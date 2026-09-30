@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tic Tac Toe</title><meta name="description" content="A quick game of tic-tac-toe against the computer.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23131927'/%3E%3Cpath d='M9 9l14 14M23 9L9 23' stroke='%2389f0ce' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+:root{color-scheme:dark;font-family:system-ui,sans-serif;background:#0b101b;color:#eef3fc}*{box-sizing:border-box}body{margin:0;min-height:100svh;display:grid;place-items:center;padding:24px}main{width:min(100%,420px)}header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px}h1{font-size:1.4rem;letter-spacing:-.04em;margin:0}.tag{font-size:.875rem;color:#9cabc4;border:1px solid #293447;border-radius:99px;padding:7px 12px}.players{display:flex;justify-content:space-between;margin-bottom:24px;color:#a7b4ca;font-size:1rem}.players strong{font-size:1.5rem;margin-right:8px}.x{color:#89f0ce}.o{color:#bba7ff}.board{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.cell{aspect-ratio:1;background:#171f30;border:1px solid #2a354b;border-radius:18px;font:500 clamp(2.5rem,14vw,4rem)/1 system-ui;cursor:pointer;transition:background .15s,transform .15s}.cell:hover:enabled{background:#222f43;transform:translateY(-2px)}.cell:disabled{cursor:default;opacity:1}.cell.win{background:#203d3b;border-color:#89f0ce}button:focus-visible{outline:3px solid #eef3fc;outline-offset:4px}#status{font-size:1.125rem;font-weight:600;text-align:center;min-height:1.6em;margin:28px 0 18px}.restart{width:100%;border:0;border-radius:12px;padding:15px;background:#89f0ce;color:#102723;font:650 1rem system-ui;cursor:pointer}.restart:hover{background:#a7f5df}footer{text-align:center;color:#8b9bb4;font-size:.875rem;margin-top:20px}@media(prefers-reduced-motion:reduce){.cell{transition:none}}
+</style>
+</head>
+<body><main>
+<header><h1>Tic Tac Toe</h1><span class="tag">Your move.</span></header>
+<div class="players"><span><strong class="x">X</strong>You</span><span><strong class="o">O</strong>Computer</span></div>
+<div class="board" role="group" aria-label="Tic-tac-toe board"></div>
+<p id="status" role="status" aria-live="polite">Your turn. Pick a square.</p>
+<button class="restart" type="button">New game</button>
+<footer>Three in a row. You go first.</footer>
+</main><script>
+const boardElement=document.querySelector('.board'),statusElement=document.querySelector('#status'),tag=document.querySelector('.tag');
+const lines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+let board=Array(9).fill(''),busy=false,timer;
+function outcome(b){for(const line of lines)if(b[line[0]]&&line.every(i=>b[i]===b[line[0]]))return {winner:b[line[0]],line};return b.every(Boolean)?{winner:'draw',line:[]}:null}
+function render(){const result=outcome(board);cells.forEach((cell,i)=>{cell.textContent=board[i];cell.className='cell '+board[i].toLowerCase()+(result?.line.includes(i)?' win':'');cell.disabled=busy||!!board[i]||!!result;cell.setAttribute('aria-label',`Row ${Math.floor(i/3)+1}, column ${i%3+1}: ${board[i]||'empty'}`)});statusElement.textContent=result?(result.winner==='draw'?"It's a draw.":result.winner==='X'?'You win!':'Computer wins. Try again?'):busy?'Computer is thinking…':'Your turn. Pick a square.';tag.textContent=result?'Round complete':busy?'Thinking…':'Your move.'}
+function score(b,turn){const result=outcome(b);if(result)return result.winner==='O'?1:result.winner==='X'?-1:0;let best=turn==='O'?-Infinity:Infinity;for(let i=0;i<9;i++)if(!b[i]){b[i]=turn;const value=score(b,turn==='O'?'X':'O');b[i]='';best=turn==='O'?Math.max(best,value):Math.min(best,value)}return best}
+function computerMove(){let best=-Infinity,choices=[];for(let i=0;i<9;i++)if(!board[i]){board[i]='O';const value=score(board,'X');board[i]='';if(value>best){best=value;choices=[i]}else if(value===best)choices.push(i)}return choices[Math.floor(Math.random()*choices.length)]}
+function state(){return {board:[...board],turn:outcome(board)?null:busy?'O':'X',result:outcome(board)?.winner||null}}
+function play(index){if(!Number.isInteger(index)||index<0||index>8)throw new Error('Choose a square from 0 to 8.');if(busy||outcome(board)||board[index])throw new Error('This move is not available.');board[index]='X';if(!outcome(board)){busy=true;timer=setTimeout(()=>{board[computerMove()]='O';busy=false;render()},350)}render();return state()}
+function reset(){clearTimeout(timer);board=Array(9).fill('');busy=false;render();return state()}
+const cells=Array.from({length:9},(_,i)=>{const cell=document.createElement('button');cell.type='button';cell.addEventListener('click',()=>play(i));boardElement.append(cell);return cell});document.querySelector('.restart').addEventListener('click',reset);render();
+if(document.modelContext?.registerTool){for(const tool of [{name:'get_game_state',description:'Read the current tic-tac-toe board, turn, and result.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:state},{name:'play_square',description:'Play X in an empty square numbered 0–8 from top left to bottom right. The computer responds automatically.',inputSchema:{type:'object',properties:{index:{type:'integer',minimum:0,maximum:8}},required:['index'],additionalProperties:false},execute:async input=>{play(input.index);if(busy)await new Promise(resolve=>setTimeout(resolve,400));return state()}},{name:'start_new_game',description:'Clear the board and start a new game with you playing X.',inputSchema:{type:'object',properties:{},additionalProperties:false},execute:reset}]){try{Promise.resolve(document.modelContext.registerTool(tool)).catch(()=>{})}catch{}}}
+</script></body></html>

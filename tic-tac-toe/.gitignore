@@ -1,0 +1,38 @@
+# Local environment files and credentials
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+*.p12
+*.pfx
+/secrets/
+/credentials/
+
+# Dependencies, caches, and generated output
+node_modules/
+.npm/
+.pnpm-store/
+.cache/
+.parcel-cache/
+.vite/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+/build/
+/coverage/
+/tmp/
+/temp/
+*.tsbuildinfo
+
+# Logs and editor/OS files
+*.log
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# dist/ is the game's source and must remain tracked.
