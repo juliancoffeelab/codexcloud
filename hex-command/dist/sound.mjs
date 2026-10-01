@@ -18,6 +18,8 @@ export function soundEnabled() { return enabled; }
 export function soundForInteraction({ attackType, unitType, terrain } = {}) {
   if (attackType) return attackType === 'archer' ? 'attack-bow' : 'attack-melee';
   if (unitType === 'scout' || unitType === 'archer') return 'terrain-plains';
+  // Give armored soldiers the heavier footstep formerly used by archers.
+  if (unitType === 'soldier') return 'unit-archer';
   if (families.has(`unit-${unitType}`)) return `unit-${unitType}`;
   if (terrain === 'ford') terrain = 'water';
   return families.has(`terrain-${terrain}`) ? `terrain-${terrain}` : 'select';

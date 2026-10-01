@@ -40,6 +40,8 @@ try:
    played=page.evaluate('playedSamples')
    assert len(played)==before+1,played
    assert f'/{family}-' in played[-1],played[-1]
+  click('[data-tile="1,3"]','unit-archer') # Soldier inherits the heavier footstep.
+  click('[data-tile="2,3"]','unit-archer')
   click('[data-tile="1,2"]','terrain-plains')
   click('[data-tile="3,1"]','terrain-plains') # Capture does not stack a coin cue.
   page.keyboard.press('Escape')

@@ -110,3 +110,5 @@ Recruitment plays a brief pair of coin taps, with no horn or spawned-unit cue.
 Turn changes and undo are silent; their visual feedback remains.
 
 Scouts and archers use the soft plains/grass sound for selection and movement.
+
+Soldiers use the heavier footstep thud previously used by archers.

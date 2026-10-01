@@ -37,7 +37,7 @@ await sound.unlockSound(); assert.equal(created,1); assert.equal(resumed,1);
 assert.equal(sound.soundForInteraction({attackType:'archer',unitType:'soldier',terrain:'village'}),'attack-bow');
 assert.equal(sound.soundForInteraction({attackType:'scout',unitType:'archer',terrain:'forest'}),'attack-melee');
 for (const unitType of ['soldier','archer','scout','commander']) {
-  assert.equal(sound.soundForInteraction({unitType,terrain:'hill'}), ['archer','scout'].includes(unitType) ? 'terrain-plains' : `unit-${unitType}`);
+  assert.equal(sound.soundForInteraction({unitType,terrain:'hill'}), ['archer','scout'].includes(unitType) ? 'terrain-plains' : unitType === 'soldier' ? 'unit-archer' : `unit-${unitType}`);
 }
 for (const terrain of ['village','water','forest','hill','plains','keep']) {
   assert.equal(sound.soundForInteraction({terrain}),`terrain-${terrain}`);
