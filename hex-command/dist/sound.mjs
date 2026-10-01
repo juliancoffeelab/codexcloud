@@ -1,7 +1,7 @@
 // Short material-inspired WAVs. Audio is created only after a real gesture.
 const STORAGE_KEY = 'hex-command-sound-enabled';
 const VOLUME = 0.38;
-const AUDIO_REVISION = 'b2dba9955fa2';
+const AUDIO_REVISION = '9430452aa498';
 const families = new Set([
   'attack-bow', 'attack-melee', 'unit-soldier', 'unit-archer', 'unit-scout',
   'unit-commander', 'terrain-village', 'terrain-water', 'terrain-forest',
@@ -97,7 +97,7 @@ export async function playSound(family) {
     if (!enabled || currentRequest !== request || context.state !== 'running') return false;
     const source = context.createBufferSource(), gain = context.createGain();
     source.buffer = buffer;
-    gain.gain.value = 1;
+    gain.gain.value = family === "select" ? 0.25 : 1;
     source.connect(gain); gain.connect(master);
     const voice = { source, gain };
     voices.add(voice);

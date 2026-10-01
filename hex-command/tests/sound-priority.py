@@ -50,14 +50,21 @@ try:
   # must never add the defending soldier or its terrain cue.
   page.evaluate("""()=>{const key='hex-command-battle',saved=JSON.parse(localStorage.getItem(key));const unit=saved.state.units.find(u=>u.id==='u2');unit.type='archer';unit.hp=8;unit.tile='8,3';localStorage.setItem(key,JSON.stringify(saved));}""")
   page.reload(wait_until='networkidle')
-  click('[data-tile="8,3"]','unit-archer')
+  before_count=page.evaluate('playedSamples.length')
+  page.click('[data-tile="8,3"]');page.wait_for_timeout(150)
+  assert page.evaluate('playedSamples.length')==before_count, 'deselecting is silent'
   click('[data-tile="8,3"]','unit-archer')
   before=snapshot(page)
-  click('[data-tile="9,3"]','attack-bow')
+  click('[data-tile="9,3"]','select')
   assert snapshot(page)==before
   click('#attack','attack-bow')
   assert next(u for u in snapshot(page)['units'] if u['id']=='u5')['hp']<12
   assert not errors,errors
-  print('PASS: one cue per click; attack previews/resolution override unit and terrain; capture uses movement; material terrain cues')
+  page.keyboard.press('Escape')
+  click('[data-tile="1,0"]','terrain-water')
+  count=page.evaluate('playedSamples.length')
+  page.click('[data-tile="1,0"]');page.wait_for_timeout(150)
+  assert page.evaluate('playedSamples.length')==count, 'reinspecting the same terrain is silent'
+  print('PASS: weapons only on actual attacks; quiet target preview; silent deselection/reinspection; unit and terrain priority')
   browser.close()
 finally: server.shutdown()

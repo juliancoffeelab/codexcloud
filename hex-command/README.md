@@ -89,10 +89,13 @@ on Classic mirror. Existing river battles retain their original map layout.
 
 Shallow water uses its own artwork in each style, including pixel-only waves
 and texture in Pixel. Sound feedback uses 17 material-inspired families with
-three shuffled variations each: armored steps, light footsteps, a command cue,
+three shuffled variations each: armor clicks, light footsteps, a command horn,
 bow release and melee impact, coins, splashes, leaves, wind, grass and gates,
-plus UI/recruitment/turn/result cues. A tile interaction plays exactly one sound:
+plus UI/recruitment/turn/result cues. A tile interaction plays at most one sound:
 attack takes priority over unit, then terrain. Rapid interactions replace the
 previous cue, and muted or still-loading audio cannot play later by accident.
-Audio starts only after an interaction; the Sound effects setting persists.
+Weapon sounds play only when an attack resolves; target selection uses a quiet
+UI tick. Deselecting a unit or reinspecting the same terrain is silent. Each
+unit/terrain clip is one brief contact or texture, and the commander uses only
+the horn. Audio starts only after an interaction; the Sound effects setting persists.
 Rebuild WAVs with `python scripts/generate-sfx.py` (requires numpy and scipy).

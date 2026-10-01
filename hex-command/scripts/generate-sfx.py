@@ -67,6 +67,16 @@ def footfall(rng, duration, weight=1, armor=False):
     return result
 
 
+def soft_step(rng, duration, scout=False):
+    """One padded sole contact; deliberately no pitched wooden impact."""
+    length = round(duration * RATE)
+    contact = noise(rng, duration, 35, 290 if scout else 480)
+    contact *= envelope(length, .006 if scout else .003, .028 if scout else .038)
+    scuff = noise(rng, duration, 450, 2100 if scout else 2800)
+    scuff *= envelope(length, .014, .028)
+    return contact + scuff * (.10 if scout else .13)
+
+
 def brass(rng, duration, freq):
     time = np.arange(round(duration * RATE)) / RATE
     # Breath-shaped, muted herald horn: slight vibrato and a rounded harmonic body.
@@ -79,7 +89,11 @@ def brass(rng, duration, freq):
 def generate(family, variant, seed):
     rng = np.random.default_rng(seed)
     durations = {'select': .13, 'victory': .83, 'defeat': .68,
-                 'terrain-hill': .65, 'attack-bow': .55}
+                 'terrain-hill': .86, 'attack-bow': .55,
+                 'unit-soldier': .16, 'unit-archer': .20, 'unit-scout': .18,
+                 'terrain-village': .27,
+                 'terrain-water': .28, 'terrain-forest': .25,
+                 'terrain-plains': .23, 'terrain-keep': .26}
     duration = durations.get(family, .48) + (variant - 1) * .017
     result = np.zeros(round(duration * RATE))
     if family == 'attack-bow':
@@ -99,56 +113,68 @@ def generate(family, variant, seed):
         add(result, footfall(rng, .2, 1.3), strike)
         add(result, resonator(rng, .36, 670 + variant * 76, decay=.10), strike, .85)
         add(result, noise(rng, .08, 1500, 7000) * envelope(round(.08 * RATE), .001, .013), strike, .8)
-    elif family in ('unit-soldier', 'unit-archer', 'unit-scout'):
-        armored = family == 'unit-soldier'
-        weight = 1.1 if armored else .75 if family == 'unit-archer' else .48
-        for offset in [.01, .15 + .027 * variant]:
-            add(result, footfall(rng, .21, weight, armored), offset)
-        if not armored:
-            brush = noise(rng, .16, 800, 4500)
-            add(result, brush * envelope(len(brush), .025, .045), .09, .15)
+    elif family == 'unit-soldier':
+        # A single short armor-link tick. High, fixed inharmonic modes decay
+        # immediately instead of the longer sheet-metal bending sound.
+        time = np.arange(len(result)) / RATE
+        for index, ratio in enumerate([1, 1.63, 2.34, 3.07]):
+            freq = [1850, 2230, 1630][variant] * ratio * rng.uniform(.985, 1.015)
+            result += np.sin(2 * np.pi * freq * time + rng.uniform(0, 6.28)) * (
+                envelope(len(time), .0005, .009 / (1 + index * .35))
+                / (index + 1))
+        result += noise(rng, duration, 1300, 6200) * envelope(len(time), .001, .013) * .18
+    elif family in ('unit-archer', 'unit-scout'):
+        add(result, soft_step(rng, duration, family == 'unit-scout'), .004)
     elif family == 'unit-commander':
-        add(result, footfall(rng, .18, .8, True), 0, .35)
+        # Preserve the original herald voice and its random phase/noise stream;
+        # consume the old footfall's draws, but never mix the unwanted knock.
+        footfall(rng, .18, .8, True)
         add(result, brass(rng, .27 + variant * .014, [196, 220, 185][variant]), .09, .7)
-    elif family in ('terrain-village', 'recruit'):
-        count = 3 if family == 'terrain-village' else 2
-        for index in range(count):
+    elif family == 'terrain-village':
+        # One small gold coin contacting another, rather than a repeated jingle.
+        add(result, resonator(rng, duration, [1790, 2030, 1880][variant], decay=.048), .006)
+        tap = noise(rng, .025, 2600, 8000)
+        add(result, tap * envelope(len(tap), .0006, .004), .006, .10)
+    elif family == 'recruit':
+        for index in range(2):
             offset = .012 + index * (.067 + variant * .018)
             add(result, resonator(rng, .25, rng.uniform(1400, 2200), decay=.075), offset, 1 / (index + 1) ** .4)
-        if family == 'recruit':
-            add(result, brass(rng, .23, 294 + variant * 18), .20, .45)
+        add(result, brass(rng, .23, 294 + variant * 18), .20, .45)
     elif family == 'terrain-water':
-        splash = noise(rng, duration, 180, 6500)
-        add(result, splash * envelope(len(splash), .018, .09), 0)
-        # Smaller separated droplets with curving bubble pitches.
-        for index in range(4 + variant):
-            length = round(.075 * RATE)
-            time = np.arange(length) / RATE
-            freq = rng.uniform(550, 1300)
-            bubble = np.sin(2 * np.pi * (freq * time - freq * 2.5 * time ** 2))
-            bubble *= envelope(length, .002, .015)
-            add(result, bubble, rng.uniform(.08, .32), .16)
+        # One liquid plop: rising bubble resonance, followed by a small wet wash.
+        # No broadband attack or low booming body that suggests an explosion.
+        time = np.arange(len(result)) / RATE
+        base = [430, 530, 380][variant]
+        phase = 2 * np.pi * (base * time + (1000 + variant * 260) * time ** 2)
+        bubble = np.sin(phase) + .14 * np.sin(phase * 2.13)
+        result += bubble * envelope(len(time), .004, .030)
+        wash = noise(rng, duration, 220, 1900)
+        result += wash * envelope(len(time), .014, .055) * .23
     elif family in ('terrain-forest', 'terrain-plains'):
         forest = family == 'terrain-forest'
-        for index in range(4 if forest else 2):
-            rustle = noise(rng, .17, 650 if forest else 400, 6200 if forest else 3400)
-            rustle *= envelope(len(rustle), .023, .042)
-            add(result, rustle, .007 + index * (.072 + .012 * variant), rng.uniform(.5, 1))
-        if forest:
-            twig = noise(rng, .025, 800, 5000)
-            add(result, twig * envelope(len(twig), .001, .006), .10 + variant * .04, .2)
+        # One smooth leafy/grass brush, with no rhythmic repeated bursts.
+        rustle = noise(rng, duration, [900, 1150, 740][variant] if forest else 350,
+                       [5700, 6700, 4700][variant] if forest else 2900 + variant * 300)
+        result += rustle * envelope(len(rustle), .025 if forest else .018,
+                                    .040 + variant * .006)
     elif family == 'terrain-hill':
         time = np.arange(len(result)) / RATE
-        gust = noise(rng, duration, 110, 1400)
-        swell = np.sin(np.pi * time / duration) ** 1.8
-        result += gust * swell
-        whistle = np.sin(2 * np.pi * ((340 + 43 * variant) * time + 16 * time ** 2))
-        result += whistle * swell * .09
+        # A slow airy howl with a clear, wandering wind resonance. The long
+        # swell and narrow resonant body distinguish it from a leafy brush.
+        swell = np.sin(np.pi * time / duration) ** 1.3
+        base = [385, 460, 335][variant]
+        wander = 16 * np.sin(2 * np.pi * time / duration * .73 + variant * .5)
+        phase = 2 * np.pi * np.cumsum(base + wander) / RATE
+        howl = np.sin(phase) + .16 * np.sin(phase * 1.98 + .6)
+        airy = noise(rng, duration, 160, 1150)
+        resonant_air = noise(rng, duration, base - 45, base + 45)
+        result += (howl * .37 + airy * .18 + resonant_air * .6) * swell
     elif family == 'terrain-keep':
-        drag = noise(rng, .28, 80, 1800)
-        add(result, drag * envelope(len(drag), .04, .10), 0, .65)
-        add(result, footfall(rng, .18, 1.4), .16 + variant * .027)
-        add(result, resonator(rng, .22, 330 + variant * 50, decay=.07), .18 + variant * .027, .4)
+        # One muted latch closing against stone, without a dragged-then-banged
+        # sequence or ringing sheet metal.
+        contact = noise(rng, duration, 70, 850 + variant * 170)
+        result += contact * envelope(len(contact), .003, .032)
+        add(result, resonator(rng, .12, 1350 + variant * 130, decay=.012), .007, .18)
     elif family == 'select':
         tap = noise(rng, .08, 250, 2200)
         add(result, tap * envelope(len(tap), .001, .010), .003)
@@ -170,7 +196,11 @@ def generate(family, variant, seed):
     result[-edge:] *= np.linspace(1, 0, edge)
     peak = float(np.max(np.abs(result)))
     assert peak > 0
-    result *= .65 / peak
+    levels = {'unit-soldier': .36, 'unit-archer': .32, 'unit-scout': .25,
+              'terrain-village': .34, 'terrain-water': .30,
+              'terrain-forest': .27, 'terrain-plains': .21,
+              'terrain-hill': .28, 'terrain-keep': .30}
+    result *= levels.get(family, .65) / peak
     return np.round(result * 32767).astype('<i2')
 
 
@@ -198,7 +228,8 @@ def main():
         assert len(set(variants)) == 3
     print(f'{len(FAMILIES) * 3} WAVs: mono {RATE} Hz, signed 16-bit; '
           f'duration {min(lengths):.3f}–{max(lengths):.3f}s; '
-          f'RMS {min(rms_values):.3f}–{max(rms_values):.3f}; peak 0.65, no clipping.')
+          f'RMS {min(rms_values):.3f}–{max(rms_values):.3f}; '
+          f'category peaks 0.21–0.65, no clipping.')
 
 
 if __name__ == '__main__':

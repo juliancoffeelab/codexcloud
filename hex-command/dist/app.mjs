@@ -1,6 +1,6 @@
 import { MAPS } from "./maps.mjs?v=19a4b3697bda";
 import { createMoveUndo } from "./undo.mjs?v=a9b7694248a6";
-import { soundEnabled, setSoundEnabled, unlockSound, playSound, playInteraction } from "./sound.mjs?v=73276807c0e7";
+import { soundEnabled, setSoundEnabled, unlockSound, playSound, playInteraction } from "./sound.mjs?v=14265d9e89aa";
 import { animateTile, animateTurn } from "./motion.mjs?v=fd2467be9e52";
 import { Game, TYPES, TERRAIN } from "./engine.mjs?v=04fb80ddf51d";
 import { abilityMarkup } from "./unit-ability.mjs?v=74434fdeb2c8";
@@ -37,9 +37,9 @@ soundControl.addEventListener("change", async () => {
     playSound("select");
   }
 });
-function selectionFeedback(tileId, attackType = null) {
+function selectionFeedback(tileId, attackType = null, audible = true) {
   animateTile(tileId, "select");
-  playInteraction({ attackType, unitType: game.at(tileId)?.type, terrain: game.tile(tileId)?.terrain });
+  if (audible) playInteraction({ attackType, unitType: game.at(tileId)?.type, terrain: game.tile(tileId)?.terrain });
 }
 function actionFeedback() {
   const now = game.snapshot(), before = previousFeedbackState;
@@ -239,7 +239,8 @@ function renderPanel() {
       recruitType = button.dataset.recruit;
       target = null;
       render();
-      selectionFeedback(unit.tile);
+      animateTile(unit.tile, "select");
+      playSound("select");
       message(
         `Choose a mint-bordered hex to recruit a ${recruitType} for ${TYPES[recruitType].cost} gold.`,
       );
@@ -310,17 +311,18 @@ function clearSelection(clearInspection = false) {
 }
 function choose(tileId) {
   if (!game.tile(tileId)) return;
+  const inspectionChanged = inspectedTile !== tileId;
   inspectedTile = tileId;
   focusedTile = tileId;
   renderTerrainPanel();
-  if (!active()) { selectionFeedback(tileId); return; }
+  if (!active()) { selectionFeedback(tileId, null, inspectionChanged); return; }
   try {
     const occupant = game.at(tileId),
       unit = game.unit(selected);
     focusedTile = tileId;
     if (occupant && (occupant.id === selected || occupant.id === target)) {
       clearSelection();
-      selectionFeedback(tileId);
+      selectionFeedback(tileId, null, false);
       return;
     }
     if (recruitType) {
@@ -348,7 +350,9 @@ function choose(tileId) {
     ) {
       target = occupant.id;
       render();
-      selectionFeedback(tileId, unit.type);
+      // Selecting a target is a quiet UI cue; the weapon sounds on resolution.
+      animateTile(tileId, "select");
+      playSound("select");
       message("Review the damage, then press Attack.");
       if (matchMedia("(max-width:900px)").matches)
         panel.scrollIntoView({ block: "nearest" });
@@ -378,7 +382,7 @@ function choose(tileId) {
       return;
     }
     clearSelection();
-    selectionFeedback(tileId);
+    selectionFeedback(tileId, null, inspectionChanged);
     const tile = game.tile(tileId);
     message(
       `${TERRAIN[tile.terrain].name}: ${TERRAIN[tile.terrain].description}`,
