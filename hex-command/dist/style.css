@@ -46,3 +46,16 @@ button,select{transition:background-color 120ms ease,border-color 120ms ease}
 }
 
 .sound-control{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:44px;margin:12px 0;font:14px system-ui,sans-serif;cursor:pointer}.sound-control input{width:20px;height:20px;margin:0;accent-color:var(--gold);cursor:pointer}.sound-control input:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* Fit all battle controls while retaining full-size touch targets. */
+.battle-bar .icon-button{width:44px;min-height:44px}
+@media(max-width:400px){
+  .battle-bar{gap:4px}
+  .header-economy{gap:3px;font-size:12px}
+  .header-economy .treasury{gap:3px;font-size:13px}
+  .header-economy .villages{margin-left:0;gap:2px}
+  .income>span{display:none}
+  .battle-bar .primary{padding:8px 6px;font-size:12px}
+  #end-turn{gap:4px}
+  #end-turn .round{padding-left:4px;font-size:10px}
+}

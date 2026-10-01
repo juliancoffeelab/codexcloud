@@ -72,3 +72,8 @@ Short, quiet sound effects accompany selection and battle actions after a user
 interaction. Toggle Sound effects in Settings; the preference is remembered.
 Movement, combat, recruitment, capture, and turn changes have brief visual feedback.
 Animations respect the device’s reduced-motion preference.
+
+The Undo move button between End turn and Settings rewinds moves within the
+current turn, including movement flags and captured village ownership. Attacking,
+recruiting, ending the turn, or starting a new battle clears earlier moves. Undo
+history lasts for the current page session; battle progress still autosaves.

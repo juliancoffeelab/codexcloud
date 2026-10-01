@@ -1,3 +1,4 @@
+import { createMoveUndo } from "./undo.mjs?v=a9b7694248a6";
 import { soundEnabled, setSoundEnabled, unlockSound, playSound } from "./sound.mjs?v=8c7d01722231";
 import { animateTile, animateTurn } from "./motion.mjs?v=fd2467be9e52";
 import { Game, TYPES, TERRAIN } from "./engine.mjs?v=72bf248fde6b";
@@ -13,6 +14,7 @@ const $ = (selector) => document.querySelector(selector),
   map = $("#map"),
   panel = $("#unit-panel");
 const restoredBattle = loadBattle();
+const moveHistory = createMoveUndo();
 let game = restoredBattle.game,
   selected = game.units.find(u => u.side === "player" && u.type !== "commander")?.id || game.units.find(u => u.side === "player")?.id,
   target = null,
@@ -161,6 +163,7 @@ function render() {
     : game.turn === "player" ? "End turn" : "Enemy turn";
   $("#round").title = `Round ${game.round}`;
   $("#end-turn").disabled = !active();
+  $("#undo-move").disabled = !moveHistory.canUndo(game);
   $("#new-game").disabled = game.turn === "enemy" && !game.winner;
   $("#cancel").hidden = !recruitType;
   $("#log").innerHTML = game.log.map((text) => `<li>${text}</li>`).join("");
@@ -232,6 +235,7 @@ function renderPanel() {
   $("#attack")?.addEventListener("click", () => {
     try {
       game.attack(selected, target);
+      moveHistory.clear();
       target = null;
       render();
       message(
@@ -306,6 +310,7 @@ function choose(tileId) {
         game.recruitTiles(selected, recruitType).some((t) => t.id === tileId)
       ) {
         game.recruit(selected, recruitType, tileId);
+        moveHistory.clear();
         recruitType = null;
         render();
         message("Recruited. Your new unit will act next turn.");
@@ -345,7 +350,7 @@ function choose(tileId) {
       return;
     }
     if (unit?.side === "player" && game.reachable(selected).has(tileId)) {
-      game.move(selected, tileId);
+      moveHistory.move(game, selected, tileId);
       target = null;
       render();
       message(
@@ -395,6 +400,7 @@ map.addEventListener("keydown", (event) => {
 async function endTurn() {
   if (!active()) throw new Error("Wait for your turn.");
   const currentEpoch = epoch;
+  moveHistory.clear();
   selected = null;
   target = null;
   recruitType = null;
@@ -435,6 +441,7 @@ async function endTurn() {
 }
 function reset() {
   epoch++;
+  moveHistory.clear();
   game = new Game();
   previousFeedbackState = null;
   selected = "u2";
@@ -446,6 +453,23 @@ function reset() {
   message("Select a unit. Capture villages. Defeat the red commander.");
   return game.snapshot();
 }
+function undoMove() {
+  const restored = moveHistory.undo(game);
+  if (!restored) return game.snapshot();
+  selected = restored.unitId;
+  target = null;
+  recruitType = null;
+  focusedTile = restored.tileId;
+  inspectedTile = restored.tileId;
+  // A rewind should not replay capture or combat feedback from forward actions.
+  previousFeedbackState = null;
+  render();
+  animateTile(restored.tileId, "move");
+  playSound("move");
+  message("Move undone. Choose a new destination.");
+  return game.snapshot();
+}
+$("#undo-move").addEventListener("click", undoMove);
 $("#end-turn").addEventListener("click", () =>
   endTurn().catch((error) => message(error.message)),
 );
@@ -568,7 +592,7 @@ if (document.modelContext?.registerTool) {
         additionalProperties: false,
       },
       execute: (input) => {
-        game.move(input.unitId, input.tileId);
+        moveHistory.move(game, input.unitId, input.tileId);
         selected = input.unitId;
         inspectedTile = game.unit(selected)?.tile || inspectedTile;
         target = null;
@@ -592,6 +616,7 @@ if (document.modelContext?.registerTool) {
       },
       execute: (input) => {
         game.attack(input.unitId, input.targetId);
+        moveHistory.clear();
         selected = input.unitId;
         inspectedTile = game.unit(selected)?.tile || inspectedTile;
         target = null;
@@ -616,10 +641,17 @@ if (document.modelContext?.registerTool) {
       },
       execute: (input) => {
         game.recruit(input.commanderId, input.type, input.tileId);
+        moveHistory.clear();
         inspectedTile = input.tileId;
         render();
         return game.snapshot();
       },
+    },
+    {
+      name: "undo_move",
+      description: "Undo the latest move in the current player turn, restoring its village ownership changes. Attacking, recruiting, or ending the turn clears earlier moves.",
+      inputSchema: { type: "object", properties: {}, additionalProperties: false },
+      execute: undoMove,
     },
     {
       name: "end_turn",
