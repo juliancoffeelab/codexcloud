@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { MAPS } from "../dist/maps.mjs";
+import { MAPS, LEGACY_RIVER } from "../dist/maps.mjs";
 
 const key = ({ col, row }) => `${col},${row}`;
 const axial = ({ col, row }) => [col - Math.floor(row / 2), row];
@@ -33,7 +33,7 @@ for (const [id, map] of Object.entries(MAPS)) {
   assert.equal(new Set(map.terrain.map(key)).size, map.terrain.length, "No competing terrain overrides");
   for (const t of map.terrain) {
     assert(t.col >= 0 && t.col < map.cols && t.row >= 0 && t.row < map.rows);
-    assert(["forest", "hill", "water", "bridge", "village", "keep"].includes(t.terrain));
+    assert(["forest", "hill", "water", "bridge", "ford", "village", "keep"].includes(t.terrain));
   }
   const tiles = board(map), passable = tiles.filter((t) => t.terrain !== "water");
   const keeps = passable.filter((t) => t.terrain === "keep");
@@ -58,17 +58,23 @@ assert.deepEqual(Object.fromEntries(["forest", "hill", "water", "village", "keep
 const river = MAPS.river, tiles = board(river);
 assert.equal(tiles.length, 135);
 assert.equal(river.terrain.filter((t) => t.terrain === "village").length, 6);
-assert(tiles.filter((t) => t.col === 7).every((t) => ["water", "bridge"].includes(t.terrain)), "River reaches both map edges");
-const bridges = tiles.filter((t) => t.terrain === "bridge");
-assert.deepEqual(bridges.map((t) => t.row), [1, 4, 7]);
-const land = tiles.filter((t) => !["water", "bridge"].includes(t.terrain));
+assert.equal(river.revision, 2);
+assert.equal(mirror.revision, 1);
+assert(tiles.filter((t) => t.col === 7).every((t) => ["water", "bridge", "ford"].includes(t.terrain)), "River reaches both map edges");
+const crossings = tiles.filter((t) => ["bridge", "ford"].includes(t.terrain));
+assert.deepEqual(crossings.map((t) => [t.terrain, t.row]), [["bridge", 4], ["ford", 7]]);
+const land = tiles.filter((t) => !["water", "bridge", "ford"].includes(t.terrain));
 const left = land.find((t) => t.col === 1 && t.row === 4);
 const leftBank = connected(land, left);
-assert.equal(leftBank.size, 7 * 9, "Removing bridges separates banks");
+assert.equal(leftBank.size, 7 * 9, "Removing both crossings separates banks");
 assert(land.filter((t) => t.col > 7).every((t) => !leftBank.has(key(t))), "No route around the river");
-for (const bridge of bridges) {
-  assert.equal(connected([...land, bridge], left).size, land.length + 1, "Each bridge independently connects both banks");
-  assert(tiles.some((t) => t.col === 6 && t.terrain !== "water" && adjacent(t, bridge)));
-  assert(tiles.some((t) => t.col === 8 && t.terrain !== "water" && adjacent(t, bridge)));
+for (const crossing of crossings) {
+  assert.equal(connected([...land, crossing], left).size, land.length + 1, "Each crossing independently connects both banks");
+  assert(tiles.some((t) => t.col === 6 && t.terrain !== "water" && adjacent(t, crossing)));
+  assert(tiles.some((t) => t.col === 8 && t.terrain !== "water" && adjacent(t, crossing)));
 }
+assert.notDeepEqual(river.terrain.filter((t) => t.terrain === "village" && t.col < 7).map((t) => [14 - t.col, t.row]).sort(), river.terrain.filter((t) => t.terrain === "village" && t.col > 7).map((t) => [t.col, t.row]).sort(), "Village approaches are asymmetric");
+assert.deepEqual(LEGACY_RIVER.terrain.filter((t) => t.terrain === "bridge").map((t) => [t.col, t.row]), [[7, 1], [7, 4], [7, 7]]);
+assert.deepEqual(LEGACY_RIVER.terrain.filter((t) => t.terrain === "village").map((t) => [t.col, t.row]), [[4, 1], [4, 4], [4, 7], [10, 1], [10, 4], [10, 7]]);
+assert(!Object.values(MAPS).includes(LEGACY_RIVER), "Legacy layout is not a new-game choice");
 console.log("Map layouts and river crossing connectivity passed.");

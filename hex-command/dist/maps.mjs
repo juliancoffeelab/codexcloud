@@ -12,6 +12,7 @@ const starters = (playerKeep, enemyKeep) => [
 export const MAPS = {
   mirror: {
     id: "mirror",
+    revision: 1,
     name: "Classic mirror",
     description: "The original compact battlefield. Four villages and a wooded center.",
     cols: 11,
@@ -35,6 +36,28 @@ export const MAPS = {
   },
   river: {
     id: "river",
+    revision: 2,
+    name: "River crossings",
+    description: "A larger battlefield with one bridge, a shallow crossing, and six scattered villages.",
+    cols: 15,
+    rows: 9,
+    terrain: [
+      ...terrain("water", [[7, 0], [7, 1], [7, 2], [7, 3], [7, 5], [7, 6], [7, 8]]),
+      ...terrain("bridge", [[7, 4]]),
+      ...terrain("ford", [[7, 7]]),
+      ...terrain("village", [[5, 2], [5, 4], [3, 7], [11, 1], [9, 5], [10, 7]]),
+      ...terrain("forest", [[2, 0], [3, 0], [3, 1], [4, 3], [2, 6], [2, 7], [4, 8], [11, 2], [12, 2], [12, 3], [10, 4], [9, 8]]),
+      ...terrain("hill", [[6, 1], [6, 2], [5, 6], [6, 6], [9, 0], [10, 0], [8, 3], [11, 6]]),
+      { col: 1, row: 4, terrain: "keep", owner: "player" },
+      { col: 13, row: 4, terrain: "keep", owner: "enemy" },
+    ],
+    units: starters(1, 13),
+  },
+};
+
+// Retained for battles saved on the original three-bridge layout.
+export const LEGACY_RIVER = {
+    id: "river",
     name: "River crossings",
     description: "A larger battlefield split by a river. Fight for three bridges and six villages.",
     cols: 15,
@@ -49,5 +72,4 @@ export const MAPS = {
       { col: 13, row: 4, terrain: "keep", owner: "enemy" },
     ],
     units: starters(1, 13),
-  },
-};
+  };

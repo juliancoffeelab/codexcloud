@@ -1,4 +1,4 @@
-import { TYPES } from "./engine.mjs?v=025c4bc5c6bb";
+import { TYPES } from "./engine.mjs?v=c269792dcd56";
 
 export function abilityMarkup({ game, unit, canAct }) {
   const type = TYPES[unit.type];

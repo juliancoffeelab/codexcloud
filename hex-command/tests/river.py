@@ -32,11 +32,12 @@ try:
         picker();page.check('input[value="river"]');page.click('#confirm-reset')
         assert snapshot(page)['mapId']=='river'
         assert page.locator('#map [data-tile]').count()==135
-        assert page.locator('#map .terrain-bridge').count()==3
+        assert page.locator('#map .terrain-bridge').count()==1
         assert page.locator('#village-total').inner_text()=='6'
-        page.click('[data-tile="2,3"]');page.click('[data-tile="4,4"]')
+        assert page.locator('#map .terrain-ford').count()==1
+        page.click('[data-tile="2,3"]');page.click('[data-tile="5,4"]')
         captured = snapshot(page)
-        assert next(v for v in captured['villages'] if v['id']=='4,4')['owner']=='player'
+        assert next(v for v in captured['villages'] if v['id']=='5,4')['owner']=='player'
         page.reload(wait_until='networkidle')
         assert snapshot(page)==captured and page.locator('#map [data-tile]').count()==135
         page.evaluate("""() => {const key='hex-command-battle';const saved=JSON.parse(localStorage.getItem(key));saved.state.units.find(u=>u.id==='u2').tile='6,4';localStorage.setItem(key,JSON.stringify(saved));}""")
@@ -50,12 +51,15 @@ try:
             bridge_state = snapshot(page)
             choose_style(page,style)
             assert snapshot(page)==bridge_state
-            assert page.locator('.terrain-bridge .terrain-art').count()==3
+            assert page.locator('.terrain-bridge .terrain-art').count()==1
         page.click('#undo-move')
         assert snapshot(page)==before
         page.click('[data-tile="7,3"]')
         assert page.locator('#terrain-panel h2').inner_text()=='Water'
         assert snapshot(page)==before
+        page.click('[data-tile="7,7"]')
+        assert page.locator('#terrain-panel h2').inner_text()=='Shallow crossing'
+        assert 'Movement: 2' in page.locator('#terrain-panel').inner_text()
         for width in [320,390,1280]:
             page.set_viewport_size({'width':width,'height':900})
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')

@@ -1,4 +1,4 @@
-import { MAPS } from "./maps.mjs?v=559108c25566";
+import { MAPS, LEGACY_RIVER } from "./maps.mjs?v=bd4f463acbc9";
 
 export const TYPES = {
   commander: {
@@ -60,6 +60,7 @@ export const TERRAIN = {
   },
   water: { name: "Water", cost: Infinity, description: "Impassable." },
   bridge: { name: "Bridge", cost: 1, description: "Cross the river here. Normal movement; no protection." },
+  ford: { name: "Shallow crossing", cost: 2, description: "Wade across the river. Costs 2 movement; no protection." },
   village: {
     name: "Village",
     cost: 1,
@@ -85,9 +86,11 @@ export function distance(a, b) {
   );
 }
 export class Game {
-  constructor(mapId = "mirror") {
+  constructor(mapId = "mirror", mapRevision = MAPS[mapId]?.revision ?? 1) {
     if (!Object.hasOwn(MAPS, mapId)) throw new Error("Unknown battlefield.");
-    const layout = MAPS[mapId];
+    if (![1, MAPS[mapId].revision ?? 1].includes(mapRevision)) throw new Error("Unknown battlefield revision.");
+    const layout = mapId === "river" && mapRevision === 1 ? LEGACY_RIVER : MAPS[mapId];
+    this.mapRevision = mapRevision;
     this.mapId = mapId;
     this.cols = layout.cols;
     this.rows = layout.rows;
@@ -412,6 +415,7 @@ export class Game {
   snapshot() {
     return {
       mapId: this.mapId,
+      mapRevision: this.mapRevision,
       round: this.round,
       turn: this.turn,
       gold: { ...this.gold },

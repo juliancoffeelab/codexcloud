@@ -1,16 +1,16 @@
-import { MAPS } from "./maps.mjs?v=559108c25566";
+import { MAPS } from "./maps.mjs?v=bd4f463acbc9";
 import { createMoveUndo } from "./undo.mjs?v=a9b7694248a6";
 import { soundEnabled, setSoundEnabled, unlockSound, playSound } from "./sound.mjs?v=8c7d01722231";
 import { animateTile, animateTurn } from "./motion.mjs?v=fd2467be9e52";
-import { Game, TYPES, TERRAIN } from "./engine.mjs?v=025c4bc5c6bb";
-import { abilityMarkup } from "./unit-ability.mjs?v=4a65aa0987a6";
-import { loadBattle, saveBattle } from "./save.mjs?v=17ed018acb3a";
+import { Game, TYPES, TERRAIN } from "./engine.mjs?v=c269792dcd56";
+import { abilityMarkup } from "./unit-ability.mjs?v=03313e56517d";
+import { loadBattle, saveBattle } from "./save.mjs?v=64686291b2c8";
 import {
   artSprite,
   loadArtStyle,
   savedArtStyle,
   saveArtStyle,
-} from "./art.mjs?v=8106a25d4dd9";
+} from "./art.mjs?v=f60cb4e7f150";
 const $ = (selector) => document.querySelector(selector),
   map = $("#map"),
   panel = $("#unit-panel");
@@ -79,6 +79,7 @@ const colors = {
     hill: "#5a6050",
     water: "#1b3c52",
     bridge: "#1b3c52",
+    ford: "#1b3c52",
     village: "#69745b",
     keep: "#526d74",
   };
@@ -259,7 +260,8 @@ const terrainDescriptions = {
   forest: "Trees shelter units and obstruct bow shots.",
   hill: "Rocky high ground offers cover and obstructs bow shots.",
   water: "Deep water cannot be crossed.",
-  bridge: "A narrow crossing between the riverbanks. Hold it, or try another bridge.",
+  bridge: "The main crossing between the riverbanks. Hold it, or take the longer route to the shallows.",
+  ford: "Shallow water offers another way around the bridge. Wading slows every unit.",
   village: "Capture this settlement by moving a unit onto it.",
   keep: "A fortified home for its army’s commander.",
 };
@@ -516,7 +518,7 @@ artControl.addEventListener("change", async () => {
 function renderMapPicker() {
   const preview = layout => {
     const features = new Map(layout.terrain.map(tile => [`${tile.col},${tile.row}`, tile.terrain]));
-    const palette = { plains: "#8d9f4f", forest: "#536e3d", hill: "#85866c", water: "#407899", bridge: "#b3ab8d", village: "#d4b476", keep: "#b9b597" };
+    const palette = { plains: "#8d9f4f", forest: "#536e3d", hill: "#85866c", water: "#407899", bridge: "#b3ab8d", ford: "#78a4a6", village: "#d4b476", keep: "#b9b597" };
     let tiles = "";
     for (let row = 0; row < layout.rows; row++) {
       for (let col = 0; col < layout.cols; col++) {

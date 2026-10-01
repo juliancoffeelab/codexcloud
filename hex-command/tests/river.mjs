@@ -6,9 +6,9 @@ let stored;
 globalThis.localStorage = { setItem: (_, value) => stored = value, getItem: () => stored };
 const river = new Game('river');
 assert.equal(river.tiles.length, 135);
-assert.equal(river.tiles.filter(tile => tile.terrain === 'bridge').length, 3);
+assert.equal(river.tiles.filter(tile => tile.terrain === 'bridge').length, 1);
 assert.equal(river.snapshot().villages.length, 6);
-river.move('u3', '4,4');
+river.move('u3', '5,4');
 saveBattle(river, true);
 assert.deepEqual(loadBattle().game.snapshot(), river.snapshot());
 assert.equal(loadBattle().pendingEnemy, true);
@@ -23,6 +23,25 @@ assert.deepEqual(loadBattle().game.snapshot(), legacy.snapshot());
 save.state.mapId = 'unknown';
 stored = JSON.stringify(save);
 assert.equal(loadBattle().game.mapId, 'mirror');
+
+// Published revision-1 river saves keep their original crossings and progress.
+const oldRiver = new Game('river', 1);
+oldRiver.move('u3', '4,4');
+oldRiver.unit('u2').tile = '7,1';
+saveBattle(oldRiver);
+const oldSave = JSON.parse(stored);
+delete oldSave.state.mapRevision;
+stored = JSON.stringify(oldSave);
+assert.deepEqual(loadBattle().game.snapshot(), oldRiver.snapshot());
+assert.equal(loadBattle().game.tile('7,1').terrain, 'bridge');
+const fordGame = new Game('river');
+fordGame.unit('u2').tile = '6,7';
+assert.equal(fordGame.reachable('u2').get('7,7'), 2);
+assert.equal(fordGame.reachable('u2').get('8,7'), 3);
+assert.equal(fordGame.reachable('u2').has('9,7'), false);
+assert.equal(fordGame.cost(fordGame.unit('u3'), fordGame.tile('7,7')), 2);
+fordGame.move('u2', '7,7');
+assert.equal(fordGame.unit('u2').tile, '7,7');
 
 // Reaching the only crossing requires first moving away from the objective.
 for (const type of ['soldier', 'scout']) {

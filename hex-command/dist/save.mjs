@@ -1,5 +1,5 @@
-import { MAPS } from './maps.mjs?v=559108c25566';
-import { Game, TYPES } from './engine.mjs?v=025c4bc5c6bb';
+import { MAPS } from './maps.mjs?v=bd4f463acbc9';
+import { Game, TYPES } from './engine.mjs?v=c269792dcd56';
 
 export const SAVE_KEY = 'hex-command-battle';
 export const SAVE_VERSION = 1;
@@ -22,7 +22,7 @@ export function loadBattle() {
     if (!saved || saved.version !== SAVE_VERSION) return fresh();
     const s = saved.state;
     if (!s || (s.mapId !== undefined && !Object.hasOwn(MAPS, s.mapId))) return fresh();
-    const game = new Game(s.mapId ?? "mirror");
+    const game = new Game(s.mapId ?? "mirror", s.mapRevision ?? 1);
     const side = value => ['player', 'enemy'].includes(value);
     const integer = value => Number.isSafeInteger(value) && value >= 0;
     if (!s || !integer(s.round) || s.round < 1 || !side(s.turn) ||
