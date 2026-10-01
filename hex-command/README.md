@@ -55,6 +55,11 @@ if the page closes during its animation. Finished battles also persist. New batt
 replaces the save; unsupported or invalid saves start fresh. No migration or
 cross-device synchronization is performed.
 
+Click a tile to inspect its terrain, including beneath friendly or enemy units.
+Terrain cards explain movement, protection, village income and healing, and keep
+ownership and recruitment. Inspection also works during enemy turns and after a battle.
+The commander’s recruit buttons live in its ability section.
+
 Tap the selected unit or attack target again, or an inactive map tile, to deselect.
 Clicks on the header, unit panel, and empty battlefield background preserve selection.
 Escape clears selection and cancels recruitment. Selecting a different unit still switches to it.

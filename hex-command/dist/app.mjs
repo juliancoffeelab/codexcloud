@@ -1,4 +1,5 @@
 import { Game, TYPES, TERRAIN } from "./engine.mjs?v=72bf248fde6b";
+import { abilityMarkup } from "./unit-ability.mjs?v=c771ffc995eb";
 import { loadBattle, saveBattle } from "./save.mjs?v=0bc258126ff2";
 import {
   artSprite,
@@ -15,7 +16,8 @@ let game = restoredBattle.game,
   target = null,
   recruitType = null,
   epoch = 0,
-  focusedTile = game.unit(selected)?.tile || "1,3";
+  focusedTile = game.unit(selected)?.tile || "1,3",
+  inspectedTile = game.unit(selected)?.tile || null;
 let artStyle = savedArtStyle();
 const artControl = $("#art-style");
 artControl.value = artStyle;
@@ -115,6 +117,7 @@ function render() {
   $("#cancel").hidden = !recruitType;
   $("#log").innerHTML = game.log.map((text) => `<li>${text}</li>`).join("");
   renderPanel();
+  renderTerrainPanel();
   if (game.winner)
     message(
       game.winner === "player"
@@ -161,16 +164,7 @@ function renderPanel() {
   const preview = attackAvailable ? game.preview(unit, victim) : null;
   let html = attackAvailable
     ? `<div class="duel">${unitCard(unit, preview.retaliation)}<span class="duel-divider" aria-hidden="true">⚔</span>${unitCard(victim, preview.damage)}</div><p class="combat-note">${preview.retaliation ? `Enemy retaliates for ${preview.retaliation} damage.` : 'No retaliation.'}</p>`
-    : `<div class="unit-detail">${unitCard(unit)}<div class="unit-info"><div class="unit-stats">${stat("move", "Move", type.move)}${stat("damage", "Damage", type.damage)}${stat("range", "Range", type.range)}</div><p class="ability">${type.ability}</p><p>${type.description}</p><p class="unit-state">${TERRAIN[tile.terrain].name} · ${unit.attacked ? 'Turn finished' : unit.moved ? 'Can still attack' : 'Ready'}</p></div></div>`;
-  if (unit.side === "player" && unit.type === "commander" && !attackAvailable) {
-    if (tile.terrain === "keep" && tile.owner === "player") {
-      html +=
-        '<h3 class="recruit-title">Recruit an ally</h3><div class="recruit-list">';
-      for (const name of ["soldier", "archer", "scout"])
-        html += `<button class="recruit-button" data-recruit="${name}" ${!active() || !game.recruitTiles(unit.id, name).length ? "disabled" : ""}><span>${TYPES[name].name}</span><span>${TYPES[name].cost} gold</span></button>`;
-      html += "</div><p>New recruits act next turn.</p>";
-    } else html += "<p>Return to your keep to recruit.</p>";
-  }
+    : `<div class="unit-detail">${unitCard(unit)}<div class="unit-info"><div class="unit-stats">${stat("move", "Move", type.move)}${stat("damage", "Damage", type.damage)}${stat("range", "Range", type.range)}</div>${abilityMarkup({ game, unit, canAct: active() && unit.side === "player" })}<p class="unit-state">${TERRAIN[tile.terrain].name} · ${unit.attacked ? 'Turn finished' : unit.moved ? 'Can still attack' : 'Ready'}</p></div></div>`;
   if (attackAvailable) html += '<button id="attack" class="primary attack-button">Attack</button>';
   panel.innerHTML = html;
   panel.querySelectorAll("[data-recruit]").forEach((button) =>
@@ -200,15 +194,53 @@ function renderPanel() {
     }
   });
 }
-function clearSelection() {
-  if (!active() || (!selected && !target && !recruitType)) return;
+const terrainDescriptions = {
+  plains: "Open grassland with easy footing.",
+  forest: "Trees shelter units and obstruct bow shots.",
+  hill: "Rocky high ground offers cover and obstructs bow shots.",
+  water: "Deep water cannot be crossed.",
+  village: "Capture this settlement by moving a unit onto it.",
+  keep: "A fortified home for its army’s commander.",
+};
+function renderTerrainPanel() {
+  const terrainPanel = $("#terrain-panel"), tile = game.tile(inspectedTile);
+  terrainPanel.hidden = !tile;
+  if (!tile) {
+    terrainPanel.innerHTML = "";
+    return;
+  }
+  const info = TERRAIN[tile.terrain];
+  const facts = [];
+  if (Number.isFinite(info.cost)) {
+    facts.push(`Movement: ${info.cost}${tile.terrain === "forest" ? " (scouts: 1)" : ""}`);
+    facts.push(tile.terrain === "hill" ? "Protection: −1 damage from all attacks" :
+      tile.terrain === "forest" ? "Protection: −1 damage from bow attacks" : "Protection: none");
+  } else facts.push("Movement: impassable");
+  if (["forest", "hill"].includes(tile.terrain)) facts.push("Blocks bow shots through this hex");
+  if (tile.terrain === "village") {
+    facts.push("+2 gold at the start of its owner’s turn", "Heals a friendly occupant by 2 HP at the start of its turn");
+  }
+  if (tile.terrain === "keep") {
+    facts.push("Its owner’s commander can recruit into adjacent empty land hexes", "Keeps cannot be captured");
+  }
+  const ownership = ["village", "keep"].includes(tile.terrain)
+    ? `<p class="terrain-owner ${tile.owner || "neutral"}">${tile.owner === "player" ? "Your " : tile.owner === "enemy" ? "Enemy " : "Unclaimed "}${tile.terrain}</p>` : "";
+  terrainPanel.innerHTML = `<div class="terrain-detail"><div class="terrain-portrait">${artSprite(artStyle, "terrain", tile.terrain, 0, 0, 80, 80, "terrain-card-art")}<span class="unit-side">Terrain</span></div><div class="terrain-info"><h2>${info.name}</h2>${ownership}<p>${terrainDescriptions[tile.terrain]}</p><ul class="terrain-facts">${facts.map(fact => `<li>${fact}</li>`).join("")}</ul></div></div>`;
+}
+function clearSelection(clearInspection = false) {
+  if (!selected && !target && !recruitType && !(clearInspection && inspectedTile)) return;
   selected = null;
   target = null;
   recruitType = null;
+  if (clearInspection) inspectedTile = null;
   render();
   message("Selection cleared.");
 }
 function choose(tileId) {
+  if (!game.tile(tileId)) return;
+  inspectedTile = tileId;
+  focusedTile = tileId;
+  renderTerrainPanel();
   if (!active()) return;
   try {
     const occupant = game.at(tileId),
@@ -340,6 +372,7 @@ async function endTurn() {
     selected =
       game.units.find((u) => u.side === "player" && u.type !== "commander")
         ?.id || game.units.find((u) => u.side === "player")?.id;
+    inspectedTile = game.unit(selected)?.tile || inspectedTile;
     render();
     message("Your turn. Capture villages, recruit reinforcements, or attack.");
   }
@@ -353,6 +386,7 @@ function reset() {
   target = null;
   recruitType = null;
   focusedTile = "1,3";
+  inspectedTile = game.unit(selected)?.tile || null;
   render();
   message("Select a unit. Capture villages. Defeat the red commander.");
   return game.snapshot();
@@ -366,7 +400,7 @@ $("#cancel").addEventListener("click", () => {
   message("Recruitment cancelled. Select a unit to act.");
 });
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && !document.querySelector("dialog[open]")) clearSelection();
+  if (event.key === "Escape" && !document.querySelector("dialog[open]")) clearSelection(true);
 });
 const resetDialog = $("#reset-dialog");
 const settingsDialog = $("#settings-dialog");
@@ -481,6 +515,7 @@ if (document.modelContext?.registerTool) {
       execute: (input) => {
         game.move(input.unitId, input.tileId);
         selected = input.unitId;
+        inspectedTile = game.unit(selected)?.tile || inspectedTile;
         target = null;
         recruitType = null;
         render();
@@ -503,6 +538,7 @@ if (document.modelContext?.registerTool) {
       execute: (input) => {
         game.attack(input.unitId, input.targetId);
         selected = input.unitId;
+        inspectedTile = game.unit(selected)?.tile || inspectedTile;
         target = null;
         recruitType = null;
         render();
@@ -525,6 +561,7 @@ if (document.modelContext?.registerTool) {
       },
       execute: (input) => {
         game.recruit(input.commanderId, input.type, input.tileId);
+        inspectedTile = input.tileId;
         render();
         return game.snapshot();
       },

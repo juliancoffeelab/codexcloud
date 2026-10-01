@@ -17,3 +17,7 @@ dialog{background:var(--surface);color:var(--text);width:calc(100% - 32px);max-w
 @media(max-width:540px){#end-turn{gap:6px}#end-turn .round{padding-left:6px;font-size:11px}.unit-stats{gap:5px 9px}.unit-stat{font-size:12px}.unit-stat svg{width:15px;height:15px}}
 
 .terrain-forest .terrain-art{filter:brightness(.93)}
+
+/* Keep inspection cards and recruitment in the same compact sidebar. */
+.panel[hidden]{display:none}.panel,#map{scroll-margin-top:90px}.terrain-detail{display:grid;grid-template-columns:80px minmax(0,1fr);gap:14px;align-items:start}.terrain-portrait{text-align:center}.terrain-portrait .terrain-card-art{display:block;width:80px;height:80px;margin-bottom:8px}.terrain-info{font:13px/1.55 system-ui,sans-serif;color:var(--muted)}.terrain-info h2{font-family:Georgia,'Times New Roman',serif;color:var(--text);margin-bottom:5px}.terrain-owner{margin-bottom:7px;color:var(--gold)}.terrain-owner.player{color:var(--mint)}.terrain-owner.enemy{color:var(--red)}.terrain-facts{padding-left:17px;margin:9px 0 0}.terrain-facts li+li{margin-top:3px}.unit-info .recruit-list{margin-top:8px}.recruit-hint{margin-top:8px}.unit-info .recruit-button{width:100%;font-size:13px;padding:8px 10px}.panel+#terrain-panel,#cancel+#terrain-panel{border-top:0}
+@media(max-width:540px){.terrain-detail{grid-template-columns:80px minmax(0,1fr);gap:14px}}
