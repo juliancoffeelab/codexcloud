@@ -15,3 +15,5 @@ dialog{background:var(--surface);color:var(--text);width:calc(100% - 32px);max-w
 .terrain-keep .tile-outline{stroke:#626452;stroke-opacity:1;stroke-width:1.4}
 #end-turn{display:flex;align-items:center;gap:10px;white-space:nowrap}#end-turn .round{font:12px system-ui,sans-serif;color:inherit;border-left:1px solid #1c211840;padding-left:10px;opacity:.8}.unit-stats{flex-wrap:wrap;gap:6px 12px}.unit-stat{display:inline-flex;align-items:center;gap:4px;white-space:nowrap;font-size:12px}.unit-stat svg{width:17px;height:17px;fill:none;stroke:var(--gold);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 @media(max-width:540px){#end-turn{gap:6px}#end-turn .round{padding-left:6px;font-size:11px}.unit-stats{gap:5px 9px}.unit-stat{font-size:12px}.unit-stat svg{width:15px;height:15px}}
+
+.terrain-forest .terrain-art{filter:brightness(.93)}

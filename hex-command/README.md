@@ -17,7 +17,7 @@ current battle intact when switching.
 the interface, and `dist/art.mjs` displays regions of the generated PNG sheets
 in `dist/assets/`. Terrain uses dedicated flat pointy-top hex artwork, rendered with square crops
 and uniform scaling, clipped to the board edges. No mesh warping is used. Unit sheets contain teal player and crimson enemy rows with natural skin tones.
-Terrain sheets include dark forest floor, stony hill ground, village dirt paths,
+Terrain shares a grassy base with lightly shaded forest floor, small stone patches, village dirt paths,
 and walled castles with paved courtyards. Grass, trees, and waves use irregular
 arrangements; the two main hill formations and village houses retain their familiar shapes.
 Roles have distinct silhouettes, with no color filter applied. Commanders carry
