@@ -277,7 +277,7 @@ const unitSheets = {
   "pixel": {
     "width": 1774,
     "height": 887,
-    "revision": "0cb42d1a21b0",
+    "revision": "cd2af5ff67fe",
     "frames": [
       {
         "x": 0,

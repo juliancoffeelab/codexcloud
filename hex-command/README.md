@@ -22,7 +22,8 @@ and walled castles with paved courtyards. Grass, trees, and waves use irregular
 arrangements; the two main hill formations and village houses retain their familiar shapes.
 Roles have distinct silhouettes, with no color filter applied. Commanders carry
 faction standards and render slightly larger on the map. Team bases and ownership dots
-also identify sides. Pixel mode uses nearest-neighbor display.
+also identify sides. Pixel units use coarse blocks and simplified shading to match the terrain,
+with nearest-neighbor display.
 
 The existing OpenAI Sites project is recorded in `.openai/hosting.json`; its
 static directory is `dist`. Publish that entire directory, including the asset
