@@ -138,6 +138,7 @@ function render() {
     );
 }
 function renderPanel() {
+  panel.hidden = false;
   if (game.winner) {
     panel.innerHTML = `<div class="unit-title"><h2>${game.winner === "player" ? "The field is yours." : "An army needs a leader."}</h2></div><p>${game.winner === "player" ? "Your army defeated the enemy commander." : "Keep your commander protected and use villages to grow your army."}</p><button id="play-again" class="primary">Play again</button>`;
     $("#play-again").addEventListener("click", reset);
@@ -145,8 +146,8 @@ function renderPanel() {
   }
   const unit = game.unit(selected);
   if (!unit) {
-    panel.innerHTML =
-      "<h2>Choose your next move</h2><p>Select one of your mint-colored units. Move into blue hexes, or inspect an enemy in range to attack.</p>";
+    panel.hidden = true;
+    panel.innerHTML = "";
     return;
   }
   const type = TYPES[unit.type],
@@ -208,12 +209,24 @@ function renderPanel() {
     }
   });
 }
+function clearSelection() {
+  if (!active() || (!selected && !target && !recruitType)) return;
+  selected = null;
+  target = null;
+  recruitType = null;
+  render();
+  message("Selection cleared.");
+}
 function choose(tileId) {
   if (!active()) return;
   try {
     const occupant = game.at(tileId),
       unit = game.unit(selected);
     focusedTile = tileId;
+    if (occupant && (occupant.id === selected || occupant.id === target)) {
+      clearSelection();
+      return;
+    }
     if (recruitType) {
       if (
         game.recruitTiles(selected, recruitType).some((t) => t.id === tileId)
@@ -226,7 +239,7 @@ function choose(tileId) {
       }
       if (occupant?.side === "player") recruitType = null;
       else {
-        message("Choose a mint-bordered hex, or cancel recruitment.");
+        clearSelection();
         return;
       }
     }
@@ -264,6 +277,7 @@ function choose(tileId) {
       );
       return;
     }
+    clearSelection();
     const tile = game.tile(tileId);
     message(
       `${TERRAIN[tile.terrain].name}: ${TERRAIN[tile.terrain].description}`,
@@ -275,6 +289,12 @@ function choose(tileId) {
 map.addEventListener("click", (event) => {
   const cell = event.target.closest("[data-tile]");
   if (cell) choose(cell.dataset.tile);
+  else clearSelection();
+});
+document.addEventListener("click", event => {
+  const controlClick = event.composedPath().some(node =>
+    node instanceof Element && node.matches("#map, button, select, input, dialog, a, summary"));
+  if (!controlClick) clearSelection();
 });
 map.addEventListener("keydown", (event) => {
   const cell = event.target.closest("[data-tile]");
@@ -361,11 +381,7 @@ $("#cancel").addEventListener("click", () => {
   message("Recruitment cancelled. Select a unit to act.");
 });
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && recruitType) {
-    recruitType = null;
-    render();
-    message("Recruitment cancelled.");
-  }
+  if (event.key === "Escape" && !document.querySelector("dialog[open]")) clearSelection();
 });
 const resetDialog = $("#reset-dialog");
 const settingsDialog = $("#settings-dialog");

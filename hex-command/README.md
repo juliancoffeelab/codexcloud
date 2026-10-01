@@ -50,3 +50,7 @@ player turn. Before an enemy turn, a checkpoint is saved for deterministic repla
 if the page closes during its animation. Finished battles also persist. New battle
 replaces the save; unsupported or invalid saves start fresh. No migration or
 cross-device synchronization is performed.
+
+Tap the selected unit or attack target again to deselect. Inactive hexes,
+battlefield background, clicks outside controls, and Escape clear selection
+and cancel recruitment. Selecting a different unit still switches to it.
