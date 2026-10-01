@@ -63,17 +63,6 @@ function renderUnit(unit, x, y) {
       : `<ellipse class="team-base" cx="${x}" cy="${y + 19}" rx="19" ry="7" fill="${teamColor}" stroke="${teamColor}"/>${artSprite(artStyle, "units", unit.type, x - 28, y - 37, 56, 65, `unit-art ${unit.side === "enemy" ? "enemy-unit" : ""} ${unit.attacked ? "spent-unit" : ""}`)}`;
   return `${body}<rect class="hp-bg" x="${x - 19}" y="${y + 27}" width="38" height="4" rx="2"/><rect class="hp" x="${x - 19}" y="${y + 27}" width="${(38 * unit.hp) / TYPES[unit.type].hp}" height="4" rx="2"/>${unit.attacked ? `<text class="acted" x="${x + 21}" y="${y - 17}">✓</text>` : ""}`;
 }
-function renderLegend() {
-  $("#terrain-legend").innerHTML = Object.entries(TERRAIN)
-    .map(([name, terrain]) => {
-      const icon =
-        artStyle === "classic"
-          ? `<span aria-hidden="true">${markers[name] || "·"}</span>`
-          : artSprite(artStyle, "terrain", name, 0, 0, 30, 30, "legend-art");
-      return `<span class="legend-item">${icon}${terrain.name}</span>`;
-    })
-    .join("");
-}
 function render() {
   const unit = game.unit(selected),
     canAct = active() && unit?.side === "player",
@@ -121,7 +110,7 @@ function render() {
   $("#gold").textContent = game.gold.player;
   $("#income").textContent = `+${game.income("player")}`;
   $("#villages").textContent = game.income("player") / 2;
-  $("#round").textContent = `Round ${game.round}`;
+  $("#round").textContent = `R${game.round}`;
   $("#turn-badge").textContent = game.winner
     ? game.winner === "player"
       ? "Victory"
@@ -129,13 +118,14 @@ function render() {
     : game.turn === "player"
       ? "Your turn"
       : "Enemy turn";
+  $("#turn-badge").title = $("#turn-badge").textContent;
+  $("#round").title = `Round ${game.round}`;
   $("#turn-badge").style.color =
     game.turn === "enemy" || game.winner === "enemy" ? "#ff9590" : "#6fdec0";
   $("#end-turn").disabled = !active();
   $("#new-game").disabled = game.turn === "enemy" && !game.winner;
   $("#cancel").hidden = !recruitType;
   $("#log").innerHTML = game.log.map((text) => `<li>${text}</li>`).join("");
-  renderLegend();
   renderPanel();
   if (game.winner)
     message(
@@ -164,18 +154,20 @@ function renderPanel() {
       game.targets(unit.id).includes(victim) &&
       active() &&
       unit.side === "player";
-  const portrait = artSprite(
-    artStyle,
-    "units",
-    unit.type,
-    0,
-    0,
-    42,
-    56,
-    `portrait ${unit.side === "enemy" ? "enemy-unit" : ""}`,
-  );
-  let html = `<div class="unit-title"><div class="unit-heading">${portrait}<h2>${type.name}</h2></div><span class="unit-side">${unit.side === "player" ? "Your army" : "Enemy"}</span></div><div class="unit-stats"><span><strong>${unit.hp}/${type.hp}</strong> HP</span><span><strong>${type.move}</strong> move</span><span><strong>${type.damage}</strong> damage</span><span>Range <strong>${type.range}</strong></span></div><p class="ability">${type.ability}</p><p class="description">${type.description}</p><p>${TERRAIN[tile.terrain].name} · ${unit.attacked ? "Turn finished" : unit.moved ? "Moved · can still attack" : "Ready to move and attack"}</p>`;
-  if (unit.side === "player" && unit.type === "commander") {
+  function unitCard(combatant, damage = null) {
+    const info = TYPES[combatant.type];
+    const after = damage === null ? combatant.hp : Math.max(0, combatant.hp - damage);
+    const portrait = artStyle === "classic"
+      ? `<span class="classic-portrait">${letters[combatant.type]}</span>`
+      : artSprite(artStyle, "units", combatant.type, 0, 0, 72, 90,
+        `portrait ${combatant.side === "enemy" ? "enemy-unit" : ""}`);
+    return `<div class="combatant ${combatant.side}"><span class="unit-side">${combatant.side === "player" ? "Your unit" : "Enemy unit"}</span>${portrait}<h2>${info.name}</h2><div class="health-numbers"><b>${combatant.hp}</b>${damage !== null ? `<span aria-label="health after attack"> → <b class="${after === 0 ? 'fatal' : ''}">${after}</b>` : ''}<span> / ${info.hp} HP</span></div><div class="health-track" role="img" aria-label="${after} of ${info.hp} health${damage !== null ? ` after attack; ${combatant.hp} before` : ''}"><span class="health-lost" style="width:${combatant.hp/info.hp*100}%"></span><span class="health-left" style="width:${after/info.hp*100}%"></span></div>${damage !== null ? `<p class="damage-result">${after === 0 ? 'Falls in battle' : damage ? `−${damage} HP` : 'Unharmed'}</p>` : ''}</div>`;
+  }
+  const preview = attackAvailable ? game.preview(unit, victim) : null;
+  let html = attackAvailable
+    ? `<div class="duel">${unitCard(unit, preview.retaliation)}<span class="duel-divider" aria-hidden="true">⚔</span>${unitCard(victim, preview.damage)}</div><p class="combat-note">${preview.retaliation ? `Enemy retaliates for ${preview.retaliation} damage.` : 'No retaliation.'}</p>`
+    : `<div class="unit-detail">${unitCard(unit)}<div class="unit-info"><div class="unit-stats"><span><b>${type.move}</b> move</span><span><b>${type.damage}</b> damage</span><span>Range <b>${type.range}</b></span></div><p class="ability">${type.ability}</p><p>${type.description}</p><p class="unit-state">${TERRAIN[tile.terrain].name} · ${unit.attacked ? 'Turn finished' : unit.moved ? 'Can still attack' : 'Ready'}</p></div></div>`;
+  if (unit.side === "player" && unit.type === "commander" && !attackAvailable) {
     if (tile.terrain === "keep" && tile.owner === "player") {
       html +=
         '<h3 class="recruit-title">Recruit an ally</h3><div class="recruit-list">';
@@ -184,10 +176,7 @@ function renderPanel() {
       html += "</div><p>New recruits act next turn.</p>";
     } else html += "<p>Return to your keep to recruit.</p>";
   }
-  if (attackAvailable) {
-    const preview = game.preview(unit, victim);
-    html += `<div class="attack-preview"><h2>Attack enemy ${TYPES[victim.type].name.toLowerCase()}</h2><p>Deal <strong>${preview.damage}</strong> damage${victim.hp <= preview.damage ? " — defeats this unit" : ""}.<br>${preview.retaliation ? `Take ${preview.retaliation} damage in retaliation${unit.hp <= preview.retaliation ? " — your unit will fall" : ""}.` : "No retaliation."}</p><button id="attack" class="primary">Attack</button></div>`;
-  }
+  if (attackAvailable) html += '<button id="attack" class="primary attack-button">Attack</button>';
   panel.innerHTML = html;
   panel.querySelectorAll("[data-recruit]").forEach((button) =>
     button.addEventListener("click", () => {
@@ -374,6 +363,16 @@ document.addEventListener("keydown", (event) => {
   }
 });
 const resetDialog = $("#reset-dialog");
+const settingsDialog = $("#settings-dialog");
+$("#settings-button").addEventListener("click", () => settingsDialog.showModal());
+$("#close-settings").addEventListener("click", () => settingsDialog.close());
+settingsDialog.addEventListener("click", event => {
+  if (event.target === settingsDialog) {
+    const bounds = settingsDialog.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right ||
+        event.clientY < bounds.top || event.clientY > bounds.bottom) settingsDialog.close();
+  }
+});
 artControl.addEventListener("change", async () => {
   const nextStyle = artControl.value;
   artControl.disabled = true;
@@ -389,6 +388,7 @@ artControl.addEventListener("change", async () => {
   artControl.disabled = false;
 });
 $("#new-game").addEventListener("click", () => {
+  settingsDialog.close();
   if (game.winner) reset();
   else resetDialog.showModal();
 });

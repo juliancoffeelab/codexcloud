@@ -10,7 +10,7 @@ python3 -m http.server 8000 --directory dist
 ```
 
 No build step or package installation is needed. The **Art style** selector
-beside the title switches between Normal, Low-poly, Pixel, and the original
+in the cog settings menu switches between Normal, Low-poly, Pixel, and the original
 Classic markers. It remembers your preference in this browser and keeps the
 current battle intact when switching.
 
@@ -38,3 +38,8 @@ The checks start their own local server and exercise style switching,
 persistence, recruitment, movement, combat, enemy turns, mobile layout, and
 asset-loading failures. Add `--screenshots /tmp/hex-command-checks` to capture
 each style on desktop and mobile.
+
+The compact top bar holds the round, coin treasury, End turn, and settings.
+Settings contains New battle, income, village count, the field manual, and
+the battle journal. Selecting an attack target shows both units with current
+and predicted health, including retaliation and defeats.

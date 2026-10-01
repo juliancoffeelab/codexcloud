@@ -30,15 +30,19 @@ def snapshot(page):
 
 
 def choose_style(page, style):
+    if not page.locator("#settings-dialog").evaluate("el => el.open"):
+        page.click("#settings-button")
     page.select_option("#art-style", style)
     page.wait_for_function(
         "style => document.documentElement.dataset.artStyle === style && "
         "!document.querySelector('#art-style').disabled",
         arg=style,
     )
+    page.click("#close-settings")
 
 
 def new_battle(page):
+    page.click("#settings-button")
     page.click("#new-game")
     page.click("#confirm-reset")
     assert snapshot(page)["round"] == 1
@@ -76,6 +80,7 @@ def run(url, screenshots):
             "image => getComputedStyle(image).imageRendering") == "pixelated"
         page.reload(wait_until="networkidle")
         assert page.input_value("#art-style") == "pixel"
+        assert not page.locator("#settings-dialog").evaluate("el => el.open")
         print("PASS: all four styles render; switching preserves battle; preference persists")
 
         # Use the actual recruitment buttons and highlighted destination tiles.
@@ -116,6 +121,16 @@ def run(url, screenshots):
                     victim_id = actions["attacks"][0]["id"]
                     victim = next(u for u in snapshot(page)["units"] if u["id"] == victim_id)
                     page.click(f'[data-tile="{victim["tile"]}"]')
+                    assert page.locator(".duel .combatant").count() == 2
+                    forecast = actions["attacks"][0]
+                    health = page.locator(".health-numbers").all_inner_texts()
+                    assert f'{victim["hp"]} → {max(0, victim["hp"] - forecast["damage"])}' in health[1]
+                    assert f'{unit["hp"]} → {max(0, unit["hp"] - forecast["retaliation"])}' in health[0]
+                    if screenshots:
+                        page.screenshot(path=str(screenshots / "desktop-combat.png"), full_page=True)
+                        page.set_viewport_size({"width": 390, "height": 844})
+                        page.screenshot(path=str(screenshots / "mobile-combat.png"), full_page=True)
+                        page.set_viewport_size({"width": 1280, "height": 900})
                     page.click("#attack")
                     after = next((u for u in snapshot(page)["units"] if u["id"] == victim_id), None)
                     assert after is None or after["hp"] < victim["hp"]
@@ -138,7 +153,13 @@ def run(url, screenshots):
         for width in (390, 320):
             page.set_viewport_size({"width": width, "height": 844})
             assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
-            assert page.locator("#art-style").bounding_box()["height"] >= 44
+            bar = page.locator(".battle-bar").bounding_box()
+            for selector in (".battle-bar h1", "#round", ".treasury", "#end-turn", "#settings-button"):
+                box = page.locator(selector).bounding_box()
+                assert box["y"] >= bar["y"] and box["y"] + box["height"] <= bar["y"] + bar["height"]
+            assert page.locator("#settings-button").bounding_box()["height"] >= 44
+            assert page.locator("#terrain-legend, .orders, .map-caption").count() == 0
+            assert page.locator("#status").bounding_box()["height"] == 1
             page.locator(".map-scroll").evaluate("el => el.scrollLeft = el.scrollWidth")
             assert page.locator(".map-scroll").evaluate("el => el.scrollLeft > 0")
             page.locator(".map-scroll").evaluate("el => el.scrollLeft = 0")
@@ -158,6 +179,7 @@ def run(url, screenshots):
         state = snapshot(page)
         pattern = "**/assets/terrain-pixel.png"
         page.route(pattern, lambda route: route.abort())
+        page.click("#settings-button")
         page.select_option("#art-style", "pixel")
         page.wait_for_function("!document.querySelector('#art-style').disabled")
         assert page.input_value("#art-style") == "normal"

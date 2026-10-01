@@ -17,31 +17,14 @@
   </head>
   <body>
     <main>
-      <header class="header">
-        <div class="title-group">
-          <h1>Hex Command<span>.</span></h1>
-          <label class="art-control" for="art-style"
-            ><span>Art style</span
-            ><select id="art-style">
-              <option value="normal">Normal</option>
-              <option value="low-poly">Low-poly</option>
-              <option value="pixel">Pixel</option>
-              <option value="classic">Classic</option>
-            </select></label
-          >
-        </div>
-        <button id="new-game" class="quiet">New battle</button>
+      <header class="battle-bar" aria-label="Battle controls">
+        <h1>Hex Command</h1>
+        <span id="turn-badge" class="turn-indicator" title="Your turn">Your turn</span>
+        <span id="round" class="round" title="Round 1">R1</span>
+        <span class="treasury" aria-label="Gold"><i class="coin" aria-hidden="true"></i><b id="gold">12</b></span>
+        <button id="end-turn" class="primary">End turn</button>
+        <button id="settings-button" class="icon-button" aria-label="Settings" title="Settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 3 1-1h4l1 3 3 1 3-1 2 4-2 2v3l2 2-2 4-3-1-3 1-1 3h-4l-1-3-3-1-3 1-2-4 2-2v-3L1 9l2-4 3 1 3-1z"/><circle cx="12" cy="12" r="3"/></svg></button>
       </header>
-      <section class="command-bar" aria-label="Battle status">
-        <div class="turn">
-          <span id="turn-badge">Your turn</span><span id="round">Round 1</span>
-        </div>
-        <div class="resources">
-          <span><b id="gold">12</b> gold</span
-          ><span><b id="income">+0</b> / turn</span
-          ><span><b id="villages">0</b> / 4 villages</span>
-        </div>
-      </section>
       <p id="status" class="status" role="status" aria-live="polite">
         Select a unit. Capture villages. Defeat the red commander.
       </p>
@@ -55,17 +38,6 @@
               aria-label="Hex battlefield"
             ></svg>
           </div>
-          <div class="map-caption">
-            <span
-              ><i class="swatch player"></i>Your army
-              <i class="swatch enemy"></i>Enemy army</span
-            ><span class="mobile-hint">Swipe to explore the map</span>
-          </div>
-          <div
-            id="terrain-legend"
-            class="legend"
-            aria-label="Terrain legend"
-          ></div>
         </section>
         <aside>
           <section
@@ -73,19 +45,15 @@
             class="panel"
             aria-label="Selected unit"
           ></section>
-          <section class="panel orders">
-            <div class="panel-heading">
-              <h2>Battle orders</h2>
-              <button id="end-turn" class="primary">End turn</button>
-            </div>
-            <p>
-              Blue borders: move. Red borders: attack. Tap an enemy to inspect
-              the damage.
-            </p>
-            <button id="cancel" class="quiet small" hidden>
-              Cancel recruitment
-            </button>
-          </section>
+          <button id="cancel" class="quiet small" hidden>Cancel recruitment</button>
+        </aside>
+      </div>
+    </main>
+    <dialog id="settings-dialog">
+      <div class="settings-heading"><h2>Settings</h2><button id="close-settings" class="icon-button" aria-label="Close settings">×</button></div>
+      <label class="art-control" for="art-style"><span>Art style</span><select id="art-style"><option value="normal">Normal</option><option value="low-poly">Low-poly</option><option value="pixel">Pixel</option><option value="classic">Classic</option></select></label>
+      <p class="economy"><span><b id="income">+0</b> coins per turn</span><span><b id="villages">0</b> / 4 villages</span></p>
+      <button id="new-game" class="quiet">New battle</button>
           <details class="panel">
             <summary>Field manual</summary>
             <div class="manual">
@@ -117,13 +85,8 @@
               </p>
             </div>
           </details>
-        </aside>
-      </div>
-      <section class="dispatch">
-        <h2>Dispatches</h2>
-        <ol id="log" aria-live="polite"></ol>
-      </section>
-    </main>
+      <details class="dispatch"><summary>Battle journal</summary><ol id="log"></ol></details>
+    </dialog>
     <dialog id="reset-dialog">
       <h2>Start a new battle?</h2>
       <p>Your current battle will be replaced.</p>
