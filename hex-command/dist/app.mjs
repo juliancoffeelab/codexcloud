@@ -2,9 +2,9 @@ import { MAPS } from "./maps.mjs?v=2b696541ff5e";
 import { createMoveUndo } from "./undo.mjs?v=a9b7694248a6";
 import { soundEnabled, setSoundEnabled, unlockSound, playSound, playInteraction } from "./sound.mjs?v=c6484757a1ba";
 import { animateTile, animateTurn } from "./motion.mjs?v=fd2467be9e52";
-import { Game, TYPES, TERRAIN } from "./engine.mjs?v=3491a4276660";
-import { abilityMarkup } from "./unit-ability.mjs?v=74434fdeb2c8";
-import { loadBattle, saveBattle } from "./save.mjs?v=3b00a4314482";
+import { Game, TYPES, TERRAIN } from "./engine.mjs?v=d435800e4a13";
+import { abilityMarkup } from "./unit-ability.mjs?v=b9ab030e56a7";
+import { loadBattle, saveBattle } from "./save.mjs?v=ad95834734db";
 import {
   artSprite,
   loadArtStyle,
@@ -268,8 +268,8 @@ const terrainDescriptions = {
   forest: "Trees shelter units and obstruct bow shots.",
   hill: "Rocky high ground offers cover and obstructs bow shots.",
   water: "Deep water cannot be crossed.",
-  bridge: "The main crossing between the riverbanks. Hold it, or take the longer route to the shallows.",
-  ford: "Wade around the bridge, but beware: heavy armor slows the crossing and the open water leaves units exposed.",
+  bridge: "A sturdy crossing over water with easy footing, but no protection.",
+  ford: "Shallow water can be crossed on foot. Heavy armor slows movement, and the open water leaves units exposed.",
   village: "Capture this settlement by moving a unit onto it.",
   keep: "A fortified home for its army’s commander.",
 };

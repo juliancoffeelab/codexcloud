@@ -59,7 +59,7 @@ export const TERRAIN = {
     description: "Costs 2 movement; all damage reduced by 1.",
   },
   water: { name: "Water", cost: Infinity, description: "Impassable." },
-  bridge: { name: "Bridge", cost: 1, description: "Cross the river here. Normal movement; no protection." },
+  bridge: { name: "Bridge", cost: 1, description: "A crossing over water. Normal movement; no protection." },
   ford: { name: "Shallow water", cost: 2, description: "Costs 3 movement for soldiers and commanders, 2 for archers and scouts. Units here take 1 extra damage." },
   village: {
     name: "Village",
