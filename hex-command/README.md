@@ -95,7 +95,12 @@ plus UI/recruitment/turn/result cues. A tile interaction plays at most one sound
 attack takes priority over unit, then terrain. Rapid interactions replace the
 previous cue, and muted or still-loading audio cannot play later by accident.
 Weapon sounds play only when an attack resolves; target selection uses a quiet
-UI tick. Deselecting a unit or reinspecting the same terrain is silent. Each
-unit/terrain clip is one brief contact or texture, and the commander uses only
-the horn. Audio starts only after an interaction; the Sound effects setting persists.
+UI tick. Repeat unit clicks and terrain inspection keep their material cue. Each
+unit/terrain clip is one brief contact or texture. The commander uses a shorter,
+prompt horn, and hill wind is quieter with a quick, soft onset. All variations
+preload after the first user gesture to keep later clicks responsive. Audio starts only after an interaction; the Sound effects setting persists.
 Rebuild WAVs with `python scripts/generate-sfx.py` (requires numpy and scipy).
+
+River forests sit above the northern village approach and along the outer southern
+edge, leaving the starting soldier and scout clear routes to nearby villages.
+Current river saves use these revised forest positions without losing progress.

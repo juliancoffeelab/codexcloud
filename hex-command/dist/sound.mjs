@@ -1,7 +1,7 @@
 // Short material-inspired WAVs. Audio is created only after a real gesture.
 const STORAGE_KEY = 'hex-command-sound-enabled';
 const VOLUME = 0.38;
-const AUDIO_REVISION = '9430452aa498';
+const AUDIO_REVISION = '6f8441202d46';
 const families = new Set([
   'attack-bow', 'attack-melee', 'unit-soldier', 'unit-archer', 'unit-scout',
   'unit-commander', 'terrain-village', 'terrain-water', 'terrain-forest',
@@ -47,10 +47,14 @@ export async function unlockSound() {
     if (!context) {
       const AudioContextClass = globalThis.AudioContext || globalThis.webkitAudioContext;
       if (!AudioContextClass) return;
-      context = new AudioContextClass();
+      context = new AudioContextClass({ latencyHint: 'interactive' });
       master = context.createGain();
       master.gain.value = VOLUME;
       master.connect(context.destination);
+      // Warm every variation once after the first gesture, without playing it.
+      for (const family of families) {
+        for (const variant of [1, 2, 3]) void sample(family, variant).catch(() => {});
+      }
     }
     if (context.state === 'suspended') {
       unlocking ??= context.resume().catch(() => {}).finally(() => { unlocking = null; });

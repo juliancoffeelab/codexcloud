@@ -52,7 +52,7 @@ for (let i=0;i<9;i++) {
 }
 for (let i=0;i<9;i+=3) assert.equal(new Set(variants.slice(i,i+3)).size,3);
 assert.ok(variants.every((value,i)=>i===0 || value!==variants[i-1]));
-assert.equal(fetched.length,3,'decoded samples are reused');
+assert.equal(fetched.length,51,'all variations warm after the first gesture and are reused');
 assert.ok(audio.sources.slice(0,-1).every(source=>source.stopped),'new cues replace earlier cues');
 sound.setSoundEnabled(false);
 assert.ok(audio.sources.every(source=>source.stopped));
@@ -60,23 +60,32 @@ const count = fetched.length;
 await sound.playSound('attack-bow'); assert.equal(fetched.length,count);
 assert.equal(stored.get('hex-command-sound-enabled'),'false');
 sound.setSoundEnabled(true);
-// Delayed lower-priority/sample responses cannot revive old audio.
+// Delayed preload responses cannot revive superseded or muted clicks.
 const pending = [];
-globalThis.fetch = url => new Promise(resolve => pending.push(() => resolve({ok:true,arrayBuffer:async()=>String(url)})));
-const old = sound.playSound('terrain-forest');
-const latest = sound.playInteraction({attackType:'archer',unitType:'soldier',terrain:'forest'});
-assert.equal(pending.length,2);
-pending[0](); assert.equal(await old,false);
-pending[1](); assert.equal(await latest,true);
-const muted = sound.playSound('terrain-water');
-sound.setSoundEnabled(false); pending[2](); assert.equal(await muted,false);
-sound.setSoundEnabled(true);
+globalThis.fetch = url => new Promise(resolve => pending.push({name:String(url),resolve:()=>resolve({ok:true,arrayBuffer:async()=>String(url)})}));
+const cold = await import('../dist/sound.mjs?cold');
+await cold.unlockSound();
+assert.equal(pending.length,51);
+const old = cold.playSound('terrain-forest');
+const latest = cold.playInteraction({attackType:'archer',unitType:'soldier',terrain:'forest'});
+for (const sample of pending.filter(p=>p.name.includes('/terrain-forest-'))) sample.resolve();
+assert.equal(await old,false);
+for (const sample of pending.filter(p=>p.name.includes('/attack-bow-'))) sample.resolve();
+assert.equal(await latest,true);
+const muted = cold.playSound('terrain-water');
+cold.setSoundEnabled(false);
+for (const sample of pending.filter(p=>p.name.includes('/terrain-water-'))) sample.resolve();
+assert.equal(await muted,false);
+cold.setSoundEnabled(true);
 audio.state='suspended';
-assert.equal(await sound.playSound('turn'),false);
-assert.equal(resumed,1,'playback cannot unlock audio itself');
-await sound.unlockSound(); assert.equal(resumed,2);
+assert.equal(await cold.playSound('turn'),false);
+const resumeCount = resumed;
+await cold.unlockSound(); assert.equal(resumed,resumeCount+1);
+// Failed preload and playback remain harmless.
 globalThis.fetch = async () => ({ok:false});
-assert.equal(await sound.playSound('terrain-hill'),false,'failed audio never throws');
+const failed = await import('../dist/sound.mjs?failed');
+await failed.unlockSound();
+assert.equal(await failed.playSound('terrain-hill'),false,'failed audio never throws');
 delete globalThis.AudioContext;
 const unsupported = await import('../dist/sound.mjs?unsupported');
 await unsupported.unlockSound(); assert.equal(await unsupported.playSound('turn'),false);

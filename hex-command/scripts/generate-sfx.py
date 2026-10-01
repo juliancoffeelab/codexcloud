@@ -77,19 +77,21 @@ def soft_step(rng, duration, scout=False):
     return contact + scuff * (.10 if scout else .13)
 
 
-def brass(rng, duration, freq):
+def brass(rng, duration, freq, quick=False):
     time = np.arange(round(duration * RATE)) / RATE
     # Breath-shaped, muted herald horn: slight vibrato and a rounded harmonic body.
     phase = 2 * np.pi * freq * time + 0.06 * np.sin(2 * np.pi * 5 * time)
     result = sum(np.sin(phase * h) / h ** 1.55 for h in range(1, 6))
     shape = np.sin(np.pi * np.clip(time / duration, 0, 1)) ** 0.8
+    if quick:
+        shape = envelope(len(time), .007, .075) * np.clip((duration - time) / .035, 0, 1)
     return result * shape + noise(rng, duration, 400, 1600) * shape * 0.025
 
 
 def generate(family, variant, seed):
     rng = np.random.default_rng(seed)
     durations = {'select': .13, 'victory': .83, 'defeat': .68,
-                 'terrain-hill': .86, 'attack-bow': .55,
+                 'terrain-hill': .42, 'unit-commander': .24, 'attack-bow': .55,
                  'unit-soldier': .16, 'unit-archer': .20, 'unit-scout': .18,
                  'terrain-village': .27,
                  'terrain-water': .28, 'terrain-forest': .25,
@@ -126,10 +128,8 @@ def generate(family, variant, seed):
     elif family in ('unit-archer', 'unit-scout'):
         add(result, soft_step(rng, duration, family == 'unit-scout'), .004)
     elif family == 'unit-commander':
-        # Preserve the original herald voice and its random phase/noise stream;
-        # consume the old footfall's draws, but never mix the unwanted knock.
-        footfall(rng, .18, .8, True)
-        add(result, brass(rng, .27 + variant * .014, [196, 220, 185][variant]), .09, .7)
+        # A short herald horn with an immediate, rounded breath onset.
+        add(result, brass(rng, duration - .004, [196, 220, 185][variant], quick=True), .004, .7)
     elif family == 'terrain-village':
         # One small gold coin contacting another, rather than a repeated jingle.
         add(result, resonator(rng, duration, [1790, 2030, 1880][variant], decay=.048), .006)
@@ -159,16 +159,15 @@ def generate(family, variant, seed):
                                     .040 + variant * .006)
     elif family == 'terrain-hill':
         time = np.arange(len(result)) / RATE
-        # A slow airy howl with a clear, wandering wind resonance. The long
-        # swell and narrow resonant body distinguish it from a leafy brush.
-        swell = np.sin(np.pi * time / duration) ** 1.3
+        # Gentle wind arrives promptly, then fades without a long howl.
+        swell = envelope(len(time), .012, .14) * np.clip((duration - time) / .065, 0, 1)
         base = [385, 460, 335][variant]
         wander = 16 * np.sin(2 * np.pi * time / duration * .73 + variant * .5)
         phase = 2 * np.pi * np.cumsum(base + wander) / RATE
         howl = np.sin(phase) + .16 * np.sin(phase * 1.98 + .6)
         airy = noise(rng, duration, 160, 1150)
         resonant_air = noise(rng, duration, base - 45, base + 45)
-        result += (howl * .37 + airy * .18 + resonant_air * .6) * swell
+        result += (howl * .12 + airy * .35 + resonant_air * .3) * swell
     elif family == 'terrain-keep':
         # One muted latch closing against stone, without a dragged-then-banged
         # sequence or ringing sheet metal.
@@ -199,7 +198,7 @@ def generate(family, variant, seed):
     levels = {'unit-soldier': .36, 'unit-archer': .32, 'unit-scout': .25,
               'terrain-village': .34, 'terrain-water': .30,
               'terrain-forest': .27, 'terrain-plains': .21,
-              'terrain-hill': .28, 'terrain-keep': .30}
+              'terrain-hill': .16, 'unit-commander': .48, 'terrain-keep': .30}
     result *= levels.get(family, .65) / peak
     return np.round(result * 32767).astype('<i2')
 
@@ -229,7 +228,7 @@ def main():
     print(f'{len(FAMILIES) * 3} WAVs: mono {RATE} Hz, signed 16-bit; '
           f'duration {min(lengths):.3f}–{max(lengths):.3f}s; '
           f'RMS {min(rms_values):.3f}–{max(rms_values):.3f}; '
-          f'category peaks 0.21–0.65, no clipping.')
+          f'category peaks 0.16–0.65, no clipping.')
 
 
 if __name__ == '__main__':

@@ -1,10 +1,10 @@
-import { MAPS } from "./maps.mjs?v=19a4b3697bda";
+import { MAPS } from "./maps.mjs?v=2b696541ff5e";
 import { createMoveUndo } from "./undo.mjs?v=a9b7694248a6";
-import { soundEnabled, setSoundEnabled, unlockSound, playSound, playInteraction } from "./sound.mjs?v=14265d9e89aa";
+import { soundEnabled, setSoundEnabled, unlockSound, playSound, playInteraction } from "./sound.mjs?v=bc16dba7c6f3";
 import { animateTile, animateTurn } from "./motion.mjs?v=fd2467be9e52";
-import { Game, TYPES, TERRAIN } from "./engine.mjs?v=04fb80ddf51d";
+import { Game, TYPES, TERRAIN } from "./engine.mjs?v=3491a4276660";
 import { abilityMarkup } from "./unit-ability.mjs?v=74434fdeb2c8";
-import { loadBattle, saveBattle } from "./save.mjs?v=3097ce7d0d02";
+import { loadBattle, saveBattle } from "./save.mjs?v=3b00a4314482";
 import {
   artSprite,
   loadArtStyle,
@@ -311,18 +311,17 @@ function clearSelection(clearInspection = false) {
 }
 function choose(tileId) {
   if (!game.tile(tileId)) return;
-  const inspectionChanged = inspectedTile !== tileId;
   inspectedTile = tileId;
   focusedTile = tileId;
   renderTerrainPanel();
-  if (!active()) { selectionFeedback(tileId, null, inspectionChanged); return; }
+  if (!active()) { selectionFeedback(tileId); return; }
   try {
     const occupant = game.at(tileId),
       unit = game.unit(selected);
     focusedTile = tileId;
     if (occupant && (occupant.id === selected || occupant.id === target)) {
       clearSelection();
-      selectionFeedback(tileId, null, false);
+      selectionFeedback(tileId);
       return;
     }
     if (recruitType) {
@@ -382,7 +381,7 @@ function choose(tileId) {
       return;
     }
     clearSelection();
-    selectionFeedback(tileId, null, inspectionChanged);
+    selectionFeedback(tileId);
     const tile = game.tile(tileId);
     message(
       `${TERRAIN[tile.terrain].name}: ${TERRAIN[tile.terrain].description}`,

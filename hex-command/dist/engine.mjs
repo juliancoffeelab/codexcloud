@@ -1,4 +1,4 @@
-import { MAPS, LEGACY_RIVER } from "./maps.mjs?v=19a4b3697bda";
+import { MAPS, LEGACY_RIVER } from "./maps.mjs?v=2b696541ff5e";
 
 export const TYPES = {
   commander: {

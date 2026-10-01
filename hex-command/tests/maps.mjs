@@ -85,3 +85,12 @@ assert.deepEqual(LEGACY_RIVER.terrain.filter((t) => t.terrain === "bridge").map(
 assert.deepEqual(LEGACY_RIVER.terrain.filter((t) => t.terrain === "village").map((t) => [t.col, t.row]), [[4, 1], [4, 4], [4, 7], [10, 1], [10, 4], [10, 7]]);
 assert(!Object.values(MAPS).includes(LEGACY_RIVER), "Legacy layout is not a new-game choice");
 console.log("Map layouts and river crossing connectivity passed.");
+
+// Opening village routes no longer require pushing through forest.
+const { Game } = await import('../dist/engine.mjs');
+const opening = new Game('river');
+assert(opening.reachable('u2').has('4,1'), 'starting soldier can reach the northern village');
+assert(opening.reachable('u3').has('4,1'), 'starting scout can reach the northern village');
+assert(opening.reachable('u3').has('2,7'), 'starting scout can reach the southern village');
+for (const id of ['2,1','3,1','3,2','4,2','1,6','2,6']) assert.equal(opening.tile(id).terrain,'plains');
+console.log('Opening river village routes are clear.');
