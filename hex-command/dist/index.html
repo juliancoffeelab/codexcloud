@@ -1,9 +1,137 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hex Command</title><meta name="description" content="A small turn-based tactics game. Capture villages, recruit an army, and defeat the enemy commander."><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2L29 9v14l-13 7L3 23V9z' fill='%236fdec0'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='serif' font-size='21' fill='%23121c25'%3EH%3C/text%3E%3C/svg%3E"><link rel="stylesheet" href="style.css"></head><body><main>
-<header class="header"><h1>Hex Command<span>.</span></h1><button id="new-game" class="quiet">New battle</button></header>
-<section class="command-bar" aria-label="Battle status"><div class="turn"><span id="turn-badge">Your turn</span><span id="round">Round 1</span></div><div class="resources"><span><b id="gold">12</b> gold</span><span><b id="income">+0</b> / turn</span><span><b id="villages">0</b> / 4 villages</span></div></section>
-<p id="status" class="status" role="status" aria-live="polite">Select a unit. Capture villages. Defeat the red commander.</p>
-<div class="workspace"><section class="map-section" aria-label="Battlefield"><div class="map-scroll"><svg id="map" viewBox="0 0 758 452" role="group" aria-label="Hex battlefield"></svg></div><div class="map-caption"><span><i class="swatch player"></i>Your army <i class="swatch enemy"></i>Enemy army</span><span class="mobile-hint">Swipe to explore the map</span></div><div class="legend" aria-label="Terrain legend"><span>♣ Forest</span><span>▲ Hills</span><span>⌂ Village</span><span>♜ Keep</span><span>≈ Water</span></div></section>
-<aside><section id="unit-panel" class="panel" aria-label="Selected unit"></section><section class="panel orders"><div class="panel-heading"><h2>Battle orders</h2><button id="end-turn" class="primary">End turn</button></div><p>Blue borders: move. Red borders: attack. Tap an enemy to inspect the damage.</p><button id="cancel" class="quiet small" hidden>Cancel recruitment</button></section><details class="panel"><summary>Field manual</summary><div class="manual"><p>Each unit moves once and attacks once. Attacking ends its turn.</p><p>Capture a village by entering it. Each owned village earns <strong>2 gold</strong> at the start of your turn and heals a friendly occupant by <strong>2 HP</strong>.</p><p>Melee attacks trigger one retaliation if the defender survives and has a melee attack. Bow attacks don’t trigger retaliation, and archers never retaliate.</p><p>Forests cost 2 movement and reduce ranged damage by 1. Hills cost 2 movement and reduce all damage by 1. Water is impassable.</p><p>Select your commander on your keep to recruit into an adjacent empty hex. Recruits act next turn.</p><p>Defeat the enemy commander to win. Keyboard: Tab to the map, use arrow keys to browse hexes, Enter to select. Escape cancels recruitment.</p></div></details></aside></div>
-<section class="dispatch"><h2>Dispatches</h2><ol id="log" aria-live="polite"></ol></section>
-</main><dialog id="reset-dialog"><h2>Start a new battle?</h2><p>Your current battle will be replaced.</p><div class="dialog-actions"><button id="keep-playing" class="quiet">Keep playing</button><button id="confirm-reset" class="primary">New battle</button></div></dialog>
-<script type="module" src="app.mjs"></script></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Hex Command</title>
+    <meta
+      name="description"
+      content="A small turn-based tactics game. Capture villages, recruit an army, and defeat the enemy commander."
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2L29 9v14l-13 7L3 23V9z' fill='%236fdec0'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='serif' font-size='21' fill='%23121c25'%3EH%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <header class="header">
+        <div class="title-group">
+          <h1>Hex Command<span>.</span></h1>
+          <label class="art-control" for="art-style"
+            ><span>Art style</span
+            ><select id="art-style">
+              <option value="normal">Normal</option>
+              <option value="low-poly">Low-poly</option>
+              <option value="pixel">Pixel</option>
+              <option value="classic">Classic</option>
+            </select></label
+          >
+        </div>
+        <button id="new-game" class="quiet">New battle</button>
+      </header>
+      <section class="command-bar" aria-label="Battle status">
+        <div class="turn">
+          <span id="turn-badge">Your turn</span><span id="round">Round 1</span>
+        </div>
+        <div class="resources">
+          <span><b id="gold">12</b> gold</span
+          ><span><b id="income">+0</b> / turn</span
+          ><span><b id="villages">0</b> / 4 villages</span>
+        </div>
+      </section>
+      <p id="status" class="status" role="status" aria-live="polite">
+        Select a unit. Capture villages. Defeat the red commander.
+      </p>
+      <div class="workspace">
+        <section class="map-section" aria-label="Battlefield">
+          <div class="map-scroll">
+            <svg
+              id="map"
+              viewBox="0 0 758 452"
+              role="group"
+              aria-label="Hex battlefield"
+            ></svg>
+          </div>
+          <div class="map-caption">
+            <span
+              ><i class="swatch player"></i>Your army
+              <i class="swatch enemy"></i>Enemy army</span
+            ><span class="mobile-hint">Swipe to explore the map</span>
+          </div>
+          <div
+            id="terrain-legend"
+            class="legend"
+            aria-label="Terrain legend"
+          ></div>
+        </section>
+        <aside>
+          <section
+            id="unit-panel"
+            class="panel"
+            aria-label="Selected unit"
+          ></section>
+          <section class="panel orders">
+            <div class="panel-heading">
+              <h2>Battle orders</h2>
+              <button id="end-turn" class="primary">End turn</button>
+            </div>
+            <p>
+              Blue borders: move. Red borders: attack. Tap an enemy to inspect
+              the damage.
+            </p>
+            <button id="cancel" class="quiet small" hidden>
+              Cancel recruitment
+            </button>
+          </section>
+          <details class="panel">
+            <summary>Field manual</summary>
+            <div class="manual">
+              <p>
+                Each unit moves once and attacks once. Attacking ends its turn.
+              </p>
+              <p>
+                Capture a village by entering it. Each owned village earns
+                <strong>2 gold</strong> at the start of your turn and heals a
+                friendly occupant by <strong>2 HP</strong>.
+              </p>
+              <p>
+                Melee attacks trigger one retaliation if the defender survives
+                and has a melee attack. Bow attacks don’t trigger retaliation,
+                and archers never retaliate.
+              </p>
+              <p>
+                Forests cost 2 movement and reduce ranged damage by 1. Hills
+                cost 2 movement and reduce all damage by 1. Water is impassable.
+              </p>
+              <p>
+                Select your commander on your keep to recruit into an adjacent
+                empty hex. Recruits act next turn.
+              </p>
+              <p>
+                Defeat the enemy commander to win. Keyboard: Tab to the map, use
+                arrow keys to browse hexes, Enter to select. Escape cancels
+                recruitment.
+              </p>
+            </div>
+          </details>
+        </aside>
+      </div>
+      <section class="dispatch">
+        <h2>Dispatches</h2>
+        <ol id="log" aria-live="polite"></ol>
+      </section>
+    </main>
+    <dialog id="reset-dialog">
+      <h2>Start a new battle?</h2>
+      <p>Your current battle will be replaced.</p>
+      <div class="dialog-actions">
+        <button id="keep-playing" class="quiet">Keep playing</button
+        ><button id="confirm-reset" class="primary">New battle</button>
+      </div>
+    </dialog>
+    <script type="module" src="app.mjs"></script>
+  </body>
+</html>
