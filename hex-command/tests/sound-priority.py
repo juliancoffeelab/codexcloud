@@ -40,8 +40,8 @@ try:
    played=page.evaluate('playedSamples')
    assert len(played)==before+1,played
    assert f'/{family}-' in played[-1],played[-1]
-  click('[data-tile="1,2"]','unit-scout')
-  click('[data-tile="3,1"]','unit-scout') # Capture does not stack a coin cue.
+  click('[data-tile="1,2"]','terrain-plains')
+  click('[data-tile="3,1"]','terrain-plains') # Capture does not stack a coin cue.
   page.keyboard.press('Escape')
   for tile,family in [('3,5','terrain-village'),('1,0','terrain-water'),('5,3','terrain-forest'),('5,0','terrain-hill'),('10,2','terrain-plains'),('0,3','unit-commander')]:
    click(f'[data-tile="{tile}"]',family)
@@ -50,9 +50,9 @@ try:
   # must never add the defending soldier or its terrain cue.
   page.evaluate("""()=>{const key='hex-command-battle',saved=JSON.parse(localStorage.getItem(key));const unit=saved.state.units.find(u=>u.id==='u2');unit.type='archer';unit.hp=8;unit.tile='8,3';localStorage.setItem(key,JSON.stringify(saved));}""")
   page.reload(wait_until='networkidle')
-  click('[data-tile="8,3"]','unit-archer') # Repeated unit clicks keep their cue.
-  click('[data-tile="8,3"]','unit-archer')
-  click('[data-tile="8,3"]','unit-archer') # Select again after toggling off.
+  click('[data-tile="8,3"]','terrain-plains') # Repeated unit clicks keep their cue.
+  click('[data-tile="8,3"]','terrain-plains')
+  click('[data-tile="8,3"]','terrain-plains') # Select again after toggling off.
   before=snapshot(page)
   click('[data-tile="9,3"]','select')
   assert snapshot(page)==before
@@ -63,8 +63,8 @@ try:
   click('[data-tile="1,0"]','terrain-water')
   click('[data-tile="1,0"]','terrain-water')
   page.evaluate("window.hexSmokeTools.start_new_battle.execute()")
-  click('[data-tile="1,2"]','unit-scout')
-  click('[data-tile="3,1"]','unit-scout')
+  click('[data-tile="1,2"]','terrain-plains')
+  click('[data-tile="3,1"]','terrain-plains')
   before=page.evaluate('playedSamples.length')
   page.click('#undo-move');page.wait_for_timeout(120)
   assert page.evaluate('playedSamples.length')==before, 'undo is silent'

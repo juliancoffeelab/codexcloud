@@ -88,8 +88,8 @@ The chosen battlefield and battle progress survive reloads; older saves load
 on Classic mirror. Existing river battles retain their original map layout.
 
 Shallow water uses its own artwork in each style, including pixel-only waves
-and texture in Pixel. Sound feedback uses 17 material-inspired families with
-three shuffled variations each: armor clicks, light footsteps, a command horn,
+and texture in Pixel. The sound library includes 17 material-inspired families with
+three shuffled variations each: armor clicks, soft grass brushes, a command horn,
 bow release and melee impact, coins, splashes, leaves, wind, grass and gates,
 plus UI/recruitment/turn/result cues. A tile interaction plays at most one sound:
 attack takes priority over unit, then terrain. Rapid interactions replace the
@@ -108,3 +108,5 @@ Current river saves use these revised forest positions without losing progress.
 Recruitment plays a brief pair of coin taps, with no horn or spawned-unit cue.
 
 Turn changes and undo are silent; their visual feedback remains.
+
+Scouts and archers use the soft plains/grass sound for selection and movement.
