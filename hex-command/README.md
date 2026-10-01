@@ -43,3 +43,9 @@ The compact top bar holds income, village count, round, coin treasury, End turn,
 and settings. Settings contains New battle, the field manual, and
 the battle journal. Selecting an attack target shows both units with current
 and predicted health, including retaliation and defeats.
+
+Battles autosave in this browser after player actions and at the start of each
+player turn. Before an enemy turn, a checkpoint is saved for deterministic replay
+if the page closes during its animation. Finished battles also persist. New battle
+replaces the save; unsupported or invalid saves start fresh. No migration or
+cross-device synchronization is performed.

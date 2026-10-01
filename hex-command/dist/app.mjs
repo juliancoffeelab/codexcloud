@@ -1,4 +1,5 @@
 import { Game, TYPES, TERRAIN } from "./engine.mjs";
+import { loadBattle, saveBattle } from "./save.mjs";
 import {
   artSprite,
   loadArtStyle,
@@ -8,12 +9,13 @@ import {
 const $ = (selector) => document.querySelector(selector),
   map = $("#map"),
   panel = $("#unit-panel");
-let game = new Game(),
-  selected = "u2",
+const restoredBattle = loadBattle();
+let game = restoredBattle.game,
+  selected = game.units.find(u => u.side === "player" && u.type !== "commander")?.id || game.units.find(u => u.side === "player")?.id,
   target = null,
   recruitType = null,
   epoch = 0,
-  focusedTile = "1,3";
+  focusedTile = game.unit(selected)?.tile || "1,3";
 let artStyle = savedArtStyle();
 const artControl = $("#art-style");
 artControl.value = artStyle;
@@ -64,6 +66,7 @@ function renderUnit(unit, x, y) {
   return `${body}<rect class="hp-bg" x="${x - 19}" y="${y + 27}" width="38" height="4" rx="2"/><rect class="hp" x="${x - 19}" y="${y + 27}" width="${(38 * unit.hp) / TYPES[unit.type].hp}" height="4" rx="2"/>${unit.attacked ? `<text class="acted" x="${x + 21}" y="${y - 17}">✓</text>` : ""}`;
 }
 function render() {
+  if (game.turn === "player") saveBattle(game);
   const unit = game.unit(selected),
     canAct = active() && unit?.side === "player",
     moves = canAct ? game.reachable(selected) : new Map(),
@@ -304,6 +307,7 @@ async function endTurn() {
   selected = null;
   target = null;
   recruitType = null;
+  saveBattle(game, true);
   game.endTurn();
   render();
   message("The enemy is planning its moves…");
@@ -334,6 +338,7 @@ async function endTurn() {
     render();
     message("Your turn. Capture villages, recruit reinforcements, or attack.");
   }
+  saveBattle(game);
   return game.snapshot();
 }
 function reset() {
@@ -398,6 +403,7 @@ $("#confirm-reset").addEventListener("click", () => {
   reset();
 });
 render();
+if (restoredBattle.pendingEnemy) endTurn().catch(error => message(error.message));
 const initialArtStyle = artStyle;
 loadArtStyle(initialArtStyle).then((ready) => {
   if (!ready && artStyle === initialArtStyle && !artControl.disabled) {
