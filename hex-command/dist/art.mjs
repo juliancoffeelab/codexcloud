@@ -354,7 +354,8 @@ export function artSprite(
   if (!Object.hasOwn(ART_STYLES, style)) return "";
   if (kind === "terrain" && name === "ford") {
     const water = terrainSprite(style, 3, 0, 0, 70, 70, "");
-    return `<svg class="art-sprite ${extraClass}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 70 70" aria-hidden="true" focusable="false">${water}<path d="M0 23 16 27 29 22 47 27 70 21v27l-22-5-17 6-17-7L0 47z" fill="#b4c5a2" opacity=".3"/><g fill="#a5a58c" stroke="#788b80" stroke-width=".8"><path d="m7 35 3-3 6 1 2 4-8 1z"/><path d="m25 30 3-2 6 1 1 3-8 2z"/><path d="m39 38 4-3 6 2 1 4-9 1z"/><path d="m55 30 4-2 5 2 1 3-8 1z"/></g><path d="m5 41 8 2 6-1m15-7 6 1m11 7 8 1 7-2" fill="none" stroke="#a9cbd0" stroke-width="1.2" opacity=".8"/></svg>`;
+    // The entire hex is shallow water; wave marks match the river, without a deck.
+    return `<svg class="art-sprite ${extraClass}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 70 70" aria-hidden="true" focusable="false">${water}<path d="M35 0 65.3 17.5v35L35 70 4.7 52.5v-35z" fill="#a4d2bd" opacity=".34"/><path d="m14 20 5-2 6 3 5-1m9 16 6-2 7 2 6-1m-40 15 7-2 6 2 5-1" fill="none" stroke="#d0e5d4" stroke-width="1.5" opacity=".65"/></svg>`;
   }
   if (kind === "terrain" && name === "bridge") {
     // Reuse the river's water palette beneath a simple stone crossing.

@@ -81,7 +81,8 @@ history lasts for the current page session; battle progress still autosaves.
 Start a new battle from Settings to choose **Classic mirror** (the original
 11×7 map) or **River crossings** (15×9, one bridge, one shallow crossing and six villages).
 Play again also opens this choice. The river is impassable except at the bridge and shallow crossing;
-the bridge costs 1 movement, the shallows cost 2, and neither offers protection. River enemies use land routes
+the bridge costs 1 movement. Shallow water costs 3 for soldiers and commanders,
+2 for archers and scouts, and adds 1 to damage received (including retaliation). River enemies use land routes
 to reach crossings while keeping their existing combat priorities.
 The chosen battlefield and battle progress survive reloads; older saves load
 on Classic mirror. Existing river battles retain their original map layout.

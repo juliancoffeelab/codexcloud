@@ -1,16 +1,16 @@
-import { MAPS } from "./maps.mjs?v=bd4f463acbc9";
+import { MAPS } from "./maps.mjs?v=19a4b3697bda";
 import { createMoveUndo } from "./undo.mjs?v=a9b7694248a6";
 import { soundEnabled, setSoundEnabled, unlockSound, playSound } from "./sound.mjs?v=8c7d01722231";
 import { animateTile, animateTurn } from "./motion.mjs?v=fd2467be9e52";
-import { Game, TYPES, TERRAIN } from "./engine.mjs?v=c269792dcd56";
-import { abilityMarkup } from "./unit-ability.mjs?v=03313e56517d";
-import { loadBattle, saveBattle } from "./save.mjs?v=64686291b2c8";
+import { Game, TYPES, TERRAIN } from "./engine.mjs?v=04fb80ddf51d";
+import { abilityMarkup } from "./unit-ability.mjs?v=74434fdeb2c8";
+import { loadBattle, saveBattle } from "./save.mjs?v=3097ce7d0d02";
 import {
   artSprite,
   loadArtStyle,
   savedArtStyle,
   saveArtStyle,
-} from "./art.mjs?v=f60cb4e7f150";
+} from "./art.mjs?v=967694b93d73";
 const $ = (selector) => document.querySelector(selector),
   map = $("#map"),
   panel = $("#unit-panel");
@@ -261,7 +261,7 @@ const terrainDescriptions = {
   hill: "Rocky high ground offers cover and obstructs bow shots.",
   water: "Deep water cannot be crossed.",
   bridge: "The main crossing between the riverbanks. Hold it, or take the longer route to the shallows.",
-  ford: "Shallow water offers another way around the bridge. Wading slows every unit.",
+  ford: "Wade around the bridge, but beware: heavy armor slows the crossing and the open water leaves units exposed.",
   village: "Capture this settlement by moving a unit onto it.",
   keep: "A fortified home for its army’s commander.",
 };
@@ -275,8 +275,9 @@ function renderTerrainPanel() {
   const info = TERRAIN[tile.terrain];
   const facts = [];
   if (Number.isFinite(info.cost)) {
-    facts.push(`Movement: ${info.cost}${tile.terrain === "forest" ? " (scouts: 1)" : ""}`);
-    facts.push(tile.terrain === "hill" ? "Protection: −1 damage from all attacks" :
+    facts.push(tile.terrain === "ford" ? "Movement: 3 for soldiers and commanders; 2 for archers and scouts" :
+      `Movement: ${info.cost}${tile.terrain === "forest" ? " (scouts: 1)" : ""}`);
+    facts.push(tile.terrain === "ford" ? "Exposure: +1 damage received from all attacks" : tile.terrain === "hill" ? "Protection: −1 damage from all attacks" :
       tile.terrain === "forest" ? "Protection: −1 damage from bow attacks" : "Protection: none");
   } else facts.push("Movement: impassable");
   if (["forest", "hill"].includes(tile.terrain)) facts.push("Blocks bow shots through this hex");

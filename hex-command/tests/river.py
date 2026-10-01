@@ -35,16 +35,16 @@ try:
         assert page.locator('#map .terrain-bridge').count()==1
         assert page.locator('#village-total').inner_text()=='6'
         assert page.locator('#map .terrain-ford').count()==1
-        page.click('[data-tile="2,3"]');page.click('[data-tile="5,4"]')
+        page.click('[data-tile="2,3"]');page.click('[data-tile="5,3"]')
         captured = snapshot(page)
-        assert next(v for v in captured['villages'] if v['id']=='5,4')['owner']=='player'
+        assert next(v for v in captured['villages'] if v['id']=='5,3')['owner']=='player'
         page.reload(wait_until='networkidle')
         assert snapshot(page)==captured and page.locator('#map [data-tile]').count()==135
-        page.evaluate("""() => {const key='hex-command-battle';const saved=JSON.parse(localStorage.getItem(key));saved.state.units.find(u=>u.id==='u2').tile='6,4';localStorage.setItem(key,JSON.stringify(saved));}""")
+        page.evaluate("""() => {const key='hex-command-battle';const saved=JSON.parse(localStorage.getItem(key));saved.state.units.find(u=>u.id==='u2').tile='6,3';localStorage.setItem(key,JSON.stringify(saved));}""")
         page.reload(wait_until='networkidle')
         before = snapshot(page)
-        page.click('[data-tile="7,4"]')
-        assert next(u for u in snapshot(page)['units'] if u['id']=='u2')['tile']=='7,4'
+        page.click('[data-tile="7,3"]')
+        assert next(u for u in snapshot(page)['units'] if u['id']=='u2')['tile']=='7,3'
         assert page.locator('#terrain-panel h2').inner_text()=='Bridge'
         assert 'Movement: 1' in page.locator('#terrain-panel').inner_text()
         for style in ['low-poly','pixel','normal']:
@@ -54,12 +54,13 @@ try:
             assert page.locator('.terrain-bridge .terrain-art').count()==1
         page.click('#undo-move')
         assert snapshot(page)==before
-        page.click('[data-tile="7,3"]')
+        page.click('[data-tile="8,2"]')
         assert page.locator('#terrain-panel h2').inner_text()=='Water'
         assert snapshot(page)==before
-        page.click('[data-tile="7,7"]')
-        assert page.locator('#terrain-panel h2').inner_text()=='Shallow crossing'
-        assert 'Movement: 2' in page.locator('#terrain-panel').inner_text()
+        page.click('[data-tile="5,7"]')
+        assert page.locator('#terrain-panel h2').inner_text()=='Shallow water'
+        assert 'Movement: 3 for soldiers and commanders; 2 for archers and scouts' in page.locator('#terrain-panel').inner_text()
+        assert 'Exposure: +1 damage received' in page.locator('#terrain-panel').inner_text()
         for width in [320,390,1280]:
             page.set_viewport_size({'width':width,'height':900})
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')

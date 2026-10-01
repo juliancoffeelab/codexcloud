@@ -1,4 +1,4 @@
-import { MAPS, LEGACY_RIVER } from "./maps.mjs?v=bd4f463acbc9";
+import { MAPS, LEGACY_RIVER } from "./maps.mjs?v=19a4b3697bda";
 
 export const TYPES = {
   commander: {
@@ -60,7 +60,7 @@ export const TERRAIN = {
   },
   water: { name: "Water", cost: Infinity, description: "Impassable." },
   bridge: { name: "Bridge", cost: 1, description: "Cross the river here. Normal movement; no protection." },
-  ford: { name: "Shallow crossing", cost: 2, description: "Wade across the river. Costs 2 movement; no protection." },
+  ford: { name: "Shallow water", cost: 2, description: "Costs 3 movement for soldiers and commanders, 2 for archers and scouts. Units here take 1 extra damage." },
   village: {
     name: "Village",
     cost: 1,
@@ -148,6 +148,7 @@ export class Game {
     return u;
   }
   cost(unit, tile) {
+    if (tile.terrain === "ford") return ["soldier", "commander"].includes(unit.type) ? 3 : 2;
     return tile.terrain === "forest" && unit.type === "scout"
       ? 1
       : TERRAIN[tile.terrain].cost;
@@ -199,7 +200,7 @@ export class Game {
     let protection =
       terrain === "hill" ? 1 : terrain === "forest" && ranged ? 1 : 0;
     if (defender.type === "soldier" && ranged) protection++;
-    return Math.max(1, TYPES[attacker.type].damage - protection);
+    return Math.max(1, TYPES[attacker.type].damage - protection + (terrain === "ford" ? 1 : 0));
   }
   preview(attacker, target) {
     const damage = this.damage(attacker, target);
