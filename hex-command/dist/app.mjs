@@ -5,7 +5,7 @@ import {
   loadArtStyle,
   savedArtStyle,
   saveArtStyle,
-} from "./art.mjs";
+} from "./art.mjs?v=5c9e32d0f2a6";
 const $ = (selector) => document.querySelector(selector),
   map = $("#map"),
   panel = $("#unit-panel");

@@ -16,8 +16,8 @@ current battle intact when switching.
 
 `dist/engine.mjs` contains the game rules and enemy AI, `dist/app.mjs` handles
 the interface, and `dist/art.mjs` displays regions of the generated PNG sheets
-in `dist/assets/`. Terrain top faces are reprojected onto the board hexes,
-so artwork and selection borders share the same edges. Enemy sprites use red accents; team bases and ownership dots
+in `dist/assets/`. Terrain uses dedicated flat pointy-top hex artwork, rendered with square crops
+and uniform scaling, clipped to the board edges. No mesh warping is used. Enemy sprites use red accents; team bases and ownership dots
 also identify sides. Pixel mode uses nearest-neighbor display.
 
 The existing OpenAI Sites project is recorded in `.openai/hosting.json`; its

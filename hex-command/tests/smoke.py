@@ -177,7 +177,7 @@ def run(url, screenshots):
         page = context.new_page()
         page.goto(url, wait_until="networkidle")
         state = snapshot(page)
-        pattern = "**/assets/terrain-pixel.png"
+        pattern = "**/assets/terrain-pixel.png*"
         page.route(pattern, lambda route: route.abort())
         page.click("#settings-button")
         page.select_option("#art-style", "pixel")
@@ -199,7 +199,7 @@ def run(url, screenshots):
 
         context = browser.new_context()
         context.add_init_script(TOOLS)
-        context.route("**/assets/*-normal.png", lambda route: route.abort())
+        context.route("**/assets/*-normal.png*", lambda route: route.abort())
         page = context.new_page()
         page.goto(url, wait_until="networkidle")
         page.wait_for_function("document.documentElement.dataset.artStyle === 'classic'")
