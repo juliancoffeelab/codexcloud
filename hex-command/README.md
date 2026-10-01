@@ -67,3 +67,8 @@ Escape clears selection and cancels recruitment. Selecting a different unit stil
 Village approaches mirror across the battlefield: a nearby hill on each side,
 no adjacent forest, and balanced central forest and hill positions. Existing saved
 battles retain their progress and load the updated terrain.
+
+Short, quiet sound effects accompany selection and battle actions after a user
+interaction. Toggle Sound effects in Settings; the preference is remembered.
+Movement, combat, recruitment, capture, and turn changes have brief visual feedback.
+Animations respect the device’s reduced-motion preference.

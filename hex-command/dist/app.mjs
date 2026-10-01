@@ -1,3 +1,5 @@
+import { soundEnabled, setSoundEnabled, unlockSound, playSound } from "./sound.mjs?v=8c7d01722231";
+import { animateTile, animateTurn } from "./motion.mjs?v=fd2467be9e52";
 import { Game, TYPES, TERRAIN } from "./engine.mjs?v=72bf248fde6b";
 import { abilityMarkup } from "./unit-ability.mjs?v=c771ffc995eb";
 import { loadBattle, saveBattle } from "./save.mjs?v=0bc258126ff2";
@@ -18,6 +20,52 @@ let game = restoredBattle.game,
   epoch = 0,
   focusedTile = game.unit(selected)?.tile || "1,3",
   inspectedTile = game.unit(selected)?.tile || null;
+let previousFeedbackState = null;
+const soundControl = $("#sound-effects");
+soundControl.checked = soundEnabled();
+// Audio starts only after a real interaction, never on initial load or replay.
+document.addEventListener("pointerdown", unlockSound, { capture: true, passive: true });
+document.addEventListener("keydown", unlockSound, { capture: true });
+soundControl.addEventListener("change", async () => {
+  setSoundEnabled(soundControl.checked);
+  if (soundControl.checked) {
+    await unlockSound();
+    playSound("select");
+  }
+});
+function selectionFeedback(tileId) {
+  animateTile(tileId, "select");
+  playSound("select");
+}
+function actionFeedback() {
+  const now = game.snapshot(), before = previousFeedbackState;
+  previousFeedbackState = now;
+  if (!before) return;
+  const oldUnits = new Map(before.units.map(unit => [unit.id, unit]));
+  const effects = new Map();
+  let moved = false, recruited = false, attacked = false, captured = false;
+  for (const unit of now.units) {
+    const old = oldUnits.get(unit.id);
+    if (!old) { effects.set(unit.tile, "recruit"); recruited = true; }
+    else {
+      if (old.tile !== unit.tile) { effects.set(unit.tile, "move"); moved = true; }
+      if (old.hp > unit.hp) { effects.set(unit.tile, "attack"); attacked = true; }
+    }
+    oldUnits.delete(unit.id);
+  }
+  for (const fallen of oldUnits.values()) { effects.set(fallen.tile, "attack"); attacked = true; }
+  for (const [tile, kind] of effects) animateTile(tile, kind);
+  for (const village of now.villages) {
+    if (village.owner && village.owner !== before.villages.find(tile => tile.id === village.id)?.owner) {
+      animateTile(village.id, "capture"); captured = true;
+    }
+  }
+  const turnChanged = before.turn !== now.turn || before.round !== now.round;
+  if (turnChanged) animateTurn();
+  const cue = now.winner && now.winner !== before.winner ? now.winner === "player" ? "victory" : "defeat"
+    : attacked ? "attack" : recruited || captured ? "recruit" : turnChanged ? "turn" : moved ? "move" : null;
+  if (cue) playSound(cue);
+}
 let artStyle = savedArtStyle();
 const artControl = $("#art-style");
 artControl.value = artStyle;
@@ -118,6 +166,7 @@ function render() {
   $("#log").innerHTML = game.log.map((text) => `<li>${text}</li>`).join("");
   renderPanel();
   renderTerrainPanel();
+  actionFeedback();
   if (game.winner)
     message(
       game.winner === "player"
@@ -172,6 +221,7 @@ function renderPanel() {
       recruitType = button.dataset.recruit;
       target = null;
       render();
+      selectionFeedback(unit.tile);
       message(
         `Choose a mint-bordered hex to recruit a ${recruitType} for ${TYPES[recruitType].cost} gold.`,
       );
@@ -241,13 +291,14 @@ function choose(tileId) {
   inspectedTile = tileId;
   focusedTile = tileId;
   renderTerrainPanel();
-  if (!active()) return;
+  if (!active()) { selectionFeedback(tileId); return; }
   try {
     const occupant = game.at(tileId),
       unit = game.unit(selected);
     focusedTile = tileId;
     if (occupant && (occupant.id === selected || occupant.id === target)) {
       clearSelection();
+      selectionFeedback(tileId);
       return;
     }
     if (recruitType) {
@@ -273,6 +324,7 @@ function choose(tileId) {
     ) {
       target = occupant.id;
       render();
+      selectionFeedback(tileId);
       message("Review the damage, then press Attack.");
       if (matchMedia("(max-width:900px)").matches)
         panel.scrollIntoView({ block: "nearest" });
@@ -282,6 +334,7 @@ function choose(tileId) {
       selected = occupant.id;
       target = null;
       render();
+      selectionFeedback(tileId);
       message(
         occupant.side === "player"
           ? occupant.attacked
@@ -301,6 +354,7 @@ function choose(tileId) {
       return;
     }
     clearSelection();
+    selectionFeedback(tileId);
     const tile = game.tile(tileId);
     message(
       `${TERRAIN[tile.terrain].name}: ${TERRAIN[tile.terrain].description}`,
@@ -382,6 +436,7 @@ async function endTurn() {
 function reset() {
   epoch++;
   game = new Game();
+  previousFeedbackState = null;
   selected = "u2";
   target = null;
   recruitType = null;
@@ -404,7 +459,7 @@ document.addEventListener("keydown", (event) => {
 });
 const resetDialog = $("#reset-dialog");
 const settingsDialog = $("#settings-dialog");
-$("#settings-button").addEventListener("click", () => settingsDialog.showModal());
+$("#settings-button").addEventListener("click", () => { settingsDialog.showModal(); playSound("select"); });
 $("#close-settings").addEventListener("click", () => settingsDialog.close());
 settingsDialog.addEventListener("click", event => {
   if (event.target === settingsDialog) {

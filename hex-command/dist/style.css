@@ -21,3 +21,28 @@ dialog{background:var(--surface);color:var(--text);width:calc(100% - 32px);max-w
 /* Keep inspection cards and recruitment in the same compact sidebar. */
 .panel[hidden]{display:none}.panel,#map{scroll-margin-top:90px}.terrain-detail{display:grid;grid-template-columns:80px minmax(0,1fr);gap:14px;align-items:start}.terrain-portrait{text-align:center}.terrain-portrait .terrain-card-art{display:block;width:80px;height:80px;margin-bottom:8px}.terrain-info{font:13px/1.55 system-ui,sans-serif;color:var(--muted)}.terrain-info h2{font-family:Georgia,'Times New Roman',serif;color:var(--text);margin-bottom:5px}.terrain-owner{margin-bottom:7px;color:var(--gold)}.terrain-owner.player{color:var(--mint)}.terrain-owner.enemy{color:var(--red)}.terrain-facts{padding-left:17px;margin:9px 0 0}.terrain-facts li+li{margin-top:3px}.unit-info .recruit-list{margin-top:8px}.recruit-hint{margin-top:8px}.unit-info .recruit-button{width:100%;font-size:13px;padding:8px 10px}.panel+#terrain-panel,#cancel+#terrain-panel{border-top:0}
 @media(max-width:540px){.terrain-detail{grid-template-columns:80px minmax(0,1fr);gap:14px}}
+
+/* Brief action feedback; terrain and cards stay still during ordinary renders. */
+button,select{transition:background-color 120ms ease,border-color 120ms ease}
+.health-track span{transition:width 160ms ease}
+.motion-move .unit-art,.motion-recruit .unit-art,.motion-attack .unit-art,
+.motion-capture .territory-badge{transform-box:fill-box;transform-origin:center bottom}
+.motion-select .tile-outline{animation:tile-select 180ms ease-out}
+.motion-move .unit-art{animation:unit-arrive 180ms ease-out}
+.motion-recruit .unit-art{animation:unit-recruit 200ms ease-out}
+.motion-attack .unit-art{animation:unit-strike 160ms ease-out}
+.motion-capture .territory-badge{animation:territory-capture 220ms ease-out;transform-origin:center}
+#end-turn.motion-turn{animation:turn-feedback 200ms ease-out}
+@keyframes tile-select{0%{stroke-opacity:.45}55%{stroke-opacity:1}100%{stroke-opacity:.8}}
+@keyframes unit-arrive{0%{transform:translateY(2px)}45%{transform:translateY(-1px)}100%{transform:translateY(0)}}
+@keyframes unit-recruit{0%{transform:translateY(2px) scale(.97)}100%{transform:translateY(0) scale(1)}}
+@keyframes unit-strike{0%,100%{transform:translateX(0)}35%{transform:translateX(1.5px)}70%{transform:translateX(-.5px)}}
+@keyframes territory-capture{0%,100%{transform:scale(1)}45%{transform:scale(1.18)}}
+@keyframes turn-feedback{0%,100%{box-shadow:0 0 0 0 #d8ba6f00}40%{box-shadow:0 0 0 2px #d8ba6f38}}
+@media(prefers-reduced-motion:reduce){
+  button,select,.health-track span{transition:none}
+  .motion-select .tile-outline,.motion-move .unit-art,.motion-recruit .unit-art,
+  .motion-attack .unit-art,.motion-capture .territory-badge,#end-turn.motion-turn{animation:none}
+}
+
+.sound-control{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:44px;margin:12px 0;font:14px system-ui,sans-serif;cursor:pointer}.sound-control input{width:20px;height:20px;margin:0;accent-color:var(--gold);cursor:pointer}.sound-control input:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
