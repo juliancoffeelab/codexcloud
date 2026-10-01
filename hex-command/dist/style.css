@@ -9,3 +9,5 @@ dialog{background:var(--surface);color:var(--text);width:calc(100% - 32px);max-w
 @media(max-width:350px){.battle-bar{gap:4px}.battle-bar h1{font-size:16px}.treasury{font-size:14px}.battle-bar .primary{padding:8px 6px}.battle-bar .icon-button{width:36px}.turn-indicator{width:4px;height:4px}}
 
 .header-economy{display:flex;align-items:center;gap:16px;margin-right:auto;font:14px system-ui,sans-serif;white-space:nowrap}.income{display:flex;gap:3px;align-items:baseline;color:var(--muted)}.income b{color:var(--gold)}.villages{display:flex;align-items:center;gap:5px;color:var(--muted)}.villages b{color:var(--text)}.villages svg{width:18px;height:18px;fill:none;stroke:var(--gold);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}@media(max-width:540px){.header-economy{gap:8px}.villages{gap:3px}.villages svg{width:16px;height:16px}}@media(max-width:350px){.header-economy{gap:5px}.income{gap:1px}.villages{gap:2px}.turn-indicator{display:none}}
+
+.header-economy{gap:10px}.header-economy .villages{margin-left:6px}@media(max-width:540px){.header-economy{gap:5px}.header-economy .villages{margin-left:4px}}
