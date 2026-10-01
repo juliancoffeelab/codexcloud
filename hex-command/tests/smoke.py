@@ -95,7 +95,7 @@ def run(url, screenshots):
         print("PASS: all three styles render; switching preserves battle; preference persists")
 
         # Use the actual recruitment buttons and highlighted destination tiles.
-        for unit_type, price in (("soldier", 8), ("archer", 10), ("scout", 7)):
+        for unit_type, price in (("soldier", 8), ("archer", 8), ("scout", 5)):
             new_battle(page)
             page.click('[data-tile="0,3"]')
             page.click(f'[data-recruit="{unit_type}"]')

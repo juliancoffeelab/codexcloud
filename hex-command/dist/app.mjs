@@ -2,9 +2,9 @@ import { MAPS } from "./maps.mjs?v=2b696541ff5e";
 import { createMoveUndo } from "./undo.mjs?v=a9b7694248a6";
 import { soundEnabled, setSoundEnabled, unlockSound, playSound, playInteraction } from "./sound.mjs?v=c6484757a1ba";
 import { animateTile, animateTurn } from "./motion.mjs?v=fd2467be9e52";
-import { Game, TYPES, TERRAIN } from "./engine.mjs?v=d435800e4a13";
-import { abilityMarkup } from "./unit-ability.mjs?v=b9ab030e56a7";
-import { loadBattle, saveBattle } from "./save.mjs?v=ad95834734db";
+import { Game, TYPES, TERRAIN } from "./engine.mjs?v=ee5d72abe121";
+import { abilityMarkup } from "./unit-ability.mjs?v=ddb46a11855b";
+import { loadBattle, saveBattle } from "./save.mjs?v=dd5d9ac69006";
 import {
   artSprite,
   loadArtStyle,
@@ -284,7 +284,7 @@ function renderTerrainPanel() {
   const facts = [];
   if (Number.isFinite(info.cost)) {
     facts.push(tile.terrain === "ford" ? "Movement: 3 for soldiers and commanders; 2 for archers and scouts" :
-      `Movement: ${info.cost}${tile.terrain === "forest" ? " (scouts: 1)" : ""}`);
+      `Movement: ${info.cost}${["forest", "hill"].includes(tile.terrain) ? " (scouts: 1)" : ""}`);
     facts.push(tile.terrain === "ford" ? "Exposure: +1 damage received from all attacks" : tile.terrain === "hill" ? "Protection: −1 damage from all attacks" :
       tile.terrain === "forest" ? "Protection: −1 damage from bow attacks" : "Protection: none");
   } else facts.push("Movement: impassable");

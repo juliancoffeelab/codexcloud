@@ -27,7 +27,7 @@ export const TYPES = {
     move: 3,
     damage: 3,
     range: 2,
-    cost: 10,
+    cost: 8,
     ability: "Bow",
     description: "Range 2. Forests and hills block shots through them.",
   },
@@ -37,9 +37,9 @@ export const TYPES = {
     move: 5,
     damage: 2,
     range: 1,
-    cost: 7,
+    cost: 5,
     ability: "Pathfinder",
-    description: "Forests cost only 1 movement.",
+    description: "Forests and hills cost only 1 movement.",
   },
 };
 export const TERRAIN = {
@@ -149,7 +149,7 @@ export class Game {
   }
   cost(unit, tile) {
     if (tile.terrain === "ford") return ["soldier", "commander"].includes(unit.type) ? 3 : 2;
-    return tile.terrain === "forest" && unit.type === "scout"
+    return ["forest", "hill"].includes(tile.terrain) && unit.type === "scout"
       ? 1
       : TERRAIN[tile.terrain].cost;
   }

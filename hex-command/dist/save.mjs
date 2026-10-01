@@ -1,5 +1,5 @@
 import { MAPS } from './maps.mjs?v=2b696541ff5e';
-import { Game, TYPES } from './engine.mjs?v=d435800e4a13';
+import { Game, TYPES } from './engine.mjs?v=ee5d72abe121';
 
 export const SAVE_KEY = 'hex-command-battle';
 export const SAVE_VERSION = 1;
