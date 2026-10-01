@@ -101,24 +101,24 @@ export class Game {
           owner: null,
         });
     for (const [col, row] of [
-      [4, 2],
       [5, 2],
       [6, 2],
       [4, 3],
       [5, 3],
       [6, 3],
-      [4, 4],
       [5, 4],
       [6, 4],
     ])
       this.tile(`${col},${row}`).terrain = "forest";
     for (const [col, row] of [
-      [2, 2],
-      [2, 4],
+      [3, 2],
+      [3, 4],
       [8, 2],
       [8, 4],
       [5, 0],
+      [6, 0],
       [5, 6],
+      [6, 6],
     ])
       this.tile(`${col},${row}`).terrain = "hill";
     for (const [col, row] of [
