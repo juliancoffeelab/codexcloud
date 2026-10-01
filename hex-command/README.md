@@ -106,3 +106,5 @@ edge, leaving the starting soldier and scout clear routes to nearby villages.
 Current river saves use these revised forest positions without losing progress.
 
 Recruitment plays a brief pair of coin taps, with no horn or spawned-unit cue.
+
+Turn changes and undo are silent; their visual feedback remains.

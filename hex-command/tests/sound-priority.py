@@ -61,6 +61,18 @@ try:
   page.keyboard.press('Escape')
   click('[data-tile="1,0"]','terrain-water')
   click('[data-tile="1,0"]','terrain-water')
+  page.evaluate("window.hexSmokeTools.start_new_battle.execute()")
+  click('[data-tile="1,2"]','unit-scout')
+  click('[data-tile="3,1"]','unit-scout')
+  before=page.evaluate('playedSamples.length')
+  page.click('#undo-move');page.wait_for_timeout(120)
+  assert page.evaluate('playedSamples.length')==before, 'undo is silent'
+  page.click('#end-turn')
+  page.wait_for_function("window.hexSmokeTools.get_battle_state.execute().round===2")
+  page.wait_for_timeout(120)
+  assert not any('/turn-' in sample for sample in page.evaluate('playedSamples')), 'both turn changes are silent'
+  assert not errors,errors
+  print('PASS: silent undo and both turn changes; enemy action sounds remain')
   print('PASS: weapons only on actual attacks; quiet target preview; audible repeat selection/reinspection; unit and terrain priority')
   browser.close()
 finally: server.shutdown()

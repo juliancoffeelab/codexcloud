@@ -73,7 +73,6 @@ function actionFeedback() {
     playInteraction({ attackType: attacker?.type || "soldier" });
   } else if (now.winner && now.winner !== before.winner) playSound(now.winner === "player" ? "victory" : "defeat");
   else if (recruited) playSound("recruit");
-  else if (turnChanged) playSound("turn");
   else if (moved) playInteraction({ unitType: movingUnit.type, terrain: game.tile(movingUnit.tile)?.terrain });
   else if (captured) playInteraction({ terrain: "village" });
 }
@@ -487,7 +486,6 @@ function undoMove() {
   previousFeedbackState = null;
   render();
   animateTile(restored.tileId, "move");
-  playInteraction({ unitType: game.unit(restored.unitId)?.type, terrain: game.tile(restored.tileId)?.terrain });
   message("Move undone. Choose a new destination.");
   return game.snapshot();
 }
