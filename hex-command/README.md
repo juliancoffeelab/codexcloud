@@ -39,7 +39,7 @@ persistence, recruitment, movement, combat, enemy turns, mobile layout, and
 asset-loading failures. Add `--screenshots /tmp/hex-command-checks` to capture
 each style on desktop and mobile.
 
-The compact top bar holds the round, coin treasury, End turn, and settings.
-Settings contains New battle, income, village count, the field manual, and
+The compact top bar holds income, village count, round, coin treasury, End turn,
+and settings. Settings contains New battle, the field manual, and
 the battle journal. Selecting an attack target shows both units with current
 and predicted health, including retaliation and defeats.

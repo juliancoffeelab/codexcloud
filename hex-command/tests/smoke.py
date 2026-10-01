@@ -154,7 +154,7 @@ def run(url, screenshots):
             page.set_viewport_size({"width": width, "height": 844})
             assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
             bar = page.locator(".battle-bar").bounding_box()
-            for selector in (".battle-bar h1", "#round", ".treasury", "#end-turn", "#settings-button"):
+            for selector in (".header-economy", "#round", ".treasury", "#end-turn", "#settings-button"):
                 box = page.locator(selector).bounding_box()
                 assert box["y"] >= bar["y"] and box["y"] + box["height"] <= bar["y"] + bar["height"]
             assert page.locator("#settings-button").bounding_box()["height"] >= 44

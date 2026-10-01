@@ -18,7 +18,7 @@
   <body>
     <main>
       <header class="battle-bar" aria-label="Battle controls">
-        <h1>Hex Command</h1>
+        <div class="header-economy"><span class="income" title="Coins earned each turn"><b id="income">+0</b><span>/turn</span></span><span class="villages" title="Owned villages"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 9-8 9 8M5 10v11h14V10M10 21v-7h4v7"/></svg><span><b id="villages">0</b>/4</span></span></div>
         <span id="turn-badge" class="turn-indicator" title="Your turn">Your turn</span>
         <span id="round" class="round" title="Round 1">R1</span>
         <span class="treasury" aria-label="Gold"><i class="coin" aria-hidden="true"></i><b id="gold">12</b></span>
@@ -52,7 +52,6 @@
     <dialog id="settings-dialog">
       <div class="settings-heading"><h2>Settings</h2><button id="close-settings" class="icon-button" aria-label="Close settings">×</button></div>
       <label class="art-control" for="art-style"><span>Art style</span><select id="art-style"><option value="normal">Normal</option><option value="low-poly">Low-poly</option><option value="pixel">Pixel</option><option value="classic">Classic</option></select></label>
-      <p class="economy"><span><b id="income">+0</b> coins per turn</span><span><b id="villages">0</b> / 4 villages</span></p>
       <button id="new-game" class="quiet">New battle</button>
           <details class="panel">
             <summary>Field manual</summary>
