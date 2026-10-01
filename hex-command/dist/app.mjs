@@ -53,7 +53,7 @@ function renderTerrain(tile, x, y) {
       ? `<text class="terrain-marker" x="${x}" y="${game.at(tile.id) ? y - 21 : y + 7}" text-anchor="middle">${markers[tile.terrain]}</text>`
       : "";
   }
-  return `<g clip-path="url(#hex-clip-${tile.col}-${tile.row})">${artSprite(artStyle, "terrain", tile.terrain, x - 37, y - 35, 74, 70, "terrain-art")}</g>`;
+  return `<g clip-path="url(#hex-clip-${tile.col}-${tile.row})">${artSprite(artStyle, "terrain", tile.terrain, x - 35, y - 35, 70, 70, "terrain-art")}</g>`;
 }
 function renderUnit(unit, x, y) {
   const teamColor = unit.side === "player" ? "#6fdec0" : "#ff9590";
