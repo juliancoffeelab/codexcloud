@@ -73,6 +73,11 @@ def run(url, screenshots):
             assert snapshot(page) == state, f"{style} reset the battle"
             assert page.locator("#map .unit-art").count() == (0 if style == "classic" else 6)
             assert page.locator("#map .terrain-art").count() == (0 if style == "classic" else 77)
+            if style != "classic":
+                assert page.locator('#map .unit-art[data-faction="player"]').count() == 3
+                assert page.locator('#map .unit-art[data-faction="enemy"]').count() == 3
+                assert page.locator('#map .enemy-unit').first.evaluate("el => getComputedStyle(el).filter") == "none"
+                assert float(page.locator('#map .unit-art[data-faction="enemy"] img').first.evaluate("el => parseFloat(el.style.top)")) < -400
             if screenshots:
                 page.screenshot(path=str(screenshots / f"desktop-{style}.png"), full_page=True)
         choose_style(page, "pixel")

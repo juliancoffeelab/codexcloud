@@ -3,9 +3,9 @@ const terrainOrder = ["plains", "forest", "hill", "water", "village", "keep"];
 const storageKey = "hex-command-art-style";
 
 export const ART_STYLES = {
-  normal: { label: "Normal", units: { width: 2073, height: 758 } },
-  "low-poly": { label: "Low-poly", units: { width: 2073, height: 759 } },
-  pixel: { label: "Pixel", units: { width: 2172, height: 724 } },
+  normal: { label: "Normal" },
+  "low-poly": { label: "Low-poly" },
+  pixel: { label: "Pixel" },
   classic: { label: "Classic" },
 };
 
@@ -165,8 +165,175 @@ const terrainSheets = {
     ]
   }
 };
+const unitSheets = {
+  "normal": {
+    "width": 1774,
+    "height": 887,
+    "revision": "6f9c80f5a0b3",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0.0,
+        "width": 443.5,
+        "height": 443.5
+      },
+      {
+        "x": 443.5,
+        "y": 0.0,
+        "width": 443.5,
+        "height": 443.5
+      },
+      {
+        "x": 887,
+        "y": 0.0,
+        "width": 443.5,
+        "height": 443.5
+      },
+      {
+        "x": 1330.5,
+        "y": 0.0,
+        "width": 443.5,
+        "height": 443.5
+      },
+      {
+        "x": 0,
+        "y": 443.5,
+        "width": 443.5,
+        "height": 443.5
+      },
+      {
+        "x": 443.5,
+        "y": 443.5,
+        "width": 443.5,
+        "height": 443.5
+      },
+      {
+        "x": 887,
+        "y": 443.5,
+        "width": 443.5,
+        "height": 443.5
+      },
+      {
+        "x": 1330.5,
+        "y": 443.5,
+        "width": 443.5,
+        "height": 443.5
+      }
+    ]
+  },
+  "low-poly": {
+    "width": 1774,
+    "height": 887,
+    "revision": "0828ec0fbc91",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0.0,
+        "width": 443.5,
+        "height": 443.5
+      },
+      {
+        "x": 443.5,
+        "y": 0.0,
+        "width": 443.5,
+        "height": 443.5
+      },
+      {
+        "x": 887,
+        "y": 0.0,
+        "width": 443.5,
+        "height": 443.5
+      },
+      {
+        "x": 1330.5,
+        "y": 0.0,
+        "width": 443.5,
+        "height": 443.5
+      },
+      {
+        "x": 0,
+        "y": 443.5,
+        "width": 443.5,
+        "height": 443.5
+      },
+      {
+        "x": 443.5,
+        "y": 443.5,
+        "width": 443.5,
+        "height": 443.5
+      },
+      {
+        "x": 887,
+        "y": 443.5,
+        "width": 443.5,
+        "height": 443.5
+      },
+      {
+        "x": 1330.5,
+        "y": 443.5,
+        "width": 443.5,
+        "height": 443.5
+      }
+    ]
+  },
+  "pixel": {
+    "width": 1774,
+    "height": 887,
+    "revision": "212b2ced162f",
+    "frames": [
+      {
+        "x": 0,
+        "y": 0.0,
+        "width": 443.5,
+        "height": 443.5
+      },
+      {
+        "x": 443.5,
+        "y": 0.0,
+        "width": 443.5,
+        "height": 443.5
+      },
+      {
+        "x": 887,
+        "y": 0.0,
+        "width": 457,
+        "height": 443.5
+      },
+      {
+        "x": 1344,
+        "y": 0.0,
+        "width": 430,
+        "height": 443.5
+      },
+      {
+        "x": 0,
+        "y": 443.5,
+        "width": 443.5,
+        "height": 443.5
+      },
+      {
+        "x": 443.5,
+        "y": 443.5,
+        "width": 443.5,
+        "height": 443.5
+      },
+      {
+        "x": 887,
+        "y": 443.5,
+        "width": 457,
+        "height": 443.5
+      },
+      {
+        "x": 1344,
+        "y": 443.5,
+        "width": 430,
+        "height": 443.5
+      }
+    ]
+  }
+};
 function assetURL(style, kind) {
-  return `assets/${kind}-${style}.png${kind === "terrain" ? `?v=${terrainSheets[style].revision}` : ""}`;
+  return `assets/${kind}-${style}.png?v=${(kind === "terrain" ? terrainSheets : unitSheets)[style].revision}`;
 }
 function terrainSprite(style, index, x, y, width, height, extraClass) {
   const sheet = terrainSheets[style];
@@ -184,6 +351,7 @@ export function artSprite(
   width,
   height,
   extraClass = "",
+  side = "player",
 ) {
   if (!Object.hasOwn(ART_STYLES, style) || style === "classic") return "";
   const isUnit = kind === "units";
@@ -191,15 +359,9 @@ export function artSprite(
   const index = order.indexOf(name);
   if (index < 0) return "";
   if (!isUnit) return terrainSprite(style, index, x, y, width, height, extraClass);
-  const sheet = isUnit
-    ? ART_STYLES[style].units
-    : { width: 1536, height: 1024 };
-  const columns = isUnit ? 4 : 3;
-  const cropWidth = sheet.width / columns;
-  const cropHeight = isUnit ? sheet.height : sheet.height / 2;
-  const cropX = (index % columns) * cropWidth;
-  const cropY = isUnit ? 0 : Math.floor(index / columns) * cropHeight;
-  // Bound the sheet inside a fixed-size HTML viewport so its offscreen pixels
-  // cannot enlarge the parent hex's SVG geometry or focus/selection bounds.
-  return `<svg class="art-sprite ${style === "pixel" ? "pixel-art" : ""} ${extraClass}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${cropWidth} ${cropHeight}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false"><foreignObject width="${cropWidth}" height="${cropHeight}"><div xmlns="http://www.w3.org/1999/xhtml" style="position:relative;width:100%;height:100%;overflow:hidden"><img src="assets/${kind}-${style}.png" alt="" draggable="false" style="position:absolute;max-width:none;width:${sheet.width}px;height:${sheet.height}px;left:${-cropX}px;top:${-cropY}px"/></div></foreignObject></svg>`;
+  const sheet = unitSheets[style];
+  const frame = sheet.frames[index + (side === "enemy" ? 4 : 0)];
+  const { x: cropX, y: cropY, width: cropWidth, height: cropHeight } = frame;
+  // Keep the whole sheet bounded to the selected frame for hit-testing.
+  return `<svg class="art-sprite ${style === "pixel" ? "pixel-art" : ""} ${extraClass}" data-faction="${side}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${cropWidth} ${cropHeight}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false"><foreignObject width="${cropWidth}" height="${cropHeight}"><div xmlns="http://www.w3.org/1999/xhtml" style="position:relative;width:100%;height:100%;overflow:hidden"><img src="${assetURL(style, "units")}" alt="" draggable="false" style="position:absolute;max-width:none;width:${sheet.width}px;height:${sheet.height}px;left:${-cropX}px;top:${-cropY}px"/></div></foreignObject></svg>`;
 }
