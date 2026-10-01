@@ -1,3 +1,5 @@
+import { MAPS } from "./maps.mjs?v=559108c25566";
+
 export const TYPES = {
   commander: {
     name: "Commander",
@@ -57,6 +59,7 @@ export const TERRAIN = {
     description: "Costs 2 movement; all damage reduced by 1.",
   },
   water: { name: "Water", cost: Infinity, description: "Impassable." },
+  bridge: { name: "Bridge", cost: 1, description: "Cross the river here. Normal movement; no protection." },
   village: {
     name: "Village",
     cost: 1,
@@ -82,7 +85,12 @@ export function distance(a, b) {
   );
 }
 export class Game {
-  constructor() {
+  constructor(mapId = "mirror") {
+    if (!Object.hasOwn(MAPS, mapId)) throw new Error("Unknown battlefield.");
+    const layout = MAPS[mapId];
+    this.mapId = mapId;
+    this.cols = layout.cols;
+    this.rows = layout.rows;
     this.round = 1;
     this.turn = "player";
     this.gold = { player: 12, enemy: 12 };
@@ -91,70 +99,13 @@ export class Game {
     this.log = [];
     this.tiles = [];
     this.units = [];
-    for (let row = 0; row < 7; row++)
-      for (let col = 0; col < 11; col++)
-        this.tiles.push({
-          id: `${col},${row}`,
-          col,
-          row,
-          terrain: "plains",
-          owner: null,
-        });
-    for (const [col, row] of [
-      [5, 2],
-      [6, 2],
-      [4, 3],
-      [5, 3],
-      [6, 3],
-      [5, 4],
-      [6, 4],
-    ])
-      this.tile(`${col},${row}`).terrain = "forest";
-    for (const [col, row] of [
-      [3, 2],
-      [3, 4],
-      [8, 2],
-      [8, 4],
-      [5, 0],
-      [6, 0],
-      [5, 6],
-      [6, 6],
-    ])
-      this.tile(`${col},${row}`).terrain = "hill";
-    for (const [col, row] of [
-      [0, 0],
-      [1, 0],
-      [0, 6],
-      [1, 6],
-      [9, 0],
-      [10, 0],
-      [9, 6],
-      [10, 6],
-    ])
-      this.tile(`${col},${row}`).terrain = "water";
-    for (const [col, row] of [
-      [3, 1],
-      [3, 5],
-      [7, 1],
-      [7, 5],
-    ])
-      this.tile(`${col},${row}`).terrain = "village";
-    for (const [col, row, side] of [
-      [0, 3, "player"],
-      [10, 3, "enemy"],
-    ]) {
-      const t = this.tile(`${col},${row}`);
-      t.terrain = "keep";
-      t.owner = side;
-    }
-    for (const [side, col] of [
-      ["player", 0],
-      ["enemy", 10],
-    ]) {
-      this.addUnit("commander", side, `${col},3`);
-      this.addUnit("soldier", side, `${side === "player" ? 1 : 9},3`);
-      this.addUnit("scout", side, `${side === "player" ? 1 : 9},2`);
-    }
+    for (let row = 0; row < this.rows; row++)
+      for (let col = 0; col < this.cols; col++)
+        this.tiles.push({ id: `${col},${row}`, col, row, terrain: "plains", owner: null });
+    for (const { col, row, terrain, owner = null } of layout.terrain)
+      Object.assign(this.tile(`${col},${row}`), { terrain, owner });
+    for (const { type, side, col, row } of layout.units)
+      this.addUnit(type, side, `${col},${row}`);
     this.record("Capture villages for gold. Defeat the enemy commander.");
   }
   tile(id) {
@@ -371,6 +322,26 @@ export class Game {
         options.sort((a, b) => b.col - a.col)[0].id,
       );
   }
+  routeDistances(unit, goals) {
+    // Long-range routing ignores occupied hexes; reachable() handles actual moves.
+    // Reverse edges use the destination's cost so forests and hills count correctly.
+    const costs = new Map(goals.map(tile => [tile.id, 0]));
+    const open = [...costs.keys()];
+    while (open.length) {
+      open.sort((a, b) => costs.get(a) - costs.get(b));
+      const current = open.shift();
+      const step = this.cost(unit, this.tile(current));
+      if (!Number.isFinite(step)) continue;
+      for (const tile of this.neighbors(current)) {
+        if (!Number.isFinite(this.cost(unit, tile))) continue;
+        const cost = costs.get(current) + step;
+        if (cost >= (costs.get(tile.id) ?? Infinity)) continue;
+        costs.set(tile.id, cost);
+        if (!open.includes(tile.id)) open.push(tile.id);
+      }
+    }
+    return costs;
+  }
   enemyAct(id) {
     if (this.turn !== "enemy" || this.winner) return;
     const unit = this.unit(id);
@@ -405,10 +376,11 @@ export class Game {
       if (healing.length) goals = healing;
     }
     if (!goals.length) return;
+    const routes = this.mapId === "river" ? this.routeDistances(unit, goals) : null;
     const options = [unit.tile, ...this.reachable(id).keys()];
     const utility = (tileId) => {
       const tile = this.tile(tileId),
-        dist = Math.min(...goals.map((g) => distance(tile, g)));
+        dist = routes ? (routes.get(tileId) ?? 1000) : Math.min(...goals.map((g) => distance(tile, g)));
       const attackScore = Math.max(
         0,
         ...this.units
@@ -439,6 +411,7 @@ export class Game {
   }
   snapshot() {
     return {
+      mapId: this.mapId,
       round: this.round,
       turn: this.turn,
       gold: { ...this.gold },

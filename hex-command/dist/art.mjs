@@ -352,6 +352,12 @@ export function artSprite(
   side = "player",
 ) {
   if (!Object.hasOwn(ART_STYLES, style)) return "";
+  if (kind === "terrain" && name === "bridge") {
+    // Reuse the river's water palette beneath a simple stone crossing.
+    const water = terrainSprite(style, 3, 0, 0, 70, 70, "");
+    const joints = [10, 22, 34, 46, 58].map(at => `<path d="M${at} 24v22"/>`).join("");
+    return `<svg class="art-sprite ${extraClass}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 70 70" aria-hidden="true" focusable="false">${water}<path d="M0 26h70v23H0z" fill="#3e443b" opacity=".45"/><path d="M0 23h70v22H0z" fill="#a6a18a" stroke="#686e58" stroke-width="1"/><g stroke="#777c67" stroke-width="1" opacity=".65">${joints}</g><path d="M0 23h70M0 45h70" stroke="#6a705a" stroke-width="5"/><path d="M0 21h70M0 43h70" stroke="#b6b09a" stroke-width="3"/></svg>`;
+  }
   const isUnit = kind === "units";
   const order = isUnit ? unitOrder : terrainOrder;
   const index = order.indexOf(name);

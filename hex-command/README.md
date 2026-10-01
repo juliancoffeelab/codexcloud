@@ -77,3 +77,11 @@ The Undo move button between End turn and Settings rewinds moves within the
 current turn, including movement flags and captured village ownership. Attacking,
 recruiting, ending the turn, or starting a new battle clears earlier moves. Undo
 history lasts for the current page session; battle progress still autosaves.
+
+Start a new battle from Settings to choose **Classic mirror** (the original
+11×7 map) or **River crossings** (15×9, three bridges and six villages).
+Play again also opens this choice. The river is impassable except at bridges;
+bridges cost 1 movement and offer no protection. River enemies use land routes
+to reach crossings while keeping their existing combat priorities.
+The chosen battlefield and battle progress survive reloads; older saves load
+on Classic mirror.

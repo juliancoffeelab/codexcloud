@@ -1,15 +1,16 @@
+import { MAPS } from "./maps.mjs?v=559108c25566";
 import { createMoveUndo } from "./undo.mjs?v=a9b7694248a6";
 import { soundEnabled, setSoundEnabled, unlockSound, playSound } from "./sound.mjs?v=8c7d01722231";
 import { animateTile, animateTurn } from "./motion.mjs?v=fd2467be9e52";
-import { Game, TYPES, TERRAIN } from "./engine.mjs?v=72bf248fde6b";
-import { abilityMarkup } from "./unit-ability.mjs?v=c771ffc995eb";
-import { loadBattle, saveBattle } from "./save.mjs?v=0bc258126ff2";
+import { Game, TYPES, TERRAIN } from "./engine.mjs?v=025c4bc5c6bb";
+import { abilityMarkup } from "./unit-ability.mjs?v=4a65aa0987a6";
+import { loadBattle, saveBattle } from "./save.mjs?v=17ed018acb3a";
 import {
   artSprite,
   loadArtStyle,
   savedArtStyle,
   saveArtStyle,
-} from "./art.mjs?v=6a890b6e6a12";
+} from "./art.mjs?v=8106a25d4dd9";
 const $ = (selector) => document.querySelector(selector),
   map = $("#map"),
   panel = $("#unit-panel");
@@ -77,6 +78,7 @@ const colors = {
     forest: "#244c43",
     hill: "#5a6050",
     water: "#1b3c52",
+    bridge: "#1b3c52",
     village: "#69745b",
     keep: "#526d74",
   };
@@ -116,6 +118,10 @@ function render() {
     targets = canAct ? game.targets(selected) : [],
     recruits =
       recruitType && canAct ? game.recruitTiles(selected, recruitType) : [];
+  map.setAttribute("viewBox", `0 0 ${758 + 61 * (game.cols - 11)} ${452 + 53 * (game.rows - 7)}`);
+  map.style.setProperty("--map-scale", game.cols / 11);
+  map.setAttribute("aria-label", `${MAPS[game.mapId].name} battlefield`);
+  $("#village-total").textContent = game.tiles.filter(tile => tile.terrain === "village").length;
   const focusWasMap = document.activeElement?.closest?.("[data-tile]");
   const clips = game.tiles
     .map((tile) => {
@@ -189,7 +195,7 @@ function renderPanel() {
   panel.hidden = false;
   if (game.winner) {
     panel.innerHTML = `<div class="unit-title"><h2>${game.winner === "player" ? "The field is yours." : "An army needs a leader."}</h2></div><p>${game.winner === "player" ? "Your army defeated the enemy commander." : "Keep your commander protected and use villages to grow your army."}</p><button id="play-again" class="primary">Play again</button>`;
-    $("#play-again").addEventListener("click", reset);
+    $("#play-again").addEventListener("click", openMapPicker);
     return;
   }
   const unit = game.unit(selected);
@@ -253,6 +259,7 @@ const terrainDescriptions = {
   forest: "Trees shelter units and obstruct bow shots.",
   hill: "Rocky high ground offers cover and obstructs bow shots.",
   water: "Deep water cannot be crossed.",
+  bridge: "A narrow crossing between the riverbanks. Hold it, or try another bridge.",
   village: "Capture this settlement by moving a unit onto it.",
   keep: "A fortified home for its army’s commander.",
 };
@@ -439,15 +446,15 @@ async function endTurn() {
   saveBattle(game);
   return game.snapshot();
 }
-function reset() {
+function reset(mapId = "mirror") {
   epoch++;
   moveHistory.clear();
-  game = new Game();
+  game = new Game(mapId);
   previousFeedbackState = null;
-  selected = "u2";
+  selected = game.units.find(unit => unit.side === "player" && unit.type === "soldier")?.id;
   target = null;
   recruitType = null;
-  focusedTile = "1,3";
+  focusedTile = game.unit(selected)?.tile;
   inspectedTile = game.unit(selected)?.tile || null;
   render();
   message("Select a unit. Capture villages. Defeat the red commander.");
@@ -506,15 +513,33 @@ artControl.addEventListener("change", async () => {
   }
   artControl.disabled = false;
 });
-$("#new-game").addEventListener("click", () => {
+function renderMapPicker() {
+  const preview = layout => {
+    const features = new Map(layout.terrain.map(tile => [`${tile.col},${tile.row}`, tile.terrain]));
+    const palette = { plains: "#8d9f4f", forest: "#536e3d", hill: "#85866c", water: "#407899", bridge: "#b3ab8d", village: "#d4b476", keep: "#b9b597" };
+    let tiles = "";
+    for (let row = 0; row < layout.rows; row++) {
+      for (let col = 0; col < layout.cols; col++) {
+        const { x, y } = tileCenter({ col, row });
+        tiles += `<polygon points="${hexPoints(x,y)}" fill="${palette[features.get(`${col},${row}`) || "plains"]}" stroke="#263322" stroke-width="2"/>`;
+      }
+    }
+    return `<svg class="map-preview" viewBox="0 0 ${85 + 61 * (layout.cols - .5)} ${84 + 53 * (layout.rows - 1)}" aria-hidden="true">${tiles}</svg>`;
+  };
+  $("#map-picker").innerHTML = `<legend>Battlefield</legend>` + Object.values(MAPS).map(layout =>
+    `<label class="map-choice"><input type="radio" name="battle-map" value="${layout.id}" ${layout.id === game.mapId ? "checked" : ""}/><span>${preview(layout)}<strong>${layout.name}</strong><span class="map-description">${layout.description}</span></span></label>`
+  ).join("");
+}
+function openMapPicker() {
   settingsDialog.close();
-  if (game.winner) reset();
-  else resetDialog.showModal();
-});
+  renderMapPicker();
+  resetDialog.showModal();
+}
+$("#new-game").addEventListener("click", openMapPicker);
 $("#keep-playing").addEventListener("click", () => resetDialog.close());
 $("#confirm-reset").addEventListener("click", () => {
   resetDialog.close();
-  reset();
+  reset($("input[name=battle-map]:checked").value);
 });
 render();
 if (restoredBattle.pendingEnemy) endTurn().catch(error => message(error.message));
@@ -669,10 +694,10 @@ if (document.modelContext?.registerTool) {
       description: "Replace the current battle with a fresh battle.",
       inputSchema: {
         type: "object",
-        properties: {},
+        properties: { mapId: { type: "string", enum: Object.keys(MAPS) } },
         additionalProperties: false,
       },
-      execute: reset,
+      execute: (input = {}) => reset(input.mapId ?? "mirror"),
     },
   ];
   for (const tool of toolset)
