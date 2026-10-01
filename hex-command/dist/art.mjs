@@ -6,7 +6,6 @@ export const ART_STYLES = {
   normal: { label: "Normal" },
   "low-poly": { label: "Low-poly" },
   pixel: { label: "Pixel" },
-  classic: { label: "Classic" },
 };
 
 export function savedArtStyle() {
@@ -28,7 +27,6 @@ export function saveArtStyle(style) {
 const loadedStyles = new Map();
 export function loadArtStyle(style) {
   if (!Object.hasOwn(ART_STYLES, style)) return Promise.resolve(false);
-  if (style === "classic") return Promise.resolve(true);
   if (!loadedStyles.has(style)) {
     const loading = Promise.all(
       ["units", "terrain"].map(
@@ -353,7 +351,7 @@ export function artSprite(
   extraClass = "",
   side = "player",
 ) {
-  if (!Object.hasOwn(ART_STYLES, style) || style === "classic") return "";
+  if (!Object.hasOwn(ART_STYLES, style)) return "";
   const isUnit = kind === "units";
   const order = isUnit ? unitOrder : terrainOrder;
   const index = order.indexOf(name);

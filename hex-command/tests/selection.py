@@ -22,7 +22,7 @@ try:
   page.click('[data-tile="1,2"]');assert page.locator('.hex.selected').get_attribute('data-tile')=='1,2'
   page.click('[data-tile="10,0"]');cleared();assert snapshot(page)==initial
   page.click('[data-tile="1,3"]');page.locator('#map').click(position={'x':10,'y':page.locator('#map').bounding_box()['height']-5});cleared()
-  page.click('[data-tile="1,3"]');page.click('#round');cleared()
+  page.click('[data-tile="1,3"]');page.click('.header-economy');cleared()
   page.click('[data-tile="1,3"]');page.keyboard.press('Escape');cleared()
   page.click('[data-tile="0,3"]');page.click('[data-recruit="archer"]');page.click('[data-tile="10,0"]');cleared();assert not page.locator('#cancel').is_visible()
   print('PASS: same-unit, inactive tile, map background, outside, Escape, recruitment cancellation')

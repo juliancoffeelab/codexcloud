@@ -62,23 +62,27 @@ def run(url, screenshots):
         page.goto(url, wait_until="networkidle")
         assert page.locator("#map [data-tile]").count() == 77
 
+        assert page.locator('#end-turn #round').inner_text() == 'Turn 1'
+        assert page.locator('#art-style option[value="classic"]').count() == 0
+        assert page.locator('.unit-stat svg').count() == 3
+        assert page.locator('.terrain-ground').count() > 0
+        assert page.locator('.castle-wall').count() == 2
         # A real move captures a village, then each style must preserve that battle.
         page.click('[data-tile="1,2"]')
         page.click('[data-tile="3,1"]')
         state = snapshot(page)
         assert next(u for u in state["units"] if u["id"] == "u3")["tile"] == "3,1"
         assert next(v for v in state["villages"] if v["id"] == "3,1")["owner"] == "player"
-        for style in ("low-poly", "pixel", "classic", "normal"):
+        for style in ("low-poly", "pixel", "normal"):
             choose_style(page, style)
             assert snapshot(page) == state, f"{style} reset the battle"
-            assert page.locator("#map .unit-art").count() == (0 if style == "classic" else 6)
-            assert page.locator("#map .terrain-art").count() == (0 if style == "classic" else 77)
-            if style != "classic":
-                assert page.locator('#map .unit-art[width="62"]').count() == 2
-                assert page.locator('#map .unit-art[data-faction="player"]').count() == 3
-                assert page.locator('#map .unit-art[data-faction="enemy"]').count() == 3
-                assert page.locator('#map .enemy-unit').first.evaluate("el => getComputedStyle(el).filter") == "none"
-                assert float(page.locator('#map .unit-art[data-faction="enemy"] img').first.evaluate("el => parseFloat(el.style.top)")) < -400
+            assert page.locator("#map .unit-art").count() == 6
+            assert page.locator("#map .terrain-art").count() == 77
+            assert page.locator('#map .unit-art[width="62"]').count() == 2
+            assert page.locator('#map .unit-art[data-faction="player"]').count() == 3
+            assert page.locator('#map .unit-art[data-faction="enemy"]').count() == 3
+            assert page.locator('#map .enemy-unit').first.evaluate("el => getComputedStyle(el).filter") == "none"
+            assert float(page.locator('#map .unit-art[data-faction="enemy"] img').first.evaluate("el => parseFloat(el.style.top)")) < -400
             if screenshots:
                 page.screenshot(path=str(screenshots / f"desktop-{style}.png"), full_page=True)
         choose_style(page, "pixel")
@@ -87,7 +91,7 @@ def run(url, screenshots):
         page.reload(wait_until="networkidle")
         assert page.input_value("#art-style") == "pixel"
         assert not page.locator("#settings-dialog").evaluate("el => el.open")
-        print("PASS: all four styles render; switching preserves battle; preference persists")
+        print("PASS: all three styles render; switching preserves battle; preference persists")
 
         # Use the actual recruitment buttons and highlighted destination tiles.
         for unit_type, price in (("soldier", 8), ("archer", 10), ("scout", 7)):
@@ -113,6 +117,7 @@ def run(url, screenshots):
         page.wait_for_function("window.hexSmokeTools.get_battle_state.execute().round === 2")
         assert snapshot(page)["turn"] == "player"
         assert snapshot(page)["gold"]["player"] == 14
+        assert page.locator('#end-turn #round').inner_text() == 'Turn 2'
         print("PASS: keyboard selection, village capture, income, and enemy turn")
 
         # Advance using legal moves until a real UI attack becomes available.
@@ -169,7 +174,7 @@ def run(url, screenshots):
             page.locator(".map-scroll").evaluate("el => el.scrollLeft = el.scrollWidth")
             assert page.locator(".map-scroll").evaluate("el => el.scrollLeft > 0")
             page.locator(".map-scroll").evaluate("el => el.scrollLeft = 0")
-            for style in ("normal", "low-poly", "pixel", "classic"):
+            for style in ("normal", "low-poly", "pixel"):
                 choose_style(page, style)
                 if screenshots:
                     page.screenshot(path=str(screenshots / f"mobile-{width}-{style}.png"), full_page=True)
@@ -208,10 +213,10 @@ def run(url, screenshots):
         context.route("**/assets/*-normal.png*", lambda route: route.abort())
         page = context.new_page()
         page.goto(url, wait_until="networkidle")
-        page.wait_for_function("document.documentElement.dataset.artStyle === 'classic'")
+        page.wait_for_function("document.documentElement.dataset.artStyle === 'low-poly'")
         assert len(snapshot(page)["units"]) == 6
         context.close()
-        print("PASS: failed asset retry, blocked storage, and initial Classic fallback")
+        print("PASS: failed asset retry, blocked storage, and initial alternate artwork fallback")
         browser.close()
 
 

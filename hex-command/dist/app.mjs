@@ -1,11 +1,12 @@
 import { Game, TYPES, TERRAIN } from "./engine.mjs";
 import { loadBattle, saveBattle } from "./save.mjs";
+import { terrainDefinitions, terrainGround } from "./terrain.mjs?v=38e92e1aff05";
 import {
   artSprite,
   loadArtStyle,
   savedArtStyle,
   saveArtStyle,
-} from "./art.mjs?v=92df605bf15c";
+} from "./art.mjs?v=c0539201b300";
 const $ = (selector) => document.querySelector(selector),
   map = $("#map"),
   panel = $("#unit-panel");
@@ -27,9 +28,7 @@ const colors = {
     water: "#1b3c52",
     village: "#69745b",
     keep: "#526d74",
-  },
-  markers = { forest: "♣", hill: "▲", water: "≈", village: "⌂", keep: "♜" },
-  letters = { commander: "C", soldier: "S", archer: "A", scout: "Sc" };
+  };
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 function message(text) {
   $("#status").textContent = text;
@@ -50,20 +49,12 @@ function tileCenter(tile) {
   };
 }
 function renderTerrain(tile, x, y) {
-  if (artStyle === "classic") {
-    return markers[tile.terrain]
-      ? `<text class="terrain-marker" x="${x}" y="${game.at(tile.id) ? y - 21 : y + 7}" text-anchor="middle">${markers[tile.terrain]}</text>`
-      : "";
-  }
-  return `<g clip-path="url(#hex-clip-${tile.col}-${tile.row})">${artSprite(artStyle, "terrain", tile.terrain, x - 35, y - 35, 70, 70, "terrain-art")}</g>`;
+  return `<g clip-path="url(#hex-clip-${tile.col}-${tile.row})">${artSprite(artStyle, "terrain", tile.terrain, x - 35, y - 35, 70, 70, "terrain-art")}${terrainGround(tile.terrain, x, y, hexPoints(x, y), artStyle === "pixel")}</g>`;
 }
 function renderUnit(unit, x, y) {
   const teamColor = unit.side === "player" ? "#6fdec0" : "#ff9590";
   const spriteSize = unit.type === "commander" ? 62 : 56;
-  const body =
-    artStyle === "classic"
-      ? `<circle class="unit-circle" cx="${x}" cy="${y - 1}" r="19" fill="${teamColor}" stroke="${unit.attacked ? "#778e92" : "#e5f1e3"}" opacity="${unit.attacked ? ".68" : "1"}"/><text class="unit-letter" x="${x}" y="${y + 6}" text-anchor="middle">${letters[unit.type]}</text>`
-      : `<ellipse class="team-base" cx="${x}" cy="${y + 19}" rx="19" ry="7" fill="${teamColor}" stroke="${teamColor}"/>${artSprite(artStyle, "units", unit.type, x - spriteSize / 2, y + 20 - spriteSize, spriteSize, spriteSize, `unit-art ${unit.side === "enemy" ? "enemy-unit" : ""} ${unit.attacked ? "spent-unit" : ""}`, unit.side)}`;
+  const body = `<ellipse class="team-base" cx="${x}" cy="${y + 19}" rx="19" ry="7" fill="${teamColor}" stroke="${teamColor}"/>${artSprite(artStyle, "units", unit.type, x - spriteSize / 2, y + 20 - spriteSize, spriteSize, spriteSize, `unit-art ${unit.side === "enemy" ? "enemy-unit" : ""} ${unit.attacked ? "spent-unit" : ""}`, unit.side)}`;
   return `${body}<rect class="hp-bg" x="${x - 19}" y="${y + 27}" width="38" height="4" rx="2"/><rect class="hp" x="${x - 19}" y="${y + 27}" width="${(38 * unit.hp) / TYPES[unit.type].hp}" height="4" rx="2"/>${unit.attacked ? `<text class="acted" x="${x + 21}" y="${y - 17}">✓</text>` : ""}`;
 }
 function render() {
@@ -82,7 +73,7 @@ function render() {
     })
     .join("");
   map.innerHTML =
-    `<defs>${clips}</defs>` +
+    `<defs>${terrainDefinitions}${clips}</defs>` +
     game.tiles
       .map((tile) => {
         const occupant = game.at(tile.id);
@@ -90,6 +81,7 @@ function render() {
         const isTarget = targets.some((u) => u.tile === tile.id);
         const className = [
           "hex",
+          `terrain-${tile.terrain}`,
           unit?.tile === tile.id ? "selected" : "",
           moves.has(tile.id) && !recruitType ? "reachable" : "",
           isTarget && !recruitType ? "target" : "",
@@ -114,7 +106,7 @@ function render() {
   $("#gold").textContent = game.gold.player;
   $("#income").textContent = `+${game.income("player")}`;
   $("#villages").textContent = game.income("player") / 2;
-  $("#round").textContent = `R${game.round}`;
+  $("#round").textContent = `Turn ${game.round}`;
   $("#turn-badge").textContent = game.winner
     ? game.winner === "player"
       ? "Victory"
@@ -137,6 +129,14 @@ function render() {
         ? "Victory! The enemy commander has fallen. The field is yours."
         : "Your commander has fallen. Start a new battle and try a different approach.",
     );
+}
+const statIcons = {
+  move: '<path d="m5 17 4-4 3 3 7-9M14 7h5v5"/>',
+  damage: '<path d="m5 19 3-3m-2-3 5 5m-3-4L17 4l3-1-1 3-10 9"/>',
+  range: '<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/>',
+};
+function stat(icon, label, value) {
+  return `<span class="unit-stat"><svg viewBox="0 0 24 24" aria-hidden="true">${statIcons[icon]}</svg><span>${label}: <b>${value}</b></span></span>`;
 }
 function renderPanel() {
   panel.hidden = false;
@@ -162,16 +162,14 @@ function renderPanel() {
   function unitCard(combatant, damage = null) {
     const info = TYPES[combatant.type];
     const after = damage === null ? combatant.hp : Math.max(0, combatant.hp - damage);
-    const portrait = artStyle === "classic"
-      ? `<span class="classic-portrait">${letters[combatant.type]}</span>`
-      : artSprite(artStyle, "units", combatant.type, 0, 0, 72, 90,
+    const portrait = artSprite(artStyle, "units", combatant.type, 0, 0, 72, 90,
         `portrait ${combatant.side === "enemy" ? "enemy-unit" : ""}`, combatant.side);
     return `<div class="combatant ${combatant.side}"><span class="unit-side">${combatant.side === "player" ? "Your unit" : "Enemy unit"}</span>${portrait}<h2>${info.name}</h2><div class="health-numbers"><b>${combatant.hp}</b>${damage !== null ? `<span aria-label="health after attack"> → <b class="${after === 0 ? 'fatal' : ''}">${after}</b>` : ''}<span> / ${info.hp} HP</span></div><div class="health-track" role="img" aria-label="${after} of ${info.hp} health${damage !== null ? ` after attack; ${combatant.hp} before` : ''}"><span class="health-lost" style="width:${combatant.hp/info.hp*100}%"></span><span class="health-left" style="width:${after/info.hp*100}%"></span></div>${damage !== null ? `<p class="damage-result">${after === 0 ? 'Falls in battle' : damage ? `−${damage} HP` : 'Unharmed'}</p>` : ''}</div>`;
   }
   const preview = attackAvailable ? game.preview(unit, victim) : null;
   let html = attackAvailable
     ? `<div class="duel">${unitCard(unit, preview.retaliation)}<span class="duel-divider" aria-hidden="true">⚔</span>${unitCard(victim, preview.damage)}</div><p class="combat-note">${preview.retaliation ? `Enemy retaliates for ${preview.retaliation} damage.` : 'No retaliation.'}</p>`
-    : `<div class="unit-detail">${unitCard(unit)}<div class="unit-info"><div class="unit-stats"><span><b>${type.move}</b> move</span><span><b>${type.damage}</b> damage</span><span>Range <b>${type.range}</b></span></div><p class="ability">${type.ability}</p><p>${type.description}</p><p class="unit-state">${TERRAIN[tile.terrain].name} · ${unit.attacked ? 'Turn finished' : unit.moved ? 'Can still attack' : 'Ready'}</p></div></div>`;
+    : `<div class="unit-detail">${unitCard(unit)}<div class="unit-info"><div class="unit-stats">${stat("move", "Move", type.move)}${stat("damage", "Damage", type.damage)}${stat("range", "Range", type.range)}</div><p class="ability">${type.ability}</p><p>${type.description}</p><p class="unit-state">${TERRAIN[tile.terrain].name} · ${unit.attacked ? 'Turn finished' : unit.moved ? 'Can still attack' : 'Ready'}</p></div></div>`;
   if (unit.side === "player" && unit.type === "commander" && !attackAvailable) {
     if (tile.terrain === "keep" && tile.owner === "player") {
       html +=
@@ -422,15 +420,21 @@ $("#confirm-reset").addEventListener("click", () => {
 render();
 if (restoredBattle.pendingEnemy) endTurn().catch(error => message(error.message));
 const initialArtStyle = artStyle;
-loadArtStyle(initialArtStyle).then((ready) => {
+loadArtStyle(initialArtStyle).then(async (ready) => {
   if (!ready && artStyle === initialArtStyle && !artControl.disabled) {
-    artStyle = "classic";
-    artControl.value = artStyle;
-    document.documentElement.dataset.artStyle = artStyle;
-    render();
-    message(
-      "Artwork could not load. Classic view is available while you retry.",
-    );
+    for (const fallback of ["normal", "low-poly", "pixel"].filter(style => style !== initialArtStyle)) {
+      if (await loadArtStyle(fallback)) {
+        if (artStyle === initialArtStyle && !artControl.disabled) {
+          artStyle = fallback;
+          artControl.value = artStyle;
+          document.documentElement.dataset.artStyle = artStyle;
+          render();
+          message("Using alternate artwork. Retry your preferred style in Settings.");
+        }
+        return;
+      }
+    }
+    message("Artwork could not load. Please reload to retry.");
   }
 });
 if (document.modelContext?.registerTool) {
