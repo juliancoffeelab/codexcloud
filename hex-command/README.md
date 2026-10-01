@@ -89,16 +89,16 @@ on Classic mirror. Existing river battles retain their original map layout.
 
 Shallow water uses its own artwork in each style, including pixel-only waves
 and texture in Pixel. The sound library includes 17 material-inspired families with
-three shuffled variations each: armor clicks, soft grass brushes, a command horn,
+three shuffled variations each: armor clicks, soft grass brushes, leather and cloth,
 bow release and melee impact, coins, splashes, leaves, wind, grass and gates,
 plus UI/recruitment/turn/result cues. A tile interaction plays at most one sound:
 attack takes priority over unit, then terrain. Rapid interactions replace the
 previous cue, and muted or still-loading audio cannot play later by accident.
 Weapon sounds play only when an attack resolves; target selection uses a quiet
 UI tick. Repeat unit clicks and terrain inspection keep their material cue. Each
-unit/terrain clip is one brief contact or texture. The commander uses a shorter,
-prompt horn, and hill wind is quieter with a quick, soft onset. All variations
-preload after the first user gesture to keep later clicks responsive. Audio starts only after an interaction; the Sound effects setting persists.
+unit/terrain clip is one brief contact or texture. The commander uses a soft
+leather-and-cloth rustle, and hill wind is quiet with a quick, soft onset. All
+variations preload after the first user gesture to keep later clicks responsive. Audio starts only after an interaction; the Sound effects setting persists.
 Rebuild WAVs with `python scripts/generate-sfx.py` (requires numpy and scipy).
 
 River forests sit above the northern village approach and along the outer southern
@@ -112,3 +112,5 @@ Turn changes and undo are silent; their visual feedback remains.
 Scouts and archers use the soft plains/grass sound for selection and movement.
 
 Soldiers use the heavier footstep thud previously used by archers.
+
+All cues have a lower playback level, rounded attacks, and gentler high frequencies.

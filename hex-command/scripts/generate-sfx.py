@@ -77,14 +77,12 @@ def soft_step(rng, duration, scout=False):
     return contact + scuff * (.10 if scout else .13)
 
 
-def brass(rng, duration, freq, quick=False):
+def brass(rng, duration, freq):
     time = np.arange(round(duration * RATE)) / RATE
     # Breath-shaped, muted herald horn: slight vibrato and a rounded harmonic body.
     phase = 2 * np.pi * freq * time + 0.06 * np.sin(2 * np.pi * 5 * time)
     result = sum(np.sin(phase * h) / h ** 1.55 for h in range(1, 6))
     shape = np.sin(np.pi * np.clip(time / duration, 0, 1)) ** 0.8
-    if quick:
-        shape = envelope(len(time), .007, .075) * np.clip((duration - time) / .035, 0, 1)
     return result * shape + noise(rng, duration, 400, 1600) * shape * 0.025
 
 
@@ -128,8 +126,11 @@ def generate(family, variant, seed):
     elif family in ('unit-archer', 'unit-scout'):
         add(result, soft_step(rng, duration, family == 'unit-scout'), .004)
     elif family == 'unit-commander':
-        # A short herald horn with an immediate, rounded breath onset.
-        add(result, brass(rng, duration - .004, [196, 220, 185][variant], quick=True), .004, .7)
+        # Soft leather flex and a cloth brush, without a sustained pitched note.
+        leather = noise(rng, duration, 70, [620, 750, 540][variant])
+        cloth = noise(rng, duration, 350, [2000, 2300, 1700][variant])
+        result += leather * envelope(len(result), .008, .055)
+        result += cloth * envelope(len(result), .012, .040) * .22
     elif family == 'terrain-village':
         # One small gold coin contacting another, rather than a repeated jingle.
         add(result, resonator(rng, duration, [1790, 2030, 1880][variant], decay=.048), .006)
@@ -197,8 +198,14 @@ def generate(family, variant, seed):
     levels = {'unit-soldier': .36, 'unit-archer': .32, 'unit-scout': .25,
               'terrain-village': .34, 'terrain-water': .30,
               'terrain-forest': .27, 'terrain-plains': .21,
-              'terrain-hill': .16, 'unit-commander': .48, 'terrain-keep': .30}
+              'terrain-hill': .16, 'unit-commander': .25, 'terrain-keep': .30}
     result *= levels.get(family, .65) / peak
+    # Darken bright transients without renormalizing them back to full volume.
+    softened = sosfilt(butter(2, 2200, btype='lowpass', fs=RATE, output='sos'), result)
+    result = .25 * result + .75 * softened
+    edge = round(.010 * RATE)
+    result[:edge] *= np.linspace(0, 1, edge)
+    result[-edge:] *= np.linspace(1, 0, edge)
     return np.round(result * 32767).astype('<i2')
 
 
@@ -212,7 +219,7 @@ def main():
             samples = generate(family, variant, 917_003 + family_index * 307 + variant)
             assert np.max(np.abs(samples.astype(np.int32))) < 32767
             rms = float(np.sqrt(np.mean((samples.astype(float) / 32767) ** 2)))
-            assert rms > .015, (family, variant, rms)
+            assert rms > .005, (family, variant, rms)
             assert .1 <= len(samples) / RATE <= .9
             path = OUTPUT / f'{family}-{variant + 1}.wav'
             with wave.open(str(path), 'wb') as out:
@@ -227,7 +234,7 @@ def main():
     print(f'{len(FAMILIES) * 3} WAVs: mono {RATE} Hz, signed 16-bit; '
           f'duration {min(lengths):.3f}–{max(lengths):.3f}s; '
           f'RMS {min(rms_values):.3f}–{max(rms_values):.3f}; '
-          f'category peaks 0.16–0.65, no clipping.')
+          f'rounded attacks and softened high frequencies, no clipping.')
 
 
 if __name__ == '__main__':
