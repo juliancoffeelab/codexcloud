@@ -104,3 +104,5 @@ Rebuild WAVs with `python scripts/generate-sfx.py` (requires numpy and scipy).
 River forests sit above the northern village approach and along the outer southern
 edge, leaving the starting soldier and scout clear routes to nearby villages.
 Current river saves use these revised forest positions without losing progress.
+
+Recruitment plays a brief pair of coin taps, with no horn or spawned-unit cue.

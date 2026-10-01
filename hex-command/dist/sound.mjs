@@ -1,7 +1,7 @@
 // Short material-inspired WAVs. Audio is created only after a real gesture.
 const STORAGE_KEY = 'hex-command-sound-enabled';
 const VOLUME = 0.38;
-const AUDIO_REVISION = '6f8441202d46';
+const AUDIO_REVISION = '25861896ea19';
 const families = new Set([
   'attack-bow', 'attack-melee', 'unit-soldier', 'unit-archer', 'unit-scout',
   'unit-commander', 'terrain-village', 'terrain-water', 'terrain-forest',

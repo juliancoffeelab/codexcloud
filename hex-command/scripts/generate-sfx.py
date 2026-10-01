@@ -93,7 +93,7 @@ def generate(family, variant, seed):
     durations = {'select': .13, 'victory': .83, 'defeat': .68,
                  'terrain-hill': .42, 'unit-commander': .24, 'attack-bow': .55,
                  'unit-soldier': .16, 'unit-archer': .20, 'unit-scout': .18,
-                 'terrain-village': .27,
+                 'terrain-village': .27, 'recruit': .32,
                  'terrain-water': .28, 'terrain-forest': .25,
                  'terrain-plains': .23, 'terrain-keep': .26}
     duration = durations.get(family, .48) + (variant - 1) * .017
@@ -139,7 +139,6 @@ def generate(family, variant, seed):
         for index in range(2):
             offset = .012 + index * (.067 + variant * .018)
             add(result, resonator(rng, .25, rng.uniform(1400, 2200), decay=.075), offset, 1 / (index + 1) ** .4)
-        add(result, brass(rng, .23, 294 + variant * 18), .20, .45)
     elif family == 'terrain-water':
         # One liquid plop: rising bubble resonance, followed by a small wet wash.
         # No broadband attack or low booming body that suggests an explosion.
