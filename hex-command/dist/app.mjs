@@ -1,5 +1,5 @@
-import { Game, TYPES, TERRAIN } from "./engine.mjs";
-import { loadBattle, saveBattle } from "./save.mjs";
+import { Game, TYPES, TERRAIN } from "./engine.mjs?v=72bf248fde6b";
+import { loadBattle, saveBattle } from "./save.mjs?v=0bc258126ff2";
 import {
   artSprite,
   loadArtStyle,
@@ -280,12 +280,6 @@ function choose(tileId) {
 map.addEventListener("click", (event) => {
   const cell = event.target.closest("[data-tile]");
   if (cell) choose(cell.dataset.tile);
-  else clearSelection();
-});
-document.addEventListener("click", event => {
-  const controlClick = event.composedPath().some(node =>
-    node instanceof Element && node.matches("#map, button, select, input, dialog, a, summary"));
-  if (!controlClick) clearSelection();
 });
 map.addEventListener("keydown", (event) => {
   const cell = event.target.closest("[data-tile]");

@@ -1,4 +1,4 @@
-import { Game, TYPES } from './engine.mjs';
+import { Game, TYPES } from './engine.mjs?v=72bf248fde6b';
 
 export const SAVE_KEY = 'hex-command-battle';
 export const SAVE_VERSION = 1;
