@@ -54,7 +54,7 @@ const terrainSheets = {
   "normal": {
     "width": 1536,
     "height": 1024,
-    "revision": "aa703bdf9fe2",
+    "revision": "8eff244563e2",
     "frames": [
       {
         "x": 76.0,
@@ -91,7 +91,7 @@ const terrainSheets = {
   "low-poly": {
     "width": 1536,
     "height": 1024,
-    "revision": "e7bf4ed38750",
+    "revision": "47d359491cc4",
     "frames": [
       {
         "x": 41.0,
@@ -128,7 +128,7 @@ const terrainSheets = {
   "pixel": {
     "width": 1536,
     "height": 1024,
-    "revision": "9c2b16ea35a2",
+    "revision": "50ca312f1cea",
     "frames": [
       {
         "x": 61.0,

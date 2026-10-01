@@ -65,8 +65,9 @@ def run(url, screenshots):
         assert page.locator('#end-turn #round').inner_text() == 'Turn 1'
         assert page.locator('#art-style option[value="classic"]').count() == 0
         assert page.locator('.unit-stat svg').count() == 3
-        assert page.locator('.terrain-ground').count() > 0
-        assert page.locator('.castle-wall').count() == 2
+        assert page.locator('#turn-badge').count() == 0
+        assert page.locator('#turn-label').inner_text() == 'End turn'
+        assert page.locator('.terrain-keep .terrain-art').count() == 2
         # A real move captures a village, then each style must preserve that battle.
         page.click('[data-tile="1,2"]')
         page.click('[data-tile="3,1"]')
@@ -114,6 +115,7 @@ def run(url, screenshots):
         assert page.locator("#unit-panel h2").first.inner_text() == "Scout"
         page.click('[data-tile="3,1"]')
         page.click("#end-turn")
+        assert page.locator("#turn-label").inner_text() == "Enemy turn"
         page.wait_for_function("window.hexSmokeTools.get_battle_state.execute().round === 2")
         assert snapshot(page)["turn"] == "player"
         assert snapshot(page)["gold"]["player"] == 14

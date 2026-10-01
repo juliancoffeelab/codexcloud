@@ -1,12 +1,11 @@
 import { Game, TYPES, TERRAIN } from "./engine.mjs";
 import { loadBattle, saveBattle } from "./save.mjs";
-import { terrainDefinitions, terrainGround } from "./terrain.mjs?v=38e92e1aff05";
 import {
   artSprite,
   loadArtStyle,
   savedArtStyle,
   saveArtStyle,
-} from "./art.mjs?v=c0539201b300";
+} from "./art.mjs?v=de1133bee4a0";
 const $ = (selector) => document.querySelector(selector),
   map = $("#map"),
   panel = $("#unit-panel");
@@ -49,7 +48,7 @@ function tileCenter(tile) {
   };
 }
 function renderTerrain(tile, x, y) {
-  return `<g clip-path="url(#hex-clip-${tile.col}-${tile.row})">${artSprite(artStyle, "terrain", tile.terrain, x - 35, y - 35, 70, 70, "terrain-art")}${terrainGround(tile.terrain, x, y, hexPoints(x, y), artStyle === "pixel")}</g>`;
+  return `<g clip-path="url(#hex-clip-${tile.col}-${tile.row})">${artSprite(artStyle, "terrain", tile.terrain, x - 35, y - 35, 70, 70, "terrain-art")}</g>`;
 }
 function renderUnit(unit, x, y) {
   const teamColor = unit.side === "player" ? "#6fdec0" : "#ff9590";
@@ -73,7 +72,7 @@ function render() {
     })
     .join("");
   map.innerHTML =
-    `<defs>${terrainDefinitions}${clips}</defs>` +
+    `<defs>${clips}</defs>` +
     game.tiles
       .map((tile) => {
         const occupant = game.at(tile.id);
@@ -107,17 +106,10 @@ function render() {
   $("#income").textContent = `+${game.income("player")}`;
   $("#villages").textContent = game.income("player") / 2;
   $("#round").textContent = `Turn ${game.round}`;
-  $("#turn-badge").textContent = game.winner
-    ? game.winner === "player"
-      ? "Victory"
-      : "Defeat"
-    : game.turn === "player"
-      ? "Your turn"
-      : "Enemy turn";
-  $("#turn-badge").title = $("#turn-badge").textContent;
+  $("#turn-label").textContent = game.winner
+    ? game.winner === "player" ? "Victory" : "Defeat"
+    : game.turn === "player" ? "End turn" : "Enemy turn";
   $("#round").title = `Round ${game.round}`;
-  $("#turn-badge").style.color =
-    game.turn === "enemy" || game.winner === "enemy" ? "#ff9590" : "#6fdec0";
   $("#end-turn").disabled = !active();
   $("#new-game").disabled = game.turn === "enemy" && !game.winner;
   $("#cancel").hidden = !recruitType;

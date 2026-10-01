@@ -17,8 +17,9 @@ current battle intact when switching.
 the interface, and `dist/art.mjs` displays regions of the generated PNG sheets
 in `dist/assets/`. Terrain uses dedicated flat pointy-top hex artwork, rendered with square crops
 and uniform scaling, clipped to the board edges. No mesh warping is used. Unit sheets contain teal player and crimson enemy rows with natural skin tones.
-Ground textures are layered around the unchanged trees, hill rocks, and houses.
-Castle tiles have a paved courtyard and a masonry perimeter.
+Terrain sheets include dark forest floor, stony hill ground, village dirt paths,
+and walled castles with paved courtyards. Grass, trees, and waves use irregular
+arrangements; the two main hill formations and village houses retain their familiar shapes.
 Roles have distinct silhouettes, with no color filter applied. Commanders carry
 faction standards and render slightly larger on the map. Team bases and ownership dots
 also identify sides. Pixel mode uses nearest-neighbor display.
