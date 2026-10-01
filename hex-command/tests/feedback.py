@@ -16,7 +16,7 @@ window.audioStarts = 0; window.audioNotes = 0;
 const NativeAudio = window.AudioContext;
 if (NativeAudio) window.AudioContext = class extends NativeAudio {
   constructor(...args) { super(...args); window.audioStarts++; }
-  createOscillator() { window.audioNotes++; return super.createOscillator(); }
+  createBufferSource() { window.audioNotes++; return super.createBufferSource(); }
 };
 '''
 try:

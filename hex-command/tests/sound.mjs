@@ -1,91 +1,83 @@
 import assert from 'node:assert/strict';
-
 const stored = new Map();
-globalThis.localStorage = {
-  getItem: key => stored.get(key) ?? null,
-  setItem: (key, value) => stored.set(key, value),
+globalThis.localStorage = { getItem: key => stored.get(key) ?? null, setItem: (key,value) => stored.set(key,value) };
+let created = 0, resumed = 0, audio;
+const fetched = [];
+globalThis.fetch = async url => {
+  fetched.push(String(url));
+  return { ok:true, arrayBuffer:async () => String(url) };
 };
-let created = 0;
-let resumed = 0;
-let audio;
 class Param {
   value = 0;
-  events = [];
-  cancelScheduledValues(time) { this.events.push(['cancel', time]); }
-  setValueAtTime(value, time) { this.events.push(['set', value, time]); this.value = value; }
-  linearRampToValueAtTime(value, time) { this.events.push(['linear', value, time]); this.value = value; }
-  exponentialRampToValueAtTime(value, time) { this.events.push(['exponential', value, time]); this.value = value; }
-}
-class Node {
-  disconnected = false;
-  connect() {}
-  disconnect() { this.disconnected = true; }
+  cancelScheduledValues() {}
+  setValueAtTime(value) { this.value = value; }
+  linearRampToValueAtTime(value) { this.value = value; }
 }
 class FakeContext {
-  state = 'suspended';
-  currentTime = 10;
-  destination = {};
-  oscillators = [];
-  gains = [];
+  state = 'suspended'; currentTime = 10; destination = {}; sources = [];
   constructor() { created++; audio = this; }
   async resume() { resumed++; this.state = 'running'; }
-  createGain() {
-    const node = new Node(); node.gain = new Param(); this.gains.push(node); return node;
-  }
-  createOscillator() {
-    const node = new Node(); node.frequency = new Param();
-    node.start = time => { node.startTime = time; };
-    node.stop = time => { node.stopTime = time; };
-    this.oscillators.push(node); return node;
+  createGain() { return { gain:new Param(), connect(){}, disconnect(){} }; }
+  async decodeAudioData(name) { return {name}; }
+  createBufferSource() {
+    const source = {connect(){},disconnect(){this.disconnected=true;},start(){this.started=true;},stop(){this.stopped=true;}};
+    this.sources.push(source); return source;
   }
 }
 globalThis.AudioContext = FakeContext;
 const sound = await import('../dist/sound.mjs');
-assert.equal(sound.soundEnabled(), true);
-sound.playSound('turn');
-assert.equal(created, 0, 'restores and programmatic feedback must not construct audio');
+assert.equal(sound.soundEnabled(),true);
+await sound.playSound('turn');
+assert.equal(created,0); assert.equal(fetched.length,0);
 sound.setSoundEnabled(false);
-await sound.unlockSound();
-assert.equal(created, 0, 'muted gestures must not construct audio');
-assert.equal(stored.get('hex-command-sound-enabled'), 'false');
+await sound.unlockSound(); assert.equal(created,0);
 sound.setSoundEnabled(true);
-await sound.unlockSound();
-assert.equal(created, 1);
-assert.equal(resumed, 1);
-sound.playSound('turn');
-assert.equal(audio.oscillators.length, 2);
-assert.ok(audio.oscillators.every(osc => osc.stopTime > osc.startTime));
-sound.playSound('victory');
-sound.playSound('recruit');
-assert.equal(audio.oscillators.length, 5, 'polyphony is capped');
+await sound.unlockSound(); assert.equal(created,1); assert.equal(resumed,1);
+// Priority resolves a single family even when all three contexts exist.
+assert.equal(sound.soundForInteraction({attackType:'archer',unitType:'soldier',terrain:'village'}),'attack-bow');
+assert.equal(sound.soundForInteraction({attackType:'scout',unitType:'archer',terrain:'forest'}),'attack-melee');
+for (const unitType of ['soldier','archer','scout','commander']) {
+  assert.equal(sound.soundForInteraction({unitType,terrain:'hill'}),`unit-${unitType}`);
+}
+for (const terrain of ['village','water','forest','hill','plains','keep']) {
+  assert.equal(sound.soundForInteraction({terrain}),`terrain-${terrain}`);
+}
+assert.equal(sound.soundForInteraction({terrain:'ford'}),'terrain-water');
+assert.equal(sound.soundForInteraction({}),'select');
+// A shuffle bag plays all three variations, without an immediate repeat at refill.
+const variants = [];
+for (let i=0;i<9;i++) {
+  assert.equal(await sound.playSound('unit-soldier'),true);
+  variants.push(audio.sources.at(-1).buffer.name.match(/-(\d)\.wav/)[1]);
+}
+for (let i=0;i<9;i+=3) assert.equal(new Set(variants.slice(i,i+3)).size,3);
+assert.ok(variants.every((value,i)=>i===0 || value!==variants[i-1]));
+assert.equal(fetched.length,3,'decoded samples are reused');
+assert.ok(audio.sources.slice(0,-1).every(source=>source.stopped),'new cues replace earlier cues');
 sound.setSoundEnabled(false);
-assert.ok(audio.oscillators.every(osc => osc.stopTime <= audio.currentTime + 0.015));
-assert.equal(audio.gains[0].gain.events.at(-1)[1], 0, 'muting fades the master immediately');
-for (const osc of audio.oscillators) osc.onended();
-assert.ok(audio.oscillators.every(osc => osc.disconnected));
-assert.ok(audio.gains.slice(1).every(gain => gain.disconnected));
+assert.ok(audio.sources.every(source=>source.stopped));
+const count = fetched.length;
+await sound.playSound('attack-bow'); assert.equal(fetched.length,count);
+assert.equal(stored.get('hex-command-sound-enabled'),'false');
 sound.setSoundEnabled(true);
-sound.playSound('attack');
-assert.equal(audio.oscillators.length, 6, 'ended voices release the polyphony budget');
-audio.state = 'suspended';
-sound.playSound('select');
-assert.equal(resumed, 1, 'effects cannot resume audio without a gesture');
-await sound.unlockSound();
-assert.equal(resumed, 2);
-sound.playSound('select');
-sound.playSound('select');
-assert.equal(audio.oscillators.length, 7, 'rapid selection feedback is throttled');
-
-globalThis.localStorage = { getItem() { throw Error('blocked'); }, setItem() { throw Error('blocked'); } };
+// Delayed lower-priority/sample responses cannot revive old audio.
+const pending = [];
+globalThis.fetch = url => new Promise(resolve => pending.push(() => resolve({ok:true,arrayBuffer:async()=>String(url)})));
+const old = sound.playSound('terrain-forest');
+const latest = sound.playInteraction({attackType:'archer',unitType:'soldier',terrain:'forest'});
+assert.equal(pending.length,2);
+pending[0](); assert.equal(await old,false);
+pending[1](); assert.equal(await latest,true);
+const muted = sound.playSound('terrain-water');
+sound.setSoundEnabled(false); pending[2](); assert.equal(await muted,false);
+sound.setSoundEnabled(true);
+audio.state='suspended';
+assert.equal(await sound.playSound('turn'),false);
+assert.equal(resumed,1,'playback cannot unlock audio itself');
+await sound.unlockSound(); assert.equal(resumed,2);
+globalThis.fetch = async () => ({ok:false});
+assert.equal(await sound.playSound('terrain-hill'),false,'failed audio never throws');
 delete globalThis.AudioContext;
-const unavailable = await import('../dist/sound.mjs?unsupported');
-assert.equal(unavailable.soundEnabled(), true);
-await unavailable.unlockSound();
-unavailable.playSound('move');
-unavailable.setSoundEnabled(false);
-assert.equal(unavailable.soundEnabled(), false);
-globalThis.AudioContext = class { constructor() { throw Error('audio unavailable'); } };
-const failing = await import('../dist/sound.mjs?failing');
-await failing.unlockSound();
-failing.playSound('attack');
-console.log('Sound lifecycle checks passed.');
+const unsupported = await import('../dist/sound.mjs?unsupported');
+await unsupported.unlockSound(); assert.equal(await unsupported.playSound('turn'),false);
+console.log('PASS: distinct cue priority, three variations, caching, latest-only playback, gestures, mute and unavailable audio');

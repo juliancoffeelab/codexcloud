@@ -1,40 +1,46 @@
-// Small, gesture-unlocked effects. No audio is started by loading a battle.
+// Short material-inspired WAVs. Audio is created only after a real gesture.
 const STORAGE_KEY = 'hex-command-sound-enabled';
+const VOLUME = 0.38;
+const AUDIO_REVISION = 'b2dba9955fa2';
+const families = new Set([
+  'attack-bow', 'attack-melee', 'unit-soldier', 'unit-archer', 'unit-scout',
+  'unit-commander', 'terrain-village', 'terrain-water', 'terrain-forest',
+  'terrain-hill', 'terrain-plains', 'terrain-keep', 'select', 'recruit',
+  'turn', 'victory', 'defeat',
+]);
 let enabled = true;
 try { enabled = localStorage.getItem(STORAGE_KEY) !== 'false'; } catch {}
-
-let context = null;
-let master = null;
-let unlocked = false;
-let lastSelection = -Infinity;
-const voices = new Set();
-
+let context = null, master = null, unlocking = null, request = 0;
+const buffers = new Map(), bags = new Map(), lastVariation = new Map(), voices = new Set();
 export function soundEnabled() { return enabled; }
 
-function removeVoice(voice) {
-  voices.delete(voice);
-  try { voice.oscillator.disconnect(); } catch {}
-  try { voice.gain.disconnect(); } catch {}
+// A tile interaction has exactly one family: attack > occupant > ground.
+export function soundForInteraction({ attackType, unitType, terrain } = {}) {
+  if (attackType) return attackType === 'archer' ? 'attack-bow' : 'attack-melee';
+  if (families.has(`unit-${unitType}`)) return `unit-${unitType}`;
+  if (terrain === 'ford') terrain = 'water';
+  return families.has(`terrain-${terrain}`) ? `terrain-${terrain}` : 'select';
 }
+export function playInteraction(details) { return playSound(soundForInteraction(details)); }
 
+function stopVoices() {
+  for (const voice of voices) {
+    try {
+      const now = context.currentTime;
+      voice.gain.gain.cancelScheduledValues(now);
+      voice.gain.gain.setValueAtTime(voice.gain.gain.value, now);
+      voice.gain.gain.linearRampToValueAtTime(0, now + 0.008);
+      voice.source.stop(now + 0.009);
+    } catch {}
+  }
+  voices.clear();
+}
 export function setSoundEnabled(value) {
   enabled = Boolean(value);
+  request++; // Also discard sounds whose samples are still loading.
   try { localStorage.setItem(STORAGE_KEY, String(enabled)); } catch {}
-  if (!context || !master) return;
-  try {
-    const now = context.currentTime;
-    master.gain.cancelScheduledValues(now);
-    master.gain.setValueAtTime(master.gain.value, now);
-    master.gain.linearRampToValueAtTime(enabled ? 0.6 : 0, now + 0.012);
-    if (!enabled) {
-      for (const voice of voices) {
-        try { voice.oscillator.stop(now + 0.015); } catch {}
-      }
-    }
-  } catch { /* Audio failures must never interrupt a battle. */ }
+  if (!enabled) stopVoices();
 }
-
-// Call only from a click/key gesture. Effects never try to unlock audio themselves.
 export async function unlockSound() {
   if (!enabled) return;
   try {
@@ -43,58 +49,63 @@ export async function unlockSound() {
       if (!AudioContextClass) return;
       context = new AudioContextClass();
       master = context.createGain();
-      master.gain.value = 0.6;
+      master.gain.value = VOLUME;
       master.connect(context.destination);
     }
-    if (context.state === 'suspended') await context.resume();
-    unlocked = context.state === 'running';
-  } catch { unlocked = false; }
-}
-
-// [frequency, offset, duration, gain, ending frequency, oscillator shape]
-const effects = {
-  select: [[440, 0, 0.075, 0.025, 410, 'sine']],
-  move: [[220, 0, 0.13, 0.04, 175, 'triangle']],
-  attack: [[105, 0, 0.14, 0.055, 58, 'sine']],
-  recruit: [[330, 0, 0.15, 0.035, 330, 'triangle'], [440, 0.08, 0.17, 0.03, 440, 'sine']],
-  turn: [[294, 0, 0.16, 0.03, 294, 'sine'], [392, 0.095, 0.18, 0.03, 392, 'sine']],
-  victory: [[330, 0, 0.2, 0.035, 330, 'triangle'], [440, 0.1, 0.22, 0.03, 440, 'sine'], [523, 0.2, 0.24, 0.03, 523, 'sine']],
-  defeat: [[220, 0, 0.2, 0.03, 220, 'sine'], [165, 0.12, 0.24, 0.03, 150, 'sine']],
-};
-
-export function playSound(kind) {
-  if (!enabled || !unlocked || !context || !master || context.state !== 'running') return;
-  const notes = effects[kind];
-  if (!notes) return;
-  const now = context.currentTime;
-  if (kind === 'select' && now - lastSelection < 0.06) return;
-  if (kind === 'select') lastSelection = now;
-  // Drop rapid excess feedback instead of accumulating a loud queue.
-  if (voices.size + notes.length > 6) return;
-  for (const [frequency, offset, duration, volume, ending, shape] of notes) {
-    let voice;
-    try {
-      const oscillator = context.createOscillator();
-      const gain = context.createGain();
-      voice = { oscillator, gain };
-      voices.add(voice);
-      const start = now + offset;
-      oscillator.type = shape;
-      oscillator.frequency.setValueAtTime(frequency, start);
-      oscillator.frequency.exponentialRampToValueAtTime(ending, start + duration);
-      gain.gain.setValueAtTime(0, start);
-      gain.gain.linearRampToValueAtTime(volume, start + 0.008);
-      gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
-      oscillator.connect(gain);
-      gain.connect(master);
-      oscillator.onended = () => removeVoice(voice);
-      oscillator.start(start);
-      oscillator.stop(start + duration + 0.01);
-    } catch {
-      if (voice) {
-        try { voice.oscillator.stop(); } catch {}
-        removeVoice(voice);
-      }
+    if (context.state === 'suspended') {
+      unlocking ??= context.resume().catch(() => {}).finally(() => { unlocking = null; });
+      await unlocking;
     }
+  } catch { /* Unavailable audio never interrupts a battle. */ }
+}
+function variation(family) {
+  let bag = bags.get(family);
+  if (!bag?.length) {
+    bag = [1, 2, 3];
+    for (let i = 2; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [bag[i], bag[j]] = [bag[j], bag[i]];
+    }
+    if (bag.at(-1) === lastVariation.get(family)) [bag[0], bag[2]] = [bag[2], bag[0]];
+    bags.set(family, bag);
   }
+  const chosen = bag.pop();
+  lastVariation.set(family, chosen);
+  return chosen;
+}
+async function sample(family, variant) {
+  const name = `${family}-${variant}`;
+  if (!buffers.has(name)) {
+    const loading = (async () => {
+      const response = await fetch(new URL(`./assets/audio/${name}.wav?v=${AUDIO_REVISION}`, import.meta.url));
+      if (!response.ok) throw Error('Sound unavailable');
+      return await context.decodeAudioData(await response.arrayBuffer());
+    })().catch(error => { buffers.delete(name); throw error; });
+    buffers.set(name, loading);
+  }
+  return buffers.get(name);
+}
+export async function playSound(family) {
+  // Playback cannot construct or resume audio outside a user gesture.
+  if (!enabled || !context || !master || !families.has(family)) return false;
+  const currentRequest = ++request;
+  stopVoices(); // Rapid clicks replace feedback instead of stacking it.
+  try {
+    if (unlocking) await unlocking;
+    if (context.state !== 'running') return false;
+    const buffer = await sample(family, variation(family));
+    if (!enabled || currentRequest !== request || context.state !== 'running') return false;
+    const source = context.createBufferSource(), gain = context.createGain();
+    source.buffer = buffer;
+    gain.gain.value = 1;
+    source.connect(gain); gain.connect(master);
+    const voice = { source, gain };
+    voices.add(voice);
+    source.onended = () => {
+      voices.delete(voice);
+      try { source.disconnect(); gain.disconnect(); } catch {}
+    };
+    source.start();
+    return true;
+  } catch { return false; }
 }

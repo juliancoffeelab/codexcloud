@@ -61,6 +61,15 @@ try:
         assert page.locator('#terrain-panel h2').inner_text()=='Shallow water'
         assert 'Movement: 3 for soldiers and commanders; 2 for archers and scouts' in page.locator('#terrain-panel').inner_text()
         assert 'Exposure: +1 damage received' in page.locator('#terrain-panel').inner_text()
+        for style in ['normal','low-poly','pixel']:
+            choose_style(page,style)
+            water = page.locator('.terrain-ford .terrain-art')
+            assert f'shallow-{style}.png' in water.locator('img').get_attribute('src')
+            assert water.locator('path').count()==0
+            if style=='pixel':
+                assert water.locator('img').evaluate('el=>getComputedStyle(el).imageRendering')=='pixelated'
+            water.screenshot(path=f'/tmp/shallow-{style}-render.png')
+        choose_style(page,'normal')
         for width in [320,390,1280]:
             page.set_viewport_size({'width':width,'height':900})
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')

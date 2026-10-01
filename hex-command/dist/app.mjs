@@ -1,6 +1,6 @@
 import { MAPS } from "./maps.mjs?v=19a4b3697bda";
 import { createMoveUndo } from "./undo.mjs?v=a9b7694248a6";
-import { soundEnabled, setSoundEnabled, unlockSound, playSound } from "./sound.mjs?v=8c7d01722231";
+import { soundEnabled, setSoundEnabled, unlockSound, playSound, playInteraction } from "./sound.mjs?v=73276807c0e7";
 import { animateTile, animateTurn } from "./motion.mjs?v=fd2467be9e52";
 import { Game, TYPES, TERRAIN } from "./engine.mjs?v=04fb80ddf51d";
 import { abilityMarkup } from "./unit-ability.mjs?v=74434fdeb2c8";
@@ -10,7 +10,7 @@ import {
   loadArtStyle,
   savedArtStyle,
   saveArtStyle,
-} from "./art.mjs?v=967694b93d73";
+} from "./art.mjs?v=e288e02de731";
 const $ = (selector) => document.querySelector(selector),
   map = $("#map"),
   panel = $("#unit-panel");
@@ -29,6 +29,7 @@ soundControl.checked = soundEnabled();
 // Audio starts only after a real interaction, never on initial load or replay.
 document.addEventListener("pointerdown", unlockSound, { capture: true, passive: true });
 document.addEventListener("keydown", unlockSound, { capture: true });
+document.addEventListener("click", unlockSound, { capture: true });
 soundControl.addEventListener("change", async () => {
   setSoundEnabled(soundControl.checked);
   if (soundControl.checked) {
@@ -36,9 +37,9 @@ soundControl.addEventListener("change", async () => {
     playSound("select");
   }
 });
-function selectionFeedback(tileId) {
+function selectionFeedback(tileId, attackType = null) {
   animateTile(tileId, "select");
-  playSound("select");
+  playInteraction({ attackType, unitType: game.at(tileId)?.type, terrain: game.tile(tileId)?.terrain });
 }
 function actionFeedback() {
   const now = game.snapshot(), before = previousFeedbackState;
@@ -46,12 +47,12 @@ function actionFeedback() {
   if (!before) return;
   const oldUnits = new Map(before.units.map(unit => [unit.id, unit]));
   const effects = new Map();
-  let moved = false, recruited = false, attacked = false, captured = false;
+  let moved = false, recruited = false, attacked = false, captured = false, movingUnit = null;
   for (const unit of now.units) {
     const old = oldUnits.get(unit.id);
     if (!old) { effects.set(unit.tile, "recruit"); recruited = true; }
     else {
-      if (old.tile !== unit.tile) { effects.set(unit.tile, "move"); moved = true; }
+      if (old.tile !== unit.tile) { effects.set(unit.tile, "move"); moved = true; movingUnit = unit; }
       if (old.hp > unit.hp) { effects.set(unit.tile, "attack"); attacked = true; }
     }
     oldUnits.delete(unit.id);
@@ -65,9 +66,16 @@ function actionFeedback() {
   }
   const turnChanged = before.turn !== now.turn || before.round !== now.round;
   if (turnChanged) animateTurn();
-  const cue = now.winner && now.winner !== before.winner ? now.winner === "player" ? "victory" : "defeat"
-    : attacked ? "attack" : recruited || captured ? "recruit" : turnChanged ? "turn" : moved ? "move" : null;
-  if (cue) playSound(cue);
+  if (attacked) {
+    const attacker = now.units.find(unit => unit.side === before.turn && unit.attacked &&
+      before.units.some(old => old.id === unit.id && !old.attacked)) ||
+      before.units.find(unit => unit.side === before.turn && !now.units.some(alive => alive.id === unit.id));
+    playInteraction({ attackType: attacker?.type || "soldier" });
+  } else if (now.winner && now.winner !== before.winner) playSound(now.winner === "player" ? "victory" : "defeat");
+  else if (recruited) playSound("recruit");
+  else if (turnChanged) playSound("turn");
+  else if (moved) playInteraction({ unitType: movingUnit.type, terrain: game.tile(movingUnit.tile)?.terrain });
+  else if (captured) playInteraction({ terrain: "village" });
 }
 let artStyle = savedArtStyle();
 const artControl = $("#art-style");
@@ -329,6 +337,7 @@ function choose(tileId) {
       if (occupant?.side === "player") recruitType = null;
       else {
         clearSelection();
+        selectionFeedback(tileId);
         return;
       }
     }
@@ -339,7 +348,7 @@ function choose(tileId) {
     ) {
       target = occupant.id;
       render();
-      selectionFeedback(tileId);
+      selectionFeedback(tileId, unit.type);
       message("Review the damage, then press Attack.");
       if (matchMedia("(max-width:900px)").matches)
         panel.scrollIntoView({ block: "nearest" });
@@ -475,7 +484,7 @@ function undoMove() {
   previousFeedbackState = null;
   render();
   animateTile(restored.tileId, "move");
-  playSound("move");
+  playInteraction({ unitType: game.unit(restored.unitId)?.type, terrain: game.tile(restored.tileId)?.terrain });
   message("Move undone. Choose a new destination.");
   return game.snapshot();
 }

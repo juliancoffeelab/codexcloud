@@ -86,3 +86,13 @@ the bridge costs 1 movement. Shallow water costs 3 for soldiers and commanders,
 to reach crossings while keeping their existing combat priorities.
 The chosen battlefield and battle progress survive reloads; older saves load
 on Classic mirror. Existing river battles retain their original map layout.
+
+Shallow water uses its own artwork in each style, including pixel-only waves
+and texture in Pixel. Sound feedback uses 17 material-inspired families with
+three shuffled variations each: armored steps, light footsteps, a command cue,
+bow release and melee impact, coins, splashes, leaves, wind, grass and gates,
+plus UI/recruitment/turn/result cues. A tile interaction plays exactly one sound:
+attack takes priority over unit, then terrain. Rapid interactions replace the
+previous cue, and muted or still-loading audio cannot play later by accident.
+Audio starts only after an interaction; the Sound effects setting persists.
+Rebuild WAVs with `python scripts/generate-sfx.py` (requires numpy and scipy).

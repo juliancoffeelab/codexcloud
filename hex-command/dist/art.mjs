@@ -29,13 +29,13 @@ export function loadArtStyle(style) {
   if (!Object.hasOwn(ART_STYLES, style)) return Promise.resolve(false);
   if (!loadedStyles.has(style)) {
     const loading = Promise.all(
-      ["units", "terrain"].map(
-        (kind) =>
+      [assetURL(style,"units"), assetURL(style,"terrain"), shallowAssetURL(style)].map(
+        (url) =>
           new Promise((resolve) => {
             const image = new Image();
             image.onload = () => resolve(true);
             image.onerror = () => resolve(false);
-            image.src = assetURL(style, kind);
+            image.src = url;
           }),
       ),
     ).then((results) => {
@@ -333,10 +333,12 @@ const unitSheets = {
 function assetURL(style, kind) {
   return `assets/${kind}-${style}.png?v=${(kind === "terrain" ? terrainSheets : unitSheets)[style].revision}`;
 }
-function terrainSprite(style, index, x, y, width, height, extraClass) {
+const shallowRevisions = { normal: "e00d7da98abd", "low-poly": "467b3db16f62", pixel: "8843342bc280" };
+function shallowAssetURL(style) { return `assets/shallow-${style}.png?v=${shallowRevisions[style]}`; }
+function terrainSprite(style, index, x, y, width, height, extraClass, url = assetURL(style, "terrain")) {
   const sheet = terrainSheets[style];
   const { x: cropX, y: cropY, size } = sheet.frames[index];
-  return `<svg class="art-sprite ${style === "pixel" ? "pixel-art" : ""} ${extraClass}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${size} ${size}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false"><foreignObject width="${size}" height="${size}"><div xmlns="http://www.w3.org/1999/xhtml" style="position:relative;width:100%;height:100%;overflow:hidden"><img src="${assetURL(style, "terrain")}" alt="" draggable="false" style="position:absolute;max-width:none;width:${sheet.width}px;height:${sheet.height}px;left:${-cropX}px;top:${-cropY}px"/></div></foreignObject></svg>`;
+  return `<svg class="art-sprite ${style === "pixel" ? "pixel-art" : ""} ${extraClass}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${size} ${size}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false"><foreignObject width="${size}" height="${size}"><div xmlns="http://www.w3.org/1999/xhtml" style="position:relative;width:100%;height:100%;overflow:hidden"><img src="${url}" alt="" draggable="false" style="position:absolute;max-width:none;width:${sheet.width}px;height:${sheet.height}px;left:${-cropX}px;top:${-cropY}px"/></div></foreignObject></svg>`;
 }
 
 // Render a region of the original sheet directly. Keep the generated PNGs intact.
@@ -353,9 +355,7 @@ export function artSprite(
 ) {
   if (!Object.hasOwn(ART_STYLES, style)) return "";
   if (kind === "terrain" && name === "ford") {
-    const water = terrainSprite(style, 3, 0, 0, 70, 70, "");
-    // The entire hex is shallow water; wave marks match the river, without a deck.
-    return `<svg class="art-sprite ${extraClass}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 70 70" aria-hidden="true" focusable="false">${water}<path d="M35 0 65.3 17.5v35L35 70 4.7 52.5v-35z" fill="#a4d2bd" opacity=".34"/><path d="m14 20 5-2 6 3 5-1m9 16 6-2 7 2 6-1m-40 15 7-2 6 2 5-1" fill="none" stroke="#d0e5d4" stroke-width="1.5" opacity=".65"/></svg>`;
+    return terrainSprite(style, 3, x, y, width, height, extraClass, shallowAssetURL(style));
   }
   if (kind === "terrain" && name === "bridge") {
     // Reuse the river's water palette beneath a simple stone crossing.
