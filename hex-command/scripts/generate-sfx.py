@@ -126,11 +126,11 @@ def generate(family, variant, seed):
     elif family in ('unit-archer', 'unit-scout'):
         add(result, soft_step(rng, duration, family == 'unit-scout'), .004)
     elif family == 'unit-commander':
-        # Soft leather flex and a cloth brush, without a sustained pitched note.
-        leather = noise(rng, duration, 70, [620, 750, 540][variant])
-        cloth = noise(rng, duration, 350, [2000, 2300, 1700][variant])
-        result += leather * envelope(len(result), .008, .055)
-        result += cloth * envelope(len(result), .012, .040) * .22
+        # One fabric/leather brush: no low impact or abrupt contact transient.
+        leather = noise(rng, duration, 500, [1500, 1700, 1300][variant])
+        cloth = noise(rng, duration, 900, [3000, 3300, 2700][variant])
+        brush = envelope(len(result), .028, .060)
+        result += (leather * .60 + cloth * .35) * brush
     elif family == 'terrain-village':
         # One small gold coin contacting another, rather than a repeated jingle.
         add(result, resonator(rng, duration, [1790, 2030, 1880][variant], decay=.048), .006)
@@ -198,7 +198,7 @@ def generate(family, variant, seed):
     levels = {'unit-soldier': .36, 'unit-archer': .32, 'unit-scout': .25,
               'terrain-village': .34, 'terrain-water': .30,
               'terrain-forest': .27, 'terrain-plains': .21,
-              'terrain-hill': .16, 'unit-commander': .25, 'terrain-keep': .30}
+              'terrain-hill': .16, 'unit-commander': .20, 'terrain-keep': .30}
     result *= levels.get(family, .65) / peak
     # Darken bright transients without renormalizing them back to full volume.
     softened = sosfilt(butter(2, 2200, btype='lowpass', fs=RATE, output='sos'), result)

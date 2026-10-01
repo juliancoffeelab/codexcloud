@@ -1,6 +1,6 @@
 import { MAPS } from "./maps.mjs?v=2b696541ff5e";
 import { createMoveUndo } from "./undo.mjs?v=a9b7694248a6";
-import { soundEnabled, setSoundEnabled, unlockSound, playSound, playInteraction } from "./sound.mjs?v=064815644191";
+import { soundEnabled, setSoundEnabled, unlockSound, playSound, playInteraction } from "./sound.mjs?v=81a004ca84f0";
 import { animateTile, animateTurn } from "./motion.mjs?v=fd2467be9e52";
 import { Game, TYPES, TERRAIN } from "./engine.mjs?v=ee5d72abe121";
 import { abilityMarkup } from "./unit-ability.mjs?v=ddb46a11855b";
