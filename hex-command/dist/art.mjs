@@ -169,7 +169,7 @@ const unitSheets = {
   "normal": {
     "width": 1774,
     "height": 887,
-    "revision": "6f9c80f5a0b3",
+    "revision": "baba41eaaf62",
     "frames": [
       {
         "x": 0,
@@ -224,7 +224,7 @@ const unitSheets = {
   "low-poly": {
     "width": 1774,
     "height": 887,
-    "revision": "0828ec0fbc91",
+    "revision": "28004172c750",
     "frames": [
       {
         "x": 0,
@@ -279,7 +279,7 @@ const unitSheets = {
   "pixel": {
     "width": 1774,
     "height": 887,
-    "revision": "212b2ced162f",
+    "revision": "0cb42d1a21b0",
     "frames": [
       {
         "x": 0,

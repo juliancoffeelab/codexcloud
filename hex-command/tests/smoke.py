@@ -74,6 +74,7 @@ def run(url, screenshots):
             assert page.locator("#map .unit-art").count() == (0 if style == "classic" else 6)
             assert page.locator("#map .terrain-art").count() == (0 if style == "classic" else 77)
             if style != "classic":
+                assert page.locator('#map .unit-art[width="62"]').count() == 2
                 assert page.locator('#map .unit-art[data-faction="player"]').count() == 3
                 assert page.locator('#map .unit-art[data-faction="enemy"]').count() == 3
                 assert page.locator('#map .enemy-unit').first.evaluate("el => getComputedStyle(el).filter") == "none"

@@ -5,7 +5,7 @@ import {
   loadArtStyle,
   savedArtStyle,
   saveArtStyle,
-} from "./art.mjs?v=99feb0b40fb4";
+} from "./art.mjs?v=92df605bf15c";
 const $ = (selector) => document.querySelector(selector),
   map = $("#map"),
   panel = $("#unit-panel");
@@ -59,10 +59,11 @@ function renderTerrain(tile, x, y) {
 }
 function renderUnit(unit, x, y) {
   const teamColor = unit.side === "player" ? "#6fdec0" : "#ff9590";
+  const spriteSize = unit.type === "commander" ? 62 : 56;
   const body =
     artStyle === "classic"
       ? `<circle class="unit-circle" cx="${x}" cy="${y - 1}" r="19" fill="${teamColor}" stroke="${unit.attacked ? "#778e92" : "#e5f1e3"}" opacity="${unit.attacked ? ".68" : "1"}"/><text class="unit-letter" x="${x}" y="${y + 6}" text-anchor="middle">${letters[unit.type]}</text>`
-      : `<ellipse class="team-base" cx="${x}" cy="${y + 19}" rx="19" ry="7" fill="${teamColor}" stroke="${teamColor}"/>${artSprite(artStyle, "units", unit.type, x - 28, y - 36, 56, 56, `unit-art ${unit.side === "enemy" ? "enemy-unit" : ""} ${unit.attacked ? "spent-unit" : ""}`, unit.side)}`;
+      : `<ellipse class="team-base" cx="${x}" cy="${y + 19}" rx="19" ry="7" fill="${teamColor}" stroke="${teamColor}"/>${artSprite(artStyle, "units", unit.type, x - spriteSize / 2, y + 20 - spriteSize, spriteSize, spriteSize, `unit-art ${unit.side === "enemy" ? "enemy-unit" : ""} ${unit.attacked ? "spent-unit" : ""}`, unit.side)}`;
   return `${body}<rect class="hp-bg" x="${x - 19}" y="${y + 27}" width="38" height="4" rx="2"/><rect class="hp" x="${x - 19}" y="${y + 27}" width="${(38 * unit.hp) / TYPES[unit.type].hp}" height="4" rx="2"/>${unit.attacked ? `<text class="acted" x="${x + 21}" y="${y - 17}">✓</text>` : ""}`;
 }
 function render() {
