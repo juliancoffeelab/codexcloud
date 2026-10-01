@@ -43,7 +43,8 @@ try:
         page.evaluate("""() => {const key='hex-command-battle';const saved=JSON.parse(localStorage.getItem(key));saved.state.units.find(u=>u.id==='u2').tile='6,3';localStorage.setItem(key,JSON.stringify(saved));}""")
         page.reload(wait_until='networkidle')
         before = snapshot(page)
-        page.click('[data-tile="7,3"]')
+        assert page.locator('.hex.selected,.hex.reachable').count()==0
+        page.click('[data-tile="6,3"]');page.click('[data-tile="7,3"]')
         assert next(u for u in snapshot(page)['units'] if u['id']=='u2')['tile']=='7,3'
         assert page.locator('#terrain-panel h2').inner_text()=='Bridge'
         assert 'Movement: 1' in page.locator('#terrain-panel').inner_text()

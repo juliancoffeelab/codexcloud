@@ -35,6 +35,7 @@ try:
         assert page.locator('.hex.reachable').count()>0
         page.reload(wait_until='networkidle')
         assert snapshot(page)==initial and button.is_disabled()
+        assert page.locator('.hex.selected,.hex.reachable').count()==0
         act('move_unit', unitId='u2', tileId='2,3')
         first = snapshot(page)
         act('move_unit', unitId='u3', tileId='3,1')

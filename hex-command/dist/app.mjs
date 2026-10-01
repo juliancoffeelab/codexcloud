@@ -17,12 +17,12 @@ const $ = (selector) => document.querySelector(selector),
 const restoredBattle = loadBattle();
 const moveHistory = createMoveUndo();
 let game = restoredBattle.game,
-  selected = game.units.find(u => u.side === "player" && u.type !== "commander")?.id || game.units.find(u => u.side === "player")?.id,
+  selected = null,
   target = null,
   recruitType = null,
   epoch = 0,
-  focusedTile = game.unit(selected)?.tile || "1,3",
-  inspectedTile = game.unit(selected)?.tile || null;
+  focusedTile = game.units.find(u => u.side === "player")?.tile || game.tiles[0].id,
+  inspectedTile = null;
 let previousFeedbackState = null;
 const soundControl = $("#sound-effects");
 soundControl.checked = soundEnabled();
@@ -450,10 +450,6 @@ async function endTurn() {
   }
   if (!game.winner) {
     game.endTurn();
-    selected =
-      game.units.find((u) => u.side === "player" && u.type !== "commander")
-        ?.id || game.units.find((u) => u.side === "player")?.id;
-    inspectedTile = game.unit(selected)?.tile || inspectedTile;
     render();
     message("Your turn. Capture villages, recruit reinforcements, or attack.");
   }
@@ -465,11 +461,11 @@ function reset(mapId = "mirror") {
   moveHistory.clear();
   game = new Game(mapId);
   previousFeedbackState = null;
-  selected = game.units.find(unit => unit.side === "player" && unit.type === "soldier")?.id;
+  selected = null;
   target = null;
   recruitType = null;
-  focusedTile = game.unit(selected)?.tile;
-  inspectedTile = game.unit(selected)?.tile || null;
+  focusedTile = game.units.find(unit => unit.side === "player")?.tile || game.tiles[0].id;
+  inspectedTile = null;
   render();
   message("Select a unit. Capture villages. Defeat the red commander.");
   return game.snapshot();

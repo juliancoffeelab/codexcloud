@@ -52,6 +52,7 @@ try:
   page.reload(wait_until='networkidle')
   click('[data-tile="8,3"]','unit-archer') # Repeated unit clicks keep their cue.
   click('[data-tile="8,3"]','unit-archer')
+  click('[data-tile="8,3"]','unit-archer') # Select again after toggling off.
   before=snapshot(page)
   click('[data-tile="9,3"]','select')
   assert snapshot(page)==before

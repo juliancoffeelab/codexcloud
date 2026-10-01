@@ -25,6 +25,8 @@ try:
             assert terrain.locator('img').evaluate('img => img.complete && img.naturalWidth > 0')
         screenshots = Path('/tmp/hex-command-cards'); screenshots.mkdir(exist_ok=True)
         initial = snapshot(page)
+        assert not terrain.is_visible() and not page.locator('#unit-panel').is_visible()
+        inspect('1,3', 'Plains')
         inspect('1,3', 'Plains')  # Repeated unit selection still deselects tactically.
         assert not page.locator('#unit-panel').is_visible()
         for tile, name, mechanics in [
@@ -69,11 +71,12 @@ try:
         page.keyboard.press('Escape')
         assert not terrain.is_visible()
         page.wait_for_function("window.hexSmokeTools.get_battle_state.execute().round === 2")
-        assert terrain.locator('h2').inner_text() == 'Plains'
+        assert not terrain.is_visible() and not page.locator('#unit-panel').is_visible()
         # Restore an attack setup using the normal save mechanism.
         new_battle(page)
         page.evaluate("""() => {const key='hex-command-battle';const s=JSON.parse(localStorage.getItem(key));s.state.units.find(u=>u.id==='u2').tile='8,3';localStorage.setItem(key,JSON.stringify(s));}""")
         page.reload(wait_until='networkidle')
+        inspect('8,3', 'Plains')
         inspect('9,3', 'Plains')
         assert page.locator('.duel').is_visible()
         page.click('#attack')
@@ -87,7 +90,7 @@ try:
         page.keyboard.press('Escape')
         assert not terrain.is_visible()
         assert page.locator('#play-again').is_visible()
-        print('PASS: off-turn and finished terrain inspection, Escape, new-turn default, attack-target terrain, combat')
+        print('PASS: off-turn and finished terrain inspection, Escape, no new-turn selection, attack-target terrain, combat')
         for width in (320, 390, 1280):
             page.set_viewport_size({'width': width, 'height': 844})
             inspect('3,1', 'Village')

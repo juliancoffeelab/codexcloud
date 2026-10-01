@@ -64,6 +64,9 @@ def run(url, screenshots):
 
         assert page.locator('#end-turn #round').inner_text() == 'Turn 1'
         assert page.locator('#art-style option[value="classic"]').count() == 0
+        assert page.locator('.hex.selected,.hex.reachable').count() == 0
+        assert not page.locator('#unit-panel').is_visible()
+        page.click('[data-tile="1,3"]')
         assert page.locator('.unit-stat svg').count() == 3
         assert page.locator('#turn-badge').count() == 0
         assert page.locator('#turn-label').inner_text() == 'End turn'
