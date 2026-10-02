@@ -105,3 +105,38 @@ button,select{transition:background-color 120ms ease,border-color 120ms ease}
 .terrain-facts,#log{list-style:none;padding-left:0}
 .terrain-recruitment{margin:0 0 18px}
 .terrain-recruitment .recruit-button{justify-content:space-between}
+
+/* Each attack carries its own outcome; buttons keep visible boundaries. */
+.attack-action-row{gap:8px;margin-top:8px}
+.attack-action{display:block;width:100%;padding:10px;border:1px solid var(--line);border-radius:4px;white-space:normal}
+.attack-heading{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.attack-heading>strong{color:var(--gold)}
+.attack-outcome{gap:10px;font-size:13px;white-space:nowrap}
+.attack-inspect{border:1px solid var(--line);border-radius:4px;padding:10px;margin:0}
+.attack-forecasts{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin-top:10px}
+.attack-health{min-width:0}
+.forecast-label{display:flex;justify-content:space-between;gap:5px;font:13px/1.4 system-ui,sans-serif;color:var(--muted)}
+.forecast-label b{color:var(--text)}
+.attack-health .health-track{display:block;margin:5px 0 0}
+.attack-health.enemy .health-left{background:#cf8a79}
+.attack-kind{display:flex;flex-wrap:wrap;gap:6px 14px}
+.damage-equation{display:grid;grid-template-columns:78px minmax(0,1fr);gap:8px;font-variant-numeric:tabular-nums}
+.damage-equation>span:first-child{color:var(--gold)}
+.combat-explanation p+p{margin-top:6px}
+.weapon-table{width:100%;border-collapse:collapse;table-layout:fixed;text-align:left}
+.weapon-table th,.weapon-table td{padding:8px 4px;vertical-align:top;border-bottom:1px solid var(--line)}
+.weapon-table thead th{font-size:12px;font-weight:400;color:var(--muted);padding-top:0}
+.weapon-table th:first-child{width:34%;padding-left:0}
+.weapon-table th:nth-child(2){width:25%}
+.weapon-table tbody th{font-weight:400}
+.weapon-name{display:flex;align-items:center;gap:6px;color:var(--text)}
+.weapon-table td{color:var(--text);font-variant-numeric:tabular-nums}
+.weapon-detail{display:block;color:var(--muted);font-size:13px}
+.unit-detail .resistance-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.resistance{display:flex;flex-direction:column;gap:2px}
+.terrain-recruitment .recruit-list{gap:7px}
+.terrain-recruitment .recruit-button{padding:9px 12px;border:1px solid var(--line);border-radius:4px}
+
+.forecast-label{flex-direction:column;gap:2px}
+.forecast-label>span{white-space:nowrap;color:var(--text)}
+.terrain-recruitment .recruit-button:hover:not(:disabled){border-color:var(--gold)}

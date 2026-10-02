@@ -34,8 +34,15 @@ try:
      return Math.abs(r.height-r.width*v.height/v.width)<1&&r.height>300;
     }'''),'map keeps its full aspect ratio'
     assert page.locator('.map-scroll').evaluate('el=>el.clientHeight>=el.querySelector("svg").getBoundingClientRect().height-1'),'board is not clipped vertically'
-    for row in page.locator('.unit-detail .arsenal p').all():
-     assert row.bounding_box()['height']<35,'weapon and reach stay on one row'
+    rows=page.locator('.weapon-table tbody tr').all()
+    assert len(rows)==2
+    for column in range(1,4):
+     boxes=[row.locator('th,td').nth(column-1).bounding_box() for row in rows]
+     assert abs(boxes[0]['x']-boxes[1]['x'])<1, 'weapon columns align across attacks'
+    assert '1 hex range' in page.locator('.weapon-table').inner_text()
+    assert '75%' in page.locator('.resistance-list').inner_text()
+    assert '100%' in page.locator('.resistance-list').inner_text()
+    assert not any(dot in page.locator('#unit-panel').inner_text() for dot in ['\u00b7','\u2022'])
     if width==393 and style=='pixel':
      page.locator('#unit-panel').screenshot(path='/tmp/hex-unit-panel-fixed.png')
      page.screenshot(path='/tmp/hex-unit-mobile-fixed.png',full_page=True)

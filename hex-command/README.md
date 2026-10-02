@@ -46,10 +46,10 @@ each style on desktop and mobile.
 
 The sticky top bar holds income, village count, coin treasury, End turn with its turn counter,
 and settings. Settings contains New battle, the field manual, and
-the battle journal. Selecting an attack target shows current and predicted health, including damage
-segments on each health bar, and one-line weapon actions with damage dealt and taken.
-Hover or focus a weapon, or tap its magnifying glass, to update the forecast. The magnifying glass
-opens exact damage calculations and resistances.
+the battle journal. Selecting an attack target shows both units’ current health. Every weapon button
+has its own labelled player/enemy HP forecast and damage segments. The magnifying
+glass opens numeric damage and reply equations; unit damage multipliers stay in
+the unit stats panel. Armor rounding happens before cover and exposure.
 
 Battles autosave in this browser after player actions and at the start of each
 player turn. Before an enemy turn, a checkpoint is saved for deterministic replay
@@ -123,17 +123,17 @@ All cues have a lower playback level, rounded attacks, and gentler high frequenc
 
 ## Weapon choices and resistances
 
-Select an enemy, then tap a weapon to attack immediately. Each compact action shows
-the damage dealt and taken. The magnifying glass reveals damage calculations and
-enemy resistances without spending an action. Every unit still attacks once per
+Select an enemy, then tap a weapon to attack immediately. Each bordered action shows
+the damage dealt and taken, plus its own HP forecasts. The magnifying glass reveals
+rounded numeric damage calculations without spending an action. Every unit still attacks once per
 turn; attacking ends its movement.
 
 | Unit | Melee | Ranged | Resistance / weakness |
 | --- | --- | --- | --- |
-| Commander | Sword: 4 Blade; Mace: 3 Impact | — | 25% less Blade damage |
-| Soldier (8 gold) | Sword: 4 Blade; Mace: 3 Impact | — | 25% less Blade/Pierce; 25% more Impact |
-| Archer (8 gold) | Knife: 2 Blade | Bow: 3 Pierce, range 2 | Normal damage |
-| Scout (5 gold) | Knife: 2 Blade | Sling: 1 Impact, range 2 | Normal damage |
+| Commander | Sword: 4 Blade; Mace: 3 Impact | — | 75% Blade base damage |
+| Soldier (8 gold) | Sword: 4 Blade; Mace: 3 Impact | — | 75% Blade/Pierce; 125% Impact base damage |
+| Archer (8 gold) | Knife: 2 Blade | Bow: 3 Pierce, range 2 | 100% base damage |
+| Scout (5 gold) | Knife: 2 Blade | Sling: 1 Impact, range 2 | 100% base damage |
 
 Melee answers melee; ranged answers ranged. A surviving defender replies once
 with its strongest legal weapon in the same category, even if it already acted

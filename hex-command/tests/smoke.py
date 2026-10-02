@@ -68,7 +68,7 @@ def run(url, screenshots):
         assert not page.locator('#unit-panel').is_visible()
         page.click('[data-tile="1,3"]')
         assert page.locator('.unit-stat svg').count() == 1
-        assert page.locator('.arsenal p').count() == 2
+        assert page.locator('.weapon-table tbody tr').count() == 2
         assert page.locator('.resistance').count() == 3
         assert page.locator('#turn-badge').count() == 0
         assert page.locator('#turn-label').inner_text() == 'End turn'
@@ -141,8 +141,8 @@ def run(url, screenshots):
                     assert page.locator(".duel .combatant").count() == 2
                     forecast = actions["attacks"][0]
                     health = page.locator(".health-numbers").all_inner_texts()
-                    assert f'{victim["hp"]} →' in health[1]
-                    assert f'{unit["hp"]} →' in health[0]
+                    assert f'{victim["hp"]} /' in health[1]
+                    assert f'{unit["hp"]} /' in health[0]
                     if screenshots:
                         page.screenshot(path=str(screenshots / "desktop-combat.png"), full_page=True)
                         page.set_viewport_size({"width": 390, "height": 844})

@@ -28,14 +28,15 @@ try:
    page.click('[data-tile="5,1"]');page.click(f'[data-tile="{target_tile}"]')
   def hp(id):return next(u['hp'] for u in snapshot(page)['units'] if u['id']==id)
   def forecast(attack, player_after, enemy_after):
-   assert page.locator('#unit-panel').get_attribute('data-preview-attack') == attack
+   row=page.locator(f'[data-attack="{attack}"]')
    for side, after, maximum in [('player',player_after,12 if hp('u2')==12 else 8),('enemy',enemy_after,12 if hp('u5')==12 else 8)]:
-    card=page.locator(f'.duel .combatant.{side}')
-    assert card.locator('.health-numbers [aria-label="health after attack"] b').inner_text()==str(after)
-    width=card.locator('.health-left').evaluate("e=>parseFloat(e.style.width)")
+    bar=row.locator(f'[data-forecast="{side}"]')
+    assert bar.locator('.forecast-label b').inner_text()==str(after)
+    width=bar.locator('.health-left').evaluate("e=>parseFloat(e.style.width)")
     assert abs(width-after/maximum*100)<0.001
-    assert card.locator('.health-lost').count()==1
-   assert page.locator(f'[data-attack="{attack}"].previewing').count()==1
+    assert bar.locator('.health-lost').count()==1
+   assert abs(row.locator('[data-forecast="player"] .health-track').bounding_box()['y']-row.locator('[data-forecast="enemy"] .health-track').bounding_box()['y'])<1, 'attack bars align'
+   assert row.evaluate("e=>getComputedStyle(e).borderTopStyle")=='solid'
   def no_dots():
    assert not any(dot in page.locator('body').inner_text() for dot in ['\u00b7','\u2022']), 'no text dot separators'
    assert page.locator('.terrain-facts').evaluate('e=>getComputedStyle(e).listStyleType')=='none', 'no bullet markers'
@@ -53,11 +54,15 @@ try:
   assert snapshot(page)==before, 'hovering a forecast is read-only'
   page.tap('[data-inspect="sword"]')
   assert page.locator('[data-inspect="sword"]').get_attribute('aria-expanded')=='true'
-  assert '25% blade resistance' in page.locator('#attack-details-sword').inner_text()
-  assert 'Impact: 25% more' in page.locator('#attack-details-sword').inner_text()
+  assert 'round(4 × 75%) = 3' in page.locator('#attack-details-sword').inner_text()
+  assert 'round(3 × 125%) = 4' in page.locator('#attack-details-sword').inner_text()
+  assert page.locator('.attack-actions .resistances').count()==0, 'unit stats do not repeat in attack calculations'
   assert snapshot(page)==before,'inspecting a calculation is not an action'
   forecast('sword',8,9)
   no_dots()
+  page.tap('[data-inspect="mace"]')
+  page.locator('#unit-panel').screenshot(path='/tmp/hex-attack-equations.png')
+  page.tap('[data-inspect="mace"]')
   page.tap('[data-inspect="sword"]')
   assert not page.locator('#attack-details-sword').is_visible()
   page.locator('[data-attack="mace"]').click()
@@ -74,13 +79,14 @@ try:
   setup('archer','soldier','7,1')
   assert page.locator('[data-attack="knife"]').is_disabled()
   page.locator('[data-inspect="bow"]').click()
-  assert 'No ranged retaliation' in page.locator('#attack-details-bow').inner_text()
+  assert '0 (out of range)' in page.locator('#attack-details-bow').inner_text()
+  assert '1–2 hex range' in page.locator('#attack-details-bow').inner_text()
   page.locator('[data-inspect="bow"]').click()
   for width in [1280,390,320]:
    page.set_viewport_size({'width':width,'height':900})
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),'no page overflow'
    row=page.locator('.attack-action-row').first
-   assert row.bounding_box()['height']==44,'each action stays a single compact touch row'
+   assert row.bounding_box()['height']>=44,'bordered action with its own forecast remains touch-sized'
    assert row.evaluate('(e)=>e.scrollWidth<=e.clientWidth'),'no action row overflow'
    assert page.locator('.combat-explanation:visible').count()==0
    forecast('bow',8,10)
@@ -88,6 +94,6 @@ try:
    path=f'/tmp/hex-combat-{width}.png';page.screenshot(path=path,full_page=True)
   page.locator('[data-attack="bow"]').click();assert hp('u2')==8 and hp('u5')==10
   assert not errors,errors
-  print('PASS: one-tap attacks, optional damage inspection, exact outcomes, ranged replies, keyboard, saves and restored health forecasts, no dot separators and compact 320px combat')
+  print('PASS: one-tap attacks, optional damage inspection, exact outcomes, ranged replies, keyboard, saves and independent attack health forecasts, numeric rounded calculations, no dot separators and compact 320px combat')
   browser.close()
 finally:server.shutdown()

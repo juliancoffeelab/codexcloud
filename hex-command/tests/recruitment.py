@@ -28,6 +28,11 @@ try:
             new_battle(page)
             inspect('0,2')
             assert options().count() == 3
+            assert page.locator('.hex.recruitable').get_attribute('data-tile')=='0,2'
+            assert page.locator('.hex.recruitable .tile-outline').evaluate('e=>getComputedStyle(e).strokeDasharray')!='none'
+            assert options().first.evaluate('e=>getComputedStyle(e).borderTopStyle')=='solid'
+            if kind=='soldier':
+                page.locator('#terrain-panel').screenshot(path='/tmp/hex-recruitment-bordered.png')
             assert page.locator('.terrain-recruitment').bounding_box()['y'] < page.locator('.terrain-detail').bounding_box()['y'], 'recruit before terrain description'
             assert all(dot not in page.locator('#terrain-panel').inner_text() for dot in ['\u00b7','\u2022'])
             assert not page.locator('#unit-panel').is_visible()
@@ -38,6 +43,7 @@ try:
             assert (recruited['type'], recruited['tile'], recruited['moved'], recruited['attacked']) == (kind, '0,2', True, True)
             assert after['gold']['player'] == before['gold']['player'] - price
             assert options().count() == 0
+            assert page.locator('.hex.recruitable').count()==0
             assert page.locator('#undo-move').is_disabled()
         new_battle(page)
         inspect('0,3')

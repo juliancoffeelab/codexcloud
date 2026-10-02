@@ -16,7 +16,7 @@ try:
   page=context.new_page();page.goto(f'http://127.0.0.1:{server.server_port}',wait_until='networkidle')
   initial=snapshot(page)
   def cleared():
-   assert page.locator('.hex.selected,.hex.reachable,.hex.target,.hex.recruitable').count()==0
+   assert page.locator('.hex.selected,.hex.reachable,.hex.target').count()==0
    assert not page.locator('#unit-panel').is_visible()
   cleared();assert page.locator('#map [tabindex="0"]').count()==1
   page.click('[data-tile="1,3"]');retile=page.locator('.hex.selected').get_attribute('data-tile');assert retile=='1,3'

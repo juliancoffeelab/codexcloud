@@ -1,3 +1,4 @@
+import { damageExplanation } from '../dist/combat.mjs';
 import assert from 'node:assert/strict';
 import { Game, TYPES, distance } from '../dist/engine.mjs';
 import { loadBattle, saveBattle } from '../dist/save.mjs';
@@ -93,3 +94,9 @@ for(const a of Object.keys(TYPES))for(const b of Object.keys(TYPES))
  assert.equal(TYPES[restored.unit('u2').type].resistances.impact,-25);
 }
 console.log(`PASS: weapon choices, armor, matching replies, range/blocking, deaths, AI and old saves; ${exchanges} exact preview/resolution exchanges`);
+
+assert.equal(damageExplanation({base:2,resistance:25,resisted:2,protection:0,exposure:0,damage:2}), 'round(2 × 75%) = 2');
+assert.equal(damageExplanation({base:3,resistance:25,resisted:2,protection:1,exposure:0,damage:1}), 'round(3 × 75%) − 1 (cover) = 1');
+assert.equal(damageExplanation({base:1,resistance:0,resisted:1,protection:1,exposure:0,damage:1}), 'max(1, round(1 × 100%) − 1 (cover)) = 1');
+assert.equal(damageExplanation({base:3,resistance:-25,resisted:4,protection:0,exposure:1,damage:5}), 'round(3 × 125%) + 1 (shallow water) = 5');
+console.log('PASS: numeric equations preserve armor rounding, cover, minimum damage and exposure');
