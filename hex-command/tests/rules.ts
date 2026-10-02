@@ -37,7 +37,7 @@ g = new Game();
 g.units = [required(g.unit("u1")), required(g.unit("u4"))];
 const melee = g.addUnit("soldier", "player", "2,1"),
   defender = g.addUnit("scout", "enemy", "3,1");
-assert.deepEqual(g.preview(melee, defender), { damage: 4, retaliation: 2 });
+assert.deepEqual(g.preview(melee, defender), { damage: 4, retaliation: 1 });
 defender.hp = 4;
 assert.equal(g.preview(melee, defender).retaliation, 0);
 g.attack(melee.id, defender.id);

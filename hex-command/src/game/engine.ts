@@ -48,7 +48,7 @@ export const TYPES = immutable<Record<UnitType, UnitDefinition>>({
       weapon("sword", "Sword", 4, "blade", "melee", 1),
       weapon("mace", "Mace", 3, "impact", "melee", 1),
     ],
-    resistances: { blade: 25, pierce: 0, impact: 0 },
+    damageModifiers: { blade: -1, pierce: 0, impact: 0 },
     ability: "Recruit",
     description: "Recruit while on your keep. New recruits act next turn.",
   },
@@ -63,9 +63,9 @@ export const TYPES = immutable<Record<UnitType, UnitDefinition>>({
       weapon("sword", "Sword", 4, "blade", "melee", 1),
       weapon("mace", "Mace", 3, "impact", "melee", 1),
     ],
-    resistances: { blade: 25, pierce: 25, impact: -25 },
+    damageModifiers: { blade: -1, pierce: -1, impact: 1 },
     ability: "Armor",
-    description: "Resists blades and arrows; vulnerable to impact weapons.",
+    description: "Takes 1 less Blade/Pierce damage and 1 more Impact damage.",
   },
   archer: {
     name: "Archer",
@@ -78,7 +78,7 @@ export const TYPES = immutable<Record<UnitType, UnitDefinition>>({
       weapon("bow", "Bow", 3, "pierce", "ranged", 2, "attack-bow"),
       weapon("knife", "Knife", 2, "blade", "melee", 1),
     ],
-    resistances: { blade: 0, pierce: 0, impact: 0 },
+    damageModifiers: { blade: 0, pierce: 0, impact: 0 },
     ability: "Bow",
     description: "Bow reaches 2 hexes. A knife provides a weak melee reply.",
   },
@@ -93,7 +93,7 @@ export const TYPES = immutable<Record<UnitType, UnitDefinition>>({
       weapon("knife", "Knife", 2, "blade", "melee", 1),
       weapon("sling", "Sling", 1, "impact", "ranged", 2, "unit-archer"),
     ],
-    resistances: { blade: 0, pierce: 0, impact: 0 },
+    damageModifiers: { blade: 0, pierce: 0, impact: 0 },
     ability: "Pathfinder",
     description: "Forests and hills cost only 1 movement.",
   },
@@ -362,18 +362,18 @@ export class Game {
     const attack = this.attackProfile(attacker, attackId);
     if (!attack) throw new Error("Unknown attack for this unit.");
     const terrain = this.tile(defender.tile)!.terrain;
-    const resistance = TYPES[defender.type].resistances[attack.damageType] || 0;
-    const resisted = Math.round((attack.damage * (100 - resistance)) / 100);
+    const modifier = TYPES[defender.type].damageModifiers[attack.damageType];
+    const modified = attack.damage + modifier;
     const hasTerrainProtection =
       terrain === "hill" || (terrain === "forest" && attack.category === "ranged");
     const protection = hasTerrainProtection ? 1 : 0;
     const exposure = terrain === "ford" ? 1 : 0;
-    const damage = Math.max(1, resisted - protection + exposure);
+    const damage = Math.max(0, modified - protection + exposure);
     return {
       base: attack.damage,
       damageType: attack.damageType,
-      resistance,
-      resisted,
+      modifier,
+      modified,
       protection,
       exposure,
       damage,
@@ -423,7 +423,7 @@ export class Game {
       damageDetail,
       retaliationDetail,
       damage: damageDetail.damage,
-      retaliation: retaliationDetail?.damage || 0,
+      retaliation: retaliationDetail?.damage ?? 0,
     };
   }
 

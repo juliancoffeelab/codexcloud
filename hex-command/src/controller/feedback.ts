@@ -48,6 +48,8 @@ export function describeChanges(before: GameSnapshot, after: GameSnapshot) {
     before.units.find((unit) => {
       return unit.side === before.turn && !after.units.some((alive) => alive.id === unit.id);
     });
+  // Spending an attack still produces its cue when both combatants block all damage.
+  if (attacker) attacked = true;
 
   return {
     tileEffects,

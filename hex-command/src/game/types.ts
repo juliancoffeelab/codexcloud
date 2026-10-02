@@ -40,7 +40,8 @@ export interface UnitDefinition {
   range: number;
   cost: number;
   attacks: [Weapon, ...Weapon[]];
-  resistances: Record<DamageType, number>;
+  /** Signed damage received: negative is armor, positive is weakness. */
+  damageModifiers: Record<DamageType, number>;
   ability: string;
   description: string;
 }
@@ -70,8 +71,8 @@ export interface MapDefinition {
 export interface DamageBreakdown {
   base: number;
   damageType: DamageType;
-  resistance: number;
-  resisted: number;
+  modifier: number;
+  modified: number;
   protection: number;
   exposure: number;
   damage: number;

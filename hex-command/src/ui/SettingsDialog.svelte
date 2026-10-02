@@ -84,11 +84,12 @@
         Forests and hills block ranged shots through them.
       </p>
       <p>
-        Blade, Pierce, and Impact damage interact with armor. Soldiers receive 75% of Blade and
-        Pierce base damage, and 125% of Impact base damage. Commanders receive 75% of Blade base
-        damage. Archers and scouts receive 100%. Damage is rounded to the nearest whole number after
-        resistance, then terrain cover and shallow-water exposure apply. Every hit deals at least 1
-        damage. The combat preview shows the exact outcome; there are no hit-chance rolls.
+        Blade, Pierce, and Impact damage interact with armor. Soldiers take 1 less Blade and Pierce
+        damage, and 1 more Impact damage. Commanders take 1 less Blade damage. Archers and scouts
+        have no modifiers. Armor and weakness change base damage first, then terrain cover and
+        shallow-water exposure apply. No rounding is needed. Damage cannot fall below 0. A fully
+        blocked hit still spends the attack, and a surviving defender can reply. The combat preview
+        shows the exact outcome; there are no hit-chance rolls.
       </p>
       <p>
         Forests cost 2 movement and reduce ranged damage by 1. Hills cost 2 movement and reduce all
