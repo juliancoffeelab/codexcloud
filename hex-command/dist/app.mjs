@@ -11,7 +11,7 @@ import {
   savedArtStyle,
   saveArtStyle,
 } from "./art.mjs?v=e288e02de731";
-import { arsenalMarkup, resistanceMarkup, attackChoicesMarkup, damageExplanation } from "./combat.mjs?v=a1df9fc466e9";
+import { arsenalMarkup, resistanceMarkup, attackChoicesMarkup, damageExplanation } from "./combat.mjs?v=48350b3b9e8a";
 const $ = (selector) => document.querySelector(selector),
   map = $("#map"),
   panel = $("#unit-panel");
@@ -235,7 +235,7 @@ function renderPanel() {
   const preview = attackAvailable ? game.previewDetails(unit, victim, attackChoice) : null;
   let html = attackAvailable
     ? `<div class="duel">${unitCard(unit, preview.retaliation)}<span class="duel-divider" aria-hidden="true">⚔</span>${unitCard(victim, preview.damage)}</div>${attackChoicesMarkup(game, unit, victim, attackChoice)}<div class="combat-explanation" aria-live="polite"><p><strong>${preview.attack.name}</strong>: ${damageExplanation(preview.damageDetail)}.</p><p>${preview.response ? `Enemy replies with ${preview.response.name.toLowerCase()}: ${damageExplanation(preview.retaliationDetail)}.` : preview.damage >= victim.hp ? 'Enemy falls before replying.' : `No ${preview.attack.category} retaliation in reach.`}</p></div><details class="defender-resistances"><summary>Enemy resistances</summary>${resistanceMarkup(victim)}</details>`
-    : `<div class="unit-detail">${unitCard(unit)}<div class="unit-info"><div class="unit-stats">${stat("move", "Move", type.move)}</div>${abilityMarkup({ game, unit, canAct: active() && unit.side === "player" })}${arsenalMarkup(unit)}<p class="unit-state">${TERRAIN[tile.terrain].name} · ${unit.attacked ? 'Turn finished' : unit.moved ? 'Can still attack' : 'Ready'}</p></div></div>`;
+    : `<div class="unit-detail">${unitCard(unit)}<div class="unit-info"><div class="unit-stats">${stat("move", "Move", type.move)}<p class="unit-state">${TERRAIN[tile.terrain].name} · ${unit.attacked ? 'Turn finished' : unit.moved ? 'Can still attack' : 'Ready'}</p></div>${abilityMarkup({ game, unit, canAct: active() && unit.side === "player" })}${arsenalMarkup(unit)}</div></div>`;
   if (attackAvailable) html += '<button id="attack" class="primary attack-button">Attack</button>';
   panel.innerHTML = html;
   panel.querySelectorAll('input[name="attack-choice"]').forEach(input => input.addEventListener("change", () => {

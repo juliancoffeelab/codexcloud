@@ -10,7 +10,7 @@ export function resistanceMarkup(unit) {
 }
 export function arsenalMarkup(unit) {
   return `<div class="arsenal"><h3>Attacks</h3>${TYPES[unit.type].attacks.map(attack =>
-    `<p><strong>${attack.name}</strong> · ${attack.damage} ${DAMAGE_TYPES[attack.damageType].toLowerCase()}<span>${attack.category === 'melee' ? 'Melee' : 'Ranged'} · ${reach(attack)}</span></p>`).join('')}</div>${resistanceMarkup(unit)}`;
+    `<p><span class="arsenal-weapon"><strong>${attack.name}</strong> · ${attack.damage} ${DAMAGE_TYPES[attack.damageType].toLowerCase()}</span><span class="arsenal-reach">${attack.category === 'melee' ? 'Melee' : 'Ranged'} · ${reach(attack)}</span></p>`).join('')}</div>${resistanceMarkup(unit)}`;
 }
 export function attackChoicesMarkup(game, attacker, target, selectedId) {
   return `<fieldset class="attack-choices"><legend>Choose an attack</legend>${TYPES[attacker.type].attacks.map(attack => {
