@@ -22,10 +22,15 @@
             <button
               class="recruit-button"
               data-recruit={recruit.type}
+              title={recruit.description}
               disabled={!recruit.enabled}
               onclick={() => actions.recruitHere(recruit.type, panel.tile.id)}
             >
-              <span>{recruit.name}</span>
+              <span>
+                {recruit.name}{#if view.game.campaign}<small class="recruit-preview">
+                    {recruit.hp} HP &nbsp; {recruit.move} move
+                  </small>{/if}
+              </span>
               <span>{recruit.cost} gold</span>
             </button>
           {/each}

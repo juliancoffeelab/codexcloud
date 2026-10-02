@@ -1,3 +1,4 @@
+import { campaignSheets } from "./campaign-art";
 import type { Side } from "../game/types";
 
 const unitOrder = ["soldier", "archer", "scout", "commander"];
@@ -389,6 +390,16 @@ export function artSprite(
   side: Side = "player",
 ) {
   if (!isArtStyle(style)) return "";
+  const campaignName =
+    name === "bonearcher" ? "bone_archer" : name === "grove" ? "sacred_grove" : name;
+  const campaignKey = kind === "terrain" ? `terrain_${campaignName}` : `${side}_${campaignName}`;
+  const campaignSheet = campaignSheets[style];
+  const crop = campaignSheet.frames[campaignKey as keyof typeof campaignSheet.frames];
+  if (crop) {
+    const [cropX, cropY, cropWidth, cropHeight] = crop;
+    const url = `${import.meta.env?.BASE_URL ?? "/"}assets/campaign-${style}.png?v=${campaignSheet.revision}`;
+    return `<svg class="art-sprite ${style === "pixel" ? "pixel-art" : ""} ${extraClass}" data-faction="${side}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${cropWidth} ${cropHeight}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false">${sheetImage(url, { width: 1536, height: 1024 }, cropX, cropY)}</svg>`;
+  }
   if (kind === "terrain" && name === "ford") {
     return terrainSprite(style, 3, x, y, width, height, extraClass, shallowAssetURL(style));
   }

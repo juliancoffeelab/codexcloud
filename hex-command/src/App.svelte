@@ -3,6 +3,10 @@
   import { BattleController } from "./controller/battle";
   import { registerBattleTools } from "./controller/tools";
   import { unlockSound, playSound } from "./presentation/sound";
+  import CampaignPicker from "./ui/CampaignPicker.svelte";
+  import CampaignPanel from "./ui/CampaignPanel.svelte";
+  import Dialogue from "./ui/Dialogue.svelte";
+  import type { CampaignId } from "./game/types";
   import TurnBar from "./ui/TurnBar.svelte";
   import Battlefield from "./ui/Battlefield.svelte";
   import UnitPanel from "./ui/UnitPanel.svelte";
@@ -13,11 +17,21 @@
   const view = controller.view;
   const actions = controller.commands;
   let settingsDialog = $state<HTMLDialogElement>();
+  let campaignDialog: HTMLDialogElement;
+  let campaignChoice = $state<CampaignId>("lantern-road");
+  function openCampaignPicker() {
+    settingsDialog?.close();
+    campaignDialog.showModal();
+  }
+  function startCampaign() {
+    actions.startCampaign(campaignChoice);
+    campaignDialog.close();
+  }
   let resetDialog: HTMLDialogElement;
   let mapChoice = $state("mirror");
   function openMapPicker() {
     settingsDialog?.close();
-    mapChoice = $view.game.mapId;
+    mapChoice = $view.game.mapId === "river" ? "river" : "mirror";
     resetDialog.showModal();
   }
   function openSettings() {
@@ -58,6 +72,7 @@
 <main>
   <TurnBar view={$view} {actions} onSettings={openSettings} />
   <p id="status" class="status" role="status" aria-live="polite">{$view.status}</p>
+  <CampaignPanel view={$view} {actions} onNewCampaign={openCampaignPicker} />
   <div class="workspace">
     <Battlefield view={$view} {actions} />
     <aside>
@@ -66,7 +81,23 @@
     </aside>
   </div>
 </main>
-<SettingsDialog view={$view} {actions} bind:dialog={settingsDialog} onNewBattle={openMapPicker} />
+<SettingsDialog
+  view={$view}
+  {actions}
+  bind:dialog={settingsDialog}
+  onNewBattle={openMapPicker}
+  onNewCampaign={openCampaignPicker}
+/>
+<Dialogue view={$view} {actions} />
+<dialog class="campaign-dialog" bind:this={campaignDialog}>
+  <h2>New campaign</h2>
+  <p>Choose a company and a story. Starting replaces your current battle.</p>
+  <CampaignPicker bind:selected={campaignChoice} artStyle={$view.artStyle} />
+  <div class="dialog-actions">
+    <button class="quiet" onclick={() => campaignDialog.close()}>Keep playing</button>
+    <button class="primary" onclick={startCampaign}>Start campaign</button>
+  </div>
+</dialog>
 <dialog bind:this={resetDialog} id="reset-dialog">
   <h2>Start a new battle?</h2>
   <p>Choose your battlefield. Your current battle will be replaced.</p>

@@ -1523,3 +1523,247 @@ select {
 .forecast-label b.fatal {
   color: #ee9686;
 }
+
+/* Campaign controls share the battlefield's borders, type and colors. */
+.campaign-panel {
+  border-bottom: 1px solid var(--line);
+  padding: 16px 0 20px;
+  margin-bottom: 18px;
+}
+.mission-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.campaign-panel h2 {
+  margin: 8px 0 12px;
+}
+.mission-goals p {
+  margin: 6px 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.mission-goals strong {
+  margin-left: auto;
+  white-space: nowrap;
+  color: var(--gold);
+}
+.mission-goals .mission-warning {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+.completed-goal {
+  color: #9fbf94;
+}
+.mission-briefing {
+  margin-top: 12px;
+}
+.mission-briefing summary {
+  cursor: pointer;
+  color: var(--gold);
+}
+.mission-briefing p {
+  color: var(--muted);
+  margin: 10px 0;
+}
+.hex.objective .tile-outline {
+  stroke: #d2b96e;
+  stroke-width: 2.7;
+  stroke-dasharray: 9 5;
+}
+.hex.objective.selected .tile-outline,
+.hex.objective.reachable .tile-outline {
+  stroke: #99c8ec;
+}
+.hex.objective.recruitable .tile-outline {
+  stroke: #6fdec0;
+}
+.campaign-dialog {
+  width: min(720px, calc(100% - 24px));
+}
+.campaign-picker {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.campaign-picker legend {
+  margin-bottom: 12px;
+  color: var(--gold);
+}
+.campaign-choice {
+  display: grid;
+  grid-template-columns: 18px 64px minmax(0, 1fr);
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  margin: 12px 0;
+  cursor: pointer;
+}
+.campaign-choice.selected,
+.recall-choice.selected {
+  border-color: var(--gold);
+  background: rgba(204, 177, 108, 0.06);
+}
+.campaign-choice input {
+  margin-top: 6px;
+}
+.campaign-choice h3 {
+  color: var(--gold);
+  margin: 0;
+}
+.campaign-choice p {
+  margin: 7px 0;
+  font-size: 0.93rem;
+}
+.campaign-choice .campaign-tagline {
+  color: var(--text);
+}
+.campaign-length {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.campaign-portrait svg {
+  width: 64px;
+  height: 90px;
+}
+.mission-list {
+  padding: 0;
+  list-style: none;
+  margin: 12px 0;
+}
+.mission-list li {
+  margin: 12px 0;
+}
+.mission-list strong,
+.mission-list span {
+  display: block;
+  font-size: 0.88rem;
+}
+.mission-list span {
+  color: var(--muted);
+}
+.story-dialog {
+  width: min(620px, calc(100% - 24px));
+}
+.story-line {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 20px;
+}
+.story-portrait svg {
+  width: 90px;
+  height: 120px;
+}
+.story-dialog .story-text {
+  color: var(--text);
+  font-size: 1.08rem;
+  line-height: 1.65;
+}
+.story-heading,
+.story-count {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.story-count {
+  text-align: right;
+}
+.story-dialog h2 {
+  margin: 0 0 12px;
+}
+.mission-debrief {
+  padding: 10px 0;
+}
+.mission-debrief p {
+  color: var(--muted);
+}
+.mission-debrief .primary {
+  margin-top: 16px;
+}
+.recall-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.recall-choice {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  padding: 8px;
+  border-radius: 4px;
+}
+.recall-choice input {
+  flex-shrink: 0;
+}
+.recall-choice svg {
+  flex-shrink: 0;
+  width: 36px;
+  height: 44px;
+}
+.recall-choice span span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+#new-campaign {
+  width: 100%;
+  margin: 8px 0 12px;
+}
+@media (max-width: 480px) {
+  .campaign-choice {
+    grid-template-columns: 16px minmax(0, 1fr);
+    padding: 12px;
+    gap: 10px;
+  }
+  .campaign-portrait {
+    display: none;
+  }
+  .story-line {
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 12px;
+  }
+  .story-portrait svg {
+    width: 64px;
+    height: 96px;
+  }
+  .recall-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+.named-unit-type {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.campaign-dialog {
+  max-width: 720px;
+}
+.story-dialog {
+  max-width: 620px;
+}
+.campaign-panel {
+  font:
+    14px/1.5 system-ui,
+    sans-serif;
+}
+.campaign-panel h2 {
+  font:
+    26px Georgia,
+    serif;
+}
+.campaign-picker {
+  font-family: system-ui, sans-serif;
+}
+.recruit-preview {
+  display: block;
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-top: 4px;
+}

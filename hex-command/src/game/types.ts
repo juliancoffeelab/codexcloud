@@ -1,10 +1,46 @@
 export type Side = "player" | "enemy";
-export type UnitType = "commander" | "soldier" | "archer" | "scout";
+export type LeaderType = "commander" | "wildkeeper" | "necromancer";
+export type UnitType =
+  | LeaderType
+  | "soldier"
+  | "archer"
+  | "scout"
+  | "warden"
+  | "adept"
+  | "skeleton"
+  | "bonearcher"
+  | "wolf"
+  | "boar"
+  | "thorncaller";
+export type RecruitType = Exclude<UnitType, LeaderType>;
+export type Race = "human" | "undead" | "beast";
 export type TerrainType =
-  "plains" | "forest" | "hill" | "water" | "bridge" | "ford" | "village" | "keep";
+  | "plains"
+  | "forest"
+  | "hill"
+  | "water"
+  | "bridge"
+  | "ford"
+  | "village"
+  | "keep"
+  | "marsh"
+  | "ruins"
+  | "fort"
+  | "grove";
 export type DamageType = "blade" | "pierce" | "impact";
 export type AttackCategory = "melee" | "ranged";
-export type MapId = "mirror" | "river";
+export type CampaignId = "lantern-road" | "green-accord" | "ashen-oath";
+export type CampaignMapId =
+  | "lantern-ferry"
+  | "lantern-villages"
+  | "lantern-bell"
+  | "green-border"
+  | "green-vigil"
+  | "green-pact"
+  | "ashen-quarry"
+  | "ashen-refuge"
+  | "ashen-dawn";
+export type MapId = "mirror" | "river" | CampaignMapId;
 export interface Coordinates {
   col: number;
   row: number;
@@ -22,6 +58,8 @@ export interface Unit {
   hp: number;
   moved: boolean;
   attacked: boolean;
+  name?: string;
+  role?: "leader" | "courier";
 }
 export interface Weapon {
   id: string;
@@ -44,6 +82,9 @@ export interface UnitDefinition {
   damageModifiers: Record<DamageType, number>;
   ability: string;
   description: string;
+  race?: Race;
+  leader?: boolean;
+  woodland?: boolean;
 }
 export interface TerrainDefinition {
   name: string;
@@ -57,6 +98,8 @@ export interface TerrainOverride extends Coordinates {
 export interface StartingUnit extends Coordinates {
   type: UnitType;
   side: Side;
+  name?: string;
+  role?: "leader" | "courier";
 }
 export interface MapDefinition {
   id: MapId;
@@ -105,6 +148,8 @@ export interface GameSnapshot {
   winner: Side | null;
   units: Unit[];
   villages: VillageState[];
+  campaign?: CampaignState;
+  sites?: VillageState[];
 }
 /** Full session state, including mutable terrain, for exact move undo. */
 export interface GameState {
@@ -121,6 +166,68 @@ export interface GameState {
   tiles: Tile[];
   units: Unit[];
   lastCombat?: LastCombat | null;
+  campaign?: CampaignState;
+}
+
+export interface DialogueLine {
+  speaker: string;
+  portrait: UnitType;
+  text: string;
+}
+export type MissionGoal =
+  | { kind: "escort"; label: string; tile: string }
+  | { kind: "escape"; label: string; tile: string }
+  | { kind: "control"; label: string; tiles: string[] }
+  | { kind: "hold"; label: string; tile: string; round: number }
+  | { kind: "seal"; label: string; tiles: string[] }
+  | { kind: "defeat"; label: string };
+export interface MissionEvent {
+  id: string;
+  trigger: { kind: "visit"; tile: string } | { kind: "round"; round: number };
+  label?: string;
+  dialogue: DialogueLine[];
+  gold?: number;
+}
+export interface ReinforcementWave {
+  round: number;
+  label: string;
+  units: StartingUnit[];
+  requiresUnsealed?: string;
+}
+export interface MissionDefinition {
+  map: MapDefinition;
+  subtitle: string;
+  briefing: string;
+  goals: MissionGoal[];
+  recruits: RecruitType[];
+  enemyRecruits: RecruitType[];
+  gold: number;
+  enemyGold: number;
+  intro: DialogueLine[];
+  victory: DialogueLine[];
+  events: MissionEvent[];
+  waves: ReinforcementWave[];
+}
+export interface CampaignDefinition {
+  id: CampaignId;
+  name: string;
+  tagline: string;
+  description: string;
+  race: Race;
+  leader: LeaderType;
+  missions: MissionDefinition[];
+  ending: DialogueLine[];
+}
+export interface CampaignState {
+  id: CampaignId;
+  mission: number;
+  recall: RecruitType[];
+  carryGold: number;
+  marks: string[];
+  dialogue: DialogueLine[];
+  dialogueIndex: number;
+  outcome: string | null;
+  completed: boolean;
 }
 export type Attack = Weapon;
 export type DamageDetail = DamageBreakdown;

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { dialoguePending } from "../game/campaign-progress";
   import type { BattleView, BattleCommands } from "../controller/view";
 
   interface Props {
@@ -9,7 +10,9 @@
   let { view, actions, onSettings }: Props = $props();
 
   const game = $derived(view.game);
-  const isPlayerTurn = $derived(game.turn === "player" && !game.winner);
+  const isPlayerTurn = $derived(
+    game.turn === "player" && !game.winner && !dialoguePending(game.campaign),
+  );
   const income = $derived(game.income("player"));
   const ownedVillages = $derived(income / 2);
   const totalVillages = $derived(game.tiles.filter((tile) => tile.terrain === "village").length);

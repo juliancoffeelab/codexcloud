@@ -6,8 +6,9 @@
     actions: BattleCommands;
     dialog?: HTMLDialogElement;
     onNewBattle: () => void;
+    onNewCampaign: () => void;
   }
-  let { view, actions, dialog = $bindable(), onNewBattle }: Props = $props();
+  let { view, actions, dialog = $bindable(), onNewBattle, onNewCampaign }: Props = $props();
   let selectedArt = $state<ArtStyle>("normal");
   $effect(() => {
     if (!view.artLoading) selectedArt = view.artStyle;
@@ -58,6 +59,16 @@
       onchange={(event) => void actions.setSound(event.currentTarget.checked)}
     />
   </label>
+  <button id="new-campaign" class="primary" onclick={onNewCampaign}>New campaign</button>
+  {#if view.game.campaign}
+    <details class="panel">
+      <summary>Campaign conversations</summary>
+      {#each view.game.campaign.dialogue.slice(0, view.game.campaign.dialogueIndex) as line}<p>
+          <strong>{line.speaker}</strong>
+          {line.text}
+        </p>{/each}
+    </details>
+  {/if}
   <button
     id="new-game"
     class="quiet"
@@ -102,8 +113,12 @@
         recruit. The unit appears on that hex and acts next turn.
       </p>
       <p>
-        Defeat the enemy commander to win. Keyboard: Tab to the map, use arrow keys to browse hexes,
-        Enter to select. Escape clears selection.
+        In skirmishes, defeat the enemy commander to win. In campaigns, follow the mission
+        objectives and protect your leader. Groves heal their owner’s occupants; forts protect
+        against all attacks; ruins shelter against ranged attacks. Marsh slows heavy units. Bones
+        resist arrows but are weak against impact; wolves are fast but vulnerable to pierce damage.
+        Keyboard: Tab to the map, use arrow keys to browse hexes, Enter to select. Escape clears
+        selection.
       </p>
     </div>
   </details>

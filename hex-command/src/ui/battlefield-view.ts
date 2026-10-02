@@ -1,3 +1,4 @@
+import { campaignMission, goalTiles } from "../game/campaign-progress";
 import type { GameView, UnitView, TileView } from "../game/view";
 import type { ArtStyle } from "../presentation/art";
 import { TERRAIN, TYPES } from "../game/engine";
@@ -54,6 +55,9 @@ export function battlefieldTiles(
   const reachableTiles = canAct ? game.reachable(selected) : new Map<string, number>();
   const targetTiles = new Set(canAct ? game.targets(selected).map((unit) => unit.tile) : []);
 
+  const objectiveTiles = new Set(
+    game.campaign ? campaignMission(game.campaign).goals.flatMap(goalTiles) : [],
+  );
   return game.tiles.map((tile) => {
     const { x, y } = tileCenter(tile);
     const unit = game.at(tile.id);
@@ -61,6 +65,7 @@ export function battlefieldTiles(
     const target = targetTiles.has(tile.id);
     const classes = [
       "hex",
+      objectiveTiles.has(tile.id) ? "objective" : "",
       `terrain-${tile.terrain}`,
       selectedUnit?.tile === tile.id ? "selected" : "",
       reachable ? "reachable" : "",
@@ -72,7 +77,7 @@ export function battlefieldTiles(
 
     let occupant: TileUnitView | null = null;
     if (unit) {
-      const spriteSize = unit.type === "commander" ? 62 : 56;
+      const spriteSize = TYPES[unit.type].leader ? 62 : 56;
       const spriteClasses = `unit-art ${unit.side === "enemy" ? "enemy-unit" : ""} ${unit.attacked ? "spent-unit" : ""}`;
       occupant = {
         unit,

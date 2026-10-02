@@ -14,7 +14,7 @@
 </script>
 
 <div class="unit-detail">
-  <UnitCard unit={details.unit} {artStyle} />
+  <UnitCard unit={details.unit} {artStyle} showName />
   <div class="unit-info">
     <div class="unit-stats">
       <span class="unit-stat">

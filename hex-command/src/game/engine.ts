@@ -21,6 +21,10 @@ import type {
 export type * from "./types";
 import { MAPS, LEGACY_RIVER } from "./maps";
 import { immutable } from "./immutable";
+import { CAMPAIGN_UNITS } from "./campaign-units";
+import { CAMPAIGNS } from "./campaign-data";
+import { campaignMission, goalProgress } from "./campaign-progress";
+import type { CampaignId, CampaignState, RecruitType } from "./types";
 
 export const DAMAGE_TYPES = Object.freeze({
   blade: "Blade",
@@ -37,6 +41,7 @@ const weapon = (
   sound = "attack-melee",
 ): Weapon => ({ id, name, damage, damageType, category, range, sound });
 export const TYPES = immutable<Record<UnitType, UnitDefinition>>({
+  ...CAMPAIGN_UNITS,
   commander: {
     name: "Commander",
     hp: 16,
@@ -44,6 +49,8 @@ export const TYPES = immutable<Record<UnitType, UnitDefinition>>({
     damage: 4,
     range: 1,
     cost: 0,
+    leader: true,
+    race: "human",
     attacks: [
       weapon("sword", "Sword", 4, "blade", "melee", 1),
       weapon("mace", "Mace", 3, "impact", "melee", 1),
@@ -136,6 +143,30 @@ export const TERRAIN = immutable<Record<TerrainType, TerrainDefinition>>({
     cost: 1,
     description: "Your commander can recruit into adjacent empty hexes.",
   },
+  marsh: {
+    name: "Marsh",
+    cost: 2,
+    description:
+      "Mud and reeds slow travel. Heavy troops spend 3 movement; others spend 2. No protection.",
+  },
+  ruins: {
+    name: "Ruins",
+    cost: 1,
+    description:
+      "Broken walls reduce ranged damage by 1 without blocking shots through the tile. Campaign binding stones can be sealed by entering them.",
+  },
+  fort: {
+    name: "Fort",
+    cost: 2,
+    description:
+      "Earthworks reduce all incoming damage by 1. Capture by entering; forts provide no income or healing.",
+  },
+  grove: {
+    name: "Sacred grove",
+    cost: 2,
+    description:
+      "Trees reduce ranged damage by 1 and block shots through the tile. An owned grove heals its friendly occupant by 2 HP, but provides no income.",
+  },
 });
 export function axial(tile: Coordinates) {
   return { q: tile.col - Math.floor(tile.row / 2), r: tile.row };
@@ -165,6 +196,7 @@ export class Game {
   tiles: Tile[];
   units: Unit[];
   declare lastCombat?: LastCombat | null;
+  declare campaign?: CampaignState;
 
   constructor(mapId: string = "mirror", mapRevision = MAPS[mapId as MapId]?.revision ?? 1) {
     if (!Object.hasOwn(MAPS, mapId)) throw new Error("Unknown battlefield.");
@@ -195,7 +227,11 @@ export class Game {
     this.indexTiles();
     for (const { col, row, terrain, owner = null } of layout.terrain)
       Object.assign(this.tile(`${col},${row}`)!, { terrain, owner });
-    for (const { type, side, col, row } of layout.units) this.addUnit(type, side, `${col},${row}`);
+    for (const { type, side, col, row, name, role } of layout.units) {
+      const unit = this.addUnit(type, side, `${col},${row}`);
+      if (name) unit.name = name;
+      if (role) unit.role = role;
+    }
     this.record("Capture villages for gold. Defeat the enemy commander.");
   }
 
@@ -270,12 +306,13 @@ export class Game {
   }
 
   cost(unit: Pick<Unit, "type">, tile: Pick<Tile, "terrain">): number {
-    if (tile.terrain === "ford") {
-      const heavyUnit = ["soldier", "commander"].includes(unit.type);
+    if (tile.terrain === "ford" || tile.terrain === "marsh") {
+      const heavyUnit = ["soldier", "commander", "warden", "boar"].includes(unit.type);
       return heavyUnit ? 3 : 2;
     }
-    const pathfinderTerrain = ["forest", "hill"].includes(tile.terrain);
+    const pathfinderTerrain = ["forest", "hill", "grove"].includes(tile.terrain);
     if (pathfinderTerrain && unit.type === "scout") return 1;
+    if (["forest", "grove"].includes(tile.terrain) && TYPES[unit.type].woodland) return 1;
     return TERRAIN[tile.terrain].cost;
   }
 
@@ -335,7 +372,7 @@ export class Game {
         return this.neighbors(from).some(
           (tile) =>
             distance(tile, this.tile(target.tile)!) === 1 &&
-            !["forest", "hill"].includes(tile.terrain),
+            !["forest", "hill", "grove"].includes(tile.terrain),
         );
       }
       return true;
@@ -365,7 +402,8 @@ export class Game {
     const modifier = TYPES[defender.type].damageModifiers[attack.damageType];
     const modified = attack.damage + modifier;
     const hasTerrainProtection =
-      terrain === "hill" || (terrain === "forest" && attack.category === "ranged");
+      ["hill", "fort"].includes(terrain) ||
+      (["forest", "grove", "ruins"].includes(terrain) && attack.category === "ranged");
     const protection = hasTerrainProtection ? 1 : 0;
     const exposure = terrain === "ford" ? 1 : 0;
     const damage = Math.max(0, modified - protection + exposure);
@@ -458,12 +496,13 @@ export class Game {
     unit.tile = tileId;
     unit.moved = true;
     const tile = this.tile(tileId)!;
-    if (tile.terrain === "village" && tile.owner !== unit.side) {
+    if (["village", "grove", "fort", "ruins"].includes(tile.terrain) && tile.owner !== unit.side) {
       tile.owner = unit.side;
       this.record(
-        `${unit.side === "player" ? "Your" : "Enemy"} ${TYPES[unit.type].name.toLowerCase()} captured a village.`,
+        `${unit.side === "player" ? "Your" : "Enemy"} ${TYPES[unit.type].name.toLowerCase()} ${tile.terrain === "village" ? "captured a village" : `claimed ${TERRAIN[tile.terrain].name.toLowerCase()}`}.`,
       );
     }
+    this.evaluateCampaign();
     return unit;
   }
 
@@ -493,7 +532,7 @@ export class Game {
       `${sideLabel} ${unitName} used ${attackName} for ${result.damage} damage${retaliationMessage}.`,
     );
     for (const defeated of this.units.filter((unit) => unit.hp <= 0)) {
-      if (defeated.type === "commander") {
+      if (TYPES[defeated.type].leader && !this.campaign) {
         this.winner = defeated.side === "player" ? "enemy" : "player";
       }
       this.record(
@@ -501,6 +540,7 @@ export class Game {
       );
     }
     this.units = this.units.filter((unit) => unit.hp > 0);
+    this.evaluateCampaign();
     return result;
   }
 
@@ -508,9 +548,10 @@ export class Game {
     const commander = this.unit(id);
     if (
       !commander ||
-      commander.type !== "commander" ||
+      !TYPES[commander.type].leader ||
       !TYPES[type] ||
-      type === "commander" ||
+      TYPES[type].leader ||
+      !this.recruitmentOptions(commander.side).includes(type as RecruitType) ||
       this.winner ||
       commander.side !== this.turn ||
       this.gold[commander.side] < TYPES[type].cost
@@ -553,10 +594,12 @@ export class Game {
       unit.moved = false;
       unit.attacked = false;
       const tile = this.tile(unit.tile)!;
-      if (tile.terrain === "village" && tile.owner === side) {
+      if (["village", "grove"].includes(tile.terrain) && tile.owner === side) {
         unit.hp = Math.min(TYPES[unit.type].hp, unit.hp + 2);
       }
     }
+    if (side === "enemy") this.spawnCampaignWaves();
+    this.evaluateCampaign(side === "player");
   }
 
   endTurn(): void {
@@ -570,11 +613,16 @@ export class Game {
 
   enemyRecruit(): void {
     if (this.turn !== "enemy" || this.winner) return;
-    const commander = this.units.find((unit) => unit.side === "enemy" && unit.type === "commander");
+    const commander = this.units.find((unit) => unit.side === "enemy" && TYPES[unit.type].leader);
     if (!commander) return;
 
     const hasArcher = this.units.some((unit) => unit.side === "enemy" && unit.type === "archer");
-    const recruitType = hasArcher ? "soldier" : "archer";
+    const options = this.recruitmentOptions("enemy");
+    const recruitType = this.campaign
+      ? options[(this.round - 1) % options.length]!
+      : hasArcher
+        ? "soldier"
+        : "archer";
     const recruitTiles = this.recruitTiles(commander.id, recruitType);
     if (!recruitTiles.length) return;
 
@@ -615,11 +663,12 @@ export class Game {
     if (!unit || unit.side !== "enemy" || unit.attacked) return;
 
     if (this.tryEnemyAttack(unit)) return;
-    if (unit.type === "commander" && this.round < 5) return;
+    if (TYPES[unit.type].leader && this.round < 5) return;
 
     const goals = this.enemyMovementGoals(unit);
     if (!goals.length) return;
-    const routes = this.mapId === "river" ? this.routeDistances(unit, goals) : null;
+    const routes =
+      this.mapId === "river" || this.campaign ? this.routeDistances(unit, goals) : null;
     const destinations = [unit.tile, ...this.reachable(id).keys()];
     destinations.sort(
       (first, second) =>
@@ -637,7 +686,7 @@ export class Game {
     if (!attack) return -100;
     const { damage, retaliation } = this.preview(unit, target, attack.id, from);
 
-    const commanderPriority = target.type === "commander" ? 20 : 0;
+    const commanderPriority = TYPES[target.type].leader ? 20 : target.role === "courier" ? 12 : 0;
     const defeatBonus = target.hp <= damage ? 12 : 0;
     const woundedTargetBonus = (TYPES[target.type].hp - target.hp) * 0.3;
     const retaliationCost = retaliation * 0.7;
@@ -672,6 +721,15 @@ export class Game {
         : this.units
             .filter((target) => target.side === "player")
             .map((target) => this.tile(target.tile)!);
+
+    if (this.campaign) {
+      const mission = campaignMission(this.campaign);
+      const territory = mission.goals.flatMap((goal) =>
+        goal.kind === "control" ? goal.tiles : goal.kind === "hold" ? [goal.tile] : [],
+      );
+      const contested = territory.filter((id) => this.tile(id)?.owner !== "enemy");
+      if (contested.length) goals = contested.map((id) => this.tile(id)!);
+    }
 
     if (unit.hp <= 4) {
       const healingVillages = this.tiles.filter(
@@ -724,18 +782,20 @@ export class Game {
       units: this.units,
     };
     if (Object.hasOwn(this, "lastCombat")) state.lastCombat = this.lastCombat ?? null;
+    if (this.campaign) state.campaign = this.campaign;
     return structuredClone(state);
   }
 
   restoreState(state: GameState): void {
     const restored = structuredClone(state);
     if (!Object.hasOwn(restored, "lastCombat")) delete this.lastCombat;
+    if (!Object.hasOwn(restored, "campaign")) delete this.campaign;
     Object.assign(this, restored);
     this.indexTiles();
   }
 
   snapshot(): GameSnapshot {
-    return {
+    const snapshot: GameSnapshot = {
       mapId: this.mapId,
       mapRevision: this.mapRevision,
       round: this.round,
@@ -747,5 +807,197 @@ export class Game {
         .filter((tile) => tile.terrain === "village")
         .map((tile) => ({ id: tile.id, owner: tile.owner })),
     };
+    if (this.campaign) {
+      snapshot.campaign = structuredClone(this.campaign);
+      snapshot.sites = this.tiles
+        .filter((tile) => ["grove", "fort", "ruins"].includes(tile.terrain))
+        .map((tile) => ({ id: tile.id, owner: tile.owner }));
+    }
+    return snapshot;
+  }
+
+  recruitmentOptions(side: Side): RecruitType[] {
+    if (!this.campaign) return ["soldier", "archer", "scout"];
+    const mission = campaignMission(this.campaign);
+    return [...(side === "player" ? mission.recruits : mission.enemyRecruits)];
+  }
+
+  static startCampaign(
+    id: CampaignId,
+    missionIndex = 0,
+    recall: RecruitType[] = [],
+    carryGold = 0,
+  ): Game {
+    const definition = CAMPAIGNS[id];
+    const mission = definition?.missions[missionIndex];
+    if (
+      !mission ||
+      !Number.isInteger(missionIndex) ||
+      !Number.isSafeInteger(carryGold) ||
+      carryGold < 0
+    )
+      throw new Error("Unknown campaign mission.");
+    if (recall.length > 4 || recall.some((type) => !TYPES[type] || TYPES[type].leader))
+      throw new Error("Choose up to four surviving recruits.");
+    const game = new Game(mission.map.id);
+    game.campaign = {
+      id,
+      mission: missionIndex,
+      recall: [...recall],
+      carryGold: Math.min(8, Math.max(0, carryGold)),
+      marks: [],
+      dialogue: mission.intro.map((line) => ({ ...line })),
+      dialogueIndex: 0,
+      outcome: null,
+      completed: false,
+    };
+    game.gold = { player: mission.gold + game.campaign.carryGold, enemy: mission.enemyGold };
+    const leader = game.units.find((unit) => unit.side === "player" && unit.role === "leader")!;
+    const slots = game.tiles
+      .filter(
+        (tile) =>
+          tile.terrain !== "water" &&
+          !game.at(tile.id) &&
+          distance(tile, game.tile(leader.tile)!) <= 3,
+      )
+      .sort((a, b) => distance(a, game.tile(leader.tile)!) - distance(b, game.tile(leader.tile)!));
+    for (const type of recall) {
+      const tile = slots.shift();
+      if (!tile) throw new Error("No room for the returning company.");
+      game.addUnit(type, "player", tile.id);
+    }
+    for (const unit of game.units) {
+      const tile = game.tile(unit.tile)!;
+      if (["village", "grove", "ruins", "fort"].includes(tile.terrain)) tile.owner = unit.side;
+    }
+    game.log = [];
+    game.record(mission.briefing);
+    return game;
+  }
+
+  nextCampaignMission(recallIds: string[]): Game {
+    if (!this.campaign || this.winner !== "player" || this.campaign.completed)
+      throw new Error("Win this mission before continuing.");
+    if (new Set(recallIds).size !== recallIds.length || recallIds.length > 4)
+      throw new Error("Choose up to four different survivors.");
+    const roster = recallIds.map((id) => {
+      const unit = this.unit(id);
+      if (!unit || unit.side !== "player" || TYPES[unit.type].leader || unit.role === "courier")
+        throw new Error("Only surviving recruits can return.");
+      return unit.type as RecruitType;
+    });
+    return Game.startCampaign(
+      this.campaign.id,
+      this.campaign.mission + 1,
+      roster,
+      this.gold.player,
+    );
+  }
+
+  retryCampaignMission(): Game {
+    if (!this.campaign) throw new Error("No campaign is active.");
+    return Game.startCampaign(
+      this.campaign.id,
+      this.campaign.mission,
+      this.campaign.recall,
+      this.campaign.carryGold,
+    );
+  }
+
+  advanceDialogue(skip = false): void {
+    if (!this.campaign) return;
+    this.campaign.dialogueIndex = skip
+      ? this.campaign.dialogue.length
+      : Math.min(this.campaign.dialogue.length, this.campaign.dialogueIndex + 1);
+  }
+
+  private spawnCampaignWaves(): void {
+    if (!this.campaign || this.winner) return;
+    const campaign = this.campaign;
+    campaignMission(campaign).waves.forEach((wave, index) => {
+      const marker = `wave:${index}`;
+      if (this.round < wave.round || campaign.marks.includes(marker)) return;
+      campaign.marks.push(marker);
+      if (wave.requiresUnsealed && campaign.marks.includes(`sealed:${wave.requiresUnsealed}`))
+        return;
+      let arrived = 0;
+      for (const incoming of wave.units) {
+        const origin = this.tile(`${incoming.col},${incoming.row}`)!;
+        const destination = this.tiles
+          .filter(
+            (tile) => tile.terrain !== "water" && !this.at(tile.id) && distance(tile, origin) <= 2,
+          )
+          .sort((a, b) => distance(a, origin) - distance(b, origin))[0];
+        if (destination) {
+          this.addUnit(incoming.type, incoming.side, destination.id);
+          arrived++;
+        }
+      }
+      if (arrived) this.record(wave.label);
+    });
+  }
+
+  private evaluateCampaign(atTurnStart = false): void {
+    if (!this.campaign || this.winner) return;
+    const campaign = this.campaign;
+    const mission = campaignMission(campaign);
+    const leader = this.units.find((unit) => unit.side === "player" && unit.role === "leader");
+    const needsCourier = mission.goals.some((goal) => goal.kind === "escort");
+    const courier = this.units.find((unit) => unit.side === "player" && unit.role === "courier");
+    if (!leader || (needsCourier && !courier)) {
+      this.winner = "enemy";
+      campaign.outcome = !leader
+        ? "Your leader fell. The company cannot continue without them."
+        : "The courier fell before reaching safety.";
+      campaign.dialogue.push({
+        speaker: "The company",
+        portrait: CAMPAIGNS[campaign.id].leader,
+        text: campaign.outcome,
+      });
+      this.record(campaign.outcome);
+      return;
+    }
+    for (const goal of mission.goals) {
+      if (
+        atTurnStart &&
+        goal.kind === "hold" &&
+        this.round >= goal.round &&
+        this.tile(goal.tile)?.owner === "player" &&
+        !campaign.marks.includes(`held:${goal.tile}`)
+      )
+        campaign.marks.push(`held:${goal.tile}`);
+      if (goal.kind !== "seal") continue;
+      for (const id of goal.tiles) {
+        if (!campaign.marks.includes(`sealed:${id}`) && this.at(id)?.side === "player") {
+          campaign.marks.push(`sealed:${id}`);
+          this.record("A binding stone was sealed. It will no longer raise the dead.");
+        }
+      }
+    }
+    if (this.turn === "player") {
+      for (const event of mission.events) {
+        const marker = `event:${event.id}`;
+        const triggered =
+          event.trigger.kind === "visit"
+            ? this.at(event.trigger.tile)?.side === "player"
+            : this.round >= event.trigger.round;
+        if (!triggered || campaign.marks.includes(marker)) continue;
+        campaign.marks.push(marker);
+        this.gold.player += event.gold ?? 0;
+        campaign.dialogue.push(...structuredClone(event.dialogue));
+        this.record(event.label ?? "The company found a new story.");
+      }
+    }
+    if (mission.goals.every((goal) => goalProgress(this, goal).done)) {
+      this.winner = "player";
+      campaign.outcome = "Mission complete. The company can rest and regroup.";
+      campaign.dialogue.push(...structuredClone(mission.victory));
+      campaign.completed = campaign.mission === CAMPAIGNS[campaign.id].missions.length - 1;
+      if (campaign.completed)
+        campaign.dialogue.push(...structuredClone(CAMPAIGNS[campaign.id].ending));
+      this.record(
+        campaign.completed ? `${CAMPAIGNS[campaign.id].name} is complete.` : "Mission complete.",
+      );
+    }
   }
 }

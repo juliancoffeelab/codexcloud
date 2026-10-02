@@ -28,6 +28,7 @@ function actionStatus(unit: UnitView): string {
 export function unitPanelView(view: BattleView): UnitPanelView {
   const { game } = view;
 
+  if (game.campaign && game.winner) return { kind: "hidden" };
   if (game.winner === "player") {
     return {
       kind: "outcome",

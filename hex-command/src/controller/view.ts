@@ -1,8 +1,9 @@
 import type { GameView, UnitView } from "../game/view";
-import type { GameSnapshot, UnitType } from "../game/types";
+import type { GameSnapshot, CampaignId, RecruitType as GameRecruitType } from "../game/types";
+import { TYPES } from "../game/engine";
 import type { ArtStyle } from "../presentation/art";
 
-export type RecruitType = Exclude<UnitType, "commander">;
+export type RecruitType = GameRecruitType;
 export const recruitTypes = ["soldier", "archer", "scout"] as const;
 
 export interface RecruitmentContext {
@@ -28,6 +29,10 @@ export interface BattleView {
 
 /** Components can issue commands, but cannot read hidden controller state. */
 export interface BattleCommands {
+  startCampaign(id: CampaignId): GameSnapshot;
+  nextMission(recallIds: string[]): GameSnapshot;
+  retryMission(): GameSnapshot;
+  advanceDialogue(skip?: boolean): void;
   choose(tileId: string): void;
   focusTile(tileId: string): void;
   clearSelection(clearInspection?: boolean): void;
@@ -43,6 +48,10 @@ export interface BattleCommands {
 
 export function createBattleCommands(controller: BattleCommands): BattleCommands {
   return Object.freeze({
+    startCampaign: controller.startCampaign.bind(controller),
+    nextMission: controller.nextMission.bind(controller),
+    retryMission: controller.retryMission.bind(controller),
+    advanceDialogue: controller.advanceDialogue.bind(controller),
     choose: controller.choose.bind(controller),
     focusTile: controller.focusTile.bind(controller),
     clearSelection: controller.clearSelection.bind(controller),
@@ -71,6 +80,6 @@ export function recruitmentContext(
     .neighbors(tile.id)
     .find((neighbor) => neighbor.terrain === "keep" && neighbor.owner === "player");
   if (!keep) return null;
-  const commander = game.units.find((unit) => unit.side === "player" && unit.type === "commander");
+  const commander = game.units.find((unit) => unit.side === "player" && TYPES[unit.type].leader);
   return Object.freeze({ commander, stationed: commander?.tile === keep.id });
 }

@@ -60,9 +60,21 @@ export function createSound() {
     if (attackType) return attackType === "archer" ? "attack-bow" : "attack-melee";
     if (unitType === "scout" || unitType === "archer") return "terrain-plains";
     // Give armored soldiers the heavier footstep formerly used by archers.
-    if (unitType === "soldier") return "unit-archer";
+    if (unitType === "soldier" || unitType === "warden" || unitType === "boar")
+      return "unit-archer";
+    if (
+      unitType === "wildkeeper" ||
+      unitType === "necromancer" ||
+      unitType === "skeleton" ||
+      unitType === "bonearcher"
+    )
+      return "unit-commander";
+    if (unitType === "wolf" || unitType === "thorncaller" || unitType === "adept")
+      return "terrain-plains";
     if (families.has(`unit-${unitType}`)) return `unit-${unitType}`;
-    if (terrain === "ford") terrain = "water";
+    if (terrain === "ford" || terrain === "marsh") terrain = "water";
+    if (terrain === "grove") terrain = "forest";
+    if (terrain === "ruins" || terrain === "fort") terrain = "keep";
     return families.has(`terrain-${terrain}`) ? `terrain-${terrain}` : "select";
   }
   function playInteraction(details: InteractionSound) {

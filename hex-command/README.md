@@ -1,7 +1,7 @@
 # Hex Command
 
 A standalone browser game about capturing villages, recruiting units, and
-defeating the enemy commander on a hex battlefield.
+defeating the enemy commander on a hex battlefield, with three story campaigns.
 
 Install and run from this folder (Node.js 22.12+):
 
@@ -58,6 +58,71 @@ sheets, through a Sites session with access to the project.
 
 Site: https://hex-command-tfhlu4.lightdarkdaughter.chatgpt.site/
 
+## Campaigns
+
+Open **Settings → New campaign**. Three stories each have three linked missions:
+
+| Campaign         | Your company            | Objectives                                                             |
+| ---------------- | ----------------------- | ---------------------------------------------------------------------- |
+| The Lantern Road | Nera’s human army       | Escort Ivo, reclaim villages, silence grave ruins and the Bellwarden   |
+| The Green Accord | Alder’s woodland beasts | Reclaim groves, defend through dawn, escort a witness across the river |
+| The Ashen Oath   | Orin’s unbound undead   | Escape a quarry, secure a refuge, break the Master’s binding stones    |
+
+Portrait conversations introduce missions and react to optional side quests and
+outcomes. Continue or skip them; read past lines in Settings. Conversations and
+mission progress survive reloads. Gold-bordered map hexes mark objectives. Expand
+the briefing for side quests and announced reinforcements. Enemy armies contest
+control objectives and threaten escorts; defeating their leader does not replace
+an escort or territory objective.
+
+After a victory, select up to four surviving recruits to bring to the next mission.
+They heal completely, and up to eight spare gold carries forward. Each mission
+also supplies its own starting company and treasury. Couriers and leaders have
+fixed story roles rather than occupying recall slots. Losing a leader or required
+courier ends the mission; Retry mission restores its original company, recall
+and treasury. There is no arbitrary loss deadline. Hold objectives check ownership
+at the beginning of a player turn, starting at the announced turn.
+
+New terrain adds tactical choices: marsh costs 3 movement for heavy troops and 2
+for others; ruins give 1 ranged cover without blocking shots; forts give 1 cover
+against every attack; sacred groves give ranged cover, block shots through them,
+and heal their owner’s occupant by 2 HP each turn. Forts, ruins and groves are
+capturable but do not generate gold. Woodland units cross forest and grove for
+1 movement. Only scouts also receive that discount on hills. Sealing marked
+ruins stops their future grave waves permanently. Each optional supply quest
+pays six gold once; move undo restores both its reward and conversation.
+
+The nine new unit types have original teal/crimson artwork in Normal, Low-poly
+and Pixel, alongside the four new terrain tiles. Campaign sheets load when used;
+classic skirmishes retain their original three recruits and rules.
+
+| New unit             | Gold |  HP | Move | Weapons                                           | Flat incoming modifiers        |
+| -------------------- | ---: | --: | ---: | ------------------------------------------------- | ------------------------------ |
+| Warden               |    9 |  12 |    3 | Spear 4 Pierce; Hammer 2 Impact                   | Blade −1, Pierce −1, Impact +1 |
+| Adept                |   10 |   7 |    3 | Spark 3 Impact, range 2; Staff 1 Impact           | None                           |
+| Skeleton             |    7 |   9 |    3 | Rust blade 3 Blade; Bone club 3 Impact            | Pierce −2, Impact +1           |
+| Bone archer          |    8 |   7 |    3 | Bone bow 3 Pierce, range 2; Shard 1 Blade         | Pierce −1, Impact +1           |
+| Wolf                 |    6 |   8 |    5 | Fangs 3 Blade                                     | Pierce +1                      |
+| Boar                 |    9 |  13 |    3 | Tusks 4 Pierce                                    | None                           |
+| Thorncaller          |    8 |   7 |    4 | Thorns 2 Pierce, range 2; Root staff 2 Impact     | None                           |
+| Wildkeeper (leader)  |    — |  14 |    3 | Bough 3 Impact; Stones 2 Impact, range 2          | Impact −1                      |
+| Necromancer (leader) |    — |  12 |    3 | Bone staff 3 Impact; Grave bolt 3 Impact, range 2 | Pierce −1, Impact +1           |
+
+Balance follows counterplay rather than enemy stat boosts. A bow deals 1 damage
+to an open-ground skeleton; a sword or mace deals 4. Skeleton clubs deal 4 to
+armored soldiers but 3 to unarmored targets. Wardens’ spears deal 5 to wolves;
+wolves compensate with speed and woodland routes. Boars survive front-line
+exchanges but cannot reply to ranged attacks. Adepts punish bones and armor but
+have low HP and a weak melee reply. Thorncallers trade raw damage for woodland
+mobility. Every faction uses the same unit definitions and combat calculations.
+
+Focused campaign checks cover all nine map layouts, saves, objectives, turn-boundary
+holds, bounded reinforcement waves, grave suppression, one-time rewards, undo,
+recall, retry, unit counters and session cancellation. Separate exploratory
+headless play probes completed all three campaigns with survivor carryover;
+these check feasibility, not human playtest quality. Browser interaction and visual
+parity have not been automated, in accordance with `AGENTS.md`.
+
 ## Formatting
 
 Prettier and its Svelte plugin format source, tests, configuration, and this README.
@@ -83,9 +148,9 @@ on `GameView` read one detached, frozen revision and expose no engine commands.
 The sticky top bar holds income, village count, coin treasury, End turn with its turn counter,
 and settings. Settings contains New battle, the field manual, and
 the battle journal. Selecting an attack target shows both units’ current health. Every weapon button
-has its own labelled player/enemy HP forecast and damage segments. The magnifying
-glass opens numeric damage and reply equations; unit damage multipliers stay in
-the unit stats panel. Armor rounding happens before cover and exposure.
+has its own HP forecast and damage segments. The magnifying
+glass opens numeric damage and reply equations; flat incoming damage modifiers stay in
+the unit stats panel. Armor applies before cover and exposure; no rounding is needed.
 
 Battles autosave in this browser after player actions and at the start of each
 player turn. Before an enemy turn, a checkpoint is saved for deterministic replay

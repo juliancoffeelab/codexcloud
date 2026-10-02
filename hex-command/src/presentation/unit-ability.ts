@@ -7,7 +7,7 @@ export interface AbilityInfo {
 }
 
 export function abilityInfo(unit: Unit): AbilityInfo {
-  if (unit.type === "commander") {
+  if (TYPES[unit.type].leader) {
     return {
       name: "Command",
       description: "Losing this unit ends the battle.",

@@ -1,4 +1,7 @@
-import { MAPS } from "../game/maps";
+import { TYPES } from "../game/engine";
+import type { RecruitType, CampaignId } from "../game/types";
+import { CAMPAIGNS } from "../game/campaign-data";
+const recruitable = Object.keys(TYPES).filter((type) => !TYPES[type as keyof typeof TYPES].leader);
 import type { BattleController } from "./battle";
 
 interface InputProperty {
@@ -59,6 +62,22 @@ export function registerBattleTools(controller: BattleController): () => void {
   if (!registry?.registerTool) return () => {};
   const tools: BattleTool[] = [
     {
+      name: "start_campaign",
+      description: "Replace the current battle with a new story campaign.",
+      inputSchema: schema({ id: { type: "string", enum: Object.keys(CAMPAIGNS) } }, ["id"]),
+      execute: (value) => {
+        const id = stringInput(inputs(value), "id");
+        if (!Object.hasOwn(CAMPAIGNS, id)) throw new Error("Unknown campaign.");
+        return controller.startCampaign(id as CampaignId);
+      },
+    },
+    {
+      name: "advance_dialogue",
+      description: "Read the next line in an active campaign conversation.",
+      inputSchema: schema(),
+      execute: () => controller.advanceDialogue(),
+    },
+    {
       name: "get_battle_state",
       description: "Read units, gold, village ownership, the current turn, and victory state.",
       inputSchema: schema(),
@@ -112,11 +131,11 @@ export function registerBattleTools(controller: BattleController): () => void {
     {
       name: "recruit_unit",
       description:
-        "Spend gold to recruit a soldier, archer, or scout adjacent to your commander on the keep.",
+        "Spend gold to recruit a troop from this mission’s pool adjacent to your leader on the keep.",
       inputSchema: schema(
         {
           commanderId: { type: "string" },
-          type: { type: "string", enum: ["soldier", "archer", "scout"] },
+          type: { type: "string", enum: recruitable },
           tileId: { type: "string" },
         },
         ["commanderId", "type", "tileId"],
@@ -124,11 +143,10 @@ export function registerBattleTools(controller: BattleController): () => void {
       execute: (value) => {
         const input = inputs(value);
         const type = stringInput(input, "type");
-        if (type !== "soldier" && type !== "archer" && type !== "scout")
-          throw new Error("Unknown recruit type.");
+        if (!recruitable.includes(type)) throw new Error("Unknown recruit type.");
         return controller.recruit(
           stringInput(input, "commanderId"),
-          type,
+          type as RecruitType,
           stringInput(input, "tileId"),
         );
       },
@@ -150,7 +168,7 @@ export function registerBattleTools(controller: BattleController): () => void {
       name: "start_new_battle",
       description: "Replace the current battle with a fresh battle.",
       inputSchema: schema({
-        mapId: { type: "string", enum: Object.keys(MAPS) },
+        mapId: { type: "string", enum: ["mirror", "river"] },
       }),
       execute: (value) => {
         const input = inputs(value);

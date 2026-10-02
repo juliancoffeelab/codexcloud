@@ -10,6 +10,8 @@ export type TileView = Immutable<Tile>;
 
 type ReadableGame = Pick<
   Game,
+  | "campaign"
+  | "recruitmentOptions"
   | "mapId"
   | "mapRevision"
   | "cols"
@@ -45,9 +47,12 @@ export function createGameView(source: Game): GameView {
   freeze(game.tiles);
   freeze(game.units);
   freeze(game.lastCombat);
+  freeze(game.campaign);
   Object.freeze(game);
 
   return Object.freeze({
+    campaign: game.campaign,
+    recruitmentOptions: (side) => freeze(game.recruitmentOptions(side)),
     mapId: game.mapId,
     mapRevision: game.mapRevision,
     cols: game.cols,
