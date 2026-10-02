@@ -21,3 +21,6 @@
   settlement paths inside their tile and terrain ownership decoration neutral.
 - Normal and Low-poly ground cover uses believable proportions and distinct
   landscape compositions. Preserve Pixel artwork unless explicitly asked to change it.
+- Judge terrain at its actual 70-pixel render size, including with a unit on top.
+  Keep plains muted and low-detail, hills readable as broad landforms, and keeps
+  large enough to remain visibly substantial behind a 56- or 62-pixel unit.

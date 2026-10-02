@@ -63,7 +63,7 @@ const terrainSheets = {
   normal: {
     width: 1536,
     height: 1024,
-    revision: "b97cf824c51e",
+    revision: "36244e2b44ee",
     frames: [
       {
         x: 76.0,
@@ -100,7 +100,7 @@ const terrainSheets = {
   "low-poly": {
     width: 1536,
     height: 1024,
-    revision: "2cee60de0b7d",
+    revision: "4ba16129dada",
     frames: [
       {
         x: 41.0,

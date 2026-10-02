@@ -44,9 +44,11 @@ current battle intact when switching.
 Terrain uses dedicated flat pointy-top hex artwork, rendered with square crops
 and uniform scaling, clipped to the board edges. Terrain sheets render with native
 SVG images, including forest brightness and pixel-art scaling. No mesh warping is used. Unit sheets contain teal player and crimson enemy rows with natural skin tones.
-Normal terrain uses softly painted meadow cover, connected leafy woodland,
-weathered grassy ridges, textured water, and small rural hamlets. Low-poly uses
-restrained ground facets, varied groves, coherent ridges, and compact settlements.
+Normal terrain uses quiet muted fields, connected leafy woodland, broad grassy
+ridges, textured water, and small rural hamlets. Low-poly uses a few broad ground
+facets, varied groves, coherent ridges, and compact settlements. Plains and hills
+keep their detail restrained at the game's 70-pixel tile size. Keeps use large
+central towers and substantial walls that remain readable behind units.
 Grass remains much shorter than trees and cottages in both styles. Plains,
 forests, and hills have no baked-in roads; settlement paths stay inside their
 tiles so arbitrary neighbors compose cleanly. Fortresses have neutral decoration;
