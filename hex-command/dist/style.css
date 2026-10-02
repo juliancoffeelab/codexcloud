@@ -140,3 +140,13 @@ button,select{transition:background-color 120ms ease,border-color 120ms ease}
 .forecast-label{flex-direction:column;gap:2px}
 .forecast-label>span{white-space:nowrap;color:var(--text)}
 .terrain-recruitment .recruit-button:hover:not(:disabled){border-color:var(--gold)}
+
+/* The action and inspection share one boundary; facts stay with their labels. */
+.attack-action-row{display:block}
+.attack-box{position:relative;border:1px solid var(--line);border-radius:4px}
+.attack-box:focus-within,.attack-box:has(.attack-action:hover:not(:disabled)){border-color:var(--gold)}
+.attack-box .attack-action{border:0;border-radius:3px}
+.attack-box .attack-heading{justify-content:flex-start;gap:14px;padding-right:34px}
+.attack-box .attack-inspect{position:absolute;top:0;right:0;width:44px;border:0;border-radius:0 3px 0 0}
+.weapon-category{padding-left:23px}
+.weapon-damage{white-space:nowrap}

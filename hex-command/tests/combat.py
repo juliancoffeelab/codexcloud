@@ -36,7 +36,7 @@ try:
     assert abs(width-after/maximum*100)<0.001
     assert bar.locator('.health-lost').count()==1
    assert abs(row.locator('[data-forecast="player"] .health-track').bounding_box()['y']-row.locator('[data-forecast="enemy"] .health-track').bounding_box()['y'])<1, 'attack bars align'
-   assert row.evaluate("e=>getComputedStyle(e).borderTopStyle")=='solid'
+   assert row.locator("..").evaluate("e=>getComputedStyle(e).borderTopStyle")=='solid'
   def no_dots():
    assert not any(dot in page.locator('body').inner_text() for dot in ['\u00b7','\u2022']), 'no text dot separators'
    assert page.locator('.terrain-facts').evaluate('e=>getComputedStyle(e).listStyleType')=='none', 'no bullet markers'
@@ -88,6 +88,13 @@ try:
    row=page.locator('.attack-action-row').first
    assert row.bounding_box()['height']>=44,'bordered action with its own forecast remains touch-sized'
    assert row.evaluate('(e)=>e.scrollWidth<=e.clientWidth'),'no action row overflow'
+   box=row.locator('.attack-box').bounding_box()
+   glass=row.locator('[data-inspect]').bounding_box()
+   assert glass['x']>=box['x'] and glass['x']+glass['width']<=box['x']+box['width'], 'glass is inside attack border'
+   heading=row.locator('.attack-heading')
+   name=heading.locator('strong').bounding_box()
+   outcome=heading.locator('.attack-outcome').bounding_box()
+   assert abs(outcome['x']-(name['x']+name['width'])-14)<1, 'damage follows the weapon inline'
    assert page.locator('.combat-explanation:visible').count()==0
    forecast('bow',8,10)
    no_dots()

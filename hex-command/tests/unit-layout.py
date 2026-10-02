@@ -40,6 +40,11 @@ try:
      boxes=[row.locator('th,td').nth(column-1).bounding_box() for row in rows]
      assert abs(boxes[0]['x']-boxes[1]['x'])<1, 'weapon columns align across attacks'
     assert '1 hex range' in page.locator('.weapon-table').inner_text()
+    for row in rows:
+     assert row.locator('th .weapon-category').inner_text()=='Melee'
+     assert row.locator('td').nth(0).inner_text() in ['4 Blade','3 Impact']
+     assert row.locator('td').nth(0).evaluate('e=>getComputedStyle(e).whiteSpace')=='nowrap'
+     assert row.locator('td').nth(1).inner_text()=='1 hex range'
     assert '75%' in page.locator('.resistance-list').inner_text()
     assert '100%' in page.locator('.resistance-list').inner_text()
     assert not any(dot in page.locator('#unit-panel').inner_text() for dot in ['\u00b7','\u2022'])
