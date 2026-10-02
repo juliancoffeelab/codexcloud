@@ -1,0 +1,27 @@
+{
+  "name": "hex-command",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p tsconfig.tests.json",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "test": "node --import tsx scripts/test.ts",
+    "test:browser": "python3 scripts/test-browser.py",
+    "test:rules-parity": "node --import tsx scripts/check-engine-parity.ts",
+    "test:parity": "python3 scripts/test-parity.py"
+  },
+  "dependencies": {
+    "svelte": "^5.0.0"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^6.0.0",
+    "@types/node": "^24.0.0",
+    "svelte-check": "^4.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.9.0",
+    "vite": "^7.0.0"
+  }
+}

@@ -3,19 +3,43 @@
 A standalone browser game about capturing villages, recruiting units, and
 defeating the enemy commander on a hex battlefield.
 
-Run it locally from this folder:
+Install and run from this folder (Node.js 22.12+):
 
 ```sh
+npm ci
+npm run dev
+```
+
+The game uses Svelte 5 with strict TypeScript, built by Vite. It remains a static,
+client-only game: no server or account is required. To build and serve the
+production files:
+
+```sh
+npm run check
+npm test
+npm run build
 python3 -m http.server 8000 --directory dist
 ```
 
-No build step or package installation is needed. The **Art style** selector
-in the cog settings menu switches between Normal, Low-poly, and Pixel. It remembers your preference in this browser and keeps the
+Source lives in `src/`; `dist/` is generated and must not be edited.
+
+- `src/game/` contains browser-independent rules, AI, typed domain models,
+  save validation, and move undo. Save keys, format, battle rules, and deterministic
+  enemy replay remain compatible with the original game.
+- `src/controller/` owns the play session and actions, autosaves, turn sequencing,
+  feedback, preferences, and browser tools. UI controls and tools use the same
+  action methods; rendering does not save or mutate the battle.
+- `src/ui/` contains Svelte components for the battlefield, panels, combat,
+  controls, and dialogs. `src/App.svelte` assembles the interface.
+- `src/presentation/` contains sprite, audio, motion, and icon helpers.
+- `src/style.css` retains the original global styles. `public/assets/` contains
+  the original artwork and audio, copied unchanged into production builds.
+
+The **Art style** selector in the cog settings menu switches between Normal,
+Low-poly, and Pixel. It remembers your preference in this browser and keeps the
 current battle intact when switching.
 
-`dist/engine.mjs` contains the game rules and enemy AI, `dist/app.mjs` handles
-the interface, and `dist/art.mjs` displays regions of the generated PNG sheets
-in `dist/assets/`. Terrain uses dedicated flat pointy-top hex artwork, rendered with square crops
+Terrain uses dedicated flat pointy-top hex artwork, rendered with square crops
 and uniform scaling, clipped to the board edges. No mesh warping is used. Unit sheets contain teal player and crimson enemy rows with natural skin tones.
 Terrain shares a grassy base with lightly shaded forest floor, small stone patches, village dirt paths,
 and walled castles with paved courtyards. Grass, trees, and waves use irregular
@@ -31,6 +55,30 @@ sheets, through a Sites session with access to the project.
 
 Site: https://hex-command-tfhlu4.lightdarkdaughter.chatgpt.site/
 
+## Migration checks
+
+`npm run check` checks all application components and TypeScript tests with
+`strict` and `noUncheckedIndexedAccess`. `npm test` runs the rules, combat, maps,
+undo, persistence, and audio fixtures in isolated Node processes.
+`npm run test:rules-parity` compares deterministic battles, corrupt/valid saves,
+and undo directly against the original JavaScript release extracted from local Git history.
+
+For exact screenshot and public-state comparison against the original JavaScript
+release, build first and run:
+
+```sh
+npm run build
+npm run test:parity
+```
+
+This extracts the original release from local Git history (`2297aa1`) and compares
+75 full-page screenshots and battle states across desktop and two mobile sizes.
+It includes all art styles, both maps, combat forecasts/calculations, recruitment,
+undo, settings, and finished battles. There is no image-difference tolerance.
+Requires Python Playwright, Chromium, Pillow, and numpy; artifacts go to
+`/tmp/hex-command-parity`. Override the original commit or artifact location with
+`npm run test:parity -- --baseline-ref <commit> --output <directory>`.
+
 ## Browser checks
 
 With Python Playwright and Chromium installed, run from this folder:
@@ -39,6 +87,7 @@ With Python Playwright and Chromium installed, run from this folder:
 python3 tests/smoke.py
 ```
 
+Build first with `npm run build`. Run all browser checks with `npm run test:browser`.
 The checks start their own local server and exercise style switching,
 persistence, recruitment, movement, combat, enemy turns, mobile layout, and
 asset-loading failures. Add `--screenshots /tmp/hex-command-checks` to capture
@@ -104,7 +153,7 @@ UI tick. Repeat unit clicks and terrain inspection keep their material cue. Each
 unit/terrain clip is one brief contact or texture. The commander uses a soft
 leather-and-cloth rustle, and hill wind is quiet with a quick, soft onset. All
 variations preload after the first user gesture to keep later clicks responsive. Audio starts only after an interaction; the Sound effects setting persists.
-Rebuild WAVs with `python scripts/generate-sfx.py` (requires numpy and scipy).
+Rebuild WAVs in `public/assets/audio/` with `python scripts/generate-sfx.py` (requires numpy and scipy).
 
 River forests sit above the northern village approach and along the outer southern
 edge, leaving the starting soldier and scout clear routes to nearby villages.
@@ -149,6 +198,6 @@ Maces counter armor; swords hit unarmored units harder. The enemy evaluates
 weapons and retaliation, including safer replies and avoiding lethal exchanges.
 Existing saves keep their units, HP, gold, map, and progress and use the new rules.
 
-Run `node tests/combat.mjs` for weapon/terrain rules and `python3 tests/combat.py`
+Run `node --import tsx tests/combat.ts` for weapon/terrain rules and `python3 tests/combat.py`
 for immediate attacks, optional damage inspection, exact outcomes, keyboard use,
 and mobile layout.
