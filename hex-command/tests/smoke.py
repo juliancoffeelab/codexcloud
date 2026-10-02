@@ -141,8 +141,8 @@ def run(url, screenshots):
                     assert page.locator(".duel .combatant").count() == 2
                     forecast = actions["attacks"][0]
                     health = page.locator(".health-numbers").all_inner_texts()
-                    assert f'{victim["hp"]} /' in health[1]
-                    assert f'{unit["hp"]} /' in health[0]
+                    assert f'{victim["hp"]} →' in health[1]
+                    assert f'{unit["hp"]} →' in health[0]
                     if screenshots:
                         page.screenshot(path=str(screenshots / "desktop-combat.png"), full_page=True)
                         page.set_viewport_size({"width": 390, "height": 844})

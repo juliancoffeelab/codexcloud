@@ -94,3 +94,14 @@ button,select{transition:background-color 120ms ease,border-color 120ms ease}
 .terrain-recruitment .recruit-button:hover:not(:disabled){color:var(--gold);background:none}
 .terrain-recruitment .recruit-button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .terrain-recruitment .recruit-hint{margin-top:5px;color:var(--muted)}
+
+/* Separate facts with spacing; previews keep their original damage segments. */
+.attack-action{display:flex;align-items:center;gap:14px}
+.attack-outcome{display:flex;gap:14px}
+.attack-outcome b{font-weight:400}
+.attack-action.previewing strong{text-decoration:underline;text-underline-offset:4px}
+.unit-state{display:flex;gap:12px}
+.arsenal-weapon strong{margin-right:6px}
+.terrain-facts,#log{list-style:none;padding-left:0}
+.terrain-recruitment{margin:0 0 18px}
+.terrain-recruitment .recruit-button{justify-content:space-between}

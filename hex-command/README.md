@@ -46,8 +46,9 @@ each style on desktop and mobile.
 
 The sticky top bar holds income, village count, coin treasury, End turn with its turn counter,
 and settings. Settings contains New battle, the field manual, and
-the battle journal. Selecting an attack target shows both units’ current health
-and one-line weapon actions with damage dealt and taken. The magnifying glass
+the battle journal. Selecting an attack target shows current and predicted health, including damage
+segments on each health bar, and one-line weapon actions with damage dealt and taken.
+Hover or focus a weapon, or tap its magnifying glass, to update the forecast. The magnifying glass
 opens exact damage calculations and resistances.
 
 Battles autosave in this browser after player actions and at the start of each
@@ -60,7 +61,7 @@ Click a tile to inspect its terrain, including beneath friendly or enemy units.
 Terrain cards explain movement, protection, village income and healing, and keep
 ownership and recruitment. Inspection also works during enemy turns and after a battle.
 With your commander on your own keep, click an adjacent empty land hex to
-open its terrain recruitment menu. Choose a unit to buy it directly onto that hex.
+open its terrain recruitment menu above the tile description. Choose a unit to buy it directly onto that hex.
 Prices and unavailable purchases are shown there; new recruits act next turn.
 Selecting a unit first preserves normal movement into that hex.
 

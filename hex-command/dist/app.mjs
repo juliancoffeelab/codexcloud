@@ -11,7 +11,7 @@ import {
   savedArtStyle,
   saveArtStyle,
 } from "./art.mjs?v=e288e02de731";
-import { arsenalMarkup, attackChoicesMarkup } from "./combat.mjs?v=0ffbba10e76d";
+import { arsenalMarkup, attackChoicesMarkup } from "./combat.mjs?v=7cb6b0d2c016";
 import { iconMarkup } from "./icons.mjs?v=a28758f5c35e";
 const $ = (selector) => document.querySelector(selector),
   map = $("#map"),
@@ -195,6 +195,7 @@ function stat(icon, label, value) {
   return `<span class="unit-stat">${iconMarkup(icon)}<span>${label}: <b>${value}</b></span></span>`;
 }
 function renderPanel() {
+  delete panel.dataset.previewAttack;
   panel.hidden = false;
   if (game.winner) {
     panel.innerHTML = `<div class="unit-title"><h2>${game.winner === "player" ? "The field is yours." : "An army needs a leader."}</h2></div><p>${game.winner === "player" ? "Your army defeated the enemy commander." : "Keep your commander protected and use villages to grow your army."}</p><button id="play-again" class="primary">Play again</button>`;
@@ -215,21 +216,52 @@ function renderPanel() {
       game.targets(unit.id).includes(victim) &&
       active() &&
       unit.side === "player";
-  function unitCard(combatant) {
+  function healthNumbers(combatant, damage) {
+    const after = damage === null ? combatant.hp : Math.max(0, combatant.hp - damage);
+    return `<b>${combatant.hp}</b>${damage === null ? '' : `<span aria-label="health after attack"> → <b class="${after === 0 ? 'fatal' : ''}">${after}</b></span>`}<span> / ${TYPES[combatant.type].hp} HP</span>`;
+  }
+  function damageResult(combatant, damage) {
+    return damage >= combatant.hp ? 'Falls in battle' : damage ? `−${damage} HP` : 'Unharmed';
+  }
+  function unitCard(combatant, damage = null) {
     const info = TYPES[combatant.type];
+    const after = damage === null ? combatant.hp : Math.max(0, combatant.hp - damage);
     const portrait = artSprite(artStyle, "units", combatant.type, 0, 0, 72, 90,
         `portrait ${combatant.side === "enemy" ? "enemy-unit" : ""}`, combatant.side);
-    return `<div class="combatant ${combatant.side}"><span class="unit-side">${combatant.side === "player" ? "Your unit" : "Enemy unit"}</span>${portrait}<h2>${info.name}</h2><div class="health-numbers"><b>${combatant.hp}</b><span> / ${info.hp} HP</span></div><div class="health-track" role="img" aria-label="${combatant.hp} of ${info.hp} health"><span class="health-left" style="width:${combatant.hp/info.hp*100}%"></span></div></div>`;
+    return `<div class="combatant ${combatant.side}"><span class="unit-side">${combatant.side === "player" ? "Your unit" : "Enemy unit"}</span>${portrait}<h2>${info.name}</h2><div class="health-numbers">${healthNumbers(combatant, damage)}</div><div class="health-track" role="img" aria-label="${after} of ${info.hp} health${damage === null ? '' : ` after attack; ${combatant.hp} before`}">${damage === null ? '' : `<span class="health-lost" style="width:${combatant.hp/info.hp*100}%"></span>`}<span class="health-left" style="width:${after/info.hp*100}%"></span></div>${damage === null ? '' : `<p class="damage-result">${damageResult(combatant, damage)}</p>`}</div>`;
   }
+  const initialAttack = attackAvailable ? game.bestAttack(unit, victim).id : null;
+  const forecast = attackAvailable ? game.previewDetails(unit, victim, initialAttack) : null;
   const html = attackAvailable
-    ? `<div class="duel">${unitCard(unit)}<span class="duel-divider" aria-hidden="true">⚔</span>${unitCard(victim)}</div>${attackChoicesMarkup(game, unit, victim)}`
-    : `<div class="unit-detail">${unitCard(unit)}<div class="unit-info"><div class="unit-stats">${stat("move", "Move", type.move)}<p class="unit-state">${TERRAIN[tile.terrain].name} · ${unit.attacked ? 'Turn finished' : unit.moved ? 'Can still attack' : 'Ready'}</p></div>${abilityMarkup({ game, unit, canAct: active() && unit.side === "player" })}${arsenalMarkup(unit)}</div></div>`;
+    ? `<div class="duel">${unitCard(unit, forecast.retaliation)}<span class="duel-divider" aria-hidden="true">⚔</span>${unitCard(victim, forecast.damage)}</div>${attackChoicesMarkup(game, unit, victim)}`
+    : `<div class="unit-detail">${unitCard(unit)}<div class="unit-info"><div class="unit-stats">${stat("move", "Move", type.move)}<p class="unit-state"><span>${TERRAIN[tile.terrain].name}</span><span>${unit.attacked ? 'Turn finished' : unit.moved ? 'Can still attack' : 'Ready'}</span></p></div>${abilityMarkup({ game, unit, canAct: active() && unit.side === "player" })}${arsenalMarkup(unit)}</div></div>`;
   panel.innerHTML = html;
+  function showForecast(attackId) {
+    const preview = game.previewDetails(unit, victim, attackId);
+    panel.dataset.previewAttack = attackId;
+    for (const [combatant, damage] of [[unit, preview.retaliation], [victim, preview.damage]]) {
+      const card = panel.querySelector(`.duel .combatant.${combatant.side}`);
+      const after = Math.max(0, combatant.hp - damage), maximum = TYPES[combatant.type].hp;
+      card.querySelector('.health-numbers').innerHTML = healthNumbers(combatant, damage);
+      card.querySelector('.health-left').style.width = `${after / maximum * 100}%`;
+      card.querySelector('.health-track').setAttribute('aria-label', `${after} of ${maximum} health after attack; ${combatant.hp} before`);
+      card.querySelector('.damage-result').textContent = damageResult(combatant, damage);
+    }
+    panel.querySelectorAll('[data-attack]').forEach(button => {
+      button.classList.toggle('previewing', button.dataset.attack === attackId);
+    });
+  }
+  if (attackAvailable) showForecast(initialAttack);
   panel.querySelectorAll("[data-inspect]").forEach(button => button.addEventListener("click", () => {
+    showForecast(button.dataset.inspect);
     const detail = document.getElementById(button.getAttribute("aria-controls"));
     detail.hidden = !detail.hidden;
     button.setAttribute("aria-expanded", String(!detail.hidden));
   }));
+  panel.querySelectorAll('[data-attack]:not(:disabled)').forEach(button => {
+    button.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') showForecast(button.dataset.attack); });
+    button.addEventListener('focus', () => showForecast(button.dataset.attack));
+  });
   panel.querySelectorAll("[data-attack]").forEach(button => button.addEventListener("click", () => {
     try {
       game.attack(selected, target, button.dataset.attack);
@@ -267,7 +299,7 @@ function terrainRecruitment(tile) {
   const buttons = ["soldier", "archer", "scout"].map(name => {
     const type = TYPES[name];
     const enabled = active() && stationed && game.recruitTiles(commander.id, name).some(destination => destination.id === tile.id);
-    return `<button class="recruit-button" data-recruit="${name}"${enabled ? "" : " disabled"}><span>${type.name} · ${type.cost} gold</span></button>`;
+    return `<button class="recruit-button" data-recruit="${name}"${enabled ? "" : " disabled"}><span>${type.name}</span><span>${type.cost} gold</span></button>`;
   }).join("");
   return `<div class="terrain-recruitment"><h3>Recruit here</h3><div class="recruit-list">${buttons}</div><p class="recruit-hint">${hint}${active() && stationed && game.gold.player < TYPES.scout.cost ? " Not enough gold." : ""}</p></div>`;
 }
@@ -295,7 +327,7 @@ function renderTerrainPanel() {
   }
   const ownership = ["village", "keep"].includes(tile.terrain)
     ? `<p class="terrain-owner ${tile.owner || "neutral"}">${tile.owner === "player" ? "Your " : tile.owner === "enemy" ? "Enemy " : "Unclaimed "}${tile.terrain}</p>` : "";
-  terrainPanel.innerHTML = `<div class="terrain-detail"><div class="terrain-portrait">${artSprite(artStyle, "terrain", tile.terrain, 0, 0, 80, 80, "terrain-card-art")}<span class="unit-side">Terrain</span></div><div class="terrain-info"><h2>${info.name}</h2>${ownership}<p>${terrainDescriptions[tile.terrain]}</p><ul class="terrain-facts">${facts.map(fact => `<li>${fact}</li>`).join("")}</ul></div></div>${terrainRecruitment(tile)}`;
+  terrainPanel.innerHTML = `${terrainRecruitment(tile)}<div class="terrain-detail"><div class="terrain-portrait">${artSprite(artStyle, "terrain", tile.terrain, 0, 0, 80, 80, "terrain-card-art")}<span class="unit-side">Terrain</span></div><div class="terrain-info"><h2>${info.name}</h2>${ownership}<p>${terrainDescriptions[tile.terrain]}</p><ul class="terrain-facts" role="list">${facts.map(fact => `<li>${fact}</li>`).join("")}</ul></div></div>`;
   terrainPanel.querySelectorAll("[data-recruit]").forEach(button => button.addEventListener("click", () => {
     try {
       const commander = game.units.find(unit => unit.side === "player" && unit.type === "commander");

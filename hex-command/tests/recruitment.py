@@ -28,6 +28,8 @@ try:
             new_battle(page)
             inspect('0,2')
             assert options().count() == 3
+            assert page.locator('.terrain-recruitment').bounding_box()['y'] < page.locator('.terrain-detail').bounding_box()['y'], 'recruit before terrain description'
+            assert all(dot not in page.locator('#terrain-panel').inner_text() for dot in ['\u00b7','\u2022'])
             assert not page.locator('#unit-panel').is_visible()
             before = snapshot(page)
             page.click(f'#terrain-panel [data-recruit="{kind}"]')
