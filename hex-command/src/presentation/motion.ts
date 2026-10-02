@@ -8,9 +8,7 @@ const active = new WeakMap<Element, PulseRecord>();
 const tileKinds = new Set(["select", "move", "attack", "recruit", "capture"]);
 
 function reducedMotion() {
-  return (
-    globalThis.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false
-  );
+  return globalThis.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
 }
 
 function pulse(element: Element | null, kind: MotionKind | "turn") {
@@ -35,19 +33,14 @@ function pulse(element: Element | null, kind: MotionKind | "turn") {
 
 export function animateTile(tileId: string, kind: MotionKind) {
   if (!tileKinds.has(kind) || typeof document === "undefined") return;
-  const tile = [
-    ...document.querySelectorAll<SVGElement>("#map [data-tile]"),
-  ].find((node) => node.dataset.tile === String(tileId));
+  const tile = [...document.querySelectorAll<SVGElement>("#map [data-tile]")].find(
+    (node) => node.dataset.tile === String(tileId),
+  );
   if (!tile) return;
-  if (
-    ["move", "attack", "recruit"].includes(kind) &&
-    !tile.querySelector(".unit-art")
-  )
-    return;
+  if (["move", "attack", "recruit"].includes(kind) && !tile.querySelector(".unit-art")) return;
   pulse(tile, kind);
 }
 
 export function animateTurn() {
-  if (typeof document !== "undefined")
-    pulse(document.querySelector("#end-turn"), "turn");
+  if (typeof document !== "undefined") pulse(document.querySelector("#end-turn"), "turn");
 }

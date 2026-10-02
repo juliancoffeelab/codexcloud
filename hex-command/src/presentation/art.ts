@@ -38,11 +38,7 @@ export function loadArtStyle(style: string): Promise<boolean> {
   if (!isArtStyle(style)) return Promise.resolve(false);
   if (!loadedStyles.has(style)) {
     const loading = Promise.all(
-      [
-        assetURL(style, "units"),
-        assetURL(style, "terrain"),
-        shallowAssetURL(style),
-      ].map(
+      [assetURL(style, "units"), assetURL(style, "terrain"), shallowAssetURL(style)].map(
         (url) =>
           new Promise<boolean>((resolve) => {
             const image = new Image();
@@ -383,31 +379,19 @@ export function artSprite(
 ) {
   if (!isArtStyle(style)) return "";
   if (kind === "terrain" && name === "ford") {
-    return terrainSprite(
-      style,
-      3,
-      x,
-      y,
-      width,
-      height,
-      extraClass,
-      shallowAssetURL(style),
-    );
+    return terrainSprite(style, 3, x, y, width, height, extraClass, shallowAssetURL(style));
   }
   if (kind === "terrain" && name === "bridge") {
     // Reuse the river's water palette beneath a simple stone crossing.
     const water = terrainSprite(style, 3, 0, 0, 70, 70, "");
-    const joints = [10, 22, 34, 46, 58]
-      .map((at) => `<path d="M${at} 24v22"/>`)
-      .join("");
+    const joints = [10, 22, 34, 46, 58].map((at) => `<path d="M${at} 24v22"/>`).join("");
     return `<svg class="art-sprite ${extraClass}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 70 70" aria-hidden="true" focusable="false">${water}<path d="M0 26h70v23H0z" fill="#3e443b" opacity=".45"/><path d="M0 23h70v22H0z" fill="#a6a18a" stroke="#686e58" stroke-width="1"/><g stroke="#777c67" stroke-width="1" opacity=".65">${joints}</g><path d="M0 23h70M0 45h70" stroke="#6a705a" stroke-width="5"/><path d="M0 21h70M0 43h70" stroke="#b6b09a" stroke-width="3"/></svg>`;
   }
   const isUnit = kind === "units";
   const order = isUnit ? unitOrder : terrainOrder;
   const index = order.indexOf(name);
   if (index < 0) return "";
-  if (!isUnit)
-    return terrainSprite(style, index, x, y, width, height, extraClass);
+  if (!isUnit) return terrainSprite(style, index, x, y, width, height, extraClass);
   const sheet = unitSheets[style];
   const frame = sheet.frames[index + (side === "enemy" ? 4 : 0)]!;
   const { x: cropX, y: cropY, width: cropWidth, height: cropHeight } = frame;

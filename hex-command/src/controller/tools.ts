@@ -39,8 +39,7 @@ function inputs(value: unknown): Record<string, unknown> {
 
 function stringInput(input: Record<string, unknown>, key: string): string {
   const value = input[key];
-  if (typeof value !== "string")
-    throw new Error(`Expected ${key} to be a string.`);
+  if (typeof value !== "string") throw new Error(`Expected ${key} to be a string.`);
   return value;
 }
 
@@ -61,41 +60,33 @@ export function registerBattleTools(controller: BattleController): () => void {
   const tools: BattleTool[] = [
     {
       name: "get_battle_state",
-      description:
-        "Read units, gold, village ownership, the current turn, and victory state.",
+      description: "Read units, gold, village ownership, the current turn, and victory state.",
       inputSchema: schema(),
       annotations: { readOnlyHint: true },
       execute: () => controller.snapshot(),
     },
     {
       name: "get_unit_actions",
-      description:
-        "Read legal moves, attacks, and recruiting locations for a unit.",
+      description: "Read legal moves, attacks, and recruiting locations for a unit.",
       inputSchema: schema({ unitId: { type: "string" } }, ["unitId"]),
       annotations: { readOnlyHint: true },
-      execute: (value) =>
-        controller.actions(stringInput(inputs(value), "unitId")),
+      execute: (value) => controller.actions(stringInput(inputs(value), "unitId")),
     },
     {
       name: "move_unit",
-      description:
-        "Move one of your units to a legal hex. Captures a village when entered.",
-      inputSchema: schema(
-        { unitId: { type: "string" }, tileId: { type: "string" } },
-        ["unitId", "tileId"],
-      ),
+      description: "Move one of your units to a legal hex. Captures a village when entered.",
+      inputSchema: schema({ unitId: { type: "string" }, tileId: { type: "string" } }, [
+        "unitId",
+        "tileId",
+      ]),
       execute: (value) => {
         const input = inputs(value);
-        return controller.move(
-          stringInput(input, "unitId"),
-          stringInput(input, "tileId"),
-        );
+        return controller.move(stringInput(input, "unitId"), stringInput(input, "tileId"));
       },
     },
     {
       name: "attack_unit",
-      description:
-        "Attack an enemy in range and resolve damage and retaliation.",
+      description: "Attack an enemy in range and resolve damage and retaliation.",
       inputSchema: schema(
         {
           unitId: { type: "string" },
@@ -110,10 +101,7 @@ export function registerBattleTools(controller: BattleController): () => void {
       ),
       execute: (value) => {
         const input = inputs(value);
-        const attackId =
-          input.attackId === undefined
-            ? undefined
-            : stringInput(input, "attackId");
+        const attackId = input.attackId === undefined ? undefined : stringInput(input, "attackId");
         return controller.attack(
           stringInput(input, "unitId"),
           stringInput(input, "targetId"),
@@ -154,8 +142,7 @@ export function registerBattleTools(controller: BattleController): () => void {
     },
     {
       name: "end_turn",
-      description:
-        "End your turn, let the enemy army act, and return the resulting battle state.",
+      description: "End your turn, let the enemy army act, and return the resulting battle state.",
       inputSchema: schema(),
       execute: () => controller.endTurn(),
     },
@@ -167,9 +154,7 @@ export function registerBattleTools(controller: BattleController): () => void {
       }),
       execute: (value) => {
         const input = inputs(value);
-        return controller.reset(
-          input.mapId === undefined ? "mirror" : stringInput(input, "mapId"),
-        );
+        return controller.reset(input.mapId === undefined ? "mirror" : stringInput(input, "mapId"));
       },
     },
   ];

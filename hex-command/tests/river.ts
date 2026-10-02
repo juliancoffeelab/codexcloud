@@ -47,10 +47,7 @@ required(fordGame.unit("u2")).tile = "4,7";
 assert.equal(fordGame.reachable("u2").get("5,7"), 3);
 assert.equal(fordGame.reachable("u2").has("6,7"), false);
 assert.equal(fordGame.reachable("u2").has("9,7"), false);
-assert.equal(
-  fordGame.cost(required(fordGame.unit("u3")), required(fordGame.tile("5,7"))),
-  2,
-);
+assert.equal(fordGame.cost(required(fordGame.unit("u3")), required(fordGame.tile("5,7"))), 2);
 fordGame.move("u2", "5,7");
 assert.equal(required(fordGame.unit("u2")).tile, "5,7");
 for (const type of ["commander", "soldier", "archer", "scout"] as const) {
@@ -69,11 +66,7 @@ for (const type of ["soldier", "scout"] as const) {
   }
   required(game.tile("7,0")).terrain = "bridge";
   game.units = [];
-  const commander = game.addUnit(
-    "commander",
-    "player",
-    type === "scout" ? "0,8" : "6,8",
-  );
+  const commander = game.addUnit("commander", "player", type === "scout" ? "0,8" : "6,8");
   const enemy = game.addUnit(type, "enemy", "8,8");
   if (type === "scout") required(game.tile("5,8")).terrain = "village";
   let crossed = false,
@@ -82,13 +75,10 @@ for (const type of ["soldier", "scout"] as const) {
     game.beginTurn("enemy");
     game.enemyAct(enemy.id);
     assert.notEqual(required(game.tile(enemy.tile)).terrain, "water");
-    if (turn === 0)
-      assert.notEqual(enemy.tile, "8,8", "must detour toward the crossing");
+    if (turn === 0) assert.notEqual(enemy.tile, "8,8", "must detour toward the crossing");
     crossed ||= required(game.tile(enemy.tile)).col < 7;
     achieved ||=
-      type === "scout"
-        ? required(game.tile("5,8")).owner === "enemy"
-        : commander.hp < 16;
+      type === "scout" ? required(game.tile("5,8")).owner === "enemy" : commander.hp < 16;
     if (achieved) break;
   }
   assert.ok(crossed && achieved, `${type} must cross to its objective`);
@@ -107,12 +97,7 @@ console.log(
 const exposed = new Game("river");
 required(exposed.tile("6,7")).terrain = "plains";
 for (const attackerType of ["soldier", "archer"] as const) {
-  for (const defenderType of [
-    "soldier",
-    "archer",
-    "scout",
-    "commander",
-  ] as const) {
+  for (const defenderType of ["soldier", "archer", "scout", "commander"] as const) {
     exposed.units = [];
     const attacker = exposed.addUnit(attackerType, "player", "4,7");
     const defender = exposed.addUnit(defenderType, "enemy", "5,7");
@@ -131,6 +116,4 @@ assert.deepEqual(exposed.preview(wader, defender), {
 exposed.attack(wader.id, defender.id);
 assert.equal(wader.hp, 7);
 assert.equal(defender.hp, 8);
-console.log(
-  "PASS: shallow water movement penalties and increased damage including retaliation",
-);
+console.log("PASS: shallow water movement penalties and increased damage including retaliation");

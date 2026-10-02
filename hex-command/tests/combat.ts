@@ -4,11 +4,7 @@ import { damageExplanation } from "../src/presentation/combat.ts";
 import assert from "node:assert/strict";
 import { Game, TYPES, distance } from "../src/game/engine.ts";
 import { loadBattle, saveBattle } from "../src/game/save.ts";
-const fixture = (
-  a: UnitType = "soldier",
-  b: UnitType = "soldier",
-  targetTile = "3,3",
-) => {
+const fixture = (a: UnitType = "soldier", b: UnitType = "soldier", targetTile = "3,3") => {
   const game = new Game();
   for (const tile of game.tiles) {
     tile.terrain = "plains";
@@ -32,10 +28,7 @@ const fixture = (
   assert.equal(game.damage(attacker, target, "mace"), 3);
   required(game.tile(target.tile)).terrain = "ford";
   assert.equal(game.damage(attacker, target, "mace"), 5);
-  assert.throws(
-    () => game.attack(attacker.id, target.id, "bow"),
-    /cannot reach/,
-  );
+  assert.throws(() => game.attack(attacker.id, target.id, "bow"), /cannot reach/);
   assert.equal(attacker.attacked, false);
   assert.equal(target.hp, 12);
 }
@@ -62,19 +55,13 @@ const fixture = (
     damage: 3,
     retaliation: 3,
   });
-  assert.equal(
-    game.canAttackFrom(attacker, attacker.tile, target, "knife"),
-    false,
-  );
+  assert.equal(game.canAttackFrom(attacker, attacker.tile, target, "knife"), false);
   assert.throws(() => game.preview(attacker, target, "knife"), /cannot reach/);
   for (const tile of game
     .neighbors(attacker.tile)
     .filter((t) => distance(t, required(game.tile(target.tile))) === 1))
     tile.terrain = "hill";
-  assert.equal(
-    game.canAttackFrom(attacker, attacker.tile, target, "bow"),
-    false,
-  );
+  assert.equal(game.canAttackFrom(attacker, attacker.tile, target, "bow"), false);
   assert.throws(() => game.attack(attacker.id, target.id, "bow"));
 }
 {
@@ -108,22 +95,13 @@ for (const a of Object.keys(TYPES) as UnitType[])
     for (const terrain of ["plains", "forest", "hill", "ford"] as const)
       for (const range of [1, 2] as const)
         for (const weapon of TYPES[a].attacks) {
-          const { game, attacker, target } = fixture(
-            a,
-            b,
-            range === 1 ? "3,3" : "4,3",
-          );
+          const { game, attacker, target } = fixture(a, b, range === 1 ? "3,3" : "4,3");
           required(game.tile(target.tile)).terrain = terrain;
-          if (!game.canAttackFrom(attacker, attacker.tile, target, weapon.id))
-            continue;
+          if (!game.canAttackFrom(attacker, attacker.tile, target, weapon.id)) continue;
           const preview = game.previewDetails(attacker, target, weapon.id);
           assert(preview.damage >= 1 && Number.isInteger(preview.damage));
-          assert(
-            preview.retaliation >= 0 && Number.isInteger(preview.retaliation),
-          );
-          assert(
-            !preview.response || preview.response.category === weapon.category,
-          );
+          assert(preview.retaliation >= 0 && Number.isInteger(preview.retaliation));
+          assert(!preview.response || preview.response.category === weapon.category);
           game.attack(attacker.id, target.id, weapon.id);
           assert.equal(attacker.hp, TYPES[a].hp - preview.retaliation);
           assert.equal(target.hp, TYPES[b].hp - preview.damage);
@@ -134,11 +112,7 @@ for (const a of Object.keys(TYPES) as UnitType[])
   const { game, attacker, target } = fixture();
   game.turn = "enemy";
   game.enemyAct(target.id);
-  assert.equal(
-    required(game.lastCombat).attackId,
-    "mace",
-    "enemy exploits armor weakness",
-  );
+  assert.equal(required(game.lastCombat).attackId, "mace", "enemy exploits armor weakness");
   assert.equal(attacker.hp, 8);
 }
 {
@@ -168,10 +142,7 @@ for (const a of Object.keys(TYPES) as UnitType[])
   const restored = loadBattle().game;
   assert.deepEqual(restored.snapshot(), game.snapshot());
   assert.equal(TYPES[required(restored.unit("u3")).type].attacks.length, 2);
-  assert.equal(
-    TYPES[required(restored.unit("u2")).type].resistances.impact,
-    -25,
-  );
+  assert.equal(TYPES[required(restored.unit("u2")).type].resistances.impact, -25);
 }
 console.log(
   `PASS: weapon choices, armor, matching replies, range/blocking, deaths, AI and old saves; ${exchanges} exact preview/resolution exchanges`,
@@ -221,6 +192,4 @@ assert.equal(
   }),
   "round(3 × 125%) + 1 (shallow water) = 5",
 );
-console.log(
-  "PASS: numeric equations preserve armor rounding, cover, minimum damage and exposure",
-);
+console.log("PASS: numeric equations preserve armor rounding, cover, minimum damage and exposure");

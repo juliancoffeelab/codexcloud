@@ -1,14 +1,7 @@
 export type Side = "player" | "enemy";
 export type UnitType = "commander" | "soldier" | "archer" | "scout";
 export type TerrainType =
-  | "plains"
-  | "forest"
-  | "hill"
-  | "water"
-  | "bridge"
-  | "ford"
-  | "village"
-  | "keep";
+  "plains" | "forest" | "hill" | "water" | "bridge" | "ford" | "village" | "keep";
 export type DamageType = "blade" | "pierce" | "impact";
 export type AttackCategory = "melee" | "ranged";
 export type MapId = "mirror" | "river";

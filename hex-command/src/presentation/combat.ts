@@ -5,7 +5,6 @@ export function damageExplanation(detail: Omit<DamageBreakdown, "damageType">) {
   let equation = `round(${detail.base} × ${multiplier}%)`;
   if (detail.protection) equation += ` − ${detail.protection} (cover)`;
   if (detail.exposure) equation += ` + ${detail.exposure} (shallow water)`;
-  if (detail.resisted - detail.protection + detail.exposure < 1)
-    equation = `max(1, ${equation})`;
+  if (detail.resisted - detail.protection + detail.exposure < 1) equation = `max(1, ${equation})`;
   return `${equation} = ${detail.damage}`;
 }

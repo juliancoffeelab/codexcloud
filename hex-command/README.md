@@ -30,7 +30,9 @@ Source lives in `src/`; `dist/` is generated and must not be edited.
   feedback, preferences, and browser tools. UI controls and tools use the same
   action methods; rendering does not save or mutate the battle.
 - `src/ui/` contains Svelte components for the battlefield, panels, combat,
-  controls, and dialogs. `src/App.svelte` assembles the interface.
+  controls, and dialogs. Pure `*-view.ts` helpers prepare display states, labels,
+  and forecasts so templates describe the interface rather than calculate it.
+  `src/App.svelte` assembles the interface.
 - `src/presentation/` contains sprite, audio, motion, and icon helpers.
 - `src/style.css` retains the original global styles. `public/assets/` contains
   the original artwork and audio, copied unchanged into production builds.
@@ -54,6 +56,12 @@ static directory is `dist`. Publish that entire directory, including the asset
 sheets, through a Sites session with access to the project.
 
 Site: https://hex-command-tfhlu4.lightdarkdaughter.chatgpt.site/
+
+## Formatting
+
+Prettier and its Svelte plugin format source, tests, configuration, and this README.
+Use `npm run format` to apply formatting and `npm run format:check` to verify it.
+Generated output and original binary assets are excluded.
 
 ## Migration checks
 
@@ -169,7 +177,6 @@ Soldiers use the heavier footstep thud previously used by archers.
 
 All cues have a lower playback level, rounded attacks, and gentler high frequencies.
 
-
 ## Weapon choices and resistances
 
 Select an enemy, then tap a weapon to attack immediately. Each bordered action shows
@@ -177,12 +184,12 @@ the damage dealt and taken, plus its own HP forecasts. The magnifying glass reve
 rounded numeric damage calculations without spending an action. Every unit still attacks once per
 turn; attacking ends its movement.
 
-| Unit | Melee | Ranged | Resistance / weakness |
-| --- | --- | --- | --- |
-| Commander | Sword: 4 Blade; Mace: 3 Impact | — | 75% Blade base damage |
-| Soldier (8 gold) | Sword: 4 Blade; Mace: 3 Impact | — | 75% Blade/Pierce; 125% Impact base damage |
-| Archer (8 gold) | Knife: 2 Blade | Bow: 3 Pierce, range 2 | 100% base damage |
-| Scout (5 gold) | Knife: 2 Blade | Sling: 1 Impact, range 2 | 100% base damage |
+| Unit             | Melee                          | Ranged                   | Resistance / weakness                     |
+| ---------------- | ------------------------------ | ------------------------ | ----------------------------------------- |
+| Commander        | Sword: 4 Blade; Mace: 3 Impact | —                        | 75% Blade base damage                     |
+| Soldier (8 gold) | Sword: 4 Blade; Mace: 3 Impact | —                        | 75% Blade/Pierce; 125% Impact base damage |
+| Archer (8 gold)  | Knife: 2 Blade                 | Bow: 3 Pierce, range 2   | 100% base damage                          |
+| Scout (5 gold)   | Knife: 2 Blade                 | Sling: 1 Impact, range 2 | 100% base damage                          |
 
 Melee answers melee; ranged answers ranged. A surviving defender replies once
 with its strongest legal weapon in the same category, even if it already acted

@@ -29,10 +29,7 @@ export class TestStorage implements Storage {
   }
 }
 
-export function storageWithValue(
-  read: () => string,
-  write: (value: string) => void,
-): Storage {
+export function storageWithValue(read: () => string, write: (value: string) => void): Storage {
   return {
     get length() {
       return read() ? 1 : 0;

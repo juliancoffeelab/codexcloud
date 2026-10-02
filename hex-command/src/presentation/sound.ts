@@ -56,13 +56,8 @@ export function createSound() {
   }
 
   // A tile interaction has exactly one family: attack > occupant > ground.
-  function soundForInteraction({
-    attackType,
-    unitType,
-    terrain,
-  }: InteractionSound = {}) {
-    if (attackType)
-      return attackType === "archer" ? "attack-bow" : "attack-melee";
+  function soundForInteraction({ attackType, unitType, terrain }: InteractionSound = {}) {
+    if (attackType) return attackType === "archer" ? "attack-bow" : "attack-melee";
     if (unitType === "scout" || unitType === "archer") return "terrain-plains";
     // Give armored soldiers the heavier footstep formerly used by archers.
     if (unitType === "soldier") return "unit-archer";
@@ -99,8 +94,7 @@ export function createSound() {
     try {
       if (!context || context.state === "closed") {
         const AudioContextClass =
-          globalThis.AudioContext ||
-          (globalThis as AudioGlobals).webkitAudioContext;
+          globalThis.AudioContext || (globalThis as AudioGlobals).webkitAudioContext;
         if (!AudioContextClass) return;
         context = new AudioContextClass({ latencyHint: "interactive" });
         primed = false;
@@ -109,8 +103,7 @@ export function createSound() {
         master.connect(context.destination);
         // Warm every variation once after the first gesture, without playing it.
         for (const family of families) {
-          for (const variant of [1, 2, 3])
-            void sample(family, variant).catch(() => {});
+          for (const variant of [1, 2, 3]) void sample(family, variant).catch(() => {});
         }
       }
       if (context.state === "running") unlocking = null;
@@ -146,8 +139,7 @@ export function createSound() {
         const j = Math.floor(Math.random() * (i + 1));
         [bag[i], bag[j]] = [bag[j]!, bag[i]!];
       }
-      if (bag.at(-1) === lastVariation.get(family))
-        [bag[0], bag[2]] = [bag[2]!, bag[0]!];
+      if (bag.at(-1) === lastVariation.get(family)) [bag[0], bag[2]] = [bag[2]!, bag[0]!];
       bags.set(family, bag);
     }
     const chosen = bag.pop()!;
@@ -180,8 +172,7 @@ export function createSound() {
       if (context.state !== "running" && unlocking) await unlocking;
       if (context.state !== "running") return false;
       const buffer = await sample(family, variation(family));
-      if (!enabled || currentRequest !== request || context.state !== "running")
-        return false;
+      if (!enabled || currentRequest !== request || context.state !== "running") return false;
       const source = context.createBufferSource(),
         gain = context.createGain();
       source.buffer = buffer;

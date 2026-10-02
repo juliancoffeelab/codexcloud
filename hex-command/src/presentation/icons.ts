@@ -10,8 +10,7 @@ const paths = {
   blocked: '<path d="M3 12h18m-4-4 4 4-4 4M8 4v16m8-16L8 20"/>',
   coin: '<circle cx="12" cy="12" r="8"/><path d="M14 8h-3a2 2 0 0 0 0 4h2a2 2 0 0 1 0 4h-3m2-10v12"/>',
   heal: '<path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/>',
-  recruit:
-    '<circle cx="9" cy="7" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3m4-12v8m-4-4h8"/>',
+  recruit: '<circle cx="9" cy="7" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3m4-12v8m-4-4h8"/>',
   keep: '<path d="M4 21V3h4v4h3V3h3v4h3V3h3v18zM10 21v-6h4v6"/>',
   search: '<circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/>',
 };

@@ -1,9 +1,6 @@
 import assert from "node:assert/strict";
 import { Game, TYPES } from "../src/game/engine.ts";
-import {
-  abilityInfo,
-  type AbilityInfo,
-} from "../src/presentation/unit-ability.ts";
+import { abilityInfo, type AbilityInfo } from "../src/presentation/unit-ability.ts";
 
 const game = new Game();
 for (const unit of game.units) {
@@ -21,6 +18,4 @@ for (const unit of game.units) {
     });
   }
 }
-console.log(
-  "PASS: commanders show command information; other unit abilities match their rules",
-);
+console.log("PASS: commanders show command information; other unit abilities match their rules");

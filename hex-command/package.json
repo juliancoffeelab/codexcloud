@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "format": "prettier --write src scripts/*.ts tests/*.ts *.config.ts *.json README.md",
+    "format:check": "prettier --check src scripts/*.ts tests/*.ts *.config.ts *.json README.md",
     "dev": "vite --host 0.0.0.0",
     "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p tsconfig.tests.json",
     "build": "vite build",
@@ -19,6 +21,8 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^6.0.0",
     "@types/node": "^24.0.0",
+    "prettier": "^3.9.9",
+    "prettier-plugin-svelte": "^3.5.2",
     "svelte-check": "^4.0.0",
     "tsx": "^4.0.0",
     "typescript": "^5.9.0",

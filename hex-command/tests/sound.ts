@@ -109,14 +109,7 @@ for (const unitType of ["soldier", "archer", "scout", "commander"] as const) {
         : `unit-${unitType}`,
   );
 }
-for (const terrain of [
-  "village",
-  "water",
-  "forest",
-  "hill",
-  "plains",
-  "keep",
-] as const) {
+for (const terrain of ["village", "water", "forest", "hill", "plains", "keep"] as const) {
   assert.equal(sound.soundForInteraction({ terrain }), `terrain-${terrain}`);
 }
 assert.equal(sound.soundForInteraction({ terrain: "ford" }), "terrain-water");
@@ -129,14 +122,9 @@ for (let i = 0; i < 9; i++) {
   const match = required(required(source.buffer.name).match(/-(\d)\.wav/));
   variants.push(required(match[1]));
 }
-for (let i = 0; i < 9; i += 3)
-  assert.equal(new Set(variants.slice(i, i + 3)).size, 3);
+for (let i = 0; i < 9; i += 3) assert.equal(new Set(variants.slice(i, i + 3)).size, 3);
 assert.ok(variants.every((value, i) => i === 0 || value !== variants[i - 1]));
-assert.equal(
-  fetched.length,
-  51,
-  "all variations warm after the first gesture and are reused",
-);
+assert.equal(fetched.length, 51, "all variations warm after the first gesture and are reused");
 assert.ok(
   required(audio)
     .sources.filter((source) => !source.buffer.silent)
@@ -173,16 +161,13 @@ const latest = cold.playInteraction({
   unitType: "soldier",
   terrain: "forest",
 });
-for (const sample of pending.filter((p) => p.name.includes("/terrain-forest-")))
-  sample.resolve();
+for (const sample of pending.filter((p) => p.name.includes("/terrain-forest-"))) sample.resolve();
 assert.equal(await old, false);
-for (const sample of pending.filter((p) => p.name.includes("/attack-bow-")))
-  sample.resolve();
+for (const sample of pending.filter((p) => p.name.includes("/attack-bow-"))) sample.resolve();
 assert.equal(await latest, true);
 const muted = cold.playSound("terrain-water");
 cold.setSoundEnabled(false);
-for (const sample of pending.filter((p) => p.name.includes("/terrain-water-")))
-  sample.resolve();
+for (const sample of pending.filter((p) => p.name.includes("/terrain-water-"))) sample.resolve();
 assert.equal(await muted, false);
 cold.setSoundEnabled(true);
 required(audio).state = "suspended";
@@ -209,16 +194,10 @@ globalThis.fetch = async (url) => new Response(String(url));
 const touch = createSound();
 void touch.unlockSound(gesture("pointerdown", true));
 assert.equal(attempts, 1);
-assert.equal(
-  required(audio).sources.length,
-  1,
-  "the gesture primes mobile output with silence",
-);
+assert.equal(required(audio).sources.length, 1, "the gesture primes mobile output with silence");
 await Promise.race([
   touch.unlockSound(gesture("touchend", true)),
-  new Promise((_, reject) =>
-    setTimeout(() => reject(Error("touch resume remained stuck")), 100),
-  ),
+  new Promise((_, reject) => setTimeout(() => reject(Error("touch resume remained stuck")), 100)),
 ]);
 assert.equal(attempts, 2);
 assert.equal(await touch.playSound("terrain-plains"), true);
@@ -229,11 +208,7 @@ assert.equal(attempts, 3);
 assert.equal(await touch.playSound("terrain-plains"), true);
 required(audio).state = "closed";
 await touch.unlockSound(gesture("click", true));
-assert.equal(
-  required(audio).state,
-  "running",
-  "closed mobile contexts can be recreated",
-);
+assert.equal(required(audio).state, "running", "closed mobile contexts can be recreated");
 const attemptsBefore = attempts;
 await touch.unlockSound(gesture("click", false));
 assert.equal(attempts, attemptsBefore, "scripted events cannot unlock output");
@@ -242,11 +217,7 @@ globalThis.AudioContext = NativeFake;
 globalThis.fetch = async () => new Response(null, { status: 500 });
 const failed = createSound();
 await failed.unlockSound();
-assert.equal(
-  await failed.playSound("terrain-hill"),
-  false,
-  "failed audio never throws",
-);
+assert.equal(await failed.playSound("terrain-hill"), false, "failed audio never throws");
 Reflect.deleteProperty(globalThis, "AudioContext");
 const unsupported = createSound();
 await unsupported.unlockSound();

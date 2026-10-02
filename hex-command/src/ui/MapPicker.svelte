@@ -1,14 +1,46 @@
 <script lang="ts">
-  import { MAPS } from '../game/maps';
-  import { hexPoints, tileCenter, previewColors } from './geometry';
-  import type { MapDefinition, TerrainType } from '../game/types';
-  let { selected = $bindable('mirror') }: { selected?: string } = $props();
-  function tiles(layout: MapDefinition) {
-    const features = new Map(layout.terrain.map(tile => [`${tile.col},${tile.row}`, tile.terrain]));
+  import { MAPS } from "../game/maps";
+  import { hexPoints, tileCenter, previewColors } from "./geometry";
+  import type { MapDefinition, TerrainType } from "../game/types";
+
+  let { selected = $bindable("mirror") }: { selected?: string } = $props();
+
+  function previewTiles(layout: MapDefinition) {
+    const terrainByTile = new Map<string, TerrainType>(
+      layout.terrain.map((tile) => [`${tile.col},${tile.row}`, tile.terrain]),
+    );
     return Array.from({ length: layout.rows * layout.cols }, (_, index) => {
-      const col = index % layout.cols, row = Math.floor(index / layout.cols);
-      return { ...tileCenter({ col, row }), terrain: (features.get(`${col},${row}`) || 'plains') as TerrainType };
+      const col = index % layout.cols;
+      const row = Math.floor(index / layout.cols);
+      const { x, y } = tileCenter({ col, row });
+      const terrain = terrainByTile.get(`${col},${row}`) || "plains";
+      return { points: hexPoints(x, y), fill: previewColors[terrain] };
     });
   }
+
+  const maps = Object.values(MAPS).map((layout) => ({
+    id: layout.id,
+    name: layout.name,
+    description: layout.description,
+    viewBox: `0 0 ${85 + 61 * (layout.cols - 0.5)} ${84 + 53 * (layout.rows - 1)}`,
+    tiles: previewTiles(layout),
+  }));
 </script>
-<fieldset id="map-picker"><legend>Battlefield</legend>{#each Object.values(MAPS) as layout}<label class="map-choice"><input type="radio" name="battle-map" value={layout.id} bind:group={selected}/><span><svg class="map-preview" viewBox={`0 0 ${85 + 61 * (layout.cols - .5)} ${84 + 53 * (layout.rows - 1)}`} aria-hidden="true">{#each tiles(layout) as tile}<polygon points={hexPoints(tile.x, tile.y)} fill={previewColors[tile.terrain]} stroke="#263322" stroke-width="2"/>{/each}</svg><strong>{layout.name}</strong><span class="map-description">{layout.description}</span></span></label>{/each}</fieldset>
+
+<fieldset id="map-picker">
+  <legend>Battlefield</legend>
+  {#each maps as map}
+    <label class="map-choice">
+      <input type="radio" name="battle-map" value={map.id} bind:group={selected} />
+      <span>
+        <svg class="map-preview" viewBox={map.viewBox} aria-hidden="true">
+          {#each map.tiles as tile}
+            <polygon points={tile.points} fill={tile.fill} stroke="#263322" stroke-width="2" />
+          {/each}
+        </svg>
+        <strong>{map.name}</strong>
+        <span class="map-description">{map.description}</span>
+      </span>
+    </label>
+  {/each}
+</fieldset>

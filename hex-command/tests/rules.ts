@@ -48,14 +48,10 @@ g = new Game();
 g.units = [required(g.unit("u1")), required(g.unit("u4"))];
 const bow = g.addUnit("archer", "player", "2,1"),
   far = g.addUnit("scout", "enemy", "4,1");
-for (const t of g
-  .neighbors(bow.tile)
-  .filter((t) => distance(t, required(g.tile(far.tile))) === 1))
+for (const t of g.neighbors(bow.tile).filter((t) => distance(t, required(g.tile(far.tile))) === 1))
   t.terrain = "forest";
 assert(!g.canAttackFrom(bow, bow.tile, far));
-g
-  .neighbors(bow.tile)
-  .filter((t) => distance(t, required(g.tile(far.tile))) === 1)[0]!.terrain =
+g.neighbors(bow.tile).filter((t) => distance(t, required(g.tile(far.tile))) === 1)[0]!.terrain =
   "plains";
 assert(g.canAttackFrom(bow, bow.tile, far));
 g = new Game();
@@ -102,12 +98,8 @@ for (let n = 0; n < 20; n++) {
       }
       const goals =
         u.type === "scout"
-          ? g.tiles.filter(
-              (t) => t.terrain === "village" && t.owner !== "player",
-            )
-          : g.units
-              .filter((v) => v.side === "enemy")
-              .map((v) => required(g.tile(v.tile)));
+          ? g.tiles.filter((t) => t.terrain === "village" && t.owner !== "player")
+          : g.units.filter((v) => v.side === "enemy").map((v) => required(g.tile(v.tile)));
       const options = [...g.reachable(u.id).keys()];
       options.sort(
         (a, b) =>

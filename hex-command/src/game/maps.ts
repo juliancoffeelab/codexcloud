@@ -1,15 +1,6 @@
-import type {
-  MapDefinition,
-  MapId,
-  TerrainOverride,
-  TerrainType,
-  StartingUnit,
-} from "./types";
+import type { MapDefinition, MapId, TerrainOverride, TerrainType, StartingUnit } from "./types";
 // Only overrides are listed; all other hexes are plains.
-const terrain = (
-  kind: TerrainType,
-  positions: [number, number][],
-): TerrainOverride[] =>
+const terrain = (kind: TerrainType, positions: [number, number][]): TerrainOverride[] =>
   positions.map(([col, row]) => ({ col, row, terrain: kind }));
 const starters = (playerKeep: number, enemyKeep: number): StartingUnit[] => [
   { type: "commander", side: "player", col: playerKeep, row: 4 },
@@ -25,8 +16,7 @@ export const MAPS: Record<MapId, MapDefinition> = {
     id: "mirror",
     revision: 1,
     name: "Classic mirror",
-    description:
-      "The original compact battlefield. Four villages and a wooded center.",
+    description: "The original compact battlefield. Four villages and a wooded center.",
     cols: 11,
     rows: 7,
     terrain: [
@@ -148,8 +138,7 @@ export const MAPS: Record<MapId, MapDefinition> = {
 export const LEGACY_RIVER: MapDefinition = {
   id: "river",
   name: "River crossings",
-  description:
-    "A larger battlefield split by a river. Fight for three bridges and six villages.",
+  description: "A larger battlefield split by a river. Fight for three bridges and six villages.",
   cols: 15,
   rows: 9,
   terrain: [

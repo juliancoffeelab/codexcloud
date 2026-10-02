@@ -202,6 +202,10 @@ def compare(baseline, current):
     actual = json.loads((current / "states.json").read_text())
     problems = []
     for key in sorted(set(expected) | set(actual)):
+        # Reusing an artifact directory must not leave obsolete diagnostics
+        # after a later successful comparison.
+        for suffix in ("-diff.png", "-marked.png"):
+            (current / f"{key}{suffix}").unlink(missing_ok=True)
         if expected.get(key) != actual.get(key):
             problems.append(f"{key}: battle state differs")
         left = Image.open(baseline / f"{key}.png").convert("RGBA")

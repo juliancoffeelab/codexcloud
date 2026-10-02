@@ -26,8 +26,7 @@ export function saveBattle(game: Game, pendingEnemy = false): void {
 
 const record = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null;
-const side = (value: unknown): value is Side =>
-  value === "player" || value === "enemy";
+const side = (value: unknown): value is Side => value === "player" || value === "enemy";
 const integer = (value: unknown): value is number =>
   typeof value === "number" && Number.isSafeInteger(value) && value >= 0;
 const unitType = (value: unknown): value is UnitType =>
@@ -61,10 +60,7 @@ function validUnit(
     return false;
   return true;
 }
-function validVillage(
-  value: unknown,
-  villages: VillageState[],
-): value is VillageState {
+function validVillage(value: unknown, villages: VillageState[]): value is VillageState {
   return (
     record(value) &&
     typeof value.id === "string" &&
@@ -81,16 +77,11 @@ export function loadBattle(): LoadedBattle {
     const s = saved.state;
     if (
       !record(s) ||
-      (s.mapId !== undefined &&
-        (typeof s.mapId !== "string" || !Object.hasOwn(MAPS, s.mapId)))
+      (s.mapId !== undefined && (typeof s.mapId !== "string" || !Object.hasOwn(MAPS, s.mapId)))
     )
       return fresh();
     // The constructor rejects unsupported revisions, including malformed persisted values.
-    if (
-      s.mapRevision !== undefined &&
-      s.mapRevision !== null &&
-      typeof s.mapRevision !== "number"
-    )
+    if (s.mapRevision !== undefined && s.mapRevision !== null && typeof s.mapRevision !== "number")
       return fresh();
     const game = new Game(s.mapId as string | undefined, s.mapRevision ?? 1);
     if (
@@ -111,8 +102,7 @@ export function loadBattle(): LoadedBattle {
       !Array.isArray(s.log) ||
       s.log.length > 8 ||
       !s.log.every(
-        (line: unknown): line is string =>
-          typeof line === "string" && line.length <= 1000,
+        (line: unknown): line is string => typeof line === "string" && line.length <= 1000,
       )
     )
       return fresh();
@@ -128,9 +118,8 @@ export function loadBattle(): LoadedBattle {
     const villages = game.tiles.filter((tile) => tile.terrain === "village");
     if (
       s.villages.length !== villages.length ||
-      new Set(
-        (s.villages as unknown[]).map((v) => (record(v) ? v.id : undefined)),
-      ).size !== villages.length
+      new Set((s.villages as unknown[]).map((v) => (record(v) ? v.id : undefined))).size !==
+        villages.length
     )
       return fresh();
     for (const village of s.villages as unknown[]) {
@@ -140,10 +129,7 @@ export function loadBattle(): LoadedBattle {
     if (
       !s.winner &&
       ["player", "enemy"].some(
-        (team) =>
-          !units.some(
-            (unit) => unit.side === team && unit.type === "commander",
-          ),
+        (team) => !units.some((unit) => unit.side === team && unit.type === "commander"),
       )
     )
       return fresh();

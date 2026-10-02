@@ -24,14 +24,10 @@ for (const id of ["3,1", "3,5"]) {
     assert.ok(game.neighbors(enemyVillage.id).includes(mirror(neighbor)));
   }
 }
-for (const tile of game.tiles.filter((tile) =>
-  ["forest", "hill"].includes(tile.terrain),
-)) {
+for (const tile of game.tiles.filter((tile) => ["forest", "hill"].includes(tile.terrain))) {
   assert.equal(mirror(tile).terrain, tile.terrain);
 }
-console.log(
-  "PASS: village approaches and central forests/hills mirror on staggered hexes",
-);
+console.log("PASS: village approaches and central forests/hills mirror on staggered hexes");
 
 // Existing v1 saves store battle progress rather than terrain. Updating the map
 // must preserve an ongoing battle, including units on changed ground.

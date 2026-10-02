@@ -47,8 +47,7 @@ function option(name: string): string | undefined {
   const index = process.argv.indexOf(name);
   if (index < 0) return undefined;
   const value = process.argv[index + 1];
-  if (!value || value.startsWith("--"))
-    throw new Error(`Missing value for ${name}.`);
+  if (!value || value.startsWith("--")) throw new Error(`Missing value for ${name}.`);
   return value;
 }
 
@@ -59,8 +58,7 @@ function engineParity(legacy: LegacyEngine, oldUndo: () => LegacyUndo): number {
   for (const [map, revision] of maps) {
     for (let seed = 1; seed <= 20; seed++) {
       let rng = seed;
-      const random = (): number =>
-        (rng = (Math.imul(rng, 1664525) + 1013904223) >>> 0) / 2 ** 32;
+      const random = (): number => (rng = (Math.imul(rng, 1664525) + 1013904223) >>> 0) / 2 ** 32;
       const original = new legacy.Game(map, revision);
       const current = new Game(map, revision);
       const equal = (): void => {
@@ -74,14 +72,9 @@ function engineParity(legacy: LegacyEngine, oldUndo: () => LegacyUndo): number {
       equal();
       for (let turn = 0; turn < 40 && !original.winner; turn++) {
         if (original.turn === "player") {
-          for (const unit of [...original.units].filter(
-            (u) => u.side === "player",
-          )) {
+          for (const unit of [...original.units].filter((u) => u.side === "player")) {
             const moves = [...original.reachable(unit.id).keys()];
-            assert.deepEqual(
-              [...current.reachable(unit.id)],
-              [...original.reachable(unit.id)],
-            );
+            assert.deepEqual([...current.reachable(unit.id)], [...original.reachable(unit.id)]);
             if (moves.length && random() < 0.85) {
               const destination = moves[Math.floor(random() * moves.length)]!;
               original.move(unit.id, destination);
@@ -94,10 +87,7 @@ function engineParity(legacy: LegacyEngine, oldUndo: () => LegacyUndo): number {
               const target = targets[Math.floor(random() * targets.length)]!;
               const attack = original.bestAttack(unit, target)!;
               assert.deepEqual(
-                current.bestAttack(
-                  current.unit(unit.id)!,
-                  current.unit(target.id)!,
-                ),
+                current.bestAttack(current.unit(unit.id)!, current.unit(target.id)!),
                 attack,
               );
               original.attack(unit.id, target.id, attack.id);
@@ -118,9 +108,7 @@ function engineParity(legacy: LegacyEngine, oldUndo: () => LegacyUndo): number {
           original.enemyRecruit();
           current.enemyRecruit();
           equal();
-          for (const unit of [...original.units].filter(
-            (u) => u.side === "enemy",
-          )) {
+          for (const unit of [...original.units].filter((u) => u.side === "enemy")) {
             original.enemyAct(unit.id);
             current.enemyAct(unit.id);
             equal();
@@ -151,10 +139,7 @@ function engineParity(legacy: LegacyEngine, oldUndo: () => LegacyUndo): number {
 }
 
 function saveParity(legacy: LegacySave): number {
-  const previousStorage = Object.getOwnPropertyDescriptor(
-    globalThis,
-    "localStorage",
-  );
+  const previousStorage = Object.getOwnPropertyDescriptor(globalThis, "localStorage");
   const entries = new Map<string, string>();
   const storage: Storage = {
     get length() {
@@ -178,10 +163,7 @@ function saveParity(legacy: LegacySave): number {
   try {
     for (const [map, revision] of maps) {
       const game = new Game(map, revision);
-      game.move(
-        "u3",
-        map === "mirror" ? "3,1" : revision === 1 ? "3,4" : "4,1",
-      );
+      game.move("u3", map === "mirror" ? "3,1" : revision === 1 ? "3,4" : "4,1");
       const base: MutableSave = {
         version: 1,
         pendingEnemy: false,
@@ -228,15 +210,7 @@ function saveParity(legacy: LegacySave): number {
           compare(copy);
         }
       }
-      for (const key of [
-        "id",
-        "type",
-        "side",
-        "tile",
-        "hp",
-        "moved",
-        "attacked",
-      ]) {
+      for (const key of ["id", "type", "side", "tile", "hp", "moved", "attacked"]) {
         for (const malformed of [null, "wrong", [], {}, 0, -1, 99, true]) {
           const copy = structuredClone(base);
           copy.state.units[0]![key] = malformed;
@@ -245,8 +219,7 @@ function saveParity(legacy: LegacySave): number {
       }
     }
   } finally {
-    if (previousStorage)
-      Object.defineProperty(globalThis, "localStorage", previousStorage);
+    if (previousStorage) Object.defineProperty(globalThis, "localStorage", previousStorage);
     else Reflect.deleteProperty(globalThis, "localStorage");
   }
   return count;
@@ -265,16 +238,13 @@ try {
       encoding: "utf8",
     }).trim();
     for (const name of ["engine", "maps", "save", "undo"]) {
-      const source = execFileSync(
-        "git",
-        ["show", `${revision}:${prefix}dist/${name}.mjs`],
-        { cwd: project },
-      );
+      const source = execFileSync("git", ["show", `${revision}:${prefix}dist/${name}.mjs`], {
+        cwd: project,
+      });
       writeFileSync(join(baseline, `${name}.mjs`), source);
     }
   }
-  const moduleURL = (name: string): string =>
-    pathToFileURL(resolve(baseline, `${name}.mjs`)).href;
+  const moduleURL = (name: string): string => pathToFileURL(resolve(baseline, `${name}.mjs`)).href;
   const legacy = (await import(moduleURL("engine"))) as LegacyEngine;
   const undo = (await import(moduleURL("undo"))) as {
     createMoveUndo(): LegacyUndo;

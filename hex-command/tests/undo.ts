@@ -6,9 +6,7 @@ import { createMoveUndo } from "../src/game/undo.ts";
 
 const snapshot = (game: Game) => structuredClone({ ...game });
 const playerUnit = (game: Game, type: UnitType) =>
-  required(
-    game.units.find((unit) => unit.side === "player" && unit.type === type),
-  );
+  required(game.units.find((unit) => unit.side === "player" && unit.type === type));
 
 // Capturing a village must restore its former owner, unit flags and capture log.
 for (const owner of [null, "enemy", "player"] as const) {
@@ -98,9 +96,7 @@ for (const change of ["enemy", "winner", "round", "game"]) {
   const game = new Game();
   const undo = createMoveUndo();
   game.turn = "enemy";
-  const scout = required(
-    game.units.find((unit) => unit.side === "enemy" && unit.type === "scout"),
-  );
+  const scout = required(game.units.find((unit) => unit.side === "enemy" && unit.type === "scout"));
   undo.move(game, scout.id, "7,1");
   assert.equal(undo.canUndo(game), false);
   game.turn = "player";
