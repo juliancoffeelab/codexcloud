@@ -35,7 +35,7 @@ Source lives in `src/`; `dist/` is generated and must not be edited.
   `src/App.svelte` assembles the interface.
 - `src/presentation/` contains sprite, audio, motion, and icon helpers.
 - `src/style.css` retains the original global styles. `public/assets/` contains
-  the original artwork and audio, copied unchanged into production builds.
+  the terrain artwork, unit sheets, and audio, copied into production builds.
 
 The **Art style** selector in the cog settings menu switches between Normal,
 Low-poly, and Pixel. It remembers your preference in this browser and keeps the
@@ -44,9 +44,14 @@ current battle intact when switching.
 Terrain uses dedicated flat pointy-top hex artwork, rendered with square crops
 and uniform scaling, clipped to the board edges. Terrain sheets render with native
 SVG images, including forest brightness and pixel-art scaling. No mesh warping is used. Unit sheets contain teal player and crimson enemy rows with natural skin tones.
-Terrain shares a grassy base with lightly shaded forest floor, small stone patches, village dirt paths,
-and walled castles with paved courtyards. Grass, trees, and waves use irregular
-arrangements; the two main hill formations and village houses retain their familiar shapes.
+Normal terrain uses softly painted meadow cover, connected leafy woodland,
+weathered grassy ridges, textured water, and small rural hamlets. Low-poly uses
+restrained ground facets, varied groves, coherent ridges, and compact settlements.
+Grass remains much shorter than trees and cottages in both styles. Plains,
+forests, and hills have no baked-in roads; settlement paths stay inside their
+tiles so arbitrary neighbors compose cleanly. Fortresses have neutral decoration;
+the game supplies ownership markers. Both sheets keep their six hex frames.
+Pixel keeps its original simplified terrain symbols and artwork.
 Roles have distinct silhouettes, with no color filter applied. Commanders carry
 faction standards and render slightly larger on the map. Team bases and ownership dots
 also identify sides. Pixel units use coarse blocks and simplified shading to match the terrain,

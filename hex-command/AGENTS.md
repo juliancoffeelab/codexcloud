@@ -16,3 +16,8 @@
   before publishing results or applying feedback.
 - Preserve the game rules, artwork, layout, and existing visible behavior. Keep
   strict TypeScript and Prettier checks passing. Keep this project self-contained.
+- Terrain artwork must compose across arbitrary neighboring hexes. Do not bake
+  through-roads or trails into individual plains, forest, or hill tiles. Keep
+  settlement paths inside their tile and terrain ownership decoration neutral.
+- Normal and Low-poly ground cover uses believable proportions and distinct
+  landscape compositions. Preserve Pixel artwork unless explicitly asked to change it.

@@ -63,7 +63,7 @@ const terrainSheets = {
   normal: {
     width: 1536,
     height: 1024,
-    revision: "bc9be76e5658",
+    revision: "b97cf824c51e",
     frames: [
       {
         x: 76.0,
@@ -100,7 +100,7 @@ const terrainSheets = {
   "low-poly": {
     width: 1536,
     height: 1024,
-    revision: "ffabf1089a96",
+    revision: "2cee60de0b7d",
     frames: [
       {
         x: 41.0,
@@ -343,8 +343,8 @@ function assetURL(style: ArtStyle, kind: SpriteKind) {
   return `${import.meta.env?.BASE_URL ?? "/"}assets/${kind}-${style}.png?v=${(kind === "terrain" ? terrainSheets : unitSheets)[style].revision}`;
 }
 const shallowRevisions = {
-  normal: "e00d7da98abd",
-  "low-poly": "467b3db16f62",
+  normal: "78299cb1dda4",
+  "low-poly": "5c738b2c0425",
   pixel: "8843342bc280",
 };
 function shallowAssetURL(style: ArtStyle) {
