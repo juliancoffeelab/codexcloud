@@ -293,25 +293,22 @@ function renderTerrainPanel() {
   }
   const info = TERRAIN[tile.terrain];
   const facts = [];
-  const fact = (icon, text) => facts.push({ icon, text });
   if (Number.isFinite(info.cost)) {
-    fact("move", tile.terrain === "ford" ? "Movement: 3 for soldiers and commanders; 2 for archers and scouts" :
+    facts.push(tile.terrain === "ford" ? "Movement: 3 for soldiers and commanders; 2 for archers and scouts" :
       `Movement: ${info.cost}${["forest", "hill"].includes(tile.terrain) ? " (scouts: 1)" : ""}`);
-    fact("shield", tile.terrain === "ford" ? "Exposure: +1 damage received from all attacks" : tile.terrain === "hill" ? "Protection: −1 damage from all attacks" :
+    facts.push(tile.terrain === "ford" ? "Exposure: +1 damage received from all attacks" : tile.terrain === "hill" ? "Protection: −1 damage from all attacks" :
       tile.terrain === "forest" ? "Protection: −1 damage from ranged attacks" : "Protection: none");
-  } else fact("move", "Movement: impassable");
-  if (["forest", "hill"].includes(tile.terrain)) fact("blocked", "Blocks ranged shots through this hex");
+  } else facts.push("Movement: impassable");
+  if (["forest", "hill"].includes(tile.terrain)) facts.push("Blocks ranged shots through this hex");
   if (tile.terrain === "village") {
-    fact("coin", "+2 gold at the start of its owner’s turn");
-    fact("heal", "Heals a friendly occupant by 2 HP at the start of its turn");
+    facts.push("+2 gold at the start of its owner’s turn", "Heals a friendly occupant by 2 HP at the start of its turn");
   }
   if (tile.terrain === "keep") {
-    fact("recruit", "Its owner’s commander can recruit into adjacent empty land hexes");
-    fact("keep", "Keeps cannot be captured");
+    facts.push("Its owner’s commander can recruit into adjacent empty land hexes", "Keeps cannot be captured");
   }
   const ownership = ["village", "keep"].includes(tile.terrain)
     ? `<p class="terrain-owner ${tile.owner || "neutral"}">${tile.owner === "player" ? "Your " : tile.owner === "enemy" ? "Enemy " : "Unclaimed "}${tile.terrain}</p>` : "";
-  terrainPanel.innerHTML = `<div class="terrain-detail"><div class="terrain-portrait">${artSprite(artStyle, "terrain", tile.terrain, 0, 0, 80, 80, "terrain-card-art")}<span class="unit-side">Terrain</span></div><div class="terrain-info"><h2>${info.name}</h2>${ownership}<p>${terrainDescriptions[tile.terrain]}</p><ul class="terrain-facts" role="list">${facts.map(({ icon, text }) => `<li>${iconMarkup(icon)}<span>${text}</span></li>`).join("")}</ul></div></div>`;
+  terrainPanel.innerHTML = `<div class="terrain-detail"><div class="terrain-portrait">${artSprite(artStyle, "terrain", tile.terrain, 0, 0, 80, 80, "terrain-card-art")}<span class="unit-side">Terrain</span></div><div class="terrain-info"><h2>${info.name}</h2>${ownership}<p>${terrainDescriptions[tile.terrain]}</p><ul class="terrain-facts">${facts.map(fact => `<li>${fact}</li>`).join("")}</ul></div></div>`;
 }
 function clearSelection(clearInspection = false) {
   if (!selected && !target && !recruitType && !(clearInspection && inspectedTile)) return;
