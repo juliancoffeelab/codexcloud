@@ -1,0 +1,18 @@
+import { TYPES } from "../game/engine";
+import type { Unit } from "../game/types";
+
+export interface AbilityInfo {
+  name: string;
+  description: string;
+}
+
+export function abilityInfo(unit: Unit): AbilityInfo {
+  if (unit.type === "commander") {
+    return {
+      name: "Command",
+      description: "Losing this unit ends the battle.",
+    };
+  }
+  const type = TYPES[unit.type];
+  return { name: type.ability, description: type.description };
+}

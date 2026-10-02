@@ -11,7 +11,7 @@ import numpy as np
 from scipy.signal import butter, sosfilt
 
 RATE = 24_000
-OUTPUT = Path(__file__).resolve().parents[1] / 'dist' / 'assets' / 'audio'
+OUTPUT = Path(__file__).resolve().parents[1] / 'public' / 'assets' / 'audio'
 FAMILIES = (
     'attack-bow', 'attack-melee', 'unit-soldier', 'unit-archer',
     'unit-scout', 'unit-commander', 'terrain-village', 'terrain-water',

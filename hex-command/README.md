@@ -3,19 +3,45 @@
 A standalone browser game about capturing villages, recruiting units, and
 defeating the enemy commander on a hex battlefield.
 
-Run it locally from this folder:
+Install and run from this folder (Node.js 22.12+):
 
 ```sh
+npm ci
+npm run dev
+```
+
+The game uses Svelte 5 with strict TypeScript, built by Vite. It remains a static,
+client-only game: no server or account is required. To build and serve the
+production files:
+
+```sh
+npm run check
+npm test
+npm run build
 python3 -m http.server 8000 --directory dist
 ```
 
-No build step or package installation is needed. The **Art style** selector
-in the cog settings menu switches between Normal, Low-poly, and Pixel. It remembers your preference in this browser and keeps the
+Source lives in `src/`; `dist/` is generated and must not be edited.
+
+- `src/game/` contains browser-independent rules, AI, typed domain models,
+  save validation, and move undo. Save keys, format, battle rules, and deterministic
+  enemy replay remain compatible with the original game.
+- `src/controller/` owns the play session and actions, autosaves, turn sequencing,
+  feedback, preferences, and browser tools. UI controls and tools use the same
+  action methods; rendering does not save or mutate the battle.
+- `src/ui/` contains Svelte components for the battlefield, panels, combat,
+  controls, and dialogs. Pure `*-view.ts` helpers prepare display states, labels,
+  and forecasts so templates describe the interface rather than calculate it.
+  `src/App.svelte` assembles the interface.
+- `src/presentation/` contains sprite, audio, motion, and icon helpers.
+- `src/style.css` retains the original global styles. `public/assets/` contains
+  the original artwork and audio, copied unchanged into production builds.
+
+The **Art style** selector in the cog settings menu switches between Normal,
+Low-poly, and Pixel. It remembers your preference in this browser and keeps the
 current battle intact when switching.
 
-`dist/engine.mjs` contains the game rules and enemy AI, `dist/app.mjs` handles
-the interface, and `dist/art.mjs` displays regions of the generated PNG sheets
-in `dist/assets/`. Terrain uses dedicated flat pointy-top hex artwork, rendered with square crops
+Terrain uses dedicated flat pointy-top hex artwork, rendered with square crops
 and uniform scaling, clipped to the board edges. No mesh warping is used. Unit sheets contain teal player and crimson enemy rows with natural skin tones.
 Terrain shares a grassy base with lightly shaded forest floor, small stone patches, village dirt paths,
 and walled castles with paved courtyards. Grass, trees, and waves use irregular
@@ -31,18 +57,27 @@ sheets, through a Sites session with access to the project.
 
 Site: https://hex-command-tfhlu4.lightdarkdaughter.chatgpt.site/
 
-## Browser checks
+## Formatting
 
-With Python Playwright and Chromium installed, run from this folder:
+Prettier and its Svelte plugin format source, tests, configuration, and this README.
+Use `npm run format` to apply formatting and `npm run format:check` to verify it.
+Generated output and original binary assets are excluded.
 
-```sh
-python3 tests/smoke.py
-```
+## Checks
 
-The checks start their own local server and exercise style switching,
-persistence, recruitment, movement, combat, enemy turns, mobile layout, and
-asset-loading failures. Add `--screenshots /tmp/hex-command-checks` to capture
-each style on desktop and mobile.
+`npm run check` checks application components and TypeScript tests with `strict`
+and `noUncheckedIndexedAccess`. `npm test` runs small unit checks for rules,
+publication, immutable views, undo, persistence, audio, and asynchronous cancellation.
+The entire unit command has a 20-second limit, enforced by a shared runner budget.
+Tests use controlled promises instead of waiting through gameplay animations.
+
+There are no browser automation, screenshot, or migration/parity suites. These
+constraints are recorded in `AGENTS.md` and apply to future changes as well.
+
+Components receive an immutable `BattleView` and a command-only `BattleCommands`
+facade. The controller owns the mutable engine, publishes undo and recruitment
+availability with each view, and invalidates stale asynchronous results. Queries
+on `GameView` read one detached, frozen revision and expose no engine commands.
 
 The sticky top bar holds income, village count, coin treasury, End turn with its turn counter,
 and settings. Settings contains New battle, the field manual, and
@@ -104,7 +139,7 @@ UI tick. Repeat unit clicks and terrain inspection keep their material cue. Each
 unit/terrain clip is one brief contact or texture. The commander uses a soft
 leather-and-cloth rustle, and hill wind is quiet with a quick, soft onset. All
 variations preload after the first user gesture to keep later clicks responsive. Audio starts only after an interaction; the Sound effects setting persists.
-Rebuild WAVs with `python scripts/generate-sfx.py` (requires numpy and scipy).
+Rebuild WAVs in `public/assets/audio/` with `python scripts/generate-sfx.py` (requires numpy and scipy).
 
 River forests sit above the northern village approach and along the outer southern
 edge, leaving the starting soldier and scout clear routes to nearby villages.
@@ -120,7 +155,6 @@ Soldiers use the heavier footstep thud previously used by archers.
 
 All cues have a lower playback level, rounded attacks, and gentler high frequencies.
 
-
 ## Weapon choices and resistances
 
 Select an enemy, then tap a weapon to attack immediately. Each bordered action shows
@@ -128,12 +162,12 @@ the damage dealt and taken, plus its own HP forecasts. The magnifying glass reve
 rounded numeric damage calculations without spending an action. Every unit still attacks once per
 turn; attacking ends its movement.
 
-| Unit | Melee | Ranged | Resistance / weakness |
-| --- | --- | --- | --- |
-| Commander | Sword: 4 Blade; Mace: 3 Impact | — | 75% Blade base damage |
-| Soldier (8 gold) | Sword: 4 Blade; Mace: 3 Impact | — | 75% Blade/Pierce; 125% Impact base damage |
-| Archer (8 gold) | Knife: 2 Blade | Bow: 3 Pierce, range 2 | 100% base damage |
-| Scout (5 gold) | Knife: 2 Blade | Sling: 1 Impact, range 2 | 100% base damage |
+| Unit             | Melee                          | Ranged                   | Resistance / weakness                     |
+| ---------------- | ------------------------------ | ------------------------ | ----------------------------------------- |
+| Commander        | Sword: 4 Blade; Mace: 3 Impact | —                        | 75% Blade base damage                     |
+| Soldier (8 gold) | Sword: 4 Blade; Mace: 3 Impact | —                        | 75% Blade/Pierce; 125% Impact base damage |
+| Archer (8 gold)  | Knife: 2 Blade                 | Bow: 3 Pierce, range 2   | 100% base damage                          |
+| Scout (5 gold)   | Knife: 2 Blade                 | Sling: 1 Impact, range 2 | 100% base damage                          |
 
 Melee answers melee; ranged answers ranged. A surviving defender replies once
 with its strongest legal weapon in the same category, even if it already acted
@@ -149,6 +183,5 @@ Maces counter armor; swords hit unarmored units harder. The enemy evaluates
 weapons and retaliation, including safer replies and avoiding lethal exchanges.
 Existing saves keep their units, HP, gold, map, and progress and use the new rules.
 
-Run `node tests/combat.mjs` for weapon/terrain rules and `python3 tests/combat.py`
-for immediate attacks, optional damage inspection, exact outcomes, keyboard use,
-and mobile layout.
+Run `npm test` for the lightweight unit checks, or
+`node --import tsx tests/combat.ts` for weapon and terrain rules alone.

@@ -35,4 +35,5 @@ Thumbs.db
 *.swo
 *~
 
-# dist/ is the game's source and must remain tracked.
+# Production output is generated from src/ and public/.
+/dist/
