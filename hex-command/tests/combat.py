@@ -14,18 +14,18 @@ try:
   context=browser.new_context(viewport={'width':393,'height':800},is_mobile=True,has_touch=True);context.add_init_script(TOOLS)
   page=context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
   page.goto(f'http://127.0.0.1:{server.server_port}',wait_until='networkidle')
-  def setup(attacker='soldier',defender='soldier',target_tile='6,1'):
+  def setup(attacker='soldier',defender='soldier',target_tile='6,1',attacker_tile='5,1'):
    page.evaluate("window.hexSmokeTools.start_new_battle.execute()")
-   page.evaluate('''([a,b,t])=>{
+   page.evaluate('''([a,b,t,origin])=>{
     const key='hex-command-battle',s=JSON.parse(localStorage.getItem(key));
     s.state.units=s.state.units.filter(u=>['u1','u2','u4','u5'].includes(u.id));
-    for(const [id,type,tile] of [['u2',a,'5,1'],['u5',b,t]]){
+    for(const [id,type,tile] of [['u2',a,origin],['u5',b,t]]){
      const u=s.state.units.find(u=>u.id===id);u.type=type;u.tile=tile;u.hp=type==='soldier'?12:8;u.moved=false;u.attacked=false;
     }
     localStorage.setItem(key,JSON.stringify(s));
-   }''',[attacker,defender,target_tile])
+   }''',[attacker,defender,target_tile,attacker_tile])
    page.reload(wait_until='networkidle')
-   page.click('[data-tile="5,1"]');page.click(f'[data-tile="{target_tile}"]')
+   page.click(f'[data-tile="{attacker_tile}"]');page.click(f'[data-tile="{target_tile}"]')
   def hp(id):return next(u['hp'] for u in snapshot(page)['units'] if u['id']==id)
   def forecast(attack, player_after, enemy_after):
    row=page.locator(f'[data-attack="{attack}"]')
@@ -43,8 +43,10 @@ try:
   setup()
   assert page.locator('[data-attack]').count()==2
   assert page.locator('input[name="attack-choice"], #attack').count()==0
-  assert page.locator('[data-attack="mace"] .attack-outcome').inner_text() == 'Deal 4\nTake 4'
-  assert page.locator('[data-attack="sword"] .attack-outcome').inner_text() == 'Deal 3\nTake 4'
+  assert page.locator('[data-attack="mace"] [data-forecast="enemy"] .forecast-impact').inner_text() == 'Deal 4 HP'
+  assert page.locator('[data-attack="mace"] [data-forecast="player"] .forecast-impact').inner_text() == 'Take 4 HP'
+  assert page.locator('[data-attack="sword"] [data-forecast="enemy"] .forecast-impact').inner_text() == 'Deal 3 HP'
+  assert page.locator('[data-attack="sword"] [data-forecast="player"] .forecast-impact').inner_text() == 'Take 4 HP'
   assert not page.locator('#attack-details-sword').is_visible()
   before=snapshot(page)
   forecast('mace',8,8)
@@ -54,6 +56,8 @@ try:
   assert snapshot(page)==before, 'hovering a forecast is read-only'
   page.tap('[data-inspect="sword"]')
   assert page.locator('[data-inspect="sword"]').get_attribute('aria-expanded')=='true'
+  assert 'Your attack: 4 blade, sword, melee' in page.locator('#attack-details-sword').inner_text()
+  assert 'Their attack: 3 impact, mace, melee' in page.locator('#attack-details-sword').inner_text()
   assert 'round(4 × 75%) = 3' in page.locator('#attack-details-sword').inner_text()
   assert 'round(3 × 125%) = 4' in page.locator('#attack-details-sword').inner_text()
   assert page.locator('.attack-actions .resistances').count()==0, 'unit stats do not repeat in attack calculations'
@@ -70,8 +74,10 @@ try:
   page.reload(wait_until='networkidle');assert hp('u2')==8 and hp('u5')==8
   assert not page.locator('#unit-panel').is_visible()
   setup('archer','archer')
-  assert page.locator('[data-attack="bow"] .attack-outcome').inner_text() == 'Deal 3\nTake 3'
-  assert page.locator('[data-attack="knife"] .attack-outcome').inner_text() == 'Deal 2\nTake 2'
+  assert page.locator('[data-attack="bow"] [data-forecast="enemy"] .forecast-impact').inner_text() == 'Deal 3 HP'
+  assert page.locator('[data-attack="bow"] [data-forecast="player"] .forecast-impact').inner_text() == 'Take 3 HP'
+  assert page.locator('[data-attack="knife"] [data-forecast="enemy"] .forecast-impact').inner_text() == 'Deal 2 HP'
+  assert page.locator('[data-attack="knife"] [data-forecast="player"] .forecast-impact').inner_text() == 'Take 2 HP'
   page.locator('[data-attack="knife"]').focus()
   forecast('knife',6,6)
   page.keyboard.press('Enter')
@@ -80,7 +86,8 @@ try:
   assert page.locator('[data-attack="knife"]').is_disabled()
   page.locator('[data-inspect="bow"]').click()
   assert '0 (out of range)' in page.locator('#attack-details-bow').inner_text()
-  assert '1–2 hex range' in page.locator('#attack-details-bow').inner_text()
+  assert 'Your attack: 3 pierce, bow, ranged' in page.locator('#attack-details-bow').inner_text()
+  assert 'Their attack: none' in page.locator('#attack-details-bow').inner_text()
   page.locator('[data-inspect="bow"]').click()
   for width in [1280,390,320]:
    page.set_viewport_size({'width':width,'height':900})
@@ -91,15 +98,27 @@ try:
    box=row.locator('.attack-box').bounding_box()
    glass=row.locator('[data-inspect]').bounding_box()
    assert glass['x']>=box['x'] and glass['x']+glass['width']<=box['x']+box['width'], 'glass is inside attack border'
-   heading=row.locator('.attack-heading')
-   name=heading.locator('strong').bounding_box()
-   outcome=heading.locator('.attack-outcome').bounding_box()
-   assert abs(outcome['x']-(name['x']+name['width'])-14)<1, 'damage follows the weapon inline'
+   assert row.locator('.attack-heading .forecast-impact, .attack-heading .attack-outcome').count()==0
+   for side in ['player','enemy']:
+    bar=row.locator(f'[data-forecast="{side}"]')
+    track=bar.locator('.health-track').bounding_box()
+    loss=bar.locator('.forecast-impact').bounding_box()
+    assert loss['y']>=track['y']+track['height'], 'damage labels sit below the corresponding bar'
    assert page.locator('.combat-explanation:visible').count()==0
    forecast('bow',8,10)
    no_dots()
    path=f'/tmp/hex-combat-{width}.png';page.screenshot(path=path,full_page=True)
   page.locator('[data-attack="bow"]').click();assert hp('u2')==8 and hp('u5')==10
+  setup('archer','archer','3,2','5,2')
+  before=snapshot(page)
+  page.tap('[data-inspect="bow"]')
+  detail=page.locator('#attack-details-bow').inner_text()
+  assert 'Your attack: 3 pierce, bow, ranged, hills' in detail
+  assert 'Their attack: 3 pierce, bow, ranged, forest' in detail
+  assert detail.count('round(3 × 100%) − 1 (cover) = 2')==2
+  assert snapshot(page)==before
+  page.locator('[data-attack="bow"]').click()
+  assert hp('u2')==6 and hp('u5')==6
   assert not errors,errors
   print('PASS: one-tap attacks, optional damage inspection, exact outcomes, ranged replies, keyboard, saves and independent attack health forecasts, numeric rounded calculations, no dot separators and compact 320px combat')
   browser.close()

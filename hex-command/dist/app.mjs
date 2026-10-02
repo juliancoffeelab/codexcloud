@@ -11,7 +11,7 @@ import {
   savedArtStyle,
   saveArtStyle,
 } from "./art.mjs?v=e288e02de731";
-import { arsenalMarkup, attackChoicesMarkup } from "./combat.mjs?v=535a23c418bd";
+import { arsenalMarkup, attackChoicesMarkup } from "./combat.mjs?v=b5fb6d618a80";
 import { iconMarkup } from "./icons.mjs?v=a28758f5c35e";
 const $ = (selector) => document.querySelector(selector),
   map = $("#map"),

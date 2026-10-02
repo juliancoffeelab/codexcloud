@@ -150,3 +150,12 @@ button,select{transition:background-color 120ms ease,border-color 120ms ease}
 .attack-box .attack-inspect{position:absolute;top:0;right:0;width:44px;border:0;border-radius:0 3px 0 0}
 .weapon-category{padding-left:23px}
 .weapon-damage{white-space:nowrap}
+
+/* Damage labels belong to the HP forecasts, with one calculation per side. */
+.attack-action .forecast-impact{display:block;margin-top:6px;text-align:center;font-size:13px;color:var(--gold)}
+.forecast-label>span{text-align:center}
+.damage-equation{display:block;font-variant-numeric:tabular-nums;color:var(--text)}
+.attack-calculation+.attack-calculation{margin-top:12px}
+.attack-calculation p+p{margin-top:4px}
+
+.forecast-label b.fatal{color:#ee9686}
