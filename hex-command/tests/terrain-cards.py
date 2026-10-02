@@ -31,8 +31,8 @@ try:
         assert not page.locator('#unit-panel').is_visible()
         for tile, name, mechanics in [
             ('0,0', 'Water', ['impassable']),
-            ('5,2', 'Forest', ['Movement: 2 (scouts: 1)', '−1 damage from bow attacks', 'Blocks bow shots']),
-            ('3,2', 'Hills', ['Movement: 2 (scouts: 1)', '−1 damage from all attacks', 'Blocks bow shots']),
+            ('5,2', 'Forest', ['Movement: 2 (scouts: 1)', '−1 damage from ranged attacks', 'Blocks ranged shots']),
+            ('3,2', 'Hills', ['Movement: 2 (scouts: 1)', '−1 damage from all attacks', 'Blocks ranged shots']),
             ('3,1', 'Village', ['Unclaimed village', '+2 gold', '2 HP', 'start of its turn']),
             ('10,3', 'Keep', ['Enemy keep', 'adjacent empty land', 'cannot be captured']),
         ]:

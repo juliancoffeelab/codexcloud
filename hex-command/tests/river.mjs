@@ -55,7 +55,7 @@ for (const type of ['soldier', 'scout']) {
   }
   game.tile('7,0').terrain = 'bridge';
   game.units = [];
-  const commander = game.addUnit('commander', 'player', '6,8');
+  const commander = game.addUnit('commander', 'player', type === 'scout' ? '0,8' : '6,8');
   const enemy = game.addUnit(type, 'enemy', '8,8');
   if (type === 'scout') game.tile('5,8').terrain = 'village';
   let crossed = false, achieved = false;
@@ -78,7 +78,7 @@ river.move('u2', '7,3');
 assert.equal(river.unit('u2').tile, '7,3');
 console.log('PASS: river movement, save migration, interrupted checkpoint and enemy bridge detours');
 
-// Exposure applies to both weapon types and retaliation, while Shield still works.
+// Exposure applies to both weapon types and retaliation, while armor resistances still work.
 const exposed = new Game('river');
 exposed.tile('6,7').terrain = 'plains';
 for (const attackerType of ['soldier', 'archer']) {

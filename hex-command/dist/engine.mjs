@@ -1,5 +1,8 @@
 import { MAPS, LEGACY_RIVER } from "./maps.mjs?v=2b696541ff5e";
 
+export const DAMAGE_TYPES = { blade: "Blade", pierce: "Pierce", impact: "Impact" };
+const weapon = (id, name, damage, damageType, category, range, sound = "attack-melee") =>
+  ({ id, name, damage, damageType, category, range, sound });
 export const TYPES = {
   commander: {
     name: "Commander",
@@ -8,6 +11,8 @@ export const TYPES = {
     damage: 4,
     range: 1,
     cost: 0,
+    attacks: [weapon("sword", "Sword", 4, "blade", "melee", 1), weapon("mace", "Mace", 3, "impact", "melee", 1)],
+    resistances: { blade: 25, pierce: 0, impact: 0 },
     ability: "Recruit",
     description: "Recruit while on your keep. New recruits act next turn.",
   },
@@ -18,8 +23,10 @@ export const TYPES = {
     damage: 4,
     range: 1,
     cost: 8,
-    ability: "Shield",
-    description: "Takes 1 less damage from ranged attacks.",
+    attacks: [weapon("sword", "Sword", 4, "blade", "melee", 1), weapon("mace", "Mace", 3, "impact", "melee", 1)],
+    resistances: { blade: 25, pierce: 25, impact: -25 },
+    ability: "Armor",
+    description: "Resists blades and arrows; vulnerable to impact weapons.",
   },
   archer: {
     name: "Archer",
@@ -28,16 +35,20 @@ export const TYPES = {
     damage: 3,
     range: 2,
     cost: 8,
+    attacks: [weapon("bow", "Bow", 3, "pierce", "ranged", 2, "attack-bow"), weapon("knife", "Knife", 2, "blade", "melee", 1)],
+    resistances: { blade: 0, pierce: 0, impact: 0 },
     ability: "Bow",
-    description: "Range 2. Forests and hills block shots through them.",
+    description: "Bow reaches 2 hexes. A knife provides a weak melee reply.",
   },
   scout: {
     name: "Scout",
     hp: 8,
     move: 5,
     damage: 2,
-    range: 1,
+    range: 2,
     cost: 5,
+    attacks: [weapon("knife", "Knife", 2, "blade", "melee", 1), weapon("sling", "Sling", 1, "impact", "ranged", 2, "unit-archer")],
+    resistances: { blade: 0, pierce: 0, impact: 0 },
     ability: "Pathfinder",
     description: "Forests and hills cost only 1 movement.",
   },
@@ -176,42 +187,68 @@ export class Game {
     costs.delete(unit.tile);
     return costs;
   }
-  canAttackFrom(unit, from, target) {
+  attackProfile(unit, attackId) {
+    return TYPES[unit.type].attacks.find(attack => attack.id === attackId);
+  }
+  canAttackFrom(unit, from, target, attackId = null) {
+    if (!unit || !target || !this.tile(from) || !this.tile(target.tile) || unit.side === target.side) return false;
+    const attacks = attackId == null ? TYPES[unit.type].attacks : [this.attackProfile(unit, attackId)].filter(Boolean);
     const d = distance(this.tile(from), this.tile(target.tile));
-    if (d < 1 || d > TYPES[unit.type].range || unit.side === target.side)
-      return false;
-    if (unit.type === "archer" && d === 2) {
-      return this.neighbors(from).some(
-        (t) =>
-          distance(t, this.tile(target.tile)) === 1 &&
-          !["forest", "hill"].includes(t.terrain),
-      );
-    }
-    return true;
+    return attacks.some(attack => {
+      if (d < 1 || d > attack.range) return false;
+      if (attack.category === "ranged" && d === 2) {
+        return this.neighbors(from).some(tile => distance(tile, this.tile(target.tile)) === 1 &&
+          !["forest", "hill"].includes(tile.terrain));
+      }
+      return true;
+    });
+  }
+  attackOptions(unit, target, from = unit.tile) {
+    return TYPES[unit.type].attacks.filter(attack => this.canAttackFrom(unit, from, target, attack.id));
   }
   targets(id) {
     const unit = this.unit(id);
     if (!unit || unit.attacked || this.winner) return [];
-    return this.units.filter((t) => this.canAttackFrom(unit, unit.tile, t));
+    return this.units.filter(target => this.canAttackFrom(unit, unit.tile, target));
   }
-  damage(attacker, defender) {
-    const terrain = this.tile(defender.tile).terrain,
-      ranged = attacker.type === "archer";
-    let protection =
-      terrain === "hill" ? 1 : terrain === "forest" && ranged ? 1 : 0;
-    if (defender.type === "soldier" && ranged) protection++;
-    return Math.max(1, TYPES[attacker.type].damage - protection + (terrain === "ford" ? 1 : 0));
+  damageBreakdown(attacker, defender, attackId = TYPES[attacker.type].attacks[0].id) {
+    const attack = this.attackProfile(attacker, attackId);
+    if (!attack) throw new Error("Unknown attack for this unit.");
+    const terrain = this.tile(defender.tile).terrain;
+    const resistance = TYPES[defender.type].resistances[attack.damageType] || 0;
+    const resisted = Math.round(attack.damage * (100 - resistance) / 100);
+    const protection = terrain === "hill" || (terrain === "forest" && attack.category === "ranged") ? 1 : 0;
+    const exposure = terrain === "ford" ? 1 : 0;
+    return { base: attack.damage, damageType: attack.damageType, resistance, resisted, protection, exposure,
+      damage: Math.max(1, resisted - protection + exposure) };
   }
-  preview(attacker, target) {
-    const damage = this.damage(attacker, target);
-    const retaliation =
-      target.hp > damage &&
-      TYPES[attacker.type].range === 1 &&
-      TYPES[target.type].range === 1 &&
-      distance(this.tile(attacker.tile), this.tile(target.tile)) === 1
-        ? this.damage(target, attacker)
-        : 0;
+  damage(attacker, defender, attackId) {
+    return this.damageBreakdown(attacker, defender, attackId).damage;
+  }
+  retaliationProfile(attacker, target, attack) {
+    return this.attackOptions(target, attacker).filter(response => response.category === attack.category)
+      .sort((a, b) => this.damage(target, attacker, b.id) - this.damage(target, attacker, a.id))[0] || null;
+  }
+  previewDetails(attacker, target, attackId, from = attacker.tile) {
+    const attack = attackId == null ? this.bestAttack(attacker, target, from) : this.attackProfile(attacker, attackId);
+    if (!attack || !this.canAttackFrom(attacker, from, target, attack.id)) throw new Error("That attack cannot reach this enemy.");
+    const positioned = { ...attacker, tile: from };
+    const damageDetail = this.damageBreakdown(positioned, target, attack.id);
+    const response = target.hp > damageDetail.damage ? this.retaliationProfile(positioned, target, attack) : null;
+    const retaliationDetail = response ? this.damageBreakdown(target, positioned, response.id) : null;
+    return { attack, response, damageDetail, retaliationDetail,
+      damage: damageDetail.damage, retaliation: retaliationDetail?.damage || 0 };
+  }
+  preview(attacker, target, attackId, from = attacker.tile) {
+    const { damage, retaliation } = this.previewDetails(attacker, target, attackId, from);
     return { damage, retaliation };
+  }
+  bestAttack(attacker, target, from = attacker.tile) {
+    const score = attack => {
+      const { damage, retaliation } = this.preview(attacker, target, attack.id, from);
+      return damage + (damage >= target.hp ? 18 : 0) - retaliation * .7 - (retaliation >= attacker.hp ? 40 : 0);
+    };
+    return this.attackOptions(attacker, target, from).sort((a, b) => score(b) - score(a))[0] || null;
   }
   move(id, tileId) {
     const unit = this.requireActor(id);
@@ -228,18 +265,20 @@ export class Game {
     }
     return unit;
   }
-  attack(id, targetId) {
+  attack(id, targetId, attackId) {
     const attacker = this.requireActor(id),
       target = this.unit(targetId);
     if (!target || !this.targets(id).includes(target))
       throw new Error("That enemy is out of range.");
-    const result = this.preview(attacker, target);
+    const details = this.previewDetails(attacker, target, attackId);
+    const result = { damage: details.damage, retaliation: details.retaliation };
+    this.lastCombat = { attackerId: id, attackId: details.attack.id, sound: details.attack.sound };
     attacker.moved = true;
     attacker.attacked = true;
     target.hp -= result.damage;
     if (target.hp > 0) attacker.hp -= result.retaliation;
     this.record(
-      `${attacker.side === "player" ? "Your" : "Enemy"} ${TYPES[attacker.type].name.toLowerCase()} dealt ${result.damage} damage${result.retaliation ? ` and took ${result.retaliation} in retaliation` : ""}.`,
+      `${attacker.side === "player" ? "Your" : "Enemy"} ${TYPES[attacker.type].name.toLowerCase()} used ${details.attack.name.toLowerCase()} for ${result.damage} damage${result.retaliation ? ` and took ${result.retaliation} in retaliation` : ""}.`,
     );
     for (const u of this.units.filter((u) => u.hp <= 0)) {
       if (u.type === "commander")
@@ -290,6 +329,7 @@ export class Game {
   }
   beginTurn(side) {
     this.turn = side;
+    this.lastCombat = null;
     this.gold[side] += this.income(side);
     for (const u of this.units.filter((u) => u.side === side)) {
       u.moved = false;
@@ -350,14 +390,19 @@ export class Game {
     if (this.turn !== "enemy" || this.winner) return;
     const unit = this.unit(id);
     if (!unit || unit.side !== "enemy" || unit.attacked) return;
-    const rank = (target) =>
-      (target.type === "commander" ? 20 : 0) +
-      (target.hp <= this.damage(unit, target) ? 12 : 0) +
-      (TYPES[target.type].hp - target.hp);
+    const rank = (target, from = unit.tile) => {
+      const weapon = this.bestAttack(unit, target, from);
+      if (!weapon) return -100;
+      const { damage, retaliation } = this.preview(unit, target, weapon.id, from);
+      return (target.type === "commander" ? 20 : 0) + (target.hp <= damage ? 12 : 0) +
+        (TYPES[target.type].hp - target.hp) * .3 + damage - retaliation * .7 - (retaliation >= unit.hp ? 30 : 0);
+    };
     const attack = () => {
       const targets = this.targets(id).sort((a, b) => rank(b) - rank(a));
       if (targets.length) {
-        this.attack(id, targets[0].id);
+        const weapon = this.bestAttack(unit, targets[0]);
+        if (this.preview(unit, targets[0], weapon.id).retaliation >= unit.hp) return false;
+        this.attack(id, targets[0].id, weapon.id);
         return true;
       }
       return false;
@@ -389,7 +434,7 @@ export class Game {
         0,
         ...this.units
           .filter((t) => this.canAttackFrom(unit, tileId, t))
-          .map((t) => 5 + rank(t) / 5),
+          .map((t) => 5 + rank(t, tileId) / 5),
       );
       const capture =
         tile.terrain === "village" && tile.owner !== "enemy"

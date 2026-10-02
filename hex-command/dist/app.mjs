@@ -2,15 +2,16 @@ import { MAPS } from "./maps.mjs?v=2b696541ff5e";
 import { createMoveUndo } from "./undo.mjs?v=a9b7694248a6";
 import { soundEnabled, setSoundEnabled, unlockSound, playSound, playInteraction } from "./sound.mjs?v=81a004ca84f0";
 import { animateTile, animateTurn } from "./motion.mjs?v=fd2467be9e52";
-import { Game, TYPES, TERRAIN } from "./engine.mjs?v=ee5d72abe121";
-import { abilityMarkup } from "./unit-ability.mjs?v=ddb46a11855b";
-import { loadBattle, saveBattle } from "./save.mjs?v=dd5d9ac69006";
+import { Game, TYPES, TERRAIN } from "./engine.mjs?v=9d86854f39f3";
+import { abilityMarkup } from "./unit-ability.mjs?v=fcfe191da416";
+import { loadBattle, saveBattle } from "./save.mjs?v=dd96a765fa08";
 import {
   artSprite,
   loadArtStyle,
   savedArtStyle,
   saveArtStyle,
 } from "./art.mjs?v=e288e02de731";
+import { arsenalMarkup, resistanceMarkup, attackChoicesMarkup, damageExplanation } from "./combat.mjs?v=a1df9fc466e9";
 const $ = (selector) => document.querySelector(selector),
   map = $("#map"),
   panel = $("#unit-panel");
@@ -19,6 +20,7 @@ const moveHistory = createMoveUndo();
 let game = restoredBattle.game,
   selected = null,
   target = null,
+  attackChoice = null,
   recruitType = null,
   epoch = 0,
   focusedTile = game.units.find(u => u.side === "player")?.tile || game.tiles[0].id,
@@ -70,7 +72,7 @@ function actionFeedback() {
     const attacker = now.units.find(unit => unit.side === before.turn && unit.attacked &&
       before.units.some(old => old.id === unit.id && !old.attacked)) ||
       before.units.find(unit => unit.side === before.turn && !now.units.some(alive => alive.id === unit.id));
-    playInteraction({ attackType: attacker?.type || "soldier" });
+    playSound(game.lastCombat?.sound || (attacker?.type === "archer" ? "attack-bow" : "attack-melee"));
   } else if (now.winner && now.winner !== before.winner) playSound(now.winner === "player" ? "victory" : "defeat");
   else if (recruited) playSound("recruit");
   else if (moved) playInteraction({ unitType: movingUnit.type, terrain: game.tile(movingUnit.tile)?.terrain });
@@ -227,16 +229,25 @@ function renderPanel() {
         `portrait ${combatant.side === "enemy" ? "enemy-unit" : ""}`, combatant.side);
     return `<div class="combatant ${combatant.side}"><span class="unit-side">${combatant.side === "player" ? "Your unit" : "Enemy unit"}</span>${portrait}<h2>${info.name}</h2><div class="health-numbers"><b>${combatant.hp}</b>${damage !== null ? `<span aria-label="health after attack"> → <b class="${after === 0 ? 'fatal' : ''}">${after}</b>` : ''}<span> / ${info.hp} HP</span></div><div class="health-track" role="img" aria-label="${after} of ${info.hp} health${damage !== null ? ` after attack; ${combatant.hp} before` : ''}"><span class="health-lost" style="width:${combatant.hp/info.hp*100}%"></span><span class="health-left" style="width:${after/info.hp*100}%"></span></div>${damage !== null ? `<p class="damage-result">${after === 0 ? 'Falls in battle' : damage ? `−${damage} HP` : 'Unharmed'}</p>` : ''}</div>`;
   }
-  const preview = attackAvailable ? game.preview(unit, victim) : null;
+  if (attackAvailable && !game.attackOptions(unit, victim).some(attack => attack.id === attackChoice)) {
+    attackChoice = game.bestAttack(unit, victim).id;
+  }
+  const preview = attackAvailable ? game.previewDetails(unit, victim, attackChoice) : null;
   let html = attackAvailable
-    ? `<div class="duel">${unitCard(unit, preview.retaliation)}<span class="duel-divider" aria-hidden="true">⚔</span>${unitCard(victim, preview.damage)}</div><p class="combat-note">${preview.retaliation ? `Enemy retaliates for ${preview.retaliation} damage.` : 'No retaliation.'}</p>`
-    : `<div class="unit-detail">${unitCard(unit)}<div class="unit-info"><div class="unit-stats">${stat("move", "Move", type.move)}${stat("damage", "Damage", type.damage)}${stat("range", "Range", type.range)}</div>${abilityMarkup({ game, unit, canAct: active() && unit.side === "player" })}<p class="unit-state">${TERRAIN[tile.terrain].name} · ${unit.attacked ? 'Turn finished' : unit.moved ? 'Can still attack' : 'Ready'}</p></div></div>`;
+    ? `<div class="duel">${unitCard(unit, preview.retaliation)}<span class="duel-divider" aria-hidden="true">⚔</span>${unitCard(victim, preview.damage)}</div>${attackChoicesMarkup(game, unit, victim, attackChoice)}<div class="combat-explanation" aria-live="polite"><p><strong>${preview.attack.name}</strong>: ${damageExplanation(preview.damageDetail)}.</p><p>${preview.response ? `Enemy replies with ${preview.response.name.toLowerCase()}: ${damageExplanation(preview.retaliationDetail)}.` : preview.damage >= victim.hp ? 'Enemy falls before replying.' : `No ${preview.attack.category} retaliation in reach.`}</p></div><details class="defender-resistances"><summary>Enemy resistances</summary>${resistanceMarkup(victim)}</details>`
+    : `<div class="unit-detail">${unitCard(unit)}<div class="unit-info"><div class="unit-stats">${stat("move", "Move", type.move)}</div>${abilityMarkup({ game, unit, canAct: active() && unit.side === "player" })}${arsenalMarkup(unit)}<p class="unit-state">${TERRAIN[tile.terrain].name} · ${unit.attacked ? 'Turn finished' : unit.moved ? 'Can still attack' : 'Ready'}</p></div></div>`;
   if (attackAvailable) html += '<button id="attack" class="primary attack-button">Attack</button>';
   panel.innerHTML = html;
+  panel.querySelectorAll('input[name="attack-choice"]').forEach(input => input.addEventListener("change", () => {
+    attackChoice = input.value;
+    renderPanel();
+    panel.querySelector(`input[value="${attackChoice}"]`)?.focus({ preventScroll: true });
+  }));
   panel.querySelectorAll("[data-recruit]").forEach((button) =>
     button.addEventListener("click", () => {
       recruitType = button.dataset.recruit;
       target = null;
+      attackChoice = null;
       render();
       animateTile(unit.tile, "select");
       playSound("select");
@@ -249,9 +260,10 @@ function renderPanel() {
   );
   $("#attack")?.addEventListener("click", () => {
     try {
-      game.attack(selected, target);
+      game.attack(selected, target, attackChoice);
       moveHistory.clear();
       target = null;
+      attackChoice = null;
       render();
       message(
         game.winner
@@ -265,8 +277,8 @@ function renderPanel() {
 }
 const terrainDescriptions = {
   plains: "Open grassland with easy footing.",
-  forest: "Trees shelter units and obstruct bow shots.",
-  hill: "Rocky high ground offers cover and obstructs bow shots.",
+  forest: "Trees shelter units and obstruct ranged shots.",
+  hill: "Rocky high ground offers cover and obstructs ranged shots.",
   water: "Deep water cannot be crossed.",
   bridge: "A sturdy crossing over water with easy footing, but no protection.",
   ford: "Shallow water can be crossed on foot. Heavy armor slows movement, and the open water leaves units exposed.",
@@ -286,9 +298,9 @@ function renderTerrainPanel() {
     facts.push(tile.terrain === "ford" ? "Movement: 3 for soldiers and commanders; 2 for archers and scouts" :
       `Movement: ${info.cost}${["forest", "hill"].includes(tile.terrain) ? " (scouts: 1)" : ""}`);
     facts.push(tile.terrain === "ford" ? "Exposure: +1 damage received from all attacks" : tile.terrain === "hill" ? "Protection: −1 damage from all attacks" :
-      tile.terrain === "forest" ? "Protection: −1 damage from bow attacks" : "Protection: none");
+      tile.terrain === "forest" ? "Protection: −1 damage from ranged attacks" : "Protection: none");
   } else facts.push("Movement: impassable");
-  if (["forest", "hill"].includes(tile.terrain)) facts.push("Blocks bow shots through this hex");
+  if (["forest", "hill"].includes(tile.terrain)) facts.push("Blocks ranged shots through this hex");
   if (tile.terrain === "village") {
     facts.push("+2 gold at the start of its owner’s turn", "Heals a friendly occupant by 2 HP at the start of its turn");
   }
@@ -303,6 +315,7 @@ function clearSelection(clearInspection = false) {
   if (!selected && !target && !recruitType && !(clearInspection && inspectedTile)) return;
   selected = null;
   target = null;
+  attackChoice = null;
   recruitType = null;
   if (clearInspection) inspectedTile = null;
   render();
@@ -347,6 +360,7 @@ function choose(tileId) {
       game.targets(selected).includes(occupant)
     ) {
       target = occupant.id;
+      attackChoice = null;
       render();
       // Selecting a target is a quiet UI cue; the weapon sounds on resolution.
       animateTile(tileId, "select");
@@ -359,6 +373,7 @@ function choose(tileId) {
     if (occupant) {
       selected = occupant.id;
       target = null;
+      attackChoice = null;
       render();
       selectionFeedback(tileId);
       message(
@@ -373,6 +388,7 @@ function choose(tileId) {
     if (unit?.side === "player" && game.reachable(selected).has(tileId)) {
       moveHistory.move(game, selected, tileId);
       target = null;
+      attackChoice = null;
       render();
       message(
         "Moved. You can attack an enemy in range or select another unit.",
@@ -424,6 +440,7 @@ async function endTurn() {
   moveHistory.clear();
   selected = null;
   target = null;
+  attackChoice = null;
   recruitType = null;
   saveBattle(game, true);
   game.endTurn();
@@ -463,6 +480,7 @@ function reset(mapId = "mirror") {
   previousFeedbackState = null;
   selected = null;
   target = null;
+  attackChoice = null;
   recruitType = null;
   focusedTile = game.units.find(unit => unit.side === "player")?.tile || game.tiles[0].id;
   inspectedTile = null;
@@ -475,6 +493,7 @@ function undoMove() {
   if (!restored) return game.snapshot();
   selected = restored.unitId;
   target = null;
+  attackChoice = null;
   recruitType = null;
   focusedTile = restored.tileId;
   inspectedTile = restored.tileId;
@@ -605,6 +624,10 @@ if (document.modelContext?.registerTool) {
           attacks: game.targets(input.unitId).map((u) => ({
             id: u.id,
             ...game.preview(game.unit(input.unitId), u),
+            recommendedAttackId: game.bestAttack(game.unit(input.unitId), u).id,
+            weapons: game.attackOptions(game.unit(input.unitId), u).map(attack => ({
+              ...attack, ...game.previewDetails(game.unit(input.unitId), u, attack.id),
+            })),
           })),
           recruitment: Object.fromEntries(
             ["soldier", "archer", "scout"].map((type) => [
@@ -630,6 +653,7 @@ if (document.modelContext?.registerTool) {
         selected = input.unitId;
         inspectedTile = game.unit(selected)?.tile || inspectedTile;
         target = null;
+        attackChoice = null;
         recruitType = null;
         render();
         return game.snapshot();
@@ -644,16 +668,18 @@ if (document.modelContext?.registerTool) {
         properties: {
           unitId: { type: "string" },
           targetId: { type: "string" },
+          attackId: { type: "string", description: "Weapon id from get_unit_actions; omit to choose the safest effective attack." },
         },
         required: ["unitId", "targetId"],
         additionalProperties: false,
       },
       execute: (input) => {
-        game.attack(input.unitId, input.targetId);
+        game.attack(input.unitId, input.targetId, input.attackId);
         moveHistory.clear();
         selected = input.unitId;
         inspectedTile = game.unit(selected)?.tile || inspectedTile;
         target = null;
+        attackChoice = null;
         recruitType = null;
         render();
         return game.snapshot();

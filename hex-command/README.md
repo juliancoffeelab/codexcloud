@@ -114,3 +114,35 @@ Scouts and archers use the soft plains/grass sound for selection and movement.
 Soldiers use the heavier footstep thud previously used by archers.
 
 All cues have a lower playback level, rounded attacks, and gentler high frequencies.
+
+
+## Weapon choices and resistances
+
+Select an enemy and choose a weapon before pressing Attack. The preview shows
+both units' resulting HP, exact damage, armor modifiers, cover, and the defender's
+reply. Choosing a weapon does not spend an action. Every unit still attacks once
+per turn; attacking ends its movement.
+
+| Unit | Melee | Ranged | Resistance / weakness |
+| --- | --- | --- | --- |
+| Commander | Sword: 4 Blade; Mace: 3 Impact | — | 25% less Blade damage |
+| Soldier (8 gold) | Sword: 4 Blade; Mace: 3 Impact | — | 25% less Blade/Pierce; 25% more Impact |
+| Archer (8 gold) | Knife: 2 Blade | Bow: 3 Pierce, range 2 | Normal damage |
+| Scout (5 gold) | Knife: 2 Blade | Sling: 1 Impact, range 2 | Normal damage |
+
+Melee answers melee; ranged answers ranged. A surviving defender replies once
+with its strongest legal weapon in the same category, even if it already acted
+this turn. A defeated defender cannot reply. Forests and hills block both bows
+and slings through them; forest cover reduces all ranged damage by 1. Hill
+cover reduces all damage by 1. Resistance changes base damage first, rounded to
+the nearest integer, then cover and shallow-water exposure apply. Every hit deals
+at least 1 damage; there are no hit-chance rolls.
+
+The initial balance keeps soldiers strongest in close combat, archers stronger
+than scouts in ranged exchanges, and scouts focused on mobility and villages.
+Maces counter armor; swords hit unarmored units harder. The enemy evaluates
+weapons and retaliation, including safer replies and avoiding lethal exchanges.
+Existing saves keep their units, HP, gold, map, and progress and use the new rules.
+
+Run `node tests/combat.mjs` for weapon/terrain rules and `python3 tests/combat.py`
+for browser weapon choices, exact HP forecasts, keyboard use, and mobile layout.
