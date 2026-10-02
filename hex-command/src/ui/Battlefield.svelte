@@ -14,9 +14,10 @@
 
   const game = $derived(view.game);
   const inspectedTile = $derived(game.tile(view.inspectedTile));
-  const recruitTileId = $derived(
-    controller.active() && controller.recruitmentContext(inspectedTile) ? view.inspectedTile : null,
-  );
+  const recruitment = $derived(controller.recruitmentContext(inspectedTile));
+  // Track the published turn even when the enemy turn hides the destination.
+  const isPlayerTurn = $derived(game.turn === "player" && !game.winner);
+  const recruitTileId = $derived(isPlayerTurn && recruitment ? view.inspectedTile : null);
   const tiles = $derived(battlefieldTiles(view, recruitTileId));
   const viewBox = $derived(`0 0 ${758 + 61 * (game.cols - 11)} ${452 + 53 * (game.rows - 7)}`);
 

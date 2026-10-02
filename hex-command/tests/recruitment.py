@@ -72,13 +72,42 @@ try:
         assert options().count() == 3 and page.locator('#terrain-panel [data-recruit]:disabled').count() == 3
         assert 'Return your commander' in page.locator('#terrain-panel').inner_text()
         new_battle(page)
+        inspect('0,2')
+        assert page.locator('.hex.recruitable').get_attribute('data-tile') == '0,2'
         page.click('#end-turn')
+        assert page.locator('.hex.recruitable').count() == 0, 'enemy turn removes the recruit destination highlight'
         page.locator('[data-tile="0,2"]').dispatch_event('click')
         assert options().count() == 3 and page.locator('#terrain-panel [data-recruit]:disabled').count() == 3
+        assert page.locator('.hex.recruitable').count() == 0
         assert 'Recruit on your turn' in page.locator('#terrain-panel').inner_text()
         page.wait_for_function("window.hexSmokeTools.get_battle_state.execute().round === 2")
+        assert page.locator('.hex.recruitable').get_attribute('data-tile') == '0,2', 'player turn restores the inspected recruit destination'
+        assert page.locator('.hex.recruitable .tile-outline').evaluate('e=>getComputedStyle(e).strokeDasharray') != 'none'
         inspect('0,2')
         assert page.locator('[data-recruit="soldier"]').is_enabled()
+        assert page.locator('.hex.recruitable').get_attribute('data-tile') == '0,2'
+        inspect('0,4')
+        assert page.locator('.hex.recruitable').get_attribute('data-tile') == '0,4', 'inspection moves the highlight after an enemy turn'
+        new_battle(page)
+        inspect('0,2')
+        assert page.locator('.hex.recruitable').get_attribute('data-tile') == '0,2', 'new battles retain recruitment highlights after an enemy turn'
+        # Tool moves, unit selection, and undo must keep the menu and map in sync.
+        page.evaluate("window.hexSmokeTools.move_unit.execute({unitId:'u2',tileId:'3,1'})")
+        page.evaluate("window.hexSmokeTools.move_unit.execute({unitId:'u3',tileId:'3,5'})")
+        inspect('0,2')
+        assert options().count() == 3
+        assert page.locator('.hex.recruitable').get_attribute('data-tile') == '0,2'
+        inspect('3,1')
+        assert options().count() == 0 and page.locator('.hex.recruitable').count() == 0
+        inspect('3,1')  # Toggle the selected soldier off before inspecting empty terrain.
+        inspect('0,2')
+        assert page.locator('.hex.recruitable').get_attribute('data-tile') == '0,2'
+        page.evaluate("window.hexSmokeTools.undo_move.execute()")
+        assert options().count() == 0 and page.locator('.hex.recruitable').count() == 0
+        inspect('1,2')  # Toggle the restored scout off.
+        inspect('0,2')
+        assert options().count() == 3
+        assert page.locator('.hex.recruitable').get_attribute('data-tile') == '0,2'
         for width in [320, 390, 1280]:
             page.set_viewport_size({'width': width, 'height': 844})
             assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
