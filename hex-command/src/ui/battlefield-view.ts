@@ -1,5 +1,5 @@
-import type { UnitView, TileView } from "../game/view";
-import type { BattleView } from "../controller/view";
+import type { GameView, UnitView, TileView } from "../game/view";
+import type { ArtStyle } from "../presentation/art";
 import { TERRAIN, TYPES } from "../game/engine";
 import { artSprite } from "../presentation/art";
 import { colors, hexPoints, tileCenter } from "./geometry";
@@ -44,14 +44,15 @@ function tileLabel(
 
 /** Prepare geometry and display state once so SVG markup only describes its layers. */
 export function battlefieldTiles(
-  view: BattleView,
+  game: GameView,
+  selected: string | null,
+  artStyle: ArtStyle,
   recruitTileId: string | null,
 ): BattlefieldTileView[] {
-  const { game, artStyle } = view;
-  const selectedUnit = game.unit(view.selected);
+  const selectedUnit = game.unit(selected);
   const canAct = game.turn === "player" && !game.winner && selectedUnit?.side === "player";
-  const reachableTiles = canAct ? game.reachable(view.selected) : new Map<string, number>();
-  const targetTiles = new Set(canAct ? game.targets(view.selected).map((unit) => unit.tile) : []);
+  const reachableTiles = canAct ? game.reachable(selected) : new Map<string, number>();
+  const targetTiles = new Set(canAct ? game.targets(selected).map((unit) => unit.tile) : []);
 
   return game.tiles.map((tile) => {
     const { x, y } = tileCenter(tile);

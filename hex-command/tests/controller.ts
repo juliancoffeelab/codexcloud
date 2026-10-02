@@ -70,7 +70,19 @@ function pauseFirstAction() {
   assert(Object.isFrozen(controller.commands));
   assert.equal(Reflect.set(required(opening.game.unit("u3")), "tile", "3,1"), false);
 
+  controller.choose("1,2");
+  assert.equal(observed.view.game, opening.game, "selection must not rebuild the game view");
+  controller.focusTile("2,2");
+  assert.equal(observed.view.game, opening.game, "keyboard focus reuses the published game");
+  controller.message("Inspect the field.");
+  assert.equal(observed.view.game, opening.game, "status reuses the published game");
+  await controller.setSound(false);
+  assert.equal(observed.view.game, opening.game, "sound preferences reuse the published game");
+  controller.clearSelection();
+  assert.equal(observed.view.game, opening.game, "deselection must not rebuild the game view");
+
   controller.move("u3", "3,1");
+  assert.notEqual(observed.view.game, opening.game, "engine actions publish a fresh game");
   assert.equal(opening.game.unit("u3")?.tile, "1,2");
   assert.equal(observed.view.game.unit("u3")?.tile, "3,1");
   assert(observed.view.canUndo);
@@ -214,6 +226,7 @@ async function settleCallbacks() {
   const controller = new BattleController(immediatePause);
   const observed = observe(controller);
   controller.initialize();
+  const openingGame = observed.view.game;
   ControlledImage.finish("normal", false);
   await settleCallbacks(); // The initial request now waits on low-poly fallback.
   const latest = controller.setArtStyle("pixel");
@@ -224,6 +237,7 @@ async function settleCallbacks() {
   await settleCallbacks();
   assert.equal(observed.view, chosen, "stale fallback failure must not publish or report an error");
   assert.equal(observed.view.artStyle, "pixel");
+  assert.equal(observed.view.game, openingGame, "artwork changes reuse the published game");
   assert.equal(observed.view.artLoading, false);
   assert.equal(storage.getItem("hex-command-art-style"), "pixel");
 

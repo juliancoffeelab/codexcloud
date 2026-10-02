@@ -1,5 +1,5 @@
 import { writable, type Readable, type Writable } from "svelte/store";
-import { tick, flushSync } from "svelte";
+import { tick } from "svelte";
 import { Game, TYPES, TERRAIN, type UnitType, type Tile, type Unit } from "../game/engine";
 import { createMoveUndo } from "../game/undo";
 import { loadBattle, saveBattle } from "../game/save";
@@ -29,6 +29,7 @@ export type { BattleView, RecruitType } from "./view";
 
 interface PublishOptions {
   renderBattle?: boolean;
+  gameChanged?: boolean;
   showWinnerMessage?: boolean;
 }
 
@@ -145,7 +146,11 @@ export class BattleController {
     this.message(error instanceof Error ? error.message : String(error));
   }
 
-  private publish({ renderBattle = true, showWinnerMessage = true }: PublishOptions = {}) {
+  private publish({
+    renderBattle = true,
+    gameChanged = renderBattle,
+    showWinnerMessage = true,
+  }: PublishOptions = {}) {
     if (this.disposed) {
       return;
     }
@@ -158,25 +163,12 @@ export class BattleController {
           ? "Victory! The enemy commander has fallen. The field is yours."
           : "Your commander has fallen. Start a new battle and try a different approach.";
     }
-    const focusWasMap =
-      renderBattle &&
-      typeof document !== "undefined" &&
-      document.activeElement?.closest("[data-tile]");
-    // A fresh render snapshot keeps mutable engine state outside Svelte.
-    // Status and preference updates reuse it until the next battle render.
-    if (renderBattle) {
+    // Selection and preferences reuse the detached game until an engine action.
+    if (gameChanged) {
       this.gameView = createGameView(this.#game);
     }
-    // Notify all readers before flushing DOM updates; subscribers see one complete view.
+    // Subscribers see a complete view immediately; Svelte batches its DOM work.
     this.store.set(this.currentView());
-    if (typeof document !== "undefined") {
-      flushSync();
-    }
-    if (focusWasMap) {
-      document
-        .querySelector<SVGGElement>(`#map [data-tile="${this.state.focusedTile}"]`)
-        ?.focus({ preventScroll: true });
-    }
     if (renderBattle) {
       this.playBattleFeedback();
     }
@@ -255,6 +247,7 @@ export class BattleController {
 
   focusTile(tileId: string) {
     this.requireSession();
+    if (this.state.focusedTile === tileId || !this.#game.tile(tileId)) return;
     this.state.focusedTile = tileId;
     this.publish({ renderBattle: false });
   }
@@ -273,7 +266,7 @@ export class BattleController {
     if (clearInspection) {
       this.state.inspectedTile = null;
     }
-    this.publish();
+    this.publish({ gameChanged: false });
     this.message("Selection cleared.");
   }
 
@@ -323,7 +316,7 @@ export class BattleController {
 
   private selectTarget(target: Unit) {
     this.state.target = target.id;
-    this.publish();
+    this.publish({ gameChanged: false });
     this.animateTileAfterRender(target.tile, "select");
     playSound("select");
     this.message("Tap a weapon to attack. Use the magnifying glass for damage details.");
@@ -337,7 +330,7 @@ export class BattleController {
   private selectUnit(unit: Unit) {
     this.state.selected = unit.id;
     this.state.target = null;
-    this.publish();
+    this.publish({ gameChanged: false });
     this.playSelectionFeedback(unit.tile);
 
     if (unit.side === "enemy") {
@@ -354,7 +347,7 @@ export class BattleController {
   private inspectTerrain(tile: Tile) {
     this.state.selected = null;
     this.state.target = null;
-    this.publish();
+    this.publish({ gameChanged: false });
     this.playSelectionFeedback(tile.id);
     const terrain = TERRAIN[tile.terrain];
     this.message(`${terrain.name}: ${terrain.description}`);
@@ -576,7 +569,7 @@ export class BattleController {
       if (typeof document !== "undefined") {
         document.documentElement.dataset.artStyle = next;
       }
-      this.publish();
+      this.publish({ gameChanged: false });
     } else {
       this.message("Could not load that artwork. Please try again.");
     }
@@ -628,7 +621,7 @@ export class BattleController {
         if (typeof document !== "undefined") {
           document.documentElement.dataset.artStyle = fallback;
         }
-        this.publish();
+        this.publish({ gameChanged: false });
         this.message("Using alternate artwork. Retry your preferred style in Settings.");
         return;
       }
