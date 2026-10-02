@@ -48,8 +48,8 @@ try:
         assert page.evaluate('(key) => JSON.parse(localStorage.getItem(key)).state', key) == twin.evaluate('(key) => JSON.parse(localStorage.getItem(key)).state', key)
         other.close()
         print('PASS: no intermediate enemy saves; interruption replays deterministically')
-        new_battle(page); page.click('[data-tile="0,3"]')
-        page.click('[data-recruit="archer"]'); page.locator('.hex.recruitable').first.click()
+        new_battle(page); page.click('[data-tile="0,2"]')
+        page.click('#terrain-panel [data-recruit="archer"]')
         recruited = snapshot(page); page.reload(wait_until='networkidle')
         assert snapshot(page) == recruited
         new_battle(page); page.reload(wait_until='networkidle')

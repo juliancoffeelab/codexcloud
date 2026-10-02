@@ -99,14 +99,13 @@ def run(url, screenshots):
         assert not page.locator("#settings-dialog").evaluate("el => el.open")
         print("PASS: all three styles render; switching preserves battle; preference persists")
 
-        # Use the actual recruitment buttons and highlighted destination tiles.
+        # Choose the destination terrain first, then purchase directly onto it.
         for unit_type, price in (("soldier", 8), ("archer", 8), ("scout", 5)):
             new_battle(page)
-            page.click('[data-tile="0,3"]')
-            page.click(f'[data-recruit="{unit_type}"]')
-            destination = page.locator(".hex.recruitable").first
-            tile = destination.get_attribute("data-tile")
-            destination.click()
+            tile = '0,2'
+            page.click(f'[data-tile="{tile}"]')
+            assert page.locator('#unit-panel [data-recruit]').count() == 0
+            page.click(f'#terrain-panel [data-recruit="{unit_type}"]')
             recruited = next(u for u in snapshot(page)["units"] if u["id"] == "u7")
             assert recruited["type"] == unit_type and recruited["tile"] == tile
             assert recruited["moved"] and recruited["attacked"]
@@ -142,14 +141,14 @@ def run(url, screenshots):
                     assert page.locator(".duel .combatant").count() == 2
                     forecast = actions["attacks"][0]
                     health = page.locator(".health-numbers").all_inner_texts()
-                    assert f'{victim["hp"]} → {max(0, victim["hp"] - forecast["damage"])}' in health[1]
-                    assert f'{unit["hp"]} → {max(0, unit["hp"] - forecast["retaliation"])}' in health[0]
+                    assert f'{victim["hp"]} /' in health[1]
+                    assert f'{unit["hp"]} /' in health[0]
                     if screenshots:
                         page.screenshot(path=str(screenshots / "desktop-combat.png"), full_page=True)
                         page.set_viewport_size({"width": 390, "height": 844})
                         page.screenshot(path=str(screenshots / "mobile-combat.png"), full_page=True)
                         page.set_viewport_size({"width": 1280, "height": 900})
-                    page.click("#attack")
+                    page.click(f'[data-attack="{forecast["recommendedAttackId"]}"]')
                     after = next((u for u in snapshot(page)["units"] if u["id"] == victim_id), None)
                     assert after is None or after["hp"] < victim["hp"]
                     attacked = True

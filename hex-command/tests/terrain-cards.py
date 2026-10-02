@@ -55,15 +55,15 @@ try:
         page.set_viewport_size({'width': 1280, 'height': 900})
         page.screenshot(path=str(screenshots / 'desktop-commander-keep.png'), full_page=True)
         page.set_viewport_size({'width': 390, 'height': 844})
-        assert page.locator('.unit-info [data-recruit]').count() == 3
-        assert page.locator('#unit-panel > .recruit-list, #unit-panel > .recruit-title').count() == 0
-        page.click('[data-recruit="soldier"]')
-        destination = page.locator('.hex.recruitable').first
-        tile = destination.get_attribute('data-tile')
-        destination.click()
+        assert page.locator('#unit-panel [data-recruit]').count() == 0
+        page.keyboard.press('Escape')
+        tile = '0,2'
+        inspect(tile, 'Plains')
+        assert terrain.locator('[data-recruit]').count() == 3
+        page.click('#terrain-panel [data-recruit="soldier"]')
         assert next(u for u in snapshot(page)['units'] if u['id'] == 'u7')['tile'] == tile
-        assert terrain.is_visible()
-        print('PASS: terrain cards, unit terrain, ownership, rules, artwork styles, first-click movement and inline recruitment')
+        assert terrain.is_visible() and terrain.locator('[data-recruit]').count() == 0
+        print('PASS: terrain cards, unit terrain, ownership, rules, artwork styles, first-click movement and terrain recruitment')
         # Read-only inspection remains available during the animated enemy turn.
         page.click('#end-turn')
         page.locator('[data-tile="0,0"]').dispatch_event('click')
@@ -79,7 +79,7 @@ try:
         inspect('8,3', 'Plains')
         inspect('9,3', 'Plains')
         assert page.locator('.duel').is_visible()
-        page.click('#attack')
+        page.click('[data-attack="sword"]')
         assert next(u for u in snapshot(page)['units'] if u['id'] == 'u5')['hp'] == 8
         page.evaluate("""() => {const key='hex-command-battle';const s=JSON.parse(localStorage.getItem(key));s.state.winner='player';s.state.units=s.state.units.filter(u=>!(u.side==='enemy'&&u.type==='commander'));localStorage.setItem(key,JSON.stringify(s));}""")
         page.reload(wait_until='networkidle')

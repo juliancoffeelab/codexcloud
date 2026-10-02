@@ -21,7 +21,6 @@ const moveHistory = createMoveUndo();
 let game = restoredBattle.game,
   selected = null,
   target = null,
-  recruitType = null,
   epoch = 0,
   focusedTile = game.units.find(u => u.side === "player")?.tile || game.tiles[0].id,
   inspectedTile = null;
@@ -128,9 +127,7 @@ function render() {
   const unit = game.unit(selected),
     canAct = active() && unit?.side === "player",
     moves = canAct ? game.reachable(selected) : new Map(),
-    targets = canAct ? game.targets(selected) : [],
-    recruits =
-      recruitType && canAct ? game.recruitTiles(selected, recruitType) : [];
+    targets = canAct ? game.targets(selected) : [];
   map.setAttribute("viewBox", `0 0 ${758 + 61 * (game.cols - 11)} ${452 + 53 * (game.rows - 7)}`);
   map.style.setProperty("--map-scale", game.cols / 11);
   map.setAttribute("aria-label", `${MAPS[game.mapId].name} battlefield`);
@@ -153,9 +150,8 @@ function render() {
           "hex",
           `terrain-${tile.terrain}`,
           unit?.tile === tile.id ? "selected" : "",
-          moves.has(tile.id) && !recruitType ? "reachable" : "",
-          isTarget && !recruitType ? "target" : "",
-          recruits.some((t) => t.id === tile.id) ? "recruitable" : "",
+          moves.has(tile.id) ? "reachable" : "",
+          isTarget ? "target" : "",
         ]
           .filter(Boolean)
           .join(" ");
@@ -184,7 +180,6 @@ function render() {
   $("#end-turn").disabled = !active();
   $("#undo-move").disabled = !moveHistory.canUndo(game);
   $("#new-game").disabled = game.turn === "enemy" && !game.winner;
-  $("#cancel").hidden = !recruitType;
   $("#log").innerHTML = game.log.map((text) => `<li>${text}</li>`).join("");
   renderPanel();
   renderTerrainPanel();
@@ -235,20 +230,6 @@ function renderPanel() {
     detail.hidden = !detail.hidden;
     button.setAttribute("aria-expanded", String(!detail.hidden));
   }));
-  panel.querySelectorAll("[data-recruit]").forEach((button) =>
-    button.addEventListener("click", () => {
-      recruitType = button.dataset.recruit;
-      target = null;
-      render();
-      animateTile(unit.tile, "select");
-      playSound("select");
-      message(
-        `Choose a mint-bordered hex to recruit a ${recruitType} for ${TYPES[recruitType].cost} gold.`,
-      );
-      if (matchMedia("(max-width:900px)").matches)
-        map.scrollIntoView({ block: "center" });
-    }),
-  );
   panel.querySelectorAll("[data-attack]").forEach(button => button.addEventListener("click", () => {
     try {
       game.attack(selected, target, button.dataset.attack);
@@ -275,6 +256,21 @@ const terrainDescriptions = {
   village: "Capture this settlement by moving a unit onto it.",
   keep: "A fortified home for its army’s commander.",
 };
+function terrainRecruitment(tile) {
+  if (!tile || tile.terrain === "water" || game.at(tile.id) || game.winner || game.unit(selected)) return "";
+  const keep = game.neighbors(tile.id).find(neighbor => neighbor.terrain === "keep" && neighbor.owner === "player");
+  if (!keep) return "";
+  const commander = game.units.find(unit => unit.side === "player" && unit.type === "commander");
+  const stationed = commander?.tile === keep.id;
+  const hint = !stationed ? "Return your commander to this keep to recruit." :
+    !active() ? "Recruit on your turn." : "New recruits act next turn.";
+  const buttons = ["soldier", "archer", "scout"].map(name => {
+    const type = TYPES[name];
+    const enabled = active() && stationed && game.recruitTiles(commander.id, name).some(destination => destination.id === tile.id);
+    return `<button class="recruit-button" data-recruit="${name}"${enabled ? "" : " disabled"}><span>${type.name} · ${type.cost} gold</span></button>`;
+  }).join("");
+  return `<div class="terrain-recruitment"><h3>Recruit here</h3><div class="recruit-list">${buttons}</div><p class="recruit-hint">${hint}${active() && stationed && game.gold.player < TYPES.scout.cost ? " Not enough gold." : ""}</p></div>`;
+}
 function renderTerrainPanel() {
   const terrainPanel = $("#terrain-panel"), tile = game.tile(inspectedTile);
   terrainPanel.hidden = !tile;
@@ -295,17 +291,25 @@ function renderTerrainPanel() {
     facts.push("+2 gold at the start of its owner’s turn", "Heals a friendly occupant by 2 HP at the start of its turn");
   }
   if (tile.terrain === "keep") {
-    facts.push("Its owner’s commander can recruit into adjacent empty land hexes", "Keeps cannot be captured");
+    facts.push("Its owner’s commander can recruit into adjacent empty land hexes", "Select an empty adjacent hex to recruit", "Keeps cannot be captured");
   }
   const ownership = ["village", "keep"].includes(tile.terrain)
     ? `<p class="terrain-owner ${tile.owner || "neutral"}">${tile.owner === "player" ? "Your " : tile.owner === "enemy" ? "Enemy " : "Unclaimed "}${tile.terrain}</p>` : "";
-  terrainPanel.innerHTML = `<div class="terrain-detail"><div class="terrain-portrait">${artSprite(artStyle, "terrain", tile.terrain, 0, 0, 80, 80, "terrain-card-art")}<span class="unit-side">Terrain</span></div><div class="terrain-info"><h2>${info.name}</h2>${ownership}<p>${terrainDescriptions[tile.terrain]}</p><ul class="terrain-facts">${facts.map(fact => `<li>${fact}</li>`).join("")}</ul></div></div>`;
+  terrainPanel.innerHTML = `<div class="terrain-detail"><div class="terrain-portrait">${artSprite(artStyle, "terrain", tile.terrain, 0, 0, 80, 80, "terrain-card-art")}<span class="unit-side">Terrain</span></div><div class="terrain-info"><h2>${info.name}</h2>${ownership}<p>${terrainDescriptions[tile.terrain]}</p><ul class="terrain-facts">${facts.map(fact => `<li>${fact}</li>`).join("")}</ul></div></div>${terrainRecruitment(tile)}`;
+  terrainPanel.querySelectorAll("[data-recruit]").forEach(button => button.addEventListener("click", () => {
+    try {
+      const commander = game.units.find(unit => unit.side === "player" && unit.type === "commander");
+      game.recruit(commander?.id, button.dataset.recruit, tile.id);
+      moveHistory.clear();
+      render();
+      message("Recruited. Your new unit will act next turn.");
+    } catch (error) { message(error.message); }
+  }));
 }
 function clearSelection(clearInspection = false) {
-  if (!selected && !target && !recruitType && !(clearInspection && inspectedTile)) return;
+  if (!selected && !target && !(clearInspection && inspectedTile)) return;
   selected = null;
   target = null;
-  recruitType = null;
   if (clearInspection) inspectedTile = null;
   render();
   message("Selection cleared.");
@@ -324,24 +328,6 @@ function choose(tileId) {
       clearSelection();
       selectionFeedback(tileId);
       return;
-    }
-    if (recruitType) {
-      if (
-        game.recruitTiles(selected, recruitType).some((t) => t.id === tileId)
-      ) {
-        game.recruit(selected, recruitType, tileId);
-        moveHistory.clear();
-        recruitType = null;
-        render();
-        message("Recruited. Your new unit will act next turn.");
-        return;
-      }
-      if (occupant?.side === "player") recruitType = null;
-      else {
-        clearSelection();
-        selectionFeedback(tileId);
-        return;
-      }
     }
     if (
       occupant?.side === "enemy" &&
@@ -426,7 +412,6 @@ async function endTurn() {
   moveHistory.clear();
   selected = null;
   target = null;
-  recruitType = null;
   saveBattle(game, true);
   game.endTurn();
   render();
@@ -465,7 +450,6 @@ function reset(mapId = "mirror") {
   previousFeedbackState = null;
   selected = null;
   target = null;
-  recruitType = null;
   focusedTile = game.units.find(unit => unit.side === "player")?.tile || game.tiles[0].id;
   inspectedTile = null;
   render();
@@ -477,7 +461,6 @@ function undoMove() {
   if (!restored) return game.snapshot();
   selected = restored.unitId;
   target = null;
-  recruitType = null;
   focusedTile = restored.tileId;
   inspectedTile = restored.tileId;
   // A rewind should not replay capture or combat feedback from forward actions.
@@ -491,11 +474,6 @@ $("#undo-move").addEventListener("click", undoMove);
 $("#end-turn").addEventListener("click", () =>
   endTurn().catch((error) => message(error.message)),
 );
-$("#cancel").addEventListener("click", () => {
-  recruitType = null;
-  render();
-  message("Recruitment cancelled. Select a unit to act.");
-});
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && !document.querySelector("dialog[open]")) clearSelection(true);
 });
@@ -636,7 +614,6 @@ if (document.modelContext?.registerTool) {
         selected = input.unitId;
         inspectedTile = game.unit(selected)?.tile || inspectedTile;
         target = null;
-        recruitType = null;
         render();
         return game.snapshot();
       },
@@ -661,7 +638,6 @@ if (document.modelContext?.registerTool) {
         selected = input.unitId;
         inspectedTile = game.unit(selected)?.tile || inspectedTile;
         target = null;
-        recruitType = null;
         render();
         return game.snapshot();
       },

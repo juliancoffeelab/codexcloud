@@ -58,11 +58,14 @@ cross-device synchronization is performed.
 Click a tile to inspect its terrain, including beneath friendly or enemy units.
 Terrain cards explain movement, protection, village income and healing, and keep
 ownership and recruitment. Inspection also works during enemy turns and after a battle.
-The commander’s recruit buttons live in its ability section.
+With your commander on your own keep, click an adjacent empty land hex to
+open its terrain recruitment menu. Choose a unit to buy it directly onto that hex.
+Prices and unavailable purchases are shown there; new recruits act next turn.
+Selecting a unit first preserves normal movement into that hex.
 
 Tap the selected unit or attack target again, or an inactive map tile, to deselect.
 Clicks on the header, unit panel, and empty battlefield background preserve selection.
-Escape clears selection and cancels recruitment. Selecting a different unit still switches to it.
+Escape clears selection and terrain inspection. Selecting a different unit still switches to it.
 
 Village approaches mirror across the battlefield: a nearby hill on each side,
 no adjacent forest, and balanced central forest and hill positions. Existing saved

@@ -86,3 +86,11 @@ button,select{transition:background-color 120ms ease,border-color 120ms ease}
 
 /* Unit and combat symbols share the battle controls’ outline style. */
 .ui-icon{display:inline-block;width:17px;height:17px;flex-shrink:0;fill:none;stroke:var(--gold);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
+/* Recruiting belongs to the chosen empty terrain hex. */
+.terrain-recruitment{margin-top:14px;font:14px/1.5 system-ui,sans-serif}
+.terrain-recruitment h3{font-size:15px;font-weight:normal;color:var(--gold);margin:0 0 5px}
+.terrain-recruitment .recruit-list{gap:0}
+.terrain-recruitment .recruit-button{width:100%;justify-content:flex-start;min-height:44px;padding:9px 0;border:0;border-radius:0;background:none;text-align:left;color:var(--text)}
+.terrain-recruitment .recruit-button:hover:not(:disabled){color:var(--gold);background:none}
+.terrain-recruitment .recruit-button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.terrain-recruitment .recruit-hint{margin-top:5px;color:var(--muted)}
