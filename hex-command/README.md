@@ -53,7 +53,9 @@ Grass remains much shorter than trees and cottages in both styles. Plains,
 forests, and hills have no baked-in roads; settlement paths stay inside their
 tiles so arbitrary neighbors compose cleanly. Fortresses have neutral decoration;
 the game supplies ownership markers. Both sheets keep their six hex frames.
-Pixel keeps its original simplified terrain symbols and artwork.
+Normal bridges use curved stone rails and an open arch; Low-poly uses angular
+forms. Both retain the same east-west crossing and share their style's water.
+Pixel keeps its original simplified terrain symbols, bridge, and artwork.
 Roles have distinct silhouettes, with no color filter applied. Commanders carry
 faction standards and render slightly larger on the map. Team bases and ownership dots
 also identify sides. Pixel units use coarse blocks and simplified shading to match the terrain,

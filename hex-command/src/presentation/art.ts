@@ -376,6 +376,36 @@ function terrainSprite(
   return `<svg class="art-sprite ${style === "pixel" ? "pixel-art" : ""} ${extraClass}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${size} ${size}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false">${sheetImage(url, sheet, cropX, cropY)}</svg>`;
 }
 
+function bridgeArtwork(style: ArtStyle): string {
+  if (style === "pixel") {
+    const joints = [10, 22, 34, 46, 58].map((at) => `<path d="M${at} 24v22"/>`).join("");
+    return `<path d="M0 26h70v23H0z" fill="#3e443b" opacity=".45"/><path d="M0 23h70v22H0z" fill="#a6a18a" stroke="#686e58" stroke-width="1"/><g stroke="#777c67" stroke-width="1" opacity=".65">${joints}</g><path d="M0 23h70M0 45h70" stroke="#6a705a" stroke-width="5"/><path d="M0 21h70M0 43h70" stroke="#b6b09a" stroke-width="3"/>`;
+  }
+
+  const lowPoly = style === "low-poly";
+  // The open arch reveals the river beneath the near side of the deck.
+  const arch = lowPoly ? "M18 60V56L28 49H42L52 56V60Z" : "M18 60V56Q35 41 52 56V60Z";
+  const deck = lowPoly ? "M0 25L35 22L70 25V45H0Z" : "M0 25Q35 19 70 25V45H0Z";
+  const upperRail = lowPoly
+    ? "M0 20L35 17L70 20V25L35 22L0 25Z"
+    : "M0 20Q35 14 70 20V25Q35 19 0 25Z";
+  const joints = [14, 28, 42, 56]
+    .map((at) => `<path d="M${at} 26v17M${at - 7} 21v3M${at - 7} 45v4"/>`)
+    .join("");
+
+  return `
+    <path d="M0 43H70V61H0Z" fill="#14241f" opacity=".3"/>
+    <path d="M0 42H70V60H0Z${arch}" fill="#827b68" fill-rule="evenodd"/>
+    <path d="${deck}" fill="#b6ad92" stroke="#706b59" stroke-width=".7"/>
+    <path d="${upperRail}" fill="#d0c5a8" stroke="#827b68" stroke-width=".7"/>
+    <path d="M0 44H70V49H0Z" fill="#d0c5a8" stroke="#827b68" stroke-width=".7"/>
+    <path d="M0 26H12V43H0ZM58 26H70V43H58Z" fill="#c2b89e"/>
+    <path d="M12 26V43M58 26V43" stroke="#827b68" stroke-width=".8"/>
+    <g fill="none" stroke="#938b75" stroke-width=".65">${joints}</g>
+    <path d="M0 20${lowPoly ? "L35 17L70 20" : "Q35 14 70 20"}M0 44H70" fill="none" stroke="#e3d7ba" stroke-width="1"/>
+  `;
+}
+
 // Render a region of the original sheet directly. Keep the generated PNGs intact.
 export function artSprite(
   style: ArtStyle,
@@ -393,10 +423,9 @@ export function artSprite(
     return terrainSprite(style, 3, x, y, width, height, extraClass, shallowAssetURL(style));
   }
   if (kind === "terrain" && name === "bridge") {
-    // Reuse the river's water palette beneath a simple stone crossing.
+    // Keep the east-west crossing aligned with adjoining tiles in every style.
     const water = terrainSprite(style, 3, 0, 0, 70, 70, "");
-    const joints = [10, 22, 34, 46, 58].map((at) => `<path d="M${at} 24v22"/>`).join("");
-    return `<svg class="art-sprite ${extraClass}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 70 70" aria-hidden="true" focusable="false">${water}<path d="M0 26h70v23H0z" fill="#3e443b" opacity=".45"/><path d="M0 23h70v22H0z" fill="#a6a18a" stroke="#686e58" stroke-width="1"/><g stroke="#777c67" stroke-width="1" opacity=".65">${joints}</g><path d="M0 23h70M0 45h70" stroke="#6a705a" stroke-width="5"/><path d="M0 21h70M0 43h70" stroke="#b6b09a" stroke-width="3"/></svg>`;
+    return `<svg class="art-sprite ${extraClass}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 70 70" aria-hidden="true" focusable="false">${water}${bridgeArtwork(style)}</svg>`;
   }
   const isUnit = kind === "units";
   const order = isUnit ? unitOrder : terrainOrder;
