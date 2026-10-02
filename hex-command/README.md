@@ -46,8 +46,9 @@ each style on desktop and mobile.
 
 The sticky top bar holds income, village count, coin treasury, End turn with its turn counter,
 and settings. Settings contains New battle, the field manual, and
-the battle journal. Selecting an attack target shows both units with current
-and predicted health, including retaliation and defeats.
+the battle journal. Selecting an attack target shows both units’ current health
+and one-line weapon actions with damage dealt and taken. The magnifying glass
+opens exact damage calculations and resistances.
 
 Battles autosave in this browser after player actions and at the start of each
 player turn. Before an enemy turn, a checkpoint is saved for deterministic replay

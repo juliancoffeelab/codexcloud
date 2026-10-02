@@ -1,5 +1,5 @@
 import { TYPES, DAMAGE_TYPES } from './engine.mjs?v=9d86854f39f3';
-import { iconMarkup } from './icons.mjs';
+import { iconMarkup } from './icons.mjs?v=a28758f5c35e';
 
 const reach = attack => attack.range === 1 ? '1 hex' : `1–${attack.range} hexes`;
 export function resistanceMarkup(unit) {

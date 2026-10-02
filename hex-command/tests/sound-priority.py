@@ -65,6 +65,9 @@ try:
   click('[data-tile="1,0"]','terrain-water')
   click('[data-tile="1,0"]','terrain-water')
   page.evaluate("window.hexSmokeTools.start_new_battle.execute()")
+  click('[data-tile="0,2"]','terrain-plains')
+  click('[data-recruit="scout"]','recruit') # Buying on terrain emits coins only.
+  page.evaluate("window.hexSmokeTools.start_new_battle.execute()")
   click('[data-tile="1,2"]','terrain-plains')
   click('[data-tile="3,1"]','terrain-plains')
   before=page.evaluate('playedSamples.length')

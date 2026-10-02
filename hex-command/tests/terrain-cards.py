@@ -79,7 +79,7 @@ try:
         inspect('8,3', 'Plains')
         inspect('9,3', 'Plains')
         assert page.locator('.duel').is_visible()
-        page.click('[data-attack="sword"]')
+        page.click('[data-attack="mace"]')
         assert next(u for u in snapshot(page)['units'] if u['id'] == 'u5')['hp'] == 8
         page.evaluate("""() => {const key='hex-command-battle';const s=JSON.parse(localStorage.getItem(key));s.state.winner='player';s.state.units=s.state.units.filter(u=>!(u.side==='enemy'&&u.type==='commander'));localStorage.setItem(key,JSON.stringify(s));}""")
         page.reload(wait_until='networkidle')
