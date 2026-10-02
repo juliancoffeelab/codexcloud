@@ -1,13 +1,12 @@
 <script lang="ts">
-  import type { Game } from "../game/engine";
-  import type { Unit } from "../game/types";
+  import type { GameView, UnitView } from "../game/view";
   import { attackChoiceViews } from "./combat-view";
   import AttackChoice from "./AttackChoice.svelte";
 
   interface Props {
-    game: Game;
-    attacker: Unit;
-    target: Unit;
+    game: GameView;
+    attacker: UnitView;
+    target: UnitView;
     onAttack: (attackId: string) => void;
   }
 

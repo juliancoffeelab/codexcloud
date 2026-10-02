@@ -175,6 +175,45 @@ assert.equal(await cold.playSound("turn"), false);
 const resumeCount = resumed;
 await cold.unlockSound();
 assert.equal(resumed, resumeCount + 1);
+// Reset/unmount cancellation stops active feedback without muting future cues.
+assert.equal(await cold.playSound("terrain-forest"), true);
+const cancellationContext = required(audio);
+const activeSource = required(cancellationContext.sources.at(-1));
+const savedPreference = stored.get("hex-command-sound-enabled");
+cold.cancelSound();
+assert.equal(activeSource.stopped, true);
+assert.equal(cold.soundEnabled(), true);
+assert.equal(stored.get("hex-command-sound-enabled"), savedPreference);
+
+// A sample already decoding when its session ends must never start afterward.
+const originalDecode = cancellationContext.decodeAudioData.bind(cancellationContext);
+const finishDecoding: (() => void)[] = [];
+let announceDecoding = () => {};
+const decodingStarted = new Promise<void>((resolve) => {
+  announceDecoding = resolve;
+});
+cancellationContext.decodeAudioData = (bytes) =>
+  new Promise<FakeBuffer>((resolve) => {
+    finishDecoding.push(() => {
+      void originalDecode(bytes).then(resolve);
+    });
+    if (finishDecoding.length === 3) announceDecoding();
+  });
+const cancelled = cold.playSound("terrain-hill");
+for (const sample of pending.filter((p) => p.name.includes("/terrain-hill-"))) sample.resolve();
+await decodingStarted;
+const sourcesBeforeCancel = cancellationContext.sources.length;
+cold.cancelSound();
+for (const finish of finishDecoding) finish();
+assert.equal(await cancelled, false);
+assert.equal(cancellationContext.sources.length, sourcesBeforeCancel);
+cancellationContext.decodeAudioData = originalDecode;
+assert.equal(
+  await cold.playSound("terrain-hill"),
+  true,
+  "later sessions can reuse decoded samples",
+);
+cold.cancelSound();
 // Mobile browsers can leave a touch-start resume pending. A completed tap must
 // make a fresh attempt, and resume an interrupted context after app switching.
 const NativeFake = globalThis.AudioContext;
@@ -223,5 +262,5 @@ const unsupported = createSound();
 await unsupported.unlockSound();
 assert.equal(await unsupported.playSound("turn"), false);
 console.log(
-  "PASS: distinct cue priority, three variations, caching, latest-only playback, gestures, mute and unavailable audio",
+  "PASS: cue priority, variations, caching, session cancellation, gestures, mute and unavailable audio",
 );

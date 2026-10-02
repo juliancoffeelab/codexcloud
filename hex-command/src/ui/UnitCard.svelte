@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { Unit } from "../game/types";
+  import type { UnitView } from "../game/view";
   import { TYPES } from "../game/engine";
   import { artSprite, type ArtStyle } from "../presentation/art";
 
   interface Props {
-    unit: Unit;
+    unit: UnitView;
     artStyle: ArtStyle;
   }
   let { unit, artStyle }: Props = $props();

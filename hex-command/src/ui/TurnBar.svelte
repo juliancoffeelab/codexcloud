@@ -1,23 +1,19 @@
 <script lang="ts">
-  import type { BattleView, BattleController } from "../controller/battle";
+  import type { BattleView, BattleCommands } from "../controller/view";
 
   interface Props {
     view: BattleView;
-    controller: BattleController;
+    actions: BattleCommands;
     onSettings: () => void;
   }
-  let { view, controller, onSettings }: Props = $props();
+  let { view, actions, onSettings }: Props = $props();
 
   const game = $derived(view.game);
   const isPlayerTurn = $derived(game.turn === "player" && !game.winner);
   const income = $derived(game.income("player"));
   const ownedVillages = $derived(income / 2);
   const totalVillages = $derived(game.tiles.filter((tile) => tile.terrain === "village").length);
-  const canUndo = $derived.by(() => {
-    // Undo history belongs to the controller; refresh its availability with the view.
-    view;
-    return controller.canUndo();
-  });
+  const canUndo = $derived(view.canUndo);
   const turnLabel = $derived.by(() => {
     if (game.winner === "player") return "Victory";
     if (game.winner === "enemy") return "Defeat";
@@ -25,7 +21,7 @@
   });
 
   function endTurn(): void {
-    void controller.endTurn().catch((error) => controller.error(error));
+    void actions.endTurn().catch((error) => actions.error(error));
   }
 </script>
 
@@ -58,7 +54,7 @@
     aria-label="Undo move"
     title="Undo move"
     disabled={!canUndo}
-    onclick={() => controller.undoMove()}
+    onclick={() => actions.undoMove()}
   >
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M9 4 4 9l5 5M4 9h9a7 7 0 0 1 7 7v4" />

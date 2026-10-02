@@ -11,6 +11,7 @@
   import MapPicker from "./ui/MapPicker.svelte";
   const controller = new BattleController();
   const view = controller.view;
+  const actions = controller.commands;
   let settingsDialog = $state<HTMLDialogElement>();
   let resetDialog: HTMLDialogElement;
   let mapChoice = $state("mirror");
@@ -25,11 +26,11 @@
   }
   function startNewBattle() {
     resetDialog.close();
-    controller.reset(mapChoice);
+    actions.reset(mapChoice);
   }
   function globalKeydown(event: KeyboardEvent) {
     if (event.key === "Escape" && !document.querySelector("dialog[open]"))
-      controller.clearSelection(true);
+      actions.clearSelection(true);
   }
   onMount(() => {
     // Sound activation requires a real browser gesture; loading/replay stays silent.
@@ -55,22 +56,17 @@
 
 <svelte:document onkeydown={globalKeydown} />
 <main>
-  <TurnBar view={$view} {controller} onSettings={openSettings} />
+  <TurnBar view={$view} {actions} onSettings={openSettings} />
   <p id="status" class="status" role="status" aria-live="polite">{$view.status}</p>
   <div class="workspace">
-    <Battlefield view={$view} {controller} />
+    <Battlefield view={$view} {actions} />
     <aside>
-      <UnitPanel view={$view} {controller} onNewBattle={openMapPicker} />
-      <TerrainPanel view={$view} {controller} />
+      <UnitPanel view={$view} {actions} onNewBattle={openMapPicker} />
+      <TerrainPanel view={$view} {actions} />
     </aside>
   </div>
 </main>
-<SettingsDialog
-  view={$view}
-  {controller}
-  bind:dialog={settingsDialog}
-  onNewBattle={openMapPicker}
-/>
+<SettingsDialog view={$view} {actions} bind:dialog={settingsDialog} onNewBattle={openMapPicker} />
 <dialog bind:this={resetDialog} id="reset-dialog">
   <h2>Start a new battle?</h2>
   <p>Choose your battlefield. Your current battle will be replaced.</p>

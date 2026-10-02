@@ -1,17 +1,15 @@
 <script lang="ts">
-  import type { BattleController, BattleView } from "../controller/battle";
+  import type { BattleCommands, BattleView } from "../controller/view";
   import { artSprite } from "../presentation/art";
   import { terrainPanelView } from "./terrain-view";
 
   interface Props {
     view: BattleView;
-    controller: BattleController;
+    actions: BattleCommands;
   }
-  let { view, controller }: Props = $props();
+  let { view, actions }: Props = $props();
 
-  const inspectedTile = $derived(view.game.tile(view.inspectedTile));
-  const recruitment = $derived(controller.recruitmentContext(inspectedTile));
-  const panel = $derived(terrainPanelView(view, recruitment));
+  const panel = $derived(terrainPanelView(view));
 </script>
 
 <section id="terrain-panel" class="panel" aria-label="Selected terrain" hidden={!panel}>
@@ -25,7 +23,7 @@
               class="recruit-button"
               data-recruit={recruit.type}
               disabled={!recruit.enabled}
-              onclick={() => controller.recruitHere(recruit.type, panel.tile.id)}
+              onclick={() => actions.recruitHere(recruit.type, panel.tile.id)}
             >
               <span>{recruit.name}</span>
               <span>{recruit.cost} gold</span>

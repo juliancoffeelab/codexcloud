@@ -4,16 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "format": "prettier --write src scripts/*.ts tests/*.ts *.config.ts *.json README.md",
-    "format:check": "prettier --check src scripts/*.ts tests/*.ts *.config.ts *.json README.md",
+    "format": "prettier --write src scripts/*.ts tests/*.ts *.config.ts *.json README.md AGENTS.md",
+    "format:check": "prettier --check src scripts/*.ts tests/*.ts *.config.ts *.json README.md AGENTS.md",
     "dev": "vite --host 0.0.0.0",
     "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p tsconfig.tests.json",
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0",
-    "test": "node --import tsx scripts/test.ts",
-    "test:browser": "python3 scripts/test-browser.py",
-    "test:rules-parity": "node --import tsx scripts/check-engine-parity.ts",
-    "test:parity": "python3 scripts/test-parity.py"
+    "test": "node --import tsx scripts/test.ts"
   },
   "dependencies": {
     "svelte": "^5.0.0"

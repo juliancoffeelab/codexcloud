@@ -1,11 +1,12 @@
-import type { BattleView } from "../controller/battle";
+import type { Immutable, UnitView } from "../game/view";
+import type { BattleView } from "../controller/view";
 import { TERRAIN, TYPES } from "../game/engine";
-import type { Unit, UnitDefinition } from "../game/types";
+import type { UnitDefinition } from "../game/types";
 import { abilityInfo } from "../presentation/unit-ability";
 
 export interface UnitDetailsView {
-  unit: Unit;
-  definition: UnitDefinition;
+  unit: UnitView;
+  definition: Immutable<UnitDefinition>;
   terrainName: string;
   actionStatus: string;
   ability: ReturnType<typeof abilityInfo>;
@@ -15,9 +16,9 @@ type UnitPanelView =
   | { kind: "hidden" }
   | { kind: "outcome"; title: string; description: string }
   | { kind: "details"; details: UnitDetailsView }
-  | { kind: "combat"; attacker: Unit; defender: Unit; detailsResetKey: string };
+  | { kind: "combat"; attacker: UnitView; defender: UnitView; detailsResetKey: string };
 
-function actionStatus(unit: Unit): string {
+function actionStatus(unit: UnitView): string {
   if (unit.attacked) return "Turn finished";
   if (unit.moved) return "Can still attack";
   return "Ready";

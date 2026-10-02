@@ -1,7 +1,8 @@
-import type { BattleController, BattleView } from "../controller/battle";
-import { recruitTypes } from "../controller/battle";
+import type { TileView } from "../game/view";
+import type { RecruitmentContext, BattleView } from "../controller/view";
+import { recruitTypes } from "../controller/view";
 import { TERRAIN, TYPES } from "../game/engine";
-import type { Tile, TerrainType } from "../game/types";
+import type { TerrainType } from "../game/types";
 
 const descriptions: Record<TerrainType, string> = {
   plains: "Open grassland with easy footing.",
@@ -13,8 +14,6 @@ const descriptions: Record<TerrainType, string> = {
   village: "Capture this settlement by moving a unit onto it.",
   keep: "A fortified home for its army’s commander.",
 };
-
-type RecruitmentContext = ReturnType<BattleController["recruitmentContext"]>;
 
 function movementFact(terrain: TerrainType): string {
   if (terrain === "water") return "Movement: impassable";
@@ -53,7 +52,7 @@ function terrainFacts(terrain: TerrainType): string[] {
   return facts;
 }
 
-function recruitmentView(view: BattleView, tile: Tile, context: RecruitmentContext) {
+function recruitmentView(view: BattleView, tile: TileView, context: RecruitmentContext | null) {
   if (!context) return null;
   const { game } = view;
   const isPlayerTurn = game.turn === "player" && !game.winner;
@@ -80,7 +79,7 @@ function recruitmentView(view: BattleView, tile: Tile, context: RecruitmentConte
   return { options, hint };
 }
 
-export function terrainPanelView(view: BattleView, context: RecruitmentContext) {
+export function terrainPanelView(view: BattleView) {
   const tile = view.game.tile(view.inspectedTile);
   if (!tile) return null;
 
@@ -97,6 +96,6 @@ export function terrainPanelView(view: BattleView, context: RecruitmentContext) 
       ? { label: `${ownerLabel} ${tile.terrain}`, className: tile.owner || "neutral" }
       : null,
     facts: terrainFacts(tile.terrain),
-    recruitment: recruitmentView(view, tile, context),
+    recruitment: recruitmentView(view, tile, view.recruitment),
   };
 }

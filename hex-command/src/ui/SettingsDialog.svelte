@@ -1,13 +1,13 @@
 <script lang="ts">
-  import type { BattleView, BattleController } from "../controller/battle";
+  import type { BattleView, BattleCommands } from "../controller/view";
   import type { ArtStyle } from "../presentation/art";
   interface Props {
     view: BattleView;
-    controller: BattleController;
+    actions: BattleCommands;
     dialog?: HTMLDialogElement;
     onNewBattle: () => void;
   }
-  let { view, controller, dialog = $bindable(), onNewBattle }: Props = $props();
+  let { view, actions, dialog = $bindable(), onNewBattle }: Props = $props();
   let selectedArt = $state<ArtStyle>("normal");
   $effect(() => {
     if (!view.artLoading) selectedArt = view.artStyle;
@@ -25,7 +25,7 @@
   function changeArt(event: Event) {
     const value = (event.currentTarget as HTMLSelectElement).value;
     if (value === "normal" || value === "low-poly" || value === "pixel")
-      void controller.setArtStyle(value);
+      void actions.setArtStyle(value);
   }
 </script>
 
@@ -55,7 +55,7 @@
       id="sound-effects"
       type="checkbox"
       checked={view.sound}
-      onchange={(event) => void controller.setSound(event.currentTarget.checked)}
+      onchange={(event) => void actions.setSound(event.currentTarget.checked)}
     />
   </label>
   <button

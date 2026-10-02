@@ -1,17 +1,17 @@
-import type { BattleView } from "../controller/battle";
+import type { UnitView, TileView } from "../game/view";
+import type { BattleView } from "../controller/view";
 import { TERRAIN, TYPES } from "../game/engine";
-import type { Tile, Unit } from "../game/types";
 import { artSprite } from "../presentation/art";
 import { colors, hexPoints, tileCenter } from "./geometry";
 
 export interface TileUnitView {
-  unit: Unit;
+  unit: UnitView;
   teamColor: string;
   artwork: string;
   healthWidth: number;
 }
 
-export interface BattlefieldTileView extends Tile {
+export interface BattlefieldTileView extends TileView {
   x: number;
   y: number;
   points: string;
@@ -25,8 +25,8 @@ export interface BattlefieldTileView extends Tile {
 }
 
 function tileLabel(
-  tile: Tile,
-  occupant: Unit | undefined,
+  tile: TileView,
+  occupant: UnitView | undefined,
   reachable: boolean,
   target: boolean,
 ): string {

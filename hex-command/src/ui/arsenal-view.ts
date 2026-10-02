@@ -1,5 +1,6 @@
+import type { UnitView } from "../game/view";
 import { TYPES, DAMAGE_TYPES } from "../game/engine";
-import type { Unit, DamageType } from "../game/types";
+import type { DamageType } from "../game/types";
 
 function resistanceClass(resistance: number): string {
   if (resistance > 0) return "resistant";
@@ -7,7 +8,7 @@ function resistanceClass(resistance: number): string {
   return "";
 }
 
-export function arsenalView(unit: Unit) {
+export function arsenalView(unit: UnitView) {
   const definition = TYPES[unit.type];
   const weapons = definition.attacks.map((weapon) => ({
     ...weapon,

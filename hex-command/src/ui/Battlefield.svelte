@@ -1,30 +1,29 @@
 <script lang="ts">
+  import type { TileView } from "../game/view";
   import { tick } from "svelte";
-  import type { BattleController, BattleView } from "../controller/battle";
+  import type { BattleCommands, BattleView } from "../controller/view";
   import { MAPS } from "../game/maps";
-  import type { Tile } from "../game/types";
   import { battlefieldTiles } from "./battlefield-view";
 
   interface Props {
     view: BattleView;
-    controller: BattleController;
+    actions: BattleCommands;
   }
-  let { view, controller }: Props = $props();
-  let map: SVGSVGElement;
+  let { view, actions }: Props = $props();
+  let map: SVGSVGElement | undefined;
 
   const game = $derived(view.game);
-  const inspectedTile = $derived(game.tile(view.inspectedTile));
-  const recruitment = $derived(controller.recruitmentContext(inspectedTile));
+  const recruitment = $derived(view.recruitment);
   // Track the published turn even when the enemy turn hides the destination.
   const isPlayerTurn = $derived(game.turn === "player" && !game.winner);
   const recruitTileId = $derived(isPlayerTurn && recruitment ? view.inspectedTile : null);
   const tiles = $derived(battlefieldTiles(view, recruitTileId));
   const viewBox = $derived(`0 0 ${758 + 61 * (game.cols - 11)} ${452 + 53 * (game.rows - 7)}`);
 
-  async function handleTileKey(event: KeyboardEvent, tile: Tile): Promise<void> {
+  async function handleTileKey(event: KeyboardEvent, tile: TileView): Promise<void> {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
-      controller.choose(tile.id);
+      actions.choose(tile.id);
       return;
     }
 
@@ -50,8 +49,15 @@
     const nextTile = game.tile(`${col},${row}`);
     if (!nextTile) return;
 
-    controller.focusTile(nextTile.id);
+    const renderRevision = view.renderRevision;
+    actions.focusTile(nextTile.id);
     await tick();
+    if (
+      !map?.isConnected ||
+      view.renderRevision !== renderRevision ||
+      view.focusedTile !== nextTile.id
+    )
+      return;
     map.querySelector<SVGGElement>(`[data-tile="${nextTile.id}"]`)?.focus();
   }
 </script>
@@ -83,7 +89,7 @@
             tabindex={tile.id === view.focusedTile ? 0 : -1}
             aria-label={tile.label}
             data-tile={tile.id}
-            onclick={() => controller.choose(tile.id)}
+            onclick={() => actions.choose(tile.id)}
             onkeydown={(event) => handleTileKey(event, tile)}
           >
             <polygon class="tile-ground" points={tile.points} fill={tile.fill} />

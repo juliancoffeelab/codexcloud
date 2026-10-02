@@ -2,10 +2,11 @@
   import { MAPS } from "../game/maps";
   import { hexPoints, tileCenter, previewColors } from "./geometry";
   import type { MapDefinition, TerrainType } from "../game/types";
+  import type { Immutable } from "../game/view";
 
   let { selected = $bindable("mirror") }: { selected?: string } = $props();
 
-  function previewTiles(layout: MapDefinition) {
+  function previewTiles(layout: Immutable<MapDefinition>) {
     const terrainByTile = new Map<string, TerrainType>(
       layout.terrain.map((tile) => [`${tile.col},${tile.row}`, tile.terrain]),
     );

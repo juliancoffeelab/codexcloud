@@ -20,12 +20,13 @@ import type {
 } from "./types";
 export type * from "./types";
 import { MAPS, LEGACY_RIVER } from "./maps";
+import { immutable } from "./immutable";
 
-export const DAMAGE_TYPES = {
+export const DAMAGE_TYPES = Object.freeze({
   blade: "Blade",
   pierce: "Pierce",
   impact: "Impact",
-};
+});
 const weapon = (
   id: string,
   name: string,
@@ -35,7 +36,7 @@ const weapon = (
   range: number,
   sound = "attack-melee",
 ): Weapon => ({ id, name, damage, damageType, category, range, sound });
-export const TYPES: Record<UnitType, UnitDefinition> = {
+export const TYPES = immutable<Record<UnitType, UnitDefinition>>({
   commander: {
     name: "Commander",
     hp: 16,
@@ -96,8 +97,8 @@ export const TYPES: Record<UnitType, UnitDefinition> = {
     ability: "Pathfinder",
     description: "Forests and hills cost only 1 movement.",
   },
-};
-export const TERRAIN: Record<TerrainType, TerrainDefinition> = {
+});
+export const TERRAIN = immutable<Record<TerrainType, TerrainDefinition>>({
   plains: {
     name: "Plains",
     cost: 1,
@@ -135,7 +136,7 @@ export const TERRAIN: Record<TerrainType, TerrainDefinition> = {
     cost: 1,
     description: "Your commander can recruit into adjacent empty hexes.",
   },
-};
+});
 export function axial(tile: Coordinates) {
   return { q: tile.col - Math.floor(tile.row / 2), r: tile.row };
 }

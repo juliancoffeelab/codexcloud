@@ -1,4 +1,4 @@
-import { writable, type Readable } from "svelte/store";
+import { writable, type Readable, type Writable } from "svelte/store";
 import { tick, flushSync } from "svelte";
 import { Game, TYPES, TERRAIN, type UnitType, type Tile, type Unit } from "../game/engine";
 import { createMoveUndo } from "../game/undo";
@@ -10,20 +10,29 @@ import {
   unlockSound,
   playSound,
   playInteraction,
+  cancelSound,
 } from "../presentation/sound";
 import { animateTile, animateTurn, type MotionKind } from "../presentation/motion";
 import { describeChanges } from "./feedback";
+import { createGameView, type GameView } from "../game/view";
+import {
+  createBattleCommands,
+  recruitmentContext,
+  recruitTypes,
+  type BattleView,
+  type BattleCommands,
+  type RecruitType,
+} from "./view";
+
+export { recruitTypes } from "./view";
+export type { BattleView, RecruitType } from "./view";
 
 interface PublishOptions {
   renderBattle?: boolean;
   showWinnerMessage?: boolean;
 }
 
-export type RecruitType = Exclude<UnitType, "commander">;
-export const recruitTypes: RecruitType[] = ["soldier", "archer", "scout"];
-
-export interface BattleView {
-  game: Game;
+interface SessionState {
   selected: string | null;
   target: string | null;
   focusedTile: string;
@@ -47,20 +56,27 @@ const enemyActionOrder: Record<UnitType, number> = {
 };
 
 export class BattleController {
-  private readonly restored = loadBattle();
+  #game: Game;
+  private pendingEnemyReplay: boolean;
+  private initialized = false;
+  private artRequestVersion = 0;
+  private soundRequestVersion = 0;
   private readonly history = createMoveUndo();
   private sessionVersion = 0;
   private disposed = false;
   private previousFeedbackState: ReturnType<Game["snapshot"]> | null = null;
-  private state: BattleView;
-  private store;
-  private gameView: Game;
+  private state: SessionState;
+  private store: Writable<BattleView>;
+  private gameView: GameView;
   readonly view: Readable<BattleView>;
+  readonly commands: BattleCommands;
 
-  constructor() {
-    const game = this.restored.game;
+  constructor(private readonly pause: (ms: number) => Promise<void> = delay) {
+    const restored = loadBattle();
+    const game = restored.game;
+    this.#game = game;
+    this.pendingEnemyReplay = restored.pendingEnemy;
     this.state = {
-      game,
       selected: null,
       target: null,
       focusedTile: game.units.find((u) => u.side === "player")?.tile ?? game.tiles[0]!.id,
@@ -71,17 +87,20 @@ export class BattleController {
       artLoading: false,
       sound: soundEnabled(),
     };
-    this.gameView = new Game(game.mapId, game.mapRevision);
-    this.gameView.restoreState(game.captureState());
-    this.store = writable({ ...this.state, game: this.gameView });
+    this.gameView = createGameView(game);
+    this.store = writable(this.currentView());
     this.view = { subscribe: this.store.subscribe };
     this.previousFeedbackState = game.snapshot();
+    this.commands = createBattleCommands(this);
   }
 
   /** Stop outstanding turn and preference work when this play session unmounts. */
   dispose(): void {
     this.disposed = true;
     this.sessionVersion++;
+    this.artRequestVersion++;
+    cancelSound();
+    this.soundRequestVersion++;
   }
 
   private requireSession(): void {
@@ -90,20 +109,31 @@ export class BattleController {
     }
   }
 
-  get game() {
-    return this.state.game;
+  private active() {
+    return this.#game.turn === "player" && !this.#game.winner;
   }
 
-  active() {
-    return this.game.turn === "player" && !this.game.winner;
+  private requirePlayerActor(unitId: string): void {
+    this.requireSession();
+    if (!this.active()) {
+      throw new Error("Wait for your turn.");
+    }
+    if (this.#game.unit(unitId)?.side !== "player") {
+      throw new Error("This unit cannot act now.");
+    }
   }
 
-  canUndo() {
-    return this.history.canUndo(this.game);
+  private currentView(): BattleView {
+    return Object.freeze({
+      ...this.state,
+      game: this.gameView,
+      canUndo: this.history.canUndo(this.#game),
+      recruitment: recruitmentContext(this.gameView, this.state.selected, this.state.inspectedTile),
+    });
   }
 
   snapshot() {
-    return this.game.snapshot();
+    return this.#game.snapshot();
   }
 
   message(status: string) {
@@ -122,9 +152,9 @@ export class BattleController {
     if (renderBattle) {
       this.state.renderRevision++;
     }
-    if (showWinnerMessage && this.game.winner) {
+    if (showWinnerMessage && this.#game.winner) {
       this.state.status =
-        this.game.winner === "player"
+        this.#game.winner === "player"
           ? "Victory! The enemy commander has fallen. The field is yours."
           : "Your commander has fallen. Start a new battle and try a different approach.";
     }
@@ -135,10 +165,13 @@ export class BattleController {
     // A fresh render snapshot keeps mutable engine state outside Svelte.
     // Status and preference updates reuse it until the next battle render.
     if (renderBattle) {
-      this.gameView = new Game(this.game.mapId, this.game.mapRevision);
-      this.gameView.restoreState(this.game.captureState());
+      this.gameView = createGameView(this.#game);
     }
-    flushSync(() => this.store.set({ ...this.state, game: this.gameView }));
+    // Notify all readers before flushing DOM updates; subscribers see one complete view.
+    this.store.set(this.currentView());
+    if (typeof document !== "undefined") {
+      flushSync();
+    }
     if (focusWasMap) {
       document
         .querySelector<SVGGElement>(`#map [data-tile="${this.state.focusedTile}"]`)
@@ -150,30 +183,41 @@ export class BattleController {
   }
 
   private commitAction() {
-    if (this.game.turn === "player") {
-      saveBattle(this.game);
+    if (this.#game.turn === "player") {
+      saveBattle(this.#game);
     }
     this.publish();
   }
 
-  private animateTileAfterRender(tile: string, kind: MotionKind) {
+  private afterRender(effect: () => void) {
+    const sessionVersion = this.sessionVersion;
+    const renderRevision = this.state.renderRevision;
     void tick().then(() => {
-      if (!this.disposed) {
-        animateTile(tile, kind);
+      if (
+        this.disposed ||
+        this.sessionVersion !== sessionVersion ||
+        this.state.renderRevision !== renderRevision
+      ) {
+        return;
       }
+      effect();
     });
+  }
+
+  private animateTileAfterRender(tile: string, kind: MotionKind) {
+    this.afterRender(() => animateTile(tile, kind));
   }
 
   private playSelectionFeedback(tileId: string) {
     this.animateTileAfterRender(tileId, "select");
     playInteraction({
-      unitType: this.game.at(tileId)?.type,
-      terrain: this.game.tile(tileId)?.terrain,
+      unitType: this.#game.at(tileId)?.type,
+      terrain: this.#game.tile(tileId)?.terrain,
     });
   }
 
   private playBattleFeedback() {
-    const current = this.game.snapshot();
+    const current = this.#game.snapshot();
     const previous = this.previousFeedbackState;
     this.previousFeedbackState = current;
     if (!previous) {
@@ -188,17 +232,13 @@ export class BattleController {
       this.animateTileAfterRender(tile, "capture");
     }
     if (changes.turnChanged) {
-      void tick().then(() => {
-        if (!this.disposed) {
-          animateTurn();
-        }
-      });
+      this.afterRender(animateTurn);
     }
 
     // One cue per action, with combat taking precedence over movement/capture.
     if (changes.attacked) {
       const defaultSound = changes.attacker?.type === "archer" ? "attack-bow" : "attack-melee";
-      playSound(this.game.lastCombat?.sound || defaultSound);
+      playSound(this.#game.lastCombat?.sound || defaultSound);
     } else if (changes.newWinner) {
       playSound(changes.newWinner === "player" ? "victory" : "defeat");
     } else if (changes.recruited) {
@@ -206,41 +246,21 @@ export class BattleController {
     } else if (changes.movedUnit) {
       playInteraction({
         unitType: changes.movedUnit.type,
-        terrain: this.game.tile(changes.movedUnit.tile)?.terrain,
+        terrain: this.#game.tile(changes.movedUnit.tile)?.terrain,
       });
     } else if (changes.capturedTiles.length > 0) {
       playInteraction({ terrain: "village" });
     }
   }
 
-  recruitmentContext(tile: Tile | undefined) {
-    if (
-      !tile ||
-      tile.terrain === "water" ||
-      this.game.at(tile.id) ||
-      this.game.winner ||
-      this.game.unit(this.state.selected)
-    ) {
-      return null;
-    }
-    const keep = this.game
-      .neighbors(tile.id)
-      .find((neighbor) => neighbor.terrain === "keep" && neighbor.owner === "player");
-    if (!keep) {
-      return null;
-    }
-    const commander = this.game.units.find(
-      (unit) => unit.side === "player" && unit.type === "commander",
-    );
-    return { commander, stationed: commander?.tile === keep.id };
-  }
-
   focusTile(tileId: string) {
+    this.requireSession();
     this.state.focusedTile = tileId;
     this.publish({ renderBattle: false });
   }
 
   clearSelection(clearInspection = false) {
+    this.requireSession();
     if (
       !this.state.selected &&
       !this.state.target &&
@@ -258,7 +278,8 @@ export class BattleController {
   }
 
   choose(tileId: string) {
-    const tile = this.game.tile(tileId);
+    this.requireSession();
+    const tile = this.#game.tile(tileId);
     if (!tile) {
       return;
     }
@@ -270,8 +291,8 @@ export class BattleController {
       return;
     }
     try {
-      const occupant = this.game.at(tileId);
-      const unit = this.game.unit(this.state.selected);
+      const occupant = this.#game.at(tileId);
+      const unit = this.#game.unit(this.state.selected);
       if (occupant && (occupant.id === this.state.selected || occupant.id === this.state.target)) {
         this.clearSelection();
         this.playSelectionFeedback(tileId);
@@ -280,7 +301,7 @@ export class BattleController {
       if (
         occupant?.side === "enemy" &&
         unit?.side === "player" &&
-        this.game.targets(unit.id).includes(occupant)
+        this.#game.targets(unit.id).includes(occupant)
       ) {
         this.selectTarget(occupant);
         return;
@@ -289,7 +310,7 @@ export class BattleController {
         this.selectUnit(occupant);
         return;
       }
-      if (unit?.side === "player" && this.game.reachable(unit.id).has(tileId)) {
+      if (unit?.side === "player" && this.#game.reachable(unit.id).has(tileId)) {
         this.move(unit.id, tileId);
         this.message("Moved. You can attack an enemy in range or select another unit.");
         return;
@@ -307,7 +328,7 @@ export class BattleController {
     playSound("select");
     this.message("Tap a weapon to attack. Use the magnifying glass for damage details.");
     if (matchMedia("(max-width:900px)").matches) {
-      void tick().then(() => {
+      this.afterRender(() => {
         document.getElementById("unit-panel")?.scrollIntoView({ block: "nearest" });
       });
     }
@@ -340,10 +361,10 @@ export class BattleController {
   }
 
   move(unitId: string, tileId: string) {
-    this.requireSession();
-    this.history.move(this.game, unitId, tileId);
+    this.requirePlayerActor(unitId);
+    this.history.move(this.#game, unitId, tileId);
     this.state.selected = unitId;
-    this.state.inspectedTile = this.game.unit(unitId)?.tile ?? this.state.inspectedTile;
+    this.state.inspectedTile = this.#game.unit(unitId)?.tile ?? this.state.inspectedTile;
     this.state.target = null;
     this.commitAction();
     return this.snapshot();
@@ -359,12 +380,12 @@ export class BattleController {
     attackId: string | undefined,
     { inspectActor }: { inspectActor: boolean },
   ) {
-    this.requireSession();
-    this.game.attack(unitId, targetId, attackId);
+    this.requirePlayerActor(unitId);
+    this.#game.attack(unitId, targetId, attackId);
     this.history.clear();
     this.state.selected = unitId;
     if (inspectActor) {
-      this.state.inspectedTile = this.game.unit(unitId)?.tile ?? this.state.inspectedTile;
+      this.state.inspectedTile = this.#game.unit(unitId)?.tile ?? this.state.inspectedTile;
     }
     this.state.target = null;
     this.commitAction();
@@ -377,7 +398,7 @@ export class BattleController {
         return;
       }
       this.resolveAttack(this.state.selected, this.state.target, attackId, { inspectActor: false });
-      if (!this.game.winner) {
+      if (!this.#game.winner) {
         this.message("Attack complete. Select another unit or end your turn.");
       }
     } catch (error) {
@@ -386,8 +407,8 @@ export class BattleController {
   }
 
   recruit(commanderId: string, type: RecruitType, tileId: string) {
-    this.requireSession();
-    this.game.recruit(commanderId, type, tileId);
+    this.requirePlayerActor(commanderId);
+    this.#game.recruit(commanderId, type, tileId);
     this.history.clear();
     this.state.inspectedTile = tileId;
     this.commitAction();
@@ -396,7 +417,7 @@ export class BattleController {
 
   recruitHere(type: RecruitType, tileId: string) {
     try {
-      const commander = this.game.units.find(
+      const commander = this.#game.units.find(
         (unit) => unit.side === "player" && unit.type === "commander",
       );
       if (!commander) {
@@ -420,37 +441,37 @@ export class BattleController {
     this.state.selected = null;
     this.state.target = null;
     // Interrupted enemy turns replay from this player-state checkpoint.
-    saveBattle(this.game, true);
-    this.game.endTurn();
+    saveBattle(this.#game, true);
+    this.#game.endTurn();
     this.publish();
     this.message("The enemy is planning its moves…");
-    await delay(enemyThinkingDelay);
+    await this.pause(enemyThinkingDelay);
     if (turnSessionVersion !== this.sessionVersion) {
       return;
     }
-    this.game.enemyRecruit();
+    this.#game.enemyRecruit();
     this.publish();
-    const queue = this.game.units
+    const queue = this.#game.units
       .filter((u) => u.side === "enemy")
       .sort((a, b) => enemyActionOrder[a.type] - enemyActionOrder[b.type])
       .map((u) => u.id);
     for (const id of queue) {
-      await delay(enemyActionDelay);
+      await this.pause(enemyActionDelay);
       if (turnSessionVersion !== this.sessionVersion) {
         return;
       }
-      this.game.enemyAct(id);
+      this.#game.enemyAct(id);
       this.publish();
-      if (this.game.winner) {
+      if (this.#game.winner) {
         break;
       }
     }
-    if (!this.game.winner) {
-      this.game.endTurn();
+    if (!this.#game.winner) {
+      this.#game.endTurn();
       this.publish();
       this.message("Your turn. Capture villages, recruit reinforcements, or attack.");
     }
-    saveBattle(this.game);
+    saveBattle(this.#game);
     return this.snapshot();
   }
 
@@ -458,15 +479,17 @@ export class BattleController {
     this.requireSession();
     // Validate before changing the current battle, its undo history, or its turn.
     const replacement = new Game(mapId);
+    cancelSound();
     this.sessionVersion++;
     this.history.clear();
-    this.state.game = replacement;
+    this.#game = replacement;
+    this.pendingEnemyReplay = false;
     this.previousFeedbackState = null;
     this.state.selected = null;
     this.state.target = null;
     this.state.inspectedTile = null;
     this.state.focusedTile =
-      this.game.units.find((unit) => unit.side === "player")?.tile ?? this.game.tiles[0]!.id;
+      this.#game.units.find((unit) => unit.side === "player")?.tile ?? this.#game.tiles[0]!.id;
     this.state.status = initialMessage;
     this.commitAction();
     return this.snapshot();
@@ -474,7 +497,7 @@ export class BattleController {
 
   undoMove() {
     this.requireSession();
-    const restored = this.history.undo(this.game);
+    const restored = this.history.undo(this.#game);
     if (!restored) {
       return this.snapshot();
     }
@@ -490,41 +513,49 @@ export class BattleController {
   }
 
   actions(unitId: string) {
-    const unit = this.game.unit(unitId);
+    const unit = this.#game.unit(unitId);
     if (!unit) {
       throw new Error("Unknown unit.");
     }
-    return {
-      moves: [...this.game.reachable(unitId)].map(([tile, cost]) => ({
+    return structuredClone({
+      moves: [...this.#game.reachable(unitId)].map(([tile, cost]) => ({
         tile,
         cost,
       })),
-      attacks: this.game.targets(unitId).map((target) => ({
+      attacks: this.#game.targets(unitId).map((target) => ({
         id: target.id,
-        ...this.game.preview(unit, target),
-        recommendedAttackId: this.game.bestAttack(unit, target)!.id,
-        weapons: this.game.attackOptions(unit, target).map((attack) => ({
+        ...this.#game.preview(unit, target),
+        recommendedAttackId: this.#game.bestAttack(unit, target)!.id,
+        weapons: this.#game.attackOptions(unit, target).map((attack) => ({
           ...attack,
-          ...this.game.previewDetails(unit, target, attack.id),
+          ...this.#game.previewDetails(unit, target, attack.id),
         })),
       })),
       recruitment: Object.fromEntries(
         recruitTypes.map((type) => [
           type,
-          this.game.recruitTiles(unitId, type).map((tile) => tile.id),
+          this.#game.recruitTiles(unitId, type).map((tile) => tile.id),
         ]),
       ),
-    };
+    });
   }
 
   async setSound(enabled: boolean) {
     this.requireSession();
+    const requestVersion = ++this.soundRequestVersion;
+    const sessionVersion = this.sessionVersion;
+    const renderRevision = this.state.renderRevision;
     setSoundEnabled(enabled);
     this.state.sound = enabled;
     this.publish({ renderBattle: false });
     if (enabled) {
       await unlockSound();
-      if (!this.disposed) {
+      if (
+        !this.disposed &&
+        requestVersion === this.soundRequestVersion &&
+        sessionVersion === this.sessionVersion &&
+        renderRevision === this.state.renderRevision
+      ) {
         playSound("select");
       }
     }
@@ -532,16 +563,19 @@ export class BattleController {
 
   async setArtStyle(next: ArtStyle) {
     this.requireSession();
+    const requestVersion = ++this.artRequestVersion;
     this.state.artLoading = true;
     this.publish({ renderBattle: false });
     const ready = await loadArtStyle(next);
-    if (this.disposed) {
+    if (!this.isCurrentArtRequest(requestVersion)) {
       return;
     }
     if (ready) {
       this.state.artStyle = next;
       saveArtStyle(next);
-      document.documentElement.dataset.artStyle = next;
+      if (typeof document !== "undefined") {
+        document.documentElement.dataset.artStyle = next;
+      }
       this.publish();
     } else {
       this.message("Could not load that artwork. Please try again.");
@@ -550,42 +584,55 @@ export class BattleController {
     this.publish({ renderBattle: false });
   }
 
-  initialize() {
-    this.requireSession();
-    document.documentElement.dataset.artStyle = this.state.artStyle;
-    if (this.game.turn === "player") {
-      saveBattle(this.game);
-    }
-    this.publish({ renderBattle: false });
-    if (this.restored.pendingEnemy) {
-      void this.endTurn().catch((error) => this.error(error));
-    }
-    void this.loadInitialArtwork(this.state.artStyle);
+  private isCurrentArtRequest(version: number): boolean {
+    return !this.disposed && version === this.artRequestVersion;
   }
 
-  private async loadInitialArtwork(initialStyle: ArtStyle) {
+  initialize() {
+    this.requireSession();
+    if (this.initialized) {
+      return;
+    }
+    this.initialized = true;
+    if (typeof document !== "undefined") {
+      document.documentElement.dataset.artStyle = this.state.artStyle;
+    }
+    if (this.#game.turn === "player") {
+      saveBattle(this.#game);
+    }
+    this.publish({ renderBattle: false });
+    if (this.pendingEnemyReplay) {
+      this.pendingEnemyReplay = false;
+      void this.endTurn().catch((error) => this.error(error));
+    }
+    if (!this.state.artLoading) {
+      const requestVersion = ++this.artRequestVersion;
+      void this.loadInitialArtwork(this.state.artStyle, requestVersion);
+    }
+  }
+
+  private async loadInitialArtwork(initialStyle: ArtStyle, requestVersion: number) {
     const ready = await loadArtStyle(initialStyle);
-    if (this.disposed || ready || this.state.artStyle !== initialStyle || this.state.artLoading) {
+    if (!this.isCurrentArtRequest(requestVersion) || ready || this.state.artLoading) {
       return;
     }
 
     const fallbacks: ArtStyle[] = ["normal", "low-poly", "pixel"];
     for (const fallback of fallbacks.filter((style) => style !== initialStyle)) {
-      if (await loadArtStyle(fallback)) {
-        if (this.disposed) {
-          return;
-        }
-        if (this.state.artStyle === initialStyle && !this.state.artLoading) {
-          this.state.artStyle = fallback;
+      const fallbackReady = await loadArtStyle(fallback);
+      if (!this.isCurrentArtRequest(requestVersion)) {
+        return;
+      }
+      if (fallbackReady) {
+        this.state.artStyle = fallback;
+        if (typeof document !== "undefined") {
           document.documentElement.dataset.artStyle = fallback;
-          this.publish();
-          this.message("Using alternate artwork. Retry your preferred style in Settings.");
         }
+        this.publish();
+        this.message("Using alternate artwork. Retry your preferred style in Settings.");
         return;
       }
     }
-    if (!this.disposed) {
-      this.message("Artwork could not load. Please reload to retry.");
-    }
+    this.message("Artwork could not load. Please reload to retry.");
   }
 }

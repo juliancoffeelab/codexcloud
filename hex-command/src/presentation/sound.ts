@@ -81,6 +81,11 @@ export function createSound() {
     }
     voices.clear();
   }
+  // End session feedback without changing the user's saved sound preference.
+  function cancelSound() {
+    request++;
+    stopVoices();
+  }
   function setSoundEnabled(value: boolean) {
     enabled = Boolean(value);
     request++; // Also discard sounds whose samples are still loading.
@@ -199,6 +204,7 @@ export function createSound() {
     soundEnabled,
     soundForInteraction,
     playInteraction,
+    cancelSound,
     setSoundEnabled,
     unlockSound,
     playSound,
@@ -209,6 +215,7 @@ export const {
   soundEnabled,
   soundForInteraction,
   playInteraction,
+  cancelSound,
   setSoundEnabled,
   unlockSound,
   playSound,

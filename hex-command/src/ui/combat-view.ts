@@ -1,5 +1,6 @@
-import { DAMAGE_TYPES, TERRAIN, TYPES, type Game } from "../game/engine";
-import type { DamageBreakdown, Side, TerrainType, Unit, Weapon } from "../game/types";
+import type { GameView, UnitView } from "../game/view";
+import { DAMAGE_TYPES, TERRAIN, TYPES } from "../game/engine";
+import type { DamageBreakdown, Side, TerrainType, Weapon } from "../game/types";
 import { damageExplanation } from "../presentation/combat";
 
 export interface HealthForecastView {
@@ -42,7 +43,7 @@ export interface UnavailableAttackChoice extends AttackChoiceBase {
 export type AttackChoiceView = AvailableAttackChoice | UnavailableAttackChoice;
 
 function healthForecast(
-  unit: Unit,
+  unit: UnitView,
   damage: number,
   label: "You" | "Enemy",
   impact: "Take" | "Deal",
@@ -77,14 +78,23 @@ function describeAttack(
   return `${label}: ${weapon.damage} ${DAMAGE_TYPES[weapon.damageType].toLowerCase()}, ${weapon.name.toLowerCase()}, ${weapon.category}${terrainDescription}`;
 }
 
-function outcomeWarning(attacker: Unit, target: Unit, damage: number, retaliation: number): string {
+function outcomeWarning(
+  attacker: UnitView,
+  target: UnitView,
+  damage: number,
+  retaliation: number,
+): string {
   if (retaliation >= attacker.hp) return ", you fall";
   if (damage >= target.hp) return ", enemy falls";
   return "";
 }
 
 /** Prepare display text and forecasts; damage and legality remain engine decisions. */
-export function attackChoiceViews(game: Game, attacker: Unit, target: Unit): AttackChoiceView[] {
+export function attackChoiceViews(
+  game: GameView,
+  attacker: UnitView,
+  target: UnitView,
+): AttackChoiceView[] {
   return TYPES[attacker.type].attacks.map((weapon) => {
     if (!game.canAttackFrom(attacker, attacker.tile, target, weapon.id)) {
       return {

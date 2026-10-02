@@ -1,4 +1,5 @@
 import type { MapDefinition, MapId, TerrainOverride, TerrainType, StartingUnit } from "./types";
+import { immutable } from "./immutable";
 // Only overrides are listed; all other hexes are plains.
 const terrain = (kind: TerrainType, positions: [number, number][]): TerrainOverride[] =>
   positions.map(([col, row]) => ({ col, row, terrain: kind }));
@@ -11,7 +12,7 @@ const starters = (playerKeep: number, enemyKeep: number): StartingUnit[] => [
   { type: "scout", side: "enemy", col: enemyKeep - 1, row: 3 },
 ];
 
-export const MAPS: Record<MapId, MapDefinition> = {
+export const MAPS = immutable<Record<MapId, MapDefinition>>({
   mirror: {
     id: "mirror",
     revision: 1,
@@ -132,10 +133,10 @@ export const MAPS: Record<MapId, MapDefinition> = {
       { type: "scout", side: "enemy", col: 12, row: 6 },
     ],
   },
-};
+});
 
 // Retained for battles saved on the original three-bridge layout.
-export const LEGACY_RIVER: MapDefinition = {
+export const LEGACY_RIVER = immutable<MapDefinition>({
   id: "river",
   name: "River crossings",
   description: "A larger battlefield split by a river. Fight for three bridges and six villages.",
@@ -191,4 +192,4 @@ export const LEGACY_RIVER: MapDefinition = {
     { col: 13, row: 4, terrain: "keep", owner: "enemy" },
   ],
   units: starters(1, 13),
-};
+});

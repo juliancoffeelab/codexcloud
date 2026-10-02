@@ -1,4 +1,5 @@
 import type { Coordinates, MapDefinition } from "../src/game/types.ts";
+import type { Immutable } from "../src/game/immutable.ts";
 import { required } from "./helpers.ts";
 import assert from "node:assert/strict";
 import { MAPS, LEGACY_RIVER } from "../src/game/maps.ts";
@@ -10,7 +11,7 @@ const adjacent = (a: Coordinates, b: Coordinates) => {
     [bq, br] = axial(b);
   return (Math.abs(aq - bq) + Math.abs(ar - br) + Math.abs(aq + ar - bq - br)) / 2 === 1;
 };
-const board = (map: MapDefinition) => {
+const board = (map: Immutable<MapDefinition>) => {
   const overrides = new Map(map.terrain.map((t) => [key(t), t]));
   return Array.from({ length: map.cols * map.rows }, (_, i) => {
     const col = i % map.cols,

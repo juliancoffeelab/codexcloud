@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { BattleController, BattleView } from "../controller/battle";
+  import type { BattleCommands, BattleView } from "../controller/view";
   import { unitPanelView } from "./unit-panel-view";
   import UnitCard from "./UnitCard.svelte";
   import UnitDetails from "./UnitDetails.svelte";
@@ -7,15 +7,15 @@
 
   interface Props {
     view: BattleView;
-    controller: BattleController;
+    actions: BattleCommands;
     onNewBattle: () => void;
   }
 
-  let { view, controller, onNewBattle }: Props = $props();
+  let { view, actions, onNewBattle }: Props = $props();
   const panel = $derived(unitPanelView(view));
 
   function attackWithWeapon(weaponId: string): void {
-    controller.attackSelected(weaponId);
+    actions.attackSelected(weaponId);
   }
 </script>
 

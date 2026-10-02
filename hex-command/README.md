@@ -63,43 +63,21 @@ Prettier and its Svelte plugin format source, tests, configuration, and this REA
 Use `npm run format` to apply formatting and `npm run format:check` to verify it.
 Generated output and original binary assets are excluded.
 
-## Migration checks
+## Checks
 
-`npm run check` checks all application components and TypeScript tests with
-`strict` and `noUncheckedIndexedAccess`. `npm test` runs the rules, combat, maps,
-undo, persistence, and audio fixtures in isolated Node processes.
-`npm run test:rules-parity` compares deterministic battles, corrupt/valid saves,
-and undo directly against the original JavaScript release extracted from local Git history.
+`npm run check` checks application components and TypeScript tests with `strict`
+and `noUncheckedIndexedAccess`. `npm test` runs small unit checks for rules,
+publication, immutable views, undo, persistence, audio, and asynchronous cancellation.
+The entire unit command has a 20-second limit, enforced by a shared runner budget.
+Tests use controlled promises instead of waiting through gameplay animations.
 
-For exact screenshot and public-state comparison against the original JavaScript
-release, build first and run:
+There are no browser automation, screenshot, or migration/parity suites. These
+constraints are recorded in `AGENTS.md` and apply to future changes as well.
 
-```sh
-npm run build
-npm run test:parity
-```
-
-This extracts the original release from local Git history (`2297aa1`) and compares
-75 full-page screenshots and battle states across desktop and two mobile sizes.
-It includes all art styles, both maps, combat forecasts/calculations, recruitment,
-undo, settings, and finished battles. There is no image-difference tolerance.
-Requires Python Playwright, Chromium, Pillow, and numpy; artifacts go to
-`/tmp/hex-command-parity`. Override the original commit or artifact location with
-`npm run test:parity -- --baseline-ref <commit> --output <directory>`.
-
-## Browser checks
-
-With Python Playwright and Chromium installed, run from this folder:
-
-```sh
-python3 tests/smoke.py
-```
-
-Build first with `npm run build`. Run all browser checks with `npm run test:browser`.
-The checks start their own local server and exercise style switching,
-persistence, recruitment, movement, combat, enemy turns, mobile layout, and
-asset-loading failures. Add `--screenshots /tmp/hex-command-checks` to capture
-each style on desktop and mobile.
+Components receive an immutable `BattleView` and a command-only `BattleCommands`
+facade. The controller owns the mutable engine, publishes undo and recruitment
+availability with each view, and invalidates stale asynchronous results. Queries
+on `GameView` read one detached, frozen revision and expose no engine commands.
 
 The sticky top bar holds income, village count, coin treasury, End turn with its turn counter,
 and settings. Settings contains New battle, the field manual, and
@@ -205,6 +183,5 @@ Maces counter armor; swords hit unarmored units harder. The enemy evaluates
 weapons and retaliation, including safer replies and avoiding lethal exchanges.
 Existing saves keep their units, HP, gold, map, and progress and use the new rules.
 
-Run `node --import tsx tests/combat.ts` for weapon/terrain rules and `python3 tests/combat.py`
-for immediate attacks, optional damage inspection, exact outcomes, keyboard use,
-and mobile layout.
+Run `npm test` for the lightweight unit checks, or
+`node --import tsx tests/combat.ts` for weapon and terrain rules alone.

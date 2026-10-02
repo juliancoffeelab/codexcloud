@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { Unit } from "../game/types";
+  import type { UnitView } from "../game/view";
   import { iconMarkup } from "../presentation/icons";
   import { arsenalView } from "./arsenal-view";
 
-  let { unit }: { unit: Unit } = $props();
+  let { unit }: { unit: UnitView } = $props();
   const arsenal = $derived(arsenalView(unit));
 </script>
 
