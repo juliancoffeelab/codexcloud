@@ -32,6 +32,7 @@ try:
    for side, after, maximum in [('player',player_after,12 if hp('u2')==12 else 8),('enemy',enemy_after,12 if hp('u5')==12 else 8)]:
     bar=row.locator(f'[data-forecast="{side}"]')
     assert bar.locator('.forecast-label b').inner_text()==str(after)
+    assert 'You' not in bar.locator('.forecast-label').inner_text() and 'Enemy' not in bar.locator('.forecast-label').inner_text()
     width=bar.locator('.health-left').evaluate("e=>parseFloat(e.style.width)")
     assert abs(width-after/maximum*100)<0.001
     assert bar.locator('.health-lost').count()==1
@@ -43,10 +44,10 @@ try:
   setup()
   assert page.locator('[data-attack]').count()==2
   assert page.locator('input[name="attack-choice"], #attack').count()==0
-  assert page.locator('[data-attack="mace"] [data-forecast="enemy"] .forecast-impact').inner_text() == 'Deal 4 HP'
-  assert page.locator('[data-attack="mace"] [data-forecast="player"] .forecast-impact').inner_text() == 'Take 4 HP'
-  assert page.locator('[data-attack="sword"] [data-forecast="enemy"] .forecast-impact').inner_text() == 'Deal 3 HP'
-  assert page.locator('[data-attack="sword"] [data-forecast="player"] .forecast-impact').inner_text() == 'Take 4 HP'
+  assert page.locator('[data-attack="mace"] [data-forecast="enemy"] .forecast-impact').inner_text() == 'Deal −4 HP'
+  assert page.locator('[data-attack="mace"] [data-forecast="player"] .forecast-impact').inner_text() == 'Take −4 HP'
+  assert page.locator('[data-attack="sword"] [data-forecast="enemy"] .forecast-impact').inner_text() == 'Deal −3 HP'
+  assert page.locator('[data-attack="sword"] [data-forecast="player"] .forecast-impact').inner_text() == 'Take −4 HP'
   assert not page.locator('#attack-details-sword').is_visible()
   before=snapshot(page)
   forecast('mace',8,8)
@@ -74,10 +75,10 @@ try:
   page.reload(wait_until='networkidle');assert hp('u2')==8 and hp('u5')==8
   assert not page.locator('#unit-panel').is_visible()
   setup('archer','archer')
-  assert page.locator('[data-attack="bow"] [data-forecast="enemy"] .forecast-impact').inner_text() == 'Deal 3 HP'
-  assert page.locator('[data-attack="bow"] [data-forecast="player"] .forecast-impact').inner_text() == 'Take 3 HP'
-  assert page.locator('[data-attack="knife"] [data-forecast="enemy"] .forecast-impact').inner_text() == 'Deal 2 HP'
-  assert page.locator('[data-attack="knife"] [data-forecast="player"] .forecast-impact').inner_text() == 'Take 2 HP'
+  assert page.locator('[data-attack="bow"] [data-forecast="enemy"] .forecast-impact').inner_text() == 'Deal −3 HP'
+  assert page.locator('[data-attack="bow"] [data-forecast="player"] .forecast-impact').inner_text() == 'Take −3 HP'
+  assert page.locator('[data-attack="knife"] [data-forecast="enemy"] .forecast-impact').inner_text() == 'Deal −2 HP'
+  assert page.locator('[data-attack="knife"] [data-forecast="player"] .forecast-impact').inner_text() == 'Take −2 HP'
   page.locator('[data-attack="knife"]').focus()
   forecast('knife',6,6)
   page.keyboard.press('Enter')
@@ -113,8 +114,8 @@ try:
   before=snapshot(page)
   page.tap('[data-inspect="bow"]')
   detail=page.locator('#attack-details-bow').inner_text()
-  assert 'Your attack: 3 pierce, bow, ranged, hills' in detail
-  assert 'Their attack: 3 pierce, bow, ranged, forest' in detail
+  assert 'Your attack: 3 pierce, bow, ranged, against terrain: hills' in detail
+  assert 'Their attack: 3 pierce, bow, ranged, against terrain: forest' in detail
   assert detail.count('round(3 × 100%) − 1 (cover) = 2')==2
   assert snapshot(page)==before
   page.locator('[data-attack="bow"]').click()

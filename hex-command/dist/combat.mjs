@@ -16,10 +16,10 @@ export function arsenalMarkup(unit) {
 }
 function healthForecast(unit, damage, label, impact) {
   const maximum = TYPES[unit.type].hp, after = Math.max(0, unit.hp - damage);
-  return `<span class="attack-health ${unit.side}" data-forecast="${unit.side}"><span class="forecast-label">${label}<span>${unit.hp} → <b class="${after === 0 ? 'fatal' : ''}">${after}</b> / ${maximum} HP</span></span><span class="health-track" role="img" aria-label="${label}: ${unit.hp} to ${after} HP after this attack"><span class="health-lost" style="width:${unit.hp/maximum*100}%"></span><span class="health-left" style="width:${after/maximum*100}%"></span></span><span class="forecast-impact">${impact} ${damage} HP</span></span>`;
+  return `<span class="attack-health ${unit.side}" data-forecast="${unit.side}"><span class="forecast-label"><span>${unit.hp} → <b class="${after === 0 ? 'fatal' : ''}">${after}</b> / ${maximum} HP</span></span><span class="health-track" role="img" aria-label="${label}: ${unit.hp} to ${after} HP after this attack"><span class="health-lost" style="width:${unit.hp/maximum*100}%"></span><span class="health-left" style="width:${after/maximum*100}%"></span></span><span class="forecast-impact">${impact} ${damage ? `−${damage}` : 0} HP</span></span>`;
 }
 function attackDescription(label, attack, detail, tile) {
-  const terrain = detail.protection || detail.exposure ? `, ${TERRAIN[tile.terrain].name.toLowerCase()}` : '';
+  const terrain = detail.protection || detail.exposure ? `, against terrain: ${TERRAIN[tile.terrain].name.toLowerCase()}` : '';
   return `${label}: ${attack.damage} ${DAMAGE_TYPES[attack.damageType].toLowerCase()}, ${attack.name.toLowerCase()}, ${attack.category}${terrain}`;
 }
 export function attackChoicesMarkup(game, attacker, target) {
