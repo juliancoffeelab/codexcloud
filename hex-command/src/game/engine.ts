@@ -150,6 +150,8 @@ export function distance(first: Coordinates, second: Coordinates) {
 }
 
 export class Game {
+  #tilesById = new Map<string, Tile>();
+  #adjacentTiles = new Map<string, readonly Tile[]>();
   mapRevision: number;
   mapId: MapId;
   cols: number;
@@ -190,6 +192,7 @@ export class Game {
           terrain: "plains",
           owner: null,
         });
+    this.indexTiles();
     for (const { col, row, terrain, owner = null } of layout.terrain)
       Object.assign(this.tile(`${col},${row}`)!, { terrain, owner });
     for (const { type, side, col, row } of layout.units) this.addUnit(type, side, `${col},${row}`);
@@ -197,7 +200,33 @@ export class Game {
   }
 
   tile(id: string | null | undefined): Tile | undefined {
-    return this.tiles.find((tile) => tile.id === id);
+    return id == null ? undefined : this.#tilesById.get(id);
+  }
+
+  private indexTiles(): void {
+    this.#tilesById = new Map(this.tiles.map((tile) => [tile.id, tile]));
+    const coordinates = new Map(this.tiles.map((tile) => [`${tile.col},${tile.row}`, tile]));
+    const order = new Map(this.tiles.map((tile, index) => [tile.id, index]));
+    this.#adjacentTiles = new Map(
+      this.tiles.map((tile) => {
+        const { col, row } = tile;
+        const diagonal = row % 2 === 0 ? -1 : 1;
+        const positions = [
+          [col, row - 1],
+          [col + diagonal, row - 1],
+          [col - 1, row],
+          [col + 1, row],
+          [col, row + 1],
+          [col + diagonal, row + 1],
+        ];
+        const neighbors = positions
+          .map(([column, row]) => coordinates.get(`${column},${row}`))
+          .filter((neighbor): neighbor is Tile => neighbor !== undefined)
+          // Preserve the old array order, including equal-cost routing ties.
+          .sort((first, second) => order.get(first.id)! - order.get(second.id)!);
+        return [tile.id, neighbors];
+      }),
+    );
   }
 
   unit(id: string | null | undefined): Unit | undefined {
@@ -209,8 +238,8 @@ export class Game {
   }
 
   neighbors(id: string): Tile[] {
-    const tile = this.tile(id)!;
-    return this.tiles.filter((neighbor) => distance(tile, neighbor) === 1);
+    // Callers may sort/filter their result without changing cached adjacency.
+    return [...(this.#adjacentTiles.get(id) ?? [])];
   }
 
   record(message: string): void {
@@ -702,6 +731,7 @@ export class Game {
     const restored = structuredClone(state);
     if (!Object.hasOwn(restored, "lastCombat")) delete this.lastCombat;
     Object.assign(this, restored);
+    this.indexTiles();
   }
 
   snapshot(): GameSnapshot {
