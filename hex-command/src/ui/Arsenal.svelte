@@ -40,12 +40,12 @@
 <div class="resistances">
   <h3>Damage received</h3>
   <div class="resistance-list">
-    {#each arsenal.resistances as resistance}
-      <span class={`resistance ${resistance.className}`}>
-        <span>{resistance.name}</span>
-        <b>{resistance.multiplier}%</b>
+    {#each arsenal.modifiers as modifier}
+      <span class={`resistance ${modifier.className}`}>
+        <span>{modifier.name}</span>
+        <b>{modifier.label}</b>
       </span>
     {/each}
   </div>
-  <p class="resistance-hint">Base damage multiplier, rounded before terrain cover.</p>
+  <p class="resistance-hint">Flat changes before terrain. Fully blocked hits deal 0 damage.</p>
 </div>

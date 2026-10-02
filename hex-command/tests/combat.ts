@@ -1,6 +1,10 @@
 import type { UnitType } from "../src/game/types.ts";
 import { required, storageWithValue } from "./helpers.ts";
 import { damageExplanation } from "../src/presentation/combat.ts";
+import { describeChanges } from "../src/controller/feedback.ts";
+import { createGameView } from "../src/game/view.ts";
+import { arsenalView } from "../src/ui/arsenal-view.ts";
+import { attackChoiceViews } from "../src/ui/combat-view.ts";
 import assert from "node:assert/strict";
 import { Game, TYPES, distance } from "../src/game/engine.ts";
 import { loadBattle, saveBattle } from "../src/game/save.ts";
@@ -15,6 +19,73 @@ const fixture = (a: UnitType = "soldier", b: UnitType = "soldier", targetTile = 
     target = game.addUnit(b, "enemy", targetTile);
   return { game, attacker, target };
 };
+
+// Explicit balance outcomes, independent of preview/resolution agreement.
+const weapons = [
+  ["soldier", "sword"],
+  ["soldier", "mace"],
+  ["archer", "bow"],
+  ["scout", "knife"],
+  ["scout", "sling"],
+] as const;
+for (const [defenderType, expected] of [
+  ["soldier", [3, 4, 2, 1, 2]],
+  ["commander", [3, 3, 3, 1, 1]],
+  ["archer", [4, 3, 3, 2, 1]],
+  ["scout", [4, 3, 3, 2, 1]],
+] as const) {
+  for (const [index, [attackerType, weapon]] of weapons.entries()) {
+    const { game, attacker, target } = fixture(attackerType, defenderType);
+    assert.equal(game.damage(attacker, target, weapon), expected[index]);
+  }
+}
+for (const terrain of ["forest", "hill"] as const) {
+  const { game, attacker, target } = fixture("scout", "soldier");
+  required(game.tile(target.tile)).terrain = terrain;
+  assert.equal(game.damage(attacker, target, "sling"), 1);
+}
+{
+  const { game, attacker, target } = fixture("archer", "soldier");
+  required(game.tile(target.tile)).terrain = "hill";
+  const published = createGameView(game);
+  const choice = required(
+    attackChoiceViews(published, attacker, target).find((c) => c.id === "knife"),
+  );
+  assert(choice.available);
+  assert.equal(choice.enemyForecast.remainingHp, target.hp);
+  assert.equal(choice.attackCalculation.equation, "2 − 1 (armor) − 1 (cover) = 0");
+  assert.deepEqual(game.attack(attacker.id, target.id, "knife"), { damage: 0, retaliation: 4 });
+  assert.equal(target.hp, 12);
+  assert.equal(attacker.hp, 4);
+  assert(attacker.moved && attacker.attacked);
+  assert.throws(() => game.attack(attacker.id, target.id, "knife"));
+  assert.deepEqual(
+    arsenalView(required(published.unit(target.id))).modifiers.map((m) => m.label),
+    ["−1", "−1", "+1"],
+  );
+}
+{
+  const { game, attacker, target } = fixture("commander", "archer");
+  required(game.tile(attacker.tile)).terrain = "hill";
+  const preview = game.previewDetails(attacker, target, "sword");
+  assert.equal(preview.retaliation, 0);
+  assert.equal(preview.response?.id, "knife");
+  const choice = required(
+    attackChoiceViews(createGameView(game), attacker, target).find((c) => c.id === "sword"),
+  );
+  assert(choice.available);
+  assert(choice.retaliationCalculation.description.includes("knife"));
+  assert.equal(choice.retaliationCalculation.equation, "2 − 1 (armor) − 1 (cover) = 0");
+}
+{
+  const { game, attacker, target } = fixture("scout", "commander", "4,3");
+  required(game.tile(target.tile)).terrain = "hill";
+  const before = game.snapshot();
+  assert.deepEqual(game.attack(attacker.id, target.id, "sling"), { damage: 0, retaliation: 0 });
+  assert.equal(target.hp, 16);
+  assert.equal(attacker.hp, 8);
+  assert(describeChanges(before, game.snapshot()).attacked, "blocked attacks still play their cue");
+}
 {
   const { game, attacker, target } = fixture();
   assert.equal(game.damage(attacker, target, "sword"), 3);
@@ -39,14 +110,14 @@ const fixture = (a: UnitType = "soldier", b: UnitType = "soldier", targetTile = 
     retaliation: 0,
   });
   assert.deepEqual(game.preview(attacker, target, "knife"), {
-    damage: 2,
+    damage: 1,
     retaliation: 4,
   });
   assert.equal(required(game.bestAttack(attacker, target)).id, "bow");
   game.attack(attacker.id, target.id, "knife");
   assert.equal(required(game.lastCombat).sound, "attack-melee");
   assert.equal(attacker.hp, 4);
-  assert.equal(target.hp, 10);
+  assert.equal(target.hp, 11);
   assert.throws(() => game.attack(attacker.id, target.id, "bow"));
 }
 {
@@ -99,7 +170,7 @@ for (const a of Object.keys(TYPES) as UnitType[])
           required(game.tile(target.tile)).terrain = terrain;
           if (!game.canAttackFrom(attacker, attacker.tile, target, weapon.id)) continue;
           const preview = game.previewDetails(attacker, target, weapon.id);
-          assert(preview.damage >= 1 && Number.isInteger(preview.damage));
+          assert(preview.damage >= 0 && Number.isInteger(preview.damage));
           assert(preview.retaliation >= 0 && Number.isInteger(preview.retaliation));
           assert(!preview.response || preview.response.category === weapon.category);
           game.attack(attacker.id, target.id, weapon.id);
@@ -142,7 +213,7 @@ for (const a of Object.keys(TYPES) as UnitType[])
   const restored = loadBattle().game;
   assert.deepEqual(restored.snapshot(), game.snapshot());
   assert.equal(TYPES[required(restored.unit("u3")).type].attacks.length, 2);
-  assert.equal(TYPES[required(restored.unit("u2")).type].resistances.impact, -25);
+  assert.equal(TYPES[required(restored.unit("u2")).type].damageModifiers.impact, 1);
 }
 console.log(
   `PASS: weapon choices, armor, matching replies, range/blocking, deaths, AI and old saves; ${exchanges} exact preview/resolution exchanges`,
@@ -151,45 +222,49 @@ console.log(
 assert.equal(
   damageExplanation({
     base: 2,
-    resistance: 25,
-    resisted: 2,
+    modifier: -1,
+    modified: 1,
     protection: 0,
     exposure: 0,
-    damage: 2,
+    damage: 1,
   }),
-  "round(2 × 75%) = 2",
+  "2 − 1 (armor) = 1",
 );
 assert.equal(
   damageExplanation({
     base: 3,
-    resistance: 25,
-    resisted: 2,
+    modifier: -1,
+    modified: 2,
     protection: 1,
     exposure: 0,
     damage: 1,
   }),
-  "round(3 × 75%) − 1 (cover) = 1",
+  "3 − 1 (armor) − 1 (cover) = 1",
 );
 assert.equal(
   damageExplanation({
     base: 1,
-    resistance: 0,
-    resisted: 1,
+    modifier: 0,
+    modified: 1,
     protection: 1,
     exposure: 0,
-    damage: 1,
+    damage: 0,
   }),
-  "max(1, round(1 × 100%) − 1 (cover)) = 1",
+  "1 − 1 (cover) = 0",
 );
 assert.equal(
   damageExplanation({
     base: 3,
-    resistance: -25,
-    resisted: 4,
+    modifier: 1,
+    modified: 4,
     protection: 0,
     exposure: 1,
     damage: 5,
   }),
-  "round(3 × 125%) + 1 (shallow water) = 5",
+  "3 + 1 (weakness) + 1 (shallow water) = 5",
 );
-console.log("PASS: numeric equations preserve armor rounding, cover, minimum damage and exposure");
+assert.equal(
+  damageExplanation({ base: 1, modifier: -1, modified: 0, protection: 1, exposure: 0, damage: 0 }),
+  "max(0, 1 − 1 (armor) − 1 (cover)) = 0",
+);
+console.log("PASS: numeric equations show flat armor, cover, zero damage and exposure");

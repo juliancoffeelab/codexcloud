@@ -156,30 +156,35 @@ Soldiers use the heavier footstep thud previously used by archers.
 
 All cues have a lower playback level, rounded attacks, and gentler high frequencies.
 
-## Weapon choices and resistances
+## Weapon choices and armor
 
 Select an enemy, then tap a weapon to attack immediately. Each bordered action shows
 the damage dealt and taken, plus its own HP forecasts. The magnifying glass reveals
-rounded numeric damage calculations without spending an action. Every unit still attacks once per
+exact numeric damage calculations without spending an action. Every unit still attacks once per
 turn; attacking ends its movement.
 
-| Unit             | Melee                          | Ranged                   | Resistance / weakness                     |
-| ---------------- | ------------------------------ | ------------------------ | ----------------------------------------- |
-| Commander        | Sword: 4 Blade; Mace: 3 Impact | —                        | 75% Blade base damage                     |
-| Soldier (8 gold) | Sword: 4 Blade; Mace: 3 Impact | —                        | 75% Blade/Pierce; 125% Impact base damage |
-| Archer (8 gold)  | Knife: 2 Blade                 | Bow: 3 Pierce, range 2   | 100% base damage                          |
-| Scout (5 gold)   | Knife: 2 Blade                 | Sling: 1 Impact, range 2 | 100% base damage                          |
+| Unit             | Melee                          | Ranged                   | Flat armor / weakness             |
+| ---------------- | ------------------------------ | ------------------------ | --------------------------------- |
+| Commander        | Sword: 4 Blade; Mace: 3 Impact | —                        | −1 Blade damage                   |
+| Soldier (8 gold) | Sword: 4 Blade; Mace: 3 Impact | —                        | −1 Blade/Pierce; +1 Impact damage |
+| Archer (8 gold)  | Knife: 2 Blade                 | Bow: 3 Pierce, range 2   | None                              |
+| Scout (5 gold)   | Knife: 2 Blade                 | Sling: 1 Impact, range 2 | None                              |
 
 Melee answers melee; ranged answers ranged. A surviving defender replies once
 with its strongest legal weapon in the same category, even if it already acted
 this turn. A defeated defender cannot reply. Forests and hills block both bows
 and slings through them; forest cover reduces all ranged damage by 1. Hill
-cover reduces all damage by 1. Resistance changes base damage first, rounded to
-the nearest integer, then cover and shallow-water exposure apply. Every hit deals
-at least 1 damage; there are no hit-chance rolls.
+cover reduces all damage by 1. Flat armor and weakness change base damage first,
+then cover and shallow-water exposure apply. Clamp the final result to 0;
+there is no rounding and no hit-chance roll. A fully blocked hit still spends
+the attack, and a surviving defender can retaliate.
+
+On plains, soldiers receive 3 damage from a sword, 4 from a mace, 2 from a bow,
+1 from a knife, and 2 from a sling. On hills, a knife deals 0 damage to a soldier;
+hills or forest reduce sling damage against soldiers to 1.
 
 The initial balance keeps soldiers strongest in close combat, archers stronger
-than scouts in ranged exchanges, and scouts focused on mobility and villages.
+than scouts in most ranged exchanges, and scouts focused on mobility and villages.
 Maces counter armor; swords hit unarmored units harder. The enemy evaluates
 weapons and retaliation, including safer replies and avoiding lethal exchanges.
 Existing saves keep their units, HP, gold, map, and progress and use the new rules.
