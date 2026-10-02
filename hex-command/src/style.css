@@ -216,7 +216,8 @@ button[hidden] {
 .art-sprite {
   pointer-events: none;
 }
-.pixel-art img {
+.pixel-art img,
+.pixel-art image {
   image-rendering: pixelated;
 }
 .spent-unit {
