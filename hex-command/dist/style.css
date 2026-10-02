@@ -82,3 +82,9 @@ button,select{transition:background-color 120ms ease,border-color 120ms ease}
 .unit-detail .resistance-list{display:flex;flex-wrap:wrap;gap:5px 14px}
 .unit-detail .resistance-hint{margin-top:5px}
 @media(max-width:540px){.unit-detail>.combatant{column-gap:12px}.unit-detail .ability{margin-top:10px}.unit-detail .arsenal,.unit-detail .resistances{margin-top:10px}}
+
+/* Terrain facts use the same clear outline symbols as the battle controls. */
+.ui-icon{display:inline-block;width:17px;height:17px;flex-shrink:0;fill:none;stroke:var(--gold);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
+.terrain-facts{list-style:none;padding-left:0}
+.terrain-facts li{display:flex;align-items:flex-start;gap:6px}
+.terrain-facts .ui-icon{margin-top:2px}

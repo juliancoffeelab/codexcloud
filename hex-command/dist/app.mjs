@@ -12,6 +12,7 @@ import {
   saveArtStyle,
 } from "./art.mjs?v=e288e02de731";
 import { arsenalMarkup, resistanceMarkup, attackChoicesMarkup, damageExplanation } from "./combat.mjs?v=48350b3b9e8a";
+import { iconMarkup } from "./icons.mjs";
 const $ = (selector) => document.querySelector(selector),
   map = $("#map"),
   panel = $("#unit-panel");
@@ -193,13 +194,8 @@ function render() {
         : "Your commander has fallen. Start a new battle and try a different approach.",
     );
 }
-const statIcons = {
-  move: '<path d="m5 17 4-4 3 3 7-9M14 7h5v5"/>',
-  damage: '<path d="m5 19 3-3m-2-3 5 5m-3-4L17 4l3-1-1 3-10 9"/>',
-  range: '<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/>',
-};
 function stat(icon, label, value) {
-  return `<span class="unit-stat"><svg viewBox="0 0 24 24" aria-hidden="true">${statIcons[icon]}</svg><span>${label}: <b>${value}</b></span></span>`;
+  return `<span class="unit-stat">${iconMarkup(icon)}<span>${label}: <b>${value}</b></span></span>`;
 }
 function renderPanel() {
   panel.hidden = false;
@@ -294,22 +290,25 @@ function renderTerrainPanel() {
   }
   const info = TERRAIN[tile.terrain];
   const facts = [];
+  const fact = (icon, text) => facts.push({ icon, text });
   if (Number.isFinite(info.cost)) {
-    facts.push(tile.terrain === "ford" ? "Movement: 3 for soldiers and commanders; 2 for archers and scouts" :
+    fact("move", tile.terrain === "ford" ? "Movement: 3 for soldiers and commanders; 2 for archers and scouts" :
       `Movement: ${info.cost}${["forest", "hill"].includes(tile.terrain) ? " (scouts: 1)" : ""}`);
-    facts.push(tile.terrain === "ford" ? "Exposure: +1 damage received from all attacks" : tile.terrain === "hill" ? "Protection: −1 damage from all attacks" :
+    fact("shield", tile.terrain === "ford" ? "Exposure: +1 damage received from all attacks" : tile.terrain === "hill" ? "Protection: −1 damage from all attacks" :
       tile.terrain === "forest" ? "Protection: −1 damage from ranged attacks" : "Protection: none");
-  } else facts.push("Movement: impassable");
-  if (["forest", "hill"].includes(tile.terrain)) facts.push("Blocks ranged shots through this hex");
+  } else fact("move", "Movement: impassable");
+  if (["forest", "hill"].includes(tile.terrain)) fact("blocked", "Blocks ranged shots through this hex");
   if (tile.terrain === "village") {
-    facts.push("+2 gold at the start of its owner’s turn", "Heals a friendly occupant by 2 HP at the start of its turn");
+    fact("coin", "+2 gold at the start of its owner’s turn");
+    fact("heal", "Heals a friendly occupant by 2 HP at the start of its turn");
   }
   if (tile.terrain === "keep") {
-    facts.push("Its owner’s commander can recruit into adjacent empty land hexes", "Keeps cannot be captured");
+    fact("recruit", "Its owner’s commander can recruit into adjacent empty land hexes");
+    fact("keep", "Keeps cannot be captured");
   }
   const ownership = ["village", "keep"].includes(tile.terrain)
     ? `<p class="terrain-owner ${tile.owner || "neutral"}">${tile.owner === "player" ? "Your " : tile.owner === "enemy" ? "Enemy " : "Unclaimed "}${tile.terrain}</p>` : "";
-  terrainPanel.innerHTML = `<div class="terrain-detail"><div class="terrain-portrait">${artSprite(artStyle, "terrain", tile.terrain, 0, 0, 80, 80, "terrain-card-art")}<span class="unit-side">Terrain</span></div><div class="terrain-info"><h2>${info.name}</h2>${ownership}<p>${terrainDescriptions[tile.terrain]}</p><ul class="terrain-facts">${facts.map(fact => `<li>${fact}</li>`).join("")}</ul></div></div>`;
+  terrainPanel.innerHTML = `<div class="terrain-detail"><div class="terrain-portrait">${artSprite(artStyle, "terrain", tile.terrain, 0, 0, 80, 80, "terrain-card-art")}<span class="unit-side">Terrain</span></div><div class="terrain-info"><h2>${info.name}</h2>${ownership}<p>${terrainDescriptions[tile.terrain]}</p><ul class="terrain-facts" role="list">${facts.map(({ icon, text }) => `<li>${iconMarkup(icon)}<span>${text}</span></li>`).join("")}</ul></div></div>`;
 }
 function clearSelection(clearInspection = false) {
   if (!selected && !target && !recruitType && !(clearInspection && inspectedTile)) return;
