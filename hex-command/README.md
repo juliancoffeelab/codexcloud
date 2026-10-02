@@ -118,10 +118,10 @@ All cues have a lower playback level, rounded attacks, and gentler high frequenc
 
 ## Weapon choices and resistances
 
-Select an enemy and choose a weapon before pressing Attack. The preview shows
-both units' resulting HP, exact damage, armor modifiers, cover, and the defender's
-reply. Choosing a weapon does not spend an action. Every unit still attacks once
-per turn; attacking ends its movement.
+Select an enemy, then tap a weapon to attack immediately. Each compact action shows
+the damage dealt and taken. The magnifying glass reveals damage calculations and
+enemy resistances without spending an action. Every unit still attacks once per
+turn; attacking ends its movement.
 
 | Unit | Melee | Ranged | Resistance / weakness |
 | --- | --- | --- | --- |
@@ -145,4 +145,5 @@ weapons and retaliation, including safer replies and avoiding lethal exchanges.
 Existing saves keep their units, HP, gold, map, and progress and use the new rules.
 
 Run `node tests/combat.mjs` for weapon/terrain rules and `python3 tests/combat.py`
-for browser weapon choices, exact HP forecasts, keyboard use, and mobile layout.
+for immediate attacks, optional damage inspection, exact outcomes, keyboard use,
+and mobile layout.

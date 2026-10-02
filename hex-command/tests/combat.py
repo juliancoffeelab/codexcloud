@@ -28,36 +28,43 @@ try:
    page.click('[data-tile="5,1"]');page.click(f'[data-tile="{target_tile}"]')
   def hp(id):return next(u['hp'] for u in snapshot(page)['units'] if u['id']==id)
   setup()
-  assert page.locator('input[name="attack-choice"]').count()==2
-  assert page.locator('input[value="mace"]').is_checked()
-  assert 'Deal 4 · take 4' in page.locator('.attack-choice.chosen').inner_text()
-  page.locator('.defender-resistances summary').click()
-  assert 'Impact: 25% more' in page.locator('.defender-resistances').inner_text()
+  assert page.locator('[data-attack]').count()==2
+  assert page.locator('input[name="attack-choice"], #attack').count()==0
+  assert 'deal 4 · take 4' in page.locator('[data-attack="mace"]').inner_text()
+  assert 'deal 3 · take 4' in page.locator('[data-attack="sword"]').inner_text()
+  assert not page.locator('#attack-details-sword').is_visible()
   before=snapshot(page)
-  page.check('input[value="sword"]')
-  assert 'Deal 3 · take 4' in page.locator('.attack-choice.chosen').inner_text()
-  assert '25% blade resistance' in page.locator('.combat-explanation').inner_text()
-  assert snapshot(page)==before,'choosing a weapon is not an action'
-  page.check('input[value="mace"]');page.click('#attack')
-  assert hp('u2')==8 and hp('u5')==8
+  page.locator('[data-inspect="sword"]').click()
+  assert page.locator('[data-inspect="sword"]').get_attribute('aria-expanded')=='true'
+  assert '25% blade resistance' in page.locator('#attack-details-sword').inner_text()
+  assert 'Impact: 25% more' in page.locator('#attack-details-sword').inner_text()
+  assert snapshot(page)==before,'inspecting a calculation is not an action'
+  page.locator('[data-inspect="sword"]').click()
+  assert not page.locator('#attack-details-sword').is_visible()
+  page.locator('[data-attack="mace"]').click()
+  assert hp('u2')==8 and hp('u5')==8,'one weapon click executes the attack'
   page.reload(wait_until='networkidle');assert hp('u2')==8 and hp('u5')==8
   assert not page.locator('#unit-panel').is_visible()
   setup('archer','archer')
-  assert 'Deal 3 · take 3' in page.locator('.attack-choice.chosen').inner_text()
-  page.check('input[value="knife"]')
-  assert 'Deal 2 · take 2' in page.locator('.attack-choice.chosen').inner_text()
-  page.keyboard.press('ArrowLeft')
-  assert page.locator('input[value="bow"]').is_checked(),'native radio keyboard choice works'
-  page.click('#attack');assert hp('u2')==5 and hp('u5')==5
+  assert 'deal 3 · take 3' in page.locator('[data-attack="bow"]').inner_text()
+  assert 'deal 2 · take 2' in page.locator('[data-attack="knife"]').inner_text()
+  page.locator('[data-attack="knife"]').focus();page.keyboard.press('Enter')
+  assert hp('u2')==6 and hp('u5')==6,'keyboard activation attacks immediately'
   setup('archer','soldier','7,1')
-  assert page.locator('input[value="knife"]').is_disabled()
-  assert 'No ranged retaliation' in page.locator('.combat-explanation').inner_text()
+  assert page.locator('[data-attack="knife"]').is_disabled()
+  page.locator('[data-inspect="bow"]').click()
+  assert 'No ranged retaliation' in page.locator('#attack-details-bow').inner_text()
+  page.locator('[data-inspect="bow"]').click()
   for width in [1280,390,320]:
    page.set_viewport_size({'width':width,'height':900})
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),'no page overflow'
-   assert page.locator('.attack-choice').first.bounding_box()['height']>=44
+   row=page.locator('.attack-action-row').first
+   assert row.bounding_box()['height']==44,'each action stays a single compact touch row'
+   assert row.evaluate('(e)=>e.scrollWidth<=e.clientWidth'),'no action row overflow'
+   assert page.locator('.combat-explanation:visible').count()==0
    path=f'/tmp/hex-combat-{width}.png';page.screenshot(path=path,full_page=True)
+  page.locator('[data-attack="bow"]').click();assert hp('u2')==8 and hp('u5')==10
   assert not errors,errors
-  print('PASS: weapon choice, armor explanations, exact HP forecasts, ranged replies, keyboard, saves and 320px combat')
+  print('PASS: one-tap attacks, optional damage inspection, exact outcomes, ranged replies, keyboard, saves and compact 320px combat')
   browser.close()
 finally:server.shutdown()

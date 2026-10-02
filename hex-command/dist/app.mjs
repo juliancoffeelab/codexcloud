@@ -11,7 +11,7 @@ import {
   savedArtStyle,
   saveArtStyle,
 } from "./art.mjs?v=e288e02de731";
-import { arsenalMarkup, resistanceMarkup, attackChoicesMarkup, damageExplanation } from "./combat.mjs?v=48350b3b9e8a";
+import { arsenalMarkup, attackChoicesMarkup } from "./combat.mjs?v=48350b3b9e8a";
 import { iconMarkup } from "./icons.mjs";
 const $ = (selector) => document.querySelector(selector),
   map = $("#map"),
@@ -21,7 +21,6 @@ const moveHistory = createMoveUndo();
 let game = restoredBattle.game,
   selected = null,
   target = null,
-  attackChoice = null,
   recruitType = null,
   epoch = 0,
   focusedTile = game.units.find(u => u.side === "player")?.tile || game.tiles[0].id,
@@ -221,32 +220,25 @@ function renderPanel() {
       game.targets(unit.id).includes(victim) &&
       active() &&
       unit.side === "player";
-  function unitCard(combatant, damage = null) {
+  function unitCard(combatant) {
     const info = TYPES[combatant.type];
-    const after = damage === null ? combatant.hp : Math.max(0, combatant.hp - damage);
     const portrait = artSprite(artStyle, "units", combatant.type, 0, 0, 72, 90,
         `portrait ${combatant.side === "enemy" ? "enemy-unit" : ""}`, combatant.side);
-    return `<div class="combatant ${combatant.side}"><span class="unit-side">${combatant.side === "player" ? "Your unit" : "Enemy unit"}</span>${portrait}<h2>${info.name}</h2><div class="health-numbers"><b>${combatant.hp}</b>${damage !== null ? `<span aria-label="health after attack"> → <b class="${after === 0 ? 'fatal' : ''}">${after}</b>` : ''}<span> / ${info.hp} HP</span></div><div class="health-track" role="img" aria-label="${after} of ${info.hp} health${damage !== null ? ` after attack; ${combatant.hp} before` : ''}"><span class="health-lost" style="width:${combatant.hp/info.hp*100}%"></span><span class="health-left" style="width:${after/info.hp*100}%"></span></div>${damage !== null ? `<p class="damage-result">${after === 0 ? 'Falls in battle' : damage ? `−${damage} HP` : 'Unharmed'}</p>` : ''}</div>`;
+    return `<div class="combatant ${combatant.side}"><span class="unit-side">${combatant.side === "player" ? "Your unit" : "Enemy unit"}</span>${portrait}<h2>${info.name}</h2><div class="health-numbers"><b>${combatant.hp}</b><span> / ${info.hp} HP</span></div><div class="health-track" role="img" aria-label="${combatant.hp} of ${info.hp} health"><span class="health-left" style="width:${combatant.hp/info.hp*100}%"></span></div></div>`;
   }
-  if (attackAvailable && !game.attackOptions(unit, victim).some(attack => attack.id === attackChoice)) {
-    attackChoice = game.bestAttack(unit, victim).id;
-  }
-  const preview = attackAvailable ? game.previewDetails(unit, victim, attackChoice) : null;
-  let html = attackAvailable
-    ? `<div class="duel">${unitCard(unit, preview.retaliation)}<span class="duel-divider" aria-hidden="true">⚔</span>${unitCard(victim, preview.damage)}</div>${attackChoicesMarkup(game, unit, victim, attackChoice)}<div class="combat-explanation" aria-live="polite"><p><strong>${preview.attack.name}</strong>: ${damageExplanation(preview.damageDetail)}.</p><p>${preview.response ? `Enemy replies with ${preview.response.name.toLowerCase()}: ${damageExplanation(preview.retaliationDetail)}.` : preview.damage >= victim.hp ? 'Enemy falls before replying.' : `No ${preview.attack.category} retaliation in reach.`}</p></div><details class="defender-resistances"><summary>Enemy resistances</summary>${resistanceMarkup(victim)}</details>`
+  const html = attackAvailable
+    ? `<div class="duel">${unitCard(unit)}<span class="duel-divider" aria-hidden="true">⚔</span>${unitCard(victim)}</div>${attackChoicesMarkup(game, unit, victim)}`
     : `<div class="unit-detail">${unitCard(unit)}<div class="unit-info"><div class="unit-stats">${stat("move", "Move", type.move)}<p class="unit-state">${TERRAIN[tile.terrain].name} · ${unit.attacked ? 'Turn finished' : unit.moved ? 'Can still attack' : 'Ready'}</p></div>${abilityMarkup({ game, unit, canAct: active() && unit.side === "player" })}${arsenalMarkup(unit)}</div></div>`;
-  if (attackAvailable) html += '<button id="attack" class="primary attack-button">Attack</button>';
   panel.innerHTML = html;
-  panel.querySelectorAll('input[name="attack-choice"]').forEach(input => input.addEventListener("change", () => {
-    attackChoice = input.value;
-    renderPanel();
-    panel.querySelector(`input[value="${attackChoice}"]`)?.focus({ preventScroll: true });
+  panel.querySelectorAll("[data-inspect]").forEach(button => button.addEventListener("click", () => {
+    const detail = document.getElementById(button.getAttribute("aria-controls"));
+    detail.hidden = !detail.hidden;
+    button.setAttribute("aria-expanded", String(!detail.hidden));
   }));
   panel.querySelectorAll("[data-recruit]").forEach((button) =>
     button.addEventListener("click", () => {
       recruitType = button.dataset.recruit;
       target = null;
-      attackChoice = null;
       render();
       animateTile(unit.tile, "select");
       playSound("select");
@@ -257,12 +249,11 @@ function renderPanel() {
         map.scrollIntoView({ block: "center" });
     }),
   );
-  $("#attack")?.addEventListener("click", () => {
+  panel.querySelectorAll("[data-attack]").forEach(button => button.addEventListener("click", () => {
     try {
-      game.attack(selected, target, attackChoice);
+      game.attack(selected, target, button.dataset.attack);
       moveHistory.clear();
       target = null;
-      attackChoice = null;
       render();
       message(
         game.winner
@@ -272,7 +263,7 @@ function renderPanel() {
     } catch (error) {
       message(error.message);
     }
-  });
+  }));
 }
 const terrainDescriptions = {
   plains: "Open grassland with easy footing.",
@@ -314,7 +305,6 @@ function clearSelection(clearInspection = false) {
   if (!selected && !target && !recruitType && !(clearInspection && inspectedTile)) return;
   selected = null;
   target = null;
-  attackChoice = null;
   recruitType = null;
   if (clearInspection) inspectedTile = null;
   render();
@@ -359,12 +349,11 @@ function choose(tileId) {
       game.targets(selected).includes(occupant)
     ) {
       target = occupant.id;
-      attackChoice = null;
       render();
       // Selecting a target is a quiet UI cue; the weapon sounds on resolution.
       animateTile(tileId, "select");
       playSound("select");
-      message("Review the damage, then press Attack.");
+      message("Tap a weapon to attack. Use the magnifying glass for damage details.");
       if (matchMedia("(max-width:900px)").matches)
         panel.scrollIntoView({ block: "nearest" });
       return;
@@ -372,7 +361,6 @@ function choose(tileId) {
     if (occupant) {
       selected = occupant.id;
       target = null;
-      attackChoice = null;
       render();
       selectionFeedback(tileId);
       message(
@@ -387,7 +375,6 @@ function choose(tileId) {
     if (unit?.side === "player" && game.reachable(selected).has(tileId)) {
       moveHistory.move(game, selected, tileId);
       target = null;
-      attackChoice = null;
       render();
       message(
         "Moved. You can attack an enemy in range or select another unit.",
@@ -439,7 +426,6 @@ async function endTurn() {
   moveHistory.clear();
   selected = null;
   target = null;
-  attackChoice = null;
   recruitType = null;
   saveBattle(game, true);
   game.endTurn();
@@ -479,7 +465,6 @@ function reset(mapId = "mirror") {
   previousFeedbackState = null;
   selected = null;
   target = null;
-  attackChoice = null;
   recruitType = null;
   focusedTile = game.units.find(unit => unit.side === "player")?.tile || game.tiles[0].id;
   inspectedTile = null;
@@ -492,7 +477,6 @@ function undoMove() {
   if (!restored) return game.snapshot();
   selected = restored.unitId;
   target = null;
-  attackChoice = null;
   recruitType = null;
   focusedTile = restored.tileId;
   inspectedTile = restored.tileId;
@@ -652,7 +636,6 @@ if (document.modelContext?.registerTool) {
         selected = input.unitId;
         inspectedTile = game.unit(selected)?.tile || inspectedTile;
         target = null;
-        attackChoice = null;
         recruitType = null;
         render();
         return game.snapshot();
@@ -678,7 +661,6 @@ if (document.modelContext?.registerTool) {
         selected = input.unitId;
         inspectedTile = game.unit(selected)?.tile || inspectedTile;
         target = null;
-        attackChoice = null;
         recruitType = null;
         render();
         return game.snapshot();
