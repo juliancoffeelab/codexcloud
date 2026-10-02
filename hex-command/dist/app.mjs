@@ -31,6 +31,9 @@ const soundControl = $("#sound-effects");
 soundControl.checked = soundEnabled();
 // Audio starts only after a real interaction, never on initial load or replay.
 document.addEventListener("pointerdown", unlockSound, { capture: true, passive: true });
+// Touch completion supplies activation on browsers that defer it past pointerdown.
+document.addEventListener("pointerup", unlockSound, { capture: true, passive: true });
+document.addEventListener("touchend", unlockSound, { capture: true, passive: true });
 document.addEventListener("keydown", unlockSound, { capture: true });
 document.addEventListener("click", unlockSound, { capture: true });
 soundControl.addEventListener("change", async () => {

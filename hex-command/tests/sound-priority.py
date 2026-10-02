@@ -23,7 +23,7 @@ window.fetch=async (...args)=>{
 const NativeAudio=window.AudioContext;
 window.AudioContext=class extends NativeAudio {
  async decodeAudioData(data){const buffer=await super.decodeAudioData(data);decodedNames.set(buffer,encodedNames.get(data));return buffer;}
- createBufferSource(){const source=super.createBufferSource(),start=source.start.bind(source);source.start=(...args)=>{playedSamples.push(decodedNames.get(source.buffer));start(...args);};return source;}
+ createBufferSource(){const source=super.createBufferSource(),start=source.start.bind(source);source.start=(...args)=>{if(decodedNames.has(source.buffer)) playedSamples.push(decodedNames.get(source.buffer));start(...args);};return source;}
 };
 '''
 try:
@@ -58,7 +58,7 @@ try:
   before=snapshot(page)
   click('[data-tile="9,3"]','select')
   assert snapshot(page)==before
-  click('#attack','attack-bow')
+  click('[data-attack="bow"]','attack-bow')
   assert next(u for u in snapshot(page)['units'] if u['id']=='u5')['hp']<12
   assert not errors,errors
   page.keyboard.press('Escape')

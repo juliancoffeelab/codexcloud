@@ -10,7 +10,7 @@ const families = new Set([
 ]);
 let enabled = true;
 try { enabled = localStorage.getItem(STORAGE_KEY) !== 'false'; } catch {}
-let context = null, master = null, unlocking = null, request = 0;
+let context = null, master = null, unlocking = null, primed = false, request = 0;
 const buffers = new Map(), bags = new Map(), lastVariation = new Map(), voices = new Set();
 export function soundEnabled() { return enabled; }
 
@@ -44,13 +44,14 @@ export function setSoundEnabled(value) {
   try { localStorage.setItem(STORAGE_KEY, String(enabled)); } catch {}
   if (!enabled) stopVoices();
 }
-export async function unlockSound() {
-  if (!enabled) return;
+export async function unlockSound(event) {
+  if (!enabled || event?.isTrusted === false) return false;
   try {
-    if (!context) {
+    if (!context || context.state === 'closed') {
       const AudioContextClass = globalThis.AudioContext || globalThis.webkitAudioContext;
       if (!AudioContextClass) return;
       context = new AudioContextClass({ latencyHint: 'interactive' });
+      primed = false;
       master = context.createGain();
       master.gain.value = VOLUME;
       master.connect(context.destination);
@@ -59,10 +60,25 @@ export async function unlockSound() {
         for (const variant of [1, 2, 3]) void sample(family, variant).catch(() => {});
       }
     }
-    if (context.state === 'suspended') {
-      unlocking ??= context.resume().catch(() => {}).finally(() => { unlocking = null; });
-      await unlocking;
+    if (context.state === 'running') unlocking = null;
+    else {
+      // A touch-start resume may remain pending until a completed tap. Retry
+      // inside each trusted gesture instead of letting that promise lock us out.
+      const attempt = context.resume().catch(() => {});
+      unlocking = attempt;
+      void attempt.finally(() => { if (unlocking === attempt) unlocking = null; });
     }
+    if (!primed) {
+      // Starting a silent source in the gesture also primes mobile audio output.
+      const source = context.createBufferSource();
+      source.buffer = context.createBuffer(1, 1, context.sampleRate);
+      source.connect(master);
+      source.onended = () => source.disconnect();
+      source.start();
+      primed = true;
+    }
+    if (context.state !== 'running' && unlocking) await unlocking;
+    return context.state === 'running';
   } catch { /* Unavailable audio never interrupts a battle. */ }
 }
 function variation(family) {
@@ -98,7 +114,7 @@ export async function playSound(family) {
   const currentRequest = ++request;
   stopVoices(); // Rapid clicks replace feedback instead of stacking it.
   try {
-    if (unlocking) await unlocking;
+    if (context.state !== 'running' && unlocking) await unlocking;
     if (context.state !== 'running') return false;
     const buffer = await sample(family, variation(family));
     if (!enabled || currentRequest !== request || context.state !== 'running') return false;

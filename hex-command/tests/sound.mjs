@@ -17,6 +17,7 @@ class FakeContext {
   state = 'suspended'; currentTime = 10; destination = {}; sources = [];
   constructor() { created++; audio = this; }
   async resume() { resumed++; this.state = 'running'; }
+  createBuffer() { return {silent:true}; }
   createGain() { return { gain:new Param(), connect(){}, disconnect(){} }; }
   async decodeAudioData(name) { return {name}; }
   createBufferSource() {
@@ -53,9 +54,9 @@ for (let i=0;i<9;i++) {
 for (let i=0;i<9;i+=3) assert.equal(new Set(variants.slice(i,i+3)).size,3);
 assert.ok(variants.every((value,i)=>i===0 || value!==variants[i-1]));
 assert.equal(fetched.length,51,'all variations warm after the first gesture and are reused');
-assert.ok(audio.sources.slice(0,-1).every(source=>source.stopped),'new cues replace earlier cues');
+assert.ok(audio.sources.filter(source=>!source.buffer.silent).slice(0,-1).every(source=>source.stopped),'new cues replace earlier cues');
 sound.setSoundEnabled(false);
-assert.ok(audio.sources.every(source=>source.stopped));
+assert.ok(audio.sources.filter(source=>!source.buffer.silent).every(source=>source.stopped));
 const count = fetched.length;
 await sound.playSound('attack-bow'); assert.equal(fetched.length,count);
 assert.equal(stored.get('hex-command-sound-enabled'),'false');
@@ -81,6 +82,41 @@ audio.state='suspended';
 assert.equal(await cold.playSound('turn'),false);
 const resumeCount = resumed;
 await cold.unlockSound(); assert.equal(resumed,resumeCount+1);
+// Mobile browsers can leave a touch-start resume pending. A completed tap must
+// make a fresh attempt, and resume an interrupted context after app switching.
+const NativeFake = globalThis.AudioContext;
+let attempts = 0;
+globalThis.AudioContext = class extends FakeContext {
+  resume() {
+    resumed++; attempts++;
+    if (attempts === 1) return new Promise(() => {});
+    this.state = 'running';
+    return Promise.resolve();
+  }
+};
+globalThis.fetch = async url => ({ok:true,arrayBuffer:async()=>String(url)});
+const touch = await import('../dist/sound.mjs?touch');
+void touch.unlockSound({isTrusted:true,type:'pointerdown'});
+assert.equal(attempts,1);
+assert.equal(audio.sources.length,1,'the gesture primes mobile output with silence');
+await Promise.race([
+  touch.unlockSound({isTrusted:true,type:'touchend'}),
+  new Promise((_,reject)=>setTimeout(()=>reject(Error('touch resume remained stuck')),100)),
+]);
+assert.equal(attempts,2);
+assert.equal(await touch.playSound('terrain-plains'),true);
+audio.state='interrupted';
+assert.equal(await touch.playSound('terrain-plains'),false);
+await touch.unlockSound({isTrusted:true,type:'pointerup'});
+assert.equal(attempts,3);
+assert.equal(await touch.playSound('terrain-plains'),true);
+audio.state='closed';
+await touch.unlockSound({isTrusted:true,type:'click'});
+assert.equal(audio.state,'running','closed mobile contexts can be recreated');
+const attemptsBefore = attempts;
+await touch.unlockSound({isTrusted:false,type:'click'});
+assert.equal(attempts,attemptsBefore,'scripted events cannot unlock output');
+globalThis.AudioContext = NativeFake;
 // Failed preload and playback remain harmless.
 globalThis.fetch = async () => ({ok:false});
 const failed = await import('../dist/sound.mjs?failed');
