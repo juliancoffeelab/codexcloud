@@ -350,6 +350,17 @@ const shallowRevisions = {
 function shallowAssetURL(style: ArtStyle) {
   return `${import.meta.env?.BASE_URL ?? "/"}assets/shallow-${style}.png?v=${shallowRevisions[style]}`;
 }
+
+/** Draw the terrain sheet in SVG coordinates; the sprite viewport crops the frame. */
+function sheetImage(
+  url: string,
+  sheet: { width: number; height: number },
+  cropX: number,
+  cropY: number,
+) {
+  return `<image href="${url}" x="${-cropX}" y="${-cropY}" width="${sheet.width}" height="${sheet.height}" preserveAspectRatio="none"/>`;
+}
+
 function terrainSprite(
   style: ArtStyle,
   index: number,
@@ -362,7 +373,7 @@ function terrainSprite(
 ) {
   const sheet = terrainSheets[style];
   const { x: cropX, y: cropY, size } = sheet.frames[index]!;
-  return `<svg class="art-sprite ${style === "pixel" ? "pixel-art" : ""} ${extraClass}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${size} ${size}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false"><foreignObject width="${size}" height="${size}"><div xmlns="http://www.w3.org/1999/xhtml" style="position:relative;width:100%;height:100%;overflow:hidden"><img src="${url}" alt="" draggable="false" style="position:absolute;max-width:none;width:${sheet.width}px;height:${sheet.height}px;left:${-cropX}px;top:${-cropY}px"/></div></foreignObject></svg>`;
+  return `<svg class="art-sprite ${style === "pixel" ? "pixel-art" : ""} ${extraClass}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${size} ${size}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false">${sheetImage(url, sheet, cropX, cropY)}</svg>`;
 }
 
 // Render a region of the original sheet directly. Keep the generated PNGs intact.
@@ -395,6 +406,6 @@ export function artSprite(
   const sheet = unitSheets[style];
   const frame = sheet.frames[index + (side === "enemy" ? 4 : 0)]!;
   const { x: cropX, y: cropY, width: cropWidth, height: cropHeight } = frame;
-  // Keep the whole sheet bounded to the selected frame for hit-testing.
+  // Preserve HTML cropping for half-pixel unit frames; SVG sheet scaling can bleed adjacent rows.
   return `<svg class="art-sprite ${style === "pixel" ? "pixel-art" : ""} ${extraClass}" data-faction="${side}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${cropWidth} ${cropHeight}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false"><foreignObject width="${cropWidth}" height="${cropHeight}"><div xmlns="http://www.w3.org/1999/xhtml" style="position:relative;width:100%;height:100%;overflow:hidden"><img src="${assetURL(style, "units")}" alt="" draggable="false" style="position:absolute;max-width:none;width:${sheet.width}px;height:${sheet.height}px;left:${-cropX}px;top:${-cropY}px"/></div></foreignObject></svg>`;
 }
