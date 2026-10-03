@@ -27,6 +27,7 @@ type ReadableGame = Pick<
   | "unit"
   | "at"
   | "neighbors"
+  | "cost"
   | "reachable"
   | "targets"
   | "recruitTiles"
@@ -68,6 +69,7 @@ export function createGameView(source: Game): GameView {
     unit: (id) => game.unit(id),
     at: (id) => game.at(id),
     neighbors: (id) => freeze(game.neighbors(id)),
+    cost: (unit, tile) => game.cost(unit, tile),
     // Each result is independent; changing it cannot alter the published revision.
     reachable: (id) => game.reachable(id),
     targets: (id) => freeze(game.targets(id)),

@@ -408,7 +408,9 @@ function unitImage(
   const clipping = clip
     ? `;clip-path:polygon(${clip.map(([x, y]) => `${((100 * x) / cropWidth).toFixed(4)}% ${((100 * y) / cropHeight).toFixed(4)}%`).join(",")})`
     : "";
-  return `<foreignObject width="${cropWidth}" height="${cropHeight}"><div xmlns="http://www.w3.org/1999/xhtml" style="position:relative;width:100%;height:100%;overflow:hidden${clipping}"><img src="${url}" alt="" draggable="false" style="position:absolute;max-width:none;width:${sheet.width}px;height:${sheet.height}px;left:${-cropX}px;top:${-cropY}px"/></div></foreignObject>`;
+  // The HTML sheet is much larger than its SVG frame. Explicit native bounds and
+  // paint containment keep mobile compositors from painting outside that crop.
+  return `<foreignObject width="${cropWidth}" height="${cropHeight}" overflow="hidden"><div xmlns="http://www.w3.org/1999/xhtml" style="position:relative;width:${cropWidth}px;height:${cropHeight}px;overflow:hidden;contain:paint${clipping}"><img src="${url}" alt="" draggable="false" style="position:absolute;display:block;max-width:none;width:${sheet.width}px;height:${sheet.height}px;left:${-cropX}px;top:${-cropY}px"/></div></foreignObject>`;
 }
 
 /** Draw the terrain sheet in SVG coordinates; the sprite viewport crops the frame. */

@@ -1830,3 +1830,47 @@ select {
   font-size: 0.8rem;
   margin-top: 4px;
 }
+.movement-costs {
+  margin-top: 14px;
+  font:
+    14px/1.5 system-ui,
+    sans-serif;
+}
+.movement-costs h3 {
+  margin-bottom: 6px;
+  color: var(--gold);
+  font-size: 14px;
+  font-weight: 600;
+}
+.movement-costs dl {
+  margin: 0;
+}
+.movement-cost-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 4px 0;
+}
+.movement-cost-row dt {
+  color: var(--muted);
+}
+.movement-cost-row dd {
+  margin: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.movement-cost-row.easy dd {
+  color: var(--mint);
+}
+.movement-cost-row.slow dd {
+  color: var(--gold);
+}
+.movement-cost-row.difficult dd,
+.movement-cost-row.blocked dd {
+  color: var(--red);
+}
+.movement-costs p {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 13px;
+}

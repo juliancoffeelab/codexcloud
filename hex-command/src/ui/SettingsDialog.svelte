@@ -103,10 +103,9 @@
         shows the exact outcome; there are no hit-chance rolls.
       </p>
       <p>
-        Forests cost 2 movement and reduce ranged damage by 1. Hills cost 2 movement and reduce all
-        damage by 1. Scouts spend only 1 movement in forests and hills. Water is impassable; bridges
-        cost 1 movement. Shallow water costs 3 for soldiers and commanders, 2 for archers and
-        scouts, and adds 1 to damage received.
+        Each unit’s Movement costs list shows how much movement it spends entering each terrain.
+        Forests reduce ranged damage by 1. Hills reduce all damage by 1. Water is impassable;
+        bridges provide a crossing. Shallow water adds 1 to damage received.
       </p>
       <p>
         Keep your commander on your keep, then select an adjacent empty land hex and choose a

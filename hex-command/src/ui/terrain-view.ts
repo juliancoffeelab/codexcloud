@@ -4,35 +4,20 @@ import { TERRAIN, TYPES } from "../game/engine";
 import type { TerrainType } from "../game/types";
 
 const descriptions: Record<TerrainType, string> = {
-  marsh: "Soft ground slows an army. Heavy units need 3 movement to cross.",
+  marsh: "Soft mud and reeds surround shallow pools.",
   ruins:
     "Broken walls shelter against ranged attacks. Walk onto a marked ruin to seal its binding stone.",
   fort: "Earthworks protect against every damage kind. Capture them to hold a crossing.",
-  grove:
-    "A sacred woodland refuge. Its owner’s occupants heal 2 HP each turn. Woodland units cross easily.",
+  grove: "A sacred woodland refuge. Its owner’s occupants heal 2 HP each turn.",
   plains: "Open grassland with easy footing.",
   forest: "Trees shelter units and obstruct ranged shots.",
   hill: "Rocky high ground offers cover and obstructs ranged shots.",
   water: "Deep water cannot be crossed.",
   bridge: "A sturdy crossing over water with easy footing, but no protection.",
-  ford: "Shallow water can be crossed on foot. Heavy armor slows movement, and the open water leaves units exposed.",
+  ford: "Shallow water can be crossed on foot. The open water leaves units exposed.",
   village: "Capture this settlement by moving a unit onto it.",
   keep: "A fortified home for its army’s commander.",
 };
-
-function movementFact(terrain: TerrainType): string {
-  if (terrain === "water") return "Movement: impassable";
-  if (terrain === "ford" || terrain === "marsh")
-    return "Movement: 3 for soldiers, commanders, wardens and boars; 2 for others";
-  if (terrain === "grove") return "Movement: 2 (scouts and woodland units: 1)";
-  const scoutDiscount =
-    terrain === "forest"
-      ? " (scouts and woodland units: 1)"
-      : terrain === "hill"
-        ? " (scouts: 1)"
-        : "";
-  return `Movement: ${TERRAIN[terrain].cost}${scoutDiscount}`;
-}
 
 function protectionFact(terrain: TerrainType): string {
   if (terrain === "ford") return "Exposure: +1 damage received from all attacks";
@@ -43,7 +28,7 @@ function protectionFact(terrain: TerrainType): string {
 }
 
 function terrainFacts(terrain: TerrainType): string[] {
-  const facts = [movementFact(terrain)];
+  const facts: string[] = [];
   if (terrain !== "water") facts.push(protectionFact(terrain));
   if (["forest", "hill", "grove"].includes(terrain)) {
     facts.push("Blocks ranged shots through this hex");

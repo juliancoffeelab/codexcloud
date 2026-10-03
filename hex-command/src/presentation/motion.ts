@@ -33,8 +33,11 @@ function pulse(element: Element | null, kind: MotionKind | "turn") {
 
 export function animateTile(tileId: string, kind: MotionKind) {
   if (!tileKinds.has(kind) || typeof document === "undefined") return;
-  const tile = [...document.querySelectorAll<SVGElement>("#map [data-tile]")].find(
-    (node) => node.dataset.tile === String(tileId),
+  // Interactive ground nodes stay independent from the visual unit/HUD layers.
+  const attribute =
+    kind === "select" ? "data-tile" : kind === "capture" ? "data-indicator-tile" : "data-unit-tile";
+  const tile = [...document.querySelectorAll<SVGElement>(`#map [${attribute}]`)].find(
+    (node) => node.getAttribute(attribute) === String(tileId),
   );
   if (!tile) return;
   if (["move", "attack", "recruit"].includes(kind) && !tile.querySelector(".unit-art")) return;

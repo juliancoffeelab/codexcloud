@@ -1,7 +1,7 @@
 import type { Immutable, UnitView } from "../game/view";
 import type { BattleView } from "../controller/view";
 import { TERRAIN, TYPES } from "../game/engine";
-import type { UnitDefinition } from "../game/types";
+import type { TerrainType, UnitDefinition } from "../game/types";
 import { abilityInfo } from "../presentation/unit-ability";
 
 export interface UnitDetailsView {
@@ -10,6 +10,12 @@ export interface UnitDetailsView {
   terrainName: string;
   actionStatus: string;
   ability: ReturnType<typeof abilityInfo>;
+  movementCosts: {
+    terrain: TerrainType;
+    name: string;
+    label: string;
+    className: "easy" | "slow" | "difficult" | "blocked";
+  }[];
 }
 
 type UnitPanelView =
@@ -70,6 +76,21 @@ export function unitPanelView(view: BattleView): UnitPanelView {
       terrainName: TERRAIN[occupiedTile.terrain].name,
       actionStatus: actionStatus(selectedUnit),
       ability: abilityInfo(selectedUnit),
+      movementCosts: (Object.keys(TERRAIN) as TerrainType[]).map((terrain) => {
+        const cost = game.cost(selectedUnit, { terrain });
+        return {
+          terrain,
+          name: TERRAIN[terrain].name,
+          label: Number.isFinite(cost) ? String(cost) : "Impassable",
+          className: !Number.isFinite(cost)
+            ? "blocked"
+            : cost === 1
+              ? "easy"
+              : cost === 2
+                ? "slow"
+                : "difficult",
+        };
+      }),
     },
   };
 }

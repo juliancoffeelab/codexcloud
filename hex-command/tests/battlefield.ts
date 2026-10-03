@@ -38,3 +38,64 @@ assert.notEqual(required(alternate[0]).terrainArtwork, required(selected[0]).ter
 assert.equal(required(alternate[0]).points, required(selected[0]).points);
 
 console.log("PASS: battlefield selection, targets, recruitment, movement and stable SVG layers");
+
+// The three paint layers retain separate feedback targets; overlays never need
+// the keyboard-focusable ground node to contain the unit artwork.
+const { animateTile } = await import("../src/presentation/motion");
+function feedbackNode(attribute: string, tileId: string, occupied = false) {
+  const classes = new Set<string>();
+  return {
+    classes,
+    classList: {
+      add: (name: string) => classes.add(name),
+      remove: (name: string) => classes.delete(name),
+    },
+    getAttribute: (name: string) => (name === attribute ? tileId : null),
+    getBoundingClientRect: () => ({}),
+    querySelector: (selector: string) => (occupied && selector === ".unit-art" ? {} : null),
+  };
+}
+const groundNode = feedbackNode("data-tile", "1,3");
+const unitNode = feedbackNode("data-unit-tile", "1,3", true);
+const indicatorNode = feedbackNode("data-indicator-tile", "1,3");
+const emptyNode = feedbackNode("data-unit-tile", "2,2");
+const feedbackLayers = new Map([
+  ["#map [data-tile]", [groundNode]],
+  ["#map [data-unit-tile]", [unitNode, emptyNode]],
+  ["#map [data-indicator-tile]", [indicatorNode]],
+]);
+const originalDocument = Object.getOwnPropertyDescriptor(globalThis, "document");
+const originalTimeout = globalThis.setTimeout;
+const originalClearTimeout = globalThis.clearTimeout;
+const cleanup: (() => void)[] = [];
+try {
+  Object.defineProperty(globalThis, "document", {
+    configurable: true,
+    value: { querySelectorAll: (selector: string) => feedbackLayers.get(selector) ?? [] },
+  });
+  globalThis.setTimeout = ((callback: () => void) => {
+    cleanup.push(callback);
+    return cleanup.length;
+  }) as unknown as typeof setTimeout;
+  globalThis.clearTimeout = (() => undefined) as typeof clearTimeout;
+
+  animateTile("1,3", "select");
+  assert(groundNode.classes.has("motion-select"));
+  assert.equal(unitNode.classes.size, 0);
+  for (const kind of ["move", "recruit", "attack"] as const) {
+    animateTile("1,3", kind);
+    assert.deepEqual([...unitNode.classes], [`motion-${kind}`]);
+  }
+  animateTile("1,3", "capture");
+  assert(indicatorNode.classes.has("motion-capture"));
+  animateTile("2,2", "move");
+  assert.equal(emptyNode.classes.size, 0);
+  for (const finish of cleanup) finish();
+  assert.equal(groundNode.classes.size + unitNode.classes.size + indicatorNode.classes.size, 0);
+} finally {
+  if (originalDocument) Object.defineProperty(globalThis, "document", originalDocument);
+  else Reflect.deleteProperty(globalThis, "document");
+  globalThis.setTimeout = originalTimeout;
+  globalThis.clearTimeout = originalClearTimeout;
+}
+console.log("PASS: selection, unit motion and capture feedback target their independent layers");

@@ -74,67 +74,84 @@
         {/each}
       </defs>
 
-      {#each tiles as tile (tile.id)}
-        <g
-          class={tile.classes}
-          role="button"
-          tabindex={tile.id === view.focusedTile ? 0 : -1}
-          aria-label={tile.label}
-          data-tile={tile.id}
-          onclick={() => actions.choose(tile.id)}
-          onkeydown={(event) => handleTileKey(event, tile)}
-        >
-          <polygon class="tile-ground" points={tile.points} fill={tile.fill} />
-          <g clip-path={`url(#${tile.clipId})`}>
-            {@html tile.terrainArtwork}
+      <g class="terrain-layer">
+        {#each tiles as tile (tile.id)}
+          <g
+            class={tile.classes}
+            role="button"
+            tabindex={tile.id === view.focusedTile ? 0 : -1}
+            aria-label={tile.label}
+            data-tile={tile.id}
+            onclick={() => actions.choose(tile.id)}
+            onkeydown={(event) => handleTileKey(event, tile)}
+          >
+            <polygon class="tile-ground" points={tile.points} fill={tile.fill} />
+            <g clip-path={`url(#${tile.clipId})`}>
+              {@html tile.terrainArtwork}
+            </g>
+            {#if tile.classes.includes("objective") || tile.classes.includes("recruitable")}
+              <polygon class="tile-highlight-outline" points={tile.points} fill="none" />
+            {/if}
+            <polygon class="tile-outline" points={tile.points} fill="none" />
           </g>
-          {#if tile.classes.includes("objective") || tile.classes.includes("recruitable")}
-            <polygon class="tile-highlight-outline" points={tile.points} fill="none" />
-          {/if}
-          <polygon class="tile-outline" points={tile.points} fill="none" />
+        {/each}
+      </g>
 
-          {#if tile.occupant}
-            {@const occupant = tile.occupant}
-            <ellipse
-              class="team-base"
-              cx={tile.x}
-              cy={tile.y + 19}
-              rx="19"
-              ry="7"
-              fill={occupant.teamColor}
-              stroke={occupant.teamColor}
-            />
-            {@html occupant.artwork}
-            <rect class="hp-bg" x={tile.x - 19} y={tile.y + 27} width="38" height="4" rx="2" />
-            <rect
-              class="hp"
-              x={tile.x - 19}
-              y={tile.y + 27}
-              width={occupant.healthWidth}
-              height="4"
-              rx="2"
-            />
-            {#if occupant.unit.attacked}
-              <text class="acted" x={tile.x + 21} y={tile.y - 17}>✓</text>
+      <!-- Paint every terrain first; adjacent hexes must not hide units or bars. -->
+      <g class="unit-layer" pointer-events="none" aria-hidden="true">
+        {#each tiles as tile (tile.id)}
+          <g data-unit-tile={tile.id}>
+            {#if tile.occupant}
+              {@const occupant = tile.occupant}
+              <ellipse
+                class="team-base"
+                cx={tile.x}
+                cy={tile.y + 19}
+                rx="19"
+                ry="7"
+                fill={occupant.teamColor}
+                stroke={occupant.teamColor}
+              />
+              {@html occupant.artwork}
             {/if}
-            {#if occupant.unit.retreating}
-              <text class="retreat-marker" x={tile.x - 28} y={tile.y - 14} aria-hidden="true">
-                ↶
-              </text>
-            {/if}
-          {/if}
+          </g>
+        {/each}
+      </g>
 
-          {#if tile.owner}
-            <circle
-              class="territory-badge"
-              cx={tile.x + 23}
-              cy={tile.y + 17}
-              r="5"
-              fill={tile.ownerColor}
-            />
-          {/if}
-        </g>
-      {/each}
+      <!-- Health and state indicators remain above every terrain and sprite. -->
+      <g class="indicator-layer" pointer-events="none" aria-hidden="true">
+        {#each tiles as tile (tile.id)}
+          <g data-indicator-tile={tile.id}>
+            {#if tile.occupant}
+              {@const occupant = tile.occupant}
+              <rect class="hp-bg" x={tile.x - 19} y={tile.y + 27} width="38" height="4" rx="2" />
+              <rect
+                class="hp"
+                x={tile.x - 19}
+                y={tile.y + 27}
+                width={occupant.healthWidth}
+                height="4"
+                rx="2"
+              />
+              {#if occupant.unit.attacked}
+                <text class="acted" x={tile.x + 21} y={tile.y - 17}>✓</text>
+              {/if}
+              {#if occupant.unit.retreating}
+                <text class="retreat-marker" x={tile.x - 28} y={tile.y - 14}>↶</text>
+              {/if}
+            {/if}
+            {#if tile.owner}
+              <circle
+                class="territory-badge"
+                cx={tile.x + 23}
+                cy={tile.y + 17}
+                r="5"
+                fill={tile.ownerColor}
+              />
+            {/if}
+          </g>
+        {/each}
+      </g>
     </svg>
   </div>
 </section>
