@@ -87,7 +87,6 @@
     <ul class="mission-items">
       {#each mission.hints as hint}<li><span>{hint}</span></li>{/each}
       {#each upcoming as warning}<li><span>{warning}</span></li>{/each}
-      <li><span>Objectives are marked with a broken gold border.</span></li>
     </ul>
     <h3>Objectives</h3>
     <ul class="mission-items mission-goals">

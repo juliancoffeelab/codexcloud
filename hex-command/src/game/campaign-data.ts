@@ -917,11 +917,9 @@ const ashen: MissionDefinition[] = [
     briefing:
       "Orin’s company has found empty houses beside living villages. Captain Dain has orders to drive the dead away; the villagers want time to judge their new neighbors for themselves. Orin will defend the refuge while they gather. Helping the sick can win their support sooner, but hunting down withdrawing soldiers would destroy the chance of peace.",
     hints: [
-      "Hold the refuge through 6 enemy turns. Losing it resets the count; reclaiming it lets you begin again.",
-      "Medicine from the northern grove brings the villagers’ intervention after 5 defended turns, and gives 6 gold.",
-      "The outer villages are on your side of the refuge. They provide income and healing, not conquest objectives.",
-      "Wounded or endangered patrols withdraw toward safe villages or open ground. Retreating units are marked with an arrow.",
-      "Killing a retreating soldier, or killing Dain, ends the chance of mediation. Then defeat the entire patrol; Dain will not join you afterward.",
+      "Use nearby villages to heal and fund your defense.",
+      "Bring herbs from the northern grove to win support sooner.",
+      "Let retreating soldiers go if you want peace.",
     ],
     goals: [
       {
@@ -981,9 +979,8 @@ const ashen: MissionDefinition[] = [
       warBriefing:
         "The attempt to live beside the villages has become an open battle. After the bloodshed, the households can no longer persuade the patrol to stand down. Orin’s company must break the remaining patrol to leave, and will face the Master without Dain’s help.",
       warHints: [
-        "Defeat every remaining enemy. Holding the refuge will no longer end the battle.",
-        "Medicine still helps the villagers and provides 6 gold, but cannot restore mediation.",
-        "Your villages provide income and healing. Enemy survivors will seek safe places to recover.",
+        "Cut off the patrol’s retreat to its healing village.",
+        "Rest your wounded in the nearby villages.",
       ],
       escalation: [
         line(
