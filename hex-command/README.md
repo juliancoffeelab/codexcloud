@@ -118,10 +118,15 @@ mobility. Every faction uses the same unit definitions and combat calculations.
 
 Focused campaign checks cover all nine map layouts, saves, objectives, turn-boundary
 holds, bounded reinforcement waves, grave suppression, one-time rewards, undo,
-recall, retry, unit counters and session cancellation. Separate exploratory
-headless play probes completed all three campaigns with survivor carryover;
-these check feasibility, not human playtest quality. Browser interaction and visual
-parity have not been automated, in accordance with `AGENTS.md`.
+recall, retry, unit counters and session cancellation. Independent Luna 6 players
+also play complete linked campaigns through the headless interface below. Their
+failures inform map and pacing changes; the [playtest report](docs/campaign-playtests.md)
+records the method, results and limitations. Browser interaction and visual parity
+have not been automated, in accordance with `AGENTS.md`.
+
+Existing campaign saves retain their terrain and deployed units. Start a new
+campaign, or retry a defeated mission, to use the revised starting layouts and
+companies.
 
 ### Headless campaign playtesting
 

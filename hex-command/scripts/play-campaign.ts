@@ -298,6 +298,7 @@ try {
         }
       }
       if (input.endTurn === true && !game.winner) {
+        const playerRound = game.round;
         trial.moves = [];
         game.endTurn();
         game.enemyRecruit();
@@ -310,7 +311,7 @@ try {
         game.advanceDialogue(true);
         trial.transcript.push({
           mission: game.mapId,
-          enemyTurnAfter: game.round - 1,
+          enemyTurnAfter: playerRound,
           state: game.snapshot(),
         });
         noteOutcome();

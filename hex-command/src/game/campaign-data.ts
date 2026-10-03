@@ -70,6 +70,7 @@ const lantern: MissionDefinition[] = [
         ...land("village", [
           [3, 1],
           [3, 5],
+          [8, 1],
         ]),
         ...land("village", [[10, 2]], "enemy"),
         ...land("forest", [
@@ -82,28 +83,28 @@ const lantern: MissionDefinition[] = [
           [5, 4],
           [8, 2],
         ]),
-        ...land("marsh", [
-          [5, 1],
+        ...land("marsh", [[7, 5]]),
+        ...land("ruins", [
+          [9, 1],
           [7, 1],
-          [7, 5],
+          [7, 2],
         ]),
-        ...land("ruins", [[9, 1]]),
         ...land("fort", [[9, 3]]),
       ],
       [
         unit("commander", "player", 1, 3, "Captain Nera", "leader"),
         unit("soldier", "player", 2, 3),
+        unit("soldier", "player", 2, 4),
         unit("scout", "player", 2, 2, "Ivo", "courier"),
         unit("necromancer", "enemy", 11, 4, "The Tollkeeper", "leader"),
-        unit("skeleton", "enemy", 8, 2),
-        unit("bonearcher", "enemy", 9, 3),
-        unit("skeleton", "enemy", 8, 5),
+        unit("skeleton", "enemy", 10, 5),
+        unit("bonearcher", "enemy", 12, 5),
       ],
     ),
     subtitle: "Carry a message, not a conquest.",
     briefing:
-      "Get Ivo to the eastern landing. The bridge is easy footing; the northern ford offers a way around the guards, but slows heavy troops. Nera and Ivo must survive.",
-    goals: [{ kind: "escort", label: "Bring Ivo to the eastern landing", tile: "11,3" }],
+      "Get Ivo to the northeastern landing, beyond the guards rather than into their keep. Two shields can screen the courier while your recruits arrive. Skeletons resist arrows; maces crack their bones. The bridge leads toward the guards; the northern ford leads to a healing village and a route around them. A southern patrol arrives on turn 6. Nera and Ivo must survive.",
+    goals: [{ kind: "escort", label: "Bring Ivo to the northeastern landing", tile: "11,1" }],
     recruits: ["soldier", "archer", "scout"],
     enemyRecruits: ["skeleton", "bonearcher"],
     gold: 16,
@@ -152,7 +153,13 @@ const lantern: MissionDefinition[] = [
         ],
       },
     ],
-    waves: [],
+    waves: [
+      {
+        round: 6,
+        label: "A skeleton patrol arrives from the southern road on turn 6",
+        units: [unit("skeleton", "enemy", 11, 6)],
+      },
+    ],
   },
   {
     map: map(
@@ -201,6 +208,7 @@ const lantern: MissionDefinition[] = [
         unit("commander", "player", 1, 4, "Captain Nera", "leader"),
         unit("warden", "player", 2, 4),
         unit("scout", "player", 2, 3),
+        unit("soldier", "player", 2, 5),
         unit("necromancer", "enemy", 11, 4, "The Tollkeeper", "leader"),
         unit("skeleton", "enemy", 6, 2),
         unit("skeleton", "enemy", 6, 6),
@@ -274,7 +282,7 @@ const lantern: MissionDefinition[] = [
       9,
       [
         ...river(6, 9, { 2: "bridge", 4: "ford", 6: "bridge" }),
-        keep(1, 4, "player"),
+        keep(3, 4, "player"),
         keep(13, 4, "enemy"),
         ...land("village", [
           [3, 2],
@@ -285,13 +293,13 @@ const lantern: MissionDefinition[] = [
           [9, 1],
           [11, 4],
           [9, 7],
+          [7, 1],
+          [7, 7],
         ]),
         ...land("marsh", [
-          [7, 1],
           [7, 3],
           [7, 4],
           [7, 5],
-          [7, 7],
           [12, 2],
           [12, 6],
         ]),
@@ -310,9 +318,10 @@ const lantern: MissionDefinition[] = [
         ]),
       ],
       [
-        unit("commander", "player", 1, 4, "Captain Nera", "leader"),
-        unit("adept", "player", 2, 3),
-        unit("soldier", "player", 2, 4),
+        unit("commander", "player", 3, 4, "Captain Nera", "leader"),
+        unit("adept", "player", 4, 3),
+        unit("soldier", "player", 4, 4),
+        unit("scout", "player", 4, 5),
         unit("necromancer", "enemy", 13, 4, "The Bellwarden", "leader"),
         unit("skeleton", "enemy", 8, 1),
         unit("skeleton", "enemy", 8, 7),
@@ -324,7 +333,7 @@ const lantern: MissionDefinition[] = [
     ),
     subtitle: "Silence the graves before silencing the bell.",
     briefing:
-      "Seal the three grave ruins by entering them, then defeat the Bellwarden. An unsealed grave raises a skeleton on turns 4 and 7. A sealed grave stays quiet; scouts can reach the flank graves quickly.",
+      "Seal the three grave ruins by entering them, then defeat the Bellwarden. An unsealed grave raises a skeleton on turns 8 and 12. Your forward camp is near the crossings. Ruins beyond each flank bridge offer cover; your scout can reach the graves once the shields clear a crossing. A sealed grave stays quiet.",
     goals: [
       { kind: "seal", label: "Seal the three grave ruins", tiles: ["9,1", "11,4", "9,7"] },
       { kind: "defeat", label: "Defeat the Bellwarden" },
@@ -365,7 +374,7 @@ const lantern: MissionDefinition[] = [
         ],
       },
     ],
-    waves: [4, 7].flatMap((round) =>
+    waves: [8, 12].flatMap((round) =>
       ["9,1", "11,4", "9,7"].map((tile, index) => ({
         round,
         label: `An unsealed grave raises a skeleton on turn ${round}`,
@@ -621,6 +630,8 @@ const green: MissionDefinition[] = [
         ...land("grove", [
           [5, 2],
           [5, 6],
+          [7, 1],
+          [10, 1],
         ]),
         ...land("forest", [
           [4, 1],
@@ -631,12 +642,13 @@ const green: MissionDefinition[] = [
           [10, 5],
         ]),
         ...land("marsh", [
-          [7, 1],
-          [9, 1],
           [7, 7],
           [9, 7],
         ]),
-        ...land("ruins", [[6, 0]]),
+        ...land("ruins", [
+          [6, 0],
+          [9, 1],
+        ]),
         ...land("hill", [
           [11, 2],
           [11, 6],
@@ -646,22 +658,23 @@ const green: MissionDefinition[] = [
         unit("wildkeeper", "player", 1, 4, "Alder", "leader"),
         unit("thorncaller", "player", 2, 4, "Lark", "courier"),
         unit("warden", "player", 3, 4, "Captain Dain"),
+        unit("adept", "player", 2, 5, "Adept Tamsin"),
         unit("necromancer", "enemy", 13, 5, "The Rootbinder", "leader"),
         unit("skeleton", "enemy", 10, 2),
         unit("skeleton", "enemy", 10, 6),
-        unit("bonearcher", "enemy", 11, 1),
+        unit("bonearcher", "enemy", 12, 3),
         unit("bonearcher", "enemy", 11, 7),
-        unit("wolf", "enemy", 9, 4),
+        unit("wolf", "enemy", 11, 4),
       ],
     ),
     subtitle: "A witness, a bridge, and a promise.",
     briefing:
-      "Claim the bridge fort, then bring Lark to the northern village beyond the river. Dain’s wardens can join your pack. The Rootbinder’s wolves are fast; a spear is a useful answer.",
+      "Claim the bridge fort and bring Lark to the northern village beyond the river. Groves along the northern route offer healing and ranged cover. Dain brings wardens and adepts: spears counter wolves, while stone sparks hurt skeletal armor. Keep the witness behind the fighting line.",
     goals: [
       { kind: "control", label: "Secure the fort beside the bridge", tiles: ["7,4"] },
       { kind: "escort", label: "Bring Lark to the northern village", tile: "12,1" },
     ],
-    recruits: ["wolf", "boar", "thorncaller", "warden"],
+    recruits: ["wolf", "boar", "thorncaller", "warden", "adept"],
     enemyRecruits: ["skeleton", "bonearcher", "wolf"],
     gold: 18,
     enemyGold: 0,
@@ -680,6 +693,11 @@ const green: MissionDefinition[] = [
         "Alder",
         "wildkeeper",
         "Secure the bridge. The witness comes first. Dain, your spears and our boars hold the open road together.",
+      ),
+      line(
+        "Tamsin",
+        "adept",
+        "The dead hardly feel arrows, but stone sparks crack bone. Let the shields hold them while I work. Lark can rest in the groves beyond the ford.",
       ),
     ],
     victory: [
@@ -719,7 +737,7 @@ const ashen: MissionDefinition[] = [
       7,
       [
         keep(1, 3, "player"),
-        keep(11, 3, "enemy"),
+        keep(11, 5, "enemy"),
         ...river(4, 7, { 1: "ford", 4: "bridge" }),
         ...land("hill", [
           [6, 2],
@@ -728,16 +746,16 @@ const ashen: MissionDefinition[] = [
         ]),
         ...land("ruins", [
           [5, 5],
-          [8, 0],
+          [7, 0],
+          [10, 0],
+          [5, 1],
         ]),
         ...land("fort", [[8, 5]]),
-        ...land("marsh", [
-          [5, 1],
-          [5, 2],
-        ]),
+        ...land("marsh", [[5, 2]]),
         ...land("village", [
           [2, 5],
           [6, 1],
+          [8, 0],
         ]),
         ...land("village", [[10, 5]], "enemy"),
       ],
@@ -746,15 +764,15 @@ const ashen: MissionDefinition[] = [
         unit("skeleton", "player", 2, 3),
         unit("bonearcher", "player", 2, 2),
         unit("skeleton", "player", 2, 4),
-        unit("commander", "enemy", 11, 3, "The Ledgerkeeper", "leader"),
-        unit("soldier", "enemy", 7, 3),
-        unit("archer", "enemy", 8, 1),
-        unit("warden", "enemy", 9, 4),
+        unit("skeleton", "player", 1, 2),
+        unit("commander", "enemy", 11, 5, "The Ledgerkeeper", "leader"),
+        unit("soldier", "enemy", 9, 5),
+        unit("archer", "enemy", 10, 4),
       ],
     ),
     subtitle: "The first order you give yourself.",
     briefing:
-      "Escape with Orin to the northern quarry gate. Recruit before leaving your keep. You do not need to defeat every guard. Bones resist arrows; an enemy adept arrives from the southern road on turn 6. Use the bridge or the exposed northern ford.",
+      "Escape with Orin to the northern quarry gate. Recruit before leaving your keep. The guards hold the southern road; the northern ford offers a way around them. Three skeletons can screen Orin while he crosses. Bones resist arrows; northern ruins provide ranged cover, and owned villages heal their occupants. An adept and warden arrive from the southern road on turn 6. You do not need to defeat every guard.",
     goals: [{ kind: "escape", label: "Bring Orin to the northern quarry gate", tile: "11,1" }],
     recruits: ["skeleton", "bonearcher"],
     enemyRecruits: ["soldier", "archer"],
@@ -800,8 +818,8 @@ const ashen: MissionDefinition[] = [
     waves: [
       {
         round: 6,
-        label: "An adept arrives from the southern road on turn 6",
-        units: [unit("adept", "enemy", 11, 6)],
+        label: "An adept and warden arrive from the southern road on turn 6",
+        units: [unit("adept", "enemy", 11, 6), unit("warden", "enemy", 10, 6)],
       },
     ],
   },

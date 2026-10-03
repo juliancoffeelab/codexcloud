@@ -60,8 +60,8 @@ for (const definition of Object.values(CAMPAIGNS)) {
 {
   const game = Game.startCampaign("lantern-road");
   const courier = required(game.units.find((u) => u.role === "courier"));
-  courier.tile = "10,3";
-  game.move(courier.id, "11,3");
+  courier.tile = "10,1";
+  game.move(courier.id, "11,1");
   assert.equal(game.winner, "player");
   assert(game.units.some((u) => u.side === "enemy" && u.role === "leader"));
   const survivor = required(game.units.find((u) => u.type === "soldier" && u.side === "player"));
@@ -95,7 +95,7 @@ for (const definition of Object.values(CAMPAIGNS)) {
   const sealer = game.addUnit("scout", "player", "9,1");
   game.beginTurn("player");
   assert(game.campaign?.marks.includes("sealed:9,1"));
-  game.round = 4;
+  game.round = campaignMission(game.campaign!).waves[0]!.round;
   const before = game.units.length;
   const beforeWave = game.snapshot();
   game.beginTurn("enemy");
@@ -187,7 +187,7 @@ for (const definition of Object.values(CAMPAIGNS)) {
 {
   const game = Game.startCampaign("lantern-road", 2);
   game.advanceDialogue(true);
-  game.round = 4;
+  game.round = campaignMission(game.campaign!).waves[0]!.round;
   saveBattle(game, true);
   assert.equal(loadBattle().pendingEnemy, true);
   const first = new BattleController(async () => {});
