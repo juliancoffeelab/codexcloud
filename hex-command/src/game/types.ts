@@ -181,6 +181,7 @@ export type MissionGoal =
   | { kind: "escape"; label: string; tile: string }
   | { kind: "control"; label: string; tiles: string[] }
   | { kind: "hold"; label: string; tile: string; round: number }
+  | { kind: "vigil"; label: string; tile: string; turns: number; companion: string }
   | { kind: "refuge"; label: string; tile: string; turns: number }
   | { kind: "seal"; label: string; tiles: string[] }
   | { kind: "defeat"; label: string };
@@ -202,6 +203,8 @@ export interface MissionDefinition {
   map: MapDefinition;
   subtitle: string;
   briefing: string;
+  debrief?: string;
+  requiredCompanions?: string[];
   hints: string[];
   goals: MissionGoal[];
   recruits: RecruitType[];
@@ -226,6 +229,8 @@ export interface MissionDefinition {
     intro: DialogueLine[];
     recruits: RecruitType[];
     reinforcements: StartingUnit[];
+    victory?: DialogueLine[];
+    debrief?: string;
   };
   /** Previously published lines remain valid in ongoing saved conversations. */
   legacyDialogue?: DialogueLine[];
@@ -251,7 +256,8 @@ export interface CampaignState {
   outcome: string | null;
   completed: boolean;
   refuge?: { heldTurns: number; lastCountedRound: number; escalated: boolean };
-  choices?: ("refuge-peace" | "refuge-war")[];
+  vigil?: { heldTurns: number; lastCountedRound: number };
+  choices?: ("refuge-peace" | "refuge-war" | "green-dain-dead")[];
 }
 export type Attack = Weapon;
 export type DamageDetail = DamageBreakdown;

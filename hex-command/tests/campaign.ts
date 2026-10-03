@@ -301,25 +301,6 @@ for (const definition of Object.values(CAMPAIGNS)) {
   assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
 }
 
-// Hold objectives wait for a player turn boundary; missing dawn is recoverable.
-{
-  const game = Game.startCampaign("green-accord", 1);
-  game.advanceDialogue(true);
-  const goal = required(campaignMission(game.campaign!).goals.find((goal) => goal.kind === "hold"));
-  game.tile("6,4")!.owner = "enemy";
-  game.units = game.units.filter((unit) => unit.tile !== "6,4");
-  const wolf = game.addUnit("wolf", "player", "5,4");
-  game.round = 6;
-  game.move(wolf.id, "6,4");
-  assert.equal(game.winner, null, "Capture during a turn does not satisfy dawn");
-  assert.equal(goalProgress(game, goal).done, false);
-  game.endTurn();
-  game.endTurn();
-  assert.equal(game.winner, "player");
-  saveBattle(game);
-  assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
-}
-
 // Side quests and their dialogue are rolled back with the move, then awarded only once.
 {
   const game = Game.startCampaign("lantern-road");

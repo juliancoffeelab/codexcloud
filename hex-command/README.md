@@ -94,11 +94,21 @@ Dain’s alliance and living recruitment in the final mission. The remaining und
 company receives two companions instead. Refuge save upgrades move the villages
 while preserving units, gold and ownership; defense tracking begins on the updated rules.
 
+The Green Accord ends its opening battle when all three groves are reclaimed.
+Lark then conducts a vigil in the central grove: protect her there through three
+complete enemy turns. Leaving the grove or losing control resets the vigil.
+Lark must survive every mission and returns as part of the story company, without
+using a recall slot. Dain’s death persists across the campaign; Tamsin investigates
+the woodcutters’ deaths independently if he cannot return. The final mission
+requires both delivering Lark to the village meeting and securing the bridge fort
+so the households can share the crossing. Mission results explain what happened
+and why the company moves on.
+
 After a victory, select up to four surviving recruits to bring to the next mission.
 They heal completely, and up to eight spare gold carries forward. Each mission
-also supplies its own starting company and treasury. Couriers and leaders have
-fixed story roles rather than occupying recall slots. Losing a leader or required
-courier ends the mission; Retry mission restores its original company, recall
+also supplies its own starting company and treasury. Couriers, leaders and required companions have
+fixed story roles rather than occupying recall slots. Losing a leader, required
+courier or story companion ends the mission; Retry mission restores its original company, recall
 and treasury. There is no arbitrary loss deadline. Hold objectives check ownership
 at the beginning of a player turn, starting at the announced turn.
 

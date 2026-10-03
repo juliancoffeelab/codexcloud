@@ -537,6 +537,9 @@ export class Game {
       `${sideLabel} ${unitName} used ${attackName} for ${result.damage} damage${retaliationMessage}.`,
     );
     for (const defeated of this.units.filter((unit) => unit.hp <= 0)) {
+      if (this.campaign?.id === "green-accord" && defeated.name === "Captain Dain") {
+        if (!this.campaign.marks.includes("dain-fell")) this.campaign.marks.push("dain-fell");
+      }
       if (endsRefugeMediation(this, defeated)) this.escalateRefuge();
       if (TYPES[defeated.type].leader && !this.campaign) {
         this.winner = defeated.side === "player" ? "enemy" : "player";
@@ -940,12 +943,22 @@ export class Game {
       ...(mission.refuge
         ? { refuge: { heldTurns: 0, lastCountedRound: 1, escalated: false } }
         : {}),
+      ...(mission.goals.some((goal) => goal.kind === "vigil")
+        ? { vigil: { heldTurns: 0, lastCountedRound: 1 } }
+        : {}),
     };
-    if (choices.includes("refuge-war") && mission.withoutDain) {
+    const effectiveMission = campaignMission(game.campaign);
+    if (
+      (choices.includes("refuge-war") || choices.includes("green-dain-dead")) &&
+      mission.withoutDain
+    ) {
       game.units = game.units.filter((unit) => unit.name !== "Captain Dain");
-      for (const incoming of mission.withoutDain.reinforcements)
-        game.addUnit(incoming.type, incoming.side, `${incoming.col},${incoming.row}`);
-      game.campaign.dialogue = mission.withoutDain.intro.map((line) => ({ ...line }));
+      for (const incoming of mission.withoutDain.reinforcements) {
+        const unit = game.addUnit(incoming.type, incoming.side, `${incoming.col},${incoming.row}`);
+        if (incoming.name) unit.name = incoming.name;
+        if (incoming.role) unit.role = incoming.role;
+      }
+      game.campaign.dialogue = effectiveMission.intro.map((line) => ({ ...line }));
     }
     game.gold = { player: mission.gold + game.campaign.carryGold, enemy: mission.enemyGold };
     const leader = game.units.find((unit) => unit.side === "player" && unit.role === "leader")!;
@@ -978,16 +991,27 @@ export class Game {
       throw new Error("Choose up to four different survivors.");
     const roster = recallIds.map((id) => {
       const unit = this.unit(id);
-      if (!unit || unit.side !== "player" || TYPES[unit.type].leader || unit.role === "courier")
+      const isCompanion =
+        unit?.name && campaignMission(this.campaign!).requiredCompanions?.includes(unit.name);
+      if (
+        !unit ||
+        unit.side !== "player" ||
+        TYPES[unit.type].leader ||
+        unit.role === "courier" ||
+        isCompanion
+      )
         throw new Error("Only surviving recruits can return.");
       return unit.type as RecruitType;
     });
+    const choices = [...(this.campaign.choices ?? [])];
+    if (this.campaign.marks.includes("dain-fell") && !choices.includes("green-dain-dead"))
+      choices.push("green-dain-dead");
     return Game.startCampaign(
       this.campaign.id,
       this.campaign.mission + 1,
       roster,
       this.gold.player,
-      this.campaign.choices ?? [],
+      choices,
     );
   }
 
@@ -1042,11 +1066,16 @@ export class Game {
     const leader = this.units.find((unit) => unit.side === "player" && unit.role === "leader");
     const needsCourier = mission.goals.some((goal) => goal.kind === "escort");
     const courier = this.units.find((unit) => unit.side === "player" && unit.role === "courier");
-    if (!leader || (needsCourier && !courier)) {
+    const missingCompanion = mission.requiredCompanions?.find(
+      (name) => !this.units.some((unit) => unit.side === "player" && unit.name === name),
+    );
+    if (!leader || missingCompanion || (needsCourier && !courier)) {
       this.winner = "enemy";
       campaign.outcome = !leader
         ? "Your leader fell. The company cannot continue without them."
-        : "The courier fell before reaching safety.";
+        : missingCompanion
+          ? `${missingCompanion} fell. The company cannot continue without them.`
+          : "The courier fell before reaching safety.";
       campaign.dialogue.push({
         speaker: "The company",
         portrait: CAMPAIGNS[campaign.id].leader,
@@ -1054,6 +1083,23 @@ export class Game {
       });
       this.record(campaign.outcome);
       return;
+    }
+    const vigilGoal = mission.goals.find((goal) => goal.kind === "vigil");
+    if (vigilGoal?.kind === "vigil") {
+      campaign.vigil ??= { heldTurns: 0, lastCountedRound: this.round };
+      const present = this.units.some(
+        (unit) =>
+          unit.side === "player" &&
+          unit.name === vigilGoal.companion &&
+          unit.tile === vigilGoal.tile,
+      );
+      if (!present || this.tile(vigilGoal.tile)?.owner !== "player") {
+        campaign.vigil.heldTurns = 0;
+        campaign.vigil.lastCountedRound = this.round;
+      } else if (atTurnStart && this.round > campaign.vigil.lastCountedRound) {
+        campaign.vigil.heldTurns = Math.min(vigilGoal.turns, campaign.vigil.heldTurns + 1);
+        campaign.vigil.lastCountedRound = this.round;
+      }
     }
     if (mission.refuge) {
       campaign.refuge ??= { heldTurns: 0, lastCountedRound: this.round, escalated: false };
@@ -1122,7 +1168,11 @@ export class Game {
         campaign.dialogue.push(
           ...structuredClone(
             CAMPAIGNS[campaign.id].ending.filter(
-              (line) => !campaign.choices?.includes("refuge-war") || line.speaker !== "Dain",
+              (line) =>
+                (!campaign.choices?.includes("refuge-war") &&
+                  !campaign.choices?.includes("green-dain-dead") &&
+                  !campaign.marks.includes("dain-fell")) ||
+                (line.speaker !== "Dain" && line.speaker !== "Captain Dain"),
             ),
           ),
         );

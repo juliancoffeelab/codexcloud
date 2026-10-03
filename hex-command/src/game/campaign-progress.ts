@@ -12,7 +12,12 @@ export interface CampaignBoard {
 
 export function campaignMission(state: Immutable<CampaignState>): Immutable<MissionDefinition> {
   const mission = CAMPAIGNS[state.id].missions[state.mission]!;
-  if (state.choices?.includes("refuge-war") && mission.withoutDain)
+  if (
+    (state.choices?.includes("refuge-war") ||
+      state.choices?.includes("green-dain-dead") ||
+      state.marks.includes("dain-fell")) &&
+    mission.withoutDain
+  )
     return { ...mission, ...mission.withoutDain };
   if (state.refuge?.escalated && mission.refuge)
     return { ...mission, briefing: mission.refuge.warBriefing, hints: mission.refuge.warHints };
@@ -60,6 +65,10 @@ export function goalProgress(board: CampaignBoard, goal: Immutable<MissionGoal>)
     case "hold":
       total = goal.round;
       current = board.tile(goal.tile)?.owner === "player" ? Math.min(board.round, total) : 0;
+      break;
+    case "vigil":
+      total = goal.turns;
+      current = Math.min(board.campaign?.vigil?.heldTurns ?? 0, total);
       break;
     case "refuge": {
       if (board.campaign?.refuge?.escalated) {

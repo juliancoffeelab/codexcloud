@@ -76,7 +76,12 @@ function validVillage(value: unknown, villages: VillageState[]): value is Villag
   );
 }
 
-function campaignState(value: unknown, mapId: string, winner: Side | null): CampaignState | null {
+function campaignState(
+  value: unknown,
+  mapId: string,
+  winner: Side | null,
+  round: number,
+): CampaignState | null {
   if (
     !record(value) ||
     typeof value.id !== "string" ||
@@ -85,7 +90,8 @@ function campaignState(value: unknown, mapId: string, winner: Side | null): Camp
   )
     return null;
   const definition = CAMPAIGNS[value.id as CampaignId];
-  const mission = definition.missions[value.mission];
+  const missionIndex = value.mission;
+  const mission = definition.missions[missionIndex];
   if (
     !mission ||
     mission.map.id !== mapId ||
@@ -97,13 +103,16 @@ function campaignState(value: unknown, mapId: string, winner: Side | null): Camp
   )
     return null;
   const allowedMarks = new Set([
+    ...(value.id === "green-accord" && (missionIndex === 0 || missionIndex === 2)
+      ? ["dain-fell"]
+      : []),
     ...(mission.refuge ? ["held:5,4"] : []),
     ...mission.events.map((event) => `event:${event.id}`),
     ...mission.waves.map((_, index) => `wave:${index}`),
     ...mission.goals.flatMap((goal) =>
       goal.kind === "seal"
         ? goal.tiles.map((tile) => `sealed:${tile}`)
-        : goal.kind === "hold"
+        : goal.kind === "hold" || goal.kind === "vigil"
           ? [`held:${goal.tile}`]
           : [],
     ),
@@ -112,6 +121,17 @@ function campaignState(value: unknown, mapId: string, winner: Side | null): Camp
     !Array.isArray(value.marks) ||
     new Set(value.marks).size !== value.marks.length ||
     !value.marks.every((mark) => typeof mark === "string" && allowedMarks.has(mark))
+  )
+    return null;
+  const vigilGoal = mission.goals.find((goal) => goal.kind === "vigil");
+  if (
+    value.vigil !== undefined &&
+    (vigilGoal?.kind !== "vigil" ||
+      !record(value.vigil) ||
+      !integer(value.vigil.heldTurns) ||
+      value.vigil.heldTurns > vigilGoal.turns ||
+      !integer(value.vigil.lastCountedRound) ||
+      value.vigil.lastCountedRound > round)
   )
     return null;
   if (
@@ -128,14 +148,19 @@ function campaignState(value: unknown, mapId: string, winner: Side | null): Camp
     value.choices !== undefined &&
     (!Array.isArray(value.choices) ||
       value.choices.length > 1 ||
-      value.id !== "ashen-oath" ||
-      value.mission < 1 ||
-      !value.choices.every((choice) => choice === "refuge-peace" || choice === "refuge-war"))
+      !value.choices.every((choice) =>
+        value.id === "ashen-oath"
+          ? missionIndex >= 1 && (choice === "refuge-peace" || choice === "refuge-war")
+          : value.id === "green-accord" && choice === "green-dain-dead",
+      ))
   )
     return null;
   const failure = [
     "Your leader fell. The company cannot continue without them.",
     "The courier fell before reaching safety.",
+    ...(mission.requiredCompanions ?? []).map(
+      (name) => `${name} fell. The company cannot continue without them.`,
+    ),
   ];
   const knownLines = [
     ...mission.intro,
@@ -145,6 +170,7 @@ function campaignState(value: unknown, mapId: string, winner: Side | null): Camp
     ...(mission.refuge?.escalation ?? []),
     ...(mission.refuge?.warVictory ?? []),
     ...(mission.withoutDain?.intro ?? []),
+    ...(mission.withoutDain?.victory ?? []),
     ...(mission.legacyDialogue ?? []),
     ...definition.ending,
     ...failure.map((text) => ({ speaker: "The company", portrait: definition.leader, text })),
@@ -193,6 +219,13 @@ function campaignState(value: unknown, mapId: string, winner: Side | null): Camp
     ...(value.refuge
       ? { refuge: { ...(value.refuge as NonNullable<CampaignState["refuge"]>) } }
       : {}),
+    ...(vigilGoal
+      ? {
+          vigil: value.vigil
+            ? { ...(value.vigil as NonNullable<CampaignState["vigil"]>) }
+            : { heldTurns: 0, lastCountedRound: round },
+        }
+      : {}),
     ...(value.choices
       ? { choices: [...(value.choices as NonNullable<CampaignState["choices"]>)] }
       : {}),
@@ -237,7 +270,7 @@ export function loadBattle(): LoadedBattle {
     )
       return fresh();
     const isCampaign = game.mapId !== "mirror" && game.mapId !== "river";
-    const campaign = isCampaign ? campaignState(s.campaign, game.mapId, s.winner) : null;
+    const campaign = isCampaign ? campaignState(s.campaign, game.mapId, s.winner, s.round) : null;
     if ((isCampaign && !campaign) || (!isCampaign && s.campaign !== undefined)) return fresh();
     if (campaign) game.campaign = campaign;
     const ids = new Set<string>(),
@@ -316,6 +349,34 @@ export function loadBattle(): LoadedBattle {
       nextId: s.nextId,
       log: [...s.log],
     });
+    // Older green saves did not remember named deaths. Infer only what the saved army proves.
+    if (campaign?.id === "green-accord") {
+      if (
+        (campaign.mission === 0 || campaign.mission === 2) &&
+        !campaign.choices?.includes("green-dain-dead") &&
+        !units.some((unit) => unit.name === "Captain Dain") &&
+        !campaign.marks.includes("dain-fell")
+      ) {
+        campaign.marks.push("dain-fell");
+      }
+      const missingCompanion = CAMPAIGNS[campaign.id].missions[
+        campaign.mission
+      ]!.requiredCompanions?.find(
+        (name) => !units.some((unit) => unit.side === "player" && unit.name === name),
+      );
+      if (game.winner === "player" && missingCompanion) {
+        game.winner = "enemy";
+        campaign.completed = false;
+        campaign.outcome = `${missingCompanion} fell. The company cannot continue without them.`;
+        campaign.dialogueIndex = campaign.dialogue.length;
+        campaign.dialogue.push({
+          speaker: "The company",
+          portrait: CAMPAIGNS[campaign.id].leader,
+          text: campaign.outcome,
+        });
+        game.record(campaign.outcome);
+      }
+    }
     return { game, pendingEnemy: saved.pendingEnemy };
   } catch {
     return fresh();

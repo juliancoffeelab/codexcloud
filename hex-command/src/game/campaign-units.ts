@@ -155,16 +155,16 @@ export const CAMPAIGN_UNITS = {
     woodland: true,
     hp: 7,
     move: 4,
-    damage: 2,
+    damage: 3,
     range: 2,
     cost: 8,
     attacks: [
-      attack("thorns", "Thorns", 2, "pierce", "ranged", 2),
+      attack("thorns", "Thorns", 3, "pierce", "ranged", 2),
       attack("rootstaff", "Root staff", 2, "impact"),
     ],
     damageModifiers: { blade: 0, pierce: 0, impact: 0 },
     ability: "Understory",
     description:
-      "Forests and groves cost 1 movement. Mobile ranged support; its staff can answer armored melee units.",
+      "Forests and groves cost 1 movement. A fragile ranged skirmisher; its light Impact staff offers a risky answer to armor.",
   },
 } satisfies Partial<Record<UnitType, UnitDefinition>>;

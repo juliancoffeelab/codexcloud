@@ -22,7 +22,11 @@
   const goals = $derived(mission?.goals.map((goal) => goalProgress(view.game, goal)) ?? []);
   const survivors = $derived(
     view.game.units.filter(
-      (unit) => unit.side === "player" && !TYPES[unit.type].leader && unit.role !== "courier",
+      (unit) =>
+        unit.side === "player" &&
+        !TYPES[unit.type].leader &&
+        unit.role !== "courier" &&
+        !mission?.requiredCompanions?.includes(unit.name ?? ""),
     ),
   );
   const missionMapId = $derived(view.game.mapId);
@@ -79,11 +83,15 @@
       {/each}
       <li>
         <span>
-          Keep your leader alive{mission.goals.some((goal) => goal.kind === "escort")
+          Keep your leader alive{mission.goals.some((goal) => goal.kind === "escort") &&
+          !mission.requiredCompanions?.length
             ? " and protect the courier"
             : ""}.
         </span>
       </li>
+      {#each mission.requiredCompanions ?? [] as companion}
+        <li><span>Keep {companion} alive.</span></li>
+      {/each}
       {#each mission.events.filter((event) => event.label) as event}
         <li class:completed-goal={campaign.marks.includes(`event:${event.id}`)}>
           <span>
@@ -95,7 +103,7 @@
     </ul>
   </section>
   {#if view.game.winner && !dialoguePending(campaign)}
-    <section class="campaign-panel" aria-label="Mission result">
+    <section id="mission-result" class="campaign-panel" aria-label="Mission result" tabindex="-1">
       <h2>{mission.map.name}</h2>
 
       <div class="mission-debrief">
@@ -106,7 +114,9 @@
               ? "Campaign complete"
               : "The company regroups"}
         </h3>
-        <p>{campaign.outcome}</p>
+        <p>
+          {view.game.winner === "player" ? (mission.debrief ?? campaign.outcome) : campaign.outcome}
+        </p>
         {#if view.game.winner === "player" && !campaign.completed}
           <p>
             Choose up to four survivors for the next mission. They return at full health. Carrying {Math.min(
