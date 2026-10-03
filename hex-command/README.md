@@ -137,6 +137,7 @@ Each invocation reads and writes that trial file, returning JSON with the curren
 map, units, treasury, objectives, side quests and announced reinforcements. Start
 and retry also return unit definitions, terrain rules and the common action rules.
 Coordinates are zero-based `col,row` on the game's odd-row-offset hex grid.
+Start refuses to overwrite an existing trial; use next, retry, or a new file path.
 
 | Operation | Parameters and behavior                                                                                                                                  |
 | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -162,6 +163,11 @@ conflict, and future recruitment, waves, healing and other planned moves are
 excluded. It supplies mechanical information, not tactical recommendations.
 The agent chooses every player action. The trial records successful actions,
 undo, recall, retries and enemy-turn snapshots for review.
+New trials also fingerprint their campaign definition and engine rules, rejecting
+continuation if those rules change mid-run. Verify a recorded trial against its
+matching source with `node --import tsx scripts/replay-campaign.ts /tmp/my-company.json`;
+this replays the agent's decisions and checks every enemy response and final state,
+without selecting any player actions.
 
 ## Formatting
 

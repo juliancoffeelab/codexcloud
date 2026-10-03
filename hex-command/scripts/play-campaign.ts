@@ -1,6 +1,7 @@
 /** A headless control surface for playtesting the live engine. No substitute rules or player AI. */
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname } from "node:path";
+import { createHash } from "node:crypto";
 import { Game, TYPES, TERRAIN } from "../src/game/engine";
 import { CAMPAIGNS } from "../src/game/campaign-data";
 import { campaignMission, goalProgress } from "../src/game/campaign-progress";
@@ -8,10 +9,18 @@ import { enemyActionIds } from "../src/game/enemy-turn";
 import type { CampaignId, GameState, RecruitType } from "../src/game/types";
 
 interface Trial {
+  rulesFingerprint?: string;
   state: GameState;
   moves: GameState[];
   transcript: unknown[];
   outcomes: { mission: string; winner: string; round: number; survivors: number }[];
+}
+function rulesFingerprint(id: CampaignId): string {
+  const hash = createHash("sha256");
+  hash.update(JSON.stringify({ campaign: CAMPAIGNS[id], units: TYPES, terrain: TERRAIN }));
+  for (const file of ["engine.ts", "campaign-progress.ts", "enemy-turn.ts"])
+    hash.update(readFileSync(new URL(`../src/game/${file}`, import.meta.url)));
+  return hash.digest("hex");
 }
 const trialPath = process.argv[2];
 if (!trialPath) throw new Error("Usage: play-campaign.ts TRIAL.json REQUEST_JSON");
@@ -30,16 +39,29 @@ const input = record(request);
 let trial: Trial;
 let game: Game;
 if (input.op === "start") {
+  if (existsSync(path))
+    throw new Error("Trial already exists. Use next, retry, or a new trial path.");
   const id = string(input.campaign);
   if (!Object.hasOwn(CAMPAIGNS, id)) throw new Error("Unknown campaign.");
   game = Game.startCampaign(id as CampaignId);
   if (input.mission !== undefined)
     throw new Error("Start at mission one; carryover must be earned.");
   game.advanceDialogue(true);
-  trial = { state: game.captureState(), moves: [], transcript: [], outcomes: [] };
+  trial = {
+    rulesFingerprint: rulesFingerprint(id as CampaignId),
+    state: game.captureState(),
+    moves: [],
+    transcript: [],
+    outcomes: [],
+  };
 } else {
   // This file is produced only by this CLI, not imported as an external battle save.
   trial = JSON.parse(readFileSync(path, "utf8")) as Trial;
+  if (
+    trial.rulesFingerprint &&
+    trial.rulesFingerprint !== rulesFingerprint(trial.state.campaign!.id)
+  )
+    throw new Error("Campaign rules changed during this trial. Start a fresh trial file.");
   game = new Game(trial.state.mapId, trial.state.mapRevision);
   game.restoreState(trial.state);
 }
@@ -59,6 +81,12 @@ const symbols = {
 } as const;
 function observation(includeRules = false) {
   const mission = campaignMission(game.campaign!);
+  const relevantTypes = new Set([
+    ...game.units.map((unit) => unit.type),
+    ...mission.recruits,
+    ...mission.enemyRecruits,
+    ...mission.waves.flatMap((wave) => wave.units.map((unit) => unit.type)),
+  ]);
   return {
     campaign: game.campaign!.id,
     mission: game.campaign!.mission + 1,
@@ -119,7 +147,7 @@ function observation(includeRules = false) {
               "All mission goals must be completed. Losing your leader or required courier is defeat. Killing the enemy leader alone does not complete an escort or escape objective.",
               "Move undo is available until an attack, recruitment or end turn. An invalid action stops the batch; earlier successful actions remain applied, and the returned observation is authoritative.",
             ],
-            units: TYPES,
+            units: Object.fromEntries([...relevantTypes].map((type) => [type, TYPES[type]])),
             terrain: TERRAIN,
           },
         }

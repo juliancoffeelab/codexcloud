@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { Game } from "../src/game/engine";
@@ -20,6 +20,7 @@ function call(request: unknown) {
 const saved = () => JSON.parse(readFileSync(path, "utf8"));
 try {
   call({ op: "start", campaign: "lantern-road" });
+  assert.match(saved().rulesFingerprint, /^[a-f0-9]{64}$/);
   const game = Game.startCampaign("lantern-road");
   game.advanceDialogue(true);
   assert.deepEqual(saved().state, game.captureState());
@@ -28,6 +29,20 @@ try {
   call({ op: "options", unit: leader.id });
   call({ op: "threats", unit: leader.id, tiles: [leader.tile, "1,2"] });
   assert.deepEqual(saved(), before, "Mechanical inspections must not change the trial");
+  const duplicateStart = spawnSync(
+    process.execPath,
+    [
+      "--import",
+      "tsx",
+      "scripts/play-campaign.ts",
+      path,
+      '{"op":"start","campaign":"lantern-road"}',
+    ],
+    { encoding: "utf8", timeout: 3000 },
+  );
+  assert.notEqual(duplicateStart.status, 0);
+  assert.match(duplicateStart.stderr, /Trial already exists/);
+  assert.deepEqual(saved(), before, "Starting again must not erase attempts or progress");
 
   const destination = game.recruitTiles(leader.id, "soldier")[0]!.id;
   const response = call({
@@ -56,6 +71,17 @@ try {
     game.captureState(),
     "Headless enemy response matches live rules",
   );
+  const mismatched = saved();
+  mismatched.rulesFingerprint = "changed";
+  writeFileSync(path, JSON.stringify(mismatched));
+  const rejected = spawnSync(
+    process.execPath,
+    ["--import", "tsx", "scripts/play-campaign.ts", path, '{"op":"observe"}'],
+    { encoding: "utf8", timeout: 3000 },
+  );
+  assert.notEqual(rejected.status, 0);
+  assert.match(rejected.stderr, /Campaign rules changed/);
+  assert.deepEqual(saved(), mismatched, "A changed ruleset must not continue or modify a trial");
   console.log(
     "PASS: headless state persistence, pure inspection, partial action errors and enemy turns",
   );
