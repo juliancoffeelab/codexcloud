@@ -88,6 +88,9 @@
           <g clip-path={`url(#${tile.clipId})`}>
             {@html tile.terrainArtwork}
           </g>
+          {#if tile.classes.includes("objective") || tile.classes.includes("recruitable")}
+            <polygon class="tile-highlight-outline" points={tile.points} fill="none" />
+          {/if}
           <polygon class="tile-outline" points={tile.points} fill="none" />
 
           {#if tile.occupant}

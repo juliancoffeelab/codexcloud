@@ -178,6 +178,20 @@ button[hidden] {
   stroke-opacity: 0.3;
   stroke-width: 0.7;
 }
+.hex .tile-highlight-outline {
+  display: none;
+  pointer-events: none;
+}
+.hex.objective .tile-highlight-outline,
+.hex.recruitable .tile-highlight-outline {
+  display: initial;
+  stroke: #172015;
+  stroke-width: 7;
+  stroke-dasharray: 9 5;
+}
+.hex.recruitable .tile-highlight-outline {
+  stroke-dasharray: 4 3;
+}
 .hex:hover .tile-ground,
 .hex:hover .terrain-art {
   filter: brightness(1.12);
@@ -1604,8 +1618,12 @@ select {
   }
 }
 .hex.objective .tile-outline {
-  stroke: #d2b96e;
-  stroke-width: 2.7;
+  stroke-opacity: 1;
+  stroke: #ffe5a1;
+  stroke-width: 3.5;
+  stroke-dasharray: 9 5;
+}
+.hex.objective .tile-highlight-outline {
   stroke-dasharray: 9 5;
 }
 .hex.objective.selected .tile-outline,

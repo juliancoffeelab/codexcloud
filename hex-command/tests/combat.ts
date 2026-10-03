@@ -159,6 +159,32 @@ for (const terrain of ["forest", "hill"] as const) {
   );
   assert(game.attackOptions(attacker, target).some((a) => a.id === "sling"));
 }
+// Lethal forecasts identify the unit that dies, including overkill and retaliation.
+{
+  const { game, attacker, target } = fixture();
+  target.hp = 4;
+  let choice = required(
+    attackChoiceViews(createGameView(game), attacker, target).find((c) => c.id === "mace"),
+  );
+  assert(choice.available);
+  assert.equal(choice.enemyForecast.impactLabel, "Deal −4 HP (dies)");
+  assert.equal(choice.playerForecast.impactLabel, "Take 0 HP");
+  target.hp = 3;
+  choice = required(
+    attackChoiceViews(createGameView(game), attacker, target).find((c) => c.id === "mace"),
+  );
+  assert(choice.available);
+  assert.equal(choice.enemyForecast.impactLabel, "Deal −4 HP (dies)", "overkill is also lethal");
+  target.hp = 5;
+  attacker.hp = 4;
+  choice = required(
+    attackChoiceViews(createGameView(game), attacker, target).find((c) => c.id === "mace"),
+  );
+  assert(choice.available);
+  assert.equal(choice.enemyForecast.impactLabel, "Deal −4 HP");
+  assert.equal(choice.playerForecast.impactLabel, "Take −4 HP (dies)");
+}
+
 // Every legal weapon across unit pairs and cover must exactly match resolution.
 let exchanges = 0;
 for (const a of Object.keys(TYPES) as UnitType[])

@@ -60,7 +60,7 @@ function healthForecast(
     healthLabel: `${label}: ${unit.hp} to ${remainingHp} HP after this attack`,
     currentPercent: (unit.hp / maximumHp) * 100,
     remainingPercent: (remainingHp / maximumHp) * 100,
-    impactLabel: `${impact} ${damage ? `−${damage}` : 0} HP`,
+    impactLabel: `${impact} ${damage ? `−${damage}` : 0} HP${remainingHp === 0 ? " (dies)" : ""}`,
   };
 }
 
