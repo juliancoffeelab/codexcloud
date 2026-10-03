@@ -1,4 +1,5 @@
 import type { UnitDefinition, UnitType, Weapon } from "./types";
+import { HEAVY_MOVEMENT, WOODLAND_MOVEMENT } from "./movement";
 
 const attack = (
   id: string,
@@ -20,6 +21,7 @@ const attack = (
 export const CAMPAIGN_UNITS = {
   warden: {
     name: "Warden",
+    movementModifiers: HEAVY_MOVEMENT,
     race: "human",
     hp: 12,
     move: 3,
@@ -86,7 +88,7 @@ export const CAMPAIGN_UNITS = {
   wolf: {
     name: "Wolf",
     race: "beast",
-    woodland: true,
+    movementModifiers: WOODLAND_MOVEMENT,
     hp: 8,
     move: 5,
     damage: 3,
@@ -101,7 +103,7 @@ export const CAMPAIGN_UNITS = {
   boar: {
     name: "Boar",
     race: "beast",
-    woodland: true,
+    movementModifiers: { ...HEAVY_MOVEMENT, ...WOODLAND_MOVEMENT },
     hp: 13,
     move: 3,
     damage: 4,
@@ -117,7 +119,7 @@ export const CAMPAIGN_UNITS = {
     name: "Wildkeeper",
     race: "beast",
     leader: true,
-    woodland: true,
+    movementModifiers: WOODLAND_MOVEMENT,
     hp: 14,
     move: 3,
     damage: 3,
@@ -153,7 +155,7 @@ export const CAMPAIGN_UNITS = {
   thorncaller: {
     name: "Thorncaller",
     race: "beast",
-    woodland: true,
+    movementModifiers: WOODLAND_MOVEMENT,
     hp: 7,
     move: 4,
     damage: 3,

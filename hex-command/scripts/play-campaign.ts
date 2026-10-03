@@ -155,7 +155,15 @@ function observation(includeRules = false) {
               "Move undo is available until an attack, recruitment or end turn. An invalid action stops the batch; earlier successful actions remain applied, and the returned observation is authoritative.",
             ],
             units: Object.fromEntries([...relevantTypes].map((type) => [type, TYPES[type]])),
-            terrain: TERRAIN,
+            terrain: Object.fromEntries(
+              Object.entries(TERRAIN).map(([id, terrain]) => [
+                id,
+                {
+                  ...terrain,
+                  cost: Number.isFinite(terrain.cost) ? terrain.cost : "impassable",
+                },
+              ]),
+            ),
           },
         }
       : {}),

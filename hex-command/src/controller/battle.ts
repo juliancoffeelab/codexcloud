@@ -497,6 +497,14 @@ export class BattleController {
     this.publish({ renderBattle: false, gameChanged: true });
   }
 
+  previousDialogue() {
+    this.requireSession();
+    if (!dialoguePending(this.#game.campaign) || this.#game.campaign?.dialogueIndex === 0) return;
+    this.#game.previousDialogue();
+    saveBattle(this.#game);
+    this.publish({ renderBattle: false, gameChanged: true });
+  }
+
   private replaceGame(replacement: Game) {
     cancelSound();
     this.sessionVersion++;

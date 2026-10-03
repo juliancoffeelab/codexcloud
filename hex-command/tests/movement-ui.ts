@@ -24,6 +24,23 @@ function published(game: Game, selected: string): BattleView {
   };
 }
 
+// Fixed rule expectations: forest, hills, grove, then shallow water/marsh.
+const expectedMovement: Record<UnitType, readonly [number, number, number, number]> = {
+  commander: [2, 2, 2, 3],
+  soldier: [2, 2, 2, 3],
+  archer: [2, 2, 2, 2],
+  scout: [1, 1, 1, 2],
+  warden: [2, 2, 2, 3],
+  adept: [2, 2, 2, 2],
+  skeleton: [2, 2, 2, 2],
+  bonearcher: [2, 2, 2, 2],
+  wolf: [1, 2, 1, 2],
+  boar: [1, 2, 1, 3],
+  wildkeeper: [1, 2, 1, 2],
+  necromancer: [2, 2, 2, 2],
+  thorncaller: [1, 2, 1, 2],
+};
+
 // Every movement stat follows the production cost query without changing published state.
 const game = new Game();
 game.units = [];
@@ -43,6 +60,23 @@ for (const type of Object.keys(TYPES) as UnitType[]) {
   }
   const stat = (terrain: TerrainType) =>
     required(panel.details.movementCosts.find((movement) => movement.terrain === terrain));
+  const [forest, hill, grove, wetlands] = expectedMovement[type];
+  for (const [terrain, expected] of [
+    ["plains", 1],
+    ["forest", forest],
+    ["hill", hill],
+    ["grove", grove],
+    ["ford", wetlands],
+    ["marsh", wetlands],
+    ["water", Infinity],
+    ["bridge", 1],
+    ["village", 1],
+    ["keep", 1],
+    ["ruins", 1],
+    ["fort", 2],
+  ] as const) {
+    assert.equal(game.cost(unit, { terrain }), expected, `${type} entering ${terrain}`);
+  }
   assert.equal(stat("water").className, "blocked");
   assert.equal(stat("bridge").className, "easy");
   if (type === "scout") {
@@ -57,7 +91,7 @@ for (const type of Object.keys(TYPES) as UnitType[]) {
       assert.equal(stat(terrain).className, "difficult");
     }
   }
-  if (TYPES[type].woodland) {
+  if (["wolf", "boar", "wildkeeper", "thorncaller"].includes(type)) {
     assert.equal(stat("forest").label, "1");
     assert.equal(stat("grove").label, "1");
     assert.equal(stat("hill").label, "2");
@@ -95,6 +129,30 @@ for (const type of ["wolf", "boar", "wildkeeper", "thorncaller"] as const) {
     assert.equal(route.cost(beast, { terrain: "marsh" }), 3);
     assert.equal(route.cost(beast, { terrain: "ford" }), 3);
     assert.equal(TYPES.boar.move, 3);
+  }
+}
+
+// Entry costs affect both legal movement and long-range reverse routing.
+for (const [type, distance] of [
+  ["soldier", 4],
+  ["archer", 3],
+] as const) {
+  const route = new Game();
+  route.units = [];
+  for (const tile of route.tiles) tile.terrain = "water";
+  required(route.tile("0,0")).terrain = "plains";
+  required(route.tile("1,0")).terrain = "ford";
+  const goal = required(route.tile("2,0"));
+  goal.terrain = "plains";
+  const unit = route.addUnit(type, "player", "0,0");
+  assert.equal(route.routeDistances(unit, [goal]).get("0,0"), distance);
+  assert.equal(route.routeDistances(unit, [goal]).has("0,1"), false);
+  assert.equal(route.reachable(unit.id).has(goal.id), type === "archer");
+  if (type === "archer") {
+    route.move(unit.id, goal.id);
+    assert.equal(unit.tile, goal.id);
+  } else {
+    assert.throws(() => route.move(unit.id, goal.id), /outside/);
   }
 }
 

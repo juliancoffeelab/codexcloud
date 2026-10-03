@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { BattleController, type BattleView } from "../src/controller/battle";
 import { Game, TYPES } from "../src/game/engine";
+import { dialoguePending } from "../src/game/campaign-progress";
 import { SAVE_KEY, saveBattle } from "../src/game/save";
 import { required, TestStorage } from "./helpers";
 
@@ -35,6 +36,52 @@ function pauseFirstAction() {
     },
     release: () => required(release)(),
   };
+}
+
+// Dialogue navigation persists its cursor without advancing gameplay or reopening finished lines.
+{
+  storage.clear();
+  const controller = new BattleController(immediatePause);
+  const observed = observe(controller);
+  controller.commands.startCampaign("green-accord");
+  const opening = observed.view;
+  const campaign = required(opening.game.campaign);
+  assert(campaign.dialogue.length > 1);
+  controller.commands.previousDialogue();
+  assert.equal(observed.view, opening, "the first line has no previous line");
+  controller.commands.advanceDialogue();
+  assert.equal(required(observed.view.game.campaign).dialogueIndex, 1);
+  assert.equal(campaign.dialogueIndex, 0, "previous publications keep their original cursor");
+  assert.equal(observed.view.renderRevision, opening.renderRevision);
+  const onSecondLine = controller.snapshot();
+  assert.throws(
+    () => controller.move(required(onSecondLine.units[0]).id, "3,2"),
+    /Wait for your turn/,
+  );
+  await assert.rejects(controller.endTurn(), /Wait for your turn/);
+  assert.throws(() => controller.undoMove(), /Finish the conversation/);
+  assert.deepEqual(controller.snapshot(), onSecondLine);
+
+  const restored = new BattleController(immediatePause);
+  assert.equal(required(restored.snapshot().campaign).dialogueIndex, 1);
+  restored.commands.previousDialogue();
+  assert.equal(required(restored.snapshot().campaign).dialogueIndex, 0);
+  const rewound = new BattleController(immediatePause);
+  assert.equal(required(rewound.snapshot().campaign).dialogueIndex, 0);
+  while (dialoguePending(rewound.snapshot().campaign)) rewound.commands.advanceDialogue();
+  const finished = rewound.snapshot();
+  rewound.commands.previousDialogue();
+  assert.deepEqual(rewound.snapshot(), finished, "back cannot reopen a completed conversation");
+  rewound.reset();
+  const skirmish = rewound.snapshot();
+  rewound.commands.previousDialogue();
+  assert.deepEqual(rewound.snapshot(), skirmish, "back has no stale campaign to change");
+  rewound.dispose();
+  assert.throws(() => rewound.commands.previousDialogue(), /session has closed/);
+  controller.dispose();
+  restored.dispose();
+  observed.unsubscribe();
+  storage.clear();
 }
 
 // Rejected replacement must not spend undo history or cancel an enemy turn.

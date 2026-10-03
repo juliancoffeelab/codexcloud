@@ -73,7 +73,8 @@ Open **Settings → New campaign**. Three stories each have three linked mission
 | The Ashen Oath   | Orin’s unbound undead   | Escape a quarry, secure a refuge, break the Master’s binding stones    |
 
 Portrait conversations introduce missions and react to optional side quests and
-outcomes. Continue or skip them; read past lines in Settings. Conversations and
+outcomes. Move between lines with the previous/next arrows or keyboard arrows;
+read past lines in Settings. Conversations and
 mission progress survive reloads. Gold-bordered map hexes mark objectives. The magnifying glass between undo and
 settings opens the mission briefing, hints, objectives and optional side quests;
 these details start collapsed so the battlefield remains visible. Enemy armies contest
@@ -85,8 +86,10 @@ The Quiet Refuge is a defense and mediation mission. Its villages sit on Orin’
 side of the shelter; claiming both is no longer a victory requirement. Defend the
 refuge through six enemy turns. Medicine from the northern grove gives six gold
 and brings the villagers’ intervention after five defended turns. Losing the refuge
-resets that count. Wounded or endangered enemies withdraw toward safe healing
-villages or open ground, with a visible retreat arrow; cornered troops may still fight.
+resets that count. Enemies withdraw when every available attack would kill them
+through retaliation. They favor safe owned healing villages or open ground, with
+a visible retreat arrow; cornered troops may still fight. A safe attack permits
+reengagement, while previously withdrawing troops can recover in owned villages.
 Any death of a withdrawing soldier or Dain ends mediation, including a death from
 defensive retaliation.
 It changes the objective to defeating the remaining patrol and removes
@@ -172,6 +175,8 @@ map, units, treasury, briefing, hints, conversations, objectives, side quests an
 announced reinforcements, plus the debrief after victory. Start and retry also
 return unit definitions, terrain rules and the common action rules.
 Coordinates are zero-based `col,row` on the game's odd-row-offset hex grid.
+Terrain rules expose numeric base costs, or `"impassable"` for water; unit
+`movementModifiers` apply signed changes to those base costs.
 Start refuses to overwrite an existing trial; use next, retry, or a new file path.
 
 | Operation | Parameters and behavior                                                                                                                                  |

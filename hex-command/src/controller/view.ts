@@ -33,6 +33,7 @@ export interface BattleCommands {
   nextMission(recallIds: string[]): GameSnapshot;
   retryMission(): GameSnapshot;
   advanceDialogue(skip?: boolean): void;
+  previousDialogue(): void;
   choose(tileId: string): void;
   focusTile(tileId: string): void;
   clearSelection(clearInspection?: boolean): void;
@@ -52,6 +53,7 @@ export function createBattleCommands(controller: BattleCommands): BattleCommands
     nextMission: controller.nextMission.bind(controller),
     retryMission: controller.retryMission.bind(controller),
     advanceDialogue: controller.advanceDialogue.bind(controller),
+    previousDialogue: controller.previousDialogue.bind(controller),
     choose: controller.choose.bind(controller),
     focusTile: controller.focusTile.bind(controller),
     clearSelection: controller.clearSelection.bind(controller),

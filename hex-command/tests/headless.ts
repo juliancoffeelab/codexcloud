@@ -19,9 +19,15 @@ function call(request: unknown) {
 }
 const saved = () => JSON.parse(readFileSync(path, "utf8"));
 try {
-  call({ op: "start", campaign: "lantern-road" });
+  const started = call({ op: "start", campaign: "lantern-road" }).result as {
+    conversation: unknown;
+    rules: { terrain: { water: { cost: unknown }; forest: { cost: unknown } } };
+  };
+  assert.equal(started.rules.terrain.water.cost, "impassable");
+  assert.equal(started.rules.terrain.forest.cost, 2);
   assert.match(saved().rulesFingerprint, /^[a-f0-9]{64}$/);
   const game = Game.startCampaign("lantern-road");
+  assert.deepEqual(started.conversation, game.campaign!.dialogue);
   game.advanceDialogue(true);
   assert.deepEqual(saved().state, game.captureState());
   const leader = game.units.find((unit) => unit.role === "leader" && unit.side === "player")!;

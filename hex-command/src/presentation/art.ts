@@ -369,11 +369,13 @@ interface CampaignSourceMetadata {
   height: number;
   revision: string;
   sources?: Record<CampaignSourceKey, CampaignSource>;
+  frameSources?: Readonly<Record<string, CampaignSource>>;
   clips?: Readonly<Record<string, ClipPolygon>>;
 }
-function campaignSource(style: ArtStyle, key: CampaignSourceKey): CampaignSource {
+function campaignSource(style: ArtStyle, key: CampaignSourceKey, frame?: string): CampaignSource {
   const sheet: CampaignSourceMetadata = campaignSheets[style];
   return (
+    (frame ? sheet.frameSources?.[frame] : undefined) ??
     sheet.sources?.[key] ?? {
       filename: `campaign-${style}.png`,
       width: sheet.width,
@@ -386,11 +388,13 @@ function campaignAssetURL(source: CampaignSource) {
   return `${import.meta.env?.BASE_URL ?? "/"}assets/${source.filename}?v=${source.revision}`;
 }
 function campaignAssetURLs(style: ArtStyle) {
+  const sheet: CampaignSourceMetadata = campaignSheets[style];
   return [
     ...new Set(
-      (["player", "enemy", "terrain"] as const).map((key) =>
-        campaignAssetURL(campaignSource(style, key)),
-      ),
+      [
+        ...(["player", "enemy", "terrain"] as const).map((key) => campaignSource(style, key)),
+        ...Object.values(sheet.frameSources ?? {}),
+      ].map(campaignAssetURL),
     ),
   ];
 }
@@ -458,7 +462,7 @@ export function artSprite(
   const crop = campaignSheet.frames[campaignKey as keyof typeof campaignSheet.frames];
   if (crop) {
     const [cropX, cropY, cropWidth, cropHeight] = crop;
-    const source = campaignSource(style, kind === "terrain" ? "terrain" : side);
+    const source = campaignSource(style, kind === "terrain" ? "terrain" : side, campaignKey);
     const url = campaignAssetURL(source);
     const metadata: CampaignSourceMetadata = campaignSheet;
     const image =

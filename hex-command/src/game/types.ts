@@ -86,7 +86,8 @@ export interface UnitDefinition {
   description: string;
   race?: Race;
   leader?: boolean;
-  woodland?: boolean;
+  /** Signed changes to the terrain's base movement cost. */
+  movementModifiers?: Partial<Record<TerrainType, number>>;
 }
 export interface TerrainDefinition {
   name: string;

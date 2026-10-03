@@ -1,4 +1,11 @@
 /* Integer crops of the original generated sheets. Keep the PNGs intact. */
+const pixelUndeadSource = {
+  filename: "campaign-pixel-undead.png",
+  width: 1330,
+  height: 1182,
+  revision: "44d5e0513ea7",
+} as const;
+
 export const campaignSheets = {
   normal: {
     width: 1254,
@@ -278,11 +285,17 @@ export const campaignSheets = {
     width: 1024,
     height: 1536,
     revision: "f8e1face84a4",
+    frameSources: {
+      player_skeleton: pixelUndeadSource,
+      player_bone_archer: pixelUndeadSource,
+      enemy_skeleton: pixelUndeadSource,
+      enemy_bone_archer: pixelUndeadSource,
+    },
     frames: {
       player_warden: [22, 24, 232, 275],
       player_adept: [286, 55, 223, 239],
-      player_skeleton: [544, 93, 215, 199],
-      player_bone_archer: [789, 69, 210, 222],
+      player_skeleton: [126, 52, 488, 536],
+      player_bone_archer: [147, 591, 518, 561],
       player_wolf: [30, 378, 221, 175],
       player_boar: [267, 364, 264, 192],
       player_wildkeeper: [540, 316, 211, 238],
@@ -290,8 +303,8 @@ export const campaignSheets = {
       player_thorncaller: [27, 577, 218, 232],
       enemy_warden: [267, 560, 229, 254],
       enemy_adept: [529, 586, 219, 224],
-      enemy_skeleton: [786, 614, 214, 189],
-      enemy_bone_archer: [36, 832, 207, 211],
+      enemy_skeleton: [761, 52, 488, 536],
+      enemy_bone_archer: [781, 591, 518, 561],
       enemy_wolf: [271, 881, 223, 173],
       enemy_boar: [510, 865, 259, 194],
       enemy_wildkeeper: [782, 817, 211, 237],

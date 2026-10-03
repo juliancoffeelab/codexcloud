@@ -22,6 +22,7 @@ export type * from "./types";
 import { MAPS, LEGACY_RIVER } from "./maps";
 import { immutable } from "./immutable";
 import { CAMPAIGN_UNITS } from "./campaign-units";
+import { HEAVY_MOVEMENT, PATHFINDER_MOVEMENT } from "./movement";
 import { CAMPAIGNS, LEGACY_ASHEN_REFUGE } from "./campaign-data";
 import { campaignMission, goalProgress, endsRefugeMediation } from "./campaign-progress";
 import type { CampaignId, CampaignState, RecruitType } from "./types";
@@ -51,6 +52,7 @@ export const TYPES = immutable<Record<UnitType, UnitDefinition>>({
     cost: 0,
     leader: true,
     race: "human",
+    movementModifiers: HEAVY_MOVEMENT,
     attacks: [
       weapon("sword", "Sword", 4, "blade", "melee", 1),
       weapon("mace", "Mace", 3, "impact", "melee", 1),
@@ -61,6 +63,7 @@ export const TYPES = immutable<Record<UnitType, UnitDefinition>>({
   },
   soldier: {
     name: "Soldier",
+    movementModifiers: HEAVY_MOVEMENT,
     hp: 12,
     move: 3,
     damage: 4,
@@ -91,6 +94,7 @@ export const TYPES = immutable<Record<UnitType, UnitDefinition>>({
   },
   scout: {
     name: "Scout",
+    movementModifiers: PATHFINDER_MOVEMENT,
     hp: 8,
     move: 5,
     damage: 2,
@@ -311,14 +315,10 @@ export class Game {
   }
 
   cost(unit: Pick<Unit, "type">, tile: Pick<Tile, "terrain">): number {
-    if (tile.terrain === "ford" || tile.terrain === "marsh") {
-      const heavyUnit = ["soldier", "commander", "warden", "boar"].includes(unit.type);
-      return heavyUnit ? 3 : 2;
-    }
-    const pathfinderTerrain = ["forest", "hill", "grove"].includes(tile.terrain);
-    if (pathfinderTerrain && unit.type === "scout") return 1;
-    if (["forest", "grove"].includes(tile.terrain) && TYPES[unit.type].woodland) return 1;
-    return TERRAIN[tile.terrain].cost;
+    const baseCost = TERRAIN[tile.terrain].cost;
+    if (!Number.isFinite(baseCost)) return Infinity;
+    const modifier = TYPES[unit.type].movementModifiers?.[tile.terrain] ?? 0;
+    return Math.max(1, baseCost + modifier);
   }
 
   reachable(id: string | null | undefined): Map<string, number> {
@@ -671,8 +671,9 @@ export class Game {
     const unit = this.unit(id);
     if (!unit || unit.side !== "enemy" || unit.attacked) return;
 
-    if (this.tryEnemyRetreat(unit)) return;
-    if (this.tryEnemyAttack(unit, Boolean(unit.retreating))) return;
+    const retreat = this.tryEnemyRetreat(unit);
+    if (retreat === "acted") return;
+    if (this.tryEnemyAttack(unit, retreat === "cornered")) return;
     if (TYPES[unit.type].leader && this.round < 5) return;
 
     const goals = this.enemyMovementGoals(unit);
@@ -687,10 +688,10 @@ export class Game {
 
     const destination = destinations[0]!;
     if (destination !== unit.tile) this.move(id, destination);
-    this.tryEnemyAttack(unit, Boolean(unit.retreating));
+    this.tryEnemyAttack(unit);
   }
 
-  /** Immediate incoming attacks are enough to avoid a doomed stand; distance breaks safe ties. */
+  /** Compare positions when moving; incoming danger alone does not trigger retreat. */
   private enemyDanger(unit: Unit, tileId: string): number {
     const positioned = { ...unit, tile: tileId };
     const damage = this.units
@@ -707,39 +708,43 @@ export class Game {
     return (damage[0] ?? 0) + (damage[1] ?? 0);
   }
 
-  private tryEnemyRetreat(unit: Unit): boolean {
+  private tryEnemyRetreat(unit: Unit): "acted" | "cornered" | "none" {
     const enemies = this.units.filter((opponent) => opponent.side === "player");
-    if (!enemies.length) return false;
-    const danger = this.enemyDanger(unit, unit.tile);
-    const wounded = unit.hp <= Math.ceil(TYPES[unit.type].hp / 3);
-    const trappedAttack =
-      this.targets(unit.id).length > 0 &&
-      this.targets(unit.id).every((target) => {
-        const attack = this.bestAttack(unit, target)!;
-        return this.preview(unit, target, attack.id).retaliation >= unit.hp;
-      });
-    const recovering = unit.retreating && unit.hp < Math.ceil(TYPES[unit.type].hp * 0.7);
-    if (!wounded && !recovering && danger < unit.hp && !trappedAttack) {
+    const retaliations = this.targets(unit.id).flatMap((target) =>
+      this.attackOptions(unit, target).map(
+        (attack) => this.preview(unit, target, attack.id).retaliation,
+      ),
+    );
+    // A safe weapon or a killing blow lets the troop fight, even while wounded.
+    if (!enemies.length || retaliations.some((damage) => damage < unit.hp)) {
       delete unit.retreating;
-      return false;
+      return "none";
     }
-    unit.retreating = true;
+    const trappedAttack = retaliations.length > 0;
     const villages = this.tiles.filter(
       (tile) =>
         tile.terrain === "village" &&
-        tile.owner !== "player" &&
+        tile.owner === "enemy" &&
         (!this.at(tile.id) || this.at(tile.id)?.id === unit.id) &&
         this.enemyDanger(unit, tile.id) === 0,
     );
     const routes = villages.length ? this.routeDistances(unit, villages) : null;
+    const recovering = unit.retreating && unit.hp < TYPES[unit.type].hp && routes?.has(unit.tile);
+    if (!trappedAttack && !recovering) {
+      delete unit.retreating;
+      return "none";
+    }
+    if (recovering && villages.some((tile) => tile.id === unit.tile)) {
+      unit.attacked = true;
+      return "acted";
+    }
     const score = (id: string): number => {
       const tile = this.tile(id)!;
       const threat = this.enemyDanger(unit, id);
       const separation = Math.min(
         ...enemies.map((opponent) => distance(tile, this.tile(opponent.tile)!)),
       );
-      const healing =
-        tile.terrain === "village" && tile.owner !== "player" && threat === 0 ? 20 : 0;
+      const healing = villages.some((village) => village.id === id) ? 20 : 0;
       return -threat * 20 + Math.min(separation, 8) * 2 + healing - (routes?.get(id) ?? 0);
     };
     const destinations = [unit.tile, ...this.reachable(unit.id).keys()];
@@ -748,21 +753,22 @@ export class Game {
     const destination = destinations[0]!;
     if (destination !== unit.tile && scores.get(destination)! > scores.get(unit.tile)!) {
       this.move(unit.id, destination);
+      unit.retreating = true;
       unit.attacked = true;
       this.record(`${unit.name ?? TYPES[unit.type].name} is retreating.`);
-      return true;
+      return "acted";
     }
-    // Rest in safety rather than leaving a healing village to take another fight.
-    if (danger === 0) {
-      unit.attacked = true;
-      return true;
-    }
-    // No better escape exists. The normal action may now make a desperate attack.
-    return false;
+    // A failed escape is a stand, not a withdrawal; mediation observes this marker.
+    delete unit.retreating;
+    return trappedAttack ? "cornered" : "none";
   }
 
-  private enemyAttackScore(unit: Unit, target: Unit, from = unit.tile): number {
-    const attack = this.bestAttack(unit, target, from);
+  private enemyAttackScore(
+    unit: Unit,
+    target: Unit,
+    from = unit.tile,
+    attack = this.bestAttack(unit, target, from),
+  ): number {
     if (!attack) return -100;
     const { damage, retaliation } = this.preview(unit, target, attack.id, from);
 
@@ -777,17 +783,21 @@ export class Game {
   }
 
   private tryEnemyAttack(unit: Unit, desperate = false): boolean {
-    const targets = this.targets(unit.id).sort(
-      (first, second) => this.enemyAttackScore(unit, second) - this.enemyAttackScore(unit, first),
-    );
-    const target = targets[0];
-    if (!target) return false;
+    const choices = this.targets(unit.id)
+      .flatMap((target) => this.attackOptions(unit, target).map((attack) => ({ target, attack })))
+      .filter(
+        ({ target, attack }) =>
+          desperate || this.preview(unit, target, attack.id).retaliation < unit.hp,
+      )
+      .sort(
+        (first, second) =>
+          this.enemyAttackScore(unit, second.target, unit.tile, second.attack) -
+          this.enemyAttackScore(unit, first.target, unit.tile, first.attack),
+      );
+    const choice = choices[0];
+    if (!choice) return false;
 
-    const attack = this.bestAttack(unit, target)!;
-    const preview = this.preview(unit, target, attack.id);
-    if (preview.retaliation >= unit.hp && !desperate) return false;
-
-    this.attack(unit.id, target.id, attack.id);
+    this.attack(unit.id, choice.target.id, choice.attack.id);
     return true;
   }
 
@@ -815,12 +825,6 @@ export class Game {
       if (contested.length) goals = contested.map((id) => this.tile(id)!);
     }
 
-    if (unit.hp <= 4) {
-      const healingVillages = this.tiles.filter(
-        (tile) => tile.terrain === "village" && tile.owner === "enemy",
-      );
-      if (healingVillages.length) goals = healingVillages;
-    }
     return goals;
   }
 
@@ -848,7 +852,7 @@ export class Game {
     const healingBonus = canHeal ? 9 : 0;
     const hillBonus = tile.terrain === "hill" ? 0.25 : 0;
     const danger = this.enemyDanger(unit, tileId);
-    const dangerPenalty = danger >= unit.hp ? 40 : danger * 0.5;
+    const dangerPenalty = danger * 0.5;
     return (
       -distanceToGoal + attackOpportunity + captureBonus + healingBonus + hillBonus - dangerPenalty
     );
@@ -1031,6 +1035,12 @@ export class Game {
     this.campaign.dialogueIndex = skip
       ? this.campaign.dialogue.length
       : Math.min(this.campaign.dialogue.length, this.campaign.dialogueIndex + 1);
+  }
+
+  previousDialogue(): void {
+    const campaign = this.campaign;
+    if (!campaign || campaign.dialogueIndex >= campaign.dialogue.length) return;
+    campaign.dialogueIndex = Math.max(0, campaign.dialogueIndex - 1);
   }
 
   private spawnCampaignWaves(): void {

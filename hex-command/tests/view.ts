@@ -120,6 +120,7 @@ const controller = {
   nextMission: () => live.snapshot(),
   retryMission: () => live.snapshot(),
   advanceDialogue: () => {},
+  previousDialogue: () => {},
   setArtStyle: async () => {},
   setSound: async () => {},
   error: () => {},
