@@ -92,6 +92,7 @@ function observation(includeRules = false) {
     mission: game.campaign!.mission + 1,
     name: mission.map.name,
     briefing: mission.briefing,
+    hints: mission.hints,
     round: game.round,
     turn: game.turn,
     winner: game.winner,

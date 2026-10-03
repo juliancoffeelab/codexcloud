@@ -1531,44 +1531,77 @@ select {
   margin-bottom: 18px;
 }
 .mission-heading {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  color: var(--muted);
-  font-size: 0.85rem;
-}
-.campaign-panel h2 {
-  margin: 8px 0 12px;
-}
-.mission-goals p {
-  margin: 6px 0;
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-}
-.mission-goals strong {
-  margin-left: auto;
-  white-space: nowrap;
-  color: var(--gold);
-}
-.mission-goals .mission-warning {
   color: var(--muted);
   font-size: 0.9rem;
-  margin-top: 10px;
+}
+.campaign-panel h2 {
+  margin: 0 0 6px;
+}
+.mission-overview h3 {
+  font: inherit;
+  font-weight: 600;
+  color: var(--gold);
+  margin: 16px 0 6px;
+}
+.mission-overview > p:not(.mission-heading) {
+  color: var(--muted);
+}
+.mission-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.mission-items li {
+  display: grid;
+  grid-template-columns: 1ch minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 8px;
+  margin: 7px 0;
+}
+.mission-items li::before {
+  content: "–";
+  color: var(--muted);
+}
+.mission-goals strong {
+  white-space: nowrap;
+  color: var(--gold);
+  font-weight: 500;
 }
 .completed-goal {
   color: #9fbf94;
 }
-.mission-briefing {
-  margin-top: 12px;
+.mission-items .completed-goal::before {
+  content: "✓";
+  color: inherit;
 }
-.mission-briefing summary {
-  cursor: pointer;
-  color: var(--gold);
-}
-.mission-briefing p {
+.optional-label {
   color: var(--muted);
-  margin: 10px 0;
+}
+#mission-briefing-button[aria-expanded="true"] {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+@media (max-width: 540px) {
+  .battle-bar.campaign-controls .header-economy {
+    flex: 1 1 0;
+    min-width: 0;
+    flex-wrap: wrap;
+    row-gap: 2px;
+  }
+  .battle-bar.campaign-controls .villages {
+    margin-left: 0;
+  }
+  .battle-bar.campaign-controls .income > span {
+    display: none;
+  }
+  .battle-bar.campaign-controls #end-turn {
+    flex-direction: column;
+    gap: 1px;
+  }
+  .battle-bar.campaign-controls #end-turn .round {
+    border: 0;
+    padding: 0;
+  }
 }
 .hex.objective .tile-outline {
   stroke: #d2b96e;

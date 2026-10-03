@@ -8,7 +8,13 @@
     view,
     actions,
     onNewCampaign,
-  }: { view: BattleView; actions: BattleCommands; onNewCampaign: () => void } = $props();
+    expanded = $bindable(false),
+  }: {
+    view: BattleView;
+    actions: BattleCommands;
+    onNewCampaign: () => void;
+    expanded?: boolean;
+  } = $props();
   let recall = $state<string[]>([]);
   const campaign = $derived(view.game.campaign);
   const definition = $derived(campaign ? CAMPAIGNS[campaign.id] : null);
@@ -32,7 +38,7 @@
                     campaign.marks.includes(`sealed:${wave.requiresUnsealed}`)
                   ),
               )
-              .map((wave) => `Turn ${wave.round}: ${wave.label}`),
+              .map((wave) => wave.label),
           ),
         ]
       : [],
@@ -52,46 +58,66 @@
   function next() {
     try {
       actions.nextMission(recall);
+      expanded = false;
     } catch (error) {
       actions.error(error);
     }
   }
+  function retry() {
+    actions.retryMission();
+    expanded = false;
+  }
 </script>
 
 {#if campaign && definition && mission}
-  <section class="campaign-panel" aria-label="Campaign objectives">
-    <div class="mission-heading">
-      <span>{definition.name}</span>
-      <span>Mission {campaign.mission + 1} / {definition.missions.length}</span>
-    </div>
+  <section
+    id="mission-overview"
+    class="campaign-panel mission-overview"
+    hidden={!expanded}
+    aria-label="Mission briefing"
+  >
     <h2>{mission.map.name}</h2>
-    {#if !view.game.winner}
-      <div class="mission-goals">
-        {#each goals as goal}
-          <p class:completed-goal={goal.done}>
-            <span aria-hidden="true">{goal.done ? "✓" : "◇"}</span>
-            {goal.label}
-            <strong>{goal.current} / {goal.total}</strong>
-          </p>
-        {/each}
-        <p class="mission-warning">
+    <p class="mission-heading">
+      {definition.name}
+      {campaign.mission + 1}/{definition.missions.length}
+    </p>
+    <h3>Briefing</h3>
+    <p>{mission.briefing}</p>
+    <h3>Hints</h3>
+    <ul class="mission-items">
+      {#each mission.hints as hint}<li><span>{hint}</span></li>{/each}
+      {#each upcoming as warning}<li><span>{warning}</span></li>{/each}
+      <li><span>Objectives are marked with a broken gold border.</span></li>
+    </ul>
+    <h3>Objectives</h3>
+    <ul class="mission-items mission-goals">
+      {#each goals as goal}
+        <li class:completed-goal={goal.done}>
+          <span>{goal.label}</span>
+          <strong>{goal.current}/{goal.total}</strong>
+        </li>
+      {/each}
+      <li>
+        <span>
           Keep your leader alive{mission.goals.some((goal) => goal.kind === "escort")
             ? " and protect the courier"
             : ""}.
-        </p>
-      </div>
-      <details class="mission-briefing">
-        <summary>Briefing and side quests</summary>
-        <p>{mission.briefing}</p>
-        {#each mission.events.filter((event) => event.label) as event}<p>
-            {campaign.marks.includes(`event:${event.id}`) ? "✓ " : ""}{event.label}{event.gold
-              ? ` (+${event.gold} gold)`
-              : ""}
-          </p>{/each}
-        {#each upcoming as warning}<p>{warning}</p>{/each}
-        <p>Gold comes from villages. Marked objectives have a broken gold border.</p>
-      </details>
-    {:else if !dialoguePending(campaign)}
+        </span>
+      </li>
+      {#each mission.events.filter((event) => event.label) as event}
+        <li class:completed-goal={campaign.marks.includes(`event:${event.id}`)}>
+          <span>
+            {event.label}{event.gold ? ` (+${event.gold} gold)` : ""}
+            <span class="optional-label">[optional]</span>
+          </span>
+        </li>
+      {/each}
+    </ul>
+  </section>
+  {#if view.game.winner && !dialoguePending(campaign)}
+    <section class="campaign-panel" aria-label="Mission result">
+      <h2>{mission.map.name}</h2>
+
       <div class="mission-debrief">
         <h3>
           {view.game.winner === "enemy"
@@ -129,11 +155,11 @@
             Continue to {definition.missions[campaign.mission + 1]?.map.name}
           </button>
         {:else if view.game.winner === "enemy"}
-          <button class="primary" onclick={() => actions.retryMission()}>Retry mission</button>
+          <button class="primary" onclick={retry}>Retry mission</button>
         {:else}
           <button class="primary" onclick={onNewCampaign}>Choose another campaign</button>
         {/if}
       </div>
-    {/if}
-  </section>
+    </section>
+  {/if}
 {/if}

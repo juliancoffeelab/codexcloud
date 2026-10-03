@@ -70,8 +70,9 @@ Open **Settings → New campaign**. Three stories each have three linked mission
 
 Portrait conversations introduce missions and react to optional side quests and
 outcomes. Continue or skip them; read past lines in Settings. Conversations and
-mission progress survive reloads. Gold-bordered map hexes mark objectives. Expand
-the briefing for side quests and announced reinforcements. Enemy armies contest
+mission progress survive reloads. Gold-bordered map hexes mark objectives. The magnifying glass between undo and
+settings opens the mission briefing, hints, objectives and optional side quests;
+these details start collapsed so the battlefield remains visible. Enemy armies contest
 control objectives and threaten escorts; defeating their leader does not replace
 an escort or territory objective.
 

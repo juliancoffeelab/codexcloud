@@ -198,6 +198,7 @@ export interface MissionDefinition {
   map: MapDefinition;
   subtitle: string;
   briefing: string;
+  hints: string[];
   goals: MissionGoal[];
   recruits: RecruitType[];
   enemyRecruits: RecruitType[];

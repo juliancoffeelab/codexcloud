@@ -16,6 +16,12 @@
   const controller = new BattleController();
   const view = controller.view;
   const actions = controller.commands;
+  let briefingExpanded = $state(false);
+  const missionMapId = $derived($view.game.mapId);
+  $effect(() => {
+    missionMapId;
+    briefingExpanded = false;
+  });
   let settingsDialog = $state<HTMLDialogElement>();
   let campaignDialog: HTMLDialogElement;
   let campaignChoice = $state<CampaignId>("lantern-road");
@@ -24,6 +30,7 @@
     campaignDialog.showModal();
   }
   function startCampaign() {
+    briefingExpanded = false;
     actions.startCampaign(campaignChoice);
     campaignDialog.close();
   }
@@ -39,6 +46,7 @@
     playSound("select");
   }
   function startNewBattle() {
+    briefingExpanded = false;
     resetDialog.close();
     actions.reset(mapChoice);
   }
@@ -70,9 +78,20 @@
 
 <svelte:document onkeydown={globalKeydown} />
 <main>
-  <TurnBar view={$view} {actions} onSettings={openSettings} />
+  <TurnBar
+    view={$view}
+    {actions}
+    onSettings={openSettings}
+    {briefingExpanded}
+    onBriefing={() => (briefingExpanded = !briefingExpanded)}
+  />
   <p id="status" class="status" role="status" aria-live="polite">{$view.status}</p>
-  <CampaignPanel view={$view} {actions} onNewCampaign={openCampaignPicker} />
+  <CampaignPanel
+    view={$view}
+    {actions}
+    bind:expanded={briefingExpanded}
+    onNewCampaign={openCampaignPicker}
+  />
   <div class="workspace">
     <Battlefield view={$view} {actions} />
     <aside>

@@ -1,13 +1,16 @@
 <script lang="ts">
   import { dialoguePending } from "../game/campaign-progress";
   import type { BattleView, BattleCommands } from "../controller/view";
+  import { iconMarkup } from "../presentation/icons";
 
   interface Props {
     view: BattleView;
     actions: BattleCommands;
     onSettings: () => void;
+    onBriefing: () => void;
+    briefingExpanded: boolean;
   }
-  let { view, actions, onSettings }: Props = $props();
+  let { view, actions, onSettings, onBriefing, briefingExpanded }: Props = $props();
 
   const game = $derived(view.game);
   const isPlayerTurn = $derived(
@@ -28,7 +31,7 @@
   }
 </script>
 
-<header class="battle-bar" aria-label="Battle controls">
+<header class="battle-bar" class:campaign-controls={!!game.campaign} aria-label="Battle controls">
   <div class="header-economy">
     <span class="treasury" aria-label="Gold">
       <i class="coin" aria-hidden="true"></i>
@@ -63,6 +66,19 @@
       <path d="M9 4 4 9l5 5M4 9h9a7 7 0 0 1 7 7v4" />
     </svg>
   </button>
+  {#if game.campaign}
+    <button
+      id="mission-briefing-button"
+      class="icon-button"
+      aria-label="Mission briefing"
+      title="Mission briefing"
+      aria-expanded={briefingExpanded}
+      aria-controls="mission-overview"
+      onclick={onBriefing}
+    >
+      {@html iconMarkup("search")}
+    </button>
+  {/if}
   <button
     id="settings-button"
     class="icon-button"

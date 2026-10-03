@@ -102,8 +102,13 @@ const lantern: MissionDefinition[] = [
       ],
     ),
     subtitle: "Carry a message, not a conquest.",
-    briefing:
-      "Get Ivo to the northeastern landing, beyond the guards rather than into their keep. Two shields can screen the courier while your recruits arrive. Skeletons resist arrows; maces crack their bones. The bridge leads toward the guards; the northern ford leads to a healing village and a route around them. A southern patrol arrives on turn 6. Nera and Ivo must survive.",
+    briefing: "Bring Ivo to the northeastern landing, beyond the enemy keep.",
+    hints: [
+      "Recruit before leaving your keep.",
+      "Use your soldiers to screen Ivo.",
+      "Skeletons resist arrows; swords and maces are effective against them.",
+      "The bridge approaches the guards; the northern ford leads to a healing village and a route around them.",
+    ],
     goals: [{ kind: "escort", label: "Bring Ivo to the northeastern landing", tile: "11,1" }],
     recruits: ["soldier", "archer", "scout"],
     enemyRecruits: ["skeleton", "bonearcher"],
@@ -217,8 +222,11 @@ const lantern: MissionDefinition[] = [
       ],
     ),
     subtitle: "Three crossings. Three homes to reclaim.",
-    briefing:
-      "Capture all three eastern villages. Split your force or secure the central bridge first. Enemy reinforcements arrive on turn 5; the villages fund whoever controls them.",
+    briefing: "Capture all three eastern villages.",
+    hints: [
+      "Split your force, or secure the central bridge first.",
+      "Villages pay two gold per turn to whoever controls them.",
+    ],
     goals: [
       { kind: "control", label: "Light all three eastern villages", tiles: ["7,1", "7,4", "7,7"] },
     ],
@@ -332,8 +340,12 @@ const lantern: MissionDefinition[] = [
       ],
     ),
     subtitle: "Silence the graves before silencing the bell.",
-    briefing:
-      "Seal the three grave ruins by entering them, then defeat the Bellwarden. An unsealed grave raises a skeleton on turns 8 and 12. Your forward camp is near the crossings. Ruins beyond each flank bridge offer cover; your scout can reach the graves once the shields clear a crossing. A sealed grave stays quiet.",
+    briefing: "Seal the three grave ruins, then defeat the Bellwarden.",
+    hints: [
+      "Your forward camp is near the crossings.",
+      "Ruins beyond the flank bridges offer cover. Send scouts to the graves once your shields clear a crossing.",
+      "A sealed grave permanently stops its reinforcements.",
+    ],
     goals: [
       { kind: "seal", label: "Seal the three grave ruins", tiles: ["9,1", "11,4", "9,7"] },
       { kind: "defeat", label: "Defeat the Bellwarden" },
@@ -448,8 +460,12 @@ const green: MissionDefinition[] = [
       ],
     ),
     subtitle: "Take back the roots without burning the branches.",
-    briefing:
-      "Reclaim the three sacred groves. Wolves cross woods quickly, but enemy spears and arrows hurt them. Use boars to hold lanes and Alder’s Impact attacks against armored wardens.",
+    briefing: "Reclaim the three sacred groves.",
+    hints: [
+      "Wolves cross woods quickly, but spears and arrows hurt them.",
+      "Use boars to hold lanes and Alder’s impact attacks against armored wardens.",
+      "Owned groves heal their occupants by two HP each turn.",
+    ],
     goals: [
       { kind: "control", label: "Reclaim the three sacred groves", tiles: ["3,1", "5,4", "3,7"] },
     ],
@@ -555,8 +571,8 @@ const green: MissionDefinition[] = [
       ],
     ),
     subtitle: "The grove must still be yours at dawn.",
-    briefing:
-      "Control the central grove at the start of your turn, from turn 6 onward. Its healing helps whoever owns it. Eastern patrols arrive on turns 3 and 5; you can take their fortifications and use their cover.",
+    briefing: "Control the central grove at the beginning of your turn, from turn 6 onward.",
+    hints: ["The grove heals whoever owns it.", "Capture enemy fortifications to use their cover."],
     goals: [{ kind: "hold", label: "Hold the central grove until turn 6", tile: "6,4", round: 6 }],
     recruits: ["wolf", "boar", "thorncaller"],
     enemyRecruits: ["soldier", "archer"],
@@ -668,8 +684,12 @@ const green: MissionDefinition[] = [
       ],
     ),
     subtitle: "A witness, a bridge, and a promise.",
-    briefing:
-      "Claim the bridge fort and bring Lark to the northern village beyond the river. Groves along the northern route offer healing and ranged cover. Dain brings wardens and adepts: spears counter wolves, while stone sparks hurt skeletal armor. Keep the witness behind the fighting line.",
+    briefing: "Claim the bridge fort and bring Lark to the northern village beyond the river.",
+    hints: [
+      "Groves along the northern route offer healing and ranged cover.",
+      "Dain brings wardens and adepts: spears counter wolves, while stone sparks hurt skeletal armor.",
+      "Keep Lark behind the fighting line.",
+    ],
     goals: [
       { kind: "control", label: "Secure the fort beside the bridge", tiles: ["7,4"] },
       { kind: "escort", label: "Bring Lark to the northern village", tile: "12,1" },
@@ -772,7 +792,13 @@ const ashen: MissionDefinition[] = [
     ),
     subtitle: "The first order you give yourself.",
     briefing:
-      "Escape with Orin to the northern quarry gate. Recruit before leaving your keep. The guards hold the southern road; the northern ford offers a way around them. Three skeletons can screen Orin while he crosses. Bones resist arrows; northern ruins provide ranged cover, and owned villages heal their occupants. An adept and warden arrive from the southern road on turn 6. You do not need to defeat every guard.",
+      "Escape with Orin to the northern quarry gate. You do not need to defeat every guard.",
+    hints: [
+      "Recruit before leaving your keep.",
+      "The guards hold the southern road; the northern ford offers a way around them.",
+      "Three skeletons can screen Orin while he crosses.",
+      "Bones resist arrows. Northern ruins provide ranged cover, and owned villages heal their occupants.",
+    ],
     goals: [{ kind: "escape", label: "Bring Orin to the northern quarry gate", tile: "11,1" }],
     recruits: ["skeleton", "bonearcher"],
     enemyRecruits: ["soldier", "archer"],
@@ -872,7 +898,8 @@ const ashen: MissionDefinition[] = [
     ),
     subtitle: "Empty houses need not stay empty.",
     briefing:
-      "Claim both outer villages and control the central refuge at the start of your turn, from turn 6 onward. Supply patrols arrive on turns 3 and 5. Your units heal in owned villages and groves just like the living.",
+      "Claim both outer villages and control the central refuge at the beginning of your turn, from turn 6 onward.",
+    hints: ["Your units heal in owned villages and groves just like the living."],
     goals: [
       { kind: "control", label: "Claim the two outer villages", tiles: ["5,1", "5,7"] },
       { kind: "hold", label: "Keep the central refuge until turn 6", tile: "5,4", round: 6 },
@@ -992,8 +1019,11 @@ const ashen: MissionDefinition[] = [
       ],
     ),
     subtitle: "Break the chains. Leave the names.",
-    briefing:
-      "Seal both binding stones and defeat the Master. Dain brings wardens and adepts into your recruitment pool. Unsealed stones raise a skeleton on turn 5; enter them first to stop it.",
+    briefing: "Seal both binding stones and defeat the Master.",
+    hints: [
+      "Dain adds wardens and adepts to your recruitment pool.",
+      "Enter a binding stone before its reinforcement arrives to stop it.",
+    ],
     goals: [
       { kind: "seal", label: "Break both binding stones", tiles: ["7,2", "7,6"] },
       { kind: "defeat", label: "Defeat the Master" },
