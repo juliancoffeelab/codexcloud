@@ -1,6 +1,6 @@
 import { CAMPAIGNS } from "./campaign-data";
 import type { Immutable } from "./immutable";
-import type { CampaignState, MissionGoal, Side, Tile, Unit } from "./types";
+import type { CampaignState, MissionDefinition, MissionGoal, Side, Tile, Unit } from "./types";
 
 export interface CampaignBoard {
   campaign?: Immutable<CampaignState>;
@@ -10,8 +10,13 @@ export interface CampaignBoard {
   tile(id: string): Readonly<Tile> | undefined;
 }
 
-export function campaignMission(state: Immutable<CampaignState>) {
-  return CAMPAIGNS[state.id].missions[state.mission]!;
+export function campaignMission(state: Immutable<CampaignState>): Immutable<MissionDefinition> {
+  const mission = CAMPAIGNS[state.id].missions[state.mission]!;
+  if (state.choices?.includes("refuge-war") && mission.withoutDain)
+    return { ...mission, ...mission.withoutDain };
+  if (state.refuge?.escalated && mission.refuge)
+    return { ...mission, briefing: mission.refuge.warBriefing, hints: mission.refuge.warHints };
+  return mission;
 }
 
 export function goalTiles(goal: Immutable<MissionGoal>): readonly string[] {
@@ -22,6 +27,8 @@ export function goalTiles(goal: Immutable<MissionGoal>): readonly string[] {
 export function goalProgress(board: CampaignBoard, goal: Immutable<MissionGoal>) {
   let current = 0;
   let total = 1;
+  let label = goal.label;
+  let tiles = goalTiles(goal);
   switch (goal.kind) {
     case "defeat":
       current = Number(
@@ -54,14 +61,39 @@ export function goalProgress(board: CampaignBoard, goal: Immutable<MissionGoal>)
       total = goal.round;
       current = board.tile(goal.tile)?.owner === "player" ? Math.min(board.round, total) : 0;
       break;
+    case "refuge": {
+      if (board.campaign?.refuge?.escalated) {
+        label = "Defeat the remaining patrol";
+        current = Number(!board.units.some((unit) => unit.side === "enemy"));
+        tiles = [];
+      } else {
+        const mission = board.campaign && campaignMission(board.campaign);
+        const medicine =
+          mission?.refuge &&
+          board.campaign?.marks.includes(`event:${mission.refuge.medicineEvent}`);
+        total = medicine ? mission!.refuge!.medicineTurns : goal.turns;
+        current = Math.min(board.campaign?.refuge?.heldTurns ?? 0, total);
+      }
+      break;
+    }
   }
   const done =
     current === total &&
     (goal.kind !== "hold" ||
       (board.turn === "player" && board.campaign?.marks.includes(`held:${goal.tile}`)));
-  return { label: goal.label, current, total, done, tiles: goalTiles(goal) };
+  return { label, current, total, done, tiles };
 }
 
 export function dialoguePending(state: Immutable<CampaignState> | undefined): boolean {
   return Boolean(state && state.dialogueIndex < state.dialogue.length);
+}
+
+export function endsRefugeMediation(board: CampaignBoard, target: Readonly<Unit>): boolean {
+  return Boolean(
+    board.campaign &&
+    campaignMission(board.campaign).refuge &&
+    !board.campaign.refuge?.escalated &&
+    target.side === "enemy" &&
+    (target.retreating || target.role === "leader"),
+  );
 }

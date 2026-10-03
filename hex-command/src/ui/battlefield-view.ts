@@ -1,4 +1,4 @@
-import { campaignMission, goalTiles } from "../game/campaign-progress";
+import { campaignMission, goalProgress } from "../game/campaign-progress";
 import type { GameView, UnitView, TileView } from "../game/view";
 import type { ArtStyle } from "../presentation/art";
 import { TERRAIN, TYPES } from "../game/engine";
@@ -37,6 +37,7 @@ function tileLabel(
     const team = occupant.side === "player" ? "your" : "enemy";
     parts.push(`${team} ${TYPES[occupant.type].name}`, `${occupant.hp} health`);
     if (occupant.attacked) parts.push("turn finished");
+    if (occupant.retreating) parts.push("retreating");
   }
   if (reachable) parts.push("move here");
   if (target) parts.push("attack available");
@@ -56,7 +57,9 @@ export function battlefieldTiles(
   const targetTiles = new Set(canAct ? game.targets(selected).map((unit) => unit.tile) : []);
 
   const objectiveTiles = new Set(
-    game.campaign ? campaignMission(game.campaign).goals.flatMap(goalTiles) : [],
+    game.campaign
+      ? campaignMission(game.campaign).goals.flatMap((goal) => goalProgress(game, goal).tiles)
+      : [],
   );
   return game.tiles.map((tile) => {
     const { x, y } = tileCenter(tile);

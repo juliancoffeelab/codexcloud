@@ -32,6 +32,7 @@
   <span class="unit-side">{teamLabel}</span>
   {@html portrait}
   <h2>{showName && unit.name ? unit.name : definition.name}</h2>
+  {#if unit.retreating}<span class="retreat-label">Retreating</span>{/if}
   {#if showName && unit.name}<span class="named-unit-type">{definition.name}</span>{/if}
   <div class="health-numbers">
     <b>{unit.hp}</b>

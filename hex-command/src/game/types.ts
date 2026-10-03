@@ -60,6 +60,8 @@ export interface Unit {
   attacked: boolean;
   name?: string;
   role?: "leader" | "courier";
+  /** Set by the enemy AI when withdrawing; visible before the player chooses to pursue. */
+  retreating?: boolean;
 }
 export interface Weapon {
   id: string;
@@ -179,6 +181,7 @@ export type MissionGoal =
   | { kind: "escape"; label: string; tile: string }
   | { kind: "control"; label: string; tiles: string[] }
   | { kind: "hold"; label: string; tile: string; round: number }
+  | { kind: "refuge"; label: string; tile: string; turns: number }
   | { kind: "seal"; label: string; tiles: string[] }
   | { kind: "defeat"; label: string };
 export interface MissionEvent {
@@ -187,6 +190,7 @@ export interface MissionEvent {
   label?: string;
   dialogue: DialogueLine[];
   gold?: number;
+  warDialogue?: DialogueLine[];
 }
 export interface ReinforcementWave {
   round: number;
@@ -208,6 +212,23 @@ export interface MissionDefinition {
   victory: DialogueLine[];
   events: MissionEvent[];
   waves: ReinforcementWave[];
+  refuge?: {
+    medicineEvent: string;
+    medicineTurns: number;
+    escalation: DialogueLine[];
+    warVictory: DialogueLine[];
+    warBriefing: string;
+    warHints: string[];
+  };
+  withoutDain?: {
+    briefing: string;
+    hints: string[];
+    intro: DialogueLine[];
+    recruits: RecruitType[];
+    reinforcements: StartingUnit[];
+  };
+  /** Previously published lines remain valid in ongoing saved conversations. */
+  legacyDialogue?: DialogueLine[];
 }
 export interface CampaignDefinition {
   id: CampaignId;
@@ -229,6 +250,8 @@ export interface CampaignState {
   dialogueIndex: number;
   outcome: string | null;
   completed: boolean;
+  refuge?: { heldTurns: number; lastCountedRound: number; escalated: boolean };
+  choices?: ("refuge-peace" | "refuge-war")[];
 }
 export type Attack = Weapon;
 export type DamageDetail = DamageBreakdown;

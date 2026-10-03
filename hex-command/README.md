@@ -76,6 +76,18 @@ these details start collapsed so the battlefield remains visible. Enemy armies c
 control objectives and threaten escorts; defeating their leader does not replace
 an escort or territory objective.
 
+The Quiet Refuge is a defense and mediation mission. Its villages sit on Orin’s
+side of the shelter; claiming both is no longer a victory requirement. Defend the
+refuge through six enemy turns. Medicine from the northern grove gives six gold
+and brings the villagers’ intervention after five defended turns. Losing the refuge
+resets that count. Wounded or endangered enemies withdraw toward safe healing
+villages or open ground, with a visible retreat arrow; cornered troops may still fight.
+Lethal previews warn when killing a withdrawing soldier or Dain will end mediation.
+That choice changes the objective to defeating the remaining patrol and removes
+Dain’s alliance and living recruitment in the final mission. The remaining undead
+company receives two companions instead. Refuge save upgrades move the villages
+while preserving units, gold and ownership; defense tracking begins on the updated rules.
+
 After a victory, select up to four surviving recruits to bring to the next mission.
 They heal completely, and up to eight spare gold carries forward. Each mission
 also supplies its own starting company and treasury. Couriers and leaders have
@@ -125,7 +137,7 @@ failures inform map and pacing changes; the [playtest report](docs/campaign-play
 records the method, results and limitations. Browser interaction and visual parity
 have not been automated, in accordance with `AGENTS.md`.
 
-Existing campaign saves retain their terrain and deployed units. Start a new
+Existing campaign saves retain their deployed units. The refuge’s two village positions upgrade on reload; other saved terrain remains unchanged. Start a new
 campaign, or retry a defeated mission, to use the revised starting layouts and
 companies.
 

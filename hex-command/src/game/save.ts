@@ -60,7 +60,9 @@ function validUnit(
     (value.role !== undefined && value.role !== "leader" && value.role !== "courier") ||
     (value.role === "leader" && !TYPES[value.type].leader) ||
     typeof value.moved !== "boolean" ||
-    typeof value.attacked !== "boolean"
+    typeof value.attacked !== "boolean" ||
+    (value.retreating !== undefined &&
+      (typeof value.retreating !== "boolean" || value.side !== "enemy"))
   )
     return false;
   return true;
@@ -95,6 +97,7 @@ function campaignState(value: unknown, mapId: string, winner: Side | null): Camp
   )
     return null;
   const allowedMarks = new Set([
+    ...(mission.refuge ? ["held:5,4"] : []),
     ...mission.events.map((event) => `event:${event.id}`),
     ...mission.waves.map((_, index) => `wave:${index}`),
     ...mission.goals.flatMap((goal) =>
@@ -111,6 +114,25 @@ function campaignState(value: unknown, mapId: string, winner: Side | null): Camp
     !value.marks.every((mark) => typeof mark === "string" && allowedMarks.has(mark))
   )
     return null;
+  if (
+    value.refuge !== undefined &&
+    (!mission.refuge ||
+      !record(value.refuge) ||
+      !integer(value.refuge.heldTurns) ||
+      value.refuge.heldTurns > 6 ||
+      !integer(value.refuge.lastCountedRound) ||
+      typeof value.refuge.escalated !== "boolean")
+  )
+    return null;
+  if (
+    value.choices !== undefined &&
+    (!Array.isArray(value.choices) ||
+      value.choices.length > 1 ||
+      value.id !== "ashen-oath" ||
+      value.mission < 1 ||
+      !value.choices.every((choice) => choice === "refuge-peace" || choice === "refuge-war"))
+  )
+    return null;
   const failure = [
     "Your leader fell. The company cannot continue without them.",
     "The courier fell before reaching safety.",
@@ -118,7 +140,12 @@ function campaignState(value: unknown, mapId: string, winner: Side | null): Camp
   const knownLines = [
     ...mission.intro,
     ...mission.events.flatMap((event) => event.dialogue),
+    ...mission.events.flatMap((event) => event.warDialogue ?? []),
     ...mission.victory,
+    ...(mission.refuge?.escalation ?? []),
+    ...(mission.refuge?.warVictory ?? []),
+    ...(mission.withoutDain?.intro ?? []),
+    ...(mission.legacyDialogue ?? []),
     ...definition.ending,
     ...failure.map((text) => ({ speaker: "The company", portrait: definition.leader, text })),
   ];
@@ -163,6 +190,12 @@ function campaignState(value: unknown, mapId: string, winner: Side | null): Camp
     dialogueIndex: value.dialogueIndex,
     outcome: value.outcome as string | null,
     completed: value.completed,
+    ...(value.refuge
+      ? { refuge: { ...(value.refuge as NonNullable<CampaignState["refuge"]>) } }
+      : {}),
+    ...(value.choices
+      ? { choices: [...(value.choices as NonNullable<CampaignState["choices"]>)] }
+      : {}),
   };
 }
 
@@ -226,6 +259,18 @@ export function loadBattle(): LoadedBattle {
     for (const village of s.villages as unknown[]) {
       if (!validVillage(village, villages)) return fresh();
       game.tile(village.id)!.owner = village.owner;
+    }
+    // Move the refuge's two villages without discarding a player's ongoing company.
+    if (game.mapId === "ashen-refuge" && game.mapRevision === 1) {
+      for (const row of [1, 7]) {
+        const oldTile = game.tile(`5,${row}`)!;
+        const newTile = game.tile(`3,${row}`)!;
+        newTile.terrain = "village";
+        newTile.owner = units.find((unit) => unit.tile === newTile.id)?.side ?? oldTile.owner;
+        oldTile.terrain = "plains";
+        oldTile.owner = null;
+      }
+      game.mapRevision = 2;
     }
     const sites = game.tiles.filter((tile) => ["grove", "ruins", "fort"].includes(tile.terrain));
     if (campaign) {

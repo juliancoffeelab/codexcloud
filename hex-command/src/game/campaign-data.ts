@@ -102,7 +102,8 @@ const lantern: MissionDefinition[] = [
       ],
     ),
     subtitle: "Carry a message, not a conquest.",
-    briefing: "Bring Ivo to the northeastern landing, beyond the enemy keep.",
+    briefing:
+      "The eastern villages have gone dark. Ivo carries their names and a message for the last ferryman; Nera promises to get him across the river. The Tollkeeper’s guards block the road, but this journey is about reaching the living, not conquering the valley.",
     hints: [
       "Recruit before leaving your keep.",
       "Use your soldiers to screen Ivo.",
@@ -222,7 +223,8 @@ const lantern: MissionDefinition[] = [
       ],
     ),
     subtitle: "Three crossings. Three homes to reclaim.",
-    briefing: "Capture all three eastern villages.",
+    briefing:
+      "The ferryman has brought news of three settlements occupied by the dead. Nera’s company is staying to reopen the road and light their windows again. Sella’s wardens will help, but the Tollkeeper is still collecting from the other bank.",
     hints: [
       "Split your force, or secure the central bridge first.",
       "Villages pay two gold per turn to whoever controls them.",
@@ -340,7 +342,8 @@ const lantern: MissionDefinition[] = [
       ],
     ),
     subtitle: "Silence the graves before silencing the bell.",
-    briefing: "Seal the three grave ruins, then defeat the Bellwarden.",
+    briefing:
+      "The villages are lit again, but the bell keeps calling their dead back to war. Nera and the adepts have traced that call to the grave ruins. Breaking those bindings will let the company silence the Bellwarden and leave the valley a road home.",
     hints: [
       "Your forward camp is near the crossings.",
       "Ruins beyond the flank bridges offer cover. Send scouts to the graves once your shields clear a crossing.",
@@ -460,7 +463,8 @@ const green: MissionDefinition[] = [
       ],
     ),
     subtitle: "Take back the roots without burning the branches.",
-    briefing: "Reclaim the three sacred groves.",
+    briefing:
+      "Alder’s pack has found soldiers cutting the sacred groves for the overseer. The roots shelter the woodland people and hold their memories. Alder wants the intruders driven out so the forest can recover, without turning its border villages into another battlefield.",
     hints: [
       "Wolves cross woods quickly, but spears and arrows hurt them.",
       "Use boars to hold lanes and Alder’s impact attacks against armored wardens.",
@@ -571,7 +575,8 @@ const green: MissionDefinition[] = [
       ],
     ),
     subtitle: "The grove must still be yours at dawn.",
-    briefing: "Control the central grove at the beginning of your turn, from turn 6 onward.",
+    briefing:
+      "The grove is back in the pack’s care. Lark needs a quiet vigil to reveal what lies beneath its stones, while the overseer sends patrols to interrupt her. Alder must give her that time; what she uncovers could convince the living that the forest is more than timber.",
     hints: ["The grove heals whoever owns it.", "Capture enemy fortifications to use their cover."],
     goals: [{ kind: "hold", label: "Hold the central grove until turn 6", tile: "6,4", round: 6 }],
     recruits: ["wolf", "boar", "thorncaller"],
@@ -684,7 +689,8 @@ const green: MissionDefinition[] = [
       ],
     ),
     subtitle: "A witness, a bridge, and a promise.",
-    briefing: "Claim the bridge fort and bring Lark to the northern village beyond the river.",
+    briefing:
+      "Dain has seen the overseer’s deception and agreed to carry Lark’s testimony to the villages. Her living branch is proof that the grove survived. The dead still bar the crossing; Alder and Dain must open a safe road for their witness and the pact she carries.",
     hints: [
       "Groves along the northern route offer healing and ranged cover.",
       "Dain brings wardens and adepts: spears counter wolves, while stone sparks hurt skeletal armor.",
@@ -748,6 +754,53 @@ const green: MissionDefinition[] = [
   },
 ];
 
+export const LEGACY_ASHEN_REFUGE = map(
+  "ashen-refuge",
+  "The Quiet Refuge",
+  11,
+  9,
+  [
+    keep(1, 4, "player"),
+    keep(9, 4, "enemy"),
+    ...land("village", [
+      [5, 1],
+      [5, 7],
+      [2, 6],
+    ]),
+    ...land("village", [[9, 2]], "enemy"),
+    ...land("ruins", [[5, 4]]),
+    ...land("forest", [
+      [4, 2],
+      [4, 6],
+      [7, 1],
+      [7, 7],
+    ]),
+    ...land("marsh", [
+      [6, 3],
+      [6, 5],
+    ]),
+    ...land("grove", [[3, 0]]),
+    ...land("fort", [
+      [7, 3],
+      [7, 5],
+    ]),
+    ...land("hill", [
+      [3, 3],
+      [3, 5],
+    ]),
+  ],
+  [
+    unit("necromancer", "player", 1, 4, "Orin", "leader"),
+    unit("skeleton", "player", 5, 4),
+    unit("skeleton", "player", 2, 5),
+    unit("bonearcher", "player", 2, 3),
+    unit("commander", "enemy", 9, 4, "Captain Dain", "leader"),
+    unit("soldier", "enemy", 6, 3),
+    unit("warden", "enemy", 6, 5),
+    unit("adept", "enemy", 8, 4),
+  ],
+);
+
 const ashen: MissionDefinition[] = [
   {
     map: map(
@@ -792,7 +845,7 @@ const ashen: MissionDefinition[] = [
     ),
     subtitle: "The first order you give yourself.",
     briefing:
-      "Escape with Orin to the northern quarry gate. You do not need to defeat every guard.",
+      "The Master’s binding broke at midnight. For the first time, Orin and the quarry’s dead can choose where to go. Orin leads them toward the northern gate before the guards can return them to servitude. Freedom begins with getting the company out alive.",
     hints: [
       "Recruit before leaving your keep.",
       "The guards hold the southern road; the northern ford offers a way around them.",
@@ -850,65 +903,109 @@ const ashen: MissionDefinition[] = [
     ],
   },
   {
-    map: map(
-      "ashen-refuge",
-      "The Quiet Refuge",
-      11,
-      9,
-      [
-        keep(1, 4, "player"),
-        keep(9, 4, "enemy"),
-        ...land("village", [
-          [5, 1],
-          [5, 7],
-          [2, 6],
-        ]),
-        ...land("village", [[9, 2]], "enemy"),
-        ...land("ruins", [[5, 4]]),
-        ...land("forest", [
-          [4, 2],
-          [4, 6],
-          [7, 1],
-          [7, 7],
-        ]),
-        ...land("marsh", [
-          [6, 3],
-          [6, 5],
-        ]),
-        ...land("grove", [[3, 0]]),
-        ...land("fort", [
-          [7, 3],
-          [7, 5],
-        ]),
-        ...land("hill", [
-          [3, 3],
-          [3, 5],
-        ]),
-      ],
-      [
-        unit("necromancer", "player", 1, 4, "Orin", "leader"),
-        unit("skeleton", "player", 5, 4),
-        unit("skeleton", "player", 2, 5),
-        unit("bonearcher", "player", 2, 3),
-        unit("commander", "enemy", 9, 4, "Captain Dain", "leader"),
-        unit("soldier", "enemy", 6, 3),
-        unit("warden", "enemy", 6, 5),
-        unit("adept", "enemy", 8, 4),
-      ],
-    ),
-    subtitle: "Empty houses need not stay empty.",
+    map: {
+      ...LEGACY_ASHEN_REFUGE,
+      revision: 2,
+      terrain: LEGACY_ASHEN_REFUGE.terrain.map((tile) =>
+        tile.terrain === "village" && tile.col === 5 ? { ...tile, col: 3 } : tile,
+      ),
+      units: LEGACY_ASHEN_REFUGE.units.map((unit) =>
+        unit.side === "enemy" && unit.col === 6 ? { ...unit, col: 7 } : unit,
+      ),
+    },
+    subtitle: "A refuge needs neighbors, not another war.",
     briefing:
-      "Claim both outer villages and control the central refuge at the beginning of your turn, from turn 6 onward.",
-    hints: ["Your units heal in owned villages and groves just like the living."],
+      "Orin’s company has found empty houses beside living villages. Captain Dain has orders to drive the dead away; the villagers want time to judge their new neighbors for themselves. Orin will defend the refuge while they gather. Helping the sick can win their support sooner, but hunting down withdrawing soldiers would destroy the chance of peace.",
+    hints: [
+      "Hold the refuge through 6 enemy turns. Losing it resets the count; reclaiming it lets you begin again.",
+      "Medicine from the northern grove brings the villagers’ intervention after 5 defended turns, and gives 6 gold.",
+      "The outer villages are on your side of the refuge. They provide income and healing, not conquest objectives.",
+      "Wounded or endangered patrols withdraw toward safe villages or open ground. Retreating units are marked with an arrow.",
+      "Killing a retreating soldier, or killing Dain, ends the chance of mediation. Then defeat the entire patrol; Dain will not join you afterward.",
+    ],
     goals: [
-      { kind: "control", label: "Claim the two outer villages", tiles: ["5,1", "5,7"] },
-      { kind: "hold", label: "Keep the central refuge until turn 6", tile: "5,4", round: 6 },
+      {
+        kind: "refuge",
+        label: "Defend the refuge until the villagers intervene",
+        tile: "5,4",
+        turns: 6,
+      },
     ],
     recruits: ["skeleton", "bonearcher"],
     enemyRecruits: ["soldier", "archer"],
     gold: 16,
     enemyGold: 0,
     intro: [
+      line(
+        "Orin",
+        "necromancer",
+        "These houses are empty. The people next door are not. We could be neighbors, if they let us stay.",
+      ),
+      line(
+        "Captain Dain",
+        "warden",
+        "My orders say the dead must leave. My patrol is coming to enforce them.",
+      ),
+      line(
+        "Village elder",
+        "scout",
+        "Give us six days to gather the households. Defend your shelter if you must, but let men who turn back go home. There are sick families here who need the herbs in the northern grove.",
+      ),
+      line(
+        "Orin",
+        "necromancer",
+        "Then we hold our ground. We will not hunt your wounded. And we will bring the medicine.",
+      ),
+    ],
+    victory: [
+      line(
+        "Village elder",
+        "scout",
+        "Enough, Captain. They held their shelter and let your wounded leave. These houses are ours to offer. The dead may stay as our neighbors.",
+      ),
+      line(
+        "Dain",
+        "warden",
+        "My orders did not mention people who would ask the dead to stay. Perhaps the man who wrote them left other things out.",
+      ),
+      line(
+        "Orin",
+        "necromancer",
+        "He used to write my orders too. Come with us, and see what he has been hiding.",
+      ),
+      line("Dain", "warden", "I will. My soldiers can rest here. I know which road we take next."),
+    ],
+    refuge: {
+      medicineEvent: "medicine",
+      medicineTurns: 5,
+      warBriefing:
+        "The attempt to live beside the villages has become an open battle. After the bloodshed, the households can no longer persuade the patrol to stand down. Orin’s company must break the remaining patrol to leave, and will face the Master without Dain’s help.",
+      warHints: [
+        "Defeat every remaining enemy. Holding the refuge will no longer end the battle.",
+        "Medicine still helps the villagers and provides 6 gold, but cannot restore mediation.",
+        "Your villages provide income and healing. Enemy survivors will seek safe places to recover.",
+      ],
+      escalation: [
+        line(
+          "Village elder",
+          "scout",
+          "There has been too much bloodshed for the patrol to accept our mediation. We cannot stop this battle for you.",
+        ),
+        line(
+          "Orin",
+          "necromancer",
+          "Then there is no agreement left to make. We must break the patrol before we can leave.",
+        ),
+      ],
+      warVictory: [
+        line(
+          "Orin",
+          "necromancer",
+          "The patrol is broken. But we have lost the chance to leave here with friends. We face the Master with our own company.",
+        ),
+      ],
+    },
+    legacyDialogue: [
       line(
         "Orin",
         "necromancer",
@@ -920,8 +1017,6 @@ const ashen: MissionDefinition[] = [
         "necromancer",
         "Then watch what we do. We will hold the houses, not march on yours.",
       ),
-    ],
-    victory: [
       line(
         "Dain",
         "warden",
@@ -929,18 +1024,35 @@ const ashen: MissionDefinition[] = [
       ),
       line("Orin", "necromancer", "The man who wrote your orders used to write mine."),
       line("Dain", "warden", "Then I know which road we take next."),
+      line(
+        "Orin",
+        "necromancer",
+        "We have little use for the herbs. The people next door do. They insist on paying us. I think that is what neighbors do.",
+      ),
     ],
     events: [
       {
         id: "medicine",
         trigger: { kind: "visit", tile: "3,0" },
-        label: "Find medicine for the village neighbors",
+        label: "Bring medicine to the villagers",
         gold: 6,
+        warDialogue: [
+          line(
+            "Village elder",
+            "scout",
+            "The herbs will still save lives. Take these six coins. But after the bloodshed, medicine alone cannot stop the patrol’s battle with you.",
+          ),
+        ],
         dialogue: [
+          line(
+            "Village elder",
+            "scout",
+            "The fever is easing. We will send word with the families you helped; the households will gather a day sooner. Take these six coins for your shelter.",
+          ),
           line(
             "Orin",
             "necromancer",
-            "We have little use for the herbs. The people next door do. They insist on paying us. I think that is what neighbors do.",
+            "We did not need the herbs ourselves. I am glad someone did.",
           ),
         ],
       },
@@ -1019,7 +1131,8 @@ const ashen: MissionDefinition[] = [
       ],
     ),
     subtitle: "Break the chains. Leave the names.",
-    briefing: "Seal both binding stones and defeat the Master.",
+    briefing:
+      "Dain has chosen to stand beside Orin against the man who commanded them both. The Master still binds others to his will through stones along the road. Breaking those chains and confronting him is the company’s chance to secure a freedom he cannot simply revoke.",
     hints: [
       "Dain adds wardens and adepts to your recruitment pool.",
       "Enter a binding stone before its reinforcement arrives to stop it.",
@@ -1045,6 +1158,33 @@ const ashen: MissionDefinition[] = [
       line("The Master", "necromancer", "Without me, what are you?"),
       line("Orin", "necromancer", "We have not decided yet. That is the point."),
     ],
+    withoutDain: {
+      briefing:
+        "The refuge battle ended without an agreement. Dain and his allies will not come with Orin; the company must face the Master alone. His binding stones still hold others in servitude. Breaking them is the first step toward a freedom that can survive him.",
+      hints: [
+        "You have no living allies after the refuge battle. Skeletons and bone archers remain available to recruit.",
+        "Enter a binding stone before its reinforcement arrives to stop it.",
+      ],
+      recruits: ["skeleton", "bonearcher"],
+      reinforcements: [unit("skeleton", "player", 2, 4), unit("bonearcher", "player", 1, 3)],
+      intro: [
+        line(
+          "The Master",
+          "necromancer",
+          "You broke the patrol that came to turn you back. You have learned my methods well.",
+        ),
+        line(
+          "Orin",
+          "necromancer",
+          "We chose that battle. We will carry what it cost us. But you will not choose our lives again.",
+        ),
+        line(
+          "A hollow voice",
+          "skeleton",
+          "No captain is coming to help us. Break the binding stones. We can still bring the others home.",
+        ),
+      ],
+    },
     events: [
       {
         id: "names",

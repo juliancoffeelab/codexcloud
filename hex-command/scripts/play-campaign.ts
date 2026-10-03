@@ -4,7 +4,7 @@ import { dirname } from "node:path";
 import { createHash } from "node:crypto";
 import { Game, TYPES, TERRAIN } from "../src/game/engine";
 import { CAMPAIGNS } from "../src/game/campaign-data";
-import { campaignMission, goalProgress } from "../src/game/campaign-progress";
+import { campaignMission, goalProgress, endsRefugeMediation } from "../src/game/campaign-progress";
 import { enemyActionIds } from "../src/game/enemy-turn";
 import type { CampaignId, GameState, RecruitType } from "../src/game/types";
 
@@ -98,6 +98,8 @@ function observation(includeRules = false) {
     winner: game.winner,
     outcome: game.campaign!.outcome,
     completed: game.campaign!.completed,
+    choices: game.campaign!.choices ?? [],
+    refuge: game.campaign!.refuge ?? null,
     gold: game.gold.player,
     objectives: mission.goals.map((goal) => ({ ...goal, ...goalProgress(game, goal) })),
     units: game.units.map((unit) => ({ ...unit, maxHp: TYPES[unit.type].hp })),
@@ -207,6 +209,8 @@ try {
                       take: detail.retaliation,
                       yourHp: Math.max(0, unit.hp - detail.retaliation),
                       enemyHp: Math.max(0, target.hp - detail.damage),
+                      endsMediation:
+                        detail.damage >= target.hp && endsRefugeMediation(game, target),
                     };
                   }),
                 ),

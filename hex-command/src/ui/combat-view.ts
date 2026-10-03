@@ -2,6 +2,7 @@ import type { GameView, UnitView } from "../game/view";
 import { DAMAGE_TYPES, TERRAIN, TYPES } from "../game/engine";
 import type { DamageBreakdown, Side, TerrainType, Weapon } from "../game/types";
 import { damageExplanation } from "../presentation/combat";
+import { endsRefugeMediation } from "../game/campaign-progress";
 
 export interface HealthForecastView {
   side: Side;
@@ -125,15 +126,20 @@ export function attackChoiceViews(
       retaliationCalculation.equation = damageExplanation(preview.retaliationDetail);
     }
 
+    const enemyForecast = healthForecast(target, preview.damage, "Enemy", "Deal");
+    const mediationLost = enemyForecast.remainingHp === 0 && endsRefugeMediation(game, target);
+    if (mediationLost) {
+      enemyForecast.impactLabel += " — mediation lost";
+    }
     return {
       available: true,
       id: weapon.id,
       name: weapon.name,
-      buttonLabel: `Attack with ${weapon.name}: deal ${preview.damage} damage, take ${preview.retaliation} damage${warning}`,
+      buttonLabel: `Attack with ${weapon.name}: deal ${preview.damage} damage, take ${preview.retaliation} damage${warning}${mediationLost ? ", ends mediation" : ""}`,
       inspectLabel: `Inspect ${weapon.name.toLowerCase()} damage calculation`,
       detailsId: `attack-details-${weapon.id}`,
       playerForecast: healthForecast(attacker, preview.retaliation, "You", "Take"),
-      enemyForecast: healthForecast(target, preview.damage, "Enemy", "Deal"),
+      enemyForecast,
       attackCalculation: {
         description: describeAttack("Your attack", weapon, preview.damageDetail, targetTerrain),
         equation: damageExplanation(preview.damageDetail),

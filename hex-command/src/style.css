@@ -227,6 +227,18 @@ button[hidden] {
   font: 14px system-ui;
   fill: #dbe8d7;
 }
+.retreat-marker {
+  font: bold 22px system-ui;
+  fill: #fff1c1;
+  stroke: #172015;
+  stroke-width: 3px;
+  paint-order: stroke;
+  pointer-events: none;
+}
+.retreat-label {
+  color: var(--gold);
+  font: 14px system-ui;
+}
 .art-sprite {
   pointer-events: none;
 }

@@ -1,5 +1,15 @@
 # Campaign playtests
 
+The completion rates below describe the frozen balance pass at `c3b2c72`, before
+the refuge mediation and enemy retreat changes. They are historical results,
+not estimates for the current rules. Current refuge verification checks defended
+turns, medicine, escalation, retreat/healing, saves, and both next-mission branches.
+Actual-engine scenario probes also completed the peaceful route after six enemy
+turns without medicine and five with medicine, using a returning company. Those
+A deliberate pursuit probe also completed the hostile route on turn 10. The
+probes used three returning undead recruits and six carried gold; these are
+controlled scenarios, not fresh linked Luna sessions or new completion rates.
+
 These are independent Luna 6 play sessions through `scripts/play-campaign.ts`,
 which imports the production `Game` engine. The CLI exposes observations, legal
 actions, exact combat forecasts, recruitment and conservative enemy threat

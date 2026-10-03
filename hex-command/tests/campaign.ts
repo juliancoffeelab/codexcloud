@@ -11,11 +11,157 @@ import { createGameView } from "../src/game/view";
 import { createMoveUndo } from "../src/game/undo";
 import { loadBattle, saveBattle, SAVE_KEY } from "../src/game/save";
 import { describeChanges } from "../src/controller/feedback";
+import { attackChoiceViews } from "../src/ui/combat-view";
 import { BattleController, type BattleView } from "../src/controller/battle";
 import { required, TestStorage } from "./helpers";
 
 const storage = new TestStorage();
 globalThis.localStorage = storage;
+
+// The previously published refuge save keeps its units, gold and village ownership.
+{
+  const current = Game.startCampaign("ashen-oath", 1);
+  const legacy = new Game("ashen-refuge", 1);
+  legacy.campaign = structuredClone(current.campaign!);
+  delete legacy.campaign.refuge;
+  legacy.campaign.dialogue = CAMPAIGNS["ashen-oath"].missions[1]!.legacyDialogue!.slice(0, 3).map(
+    (line) => ({ ...line }),
+  );
+  legacy.round = 2;
+  legacy.gold.player = 32;
+  legacy.tile("5,4")!.owner = "player";
+  legacy.tile("5,1")!.owner = "player";
+  saveBattle(legacy);
+  const restored = loadBattle().game;
+  assert.equal(restored.mapId, "ashen-refuge");
+  assert.equal(restored.mapRevision, 2);
+  assert.equal(restored.round, 2);
+  assert.equal(restored.gold.player, 32);
+  assert.deepEqual(restored.units, legacy.units);
+  assert.equal(restored.tile("3,1")?.owner, "player");
+  assert.equal(restored.tile("3,7")?.terrain, "village");
+  assert.equal(restored.tile("5,1")?.terrain, "plains");
+  saveBattle(restored);
+  assert.deepEqual(loadBattle().game.snapshot(), restored.snapshot());
+}
+
+// Refuge defense counts completed enemy turns, not repeated publications or captures.
+{
+  const game = Game.startCampaign("ashen-oath", 1);
+  game.advanceDialogue(true);
+  assert.equal(game.tile("3,1")?.terrain, "village");
+  assert.equal(game.tile("3,7")?.terrain, "village");
+  assert.equal(game.tile("5,1")?.terrain, "plains");
+  const goal = campaignMission(game.campaign!).goals[0]!;
+  assert.equal(goalProgress(game, goal).current, 0);
+  for (let round = 2; round <= 6; round++) {
+    game.round = round;
+    game.beginTurn("player");
+    game.beginTurn("player");
+    assert.equal(game.campaign?.refuge?.heldTurns, round - 1);
+    assert.equal(game.winner, null);
+  }
+  saveBattle(game);
+  assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
+  game.round = 7;
+  game.beginTurn("player");
+  assert.equal(game.winner, "player");
+  assert.deepEqual(game.campaign?.choices, ["refuge-peace"]);
+  const next = game.nextCampaignMission([]);
+  assert(next.units.some((unit) => unit.name === "Captain Dain" && unit.side === "player"));
+  assert(next.recruitmentOptions("player").includes("adept"));
+}
+{
+  const game = Game.startCampaign("ashen-oath", 1);
+  game.advanceDialogue(true);
+  game.round = 3;
+  game.beginTurn("player");
+  assert.equal(game.campaign?.refuge?.heldTurns, 1);
+  // A lost refuge resets the count even if recaptured before the next dawn.
+  game.tile("5,4")!.owner = "enemy";
+  game.beginTurn("enemy");
+  assert.equal(game.campaign?.refuge?.heldTurns, 0);
+  game.tile("5,4")!.owner = "player";
+  game.round = 4;
+  game.beginTurn("player");
+  assert.equal(game.campaign?.refuge?.heldTurns, 1);
+  const collector = game.addUnit("skeleton", "player", "3,1");
+  const gold = game.gold.player;
+  game.move(collector.id, "3,0");
+  assert.equal(game.gold.player, gold + 6);
+  const goal = campaignMission(game.campaign!).goals[0]!;
+  assert.equal(goalProgress(game, goal).total, 5);
+  for (let round = 5; round <= 7; round++) {
+    game.round = round;
+    game.beginTurn("player");
+    assert.equal(game.winner, null);
+  }
+  game.round = 8;
+  game.beginTurn("player");
+  assert.equal(game.winner, "player");
+}
+// Pursuing a withdrawing soldier closes mediation, changes objectives and removes the ally.
+{
+  const game = Game.startCampaign("ashen-oath", 1);
+  game.advanceDialogue(true);
+  const defender = required(game.at("5,4"));
+  const fleeing = required(
+    game.units.find((unit) => unit.side === "enemy" && unit.type === "soldier"),
+  );
+  fleeing.tile = "6,4";
+  fleeing.hp = 1;
+  fleeing.retreating = true;
+  const choice = required(
+    attackChoiceViews(createGameView(game), defender, fleeing).find(
+      (choice) => choice.id === "boneclub",
+    ),
+  );
+  assert(choice.available);
+  assert(choice.enemyForecast.impactLabel.includes("mediation lost"));
+  game.attack(defender.id, fleeing.id, "boneclub");
+  assert.equal(game.campaign?.refuge?.escalated, true);
+  const goal = campaignMission(game.campaign!).goals[0]!;
+  assert.equal(goalProgress(game, goal).label, "Defeat the remaining patrol");
+  assert.equal(goalProgress(game, goal).done, false);
+  saveBattle(game);
+  assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
+  game.round = 40;
+  game.beginTurn("player");
+  assert.equal(game.winner, null, "waiting cannot end the hostile route");
+  const captain = required(
+    game.units.find((unit) => unit.side === "enemy" && unit.role === "leader"),
+  );
+  // Killing Dain alone is insufficient while another patrol member survives.
+  captain.tile = "6,4";
+  captain.hp = 1;
+  game.attack(defender.id, captain.id, "boneclub");
+  assert.equal(game.winner, null);
+  game.units = game.units.filter((unit) => unit.side === "player");
+  game.beginTurn("player");
+  assert.equal(game.winner, "player");
+  assert.deepEqual(game.campaign?.choices, ["refuge-war"]);
+  saveBattle(game);
+  assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
+  const next = game.nextCampaignMission([]);
+  assert(!next.units.some((unit) => unit.name === "Captain Dain"));
+  assert.deepEqual(next.recruitmentOptions("player"), ["skeleton", "bonearcher"]);
+  assert(!campaignMission(next.campaign!).intro.some((line) => line.speaker === "Dain"));
+  assert.deepEqual(next.retryCampaignMission().snapshot(), next.snapshot());
+  saveBattle(next);
+  assert.deepEqual(loadBattle().game.snapshot(), next.snapshot());
+}
+// Defensive kills of troops who are still fighting do not close the peaceful route.
+{
+  const game = Game.startCampaign("ashen-oath", 1);
+  const defender = required(game.at("5,4"));
+  const target = required(
+    game.units.find((unit) => unit.side === "enemy" && unit.type === "soldier"),
+  );
+  target.tile = "6,4";
+  target.hp = 1;
+  game.attack(defender.id, target.id, "boneclub");
+  assert.equal(game.campaign?.refuge?.escalated, false);
+}
 
 // Each mission has reachable objectives, lawful starting armies and a usable recruiting keep.
 for (const definition of Object.values(CAMPAIGNS)) {

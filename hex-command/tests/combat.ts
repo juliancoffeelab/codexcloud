@@ -221,9 +221,50 @@ for (const a of Object.keys(TYPES) as UnitType[])
     required(game.unit(target.id)),
     "enemy should reposition instead of accepting a lethal ranged reply",
   );
-  assert.equal(required(game.lastCombat).attackId, "knife");
-  assert.equal(target.hp, 1);
+  assert.equal(
+    game.lastCombat,
+    undefined,
+    "a wounded bowman withdraws before taking another fight",
+  );
+  assert.equal(target.hp, 3);
+  assert.equal(target.retreating, true);
+  assert(distance(required(game.tile(target.tile)), required(game.tile(attacker.tile))) > 2);
 }
+// Definitions supply new weapons to old saves without replacing battle progress.
+{
+  const { game, attacker, target } = fixture("soldier", "archer");
+  target.hp = 2;
+  game.tile("5,3")!.terrain = "village";
+  game.tile("5,3")!.owner = "enemy";
+  game.turn = "enemy";
+  game.enemyAct(target.id);
+  assert.equal(target.tile, "5,3", "a withdrawing bowman prefers a safe healing village");
+  assert.equal(target.hp, 2, "withdrawal skips retaliation damage");
+  game.beginTurn("enemy");
+  assert.equal(target.hp, 4);
+  game.enemyAct(target.id);
+  assert.equal(target.tile, "5,3", "continue recovering instead of reengaging at half health");
+  game.beginTurn("enemy");
+  game.enemyAct(target.id);
+  assert.equal(target.retreating, undefined, "recovered troops can rejoin the patrol");
+  assert(attacker.hp > 0);
+}
+{
+  const { game, attacker, target } = fixture("soldier", "soldier");
+  target.hp = 1;
+  for (const tile of game.neighbors(target.tile)) {
+    if (!game.at(tile.id)) game.addUnit("soldier", "player", tile.id);
+  }
+  game.turn = "enemy";
+  assert.equal(game.reachable(target.id).size, 0);
+  game.enemyAct(target.id);
+  assert(!game.unit(target.id), "a surrounded soldier can make a desperate stand");
+  assert(
+    attacker.hp < TYPES.soldier.hp ||
+      game.units.some((unit) => unit.side === "player" && unit.hp < TYPES.soldier.hp),
+  );
+}
+
 // Definitions supply new weapons to old saves without replacing battle progress.
 {
   const game = new Game();

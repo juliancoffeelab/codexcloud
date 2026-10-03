@@ -117,6 +117,11 @@
             {#if occupant.unit.attacked}
               <text class="acted" x={tile.x + 21} y={tile.y - 17}>✓</text>
             {/if}
+            {#if occupant.unit.retreating}
+              <text class="retreat-marker" x={tile.x - 28} y={tile.y - 14} aria-hidden="true">
+                ↶
+              </text>
+            {/if}
           {/if}
 
           {#if tile.owner}

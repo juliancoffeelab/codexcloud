@@ -22,8 +22,8 @@ export type * from "./types";
 import { MAPS, LEGACY_RIVER } from "./maps";
 import { immutable } from "./immutable";
 import { CAMPAIGN_UNITS } from "./campaign-units";
-import { CAMPAIGNS } from "./campaign-data";
-import { campaignMission, goalProgress } from "./campaign-progress";
+import { CAMPAIGNS, LEGACY_ASHEN_REFUGE } from "./campaign-data";
+import { campaignMission, goalProgress, endsRefugeMediation } from "./campaign-progress";
 import type { CampaignId, CampaignState, RecruitType } from "./types";
 
 export const DAMAGE_TYPES = Object.freeze({
@@ -202,7 +202,12 @@ export class Game {
     if (!Object.hasOwn(MAPS, mapId)) throw new Error("Unknown battlefield.");
     if (![1, MAPS[mapId as MapId].revision ?? 1].includes(mapRevision))
       throw new Error("Unknown battlefield revision.");
-    const layout = mapId === "river" && mapRevision === 1 ? LEGACY_RIVER : MAPS[mapId as MapId];
+    const layout =
+      mapId === "river" && mapRevision === 1
+        ? LEGACY_RIVER
+        : mapId === "ashen-refuge" && mapRevision === 1
+          ? LEGACY_ASHEN_REFUGE
+          : MAPS[mapId as MapId];
     this.mapRevision = mapRevision;
     this.mapId = mapId as MapId;
     this.cols = layout.cols;
@@ -522,6 +527,8 @@ export class Game {
     attacker.attacked = true;
     target.hp -= result.damage;
     if (target.hp > 0) attacker.hp -= result.retaliation;
+    if (attacker.side === "player" && target.hp <= 0 && endsRefugeMediation(this, target))
+      this.escalateRefuge();
     const sideLabel = attacker.side === "player" ? "Your" : "Enemy";
     const unitName = TYPES[attacker.type].name.toLowerCase();
     const attackName = details.attack.name.toLowerCase();
@@ -662,7 +669,8 @@ export class Game {
     const unit = this.unit(id);
     if (!unit || unit.side !== "enemy" || unit.attacked) return;
 
-    if (this.tryEnemyAttack(unit)) return;
+    if (this.tryEnemyRetreat(unit)) return;
+    if (this.tryEnemyAttack(unit, Boolean(unit.retreating))) return;
     if (TYPES[unit.type].leader && this.round < 5) return;
 
     const goals = this.enemyMovementGoals(unit);
@@ -670,15 +678,85 @@ export class Game {
     const routes =
       this.mapId === "river" || this.campaign ? this.routeDistances(unit, goals) : null;
     const destinations = [unit.tile, ...this.reachable(id).keys()];
-    destinations.sort(
-      (first, second) =>
-        this.enemyPositionScore(unit, second, goals, routes) -
-        this.enemyPositionScore(unit, first, goals, routes),
+    const scores = new Map(
+      destinations.map((tile) => [tile, this.enemyPositionScore(unit, tile, goals, routes)]),
     );
+    destinations.sort((first, second) => scores.get(second)! - scores.get(first)!);
 
     const destination = destinations[0]!;
     if (destination !== unit.tile) this.move(id, destination);
-    this.tryEnemyAttack(unit);
+    this.tryEnemyAttack(unit, Boolean(unit.retreating));
+  }
+
+  /** Immediate incoming attacks are enough to avoid a doomed stand; distance breaks safe ties. */
+  private enemyDanger(unit: Unit, tileId: string): number {
+    const positioned = { ...unit, tile: tileId };
+    const damage = this.units
+      .filter((opponent) => opponent.side === "player")
+      .map((opponent) =>
+        Math.max(
+          0,
+          ...this.attackOptions(opponent, positioned).map((weapon) =>
+            this.damage(opponent, positioned, weapon.id),
+          ),
+        ),
+      )
+      .sort((a, b) => b - a);
+    return (damage[0] ?? 0) + (damage[1] ?? 0);
+  }
+
+  private tryEnemyRetreat(unit: Unit): boolean {
+    const enemies = this.units.filter((opponent) => opponent.side === "player");
+    if (!enemies.length) return false;
+    const danger = this.enemyDanger(unit, unit.tile);
+    const wounded = unit.hp <= Math.ceil(TYPES[unit.type].hp / 3);
+    const trappedAttack =
+      this.targets(unit.id).length > 0 &&
+      this.targets(unit.id).every((target) => {
+        const attack = this.bestAttack(unit, target)!;
+        return this.preview(unit, target, attack.id).retaliation >= unit.hp;
+      });
+    const recovering = unit.retreating && unit.hp < Math.ceil(TYPES[unit.type].hp * 0.7);
+    if (!wounded && !recovering && danger < unit.hp && !trappedAttack) {
+      delete unit.retreating;
+      return false;
+    }
+    unit.retreating = true;
+    const villages = this.tiles.filter(
+      (tile) =>
+        tile.terrain === "village" &&
+        tile.owner !== "player" &&
+        (!this.at(tile.id) || this.at(tile.id)?.id === unit.id) &&
+        this.enemyDanger(unit, tile.id) === 0,
+    );
+    const routes = villages.length ? this.routeDistances(unit, villages) : null;
+    const score = (id: string): number => {
+      const tile = this.tile(id)!;
+      const threat = this.enemyDanger(unit, id);
+      const separation = Math.min(
+        ...enemies.map((opponent) => distance(tile, this.tile(opponent.tile)!)),
+      );
+      const healing =
+        tile.terrain === "village" && tile.owner !== "player" && threat === 0 ? 20 : 0;
+      return -threat * 20 + Math.min(separation, 8) * 2 + healing - (routes?.get(id) ?? 0);
+    };
+    const destinations = [unit.tile, ...this.reachable(unit.id).keys()];
+    const scores = new Map(destinations.map((tile) => [tile, score(tile)]));
+    destinations.sort((a, b) => scores.get(b)! - scores.get(a)!);
+    const destination = destinations[0]!;
+    if (destination !== unit.tile && scores.get(destination)! > scores.get(unit.tile)!) {
+      this.move(unit.id, destination);
+      unit.attacked = true;
+      this.record(`${unit.name ?? TYPES[unit.type].name} is retreating.`);
+      return true;
+    }
+    // Rest in safety rather than leaving a healing village to take another fight.
+    if (danger === 0) {
+      unit.attacked = true;
+      return true;
+    }
+    // No better escape exists. The normal action may now make a desperate attack.
+    return false;
   }
 
   private enemyAttackScore(unit: Unit, target: Unit, from = unit.tile): number {
@@ -696,7 +774,7 @@ export class Game {
     );
   }
 
-  private tryEnemyAttack(unit: Unit): boolean {
+  private tryEnemyAttack(unit: Unit, desperate = false): boolean {
     const targets = this.targets(unit.id).sort(
       (first, second) => this.enemyAttackScore(unit, second) - this.enemyAttackScore(unit, first),
     );
@@ -705,7 +783,7 @@ export class Game {
 
     const attack = this.bestAttack(unit, target)!;
     const preview = this.preview(unit, target, attack.id);
-    if (preview.retaliation >= unit.hp) return false;
+    if (preview.retaliation >= unit.hp && !desperate) return false;
 
     this.attack(unit.id, target.id, attack.id);
     return true;
@@ -725,7 +803,11 @@ export class Game {
     if (this.campaign) {
       const mission = campaignMission(this.campaign);
       const territory = mission.goals.flatMap((goal) =>
-        goal.kind === "control" ? goal.tiles : goal.kind === "hold" ? [goal.tile] : [],
+        goal.kind === "control"
+          ? goal.tiles
+          : goal.kind === "hold" || (goal.kind === "refuge" && !this.campaign?.refuge?.escalated)
+            ? [goal.tile]
+            : [],
       );
       const contested = territory.filter((id) => this.tile(id)?.owner !== "enemy");
       if (contested.length) goals = contested.map((id) => this.tile(id)!);
@@ -763,7 +845,11 @@ export class Game {
     const canHeal = unit.hp <= 4 && tile.terrain === "village" && tile.owner === "enemy";
     const healingBonus = canHeal ? 9 : 0;
     const hillBonus = tile.terrain === "hill" ? 0.25 : 0;
-    return -distanceToGoal + attackOpportunity + captureBonus + healingBonus + hillBonus;
+    const danger = this.enemyDanger(unit, tileId);
+    const dangerPenalty = danger >= unit.hp ? 40 : danger * 0.5;
+    return (
+      -distanceToGoal + attackOpportunity + captureBonus + healingBonus + hillBonus - dangerPenalty
+    );
   }
 
   captureState(): GameState {
@@ -827,6 +913,7 @@ export class Game {
     missionIndex = 0,
     recall: RecruitType[] = [],
     carryGold = 0,
+    choices: NonNullable<CampaignState["choices"]> = [],
   ): Game {
     const definition = CAMPAIGNS[id];
     const mission = definition?.missions[missionIndex];
@@ -850,7 +937,17 @@ export class Game {
       dialogueIndex: 0,
       outcome: null,
       completed: false,
+      ...(choices.length ? { choices: [...choices] } : {}),
+      ...(mission.refuge
+        ? { refuge: { heldTurns: 0, lastCountedRound: 1, escalated: false } }
+        : {}),
     };
+    if (choices.includes("refuge-war") && mission.withoutDain) {
+      game.units = game.units.filter((unit) => unit.name !== "Captain Dain");
+      for (const incoming of mission.withoutDain.reinforcements)
+        game.addUnit(incoming.type, incoming.side, `${incoming.col},${incoming.row}`);
+      game.campaign.dialogue = mission.withoutDain.intro.map((line) => ({ ...line }));
+    }
     game.gold = { player: mission.gold + game.campaign.carryGold, enemy: mission.enemyGold };
     const leader = game.units.find((unit) => unit.side === "player" && unit.role === "leader")!;
     const slots = game.tiles
@@ -871,7 +968,7 @@ export class Game {
       if (["village", "grove", "ruins", "fort"].includes(tile.terrain)) tile.owner = unit.side;
     }
     game.log = [];
-    game.record(mission.briefing);
+    game.record(campaignMission(game.campaign).briefing);
     return game;
   }
 
@@ -891,6 +988,7 @@ export class Game {
       this.campaign.mission + 1,
       roster,
       this.gold.player,
+      this.campaign.choices ?? [],
     );
   }
 
@@ -901,6 +999,7 @@ export class Game {
       this.campaign.mission,
       this.campaign.recall,
       this.campaign.carryGold,
+      campaignMission(this.campaign).refuge ? [] : (this.campaign.choices ?? []),
     );
   }
 
@@ -957,6 +1056,19 @@ export class Game {
       this.record(campaign.outcome);
       return;
     }
+    if (mission.refuge) {
+      campaign.refuge ??= { heldTurns: 0, lastCountedRound: this.round, escalated: false };
+      if (!this.units.some((unit) => unit.side === "enemy" && unit.role === "leader"))
+        this.escalateRefuge();
+      const refugeGoal = mission.goals.find((goal) => goal.kind === "refuge");
+      if (refugeGoal?.kind === "refuge" && !campaign.refuge.escalated) {
+        if (this.tile(refugeGoal.tile)?.owner !== "player") campaign.refuge.heldTurns = 0;
+        else if (atTurnStart && this.round > campaign.refuge.lastCountedRound) {
+          campaign.refuge.heldTurns++;
+        }
+        if (atTurnStart) campaign.refuge.lastCountedRound = this.round;
+      }
+    }
     for (const goal of mission.goals) {
       if (
         atTurnStart &&
@@ -984,20 +1096,51 @@ export class Game {
         if (!triggered || campaign.marks.includes(marker)) continue;
         campaign.marks.push(marker);
         this.gold.player += event.gold ?? 0;
-        campaign.dialogue.push(...structuredClone(event.dialogue));
+        campaign.dialogue.push(
+          ...structuredClone(
+            campaign.refuge?.escalated && event.warDialogue ? event.warDialogue : event.dialogue,
+          ),
+        );
         this.record(event.label ?? "The company found a new story.");
       }
     }
     if (mission.goals.every((goal) => goalProgress(this, goal).done)) {
       this.winner = "player";
       campaign.outcome = "Mission complete. The company can rest and regroup.";
-      campaign.dialogue.push(...structuredClone(mission.victory));
+      const refugeChoice = mission.refuge
+        ? campaign.refuge?.escalated
+          ? "refuge-war"
+          : "refuge-peace"
+        : null;
+      if (refugeChoice) campaign.choices = [...(campaign.choices ?? []), refugeChoice];
+      campaign.dialogue.push(
+        ...structuredClone(
+          refugeChoice === "refuge-war" ? mission.refuge!.warVictory : mission.victory,
+        ),
+      );
       campaign.completed = campaign.mission === CAMPAIGNS[campaign.id].missions.length - 1;
       if (campaign.completed)
-        campaign.dialogue.push(...structuredClone(CAMPAIGNS[campaign.id].ending));
+        campaign.dialogue.push(
+          ...structuredClone(
+            CAMPAIGNS[campaign.id].ending.filter(
+              (line) => !campaign.choices?.includes("refuge-war") || line.speaker !== "Dain",
+            ),
+          ),
+        );
       this.record(
         campaign.completed ? `${CAMPAIGNS[campaign.id].name} is complete.` : "Mission complete.",
       );
     }
+  }
+
+  private escalateRefuge(): void {
+    if (!this.campaign || !campaignMission(this.campaign).refuge) return;
+    this.campaign.refuge ??= { heldTurns: 0, lastCountedRound: this.round, escalated: false };
+    if (this.campaign.refuge.escalated) return;
+    this.campaign.refuge.escalated = true;
+    this.campaign.dialogue.push(
+      ...structuredClone(campaignMission(this.campaign).refuge!.escalation),
+    );
+    this.record("The chance of mediation is lost. Defeat the remaining patrol.");
   }
 }
