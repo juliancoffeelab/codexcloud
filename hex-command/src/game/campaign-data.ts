@@ -963,7 +963,7 @@ const green: MissionDefinition[] = [
       line(
         "Tamsin",
         "adept",
-        "I will help clear the dead from her road. We need a witness at the meeting, not another duel with their master.",
+        "Dain sent for me. Some of those woodcutters were my neighbors. I will help clear your road; their families need the truth, not another duel with their master.",
       ),
     ],
     victory: [

@@ -93,6 +93,7 @@ function observation(includeRules = false) {
     name: mission.map.name,
     briefing: mission.briefing,
     hints: mission.hints,
+    conversation: game.campaign!.dialogue.map((line) => ({ ...line })),
     requiredCompanions: mission.requiredCompanions ?? [],
     round: game.round,
     turn: game.turn,

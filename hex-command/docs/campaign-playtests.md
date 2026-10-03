@@ -1,14 +1,16 @@
 # Campaign playtests
 
-The completion rates below describe the frozen balance pass at `c3b2c72`, before
-the refuge mediation and enemy retreat changes. They are historical results,
-not estimates for the current rules. Current refuge verification checks defended
-turns, medicine, escalation, retreat/healing, saves, and both next-mission branches.
-Actual-engine scenario probes also completed the peaceful route after six enemy
-turns without medicine and five with medicine, using a returning company. Those
-A deliberate pursuit probe also completed the hostile route on turn 10. The
-probes used three returning undead recruits and six carried gold; these are
-controlled scenarios, not fresh linked Luna sessions or new completion rates.
+The current Green Accord repair was tested at `81979dc`; its results are reported
+first. The other campaign completion rates describe the historical balance pass
+at `c3b2c72`, before refuge mediation and enemy retreat changes, and do not
+estimate current performance.
+
+Current refuge verification checks defended turns, medicine, escalation,
+retreat/healing, saves, and both next-mission branches. Actual-engine scenario
+probes completed the peaceful route after six enemy turns without medicine and
+five with medicine. A deliberate pursuit probe completed the hostile route on
+turn 10. These probes used three returning undead recruits and six carried gold;
+they are controlled scenarios, not fresh linked Luna sessions or completion rates.
 
 These are independent Luna 6 play sessions through `scripts/play-campaign.ts`,
 which imports the production `Game` engine. The CLI exposes observations, legal
@@ -20,16 +22,78 @@ Each player starts at mission one, earns survivor and gold carryover, and choose
 its own tactics. Each mission allows one retry; a second defeat ends that session.
 A 40-turn limit per attempt is a test budget, not a game defeat condition. Players
 cannot inspect implementation code, other trials, or edit saves. Dialogue is
-acknowledged automatically. The trials record decisions, retries, carryover and
-enemy responses. `scripts/replay-campaign.ts` verifies these against the matching
-engine source. Rules are frozen for each session and fingerprinted in new trials.
+acknowledged automatically, with its accumulated lines now exposed in observations.
+The trials record decisions, retries, carryover and enemy responses.
+`scripts/replay-campaign.ts` verifies these against the matching engine source.
+Rules are frozen for each session and fingerprinted in new trials.
 
 Combat is deterministic. Completion rates measure variation in independent
 players' decisions, rather than combat dice or a guaranteed population win rate.
 Five sessions per campaign are a small sample. Whole-campaign completion includes
 the permitted retries; first-attempt mission wins are reported separately.
 
-## Final results
+## Current Green Accord repair
+
+Gameplay trial source: `81979dce002f392cf18d0875806fcc03d9616de1`. Five fresh Luna 6 players
+started at the opening mission, retaining their earned company and gold through
+all reached chapters. Each had one retry per mission. The table records the
+ending round of each attempt; unreached missions remain unreached.
+
+The missions now connect grove recovery, Lark's vigil to uncover the murdered
+woodcutters, and bringing that evidence to the villagers. The vigil requires
+Lark to remain in the owned central grove through three completed enemy turns,
+with progress resetting when she leaves or the grove is lost. Lark is required
+throughout; her death ends the mission. Dain's death changes later dialogue and
+reinforcements rather than restoring him, and the survivors' victory dialogue
+does not require optional companions to remain alive.
+
+Thorncaller's ranged Thorns deal 3 Pierce instead of 2; the weak melee reply, HP,
+movement and cost are unchanged. Boars now pay 1 movement in forests and groves, matching
+the other woodland beasts, while retaining their slower marsh and ford costs.
+Both factions share these unit rules. Two opening guards and two vigil guards
+start farther away, allowing an initial approach without immediately trapping
+the required companion between two melee attackers.
+
+The first repaired candidate, `a2a9bae`, completed 0/2 campaigns: A lost the
+opening twice; B won the opening but lost the vigil twice. Those failures
+prompted the guard placement and boar movement changes. Both failures remain
+in the dataset under cohort `green-continuity-1`. The final five sessions use
+cohort `green-continuity-2` and one frozen rules fingerprint.
+
+Whole campaigns completed: **4/5**; first-attempt mission wins: **11/13**.
+Three players completed all three chapters without a retry. C used its opening
+retry successfully; D lost the opening twice and did not reach later chapters.
+
+| Trial | Mission 1       | Mission 2 | Mission 3 | Complete |
+| ----- | --------------- | --------- | --------- | -------- |
+| C     | Loss 2 → Win 2  | Win 4     | Win 5     | Yes      |
+| D     | Loss 1 → Loss 5 | —         | —         | No       |
+| E     | Win 3           | Win 4     | Win 7     | Yes      |
+| F     | Win 3           | Win 4     | Win 5     | Yes      |
+| G     | Win 3           | Win 4     | Win 13    | Yes      |
+
+These trials received briefings, hints and debriefs throughout. Conversation lines
+were initially omitted by the CLI despite being automatically acknowledged; the
+observation field was added during F and G's finale. Gameplay rules stayed frozen,
+but these runs do not establish full-campaign narrative comprehension. Future
+players receive the actual introduction, event and result lines as well.
+A separate dialogue review by E found the three-mission motivation coherent,
+but Tamsin arrived without an introduction on the Dain-alive path. After the
+trials, her existing finale line was clarified to explain why she joined; this
+copy change leaves unit stats, AI, maps and objectives unchanged.
+
+All new decision traces replay against their recorded source. The
+[machine-readable results](campaign-playtest-results.json) preserve both repair
+cohorts, attempts, transcript hashes, source commits and rules fingerprints.
+These are observed outcomes for five independent players, not a statistical
+guarantee. Fragile Lark can still die when exposed to multiple attackers; the
+objectives require protecting her rather than clearing every enemy.
+
+Verification on the final production source: formatting, strict TypeScript and
+Svelte checks, all 17 lightweight unit-test files (6.05 seconds), and production
+build passed. Browser interaction and visual parity were not tested.
+
+## Historical results
 
 Five fresh sessions per story tested the final layouts. There were 40 independent
 sessions across all versions, including unsuccessful tuning candidates.

@@ -168,8 +168,9 @@ node --import tsx scripts/play-campaign.ts /tmp/my-company.json '{"op":"act","ac
 ```
 
 Each invocation reads and writes that trial file, returning JSON with the current
-map, units, treasury, objectives, side quests and announced reinforcements. Start
-and retry also return unit definitions, terrain rules and the common action rules.
+map, units, treasury, briefing, hints, conversations, objectives, side quests and
+announced reinforcements, plus the debrief after victory. Start and retry also
+return unit definitions, terrain rules and the common action rules.
 Coordinates are zero-based `col,row` on the game's odd-row-offset hex grid.
 Start refuses to overwrite an existing trial; use next, retry, or a new file path.
 
@@ -189,7 +190,9 @@ Action objects use `op` and `unit`, plus `tile` for a move, `target` and optiona
 `weapon` for an attack, or `type` and `tile` for recruitment. Move before attacking:
 an attack ends movement. New recruits act next turn. An invalid action stops the
 batch and returns an error plus the authoritative observation; earlier successful
-actions stay applied. Dialogue is acknowledged automatically for headless play.
+actions stay applied. Dialogue is acknowledged automatically for headless play,
+and `conversation` returns the current mission's accumulated lines, including
+introductions, events and the result, so agents can read them without modal clicks.
 
 Threat inspection considers each enemy independently with refreshed actions. Its
 damage sum is a conservative bound, rather than an AI prediction: movements can
