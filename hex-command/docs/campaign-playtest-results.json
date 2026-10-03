@@ -1404,6 +1404,67 @@
       "replayVerified": true,
       "sourceSnapshot": "final",
       "exception": null
+    },
+    {
+      "trial": "green-repair-luna-a",
+      "campaign": "green-accord",
+      "cohort": "green-continuity-1",
+      "completed": false,
+      "attempts": [
+        {
+          "mission": "green-border",
+          "winner": "enemy",
+          "round": 3,
+          "survivors": 1,
+          "attempt": 1
+        },
+        {
+          "mission": "green-border",
+          "winner": "enemy",
+          "round": 4,
+          "survivors": 3,
+          "attempt": 2
+        }
+      ],
+      "rulesFingerprint": "44733194a35764b9b16885fbcd2391e5edeab4392d346221941e50ad5a750a5e",
+      "recordSha256": "283bc896a1f1c3a0c715f4854638d57aaef78f735f64bfe63b9dd0656e0fc05e",
+      "replayVerified": true,
+      "sourceSnapshot": "a2a9bae37e509779e4156bea8b354dc961c9f40a",
+      "exception": null
+    },
+    {
+      "trial": "green-repair-luna-b",
+      "campaign": "green-accord",
+      "cohort": "green-continuity-1",
+      "completed": false,
+      "attempts": [
+        {
+          "mission": "green-border",
+          "winner": "player",
+          "round": 7,
+          "survivors": 3,
+          "attempt": 1
+        },
+        {
+          "mission": "green-vigil",
+          "winner": "enemy",
+          "round": 1,
+          "survivors": 4,
+          "attempt": 1
+        },
+        {
+          "mission": "green-vigil",
+          "winner": "enemy",
+          "round": 6,
+          "survivors": 1,
+          "attempt": 2
+        }
+      ],
+      "rulesFingerprint": "44733194a35764b9b16885fbcd2391e5edeab4392d346221941e50ad5a750a5e",
+      "recordSha256": "dd99f07a47f542986d36a9a020454ab6cc6ce4cd7570cc42f1c5df5d266fcedc",
+      "replayVerified": true,
+      "sourceSnapshot": "a2a9bae37e509779e4156bea8b354dc961c9f40a",
+      "exception": null
     }
   ]
 }

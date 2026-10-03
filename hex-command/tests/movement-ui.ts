@@ -66,6 +66,38 @@ for (const type of Object.keys(TYPES) as UnitType[]) {
   assert.deepEqual(view.game.snapshot(), before);
 }
 
+// Every woodland beast can traverse a full movement allowance of forest/grove hexes.
+for (const type of ["wolf", "boar", "wildkeeper", "thorncaller"] as const) {
+  const route = new Game();
+  route.units = [];
+  for (const tile of route.tiles) tile.terrain = "water";
+  required(route.tile("0,0")).terrain = "plains";
+  for (let col = 1; col <= 5; col++) {
+    required(route.tile(`${col},0`)).terrain = col % 2 ? "forest" : "grove";
+  }
+  const beast = route.addUnit(type, "player", "0,0");
+  assert.equal(route.cost(beast, { terrain: "forest" }), 1);
+  assert.equal(route.cost(beast, { terrain: "grove" }), 1);
+  const destination = `${TYPES[type].move},0`;
+  assert.equal(route.reachable(beast.id).get(destination), TYPES[type].move);
+  assert.equal(createGameView(route).reachable(beast.id).get(destination), TYPES[type].move);
+  route.move(beast.id, destination);
+  assert.equal(beast.tile, destination);
+  assert.equal(route.reachable(beast.id).size, 0, "A spent move cannot move again");
+  beast.tile = "0,0";
+  beast.moved = false;
+  beast.attacked = true;
+  assert.equal(route.reachable(beast.id).size, 0, "Attacking also ends movement");
+  beast.attacked = false;
+  route.addUnit("wolf", "enemy", "1,0");
+  assert.equal(route.reachable(beast.id).size, 0, "Occupied hexes still block the route");
+  if (type === "boar") {
+    assert.equal(route.cost(beast, { terrain: "marsh" }), 3);
+    assert.equal(route.cost(beast, { terrain: "ford" }), 3);
+    assert.equal(TYPES.boar.move, 3);
+  }
+}
+
 // Terrain keeps its protection and healing facts; movement costs belong to units.
 const unit = required(game.units[0]);
 const view = published(game, unit.id);

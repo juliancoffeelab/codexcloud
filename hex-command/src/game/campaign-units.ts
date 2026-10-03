@@ -101,6 +101,7 @@ export const CAMPAIGN_UNITS = {
   boar: {
     name: "Boar",
     race: "beast",
+    woodland: true,
     hp: 13,
     move: 3,
     damage: 4,
@@ -110,7 +111,7 @@ export const CAMPAIGN_UNITS = {
     damageModifiers: { blade: 0, pierce: 0, impact: 0 },
     ability: "Thick hide",
     description:
-      "A sturdy front-line beast. Tusks punish wolves and unarmored units, but it has no ranged reply.",
+      "Forests and groves cost 1 movement. A sturdy front-line beast. Tusks punish wolves and unarmored units, but it has no ranged reply.",
   },
   wildkeeper: {
     name: "Wildkeeper",
