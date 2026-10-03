@@ -527,8 +527,6 @@ export class Game {
     attacker.attacked = true;
     target.hp -= result.damage;
     if (target.hp > 0) attacker.hp -= result.retaliation;
-    if (attacker.side === "player" && target.hp <= 0 && endsRefugeMediation(this, target))
-      this.escalateRefuge();
     const sideLabel = attacker.side === "player" ? "Your" : "Enemy";
     const unitName = TYPES[attacker.type].name.toLowerCase();
     const attackName = details.attack.name.toLowerCase();
@@ -539,6 +537,7 @@ export class Game {
       `${sideLabel} ${unitName} used ${attackName} for ${result.damage} damage${retaliationMessage}.`,
     );
     for (const defeated of this.units.filter((unit) => unit.hp <= 0)) {
+      if (endsRefugeMediation(this, defeated)) this.escalateRefuge();
       if (TYPES[defeated.type].leader && !this.campaign) {
         this.winner = defeated.side === "player" ? "enemy" : "player";
       }

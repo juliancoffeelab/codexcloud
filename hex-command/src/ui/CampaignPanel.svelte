@@ -25,24 +25,6 @@
       (unit) => unit.side === "player" && !TYPES[unit.type].leader && unit.role !== "courier",
     ),
   );
-  const upcoming = $derived(
-    mission && campaign
-      ? [
-          ...new Set(
-            mission.waves
-              .filter(
-                (wave, index) =>
-                  !campaign.marks.includes(`wave:${index}`) &&
-                  !(
-                    wave.requiresUnsealed &&
-                    campaign.marks.includes(`sealed:${wave.requiresUnsealed}`)
-                  ),
-              )
-              .map((wave) => wave.label),
-          ),
-        ]
-      : [],
-  );
   const missionMapId = $derived(view.game.mapId);
   $effect(() => {
     missionMapId;
@@ -86,7 +68,6 @@
     <h3>Hints</h3>
     <ul class="mission-items">
       {#each mission.hints as hint}<li><span>{hint}</span></li>{/each}
-      {#each upcoming as warning}<li><span>{warning}</span></li>{/each}
     </ul>
     <h3>Objectives</h3>
     <ul class="mission-items mission-goals">

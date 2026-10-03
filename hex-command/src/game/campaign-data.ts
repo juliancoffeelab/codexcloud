@@ -105,10 +105,9 @@ const lantern: MissionDefinition[] = [
     briefing:
       "The eastern villages have gone dark. Ivo carries their names and a message for the last ferryman; Nera promises to get him across the river. The Tollkeeper’s guards block the road, but this journey is about reaching the living, not conquering the valley.",
     hints: [
-      "Recruit before leaving your keep.",
-      "Use your soldiers to screen Ivo.",
-      "Skeletons resist arrows; swords and maces are effective against them.",
-      "The bridge approaches the guards; the northern ford leads to a healing village and a route around them.",
+      "Ivo travels better in good company.",
+      "An arrow finds little purchase in bare bones.",
+      "The river has more than one crossing.",
     ],
     goals: [{ kind: "escort", label: "Bring Ivo to the northeastern landing", tile: "11,1" }],
     recruits: ["soldier", "archer", "scout"],
@@ -226,8 +225,8 @@ const lantern: MissionDefinition[] = [
     briefing:
       "The ferryman has brought news of three settlements occupied by the dead. Nera’s company is staying to reopen the road and light their windows again. Sella’s wardens will help, but the Tollkeeper is still collecting from the other bank.",
     hints: [
-      "Split your force, or secure the central bridge first.",
-      "Villages pay two gold per turn to whoever controls them.",
+      "One bridge need not carry the whole army.",
+      "A welcoming village can keep a march alive.",
     ],
     goals: [
       { kind: "control", label: "Light all three eastern villages", tiles: ["7,1", "7,4", "7,7"] },
@@ -345,9 +344,8 @@ const lantern: MissionDefinition[] = [
     briefing:
       "The villages are lit again, but the bell keeps calling their dead back to war. Nera and the adepts have traced that call to the grave ruins. Breaking those bindings will let the company silence the Bellwarden and leave the valley a road home.",
     hints: [
-      "Your forward camp is near the crossings.",
-      "Ruins beyond the flank bridges offer cover. Send scouts to the graves once your shields clear a crossing.",
-      "A sealed grave permanently stops its reinforcements.",
+      "The broken walls still cast a useful shadow.",
+      "Listen for where the bell’s answer comes from.",
     ],
     goals: [
       { kind: "seal", label: "Seal the three grave ruins", tiles: ["9,1", "11,4", "9,7"] },
@@ -466,9 +464,9 @@ const green: MissionDefinition[] = [
     briefing:
       "Alder’s pack has found soldiers cutting the sacred groves for the overseer. The roots shelter the woodland people and hold their memories. Alder wants the intruders driven out so the forest can recover, without turning its border villages into another battlefield.",
     hints: [
-      "Wolves cross woods quickly, but spears and arrows hurt them.",
-      "Use boars to hold lanes and Alder’s impact attacks against armored wardens.",
-      "Owned groves heal their occupants by two HP each turn.",
+      "Wolves know paths a soldier might miss.",
+      "Even fine armor has something to fear.",
+      "The old groves have not forgotten their own.",
     ],
     goals: [
       { kind: "control", label: "Reclaim the three sacred groves", tiles: ["3,1", "5,4", "3,7"] },
@@ -577,7 +575,7 @@ const green: MissionDefinition[] = [
     subtitle: "The grove must still be yours at dawn.",
     briefing:
       "The grove is back in the pack’s care. Lark needs a quiet vigil to reveal what lies beneath its stones, while the overseer sends patrols to interrupt her. Alder must give her that time; what she uncovers could convince the living that the forest is more than timber.",
-    hints: ["The grove heals whoever owns it.", "Capture enemy fortifications to use their cover."],
+    hints: ["The grove still has life to spare.", "A wall cares little who built it."],
     goals: [{ kind: "hold", label: "Hold the central grove until turn 6", tile: "6,4", round: 6 }],
     recruits: ["wolf", "boar", "thorncaller"],
     enemyRecruits: ["soldier", "archer"],
@@ -692,9 +690,8 @@ const green: MissionDefinition[] = [
     briefing:
       "Dain has seen the overseer’s deception and agreed to carry Lark’s testimony to the villages. Her living branch is proof that the grove survived. The dead still bar the crossing; Alder and Dain must open a safe road for their witness and the pact she carries.",
     hints: [
-      "Groves along the northern route offer healing and ranged cover.",
-      "Dain brings wardens and adepts: spears counter wolves, while stone sparks hurt skeletal armor.",
-      "Keep Lark behind the fighting line.",
+      "The northern trees may offer a gentler journey.",
+      "A witness need not stand in the front rank.",
     ],
     goals: [
       { kind: "control", label: "Secure the fort beside the bridge", tiles: ["7,4"] },
@@ -847,10 +844,9 @@ const ashen: MissionDefinition[] = [
     briefing:
       "The Master’s binding broke at midnight. For the first time, Orin and the quarry’s dead can choose where to go. Orin leads them toward the northern gate before the guards can return them to servitude. Freedom begins with getting the company out alive.",
     hints: [
-      "Recruit before leaving your keep.",
-      "The guards hold the southern road; the northern ford offers a way around them.",
-      "Three skeletons can screen Orin while he crosses.",
-      "Bones resist arrows. Northern ruins provide ranged cover, and owned villages heal their occupants.",
+      "The guards watch the road more closely than the river.",
+      "Bare bones have little to fear from arrows.",
+      "Orin need not make the crossing alone.",
     ],
     goals: [{ kind: "escape", label: "Bring Orin to the northern quarry gate", tile: "11,1" }],
     recruits: ["skeleton", "bonearcher"],
@@ -915,11 +911,11 @@ const ashen: MissionDefinition[] = [
     },
     subtitle: "A refuge needs neighbors, not another war.",
     briefing:
-      "Orin’s company has found empty houses beside living villages. Captain Dain has orders to drive the dead away; the villagers want time to judge their new neighbors for themselves. Orin will defend the refuge while they gather. Helping the sick can win their support sooner, but hunting down withdrawing soldiers would destroy the chance of peace.",
+      "Orin’s company has found empty houses beside living villages. Captain Dain has orders to drive the dead away; the villagers want time to judge their new neighbors for themselves. Orin will defend the refuge while they gather. Helping the sick can win their support sooner, but a withdrawing soldier’s death would destroy the chance of peace.",
     hints: [
-      "Use nearby villages to heal and fund your defense.",
-      "Bring herbs from the northern grove to win support sooner.",
-      "Let retreating soldiers go if you want peace.",
+      "An empty house can still offer shelter.",
+      "The northern grove may have something for the sick.",
+      "Leave frightened soldiers a way home.",
     ],
     goals: [
       {
@@ -979,8 +975,8 @@ const ashen: MissionDefinition[] = [
       warBriefing:
         "The attempt to live beside the villages has become an open battle. After the bloodshed, the households can no longer persuade the patrol to stand down. Orin’s company must break the remaining patrol to leave, and will face the Master without Dain’s help.",
       warHints: [
-        "Cut off the patrol’s retreat to its healing village.",
-        "Rest your wounded in the nearby villages.",
+        "The patrol still has somewhere to run.",
+        "The empty houses remain, even after peace is lost.",
       ],
       escalation: [
         line(
@@ -1131,8 +1127,8 @@ const ashen: MissionDefinition[] = [
     briefing:
       "Dain has chosen to stand beside Orin against the man who commanded them both. The Master still binds others to his will through stones along the road. Breaking those chains and confronting him is the company’s chance to secure a freedom he cannot simply revoke.",
     hints: [
-      "Dain adds wardens and adepts to your recruitment pool.",
-      "Enter a binding stone before its reinforcement arrives to stop it.",
+      "Dain’s company has more to offer than swords.",
+      "The stones are where the Master’s reach begins.",
     ],
     goals: [
       { kind: "seal", label: "Break both binding stones", tiles: ["7,2", "7,6"] },
@@ -1159,8 +1155,8 @@ const ashen: MissionDefinition[] = [
       briefing:
         "The refuge battle ended without an agreement. Dain and his allies will not come with Orin; the company must face the Master alone. His binding stones still hold others in servitude. Breaking them is the first step toward a freedom that can survive him.",
       hints: [
-        "You have no living allies after the refuge battle. Skeletons and bone archers remain available to recruit.",
-        "Enter a binding stone before its reinforcement arrives to stop it.",
+        "The dead will have to look after their own.",
+        "The stones are where the Master’s reach begins.",
       ],
       recruits: ["skeleton", "bonearcher"],
       reinforcements: [unit("skeleton", "player", 2, 4), unit("bonearcher", "player", 1, 3)],

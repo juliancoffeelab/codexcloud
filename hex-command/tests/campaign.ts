@@ -117,7 +117,7 @@ globalThis.localStorage = storage;
     ),
   );
   assert(choice.available);
-  assert(choice.enemyForecast.impactLabel.includes("mediation lost"));
+  assert(choice.enemyForecast.impactLabel.endsWith("(dies)"));
   game.attack(defender.id, fleeing.id, "boneclub");
   assert.equal(game.campaign?.refuge?.escalated, true);
   const goal = campaignMission(game.campaign!).goals[0]!;
@@ -150,7 +150,7 @@ globalThis.localStorage = storage;
   saveBattle(next);
   assert.deepEqual(loadBattle().game.snapshot(), next.snapshot());
 }
-// Defensive kills of troops who are still fighting do not close the peaceful route.
+// Killing troops who are still fighting does not close the peaceful route.
 {
   const game = Game.startCampaign("ashen-oath", 1);
   const defender = required(game.at("5,4"));
@@ -161,6 +161,44 @@ globalThis.localStorage = storage;
   target.hp = 1;
   game.attack(defender.id, target.id, "boneclub");
   assert.equal(game.campaign?.refuge?.escalated, false);
+}
+
+// Every withdrawing troop or captain death closes mediation, including a lethal reply.
+for (const scenario of ["retreating", "captain", "fighting", "survives"] as const) {
+  const game = Game.startCampaign("ashen-oath", 1);
+  game.advanceDialogue(true);
+  const defender = required(game.at("5,4"));
+  const attacker = required(
+    game.units.find((unit) =>
+      scenario === "captain"
+        ? unit.side === "enemy" && unit.role === "leader"
+        : unit.side === "enemy" && unit.type === "soldier",
+    ),
+  );
+  attacker.tile = "6,4";
+  attacker.hp = scenario === "survives" ? TYPES[attacker.type].hp : 1;
+  if (scenario === "retreating" || scenario === "survives") attacker.retreating = true;
+  game.turn = "enemy";
+  const weapon = TYPES[attacker.type].attacks[0]!;
+  assert(game.previewDetails(attacker, defender, weapon.id).retaliation > 0);
+  game.attack(attacker.id, defender.id, weapon.id);
+  const escalated = scenario === "retreating" || scenario === "captain";
+  assert.equal(game.campaign?.refuge?.escalated, escalated, scenario);
+  assert.equal(Boolean(game.unit(attacker.id)), scenario === "survives", scenario);
+  if (escalated) {
+    game.beginTurn("player");
+    saveBattle(game);
+    const restored = loadBattle().game;
+    assert.equal(restored.campaign?.refuge?.escalated, true);
+    restored.advanceDialogue(true);
+    restored.round = 40;
+    restored.beginTurn("player");
+    assert.equal(restored.winner, null, "a lethal reply permanently closes mediation");
+    assert.equal(
+      goalProgress(restored, campaignMission(restored.campaign!).goals[0]!).label,
+      "Defeat the remaining patrol",
+    );
+  }
 }
 
 // Each mission has reachable objectives, lawful starting armies and a usable recruiting keep.
