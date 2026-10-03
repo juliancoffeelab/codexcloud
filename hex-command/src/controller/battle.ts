@@ -2,7 +2,8 @@ import { dialoguePending } from "../game/campaign-progress";
 import type { CampaignId } from "../game/types";
 import { writable, type Readable, type Writable } from "svelte/store";
 import { tick } from "svelte";
-import { Game, TYPES, TERRAIN, type UnitType, type Tile, type Unit } from "../game/engine";
+import { Game, TYPES, TERRAIN, type Tile, type Unit } from "../game/engine";
+import { enemyActionIds } from "../game/enemy-turn";
 import { createMoveUndo } from "../game/undo";
 import { loadBattle, saveBattle } from "../game/save";
 import { savedArtStyle, saveArtStyle, loadArtStyle, type ArtStyle } from "../presentation/art";
@@ -51,21 +52,6 @@ const initialMessage = "Select a unit. Capture villages. Defeat the red commande
 const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 const enemyThinkingDelay = 350;
 const enemyActionDelay = 230;
-const enemyActionOrder: Record<UnitType, number> = {
-  scout: 0,
-  archer: 1,
-  soldier: 2,
-  commander: 3,
-  wolf: 0,
-  thorncaller: 1,
-  bonearcher: 1,
-  adept: 1,
-  skeleton: 2,
-  warden: 2,
-  boar: 2,
-  wildkeeper: 3,
-  necromancer: 3,
-};
 
 export class BattleController {
   #game: Game;
@@ -460,10 +446,7 @@ export class BattleController {
     }
     this.#game.enemyRecruit();
     this.publish();
-    const queue = this.#game.units
-      .filter((u) => u.side === "enemy")
-      .sort((a, b) => enemyActionOrder[a.type] - enemyActionOrder[b.type])
-      .map((u) => u.id);
+    const queue = enemyActionIds(this.#game.units);
     for (const id of queue) {
       await this.pause(enemyActionDelay);
       if (turnSessionVersion !== this.sessionVersion) {

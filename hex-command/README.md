@@ -123,6 +123,46 @@ headless play probes completed all three campaigns with survivor carryover;
 these check feasibility, not human playtest quality. Browser interaction and visual
 parity have not been automated, in accordance with `AGENTS.md`.
 
+### Headless campaign playtesting
+
+Agents can play the actual game without a browser or a replacement rules model:
+
+```sh
+node --import tsx scripts/play-campaign.ts /tmp/my-company.json '{"op":"start","campaign":"lantern-road"}'
+node --import tsx scripts/play-campaign.ts /tmp/my-company.json '{"op":"options","units":["u1"]}'
+node --import tsx scripts/play-campaign.ts /tmp/my-company.json '{"op":"act","actions":[],"endTurn":true}'
+```
+
+Each invocation reads and writes that trial file, returning JSON with the current
+map, units, treasury, objectives, side quests and announced reinforcements. Start
+and retry also return unit definitions, terrain rules and the common action rules.
+Coordinates are zero-based `col,row` on the game's odd-row-offset hex grid.
+
+| Operation | Parameters and behavior                                                                                                                                  |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `start`   | `campaign`: `lantern-road`, `green-accord` or `ashen-oath`; starts mission one.                                                                          |
+| `observe` | Optional `rules: true`; inspect the current battle.                                                                                                      |
+| `options` | `units: [ids]`; legal moves, weapon forecasts and recruitment hexes. Optional `from: "col,row"` forecasts attacks from a reachable hex without moving.   |
+| `threats` | `unit: id`, `tiles: [up to 12 current/reachable hexes]`; potential next-turn attacks from current enemies, using the same reachability and damage rules. |
+| `act`     | `actions: [...]`, optional `endTurn: true`; move, attack and recruit, then execute the actual enemy AI if requested.                                     |
+| `undo`    | Undo a move until an attack, recruitment or end turn clears the move history.                                                                            |
+| `next`    | `recall: [up to four survivor IDs]`; advance after winning, with actual survivor and gold carryover.                                                     |
+| `retry`   | Restart a defeated mission with its original recall and treasury.                                                                                        |
+| `results` | Recorded mission outcomes, rounds and survivor counts.                                                                                                   |
+
+Action objects use `op` and `unit`, plus `tile` for a move, `target` and optional
+`weapon` for an attack, or `type` and `tile` for recruitment. Move before attacking:
+an attack ends movement. New recruits act next turn. An invalid action stops the
+batch and returns an error plus the authoritative observation; earlier successful
+actions stay applied. Dialogue is acknowledged automatically for headless play.
+
+Threat inspection considers each enemy independently with refreshed actions. Its
+damage sum is a conservative bound, rather than an AI prediction: movements can
+conflict, and future recruitment, waves, healing and other planned moves are
+excluded. It supplies mechanical information, not tactical recommendations.
+The agent chooses every player action. The trial records successful actions,
+undo, recall, retries and enemy-turn snapshots for review.
+
 ## Formatting
 
 Prettier and its Svelte plugin format source, tests, configuration, and this README.
