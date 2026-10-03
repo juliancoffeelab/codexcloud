@@ -52,6 +52,10 @@ faction standards and render slightly larger on the map. Team bases and ownershi
 also identify sides. Pixel units use coarse blocks and simplified shading to match the terrain,
 with nearest-neighbor display.
 
+Campaign artwork uses the same native-resolution unit cropping and style loading
+as the original roster. Separate source sheets keep larger unit frames without
+resampling the PNGs; all campaign assets load before a style switch completes.
+
 The existing OpenAI Sites project is recorded in `.openai/hosting.json`; its
 static directory is `dist`. Publish that entire directory, including the asset
 sheets, through a Sites session with access to the project.
@@ -75,6 +79,7 @@ settings opens the mission briefing, hints, objectives and optional side quests;
 these details start collapsed so the battlefield remains visible. Enemy armies contest
 control objectives and threaten escorts; defeating their leader does not replace
 an escort or territory objective.
+Hints are brief clues rather than instructions or a schedule of future enemies.
 
 The Quiet Refuge is a defense and mediation mission. Its villages sit on Orin’s
 side of the shelter; claiming both is no longer a victory requirement. Defend the
@@ -82,8 +87,9 @@ refuge through six enemy turns. Medicine from the northern grove gives six gold
 and brings the villagers’ intervention after five defended turns. Losing the refuge
 resets that count. Wounded or endangered enemies withdraw toward safe healing
 villages or open ground, with a visible retreat arrow; cornered troops may still fight.
-Lethal previews warn when killing a withdrawing soldier or Dain will end mediation.
-That choice changes the objective to defeating the remaining patrol and removes
+Any death of a withdrawing soldier or Dain ends mediation, including a death from
+defensive retaliation.
+It changes the objective to defeating the remaining patrol and removes
 Dain’s alliance and living recruitment in the final mission. The remaining undead
 company receives two companions instead. Refuge save upgrades move the villages
 while preserving units, gold and ownership; defense tracking begins on the updated rules.

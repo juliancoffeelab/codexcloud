@@ -174,12 +174,14 @@ class ControlledImage {
   constructor() {
     ControlledImage.requests.push(this);
   }
-  static finish(style: string, success: boolean) {
+  static finish(style: string, success: boolean, campaignSuccess = success) {
     const requests = this.requests.filter((image) => !image.completed && image.src.includes(style));
-    assert.equal(requests.length, 3, `Expected one pending ${style} artwork family`);
+    assert(requests.length >= 4, `Expected one pending ${style} artwork family`);
+    assert(requests.some((image) => image.src.includes(`/campaign-${style}`)));
+    assert.equal(new Set(requests.map((image) => image.src)).size, requests.length);
     for (const image of requests) {
       image.completed = true;
-      if (success) image.onload?.();
+      if (image.src.includes(`/campaign-${style}`) ? campaignSuccess : success) image.onload?.();
       else image.onerror?.();
     }
   }
@@ -227,7 +229,7 @@ async function settleCallbacks() {
   const observed = observe(controller);
   controller.initialize();
   const openingGame = observed.view.game;
-  ControlledImage.finish("normal", false);
+  ControlledImage.finish("normal", true, false);
   await settleCallbacks(); // The initial request now waits on low-poly fallback.
   const latest = controller.setArtStyle("pixel");
   ControlledImage.finish("pixel", true);
