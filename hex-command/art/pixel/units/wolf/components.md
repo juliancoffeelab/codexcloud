@@ -27,12 +27,17 @@ large body masses, rather than being added at the belly edge.
   at x32–37/y30–35. The mane is a raised mass above the low torso.
 - Ears: nearer upright pale-rimmed point at x38–39/y27–30, farther small
   dark point x41/y28–31. Both join the cranial silhouette.
-- Head: brow/skull x37–41/y31–34, severe narrow pale eye glint x40/y34
-  with a dark brow at x40/y33 and dark socket edges x39/41/y34,
-  closed long muzzle x37–44/y35–36, grey muzzle edge ending x43/y37, one bone
-  fang x42/y37, directly beneath the visible grey jaw at x42/y36.
-  Underjaw x35–40/y37 is transparent; pale cheek points
-  occupy x34–35/y35 and x34/x36/y36, with a notch at x35/y36.
+- Head: brow/skull x37–41/y31–34; one subdued grey eye glint x40/y34
+  sits under the two-pixel dark brow x39–40/y33, between dark socket
+  edges x39/41/y34, above F muzzle-shadow x40/y35. The dark bridge
+  slopes through x42/y34–35. Grey muzzle x37–41/y35 slopes to
+  x38–43/y36, ending in dark nose x44/y36 and x43/y37. O mouth
+  x40–41/y37 cuts below the grey upper muzzle. One bone fang x42/y38
+  hangs directly from the visible G muzzle edge x42/y37, itself joining G x42/y36.
+  The fang must visibly join that upper jaw edge in the bitmap, not merely have
+  an opaque black path to the head. Underjaw x35–39/y37 is transparent.
+  Pale cheek points occupy x34–35/y35 and x34/x36/y36, with notches
+  at x35/y36 and x37/y36; these break the former rectangular grey slab.
   The black nose terminates the right-facing muzzle; cheek/chin meet neck.
 - Scarf: teal/red streamer x21–29/y27–30; descending collar follows
   x29–34/y30–37 then wraps under jaw at x34–36/y38. Preserve the
@@ -45,7 +50,8 @@ at RGB (45,42,41)/(60,57,56); `F/G` form broad pale grey flank, belly, leg,
 tail-tip and muzzle patches at RGB (84,81,78)/(142,139,133). Grey leg and
 patch shadows use F rather than coat H, preserving their material separation.
 `O` is reserved for nose, eye socket/brow, mouth, toe divisions and structural
-seams. `I` is the single bone fang and the single warm pale eye glint.
+seams. `I` is the single bone fang. The eye uses G so its one native pixel
+remains subdued; O socket edges and the F shadow below keep it distinct.
 The baseline paw divisions are O at x8/10, x23, x33/35 and x41/43 on y46.
 `T/t` is the scarf's light/shadow pair; `R/r` substitutes
 only those symbols in the enemy matrix. No faction changes touch geometry.
@@ -56,6 +62,6 @@ tail tip receive connected pale/light regions, not scattered highlight noise.
 
 Compare the fixed reference guide and actual numbered bitmap for every
 component and all four limb attachments. Render matrices directly into native
-PNGs; do not rebuild or alter the atlas. Keep source/PNG equality, 48×48,
+PNGs and rebuild the native atlas after independent review. Keep source/PNG equality, 48×48,
 binary alpha and faction geometry exact. This document records an intended
 layout; it is not a substitute for inspecting the completed bitmap.
