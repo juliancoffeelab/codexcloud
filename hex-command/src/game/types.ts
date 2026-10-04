@@ -172,9 +172,10 @@ export interface GameState {
   campaign?: CampaignState;
 }
 
+export type DialoguePortrait = UnitType | "worker";
 export interface DialogueLine {
   speaker: string;
-  portrait: UnitType;
+  portrait: DialoguePortrait;
   text: string;
 }
 export type MissionGoal =
@@ -184,7 +185,8 @@ export type MissionGoal =
   | { kind: "hold"; label: string; tile: string; round: number }
   | { kind: "vigil"; label: string; tile: string; turns: number; companion: string }
   | { kind: "refuge"; label: string; tile: string; turns: number }
-  | { kind: "seal"; label: string; tiles: string[] }
+  | { kind: "seal"; label: string; tiles: string[]; unitType?: UnitType }
+  | { kind: "event"; label: string; tile: string; event: string }
   | { kind: "defeat"; label: string };
 export interface MissionEvent {
   id: string;

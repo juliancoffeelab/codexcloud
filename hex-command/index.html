@@ -15,7 +15,18 @@
     />
   </head>
   <body>
+    <section id="startup" role="status" aria-live="polite">
+      <h1>Hex Command</h1>
+      <p id="startup-message">Loading the game…</p>
+      <p><a id="startup-reload" href="./?reload=1">Reload game</a></p>
+      <details id="startup-error" hidden>
+        <summary>Error details</summary>
+        <pre id="startup-detail"></pre>
+      </details>
+      <noscript>This game needs JavaScript enabled.</noscript>
+    </section>
     <div id="app"></div>
+    <script src="./startup.js"></script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

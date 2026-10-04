@@ -6,7 +6,13 @@ import { Game, TYPES, TERRAIN, type Tile, type Unit } from "../game/engine";
 import { enemyActionIds } from "../game/enemy-turn";
 import { createMoveUndo } from "../game/undo";
 import { loadBattle, saveBattle } from "../game/save";
-import { savedArtStyle, saveArtStyle, loadArtStyle, type ArtStyle } from "../presentation/art";
+import {
+  savedArtStyle,
+  saveArtStyle,
+  loadArtStyle,
+  artworkForStyle,
+  type ArtStyle,
+} from "../presentation/art";
 import {
   soundEnabled,
   setSoundEnabled,
@@ -129,6 +135,7 @@ export class BattleController {
     return Object.freeze({
       ...this.state,
       game: this.gameView,
+      artwork: artworkForStyle(this.state.artStyle),
       canUndo: !dialoguePending(this.#game.campaign) && this.history.canUndo(this.#game),
       recruitment: recruitmentContext(this.gameView, this.state.selected, this.state.inspectedTile),
     });
@@ -649,7 +656,11 @@ export class BattleController {
 
   private async loadInitialArtwork(initialStyle: ArtStyle, requestVersion: number) {
     const ready = await loadArtStyle(initialStyle);
-    if (!this.isCurrentArtRequest(requestVersion) || ready || this.state.artLoading) {
+    if (!this.isCurrentArtRequest(requestVersion) || this.state.artLoading) {
+      return;
+    }
+    if (ready) {
+      this.publish({ gameChanged: false });
       return;
     }
 

@@ -114,7 +114,7 @@
 <dialog class="campaign-dialog" bind:this={campaignDialog}>
   <h2>New campaign</h2>
   <p>Choose a company and a story. Starting replaces your current battle.</p>
-  <CampaignPicker bind:selected={campaignChoice} artStyle={$view.artStyle} />
+  <CampaignPicker bind:selected={campaignChoice} artwork={$view.artwork} />
   <div class="dialog-actions">
     <button class="quiet" onclick={() => campaignDialog.close()}>Keep playing</button>
     <button class="primary" onclick={startCampaign}>Start campaign</button>

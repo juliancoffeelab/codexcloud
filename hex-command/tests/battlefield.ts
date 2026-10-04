@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { artworkForStyle } from "../src/presentation/art";
 import { Game } from "../src/game/engine";
 import { campaignMission, goalProgress } from "../src/game/campaign-progress";
 import { createGameView } from "../src/game/view";
@@ -8,7 +9,7 @@ import { required } from "./helpers";
 const game = new Game();
 const enemy = game.addUnit("archer", "enemy", "2,3");
 const opening = createGameView(game);
-const selected = battlefieldTiles(opening, "u2", "pixel", null);
+const selected = battlefieldTiles(opening, "u2", artworkForStyle("pixel"), null);
 assert.equal(selected.length, opening.tiles.length);
 const soldier = required(selected.find((tile) => tile.id === "1,3"));
 assert(soldier.classes.includes("selected"));
@@ -18,12 +19,12 @@ assert(target.classes.includes("target"));
 assert(target.label.includes("attack available"));
 assert.equal(target.occupant?.healthWidth, 38);
 
-const recruited = battlefieldTiles(opening, null, "pixel", "0,2");
+const recruited = battlefieldTiles(opening, null, artworkForStyle("pixel"), "0,2");
 assert(required(recruited.find((tile) => tile.id === "0,2")).classes.includes("recruitable"));
 assert(!recruited.some((tile) => /selected|reachable|target/.test(tile.classes)));
 
 game.move("u2", "2,2");
-const moved = battlefieldTiles(createGameView(game), "u2", "pixel", null);
+const moved = battlefieldTiles(createGameView(game), "u2", artworkForStyle("pixel"), null);
 assert.equal(required(moved.find((tile) => tile.id === "1,3")).occupant, null);
 assert.equal(required(moved.find((tile) => tile.id === "2,2")).occupant?.unit.id, "u2");
 for (let index = 0; index < selected.length; index++) {
@@ -34,8 +35,8 @@ for (let index = 0; index < selected.length; index++) {
   assert.equal(after.points, before.points);
   assert.equal(after.terrainArtwork, before.terrainArtwork);
 }
-const alternate = battlefieldTiles(opening, "u2", "normal", null);
-assert.notEqual(required(alternate[0]).terrainArtwork, required(selected[0]).terrainArtwork);
+const alternate = battlefieldTiles(opening, "u2", artworkForStyle("normal"), null);
+assert.notEqual(required(alternate[0]).fill, required(selected[0]).fill);
 assert.equal(required(alternate[0]).points, required(selected[0]).points);
 
 console.log("PASS: battlefield selection, targets, recruitment, movement and stable SVG layers");
@@ -43,7 +44,7 @@ console.log("PASS: battlefield selection, targets, recruitment, movement and sta
 // Objective destinations and named companions convey the same information without color.
 for (const id of ["lantern-road", "green-accord", "ashen-oath"] as const) {
   const campaign = Game.startCampaign(id);
-  const tiles = battlefieldTiles(createGameView(campaign), null, "pixel", null);
+  const tiles = battlefieldTiles(createGameView(campaign), null, artworkForStyle("pixel"), null);
   for (const goal of campaignMission(campaign.campaign!).goals) {
     const progress = goalProgress(campaign, goal);
     for (const id of progress.tiles) {
@@ -58,6 +59,30 @@ for (const id of ["lantern-road", "green-accord", "ashen-oath"] as const) {
 }
 assert(!target.label.includes("Objective:"), "Ordinary skirmish tiles have no goal label");
 console.log("PASS: campaign objectives and named companions have accessible tile descriptions");
+
+// Sealed stones leave the map individually; territory that can be lost stays visible.
+{
+  const game = Game.startCampaign("lantern-road", 2);
+  game.campaign!.marks.push("sealed:9,1");
+  const tiles = battlefieldTiles(createGameView(game), null, artworkForStyle("pixel"), null);
+  assert(!required(tiles.find((tile) => tile.id === "9,1")).classes.includes("objective"));
+  assert(required(tiles.find((tile) => tile.id === "11,4")).classes.includes("objective"));
+  const escort = Game.startCampaign("green-accord", 2);
+  required(escort.tile("7,4")).owner = "player";
+  assert(
+    required(
+      battlefieldTiles(createGameView(escort), null, artworkForStyle("pixel"), null).find(
+        (tile) => tile.id === "7,4",
+      ),
+    ).classes.includes("objective"),
+  );
+  escort.winner = "player";
+  assert(
+    !battlefieldTiles(createGameView(escort), null, artworkForStyle("pixel"), null).some((tile) =>
+      tile.classes.includes("objective"),
+    ),
+  );
+}
 
 // The three paint layers retain separate feedback targets; overlays never need
 // the keyboard-focusable ground node to contain the unit artwork.

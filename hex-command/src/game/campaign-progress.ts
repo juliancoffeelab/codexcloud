@@ -7,6 +7,7 @@ export interface CampaignBoard {
   units: readonly Readonly<Unit>[];
   round: number;
   turn: Side;
+  winner?: Side | null;
   tile(id: string): Readonly<Tile> | undefined;
 }
 
@@ -62,6 +63,9 @@ export function goalProgress(board: CampaignBoard, goal: Immutable<MissionGoal>)
       total = goal.tiles.length;
       current = goal.tiles.filter((id) => board.campaign?.marks.includes(`sealed:${id}`)).length;
       break;
+    case "event":
+      current = Number(board.campaign?.marks.includes(`event:${goal.event}`));
+      break;
     case "hold":
       total = goal.round;
       current = board.tile(goal.tile)?.owner === "player" ? Math.min(board.round, total) : 0;
@@ -93,8 +97,27 @@ export function goalProgress(board: CampaignBoard, goal: Immutable<MissionGoal>)
   return { label, current, total, done, tiles };
 }
 
+/** Permanent completions leave the map; reversible objectives still need defending. */
+export function activeGoalTiles(board: CampaignBoard, goal: Immutable<MissionGoal>) {
+  if (board.winner) return [];
+  if (goal.kind === "seal")
+    return goal.tiles.filter((id) => !board.campaign?.marks.includes(`sealed:${id}`));
+  if (goal.kind === "event" && goalProgress(board, goal).done) return [];
+  return goalTiles(goal);
+}
+
 export function dialoguePending(state: Immutable<CampaignState> | undefined): boolean {
   return Boolean(state && state.dialogueIndex < state.dialogue.length);
+}
+
+/** Story companions already placed in the next chapter must not become duplicate recruits. */
+export function returnsWithStory(state: Immutable<CampaignState>, unit: Readonly<Unit>): boolean {
+  return Boolean(
+    unit.name &&
+    CAMPAIGNS[state.id].missions[state.mission + 1]?.map.units.some(
+      (incoming) => incoming.side === "player" && incoming.name === unit.name,
+    ),
+  );
 }
 
 export function endsRefugeMediation(board: CampaignBoard, target: Readonly<Unit>): boolean {

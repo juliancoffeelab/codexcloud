@@ -28,9 +28,9 @@
     <button id="play-again" class="primary" onclick={onNewBattle}>Play again</button>
   {:else if panel.kind === "combat"}
     <div class="duel">
-      <UnitCard unit={panel.attacker} artStyle={view.artStyle} />
+      <UnitCard unit={panel.attacker} artwork={view.artwork} />
       <span class="duel-divider" aria-hidden="true">⚔</span>
-      <UnitCard unit={panel.defender} artStyle={view.artStyle} />
+      <UnitCard unit={panel.defender} artwork={view.artwork} />
     </div>
     {#key panel.detailsResetKey}
       <AttackChoices
@@ -41,6 +41,6 @@
       />
     {/key}
   {:else if panel.kind === "details"}
-    <UnitDetails details={panel.details} artStyle={view.artStyle} />
+    <UnitDetails details={panel.details} artwork={view.artwork} />
   {/if}
 </section>

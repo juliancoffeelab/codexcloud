@@ -49,8 +49,11 @@ large body masses, rather than being added at the belly edge.
 at RGB (45,42,41)/(60,57,56); `F/G` form broad pale grey flank, belly, leg,
 tail-tip and muzzle patches at RGB (84,81,78)/(142,139,133). Grey leg and
 patch shadows use F rather than coat H, preserving their material separation.
-`O` is reserved for nose, eye socket/brow, mouth, toe divisions and structural
-seams. `I` is the single bone fang. The eye uses G so its one native pixel
+`O` defines a one-pixel dark contour around the silhouette as well as the nose,
+eye socket/brow, mouth, toe divisions and structural seams. The outline keeps
+the pale legs and muzzle readable against the green ground without moving their
+interior pixels or changing their attachment points. `I` is the single bone fang.
+The eye uses G so its one native pixel
 remains subdued; O socket edges and the F shadow below keep it distinct.
 The baseline paw divisions are O at x8/10, x23, x33/35 and x41/43 on y46.
 `T/t` is the scarf's light/shadow pair; `R/r` substitutes

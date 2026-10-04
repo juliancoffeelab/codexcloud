@@ -1,21 +1,21 @@
 <script lang="ts">
   import type { UnitView } from "../game/view";
   import { TYPES } from "../game/engine";
-  import { artSprite, type ArtStyle } from "../presentation/art";
+  import { artSprite, type Artwork } from "../presentation/art";
 
   interface Props {
     unit: UnitView;
-    artStyle: ArtStyle;
+    artwork: Artwork;
     showName?: boolean;
   }
-  let { unit, artStyle, showName = false }: Props = $props();
+  let { unit, artwork, showName = false }: Props = $props();
 
   const definition = $derived(TYPES[unit.type]);
   const teamLabel = $derived(unit.side === "player" ? "Your unit" : "Enemy unit");
   const healthPercent = $derived((unit.hp / definition.hp) * 100);
   const portrait = $derived(
     artSprite(
-      artStyle,
+      artwork,
       "units",
       unit.type,
       0,

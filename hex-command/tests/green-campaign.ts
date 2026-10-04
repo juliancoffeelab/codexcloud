@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { Game } from "../src/game/engine";
-import { campaignMission, goalProgress } from "../src/game/campaign-progress";
+import { campaignMission, goalProgress, returnsWithStory } from "../src/game/campaign-progress";
 import { createGameView } from "../src/game/view";
 import { createMoveUndo } from "../src/game/undo";
 import { loadBattle, saveBattle, SAVE_KEY } from "../src/game/save";
@@ -10,6 +10,59 @@ const storage = new TestStorage();
 globalThis.localStorage = storage;
 const companion = (game: Game) =>
   required(game.units.find((unit) => unit.side === "player" && unit.name === "Lark"));
+
+// Camps stop the cutting, but the missing workers' ledger is also required.
+{
+  const game = Game.startCampaign("green-accord");
+  game.advanceDialogue(true);
+  for (const goal of campaignMission(game.campaign!).goals) {
+    if (goal.kind === "control") {
+      assert.deepEqual(goal.tiles, ["7,3", "7,5"]);
+      for (const id of goal.tiles) required(game.tile(id)).owner = "player";
+    }
+  }
+  game.beginTurn("player");
+  assert.equal(game.winner, null);
+  const scout = game.addUnit("wolf", "player", "6,0");
+  game.move(scout.id, "6,1");
+  assert(game.campaign!.marks.includes("event:lost-tools"));
+  assert.equal(game.winner, "player");
+  const vigil = game.nextCampaignMission([]);
+  const dain = required(vigil.units.find((unit) => unit.name === "Captain Dain"));
+  assert.equal(dain.side, "player");
+  assert(vigil.units.some((unit) => unit.side === "enemy" && unit.name === "The Overseer"));
+  saveBattle(vigil);
+  assert.deepEqual(loadBattle().game.snapshot(), vigil.snapshot());
+}
+
+// Earlier vigil saves gain the living truce participant, but not a dead Dain.
+{
+  const vigil = Game.startCampaign("green-accord", 1);
+  const dain = required(vigil.units.find((unit) => unit.name === "Captain Dain"));
+  assert(returnsWithStory(vigil.campaign!, dain));
+  vigil.winner = "player";
+  assert.throws(() => vigil.nextCampaignMission([dain.id]), /Only surviving recruits/);
+  const ordinary = vigil.addUnit("warden", "player", "1,1");
+  assert(!returnsWithStory(vigil.campaign!, ordinary));
+  const next = vigil.nextCampaignMission([ordinary.id]);
+  assert.equal(next.units.filter((unit) => unit.name === "Captain Dain").length, 1);
+}
+
+// Earlier vigil saves gain the living truce participant, but not a dead Dain.
+for (const dead of [false, true]) {
+  const game = Game.startCampaign("green-accord", 1, [], 0, dead ? ["green-dain-dead"] : []);
+  game.mapRevision = 1;
+  game.units = game.units.filter((unit) => unit.name !== "Captain Dain");
+  saveBattle(game);
+  const loaded = loadBattle().game;
+  assert.equal(loaded.mapId, "green-vigil");
+  assert.equal(loaded.mapRevision, 2);
+  assert.equal(
+    loaded.units.some((unit) => unit.name === "Captain Dain"),
+    !dead,
+  );
+  assert.equal(loaded.campaign!.marks.includes("dain-fell"), false);
+}
 
 // Lark must survive both early chapters, including dying while attacking.
 for (const mission of [0, 1]) {
@@ -38,6 +91,7 @@ for (const mission of [0, 1]) {
 {
   const game = Game.startCampaign("green-accord", 0);
   for (const goal of campaignMission(game.campaign!).goals) {
+    if (goal.kind === "event") game.campaign!.marks.push(`event:${goal.event}`);
     if (goal.kind === "control") {
       for (const tile of goal.tiles) required(game.tile(tile)).owner = "player";
     }
@@ -136,7 +190,7 @@ function atVigil(): Game {
 }
 
 // Dain's death changes this debrief and future missions, but retry rewinds current-stage deaths.
-for (const mission of [0, 2]) {
+for (const mission of [0, 1, 2]) {
   const game = Game.startCampaign("green-accord", mission);
   game.units = game.units.filter((unit) => unit.name !== "Captain Dain");
   game.round = 4;
@@ -203,6 +257,7 @@ for (const retaliation of [false, true]) {
   assert(!campaignMission(game.campaign!).victory.some((line) => line.speaker.includes("Dain")));
   assert(game.retryCampaignMission().units.some((unit) => unit.name === "Captain Dain"));
   for (const goal of campaignMission(game.campaign!).goals) {
+    if (goal.kind === "event") game.campaign!.marks.push(`event:${goal.event}`);
     if (goal.kind === "control") {
       for (const tile of goal.tiles) required(game.tile(tile)).owner = "player";
     }

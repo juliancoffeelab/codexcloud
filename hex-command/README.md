@@ -59,13 +59,23 @@ faction standards and render slightly larger on the map. Team bases and ownershi
 also identify sides. Pixel units use coarse blocks and simplified shading to match the terrain,
 with nearest-neighbor display.
 
-Campaign artwork uses the same native-resolution unit cropping and style loading
-as the original roster. Separate source sheets keep larger unit frames without
-resampling the PNGs; all campaign assets load before a style switch completes.
+Pixel artwork comes from editable 48×48 matrices in `art/pixel`. Build the shared
+unit and terrain atlases in `public/assets` with `npm run art:build`. Artwork loading
+extracts each frame into a separate native-resolution image. Pixel extraction
+disables smoothing. The controller publishes the finished immutable image set
+with `BattleView`; renderers receive only isolated images and never display the
+full sheets. Normal and low-poly use the same pipeline with their existing source
+crops. Civilian conversations use a neutral worker portrait
+from the unit atlas, without adding a worker to the combat roster.
 
 The existing OpenAI Sites project is recorded in `.openai/hosting.json`; its
 static directory is `dist`. Publish that entire directory, including the asset
-sheets, through a Sites session with access to the project.
+sheets, through a Sites session with access to the project. After building and
+committing the selected Site source, package with
+`python3 scripts/package-site.py /tmp/hex-command.tar.gz`. The script checks the
+HTML's client references and byte-verifies every file in the uploaded archive.
+Do not use `git archive` for generated output: `dist/` is intentionally ignored,
+so newly named JavaScript and CSS bundles would be omitted.
 
 Site: https://hex-command-tfhlu4.lightdarkdaughter.chatgpt.site/
 
@@ -73,11 +83,11 @@ Site: https://hex-command-tfhlu4.lightdarkdaughter.chatgpt.site/
 
 Open **Settings → New campaign**. Three stories each have three linked missions:
 
-| Campaign         | Your company            | Objectives                                                             |
-| ---------------- | ----------------------- | ---------------------------------------------------------------------- |
-| The Lantern Road | Nera’s human army       | Escort Ivo, reclaim villages, silence grave ruins and the Bellwarden   |
-| The Green Accord | Alder’s woodland beasts | Reclaim groves, defend through dawn, escort a witness across the river |
-| The Ashen Oath   | Orin’s unbound undead   | Escape a quarry, secure a refuge, break the Master’s binding stones    |
+| Campaign         | Your company            | Objectives                                                                                 |
+| ---------------- | ----------------------- | ------------------------------------------------------------------------------------------ |
+| The Lantern Road | Nera’s human army       | Escort Ivo, reclaim villages, silence grave ruins and the Bellwarden                       |
+| The Green Accord | Alder’s woodland beasts | Capture cutting camps, recover a ledger, defend a vigil, deliver evidence across the river |
+| The Ashen Oath   | Orin’s unbound undead   | Escape a quarry, secure a refuge, break the Master’s binding stones                        |
 
 Portrait conversations introduce missions and react to optional side quests and
 outcomes. Move between lines with the previous/next arrows or keyboard arrows;
@@ -104,15 +114,18 @@ Dain’s alliance and living recruitment in the final mission. The remaining und
 company receives two companions instead. Refuge save upgrades move the villages
 while preserving units, gold and ownership; defense tracking begins on the updated rules.
 
-The Green Accord ends its opening battle when all three groves are reclaimed.
-Lark then conducts a vigil in the central grove: protect her there through three
-complete enemy turns. Leaving the grove or losing control resets the vigil.
-Lark must survive every mission and returns as part of the story company, without
-using a recall slot. Dain’s death persists across the campaign; Tamsin investigates
-the woodcutters’ deaths independently if he cannot return. The final mission
-requires both delivering Lark to the village meeting and securing the bridge fort
-so the households can share the crossing. Mission results explain what happened
-and why the company moves on.
+The Green Accord begins by capturing both logging supply camps and recovering
+the missing workers' pay ledger. Its evidence leads Dain to a personal truce;
+his patrol stops fighting, while the Overseer's other charter guards attack to
+silence the investigation. Living Dain is a playable ally in the vigil. Protect
+Lark in the central grove through three full enemy turns; leaving or losing it
+resets her work. The roots reveal how the Overseer traded protesting workers to
+the Rootbinder for unpaid labor. Lark carries their memories to the council in
+a living branch. The final mission requires delivering her to the meeting and
+securing the bridge fort. Tamsin joins at the crossing. Lark must survive each
+stage; Dain's death persists and changes subsequent conversations. Neither takes
+a recall slot when already included in the next chapter's story company.
+See [the story and mission contract](design/green-accord.md).
 
 After a victory, select up to four surviving recruits to bring to the next mission.
 They heal completely, and up to eight spare gold carries forward. Each mission
@@ -163,7 +176,7 @@ failures inform map and pacing changes; the [playtest report](docs/campaign-play
 records the method, results and limitations. Browser interaction and visual parity
 have not been automated, in accordance with `AGENTS.md`.
 
-Existing campaign saves retain their deployed units. The refuge’s two village positions upgrade on reload; other saved terrain remains unchanged. Start a new
+Existing campaign saves retain their deployed units. The refuge’s two village positions and the Lantern finale’s reward grove upgrade on reload; other saved terrain remains unchanged. The reed gatherers occupy the empty grove beside the northern bridge, away from the starting company. Start a new
 campaign, or retry a defeated mission, to use the revised starting layouts and
 companies.
 

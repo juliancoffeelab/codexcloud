@@ -18,6 +18,104 @@ import { required, TestStorage } from "./helpers";
 const storage = new TestStorage();
 globalThis.localStorage = storage;
 
+// Visit sites belong on unoccupied map hexes, not under the opening company.
+for (const campaign of Object.values(CAMPAIGNS)) {
+  for (const mission of campaign.missions) {
+    for (const event of mission.events) {
+      if (event.trigger.kind !== "visit") continue;
+      const target = event.trigger.tile;
+      assert(
+        !mission.map.units.some((unit) => `${unit.col},${unit.row}` === target),
+        `${mission.map.id}: ${event.id} starts occupied`,
+      );
+    }
+  }
+}
+
+// The gatherers are reachable on the northern bridge approach; old armies keep progress.
+{
+  const game = Game.startCampaign("lantern-road", 2);
+  const adept = required(game.at("4,3"));
+  const reward = required(
+    campaignMission(game.campaign!).events.find((event) => event.id === "reeds"),
+  );
+  assert.equal(reward.trigger.kind, "visit");
+  assert.equal("tile" in reward.trigger && reward.trigger.tile, "5,1");
+  assert.equal(game.tile("5,1")?.terrain, "grove");
+  assert(!game.at("5,1"));
+  game.advanceDialogue(true);
+  game.move(adept.id, "5,1");
+  assert(game.campaign!.marks.includes("event:reeds"));
+  assert.equal(game.gold.player, 26);
+  for (const rewarded of [false, true]) {
+    const old = Game.startCampaign("lantern-road", 2);
+    old.mapRevision = 1;
+    required(old.tile("4,3")).terrain = "grove";
+    required(old.tile("4,3")).owner = "player";
+    required(old.tile("5,1")).terrain = "plains";
+    if (rewarded) old.campaign!.marks.push("event:reeds");
+    old.gold.player = rewarded ? 26 : 20;
+    saveBattle(old);
+    const restored = loadBattle().game;
+    assert.equal(restored.mapId, "lantern-bell");
+    assert.equal(restored.mapRevision, 2);
+    assert.deepEqual(restored.units, old.units);
+    assert.equal(restored.gold.player, old.gold.player);
+    assert.equal(restored.campaign!.marks.includes("event:reeds"), rewarded);
+    assert.equal(restored.tile("4,3")?.terrain, "plains");
+    assert.equal(restored.tile("5,1")?.terrain, "grove");
+    assert.equal(restored.tile("5,1")?.owner, "player");
+  }
+}
+
+// Starting occupancy cannot award a visit during another move, turn, or reload.
+{
+  const game = Game.startCampaign("lantern-road", 2);
+  game.advanceDialogue(true);
+  const adept = required(game.at("4,3"));
+  adept.tile = "5,1"; // Exercise the movement rule even if a unit is already on the reward.
+  assert.throws(() => game.move(adept.id, adept.tile), /different hex/);
+  const village = required(
+    game.tiles.find((tile) => tile.terrain === "village" && !game.at(tile.id)),
+  );
+  const approach = required(
+    game.neighbors(village.id).find((tile) => tile.terrain !== "water" && !game.at(tile.id)),
+  );
+  const visitor = game.addUnit("scout", "player", approach.id);
+  const gold = game.gold.player;
+  game.move(visitor.id, village.id);
+  assert.equal(game.gold.player, gold);
+  assert(!game.campaign!.marks.includes("event:reeds"));
+  game.beginTurn("player");
+  saveBattle(game);
+  assert(!loadBattle().game.campaign!.marks.includes("event:reeds"));
+  const away = required(
+    game.neighbors(adept.tile).find((tile) => tile.terrain !== "water" && !game.at(tile.id)),
+  );
+  game.move(adept.id, away.id);
+  game.beginTurn("player");
+  const undo = createMoveUndo();
+  const before = game.gold.player;
+  undo.move(game, adept.id, "5,1");
+  assert(game.campaign!.marks.includes("event:reeds"));
+  assert.equal(game.gold.player, before + 6);
+  assert(undo.undo(game));
+  assert(!game.campaign!.marks.includes("event:reeds"));
+  assert.equal(game.gold.player, before);
+  game.move(adept.id, "5,1");
+  game.beginTurn("player");
+  assert.equal(game.campaign!.marks.filter((mark) => mark === "event:reeds").length, 1);
+  const civilian = required(
+    game.campaign!.dialogue.find((line) => line.speaker === "Reed gatherer"),
+  );
+  civilian.portrait = "scout"; // A previously published conversation.
+  saveBattle(game);
+  assert.equal(
+    loadBattle().game.campaign!.dialogue.find((line) => line.speaker === "Reed gatherer")?.portrait,
+    "worker",
+  );
+}
+
 // Dain's Ashen finale ending requires his survival, without changing the peaceful mission variant.
 for (const survives of [true, false]) {
   const game = Game.startCampaign("ashen-oath", 2, [], 0, ["refuge-peace"]);
@@ -311,7 +409,11 @@ for (const definition of Object.values(CAMPAIGNS)) {
   game.units = game.units.filter((u) => !(u.side === "enemy" && u.role === "leader"));
   game.beginTurn("player");
   assert.equal(game.winner, null);
-  const sealer = game.addUnit("scout", "player", "9,1");
+  const scout = game.addUnit("scout", "player", "9,1");
+  game.beginTurn("player");
+  assert(!game.campaign?.marks.includes("sealed:9,1"), "A scout cannot seal a Lantern grave");
+  game.units = game.units.filter((unit) => unit.id !== scout.id);
+  const sealer = game.addUnit("adept", "player", "9,1");
   game.beginTurn("player");
   assert(game.campaign?.marks.includes("sealed:9,1"));
   game.round = campaignMission(game.campaign!).waves[0]!.round;

@@ -1,7 +1,7 @@
 import { CAMPAIGNS, CAMPAIGN_MAPS } from "./campaign-data";
 import type { CampaignId, CampaignState, RecruitType } from "./types";
 import { MAPS } from "./maps";
-import { Game, TYPES } from "./engine";
+import { distance, Game, TYPES } from "./engine";
 import type { Side, Unit, UnitType, VillageState } from "./types";
 
 export const SAVE_KEY = "hex-command-battle";
@@ -103,9 +103,7 @@ function campaignState(
   )
     return null;
   const allowedMarks = new Set([
-    ...(value.id === "green-accord" && (missionIndex === 0 || missionIndex === 2)
-      ? ["dain-fell"]
-      : []),
+    ...(value.id === "green-accord" ? ["dain-fell"] : []),
     ...(mission.refuge ? ["held:5,4"] : []),
     ...mission.events.map((event) => `event:${event.id}`),
     ...mission.waves.map((_, index) => `wave:${index}`),
@@ -184,7 +182,8 @@ function campaignState(
         knownLines.some(
           (known) =>
             known.speaker === line.speaker &&
-            known.portrait === line.portrait &&
+            (known.portrait === line.portrait ||
+              (known.portrait === "worker" && line.portrait === "scout")) &&
             known.text === line.text,
         ),
     ) ||
@@ -210,7 +209,9 @@ function campaignState(
     marks: [...value.marks] as string[],
     dialogue: value.dialogue.map((line) => ({
       speaker: String(line.speaker),
-      portrait: line.portrait as CampaignState["dialogue"][number]["portrait"],
+      portrait: knownLines.find(
+        (known) => known.speaker === line.speaker && known.text === line.text,
+      )!.portrait,
       text: String(line.text),
     })),
     dialogueIndex: value.dialogueIndex,
@@ -307,16 +308,31 @@ export function loadBattle(): LoadedBattle {
     }
     const sites = game.tiles.filter((tile) => ["grove", "ruins", "fort"].includes(tile.terrain));
     if (campaign || s.sites !== undefined) {
+      // The reed gatherers moved off the starting adept's hex. Upgrade the old
+      // site's ownership without moving units or awarding the visit again.
+      const savedSites =
+        game.mapId === "lantern-bell" && game.mapRevision === 1 && Array.isArray(s.sites)
+          ? s.sites.map((site) =>
+              record(site) && site.id === "4,3"
+                ? {
+                    ...site,
+                    id: "5,1",
+                    owner: units.find((unit) => unit.tile === "5,1")?.side ?? site.owner,
+                  }
+                : site,
+            )
+          : s.sites;
       if (
-        !Array.isArray(s.sites) ||
-        s.sites.length !== sites.length ||
-        new Set(s.sites.map((v) => (record(v) ? v.id : undefined))).size !== sites.length
+        !Array.isArray(savedSites) ||
+        savedSites.length !== sites.length ||
+        new Set(savedSites.map((v) => (record(v) ? v.id : undefined))).size !== sites.length
       )
         return fresh();
-      for (const site of s.sites as unknown[]) {
+      for (const site of savedSites as unknown[]) {
         if (!validVillage(site, sites)) return fresh();
         game.tile(site.id)!.owner = site.owner;
       }
+      if (game.mapId === "lantern-bell" && game.mapRevision === 1) game.mapRevision = 2;
     } else {
       // Older noncampaign saves did not persist ownership of these sites.
       for (const site of sites) site.owner = null;
@@ -357,12 +373,28 @@ export function loadBattle(): LoadedBattle {
     // Older green saves did not remember named deaths. Infer only what the saved army proves.
     if (campaign?.id === "green-accord") {
       if (
-        (campaign.mission === 0 || campaign.mission === 2) &&
+        (campaign.mission !== 1 || game.mapRevision >= 2) &&
         !campaign.choices?.includes("green-dain-dead") &&
         !units.some((unit) => unit.name === "Captain Dain") &&
         !campaign.marks.includes("dain-fell")
       ) {
         campaign.marks.push("dain-fell");
+      }
+      // Earlier vigil maps never placed Dain on the board. Bring the living
+      // truce participant into those saves, without inferring an unrecorded death.
+      if (campaign.mission === 1 && game.mapRevision === 1) {
+        if (
+          !campaign.choices?.includes("green-dain-dead") &&
+          !campaign.marks.includes("dain-fell") &&
+          !units.some((unit) => unit.name === "Captain Dain")
+        ) {
+          const origin = game.tile("5,5")!;
+          const destination = [...game.tiles]
+            .filter((tile) => tile.terrain !== "water" && !game.at(tile.id))
+            .sort((a, b) => distance(a, origin) - distance(b, origin))[0];
+          if (destination) game.addUnit("warden", "player", destination.id).name = "Captain Dain";
+        }
+        game.mapRevision = 2;
       }
       const missingCompanion = CAMPAIGNS[campaign.id].missions[
         campaign.mission

@@ -1,12 +1,12 @@
 <script lang="ts">
   import { CAMPAIGNS } from "../game/campaign-data";
   import { TYPES } from "../game/engine";
-  import { artSprite, type ArtStyle } from "../presentation/art";
+  import { artSprite, type Artwork } from "../presentation/art";
   import type { CampaignId } from "../game/types";
   let {
     selected = $bindable<CampaignId>("lantern-road"),
-    artStyle,
-  }: { selected?: CampaignId; artStyle: ArtStyle } = $props();
+    artwork,
+  }: { selected?: CampaignId; artwork: Artwork } = $props();
   const campaigns = Object.values(CAMPAIGNS);
 </script>
 
@@ -16,7 +16,7 @@
     <label class:selected={selected === campaign.id} class="campaign-choice">
       <input type="radio" name="campaign" value={campaign.id} bind:group={selected} />
       <div class="campaign-portrait">
-        {@html artSprite(artStyle, "units", campaign.leader, 0, 0, 70, 90)}
+        {@html artSprite(artwork, "units", campaign.leader, 0, 0, 70, 90)}
       </div>
       <div>
         <h3>{campaign.name}</h3>

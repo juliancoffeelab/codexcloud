@@ -1,5 +1,51 @@
 import assert from "node:assert/strict";
 
+/** Record the canvas extraction boundary without a browser or network. */
+export function mockSpriteCanvas() {
+  const original = Object.getOwnPropertyDescriptor(globalThis, "document");
+  Object.defineProperty(globalThis, "document", {
+    configurable: true,
+    value: {
+      documentElement: { dataset: {} },
+      querySelector: () => null,
+      querySelectorAll: () => [],
+      createElement: (name: string) => {
+        assert.equal(name, "canvas");
+        let extraction: unknown;
+        const canvas = {
+          width: 0,
+          height: 0,
+          getContext: () => context,
+          toDataURL: () =>
+            "data:image/png;base64," + Buffer.from(JSON.stringify(extraction)).toString("base64"),
+        };
+        const context = {
+          imageSmoothingEnabled: true,
+          beginPath() {},
+          moveTo() {},
+          lineTo() {},
+          closePath() {},
+          clip() {},
+          drawImage(image: { src: string }, ...coordinates: number[]) {
+            extraction = {
+              source: image.src,
+              coordinates,
+              width: canvas.width,
+              height: canvas.height,
+              smoothing: context.imageSmoothingEnabled,
+            };
+          },
+        };
+        return canvas;
+      },
+    },
+  });
+  return () => {
+    if (original) Object.defineProperty(globalThis, "document", original);
+    else Reflect.deleteProperty(globalThis, "document");
+  };
+}
+
 /** Assert a fixture invariant while preserving strict nullable lookup types. */
 export function required<T>(value: T | undefined | null): T {
   assert.ok(value !== undefined && value !== null, "Expected fixture value");

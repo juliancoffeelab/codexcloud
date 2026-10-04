@@ -2,7 +2,7 @@
   import { tick } from "svelte";
   import type { BattleView, BattleCommands } from "../controller/view";
   import { campaignMission, dialoguePending } from "../game/campaign-progress";
-  import { artSprite } from "../presentation/art";
+  import { dialoguePortrait } from "../presentation/art";
   let { view, actions }: { view: BattleView; actions: BattleCommands } = $props();
   let dialog: HTMLDialogElement;
   let nextButton = $state<HTMLButtonElement>();
@@ -60,7 +60,7 @@
     <p class="story-heading">{mission?.map.name}{view.game.winner ? " — After the battle" : ""}</p>
     <div class="story-line" aria-live="polite" aria-atomic="true">
       <div class="story-portrait">
-        {@html artSprite(view.artStyle, "units", line.portrait, 0, 0, 90, 120)}
+        {@html dialoguePortrait(view.artwork, line.portrait, 0, 0, 90, 120)}
       </div>
       <div>
         <h2 id="dialogue-speaker">{line.speaker}</h2>

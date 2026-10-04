@@ -9,6 +9,10 @@ The occupied bounds are x2–45, y20–47; hooves end at the common row47 baseli
 - Eye O/E: a restrained dark surround at x34–37,y33–37 and one light pixel at x35,y35.
 - Ivory tusks I/i: two separate curved shapes, near tusk x35–41,y36–44 and far tusk x40–45,y36–44. Dark muzzle cells separate their roots and tips; the muzzle remains brown.
 
-Both variants have identical silhouette and material ownership. Only cloth symbols differ (T→R and B→r). The common palette uses flat opaque RGBA colors and transparent `.`. PNGs are exact renders of the explicit matrices. `render.py` reads those editable matrices and produces native PNGs and 10× nearest-neighbor previews. `build_matrix.py` preserves the original hand-authored shape construction without raster sampling; running it regenerates the initial matrices, so run only `render.py` after manual matrix edits.
+Both variants have identical silhouette and material ownership. Only cloth symbols differ (T→R and B→r). The common palette uses flat opaque RGBA colors and transparent `.`. PNGs are exact renders of the explicit matrices.
+
+Hide remains dark brown: H is RGB (101,61,36), S (117,70,39), D (67,43,29).
+The mane is RGB (42,33,26), with a dark (25,22,16) outline. These broad planes
+preserve the darker selected reference without dimming the faction scarf or tusks.
 
 From the project directory, run `python3 scripts/render-pixel.py art/pixel/units/boar/player.txt art/pixel/units/boar/enemy.txt` after editing, or `npm run art:build` to rebuild all native sprites and the game atlas. `npm run art:check` checks saved PNGs and atlas metadata against their matrices.
