@@ -33,7 +33,7 @@ Check that all saved PNGs match their matrices:
 python3 scripts/render-pixel.py --check
 ```
 
-Build the native adept, bone archer, boar and necromancer faction pairs into the
+Build the native adept, bone archer, boar, necromancer, skeleton and wolf pairs into the
 game's atlas, including content-hashed source metadata and native 48×48 frames:
 
 ```sh
@@ -43,12 +43,16 @@ npm run art:check
 
 Both factions use identical component geometry, with only faction cloth and
 adept gem colors changing. All unit matrices must remain 48×48. The atlas packs
-four columns and two faction rows without scaling any pixel.
+six columns and two faction rows without scaling any pixel.
 
 The chosen design reference is [C](reference/units-c.png). It records the agreed
 appearance; editable matrices define the actual native pixels. Reviews and the
 pre-generation component specifications remain in temporary task storage at
 `/workspace/artifacts/pixel-C/`.
+
+Skeleton and wolf references are tracked in [skeleton-wolf](reference/skeleton-wolf/README.md).
+The selected warrior is B; the selected wolf is A. B's rabid wolf and D's wolf
+are retained for possible future use.
 
 The renderer uses only the Python standard library. PNGs use flat colors and
 hard transparency. Store native resolution here; any later enlarged exports

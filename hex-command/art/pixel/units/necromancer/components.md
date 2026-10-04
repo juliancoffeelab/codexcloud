@@ -14,8 +14,8 @@ upper left. There are no gradients, glow or antialiased pixels.
 | Face                    | x22–32, y13–22; B/b/E/N          | Warm bone, near-black eye sockets and tooth gaps, brown nose cavity |
 | Hood opening            | E                                | Darkness inside the hood, distinct from cloth shadow H              |
 | Flowing cloak           | x5–22, y24–44; H/S/T             | Broad cloth folds and a stepped trailing hem                        |
-| Free arm and hand       | x16–23, y25–32; L/l, K/k         | Leather wrist guard and warm exposed skin                           |
-| Staff-side arm and hand | x34–39, y27–31; L/l, K/k         | Leather wrist guard and hand gripping wood                          |
+| Free arm and hand       | x16–23, y25–32; L/l, B/b         | Leather wrist guard and bone hand                                   |
+| Staff-side arm and hand | x34–39, y27–31; L/l, B/b         | Leather wrist guard and bone hand gripping wood                     |
 | Split robe panels       | x20–25 and x28–31, y33–44; I/i   | Ivory cloth, separated by faction cloth, with gold edging           |
 | Belt and clasp          | x22–30, y26–33; L/l, G/g         | Leather and gold                                                    |
 | Boots                   | x14–20 and x28–34, y44–47; L/l/O | Leather, with separated feet on row 47                              |

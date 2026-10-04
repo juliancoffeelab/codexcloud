@@ -1,13 +1,6 @@
 import { nativePixelFrames, nativePixelSource } from "./native-pixel-art";
 
 /* Integer crops of the original generated sheets and native pixel atlas. */
-const pixelUndeadSource = {
-  filename: "campaign-pixel-undead.png",
-  width: 1330,
-  height: 1182,
-  revision: "44d5e0513ea7",
-} as const;
-
 export const campaignSheets = {
   normal: {
     width: 1254,
@@ -288,8 +281,10 @@ export const campaignSheets = {
     height: 1536,
     revision: "f8e1face84a4",
     frameSources: {
-      player_skeleton: pixelUndeadSource,
-      enemy_skeleton: pixelUndeadSource,
+      player_skeleton: nativePixelSource,
+      enemy_skeleton: nativePixelSource,
+      player_wolf: nativePixelSource,
+      enemy_wolf: nativePixelSource,
       player_adept: nativePixelSource,
       player_bone_archer: nativePixelSource,
       player_boar: nativePixelSource,
@@ -301,13 +296,9 @@ export const campaignSheets = {
     },
     frames: {
       player_warden: [22, 24, 232, 275],
-      player_skeleton: [126, 52, 488, 536],
-      player_wolf: [30, 378, 221, 175],
       player_wildkeeper: [540, 316, 211, 238],
       player_thorncaller: [27, 577, 218, 232],
       enemy_warden: [267, 560, 229, 254],
-      enemy_skeleton: [761, 52, 488, 536],
-      enemy_wolf: [271, 881, 223, 173],
       enemy_wildkeeper: [782, 817, 211, 237],
       enemy_thorncaller: [270, 1069, 214, 222],
       terrain_marsh: [526, 1074, 213, 221],

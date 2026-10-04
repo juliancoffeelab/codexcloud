@@ -9,7 +9,7 @@ import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "art" / "pixel"
-NATIVE_UNITS = ("adept", "bonearcher", "boar", "necromancer")
+NATIVE_UNITS = ("adept", "bonearcher", "boar", "necromancer", "skeleton", "wolf")
 
 
 def chunk(kind, data):
@@ -115,7 +115,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("matrices", nargs="*", type=Path)
     parser.add_argument("--check", action="store_true")
-    parser.add_argument("--atlas", action="store_true", help="Pack the four C unit pairs")
+    parser.add_argument("--atlas", action="store_true", help="Pack the native unit pairs")
     args = parser.parse_args()
     matrices = [matrix.resolve() for matrix in args.matrices] or sorted(ART.rglob("*.txt"))
     if not matrices:

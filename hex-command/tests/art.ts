@@ -22,7 +22,7 @@ for (const [frame, source] of Object.entries(frameSources)) {
 }
 const nativeURL = `${nativePixelSource.filename}?v=${nativePixelSource.revision}`;
 for (const side of ["player", "enemy"] as const) {
-  for (const name of ["adept", "bonearcher", "boar", "necromancer"] as const) {
+  for (const name of ["adept", "bonearcher", "boar", "necromancer", "skeleton", "wolf"] as const) {
     const key = `${side}_${name === "bonearcher" ? "bone_archer" : name}` as const;
     assert.equal(frameSources[key], nativePixelSource);
     const sprite = artSprite("pixel", "units", name, 0, 0, 60, 70, "", side);
@@ -33,10 +33,7 @@ for (const side of ["player", "enemy"] as const) {
     assert(sprite.includes('class="art-sprite pixel-art'));
     assert(sprite.includes('viewBox="0 0 48 48"'));
   }
-  const skeleton = artSprite("pixel", "units", "skeleton", 0, 0, 60, 70, "", side);
-  assert(skeleton.includes("campaign-pixel-undead.png?v=44d5e0513ea7"));
-  assert(skeleton.includes("width:1330px;height:1182px"));
-  for (const name of ["skeleton", "adept", "bonearcher", "boar", "necromancer"]) {
+  for (const name of ["skeleton", "wolf", "adept", "bonearcher", "boar", "necromancer"]) {
     for (const style of ["normal", "low-poly"] as const) {
       const unchanged = artSprite(style, "units", name, 0, 0, 60, 70, "", side);
       assert(unchanged.includes(`campaign-${style}-${side}.png`));
@@ -79,15 +76,15 @@ try {
   const firstLoad = loadArtStyle("pixel");
   assert.equal(loadArtStyle("pixel"), firstLoad, "Concurrent requests share the pending load");
   assert.equal(await firstLoad, false, "Missing native atlas rejects ready state");
-  assert.equal(requested.length, 6, "Each shared campaign source is preloaded only once");
+  assert.equal(requested.length, 5, "Each shared campaign source is preloaded only once");
   assert.equal(requested.filter((url) => url.includes(nativeURL)).length, 1);
-  assert.equal(requested.filter((url) => url.includes("campaign-pixel-undead.png")).length, 1);
+  assert.equal(requested.filter((url) => url.includes("campaign-pixel-undead.png")).length, 0);
   failNative = false;
   assert.equal(await loadArtStyle("pixel"), true, "A failed native atlas load can be retried");
-  assert.equal(requested.length, 12);
+  assert.equal(requested.length, 10);
   assert.equal(requested.filter((url) => url.includes(nativeURL)).length, 2);
   assert.equal(await loadArtStyle("pixel"), true);
-  assert.equal(requested.length, 12, "Ready style keeps its cached load");
+  assert.equal(requested.length, 10, "Ready style keeps its cached load");
 } finally {
   if (originalImage) Object.defineProperty(globalThis, "Image", originalImage);
   else Reflect.deleteProperty(globalThis, "Image");
