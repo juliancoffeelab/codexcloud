@@ -1,6 +1,9 @@
+import { dialoguePending } from "../game/campaign-progress";
+import type { CampaignId } from "../game/types";
 import { writable, type Readable, type Writable } from "svelte/store";
 import { tick } from "svelte";
-import { Game, TYPES, TERRAIN, type UnitType, type Tile, type Unit } from "../game/engine";
+import { Game, TYPES, TERRAIN, type Tile, type Unit } from "../game/engine";
+import { enemyActionIds } from "../game/enemy-turn";
 import { createMoveUndo } from "../game/undo";
 import { loadBattle, saveBattle } from "../game/save";
 import { savedArtStyle, saveArtStyle, loadArtStyle, type ArtStyle } from "../presentation/art";
@@ -49,12 +52,6 @@ const initialMessage = "Select a unit. Capture villages. Defeat the red commande
 const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 const enemyThinkingDelay = 350;
 const enemyActionDelay = 230;
-const enemyActionOrder: Record<UnitType, number> = {
-  scout: 0,
-  archer: 1,
-  soldier: 2,
-  commander: 3,
-};
 
 export class BattleController {
   #game: Game;
@@ -83,7 +80,9 @@ export class BattleController {
       focusedTile: game.units.find((u) => u.side === "player")?.tile ?? game.tiles[0]!.id,
       inspectedTile: null,
       renderRevision: 0,
-      status: initialMessage,
+      status: game.campaign
+        ? "Follow the mission objectives. Keep your leader safe."
+        : initialMessage,
       artStyle: savedArtStyle(),
       artLoading: false,
       sound: soundEnabled(),
@@ -111,7 +110,9 @@ export class BattleController {
   }
 
   private active() {
-    return this.#game.turn === "player" && !this.#game.winner;
+    return (
+      this.#game.turn === "player" && !this.#game.winner && !dialoguePending(this.#game.campaign)
+    );
   }
 
   private requirePlayerActor(unitId: string): void {
@@ -128,7 +129,7 @@ export class BattleController {
     return Object.freeze({
       ...this.state,
       game: this.gameView,
-      canUndo: this.history.canUndo(this.#game),
+      canUndo: !dialoguePending(this.#game.campaign) && this.history.canUndo(this.#game),
       recruitment: recruitmentContext(this.gameView, this.state.selected, this.state.inspectedTile),
     });
   }
@@ -159,9 +160,10 @@ export class BattleController {
     }
     if (showWinnerMessage && this.#game.winner) {
       this.state.status =
-        this.#game.winner === "player"
+        this.#game.campaign?.outcome ??
+        (this.#game.winner === "player"
           ? "Victory! The enemy commander has fallen. The field is yours."
-          : "Your commander has fallen. Start a new battle and try a different approach.";
+          : "Your commander has fallen. Start a new battle and try a different approach.");
     }
     // Selection and preferences reuse the detached game until an engine action.
     if (gameChanged) {
@@ -411,7 +413,7 @@ export class BattleController {
   recruitHere(type: RecruitType, tileId: string) {
     try {
       const commander = this.#game.units.find(
-        (unit) => unit.side === "player" && unit.type === "commander",
+        (unit) => unit.side === "player" && TYPES[unit.type].leader,
       );
       if (!commander) {
         throw new Error("This unit cannot act now.");
@@ -437,17 +439,14 @@ export class BattleController {
     saveBattle(this.#game, true);
     this.#game.endTurn();
     this.publish();
-    this.message("The enemy is planning its moves…");
+    if (!this.#game.winner) this.message("The enemy is planning its moves…");
     await this.pause(enemyThinkingDelay);
     if (turnSessionVersion !== this.sessionVersion) {
       return;
     }
     this.#game.enemyRecruit();
     this.publish();
-    const queue = this.#game.units
-      .filter((u) => u.side === "enemy")
-      .sort((a, b) => enemyActionOrder[a.type] - enemyActionOrder[b.type])
-      .map((u) => u.id);
+    const queue = enemyActionIds(this.#game.units);
     for (const id of queue) {
       await this.pause(enemyActionDelay);
       if (turnSessionVersion !== this.sessionVersion) {
@@ -462,7 +461,8 @@ export class BattleController {
     if (!this.#game.winner) {
       this.#game.endTurn();
       this.publish();
-      this.message("Your turn. Capture villages, recruit reinforcements, or attack.");
+      if (!this.#game.winner)
+        this.message("Your turn. Capture villages, recruit reinforcements, or attack.");
     }
     saveBattle(this.#game);
     return this.snapshot();
@@ -471,7 +471,47 @@ export class BattleController {
   reset(mapId = "mirror") {
     this.requireSession();
     // Validate before changing the current battle, its undo history, or its turn.
-    const replacement = new Game(mapId);
+    if (mapId !== "mirror" && mapId !== "river" && mapId !== "developer")
+      throw new Error("Unknown battlefield. Choose a skirmish or start a campaign.");
+    return this.replaceGame(new Game(mapId));
+  }
+
+  startCampaign(id: CampaignId) {
+    this.requireSession();
+    return this.replaceGame(Game.startCampaign(id));
+  }
+
+  nextMission(recallIds: string[]) {
+    this.requireSession();
+    return this.replaceGame(this.#game.nextCampaignMission(recallIds));
+  }
+
+  retryMission() {
+    this.requireSession();
+    return this.replaceGame(this.#game.retryCampaignMission());
+  }
+
+  advanceDialogue(skip = false) {
+    this.requireSession();
+    if (!dialoguePending(this.#game.campaign)) return;
+    this.#game.advanceDialogue(skip);
+    this.commitDialogue();
+  }
+
+  previousDialogue() {
+    this.requireSession();
+    if (!dialoguePending(this.#game.campaign) || this.#game.campaign?.dialogueIndex === 0) return;
+    this.#game.previousDialogue();
+    this.commitDialogue();
+  }
+
+  private commitDialogue() {
+    // An unfinished enemy turn must retain its pre-turn recovery checkpoint.
+    if (this.#game.turn === "player" || this.#game.winner) saveBattle(this.#game);
+    this.publish({ renderBattle: false, gameChanged: true });
+  }
+
+  private replaceGame(replacement: Game) {
     cancelSound();
     this.sessionVersion++;
     this.history.clear();
@@ -483,13 +523,17 @@ export class BattleController {
     this.state.inspectedTile = null;
     this.state.focusedTile =
       this.#game.units.find((unit) => unit.side === "player")?.tile ?? this.#game.tiles[0]!.id;
-    this.state.status = initialMessage;
+    this.state.status = replacement.campaign
+      ? "Follow the mission objectives. Keep your leader safe."
+      : initialMessage;
     this.commitAction();
     return this.snapshot();
   }
 
   undoMove() {
     this.requireSession();
+    if (dialoguePending(this.#game.campaign))
+      throw new Error("Finish the conversation before undoing a move.");
     const restored = this.history.undo(this.#game);
     if (!restored) {
       return this.snapshot();
@@ -525,10 +569,9 @@ export class BattleController {
         })),
       })),
       recruitment: Object.fromEntries(
-        recruitTypes.map((type) => [
-          type,
-          this.#game.recruitTiles(unitId, type).map((tile) => tile.id),
-        ]),
+        this.#game
+          .recruitmentOptions("player")
+          .map((type) => [type, this.#game.recruitTiles(unitId, type).map((tile) => tile.id)]),
       ),
     });
   }

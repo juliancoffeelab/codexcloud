@@ -1,3 +1,4 @@
+import { campaignMission, goalProgress } from "../game/campaign-progress";
 import type { GameView, UnitView, TileView } from "../game/view";
 import type { ArtStyle } from "../presentation/art";
 import { TERRAIN, TYPES } from "../game/engine";
@@ -29,14 +30,19 @@ function tileLabel(
   occupant: UnitView | undefined,
   reachable: boolean,
   target: boolean,
+  objectives: readonly string[],
 ): string {
   const parts = [TERRAIN[tile.terrain].name, `column ${tile.col + 1}`, `row ${tile.row + 1}`];
   if (tile.owner) parts.push(tile.owner === "player" ? "your territory" : "enemy territory");
   if (occupant) {
     const team = occupant.side === "player" ? "your" : "enemy";
-    parts.push(`${team} ${TYPES[occupant.type].name}`, `${occupant.hp} health`);
+    const typeName = TYPES[occupant.type].name;
+    const name = occupant.name ? `${occupant.name} (${typeName})` : typeName;
+    parts.push(`${team} ${name}`, `${occupant.hp} health`);
     if (occupant.attacked) parts.push("turn finished");
+    if (occupant.retreating) parts.push("retreating");
   }
+  for (const objective of objectives) parts.push(`Objective: ${objective}`);
   if (reachable) parts.push("move here");
   if (target) parts.push("attack available");
   return parts.join(", ");
@@ -54,6 +60,17 @@ export function battlefieldTiles(
   const reachableTiles = canAct ? game.reachable(selected) : new Map<string, number>();
   const targetTiles = new Set(canAct ? game.targets(selected).map((unit) => unit.tile) : []);
 
+  const objectiveTiles = new Map<string, string[]>();
+  if (game.campaign) {
+    for (const goal of campaignMission(game.campaign).goals) {
+      const progress = goalProgress(game, goal);
+      for (const tile of progress.tiles) {
+        const labels = objectiveTiles.get(tile) ?? [];
+        labels.push(progress.label);
+        objectiveTiles.set(tile, labels);
+      }
+    }
+  }
   return game.tiles.map((tile) => {
     const { x, y } = tileCenter(tile);
     const unit = game.at(tile.id);
@@ -61,6 +78,7 @@ export function battlefieldTiles(
     const target = targetTiles.has(tile.id);
     const classes = [
       "hex",
+      objectiveTiles.has(tile.id) ? "objective" : "",
       `terrain-${tile.terrain}`,
       selectedUnit?.tile === tile.id ? "selected" : "",
       reachable ? "reachable" : "",
@@ -72,7 +90,7 @@ export function battlefieldTiles(
 
     let occupant: TileUnitView | null = null;
     if (unit) {
-      const spriteSize = unit.type === "commander" ? 62 : 56;
+      const spriteSize = TYPES[unit.type].leader ? 62 : 56;
       const spriteClasses = `unit-art ${unit.side === "enemy" ? "enemy-unit" : ""} ${unit.attacked ? "spent-unit" : ""}`;
       occupant = {
         unit,
@@ -100,7 +118,7 @@ export function battlefieldTiles(
       clipId: `hex-clip-${tile.col}-${tile.row}`,
       fill: colors[tile.terrain],
       classes,
-      label: tileLabel(tile, unit, reachable, target),
+      label: tileLabel(tile, unit, reachable, target, objectiveTiles.get(tile.id) ?? []),
       terrainArtwork: artSprite(
         artStyle,
         "terrain",

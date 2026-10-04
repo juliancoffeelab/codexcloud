@@ -12,6 +12,10 @@ export function tileCenter(tile: Coordinates) {
   };
 }
 export const colors: Record<TerrainType, string> = {
+  marsh: "#536d59",
+  ruins: "#697064",
+  fort: "#7a7659",
+  grove: "#426b47",
   plains: "#39564f",
   forest: "#244c43",
   hill: "#5a6050",
@@ -22,6 +26,10 @@ export const colors: Record<TerrainType, string> = {
   keep: "#526d74",
 };
 export const previewColors: Record<TerrainType, string> = {
+  marsh: "#809678",
+  ruins: "#a2a18c",
+  fort: "#b4a277",
+  grove: "#4d884e",
   plains: "#8d9f4f",
   forest: "#536e3d",
   hill: "#85866c",

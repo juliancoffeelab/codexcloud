@@ -13,7 +13,7 @@ export function describeChanges(before: GameSnapshot, after: GameSnapshot) {
     const previous = previousUnits.get(unit.id);
     if (!previous) {
       tileEffects.set(unit.tile, "recruit");
-      recruited = true;
+      recruited ||= unit.moved && unit.attacked;
     } else {
       if (previous.tile !== unit.tile) {
         tileEffects.set(unit.tile, "move");
@@ -32,9 +32,10 @@ export function describeChanges(before: GameSnapshot, after: GameSnapshot) {
     attacked = true;
   }
 
-  const capturedTiles = after.villages
+  const previousTerritory = [...before.villages, ...(before.sites ?? [])];
+  const capturedTiles = [...after.villages, ...(after.sites ?? [])]
     .filter((village) => {
-      const previous = before.villages.find((tile) => tile.id === village.id);
+      const previous = previousTerritory.find((tile) => tile.id === village.id);
       return village.owner && village.owner !== previous?.owner;
     })
     .map((village) => village.id);

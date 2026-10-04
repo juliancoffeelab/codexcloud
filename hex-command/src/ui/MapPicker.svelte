@@ -19,13 +19,15 @@
     });
   }
 
-  const maps = Object.values(MAPS).map((layout) => ({
-    id: layout.id,
-    name: layout.name,
-    description: layout.description,
-    viewBox: `0 0 ${85 + 61 * (layout.cols - 0.5)} ${84 + 53 * (layout.rows - 1)}`,
-    tiles: previewTiles(layout),
-  }));
+  const maps = (["mirror", "river", "developer"] as const)
+    .map((id) => MAPS[id])
+    .map((layout) => ({
+      id: layout.id,
+      name: layout.name,
+      description: layout.description,
+      viewBox: `0 0 ${85 + 61 * (layout.cols - 0.5)} ${84 + 53 * (layout.rows - 1)}`,
+      tiles: previewTiles(layout),
+    }));
 </script>
 
 <fieldset id="map-picker">

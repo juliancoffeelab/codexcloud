@@ -54,6 +54,57 @@ for (const [type, price] of [
   assert.equal(recruit.moved, true);
   assert.equal(recruit.attacked, true);
 }
+// Thorns can harass armored humans in cover, while skeletal armor remains a counter.
+{
+  const game = new Game();
+  game.units = [];
+  for (const tile of game.tiles) tile.terrain = "plains";
+  const thorncaller = game.addUnit("thorncaller", "player", "2,3");
+  const archer = game.addUnit("archer", "player", "2,4");
+  for (const [type, exposed, covered] of [
+    ["soldier", 2, 1],
+    ["warden", 2, 1],
+    ["archer", 3, 2],
+    ["wolf", 4, 3],
+    ["skeleton", 1, 0],
+  ] as const) {
+    const target = game.addUnit(type, "enemy", "3,3");
+    const tile = required(game.tile(target.tile));
+    tile.terrain = "plains";
+    assert.equal(game.damageBreakdown(thorncaller, target, "thorns").damage, exposed);
+    tile.terrain = "forest";
+    assert.equal(game.damageBreakdown(thorncaller, target, "thorns").damage, covered);
+    assert.equal(game.damage(archer, target, "bow"), covered);
+    game.units = game.units.filter((unit) => unit.id !== target.id);
+  }
+}
+
+// Mobility does not turn the fragile skirmisher into a safe melee armor counter.
+{
+  const game = new Game();
+  game.units = [];
+  for (const tile of game.tiles) tile.terrain = "plains";
+  const thorncaller = game.addUnit("thorncaller", "player", "2,3");
+  const soldier = game.addUnit("soldier", "enemy", "4,3");
+  assert.deepEqual(game.preview(thorncaller, soldier, "thorns"), {
+    damage: 2,
+    retaliation: 0,
+  });
+  soldier.tile = "3,3";
+  assert.deepEqual(game.preview(thorncaller, soldier, "rootstaff"), {
+    damage: 3,
+    retaliation: 4,
+  });
+  assert.ok(thorncaller.hp < 2 * game.preview(thorncaller, soldier, "rootstaff").retaliation);
+  assert.equal(TYPES.thorncaller.cost, TYPES.archer.cost);
+  assert.ok(TYPES.thorncaller.hp < TYPES.archer.hp);
+  assert.ok(TYPES.thorncaller.move > TYPES.archer.move);
+
+  // The shared roster gives enemy thorncallers the same weapon rules.
+  soldier.side = "player";
+  thorncaller.side = "enemy";
+  assert.equal(game.preview(thorncaller, soldier, "thorns").damage, 2);
+}
 console.log(
-  "PASS: scout hill/forest movement, water costs, route planning, and recruitment prices",
+  "PASS: movement, recruitment prices, Thorncaller ranged matchups, and melee counterplay",
 );

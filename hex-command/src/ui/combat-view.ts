@@ -60,7 +60,7 @@ function healthForecast(
     healthLabel: `${label}: ${unit.hp} to ${remainingHp} HP after this attack`,
     currentPercent: (unit.hp / maximumHp) * 100,
     remainingPercent: (remainingHp / maximumHp) * 100,
-    impactLabel: `${impact} ${damage ? `−${damage}` : 0} HP`,
+    impactLabel: `${impact} ${damage ? `−${damage}` : 0} HP${remainingHp === 0 ? " (dies)" : ""}`,
   };
 }
 
@@ -125,6 +125,7 @@ export function attackChoiceViews(
       retaliationCalculation.equation = damageExplanation(preview.retaliationDetail);
     }
 
+    const enemyForecast = healthForecast(target, preview.damage, "Enemy", "Deal");
     return {
       available: true,
       id: weapon.id,
@@ -133,7 +134,7 @@ export function attackChoiceViews(
       inspectLabel: `Inspect ${weapon.name.toLowerCase()} damage calculation`,
       detailsId: `attack-details-${weapon.id}`,
       playerForecast: healthForecast(attacker, preview.retaliation, "You", "Take"),
-      enemyForecast: healthForecast(target, preview.damage, "Enemy", "Deal"),
+      enemyForecast,
       attackCalculation: {
         description: describeAttack("Your attack", weapon, preview.damageDetail, targetTerrain),
         equation: damageExplanation(preview.damageDetail),

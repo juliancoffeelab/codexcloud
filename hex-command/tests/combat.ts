@@ -159,6 +159,32 @@ for (const terrain of ["forest", "hill"] as const) {
   );
   assert(game.attackOptions(attacker, target).some((a) => a.id === "sling"));
 }
+// Lethal forecasts identify the unit that dies, including overkill and retaliation.
+{
+  const { game, attacker, target } = fixture();
+  target.hp = 4;
+  let choice = required(
+    attackChoiceViews(createGameView(game), attacker, target).find((c) => c.id === "mace"),
+  );
+  assert(choice.available);
+  assert.equal(choice.enemyForecast.impactLabel, "Deal −4 HP (dies)");
+  assert.equal(choice.playerForecast.impactLabel, "Take 0 HP");
+  target.hp = 3;
+  choice = required(
+    attackChoiceViews(createGameView(game), attacker, target).find((c) => c.id === "mace"),
+  );
+  assert(choice.available);
+  assert.equal(choice.enemyForecast.impactLabel, "Deal −4 HP (dies)", "overkill is also lethal");
+  target.hp = 5;
+  attacker.hp = 4;
+  choice = required(
+    attackChoiceViews(createGameView(game), attacker, target).find((c) => c.id === "mace"),
+  );
+  assert(choice.available);
+  assert.equal(choice.enemyForecast.impactLabel, "Deal −4 HP");
+  assert.equal(choice.playerForecast.impactLabel, "Take −4 HP (dies)");
+}
+
 // Every legal weapon across unit pairs and cover must exactly match resolution.
 let exchanges = 0;
 for (const a of Object.keys(TYPES) as UnitType[])
@@ -195,9 +221,136 @@ for (const a of Object.keys(TYPES) as UnitType[])
     required(game.unit(target.id)),
     "enemy should reposition instead of accepting a lethal ranged reply",
   );
-  assert.equal(required(game.lastCombat).attackId, "knife");
-  assert.equal(target.hp, 1);
+  assert.equal(
+    game.lastCombat,
+    undefined,
+    "a wounded bowman withdraws before taking another fight",
+  );
+  assert.equal(target.hp, 3);
+  assert.equal(target.retreating, true);
+  assert(distance(required(game.tile(target.tile)), required(game.tile(attacker.tile))) > 2);
 }
+// Recovery follows a real withdrawal, rather than triggering merely from low HP.
+{
+  const { game, attacker, target } = fixture("archer", "archer", "4,3");
+  target.hp = 3;
+  game.tile("5,3")!.terrain = "village";
+  game.tile("5,3")!.owner = "enemy";
+  game.turn = "enemy";
+  game.enemyAct(target.id);
+  assert.equal(target.tile, "5,3", "a withdrawing bowman prefers a safe healing village");
+  assert.equal(target.hp, 3, "withdrawal skips retaliation damage");
+  game.beginTurn("enemy");
+  assert.equal(target.hp, 5);
+  game.enemyAct(target.id);
+  assert.equal(target.tile, "5,3", "continue recovering instead of reengaging at half health");
+  game.beginTurn("enemy");
+  game.enemyAct(target.id);
+  assert.equal(target.tile, "5,3", "recovery continues until fully healed");
+  game.beginTurn("enemy");
+  game.enemyAct(target.id);
+  assert.equal(target.retreating, undefined, "recovered troops can rejoin the patrol");
+  assert(attacker.hp > 0);
+}
+{
+  const { game, attacker, target } = fixture("soldier", "soldier");
+  target.hp = 1;
+  for (const tile of game.neighbors(target.tile)) {
+    if (!game.at(tile.id)) game.addUnit("soldier", "player", tile.id);
+  }
+  game.turn = "enemy";
+  assert.equal(game.reachable(target.id).size, 0);
+  target.retreating = true;
+  game.enemyAct(target.id);
+  assert(!game.unit(target.id), "a surrounded soldier can make a desperate stand");
+  assert.equal(target.retreating, undefined, "a cornered stand is not a withdrawal");
+  assert(
+    attacker.hp < TYPES.soldier.hp ||
+      game.units.some((unit) => unit.side === "player" && unit.hp < TYPES.soldier.hp),
+  );
+}
+
+// Actual retaliation determines retreat, across every weapon and target.
+{
+  const { game, attacker, target } = fixture("soldier", "bonearcher", "4,3");
+  attacker.tile = "3,3";
+  game.addUnit("soldier", "player", "4,2");
+  game.turn = "enemy";
+  game.enemyAct(target.id);
+  assert.equal(required(game.lastCombat).attackId, "bonebow");
+  assert.equal(target.hp, TYPES.bonearcher.hp, "future danger does not cause full-health panic");
+  assert.equal(target.tile, "4,3");
+  assert.equal(target.retreating, undefined);
+}
+{
+  const { game, attacker, target } = fixture("soldier", "archer");
+  target.hp = 2;
+  target.retreating = true;
+  game.turn = "enemy";
+  assert.equal(game.preview(target, attacker, "knife").retaliation, 4);
+  assert.equal(game.preview(target, attacker, "bow").retaliation, 0);
+  game.enemyAct(target.id);
+  assert.equal(required(game.lastCombat).attackId, "bow");
+  assert.equal(target.hp, 2);
+  assert.equal(target.retreating, undefined, "any safe attack permits immediate reengagement");
+}
+{
+  const { game, attacker, target } = fixture("archer", "soldier");
+  attacker.hp = 1;
+  target.hp = 1;
+  game.turn = "enemy";
+  assert.equal(game.preview(target, attacker, "sword").retaliation, 0);
+  game.enemyAct(target.id);
+  assert(!game.unit(attacker.id), "a killing blow prevents retaliation");
+  assert.equal(target.hp, 1);
+  assert.equal(target.retreating, undefined);
+}
+{
+  const { game, target } = fixture("soldier", "soldier", "7,3");
+  target.hp = 1;
+  target.retreating = true;
+  game.turn = "enemy";
+  game.enemyAct(target.id);
+  assert.equal(target.retreating, undefined, "without a healing destination, resume normal play");
+  assert.notEqual(target.tile, "7,3", "a stale retreat does not flee indefinitely");
+}
+for (const unavailable of ["neutral", "player-owned", "occupied", "threatened"] as const) {
+  const { game, target } = fixture("soldier", "soldier", "7,3");
+  target.hp = 1;
+  target.retreating = true;
+  const village = required(game.tile("8,3"));
+  village.terrain = "village";
+  village.owner =
+    unavailable === "neutral" ? null : unavailable === "player-owned" ? "player" : "enemy";
+  if (unavailable === "occupied") game.addUnit("soldier", "enemy", village.id);
+  if (unavailable === "threatened") game.addUnit("archer", "player", "9,3");
+  game.turn = "enemy";
+  game.enemyAct(target.id);
+  assert.equal(target.retreating, undefined, `${unavailable} village cannot sustain recovery`);
+}
+{
+  const game = Game.startCampaign("ashen-oath", 1);
+  game.advanceDialogue(true);
+  const target = required(
+    game.units.find((unit) => unit.side === "enemy" && unit.type === "soldier"),
+  );
+  target.tile = "6,4";
+  target.hp = 1;
+  target.retreating = true;
+  for (const tile of game.neighbors(target.tile)) {
+    if (!game.at(tile.id)) game.addUnit("soldier", "player", tile.id);
+  }
+  game.turn = "enemy";
+  assert.equal(game.reachable(target.id).size, 0);
+  game.enemyAct(target.id);
+  assert(!game.unit(target.id));
+  assert.equal(
+    game.campaign?.refuge?.escalated,
+    false,
+    "cornered combat is not a retreating death",
+  );
+}
+
 // Definitions supply new weapons to old saves without replacing battle progress.
 {
   const game = new Game();

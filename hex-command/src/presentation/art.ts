@@ -1,3 +1,5 @@
+import { campaignSheets } from "./campaign-art";
+import { pixelFrames, pixelSources } from "./pixel-art";
 import type { Side } from "../game/types";
 
 const unitOrder = ["soldier", "archer", "scout", "commander"];
@@ -38,7 +40,14 @@ export function loadArtStyle(style: string): Promise<boolean> {
   if (!isArtStyle(style)) return Promise.resolve(false);
   if (!loadedStyles.has(style)) {
     const loading = Promise.all(
-      [assetURL(style, "units"), assetURL(style, "terrain"), shallowAssetURL(style)].map(
+      [
+        ...new Set([
+          assetURL(style, "units"),
+          assetURL(style, "terrain"),
+          shallowAssetURL(style),
+          ...campaignAssetURLs(style),
+        ]),
+      ].map(
         (url) =>
           new Promise<boolean>((resolve) => {
             const image = new Image();
@@ -131,43 +140,6 @@ const terrainSheets = {
         x: 1055.0,
         y: 526.0,
         size: 440,
-      },
-    ],
-  },
-  pixel: {
-    width: 1536,
-    height: 1024,
-    revision: "94af10625f5f",
-    frames: [
-      {
-        x: 61.0,
-        y: 50.0,
-        size: 414,
-      },
-      {
-        x: 561.0,
-        y: 50.0,
-        size: 414,
-      },
-      {
-        x: 1061.0,
-        y: 50.0,
-        size: 414,
-      },
-      {
-        x: 61.0,
-        y: 537.0,
-        size: 414,
-      },
-      {
-        x: 561.0,
-        y: 537.0,
-        size: 414,
-      },
-      {
-        x: 1061.0,
-        y: 537.0,
-        size: 414,
       },
     ],
   },
@@ -283,72 +255,78 @@ const unitSheets = {
       },
     ],
   },
-  pixel: {
-    width: 1774,
-    height: 887,
-    revision: "cd2af5ff67fe",
-    frames: [
-      {
-        x: 0,
-        y: 0.0,
-        width: 443.5,
-        height: 443.5,
-      },
-      {
-        x: 443.5,
-        y: 0.0,
-        width: 443.5,
-        height: 443.5,
-      },
-      {
-        x: 887,
-        y: 0.0,
-        width: 457,
-        height: 443.5,
-      },
-      {
-        x: 1344,
-        y: 0.0,
-        width: 430,
-        height: 443.5,
-      },
-      {
-        x: 0,
-        y: 443.5,
-        width: 443.5,
-        height: 443.5,
-      },
-      {
-        x: 443.5,
-        y: 443.5,
-        width: 443.5,
-        height: 443.5,
-      },
-      {
-        x: 887,
-        y: 443.5,
-        width: 457,
-        height: 443.5,
-      },
-      {
-        x: 1344,
-        y: 443.5,
-        width: 430,
-        height: 443.5,
-      },
-    ],
-  },
 };
 function assetURL(style: ArtStyle, kind: SpriteKind) {
+  if (style === "pixel") return campaignAssetURL(pixelSources[kind]);
   return `${import.meta.env?.BASE_URL ?? "/"}assets/${kind}-${style}.png?v=${(kind === "terrain" ? terrainSheets : unitSheets)[style].revision}`;
 }
 const shallowRevisions = {
   normal: "e00d7da98abd",
   "low-poly": "467b3db16f62",
-  pixel: "8843342bc280",
 };
 function shallowAssetURL(style: ArtStyle) {
+  if (style === "pixel") return assetURL(style, "terrain");
   return `${import.meta.env?.BASE_URL ?? "/"}assets/shallow-${style}.png?v=${shallowRevisions[style]}`;
+}
+interface CampaignSource {
+  filename: string;
+  width: number;
+  height: number;
+  revision: string;
+}
+type CampaignSourceKey = Side | "terrain";
+type ClipPolygon = readonly (readonly [number, number])[];
+interface CampaignSourceMetadata {
+  width: number;
+  height: number;
+  revision: string;
+  sources?: Record<CampaignSourceKey, CampaignSource>;
+  frameSources?: Readonly<Record<string, CampaignSource>>;
+  clips?: Readonly<Record<string, ClipPolygon>>;
+}
+function campaignSource(style: ArtStyle, key: CampaignSourceKey, frame?: string): CampaignSource {
+  const sheet: CampaignSourceMetadata = campaignSheets[style];
+  return (
+    (frame ? sheet.frameSources?.[frame] : undefined) ??
+    sheet.sources?.[key] ?? {
+      filename: `campaign-${style}.png`,
+      width: sheet.width,
+      height: sheet.height,
+      revision: sheet.revision,
+    }
+  );
+}
+function campaignAssetURL(source: CampaignSource) {
+  return `${import.meta.env?.BASE_URL ?? "/"}assets/${source.filename}?v=${source.revision}`;
+}
+function campaignAssetURLs(style: ArtStyle) {
+  const sheet: CampaignSourceMetadata = campaignSheets[style];
+  return [
+    ...new Set(
+      [
+        ...(["player", "enemy", "terrain"] as const).map((key) => campaignSource(style, key)),
+        ...Object.values(sheet.frameSources ?? {}),
+      ].map(campaignAssetURL),
+    ),
+  ];
+}
+
+/** Crop unit sheets through the same HTML image path for every artwork family. */
+function unitImage(
+  url: string,
+  sheet: { width: number; height: number },
+  cropX: number,
+  cropY: number,
+  cropWidth: number,
+  cropHeight: number,
+  clip?: ClipPolygon,
+) {
+  const clipping = clip
+    ? `;clip-path:polygon(${clip.map(([x, y]) => `${((100 * x) / cropWidth).toFixed(4)}% ${((100 * y) / cropHeight).toFixed(4)}%`).join(",")})`
+    : "";
+  // The HTML sheet is much larger than its SVG frame. Explicit native bounds and
+  // paint containment keep mobile compositors from painting outside that crop.
+  return `<foreignObject width="${cropWidth}" height="${cropHeight}" overflow="hidden"><div xmlns="http://www.w3.org/1999/xhtml" style="position:relative;width:${cropWidth}px;height:${cropHeight}px;overflow:hidden;contain:paint${clipping}"><img src="${url}" alt="" draggable="false" style="position:absolute;display:block;max-width:none;width:${sheet.width}px;height:${sheet.height}px;left:${-cropX}px;top:${-cropY}px"/></div></foreignObject>`;
 }
 
 /** Draw the terrain sheet in SVG coordinates; the sprite viewport crops the frame. */
@@ -371,9 +349,15 @@ function terrainSprite(
   extraClass: string,
   url = assetURL(style, "terrain"),
 ) {
+  if (style === "pixel") {
+    const key = `terrain_${terrainOrder[index]}` as keyof typeof pixelFrames;
+    const [cropX, cropY, cropWidth, cropHeight] = pixelFrames[key];
+    const sheet = pixelSources.terrain;
+    return `<svg class="art-sprite pixel-art ${extraClass}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${cropWidth} ${cropHeight}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false">${sheetImage(url, sheet, cropX, cropY)}</svg>`;
+  }
   const sheet = terrainSheets[style];
   const { x: cropX, y: cropY, size } = sheet.frames[index]!;
-  return `<svg class="art-sprite ${style === "pixel" ? "pixel-art" : ""} ${extraClass}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${size} ${size}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false">${sheetImage(url, sheet, cropX, cropY)}</svg>`;
+  return `<svg class="art-sprite ${extraClass}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${size} ${size}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false">${sheetImage(url, sheet, cropX, cropY)}</svg>`;
 }
 
 // Render a region of the original sheet directly. Keep the generated PNGs intact.
@@ -389,6 +373,22 @@ export function artSprite(
   side: Side = "player",
 ) {
   if (!isArtStyle(style)) return "";
+  const campaignName =
+    name === "bonearcher" ? "bone_archer" : name === "grove" ? "sacred_grove" : name;
+  const campaignKey = kind === "terrain" ? `terrain_${campaignName}` : `${side}_${campaignName}`;
+  const campaignSheet = campaignSheets[style];
+  const crop = campaignSheet.frames[campaignKey as keyof typeof campaignSheet.frames];
+  if (crop) {
+    const [cropX, cropY, cropWidth, cropHeight] = crop;
+    const source = campaignSource(style, kind === "terrain" ? "terrain" : side, campaignKey);
+    const url = campaignAssetURL(source);
+    const metadata: CampaignSourceMetadata = campaignSheet;
+    const image =
+      kind === "units"
+        ? unitImage(url, source, cropX, cropY, cropWidth, cropHeight, metadata.clips?.[campaignKey])
+        : sheetImage(url, source, cropX, cropY);
+    return `<svg class="art-sprite ${style === "pixel" ? "pixel-art" : ""} ${extraClass}" data-faction="${side}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${cropWidth} ${cropHeight}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false">${image}</svg>`;
+  }
   if (kind === "terrain" && name === "ford") {
     return terrainSprite(style, 3, x, y, width, height, extraClass, shallowAssetURL(style));
   }
@@ -398,6 +398,7 @@ export function artSprite(
     const joints = [10, 22, 34, 46, 58].map((at) => `<path d="M${at} 24v22"/>`).join("");
     return `<svg class="art-sprite ${extraClass}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 70 70" aria-hidden="true" focusable="false">${water}<path d="M0 26h70v23H0z" fill="#3e443b" opacity=".45"/><path d="M0 23h70v22H0z" fill="#a6a18a" stroke="#686e58" stroke-width="1"/><g stroke="#777c67" stroke-width="1" opacity=".65">${joints}</g><path d="M0 23h70M0 45h70" stroke="#6a705a" stroke-width="5"/><path d="M0 21h70M0 43h70" stroke="#b6b09a" stroke-width="3"/></svg>`;
   }
+  if (style === "pixel") return "";
   const isUnit = kind === "units";
   const order = isUnit ? unitOrder : terrainOrder;
   const index = order.indexOf(name);
@@ -407,5 +408,5 @@ export function artSprite(
   const frame = sheet.frames[index + (side === "enemy" ? 4 : 0)]!;
   const { x: cropX, y: cropY, width: cropWidth, height: cropHeight } = frame;
   // Preserve HTML cropping for half-pixel unit frames; SVG sheet scaling can bleed adjacent rows.
-  return `<svg class="art-sprite ${style === "pixel" ? "pixel-art" : ""} ${extraClass}" data-faction="${side}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${cropWidth} ${cropHeight}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false"><foreignObject width="${cropWidth}" height="${cropHeight}"><div xmlns="http://www.w3.org/1999/xhtml" style="position:relative;width:100%;height:100%;overflow:hidden"><img src="${assetURL(style, "units")}" alt="" draggable="false" style="position:absolute;max-width:none;width:${sheet.width}px;height:${sheet.height}px;left:${-cropX}px;top:${-cropY}px"/></div></foreignObject></svg>`;
+  return `<svg class="art-sprite ${extraClass}" data-faction="${side}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${cropWidth} ${cropHeight}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false">${unitImage(assetURL(style, "units"), sheet, cropX, cropY, cropWidth, cropHeight)}</svg>`;
 }

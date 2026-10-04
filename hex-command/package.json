@@ -4,10 +4,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "format": "prettier --write src scripts/*.ts tests/*.ts *.config.ts *.json README.md AGENTS.md",
-    "format:check": "prettier --check src scripts/*.ts tests/*.ts *.config.ts *.json README.md AGENTS.md",
+    "format": "prettier --write src scripts/*.ts tests/*.ts *.config.ts *.json README.md AGENTS.md \"art/pixel/**/*.{json,md}\"",
+    "format:check": "prettier --check src scripts/*.ts tests/*.ts *.config.ts *.json README.md AGENTS.md \"art/pixel/**/*.{json,md}\"",
+    "art:build": "python3 scripts/render-pixel.py --atlas",
+    "art:check": "python3 scripts/render-pixel.py --check --atlas",
+    "predev": "npm run art:build",
     "dev": "vite --host 0.0.0.0",
     "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p tsconfig.tests.json",
+    "prebuild": "npm run art:build",
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0",
     "test": "node --import tsx scripts/test.ts"

@@ -1,8 +1,11 @@
 import assert from "node:assert/strict";
 import { BattleController, type BattleView } from "../src/controller/battle";
 import { Game, TYPES } from "../src/game/engine";
-import { SAVE_KEY, saveBattle } from "../src/game/save";
+import { campaignMission, dialoguePending } from "../src/game/campaign-progress";
+import { SAVE_KEY, saveBattle, loadBattle } from "../src/game/save";
 import { required, TestStorage } from "./helpers";
+import { battlefieldTiles } from "../src/ui/battlefield-view";
+import { unitPanelView } from "../src/ui/unit-panel-view";
 
 const storage = new TestStorage();
 globalThis.localStorage = storage;
@@ -21,20 +24,233 @@ function observe(controller: BattleController) {
   };
 }
 
-function pauseFirstAction() {
+function pauseTurn(callToPause = 1) {
   let release: (() => void) | undefined;
+  let markReached: (() => void) | undefined;
+  const reached = new Promise<void>((resolve) => {
+    markReached = resolve;
+  });
   const first = new Promise<void>((resolve) => {
     release = resolve;
   });
-  let paused = false;
+  let calls = 0;
   return {
+    reached,
     pause: () => {
-      if (paused) return Promise.resolve();
-      paused = true;
+      if (++calls !== callToPause) return Promise.resolve();
+      required(markReached)();
       return first;
     },
     release: () => required(release)(),
   };
+}
+
+// The developer layout uses ordinary selection, movement, combat, turns and persistence.
+{
+  storage.clear();
+  const controller = new BattleController(immediatePause);
+  const observed = observe(controller);
+  controller.commands.reset("developer");
+  const opening = controller.snapshot();
+  const player = required(opening.units.find((unit) => unit.side === "player"));
+  const enemy = required(opening.units.find((unit) => unit.side === "enemy"));
+  controller.commands.choose(player.tile);
+  const panel = unitPanelView(observed.view);
+  assert.equal(panel.kind, "details");
+  if (panel.kind === "details") assert.equal(panel.details.actionStatus, "Ready");
+  assert(controller.actions(player.id).moves.some((move) => move.tile === "0,2"));
+  assert(
+    battlefieldTiles(observed.view.game, player.id, "pixel", null).some((tile) =>
+      tile.classes.includes("reachable"),
+    ),
+  );
+  controller.move(player.id, "0,2");
+  assert(observed.view.canUndo);
+  controller.undoMove();
+  assert.deepEqual(controller.snapshot(), opening);
+  controller.commands.choose(enemy.tile);
+  assert.equal(unitPanelView(observed.view).kind, "combat");
+  controller.attack(player.id, enemy.id);
+  assert(required(controller.snapshot().units.find((unit) => unit.id === enemy.id)).hp < enemy.hp);
+  assert.deepEqual(loadBattle().game.snapshot(), controller.snapshot());
+  await controller.commands.endTurn();
+  assert(controller.snapshot().round > opening.round || controller.snapshot().winner);
+  assert.deepEqual(loadBattle().game.snapshot(), controller.snapshot());
+  controller.dispose();
+  observed.unsubscribe();
+  storage.clear();
+}
+
+// Dialogue navigation persists its cursor without advancing gameplay or reopening finished lines.
+{
+  storage.clear();
+  const controller = new BattleController(immediatePause);
+  const observed = observe(controller);
+  controller.commands.startCampaign("green-accord");
+  const opening = observed.view;
+  const campaign = required(opening.game.campaign);
+  assert(campaign.dialogue.length > 1);
+  controller.commands.previousDialogue();
+  assert.equal(observed.view, opening, "the first line has no previous line");
+  controller.commands.advanceDialogue();
+  assert.equal(required(observed.view.game.campaign).dialogueIndex, 1);
+  assert.equal(campaign.dialogueIndex, 0, "previous publications keep their original cursor");
+  assert.equal(observed.view.renderRevision, opening.renderRevision);
+  const onSecondLine = controller.snapshot();
+  assert.throws(
+    () => controller.move(required(onSecondLine.units[0]).id, "3,2"),
+    /Wait for your turn/,
+  );
+  await assert.rejects(controller.endTurn(), /Wait for your turn/);
+  assert.throws(() => controller.undoMove(), /Finish the conversation/);
+  assert.deepEqual(controller.snapshot(), onSecondLine);
+
+  const restored = new BattleController(immediatePause);
+  assert.equal(required(restored.snapshot().campaign).dialogueIndex, 1);
+  restored.commands.previousDialogue();
+  assert.equal(required(restored.snapshot().campaign).dialogueIndex, 0);
+  const rewound = new BattleController(immediatePause);
+  assert.equal(required(rewound.snapshot().campaign).dialogueIndex, 0);
+  while (dialoguePending(rewound.snapshot().campaign)) rewound.commands.advanceDialogue();
+  const finished = rewound.snapshot();
+  const finishedView = observe(rewound);
+  const finishedPublication = finishedView.view;
+  const finishedSave = storage.getItem(SAVE_KEY);
+  rewound.commands.advanceDialogue();
+  assert.equal(finishedView.view, finishedPublication, "finished dialogue is a true no-op");
+  assert.equal(storage.getItem(SAVE_KEY), finishedSave);
+  rewound.commands.previousDialogue();
+  assert.deepEqual(rewound.snapshot(), finished, "back cannot reopen a completed conversation");
+  rewound.reset();
+  const skirmish = rewound.snapshot();
+  rewound.commands.previousDialogue();
+  assert.deepEqual(rewound.snapshot(), skirmish, "back has no stale campaign to change");
+  rewound.dispose();
+  assert.throws(() => rewound.commands.previousDialogue(), /session has closed/);
+  controller.dispose();
+  restored.dispose();
+  finishedView.unsubscribe();
+  observed.unsubscribe();
+  storage.clear();
+}
+
+// Stray dialogue commands cannot overwrite the checkpoint of a paused enemy turn.
+{
+  storage.clear();
+  const paused = pauseTurn();
+  const controller = new BattleController(paused.pause);
+  const observed = observe(controller);
+  const beforeTurn = controller.snapshot();
+  const pending = controller.endTurn();
+  const checkpoint = storage.getItem(SAVE_KEY);
+  const enemyView = observed.view;
+  controller.commands.advanceDialogue();
+  controller.commands.advanceDialogue(true);
+  controller.commands.previousDialogue();
+  assert.equal(observed.view, enemyView, "absent dialogue cannot publish an unrelated revision");
+  assert.equal(storage.getItem(SAVE_KEY), checkpoint);
+  const loaded = loadBattle();
+  assert(loaded.pendingEnemy);
+  assert.deepEqual(loaded.game.snapshot(), beforeTurn);
+  controller.dispose();
+  paused.release();
+  await pending;
+  observed.unsubscribe();
+}
+
+// Real dialogue generated during an enemy turn publishes its cursor but retains the recovery save.
+{
+  storage.clear();
+  const fixture = Game.startCampaign("ashen-oath", 1);
+  fixture.advanceDialogue(true);
+  const dain = required(fixture.units.find((unit) => unit.name === "Captain Dain"));
+  fixture.units = fixture.units.filter((unit) => unit.side === "player" || unit.id === dain.id);
+  dain.tile = "7,4";
+  dain.hp = 1;
+  // A surrounded patrol cannot escape its lethal reply; its death triggers the war dialogue.
+  for (const tile of fixture.neighbors(dain.tile)) fixture.addUnit("soldier", "player", tile.id);
+  fixture.addUnit("commander", "enemy", "10,7");
+  saveBattle(fixture);
+  const paused = pauseTurn(3);
+  const controller = new BattleController(paused.pause);
+  const observed = observe(controller);
+  const pending = controller.endTurn();
+  const checkpoint = storage.getItem(SAVE_KEY);
+  await paused.reached;
+  assert.equal(observed.view.game.turn, "enemy");
+  assert.equal(observed.view.game.winner, null);
+  assert(dialoguePending(observed.view.game.campaign));
+  const originalCursor = required(observed.view.game.campaign).dialogueIndex;
+  controller.commands.advanceDialogue();
+  assert.equal(required(observed.view.game.campaign).dialogueIndex, originalCursor + 1);
+  assert.equal(storage.getItem(SAVE_KEY), checkpoint);
+  controller.commands.previousDialogue();
+  assert.equal(required(observed.view.game.campaign).dialogueIndex, originalCursor);
+  assert.equal(storage.getItem(SAVE_KEY), checkpoint);
+  assert(loadBattle().pendingEnemy);
+  controller.dispose();
+  paused.release();
+  await pending;
+  observed.unsubscribe();
+}
+
+// Completing a vigil at the next player turn keeps the published mission outcome status.
+{
+  storage.clear();
+  const fixture = Game.startCampaign("green-accord", 1);
+  fixture.advanceDialogue(true);
+  fixture.units = fixture.units.filter((unit) => unit.side === "player");
+  const goal = required(
+    campaignMission(required(fixture.campaign)).goals.find((g) => g.kind === "vigil"),
+  );
+  assert.equal(goal.kind, "vigil");
+  const lark = required(fixture.units.find((unit) => unit.name === "Lark"));
+  const occupant = fixture.at(goal.tile);
+  if (occupant && occupant.id !== lark.id) occupant.tile = "5,4";
+  lark.tile = goal.tile;
+  required(fixture.tile(goal.tile)).owner = "player";
+  fixture.round = 3;
+  required(fixture.campaign).vigil = { heldTurns: 2, lastCountedRound: 3 };
+  saveBattle(fixture);
+  assert.equal(loadBattle().game.mapId, fixture.mapId);
+  const controller = new BattleController(immediatePause);
+  const observed = observe(controller);
+  await controller.endTurn();
+  assert.equal(observed.view.game.winner, "player");
+  assert.equal(observed.view.status, observed.view.game.campaign?.outcome);
+  assert(dialoguePending(observed.view.game.campaign));
+  controller.commands.advanceDialogue();
+  assert.equal(
+    required(loadBattle().game.campaign).dialogueIndex,
+    required(observed.view.game.campaign).dialogueIndex,
+  );
+  controller.dispose();
+  observed.unsubscribe();
+  storage.clear();
+}
+
+// Finished enemy-turn battles persist their outcome conversation normally.
+{
+  const fixture = Game.startCampaign("green-accord");
+  fixture.advanceDialogue(true);
+  fixture.units = fixture.units.filter((unit) => unit.role === "leader" || unit.name === "Lark");
+  const leader = required(
+    fixture.units.find((unit) => unit.side === "player" && unit.role === "leader"),
+  );
+  const enemy = required(fixture.units.find((unit) => unit.side === "enemy"));
+  leader.tile = "3,4";
+  leader.hp = 1;
+  enemy.tile = "4,4";
+  saveBattle(fixture);
+  const controller = new BattleController(immediatePause);
+  await controller.endTurn();
+  assert.equal(controller.snapshot().turn, "enemy");
+  assert.equal(controller.snapshot().winner, "enemy");
+  assert(dialoguePending(controller.snapshot().campaign));
+  controller.commands.advanceDialogue();
+  assert.deepEqual(loadBattle().game.snapshot(), controller.snapshot());
+  controller.dispose();
+  storage.clear();
 }
 
 // Rejected replacement must not spend undo history or cancel an enemy turn.
@@ -119,7 +335,7 @@ function pauseFirstAction() {
   const fixture = new Game();
   const enemy = fixture.addUnit("soldier", "enemy", "2,3");
   saveBattle(fixture);
-  const paused = pauseFirstAction();
+  const paused = pauseTurn();
   const controller = new BattleController(paused.pause);
   const observed = observe(controller);
   const preview = required(controller.actions("u2").attacks[0]);
@@ -147,7 +363,7 @@ function pauseFirstAction() {
 // An old unmounted session must never save over its replacement after an await.
 {
   storage.clear();
-  const paused = pauseFirstAction();
+  const paused = pauseTurn();
   const previous = new BattleController(paused.pause);
   const pending = previous.endTurn();
   previous.dispose();
@@ -174,12 +390,20 @@ class ControlledImage {
   constructor() {
     ControlledImage.requests.push(this);
   }
-  static finish(style: string, success: boolean) {
+  static finish(style: string, success: boolean, campaignSuccess = success) {
     const requests = this.requests.filter((image) => !image.completed && image.src.includes(style));
-    assert.equal(requests.length, 3, `Expected one pending ${style} artwork family`);
+    if (style === "pixel") {
+      assert.equal(requests.length, 2, "Pixel artwork loads one unit atlas and one terrain atlas");
+      assert(requests.some((image) => image.src.includes("/units-pixel.png")));
+      assert(requests.some((image) => image.src.includes("/terrain-pixel.png")));
+    } else {
+      assert(requests.length >= 4, `Expected one pending ${style} artwork family`);
+      assert(requests.some((image) => image.src.includes(`/campaign-${style}`)));
+    }
+    assert.equal(new Set(requests.map((image) => image.src)).size, requests.length);
     for (const image of requests) {
       image.completed = true;
-      if (success) image.onload?.();
+      if (image.src.includes(`/campaign-${style}`) ? campaignSuccess : success) image.onload?.();
       else image.onerror?.();
     }
   }
@@ -206,11 +430,16 @@ async function settleCallbacks() {
   observed.unsubscribe();
 
   saveBattle(new Game(), true);
-  const paused = pauseFirstAction();
+  const paused = pauseTurn();
   const replay = new BattleController(paused.pause);
   replay.initialize();
   replay.initialize();
   assert.equal(replay.snapshot().turn, "enemy");
+  const checkpoint = storage.getItem(SAVE_KEY);
+  replay.commands.advanceDialogue();
+  replay.commands.previousDialogue();
+  assert.equal(storage.getItem(SAVE_KEY), checkpoint);
+  assert(loadBattle().pendingEnemy);
   paused.release();
   await settleCallbacks();
   assert.equal(replay.snapshot().turn, "player");
@@ -227,7 +456,7 @@ async function settleCallbacks() {
   const observed = observe(controller);
   controller.initialize();
   const openingGame = observed.view.game;
-  ControlledImage.finish("normal", false);
+  ControlledImage.finish("normal", true, false);
   await settleCallbacks(); // The initial request now waits on low-poly fallback.
   const latest = controller.setArtStyle("pixel");
   ControlledImage.finish("pixel", true);

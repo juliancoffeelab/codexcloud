@@ -1,0 +1,173 @@
+import type { UnitDefinition, UnitType, Weapon } from "./types";
+import { HEAVY_MOVEMENT, WOODLAND_MOVEMENT } from "./movement";
+
+const attack = (
+  id: string,
+  name: string,
+  damage: number,
+  damageType: Weapon["damageType"],
+  category: Weapon["category"] = "melee",
+  range = 1,
+): Weapon => ({
+  id,
+  name,
+  damage,
+  damageType,
+  category,
+  range,
+  sound: category === "ranged" ? "attack-bow" : "attack-melee",
+});
+
+export const CAMPAIGN_UNITS = {
+  warden: {
+    name: "Warden",
+    movementModifiers: HEAVY_MOVEMENT,
+    race: "human",
+    hp: 12,
+    move: 3,
+    damage: 4,
+    range: 1,
+    cost: 9,
+    attacks: [attack("spear", "Spear", 4, "pierce"), attack("hammer", "Hammer", 2, "impact")],
+    damageModifiers: { blade: -1, pierce: -1, impact: 1 },
+    ability: "Shield wall",
+    description:
+      "Armored spear infantry. Strong against beasts; carries a light hammer for bones and armor.",
+  },
+  adept: {
+    name: "Adept",
+    race: "human",
+    hp: 7,
+    move: 3,
+    damage: 3,
+    range: 2,
+    cost: 10,
+    attacks: [
+      attack("spark", "Spark", 3, "impact", "ranged", 2),
+      attack("staff", "Staff", 1, "impact"),
+    ],
+    damageModifiers: { blade: 0, pierce: 0, impact: 0 },
+    ability: "Stone spark",
+    description:
+      "Ranged Impact counters bones and armor. Fragile in close combat; cover still applies.",
+  },
+  skeleton: {
+    name: "Skeleton",
+    race: "undead",
+    hp: 9,
+    move: 3,
+    damage: 3,
+    range: 1,
+    cost: 7,
+    attacks: [
+      attack("rustblade", "Rust blade", 3, "blade"),
+      attack("boneclub", "Bone club", 3, "impact"),
+    ],
+    damageModifiers: { blade: 0, pierce: -2, impact: 1 },
+    ability: "Bare bones",
+    description:
+      "Takes 2 less Pierce damage and 1 more Impact damage. Swords and blunt weapons are useful against it.",
+  },
+  bonearcher: {
+    name: "Bone archer",
+    race: "undead",
+    hp: 7,
+    move: 3,
+    damage: 3,
+    range: 2,
+    cost: 8,
+    attacks: [
+      attack("bonebow", "Bone bow", 3, "pierce", "ranged", 2),
+      attack("shard", "Shard", 1, "blade"),
+    ],
+    damageModifiers: { blade: 0, pierce: -1, impact: 1 },
+    ability: "Hollow frame",
+    description:
+      "Takes 1 less Pierce damage and 1 more Impact damage. A ranged specialist with a weak melee reply.",
+  },
+  wolf: {
+    name: "Wolf",
+    race: "beast",
+    movementModifiers: WOODLAND_MOVEMENT,
+    hp: 8,
+    move: 5,
+    damage: 3,
+    range: 1,
+    cost: 6,
+    attacks: [attack("fangs", "Fangs", 3, "blade")],
+    damageModifiers: { blade: 0, pierce: 1, impact: 0 },
+    ability: "Woodland runner",
+    description:
+      "Forests and groves cost 1 movement. Fast flanking unit; takes 1 extra Pierce damage.",
+  },
+  boar: {
+    name: "Boar",
+    race: "beast",
+    movementModifiers: { ...HEAVY_MOVEMENT, ...WOODLAND_MOVEMENT },
+    hp: 13,
+    move: 3,
+    damage: 4,
+    range: 1,
+    cost: 9,
+    attacks: [attack("tusks", "Tusks", 4, "pierce")],
+    damageModifiers: { blade: 0, pierce: 0, impact: 0 },
+    ability: "Thick hide",
+    description:
+      "Forests and groves cost 1 movement. A sturdy front-line beast. Tusks punish wolves and unarmored units, but it has no ranged reply.",
+  },
+  wildkeeper: {
+    name: "Wildkeeper",
+    race: "beast",
+    leader: true,
+    movementModifiers: WOODLAND_MOVEMENT,
+    hp: 14,
+    move: 3,
+    damage: 3,
+    range: 2,
+    cost: 0,
+    attacks: [
+      attack("bough", "Bough", 3, "impact"),
+      attack("stones", "Stones", 2, "impact", "ranged", 2),
+    ],
+    damageModifiers: { blade: 0, pierce: 0, impact: -1 },
+    ability: "Keeper of the grove",
+    description:
+      "Your leader. Forests and groves cost 1 movement. Takes 1 less Impact damage; losing it ends the mission.",
+  },
+  necromancer: {
+    name: "Necromancer",
+    race: "undead",
+    leader: true,
+    hp: 12,
+    move: 3,
+    damage: 3,
+    range: 2,
+    cost: 0,
+    attacks: [
+      attack("gravebolt", "Grave bolt", 3, "impact", "ranged", 2),
+      attack("bonestaff", "Bone staff", 3, "impact"),
+    ],
+    damageModifiers: { blade: 0, pierce: -1, impact: 1 },
+    ability: "Unbound",
+    description:
+      "An undead leader with melee and ranged Impact. Takes 1 less Pierce damage and 1 more Impact damage.",
+  },
+  thorncaller: {
+    name: "Thorncaller",
+    race: "beast",
+    movementModifiers: WOODLAND_MOVEMENT,
+    hp: 7,
+    move: 4,
+    damage: 3,
+    range: 2,
+    cost: 8,
+    attacks: [
+      attack("thorns", "Thorns", 3, "pierce", "ranged", 2),
+      attack("rootstaff", "Root staff", 2, "impact"),
+    ],
+    damageModifiers: { blade: 0, pierce: 0, impact: 0 },
+    ability: "Understory",
+    description:
+      "Forests and groves cost 1 movement. A fragile ranged skirmisher; its light Impact staff offers a risky answer to armor.",
+  },
+} satisfies Partial<Record<UnitType, UnitDefinition>>;

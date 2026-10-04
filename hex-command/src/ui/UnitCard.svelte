@@ -6,8 +6,9 @@
   interface Props {
     unit: UnitView;
     artStyle: ArtStyle;
+    showName?: boolean;
   }
-  let { unit, artStyle }: Props = $props();
+  let { unit, artStyle, showName = false }: Props = $props();
 
   const definition = $derived(TYPES[unit.type]);
   const teamLabel = $derived(unit.side === "player" ? "Your unit" : "Enemy unit");
@@ -30,7 +31,9 @@
 <div class={`combatant ${unit.side}`}>
   <span class="unit-side">{teamLabel}</span>
   {@html portrait}
-  <h2>{definition.name}</h2>
+  <h2>{showName && unit.name ? unit.name : definition.name}</h2>
+  {#if unit.retreating}<span class="retreat-label">Retreating</span>{/if}
+  {#if showName && unit.name}<span class="named-unit-type">{definition.name}</span>{/if}
   <div class="health-numbers">
     <b>{unit.hp}</b>
     <span>{" "}/ {definition.hp} HP</span>

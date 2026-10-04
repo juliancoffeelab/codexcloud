@@ -10,6 +10,8 @@ export type TileView = Immutable<Tile>;
 
 type ReadableGame = Pick<
   Game,
+  | "campaign"
+  | "recruitmentOptions"
   | "mapId"
   | "mapRevision"
   | "cols"
@@ -25,6 +27,7 @@ type ReadableGame = Pick<
   | "unit"
   | "at"
   | "neighbors"
+  | "cost"
   | "reachable"
   | "targets"
   | "recruitTiles"
@@ -45,9 +48,12 @@ export function createGameView(source: Game): GameView {
   freeze(game.tiles);
   freeze(game.units);
   freeze(game.lastCombat);
+  freeze(game.campaign);
   Object.freeze(game);
 
   return Object.freeze({
+    campaign: game.campaign,
+    recruitmentOptions: (side) => freeze(game.recruitmentOptions(side)),
     mapId: game.mapId,
     mapRevision: game.mapRevision,
     cols: game.cols,
@@ -63,6 +69,7 @@ export function createGameView(source: Game): GameView {
     unit: (id) => game.unit(id),
     at: (id) => game.at(id),
     neighbors: (id) => freeze(game.neighbors(id)),
+    cost: (unit, tile) => game.cost(unit, tile),
     // Each result is independent; changing it cannot alter the published revision.
     reachable: (id) => game.reachable(id),
     targets: (id) => freeze(game.targets(id)),

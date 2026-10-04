@@ -1,0 +1,1513 @@
+import { immutable } from "./immutable";
+import type {
+  CampaignDefinition,
+  CampaignId,
+  CampaignMapId,
+  DialogueLine,
+  MapDefinition,
+  MissionDefinition,
+  StartingUnit,
+  TerrainOverride,
+  TerrainType,
+  UnitType,
+} from "./types";
+
+const land = (
+  terrain: TerrainType,
+  positions: [number, number][],
+  owner: TerrainOverride["owner"] = null,
+): TerrainOverride[] => positions.map(([col, row]) => ({ col, row, terrain, owner }));
+const river = (
+  col: number,
+  rows: number,
+  crossings: Record<number, "bridge" | "ford">,
+): TerrainOverride[] =>
+  Array.from({ length: rows }, (_, row) => ({
+    col,
+    row,
+    terrain: crossings[row] ?? "water",
+    owner: null,
+  }));
+const keep = (col: number, row: number, owner: "player" | "enemy"): TerrainOverride => ({
+  col,
+  row,
+  terrain: "keep",
+  owner,
+});
+const unit = (
+  type: UnitType,
+  side: "player" | "enemy",
+  col: number,
+  row: number,
+  name?: string,
+  role?: StartingUnit["role"],
+): StartingUnit => ({ type, side, col, row, ...(name ? { name } : {}), ...(role ? { role } : {}) });
+const line = (speaker: string, portrait: UnitType, text: string): DialogueLine => ({
+  speaker,
+  portrait,
+  text,
+});
+const map = (
+  id: CampaignMapId,
+  name: string,
+  cols: number,
+  rows: number,
+  terrain: TerrainOverride[],
+  units: StartingUnit[],
+): MapDefinition => ({ id, name, description: name, revision: 1, cols, rows, terrain, units });
+
+const lantern: MissionDefinition[] = [
+  {
+    map: map(
+      "lantern-ferry",
+      "The Last Ferry",
+      13,
+      7,
+      [
+        ...river(6, 7, { 1: "ford", 3: "bridge" }),
+        keep(1, 3, "player"),
+        keep(11, 4, "enemy"),
+        ...land("village", [
+          [3, 1],
+          [3, 5],
+          [8, 1],
+        ]),
+        ...land("village", [[10, 2]], "enemy"),
+        ...land("forest", [
+          [4, 0],
+          [4, 1],
+          [8, 4],
+          [9, 5],
+        ]),
+        ...land("hill", [
+          [5, 4],
+          [8, 2],
+        ]),
+        ...land("marsh", [[7, 5]]),
+        ...land("ruins", [
+          [9, 1],
+          [7, 1],
+          [7, 2],
+        ]),
+        ...land("fort", [[9, 3]]),
+      ],
+      [
+        unit("commander", "player", 1, 3, "Captain Nera", "leader"),
+        unit("soldier", "player", 2, 3),
+        unit("soldier", "player", 2, 4),
+        unit("scout", "player", 2, 2, "Ivo", "courier"),
+        unit("necromancer", "enemy", 11, 4, "The Tollkeeper", "leader"),
+        unit("skeleton", "enemy", 10, 5),
+        unit("bonearcher", "enemy", 12, 5),
+      ],
+    ),
+    subtitle: "Carry a message, not a conquest.",
+    briefing:
+      "The eastern villages have gone dark. Ivo carries their names and a message for the last ferryman; Nera promises to get him across the river. The Tollkeeper’s guards block the road, but this journey is about reaching the living, not conquering the valley.",
+    hints: [
+      "Ivo travels better in good company.",
+      "An arrow finds little purchase in bare bones.",
+      "The river has more than one crossing.",
+    ],
+    goals: [{ kind: "escort", label: "Bring Ivo to the northeastern landing", tile: "11,1" }],
+    recruits: ["soldier", "archer", "scout"],
+    enemyRecruits: ["skeleton", "bonearcher"],
+    gold: 16,
+    enemyGold: 0,
+    intro: [
+      line(
+        "Ivo",
+        "scout",
+        "The eastern villages have not seen a lantern in three nights. I have their names here. Someone has to read them.",
+      ),
+      line(
+        "Nera",
+        "commander",
+        "Then we get you across. Stay behind the shields. We are not here to win the river; we are here to reach the other bank.",
+      ),
+      line(
+        "Ivo",
+        "scout",
+        "The ford north of the bridge is still open. And the ferryman hid his purse in the old riverside ruin, if we need supplies.",
+      ),
+    ],
+    victory: [
+      line(
+        "Ivo",
+        "scout",
+        "The names are safe. But the ferryman says the dead have taken three settlements farther up the road.",
+      ),
+      line(
+        "Nera",
+        "commander",
+        "We will light each one. Let the people see that the road still belongs to the living.",
+      ),
+    ],
+    events: [
+      {
+        id: "ferryman",
+        trigger: { kind: "visit", tile: "9,1" },
+        label: "Find the ferryman’s purse in the riverside ruin",
+        gold: 6,
+        dialogue: [
+          line(
+            "Ferryman",
+            "scout",
+            "Take it. Six coins will not buy my ferry back, but perhaps they will buy someone else a morning.",
+          ),
+        ],
+      },
+    ],
+    waves: [
+      {
+        round: 6,
+        label: "A skeleton patrol arrives from the southern road on turn 6",
+        units: [unit("skeleton", "enemy", 11, 6)],
+      },
+    ],
+  },
+  {
+    map: map(
+      "lantern-villages",
+      "Three Unlit Windows",
+      13,
+      9,
+      [
+        ...river(5, 9, { 1: "ford", 4: "bridge", 7: "ford" }),
+        keep(1, 4, "player"),
+        keep(11, 4, "enemy"),
+        ...land(
+          "village",
+          [
+            [7, 1],
+            [7, 4],
+            [7, 7],
+          ],
+          "enemy",
+        ),
+        ...land("village", [
+          [3, 3],
+          [3, 5],
+        ]),
+        ...land("forest", [
+          [4, 2],
+          [4, 6],
+          [9, 2],
+          [9, 6],
+        ]),
+        ...land("marsh", [
+          [6, 0],
+          [6, 1],
+          [6, 7],
+          [6, 8],
+        ]),
+        ...land("hill", [
+          [8, 3],
+          [8, 5],
+        ]),
+        ...land("fort", [[10, 4]]),
+        ...land("grove", [[2, 0]]),
+        ...land("ruins", [[4, 8]]),
+      ],
+      [
+        unit("commander", "player", 1, 4, "Captain Nera", "leader"),
+        unit("warden", "player", 2, 4),
+        unit("scout", "player", 2, 3),
+        unit("soldier", "player", 2, 5),
+        unit("necromancer", "enemy", 11, 4, "The Tollkeeper", "leader"),
+        unit("skeleton", "enemy", 6, 2),
+        unit("skeleton", "enemy", 6, 6),
+        unit("bonearcher", "enemy", 8, 1),
+        unit("bonearcher", "enemy", 8, 7),
+      ],
+    ),
+    subtitle: "Three crossings. Three homes to reclaim.",
+    briefing:
+      "The ferryman has brought news of three settlements occupied by the dead. Nera’s company is staying to reopen the road and light their windows again. Sella’s wardens will help, but the Tollkeeper is still collecting from the other bank.",
+    hints: [
+      "One bridge need not carry the whole army.",
+      "A welcoming village can keep a march alive.",
+    ],
+    goals: [
+      { kind: "control", label: "Light all three eastern villages", tiles: ["7,1", "7,4", "7,7"] },
+    ],
+    recruits: ["soldier", "archer", "scout", "warden"],
+    enemyRecruits: ["skeleton", "bonearcher"],
+    gold: 18,
+    enemyGold: 0,
+    intro: [
+      line(
+        "Warden Sella",
+        "warden",
+        "Their bowmen are watching the bridge. My spears can hold the banks, but the skeletons will barely feel their points.",
+      ),
+      line(
+        "Nera",
+        "commander",
+        "Keep the hammer close. Ivo, find a ford. We need those villages earning for us, not for the tollkeeper.",
+      ),
+    ],
+    victory: [
+      line(
+        "Warden Sella",
+        "warden",
+        "All three windows are lit. One family even lent us their kettle.",
+      ),
+      line(
+        "Ivo",
+        "scout",
+        "There is still a bell sounding in the marsh. Every time it rings, another grave opens.",
+      ),
+      line("Nera", "commander", "Then we go to the bell."),
+    ],
+    events: [
+      {
+        id: "road-cache",
+        trigger: { kind: "visit", tile: "4,8" },
+        label: "Recover the southern road cache",
+        gold: 6,
+        dialogue: [
+          line(
+            "Ivo",
+            "scout",
+            "Dry blankets, clean bandages, and six coins. Someone expected the road to open again. I would hate to disappoint them.",
+          ),
+        ],
+      },
+    ],
+    waves: [
+      {
+        round: 5,
+        label: "Two skeletons enter from the eastern road on turn 5",
+        units: [unit("skeleton", "enemy", 11, 1), unit("skeleton", "enemy", 11, 7)],
+      },
+    ],
+  },
+  {
+    map: map(
+      "lantern-bell",
+      "The Bell in the Reeds",
+      15,
+      9,
+      [
+        ...river(6, 9, { 2: "bridge", 4: "ford", 6: "bridge" }),
+        keep(3, 4, "player"),
+        keep(13, 4, "enemy"),
+        ...land("village", [
+          [3, 2],
+          [3, 6],
+        ]),
+        ...land("village", [[13, 1]], "enemy"),
+        ...land("ruins", [
+          [9, 1],
+          [11, 4],
+          [9, 7],
+          [7, 1],
+          [7, 7],
+        ]),
+        ...land("marsh", [
+          [7, 3],
+          [7, 4],
+          [7, 5],
+          [12, 2],
+          [12, 6],
+        ]),
+        ...land("fort", [
+          [10, 3],
+          [10, 5],
+        ]),
+        ...land("forest", [
+          [8, 2],
+          [8, 6],
+        ]),
+        ...land("grove", [[4, 3]]),
+        ...land("hill", [
+          [5, 0],
+          [5, 8],
+        ]),
+      ],
+      [
+        unit("commander", "player", 3, 4, "Captain Nera", "leader"),
+        unit("adept", "player", 4, 3),
+        unit("soldier", "player", 4, 4),
+        unit("scout", "player", 4, 5),
+        unit("necromancer", "enemy", 13, 4, "The Bellwarden", "leader"),
+        unit("skeleton", "enemy", 8, 1),
+        unit("skeleton", "enemy", 8, 7),
+        unit("skeleton", "enemy", 11, 3),
+        unit("skeleton", "enemy", 11, 5),
+        unit("bonearcher", "enemy", 10, 2),
+        unit("bonearcher", "enemy", 10, 6),
+      ],
+    ),
+    subtitle: "Silence the graves before silencing the bell.",
+    briefing:
+      "The villages are lit again, but the bell keeps calling their dead back to war. Nera and the adepts have traced that call to the grave ruins. Breaking those bindings will let the company silence the Bellwarden and leave the valley a road home.",
+    hints: [
+      "The broken walls still cast a useful shadow.",
+      "Listen for where the bell’s answer comes from.",
+    ],
+    goals: [
+      { kind: "seal", label: "Seal the three grave ruins", tiles: ["9,1", "11,4", "9,7"] },
+      { kind: "defeat", label: "Defeat the Bellwarden" },
+    ],
+    recruits: ["soldier", "archer", "scout", "warden", "adept"],
+    enemyRecruits: ["skeleton", "bonearcher"],
+    gold: 20,
+    enemyGold: 0,
+    intro: [
+      line(
+        "Adept Meri",
+        "adept",
+        "The bell does not make the dead. It calls them from these graves. Stand on a grave and I can close the binding.",
+      ),
+      line(
+        "Nera",
+        "commander",
+        "We can hit the walls all day and still lose the road. Seal the flanks, protect Meri, then take the bell.",
+      ),
+      line("Meri", "adept", "My stone sparks hurt bones. Do keep their swords away from me."),
+    ],
+    victory: [
+      line("Ivo", "scout", "It stopped. Listen. Just frogs."),
+      line("Nera", "commander", "That is a better bell than any I have heard."),
+    ],
+    events: [
+      {
+        id: "reeds",
+        trigger: { kind: "visit", tile: "4,3" },
+        label: "Meet the reed gatherers at the grove",
+        gold: 6,
+        dialogue: [
+          line(
+            "Reed gatherer",
+            "scout",
+            "We saved what we could. Please make sure the road is still open when our children come home.",
+          ),
+        ],
+      },
+    ],
+    waves: [8, 12].flatMap((round) =>
+      ["9,1", "11,4", "9,7"].map((tile, index) => ({
+        round,
+        label: `An unsealed grave raises a skeleton on turn ${round}`,
+        requiresUnsealed: tile,
+        units: [unit("skeleton", "enemy", [9, 11, 9][index]!, [1, 4, 7][index]!)],
+      })),
+    ),
+  },
+];
+
+const legacyGreenDialogue: DialogueLine[][] = [
+  [
+    line(
+      "Lark",
+      "thorncaller",
+      "They call the trees an obstacle. They have marked three groves for cutting.",
+    ),
+    line(
+      "Alder",
+      "wildkeeper",
+      "Then we stand where their marks are. No chase into their fort. We need our roots back, not their bones.",
+    ),
+    line(
+      "Lark",
+      "thorncaller",
+      "The wolves know the narrow paths. Their hunters know where to point a spear. Let the boars go first when the woods run out.",
+    ),
+    line(
+      "Captain Dain",
+      "warden",
+      "We came for timber. Something in the old grove has been killing our woodcutters. Was that you?",
+    ),
+    line(
+      "Alder",
+      "wildkeeper",
+      "No. Come back at dusk, with empty hands, and I will show you what wakes beneath the stones.",
+    ),
+  ],
+  [
+    line("Alder", "wildkeeper", "The grove needs one night to recover. We hold it until dawn."),
+    line(
+      "Lark",
+      "thorncaller",
+      "The overseer has sent patrols along both roads. One on the third turn, another on the fifth. The wooden forts are theirs only while they stand in them.",
+    ),
+    line(
+      "Captain Dain",
+      "warden",
+      "I saw the thing under the stones. It wore a dead man’s face and my lord’s seal.",
+    ),
+    line(
+      "Alder",
+      "wildkeeper",
+      "Then take our witness to your people. A forest and a village can share a road.",
+    ),
+  ],
+  [
+    line(
+      "Dain",
+      "warden",
+      "Lark carries a living branch. When it flowers, no one can pretend the grove was only lumber.",
+    ),
+    line(
+      "Lark",
+      "thorncaller",
+      "It will flower. But I would rather not test that while a skeleton is shooting at me.",
+    ),
+    line(
+      "Alder",
+      "wildkeeper",
+      "Secure the bridge. The witness comes first. Dain, your spears and our boars hold the open road together.",
+    ),
+    line(
+      "Tamsin",
+      "adept",
+      "The dead hardly feel arrows, but stone sparks crack bone. Let the shields hold them while I work. Lark can rest in the groves beyond the ford.",
+    ),
+    line("Lark", "thorncaller", "It flowered."),
+    line(
+      "Dain",
+      "warden",
+      "Then I will say what I saw. And I will keep saying it until they hear.",
+    ),
+    line("Alder", "wildkeeper", "Leave the bridge open. That is what a pact is for."),
+  ],
+];
+
+const green: MissionDefinition[] = [
+  {
+    map: map(
+      "green-border",
+      "Roots at the Border",
+      11,
+      9,
+      [
+        keep(1, 4, "player"),
+        keep(9, 4, "enemy"),
+        ...land(
+          "grove",
+          [
+            [3, 1],
+            [5, 4],
+            [3, 7],
+          ],
+          "enemy",
+        ),
+        ...land("forest", [
+          [2, 0],
+          [2, 1],
+          [3, 2],
+          [4, 3],
+          [4, 5],
+          [3, 6],
+          [2, 7],
+          [2, 8],
+          [6, 2],
+          [6, 6],
+        ]),
+        ...land("fort", [
+          [7, 3],
+          [7, 5],
+        ]),
+        ...land("hill", [
+          [4, 2],
+          [4, 6],
+        ]),
+        ...land("marsh", [
+          [5, 0],
+          [5, 8],
+        ]),
+        ...land("ruins", [[6, 1]]),
+        ...land("village", [
+          [2, 3],
+          [2, 5],
+          [8, 4],
+        ]),
+      ],
+      [
+        unit("wildkeeper", "player", 1, 4, "Alder", "leader"),
+        unit("wolf", "player", 2, 3),
+        unit("boar", "player", 2, 4),
+        unit("thorncaller", "player", 2, 5, "Lark"),
+        unit("commander", "enemy", 9, 4, "Captain Dain", "leader"),
+        unit("warden", "enemy", 7, 3),
+        unit("warden", "enemy", 7, 6),
+        unit("archer", "enemy", 5, 3),
+        unit("archer", "enemy", 7, 5),
+      ],
+    ),
+    requiredCompanions: ["Lark"],
+    legacyDialogue: legacyGreenDialogue[0],
+    debrief:
+      "The three groves are reclaimed and the cutting has stopped. Dain agrees to a truce while Lark searches the roots for the truth about the missing woodcutters.",
+    withoutDain: {
+      briefing:
+        "The groves are still threatened, and Dain has fallen in the fighting. Alder’s pack must stop the cutting before there is nothing left for Lark to question. An adept named Tamsin has been investigating the missing woodcutters; she may still listen where the captain cannot.",
+      hints: ["Wolves know paths a soldier might miss.", "Even fine armor has something to fear."],
+      intro: [
+        line(
+          "Lark",
+          "thorncaller",
+          "Three groves marked for cutting. The soldiers say we killed their woodcutters.",
+        ),
+        line(
+          "Alder",
+          "wildkeeper",
+          "Then take the groves back. Leave their fort alone; we need the cutting stopped, not another graveyard.",
+        ),
+        line(
+          "Lark",
+          "thorncaller",
+          "Dain is gone. We can still stop the cutting and find out what happened to the woodcutters.",
+        ),
+      ],
+      victory: [
+        line(
+          "Lark",
+          "thorncaller",
+          "The three groves are ours, but Dain will never see what lies beneath them.",
+        ),
+        line(
+          "Alder",
+          "wildkeeper",
+          "His death will not bring back the woodcutters. Tamsin asked to hear the roots; let her come under a truce.",
+        ),
+      ],
+      debrief:
+        "The three groves are reclaimed and the cutting has stopped. Dain died in the fighting. Tamsin will attend Lark’s vigil to investigate the missing woodcutters herself.",
+      recruits: ["wolf", "boar", "thorncaller"],
+      reinforcements: [],
+    },
+    subtitle: "Take back the roots without burning the branches.",
+    briefing:
+      "The overseer’s soldiers are felling the groves that shelter Alder’s woodland people. Captain Dain believes the pack has been killing woodcutters; Alder knows something else has stirred beneath the roots. Driving the cutters out will save the groves and give the two sides a chance to find out who is really responsible.",
+    hints: [
+      "Wolves know paths a soldier might miss.",
+      "Even fine armor has something to fear.",
+      "The old groves have not forgotten their own.",
+    ],
+    goals: [
+      { kind: "control", label: "Reclaim the three sacred groves", tiles: ["3,1", "5,4", "3,7"] },
+    ],
+    recruits: ["wolf", "boar", "thorncaller"],
+    enemyRecruits: ["soldier", "archer", "warden"],
+    gold: 12,
+    enemyGold: 0,
+    intro: [
+      line(
+        "Lark",
+        "thorncaller",
+        "Three groves marked for cutting. The soldiers say we killed their woodcutters.",
+      ),
+      line(
+        "Alder",
+        "wildkeeper",
+        "Then take the groves back. Leave their fort alone; we need the cutting stopped, not another graveyard.",
+      ),
+      line(
+        "Captain Dain",
+        "warden",
+        "You want us gone? Prove those roots hide something other than your own crimes.",
+      ),
+    ],
+    victory: [
+      line(
+        "Lark",
+        "thorncaller",
+        "All three groves are ours again. The cutters have put down their axes.",
+      ),
+      line(
+        "Captain Dain",
+        "warden",
+        "After what has happened here, I will not call us friends. But I will hear what you know about the missing woodcutters.",
+      ),
+      line(
+        "Alder",
+        "wildkeeper",
+        "Come to the central grove under a truce. Lark can wake the roots and show us what they remember.",
+      ),
+    ],
+    events: [
+      {
+        id: "lost-tools",
+        trigger: { kind: "visit", tile: "6,1" },
+        label: "Return the lost woodcutters’ tools",
+        gold: 6,
+        dialogue: [
+          line(
+            "Lark",
+            "thorncaller",
+            "Tools, not trophies. Leave them where their owners will find them. There are six coins tucked in the handle; we can use those for the vigil.",
+          ),
+        ],
+      },
+    ],
+    waves: [],
+  },
+  {
+    map: map(
+      "green-vigil",
+      "A Vigil Under Leaves",
+      13,
+      9,
+      [
+        keep(2, 4, "player"),
+        keep(11, 4, "enemy"),
+        ...land("grove", [[6, 4]], "player"),
+        ...land("forest", [
+          [4, 2],
+          [4, 3],
+          [4, 5],
+          [4, 6],
+          [5, 2],
+          [5, 6],
+          [7, 2],
+          [7, 6],
+        ]),
+        ...land("fort", [
+          [7, 3],
+          [7, 5],
+        ]),
+        ...land("marsh", [
+          [5, 0],
+          [5, 1],
+          [5, 7],
+          [5, 8],
+        ]),
+        ...land("village", [
+          [3, 1],
+          [3, 7],
+        ]),
+        ...land("village", [[10, 4]], "enemy"),
+        ...land("ruins", [[6, 0]]),
+        ...land("hill", [
+          [9, 2],
+          [9, 6],
+        ]),
+      ],
+      [
+        unit("wildkeeper", "player", 2, 4, "Alder", "leader"),
+        unit("thorncaller", "player", 2, 3, "Lark"),
+        unit("boar", "player", 6, 4),
+        unit("commander", "enemy", 11, 4, "The Overseer", "leader"),
+        unit("warden", "enemy", 9, 2),
+        unit("archer", "enemy", 8, 4),
+        unit("soldier", "enemy", 10, 6),
+      ],
+    ),
+    requiredCompanions: ["Lark"],
+    legacyDialogue: legacyGreenDialogue[1],
+    debrief:
+      "Lark completed the vigil in the central grove. The roots revealed that the Rootbinder murdered the woodcutters for the overseer. Dain will escort her testimony to the village meeting.",
+    withoutDain: {
+      briefing:
+        "Dain is dead, but Tamsin has agreed to witness Lark’s vigil under a truce. Her own search for the missing woodcutters led here. The overseer’s patrols are trying to silence the grove before its memories reach the villages; Alder must keep Lark safe while she listens.",
+      hints: ["The grove still has life to spare.", "A wall cares little who built it."],
+      intro: [
+        line(
+          "Tamsin",
+          "adept",
+          "I will watch from the treeline. Dain is gone, but the families still deserve to know who killed their woodcutters.",
+        ),
+        line(
+          "Lark",
+          "thorncaller",
+          "Bring me to the central grove. I need three quiet nights with the roots; if I must leave, the memory slips away.",
+        ),
+        line(
+          "Alder",
+          "wildkeeper",
+          "Then we stand around you. Let the roots answer where swords could not.",
+        ),
+      ],
+      victory: [
+        line(
+          "Lark",
+          "thorncaller",
+          "The roots have spoken. The Rootbinder killed the woodcutters and raised their bodies to serve the overseer.",
+        ),
+        line(
+          "Tamsin",
+          "adept",
+          "I saw his seal on the dead. I will take you to the village meeting. Dain’s death cannot excuse what his employer has done.",
+        ),
+        line(
+          "Lark",
+          "thorncaller",
+          "I will bring their memory and this living branch. Let the households hear the dead and judge the living.",
+        ),
+      ],
+      debrief:
+        "Lark completed the vigil and uncovered the Rootbinder’s crimes. Dain cannot return, but Tamsin witnessed the truth and will help take Lark’s testimony to the village meeting.",
+      recruits: ["wolf", "boar", "thorncaller"],
+      reinforcements: [],
+    },
+    subtitle: "What the roots remember.",
+    briefing:
+      "Dain has come to watch Lark question the roots under a fragile truce. The overseer wants that memory silenced before it can reach the villages. His patrols are closing in while Lark tends the central grove; Alder must keep her safe long enough for the dead woodcutters’ story to surface.",
+    hints: ["The grove still has life to spare.", "A wall cares little who built it."],
+    goals: [
+      {
+        kind: "vigil",
+        label: "Protect Lark in the central grove through three enemy turns",
+        tile: "6,4",
+        turns: 3,
+        companion: "Lark",
+      },
+    ],
+    recruits: ["wolf", "boar", "thorncaller"],
+    enemyRecruits: ["soldier", "archer"],
+    gold: 16,
+    enemyGold: 0,
+    intro: [
+      line(
+        "Captain Dain",
+        "warden",
+        "I came without my patrol. The truce holds while I watch from the treeline.",
+      ),
+      line(
+        "Lark",
+        "thorncaller",
+        "Bring me to the central grove. I need three quiet nights with the roots; if I must leave, the memory slips away.",
+      ),
+      line(
+        "Alder",
+        "wildkeeper",
+        "Then we stand around you. The overseer would not send soldiers to silence an empty story.",
+      ),
+    ],
+    victory: [
+      line(
+        "Lark",
+        "thorncaller",
+        "The roots have spoken. The Rootbinder killed the woodcutters and raised their bodies to serve the overseer.",
+      ),
+      line(
+        "Captain Dain",
+        "warden",
+        "I saw his seal on the dead. We fought you on a lie. The villages must hear what happened, even if it costs me my command.",
+      ),
+      line(
+        "Lark",
+        "thorncaller",
+        "I will bring their memory and this living branch. Let the households hear the dead and judge the living.",
+      ),
+    ],
+    events: [
+      {
+        id: "owl-cache",
+        trigger: { kind: "visit", tile: "6,0" },
+        label: "Recover supplies from the northern ruin",
+        gold: 6,
+        dialogue: [
+          line(
+            "Lark",
+            "thorncaller",
+            "The owls found a forgotten patrol cache. Better six coins for a living grove than for another axe.",
+          ),
+        ],
+      },
+    ],
+    waves: [
+      {
+        round: 3,
+        label: "A warden and archer arrive from the east on turn 3",
+        units: [unit("warden", "enemy", 11, 1), unit("archer", "enemy", 11, 7)],
+      },
+      {
+        round: 5,
+        label: "An adept and soldier arrive from the east on turn 5",
+        units: [unit("adept", "enemy", 10, 3), unit("soldier", "enemy", 10, 5)],
+      },
+    ],
+  },
+  {
+    map: map(
+      "green-pact",
+      "A Road for Both",
+      15,
+      9,
+      [
+        keep(1, 4, "player"),
+        keep(13, 5, "enemy"),
+        ...river(8, 9, { 1: "ford", 4: "bridge", 7: "ford" }),
+        ...land("fort", [[7, 4]]),
+        ...land("village", [
+          [3, 2],
+          [3, 6],
+          [12, 1],
+        ]),
+        ...land("village", [[12, 7]], "enemy"),
+        ...land("grove", [
+          [5, 2],
+          [5, 6],
+          [7, 1],
+          [10, 1],
+        ]),
+        ...land("forest", [
+          [4, 1],
+          [4, 3],
+          [4, 5],
+          [4, 7],
+          [10, 3],
+          [10, 5],
+        ]),
+        ...land("marsh", [
+          [7, 7],
+          [9, 7],
+        ]),
+        ...land("ruins", [
+          [6, 0],
+          [9, 1],
+        ]),
+        ...land("hill", [
+          [11, 2],
+          [11, 6],
+        ]),
+      ],
+      [
+        unit("wildkeeper", "player", 1, 4, "Alder", "leader"),
+        unit("thorncaller", "player", 2, 4, "Lark", "courier"),
+        unit("warden", "player", 3, 4, "Captain Dain"),
+        unit("adept", "player", 2, 5, "Adept Tamsin"),
+        unit("necromancer", "enemy", 13, 5, "The Rootbinder", "leader"),
+        unit("skeleton", "enemy", 10, 2),
+        unit("skeleton", "enemy", 10, 6),
+        unit("bonearcher", "enemy", 12, 3),
+        unit("bonearcher", "enemy", 11, 7),
+        unit("wolf", "enemy", 11, 4),
+      ],
+    ),
+    requiredCompanions: ["Lark"],
+    legacyDialogue: legacyGreenDialogue[2],
+    debrief:
+      "Lark reached the village meeting and the bridge fort is secured. The households heard the woodcutters’ testimony and agreed to keep the crossing open with Alder’s pack.",
+    withoutDain: {
+      briefing:
+        "Tamsin has seen the grove’s memory and chosen to help Lark reach the village meeting. The living branch carries the murdered woodcutters’ testimony, but the Rootbinder’s dead block the river to keep their families from hearing it. Dain’s death cannot be undone; Alder can still open a road the villages and woodland people will share.",
+      hints: [
+        "The northern trees may offer a gentler journey.",
+        "A witness need not stand in the front rank.",
+      ],
+      intro: [
+        line(
+          "Tamsin",
+          "adept",
+          "The households are meeting in the northern village. I saw the grove’s memory; I will stand beside you when they hear it.",
+        ),
+        line(
+          "Lark",
+          "thorncaller",
+          "The branch carries the woodcutters’ memory. The Rootbinder would rather burn it than let their families listen.",
+        ),
+        line(
+          "Alder",
+          "wildkeeper",
+          "Take the bridge fort so the villagers can cross safely. Lark can use whichever path gets her to the meeting alive.",
+        ),
+      ],
+      victory: [
+        line(
+          "Lark",
+          "thorncaller",
+          "The households have heard the woodcutters. Dain is among the names we must remember, too.",
+        ),
+        line(
+          "Alder",
+          "wildkeeper",
+          "The fort is ours and the meeting has chosen an open road. That is a promise we can still keep.",
+        ),
+        line(
+          "Lark",
+          "thorncaller",
+          "Then let the first travelers cross. We have enough graves; we need neighbors.",
+        ),
+      ],
+      debrief:
+        "Lark reached the village meeting and the bridge fort is secured. Tamsin witnessed the truth in Dain’s place, and the households agreed to share the crossing with Alder’s pack.",
+      recruits: ["wolf", "boar", "thorncaller", "warden", "adept"],
+      reinforcements: [unit("boar", "player", 3, 4)],
+    },
+    subtitle: "A witness, a bridge, and a promise.",
+    briefing:
+      "The village households are gathering to hear Lark’s account of the murdered woodcutters. Her living branch carries the grove’s memory; Dain can attest to the overseer’s seal on the dead. The Rootbinder has barred the river to stop them reaching the meeting. Alder must open the crossing for the villagers and bring Lark through alive.",
+    hints: [
+      "The northern trees may offer a gentler journey.",
+      "A witness need not stand in the front rank.",
+    ],
+    goals: [
+      { kind: "control", label: "Secure the fort beside the bridge", tiles: ["7,4"] },
+      { kind: "escort", label: "Bring Lark to the northern village", tile: "12,1" },
+    ],
+    recruits: ["wolf", "boar", "thorncaller", "warden", "adept"],
+    enemyRecruits: ["skeleton", "bonearcher", "wolf"],
+    gold: 18,
+    enemyGold: 0,
+    intro: [
+      line(
+        "Dain",
+        "warden",
+        "The households are meeting in the northern village. I will tell them why my patrol fought the wrong people.",
+      ),
+      line(
+        "Lark",
+        "thorncaller",
+        "The branch carries the woodcutters’ memory. The Rootbinder would rather burn it than let their families listen.",
+      ),
+      line(
+        "Alder",
+        "wildkeeper",
+        "Take the bridge fort so the villagers can cross safely. Lark can use whichever path gets her to the meeting alive.",
+      ),
+      line(
+        "Tamsin",
+        "adept",
+        "Dain sent for me. Some of those woodcutters were my neighbors. I will help clear your road; their families need the truth, not another duel with their master.",
+      ),
+    ],
+    victory: [
+      line(
+        "Lark",
+        "thorncaller",
+        "The branch has flowered. The households have heard what happened beneath the grove.",
+      ),
+      line(
+        "Alder",
+        "wildkeeper",
+        "And the fort is ours. No one must ask the overseer’s leave to cross this river again.",
+      ),
+      line(
+        "Lark",
+        "thorncaller",
+        "We will keep the road open together. The Rootbinder can hide from us, but he cannot hide the truth now.",
+      ),
+    ],
+    events: [
+      {
+        id: "old-trail",
+        trigger: { kind: "visit", tile: "6,0" },
+        label: "Find the old trail supplies",
+        gold: 6,
+        dialogue: [
+          line(
+            "Lark",
+            "thorncaller",
+            "Someone left these for a traveler who never came. Today, someone will.",
+          ),
+        ],
+      },
+    ],
+    waves: [],
+  },
+];
+
+export const LEGACY_ASHEN_REFUGE = map(
+  "ashen-refuge",
+  "The Quiet Refuge",
+  11,
+  9,
+  [
+    keep(1, 4, "player"),
+    keep(9, 4, "enemy"),
+    ...land("village", [
+      [5, 1],
+      [5, 7],
+      [2, 6],
+    ]),
+    ...land("village", [[9, 2]], "enemy"),
+    ...land("ruins", [[5, 4]]),
+    ...land("forest", [
+      [4, 2],
+      [4, 6],
+      [7, 1],
+      [7, 7],
+    ]),
+    ...land("marsh", [
+      [6, 3],
+      [6, 5],
+    ]),
+    ...land("grove", [[3, 0]]),
+    ...land("fort", [
+      [7, 3],
+      [7, 5],
+    ]),
+    ...land("hill", [
+      [3, 3],
+      [3, 5],
+    ]),
+  ],
+  [
+    unit("necromancer", "player", 1, 4, "Orin", "leader"),
+    unit("skeleton", "player", 5, 4),
+    unit("skeleton", "player", 2, 5),
+    unit("bonearcher", "player", 2, 3),
+    unit("commander", "enemy", 9, 4, "Captain Dain", "leader"),
+    unit("soldier", "enemy", 6, 3),
+    unit("warden", "enemy", 6, 5),
+    unit("adept", "enemy", 8, 4),
+  ],
+);
+
+const ashen: MissionDefinition[] = [
+  {
+    map: map(
+      "ashen-quarry",
+      "No Name in the Ledger",
+      13,
+      7,
+      [
+        keep(1, 3, "player"),
+        keep(11, 5, "enemy"),
+        ...river(4, 7, { 1: "ford", 4: "bridge" }),
+        ...land("hill", [
+          [6, 2],
+          [6, 3],
+          [7, 4],
+        ]),
+        ...land("ruins", [
+          [5, 5],
+          [7, 0],
+          [10, 0],
+          [5, 1],
+        ]),
+        ...land("fort", [[8, 5]]),
+        ...land("marsh", [[5, 2]]),
+        ...land("village", [
+          [2, 5],
+          [6, 1],
+          [8, 0],
+        ]),
+        ...land("village", [[10, 5]], "enemy"),
+      ],
+      [
+        unit("necromancer", "player", 1, 3, "Orin", "leader"),
+        unit("skeleton", "player", 2, 3),
+        unit("bonearcher", "player", 2, 2),
+        unit("skeleton", "player", 2, 4),
+        unit("skeleton", "player", 1, 2),
+        unit("commander", "enemy", 11, 5, "The Ledgerkeeper", "leader"),
+        unit("soldier", "enemy", 9, 5),
+        unit("archer", "enemy", 10, 4),
+      ],
+    ),
+    subtitle: "The first order you give yourself.",
+    briefing:
+      "The Master’s binding broke at midnight. For the first time, Orin and the quarry’s dead can choose where to go. Orin leads them toward the northern gate before the guards can return them to servitude. Freedom begins with getting the company out alive.",
+    hints: [
+      "The guards watch the road more closely than the river.",
+      "Bare bones have little to fear from arrows.",
+      "Orin need not make the crossing alone.",
+    ],
+    goals: [{ kind: "escape", label: "Bring Orin to the northern quarry gate", tile: "11,1" }],
+    recruits: ["skeleton", "bonearcher"],
+    enemyRecruits: ["soldier", "archer"],
+    gold: 14,
+    enemyGold: 0,
+    intro: [
+      line(
+        "Orin",
+        "necromancer",
+        "The binding broke at midnight. I waited for another order. None came.",
+      ),
+      line("A hollow voice", "skeleton", "Then give us one of our own."),
+      line(
+        "Orin",
+        "necromancer",
+        "We leave the quarry. Keep the archers behind the bones. If the mage finds me, there may not be a second midnight.",
+      ),
+    ],
+    victory: [
+      line("Orin", "necromancer", "The gate is open. I thought freedom would sound louder."),
+      line("A hollow voice", "skeleton", "It sounds like no one telling us to go back."),
+      line(
+        "Orin",
+        "necromancer",
+        "There are empty houses west of here. Let us give them neighbors.",
+      ),
+    ],
+    events: [
+      {
+        id: "ledger",
+        trigger: { kind: "visit", tile: "5,5" },
+        label: "Recover the forgotten workers’ ledger",
+        gold: 6,
+        dialogue: [
+          line(
+            "Orin",
+            "necromancer",
+            "They wrote down our wages. They did not write down our names. Take the six coins. We can begin with that.",
+          ),
+        ],
+      },
+    ],
+    waves: [
+      {
+        round: 6,
+        label: "An adept and warden arrive from the southern road on turn 6",
+        units: [unit("adept", "enemy", 11, 6), unit("warden", "enemy", 10, 6)],
+      },
+    ],
+  },
+  {
+    map: {
+      ...LEGACY_ASHEN_REFUGE,
+      revision: 2,
+      terrain: LEGACY_ASHEN_REFUGE.terrain.map((tile) =>
+        tile.terrain === "village" && tile.col === 5 ? { ...tile, col: 3 } : tile,
+      ),
+      units: LEGACY_ASHEN_REFUGE.units.map((unit) =>
+        unit.side === "enemy" && unit.col === 6 ? { ...unit, col: 7 } : unit,
+      ),
+    },
+    subtitle: "A refuge needs neighbors, not another war.",
+    briefing:
+      "Orin’s company has found empty houses beside living villages. Captain Dain has orders to drive the dead away; the villagers want time to judge their new neighbors for themselves. Orin will defend the refuge while they gather. Helping the sick can win their support sooner, but a withdrawing soldier’s death would destroy the chance of peace.",
+    hints: [
+      "An empty house can still offer shelter.",
+      "The northern grove may have something for the sick.",
+      "Leave frightened soldiers a way home.",
+    ],
+    goals: [
+      {
+        kind: "refuge",
+        label: "Defend the refuge until the villagers intervene",
+        tile: "5,4",
+        turns: 6,
+      },
+    ],
+    recruits: ["skeleton", "bonearcher"],
+    enemyRecruits: ["soldier", "archer"],
+    gold: 16,
+    enemyGold: 0,
+    intro: [
+      line(
+        "Orin",
+        "necromancer",
+        "These houses are empty. The people next door are not. We could be neighbors, if they let us stay.",
+      ),
+      line(
+        "Captain Dain",
+        "warden",
+        "My orders say the dead must leave. My patrol is coming to enforce them.",
+      ),
+      line(
+        "Village elder",
+        "scout",
+        "Give us six days to gather the households. Defend your shelter if you must, but let men who turn back go home. There are sick families here who need the herbs in the northern grove.",
+      ),
+      line(
+        "Orin",
+        "necromancer",
+        "Then we hold our ground. We will not hunt your wounded. And we will bring the medicine.",
+      ),
+    ],
+    victory: [
+      line(
+        "Village elder",
+        "scout",
+        "Enough, Captain. They held their shelter and let your wounded leave. These houses are ours to offer. The dead may stay as our neighbors.",
+      ),
+      line(
+        "Dain",
+        "warden",
+        "My orders did not mention people who would ask the dead to stay. Perhaps the man who wrote them left other things out.",
+      ),
+      line(
+        "Orin",
+        "necromancer",
+        "He used to write my orders too. Come with us, and see what he has been hiding.",
+      ),
+      line("Dain", "warden", "I will. My soldiers can rest here. I know which road we take next."),
+    ],
+    refuge: {
+      medicineEvent: "medicine",
+      medicineTurns: 5,
+      warBriefing:
+        "The attempt to live beside the villages has become an open battle. After the bloodshed, the households can no longer persuade the patrol to stand down. Orin’s company must break the remaining patrol to leave, and will face the Master without Dain’s help.",
+      warHints: [
+        "The patrol still has somewhere to run.",
+        "The empty houses remain, even after peace is lost.",
+      ],
+      escalation: [
+        line(
+          "Village elder",
+          "scout",
+          "There has been too much bloodshed for the patrol to accept our mediation. We cannot stop this battle for you.",
+        ),
+        line(
+          "Orin",
+          "necromancer",
+          "Then there is no agreement left to make. We must break the patrol before we can leave.",
+        ),
+      ],
+      warVictory: [
+        line(
+          "Orin",
+          "necromancer",
+          "The patrol is broken. But we have lost the chance to leave here with friends. We face the Master with our own company.",
+        ),
+      ],
+    },
+    legacyDialogue: [
+      line(
+        "Orin",
+        "necromancer",
+        "The houses are empty, but the wells are clean. We can stop running here.",
+      ),
+      line("Captain Dain", "warden", "My orders say you are dangerous."),
+      line(
+        "Orin",
+        "necromancer",
+        "Then watch what we do. We will hold the houses, not march on yours.",
+      ),
+      line(
+        "Dain",
+        "warden",
+        "You put your archers between my patrol and those villagers. My orders did not mention that.",
+      ),
+      line("Orin", "necromancer", "The man who wrote your orders used to write mine."),
+      line("Dain", "warden", "Then I know which road we take next."),
+      line(
+        "Orin",
+        "necromancer",
+        "We have little use for the herbs. The people next door do. They insist on paying us. I think that is what neighbors do.",
+      ),
+    ],
+    events: [
+      {
+        id: "medicine",
+        trigger: { kind: "visit", tile: "3,0" },
+        label: "Bring medicine to the villagers",
+        gold: 6,
+        warDialogue: [
+          line(
+            "Village elder",
+            "scout",
+            "The herbs will still save lives. Take these six coins. But after the bloodshed, medicine alone cannot stop the patrol’s battle with you.",
+          ),
+        ],
+        dialogue: [
+          line(
+            "Village elder",
+            "scout",
+            "The fever is easing. We will send word with the families you helped; the households will gather a day sooner. Take these six coins for your shelter.",
+          ),
+          line(
+            "Orin",
+            "necromancer",
+            "We did not need the herbs ourselves. I am glad someone did.",
+          ),
+        ],
+      },
+    ],
+    waves: [
+      {
+        round: 3,
+        label: "An archer and soldier arrive on turn 3",
+        units: [unit("archer", "enemy", 9, 1), unit("soldier", "enemy", 9, 7)],
+      },
+      { round: 5, label: "An adept arrives on turn 5", units: [unit("adept", "enemy", 9, 3)] },
+    ],
+  },
+  {
+    map: map(
+      "ashen-dawn",
+      "A Dawn of Our Own",
+      15,
+      9,
+      [
+        keep(1, 4, "player"),
+        keep(13, 4, "enemy"),
+        ...land("ruins", [
+          [7, 2],
+          [7, 6],
+          [12, 0],
+        ]),
+        ...land("marsh", [
+          [5, 1],
+          [5, 2],
+          [5, 6],
+          [5, 7],
+          [8, 3],
+          [8, 5],
+        ]),
+        ...land("grove", [[4, 4]]),
+        ...land("fort", [
+          [10, 3],
+          [10, 5],
+        ]),
+        ...land("forest", [
+          [6, 0],
+          [6, 1],
+          [6, 7],
+          [6, 8],
+          [11, 2],
+          [11, 6],
+        ]),
+        ...land("hill", [
+          [9, 2],
+          [9, 6],
+        ]),
+        ...land("village", [
+          [3, 1],
+          [3, 7],
+        ]),
+        ...land("village", [[13, 1]], "enemy"),
+        ...land("water", [
+          [8, 0],
+          [8, 1],
+          [8, 7],
+          [8, 8],
+        ]),
+      ],
+      [
+        unit("necromancer", "player", 1, 4, "Orin", "leader"),
+        unit("skeleton", "player", 2, 3),
+        unit("warden", "player", 2, 4, "Captain Dain"),
+        unit("necromancer", "enemy", 13, 4, "The Master", "leader"),
+        unit("skeleton", "enemy", 10, 2),
+        unit("skeleton", "enemy", 10, 6),
+        unit("boar", "enemy", 9, 4),
+        unit("bonearcher", "enemy", 11, 1),
+        unit("bonearcher", "enemy", 11, 7),
+        unit("thorncaller", "enemy", 12, 4),
+      ],
+    ),
+    subtitle: "Break the chains. Leave the names.",
+    briefing:
+      "Dain has chosen to stand beside Orin against the man who commanded them both. The Master still binds others to his will through stones along the road. Breaking those chains and confronting him is the company’s chance to secure a freedom he cannot simply revoke.",
+    hints: [
+      "Dain’s company has more to offer than swords.",
+      "The stones are where the Master’s reach begins.",
+    ],
+    goals: [
+      { kind: "seal", label: "Break both binding stones", tiles: ["7,2", "7,6"] },
+      { kind: "defeat", label: "Defeat the Master" },
+    ],
+    recruits: ["skeleton", "bonearcher", "warden", "adept"],
+    enemyRecruits: ["skeleton", "bonearcher", "boar"],
+    gold: 20,
+    enemyGold: 0,
+    intro: [
+      line("The Master", "necromancer", "I gave you a second life. You owe me the use of it."),
+      line("Orin", "necromancer", "A life is not a ledger. These people choose whom they follow."),
+      line(
+        "Dain",
+        "warden",
+        "My wardens chose the same road. Break his binding stones. The adepts can answer his bones; my spears can keep the beasts off them.",
+      ),
+    ],
+    victory: [
+      line("The Master", "necromancer", "Without me, what are you?"),
+      line("Orin", "necromancer", "We have not decided yet. That is the point."),
+    ],
+    withoutDain: {
+      briefing:
+        "The refuge battle ended without an agreement. Dain and his allies will not come with Orin; the company must face the Master alone. His binding stones still hold others in servitude. Breaking them is the first step toward a freedom that can survive him.",
+      hints: [
+        "The dead will have to look after their own.",
+        "The stones are where the Master’s reach begins.",
+      ],
+      recruits: ["skeleton", "bonearcher"],
+      reinforcements: [unit("skeleton", "player", 2, 4), unit("bonearcher", "player", 1, 3)],
+      intro: [
+        line(
+          "The Master",
+          "necromancer",
+          "You broke the patrol that came to turn you back. You have learned my methods well.",
+        ),
+        line(
+          "Orin",
+          "necromancer",
+          "We chose that battle. We will carry what it cost us. But you will not choose our lives again.",
+        ),
+        line(
+          "A hollow voice",
+          "skeleton",
+          "No captain is coming to help us. Break the binding stones. We can still bring the others home.",
+        ),
+      ],
+    },
+    events: [
+      {
+        id: "names",
+        trigger: { kind: "visit", tile: "12,0" },
+        label: "Recover the stolen names from the old archive",
+        gold: 6,
+        dialogue: [
+          line(
+            "Orin",
+            "necromancer",
+            "Here they are. All the names he took. We will return them, one house at a time.",
+          ),
+        ],
+      },
+    ],
+    waves: ["7,2", "7,6"].map((tile, index) => ({
+      round: 5,
+      label: "An unsealed binding stone raises a skeleton on turn 5",
+      requiresUnsealed: tile,
+      units: [unit("skeleton", "enemy", 7, [2, 6][index]!)],
+    })),
+  },
+];
+
+export const CAMPAIGNS = immutable<Record<CampaignId, CampaignDefinition>>({
+  "lantern-road": {
+    id: "lantern-road",
+    name: "The Lantern Road",
+    tagline: "A message becomes a road home.",
+    description:
+      "Lead Captain Nera through a haunted river valley. Escort a courier, reclaim villages, and silence the graves. Human infantry, wardens, and adepts face the undead.",
+    race: "human",
+    leader: "commander",
+    missions: lantern,
+    ending: [
+      line(
+        "Nera",
+        "commander",
+        "We will leave a lantern at each crossing. Not as a warning. As a way home.",
+      ),
+      line("Ivo", "scout", "I have a new list. This one has everyone who made it."),
+    ],
+  },
+  "green-accord": {
+    id: "green-accord",
+    name: "The Green Accord",
+    tagline: "A forest and a village can share a road.",
+    description:
+      "Play as Alder’s woodland pack. Reclaim sacred groves, hold a vigil, and escort a witness to peace. Wolves, boars, and thorncallers each have a different job.",
+    race: "beast",
+    leader: "wildkeeper",
+    missions: green,
+    ending: [
+      line("Lark", "thorncaller", "The first cart crossed today. It carried apples, not axes."),
+      line("Alder", "wildkeeper", "Keep the road open. The roots will do the rest."),
+    ],
+  },
+  "ashen-oath": {
+    id: "ashen-oath",
+    name: "The Ashen Oath",
+    tagline: "Freedom is an order you give yourself.",
+    description:
+      "Lead Orin’s unbound dead out of servitude. Escape a quarry, defend a refuge, and break the Master’s bindings with unexpected living allies.",
+    race: "undead",
+    leader: "necromancer",
+    missions: ashen,
+    ending: [
+      line("Dain", "warden", "What should I put in the new ledger?"),
+      line(
+        "Orin",
+        "necromancer",
+        "Names first. And leave a blank page. We may become more than you expected.",
+      ),
+    ],
+  },
+});
+
+export const CAMPAIGN_MAPS = Object.fromEntries(
+  Object.values(CAMPAIGNS).flatMap((campaign) =>
+    campaign.missions.map((mission) => [mission.map.id, mission.map]),
+  ),
+) as Record<CampaignMapId, MapDefinition>;
