@@ -56,7 +56,8 @@ const map = (
   rows: number,
   terrain: TerrainOverride[],
   units: StartingUnit[],
-): MapDefinition => ({ id, name, description: name, revision: 1, cols, rows, terrain, units });
+  revision = 1,
+): MapDefinition => ({ id, name, description: name, revision, cols, rows, terrain, units });
 
 const lantern: MissionDefinition[] = [
   {
@@ -322,7 +323,7 @@ const lantern: MissionDefinition[] = [
           [8, 2],
           [8, 6],
         ]),
-        ...land("grove", [[4, 3]]),
+        ...land("grove", [[5, 1]]),
         ...land("hill", [
           [5, 0],
           [5, 8],
@@ -341,6 +342,7 @@ const lantern: MissionDefinition[] = [
         unit("bonearcher", "enemy", 10, 2),
         unit("bonearcher", "enemy", 10, 6),
       ],
+      2,
     ),
     subtitle: "Silence the graves before silencing the bell.",
     briefing:
@@ -382,8 +384,8 @@ const lantern: MissionDefinition[] = [
     events: [
       {
         id: "reeds",
-        trigger: { kind: "visit", tile: "4,3" },
-        label: "Meet the reed gatherers at the grove",
+        trigger: { kind: "visit", tile: "5,1" },
+        label: "Meet the reed gatherers by the northern bridge",
         gold: 6,
         dialogue: [
           line(

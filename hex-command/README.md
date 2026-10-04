@@ -169,7 +169,7 @@ failures inform map and pacing changes; the [playtest report](docs/campaign-play
 records the method, results and limitations. Browser interaction and visual parity
 have not been automated, in accordance with `AGENTS.md`.
 
-Existing campaign saves retain their deployed units. The refuge’s two village positions upgrade on reload; other saved terrain remains unchanged. Start a new
+Existing campaign saves retain their deployed units. The refuge’s two village positions and the Lantern finale’s reward grove upgrade on reload; other saved terrain remains unchanged. The reed gatherers occupy the empty grove beside the northern bridge, away from the starting company. Start a new
 campaign, or retry a defeated mission, to use the revised starting layouts and
 companies.
 

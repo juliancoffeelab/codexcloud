@@ -13,8 +13,10 @@ Sources:
 
 - [x] Visit rewards fire on a player entering the named hex, once per mission.
       Starting occupancy, unrelated moves, turn changes and reloads do not count.
-      The Lantern finale's starting adept on the reward grove is covered by a
-      regression check, including departure, return, undo and repeated visits.
+      The Lantern finale's reward grove is now at unoccupied `5,1`, beside the
+      northern bridge, rather than underneath the starting adept at `4,3`.
+      Old saves keep units, gold and earned rewards when the site moves. Checks
+      cover visit placement, arrival, starting occupancy, undo and repeat visits.
 - [x] Lantern Road's final binding stones require adepts. Other campaigns retain
       their existing sealing rule. Objective text and contextual terrain help
       describe the required unit and sealed state.

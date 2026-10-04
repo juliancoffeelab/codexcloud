@@ -308,16 +308,31 @@ export function loadBattle(): LoadedBattle {
     }
     const sites = game.tiles.filter((tile) => ["grove", "ruins", "fort"].includes(tile.terrain));
     if (campaign || s.sites !== undefined) {
+      // The reed gatherers moved off the starting adept's hex. Upgrade the old
+      // site's ownership without moving units or awarding the visit again.
+      const savedSites =
+        game.mapId === "lantern-bell" && game.mapRevision === 1 && Array.isArray(s.sites)
+          ? s.sites.map((site) =>
+              record(site) && site.id === "4,3"
+                ? {
+                    ...site,
+                    id: "5,1",
+                    owner: units.find((unit) => unit.tile === "5,1")?.side ?? site.owner,
+                  }
+                : site,
+            )
+          : s.sites;
       if (
-        !Array.isArray(s.sites) ||
-        s.sites.length !== sites.length ||
-        new Set(s.sites.map((v) => (record(v) ? v.id : undefined))).size !== sites.length
+        !Array.isArray(savedSites) ||
+        savedSites.length !== sites.length ||
+        new Set(savedSites.map((v) => (record(v) ? v.id : undefined))).size !== sites.length
       )
         return fresh();
-      for (const site of s.sites as unknown[]) {
+      for (const site of savedSites as unknown[]) {
         if (!validVillage(site, sites)) return fresh();
         game.tile(site.id)!.owner = site.owner;
       }
+      if (game.mapId === "lantern-bell" && game.mapRevision === 1) game.mapRevision = 2;
     } else {
       // Older noncampaign saves did not persist ownership of these sites.
       for (const site of sites) site.owner = null;
