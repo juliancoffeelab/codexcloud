@@ -4,7 +4,8 @@ Checked on 2026-10-04 against commit `b6f8ef5` for
 [PR #5](https://github.com/juliancoffeelab/codexcloud/pull/5).
 There are no submitted reviews or inline review threads. The outstanding requests
 below come from the two discussion comments and the PR description, checked against
-the current source. Discussion comments do not have a resolved/unresolved flag.
+the current source, plus the user's subsequent woodland campaign feedback in chat.
+Discussion comments do not have a resolved/unresolved flag.
 
 Sources:
 
@@ -55,6 +56,21 @@ Do not rewrite creative content without the user's input. Suggestions are welcom
       the Beastland/Green Accord witness, necromancer conflict and Dain's involvement.
       Explain how player actions lead to the next mission rather than relying on
       unexplained transitions.
+- [ ] Resolve the first woodland mission's purpose and causal outcome with the user.
+      In `green-border`, owning all three marked groves immediately wins the mission;
+      the debrief then declares that cutting stopped and Dain accepted a truce.
+      There is no separate woodcutting or surrender condition establishing why
+      capturing those locations stops him. The user found the stage's purpose
+      unclear. Agree on the relationship between the objective and the outcome,
+      rather than just adding explanatory dialogue to justify the existing rule.
+- [ ] Resolve the second woodland mission's truce and conflict with the user.
+      `green-vigil` describes a personal truce with Dain, while the enemy units belong
+      to the Overseer and continue attacking. This distinction was not clear in play.
+      The user understands the vigil's purpose somewhat, but asks why attacks occur
+      under a truce and what challenge the stage would have if attacks ceased.
+      Agree on who the truce covers and what threatens the vigil before changing
+      story, factions or mission rules; do not simply remove attacks and leave an
+      unchallenged waiting objective.
 - [ ] Clarify Dain's allegiance and relationship to the necromancer in the skeleton
       campaign. Preserve the praised immortality/service exchange and the
       "we haven't decided what we'll do" conversation.
