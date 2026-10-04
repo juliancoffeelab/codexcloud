@@ -75,6 +75,13 @@ Do not rewrite creative content without the user's input. Suggestions are welcom
       Agree on who the truce covers and what threatens the vigil before changing
       story, factions or mission rules; do not simply remove attacks and leave an
       unchallenged waiting objective.
+- [ ] Establish who the Overseer is and the woodland campaign's chain of authority
+      and motives with the user. The text associates him with timber cutting,
+      soldiers and Dain's employer, but does not explain his office or why the
+      soldiers obey him when Dain makes a truce. It says he attacks the vigil to
+      suppress evidence that the Rootbinder killed and raised the woodcutters for
+      him, without establishing why he wanted those woodcutters killed. Introduce
+      these relationships coherently; do not invent missing lore during bug fixes.
 - [ ] Clarify Dain's allegiance and relationship to the necromancer in the skeleton
       campaign. Preserve the praised immortality/service exchange and the
       "we haven't decided what we'll do" conversation.
