@@ -3,6 +3,7 @@ import type { GameView, UnitView, TileView } from "../game/view";
 import type { ArtStyle } from "../presentation/art";
 import { TERRAIN, TYPES } from "../game/engine";
 import { artSprite } from "../presentation/art";
+import { pixelTerrainColors } from "../presentation/pixel-art";
 import { colors, hexPoints, tileCenter } from "./geometry";
 
 export interface TileUnitView {
@@ -116,7 +117,7 @@ export function battlefieldTiles(
       y,
       points: hexPoints(x, y),
       clipId: `hex-clip-${tile.col}-${tile.row}`,
-      fill: colors[tile.terrain],
+      fill: artStyle === "pixel" ? pixelTerrainColors[tile.terrain] : colors[tile.terrain],
       classes,
       label: tileLabel(tile, unit, reachable, target, objectiveTiles.get(tile.id) ?? []),
       terrainArtwork: artSprite(

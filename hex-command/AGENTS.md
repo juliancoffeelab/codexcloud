@@ -16,3 +16,9 @@
   before publishing results or applying feedback.
 - Preserve the game rules, artwork, layout, and existing visible behavior. Keep
   strict TypeScript and Prettier checks passing. Keep this project self-contained.
+- `dist/` contains generated output and is intentionally Git-ignored. Commit the
+  source and public assets. For Sites publication, build the selected Site checkout
+  with `npm run build`, commit and push its exact source, then package it with
+  `python3 scripts/package-site.py /tmp/hex-command.tar.gz`. Publish the returned
+  archive and source commit. Do not use `git archive` for generated output: it
+  omits ignored bundles. The packager checks client references and archive bytes.

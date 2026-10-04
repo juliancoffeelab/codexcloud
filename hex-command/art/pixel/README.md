@@ -54,6 +54,11 @@ content hash and frame coordinates. The regular game renderer loads these public
 assets. Packing copies pixels without resizing; every frame retains its full
 48×48 canvas, separated by a transparent gutter. Atlas coordinates are integers.
 
+Terrain palettes use `G` for their ground base, or `W` for water-only backgrounds.
+The generated metadata includes that exact colour for the battlefield's vector
+hex beneath each sprite. Transparent pixels along the stepped raster silhouette
+therefore expose matching ground, without a second grey or dark jagged border.
+
 Each unit directory has `player.txt`, `enemy.txt`, the rendered PNGs and
 `components.md`. Each terrain directory has `tile.txt`, its PNG, palette and
 component description. Keep changes in these sources; rebuild the public atlases

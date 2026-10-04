@@ -6,6 +6,11 @@ import { TERRAIN, TYPES } from "../src/game/engine";
 import { artSprite, dialoguePortrait, loadArtStyle } from "../src/presentation/art";
 import { campaignSheets } from "../src/presentation/campaign-art";
 import { pixelSources } from "../src/presentation/pixel-art";
+import { Game } from "../src/game/engine";
+import { createGameView } from "../src/game/view";
+import { battlefieldTiles } from "../src/ui/battlefield-view";
+
+const terrainSamples = battlefieldTiles(createGameView(new Game("developer")), null, "pixel", null);
 
 const frameSources = Object.fromEntries(
   Object.keys(campaignSheets.pixel.frames).map((key) => [
@@ -97,6 +102,24 @@ for (const kind of ["units", "terrain", "portraits"] as const) {
       assert.equal(height, 48);
       assert.equal(width, 48);
       assert.equal(rows.length, height);
+      if (kind === "terrain") {
+        // Check against the editable source palette, independently of the
+        // generated metadata used by the renderer.
+        const groundSymbol = ["water", "bridge", "ford"].includes(entry.name) ? "W" : "G";
+        const ground = palette[groundSymbol]!;
+        assert.equal(ground[3], 255);
+        const expected = `#${ground
+          .slice(0, 3)
+          .map((channel) => channel.toString(16).padStart(2, "0"))
+          .join("")}`;
+        const sample = terrainSamples.find((tile) => tile.terrain === entry.name);
+        assert(sample, `Missing terrain sample: ${entry.name}`);
+        assert.equal(
+          sample.fill,
+          expected,
+          `${entry.name} must not expose a mismatched edge colour`,
+        );
+      }
       for (let y = 0; y < height; y++) {
         assert.equal(rows[y]!.length, width);
         for (let x = 0; x < width; x++) {

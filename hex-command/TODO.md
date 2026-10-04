@@ -44,6 +44,10 @@ Sources:
       Reed gatherers and the village elder no longer borrow the scout design.
 - [x] Pixel units use integer SVG crops with transparent atlas gutters, removing
       the oversized HTML image/compositor layer from the pixel rendering path.
+- [x] Pixel terrain uses its palette's actual ground colour beneath the transparent
+      raster edges. The legacy grey/dark underlay no longer creates a stepped fringe
+      around ruins and other hexes. All twelve terrain backgrounds are checked
+      against their source pixels; phone confirmation remains a separate check.
 
 ## Completed woodland campaign rewrite
 

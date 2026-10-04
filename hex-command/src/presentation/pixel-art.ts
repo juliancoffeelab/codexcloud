@@ -55,3 +55,18 @@ export const pixelFrames = {
   terrain_village: [99, 50, 48, 48],
   terrain_water: [148, 50, 48, 48],
 } as const;
+
+export const pixelTerrainColors = {
+  bridge: "#2a70be",
+  ford: "#44ada8",
+  forest: "#8fb337",
+  fort: "#8fb337",
+  grove: "#8fb337",
+  hill: "#8fb337",
+  keep: "#8fb337",
+  marsh: "#474b19",
+  plains: "#8fb337",
+  ruins: "#8fb337",
+  village: "#8fb337",
+  water: "#2a70be",
+} as const;
