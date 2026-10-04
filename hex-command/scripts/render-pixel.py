@@ -1,6 +1,7 @@
 """Render native pixel matrices using only the Python standard library."""
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 import struct
@@ -8,6 +9,7 @@ import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "art" / "pixel"
+NATIVE_UNITS = ("adept", "bonearcher", "boar", "necromancer")
 
 
 def chunk(kind, data):
@@ -15,33 +17,19 @@ def chunk(kind, data):
     return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", checksum)
 
 
-def render(matrix, palette):
+def read_matrix(matrix):
     rows = matrix.read_text().splitlines()
     if not rows or not rows[0] or any(len(row) != len(rows[0]) for row in rows):
         raise ValueError(f"{matrix}: matrix must be a nonempty rectangle")
     width, height = len(rows[0]), len(rows)
-    pixels = bytearray()
-    for y, row in enumerate(rows):
-        pixels.append(0)  # PNG filter: none.
-        for x, symbol in enumerate(row):
-            if symbol not in palette:
-                raise ValueError(f"{matrix}:{y + 1}:{x + 1}: unknown symbol {symbol!r}")
-            pixels.extend(palette[symbol])
-    header = struct.pack(">IIBBBBB", width, height, 8, 6, 0, 0, 0)
-    return (
-        b"\x89PNG\r\n\x1a\n"
-        + chunk(b"IHDR", header)
-        + chunk(b"IDAT", zlib.compress(pixels, level=9))
-        + chunk(b"IEND", b"")
-    )
+    if matrix.parent.parent == ART / "units" and (width, height) != (48, 48):
+        raise ValueError(f"{matrix}: unit matrices must be 48×48")
+    return rows
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("matrices", nargs="*", type=Path)
-    parser.add_argument("--check", action="store_true")
-    args = parser.parse_args()
-    palette = json.loads((ART / "palette.json").read_text())
+def read_palette(matrix):
+    path = matrix.parent / "palette.json"
+    palette = json.loads((path if path.exists() else ART / "palette.json").read_text())
     for symbol, rgba in palette.items():
         if (
             len(symbol) != 1
@@ -53,12 +41,88 @@ def main():
             raise ValueError(f"Invalid flat RGBA palette entry: {symbol!r}")
     if palette.get(".") != [0, 0, 0, 0]:
         raise ValueError("Palette '.' must be transparent black")
+    return palette
+
+
+def rgba_pixels(matrix):
+    rows, palette = read_matrix(matrix), read_palette(matrix)
+    pixels = []
+    for y, row in enumerate(rows):
+        for x, symbol in enumerate(row):
+            if symbol not in palette:
+                raise ValueError(f"{matrix}:{y + 1}:{x + 1}: unknown symbol {symbol!r}")
+            pixels.append(tuple(palette[symbol]))
+    return len(rows[0]), len(rows), pixels
+
+
+def png_bytes(width, height, rgba):
+    pixels = bytearray()
+    for y in range(height):
+        pixels.append(0)  # PNG filter: none.
+        for color in rgba[y * width : (y + 1) * width]:
+            pixels.extend(color)
+    header = struct.pack(">IIBBBBB", width, height, 8, 6, 0, 0, 0)
+    return (
+        b"\x89PNG\r\n\x1a\n"
+        + chunk(b"IHDR", header)
+        + chunk(b"IDAT", zlib.compress(pixels, level=9))
+        + chunk(b"IEND", b"")
+    )
+
+
+def native_atlas():
+    width, height = 48 * len(NATIVE_UNITS), 96
+    pixels = [(0, 0, 0, 0)] * (width * height)
+    frames = {}
+    for column, unit in enumerate(NATIVE_UNITS):
+        alpha = None
+        for row, side in enumerate(("player", "enemy")):
+            matrix = ART / "units" / unit / f"{side}.txt"
+            sprite_width, sprite_height, sprite = rgba_pixels(matrix)
+            if (sprite_width, sprite_height) != (48, 48):
+                raise ValueError(f"{matrix}: atlas requires 48×48")
+            mask = [color[3] for color in sprite]
+            if alpha is not None and alpha != mask:
+                raise ValueError(f"{unit}: factions must share identical silhouettes")
+            alpha = mask
+            occupied = [(i % 48, i // 48) for i, color in enumerate(sprite) if color[3]]
+            if not occupied:
+                raise ValueError(f"{matrix}: empty sprite")
+            for y in range(48):
+                offset = (row * 48 + y) * width + column * 48
+                pixels[offset : offset + 48] = sprite[y * 48 : (y + 1) * 48]
+            frame_name = "bone_archer" if unit == "bonearcher" else unit
+            # Keep the native canvas: tight crops would change pixel scale and foot baseline.
+            frames[f"{side}_{frame_name}"] = [column * 48, row * 48, 48, 48]
+    data = png_bytes(width, height, pixels)
+    source = {
+        "filename": "campaign-pixel-native.png",
+        "width": width,
+        "height": height,
+        "revision": hashlib.sha256(data).hexdigest()[:12],
+    }
+    source_fields = "".join(f"  {key}: {json.dumps(value)},\n" for key, value in source.items())
+    frame_fields = "".join(f"  {key}: {json.dumps(value)},\n" for key, value in frames.items())
+    metadata = (
+        "// Generated by scripts/render-pixel.py --atlas; edit native matrices instead.\n"
+        + "export const nativePixelSource = {\n" + source_fields + "} as const;\n\n"
+        + "export const nativePixelFrames = {\n" + frame_fields + "} as const;\n"
+    )
+    return data, metadata
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("matrices", nargs="*", type=Path)
+    parser.add_argument("--check", action="store_true")
+    parser.add_argument("--atlas", action="store_true", help="Pack the four C unit pairs")
+    args = parser.parse_args()
     matrices = [matrix.resolve() for matrix in args.matrices] or sorted(ART.rglob("*.txt"))
     if not matrices:
         raise ValueError("No pixel matrices found")
     for matrix in matrices:
         png = matrix.with_suffix(".png")
-        data = render(matrix, palette)
+        data = png_bytes(*rgba_pixels(matrix))
         if args.check:
             if not png.exists() or png.read_bytes() != data:
                 raise ValueError(f"{png}: regenerate from {matrix}")
@@ -66,6 +130,20 @@ def main():
         else:
             png.write_bytes(data)
             print(f"Rendered {png.relative_to(ROOT)}")
+    if args.atlas:
+        data, metadata = native_atlas()
+        atlas = ROOT / "public" / "assets" / "campaign-pixel-native.png"
+        manifest = ROOT / "src" / "presentation" / "native-pixel-art.ts"
+        if args.check:
+            if not atlas.exists() or atlas.read_bytes() != data:
+                raise ValueError(f"{atlas}: regenerate with --atlas")
+            if not manifest.exists() or manifest.read_text() != metadata:
+                raise ValueError(f"{manifest}: regenerate with --atlas")
+            print("Verified native atlas and crop metadata")
+        else:
+            atlas.write_bytes(data)
+            manifest.write_text(metadata)
+            print("Packed native atlas and crop metadata")
 
 
 if __name__ == "__main__":

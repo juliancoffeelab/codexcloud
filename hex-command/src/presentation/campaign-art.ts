@@ -1,4 +1,6 @@
-/* Integer crops of the original generated sheets. Keep the PNGs intact. */
+import { nativePixelFrames, nativePixelSource } from "./native-pixel-art";
+
+/* Integer crops of the original generated sheets and native pixel atlas. */
 const pixelUndeadSource = {
   filename: "campaign-pixel-undead.png",
   width: 1330,
@@ -287,33 +289,32 @@ export const campaignSheets = {
     revision: "f8e1face84a4",
     frameSources: {
       player_skeleton: pixelUndeadSource,
-      player_bone_archer: pixelUndeadSource,
       enemy_skeleton: pixelUndeadSource,
-      enemy_bone_archer: pixelUndeadSource,
+      player_adept: nativePixelSource,
+      player_bone_archer: nativePixelSource,
+      player_boar: nativePixelSource,
+      player_necromancer: nativePixelSource,
+      enemy_adept: nativePixelSource,
+      enemy_bone_archer: nativePixelSource,
+      enemy_boar: nativePixelSource,
+      enemy_necromancer: nativePixelSource,
     },
     frames: {
       player_warden: [22, 24, 232, 275],
-      player_adept: [286, 55, 223, 239],
       player_skeleton: [126, 52, 488, 536],
-      player_bone_archer: [147, 591, 518, 561],
       player_wolf: [30, 378, 221, 175],
-      player_boar: [267, 364, 264, 192],
       player_wildkeeper: [540, 316, 211, 238],
-      player_necromancer: [778, 337, 213, 221],
       player_thorncaller: [27, 577, 218, 232],
       enemy_warden: [267, 560, 229, 254],
-      enemy_adept: [529, 586, 219, 224],
       enemy_skeleton: [761, 52, 488, 536],
-      enemy_bone_archer: [781, 591, 518, 561],
       enemy_wolf: [271, 881, 223, 173],
-      enemy_boar: [510, 865, 259, 194],
       enemy_wildkeeper: [782, 817, 211, 237],
-      enemy_necromancer: [35, 1070, 208, 216],
       enemy_thorncaller: [270, 1069, 214, 222],
       terrain_marsh: [526, 1074, 213, 221],
       terrain_ruins: [780, 1074, 215, 224],
       terrain_fort: [36, 1295, 210, 220],
       terrain_sacred_grove: [283, 1295, 212, 221],
+      ...nativePixelFrames,
     },
   },
 } as const;

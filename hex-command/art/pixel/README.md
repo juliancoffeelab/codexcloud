@@ -6,7 +6,12 @@ original Scout: cloth shirt and trousers, leather belt, bracers and boots,
 skin-colored hands, silver knife, and windblown hair and cloak.
 
 Each character in a `.txt` matrix is one pixel. `.` is transparent. Symbols map
-to exact RGBA colors in `palette.json`; uppercase and lowercase are distinct.
+to exact RGBA colors in that unit's `palette.json`; uppercase and lowercase are
+distinct. Scout uses the shared palette in this directory. Other units keep
+their material symbols and palettes beside their matrices; see `components.md`
+in each unit directory for component locations and material ownership.
+
+The shared Scout palette uses these symbols:
 
 | Symbols       | Material                               |
 | ------------- | -------------------------------------- |
@@ -27,6 +32,23 @@ Check that all saved PNGs match their matrices:
 ```sh
 python3 scripts/render-pixel.py --check
 ```
+
+Build the native adept, bone archer, boar and necromancer faction pairs into the
+game's atlas, including content-hashed source metadata and native 48×48 frames:
+
+```sh
+npm run art:build
+npm run art:check
+```
+
+Both factions use identical component geometry, with only faction cloth and
+adept gem colors changing. All unit matrices must remain 48×48. The atlas packs
+four columns and two faction rows without scaling any pixel.
+
+The chosen design reference is [C](reference/units-c.png). It records the agreed
+appearance; editable matrices define the actual native pixels. Reviews and the
+pre-generation component specifications remain in temporary task storage at
+`/workspace/artifacts/pixel-C/`.
 
 The renderer uses only the Python standard library. PNGs use flat colors and
 hard transparency. Store native resolution here; any later enlarged exports
