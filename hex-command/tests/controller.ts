@@ -392,8 +392,14 @@ class ControlledImage {
   }
   static finish(style: string, success: boolean, campaignSuccess = success) {
     const requests = this.requests.filter((image) => !image.completed && image.src.includes(style));
-    assert(requests.length >= 4, `Expected one pending ${style} artwork family`);
-    assert(requests.some((image) => image.src.includes(`/campaign-${style}`)));
+    if (style === "pixel") {
+      assert.equal(requests.length, 2, "Pixel artwork loads one unit atlas and one terrain atlas");
+      assert(requests.some((image) => image.src.includes("/units-pixel.png")));
+      assert(requests.some((image) => image.src.includes("/terrain-pixel.png")));
+    } else {
+      assert(requests.length >= 4, `Expected one pending ${style} artwork family`);
+      assert(requests.some((image) => image.src.includes(`/campaign-${style}`)));
+    }
     assert.equal(new Set(requests.map((image) => image.src)).size, requests.length);
     for (const image of requests) {
       image.completed = true;

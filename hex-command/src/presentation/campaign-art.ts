@@ -1,4 +1,4 @@
-import { nativePixelFrames, nativePixelSource } from "./native-pixel-art";
+import { pixelFrames, pixelSources } from "./pixel-art";
 
 /* Integer crops of the original generated sheets and native pixel atlas. */
 export const campaignSheets = {
@@ -277,35 +277,12 @@ export const campaignSheets = {
     },
   },
   pixel: {
-    width: 1024,
-    height: 1536,
-    revision: "f8e1face84a4",
-    frameSources: {
-      player_skeleton: nativePixelSource,
-      enemy_skeleton: nativePixelSource,
-      player_wolf: nativePixelSource,
-      enemy_wolf: nativePixelSource,
-      player_adept: nativePixelSource,
-      player_bone_archer: nativePixelSource,
-      player_boar: nativePixelSource,
-      player_necromancer: nativePixelSource,
-      enemy_adept: nativePixelSource,
-      enemy_bone_archer: nativePixelSource,
-      enemy_boar: nativePixelSource,
-      enemy_necromancer: nativePixelSource,
+    ...pixelSources.units,
+    sources: {
+      player: pixelSources.units,
+      enemy: pixelSources.units,
+      terrain: pixelSources.terrain,
     },
-    frames: {
-      player_warden: [22, 24, 232, 275],
-      player_wildkeeper: [540, 316, 211, 238],
-      player_thorncaller: [27, 577, 218, 232],
-      enemy_warden: [267, 560, 229, 254],
-      enemy_wildkeeper: [782, 817, 211, 237],
-      enemy_thorncaller: [270, 1069, 214, 222],
-      terrain_marsh: [526, 1074, 213, 221],
-      terrain_ruins: [780, 1074, 215, 224],
-      terrain_fort: [36, 1295, 210, 220],
-      terrain_sacred_grove: [283, 1295, 212, 221],
-      ...nativePixelFrames,
-    },
+    frames: pixelFrames,
   },
 } as const;

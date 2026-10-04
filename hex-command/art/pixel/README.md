@@ -33,17 +33,32 @@ Check that all saved PNGs match their matrices:
 python3 scripts/render-pixel.py --check
 ```
 
-Build the native adept, bone archer, boar, necromancer, skeleton and wolf pairs into the
-game's atlas, including content-hashed source metadata and native 48×48 frames:
+Build the game's pixel assets from the matrices and original artwork:
 
 ```sh
 npm run art:build
 npm run art:check
 ```
 
-Both factions use identical component geometry, with only faction cloth and
-adept gem colors changing. All unit matrices must remain 48×48. The atlas packs
-six columns and two faction rows without scaling any pixel.
+`npm run dev` and `npm run build` regenerate these assets before starting.
+The script reads matrices from `art/pixel/units/` and the recorded original crops
+in `art/pixel/legacy/`. It writes exactly two public pixel images:
+
+- `public/assets/units-pixel.png`: all units and both factions. Existing matrices
+  replace their matching old sprites; every other sprite retains its original pixels.
+- `public/assets/terrain-pixel.png`: base terrain, campaign terrain and shallow water.
+
+The generated `src/presentation/pixel-art.ts` records each image's dimensions,
+content hash and frame coordinates. The regular game renderer loads these public
+assets. Packing copies pixels without resizing; matrix frames retain their full
+48×48 canvas and legacy frames retain their fractional crop offsets.
+
+There are currently thirteen matrix-backed frames. The enemy Scout and the other
+units without matrices use their original artwork within the same unit atlas.
+Terrain has no matrices yet; its original artwork is packed into the terrain atlas.
+
+Paired factions use identical component geometry, with only faction cloth and
+adept gem colors changing. All unit matrices must remain 48×48.
 
 The chosen design reference is [C](reference/units-c.png). It records the agreed
 appearance; editable matrices define the actual native pixels. Reviews and the
@@ -54,6 +69,6 @@ Skeleton and wolf references are tracked in [skeleton-wolf](reference/skeleton-w
 The selected warrior is B; the selected wolf is A. B's rabid wolf and D's wolf
 are retained for possible future use.
 
-The renderer uses only the Python standard library. PNGs use flat colors and
-hard transparency. Store native resolution here; any later enlarged exports
+The renderer uses only the Python standard library. Matrix PNGs use flat colors and
+hard transparency; legacy artwork retains its original colors and alpha. Store native resolution here; any later enlarged exports
 must use nearest neighbor. Game atlases belong in `public/assets`.
