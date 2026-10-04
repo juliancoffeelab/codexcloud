@@ -1,4 +1,4 @@
-import { campaignMission, goalProgress } from "../game/campaign-progress";
+import { activeGoalTiles, campaignMission, goalProgress } from "../game/campaign-progress";
 import type { GameView, UnitView, TileView } from "../game/view";
 import type { ArtStyle } from "../presentation/art";
 import { TERRAIN, TYPES } from "../game/engine";
@@ -64,7 +64,7 @@ export function battlefieldTiles(
   if (game.campaign) {
     for (const goal of campaignMission(game.campaign).goals) {
       const progress = goalProgress(game, goal);
-      for (const tile of progress.tiles) {
+      for (const tile of activeGoalTiles(game, goal)) {
         const labels = objectiveTiles.get(tile) ?? [];
         labels.push(progress.label);
         objectiveTiles.set(tile, labels);

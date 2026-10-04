@@ -1,6 +1,6 @@
 import { campaignSheets } from "./campaign-art";
 import { pixelFrames, pixelSources } from "./pixel-art";
-import type { Side } from "../game/types";
+import type { DialoguePortrait, Side } from "../game/types";
 
 const unitOrder = ["soldier", "archer", "scout", "commander"];
 const terrainOrder = ["plains", "forest", "hill", "water", "village", "keep"];
@@ -361,6 +361,21 @@ function terrainSprite(
 }
 
 // Render a region of the original sheet directly. Keep the generated PNGs intact.
+/** Civilian portraits share the public atlas without becoming combat units. */
+export function dialoguePortrait(
+  style: ArtStyle,
+  portrait: DialoguePortrait,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+) {
+  if (portrait !== "worker") return artSprite(style, "units", portrait, x, y, width, height);
+  const [cropX, cropY, cropWidth, cropHeight] = pixelFrames.portrait_worker;
+  const source = pixelSources.units;
+  return `<svg class="art-sprite pixel-art" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${cropWidth} ${cropHeight}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false">${sheetImage(campaignAssetURL(source), source, cropX, cropY)}</svg>`;
+}
+
 export function artSprite(
   style: ArtStyle,
   kind: SpriteKind,
@@ -384,7 +399,7 @@ export function artSprite(
     const url = campaignAssetURL(source);
     const metadata: CampaignSourceMetadata = campaignSheet;
     const image =
-      kind === "units"
+      kind === "units" && style !== "pixel"
         ? unitImage(url, source, cropX, cropY, cropWidth, cropHeight, metadata.clips?.[campaignKey])
         : sheetImage(url, source, cropX, cropY);
     return `<svg class="art-sprite ${style === "pixel" ? "pixel-art" : ""} ${extraClass}" data-faction="${side}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${cropWidth} ${cropHeight}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false">${image}</svg>`;

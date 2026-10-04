@@ -59,6 +59,30 @@ for (const id of ["lantern-road", "green-accord", "ashen-oath"] as const) {
 assert(!target.label.includes("Objective:"), "Ordinary skirmish tiles have no goal label");
 console.log("PASS: campaign objectives and named companions have accessible tile descriptions");
 
+// Sealed stones leave the map individually; territory that can be lost stays visible.
+{
+  const game = Game.startCampaign("lantern-road", 2);
+  game.campaign!.marks.push("sealed:9,1");
+  const tiles = battlefieldTiles(createGameView(game), null, "pixel", null);
+  assert(!required(tiles.find((tile) => tile.id === "9,1")).classes.includes("objective"));
+  assert(required(tiles.find((tile) => tile.id === "11,4")).classes.includes("objective"));
+  const escort = Game.startCampaign("green-accord", 2);
+  required(escort.tile("7,4")).owner = "player";
+  assert(
+    required(
+      battlefieldTiles(createGameView(escort), null, "pixel", null).find(
+        (tile) => tile.id === "7,4",
+      ),
+    ).classes.includes("objective"),
+  );
+  escort.winner = "player";
+  assert(
+    !battlefieldTiles(createGameView(escort), null, "pixel", null).some((tile) =>
+      tile.classes.includes("objective"),
+    ),
+  );
+}
+
 // The three paint layers retain separate feedback targets; overlays never need
 // the keyboard-focusable ground node to contain the unit artwork.
 const { animateTile } = await import("../src/presentation/motion");

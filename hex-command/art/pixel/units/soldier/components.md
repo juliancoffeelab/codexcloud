@@ -6,10 +6,10 @@ pose for both factions; only cloth and shield/banner fields change color.
 
 ## Components and materials
 
-Helmet and skin face; steel shoulders, torso and bent legs; ivory cross on the left shield; steel sword on the right; gold trim; leather belt and boots; faction tabard.
+Helmet and skin face; steel shoulders, torso and bent legs; ivory cross on the left shield; steel sword on the right; gold trim; leather belt, armored boots with dark soles; faction tabard.
 
 `A/a/k` forms helmet, shoulder plates, chest armor, gauntlet, leg armor and
-sword; `B/b` is the belt, strap and leather footwear. `C/c` belongs to the
+sword and boots; `B/b` is the belt and strap. `C/c` belongs to the
 shield's ivory cross. `G/g` is the shield rim, buckle, sword guard and tabard
 border. Skin `S` is confined to the face. Shield field, scarf and tabard use
 `T/t` (enemy `R/r`). `O` separates these components.

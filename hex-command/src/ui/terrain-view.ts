@@ -2,11 +2,11 @@ import type { TileView } from "../game/view";
 import type { RecruitmentContext, BattleView } from "../controller/view";
 import { TERRAIN, TYPES } from "../game/engine";
 import type { TerrainType } from "../game/types";
+import { campaignMission } from "../game/campaign-progress";
 
 const descriptions: Record<TerrainType, string> = {
   marsh: "Soft mud and reeds surround shallow pools.",
-  ruins:
-    "Broken walls shelter against ranged attacks. Walk onto a marked ruin to seal its binding stone.",
+  ruins: "Broken walls shelter against ranged attacks.",
   fort: "Earthworks protect against every damage kind. Capture them to hold a crossing.",
   grove: "A sacred woodland refuge. Its owner’s occupants heal 2 HP each turn.",
   plains: "Open grassland with easy footing.",
@@ -93,6 +93,20 @@ export function terrainPanelView(view: BattleView) {
   let ownerLabel = "Unclaimed";
   if (tile.owner === "player") ownerLabel = "Your";
   if (tile.owner === "enemy") ownerLabel = "Enemy";
+  const facts = terrainFacts(tile.terrain);
+  const campaign = view.game.campaign;
+  const seal =
+    campaign &&
+    campaignMission(campaign).goals.find(
+      (goal) => goal.kind === "seal" && goal.tiles.includes(tile.id),
+    );
+  if (seal?.kind === "seal") {
+    facts.push(
+      campaign!.marks.includes(`sealed:${tile.id}`)
+        ? "Binding stone sealed; it will not raise the dead"
+        : `Enter with ${seal.unitType ? `a friendly ${TYPES[seal.unitType].name.toLowerCase()}` : "a friendly unit"} to seal this binding stone`,
+    );
+  }
 
   return {
     tile,
@@ -101,7 +115,7 @@ export function terrainPanelView(view: BattleView) {
     ownership: hasOwnership
       ? { label: `${ownerLabel} ${tile.terrain}`, className: tile.owner || "neutral" }
       : null,
-    facts: terrainFacts(tile.terrain),
+    facts,
     recruitment: recruitmentView(view, tile, view.recruitment),
   };
 }

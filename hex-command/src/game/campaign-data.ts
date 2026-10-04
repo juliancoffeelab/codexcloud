@@ -1,9 +1,11 @@
 import { immutable } from "./immutable";
+import { LEGACY_GREEN_DIALOGUE } from "./legacy-green-dialogue";
 import type {
   CampaignDefinition,
   CampaignId,
   CampaignMapId,
   DialogueLine,
+  DialoguePortrait,
   MapDefinition,
   MissionDefinition,
   StartingUnit,
@@ -42,7 +44,7 @@ const unit = (
   name?: string,
   role?: StartingUnit["role"],
 ): StartingUnit => ({ type, side, col, row, ...(name ? { name } : {}), ...(role ? { role } : {}) });
-const line = (speaker: string, portrait: UnitType, text: string): DialogueLine => ({
+const line = (speaker: string, portrait: DialoguePortrait, text: string): DialogueLine => ({
   speaker,
   portrait,
   text,
@@ -348,7 +350,12 @@ const lantern: MissionDefinition[] = [
       "Listen for where the bell’s answer comes from.",
     ],
     goals: [
-      { kind: "seal", label: "Seal the three grave ruins", tiles: ["9,1", "11,4", "9,7"] },
+      {
+        kind: "seal",
+        label: "Use an adept to seal the three grave ruins",
+        tiles: ["9,1", "11,4", "9,7"],
+        unitType: "adept",
+      },
       { kind: "defeat", label: "Defeat the Bellwarden" },
     ],
     recruits: ["soldier", "archer", "scout", "warden", "adept"],
@@ -381,7 +388,7 @@ const lantern: MissionDefinition[] = [
         dialogue: [
           line(
             "Reed gatherer",
-            "scout",
+            "worker",
             "We saved what we could. Please make sure the road is still open when our children come home.",
           ),
         ],
@@ -398,355 +405,222 @@ const lantern: MissionDefinition[] = [
   },
 ];
 
-const legacyGreenDialogue: DialogueLine[][] = [
-  [
-    line(
-      "Lark",
-      "thorncaller",
-      "They call the trees an obstacle. They have marked three groves for cutting.",
-    ),
-    line(
-      "Alder",
-      "wildkeeper",
-      "Then we stand where their marks are. No chase into their fort. We need our roots back, not their bones.",
-    ),
-    line(
-      "Lark",
-      "thorncaller",
-      "The wolves know the narrow paths. Their hunters know where to point a spear. Let the boars go first when the woods run out.",
-    ),
-    line(
-      "Captain Dain",
-      "warden",
-      "We came for timber. Something in the old grove has been killing our woodcutters. Was that you?",
-    ),
-    line(
-      "Alder",
-      "wildkeeper",
-      "No. Come back at dusk, with empty hands, and I will show you what wakes beneath the stones.",
-    ),
-  ],
-  [
-    line("Alder", "wildkeeper", "The grove needs one night to recover. We hold it until dawn."),
-    line(
-      "Lark",
-      "thorncaller",
-      "The overseer has sent patrols along both roads. One on the third turn, another on the fifth. The wooden forts are theirs only while they stand in them.",
-    ),
-    line(
-      "Captain Dain",
-      "warden",
-      "I saw the thing under the stones. It wore a dead man’s face and my lord’s seal.",
-    ),
-    line(
-      "Alder",
-      "wildkeeper",
-      "Then take our witness to your people. A forest and a village can share a road.",
-    ),
-  ],
-  [
-    line(
-      "Dain",
-      "warden",
-      "Lark carries a living branch. When it flowers, no one can pretend the grove was only lumber.",
-    ),
-    line(
-      "Lark",
-      "thorncaller",
-      "It will flower. But I would rather not test that while a skeleton is shooting at me.",
-    ),
-    line(
-      "Alder",
-      "wildkeeper",
-      "Secure the bridge. The witness comes first. Dain, your spears and our boars hold the open road together.",
-    ),
-    line(
-      "Tamsin",
-      "adept",
-      "The dead hardly feel arrows, but stone sparks crack bone. Let the shields hold them while I work. Lark can rest in the groves beyond the ford.",
-    ),
-    line("Lark", "thorncaller", "It flowered."),
-    line(
-      "Dain",
-      "warden",
-      "Then I will say what I saw. And I will keep saying it until they hear.",
-    ),
-    line("Alder", "wildkeeper", "Leave the bridge open. That is what a pact is for."),
-  ],
-];
-
 const green: MissionDefinition[] = [
   {
-    map: map(
-      "green-border",
-      "Roots at the Border",
-      11,
-      9,
-      [
-        keep(1, 4, "player"),
-        keep(9, 4, "enemy"),
-        ...land(
-          "grove",
-          [
-            [3, 1],
-            [5, 4],
-            [3, 7],
-          ],
-          "enemy",
-        ),
-        ...land("forest", [
-          [2, 0],
-          [2, 1],
-          [3, 2],
-          [4, 3],
-          [4, 5],
-          [3, 6],
-          [2, 7],
-          [2, 8],
-          [6, 2],
-          [6, 6],
-        ]),
-        ...land("fort", [
-          [7, 3],
-          [7, 5],
-        ]),
-        ...land("hill", [
-          [4, 2],
-          [4, 6],
-        ]),
-        ...land("marsh", [
-          [5, 0],
-          [5, 8],
-        ]),
-        ...land("ruins", [[6, 1]]),
-        ...land("village", [
-          [2, 3],
-          [2, 5],
-          [8, 4],
-        ]),
-      ],
-      [
-        unit("wildkeeper", "player", 1, 4, "Alder", "leader"),
-        unit("wolf", "player", 2, 3),
-        unit("boar", "player", 2, 4),
-        unit("thorncaller", "player", 2, 5, "Lark"),
-        unit("commander", "enemy", 9, 4, "Captain Dain", "leader"),
-        unit("warden", "enemy", 7, 3),
-        unit("warden", "enemy", 7, 6),
-        unit("archer", "enemy", 5, 3),
-        unit("archer", "enemy", 7, 5),
-      ],
-    ),
     requiredCompanions: ["Lark"],
-    legacyDialogue: legacyGreenDialogue[0],
     debrief:
-      "The three groves are reclaimed and the cutting has stopped. Dain agrees to a truce while Lark searches the roots for the truth about the missing woodcutters.",
-    withoutDain: {
-      briefing:
-        "The groves are still threatened, and Dain has fallen in the fighting. Alder’s pack must stop the cutting before there is nothing left for Lark to question. An adept named Tamsin has been investigating the missing woodcutters; she may still listen where the captain cannot.",
-      hints: ["Wolves know paths a soldier might miss.", "Even fine armor has something to fear."],
-      intro: [
-        line(
-          "Lark",
-          "thorncaller",
-          "Three groves marked for cutting. The soldiers say we killed their woodcutters.",
-        ),
-        line(
-          "Alder",
-          "wildkeeper",
-          "Then take the groves back. Leave their fort alone; we need the cutting stopped, not another graveyard.",
-        ),
-        line(
-          "Lark",
-          "thorncaller",
-          "Dain is gone. We can still stop the cutting and find out what happened to the woodcutters.",
-        ),
-      ],
-      victory: [
-        line(
-          "Lark",
-          "thorncaller",
-          "The three groves are ours, but Dain will never see what lies beneath them.",
-        ),
-        line(
-          "Alder",
-          "wildkeeper",
-          "His death will not bring back the woodcutters. Tamsin asked to hear the roots; let her come under a truce.",
-        ),
-      ],
-      debrief:
-        "The three groves are reclaimed and the cutting has stopped. Dain died in the fighting. Tamsin will attend Lark’s vigil to investigate the missing woodcutters herself.",
-      recruits: ["wolf", "boar", "thorncaller"],
-      reinforcements: [],
-    },
-    subtitle: "Take back the roots without burning the branches.",
+      "Both logging camps are captured and the pay ledger contradicts the Overseer’s report. Dain suspends his patrol’s attacks and agrees to protect Lark’s investigation in the central grove. The Overseer’s other guards have accepted no truce.",
+    subtitle: "Take their tools. Find the missing workers.",
     briefing:
-      "The overseer’s soldiers are felling the groves that shelter Alder’s woodland people. Captain Dain believes the pack has been killing woodcutters; Alder knows something else has stirred beneath the roots. Driving the cutters out will save the groves and give the two sides a chance to find out who is really responsible.",
+      "The village council licenses ordinary timber cutting, but its Overseer has sent crews into Alder’s sacred groves. He claims the pack killed the missing woodcutters. His tools and carts are stored in two guarded logging camps. Capture both camps to stop the cutting, and recover the workers’ pay ledger from the northern ruin. Captain Dain commands the patrol protecting those camps; leave him alive if you can.",
     hints: [
-      "Wolves know paths a soldier might miss.",
-      "Even fine armor has something to fear.",
-      "The old groves have not forgotten their own.",
+      "Capture both logging forts; standing in a marked grove does not stop the operation.",
+      "Search the northern ruin for the workers’ ledger.",
+      "Wolves cross woods easily. Boars and thorncaller staves fare better against armor.",
     ],
     goals: [
-      { kind: "control", label: "Reclaim the three sacred groves", tiles: ["3,1", "5,4", "3,7"] },
+      {
+        kind: "control",
+        label: "Capture both logging camps",
+        tiles: ["7,3", "7,5"],
+      },
+      {
+        kind: "event",
+        label: "Recover the workers’ pay ledger",
+        tile: "6,1",
+        event: "lost-tools",
+      },
     ],
     recruits: ["wolf", "boar", "thorncaller"],
     enemyRecruits: ["soldier", "archer", "warden"],
     gold: 12,
     enemyGold: 0,
     intro: [
-      line(
-        "Lark",
-        "thorncaller",
-        "Three groves marked for cutting. The soldiers say we killed their woodcutters.",
-      ),
-      line(
-        "Alder",
-        "wildkeeper",
-        "Then take the groves back. Leave their fort alone; we need the cutting stopped, not another graveyard.",
-      ),
-      line(
-        "Captain Dain",
-        "warden",
-        "You want us gone? Prove those roots hide something other than your own crimes.",
-      ),
+      {
+        speaker: "Lark",
+        portrait: "thorncaller",
+        text: "The council promised the villages repair timber. Its Overseer marked our sacred groves instead. His crews keep their tools and carts in those two forts.",
+      },
+      {
+        speaker: "Alder",
+        portrait: "wildkeeper",
+        text: "Take the camps and the cutting stops. The northern post kept the workers’ records. Bring those back too.",
+      },
+      {
+        speaker: "Captain Dain",
+        portrait: "warden",
+        text: "My missing woodcutters were sent here. The Overseer says your pack killed them. I have orders to protect the crews that remain.",
+      },
+      {
+        speaker: "Lark",
+        portrait: "thorncaller",
+        text: "Your orders won’t tell us where they went. Their ledger might.",
+      },
+      {
+        speaker: "Alder",
+        portrait: "wildkeeper",
+        text: "We need our roots back, not your bones. Keep away from our groves, captain, and help us find your people.",
+      },
     ],
     victory: [
-      line(
-        "Lark",
-        "thorncaller",
-        "All three groves are ours again. The cutters have put down their axes.",
-      ),
-      line(
-        "Captain Dain",
-        "warden",
-        "After what has happened here, I will not call us friends. But I will hear what you know about the missing woodcutters.",
-      ),
-      line(
-        "Alder",
-        "wildkeeper",
-        "Come to the central grove under a truce. Lark can wake the roots and show us what they remember.",
-      ),
+      {
+        speaker: "Lark",
+        portrait: "thorncaller",
+        text: "Both camps are ours. Without their tools and carts, the crews have stopped cutting. Here is the ledger.",
+      },
+      {
+        speaker: "Captain Dain",
+        portrait: "warden",
+        text: "These men were marked as deserters, but their wages went to the Overseer’s own account. That is his seal. I cannot explain it.",
+      },
+      {
+        speaker: "Alder",
+        portrait: "wildkeeper",
+        text: "Lark can ask the grove what happened. Come and watch her work.",
+      },
+      {
+        speaker: "Captain Dain",
+        portrait: "warden",
+        text: "Your pack has hurt my patrol, and mine has hurt yours. I am offering a truce for this investigation, not pretending that never happened.",
+      },
     ],
     events: [
       {
         id: "lost-tools",
-        trigger: { kind: "visit", tile: "6,1" },
-        label: "Return the lost woodcutters’ tools",
-        gold: 6,
+        trigger: {
+          kind: "visit",
+          tile: "6,1",
+        },
+        label: "Recover the workers’ pay ledger",
         dialogue: [
-          line(
-            "Lark",
-            "thorncaller",
-            "Tools, not trophies. Leave them where their owners will find them. There are six coins tucked in the handle; we can use those for the vigil.",
-          ),
+          {
+            speaker: "Lark",
+            portrait: "thorncaller",
+            text: "The missing crew refused to cut the sacred grove until their overdue wages were paid. Then they were ordered to report to the Rootbinder at the Overseer’s river works. Their pay was never collected.",
+          },
+          {
+            speaker: "Alder",
+            portrait: "wildkeeper",
+            text: "Take the ledger. We can stop the cutting, but the roots must tell us what became of those workers.",
+          },
         ],
       },
     ],
     waves: [],
-  },
-  {
-    map: map(
-      "green-vigil",
-      "A Vigil Under Leaves",
-      13,
-      9,
-      [
-        keep(2, 4, "player"),
-        keep(11, 4, "enemy"),
-        ...land("grove", [[6, 4]], "player"),
-        ...land("forest", [
-          [4, 2],
-          [4, 3],
-          [4, 5],
-          [4, 6],
-          [5, 2],
-          [5, 6],
-          [7, 2],
-          [7, 6],
-        ]),
-        ...land("fort", [
-          [7, 3],
-          [7, 5],
-        ]),
-        ...land("marsh", [
-          [5, 0],
-          [5, 1],
-          [5, 7],
-          [5, 8],
-        ]),
-        ...land("village", [
-          [3, 1],
-          [3, 7],
-        ]),
-        ...land("village", [[10, 4]], "enemy"),
-        ...land("ruins", [[6, 0]]),
-        ...land("hill", [
-          [9, 2],
-          [9, 6],
-        ]),
-      ],
-      [
-        unit("wildkeeper", "player", 2, 4, "Alder", "leader"),
-        unit("thorncaller", "player", 2, 3, "Lark"),
-        unit("boar", "player", 6, 4),
-        unit("commander", "enemy", 11, 4, "The Overseer", "leader"),
-        unit("warden", "enemy", 9, 2),
-        unit("archer", "enemy", 8, 4),
-        unit("soldier", "enemy", 10, 6),
-      ],
-    ),
-    requiredCompanions: ["Lark"],
-    legacyDialogue: legacyGreenDialogue[1],
-    debrief:
-      "Lark completed the vigil in the central grove. The roots revealed that the Rootbinder murdered the woodcutters for the overseer. Dain will escort her testimony to the village meeting.",
     withoutDain: {
       briefing:
-        "Dain is dead, but Tamsin has agreed to witness Lark’s vigil under a truce. Her own search for the missing woodcutters led here. The overseer’s patrols are trying to silence the grove before its memories reach the villages; Alder must keep Lark safe while she listens.",
-      hints: ["The grove still has life to spare.", "A wall cares little who built it."],
+        "Dain has fallen. Capture both logging camps to stop their crews, and recover the workers’ pay ledger from the northern ruin. His death does not answer what happened to the missing woodcutters; Lark must find evidence their families can hear without him.",
+      hints: [
+        "Capture both logging forts; standing in a marked grove does not stop the operation.",
+        "Search the northern ruin for the workers’ ledger.",
+        "Wolves cross woods easily. Boars and thorncaller staves fare better against armor.",
+      ],
       intro: [
-        line(
-          "Tamsin",
-          "adept",
-          "I will watch from the treeline. Dain is gone, but the families still deserve to know who killed their woodcutters.",
-        ),
-        line(
-          "Lark",
-          "thorncaller",
-          "Bring me to the central grove. I need three quiet nights with the roots; if I must leave, the memory slips away.",
-        ),
-        line(
-          "Alder",
-          "wildkeeper",
-          "Then we stand around you. Let the roots answer where swords could not.",
-        ),
+        {
+          speaker: "Lark",
+          portrait: "thorncaller",
+          text: "Dain is dead. His patrol’s orders still do not tell us what happened to the workers.",
+        },
+        {
+          speaker: "Alder",
+          portrait: "wildkeeper",
+          text: "Take both tool camps and recover their ledger. We still owe the families an answer.",
+        },
       ],
       victory: [
-        line(
-          "Lark",
-          "thorncaller",
-          "The roots have spoken. The Rootbinder killed the woodcutters and raised their bodies to serve the overseer.",
-        ),
-        line(
-          "Tamsin",
-          "adept",
-          "I saw his seal on the dead. I will take you to the village meeting. Dain’s death cannot excuse what his employer has done.",
-        ),
-        line(
-          "Lark",
-          "thorncaller",
-          "I will bring their memory and this living branch. Let the households hear the dead and judge the living.",
-        ),
+        {
+          speaker: "Lark",
+          portrait: "thorncaller",
+          text: "The camps are ours and the cutting has stopped. The missing workers’ wages went to the Overseer, and their last orders sent them to the Rootbinder.",
+        },
+        {
+          speaker: "Alder",
+          portrait: "wildkeeper",
+          text: "Dain will never hear their story. Lark, bring it back in a living branch. The families must be able to hear it for themselves.",
+        },
       ],
       debrief:
-        "Lark completed the vigil and uncovered the Rootbinder’s crimes. Dain cannot return, but Tamsin witnessed the truth and will help take Lark’s testimony to the village meeting.",
+        "The cutting operation has lost both camps. Dain died in the fighting; his death remains part of what happened. The ledger leads Lark to question the roots about the Rootbinder and the Overseer.",
       recruits: ["wolf", "boar", "thorncaller"],
       reinforcements: [],
     },
-    subtitle: "What the roots remember.",
+    map: {
+      ...map(
+        "green-border",
+        "The Cutting Camps",
+        11,
+        9,
+        [
+          keep(1, 4, "player"),
+          keep(9, 4, "enemy"),
+          ...land(
+            "grove",
+            [
+              [3, 1],
+              [5, 4],
+              [3, 7],
+            ],
+            "enemy",
+          ),
+          ...land("forest", [
+            [2, 0],
+            [2, 1],
+            [3, 2],
+            [4, 3],
+            [4, 5],
+            [3, 6],
+            [2, 7],
+            [2, 8],
+            [6, 2],
+            [6, 6],
+          ]),
+          ...land("fort", [
+            [7, 3],
+            [7, 5],
+          ]),
+          ...land("hill", [
+            [4, 2],
+            [4, 6],
+          ]),
+          ...land("marsh", [
+            [5, 0],
+            [5, 8],
+          ]),
+          ...land("ruins", [[6, 1]]),
+          ...land("village", [
+            [2, 3],
+            [2, 5],
+            [8, 4],
+          ]),
+        ],
+        [
+          unit("wildkeeper", "player", 1, 4, "Alder", "leader"),
+          unit("wolf", "player", 2, 3),
+          unit("boar", "player", 2, 4),
+          unit("thorncaller", "player", 2, 5, "Lark"),
+          unit("commander", "enemy", 9, 4, "Captain Dain", "leader"),
+          unit("warden", "enemy", 7, 3),
+          unit("warden", "enemy", 7, 6),
+          unit("archer", "enemy", 5, 3),
+          unit("archer", "enemy", 7, 5),
+        ],
+      ),
+      revision: 2,
+    },
+    legacyDialogue: LEGACY_GREEN_DIALOGUE[0],
+  },
+  {
+    requiredCompanions: ["Lark"],
+    debrief:
+      "The vigil revealed a bargain: the Overseer supplied workers to the Rootbinder, who killed and bound them into unpaid logging crews. Lark carries their memories in a living branch. Dain will help bring that evidence to the village council; the Overseer’s false report can no longer be the only account.",
+    subtitle: "A personal truce. An officer’s cover-up.",
     briefing:
-      "Dain has come to watch Lark question the roots under a fragile truce. The overseer wants that memory silenced before it can reach the villages. His patrols are closing in while Lark tends the central grove; Alder must keep her safe long enough for the dead woodcutters’ story to surface.",
-    hints: ["The grove still has life to spare.", "A wall cares little who built it."],
+      "Dain has suspended his patrol’s attacks and stands with Alder at the central grove. The Overseer, the council’s timber and toll officer, still commands the other paid charter guards. The ledger threatens his office; he calls Dain a mutineer and orders the grove silenced. Keep Lark in the central grove through three enemy turns while she listens to the workers’ memories. Dain is here to defend the investigation, not command the attacking guards.",
+    hints: [
+      "Move Lark into the central grove and protect her through three full enemy turns.",
+      "Leaving the grove or losing ownership resets the vigil.",
+      "Dain is your ally; the Overseer’s remaining charter guards are the enemy.",
+    ],
     goals: [
       {
         kind: "vigil",
@@ -761,51 +635,64 @@ const green: MissionDefinition[] = [
     gold: 16,
     enemyGold: 0,
     intro: [
-      line(
-        "Captain Dain",
-        "warden",
-        "I came without my patrol. The truce holds while I watch from the treeline.",
-      ),
-      line(
-        "Lark",
-        "thorncaller",
-        "Bring me to the central grove. I need three quiet nights with the roots; if I must leave, the memory slips away.",
-      ),
-      line(
-        "Alder",
-        "wildkeeper",
-        "Then we stand around you. The overseer would not send soldiers to silence an empty story.",
-      ),
+      {
+        speaker: "Captain Dain",
+        portrait: "warden",
+        text: "I suspended my patrol’s orders. These other guards answer to the Overseer. I will stand here with you until we know what happened.",
+      },
+      {
+        speaker: "The Overseer",
+        portrait: "commander",
+        text: "Dain is dismissed. His truce binds none of you. Destroy the branch and break their circle before the council hears their lies.",
+      },
+      {
+        speaker: "Lark",
+        portrait: "thorncaller",
+        text: "Bring me to the central grove. The roots kept the workers’ last memories. If I am driven out, I must begin again.",
+      },
+      {
+        speaker: "Alder",
+        portrait: "wildkeeper",
+        text: "Then we defend the grove, captain included. The Overseer has given us a reason to keep listening.",
+      },
     ],
     victory: [
-      line(
-        "Lark",
-        "thorncaller",
-        "The roots have spoken. The Rootbinder killed the woodcutters and raised their bodies to serve the overseer.",
-      ),
-      line(
-        "Captain Dain",
-        "warden",
-        "I saw his seal on the dead. We fought you on a lie. The villages must hear what happened, even if it costs me my command.",
-      ),
-      line(
-        "Lark",
-        "thorncaller",
-        "I will bring their memory and this living branch. Let the households hear the dead and judge the living.",
-      ),
+      {
+        speaker: "Lark",
+        portrait: "thorncaller",
+        text: "The workers asked for the pay he owed them and refused to cut this grove. The Overseer handed them to the Rootbinder. He killed them and bound their bodies to the logging crews.",
+      },
+      {
+        speaker: "Captain Dain",
+        portrait: "warden",
+        text: "Unpaid labor for the Overseer. Bodies and protection for the Rootbinder. And my patrol sent to punish you for their murders.",
+      },
+      {
+        speaker: "Lark",
+        portrait: "thorncaller",
+        text: "This branch holds what the roots remember. Their families can hear it too.",
+      },
+      {
+        speaker: "Alder",
+        portrait: "wildkeeper",
+        text: "The council is meeting across the river. We take the branch and the ledger there. Let the people who gave him his office judge what he did with it.",
+      },
     ],
     events: [
       {
         id: "owl-cache",
-        trigger: { kind: "visit", tile: "6,0" },
-        label: "Recover supplies from the northern ruin",
+        trigger: {
+          kind: "visit",
+          tile: "6,0",
+        },
+        label: "Recover the northern guard-post supplies",
         gold: 6,
         dialogue: [
-          line(
-            "Lark",
-            "thorncaller",
-            "The owls found a forgotten patrol cache. Better six coins for a living grove than for another axe.",
-          ),
+          {
+            speaker: "Alder",
+            portrait: "wildkeeper",
+            text: "The abandoned guard post still has funds for provisions. Use them to bring another defender to the grove; Lark cannot finish her work if we lose it.",
+          },
         ],
       },
     ],
@@ -813,192 +700,347 @@ const green: MissionDefinition[] = [
       {
         round: 3,
         label: "A warden and archer arrive from the east on turn 3",
-        units: [unit("warden", "enemy", 11, 1), unit("archer", "enemy", 11, 7)],
+        units: [
+          {
+            type: "warden",
+            side: "enemy",
+            col: 11,
+            row: 1,
+          },
+          {
+            type: "archer",
+            side: "enemy",
+            col: 11,
+            row: 7,
+          },
+        ],
       },
       {
         round: 5,
         label: "An adept and soldier arrive from the east on turn 5",
-        units: [unit("adept", "enemy", 10, 3), unit("soldier", "enemy", 10, 5)],
+        units: [
+          {
+            type: "adept",
+            side: "enemy",
+            col: 10,
+            row: 3,
+          },
+          {
+            type: "soldier",
+            side: "enemy",
+            col: 10,
+            row: 5,
+          },
+        ],
       },
     ],
-  },
-  {
-    map: map(
-      "green-pact",
-      "A Road for Both",
-      15,
-      9,
-      [
-        keep(1, 4, "player"),
-        keep(13, 5, "enemy"),
-        ...river(8, 9, { 1: "ford", 4: "bridge", 7: "ford" }),
-        ...land("fort", [[7, 4]]),
-        ...land("village", [
-          [3, 2],
-          [3, 6],
-          [12, 1],
-        ]),
-        ...land("village", [[12, 7]], "enemy"),
-        ...land("grove", [
-          [5, 2],
-          [5, 6],
-          [7, 1],
-          [10, 1],
-        ]),
-        ...land("forest", [
-          [4, 1],
-          [4, 3],
-          [4, 5],
-          [4, 7],
-          [10, 3],
-          [10, 5],
-        ]),
-        ...land("marsh", [
-          [7, 7],
-          [9, 7],
-        ]),
-        ...land("ruins", [
-          [6, 0],
-          [9, 1],
-        ]),
-        ...land("hill", [
-          [11, 2],
-          [11, 6],
-        ]),
-      ],
-      [
-        unit("wildkeeper", "player", 1, 4, "Alder", "leader"),
-        unit("thorncaller", "player", 2, 4, "Lark", "courier"),
-        unit("warden", "player", 3, 4, "Captain Dain"),
-        unit("adept", "player", 2, 5, "Adept Tamsin"),
-        unit("necromancer", "enemy", 13, 5, "The Rootbinder", "leader"),
-        unit("skeleton", "enemy", 10, 2),
-        unit("skeleton", "enemy", 10, 6),
-        unit("bonearcher", "enemy", 12, 3),
-        unit("bonearcher", "enemy", 11, 7),
-        unit("wolf", "enemy", 11, 4),
-      ],
-    ),
-    requiredCompanions: ["Lark"],
-    legacyDialogue: legacyGreenDialogue[2],
-    debrief:
-      "Lark reached the village meeting and the bridge fort is secured. The households heard the woodcutters’ testimony and agreed to keep the crossing open with Alder’s pack.",
     withoutDain: {
       briefing:
-        "Tamsin has seen the grove’s memory and chosen to help Lark reach the village meeting. The living branch carries the murdered woodcutters’ testimony, but the Rootbinder’s dead block the river to keep their families from hearing it. Dain’s death cannot be undone; Alder can still open a road the villages and woodland people will share.",
+        "Dain is dead. The ledger still names the Overseer and the Rootbinder, but the council needs more than accusations from the pack. Keep Lark in the central grove through three full enemy turns so she can carry the workers’ memories in a living branch. The Overseer’s remaining charter guards are attacking to destroy that evidence.",
       hints: [
-        "The northern trees may offer a gentler journey.",
-        "A witness need not stand in the front rank.",
+        "Protect Lark in the grove through three enemy turns.",
+        "Leaving or losing the grove resets the vigil.",
       ],
       intro: [
-        line(
-          "Tamsin",
-          "adept",
-          "The households are meeting in the northern village. I saw the grove’s memory; I will stand beside you when they hear it.",
-        ),
-        line(
-          "Lark",
-          "thorncaller",
-          "The branch carries the woodcutters’ memory. The Rootbinder would rather burn it than let their families listen.",
-        ),
-        line(
-          "Alder",
-          "wildkeeper",
-          "Take the bridge fort so the villagers can cross safely. Lark can use whichever path gets her to the meeting alive.",
-        ),
+        {
+          speaker: "Lark",
+          portrait: "thorncaller",
+          text: "Dain cannot be our witness. The roots can. Keep me in the central grove while I listen.",
+        },
+        {
+          speaker: "The Overseer",
+          portrait: "commander",
+          text: "The captain is dead. Destroy that branch before the council hears a word of this.",
+        },
+        {
+          speaker: "Alder",
+          portrait: "wildkeeper",
+          text: "They will hear the workers themselves. We defend the grove until Lark has their memories.",
+        },
       ],
       victory: [
-        line(
-          "Lark",
-          "thorncaller",
-          "The households have heard the woodcutters. Dain is among the names we must remember, too.",
-        ),
-        line(
-          "Alder",
-          "wildkeeper",
-          "The fort is ours and the meeting has chosen an open road. That is a promise we can still keep.",
-        ),
-        line(
-          "Lark",
-          "thorncaller",
-          "Then let the first travelers cross. We have enough graves; we need neighbors.",
-        ),
+        {
+          speaker: "Lark",
+          portrait: "thorncaller",
+          text: "The workers demanded their wages and refused to cut the grove. The Overseer delivered them to the Rootbinder; he killed and bound them into his logging crews.",
+        },
+        {
+          speaker: "Alder",
+          portrait: "wildkeeper",
+          text: "Dain is among the dead now too. We cannot undo that. Bring the branch and the ledger to the families, and let them judge the whole account.",
+        },
       ],
       debrief:
-        "Lark reached the village meeting and the bridge fort is secured. Tamsin witnessed the truth in Dain’s place, and the households agreed to share the crossing with Alder’s pack.",
-      recruits: ["wolf", "boar", "thorncaller", "warden", "adept"],
-      reinforcements: [unit("boar", "player", 3, 4)],
+        "The roots revealed the workers’ murder and binding. Dain cannot testify, but the living branch carries their memories. The pack must take it and the ledger to the council across the river.",
+      recruits: ["wolf", "boar", "thorncaller"],
+      reinforcements: [
+        {
+          type: "boar",
+          side: "player",
+          col: 5,
+          row: 5,
+        },
+      ],
     },
+    map: {
+      ...map(
+        "green-vigil",
+        "A Vigil Under Leaves",
+        13,
+        9,
+        [
+          keep(2, 4, "player"),
+          keep(11, 4, "enemy"),
+          ...land("grove", [[6, 4]], "player"),
+          ...land("forest", [
+            [4, 2],
+            [4, 3],
+            [4, 5],
+            [4, 6],
+            [5, 2],
+            [5, 6],
+            [7, 2],
+            [7, 6],
+          ]),
+          ...land("fort", [
+            [7, 3],
+            [7, 5],
+          ]),
+          ...land("marsh", [
+            [5, 0],
+            [5, 1],
+            [5, 7],
+            [5, 8],
+          ]),
+          ...land("village", [
+            [3, 1],
+            [3, 7],
+          ]),
+          ...land("village", [[10, 4]], "enemy"),
+          ...land("ruins", [[6, 0]]),
+          ...land("hill", [
+            [9, 2],
+            [9, 6],
+          ]),
+        ],
+        [
+          unit("wildkeeper", "player", 2, 4, "Alder", "leader"),
+          unit("thorncaller", "player", 2, 3, "Lark"),
+          unit("boar", "player", 6, 4),
+          unit("warden", "player", 5, 5, "Captain Dain"),
+          unit("commander", "enemy", 11, 4, "The Overseer", "leader"),
+          unit("warden", "enemy", 9, 2),
+          unit("archer", "enemy", 8, 4),
+          unit("soldier", "enemy", 10, 6),
+        ],
+      ),
+      revision: 2,
+    },
+    legacyDialogue: LEGACY_GREEN_DIALOGUE[1],
+  },
+  {
+    requiredCompanions: ["Lark"],
+    debrief:
+      "Lark delivered the memories and the bridge fort remains secure. The council revoked the Overseer’s timber and toll charter. The villages and Alder’s pack agreed to protect the crossing and spare the sacred groves. The Rootbinder may still threaten the valley; this victory delivered the truth and established a road both peoples can defend.",
     subtitle: "A witness, a bridge, and a promise.",
     briefing:
-      "The village households are gathering to hear Lark’s account of the murdered woodcutters. Her living branch carries the grove’s memory; Dain can attest to the overseer’s seal on the dead. The Rootbinder has barred the river to stop them reaching the meeting. Alder must open the crossing for the villagers and bring Lark through alive.",
+      "The village council is meeting at the northern village across the river. Lark’s branch carries the murdered workers’ memories; the ledger and Dain’s testimony identify the Overseer who supplied them to the Rootbinder. The necromancer has barred the crossing to protect that bargain. Capture the bridge fort so the households can cross safely, and bring Lark to the meeting alive. Tamsin, a village adept, joins the escort against the bound dead.",
     hints: [
       "The northern trees may offer a gentler journey.",
       "A witness need not stand in the front rank.",
     ],
     goals: [
-      { kind: "control", label: "Secure the fort beside the bridge", tiles: ["7,4"] },
-      { kind: "escort", label: "Bring Lark to the northern village", tile: "12,1" },
+      {
+        kind: "control",
+        label: "Secure the fort beside the bridge",
+        tiles: ["7,4"],
+      },
+      {
+        kind: "escort",
+        label: "Bring Lark to the northern village",
+        tile: "12,1",
+      },
     ],
     recruits: ["wolf", "boar", "thorncaller", "warden", "adept"],
     enemyRecruits: ["skeleton", "bonearcher", "wolf"],
     gold: 18,
     enemyGold: 0,
     intro: [
-      line(
-        "Dain",
-        "warden",
-        "The households are meeting in the northern village. I will tell them why my patrol fought the wrong people.",
-      ),
-      line(
-        "Lark",
-        "thorncaller",
-        "The branch carries the woodcutters’ memory. The Rootbinder would rather burn it than let their families listen.",
-      ),
-      line(
-        "Alder",
-        "wildkeeper",
-        "Take the bridge fort so the villagers can cross safely. Lark can use whichever path gets her to the meeting alive.",
-      ),
-      line(
-        "Tamsin",
-        "adept",
-        "Dain sent for me. Some of those woodcutters were my neighbors. I will help clear your road; their families need the truth, not another duel with their master.",
-      ),
+      {
+        speaker: "Captain Dain",
+        portrait: "warden",
+        text: "The council gave the Overseer his timber and toll charter. With the ledger and the workers’ memories, they can take it away. I will answer for my patrol’s part as well.",
+      },
+      {
+        speaker: "Lark",
+        portrait: "thorncaller",
+        text: "The Rootbinder has put his dead on the crossing. He needs the Overseer’s protection and his supply of bodies. He would rather burn this branch than let the families hear it.",
+      },
+      {
+        speaker: "Alder",
+        portrait: "wildkeeper",
+        text: "Take the bridge fort so the households can cross. Bring Lark to the northern meeting alive; a dead necromancer alone will not open a shared road.",
+      },
+      {
+        speaker: "Tamsin",
+        portrait: "adept",
+        text: "Dain sent for me. Some of those workers were my neighbors. Stone sparks crack bone; let the shields hold the dead while I clear your road.",
+      },
     ],
     victory: [
-      line(
-        "Lark",
-        "thorncaller",
-        "The branch has flowered. The households have heard what happened beneath the grove.",
-      ),
-      line(
-        "Alder",
-        "wildkeeper",
-        "And the fort is ours. No one must ask the overseer’s leave to cross this river again.",
-      ),
-      line(
-        "Lark",
-        "thorncaller",
-        "We will keep the road open together. The Rootbinder can hide from us, but he cannot hide the truth now.",
-      ),
+      {
+        speaker: "Lark",
+        portrait: "thorncaller",
+        text: "The families heard the branch. The council matched the orders to the ledger and revoked the Overseer’s charter.",
+      },
+      {
+        speaker: "Captain Dain",
+        portrait: "warden",
+        text: "I have given them my account too. We will harvest the ordinary woods for repairs. Your groves are outside the charter.",
+      },
+      {
+        speaker: "Alder",
+        portrait: "wildkeeper",
+        text: "The fort is ours. Village and woodland guards can keep this road together; neither side owns the right to close it.",
+      },
+      {
+        speaker: "Lark",
+        portrait: "thorncaller",
+        text: "The Rootbinder still has his dead. But he no longer has a silent village to hide them in.",
+      },
     ],
     events: [
       {
         id: "old-trail",
-        trigger: { kind: "visit", tile: "6,0" },
-        label: "Find the old trail supplies",
+        trigger: {
+          kind: "visit",
+          tile: "6,0",
+        },
+        label: "Recover provisions from the old crossing post",
         gold: 6,
         dialogue: [
-          line(
-            "Lark",
-            "thorncaller",
-            "Someone left these for a traveler who never came. Today, someone will.",
-          ),
+          {
+            speaker: "Lark",
+            portrait: "thorncaller",
+            text: "The old crossing post has provisions for a stranded escort. Bring another shield to the road; the families are waiting on the other bank.",
+          },
         ],
       },
     ],
     waves: [],
+    withoutDain: {
+      briefing:
+        "Dain is dead, but Lark’s living branch carries the workers’ memories and the ledger records their last orders. Tamsin, an adept from the villages, has joined the escort to help bring that evidence to the council. The Rootbinder bars the river to protect his supply of bodies. Capture the bridge fort and bring Lark to the northern meeting alive.",
+      hints: [
+        "The northern trees may offer a gentler journey.",
+        "A witness need not stand in the front rank.",
+      ],
+      intro: [
+        {
+          speaker: "Tamsin",
+          portrait: "adept",
+          text: "I came from the villages to help you reach the council. The workers were our neighbors. Dain cannot speak; their families must hear this branch.",
+        },
+        {
+          speaker: "Lark",
+          portrait: "thorncaller",
+          text: "The Rootbinder wants his bargain kept hidden. The branch and the ledger must reach the northern village.",
+        },
+        {
+          speaker: "Alder",
+          portrait: "wildkeeper",
+          text: "Take the bridge fort and protect Lark. We owe the families an open road and an honest account, including Dain’s death.",
+        },
+      ],
+      victory: [
+        {
+          speaker: "Lark",
+          portrait: "thorncaller",
+          text: "The families heard the workers’ memories. We told them about Dain too. The council has revoked the Overseer’s charter.",
+        },
+        {
+          speaker: "Alder",
+          portrait: "wildkeeper",
+          text: "The fort is ours. The households will help us guard the crossing and keep the sacred groves outside their timber cutting.",
+        },
+        {
+          speaker: "Lark",
+          portrait: "thorncaller",
+          text: "Then let the first travelers cross. We have enough graves; we need neighbors.",
+        },
+      ],
+      debrief:
+        "The council heard the branch, examined the ledger and learned of Dain’s death. It revoked the Overseer’s charter and agreed to protect the road with the pack. The Rootbinder remains a danger, but the workers’ murder is exposed and the crossing is held.",
+      recruits: ["wolf", "boar", "thorncaller", "warden", "adept"],
+      reinforcements: [
+        {
+          type: "boar",
+          side: "player",
+          col: 3,
+          row: 4,
+        },
+      ],
+    },
+    map: {
+      ...map(
+        "green-pact",
+        "A Road for Both",
+        15,
+        9,
+        [
+          keep(1, 4, "player"),
+          keep(13, 5, "enemy"),
+          ...river(8, 9, { 1: "ford", 4: "bridge", 7: "ford" }),
+          ...land("fort", [[7, 4]]),
+          ...land("village", [
+            [3, 2],
+            [3, 6],
+            [12, 1],
+          ]),
+          ...land("village", [[12, 7]], "enemy"),
+          ...land("grove", [
+            [5, 2],
+            [5, 6],
+            [7, 1],
+            [10, 1],
+          ]),
+          ...land("forest", [
+            [4, 1],
+            [4, 3],
+            [4, 5],
+            [4, 7],
+            [10, 3],
+            [10, 5],
+          ]),
+          ...land("marsh", [
+            [7, 7],
+            [9, 7],
+          ]),
+          ...land("ruins", [
+            [6, 0],
+            [9, 1],
+          ]),
+          ...land("hill", [
+            [11, 2],
+            [11, 6],
+          ]),
+        ],
+        [
+          unit("wildkeeper", "player", 1, 4, "Alder", "leader"),
+          unit("thorncaller", "player", 2, 4, "Lark", "courier"),
+          unit("warden", "player", 3, 4, "Captain Dain"),
+          unit("adept", "player", 2, 5, "Adept Tamsin"),
+          unit("necromancer", "enemy", 13, 5, "The Rootbinder", "leader"),
+          unit("skeleton", "enemy", 10, 2),
+          unit("skeleton", "enemy", 10, 6),
+          unit("bonearcher", "enemy", 12, 3),
+          unit("bonearcher", "enemy", 11, 7),
+          unit("wolf", "enemy", 11, 4),
+        ],
+      ),
+      revision: 2,
+    },
+    legacyDialogue: LEGACY_GREEN_DIALOGUE[2],
   },
 ];
 
@@ -1193,7 +1235,7 @@ const ashen: MissionDefinition[] = [
       ),
       line(
         "Village elder",
-        "scout",
+        "worker",
         "Give us six days to gather the households. Defend your shelter if you must, but let men who turn back go home. There are sick families here who need the herbs in the northern grove.",
       ),
       line(
@@ -1205,7 +1247,7 @@ const ashen: MissionDefinition[] = [
     victory: [
       line(
         "Village elder",
-        "scout",
+        "worker",
         "Enough, Captain. They held their shelter and let your wounded leave. These houses are ours to offer. The dead may stay as our neighbors.",
       ),
       line(
@@ -1232,7 +1274,7 @@ const ashen: MissionDefinition[] = [
       escalation: [
         line(
           "Village elder",
-          "scout",
+          "worker",
           "There has been too much bloodshed for the patrol to accept our mediation. We cannot stop this battle for you.",
         ),
         line(
@@ -1283,14 +1325,14 @@ const ashen: MissionDefinition[] = [
         warDialogue: [
           line(
             "Village elder",
-            "scout",
+            "worker",
             "The herbs will still save lives. Take these six coins. But after the bloodshed, medicine alone cannot stop the patrol’s battle with you.",
           ),
         ],
         dialogue: [
           line(
             "Village elder",
-            "scout",
+            "worker",
             "The fever is easing. We will send word with the families you helped; the households will gather a day sooner. Take these six coins for your shelter.",
           ),
           line(
@@ -1477,7 +1519,7 @@ export const CAMPAIGNS = immutable<Record<CampaignId, CampaignDefinition>>({
     name: "The Green Accord",
     tagline: "A forest and a village can share a road.",
     description:
-      "Play as Alder’s woodland pack. Reclaim sacred groves, hold a vigil, and escort a witness to peace. Wolves, boars, and thorncallers each have a different job.",
+      "Lead Alder’s woodland pack against an illegal logging operation. Capture its camps, uncover the missing workers’ fate, and bring the evidence to the village council across the river.",
     race: "beast",
     leader: "wildkeeper",
     missions: green,

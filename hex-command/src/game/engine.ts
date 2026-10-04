@@ -24,7 +24,12 @@ import { immutable } from "./immutable";
 import { CAMPAIGN_UNITS } from "./campaign-units";
 import { HEAVY_MOVEMENT, PATHFINDER_MOVEMENT } from "./movement";
 import { CAMPAIGNS, LEGACY_ASHEN_REFUGE } from "./campaign-data";
-import { campaignMission, goalProgress, endsRefugeMediation } from "./campaign-progress";
+import {
+  campaignMission,
+  goalProgress,
+  endsRefugeMediation,
+  returnsWithStory,
+} from "./campaign-progress";
 import type { CampaignId, CampaignState, RecruitType } from "./types";
 
 export const DAMAGE_TYPES = Object.freeze({
@@ -157,7 +162,7 @@ export const TERRAIN = immutable<Record<TerrainType, TerrainDefinition>>({
     name: "Ruins",
     cost: 1,
     description:
-      "Broken walls reduce ranged damage by 1 without blocking shots through the tile. Campaign binding stones can be sealed by entering them.",
+      "Broken walls reduce ranged damage by 1 without blocking shots through the tile. Some campaign ruins contain binding stones; their objectives specify who can seal them.",
   },
   fort: {
     name: "Fort",
@@ -497,6 +502,7 @@ export class Game {
 
   move(id: string, tileId: string): Unit {
     const unit = this.requireActor(id);
+    if (unit.tile === tileId) throw new Error("Choose a different hex to move.");
     if (!this.reachable(id).has(tileId)) throw new Error("That hex is outside this unit’s move.");
     unit.tile = tileId;
     unit.moved = true;
@@ -507,7 +513,7 @@ export class Game {
         `${unit.side === "player" ? "Your" : "Enemy"} ${TYPES[unit.type].name.toLowerCase()} ${tile.terrain === "village" ? "captured a village" : `claimed ${TERRAIN[tile.terrain].name.toLowerCase()}`}.`,
       );
     }
-    this.evaluateCampaign();
+    this.evaluateCampaign(false, unit.side === "player" ? tileId : undefined);
     return unit;
   }
 
@@ -1001,7 +1007,8 @@ export class Game {
         unit.side !== "player" ||
         TYPES[unit.type].leader ||
         unit.role === "courier" ||
-        isCompanion
+        isCompanion ||
+        returnsWithStory(this.campaign!, unit)
       )
         throw new Error("Only surviving recruits can return.");
       return unit.type as RecruitType;
@@ -1068,7 +1075,7 @@ export class Game {
     });
   }
 
-  private evaluateCampaign(atTurnStart = false): void {
+  private evaluateCampaign(atTurnStart = false, enteredTile?: string): void {
     if (!this.campaign || this.winner) return;
     const campaign = this.campaign;
     const mission = campaignMission(campaign);
@@ -1134,7 +1141,12 @@ export class Game {
         campaign.marks.push(`held:${goal.tile}`);
       if (goal.kind !== "seal") continue;
       for (const id of goal.tiles) {
-        if (!campaign.marks.includes(`sealed:${id}`) && this.at(id)?.side === "player") {
+        const occupant = this.at(id);
+        if (
+          !campaign.marks.includes(`sealed:${id}`) &&
+          occupant?.side === "player" &&
+          (!goal.unitType || occupant.type === goal.unitType)
+        ) {
           campaign.marks.push(`sealed:${id}`);
           this.record("A binding stone was sealed. It will no longer raise the dead.");
         }
@@ -1145,7 +1157,7 @@ export class Game {
         const marker = `event:${event.id}`;
         const triggered =
           event.trigger.kind === "visit"
-            ? this.at(event.trigger.tile)?.side === "player"
+            ? enteredTile === event.trigger.tile
             : this.round >= event.trigger.round;
         if (!triggered || campaign.marks.includes(marker)) continue;
         campaign.marks.push(marker);

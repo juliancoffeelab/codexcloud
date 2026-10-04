@@ -4,13 +4,13 @@ export const pixelSources = {
     filename: "units-pixel.png",
     width: 393,
     height: 197,
-    revision: "0afc4014361e",
+    revision: "713cfa147df3",
   },
   terrain: {
     filename: "terrain-pixel.png",
     width: 393,
     height: 99,
-    revision: "2f11cdd1a581",
+    revision: "ad49fcea55a3",
   },
 } as const;
 
@@ -41,6 +41,7 @@ export const pixelFrames = {
   player_warden: [344, 99, 48, 48],
   player_wildkeeper: [1, 148, 48, 48],
   player_wolf: [50, 148, 48, 48],
+  portrait_worker: [99, 148, 48, 48],
   terrain_bridge: [1, 1, 48, 48],
   terrain_ford: [50, 1, 48, 48],
   terrain_forest: [99, 1, 48, 48],

@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { inflateSync } from "node:zlib";
 import { TERRAIN, TYPES } from "../src/game/engine";
-import { artSprite, loadArtStyle } from "../src/presentation/art";
+import { artSprite, dialoguePortrait, loadArtStyle } from "../src/presentation/art";
 import { campaignSheets } from "../src/presentation/campaign-art";
 import { pixelSources } from "../src/presentation/pixel-art";
 
@@ -31,17 +31,18 @@ for (const [frame, source] of Object.entries(frameSources)) {
   const name = frame.replace(/^(player|enemy|terrain)_/, "");
   const side = frame.startsWith("enemy_") ? "enemy" : "player";
   assert(
-    artSprite("pixel", kind, name, 0, 0, 60, 70, "", side).includes(
-      `${source.filename}?v=${source.revision}`,
-    ),
+    (frame === "portrait_worker"
+      ? dialoguePortrait("pixel", "worker", 0, 0, 60, 70)
+      : artSprite("pixel", kind, name, 0, 0, 60, 70, "", side)
+    ).includes(`${source.filename}?v=${source.revision}`),
     `${frame} must use its shared public atlas in the regular game renderer`,
   );
 }
 const nativeURL = `${pixelSources.units.filename}?v=${pixelSources.units.revision}`;
 // Check the pixels served to the ordinary renderer, not just manifest hashes.
 const matrixFrames: string[] = [];
-for (const kind of ["units", "terrain"] as const) {
-  const source = pixelSources[kind];
+for (const kind of ["units", "terrain", "portraits"] as const) {
+  const source = pixelSources[kind === "portraits" ? "units" : kind];
   const atlas = readFileSync(new URL(`../public/assets/${source.filename}`, import.meta.url));
   const chunks: Buffer[] = [];
   for (let offset = 8; offset < atlas.length;) {
@@ -73,7 +74,12 @@ for (const kind of ["units", "terrain"] as const) {
     for (const filename of readdirSync(directory).filter((name) => name.endsWith(".txt"))) {
       const side = filename.slice(0, -4);
       assert(
-        (kind === "terrain" ? ["tile"] : ["player", "enemy"]).includes(side),
+        (kind === "terrain"
+          ? ["tile"]
+          : kind === "portraits"
+            ? ["portrait"]
+            : ["player", "enemy"]
+        ).includes(side),
         `Unmapped matrix: ${entry.name}/${filename}`,
       );
       const frameName =
@@ -112,6 +118,7 @@ const expectedFrames = [
     ["player", "enemy"].map((side) => `${side}_${frameName(name)}`),
   ),
   ...Object.keys(TERRAIN).map((name) => `terrain_${frameName(name)}`),
+  "portrait_worker",
 ].sort();
 assert.deepEqual(
   matrixFrames.sort(),
@@ -141,8 +148,11 @@ for (const side of ["player", "enemy"] as const) {
     const sprite = artSprite("pixel", "units", name, 0, 0, 60, 70, "", side);
     assert(sprite.includes(nativeURL));
     assert(
-      sprite.includes(`width:${pixelSources.units.width}px;height:${pixelSources.units.height}px`),
+      sprite.includes(`width="${pixelSources.units.width}" height="${pixelSources.units.height}"`),
     );
+    assert(!sprite.includes("foreignObject"), "Integer pixel frames use an SVG-only crop");
+    const [x, y] = campaignSheets.pixel.frames[key];
+    assert(sprite.includes(`x="${-x}" y="${-y}"`));
     assert(sprite.includes('class="art-sprite pixel-art'));
     assert(sprite.includes('viewBox="0 0 48 48"'));
   }

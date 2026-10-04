@@ -21,7 +21,7 @@ def read_matrix(matrix):
     rows = matrix.read_text().splitlines()
     if not rows or not rows[0] or any(len(row) != len(rows[0]) for row in rows):
         raise ValueError(f"{matrix}: matrix must be a nonempty rectangle")
-    if matrix.parent.parent in (ART / "units", ART / "terrain") and (len(rows[0]), len(rows)) != (48, 48):
+    if matrix.parent.parent in (ART / "units", ART / "terrain", ART / "portraits") and (len(rows[0]), len(rows)) != (48, 48):
         raise ValueError(f"{matrix}: artwork matrices must be 48×48")
     return rows
 
@@ -111,6 +111,11 @@ def pixel_atlases():
             native[key] = (width, height, pixels)
     if not native:
         raise ValueError("No native unit matrices found")
+    for matrix in sorted((ART / "portraits").glob("*/portrait.txt")):
+        width, height, pixels = rgba_pixels(matrix)
+        if not any(pixels[3::4]):
+            raise ValueError(f"{matrix}: expected a nonempty portrait")
+        native[f"portrait_{matrix.parent.name}"] = (width, height, pixels)
     terrain = {}
     for matrix in sorted((ART / "terrain").glob("*/tile.txt")):
         width, height, pixels = rgba_pixels(matrix)

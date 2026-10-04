@@ -45,7 +45,8 @@ The script reads matrices and palettes from `art/pixel/units/` and
 `art/pixel/terrain/`. Original sheets in `art/pixel/legacy/` are references for
 editing. The script writes exactly two public pixel images:
 
-- `public/assets/units-pixel.png`: all 13 units, both factions (26 frames).
+- `public/assets/units-pixel.png`: all 13 units, both factions (26 frames), plus
+  the neutral civilian worker portrait.
 - `public/assets/terrain-pixel.png`: all 12 terrain types, including the bridge.
 
 The generated `src/presentation/pixel-art.ts` records each image's dimensions,
@@ -56,7 +57,9 @@ assets. Packing copies pixels without resizing; every frame retains its full
 Each unit directory has `player.txt`, `enemy.txt`, the rendered PNGs and
 `components.md`. Each terrain directory has `tile.txt`, its PNG, palette and
 component description. Keep changes in these sources; rebuild the public atlases
-with the command above. There is no raster fallback in the pixel build.
+with the command above. Civilian artwork is in `portraits/`; its `portrait.txt`
+and palette render a portrait without defining a recruit or battlefield unit.
+There is no raster fallback in the pixel build.
 
 Paired factions use identical component geometry, with only faction cloth and
 adept gem colors changing. All unit and terrain matrices must remain 48×48.

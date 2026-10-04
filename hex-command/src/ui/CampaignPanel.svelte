@@ -1,7 +1,12 @@
 <script lang="ts">
   import type { BattleView, BattleCommands } from "../controller/view";
   import { CAMPAIGNS } from "../game/campaign-data";
-  import { campaignMission, goalProgress, dialoguePending } from "../game/campaign-progress";
+  import {
+    campaignMission,
+    goalProgress,
+    dialoguePending,
+    returnsWithStory,
+  } from "../game/campaign-progress";
   import { TYPES } from "../game/engine";
   import { artSprite } from "../presentation/art";
   let {
@@ -26,7 +31,8 @@
         unit.side === "player" &&
         !TYPES[unit.type].leader &&
         unit.role !== "courier" &&
-        !mission?.requiredCompanions?.includes(unit.name ?? ""),
+        !mission?.requiredCompanions?.includes(unit.name ?? "") &&
+        !(campaign && returnsWithStory(campaign, unit)),
     ),
   );
   const missionMapId = $derived(view.game.mapId);
@@ -83,16 +89,20 @@
           <strong>{goal.current}/{goal.total}</strong>
         </li>
       {/each}
-      <li>
+      <li class:completed-goal={view.game.winner === "player"}>
         <span>
           Keep your leader alive{mission.goals.some((goal) => goal.kind === "escort") &&
           !mission.requiredCompanions?.length
             ? " and protect the courier"
             : ""}.
         </span>
+        {#if view.game.winner === "player"}<strong>✓</strong>{/if}
       </li>
       {#each mission.requiredCompanions ?? [] as companion}
-        <li><span>Keep {companion} alive.</span></li>
+        <li class:completed-goal={view.game.winner === "player"}>
+          <span>Keep {companion} alive.</span>
+          {#if view.game.winner === "player"}<strong>✓</strong>{/if}
+        </li>
       {/each}
       {#each mission.events.filter((event) => event.label) as event}
         <li class:completed-goal={campaign.marks.includes(`event:${event.id}`)}>
