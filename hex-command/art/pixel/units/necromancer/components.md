@@ -22,16 +22,11 @@ upper left. There are no gradients, glow or antialiased pixels.
 | Staff                   | x37–38, y24–47; W/w              | Brown wood                                                                |
 | Staff skull and collar  | x36–42, y15–23; B/b/O, G/g       | Bone and gold                                                             |
 
-The compact isolated skull is saved as the 8×8 study
-`art/pixel/parts/necromancer-head/head.txt`. Its O symbol maps to E in the complete
-unit palette, preserving the same RGBA color without changing the body's O
-outline color. It is placed at (25, 15). The near eye is a 3×2 socket at
+The compact skull occupies 8×8 pixels at (25, 15) in the complete unit matrices.
+The near eye is a 3×2 socket at
 x26–28/y18–19; the far eye is 2×2 at x31–32/y18–19. The nose cavity
 is N at (30, 20). Two faint b tooth shadows at (27, 21) and (29, 21)
 replace the former black gaps, preserving an almost continuous ivory jaw.
-The trimmed hood study is saved in `art/pixel/parts/necromancer-upper/` and is
-placed at (11, 6). These studies retain the working components; the complete unit
-matrices remain the authoritative game sources.
 
 Run `npm run art:build` to regenerate sprites and the atlas. `npm run art:check`
 verifies that saved PNGs and atlas metadata match their source matrices.
