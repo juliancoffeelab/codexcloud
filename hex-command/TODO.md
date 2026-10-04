@@ -66,6 +66,10 @@ Do not rewrite creative content without the user's input. Suggestions are welcom
 - [ ] Resolve the second woodland mission's truce and conflict with the user.
       `green-vigil` describes a personal truce with Dain, while the enemy units belong
       to the Overseer and continue attacking. This distinction was not clear in play.
+      Dain is absent from the vigil map and its reinforcement waves: he exists only
+      as a dialogue speaker claiming to watch from the treeline, then appears as a
+      player warden in stage three. Account for his presence and role in stage two
+      rather than implying an on-map truce participant who does not exist.
       The user understands the vigil's purpose somewhat, but asks why attacks occur
       under a truce and what challenge the stage would have if attacks ceased.
       Agree on who the truce covers and what threatens the vigil before changing
