@@ -306,7 +306,7 @@ export function loadBattle(): LoadedBattle {
       game.mapRevision = 2;
     }
     const sites = game.tiles.filter((tile) => ["grove", "ruins", "fort"].includes(tile.terrain));
-    if (campaign) {
+    if (campaign || s.sites !== undefined) {
       if (
         !Array.isArray(s.sites) ||
         s.sites.length !== sites.length ||
@@ -317,6 +317,11 @@ export function loadBattle(): LoadedBattle {
         if (!validVillage(site, sites)) return fresh();
         game.tile(site.id)!.owner = site.owner;
       }
+    } else {
+      // Older noncampaign saves did not persist ownership of these sites.
+      for (const site of sites) site.owner = null;
+    }
+    if (campaign) {
       for (const team of ["player", "enemy"] as const) {
         if (units.filter((unit) => unit.side === team && unit.role === "leader").length > 1)
           return fresh();

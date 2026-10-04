@@ -45,48 +45,38 @@ function pauseTurn(callToPause = 1) {
   };
 }
 
-// Gallery selection inspects either team without moving, targeting, or starting a turn.
+// The developer layout uses ordinary selection, movement, combat, turns and persistence.
 {
   storage.clear();
   const controller = new BattleController(immediatePause);
   const observed = observe(controller);
   controller.commands.reset("developer");
   const opening = controller.snapshot();
-  const gameView = observed.view.game;
-  const saved = storage.getItem(SAVE_KEY);
   const player = required(opening.units.find((unit) => unit.side === "player"));
   const enemy = required(opening.units.find((unit) => unit.side === "enemy"));
-  for (const unit of [player, enemy]) {
-    controller.commands.choose(unit.tile);
-    assert.equal(observed.view.selected, unit.id);
-    assert.equal(observed.view.target, null);
-    assert.equal(observed.view.game, gameView);
-    assert.deepEqual(controller.actions(unit.id), { moves: [], attacks: [], recruitment: {} });
-    const panel = unitPanelView(observed.view);
-    assert.equal(panel.kind, "details");
-    if (panel.kind === "details") assert.equal(panel.details.actionStatus, "Inspection only");
-    const tiles = battlefieldTiles(gameView, unit.id, "pixel", null);
-    assert(!tiles.some((tile) => /reachable|target|recruitable/.test(tile.classes)));
-  }
-  controller.commands.choose("0,0");
-  assert.equal(observed.view.selected, null);
-  assert.equal(observed.view.inspectedTile, "0,0");
-  assert.equal(observed.view.recruitment, null);
-  assert.equal(observed.view.canUndo, false);
-  assert.throws(() => controller.move(player.id, "2,3"), /inspection only/);
-  assert.throws(() => controller.attack(player.id, enemy.id), /inspection only/);
-  assert.throws(() => controller.recruit(player.id, "soldier", "2,3"), /inspection only/);
-  await assert.rejects(controller.commands.endTurn(), /inspection only/);
-  controller.commands.undoMove();
+  controller.commands.choose(player.tile);
+  const panel = unitPanelView(observed.view);
+  assert.equal(panel.kind, "details");
+  if (panel.kind === "details") assert.equal(panel.details.actionStatus, "Ready");
+  assert(controller.actions(player.id).moves.some((move) => move.tile === "0,2"));
+  assert(
+    battlefieldTiles(observed.view.game, player.id, "pixel", null).some((tile) =>
+      tile.classes.includes("reachable"),
+    ),
+  );
+  controller.move(player.id, "0,2");
+  assert(observed.view.canUndo);
+  controller.undoMove();
   assert.deepEqual(controller.snapshot(), opening);
-  assert.equal(storage.getItem(SAVE_KEY), saved);
-  const reloaded = new BattleController(immediatePause);
-  assert.deepEqual(reloaded.snapshot(), opening);
-  controller.commands.reset("mirror");
-  controller.move("u3", "3,1");
-  assert(observed.view.canUndo, "leaving the gallery restores normal battle commands");
+  controller.commands.choose(enemy.tile);
+  assert.equal(unitPanelView(observed.view).kind, "combat");
+  controller.attack(player.id, enemy.id);
+  assert(required(controller.snapshot().units.find((unit) => unit.id === enemy.id)).hp < enemy.hp);
+  assert.deepEqual(loadBattle().game.snapshot(), controller.snapshot());
+  await controller.commands.endTurn();
+  assert(controller.snapshot().round > opening.round || controller.snapshot().winner);
+  assert.deepEqual(loadBattle().game.snapshot(), controller.snapshot());
   controller.dispose();
-  reloaded.dispose();
   observed.unsubscribe();
   storage.clear();
 }

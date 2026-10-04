@@ -1,6 +1,6 @@
 import type { MapDefinition, TerrainType, UnitType } from "./types";
 
-// Explicit ordering keeps the gallery independent of engine definition imports.
+// Explicit ordering keeps map data independent of engine definition imports.
 const terrainTypes = [
   "plains",
   "forest",
@@ -50,8 +50,8 @@ export const DEVELOPER_UNIT_SAMPLES = unitTypes.flatMap((type, index) => {
 export const DEVELOPER_MAP = {
   id: "developer",
   revision: 1,
-  name: "Developer showcase",
-  description: "Inspect every terrain and both sides of every unit. No battle actions.",
+  name: "Developer map",
+  description: "All terrains and both sides of every unit.",
   cols: 6,
   rows: 10,
   terrain: DEVELOPER_TERRAIN_SAMPLES,

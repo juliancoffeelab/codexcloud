@@ -1,9 +1,8 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
-import { artSprite, artSpriteInfo, ART_STYLES, loadArtStyle } from "../src/presentation/art";
+import { artSprite, loadArtStyle } from "../src/presentation/art";
 import { campaignSheets } from "../src/presentation/campaign-art";
-import { TYPES, TERRAIN } from "../src/game/engine";
 
 const undeadFrames = campaignSheets.pixel.frameSources;
 for (const [frame, source] of Object.entries(undeadFrames)) {
@@ -44,41 +43,6 @@ assert(
     "campaign-pixel.png?v=f8e1face84a4",
   ),
 );
-
-for (const style of Object.keys(ART_STYLES) as (keyof typeof ART_STYLES)[]) {
-  const samples = [
-    ...Object.keys(TYPES).flatMap((name) =>
-      (["player", "enemy"] as const).map((side) => ({ kind: "units" as const, name, side })),
-    ),
-    ...Object.keys(TERRAIN).map((name) => ({
-      kind: "terrain" as const,
-      name,
-      side: "player" as const,
-    })),
-  ];
-  for (const { kind, name, side } of samples) {
-    const info = artSpriteInfo(style, kind, name, side);
-    assert(info, `${style} ${side} ${name} has inspection metadata`);
-    const filename = info.source.split("/").at(-1)!.split("?")[0]!;
-    const png = readFileSync(new URL(`../public/assets/${filename}`, import.meta.url));
-    assert.equal(png.readUInt32BE(16), info.width, `${filename} native width`);
-    assert.equal(png.readUInt32BE(20), info.height, `${filename} native height`);
-    assert(info.crop.x >= 0 && info.crop.y >= 0);
-    assert(info.crop.width > 0 && info.crop.height > 0);
-    assert(info.crop.x + info.crop.width <= info.width);
-    assert(info.crop.y + info.crop.height <= info.height);
-    const rendered = artSprite(style, kind, name, 0, 0, 60, 70, "", side);
-    assert(rendered.includes(info.source), "Inspector reports the renderer's actual source");
-    assert(rendered.includes(`viewBox="0 0 ${info.crop.width} ${info.crop.height}"`));
-    if (name === "bridge") assert.equal(info.composite, "Water raster with an SVG stone crossing");
-    else assert.equal(info.composite, undefined);
-  }
-}
-assert.equal(artSpriteInfo("pixel", "units", "unknown"), null);
-assert.equal(artSpriteInfo("pixel", "terrain", "unknown"), null);
-assert(artSpriteInfo("pixel", "units", "necromancer")?.source.includes("campaign-pixel.png"));
-assert(artSpriteInfo("pixel", "units", "wolf")?.source.includes("campaign-pixel.png"));
-assert(artSpriteInfo("pixel", "terrain", "ford")?.source.includes("shallow-pixel.png"));
 
 const originalImage = Object.getOwnPropertyDescriptor(globalThis, "Image");
 const requested: string[] = [];

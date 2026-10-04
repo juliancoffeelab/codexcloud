@@ -13,7 +13,6 @@
   import TerrainPanel from "./ui/TerrainPanel.svelte";
   import SettingsDialog from "./ui/SettingsDialog.svelte";
   import MapPicker from "./ui/MapPicker.svelte";
-  import DeveloperPanel from "./ui/DeveloperPanel.svelte";
   const controller = new BattleController();
   const view = controller.view;
   const actions = controller.commands;
@@ -97,18 +96,8 @@
     onNewCampaign={openCampaignPicker}
   />
   <div class="workspace">
-    {#if $view.game.mapId === "developer"}
-      <div class="showcase-board">
-        <DeveloperPanel view={$view} {actions} overview />
-        <Battlefield view={$view} {actions} />
-      </div>
-    {:else}
-      <Battlefield view={$view} {actions} />
-    {/if}
+    <Battlefield view={$view} {actions} />
     <aside>
-      {#if $view.game.mapId === "developer"}
-        <DeveloperPanel view={$view} {actions} />
-      {/if}
       <UnitPanel view={$view} {actions} onNewBattle={openMapPicker} />
       <TerrainPanel view={$view} {actions} />
     </aside>
@@ -132,25 +121,13 @@
   </div>
 </dialog>
 <dialog bind:this={resetDialog} id="reset-dialog">
-  <h2>{mapChoice === "developer" ? "Open developer showcase?" : "Start a new battle?"}</h2>
-  <p>
-    {mapChoice === "developer"
-      ? "Inspect terrain and unit artwork. The showcase replaces your current battle."
-      : "Choose your battlefield. Your current battle will be replaced."}
-  </p>
+  <h2>Start a new battle?</h2>
+  <p>Choose your battlefield. Your current battle will be replaced.</p>
   <MapPicker bind:selected={mapChoice} />
   <div class="dialog-actions">
     <button id="keep-playing" class="quiet" onclick={() => resetDialog.close()}>
       Keep playing
     </button>
-    <button id="confirm-reset" class="primary" onclick={startNewBattle}>
-      {mapChoice === "developer" ? "Open showcase" : "New battle"}
-    </button>
+    <button id="confirm-reset" class="primary" onclick={startNewBattle}>New battle</button>
   </div>
 </dialog>
-
-<style>
-  .showcase-board {
-    min-width: 0;
-  }
-</style>

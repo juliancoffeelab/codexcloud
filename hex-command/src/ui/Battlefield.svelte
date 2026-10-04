@@ -3,8 +3,6 @@
   import type { BattleCommands, BattleView } from "../controller/view";
   import { MAPS } from "../game/maps";
   import { battlefieldTiles } from "./battlefield-view";
-  import { DEVELOPER_TERRAIN_SAMPLES, DEVELOPER_UNIT_SAMPLES } from "../game/developer-map";
-  import { tileCenter } from "./geometry";
 
   interface Props {
     view: BattleView;
@@ -20,20 +18,7 @@
   // Track the published turn even when the enemy turn hides the destination.
   const isPlayerTurn = $derived(game.turn === "player" && !game.winner);
   const recruitTileId = $derived(isPlayerTurn && recruitment ? view.inspectedTile : null);
-  const isShowcase = $derived(game.mapId === "developer");
-  const showcaseTileIds = new Set(
-    [...DEVELOPER_TERRAIN_SAMPLES, ...DEVELOPER_UNIT_SAMPLES].map(
-      ({ col, row }) => `${col},${row}`,
-    ),
-  );
-  const unitLabels = DEVELOPER_UNIT_SAMPLES.filter((sample) => sample.side === "player").map(
-    (sample) => ({ ...sample, ...tileCenter({ col: sample.col + 2, row: sample.row }) }),
-  );
-  const tiles = $derived(
-    battlefieldTiles(game, selected, artStyle, recruitTileId).filter(
-      (tile) => !isShowcase || showcaseTileIds.has(tile.id),
-    ),
-  );
+  const tiles = $derived(battlefieldTiles(game, selected, artStyle, recruitTileId));
   const viewBox = $derived(`0 0 ${758 + 61 * (game.cols - 11)} ${452 + 53 * (game.rows - 7)}`);
 
   function handleTileKey(event: KeyboardEvent, tile: TileView): void {
@@ -62,15 +47,7 @@
     }
 
     event.preventDefault();
-    const colStep = col - tile.col;
-    const rowStep = row - tile.row;
-    let nextTile = tiles.find((candidate) => candidate.col === col && candidate.row === row);
-    // Showcase filler hexes are not rendered; arrows skip them without losing focus.
-    while (!nextTile && game.tile(`${col},${row}`)) {
-      col += colStep;
-      row += rowStep;
-      nextTile = tiles.find((candidate) => candidate.col === col && candidate.row === row);
-    }
+    const nextTile = game.tile(`${col},${row}`);
     if (!nextTile) return;
 
     actions.focusTile(nextTile.id);
@@ -175,34 +152,6 @@
           </g>
         {/each}
       </g>
-      {#if isShowcase}
-        <g class="showcase-labels" pointer-events="none" aria-hidden="true">
-          {#each tiles.filter((tile) => tile.row < 2) as tile (tile.id)}
-            <text class="terrain-id" x={tile.x} y={tile.y + 22}>{tile.terrain}</text>
-          {/each}
-          {#each unitLabels as label (label.type)}
-            <text class="unit-id" x={label.x} y={label.y}>{label.type}</text>
-          {/each}
-        </g>
-      {/if}
     </svg>
   </div>
 </section>
-
-<style>
-  .showcase-labels text {
-    font:
-      7.5px ui-monospace,
-      monospace;
-    text-anchor: middle;
-    dominant-baseline: middle;
-    fill: var(--text);
-    stroke: var(--bg);
-    stroke-width: 2px;
-    stroke-linejoin: round;
-    paint-order: stroke fill;
-  }
-  .showcase-labels .terrain-id {
-    font-weight: 700;
-  }
-</style>

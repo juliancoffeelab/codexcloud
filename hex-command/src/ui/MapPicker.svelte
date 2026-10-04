@@ -19,10 +19,8 @@
     });
   }
 
-  const maps = Object.values(MAPS)
-    .filter(
-      (layout) => layout.id === "mirror" || layout.id === "river" || layout.id === "developer",
-    )
+  const maps = (["mirror", "river", "developer"] as const)
+    .map((id) => MAPS[id])
     .map((layout) => ({
       id: layout.id,
       name: layout.name,

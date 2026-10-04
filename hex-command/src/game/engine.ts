@@ -899,12 +899,11 @@ export class Game {
         .filter((tile) => tile.terrain === "village")
         .map((tile) => ({ id: tile.id, owner: tile.owner })),
     };
-    if (this.campaign) {
-      snapshot.campaign = structuredClone(this.campaign);
-      snapshot.sites = this.tiles
-        .filter((tile) => ["grove", "fort", "ruins"].includes(tile.terrain))
-        .map((tile) => ({ id: tile.id, owner: tile.owner }));
-    }
+    if (this.campaign) snapshot.campaign = structuredClone(this.campaign);
+    const sites = this.tiles
+      .filter((tile) => ["grove", "fort", "ruins"].includes(tile.terrain))
+      .map((tile) => ({ id: tile.id, owner: tile.owner }));
+    if (this.campaign || sites.length) snapshot.sites = sites;
     return snapshot;
   }
 

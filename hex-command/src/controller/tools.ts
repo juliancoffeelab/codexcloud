@@ -166,8 +166,7 @@ export function registerBattleTools(controller: BattleController): () => void {
     },
     {
       name: "start_new_battle",
-      description:
-        "Replace the current battle with a fresh battle or the inspection-only developer showcase.",
+      description: "Replace the current battle with a fresh battle.",
       inputSchema: schema({
         mapId: { type: "string", enum: ["mirror", "river", "developer"] },
       }),

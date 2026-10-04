@@ -74,7 +74,6 @@ export function recruitmentContext(
   selected: string | null,
   inspectedTile: string | null,
 ): RecruitmentContext | null {
-  if (game.mapId === "developer") return null;
   const tile = game.tile(inspectedTile);
   if (!tile || tile.terrain === "water" || game.at(tile.id) || game.winner || game.unit(selected)) {
     return null;
