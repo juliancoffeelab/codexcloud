@@ -60,15 +60,6 @@
     />
   </label>
   <button id="new-campaign" class="primary" onclick={onNewCampaign}>New campaign</button>
-  {#if view.game.campaign}
-    <details class="panel">
-      <summary>Campaign conversations</summary>
-      {#each view.game.campaign.dialogue.slice(0, view.game.campaign.dialogueIndex) as line}<p>
-          <strong>{line.speaker}</strong>
-          {line.text}
-        </p>{/each}
-    </details>
-  {/if}
   <button
     id="new-game"
     class="quiet"
@@ -121,6 +112,15 @@
       </p>
     </div>
   </details>
+  {#if view.game.campaign}
+    <details class="panel">
+      <summary>Campaign conversations</summary>
+      {#each view.game.campaign.dialogue.slice(0, view.game.campaign.dialogueIndex) as line}<p>
+          <strong>{line.speaker}</strong>
+          {line.text}
+        </p>{/each}
+    </details>
+  {/if}
   <details class="dispatch">
     <summary>Battle journal</summary>
     <ol id="log">
