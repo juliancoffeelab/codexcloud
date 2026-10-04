@@ -125,7 +125,7 @@ ruins stops their future grave waves permanently. Each optional supply quest
 pays six gold once; move undo restores both its reward and conversation.
 
 The nine new unit types have original teal/crimson artwork in Normal, Low-poly
-and Pixel, alongside the four new terrain tiles. Campaign sheets load when used;
+and Pixel, alongside the four new terrain tiles. Sheets load for the selected style;
 classic skirmishes retain their original three recruits and rules.
 
 | New unit             | Gold |  HP | Move | Weapons                                           | Flat incoming modifiers        |
@@ -172,7 +172,7 @@ node --import tsx scripts/play-campaign.ts /tmp/my-company.json '{"op":"act","ac
 
 Each invocation reads and writes that trial file, returning JSON with the current
 map, units, treasury, briefing, hints, conversations, objectives, side quests and
-announced reinforcements, plus the debrief after victory. Start and retry also
+announced reinforcements, plus the outcome and any defined debrief after victory. Start and retry also
 return unit definitions, terrain rules and the common action rules.
 Coordinates are zero-based `col,row` on the game's odd-row-offset hex grid.
 Terrain rules expose numeric base costs, or `"impassable"` for water; unit
@@ -198,6 +198,17 @@ batch and returns an error plus the authoritative observation; earlier successfu
 actions stay applied. Dialogue is acknowledged automatically for headless play,
 and `conversation` returns the current mission's accumulated lines, including
 introductions, events and the result, so agents can read them without modal clicks.
+
+Inside `actions`, use these forms, replacing placeholders with values from
+`options`:
+
+```json
+[
+  { "op": "move", "unit": "UNIT_ID", "tile": "col,row" },
+  { "op": "attack", "unit": "UNIT_ID", "target": "ENEMY_ID", "weapon": "WEAPON_ID" },
+  { "op": "recruit", "unit": "LEADER_ID", "type": "RECRUIT_TYPE", "tile": "col,row" }
+]
+```
 
 Threat inspection considers each enemy independently with refreshed actions. Its
 damage sum is a conservative bound, rather than an AI prediction: movements can

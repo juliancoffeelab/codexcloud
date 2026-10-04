@@ -1,11 +1,14 @@
 # Campaign playtests
 
-The current Green Accord repair was tested at `81979dc`; its results are reported
-first. The other campaign completion rates describe the historical balance pass
-at `c3b2c72`, before refuge mediation and enemy retreat changes, and do not
-estimate current performance.
+The overnight mechanical pass uses gameplay source `547718d`. Fresh linked
+Luna 6 sessions receive the actual conversations throughout each story, alongside
+briefings, hints and debriefs. Their results are recorded separately from earlier
+cohorts. No historical completion rate estimates performance with the revised AI.
 
-Current refuge verification checks defended turns, medicine, escalation,
+The previous Green Accord repair was tested at `81979dc`. The original campaign
+completion rates describe `c3b2c72`, before refuge mediation and retreat changes.
+
+Earlier refuge verification checked defended turns, medicine, escalation,
 retreat/healing, saves, and both next-mission branches. Actual-engine scenario
 probes completed the peaceful route after six enemy turns without medicine and
 five with medicine. A deliberate pursuit probe completed the hostile route on
@@ -32,7 +35,74 @@ players' decisions, rather than combat dice or a guaranteed population win rate.
 Five sessions per campaign are a small sample. Whole-campaign completion includes
 the permitted retries; first-attempt mission wins are reported separately.
 
-## Current Green Accord repair
+## Overnight mechanical verification
+
+Gameplay source: `547718d47dfe0e045d1aa55d73590917d88dadfa`, held in an isolated
+checkout while the main branch received review fixes. Enemy withdrawal now
+checks actual available attacks and fatal retaliation, rather than a blanket
+low-health or projected-threat threshold. A safe attack allows reengagement;
+previously withdrawing troops can recover in safe owned villages. Cornered
+troops may fight. Terrain base costs and explicit signed unit modifiers preserve
+the existing numeric costs, including woodland movement for boars.
+
+The later review repair at `fb1b896` changes dialogue persistence, terminal status,
+ending speaker eligibility, tile accessibility and recall selection. It does not
+change combat, movement, AI, maps or mission requirements. An independent reviewer
+found five confirmed defects; each was reproduced before repair, and a separate
+architecture reviewer checked the actual fixes and regression tests. A fixed
+microtask-count wait in one test was replaced with an explicit controlled pause.
+
+Verification: all 18 unit-test files passed in 4.46 seconds on the final repair;
+strict TypeScript and
+Svelte checks reported no errors or warnings; formatting and production build
+passed. The same-map recall failure was reproduced with Svelte's Node reactivity
+runtime and the production engine. No browser interaction or mobile visual
+parity is claimed. Source-sheet inspection and focused asset checks cover the
+four replacement Pixel skeleton/bone-archer frames; existing PNG assets and the
+approved Low-poly artwork are unchanged. Story copy was not rewritten.
+
+Five fresh sessions concluded. Lantern and Green each had one player; Ashen had
+an initial player plus two independent repetitions after that player's two opener
+losses. All three campaigns were completed by Luna 6. This unequal, small sample
+is a sanity check, not an estimated population completion probability. Players
+received action-schema clarification when needed, with no tactical coaching.
+
+| Trial                                                            | Mission 1        | Mission 2 | Mission 3 | Complete |
+| ---------------------------------------------------------------- | ---------------- | --------- | --------- | -------- |
+| [Lantern](playtests/night-retaliation-1/night_lantern_luna.json) | Loss 3 → Win 6   | Win 19    | Win 17    | Yes      |
+| [Green](playtests/night-retaliation-1/night-green-luna.json)     | Win 3            | Win 4     | Win 9     | Yes      |
+| [Ashen A](playtests/night-retaliation-1/night-ashen-luna.json)   | Loss 14 → Loss 7 | —         | —         | No       |
+| [Ashen B](playtests/night-retaliation-1/night-ashen-b-luna.json) | Win 7            | Win 9     | Win 9     | Yes      |
+| [Ashen C](playtests/night-retaliation-1/night-ashen-c-luna.json) | Win 7            | Win 6     | Win 10    | Yes      |
+
+Numbers are the recorded ending round. Unreached missions remain unreached. All
+five full decision logs replay exactly against their recorded source; hashes,
+attempts, survivors and fingerprints are in the machine-readable results.
+
+Green finished with eleven survivors and full-health Lark at the meeting, while
+the Rootbinder was still alive. Lantern finished with five survivors after an
+attritional village chapter and finale. Both successful Ashen players earned
+medicine-assisted intervention after five defended turns. B lost and recaptured
+the refuge before winning; C held it continuously. B lost Dain in the finale and
+won with Orin at 1 HP; C kept Dain alive and won with Orin at 5 HP. Both had three
+final survivors. B's frozen trace retains the old ending-speaker defect; the later
+review repair suppresses dead Dain's lines and has separate death/save coverage.
+
+A separate investigator replayed Ashen A's failed trace and verified avoidable
+damage in its exact states. Its first attempt entered a ford at 4 HP within an
+adept's 5-damage attack; staying on the previous hex survived that enemy turn.
+Its retry exposed Orin ahead of his screens; a legal screened attack sequence
+preserved all five allies and left Orin at 8 HP instead of 3. Neither attempt
+recruited before leaving the keep. These branch probes demonstrate counterplay,
+not additional independent campaign wins. No map or balance tuning followed.
+
+Writing and creative changes remain for user input. One Lantern player read
+Meri's grave-sealing line as an actor requirement, although soldiers can seal
+graves. The same player noticed the reed-gatherer quest triggers from Meri's
+starting tile. These observations are recorded as discussion points; dialogue,
+hints and quest placement were preserved.
+
+## Historical Green Accord repair
 
 Gameplay trial source: `81979dce002f392cf18d0875806fcc03d9616de1`. Five fresh Luna 6 players
 started at the opening mission, retaining their earned company and gold through
@@ -89,7 +159,7 @@ These are observed outcomes for five independent players, not a statistical
 guarantee. Fragile Lark can still die when exposed to multiple attackers; the
 objectives require protecting her rather than clearing every enemy.
 
-Verification on the final production source: formatting, strict TypeScript and
+Verification on that repair's production source: formatting, strict TypeScript and
 Svelte checks, all 17 lightweight unit-test files (6.05 seconds), and production
 build passed. Browser interaction and visual parity were not tested.
 
@@ -192,6 +262,12 @@ carryover rules are shared by both sides and were unchanged during tuning.
 Later rounds remain recoverable: no artificial turn deadline was added.
 
 ## Reproducibility
+
+The overnight cohort's full decision logs are committed under
+[`playtests/night-retaliation-1`](playtests/night-retaliation-1). Each result records
+its log path, SHA-256, rules fingerprint and source commit. Replay these logs with
+`scripts/replay-campaign.ts` from source `547718d`; later review repairs can change
+terminal conversation state even though combat rules remain the same.
 
 Use a fresh trial path, the documented CLI in the README, and a fixed checkout.
 `start` refuses to overwrite prior attempts; `next` and `retry` preserve the

@@ -1642,6 +1642,186 @@
       "sourceSnapshot": "81979dce002f392cf18d0875806fcc03d9616de1",
       "exception": null,
       "conversationExposure": "finale"
+    },
+    {
+      "trial": "night-green-luna",
+      "campaign": "green-accord",
+      "cohort": "night-retaliation-1",
+      "completed": true,
+      "attempts": [
+        {
+          "mission": "green-border",
+          "winner": "player",
+          "round": 3,
+          "survivors": 4,
+          "attempt": 1
+        },
+        {
+          "mission": "green-vigil",
+          "winner": "player",
+          "round": 4,
+          "survivors": 7,
+          "attempt": 1
+        },
+        {
+          "mission": "green-pact",
+          "winner": "player",
+          "round": 9,
+          "survivors": 11,
+          "attempt": 1
+        }
+      ],
+      "rulesFingerprint": "581106805fd97e7a6df4f96ed66874596c832e63ea9657a1a93a7ea868d70d54",
+      "recordSha256": "0523f8971fe5696edcf15132da48fc58fd0c576ece6413199d82d38df59724b4",
+      "recordPath": "playtests/night-retaliation-1/night-green-luna.json",
+      "replayVerified": true,
+      "sourceSnapshot": "547718d47dfe0e045d1aa55d73590917d88dadfa",
+      "exception": null,
+      "conversationExposure": "all"
+    },
+    {
+      "trial": "night-ashen-luna",
+      "campaign": "ashen-oath",
+      "cohort": "night-retaliation-1",
+      "completed": false,
+      "attempts": [
+        {
+          "mission": "ashen-quarry",
+          "winner": "enemy",
+          "round": 14,
+          "survivors": 1,
+          "attempt": 1
+        },
+        {
+          "mission": "ashen-quarry",
+          "winner": "enemy",
+          "round": 7,
+          "survivors": 3,
+          "attempt": 2
+        }
+      ],
+      "rulesFingerprint": "bb1ff37813dbf15317c0b2e4e4b79a1b92b19a7480553c27b71b90dc3f337132",
+      "recordSha256": "b771c335eda8d0fc57331038e8f8942974c416c78a4c50893fae5998f7f8cee3",
+      "recordPath": "playtests/night-retaliation-1/night-ashen-luna.json",
+      "replayVerified": true,
+      "sourceSnapshot": "547718d47dfe0e045d1aa55d73590917d88dadfa",
+      "exception": null,
+      "conversationExposure": "all"
+    },
+    {
+      "trial": "night-lantern-luna",
+      "campaign": "lantern-road",
+      "cohort": "night-retaliation-1",
+      "completed": true,
+      "attempts": [
+        {
+          "mission": "lantern-ferry",
+          "winner": "enemy",
+          "round": 3,
+          "survivors": 4,
+          "attempt": 1
+        },
+        {
+          "mission": "lantern-ferry",
+          "winner": "player",
+          "round": 6,
+          "survivors": 3,
+          "attempt": 2
+        },
+        {
+          "mission": "lantern-villages",
+          "winner": "player",
+          "round": 19,
+          "survivors": 9,
+          "attempt": 1
+        },
+        {
+          "mission": "lantern-bell",
+          "winner": "player",
+          "round": 17,
+          "survivors": 5,
+          "attempt": 1
+        }
+      ],
+      "rulesFingerprint": "16db15c63c6dadd8245ee9d3f7c4d02605f4d99ee6a5b482189ac1f605cc0494",
+      "recordSha256": "553343f52239f5632a4e5be44c341b4483f0f8f679835fb981dd0e73dc773e16",
+      "recordPath": "playtests/night-retaliation-1/night_lantern_luna.json",
+      "replayVerified": true,
+      "sourceSnapshot": "547718d47dfe0e045d1aa55d73590917d88dadfa",
+      "exception": null,
+      "conversationExposure": "all"
+    },
+    {
+      "trial": "night-ashen-b-luna",
+      "campaign": "ashen-oath",
+      "cohort": "night-retaliation-1",
+      "completed": true,
+      "attempts": [
+        {
+          "mission": "ashen-quarry",
+          "winner": "player",
+          "round": 7,
+          "survivors": 4,
+          "attempt": 1
+        },
+        {
+          "mission": "ashen-refuge",
+          "winner": "player",
+          "round": 9,
+          "survivors": 2,
+          "attempt": 1
+        },
+        {
+          "mission": "ashen-dawn",
+          "winner": "player",
+          "round": 9,
+          "survivors": 3,
+          "attempt": 1
+        }
+      ],
+      "rulesFingerprint": "bb1ff37813dbf15317c0b2e4e4b79a1b92b19a7480553c27b71b90dc3f337132",
+      "recordSha256": "caa344b97af336b85ecb4d772f89546c4a4c6188e0746c24c43702c74296d436",
+      "recordPath": "playtests/night-retaliation-1/night-ashen-b-luna.json",
+      "replayVerified": true,
+      "sourceSnapshot": "547718d47dfe0e045d1aa55d73590917d88dadfa",
+      "exception": null,
+      "conversationExposure": "all"
+    },
+    {
+      "trial": "night-ashen-c-luna",
+      "campaign": "ashen-oath",
+      "cohort": "night-retaliation-1",
+      "completed": true,
+      "attempts": [
+        {
+          "mission": "ashen-quarry",
+          "winner": "player",
+          "round": 7,
+          "survivors": 4,
+          "attempt": 1
+        },
+        {
+          "mission": "ashen-refuge",
+          "winner": "player",
+          "round": 6,
+          "survivors": 4,
+          "attempt": 1
+        },
+        {
+          "mission": "ashen-dawn",
+          "winner": "player",
+          "round": 10,
+          "survivors": 3,
+          "attempt": 1
+        }
+      ],
+      "rulesFingerprint": "bb1ff37813dbf15317c0b2e4e4b79a1b92b19a7480553c27b71b90dc3f337132",
+      "recordSha256": "f4f6220b2e50ecb88bd877c3826a0267f03d0adf2ebc99124f75a43ac11e5dec",
+      "recordPath": "playtests/night-retaliation-1/night-ashen-c-luna.json",
+      "replayVerified": true,
+      "sourceSnapshot": "547718d47dfe0e045d1aa55d73590917d88dadfa",
+      "exception": null,
+      "conversationExposure": "all"
     }
   ]
 }
