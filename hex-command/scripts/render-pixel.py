@@ -3,15 +3,13 @@
 import argparse
 import hashlib
 import json
-import math
 from pathlib import Path
 import struct
 import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "art" / "pixel"
-LEGACY = ART / "legacy"
-FRAME_NAMES = {"bonearcher": "bone_archer"}
+FRAME_NAMES = {"bonearcher": "bone_archer", "grove": "sacred_grove"}
 
 
 def chunk(kind, data):
@@ -23,8 +21,8 @@ def read_matrix(matrix):
     rows = matrix.read_text().splitlines()
     if not rows or not rows[0] or any(len(row) != len(rows[0]) for row in rows):
         raise ValueError(f"{matrix}: matrix must be a nonempty rectangle")
-    if matrix.parent.parent == ART / "units" and (len(rows[0]), len(rows)) != (48, 48):
-        raise ValueError(f"{matrix}: unit matrices must be 48×48")
+    if matrix.parent.parent in (ART / "units", ART / "terrain") and (len(rows[0]), len(rows)) != (48, 48):
+        raise ValueError(f"{matrix}: artwork matrices must be 48×48")
     return rows
 
 
@@ -71,95 +69,14 @@ def png_bytes(width, height, rgba):
     )
 
 
-def read_png(path):
-    """Decode the original non-interlaced 8-bit RGB/RGBA sheets without resampling."""
-    data = path.read_bytes()
-    if data[:8] != b"\x89PNG\r\n\x1a\n":
-        raise ValueError(f"{path}: not a PNG")
-    offset, compressed, transparent = 8, bytearray(), None
-    while offset < len(data):
-        length = struct.unpack(">I", data[offset : offset + 4])[0]
-        kind = data[offset + 4 : offset + 8]
-        payload = data[offset + 8 : offset + 8 + length]
-        if kind == b"IHDR":
-            width, height, depth, color, compression, filtering, interlace = struct.unpack(
-                ">IIBBBBB", payload
-            )
-        elif kind == b"IDAT":
-            compressed.extend(payload)
-        elif kind == b"tRNS":
-            transparent = struct.unpack(">HHH", payload)
-        offset += length + 12
-    if depth != 8 or color not in (2, 6) or compression or filtering or interlace:
-        raise ValueError(f"{path}: expected non-interlaced 8-bit RGB/RGBA")
-    channels = 3 if color == 2 else 4
-    stride = width * channels
-    raw = zlib.decompress(compressed)
-    if len(raw) != (stride + 1) * height:
-        raise ValueError(f"{path}: invalid scanline length")
-    previous = bytearray(stride)
-    rgba = bytearray()
-    for y in range(height):
-        start = y * (stride + 1)
-        method = raw[start]
-        row = bytearray(raw[start + 1 : start + 1 + stride])
-        if method not in range(5):
-            raise ValueError(f"{path}: invalid PNG filter")
-        if method:
-            for i in range(stride):
-                left = row[i - channels] if i >= channels else 0
-                up = previous[i]
-                upper_left = previous[i - channels] if i >= channels else 0
-                if method == 1:
-                    predictor = left
-                elif method == 2:
-                    predictor = up
-                elif method == 3:
-                    predictor = (left + up) // 2
-                else:
-                    p = left + up - upper_left
-                    a, b, c = abs(p - left), abs(p - up), abs(p - upper_left)
-                    predictor = left if a <= b and a <= c else up if b <= c else upper_left
-                row[i] = (row[i] + predictor) & 255
-        if channels == 4:
-            rgba.extend(row)
-        else:
-            for x in range(width):
-                rgb = row[x * 3 : x * 3 + 3]
-                rgba.extend(rgb)
-                rgba.append(0 if transparent == tuple(rgb) else 255)
-        previous = row
-    return width, height, rgba
-
-
-def crop_pixels(image, crop):
-    """Copy whole source pixels; retain fractional crop edges in frame metadata."""
-    width, height, pixels = image
-    x, y, crop_width, crop_height = crop
-    left, top = math.floor(x), math.floor(y)
-    right, bottom = math.ceil(x + crop_width), math.ceil(y + crop_height)
-    tile_width, tile_height = right - left, bottom - top
-    if tile_width <= 0 or tile_height <= 0:
-        raise ValueError(f"Invalid crop: {crop}")
-    tile = bytearray(tile_width * tile_height * 4)
-    # Out-of-sheet portions stay transparent, matching browser image cropping.
-    for source_y in range(max(0, top), min(height, bottom)):
-        start, end = max(0, left), min(width, right)
-        if start < end:
-            source = (source_y * width + start) * 4
-            target = ((source_y - top) * tile_width + start - left) * 4
-            tile[target : target + (end - start) * 4] = pixels[source : source + (end - start) * 4]
-    return tile_width, tile_height, tile, [x - left, y - top, crop_width, crop_height]
-
-
-def pack_atlas(tiles):
+def pack_atlas(tiles, max_width=393):
     placements, frames = [], {}
     x, y, row_height, width = 1, 1, 0, 0
-    for key, (tile_width, tile_height, pixels, crop) in sorted(tiles.items()):
-        if x + tile_width + 1 > 2048:
+    for key, (tile_width, tile_height, pixels) in sorted(tiles.items()):
+        if x + tile_width + 1 > max_width and x > 1:
             x, y, row_height = 1, y + row_height + 1, 0
         placements.append((x, y, tile_width, tile_height, pixels))
-        frames[key] = [x + crop[0], y + crop[1], crop[2], crop[3]]
+        frames[key] = [x, y, tile_width, tile_height]
         width = max(width, x + tile_width + 1)
         row_height = max(row_height, tile_height)
         x += tile_width + 1
@@ -173,7 +90,6 @@ def pack_atlas(tiles):
 
 
 def pixel_atlases():
-    legacy = json.loads((LEGACY / "frames.json").read_text())
     native = {}
     for directory in sorted((ART / "units").iterdir()):
         if not directory.is_dir():
@@ -182,7 +98,7 @@ def pixel_atlases():
         for side in ("player", "enemy"):
             matrix = directory / f"{side}.txt"
             if not matrix.exists():
-                continue
+                raise ValueError(f"{matrix}: both faction matrices are required")
             width, height, pixels = rgba_pixels(matrix)
             if (width, height) != (48, 48) or not any(pixels[3::4]):
                 raise ValueError(f"{matrix}: expected a nonempty 48×48 sprite")
@@ -192,19 +108,20 @@ def pixel_atlases():
             key = f"{side}_{FRAME_NAMES.get(directory.name, directory.name)}"
             if key in native:
                 raise ValueError(f"Duplicate native frame: {key}")
-            native[key] = (width, height, pixels, [0, 0, width, height])
+            native[key] = (width, height, pixels)
     if not native:
         raise ValueError("No native unit matrices found")
-    images, outputs, sources, frames = {}, {}, {}, {}
-    for kind in ("units", "terrain"):
-        tiles = dict(native) if kind == "units" else {}
-        for key, entry in legacy[kind].items():
-            if key in tiles:
-                continue  # Existing matrices replace only their matching old artwork.
-            path = LEGACY / entry["source"]
-            if path not in images:
-                images[path] = read_png(path)
-            tiles[key] = crop_pixels(images[path], entry["crop"])
+    terrain = {}
+    for matrix in sorted((ART / "terrain").glob("*/tile.txt")):
+        width, height, pixels = rgba_pixels(matrix)
+        if not any(pixels[3::4]):
+            raise ValueError(f"{matrix}: expected a nonempty terrain sprite")
+        key = f"terrain_{FRAME_NAMES.get(matrix.parent.name, matrix.parent.name)}"
+        terrain[key] = (width, height, pixels)
+    if not terrain:
+        raise ValueError("No native terrain matrices found")
+    outputs, sources, frames = {}, {}, {}
+    for kind, tiles in (("units", native), ("terrain", terrain)):
         data, packed = pack_atlas(tiles)
         outputs[f"{kind}-pixel.png"] = data
         width, height = struct.unpack(">II", data[16:24])
@@ -219,19 +136,16 @@ def pixel_atlases():
     def property_name(key):
         return key if key.isidentifier() else json.dumps(key)
 
-    def number(value):
-        return int(value) if int(value) == value else value
-
     source_fields = ""
     for kind, source in sources.items():
         fields = "".join(f"    {key}: {json.dumps(value)},\n" for key, value in source.items())
         source_fields += f"  {kind}: {{\n{fields}  }},\n"
     frame_fields = "".join(
-        f"  {property_name(key)}: {json.dumps([number(v) for v in crop])},\n"
+        f"  {property_name(key)}: {json.dumps(crop)},\n"
         for key, crop in sorted(frames.items())
     )
     metadata = (
-        "// Generated by scripts/render-pixel.py --atlas; edit matrices or legacy crop inputs.\n"
+        "// Generated by scripts/render-pixel.py --atlas; edit art/pixel matrices and palettes.\n"
         + "export const pixelSources = {\n" + source_fields + "} as const;\n\n"
         + "export const pixelFrames = {\n" + frame_fields + "} as const;\n"
     )

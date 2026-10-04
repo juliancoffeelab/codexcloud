@@ -1,9 +1,8 @@
 # Original pixel artwork
 
-These original sheets and `frames.json` provide the artwork that has no editable
-matrix yet. They are build inputs, kept outside `public/assets/`.
+These original sheets and `frames.json` are editing references. The crop records
+identify the previous unit and terrain artwork, including fractional source bounds.
 
-`scripts/render-pixel.py --atlas` copies the recorded crops without resampling.
-Existing unit matrices replace their matching legacy frames. The output is one
-unit atlas (`public/assets/units-pixel.png`) and one terrain atlas
-(`public/assets/terrain-pixel.png`). Fractional legacy crop offsets are preserved.
+The pixel build reads the editable matrices in `art/pixel/units/` and
+`art/pixel/terrain/`; it does not sample these images. Keep these originals for
+reference comparisons rather than replacing them with the generated atlases.

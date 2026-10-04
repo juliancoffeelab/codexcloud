@@ -38,26 +38,33 @@ Sources:
       `DialogueLine.portrait` is restricted to combat `UnitType`. Support civilian art
       without inventing a combat unit solely for its portrait. Agree on the design with
       the user before creating it.
-- [ ] Transcribe the remaining unit artwork into editable pixel matrices using the
-      agreed references and fixed-resolution workflow. Remaining legacy frames are
-      soldier, archer, commander, warden, wildkeeper and thorncaller for both sides,
-      plus the enemy scout. Preserve the approved matrix-backed adept, bone archer,
-      boar, necromancer and player scout, and the selected skeleton/wolf designs
-      apart from the outline correction below. Terrain also still uses legacy
-      artwork; its redesign needs an agreed reference before transcription.
-- [ ] Fix the missing or inconsistent dark outlines on pixel wolves and skeleton
+- [x] Transcribe the remaining unit artwork into editable pixel matrices using the
+      agreed references and fixed-resolution workflow. Soldier, archer, commander,
+      warden, wildkeeper, thorncaller and enemy scout now join the existing unit
+      matrices. Completed as 26 unit and 12 terrain matrices at 48×48, retaining
+      existing terrain designs and the approved unit poses. Public atlases are
+      rendered solely from these sources.
+- [x] Fix the missing or inconsistent dark outlines on pixel wolves and skeleton
       warriors, for both factions. Match the clear silhouette and component outlines
       of the skeleton archer and boar so pale bones, grey fur, limbs and weapons
       remain readable against the terrain. The user's screenshots `15454.jpg` and
       `15456.jpg` show the discrepancy in the game. The existing matrices do not
       resolve this issue merely by being native pixel artwork.
+- [x] Restore the boar's darker hide and the thorncaller's saturated orange-red fur.
+- [x] Correct material artifacts in the new transcriptions: smooth gold trim and
+      cloth regions, remove ivory/steel flecks from cloaks and gold from unrelated
+      components, and use fur-colored thorncaller paws. Palette membership alone
+      does not establish that a pixel belongs to its component.
 - [ ] Review the remaining low-poly artwork for inconsistent style with the user.
       The original comment raised this separately from the cartoonish pixel designs;
       replacing approved designs without input is not authorized.
 
-## Writing and quest design — user input required
+## Writing and quest design
 
-Do not rewrite creative content without the user's input. Suggestions are welcome.
+The user authorized improving the woodland/Green Accord campaign: start with a
+coherent story, then derive the mission goals and conflicts from it. Pixel
+refactoring takes priority. Other creative changes still require the user's input.
+Suggestions are welcome.
 
 - [ ] Review campaign dialogue and chapter transitions for coherence, especially
       the Beastland/Green Accord witness, necromancer conflict and Dain's involvement.
