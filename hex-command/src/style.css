@@ -24,6 +24,26 @@ main {
   max-width: 1400px;
   margin: auto;
 }
+#startup {
+  max-width: 32rem;
+  margin: 15vh auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  line-height: 1.5;
+}
+#startup h1,
+#startup p {
+  margin-bottom: 12px;
+}
+#startup a {
+  color: var(--gold);
+}
+#startup pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 h1,
 h2,
 h3,
