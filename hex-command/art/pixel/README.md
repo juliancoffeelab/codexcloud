@@ -54,6 +54,13 @@ content hash and frame coordinates. The regular game renderer loads these public
 assets. Packing copies pixels without resizing; every frame retains its full
 48×48 canvas, separated by a transparent gutter. Atlas coordinates are integers.
 
+During artwork loading, the game extracts each frame into its own native-size
+PNG image, with smoothing disabled for pixels. These images are cached and
+published together when ready. Every renderer receives only a complete frame
+image. The full atlas is never inserted into the page or SVG, so viewport size,
+letterboxing or overflow cannot expose neighboring frames. Normal and low-poly
+artwork use the same extraction boundary, preserving their existing source crops.
+
 Terrain palettes use `G` for their ground base, or `W` for water-only backgrounds.
 The generated metadata includes that exact colour for the battlefield's vector
 hex beneath each sprite. Transparent pixels along the stepped raster silhouette

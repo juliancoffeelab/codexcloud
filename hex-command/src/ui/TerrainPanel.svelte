@@ -41,7 +41,7 @@
     <div class="terrain-detail">
       <div class="terrain-portrait">
         {@html artSprite(
-          view.artStyle,
+          view.artwork,
           "terrain",
           panel.tile.terrain,
           0,

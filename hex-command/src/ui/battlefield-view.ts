@@ -1,6 +1,6 @@
 import { activeGoalTiles, campaignMission, goalProgress } from "../game/campaign-progress";
 import type { GameView, UnitView, TileView } from "../game/view";
-import type { ArtStyle } from "../presentation/art";
+import type { Artwork } from "../presentation/art";
 import { TERRAIN, TYPES } from "../game/engine";
 import { artSprite } from "../presentation/art";
 import { pixelTerrainColors } from "../presentation/pixel-art";
@@ -53,7 +53,7 @@ function tileLabel(
 export function battlefieldTiles(
   game: GameView,
   selected: string | null,
-  artStyle: ArtStyle,
+  artwork: Artwork,
   recruitTileId: string | null,
 ): BattlefieldTileView[] {
   const selectedUnit = game.unit(selected);
@@ -97,7 +97,7 @@ export function battlefieldTiles(
         unit,
         teamColor: unit.side === "player" ? "#6fdec0" : "#ff9590",
         artwork: artSprite(
-          artStyle,
+          artwork,
           "units",
           unit.type,
           x - spriteSize / 2,
@@ -117,11 +117,11 @@ export function battlefieldTiles(
       y,
       points: hexPoints(x, y),
       clipId: `hex-clip-${tile.col}-${tile.row}`,
-      fill: artStyle === "pixel" ? pixelTerrainColors[tile.terrain] : colors[tile.terrain],
+      fill: artwork.style === "pixel" ? pixelTerrainColors[tile.terrain] : colors[tile.terrain],
       classes,
       label: tileLabel(tile, unit, reachable, target, objectiveTiles.get(tile.id) ?? []),
       terrainArtwork: artSprite(
-        artStyle,
+        artwork,
         "terrain",
         tile.terrain,
         x - 35,

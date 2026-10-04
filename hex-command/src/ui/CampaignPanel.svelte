@@ -145,7 +145,7 @@
                   disabled={!recall.includes(unit.id) && recall.length >= 4}
                   onchange={() => toggle(unit.id)}
                 />
-                {@html artSprite(view.artStyle, "units", unit.type, 0, 0, 36, 44)}
+                {@html artSprite(view.artwork, "units", unit.type, 0, 0, 36, 44)}
                 <span>
                   <strong>{unit.name ?? TYPES[unit.type].name}</strong>
                   <span>{unit.hp} / {TYPES[unit.type].hp} HP</span>

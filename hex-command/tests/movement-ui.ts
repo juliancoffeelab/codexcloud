@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { artworkForStyle } from "../src/presentation/art";
 import { Game, TERRAIN, TYPES } from "../src/game/engine";
 import { createGameView } from "../src/game/view";
 import type { TerrainType, UnitType } from "../src/game/types";
@@ -17,6 +18,7 @@ function published(game: Game, selected: string): BattleView {
     renderRevision: 0,
     status: "",
     artStyle: "normal",
+    artwork: artworkForStyle("normal"),
     artLoading: false,
     sound: false,
     canUndo: false,

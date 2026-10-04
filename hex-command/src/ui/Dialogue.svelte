@@ -60,7 +60,7 @@
     <p class="story-heading">{mission?.map.name}{view.game.winner ? " — After the battle" : ""}</p>
     <div class="story-line" aria-live="polite" aria-atomic="true">
       <div class="story-portrait">
-        {@html dialoguePortrait(view.artStyle, line.portrait, 0, 0, 90, 120)}
+        {@html dialoguePortrait(view.artwork, line.portrait, 0, 0, 90, 120)}
       </div>
       <div>
         <h2 id="dialogue-speaker">{line.speaker}</h2>

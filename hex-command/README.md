@@ -60,10 +60,12 @@ also identify sides. Pixel units use coarse blocks and simplified shading to mat
 with nearest-neighbor display.
 
 Pixel artwork comes from editable 48×48 matrices in `art/pixel`. Build the shared
-unit and terrain atlases in `public/assets` with `npm run art:build`. Pixel crops
-use native SVG images with integer bounds and transparent gutters. Normal and
-low-poly artwork retain their source sheets; each style's assets load before a
-style switch completes. Civilian conversations use a neutral worker portrait
+unit and terrain atlases in `public/assets` with `npm run art:build`. Artwork loading
+extracts each frame into a separate native-resolution image. Pixel extraction
+disables smoothing. The controller publishes the finished immutable image set
+with `BattleView`; renderers receive only isolated images and never display the
+full sheets. Normal and low-poly use the same pipeline with their existing source
+crops. Civilian conversations use a neutral worker portrait
 from the unit atlas, without adding a worker to the combat roster.
 
 The existing OpenAI Sites project is recorded in `.openai/hosting.json`; its

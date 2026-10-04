@@ -3,14 +3,74 @@ import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { inflateSync } from "node:zlib";
 import { TERRAIN, TYPES } from "../src/game/engine";
-import { artSprite, dialoguePortrait, loadArtStyle } from "../src/presentation/art";
+import {
+  artSprite,
+  dialoguePortrait,
+  loadArtStyle,
+  artworkForStyle,
+} from "../src/presentation/art";
 import { campaignSheets } from "../src/presentation/campaign-art";
 import { pixelSources } from "../src/presentation/pixel-art";
 import { Game } from "../src/game/engine";
 import { createGameView } from "../src/game/view";
 import { battlefieldTiles } from "../src/ui/battlefield-view";
+import { mockSpriteCanvas } from "./helpers";
 
-const terrainSamples = battlefieldTiles(createGameView(new Game("developer")), null, "pixel", null);
+const restoreCanvas = mockSpriteCanvas();
+const originalImage = Object.getOwnPropertyDescriptor(globalThis, "Image");
+const requested: string[] = [];
+let failNative = true;
+class TestImage {
+  onload?: () => void;
+  onerror?: () => void;
+  set src(url: string) {
+    requested.push(url);
+    Object.defineProperty(this, "src", { value: url });
+    queueMicrotask(() => {
+      if (failNative && url.includes("units-pixel.png")) this.onerror?.();
+      else this.onload?.();
+    });
+  }
+}
+Object.defineProperty(globalThis, "Image", { configurable: true, value: TestImage });
+assert.equal(
+  artSprite(artworkForStyle("pixel"), "units", "thorncaller", 0, 0, 90, 120),
+  "",
+  "An unprepared frame must never fall back to a full atlas",
+);
+const firstLoad = loadArtStyle("pixel");
+assert.equal(loadArtStyle("pixel"), firstLoad);
+assert.equal(await firstLoad, false);
+assert.equal(requested.length, 2);
+failNative = false;
+assert.equal(await loadArtStyle("pixel"), true);
+assert.equal(requested.length, 4);
+assert.equal(await loadArtStyle("pixel"), true);
+assert.equal(requested.length, 4);
+assert.equal(await loadArtStyle("normal"), true);
+assert.equal(await loadArtStyle("low-poly"), true);
+
+function extraction(sprite: string): {
+  source: string;
+  coordinates: number[];
+  width: number;
+  height: number;
+  smoothing: boolean;
+} {
+  const encoded = /href="data:image\/png;base64,([^"]+)"/.exec(sprite)?.[1];
+  assert(encoded, "Renderer receives only a standalone frame image");
+  assert(!sprite.includes("foreignObject"));
+  assert(!sprite.includes('overflow="hidden"'));
+  assert(!sprite.includes('x="-'));
+  return JSON.parse(Buffer.from(encoded, "base64").toString());
+}
+
+const terrainSamples = battlefieldTiles(
+  createGameView(new Game("developer")),
+  null,
+  artworkForStyle("pixel"),
+  null,
+);
 
 const frameSources = Object.fromEntries(
   Object.keys(campaignSheets.pixel.frames).map((key) => [
@@ -35,15 +95,17 @@ for (const [frame, source] of Object.entries(frameSources)) {
   const kind = frame.startsWith("terrain_") ? "terrain" : "units";
   const name = frame.replace(/^(player|enemy|terrain)_/, "");
   const side = frame.startsWith("enemy_") ? "enemy" : "player";
-  assert(
-    (frame === "portrait_worker"
-      ? dialoguePortrait("pixel", "worker", 0, 0, 60, 70)
-      : artSprite("pixel", kind, name, 0, 0, 60, 70, "", side)
-    ).includes(`${source.filename}?v=${source.revision}`),
-    `${frame} must use its shared public atlas in the regular game renderer`,
-  );
+  const sprite =
+    frame === "portrait_worker"
+      ? dialoguePortrait(artworkForStyle("pixel"), "worker", 0, 0, 60, 70)
+      : artSprite(artworkForStyle("pixel"), kind, name, 0, 0, 60, 70, "", side);
+  const isolated = extraction(sprite);
+  assert(isolated.source.includes(`${source.filename}?v=${source.revision}`));
+  assert.deepEqual(isolated.coordinates, [x, y, width, height, 0, 0, width, height]);
+  assert.equal(isolated.width, width);
+  assert.equal(isolated.height, height);
+  assert.equal(isolated.smoothing, false);
 }
-const nativeURL = `${pixelSources.units.filename}?v=${pixelSources.units.revision}`;
 // Check the pixels served to the ordinary renderer, not just manifest hashes.
 const matrixFrames: string[] = [];
 for (const kind of ["units", "terrain", "portraits"] as const) {
@@ -156,82 +218,31 @@ assert.deepEqual(
   ["terrain-pixel.png", "units-pixel.png"],
   "Pixel art is served from one unit atlas and one terrain atlas",
 );
-assert(
-  artSprite("pixel", "units", "scout", 0, 0, 60, 70).includes(nativeURL),
-  "Player scout uses its existing matrix",
-);
-assert(
-  artSprite("pixel", "units", "scout", 0, 0, 60, 70, "", "enemy").includes(nativeURL),
-  "Enemy scout uses its matrix inside the shared unit atlas",
-);
-for (const side of ["player", "enemy"] as const) {
-  for (const name of ["adept", "bonearcher", "boar", "necromancer", "skeleton", "wolf"] as const) {
-    const key = `${side}_${name === "bonearcher" ? "bone_archer" : name}` as const;
-    assert.equal(frameSources[key], pixelSources.units);
-    const sprite = artSprite("pixel", "units", name, 0, 0, 60, 70, "", side);
-    assert(sprite.includes(nativeURL));
-    assert(
-      sprite.includes(`width="${pixelSources.units.width}" height="${pixelSources.units.height}"`),
-    );
-    assert(!sprite.includes("foreignObject"), "Integer pixel frames use an SVG-only crop");
-    const [x, y] = campaignSheets.pixel.frames[key];
-    assert(sprite.includes(`x="${-x}" y="${-y}"`));
-    assert(sprite.includes('class="art-sprite pixel-art'));
-    assert(sprite.includes('viewBox="0 0 48 48"'));
-  }
-  for (const name of ["skeleton", "wolf", "adept", "bonearcher", "boar", "necromancer"]) {
-    for (const style of ["normal", "low-poly"] as const) {
-      const unchanged = artSprite(style, "units", name, 0, 0, 60, 70, "", side);
-      assert(unchanged.includes(`campaign-${style}-${side}.png`));
-      assert(!unchanged.includes("campaign-pixel-"));
+
+for (const style of ["pixel", "normal", "low-poly"] as const) {
+  for (const side of ["player", "enemy"] as const) {
+    for (const name of Object.keys(TYPES)) {
+      extraction(artSprite(artworkForStyle(style), "units", name, 0, 0, 90, 120, "", side));
     }
   }
-  assert(artSprite("pixel", "units", "warden", 0, 0, 60, 70, "", side).includes(nativeURL));
-  assert(artSprite("pixel", "units", "soldier", 0, 0, 60, 70, "", side).includes(nativeURL));
-  for (const style of ["normal", "low-poly"] as const) {
-    assert(
-      artSprite(style, "units", "scout", 0, 0, 60, 70, "", side).includes(`units-${style}.png`),
-    );
+  for (const name of Object.keys(TERRAIN)) {
+    extraction(artSprite(artworkForStyle(style), "terrain", name, 0, 0, 70, 70));
   }
+  extraction(dialoguePortrait(artworkForStyle(style), "worker", 0, 0, 90, 120));
 }
-assert(
-  artSprite("pixel", "terrain", "marsh", 0, 0, 70, 70).includes(
-    `${pixelSources.terrain.filename}?v=${pixelSources.terrain.revision}`,
-  ),
+const lark = extraction(dialoguePortrait(artworkForStyle("pixel"), "thorncaller", 0, 0, 90, 120));
+const [lx, ly] = campaignSheets.pixel.frames.player_thorncaller;
+assert.deepEqual(
+  lark.coordinates,
+  [lx, ly, 48, 48, 0, 0, 48, 48],
+  "Tall dialogue layout receives only Lark's 48×48 pixels",
 );
+assert.equal(lark.width, 48);
+assert.equal(lark.height, 48);
 
-const originalImage = Object.getOwnPropertyDescriptor(globalThis, "Image");
-const requested: string[] = [];
-let failNative = true;
-class TestImage {
-  onload?: () => void;
-  onerror?: () => void;
-  set src(url: string) {
-    requested.push(url);
-    queueMicrotask(() => {
-      if (failNative && url.includes(nativeURL)) this.onerror?.();
-      else this.onload?.();
-    });
-  }
-}
-try {
-  Object.defineProperty(globalThis, "Image", { configurable: true, value: TestImage });
-  const firstLoad = loadArtStyle("pixel");
-  assert.equal(loadArtStyle("pixel"), firstLoad, "Concurrent requests share the pending load");
-  assert.equal(await firstLoad, false, "Missing unit atlas rejects ready state");
-  assert.equal(requested.length, 2, "Each shared campaign source is preloaded only once");
-  assert.equal(requested.filter((url) => url.includes(nativeURL)).length, 1);
-  assert.equal(requested.filter((url) => url.includes("campaign-pixel-undead.png")).length, 0);
-  failNative = false;
-  assert.equal(await loadArtStyle("pixel"), true, "A failed unit atlas load can be retried");
-  assert.equal(requested.length, 4);
-  assert.equal(requested.filter((url) => url.includes(nativeURL)).length, 2);
-  assert.equal(await loadArtStyle("pixel"), true);
-  assert.equal(requested.length, 4, "Ready style keeps its cached load");
-} finally {
-  if (originalImage) Object.defineProperty(globalThis, "Image", originalImage);
-  else Reflect.deleteProperty(globalThis, "Image");
-}
+if (originalImage) Object.defineProperty(globalThis, "Image", originalImage);
+else Reflect.deleteProperty(globalThis, "Image");
+restoreCanvas();
 console.log(
-  "PASS: native pixel frames, source hashes/crops, preserved art and preload retry/cache",
+  "PASS: isolated frame extraction for every style, faithful pixel atlases, and loading/retry publication",
 );

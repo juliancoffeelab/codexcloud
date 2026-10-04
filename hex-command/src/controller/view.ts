@@ -1,7 +1,7 @@
 import type { GameView, UnitView } from "../game/view";
 import type { GameSnapshot, CampaignId, RecruitType as GameRecruitType } from "../game/types";
 import { TYPES } from "../game/engine";
-import type { ArtStyle } from "../presentation/art";
+import type { ArtStyle, Artwork } from "../presentation/art";
 
 export type RecruitType = GameRecruitType;
 export const recruitTypes = ["soldier", "archer", "scout"] as const;
@@ -21,6 +21,7 @@ export interface BattleView {
   readonly renderRevision: number;
   readonly status: string;
   readonly artStyle: ArtStyle;
+  readonly artwork: Artwork;
   readonly artLoading: boolean;
   readonly sound: boolean;
   readonly canUndo: boolean;

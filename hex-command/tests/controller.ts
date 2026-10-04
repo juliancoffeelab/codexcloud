@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
+import { artworkForStyle } from "../src/presentation/art";
 import { BattleController, type BattleView } from "../src/controller/battle";
 import { Game, TYPES } from "../src/game/engine";
 import { campaignMission, dialoguePending } from "../src/game/campaign-progress";
 import { SAVE_KEY, saveBattle, loadBattle } from "../src/game/save";
-import { required, TestStorage } from "./helpers";
+import { required, TestStorage, mockSpriteCanvas } from "./helpers";
 import { battlefieldTiles } from "../src/ui/battlefield-view";
 import { unitPanelView } from "../src/ui/unit-panel-view";
 
@@ -60,7 +61,7 @@ function pauseTurn(callToPause = 1) {
   if (panel.kind === "details") assert.equal(panel.details.actionStatus, "Ready");
   assert(controller.actions(player.id).moves.some((move) => move.tile === "0,2"));
   assert(
-    battlefieldTiles(observed.view.game, player.id, "pixel", null).some((tile) =>
+    battlefieldTiles(observed.view.game, player.id, artworkForStyle("pixel"), null).some((tile) =>
       tile.classes.includes("reachable"),
     ),
   );
@@ -391,7 +392,12 @@ class ControlledImage {
     ControlledImage.requests.push(this);
   }
   static finish(style: string, success: boolean, campaignSuccess = success) {
-    const requests = this.requests.filter((image) => !image.completed && image.src.includes(style));
+    const requests = this.requests.filter(
+      (image) =>
+        !image.completed &&
+        (image.src.includes(style) ||
+          (style !== "pixel" && image.src.includes("/units-pixel.png"))),
+    );
     if (style === "pixel") {
       assert.equal(requests.length, 2, "Pixel artwork loads one unit atlas and one terrain atlas");
       assert(requests.some((image) => image.src.includes("/units-pixel.png")));
@@ -409,6 +415,7 @@ class ControlledImage {
   }
 }
 const nativeImage = Reflect.get(globalThis, "Image") as typeof Image | undefined;
+const restoreCanvas = mockSpriteCanvas();
 globalThis.Image = ControlledImage as unknown as typeof Image;
 async function settleCallbacks() {
   for (let turn = 0; turn < 6; turn++) await Promise.resolve();
@@ -456,12 +463,21 @@ async function settleCallbacks() {
   const observed = observe(controller);
   controller.initialize();
   const openingGame = observed.view.game;
+  const openingArtwork = observed.view.artwork;
   ControlledImage.finish("normal", true, false);
   await settleCallbacks(); // The initial request now waits on low-poly fallback.
   const latest = controller.setArtStyle("pixel");
   ControlledImage.finish("pixel", true);
   await latest;
   const chosen = observed.view;
+  assert.equal(
+    Object.keys(openingArtwork.frames).length,
+    0,
+    "Loading must not mutate an already-published artwork snapshot",
+  );
+  assert(Object.isFrozen(chosen.artwork));
+  assert(Object.isFrozen(chosen.artwork.frames));
+  assert(chosen.artwork.frames.player_thorncaller?.url.startsWith("data:image/png;base64,"));
   ControlledImage.finish("low-poly", false);
   await settleCallbacks();
   assert.equal(observed.view, chosen, "stale fallback failure must not publish or report an error");
@@ -507,6 +523,7 @@ async function settleCallbacks() {
 }
 if (nativeImage) globalThis.Image = nativeImage;
 else Reflect.deleteProperty(globalThis, "Image");
+restoreCanvas();
 
 console.log(
   "PASS: immutable publications, player-only tools, isolated previews, cancellation, replay and latest artwork requests",

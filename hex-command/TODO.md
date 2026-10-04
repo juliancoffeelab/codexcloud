@@ -42,8 +42,10 @@ Sources:
 - [x] Civilian speakers use a neutral worker portrait, stored as an editable matrix
       and packed in the shared unit atlas. It is a portrait, not a combat unit.
       Reed gatherers and the village elder no longer borrow the scout design.
-- [x] Pixel units use integer SVG crops with transparent atlas gutters, removing
-      the oversized HTML image/compositor layer from the pixel rendering path.
+- [x] Replace runtime atlas cropping for every art style with source-resolution
+      frame extraction at load time. Units, terrain and dialogue portraits receive
+      standalone images containing only that frame's pixels. Remove the offset SVG
+      atlas images and HTML/foreignObject cropping paths entirely.
 - [x] Pixel terrain uses its palette's actual ground colour beneath the transparent
       raster edges. The legacy grey/dark underlay no longer creates a stepped fringe
       around ruins and other hexes. All twelve terrain backgrounds are checked
@@ -90,10 +92,9 @@ not extend to rewriting the other campaigns.
       Package the complete build and verify the actual archive's client references
       and bytes. A startup panel also displays backtraces until the app mounts,
       with a reload action that retains the saved battle.
-- [ ] Confirm the reported mobile stray lines on the user's phone after the SVG
-      crop change. Integer bounds, transparent gutters and SVG-only pixel rendering
-      are verified in source; they cannot establish the phone compositor's result.
-      Repository instructions prohibit browser automation/screenshot suites.
+- [ ] Confirm the reported mobile stray lines and portrait leakage on the user's
+      phone after replacing atlas cropping with isolated frame images. Source
+      extraction is verified; phone appearance has not yet been confirmed.
 
 ## Earlier fixes retained
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ArtStyle } from "../presentation/art";
+  import type { Artwork } from "../presentation/art";
   import { iconMarkup } from "../presentation/icons";
   import type { UnitDetailsView } from "./unit-panel-view";
   import UnitCard from "./UnitCard.svelte";
@@ -7,14 +7,14 @@
 
   interface Props {
     details: UnitDetailsView;
-    artStyle: ArtStyle;
+    artwork: Artwork;
   }
 
-  let { details, artStyle }: Props = $props();
+  let { details, artwork }: Props = $props();
 </script>
 
 <div class="unit-detail">
-  <UnitCard unit={details.unit} {artStyle} showName />
+  <UnitCard unit={details.unit} {artwork} showName />
   <div class="unit-info">
     <div class="unit-stats">
       <span class="unit-stat">

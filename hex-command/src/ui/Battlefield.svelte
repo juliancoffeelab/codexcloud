@@ -13,12 +13,12 @@
 
   const game = $derived(view.game);
   const selected = $derived(view.selected);
-  const artStyle = $derived(view.artStyle);
+  const artwork = $derived(view.artwork);
   const recruitment = $derived(view.recruitment);
   // Track the published turn even when the enemy turn hides the destination.
   const isPlayerTurn = $derived(game.turn === "player" && !game.winner);
   const recruitTileId = $derived(isPlayerTurn && recruitment ? view.inspectedTile : null);
-  const tiles = $derived(battlefieldTiles(game, selected, artStyle, recruitTileId));
+  const tiles = $derived(battlefieldTiles(game, selected, artwork, recruitTileId));
   const viewBox = $derived(`0 0 ${758 + 61 * (game.cols - 11)} ${452 + 53 * (game.rows - 7)}`);
 
   function handleTileKey(event: KeyboardEvent, tile: TileView): void {

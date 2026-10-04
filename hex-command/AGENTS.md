@@ -22,3 +22,7 @@
   `python3 scripts/package-site.py /tmp/hex-command.tar.gz`. Publish the returned
   archive and source commit. Do not use `git archive` for generated output: it
   omits ignored bundles. The packager checks client references and archive bytes.
+- Atlases are inputs to artwork loading only. Publish isolated frame images in
+  `BattleView.artwork`; renderers must consume that snapshot. Do not put a full
+  sheet in SVG, HTML or a CSS background and rely on overflow/viewports to crop it.
+  Extract pixel frames at native resolution with smoothing disabled.
