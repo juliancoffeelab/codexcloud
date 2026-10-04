@@ -49,6 +49,11 @@ interface SessionState {
 }
 
 const initialMessage = "Select a unit. Capture villages. Defeat the red commander.";
+const showcaseMessage = "Developer showcase. Select a terrain or unit sample to inspect it.";
+function openingMessage(game: Game): string {
+  if (game.mapId === "developer") return showcaseMessage;
+  return game.campaign ? "Follow the mission objectives. Keep your leader safe." : initialMessage;
+}
 const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 const enemyThinkingDelay = 350;
 const enemyActionDelay = 230;
@@ -80,9 +85,7 @@ export class BattleController {
       focusedTile: game.units.find((u) => u.side === "player")?.tile ?? game.tiles[0]!.id,
       inspectedTile: null,
       renderRevision: 0,
-      status: game.campaign
-        ? "Follow the mission objectives. Keep your leader safe."
-        : initialMessage,
+      status: openingMessage(game),
       artStyle: savedArtStyle(),
       artLoading: false,
       sound: soundEnabled(),
@@ -111,15 +114,23 @@ export class BattleController {
 
   private active() {
     return (
-      this.#game.turn === "player" && !this.#game.winner && !dialoguePending(this.#game.campaign)
+      this.#game.mapId !== "developer" &&
+      this.#game.turn === "player" &&
+      !this.#game.winner &&
+      !dialoguePending(this.#game.campaign)
     );
   }
 
-  private requirePlayerActor(unitId: string): void {
+  private requireBattleAction(): void {
     this.requireSession();
+    if (this.#game.mapId === "developer") throw new Error("Developer showcase is inspection only.");
     if (!this.active()) {
       throw new Error("Wait for your turn.");
     }
+  }
+
+  private requirePlayerActor(unitId: string): void {
+    this.requireBattleAction();
     if (this.#game.unit(unitId)?.side !== "player") {
       throw new Error("This unit cannot act now.");
     }
@@ -280,6 +291,14 @@ export class BattleController {
     }
     this.state.inspectedTile = tileId;
     this.state.focusedTile = tileId;
+    if (this.#game.mapId === "developer") {
+      this.state.selected = this.#game.at(tileId)?.id ?? null;
+      this.state.target = null;
+      this.state.status = showcaseMessage;
+      this.publish({ renderBattle: false });
+      this.playSelectionFeedback(tileId);
+      return;
+    }
     if (!this.active()) {
       this.publish({ renderBattle: false });
       this.playSelectionFeedback(tileId);
@@ -426,10 +445,7 @@ export class BattleController {
   }
 
   async endTurn() {
-    this.requireSession();
-    if (!this.active()) {
-      throw new Error("Wait for your turn.");
-    }
+    this.requireBattleAction();
     // Resetting or closing the session cancels this turn after its next pause.
     const turnSessionVersion = this.sessionVersion;
     this.history.clear();
@@ -471,7 +487,7 @@ export class BattleController {
   reset(mapId = "mirror") {
     this.requireSession();
     // Validate before changing the current battle, its undo history, or its turn.
-    if (mapId !== "mirror" && mapId !== "river")
+    if (mapId !== "mirror" && mapId !== "river" && mapId !== "developer")
       throw new Error("Unknown battlefield. Choose a skirmish or start a campaign.");
     return this.replaceGame(new Game(mapId));
   }
@@ -523,9 +539,7 @@ export class BattleController {
     this.state.inspectedTile = null;
     this.state.focusedTile =
       this.#game.units.find((unit) => unit.side === "player")?.tile ?? this.#game.tiles[0]!.id;
-    this.state.status = replacement.campaign
-      ? "Follow the mission objectives. Keep your leader safe."
-      : initialMessage;
+    this.state.status = openingMessage(replacement);
     this.commitAction();
     return this.snapshot();
   }
@@ -554,6 +568,7 @@ export class BattleController {
     if (!unit) {
       throw new Error("Unknown unit.");
     }
+    if (this.#game.mapId === "developer") return { moves: [], attacks: [], recruitment: {} };
     return structuredClone({
       moves: [...this.#game.reachable(unitId)].map(([tile, cost]) => ({
         tile,

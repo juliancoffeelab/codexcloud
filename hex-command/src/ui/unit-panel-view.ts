@@ -54,7 +54,8 @@ export function unitPanelView(view: BattleView): UnitPanelView {
   if (!selectedUnit) return { kind: "hidden" };
 
   const targetUnit = game.unit(view.target);
-  const canChooseAttack = game.turn === "player" && selectedUnit.side === "player";
+  const canChooseAttack =
+    game.mapId !== "developer" && game.turn === "player" && selectedUnit.side === "player";
   if (canChooseAttack && targetUnit && game.targets(selectedUnit.id).includes(targetUnit)) {
     return {
       kind: "combat",
@@ -74,7 +75,7 @@ export function unitPanelView(view: BattleView): UnitPanelView {
       unit: selectedUnit,
       definition: TYPES[selectedUnit.type],
       terrainName: TERRAIN[occupiedTile.terrain].name,
-      actionStatus: actionStatus(selectedUnit),
+      actionStatus: game.mapId === "developer" ? "Inspection only" : actionStatus(selectedUnit),
       ability: abilityInfo(selectedUnit),
       movementCosts: (Object.keys(TERRAIN) as TerrainType[]).map((terrain) => {
         const cost = game.cost(selectedUnit, { terrain });

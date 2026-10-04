@@ -40,7 +40,7 @@ export type CampaignMapId =
   | "ashen-quarry"
   | "ashen-refuge"
   | "ashen-dawn";
-export type MapId = "mirror" | "river" | CampaignMapId;
+export type MapId = "mirror" | "river" | "developer" | CampaignMapId;
 export interface Coordinates {
   col: number;
   row: number;

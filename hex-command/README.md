@@ -41,6 +41,21 @@ The **Art style** selector in the cog settings menu switches between Normal,
 Low-poly, and Pixel. It remembers your preference in this browser and keeps the
 current battle intact when switching.
 
+## Developer showcase
+
+Open **Settings → New battle → Developer showcase** to inspect all 12 terrain
+types and all 13 unit types in both teams (26 unit variants). This replaces the
+current saved battle. The gallery has raw type labels, player/enemy pairs,
+zero-based coordinates, an art-style selector, and the usual unit and terrain
+stats. Battle actions are disabled; **Reset showcase** restores the display.
+
+The showcase uses the actual production sprite renderer and assets. Pixel art
+currently mixes the original campaign sheet with refreshed skeleton and bone
+archer frames; necromancers and wolves still use their original frames. The full
+Pixel redraw is deferred. Its intended pipeline is fixed logical resolution,
+independent asset validation, and integer nearest-neighbor enlargement, with
+coverage checks for every unit variant and terrain.
+
 Terrain uses dedicated flat pointy-top hex artwork, rendered with square crops
 and uniform scaling, clipped to the board edges. Terrain sheets render with native
 SVG images, including forest brightness and pixel-art scaling. No mesh warping is used. Unit sheets contain teal player and crimson enemy rows with natural skin tones.

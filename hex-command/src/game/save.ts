@@ -1,4 +1,4 @@
-import { CAMPAIGNS } from "./campaign-data";
+import { CAMPAIGNS, CAMPAIGN_MAPS } from "./campaign-data";
 import type { CampaignId, CampaignState, RecruitType } from "./types";
 import { MAPS } from "./maps";
 import { Game, TYPES } from "./engine";
@@ -269,7 +269,7 @@ export function loadBattle(): LoadedBattle {
       )
     )
       return fresh();
-    const isCampaign = game.mapId !== "mirror" && game.mapId !== "river";
+    const isCampaign = Object.hasOwn(CAMPAIGN_MAPS, game.mapId);
     const campaign = isCampaign ? campaignState(s.campaign, game.mapId, s.winner, s.round) : null;
     if ((isCampaign && !campaign) || (!isCampaign && s.campaign !== undefined)) return fresh();
     if (campaign) game.campaign = campaign;

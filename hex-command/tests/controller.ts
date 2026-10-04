@@ -4,6 +4,8 @@ import { Game, TYPES } from "../src/game/engine";
 import { campaignMission, dialoguePending } from "../src/game/campaign-progress";
 import { SAVE_KEY, saveBattle, loadBattle } from "../src/game/save";
 import { required, TestStorage } from "./helpers";
+import { battlefieldTiles } from "../src/ui/battlefield-view";
+import { unitPanelView } from "../src/ui/unit-panel-view";
 
 const storage = new TestStorage();
 globalThis.localStorage = storage;
@@ -41,6 +43,52 @@ function pauseTurn(callToPause = 1) {
     },
     release: () => required(release)(),
   };
+}
+
+// Gallery selection inspects either team without moving, targeting, or starting a turn.
+{
+  storage.clear();
+  const controller = new BattleController(immediatePause);
+  const observed = observe(controller);
+  controller.commands.reset("developer");
+  const opening = controller.snapshot();
+  const gameView = observed.view.game;
+  const saved = storage.getItem(SAVE_KEY);
+  const player = required(opening.units.find((unit) => unit.side === "player"));
+  const enemy = required(opening.units.find((unit) => unit.side === "enemy"));
+  for (const unit of [player, enemy]) {
+    controller.commands.choose(unit.tile);
+    assert.equal(observed.view.selected, unit.id);
+    assert.equal(observed.view.target, null);
+    assert.equal(observed.view.game, gameView);
+    assert.deepEqual(controller.actions(unit.id), { moves: [], attacks: [], recruitment: {} });
+    const panel = unitPanelView(observed.view);
+    assert.equal(panel.kind, "details");
+    if (panel.kind === "details") assert.equal(panel.details.actionStatus, "Inspection only");
+    const tiles = battlefieldTiles(gameView, unit.id, "pixel", null);
+    assert(!tiles.some((tile) => /reachable|target|recruitable/.test(tile.classes)));
+  }
+  controller.commands.choose("0,0");
+  assert.equal(observed.view.selected, null);
+  assert.equal(observed.view.inspectedTile, "0,0");
+  assert.equal(observed.view.recruitment, null);
+  assert.equal(observed.view.canUndo, false);
+  assert.throws(() => controller.move(player.id, "2,3"), /inspection only/);
+  assert.throws(() => controller.attack(player.id, enemy.id), /inspection only/);
+  assert.throws(() => controller.recruit(player.id, "soldier", "2,3"), /inspection only/);
+  await assert.rejects(controller.commands.endTurn(), /inspection only/);
+  controller.commands.undoMove();
+  assert.deepEqual(controller.snapshot(), opening);
+  assert.equal(storage.getItem(SAVE_KEY), saved);
+  const reloaded = new BattleController(immediatePause);
+  assert.deepEqual(reloaded.snapshot(), opening);
+  controller.commands.reset("mirror");
+  controller.move("u3", "3,1");
+  assert(observed.view.canUndo, "leaving the gallery restores normal battle commands");
+  controller.dispose();
+  reloaded.dispose();
+  observed.unsubscribe();
+  storage.clear();
 }
 
 // Dialogue navigation persists its cursor without advancing gameplay or reopening finished lines.

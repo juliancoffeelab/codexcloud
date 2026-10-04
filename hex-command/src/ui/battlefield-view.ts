@@ -56,7 +56,11 @@ export function battlefieldTiles(
   recruitTileId: string | null,
 ): BattlefieldTileView[] {
   const selectedUnit = game.unit(selected);
-  const canAct = game.turn === "player" && !game.winner && selectedUnit?.side === "player";
+  const canAct =
+    game.mapId !== "developer" &&
+    game.turn === "player" &&
+    !game.winner &&
+    selectedUnit?.side === "player";
   const reachableTiles = canAct ? game.reachable(selected) : new Map<string, number>();
   const targetTiles = new Set(canAct ? game.targets(selected).map((unit) => unit.tile) : []);
 

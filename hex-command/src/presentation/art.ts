@@ -427,19 +427,95 @@ function sheetImage(
   return `<image href="${url}" x="${-cropX}" y="${-cropY}" width="${sheet.width}" height="${sheet.height}" preserveAspectRatio="none"/>`;
 }
 
+export interface SpriteInfo {
+  /** Actual raster source, including its cache revision. */
+  source: string;
+  /** Native source-sheet dimensions, not the displayed sprite size. */
+  width: number;
+  height: number;
+  crop: { x: number; y: number; width: number; height: number };
+  composite?: string;
+}
+interface ResolvedSprite extends SpriteInfo {
+  family: "campaign" | "units" | "terrain" | "bridge";
+  clip?: ClipPolygon;
+}
+
+/** One source/crop lookup for both rendering and the developer inspector. */
+function resolveSprite(
+  style: ArtStyle,
+  kind: SpriteKind,
+  name: string,
+  side: Side,
+): ResolvedSprite | null {
+  if (!isArtStyle(style)) return null;
+  const campaignName =
+    name === "bonearcher" ? "bone_archer" : name === "grove" ? "sacred_grove" : name;
+  const campaignKey = kind === "terrain" ? `terrain_${campaignName}` : `${side}_${campaignName}`;
+  const campaignSheet = campaignSheets[style];
+  const frame = campaignSheet.frames[campaignKey as keyof typeof campaignSheet.frames];
+  if (frame) {
+    const [x, y, width, height] = frame;
+    const source = campaignSource(style, kind === "terrain" ? "terrain" : side, campaignKey);
+    const metadata: CampaignSourceMetadata = campaignSheet;
+    return {
+      family: "campaign",
+      source: campaignAssetURL(source),
+      width: source.width,
+      height: source.height,
+      crop: { x, y, width, height },
+      clip: metadata.clips?.[campaignKey],
+    };
+  }
+  const isUnit = kind === "units";
+  const specialTerrain = !isUnit && (name === "ford" || name === "bridge");
+  const index = specialTerrain ? 3 : (isUnit ? unitOrder : terrainOrder).indexOf(name);
+  if (index < 0) return null;
+  if (isUnit) {
+    const sheet = unitSheets[style];
+    return {
+      family: "units",
+      source: assetURL(style, "units"),
+      width: sheet.width,
+      height: sheet.height,
+      crop: { ...sheet.frames[index + (side === "enemy" ? 4 : 0)]! },
+    };
+  }
+  const sheet = terrainSheets[style];
+  const { x, y, size } = sheet.frames[index]!;
+  return {
+    family: name === "bridge" ? "bridge" : "terrain",
+    source: name === "ford" ? shallowAssetURL(style) : assetURL(style, "terrain"),
+    width: sheet.width,
+    height: sheet.height,
+    crop: { x, y, width: size, height: size },
+    ...(name === "bridge" ? { composite: "Water raster with an SVG stone crossing" } : {}),
+  };
+}
+
+export function artSpriteInfo(
+  style: ArtStyle,
+  kind: SpriteKind,
+  name: string,
+  side: Side = "player",
+): SpriteInfo | null {
+  const sprite = resolveSprite(style, kind, name, side);
+  if (!sprite) return null;
+  const { source, width, height, crop, composite } = sprite;
+  return { source, width, height, crop, ...(composite ? { composite } : {}) };
+}
+
 function terrainSprite(
   style: ArtStyle,
-  index: number,
+  sprite: SpriteInfo,
   x: number,
   y: number,
   width: number,
   height: number,
   extraClass: string,
-  url = assetURL(style, "terrain"),
 ) {
-  const sheet = terrainSheets[style];
-  const { x: cropX, y: cropY, size } = sheet.frames[index]!;
-  return `<svg class="art-sprite ${style === "pixel" ? "pixel-art" : ""} ${extraClass}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${size} ${size}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false">${sheetImage(url, sheet, cropX, cropY)}</svg>`;
+  const { crop } = sprite;
+  return `<svg class="art-sprite ${style === "pixel" ? "pixel-art" : ""} ${extraClass}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${crop.width} ${crop.height}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false">${sheetImage(sprite.source, sprite, crop.x, crop.y)}</svg>`;
 }
 
 // Render a region of the original sheet directly. Keep the generated PNGs intact.
@@ -454,40 +530,24 @@ export function artSprite(
   extraClass = "",
   side: Side = "player",
 ) {
-  if (!isArtStyle(style)) return "";
-  const campaignName =
-    name === "bonearcher" ? "bone_archer" : name === "grove" ? "sacred_grove" : name;
-  const campaignKey = kind === "terrain" ? `terrain_${campaignName}` : `${side}_${campaignName}`;
-  const campaignSheet = campaignSheets[style];
-  const crop = campaignSheet.frames[campaignKey as keyof typeof campaignSheet.frames];
-  if (crop) {
-    const [cropX, cropY, cropWidth, cropHeight] = crop;
-    const source = campaignSource(style, kind === "terrain" ? "terrain" : side, campaignKey);
-    const url = campaignAssetURL(source);
-    const metadata: CampaignSourceMetadata = campaignSheet;
+  const sprite = resolveSprite(style, kind, name, side);
+  if (!sprite) return "";
+  const { source, crop, family } = sprite;
+  const { x: cropX, y: cropY, width: cropWidth, height: cropHeight } = crop;
+  if (family === "campaign") {
     const image =
       kind === "units"
-        ? unitImage(url, source, cropX, cropY, cropWidth, cropHeight, metadata.clips?.[campaignKey])
-        : sheetImage(url, source, cropX, cropY);
+        ? unitImage(source, sprite, cropX, cropY, cropWidth, cropHeight, sprite.clip)
+        : sheetImage(source, sprite, cropX, cropY);
     return `<svg class="art-sprite ${style === "pixel" ? "pixel-art" : ""} ${extraClass}" data-faction="${side}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${cropWidth} ${cropHeight}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false">${image}</svg>`;
   }
-  if (kind === "terrain" && name === "ford") {
-    return terrainSprite(style, 3, x, y, width, height, extraClass, shallowAssetURL(style));
-  }
-  if (kind === "terrain" && name === "bridge") {
+  if (family === "bridge") {
     // Reuse the river's water palette beneath a simple stone crossing.
-    const water = terrainSprite(style, 3, 0, 0, 70, 70, "");
+    const water = terrainSprite(style, sprite, 0, 0, 70, 70, "");
     const joints = [10, 22, 34, 46, 58].map((at) => `<path d="M${at} 24v22"/>`).join("");
     return `<svg class="art-sprite ${extraClass}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 70 70" aria-hidden="true" focusable="false">${water}<path d="M0 26h70v23H0z" fill="#3e443b" opacity=".45"/><path d="M0 23h70v22H0z" fill="#a6a18a" stroke="#686e58" stroke-width="1"/><g stroke="#777c67" stroke-width="1" opacity=".65">${joints}</g><path d="M0 23h70M0 45h70" stroke="#6a705a" stroke-width="5"/><path d="M0 21h70M0 43h70" stroke="#b6b09a" stroke-width="3"/></svg>`;
   }
-  const isUnit = kind === "units";
-  const order = isUnit ? unitOrder : terrainOrder;
-  const index = order.indexOf(name);
-  if (index < 0) return "";
-  if (!isUnit) return terrainSprite(style, index, x, y, width, height, extraClass);
-  const sheet = unitSheets[style];
-  const frame = sheet.frames[index + (side === "enemy" ? 4 : 0)]!;
-  const { x: cropX, y: cropY, width: cropWidth, height: cropHeight } = frame;
+  if (family === "terrain") return terrainSprite(style, sprite, x, y, width, height, extraClass);
   // Preserve HTML cropping for half-pixel unit frames; SVG sheet scaling can bleed adjacent rows.
-  return `<svg class="art-sprite ${style === "pixel" ? "pixel-art" : ""} ${extraClass}" data-faction="${side}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${cropWidth} ${cropHeight}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false">${unitImage(assetURL(style, "units"), sheet, cropX, cropY, cropWidth, cropHeight)}</svg>`;
+  return `<svg class="art-sprite ${style === "pixel" ? "pixel-art" : ""} ${extraClass}" data-faction="${side}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${cropWidth} ${cropHeight}" preserveAspectRatio="xMidYMid meet" overflow="hidden" aria-hidden="true" focusable="false">${unitImage(source, sprite, cropX, cropY, cropWidth, cropHeight)}</svg>`;
 }

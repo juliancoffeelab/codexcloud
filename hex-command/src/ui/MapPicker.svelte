@@ -20,7 +20,9 @@
   }
 
   const maps = Object.values(MAPS)
-    .filter((layout) => layout.id === "mirror" || layout.id === "river")
+    .filter(
+      (layout) => layout.id === "mirror" || layout.id === "river" || layout.id === "developer",
+    )
     .map((layout) => ({
       id: layout.id,
       name: layout.name,

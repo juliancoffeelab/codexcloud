@@ -1,6 +1,7 @@
 import type { MapDefinition, MapId, TerrainOverride, TerrainType, StartingUnit } from "./types";
 import { immutable } from "./immutable";
 import { CAMPAIGN_MAPS } from "./campaign-data";
+import { DEVELOPER_MAP } from "./developer-map";
 // Only overrides are listed; all other hexes are plains.
 const terrain = (kind: TerrainType, positions: [number, number][]): TerrainOverride[] =>
   positions.map(([col, row]) => ({ col, row, terrain: kind }));
@@ -15,6 +16,7 @@ const starters = (playerKeep: number, enemyKeep: number): StartingUnit[] => [
 
 export const MAPS = immutable<Record<MapId, MapDefinition>>({
   ...CAMPAIGN_MAPS,
+  developer: DEVELOPER_MAP,
   mirror: {
     id: "mirror",
     revision: 1,
