@@ -439,7 +439,7 @@ export class BattleController {
     saveBattle(this.#game, true);
     this.#game.endTurn();
     this.publish();
-    this.message("The enemy is planning its moves…");
+    if (!this.#game.winner) this.message("The enemy is planning its moves…");
     await this.pause(enemyThinkingDelay);
     if (turnSessionVersion !== this.sessionVersion) {
       return;
@@ -461,7 +461,8 @@ export class BattleController {
     if (!this.#game.winner) {
       this.#game.endTurn();
       this.publish();
-      this.message("Your turn. Capture villages, recruit reinforcements, or attack.");
+      if (!this.#game.winner)
+        this.message("Your turn. Capture villages, recruit reinforcements, or attack.");
     }
     saveBattle(this.#game);
     return this.snapshot();
@@ -492,16 +493,21 @@ export class BattleController {
 
   advanceDialogue(skip = false) {
     this.requireSession();
+    if (!dialoguePending(this.#game.campaign)) return;
     this.#game.advanceDialogue(skip);
-    saveBattle(this.#game);
-    this.publish({ renderBattle: false, gameChanged: true });
+    this.commitDialogue();
   }
 
   previousDialogue() {
     this.requireSession();
     if (!dialoguePending(this.#game.campaign) || this.#game.campaign?.dialogueIndex === 0) return;
     this.#game.previousDialogue();
-    saveBattle(this.#game);
+    this.commitDialogue();
+  }
+
+  private commitDialogue() {
+    // An unfinished enemy turn must retain its pre-turn recovery checkpoint.
+    if (this.#game.turn === "player" || this.#game.winner) saveBattle(this.#game);
     this.publish({ renderBattle: false, gameChanged: true });
   }
 

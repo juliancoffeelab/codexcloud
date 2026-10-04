@@ -30,15 +30,19 @@ function tileLabel(
   occupant: UnitView | undefined,
   reachable: boolean,
   target: boolean,
+  objectives: readonly string[],
 ): string {
   const parts = [TERRAIN[tile.terrain].name, `column ${tile.col + 1}`, `row ${tile.row + 1}`];
   if (tile.owner) parts.push(tile.owner === "player" ? "your territory" : "enemy territory");
   if (occupant) {
     const team = occupant.side === "player" ? "your" : "enemy";
-    parts.push(`${team} ${TYPES[occupant.type].name}`, `${occupant.hp} health`);
+    const typeName = TYPES[occupant.type].name;
+    const name = occupant.name ? `${occupant.name} (${typeName})` : typeName;
+    parts.push(`${team} ${name}`, `${occupant.hp} health`);
     if (occupant.attacked) parts.push("turn finished");
     if (occupant.retreating) parts.push("retreating");
   }
+  for (const objective of objectives) parts.push(`Objective: ${objective}`);
   if (reachable) parts.push("move here");
   if (target) parts.push("attack available");
   return parts.join(", ");
@@ -56,11 +60,17 @@ export function battlefieldTiles(
   const reachableTiles = canAct ? game.reachable(selected) : new Map<string, number>();
   const targetTiles = new Set(canAct ? game.targets(selected).map((unit) => unit.tile) : []);
 
-  const objectiveTiles = new Set(
-    game.campaign
-      ? campaignMission(game.campaign).goals.flatMap((goal) => goalProgress(game, goal).tiles)
-      : [],
-  );
+  const objectiveTiles = new Map<string, string[]>();
+  if (game.campaign) {
+    for (const goal of campaignMission(game.campaign).goals) {
+      const progress = goalProgress(game, goal);
+      for (const tile of progress.tiles) {
+        const labels = objectiveTiles.get(tile) ?? [];
+        labels.push(progress.label);
+        objectiveTiles.set(tile, labels);
+      }
+    }
+  }
   return game.tiles.map((tile) => {
     const { x, y } = tileCenter(tile);
     const unit = game.at(tile.id);
@@ -108,7 +118,7 @@ export function battlefieldTiles(
       clipId: `hex-clip-${tile.col}-${tile.row}`,
       fill: colors[tile.terrain],
       classes,
-      label: tileLabel(tile, unit, reachable, target),
+      label: tileLabel(tile, unit, reachable, target, objectiveTiles.get(tile.id) ?? []),
       terrainArtwork: artSprite(
         artStyle,
         "terrain",

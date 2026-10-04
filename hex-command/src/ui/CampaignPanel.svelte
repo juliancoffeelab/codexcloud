@@ -30,8 +30,10 @@
     ),
   );
   const missionMapId = $derived(view.game.mapId);
+  const winner = $derived(view.game.winner);
   $effect(() => {
     missionMapId;
+    winner;
     recall = [];
   });
   function toggle(id: string) {
@@ -43,7 +45,7 @@
   }
   function next() {
     try {
-      actions.nextMission(recall);
+      actions.nextMission(recall.filter((id) => survivors.some((unit) => unit.id === id)));
       expanded = false;
     } catch (error) {
       actions.error(error);

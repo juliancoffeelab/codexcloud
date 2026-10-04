@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { Game } from "../src/game/engine";
+import { campaignMission, goalProgress } from "../src/game/campaign-progress";
 import { createGameView } from "../src/game/view";
 import { battlefieldTiles } from "../src/ui/battlefield-view";
 import { required } from "./helpers";
@@ -38,6 +39,25 @@ assert.notEqual(required(alternate[0]).terrainArtwork, required(selected[0]).ter
 assert.equal(required(alternate[0]).points, required(selected[0]).points);
 
 console.log("PASS: battlefield selection, targets, recruitment, movement and stable SVG layers");
+
+// Objective destinations and named companions convey the same information without color.
+for (const id of ["lantern-road", "green-accord", "ashen-oath"] as const) {
+  const campaign = Game.startCampaign(id);
+  const tiles = battlefieldTiles(createGameView(campaign), null, "pixel", null);
+  for (const goal of campaignMission(campaign.campaign!).goals) {
+    const progress = goalProgress(campaign, goal);
+    for (const id of progress.tiles) {
+      const destination = required(tiles.find((tile) => tile.id === id));
+      assert(destination.classes.includes("objective"));
+      assert(destination.label.includes(`Objective: ${progress.label}`));
+    }
+  }
+  for (const unit of campaign.units.filter((unit) => unit.name)) {
+    assert(required(tiles.find((tile) => tile.id === unit.tile)).label.includes(unit.name!));
+  }
+}
+assert(!target.label.includes("Objective:"), "Ordinary skirmish tiles have no goal label");
+console.log("PASS: campaign objectives and named companions have accessible tile descriptions");
 
 // The three paint layers retain separate feedback targets; overlays never need
 // the keyboard-focusable ground node to contain the unit artwork.

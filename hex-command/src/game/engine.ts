@@ -1174,18 +1174,23 @@ export class Game {
         ),
       );
       campaign.completed = campaign.mission === CAMPAIGNS[campaign.id].missions.length - 1;
-      if (campaign.completed)
+      if (campaign.completed) {
+        const dainSurvived = this.units.some(
+          (unit) => unit.side === "player" && unit.name === "Captain Dain",
+        );
         campaign.dialogue.push(
           ...structuredClone(
             CAMPAIGNS[campaign.id].ending.filter(
               (line) =>
-                (!campaign.choices?.includes("refuge-war") &&
+                (dainSurvived &&
+                  !campaign.choices?.includes("refuge-war") &&
                   !campaign.choices?.includes("green-dain-dead") &&
                   !campaign.marks.includes("dain-fell")) ||
                 (line.speaker !== "Dain" && line.speaker !== "Captain Dain"),
             ),
           ),
         );
+      }
       this.record(
         campaign.completed ? `${CAMPAIGNS[campaign.id].name} is complete.` : "Mission complete.",
       );

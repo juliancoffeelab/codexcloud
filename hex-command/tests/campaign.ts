@@ -18,6 +18,41 @@ import { required, TestStorage } from "./helpers";
 const storage = new TestStorage();
 globalThis.localStorage = storage;
 
+// Dain's Ashen finale ending requires his survival, without changing the peaceful mission variant.
+for (const survives of [true, false]) {
+  const game = Game.startCampaign("ashen-oath", 2, [], 0, ["refuge-peace"]);
+  const mission = campaignMission(game.campaign!);
+  game.advanceDialogue(true);
+  const dain = required(game.units.find((unit) => unit.name === "Captain Dain"));
+  if (!survives) {
+    dain.hp = 1;
+    const approach = required(
+      game.neighbors(dain.tile).find((tile) => !game.at(tile.id) && tile.terrain !== "water"),
+    );
+    const attacker = game.addUnit("skeleton", "enemy", approach.id);
+    game.beginTurn("enemy");
+    game.attack(attacker.id, dain.id, "boneclub");
+    assert(!game.unit(dain.id));
+    game.endTurn();
+    saveBattle(game);
+    const restored = loadBattle().game;
+    assert.deepEqual(restored.snapshot(), game.snapshot());
+    assert.equal(campaignMission(restored.campaign!), mission);
+    assert(!restored.campaign!.marks.includes("dain-fell"));
+  }
+  const dialogueStart = game.campaign!.dialogue.length;
+  game.campaign!.marks.push("sealed:7,2", "sealed:7,6");
+  game.units = game.units.filter((unit) => unit.side === "player");
+  game.beginTurn("player");
+  assert.equal(game.winner, "player");
+  assert.equal(
+    game.campaign!.dialogue.slice(dialogueStart).some((line) => line.speaker === "Dain"),
+    survives,
+  );
+  saveBattle(game);
+  assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
+}
+
 // The previously published refuge save keeps its units, gold and village ownership.
 {
   const current = Game.startCampaign("ashen-oath", 1);

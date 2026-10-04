@@ -136,7 +136,7 @@ classic skirmishes retain their original three recruits and rules.
 | Bone archer          |    8 |   7 |    3 | Bone bow 3 Pierce, range 2; Shard 1 Blade         | Pierce −1, Impact +1           |
 | Wolf                 |    6 |   8 |    5 | Fangs 3 Blade                                     | Pierce +1                      |
 | Boar                 |    9 |  13 |    3 | Tusks 4 Pierce                                    | None                           |
-| Thorncaller          |    8 |   7 |    4 | Thorns 2 Pierce, range 2; Root staff 2 Impact     | None                           |
+| Thorncaller          |    8 |   7 |    4 | Thorns 3 Pierce, range 2; Root staff 2 Impact     | None                           |
 | Wildkeeper (leader)  |    — |  14 |    3 | Bough 3 Impact; Stones 2 Impact, range 2          | Impact −1                      |
 | Necromancer (leader) |    — |  12 |    3 | Bone staff 3 Impact; Grave bolt 3 Impact, range 2 | Pierce −1, Impact +1           |
 
