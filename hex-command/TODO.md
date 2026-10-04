@@ -81,11 +81,11 @@ not extend to rewriting the other campaigns.
 
 ## Pending device confirmation
 
-- [ ] Diagnose the reported blank mobile startup from the on-device error trace.
-      The startup panel now displays script-load errors, runtime backtraces and
-      rejected promises until the app has mounted. Reloading preserves the saved
-      battle and requests fresh HTML. Local client mounting succeeds; the phone's
-      failure cause has not been established.
+- [x] Fix the blank-page deployment package: Git-ignored generated JavaScript was
+      absent from the uploaded archive despite being referenced by its HTML.
+      Package the complete build and verify the actual archive's client references
+      and bytes. A startup panel also displays backtraces until the app mounts,
+      with a reload action that retains the saved battle.
 - [ ] Confirm the reported mobile stray lines on the user's phone after the SVG
       crop change. Integer bounds, transparent gutters and SVG-only pixel rendering
       are verified in source; they cannot establish the phone compositor's result.

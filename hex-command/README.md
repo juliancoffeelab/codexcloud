@@ -68,7 +68,12 @@ from the unit atlas, without adding a worker to the combat roster.
 
 The existing OpenAI Sites project is recorded in `.openai/hosting.json`; its
 static directory is `dist`. Publish that entire directory, including the asset
-sheets, through a Sites session with access to the project.
+sheets, through a Sites session with access to the project. After building and
+committing the selected Site source, package with
+`python3 scripts/package-site.py /tmp/hex-command.tar.gz`. The script checks the
+HTML's client references and byte-verifies every file in the uploaded archive.
+Do not use `git archive` for generated output: `dist/` is intentionally ignored,
+so newly named JavaScript and CSS bundles would be omitted.
 
 Site: https://hex-command-tfhlu4.lightdarkdaughter.chatgpt.site/
 
