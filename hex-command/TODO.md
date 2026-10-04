@@ -42,8 +42,15 @@ Sources:
       agreed references and fixed-resolution workflow. Remaining legacy frames are
       soldier, archer, commander, warden, wildkeeper and thorncaller for both sides,
       plus the enemy scout. Preserve the approved matrix-backed adept, bone archer,
-      boar, necromancer, skeleton, wolf and player scout. Terrain also still uses legacy
+      boar, necromancer and player scout, and the selected skeleton/wolf designs
+      apart from the outline correction below. Terrain also still uses legacy
       artwork; its redesign needs an agreed reference before transcription.
+- [ ] Fix the missing or inconsistent dark outlines on pixel wolves and skeleton
+      warriors, for both factions. Match the clear silhouette and component outlines
+      of the skeleton archer and boar so pale bones, grey fur, limbs and weapons
+      remain readable against the terrain. The user's screenshots `15454.jpg` and
+      `15456.jpg` show the discrepancy in the game. The existing matrices do not
+      resolve this issue merely by being native pixel artwork.
 - [ ] Review the remaining low-poly artwork for inconsistent style with the user.
       The original comment raised this separately from the cartoonish pixel designs;
       replacing approved designs without input is not authorized.
