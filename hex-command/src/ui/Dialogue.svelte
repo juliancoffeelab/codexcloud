@@ -10,6 +10,13 @@
   const line = $derived(campaign?.dialogue[campaign.dialogueIndex]);
   const pending = $derived(dialoguePending(campaign));
   const mission = $derived(campaign ? campaignMission(campaign) : null);
+  const forwardLabel = $derived(
+    campaign && campaign.dialogueIndex + 1 === campaign.dialogue.length
+      ? view.game.winner
+        ? "Review mission result"
+        : "Return to battle"
+      : "Next line",
+  );
   $effect(() => {
     if (pending && !dialog.open) {
       dialog.showModal();
@@ -75,15 +82,9 @@
         class="story-next"
         bind:this={nextButton}
         onclick={() => actions.advanceDialogue()}
-        title="Next line (Right arrow)"
+        aria-label={forwardLabel}
+        title={`${forwardLabel} (Right arrow)`}
       >
-        <span>
-          {campaign.dialogueIndex + 1 === campaign.dialogue.length
-            ? view.game.winner
-              ? "Review mission result"
-              : "Return to battle"
-            : "Continue"}
-        </span>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>
       </button>
     </nav>
@@ -92,7 +93,8 @@
 
 <style>
   .story-navigation {
-    display: flex;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
     align-items: center;
     gap: 12px;
     border-top: 1px solid var(--line);
@@ -103,9 +105,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    width: 44px;
+    height: 44px;
     min-height: 44px;
     padding: 8px;
+    color: var(--gold);
+    border-color: var(--gold);
   }
   .story-navigation svg {
     width: 20px;
@@ -117,17 +122,8 @@
     stroke-linecap: round;
     stroke-linejoin: round;
   }
-  .story-back {
-    width: 44px;
-    flex-shrink: 0;
-  }
   .story-count {
-    margin-right: auto;
+    text-align: center;
     white-space: nowrap;
-  }
-  .story-next {
-    color: var(--gold);
-    border-color: var(--gold);
-    text-align: right;
   }
 </style>
