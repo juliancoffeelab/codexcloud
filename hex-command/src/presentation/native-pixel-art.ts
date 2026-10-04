@@ -3,7 +3,7 @@ export const nativePixelSource = {
   filename: "campaign-pixel-native.png",
   width: 192,
   height: 96,
-  revision: "94c576a189bb",
+  revision: "9d0c5bdd220e",
 } as const;
 
 export const nativePixelFrames = {
