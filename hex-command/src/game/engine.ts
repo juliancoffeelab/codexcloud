@@ -22,7 +22,10 @@ export type * from "./types";
 import { MAPS, LEGACY_RIVER } from "./maps";
 import { immutable } from "./immutable";
 import { CAMPAIGN_UNITS } from "./campaign-units";
-import { HEAVY_MOVEMENT, PATHFINDER_MOVEMENT } from "./movement";
+import { HEAVY_MOVEMENT, PATHFINDER_MOVEMENT, movementCost } from "./movement";
+import { RACES, resolveUnits } from "./races";
+import { progressionUnits } from "./progression";
+export { RACES } from "./races";
 import { CAMPAIGNS, LEGACY_ASHEN_REFUGE } from "./campaign-data";
 import {
   campaignMission,
@@ -30,7 +33,7 @@ import {
   endsRefugeMediation,
   returnsWithStory,
 } from "./campaign-progress";
-import type { CampaignId, CampaignState, RecruitType } from "./types";
+import type { CampaignId, CampaignState, CampaignVeteran, RecruitType } from "./types";
 
 export const DAMAGE_TYPES = Object.freeze({
   blade: "Blade",
@@ -46,133 +49,158 @@ const weapon = (
   range: number,
   sound = "attack-melee",
 ): Weapon => ({ id, name, damage, damageType, category, range, sound });
-export const TYPES = immutable<Record<UnitType, UnitDefinition>>({
-  ...CAMPAIGN_UNITS,
-  commander: {
-    name: "Commander",
-    hp: 16,
-    move: 3,
-    damage: 4,
-    range: 1,
-    cost: 0,
-    leader: true,
-    race: "human",
-    movementModifiers: HEAVY_MOVEMENT,
-    attacks: [
-      weapon("sword", "Sword", 4, "blade", "melee", 1),
-      weapon("mace", "Mace", 3, "impact", "melee", 1),
-    ],
-    damageModifiers: { blade: -1, pierce: 0, impact: 0 },
-    ability: "Recruit",
-    description: "Recruit while on your keep. New recruits act next turn.",
-  },
-  soldier: {
-    name: "Soldier",
-    movementModifiers: HEAVY_MOVEMENT,
-    hp: 12,
-    move: 3,
-    damage: 4,
-    range: 1,
-    cost: 8,
-    attacks: [
-      weapon("sword", "Sword", 4, "blade", "melee", 1),
-      weapon("mace", "Mace", 3, "impact", "melee", 1),
-    ],
-    damageModifiers: { blade: -1, pierce: -1, impact: 1 },
-    ability: "Armor",
-    description: "Takes 1 less Blade/Pierce damage and 1 more Impact damage.",
-  },
-  archer: {
-    name: "Archer",
-    hp: 8,
-    move: 3,
-    damage: 3,
-    range: 2,
-    cost: 8,
-    attacks: [
-      weapon("bow", "Bow", 3, "pierce", "ranged", 2, "attack-bow"),
-      weapon("knife", "Knife", 2, "blade", "melee", 1),
-    ],
-    damageModifiers: { blade: 0, pierce: 0, impact: 0 },
-    ability: "Bow",
-    description: "Bow reaches 2 hexes. A knife provides a weak melee reply.",
-  },
-  scout: {
-    name: "Scout",
-    movementModifiers: PATHFINDER_MOVEMENT,
-    hp: 8,
-    move: 5,
-    damage: 2,
-    range: 2,
-    cost: 5,
-    attacks: [
-      weapon("knife", "Knife", 2, "blade", "melee", 1),
-      weapon("sling", "Sling", 1, "impact", "ranged", 2, "unit-archer"),
-    ],
-    damageModifiers: { blade: 0, pierce: 0, impact: 0 },
-    ability: "Pathfinder",
-    description: "Forests and hills cost only 1 movement.",
-  },
-});
+export const TYPES = immutable<Record<UnitType, UnitDefinition>>(
+  resolveUnits(
+    progressionUnits({
+      ...CAMPAIGN_UNITS,
+      commander: {
+        name: "Commander",
+        hp: 16,
+        move: 3,
+        damage: 4,
+        range: 1,
+        cost: 0,
+        leader: true,
+        race: "human",
+        terrainModifiers: HEAVY_MOVEMENT,
+        attacks: [
+          weapon("sword", "Sword", 4, "blade", "melee", 1),
+          weapon("mace", "Mace", 3, "impact", "melee", 1),
+        ],
+        damageModifiers: { blade: -1, pierce: 0, impact: 0 },
+        ability: "Recruit",
+        description: "Recruit while on your keep. New recruits act next turn.",
+      },
+      soldier: {
+        name: "Soldier",
+        race: "human",
+        terrainModifiers: HEAVY_MOVEMENT,
+        hp: 12,
+        move: 3,
+        damage: 4,
+        range: 1,
+        cost: 8,
+        attacks: [
+          weapon("sword", "Sword", 4, "blade", "melee", 1),
+          weapon("mace", "Mace", 3, "impact", "melee", 1),
+        ],
+        damageModifiers: { blade: -1, pierce: -1, impact: 1 },
+        ability: "Armor",
+        description: "Takes 1 less Blade/Pierce damage and 1 more Impact damage.",
+      },
+      archer: {
+        name: "Archer",
+        race: "human",
+        hp: 8,
+        move: 3,
+        damage: 3,
+        range: 2,
+        cost: 8,
+        attacks: [
+          weapon("bow", "Bow", 3, "pierce", "ranged", 2, "attack-bow"),
+          weapon("knife", "Knife", 2, "blade", "melee", 1),
+        ],
+        damageModifiers: { blade: 0, pierce: 0, impact: 0 },
+        ability: "Bow",
+        description: "Bow reaches 2 hexes. A knife provides a weak melee reply.",
+      },
+      scout: {
+        name: "Scout",
+        race: "human",
+        terrainModifiers: PATHFINDER_MOVEMENT,
+        hp: 8,
+        move: 5,
+        damage: 2,
+        range: 2,
+        cost: 5,
+        attacks: [
+          weapon("knife", "Knife", 2, "blade", "melee", 1),
+          weapon("sling", "Sling", 1, "impact", "ranged", 2, "unit-archer"),
+        ],
+        damageModifiers: { blade: 0, pierce: 0, impact: 0 },
+        ability: "Pathfinder",
+        description: "Forests and hills cost only 1 movement.",
+      },
+    }),
+  ),
+);
 export const TERRAIN = immutable<Record<TerrainType, TerrainDefinition>>({
   plains: {
     name: "Plains",
     cost: 1,
+    passable: true,
     description: "Normal movement. No protection.",
   },
   forest: {
+    damageModifiers: { ranged: -1 },
     name: "Forest",
     cost: 2,
+    passable: true,
     description: "Costs 2 movement; ranged damage reduced by 1.",
   },
   hill: {
+    damageModifiers: { melee: -1, ranged: -1 },
     name: "Hills",
     cost: 2,
+    passable: true,
     description: "Costs 2 movement; all damage reduced by 1.",
   },
-  water: { name: "Water", cost: Infinity, description: "Impassable." },
+  water: { name: "Water", cost: 1, passable: false, description: "Impassable to land units." },
   bridge: {
     name: "Bridge",
     cost: 1,
+    passable: true,
     description: "A crossing over water. Normal movement; no protection.",
   },
   ford: {
+    damageModifiers: { melee: 1, ranged: 1 },
     name: "Shallow water",
     cost: 2,
+    passable: true,
     description:
       "Costs 3 movement for soldiers and commanders, 2 for archers and scouts. Units here take 1 extra damage.",
   },
   village: {
     name: "Village",
     cost: 1,
+    passable: true,
     description: "+2 gold per turn. Heals a friendly occupant by 2 HP.",
   },
   keep: {
     name: "Keep",
     cost: 1,
+    passable: true,
     description: "Your commander can recruit into adjacent empty hexes.",
   },
   marsh: {
+    damageModifiers: { melee: 1, ranged: 1 },
     name: "Marsh",
     cost: 2,
+    passable: true,
     description:
-      "Mud and reeds slow travel. Heavy troops spend 3 movement; others spend 2. No protection.",
+      "Mud slows land units and exposes them to 1 extra damage. Merfolk move easily here and take 1 less damage.",
   },
   ruins: {
+    damageModifiers: { ranged: -1 },
     name: "Ruins",
     cost: 1,
+    passable: true,
     description:
       "Broken walls reduce ranged damage by 1 without blocking shots through the tile. Some campaign ruins contain binding stones; their objectives specify who can seal them.",
   },
   fort: {
+    damageModifiers: { melee: -1, ranged: -1 },
     name: "Fort",
     cost: 2,
+    passable: true,
     description:
       "Earthworks reduce all incoming damage by 1. Capture by entering; forts provide no income or healing.",
   },
   grove: {
+    damageModifiers: { ranged: -1 },
     name: "Sacred grove",
     cost: 2,
+    passable: true,
     description:
       "Trees reduce ranged damage by 1 and block shots through the tile. An owned grove heals its friendly occupant by 2 HP, but provides no income.",
   },
@@ -306,6 +334,7 @@ export class Game {
       hp: TYPES[type].hp,
       moved: false,
       attacked: false,
+      experience: 0,
     };
     this.units.push(unit);
     return unit;
@@ -319,11 +348,44 @@ export class Game {
     return unit;
   }
 
+  promotionOptions(id: string): UnitType[] {
+    const unit = this.unit(id);
+    if (!unit || this.winner || unit.side !== this.turn || unit.moved || unit.attacked) return [];
+    const definition = TYPES[unit.type];
+    return (unit.experience ?? 0) >= (definition.experienceNeeded ?? Infinity)
+      ? [...(definition.advancesTo ?? [])].filter((type) =>
+          Number.isFinite(this.cost({ type }, this.tile(unit.tile)!)),
+        )
+      : [];
+  }
+
+  advanceUnit(id: string, type: UnitType): Unit {
+    const unit = this.requireActor(id);
+    if (!this.promotionOptions(id).includes(type))
+      throw new Error(
+        "This advancement is not available. Advance a ready unit after it earns enough experience.",
+      );
+    const previous = TYPES[unit.type];
+    const wounds = previous.hp - unit.hp;
+    unit.experience = Math.max(0, (unit.experience ?? 0) - (previous.experienceNeeded ?? 0));
+    unit.type = type;
+    unit.hp = Math.max(1, TYPES[type].hp - wounds);
+    unit.moved = true;
+    unit.attacked = true;
+    this.record(`${unit.name ?? previous.name} advanced to ${TYPES[type].name}.`);
+    return unit;
+  }
+
+  private earnExperience(unit: Unit, damage: number, opponent: Unit): void {
+    const limit = TYPES[unit.type].experienceNeeded ?? 0;
+    if (unit.hp <= 0 || damage <= 0 || !limit) return;
+    const reward = opponent.hp <= 0 ? 6 * (TYPES[opponent.type].level ?? 1) : 1;
+    unit.experience = Math.min(limit, (unit.experience ?? 0) + reward);
+  }
+
   cost(unit: Pick<Unit, "type">, tile: Pick<Tile, "terrain">): number {
-    const baseCost = TERRAIN[tile.terrain].cost;
-    if (!Number.isFinite(baseCost)) return Infinity;
-    const modifier = TYPES[unit.type].movementModifiers?.[tile.terrain] ?? 0;
-    return Math.max(1, baseCost + modifier);
+    const definition = TYPES[unit.type];
+    return movementCost(TERRAIN[tile.terrain], tile.terrain, RACES[definition.race], definition);
   }
 
   reachable(id: string | null | undefined): Map<string, number> {
@@ -411,11 +473,18 @@ export class Game {
     const terrain = this.tile(defender.tile)!.terrain;
     const modifier = TYPES[defender.type].damageModifiers[attack.damageType];
     const modified = attack.damage + modifier;
-    const hasTerrainProtection =
-      ["hill", "fort"].includes(terrain) ||
-      (["forest", "grove", "ruins"].includes(terrain) && attack.category === "ranged");
-    const protection = hasTerrainProtection ? 1 : 0;
-    const exposure = terrain === "ford" ? 1 : 0;
+    const definition = TYPES[defender.type];
+    const environment = [
+      TERRAIN[terrain].damageModifiers,
+      RACES[definition.race].terrainModifiers[terrain]?.damageModifiers,
+      definition.terrainModifiers?.[terrain]?.damageModifiers,
+    ].reduce(
+      (total, modifiers) =>
+        total + (modifiers?.[attack.category] ?? 0) + (modifiers?.[attack.damageType] ?? 0),
+      0,
+    );
+    const protection = Math.max(0, -environment);
+    const exposure = Math.max(0, environment);
     const damage = Math.max(0, modified - protection + exposure);
     return {
       base: attack.damage,
@@ -424,6 +493,7 @@ export class Game {
       modified,
       protection,
       exposure,
+      terrain,
       damage,
     };
   }
@@ -533,6 +603,8 @@ export class Game {
     attacker.attacked = true;
     target.hp -= result.damage;
     if (target.hp > 0) attacker.hp -= result.retaliation;
+    this.earnExperience(attacker, result.damage, target);
+    this.earnExperience(target, result.retaliation, attacker);
     const sideLabel = attacker.side === "player" ? "Your" : "Enemy";
     const unitName = TYPES[attacker.type].name.toLowerCase();
     const attackName = details.attack.name.toLowerCase();
@@ -577,7 +649,7 @@ export class Game {
     const keep = this.tile(commander.tile)!;
     if (keep.terrain !== "keep" || keep.owner !== commander.side) return [];
     return this.neighbors(commander.tile).filter(
-      (neighbor) => neighbor.terrain !== "water" && !this.at(neighbor.id),
+      (neighbor) => Number.isFinite(this.cost({ type }, neighbor)) && !this.at(neighbor.id),
     );
   }
 
@@ -612,6 +684,21 @@ export class Game {
       if (["village", "grove"].includes(tile.terrain) && tile.owner === side) {
         unit.hp = Math.min(TYPES[unit.type].hp, unit.hp + 2);
       }
+    }
+    // Strongest adjacent healer only. Resolve from the same start-of-turn roster.
+    for (const unit of this.units.filter((unit) => unit.side === side)) {
+      const healing = Math.max(
+        0,
+        ...this.units
+          .filter(
+            (ally) =>
+              ally.side === side &&
+              ally.id !== unit.id &&
+              distance(this.tile(ally.tile)!, this.tile(unit.tile)!) === 1,
+          )
+          .map((ally) => TYPES[ally.type].healing ?? 0),
+      );
+      unit.hp = Math.min(TYPES[unit.type].hp, unit.hp + healing);
     }
     if (side === "enemy") this.spawnCampaignWaves();
     this.evaluateCampaign(side === "player");
@@ -676,6 +763,11 @@ export class Game {
     if (this.turn !== "enemy" || this.winner) return;
     const unit = this.unit(id);
     if (!unit || unit.side !== "enemy" || unit.attacked) return;
+    const advancement = this.promotionOptions(id)[0];
+    if (advancement) {
+      this.advanceUnit(id, advancement);
+      return;
+    }
 
     const retreat = this.tryEnemyRetreat(unit);
     if (retreat === "acted") return;
@@ -914,7 +1006,7 @@ export class Game {
   }
 
   recruitmentOptions(side: Side): RecruitType[] {
-    if (!this.campaign) return ["soldier", "archer", "scout"];
+    if (!this.campaign) return ["swordsman", "spearman", "archer", "scout"];
     const mission = campaignMission(this.campaign);
     return [...(side === "player" ? mission.recruits : mission.enemyRecruits)];
   }
@@ -925,6 +1017,8 @@ export class Game {
     recall: RecruitType[] = [],
     carryGold = 0,
     choices: NonNullable<CampaignState["choices"]> = [],
+    veterans: CampaignVeteran[] = [],
+    storyVeterans: CampaignVeteran[] = [],
   ): Game {
     const definition = CAMPAIGNS[id];
     const mission = definition?.missions[missionIndex];
@@ -942,6 +1036,10 @@ export class Game {
       id,
       mission: missionIndex,
       recall: [...recall],
+      veterans: recall.map((type, index) =>
+        structuredClone(veterans[index] ?? { type, experience: 0 }),
+      ),
+      storyVeterans: structuredClone(storyVeterans),
       carryGold: Math.min(8, Math.max(0, carryGold)),
       marks: [],
       dialogue: mission.intro.map((line) => ({ ...line })),
@@ -970,19 +1068,33 @@ export class Game {
       game.campaign.dialogue = effectiveMission.intro.map((line) => ({ ...line }));
     }
     game.gold = { player: mission.gold + game.campaign.carryGold, enemy: mission.enemyGold };
+    for (const veteran of storyVeterans) {
+      const returning = game.units.find(
+        (unit) =>
+          unit.side === "player" &&
+          (veteran.role === "leader"
+            ? unit.role === "leader"
+            : veteran.name && unit.name === veteran.name),
+      );
+      if (!returning || TYPES[returning.type].family !== TYPES[veteran.type].family) continue;
+      returning.type = veteran.type;
+      returning.experience = veteran.experience;
+      returning.hp = TYPES[veteran.type].hp;
+    }
     const leader = game.units.find((unit) => unit.side === "player" && unit.role === "leader")!;
     const slots = game.tiles
-      .filter(
-        (tile) =>
-          tile.terrain !== "water" &&
-          !game.at(tile.id) &&
-          distance(tile, game.tile(leader.tile)!) <= 3,
-      )
+      .filter((tile) => !game.at(tile.id) && distance(tile, game.tile(leader.tile)!) <= 3)
       .sort((a, b) => distance(a, game.tile(leader.tile)!) - distance(b, game.tile(leader.tile)!));
-    for (const type of recall) {
-      const tile = slots.shift();
+    for (const [recallIndex, type] of recall.entries()) {
+      const index = slots.findIndex((tile) => Number.isFinite(game.cost({ type }, tile)));
+      const tile = index < 0 ? undefined : slots.splice(index, 1)[0];
       if (!tile) throw new Error("No room for the returning company.");
-      game.addUnit(type, "player", tile.id);
+      const returning = game.addUnit(type, "player", tile.id);
+      const veteran = veterans[recallIndex];
+      if (veteran?.type === type) {
+        returning.experience = veteran.experience;
+        if (veteran.name) returning.name = veteran.name;
+      }
     }
     for (const unit of game.units) {
       const tile = game.tile(unit.tile)!;
@@ -1011,7 +1123,11 @@ export class Game {
         returnsWithStory(this.campaign!, unit)
       )
         throw new Error("Only surviving recruits can return.");
-      return unit.type as RecruitType;
+      return {
+        type: unit.type,
+        experience: unit.experience ?? 0,
+        ...(unit.name ? { name: unit.name } : {}),
+      } satisfies CampaignVeteran;
     });
     const choices = [...(this.campaign.choices ?? [])];
     if (this.campaign.marks.includes("dain-fell") && !choices.includes("green-dain-dead"))
@@ -1019,9 +1135,22 @@ export class Game {
     return Game.startCampaign(
       this.campaign.id,
       this.campaign.mission + 1,
-      roster,
+      roster.map((veteran) => veteran.type as RecruitType),
       this.gold.player,
       choices,
+      roster,
+      this.units
+        .filter(
+          (unit) =>
+            unit.side === "player" &&
+            (unit.role === "leader" || returnsWithStory(this.campaign!, unit)),
+        )
+        .map((unit) => ({
+          type: unit.type,
+          experience: unit.experience ?? 0,
+          ...(unit.name ? { name: unit.name } : {}),
+          ...(unit.role ? { role: unit.role } : {}),
+        })),
     );
   }
 
@@ -1033,6 +1162,8 @@ export class Game {
       this.campaign.recall,
       this.campaign.carryGold,
       campaignMission(this.campaign).refuge ? [] : (this.campaign.choices ?? []),
+      this.campaign.veterans ?? [],
+      this.campaign.storyVeterans ?? [],
     );
   }
 
@@ -1063,7 +1194,10 @@ export class Game {
         const origin = this.tile(`${incoming.col},${incoming.row}`)!;
         const destination = this.tiles
           .filter(
-            (tile) => tile.terrain !== "water" && !this.at(tile.id) && distance(tile, origin) <= 2,
+            (tile) =>
+              Number.isFinite(this.cost({ type: incoming.type }, tile)) &&
+              !this.at(tile.id) &&
+              distance(tile, origin) <= 2,
           )
           .sort((a, b) => distance(a, origin) - distance(b, origin))[0];
         if (destination) {
@@ -1145,7 +1279,9 @@ export class Game {
         if (
           !campaign.marks.includes(`sealed:${id}`) &&
           occupant?.side === "player" &&
-          (!goal.unitType || occupant.type === goal.unitType)
+          (!goal.unitType ||
+            occupant.type === goal.unitType ||
+            TYPES[occupant.type].family === TYPES[goal.unitType].family)
         ) {
           campaign.marks.push(`sealed:${id}`);
           this.record("A binding stone was sealed. It will no longer raise the dead.");

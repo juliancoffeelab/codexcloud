@@ -1,4 +1,5 @@
 import { immutable } from "./immutable";
+import { COASTAL_CAMPAIGN } from "./coastal-campaign";
 import { LEGACY_GREEN_DIALOGUE } from "./legacy-green-dialogue";
 import type {
   CampaignDefinition,
@@ -96,8 +97,8 @@ const lantern: MissionDefinition[] = [
       ],
       [
         unit("commander", "player", 1, 3, "Captain Nera", "leader"),
-        unit("soldier", "player", 2, 3),
-        unit("soldier", "player", 2, 4),
+        unit("swordsman", "player", 2, 3),
+        unit("swordsman", "player", 2, 4),
         unit("scout", "player", 2, 2, "Ivo", "courier"),
         unit("necromancer", "enemy", 11, 4, "The Tollkeeper", "leader"),
         unit("skeleton", "enemy", 10, 5),
@@ -113,7 +114,7 @@ const lantern: MissionDefinition[] = [
       "The river has more than one crossing.",
     ],
     goals: [{ kind: "escort", label: "Bring Ivo to the northeastern landing", tile: "11,1" }],
-    recruits: ["soldier", "archer", "scout"],
+    recruits: ["swordsman", "archer", "scout"],
     enemyRecruits: ["skeleton", "bonearcher"],
     gold: 16,
     enemyGold: 0,
@@ -216,7 +217,7 @@ const lantern: MissionDefinition[] = [
         unit("commander", "player", 1, 4, "Captain Nera", "leader"),
         unit("warden", "player", 2, 4),
         unit("scout", "player", 2, 3),
-        unit("soldier", "player", 2, 5),
+        unit("swordsman", "player", 2, 5),
         unit("necromancer", "enemy", 11, 4, "The Tollkeeper", "leader"),
         unit("skeleton", "enemy", 6, 2),
         unit("skeleton", "enemy", 6, 6),
@@ -234,7 +235,7 @@ const lantern: MissionDefinition[] = [
     goals: [
       { kind: "control", label: "Light all three eastern villages", tiles: ["7,1", "7,4", "7,7"] },
     ],
-    recruits: ["soldier", "archer", "scout", "warden"],
+    recruits: ["swordsman", "archer", "scout", "spearman"],
     enemyRecruits: ["skeleton", "bonearcher"],
     gold: 18,
     enemyGold: 0,
@@ -332,7 +333,7 @@ const lantern: MissionDefinition[] = [
       [
         unit("commander", "player", 3, 4, "Captain Nera", "leader"),
         unit("adept", "player", 4, 3),
-        unit("soldier", "player", 4, 4),
+        unit("swordsman", "player", 4, 4),
         unit("scout", "player", 4, 5),
         unit("necromancer", "enemy", 13, 4, "The Bellwarden", "leader"),
         unit("skeleton", "enemy", 8, 1),
@@ -360,7 +361,7 @@ const lantern: MissionDefinition[] = [
       },
       { kind: "defeat", label: "Defeat the Bellwarden" },
     ],
-    recruits: ["soldier", "archer", "scout", "warden", "adept"],
+    recruits: ["swordsman", "archer", "scout", "spearman", "adept"],
     enemyRecruits: ["skeleton", "bonearcher"],
     gold: 20,
     enemyGold: 0,
@@ -863,7 +864,7 @@ const green: MissionDefinition[] = [
         tile: "12,1",
       },
     ],
-    recruits: ["wolf", "boar", "thorncaller", "warden", "adept"],
+    recruits: ["wolf", "boar", "thorncaller", "spearman", "adept"],
     enemyRecruits: ["skeleton", "bonearcher", "wolf"],
     gold: 18,
     enemyGold: 0,
@@ -1429,7 +1430,7 @@ const ashen: MissionDefinition[] = [
       { kind: "seal", label: "Break both binding stones", tiles: ["7,2", "7,6"] },
       { kind: "defeat", label: "Defeat the Master" },
     ],
-    recruits: ["skeleton", "bonearcher", "warden", "adept"],
+    recruits: ["skeleton", "bonearcher", "spearman", "adept"],
     enemyRecruits: ["skeleton", "bonearcher", "boar"],
     gold: 20,
     enemyGold: 0,
@@ -1548,6 +1549,7 @@ export const CAMPAIGNS = immutable<Record<CampaignId, CampaignDefinition>>({
       ),
     ],
   },
+  "borrowed-tide": COASTAL_CAMPAIGN,
 });
 
 export const CAMPAIGN_MAPS = Object.fromEntries(

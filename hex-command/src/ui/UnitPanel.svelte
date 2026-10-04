@@ -41,6 +41,10 @@
       />
     {/key}
   {:else if panel.kind === "details"}
-    <UnitDetails details={panel.details} artwork={view.artwork} />
+    <UnitDetails
+      details={panel.details}
+      artwork={view.artwork}
+      onAdvance={(type) => actions.advanceUnit(panel.details.unit.id, type)}
+    />
   {/if}
 </section>

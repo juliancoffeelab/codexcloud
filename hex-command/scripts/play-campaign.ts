@@ -2,11 +2,11 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname } from "node:path";
 import { createHash } from "node:crypto";
-import { Game, TYPES, TERRAIN } from "../src/game/engine";
+import { Game, TYPES, TERRAIN, RACES } from "../src/game/engine";
 import { CAMPAIGNS } from "../src/game/campaign-data";
 import { campaignMission, goalProgress, endsRefugeMediation } from "../src/game/campaign-progress";
 import { enemyActionIds } from "../src/game/enemy-turn";
-import type { CampaignId, GameState, RecruitType } from "../src/game/types";
+import type { CampaignId, GameState, RecruitType, UnitType } from "../src/game/types";
 
 interface Trial {
   rulesFingerprint?: string;
@@ -17,8 +17,17 @@ interface Trial {
 }
 function rulesFingerprint(id: CampaignId): string {
   const hash = createHash("sha256");
-  hash.update(JSON.stringify({ campaign: CAMPAIGNS[id], units: TYPES, terrain: TERRAIN }));
-  for (const file of ["engine.ts", "campaign-progress.ts", "enemy-turn.ts"])
+  hash.update(
+    JSON.stringify({ campaign: CAMPAIGNS[id], units: TYPES, terrain: TERRAIN, races: RACES }),
+  );
+  for (const file of [
+    "engine.ts",
+    "campaign-progress.ts",
+    "enemy-turn.ts",
+    "movement.ts",
+    "progression.ts",
+    "races.ts",
+  ])
     hash.update(readFileSync(new URL(`../src/game/${file}`, import.meta.url)));
   return hash.digest("hex");
 }
@@ -87,6 +96,8 @@ function observation(includeRules = false) {
     ...mission.enemyRecruits,
     ...mission.waves.flatMap((wave) => wave.units.map((unit) => unit.type)),
   ]);
+  for (const type of relevantTypes)
+    for (const advanced of TYPES[type].advancesTo ?? []) relevantTypes.add(advanced);
   return {
     campaign: game.campaign!.id,
     mission: game.campaign!.mission + 1,
@@ -106,7 +117,11 @@ function observation(includeRules = false) {
     vigil: game.campaign!.vigil ?? null,
     gold: game.gold.player,
     objectives: mission.goals.map((goal) => ({ ...goal, ...goalProgress(game, goal) })),
-    units: game.units.map((unit) => ({ ...unit, maxHp: TYPES[unit.type].hp })),
+    units: game.units.map((unit) => ({
+      ...unit,
+      maxHp: TYPES[unit.type].hp,
+      promotions: game.promotionOptions(unit.id),
+    })),
     territory: game.tiles
       .filter((tile) => ["village", "grove", "ruins", "fort", "keep"].includes(tile.terrain))
       .map((tile) => ({ tile: tile.id, terrain: tile.terrain, owner: tile.owner })),
@@ -148,13 +163,16 @@ function observation(includeRules = false) {
             actions: [
               "Each unit can move once and attack once per turn. Move BEFORE attacking: attacking also ends movement. Unspent movement is not reusable.",
               "Units cannot move through occupied hexes. Coordinates are col,row with zero-based indices and odd-row-offset hex geometry; use options for legal destinations.",
-              "Only a leader on its owned keep can recruit into adjacent empty land. Recruits cannot act until the next player turn. Recruitment does not consume the leader's attack or movement.",
+              "Only a leader on its owned keep can recruit into adjacent empty passable terrain. Merfolk can recruit into water. Recruits cannot act until the next player turn. Recruitment does not consume the leader's attack or movement.",
+              "Dealing positive damage earns 1 XP; defeating an enemy earns 6 XP per enemy level. Retaliation can also earn XP. Ready units with enough XP can advance: {op:advance,unit:ID,type:TYPE}. Wounds are preserved and promotion consumes the turn. XP and promoted types carry over with recalled survivors and returning named companions; retries restore incoming XP.",
+              "Merfolk move normally on plains, swim through water, and are protected in marsh. Forests, groves and hills cost 3 movement and expose them to +1 damage. Land races take +1 damage in marsh and shallow water. Adjacent wavemenders heal allies at turn start; multiple healers do not stack.",
               "Combat is deterministic. Incoming flat damage modifiers apply before terrain cover/exposure. A surviving defender replies with its strongest reachable weapon of the same melee/ranged category.",
               "End turn executes enemy recruitment and actions, then starts your next turn with village income and village/grove healing. Enemy units have the same stats and rules as yours.",
               "All mission goals must be completed. Losing your leader, required courier, or named required companion is defeat. Killing the enemy leader alone does not complete an escort or territory objective.",
               "Move undo is available until an attack, recruitment or end turn. An invalid action stops the batch; earlier successful actions remain applied, and the returned observation is authoritative.",
             ],
             units: Object.fromEntries([...relevantTypes].map((type) => [type, TYPES[type]])),
+            races: RACES,
             terrain: Object.fromEntries(
               Object.entries(TERRAIN).map(([id, terrain]) => [
                 id,
@@ -205,6 +223,7 @@ try {
         return {
           id,
           from,
+          promotions: game.promotionOptions(id),
           moves: Object.fromEntries(moves),
           attacks: unit.attacked
             ? []
@@ -300,13 +319,16 @@ try {
             action.weapon === undefined ? undefined : string(action.weapon),
           );
           trial.moves = [];
+        } else if (action.op === "advance") {
+          game.advanceUnit(id, string(action.type) as UnitType);
+          trial.moves = [];
         } else if (action.op === "recruit") {
           const type = string(action.type);
           if (!game.recruitmentOptions("player").includes(type as RecruitType))
             throw new Error("That troop is not in this mission’s pool.");
           game.recruit(id, type as RecruitType, string(action.tile));
           trial.moves = [];
-        } else throw new Error("Unknown action; choose move, attack or recruit.");
+        } else throw new Error("Unknown action; choose move, attack, advance or recruit.");
         trial.transcript.push({ round: game.round, mission: game.mapId, action });
         game.advanceDialogue(true);
         if (game.winner) {

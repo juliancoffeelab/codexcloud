@@ -1,5 +1,5 @@
 import { CAMPAIGNS, CAMPAIGN_MAPS } from "./campaign-data";
-import type { CampaignId, CampaignState, RecruitType } from "./types";
+import type { CampaignId, CampaignState, CampaignVeteran, RecruitType } from "./types";
 import { MAPS } from "./maps";
 import { distance, Game, TYPES } from "./engine";
 import type { Side, Unit, UnitType, VillageState } from "./types";
@@ -34,6 +34,19 @@ const integer = (value: unknown): value is number =>
 const unitType = (value: unknown): value is UnitType =>
   typeof value === "string" && Object.hasOwn(TYPES, value);
 
+function veteran(value: unknown): value is CampaignVeteran {
+  return (
+    record(value) &&
+    unitType(value.type) &&
+    integer(value.experience) &&
+    value.experience <= (TYPES[value.type].experienceNeeded ?? 0) &&
+    (value.name === undefined || (typeof value.name === "string" && value.name.length <= 80)) &&
+    (value.role === undefined ||
+      value.role === "courier" ||
+      (value.role === "leader" && TYPES[value.type].leader === true))
+  );
+}
+
 function validUnit(
   value: unknown,
   game: Game,
@@ -51,11 +64,14 @@ function validUnit(
     !side(value.side) ||
     typeof value.tile !== "string" ||
     !game.tile(value.tile) ||
-    game.tile(value.tile)!.terrain === "water" ||
+    !Number.isFinite(game.cost({ type: value.type }, game.tile(value.tile)!)) ||
     occupied.has(value.tile) ||
     !integer(value.hp) ||
     value.hp < 1 ||
     value.hp > TYPES[value.type].hp ||
+    (value.experience !== undefined &&
+      (!integer(value.experience) ||
+        value.experience > (TYPES[value.type].experienceNeeded ?? 0))) ||
     (value.name !== undefined && (typeof value.name !== "string" || value.name.length > 80)) ||
     (value.role !== undefined && value.role !== "leader" && value.role !== "courier") ||
     (value.role === "leader" && !TYPES[value.type].leader) ||
@@ -100,6 +116,34 @@ function campaignState(
     !value.recall.every((type) => unitType(type) && !TYPES[type].leader) ||
     !integer(value.carryGold) ||
     value.carryGold > 8
+  )
+    return null;
+  if (
+    value.veterans !== undefined &&
+    (!Array.isArray(value.veterans) ||
+      value.veterans.length !== value.recall.length ||
+      !value.veterans.every(
+        (entry, index) =>
+          veteran(entry) && entry.type === (value.recall as unknown[])[index] && !entry.role,
+      ))
+  )
+    return null;
+  if (
+    value.storyVeterans !== undefined &&
+    (!Array.isArray(value.storyVeterans) ||
+      value.storyVeterans.length > 8 ||
+      !value.storyVeterans.every(
+        (entry) =>
+          veteran(entry) &&
+          mission.map.units.some(
+            (incoming) =>
+              incoming.side === "player" &&
+              (entry.role === "leader"
+                ? incoming.role === "leader"
+                : entry.name && entry.name === incoming.name) &&
+              TYPES[incoming.type].family === TYPES[entry.type].family,
+          ),
+      ))
   )
     return null;
   const allowedMarks = new Set([
@@ -205,6 +249,10 @@ function campaignState(
     id: value.id as CampaignId,
     mission: value.mission,
     recall: [...value.recall] as RecruitType[],
+    ...(value.veterans ? { veterans: structuredClone(value.veterans) as CampaignVeteran[] } : {}),
+    ...(value.storyVeterans
+      ? { storyVeterans: structuredClone(value.storyVeterans) as CampaignVeteran[] }
+      : {}),
     carryGold: value.carryGold,
     marks: [...value.marks] as string[],
     dialogue: value.dialogue.map((line) => ({
@@ -281,7 +329,7 @@ export function loadBattle(): LoadedBattle {
       if (!validUnit(unit, game, s.nextId, ids, occupied)) return fresh();
       ids.add(unit.id);
       occupied.add(unit.tile);
-      units.push({ ...unit });
+      units.push({ ...unit, experience: unit.experience ?? 0 });
     }
     const villages = game.tiles.filter((tile) => tile.terrain === "village");
     if (
@@ -357,7 +405,8 @@ export function loadBattle(): LoadedBattle {
       !campaign &&
       !s.winner &&
       ["player", "enemy"].some(
-        (team) => !units.some((unit) => unit.side === team && unit.type === "commander"),
+        (team) =>
+          !units.some((unit) => unit.side === team && TYPES[unit.type].family === "commander"),
       )
     )
       return fresh();

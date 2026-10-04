@@ -1,5 +1,6 @@
 import { campaignSheets } from "./campaign-art";
 import { pixelFrames, pixelSources } from "./pixel-art";
+import { TYPES } from "../game/engine";
 import type { DialoguePortrait, Side } from "../game/types";
 import {
   prepareSpriteImages,
@@ -382,6 +383,20 @@ function styleFrames(style: ArtStyle): Record<string, SpriteFrame> {
   for (const name of [...terrainOrder, "ford"]) {
     const frame = frameFor(style, "terrain", name, "player");
     if (frame) frames[`terrain_${name}`] = frame;
+  }
+  for (const [type, definition] of Object.entries(TYPES)) {
+    for (const side of ["player", "enemy"] as const) {
+      const key = `${side}_${type === "bonearcher" ? "bone_archer" : type}`;
+      if (frames[key]) continue;
+      const native = pixelFrames[key as keyof typeof pixelFrames];
+      if (native)
+        frames[key] = { source: campaignAssetURL(pixelSources.units), crop: native, pixel: true };
+      else {
+        const family = definition.family === "bonearcher" ? "bone_archer" : definition.family;
+        const existing = frames[`${side}_${family}`];
+        if (existing) frames[key] = existing;
+      }
+    }
   }
   return frames;
 }

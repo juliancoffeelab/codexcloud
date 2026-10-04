@@ -21,9 +21,10 @@ const saved = () => JSON.parse(readFileSync(path, "utf8"));
 try {
   const started = call({ op: "start", campaign: "lantern-road" }).result as {
     conversation: unknown;
-    rules: { terrain: { water: { cost: unknown }; forest: { cost: unknown } } };
+    rules: { terrain: { water: { cost: unknown; passable: boolean }; forest: { cost: unknown } } };
   };
-  assert.equal(started.rules.terrain.water.cost, "impassable");
+  assert.equal(started.rules.terrain.water.cost, 1);
+  assert.equal(started.rules.terrain.water.passable, false);
   assert.equal(started.rules.terrain.forest.cost, 2);
   assert.match(saved().rulesFingerprint, /^[a-f0-9]{64}$/);
   const game = Game.startCampaign("lantern-road");
@@ -50,16 +51,16 @@ try {
   assert.match(duplicateStart.stderr, /Trial already exists/);
   assert.deepEqual(saved(), before, "Starting again must not erase attempts or progress");
 
-  const destination = game.recruitTiles(leader.id, "soldier")[0]!.id;
+  const destination = game.recruitTiles(leader.id, "swordsman")[0]!.id;
   const response = call({
     op: "act",
     actions: [
-      { op: "recruit", unit: leader.id, type: "soldier", tile: destination },
+      { op: "recruit", unit: leader.id, type: "swordsman", tile: destination },
       { op: "move", unit: leader.id, tile: "99,99" },
     ],
   });
   assert(response.error, "Invalid actions must return an error and current observation");
-  game.recruit(leader.id, "soldier", destination);
+  game.recruit(leader.id, "swordsman", destination);
   assert.deepEqual(saved().state, game.captureState(), "Prior successful actions persist");
   assert.equal(saved().moves.length, 0, "Recruitment clears move undo");
 

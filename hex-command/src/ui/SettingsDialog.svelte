@@ -95,12 +95,22 @@
       </p>
       <p>
         Each unit’s Movement costs list shows how much movement it spends entering each terrain.
-        Forests reduce ranged damage by 1. Hills reduce all damage by 1. Water is impassable;
-        bridges provide a crossing. Shallow water adds 1 to damage received.
+        Forests reduce ranged damage by 1 for land races. Hills reduce their damage received by 1.
+        Land races cannot cross deep water; bridges provide a crossing. Shallow water and marsh
+        add 1 to their damage received. Merfolk swim through deep water, receive no shallow-water
+        penalty, and take 1 less damage in marsh. Forests, groves and hills slow merfolk and add
+        1 to their damage received. Merfolk move normally on plains.
       </p>
       <p>
-        Keep your commander on your keep, then select an adjacent empty land hex and choose a
-        recruit. The unit appears on that hex and acts next turn.
+        Keep your leader on your keep, then select an adjacent empty hex passable to the recruit.
+        Merfolk may recruit into water. The unit appears on that hex and acts next turn.
+      </p>
+      <p>
+        All unit families have a finite advancement ladder. Dealing damage earns experience;
+        defeating an enemy earns more, including during retaliation. Select a ready unit with
+        enough XP to advance. Advancement preserves wounds and consumes its turn. Returning
+        companions and recalled survivors keep their XP and rank between campaign missions.
+        Retrying restores the company that entered that mission.
       </p>
       <p>
         In skirmishes, defeat the enemy commander to win. In campaigns, follow the mission

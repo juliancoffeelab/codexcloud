@@ -1,4 +1,5 @@
 import type { MapDefinition, TerrainType, UnitType } from "./types";
+import { UNIT_TYPES } from "./types";
 
 // Explicit ordering keeps map data independent of engine definition imports.
 const terrainTypes = [
@@ -16,21 +17,7 @@ const terrainTypes = [
   "grove",
 ] as const satisfies readonly TerrainType[];
 
-const unitTypes = [
-  "commander",
-  "soldier",
-  "archer",
-  "scout",
-  "warden",
-  "adept",
-  "skeleton",
-  "bonearcher",
-  "wolf",
-  "boar",
-  "wildkeeper",
-  "necromancer",
-  "thorncaller",
-] as const satisfies readonly UnitType[];
+const unitTypes = UNIT_TYPES;
 
 export const DEVELOPER_TERRAIN_SAMPLES = terrainTypes.map((terrain, index) => ({
   terrain,
@@ -53,7 +40,7 @@ export const DEVELOPER_MAP = {
   name: "Developer map",
   description: "All terrains and both sides of every unit.",
   cols: 6,
-  rows: 10,
+  rows: 3 + Math.ceil(unitTypes.length / 2),
   terrain: DEVELOPER_TERRAIN_SAMPLES,
   units: DEVELOPER_UNIT_SAMPLES,
 } satisfies MapDefinition;

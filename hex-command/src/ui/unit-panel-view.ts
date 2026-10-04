@@ -1,7 +1,7 @@
 import type { Immutable, UnitView } from "../game/view";
 import type { BattleView } from "../controller/view";
 import { TERRAIN, TYPES } from "../game/engine";
-import type { TerrainType, UnitDefinition } from "../game/types";
+import type { TerrainType, UnitDefinition, UnitType } from "../game/types";
 import { abilityInfo } from "../presentation/unit-ability";
 
 export interface UnitDetailsView {
@@ -9,6 +9,7 @@ export interface UnitDetailsView {
   definition: Immutable<UnitDefinition>;
   terrainName: string;
   actionStatus: string;
+  promotions: { type: UnitType; name: string; description: string; hp: number }[];
   ability: ReturnType<typeof abilityInfo>;
   movementCosts: {
     terrain: TerrainType;
@@ -75,6 +76,15 @@ export function unitPanelView(view: BattleView): UnitPanelView {
       definition: TYPES[selectedUnit.type],
       terrainName: TERRAIN[occupiedTile.terrain].name,
       actionStatus: actionStatus(selectedUnit),
+      promotions: game
+        .promotionOptions(selectedUnit.id)
+        .filter(() => canChooseAttack)
+        .map((type) => ({
+          type,
+          name: TYPES[type].name,
+          description: TYPES[type].description,
+          hp: TYPES[type].hp,
+        })),
       ability: abilityInfo(selectedUnit),
       movementCosts: (Object.keys(TERRAIN) as TerrainType[]).map((terrain) => {
         const cost = game.cost(selectedUnit, { terrain });

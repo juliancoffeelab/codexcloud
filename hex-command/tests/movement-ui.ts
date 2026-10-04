@@ -27,7 +27,13 @@ function published(game: Game, selected: string): BattleView {
 }
 
 // Fixed rule expectations: forest, hills, grove, then shallow water/marsh.
-const expectedMovement: Record<UnitType, readonly [number, number, number, number]> = {
+const expectedMovement: Partial<Record<UnitType, readonly [number, number, number, number]>> = {
+  swordsman: [2, 2, 2, 2],
+  spearman: [2, 2, 2, 2],
+  tidekeeper: [3, 3, 3, 1],
+  reefguard: [3, 3, 3, 1],
+  harpooner: [3, 3, 3, 1],
+  wavemender: [3, 3, 3, 1],
   commander: [2, 2, 2, 3],
   soldier: [2, 2, 2, 3],
   archer: [2, 2, 2, 2],
@@ -37,6 +43,7 @@ const expectedMovement: Record<UnitType, readonly [number, number, number, numbe
   skeleton: [2, 2, 2, 2],
   bonearcher: [2, 2, 2, 2],
   wolf: [1, 2, 1, 2],
+  direwolf: [1, 1, 1, 2],
   boar: [1, 2, 1, 3],
   wildkeeper: [1, 2, 1, 2],
   necromancer: [2, 2, 2, 2],
@@ -62,7 +69,9 @@ for (const type of Object.keys(TYPES) as UnitType[]) {
   }
   const stat = (terrain: TerrainType) =>
     required(panel.details.movementCosts.find((movement) => movement.terrain === terrain));
-  const [forest, hill, grove, wetlands] = expectedMovement[type];
+  const [forest, hill, grove, wetlands] = required(
+    expectedMovement[type] ?? expectedMovement[TYPES[type].family ?? type],
+  );
   for (const [terrain, expected] of [
     ["plains", 1],
     ["forest", forest],
@@ -70,7 +79,7 @@ for (const type of Object.keys(TYPES) as UnitType[]) {
     ["grove", grove],
     ["ford", wetlands],
     ["marsh", wetlands],
-    ["water", Infinity],
+    ["water", TYPES[type].race === "merfolk" ? 1 : Infinity],
     ["bridge", 1],
     ["village", 1],
     ["keep", 1],
@@ -79,7 +88,7 @@ for (const type of Object.keys(TYPES) as UnitType[]) {
   ] as const) {
     assert.equal(game.cost(unit, { terrain }), expected, `${type} entering ${terrain}`);
   }
-  assert.equal(stat("water").className, "blocked");
+  assert.equal(stat("water").className, TYPES[type].race === "merfolk" ? "easy" : "blocked");
   assert.equal(stat("bridge").className, "easy");
   if (type === "scout") {
     for (const terrain of ["forest", "hill", "grove"] as const) {
@@ -166,7 +175,9 @@ for (const terrain of Object.keys(TERRAIN) as TerrainType[]) {
   const terrainPanel = required(terrainPanelView({ ...view, game: createGameView(game) }));
   assert(!terrainPanel.facts.some((fact) => fact.startsWith("Movement:")));
   if (terrain === "hill") {
-    assert(terrainPanel.facts.includes("Protection: −1 damage from all attacks"));
+    assert(
+      terrainPanel.facts.includes("Land troops: −1 damage received. Merfolk: +1 damage received."),
+    );
   }
   if (terrain === "grove") {
     assert(

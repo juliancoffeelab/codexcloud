@@ -1,5 +1,5 @@
 import { dialoguePending } from "../game/campaign-progress";
-import type { CampaignId } from "../game/types";
+import type { CampaignId, UnitType } from "../game/types";
 import { writable, type Readable, type Writable } from "svelte/store";
 import { tick } from "svelte";
 import { Game, TYPES, TERRAIN, type Tile, type Unit } from "../game/engine";
@@ -432,6 +432,23 @@ export class BattleController {
     }
   }
 
+  advanceUnit(unitId: string, type: UnitType): void {
+    try {
+      this.advance(unitId, type);
+      this.message(`Advanced to ${TYPES[type].name}. Ready next turn.`);
+    } catch (error) {
+      this.error(error);
+    }
+  }
+
+  advance(unitId: string, type: UnitType) {
+    this.requirePlayerActor(unitId);
+    this.#game.advanceUnit(unitId, type);
+    this.history.clear();
+    this.commitAction();
+    return this.snapshot();
+  }
+
   async endTurn() {
     this.requireSession();
     if (!this.active()) {
@@ -562,6 +579,7 @@ export class BattleController {
       throw new Error("Unknown unit.");
     }
     return structuredClone({
+      promotions: this.#game.promotionOptions(unitId),
       moves: [...this.#game.reachable(unitId)].map(([tile, cost]) => ({
         tile,
         cost,

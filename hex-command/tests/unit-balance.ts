@@ -35,7 +35,8 @@ for (const type of ["scout", "soldier", "archer", "commander"] as const) {
 for (const [type, price] of [
   ["scout", 5],
   ["archer", 8],
-  ["soldier", 8],
+  ["swordsman", 6],
+  ["spearman", 6],
 ] as const) {
   const game = new Game();
   const commander = required(

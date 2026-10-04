@@ -113,6 +113,7 @@ const controller = {
   clearSelection: () => {},
   attackSelected: () => {},
   recruitHere: () => {},
+  advanceUnit: () => {},
   endTurn: async () => undefined,
   undoMove: () => live.snapshot(),
   reset: () => live.snapshot(),

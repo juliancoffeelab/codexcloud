@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { Game } from "../src/game/engine";
 import { enemyActionIds } from "../src/game/enemy-turn";
-import type { CampaignId, GameState, RecruitType } from "../src/game/types";
+import type { CampaignId, GameState, RecruitType, UnitType } from "../src/game/types";
 
 const path = process.argv[2];
 if (!path) throw new Error("Usage: replay-campaign.ts TRIAL.json");
@@ -38,6 +38,9 @@ for (const entry of trial.transcript) {
       if (!game.winner) moves.push(before);
     } else if (action.op === "attack") {
       game.attack(id, string(action.target), action.weapon as string | undefined);
+      moves = [];
+    } else if (action.op === "advance") {
+      game.advanceUnit(id, string(action.type) as UnitType);
       moves = [];
     } else if (action.op === "recruit") {
       game.recruit(id, string(action.type) as RecruitType, string(action.tile));

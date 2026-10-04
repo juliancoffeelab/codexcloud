@@ -169,7 +169,7 @@ console.log("Opening river village routes are clear.");
 // The developer map must cover every current definition, once per side.
 const showcase = new Game("developer");
 assert.equal(showcase.cols, 6);
-assert.equal(showcase.rows, 10);
+assert.equal(showcase.rows, 3 + Math.ceil(Object.keys(TYPES).length / 2));
 assert.equal(showcase.campaign, undefined);
 assert.deepEqual(
   DEVELOPER_TERRAIN_SAMPLES.map((sample) => sample.terrain).sort(),
@@ -277,7 +277,7 @@ for (const invalidate of [
   },
   (save: typeof validSave) => {
     save.state.units = save.state.units.filter(
-      (unit) => !(unit.side === "enemy" && unit.type === "commander"),
+      (unit) => !(unit.side === "enemy" && TYPES[unit.type].family === "commander"),
     );
   },
   (save: typeof validSave) => {

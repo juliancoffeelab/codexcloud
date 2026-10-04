@@ -350,14 +350,15 @@ for (const definition of Object.values(CAMPAIGNS)) {
       assert.equal(game.tile(leader.tile)?.owner, side);
       assert(TYPES[leader.type].leader);
     }
-    for (const unit of game.units) assert.notEqual(game.tile(unit.tile)?.terrain, "water");
+    for (const unit of game.units)
+      assert(Number.isFinite(game.cost(unit, required(game.tile(unit.tile)))));
     const leader = required(game.units.find((u) => u.side === "player" && u.role === "leader"));
-    const land = game.tiles.filter((tile) => tile.terrain !== "water");
+    const land = game.tiles.filter((tile) => Number.isFinite(game.cost(leader, tile)));
     const reached = new Set([leader.tile]);
     const queue = [leader.tile];
     while (queue.length)
       for (const tile of game.neighbors(required(queue.shift()))) {
-        if (tile.terrain !== "water" && !reached.has(tile.id)) {
+        if (Number.isFinite(game.cost(leader, tile)) && !reached.has(tile.id)) {
           reached.add(tile.id);
           queue.push(tile.id);
         }
@@ -381,7 +382,7 @@ for (const definition of Object.values(CAMPAIGNS)) {
   game.move(courier.id, "11,1");
   assert.equal(game.winner, "player");
   assert(game.units.some((u) => u.side === "enemy" && u.role === "leader"));
-  const survivor = required(game.units.find((u) => u.type === "soldier" && u.side === "player"));
+  const survivor = required(game.units.find((u) => u.type === "swordsman" && u.side === "player"));
   survivor.hp = 1;
   game.gold.player = 500;
   const next = game.nextCampaignMission([survivor.id]);
@@ -389,7 +390,7 @@ for (const definition of Object.values(CAMPAIGNS)) {
   assert.equal(next.campaign?.carryGold, 8);
   assert(
     next.units.some(
-      (u) => u.type === "soldier" && u.side === "player" && u.hp === TYPES.soldier.hp,
+      (u) => u.type === "swordsman" && u.side === "player" && u.hp === TYPES.swordsman.hp,
     ),
   );
   assert.throws(() => game.nextCampaignMission([courier.id]));

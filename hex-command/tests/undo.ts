@@ -61,7 +61,7 @@ for (const action of ["attack", "recruit", "endTurn", "reset"]) {
     const target = game.addUnit("soldier", "enemy", "4,1");
     game.attack(scout.id, target.id);
   } else if (action === "recruit") {
-    game.recruit(playerUnit(game, "commander").id, "soldier", "0,2");
+    game.recruit(playerUnit(game, "commander").id, "swordsman", "0,2");
   } else if (action === "endTurn") {
     game.endTurn();
   }

@@ -12,6 +12,7 @@ type ReadableGame = Pick<
   Game,
   | "campaign"
   | "recruitmentOptions"
+  | "promotionOptions"
   | "mapId"
   | "mapRevision"
   | "cols"
@@ -54,6 +55,7 @@ export function createGameView(source: Game): GameView {
   return Object.freeze({
     campaign: game.campaign,
     recruitmentOptions: (side) => freeze(game.recruitmentOptions(side)),
+    promotionOptions: (id) => freeze(game.promotionOptions(id)),
     mapId: game.mapId,
     mapRevision: game.mapRevision,
     cols: game.cols,
