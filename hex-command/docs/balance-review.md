@@ -70,3 +70,24 @@ retries, unlike the older speed/attrition tradeoff. The control's avoidable
 Edda exposure limits attribution to recruitment. One pair cannot isolate the
 HP change, establish optimal balance or prove the revision caused improvement.
 No further coastal change is justified by this pair alone.
+
+## Quarry post and ninth-cohort follow-up
+
+The reviewer inspected actual `3956f5c`. The quarry's authored leader post
+changes only that leader's destination policy. Movement remains legal,
+displaced leaders return toward their post, retreat executes first and adjacent
+intrusions can still be attacked. Ordinary patrols and other missions keep
+their prior policy. No implementation blocker was found. A bounded local
+counterfactual restored surviving retreats for Orin; it was not a complete
+campaign result. Fresh tenth-cohort players are testing the revised encounter.
+
+Lantern ninth-cohort mixed replayed exactly: the ferry won at four with no
+losses; the second chapter capped at thirty with a null winner and six losses.
+It started with 26 gold. The enemy bought four troops during rounds two through
+five, then stopped recruiting; its army stabilized at seven. From rounds eleven
+through twenty-nine the player submitted no actions. Three surviving Impact
+casters remained west of the river while player gold reached 89. Earlier
+isolated advances are difficulty evidence, but the nineteen inactive turns
+substantially confound this result. It establishes neither an overwhelming
+enemy economy nor balanced Lantern play and alone justifies no stat buff or
+economy reduction.

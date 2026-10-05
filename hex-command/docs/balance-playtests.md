@@ -52,6 +52,20 @@ when actual campaigns finish. The older Lantern pair used the former ten-gold
 adept price; the current price is eight. That difference is disclosed rather
 than claiming its records replay a later version.
 
+The [ninth records](playtests/tides-9/README.md) retain two failed Ashen mixed
+openings, the restricted player's costly retry and explicitly paused refuge,
+and an unfinished Lantern mixed attempt. The Lantern player stopped acting for
+nineteen turns; enemy recruitment had already stopped. That capped result is
+not a basis for an economy nerf or a claim of balance. Fresh current-source
+players are still required.
+
+The quarry now assigns the Ledgerkeeper a post at his southern office. He
+guards its immediate approaches, returns by legal movement if displaced and
+can still attack or retreat. Regular patrols and reinforcements remain mobile.
+An independent review found no implementation blocker, but its bounded local
+escape probe is not a whole-campaign win. The tenth cohort tests the encounter
+from chapter one.
+
 The independent mechanics review found that the old evacuation objective could
 borrow elapsed global turns after a late capture. The current rule counts three
 consecutive defended enemy phases after capture, resets on enemy recapture and

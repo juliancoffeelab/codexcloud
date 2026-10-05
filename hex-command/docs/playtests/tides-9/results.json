@@ -1,0 +1,176 @@
+{
+  "sourceCommit": "efe3ec514be7409089ff9db54957c8036c94701a",
+  "trials": [
+    {
+      "file": "round9-ashen-mixed.json",
+      "verified": true,
+      "campaign": "ashen-oath",
+      "completed": false,
+      "decisions": 100,
+      "attempts": [
+        {
+          "mission": "ashen-quarry",
+          "winner": "enemy",
+          "round": 8,
+          "losses": [
+            "u2:skeleton",
+            "u4:skeleton",
+            "u1:Orin"
+          ],
+          "recruits": [],
+          "promotions": [],
+          "attacks": {
+            "necromancer": 3,
+            "bonearcher": 2,
+            "skeleton": 1
+          }
+        },
+        {
+          "mission": "ashen-quarry",
+          "winner": "enemy",
+          "round": 7,
+          "losses": [
+            "u1:Orin"
+          ],
+          "recruits": [
+            "skeleton",
+            "bonearcher"
+          ],
+          "promotions": [],
+          "attacks": {
+            "bonearcher": 2,
+            "necromancer": 4,
+            "skeleton": 1
+          }
+        }
+      ]
+    },
+    {
+      "file": "round9-ashen-skeleton.json",
+      "verified": true,
+      "campaign": "ashen-oath",
+      "completed": false,
+      "decisions": 127,
+      "attempts": [
+        {
+          "mission": "ashen-quarry",
+          "winner": "enemy",
+          "round": 8,
+          "losses": [
+            "u2:skeleton",
+            "u4:skeleton",
+            "u1:Orin"
+          ],
+          "recruits": [],
+          "promotions": [],
+          "attacks": {
+            "necromancer": 2
+          }
+        },
+        {
+          "mission": "ashen-quarry",
+          "winner": "player",
+          "round": 20,
+          "losses": [
+            "u9:skeleton",
+            "u4:skeleton",
+            "u3:bonearcher",
+            "u2:skeleton",
+            "u5:skeleton",
+            "u10:skeleton",
+            "u14:skeleton",
+            "u15:skeleton",
+            "u16:skeleton"
+          ],
+          "recruits": [
+            "skeleton",
+            "skeleton",
+            "skeleton",
+            "skeleton",
+            "skeleton"
+          ],
+          "promotions": [],
+          "attacks": {
+            "bonearcher": 3,
+            "skeleton": 5,
+            "necromancer": 3
+          }
+        },
+        {
+          "mission": "ashen-refuge",
+          "winner": null,
+          "round": 2,
+          "losses": [
+            "u2:skeleton"
+          ],
+          "recruits": [
+            "skeleton",
+            "skeleton",
+            "skeleton"
+          ],
+          "promotions": [],
+          "attacks": {}
+        }
+      ]
+    },
+    {
+      "file": "round9-lantern-mixed.json",
+      "verified": true,
+      "campaign": "lantern-road",
+      "completed": false,
+      "decisions": 124,
+      "attempts": [
+        {
+          "mission": "lantern-ferry",
+          "winner": "player",
+          "round": 4,
+          "losses": [],
+          "recruits": [
+            "archer"
+          ],
+          "promotions": [],
+          "attacks": {
+            "swordsman": 1
+          }
+        },
+        {
+          "mission": "lantern-villages",
+          "winner": null,
+          "round": 30,
+          "losses": [
+            "u2:warden",
+            "u14:swordsman",
+            "u12:spearman",
+            "u13:swordsman",
+            "u10:marksman",
+            "u4:swordsman"
+          ],
+          "recruits": [
+            "adept",
+            "spearman",
+            "swordsman",
+            "swordsman",
+            "adept",
+            "adept",
+            "spearman",
+            "scout",
+            "spearman"
+          ],
+          "promotions": [
+            "mage",
+            "marksman"
+          ],
+          "attacks": {
+            "scout": 1,
+            "warden": 2,
+            "archer": 4,
+            "swordsman": 3,
+            "adept": 2,
+            "marksman": 1,
+            "mage": 1
+          }
+        }
+      ]
+    }
+  ]
+}
