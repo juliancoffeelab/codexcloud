@@ -308,8 +308,8 @@
       "file": "round9-tide-mixed.json",
       "verified": true,
       "campaign": "borrowed-tide",
-      "completed": false,
-      "decisions": 130,
+      "completed": true,
+      "decisions": 131,
       "attempts": [
         {
           "mission": "tide-nets",
@@ -349,7 +349,7 @@
         },
         {
           "mission": "tide-sluice",
-          "winner": null,
+          "winner": "player",
           "round": 6,
           "losses": [],
           "recruits": [
