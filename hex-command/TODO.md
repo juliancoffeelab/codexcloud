@@ -87,11 +87,11 @@ not extend to rewriting the other campaigns.
 - [ ] Finish the subsequently authorized balance pass with matched Luna campaign
       trials, preserving failed attempts and replaying actual commands. Mechanical
       correctness alone does not establish that diverse armies pay off.
-      At the 09:00 Kyiv deadline, revised woodland and the first coastal pair
-      favored mixed recruitment; Ashen mixed completed with ten losses including
-      Dain. Coastal replication and current Ashen/Lantern controls remain paused
-      and incomplete. Checkpoints and limitations are in
-      [the balance report](docs/balance-playtests.md); extra time is requested.
+      The user extended work to 13:00 Kyiv. Eleventh-cohort coast and woodland
+      favor the recorded mixed armies overall; Lantern control loses its sole
+      caster, and Ashen mixed still has worse attrition. Twelfth-cohort matched
+      Ashen/Lantern trials test revised bone bows. Actual outcomes and limits are
+      preserved in [the balance report](docs/balance-playtests.md).
 
 ## Overnight race and coastal work
 
@@ -108,9 +108,12 @@ Specified in [design/tides-and-progression.md](design/tides-and-progression.md).
 - [x] Occupying woodland and Lantern village guards defend their mission objectives
       instead of pursuing the starting company across the entire map. They retake
       captured posts and use the same combat, movement and retreat rules.
-- [ ] Give every advancement distinct pixel artwork and inspect the full roster for
+- [x] Give every advancement distinct pixel artwork and inspect the full roster for
       consistent humanoid scale and material detail. The user explicitly placed this
-      after balance; several veteran matrices still copy their beginner frames.
+      after balance. All seventeen family edits are rendered; independent visual
+      review caught and verified the corrected second harpoon hook, crystal
+      alignment and Lich chest plate. Both factions retain matching anatomy,
+      approved skull pixels and connected limbs/fangs. Publication is in progress.
 
 ## Pending device confirmation
 

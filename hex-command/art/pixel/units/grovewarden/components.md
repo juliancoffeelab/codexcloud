@@ -1,6 +1,10 @@
 # grovewarden
 
-Veteran of wildkeeper. Uses the approved family silhouette and materials without resampling. Rank and improved abilities are shown in the unit panel. Kept as editable 48×48 matrices for both factions; generated PNGs enter the same unit atlas.
+Veteran of wildkeeper. The leaf mantle uses `V/v` across x12–20,y20–23 and x23–26,y21–23. A second staff cluster at x30–34,y21–23 joins the existing branch rather than floating behind the hand. A continuous gold edge follows the lower cloak at rows30–42. The antler crown, skin face/hands, ivory cloth and boots retain their beginner geometry.
+
+Both faction matrices use the same equipment and anatomy, with faction cloth colors changing. Render from these editable 48×48 sources into the ordinary unit atlas. The following notes describe the inherited beginner components; the veteran additions above override their material ownership where specified.
+
+See [the progression specifications](../../../../design/progression-art.md).
 
 # Wildkeeper: existing artwork transcription
 

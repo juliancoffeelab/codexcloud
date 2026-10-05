@@ -1,6 +1,10 @@
 # briarweaver
 
-Veteran of thorncaller. Uses the approved family silhouette and materials without resampling. Rank and improved abilities are shown in the unit panel. Kept as editable 48×48 matrices for both factions; generated PNGs enter the same unit atlas.
+Veteran of thorncaller. The veteran's connected leaf mantle uses `V/v` at x12–22,y19–22 and x26–29,y21–23. Its second leaf cluster at x34–38,y20–22 is attached directly to the brown staff. `G` traces the lit cloak edge between rows30 and42. Orange fur, ivory paws/muzzle/tail tip, hands, boots and the approved fox profile are unchanged.
+
+Both faction matrices use the same equipment and anatomy, with faction cloth colors changing. Render from these editable 48×48 sources into the ordinary unit atlas. The following notes describe the inherited beginner components; the veteran additions above override their material ownership where specified.
+
+See [the progression specifications](../../../../design/progression-art.md).
 
 # Thorncaller: existing artwork transcription
 

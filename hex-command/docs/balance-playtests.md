@@ -69,12 +69,38 @@ from chapter one. Its [mixed campaign](playtests/tides-10/README.md) completed
 replay confirms viability and substantial attrition. Skeleton-only purchases
 failed the quarry once and the refuge once; its refuge retry is paused.
 
-At the user's 09:00 Kyiv deadline, the repeated coastal mixed player had wins
-5 / 6 and an unfinished finale at six, zero casualties and both gates held;
-Edda still needs the beacon escort. Reef-only completed 9 / 6 / 6 with two
-casualties and no retry. Current Lantern mixed failed its opening and stopped
-its retry; the infantry control paused in chapter two. These unfinished pairs
-remain unresolved. An extra-time request is pending.
+At the user's initial 09:00 Kyiv deadline, the repeated coastal mixed player
+paused with both final gates held and no casualties. After the extension to
+13:00, one final Edda move completed its campaign in 5 / 6 / 6, versus reef-only
+9 / 6 / 6 with two casualties and no retry. The mixed player received the shared
+guide only before that final move; this qualification remains with the records.
+The earlier current-source Lantern and Ashen controls remain paused and are not
+claimed as completed results.
+
+The extended pass strengthens adepts and bone bows by one HP, reduces living
+bow price to seven, and staggers one Lantern village bow and the Ashen finale's
+boar. Legacy armies already containing those troops do not receive duplicates.
+Fresh eleventh-cohort players use the same tactics guide from chapter one,
+with an identical objective-pacing reminder sent to all six active players.
+Their source is frozen at `1acc1dd`; the subsequent save migration changes old
+wave bookkeeping but does not change fresh combat or deployment timing. These
+comparisons have now finished and replayed exactly. The [eleventh archive](playtests/tides-11/README.md)
+records every result. Coast mixed wins 9 / 6 / 5 with one loss versus reef-only
+9 / 6 / 7 with three. Green mixed wins 19 / 4 / 8 with four losses and Dain
+alive; boar-only is faster in the opening but loses Dain, needs an escort retry
+and accumulates nine loss events. Lantern mixed completes with nine losses and
+one retry; its control loses the sole sealing caster and remains unfinished.
+Ashen mixed completes 6 / 9 / 8 after one retry but has eighteen loss events,
+versus skeleton-only 5 / 6 / 9 after one retry with twelve. Tactical differences
+remain substantial; the latter is not an Ashen mixed advantage.
+
+The twelfth source `06e2352` raises bone bow damage from three to four and
+death bow from four to five. At the same seven-gold price and eight HP, the
+rookie bow previously dealt less damage than a living bow; Pierce resistance
+is offset by Impact vulnerability. The change also strengthens enemy bows.
+Fresh Ashen and Lantern pairs receive the same guide, including early support
+recruitment and preservation of escorts/sealing casters, and a thirty-turn cap.
+Their unfinished trials are not evidence validating the new damage values.
 
 The tenth archive also retains explicitly labeled **scripted transfers** of
 the original fifth-cohort Lantern decisions. Current rules still execute the
@@ -90,5 +116,7 @@ waits until at least turn six. Focused checks cover late arrival, recapture,
 save/load and repeated turn initialization. Mechanical checks support this rule;
 they do not replace the player comparisons.
 
-Distinct veteran sprites remain deferred at the user's request. Browser and
+The visual progression pass has begun after the guided comparisons: all
+seventeen families now have distinct native equipment and a full roster render.
+Independent visual review remains separate from atlas equality. Browser and
 phone appearance are not claimed as verified by these headless trials.

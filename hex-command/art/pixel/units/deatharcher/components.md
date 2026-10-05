@@ -1,6 +1,15 @@
 # deatharcher
 
-Veteran of bonearcher. Uses the approved family silhouette and materials without resampling. Rank and improved abilities are shown in the unit panel. Kept as editable 48×48 matrices for both factions; generated PNGs enter the same unit atlas.
+Veteran of bonearcher. Approved skull, bone hands, ribs, legs, boots, bowstring
+and the thin centered arrow remain unchanged. Grey steel `A/a` forms the
+shoulder guard at x18–22,y23 and the forearm cuff at x18–20,y24–26. A leather
+quiver behind the drawing arm occupies x8–12,y19–22, with ivory fletching above
+it at x9–10,y17–18. It does not cover the ivory elbow, nock fingers or rib gaps.
+Steel `A/a` also reinforces the upper bow limb at x34–36,y16–18 and lower limb
+at x35–37,y35–37. The one-row arrow and five-cell head stay unchanged and centered.
+Both factions share anatomy and equipment geometry. Light remains upper left.
+
+See [the progression specifications](../../../../design/progression-art.md).
 
 # Bone archer — C tracing
 

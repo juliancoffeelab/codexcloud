@@ -45,7 +45,7 @@ The script reads matrices and palettes from `art/pixel/units/` and
 `art/pixel/terrain/`. Original sheets in `art/pixel/legacy/` are references for
 editing. The script writes exactly two public pixel images:
 
-- `public/assets/units-pixel.png`: all 13 units, both factions (26 frames), plus
+- `public/assets/units-pixel.png`: all 34 unit ranks, both factions (68 frames), plus
   the neutral civilian worker portrait.
 - `public/assets/terrain-pixel.png`: all 12 terrain types, including the bridge.
 

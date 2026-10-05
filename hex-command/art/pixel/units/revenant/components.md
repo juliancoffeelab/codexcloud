@@ -1,6 +1,13 @@
 # revenant
 
-Veteran of skeleton. Uses the approved family silhouette and materials without resampling. Rank and improved abilities are shown in the unit panel. Kept as editable 48×48 matrices for both factions; generated PNGs enter the same unit atlas.
+Veteran of skeleton. Approved skull, rib gaps, bone hands and two connected legs
+remain. Grey steel `A/a` forms the shoulder guard at x18–22,y17–19, plates on
+the exposed shins above the boots, and the shield rim at x35–46,y18–34. Bone
+hands, shield boss and diagonal sword blade retain their original materials.
+Gold `G/g` now belongs to the connected sword guard at x15–17,y29–32 as well as
+the belt buckle. Both factions share anatomy and equipment. Light is upper left.
+
+See [the progression specifications](../../../../design/progression-art.md).
 
 # Skeleton warrior: option B
 
@@ -18,8 +25,10 @@ bottom baseline.
 Bone uses warm ivory and one shaded ivory; the sockets and spaces between ribs
 use the dark outline. Sword blade and guard use grey steel with a lighter edge.
 The shield has a brown rim, faction cloth face and grey boss. Brown leather
-forms the wrist guards, belt, shoulder strap and boots; gold is confined to the
-belt buckle. Cloth uses three flat faction shades. Light falls from upper left.
+forms the wrist guards, belt, shoulder strap and boots; gold belongs to the
+belt buckle and veteran sword guard. Cloth uses three flat faction shades.
+Light falls from upper left. The veteran shield rim and shin/shoulder plates
+replace the beginner leather/bone surfaces with connected steel planes.
 
 The silhouette has a one-pixel dark contour around its original opaque pixels.
 This contour separates ivory limbs, sword and shield from the green map ground;

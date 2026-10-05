@@ -1,0 +1,651 @@
+{
+  "sourceCommit": "1acc1ddeb7e7fecd617a0bd00db8849e902a5db6",
+  "trials": [
+    {
+      "file": "round11-tide-mixed.json",
+      "verified": true,
+      "campaign": "borrowed-tide",
+      "completed": true,
+      "decisions": 127,
+      "attempts": [
+        {
+          "mission": "tide-nets",
+          "winner": "player",
+          "round": 9,
+          "losses": [
+            "u2:reefguard"
+          ],
+          "recruits": [
+            "reefguard",
+            "wavemender",
+            "harpooner"
+          ],
+          "promotions": [],
+          "attacks": {
+            "harpooner": 9,
+            "reefguard": 5,
+            "wavemender": 3,
+            "tidekeeper": 1
+          }
+        },
+        {
+          "mission": "tide-wreck",
+          "winner": "player",
+          "round": 6,
+          "losses": [],
+          "recruits": [
+            "adept"
+          ],
+          "promotions": [
+            "tidehunter",
+            "tidehunter",
+            "tridentguard"
+          ],
+          "attacks": {
+            "wavemender": 3,
+            "reefguard": 4,
+            "harpooner": 2
+          }
+        },
+        {
+          "mission": "tide-sluice",
+          "winner": "player",
+          "round": 5,
+          "losses": [],
+          "recruits": [
+            "harpooner",
+            "reefguard",
+            "reefguard"
+          ],
+          "promotions": [
+            "tridentguard"
+          ],
+          "attacks": {
+            "wavemender": 2,
+            "tidehunter": 2,
+            "reefguard": 1,
+            "harpooner": 1
+          }
+        }
+      ]
+    },
+    {
+      "file": "round11-tide-reefguard.json",
+      "verified": true,
+      "campaign": "borrowed-tide",
+      "completed": true,
+      "decisions": 152,
+      "attempts": [
+        {
+          "mission": "tide-nets",
+          "winner": "player",
+          "round": 9,
+          "losses": [
+            "u3:harpooner",
+            "u2:reefguard"
+          ],
+          "recruits": [
+            "reefguard",
+            "reefguard"
+          ],
+          "promotions": [
+            "tidesage",
+            "tridentguard"
+          ],
+          "attacks": {
+            "wavemender": 7,
+            "harpooner": 2,
+            "reefguard": 8,
+            "tidekeeper": 3
+          }
+        },
+        {
+          "mission": "tide-wreck",
+          "winner": "player",
+          "round": 6,
+          "losses": [],
+          "recruits": [
+            "reefguard",
+            "reefguard"
+          ],
+          "promotions": [],
+          "attacks": {
+            "tidesage": 2,
+            "spearman": 1,
+            "tridentguard": 1
+          }
+        },
+        {
+          "mission": "tide-sluice",
+          "winner": "player",
+          "round": 7,
+          "losses": [
+            "u2:reefguard"
+          ],
+          "recruits": [
+            "reefguard",
+            "reefguard",
+            "reefguard"
+          ],
+          "promotions": [],
+          "attacks": {
+            "harpooner": 6,
+            "spearman": 1,
+            "tridentguard": 1,
+            "tidesage": 2,
+            "reefguard": 6
+          }
+        }
+      ]
+    },
+    {
+      "file": "round11-lantern-mixed.json",
+      "verified": true,
+      "campaign": "lantern-road",
+      "completed": true,
+      "decisions": 242,
+      "attempts": [
+        {
+          "mission": "lantern-ferry",
+          "winner": "enemy",
+          "round": 10,
+          "losses": [
+            "u3:swordsman",
+            "u9:scout",
+            "u4:Ivo"
+          ],
+          "recruits": [
+            "scout",
+            "scout"
+          ],
+          "promotions": [],
+          "attacks": {
+            "swordsman": 2,
+            "scout": 6,
+            "commander": 2
+          }
+        },
+        {
+          "mission": "lantern-ferry",
+          "winner": "player",
+          "round": 10,
+          "losses": [
+            "u8:scout"
+          ],
+          "recruits": [
+            "scout",
+            "scout"
+          ],
+          "promotions": [
+            "ranger"
+          ],
+          "attacks": {
+            "swordsman": 2,
+            "scout": 5,
+            "ranger": 1
+          }
+        },
+        {
+          "mission": "lantern-villages",
+          "winner": "player",
+          "round": 4,
+          "losses": [
+            "u3:scout"
+          ],
+          "recruits": [
+            "adept",
+            "adept"
+          ],
+          "promotions": [],
+          "attacks": {
+            "warden": 2,
+            "ranger": 2,
+            "adept": 2,
+            "swordsman": 1
+          }
+        },
+        {
+          "mission": "lantern-bell",
+          "winner": "player",
+          "round": 10,
+          "losses": [
+            "u3:swordsman",
+            "u4:scout",
+            "u16:adept",
+            "u15:adept"
+          ],
+          "recruits": [
+            "adept"
+          ],
+          "promotions": [],
+          "attacks": {
+            "adept": 12,
+            "ranger": 6,
+            "scout": 1,
+            "warden": 2
+          }
+        }
+      ]
+    },
+    {
+      "file": "round11-lantern-swordsman.json",
+      "verified": true,
+      "campaign": "lantern-road",
+      "completed": false,
+      "decisions": 213,
+      "attempts": [
+        {
+          "mission": "lantern-ferry",
+          "winner": "player",
+          "round": 12,
+          "losses": [],
+          "recruits": [
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman"
+          ],
+          "promotions": [],
+          "attacks": {
+            "swordsman": 6,
+            "scout": 3,
+            "commander": 1
+          }
+        },
+        {
+          "mission": "lantern-villages",
+          "winner": "player",
+          "round": 6,
+          "losses": [
+            "u2:warden",
+            "u14:swordsman"
+          ],
+          "recruits": [
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman"
+          ],
+          "promotions": [],
+          "attacks": {
+            "scout": 4,
+            "warden": 1,
+            "swordsman": 4
+          }
+        },
+        {
+          "mission": "lantern-bell",
+          "winner": null,
+          "round": 11,
+          "losses": [
+            "u16:swordsman",
+            "u3:swordsman",
+            "u13:soldier",
+            "u14:swordsman",
+            "u2:adept",
+            "u12:swordsman",
+            "u17:swordsman"
+          ],
+          "recruits": [
+            "swordsman",
+            "swordsman",
+            "swordsman"
+          ],
+          "promotions": [
+            "soldier"
+          ],
+          "attacks": {
+            "scout": 2,
+            "adept": 3,
+            "swordsman": 8
+          }
+        }
+      ]
+    },
+    {
+      "file": "round11-ashen-skeleton.json",
+      "verified": true,
+      "campaign": "ashen-oath",
+      "completed": true,
+      "decisions": 194,
+      "attempts": [
+        {
+          "mission": "ashen-quarry",
+          "winner": "enemy",
+          "round": 11,
+          "losses": [
+            "u4:skeleton",
+            "u5:skeleton",
+            "u3:bonearcher",
+            "u9:skeleton",
+            "u1:Orin"
+          ],
+          "recruits": [
+            "skeleton",
+            "skeleton"
+          ],
+          "promotions": [],
+          "attacks": {
+            "skeleton": 4,
+            "necromancer": 7,
+            "bonearcher": 4
+          }
+        },
+        {
+          "mission": "ashen-quarry",
+          "winner": "player",
+          "round": 5,
+          "losses": [],
+          "recruits": [],
+          "promotions": [],
+          "attacks": {}
+        },
+        {
+          "mission": "ashen-refuge",
+          "winner": "player",
+          "round": 6,
+          "losses": [
+            "u2:skeleton",
+            "u12:skeleton",
+            "u14:skeleton",
+            "u3:skeleton"
+          ],
+          "recruits": [
+            "skeleton",
+            "skeleton",
+            "skeleton",
+            "skeleton"
+          ],
+          "promotions": [],
+          "attacks": {
+            "bonearcher": 3
+          }
+        },
+        {
+          "mission": "ashen-dawn",
+          "winner": "player",
+          "round": 9,
+          "losses": [
+            "u10:bonearcher",
+            "u13:skeleton",
+            "u12:skeleton"
+          ],
+          "recruits": [
+            "skeleton"
+          ],
+          "promotions": [],
+          "attacks": {
+            "bonearcher": 5,
+            "warden": 3,
+            "necromancer": 3,
+            "skeleton": 6
+          }
+        }
+      ]
+    },
+    {
+      "file": "round11-ashen-mixed.json",
+      "verified": true,
+      "campaign": "ashen-oath",
+      "completed": true,
+      "decisions": 256,
+      "attempts": [
+        {
+          "mission": "ashen-quarry",
+          "winner": "enemy",
+          "round": 18,
+          "losses": [
+            "u2:skeleton",
+            "u5:skeleton",
+            "u1:Orin"
+          ],
+          "recruits": [
+            "skeleton",
+            "skeleton",
+            "skeleton",
+            "skeleton",
+            "bonearcher",
+            "bonearcher"
+          ],
+          "promotions": [],
+          "attacks": {
+            "bonearcher": 5,
+            "necromancer": 4,
+            "skeleton": 2
+          }
+        },
+        {
+          "mission": "ashen-quarry",
+          "winner": "player",
+          "round": 6,
+          "losses": [
+            "u3:bonearcher"
+          ],
+          "recruits": [],
+          "promotions": [],
+          "attacks": {
+            "bonearcher": 1
+          }
+        },
+        {
+          "mission": "ashen-refuge",
+          "winner": "player",
+          "round": 9,
+          "losses": [
+            "u2:skeleton",
+            "u3:skeleton",
+            "u14:skeleton",
+            "u12:skeleton",
+            "u11:skeleton",
+            "u15:skeleton",
+            "u10:skeleton",
+            "u19:bonearcher",
+            "u13:bonearcher",
+            "u4:bonearcher"
+          ],
+          "recruits": [
+            "skeleton",
+            "bonearcher",
+            "skeleton",
+            "skeleton",
+            "bonearcher",
+            "skeleton"
+          ],
+          "promotions": [],
+          "attacks": {
+            "skeleton": 5,
+            "bonearcher": 6
+          }
+        },
+        {
+          "mission": "ashen-dawn",
+          "winner": "player",
+          "round": 8,
+          "losses": [
+            "u2:skeleton",
+            "u15:adept",
+            "u14:spearman",
+            "u12:skeleton"
+          ],
+          "recruits": [
+            "skeleton",
+            "bonearcher",
+            "spearman",
+            "adept"
+          ],
+          "promotions": [],
+          "attacks": {
+            "adept": 2,
+            "skeleton": 7,
+            "spearman": 2,
+            "bonearcher": 2,
+            "necromancer": 1,
+            "warden": 1
+          }
+        }
+      ]
+    },
+    {
+      "file": "round11-green-mixed.json",
+      "verified": true,
+      "campaign": "green-accord",
+      "completed": true,
+      "decisions": 173,
+      "attempts": [
+        {
+          "mission": "green-border",
+          "winner": "player",
+          "round": 19,
+          "losses": [
+            "u3:boar",
+            "u12:thorncaller",
+            "u14:boar",
+            "u10:boar"
+          ],
+          "recruits": [
+            "boar",
+            "wolf",
+            "thorncaller",
+            "boar",
+            "boar",
+            "boar",
+            "wolf"
+          ],
+          "promotions": [
+            "briarweaver"
+          ],
+          "attacks": {
+            "boar": 3,
+            "thorncaller": 6,
+            "wolf": 1,
+            "briarweaver": 3
+          }
+        },
+        {
+          "mission": "green-vigil",
+          "winner": "player",
+          "round": 4,
+          "losses": [],
+          "recruits": [
+            "thorncaller",
+            "boar"
+          ],
+          "promotions": [],
+          "attacks": {
+            "briarweaver": 2,
+            "boar": 1
+          }
+        },
+        {
+          "mission": "green-pact",
+          "winner": "player",
+          "round": 8,
+          "losses": [],
+          "recruits": [
+            "adept",
+            "adept",
+            "spearman",
+            "adept"
+          ],
+          "promotions": [],
+          "attacks": {
+            "warden": 2,
+            "adept": 3,
+            "thorncaller": 1,
+            "briarweaver": 3
+          }
+        }
+      ]
+    },
+    {
+      "file": "round11-green-boar.json",
+      "verified": true,
+      "campaign": "green-accord",
+      "completed": true,
+      "decisions": 199,
+      "attempts": [
+        {
+          "mission": "green-border",
+          "winner": "player",
+          "round": 14,
+          "losses": [
+            "u3:boar",
+            "u10:boar"
+          ],
+          "recruits": [
+            "boar",
+            "boar",
+            "boar",
+            "boar",
+            "boar",
+            "boar"
+          ],
+          "promotions": [
+            "direwolf"
+          ],
+          "attacks": {
+            "boar": 6,
+            "wolf": 2,
+            "direwolf": 1,
+            "thorncaller": 1
+          }
+        },
+        {
+          "mission": "green-vigil",
+          "winner": "player",
+          "round": 4,
+          "losses": [
+            "u9:direwolf",
+            "u4:Captain Dain"
+          ],
+          "recruits": [],
+          "promotions": [],
+          "attacks": {
+            "direwolf": 1
+          }
+        },
+        {
+          "mission": "green-pact",
+          "winner": "enemy",
+          "round": 5,
+          "losses": [
+            "u11:boar",
+            "u2:Lark"
+          ],
+          "recruits": [
+            "boar",
+            "boar"
+          ],
+          "promotions": [],
+          "attacks": {
+            "boar": 4,
+            "adept": 2
+          }
+        },
+        {
+          "mission": "green-pact",
+          "winner": "player",
+          "round": 11,
+          "losses": [
+            "u13:boar",
+            "u11:boar",
+            "u12:boar"
+          ],
+          "recruits": [
+            "boar",
+            "boar"
+          ],
+          "promotions": [],
+          "attacks": {
+            "boar": 6,
+            "adept": 6,
+            "wildkeeper": 1,
+            "thorncaller": 1
+          }
+        }
+      ]
+    }
+  ]
+}

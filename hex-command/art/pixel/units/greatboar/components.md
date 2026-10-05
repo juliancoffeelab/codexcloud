@@ -1,6 +1,14 @@
 # greatboar
 
-Veteran of boar. Uses the approved family silhouette and materials without resampling. Rank and improved abilities are shown in the unit panel. Kept as editable 48×48 matrices for both factions; generated PNGs enter the same unit atlas.
+Veteran of boar. Preserve the approved deep brown hide, compact right-facing
+head/eye, two connected ivory tusks and four grounded hooves. The charcoal `M/O`
+shoulder mane grows to y18 at x18–28 without changing the snout or limbs. Brown
+leather `L/l` reinforces the existing faction harness along its right edge,
+y31–41. A small connected gold `G/g` clasp sits at x21–23,y33–34. Leather and
+gold are equipment, not hide texture. Both factions share anatomy and material
+boundaries; illumination remains upper left.
+
+See [the progression specifications](../../../../design/progression-art.md).
 
 C boar, native 48×48, facing screen-right. Coordinates below are zero-based.
 The occupied bounds are x2–45, y20–47; hooves end at the common row47 baseline.

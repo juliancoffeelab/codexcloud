@@ -1,6 +1,10 @@
 # lich
 
-Veteran of necromancer. Uses the approved family silhouette and materials without resampling. Rank and improved abilities are shown in the unit panel. Kept as editable 48×48 matrices for both factions; generated PNGs enter the same unit atlas.
+Veteran of necromancer. A connected `G/g` edge follows the hood from (26,12) down to the shoulder clasp at x18–21,y25–26. Dark steel `A/a` reinforces the chest at x24–25,y28–30 and joins the waist plate at x22–29,y31–32; the skull, bone hands, ivory robe and boots are untouched. The wood staff receives a gold collar at x37–38,y24. The approved eye sockets, nose, teeth and hood opening keep their exact original pixels.
+
+Both faction matrices use the same equipment and anatomy, with faction cloth colors changing. Render from these editable 48×48 sources into the ordinary unit atlas. The following notes describe the inherited beginner components; the veteran additions above override their material ownership where specified.
+
+See [the progression specifications](../../../../design/progression-art.md).
 
 # Necromancer: editable native sprite
 

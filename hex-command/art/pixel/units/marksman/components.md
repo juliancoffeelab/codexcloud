@@ -1,6 +1,15 @@
 # marksman
 
-Veteran of archer. Uses the approved family silhouette and materials without resampling. Rank and improved abilities are shown in the unit panel. Kept as editable 48×48 matrices for both factions; generated PNGs enter the same unit atlas.
+Veteran of archer. The approved face, skin hands, ivory lower sleeves and legs,
+cloak and boots remain. Dark reinforced leather `D/d` forms the shoulder guards
+and connected breast guard at x20–27,y22–25. The small gold belt clasp is a
+2×2 cluster at x24–25,y26–27. Two ivory quiver fletchings remain separated by
+brown leather at x13/x15,y12–14. The longbow uses warm wood `W/w`, with a
+connected lit left edge and deeper shadow; its tips extend to rows4 and47.
+The upright bow stays attached to the same exposed gripping hand. Both factions
+share anatomy, equipment and material boundaries.
+
+See [the progression specifications](../../../../design/progression-art.md).
 
 # Archer: existing artwork transcription
 

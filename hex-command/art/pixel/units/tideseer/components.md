@@ -1,6 +1,10 @@
 # tideseer
 
-Veteran of tidekeeper. Uses the approved family silhouette and materials without resampling. Rank and improved abilities are shown in the unit panel. Kept as editable 48×48 matrices for both factions; generated PNGs enter the same unit atlas.
+Veteran of tidekeeper. The existing crown receives a silver shell band with gold sides at x20–27,y4–5. Silver chest/shoulder plates at x19–29,y17–20, gold shield borders at x8/x17,y20–28 and a gold belt clasp at x23–26,y27–28 distinguish the veteran. Gold reinforcement at x34/x39,y1–4 connects to the existing three steel tines; the gold staff collar at x35–36,y7 remains attached. Scaled face/hands, cloak, tail and fins retain the approved size.
+
+Both faction matrices use the same equipment and anatomy, with faction cloth colors changing. Render from these editable 48×48 sources into the ordinary unit atlas. The following notes describe the inherited beginner components; the veteran additions above override their material ownership where specified.
+
+See [the progression specifications](../../../../design/progression-art.md).
 
 # tidekeeper
 

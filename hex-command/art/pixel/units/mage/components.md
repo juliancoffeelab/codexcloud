@@ -1,6 +1,14 @@
 # mage
 
-Veteran of adept. Uses the approved family silhouette and materials without resampling. Rank and improved abilities are shown in the unit panel. Kept as editable 48×48 matrices for both factions; generated PNGs enter the same unit atlas.
+Veteran of adept. Body, face, hands, boots, staff shaft and crystal keep their
+approved locations. Gold `G/g` follows the hood and shoulder mantle from
+x26,y13 to x12,y31; connected gold shoulder borders sit above the ivory sleeves.
+Wider connected gold hems cover x20–24,y41–42 and x29–31,y39–42. The staff
+crown is symmetric about x39: matching arms at x37/x41 rise one row
+above the original fitting. The six-cell gem remains x38–40,y20–21, blue `J/j`
+for player and crimson `K/k` for enemy. The fitting grows; the crystal does not.
+
+See [the progression specifications](../../../../design/progression-art.md).
 
 # Adept C component mapping
 

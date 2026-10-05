@@ -1,6 +1,10 @@
 # tridentguard
 
-Veteran of reefguard. Uses the approved family silhouette and materials without resampling. Rank and improved abilities are shown in the unit panel. Kept as editable 48×48 matrices for both factions; generated PNGs enter the same unit atlas.
+Veteran of reefguard. Silver `A/a` armor reinforces the shell chest and shoulders at x19–29,y17–21. Gold borders run inside the existing shell shield at x8/x17,y20–28 and form a connected belt clasp at x23–26,y27–28. A steel collar at x35–36,y7–8 joins the trident head to its wooden shaft. Scaled hands, continuous tail and both grounded fins retain their original shape.
+
+Both faction matrices use the same equipment and anatomy, with faction cloth colors changing. Render from these editable 48×48 sources into the ordinary unit atlas. The following notes describe the inherited beginner components; the veteran additions above override their material ownership where specified.
+
+See [the progression specifications](../../../../design/progression-art.md).
 
 # reefguard
 

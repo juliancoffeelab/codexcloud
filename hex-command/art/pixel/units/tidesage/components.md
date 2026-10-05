@@ -1,6 +1,10 @@
 # tidesage
 
-Veteran of wavemender. Uses the approved family silhouette and materials without resampling. Rank and improved abilities are shown in the unit panel. Kept as editable 48×48 matrices for both factions; generated PNGs enter the same unit atlas.
+Veteran of wavemender. Gold edging follows the shoulder mantle at x9–17,y14–24 and robe side from (18,26) to (17,38). The forked gold setting at x34–39,y7–11 surrounds the small crystal. Crystal and crown are symmetric around x36.5, over the wood shaft at x36–37, without increasing maximum crystal width. Blue-green scaled hands, both arms, tail and two grounded fins remain connected and retain their original proportions.
+
+Both faction matrices use the same equipment and anatomy, with faction cloth colors changing. Render from these editable 48×48 sources into the ordinary unit atlas. The following notes describe the inherited beginner components; the veteran additions above override their material ownership where specified.
+
+See [the progression specifications](../../../../design/progression-art.md).
 
 # wavemender
 

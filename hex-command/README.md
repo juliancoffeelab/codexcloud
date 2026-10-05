@@ -144,9 +144,10 @@ healers apply only the strongest healing amount at turn start.
 
 Recalled recruits and returning named companions retain type and XP. Mission
 retries restore the incoming roster checkpoint. Legacy saves with no XP load at
-zero. All ranks have editable matrices; several veteran frames still copy their
-family's beginner art pending the visual pass after balance. Beginner infantry
-uses cloth and leather in place of steel. New types have pixel
+zero. All ranks have editable matrices and distinct equipment. Beginner infantry
+uses cloth and leather in place of steel; veterans gain armor, reinforced weapons,
+mantles or rank trim. Rangers wear charcoal cloth and carry two knives. The full
+roster specifications live in `design/progression-art.md`. New types have pixel
 frames available in every art style until distinct normal/low-poly art is authored.
 
 `scripts/play-campaign.ts` exposes legal actions from the actual engine for

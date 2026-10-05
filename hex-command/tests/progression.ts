@@ -12,6 +12,16 @@ import { required, TestStorage } from "./helpers";
 assert.deepEqual(Object.keys(TYPES).sort(), [...UNIT_TYPES].sort());
 for (const type of UNIT_TYPES) {
   const definition = TYPES[type];
+  assert.equal(
+    definition.damage,
+    definition.attacks[0].damage,
+    `${type} primary damage cannot drift from its weapon`,
+  );
+  assert.equal(
+    definition.range,
+    definition.attacks[0].range,
+    `${type} primary range cannot drift from its weapon`,
+  );
   assert(definition.family && TYPES[definition.family]);
   const family = TYPES[definition.family];
   assert((family.advancesTo ?? []).length, `${type} belongs to a progression ladder`);

@@ -1,6 +1,14 @@
 # direwolf
 
-Veteran of wolf. Uses the approved family silhouette and materials without resampling. Rank and improved abilities are shown in the unit panel. Kept as editable 48×48 matrices for both factions; generated PNGs enter the same unit atlas.
+Veteran of wolf. The approved four grounded legs, compact muzzle, attached fang,
+eye and body planes remain. A connected charcoal `D/O` shoulder mane extends
+to y22 at x21–31. Dark leather `L/l` reinforces the existing faction harness
+along its right edge, y29–38. A connected gold `K/g` clasp sits at x28–30,y31–32.
+`G` still means grey fur and is never gold. Every original fur color remains
+unchanged; no gold or leather belongs in paws, fangs or muzzle. Both factions
+share geometry, face screen right and receive upper-left light.
+
+See [the progression specifications](../../../../design/progression-art.md).
 
 # Wolf A: fresh native transcription
 

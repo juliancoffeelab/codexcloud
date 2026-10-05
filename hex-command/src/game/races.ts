@@ -43,6 +43,8 @@ export function resolveUnits(
         type,
         {
           ...unit,
+          damage: unit.attacks[0].damage,
+          range: unit.attacks[0].range,
           damageModifiers: {
             blade: inherited.blade + unit.damageModifiers.blade,
             pierce: inherited.pierce + unit.damageModifiers.pierce,

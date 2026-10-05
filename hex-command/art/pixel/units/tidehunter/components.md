@@ -1,6 +1,10 @@
 # tidehunter
 
-Veteran of harpooner. Uses the approved family silhouette and materials without resampling. Rank and improved abilities are shown in the unit panel. Kept as editable 48×48 matrices for both factions; generated PNGs enter the same unit atlas.
+Veteran of harpooner. Reinforced dark leather `D/d` forms the shoulder and chest at x16–27,y17–25. The gold belt clasp occupies x23–26,y27–28. A second silver hook at x31–35,y12–13 joins the wooden shaft below the first head and gold collar, keeping it clear of the attached scaled hand. The cloak, cuffs, continuous tail and two fins retain their approved silhouette.
+
+Both faction matrices use the same equipment and anatomy, with faction cloth colors changing. Render from these editable 48×48 sources into the ordinary unit atlas. The following notes describe the inherited beginner components; the veteran additions above override their material ownership where specified.
+
+See [the progression specifications](../../../../design/progression-art.md).
 
 # harpooner
 
