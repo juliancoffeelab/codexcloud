@@ -155,6 +155,19 @@ Specified in [design/tides-and-progression.md](design/tides-and-progression.md).
       approved skull pixels and connected limbs/fangs. Published in the ordinary
       game on 2026-10-05; the developer map includes both ranks of every family.
 
+## Merfolk campaign playtest followups
+
+- [ ] Review ground-unit recruitment and enemy access through the coastal maps.
+      Ground troops can spawn but struggle to traverse the water tiles. Investigate
+      whether this prevents the enemy from threatening the player and makes the
+      campaign effectively impossible to lose; this is a reported concern, not a
+      confirmed conclusion.
+- [ ] Clarify the second chapter's hold objective. It mentions both three and six
+      turns without explaining which is required or what happens at the three-turn
+      milestone. Align the objective, progress display and story explanation.
+- [ ] Rewrite coastal campaign hints that expose raw map coordinates. Give clear
+      landmark-based directions and player-facing descriptions instead.
+
 ## Deployment and mobile rendering
 
 - [x] Fix the blank-page deployment package: Git-ignored generated JavaScript was

@@ -1,6 +1,9 @@
 # Normal and Low-poly roster additions
 
-The original thirteen units retain their existing style-specific artwork.
+The original artwork is retained. Necromancer and Lich artwork assignments were
+swapped in both styles and both factions following playtest feedback: the simpler
+gold-edged robed caster is the Necromancer, and the original caster with skull
+ornaments and heavier armor is the Lich. Pixel artwork keeps its own assignments.
 These additions cover the twenty-one missing unit types, both factions, plus a
 neutral worker portrait. Generated reference sheets live under `reference/`;
 the individual, transparent sprites under `normal/` and `low-poly/` are the
@@ -41,7 +44,7 @@ faceted triangular planes. Neither style uses pixel sprites.
 | Marshal       | Human in silver plate armor, gold helmet crest and shoulder borders, ivory/faction tabard, steel sword, rich faction standard.                                                     |
 | Revenant      | Visible bone ribs/hands/legs, jagged dark iron face-guard crown with open sockets and exposed teeth, shoulder/shin plates, steel sword, faction shield/cape.                       |
 | Death archer  | Bone skull/ribs/hands/legs, steel shoulders/wrists, leather boots/belt, faction cape, reinforced wood bow, shoulder quiver, thin centered arrow.                                   |
-| Lich          | Compact menacing bone skull and hands, square dark sockets, small nose opening, dark hood cavity, gold-edged faction cloak, ivory split robe, metal chest guard, wood skull staff. |
+| Necromancer   | Compact menacing bone skull and hands, square dark sockets, small nose opening, dark hood cavity, gold-edged faction cloak, ivory split robe, metal chest guard, wood skull staff. |
 | Dire wolf     | Natural wolf anatomy, four connected legs, ears, attached muzzle/fangs, near-black fur with connected raised shoulder/back mane, faction harness.                                  |
 | Great boar    | Four connected hooves, stocky boar, pale ivory/gray fur, dark bristled spine, two attached curved tusks, small angry eye, faction harness.                                         |
 | Briarweaver   | Orange fox head/ears/tail, ivory muzzle/paws/tail tip, leaf/vine shoulder mantle, faction cloak with gold edge, leather belt/boots, attached leafy branch staff.                   |
@@ -59,6 +62,6 @@ faceted triangular planes. Neither style uses pixel sprites.
 Reference sheet ordering is six columns by four rows, left to right:
 
 1. Swordsman, Spearman, Marksman, Ranger, Stone mage, Marshal.
-2. Revenant, Death archer, Lich, Dire wolf, Great boar, Briarweaver.
+2. Revenant, Death archer, Necromancer, Dire wolf, Great boar, Briarweaver.
 3. Grove warden, Reef guard, Trident guard, Harpooner, Tide hunter, Wavemender.
 4. Tide sage, Tidekeeper, Tide seer, Worker, empty, empty.

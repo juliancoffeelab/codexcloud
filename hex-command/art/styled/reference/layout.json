@@ -35,7 +35,7 @@
         "source_bounds": [262, 257, 512, 513]
       },
       {
-        "unit": "lich",
+        "unit": "necromancer",
         "source_bounds": [517, 269, 739, 510]
       },
       {
@@ -125,7 +125,7 @@
         "source_bounds": [255, 265, 504, 510]
       },
       {
-        "unit": "lich",
+        "unit": "necromancer",
         "source_bounds": [523, 263, 717, 511]
       },
       {
@@ -215,7 +215,7 @@
         "source_bounds": [261, 257, 513, 513]
       },
       {
-        "unit": "lich",
+        "unit": "necromancer",
         "source_bounds": [518, 269, 739, 511]
       },
       {
@@ -305,7 +305,7 @@
         "source_bounds": [253, 264, 505, 510]
       },
       {
-        "unit": "lich",
+        "unit": "necromancer",
         "source_bounds": [519, 263, 718, 511]
       },
       {
