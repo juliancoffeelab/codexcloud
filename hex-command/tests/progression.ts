@@ -76,6 +76,24 @@ assert(TYPES.soldier.attacks.some((attack) => attack.damageType === "impact"));
 assert.equal(TYPES.swordsman.attacks.length, 1);
 assert.throws(() => game.advanceUnit(attacker.id, "soldier"), /not available/);
 
+// An advanced enemy scout retains its capture role, rather than abandoning villages.
+for (const type of ["scout", "ranger"] as const) {
+  const patrol = new Game();
+  patrol.units = [];
+  for (const tile of patrol.tiles) {
+    tile.terrain = "plains";
+    tile.owner = null;
+  }
+  const village = required(patrol.tile("10,6"));
+  village.terrain = "village";
+  patrol.addUnit("swordsman", "player", "0,0");
+  const runner = patrol.addUnit(type, "enemy", "6,5");
+  patrol.beginTurn("enemy");
+  patrol.enemyAct(runner.id);
+  assert.equal(runner.tile, village.id);
+  assert.equal(village.owner, "enemy");
+}
+
 const zero = new Game();
 zero.units = [];
 const scout = zero.addUnit("scout", "player", "3,3");

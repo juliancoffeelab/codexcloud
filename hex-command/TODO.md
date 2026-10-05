@@ -80,10 +80,32 @@ not extend to rewriting the other campaigns.
 - [ ] Clarify why lighting the Lantern Road lanterns forces the necromancer away.
 - [ ] Review the remaining optional quest rewards with the user. The woodland pay
       ledger now serves a required evidence objective and has no arbitrary gold bonus.
-- [ ] Design unit progression and branching advancement, beginning with peasant →
-      soldier → heavy infantry, before adding progression rules or new unit artwork.
-- [ ] Review resistance/attack/ability balance with the user. These are design
-      choices, not permission for blanket stat increases.
+- [x] Implement the subsequently authorized progression task: all 17 combat-unit
+      families have beginner and veteran ranks, experience, promotion actions and
+      retained campaign advancement. Swordsmen and spearmen earn heavy armor and
+      blunt weapons. Branching alternatives are not part of this first ladder.
+- [ ] Finish the subsequently authorized balance pass with matched Luna campaign
+      trials, preserving failed attempts and replaying actual commands. Mechanical
+      correctness alone does not establish that diverse armies pay off.
+
+## Overnight race and coastal work
+
+Specified in [design/tides-and-progression.md](design/tides-and-progression.md).
+
+- [x] Finite terrain costs and explicit passability, with race then unit overrides,
+      shared by movement, recruitment, recall, waves and save validation.
+- [x] Race resistance defaults and race/unit terrain damage modifiers. Merfolk swim,
+      retain ordinary plains footing, suffer exposure in woods/hills and gain marsh
+      protection. Ground races are exposed in marsh as in shallow water.
+- [x] Three authored coastal chapters with a diversion, worker evacuation and sluice
+      restoration story. Named casualties persist, retries restore checkpoints,
+      and old coastal saves retain their units while migrating officer identities.
+- [x] Occupying woodland and Lantern village guards defend their mission objectives
+      instead of pursuing the starting company across the entire map. They retake
+      captured posts and use the same combat, movement and retreat rules.
+- [ ] Give every advancement distinct pixel artwork and inspect the full roster for
+      consistent humanoid scale and material detail. The user explicitly placed this
+      after balance; several veteran matrices still copy their beginner frames.
 
 ## Pending device confirmation
 

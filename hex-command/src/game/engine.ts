@@ -927,7 +927,7 @@ export class Game {
       (tile) => tile.terrain === "village" && tile.owner !== "enemy",
     );
     let goals =
-      unit.type === "scout" && uncapturedVillages.length
+      TYPES[unit.type].family === "scout" && uncapturedVillages.length
         ? uncapturedVillages
         : this.units
             .filter((target) => target.side === "player")
@@ -969,7 +969,7 @@ export class Game {
     );
 
     const canCaptureVillage = tile.terrain === "village" && tile.owner !== "enemy";
-    const captureValue = unit.type === "scout" ? 8 : 5;
+    const captureValue = TYPES[unit.type].family === "scout" ? 8 : 5;
     const captureBonus = canCaptureVillage ? captureValue : 0;
     const canHeal = unit.hp <= 4 && tile.terrain === "village" && tile.owner === "enemy";
     const healingBonus = canHeal ? 9 : 0;
