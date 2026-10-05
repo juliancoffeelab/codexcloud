@@ -18,6 +18,41 @@ import { required, TestStorage } from "./helpers";
 const storage = new TestStorage();
 globalThis.localStorage = storage;
 
+// The quarry's bookkeeper guards his office; regular troops still pursue escapees,
+// and approaching the office still provokes the leader's ordinary attack.
+{
+  const game = Game.startCampaign("ashen-oath");
+  game.advanceDialogue(true);
+  const orin = required(game.units.find((unit) => unit.name === "Orin"));
+  const keeper = required(game.units.find((unit) => unit.name === "The Ledgerkeeper"));
+  const patrol = required(
+    game.units.find((unit) => unit.side === "enemy" && unit.type === "swordsman"),
+  );
+  orin.tile = "6,4";
+  keeper.tile = "9,4";
+  game.round = 6;
+  game.beginTurn("enemy");
+  game.enemyAct(keeper.id);
+  assert(game.neighbors("11,5").some((tile) => tile.id === keeper.tile) || keeper.tile === "11,5");
+  assert.equal(orin.hp, TYPES.necromancer.hp, "The posted leader cannot chase across the quarry");
+  game.enemyAct(patrol.id);
+  assert.notEqual(patrol.tile, "9,5", "The regular road patrol still advances");
+  game.round = 7;
+  game.beginTurn("enemy");
+  game.enemyAct(patrol.id);
+  assert(orin.hp < TYPES.necromancer.hp, "A post does not protect escapees from mobile troops");
+
+  const intrusion = Game.startCampaign("ashen-oath");
+  intrusion.advanceDialogue(true);
+  const defender = required(intrusion.units.find((unit) => unit.name === "The Ledgerkeeper"));
+  const raider = required(intrusion.unit("u2"));
+  raider.tile = "11,4";
+  intrusion.round = 6;
+  intrusion.beginTurn("enemy");
+  intrusion.enemyAct(defender.id);
+  assert.equal(raider.hp, TYPES.skeleton.hp - 4, "The office guard still attacks an adjacent raid");
+}
+
 // Visit sites belong on unoccupied map hexes, not under the opening company.
 for (const campaign of Object.values(CAMPAIGNS)) {
   for (const mission of campaign.missions) {

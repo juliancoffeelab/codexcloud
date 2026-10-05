@@ -302,6 +302,8 @@ export interface MissionDefinition {
   enemyGold: number;
   /** Occupying guards patrol their control objectives instead of raiding the starting camp. */
   defendObjectives?: boolean;
+  /** An enemy leader guards this post and its immediate approaches; retreat remains free. */
+  enemyLeaderPost?: string;
   intro: DialogueLine[];
   victory: DialogueLine[];
   events: MissionEvent[];

@@ -116,6 +116,15 @@ armor through XP. The briefing makes ownership defense and the actual lethal
 mediation boundary explicit. Both players receive those same rules in fresh
 trials; earlier runs retain their stricter interpretation and failed attempts.
 
+The fresh Ashen comparison exposed an unforgiving quarry opening: the Ledgerkeeper
+began pursuing on global turn five, reaching an exposed Orin together with regular
+troops and leaving no surviving retreat on the next turn. His mission now assigns
+the southern office as a post. He guards it and its immediate approaches, while
+regular soldiers and the incoming adept/warden still pursue. This is encounter
+pacing, not a global unit buff. The game manual and player interface clarify that
+troops do not intercept attacks or exert a zone of control. A fresh full comparison
+is required; the earlier defeats and interrupted control remain recorded.
+
 ## Visual advancement, after balance
 
 Every family must visibly change when it advances. Lower infantry wear leather

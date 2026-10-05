@@ -95,6 +95,8 @@
       </p>
       <p>
         Each unit’s Movement costs list shows how much movement it spends entering each terrain.
+        Occupied hexes block movement. Units have no zone of control and do not intercept attacks;
+        protect a fragile unit by blocking the enemy’s approach, rather than standing behind it.
         Forests reduce ranged damage by 1 for land races. Hills reduce their damage received by 1.
         Land races cannot cross deep water; bridges provide a crossing. Shallow water and marsh add
         1 to their damage received. Merfolk swim through deep water, receive no shallow-water

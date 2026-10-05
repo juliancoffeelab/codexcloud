@@ -1139,12 +1139,14 @@ const ashen: MissionDefinition[] = [
       ],
     ),
     subtitle: "The first order you give yourself.",
+    enemyLeaderPost: "11,5",
     briefing:
       "The Master’s binding broke at midnight. For the first time, Orin and the quarry’s dead can choose where to go. Orin leads them toward the northern gate before the guards can return them to servitude. Freedom begins with getting the company out alive.",
     hints: [
       "The guards watch the road more closely than the river.",
       "Bare bones have little to fear from arrows.",
       "Orin need not make the crossing alone.",
+      "The Ledgerkeeper guards his southern office. The road patrol and its mage pursue the company; the northern gate is the way out.",
     ],
     goals: [{ kind: "escape", label: "Bring Orin to the northern quarry gate", tile: "11,1" }],
     recruits: ["skeleton", "bonearcher"],
