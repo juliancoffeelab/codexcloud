@@ -17,6 +17,7 @@ const files = [
   "README.md",
   "AGENTS.md",
   "art/pixel/**/*.{json,md}",
+  "art/styled/**/*.{json,md}",
   "docs/ai-simulation.md",
   "design/progression-art.md",
 ];

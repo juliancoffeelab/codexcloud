@@ -1,6 +1,6 @@
 import { campaignSheets } from "./campaign-art";
 import { pixelFrames, pixelSources } from "./pixel-art";
-import { TYPES } from "../game/engine";
+import { styledSheets } from "./styled-art";
 import type { DialoguePortrait, Side } from "../game/types";
 import {
   prepareSpriteImages,
@@ -9,7 +9,6 @@ import {
   type FrameImage,
 } from "./sprite-images";
 
-const unitOrder = ["soldier", "archer", "scout", "commander"];
 const terrainOrder = ["plains", "forest", "hill", "water", "village", "keep"];
 const storageKey = "hex-command-art-style";
 
@@ -157,121 +156,11 @@ const terrainSheets = {
     ],
   },
 };
-const unitSheets = {
-  normal: {
-    width: 1774,
-    height: 887,
-    revision: "baba41eaaf62",
-    frames: [
-      {
-        x: 0,
-        y: 0.0,
-        width: 443.5,
-        height: 443.5,
-      },
-      {
-        x: 443.5,
-        y: 0.0,
-        width: 443.5,
-        height: 443.5,
-      },
-      {
-        x: 887,
-        y: 0.0,
-        width: 443.5,
-        height: 443.5,
-      },
-      {
-        x: 1330.5,
-        y: 0.0,
-        width: 443.5,
-        height: 443.5,
-      },
-      {
-        x: 0,
-        y: 443.5,
-        width: 443.5,
-        height: 443.5,
-      },
-      {
-        x: 443.5,
-        y: 443.5,
-        width: 443.5,
-        height: 443.5,
-      },
-      {
-        x: 887,
-        y: 443.5,
-        width: 443.5,
-        height: 443.5,
-      },
-      {
-        x: 1330.5,
-        y: 443.5,
-        width: 443.5,
-        height: 443.5,
-      },
-    ],
-  },
-  "low-poly": {
-    width: 1774,
-    height: 887,
-    revision: "28004172c750",
-    frames: [
-      {
-        x: 0,
-        y: 0.0,
-        width: 443.5,
-        height: 443.5,
-      },
-      {
-        x: 443.5,
-        y: 0.0,
-        width: 443.5,
-        height: 443.5,
-      },
-      {
-        x: 887,
-        y: 0.0,
-        width: 443.5,
-        height: 443.5,
-      },
-      {
-        x: 1330.5,
-        y: 0.0,
-        width: 443.5,
-        height: 443.5,
-      },
-      {
-        x: 0,
-        y: 443.5,
-        width: 443.5,
-        height: 443.5,
-      },
-      {
-        x: 443.5,
-        y: 443.5,
-        width: 443.5,
-        height: 443.5,
-      },
-      {
-        x: 887,
-        y: 443.5,
-        width: 443.5,
-        height: 443.5,
-      },
-      {
-        x: 1330.5,
-        y: 443.5,
-        width: 443.5,
-        height: 443.5,
-      },
-    ],
-  },
-};
 function assetURL(style: ArtStyle, kind: SpriteKind) {
   if (style === "pixel") return campaignAssetURL(pixelSources[kind]);
-  return `${import.meta.env?.BASE_URL ?? "/"}assets/${kind}-${style}.png?v=${(kind === "terrain" ? terrainSheets : unitSheets)[style].revision}`;
+  const revision =
+    kind === "terrain" ? terrainSheets[style].revision : styledSheets[style].source.revision;
+  return `${import.meta.env?.BASE_URL ?? "/"}assets/${kind}-${style}.png?v=${revision}`;
 }
 const shallowRevisions = {
   normal: "e00d7da98abd",
@@ -293,7 +182,7 @@ interface CampaignSourceMetadata {
   width: number;
   height: number;
   revision: string;
-  sources?: Record<CampaignSourceKey, CampaignSource>;
+  sources?: Partial<Record<CampaignSourceKey, CampaignSource>>;
   frameSources?: Readonly<Record<string, CampaignSource>>;
   clips?: Readonly<Record<string, ClipPolygon>>;
 }
@@ -336,10 +225,9 @@ function frameFor(
   }
   if (style === "pixel") return undefined;
   if (kind === "units") {
-    const index = unitOrder.indexOf(name);
-    if (index < 0) return undefined;
-    const { x, y, width, height } = unitSheets[style].frames[index + (side === "enemy" ? 4 : 0)]!;
-    return { source: assetURL(style, kind), crop: [x, y, width, height], pixel: false };
+    const styled = styledSheets[style];
+    const crop = styled.frames[frameKey as keyof typeof styled.frames];
+    return crop ? { source: campaignAssetURL(styled.source), crop, pixel: false } : undefined;
   }
   const index = name === "ford" ? 3 : terrainOrder.indexOf(name);
   if (index < 0) return undefined;
@@ -351,7 +239,13 @@ function frameFor(
   };
 }
 
-function workerFrame(): SpriteFrame {
+function workerFrame(style: ArtStyle): SpriteFrame {
+  if (style !== "pixel")
+    return {
+      source: campaignAssetURL(styledSheets[style].source),
+      crop: styledSheets[style].frames.portrait_worker,
+      pixel: false,
+    };
   return {
     source: campaignAssetURL(pixelSources.units),
     crop: pixelFrames.portrait_worker,
@@ -361,7 +255,7 @@ function workerFrame(): SpriteFrame {
 
 /** Enumerate every frame once; atlas references stop at this loading boundary. */
 function styleFrames(style: ArtStyle): Record<string, SpriteFrame> {
-  const frames: Record<string, SpriteFrame> = { portrait_worker: workerFrame() };
+  const frames: Record<string, SpriteFrame> = { portrait_worker: workerFrame(style) };
   for (const [key, crop] of Object.entries(campaignSheets[style].frames)) {
     if (key === "portrait_worker") continue;
     const kind = key.startsWith("terrain_") ? "terrain" : "units";
@@ -374,29 +268,15 @@ function styleFrames(style: ArtStyle): Record<string, SpriteFrame> {
       mask: kind === "units" ? metadata.clips?.[key] : undefined,
     };
   }
-  for (const name of unitOrder) {
-    for (const side of ["player", "enemy"] as const) {
-      const frame = frameFor(style, "units", name, side);
-      if (frame) frames[`${side}_${name}`] = frame;
+  if (style !== "pixel") {
+    const styled = styledSheets[style];
+    for (const [key, crop] of Object.entries(styled.frames)) {
+      frames[key] = { source: campaignAssetURL(styled.source), crop, pixel: false };
     }
   }
   for (const name of [...terrainOrder, "ford"]) {
     const frame = frameFor(style, "terrain", name, "player");
     if (frame) frames[`terrain_${name}`] = frame;
-  }
-  for (const [type, definition] of Object.entries(TYPES)) {
-    for (const side of ["player", "enemy"] as const) {
-      const key = `${side}_${type === "bonearcher" ? "bone_archer" : type}`;
-      if (frames[key]) continue;
-      const native = pixelFrames[key as keyof typeof pixelFrames];
-      if (native)
-        frames[key] = { source: campaignAssetURL(pixelSources.units), crop: native, pixel: true };
-      else {
-        const family = definition.family === "bonearcher" ? "bone_archer" : definition.family;
-        const existing = frames[`${side}_${family}`];
-        if (existing) frames[key] = existing;
-      }
-    }
   }
   return frames;
 }

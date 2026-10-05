@@ -73,8 +73,12 @@ unit and terrain atlases in `public/assets` with `npm run art:build`. Artwork lo
 extracts each frame into a separate native-resolution image. Pixel extraction
 disables smoothing. The controller publishes the finished immutable image set
 with `BattleView`; renderers receive only isolated images and never display the
-full sheets. Normal and low-poly use the same pipeline with their existing source
-crops. Civilian conversations use a neutral worker portrait
+full sheets. Normal and low-poly use the same isolation pipeline. Their complete
+34-type rosters, both factions and a neutral worker portrait are packed from
+standalone source sprites in `art/styled` into one unit atlas per style. Beginners
+and veterans have distinct equipment, and veteran merfolk have violet scales;
+neither style falls back to pixel units. `npm run art:build` rebuilds all three styles.
+Civilian conversations use a neutral worker portrait
 from the unit atlas, without adding a worker to the combat roster.
 
 The existing OpenAI Sites project is recorded in `.openai/hosting.json`; its

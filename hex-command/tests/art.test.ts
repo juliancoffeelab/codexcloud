@@ -7,6 +7,7 @@ import { TERRAIN, TYPES } from "../src/game/engine";
 let art: typeof import("../src/presentation/art");
 import { campaignSheets } from "../src/presentation/campaign-art";
 import { pixelSources } from "../src/presentation/pixel-art";
+import { styledSheets } from "../src/presentation/styled-art";
 import { Game } from "../src/game/engine";
 import { createGameView } from "../src/game/view";
 import { battlefieldTiles } from "../src/ui/battlefield-view";
@@ -241,6 +242,55 @@ for (const style of ["pixel", "normal", "low-poly"] as const) {
       extraction(art.dialoguePortrait(art.artworkForStyle(style), "worker", 0, 0, 90, 120));
     },
   );
+}
+for (const style of ["normal", "low-poly"] as const) {
+  test("Complete styled roster uses its own atlas without pixel fallbacks — " + style, async () => {
+    await art.loadArtStyle(style);
+    const source = styledSheets[style].source;
+    const png = readFileSync(new URL(`../public/assets/${source.filename}`, import.meta.url));
+    assert.equal(png.readUInt32BE(16), source.width);
+    assert.equal(png.readUInt32BE(20), source.height);
+    assert.equal(createHash("sha256").update(png).digest("hex").slice(0, 12), source.revision);
+    const frameName = (name: string) => (name === "bonearcher" ? "bone_archer" : name);
+    const expected = Object.keys(TYPES).flatMap((type) =>
+      ["enemy", "player"].map((side) => `${side}_${frameName(type)}`),
+    );
+    assert.deepEqual(
+      Object.keys(styledSheets[style].frames).sort(),
+      [...expected, "portrait_worker"].sort(),
+    );
+    for (const key of [...expected, "portrait_worker"]) {
+      const frame = art.artworkForStyle(style).frames[key];
+      assert(frame, `${style} is missing ${key}`);
+      assert.equal(frame.pixel, false, `${style}/${key} must not use pixel artwork`);
+      const unit = key.replace(/^(player|enemy)_/, "");
+      const rendered =
+        key === "portrait_worker"
+          ? art.dialoguePortrait(art.artworkForStyle(style), "worker", 0, 0, 56, 56)
+          : art.artSprite(
+              art.artworkForStyle(style),
+              "units",
+              unit,
+              0,
+              0,
+              56,
+              56,
+              "",
+              key.startsWith("enemy_") ? "enemy" : "player",
+            );
+      const isolated = extraction(rendered);
+      assert.equal(isolated.smoothing, true);
+      assert(isolated.source.includes(`/assets/${source.filename}?v=${source.revision}`));
+      const [x, y, width, height] =
+        styledSheets[style].frames[key as keyof typeof styledSheets.normal.frames];
+      assert(x >= 0 && y >= 0 && x + width <= source.width && y + height <= source.height);
+      assert.deepEqual(isolated.coordinates, [x, y, width, height, 0, 0, width, height]);
+    }
+    assert(
+      !requested.some((url) => url.includes("pixel.png")),
+      "A styled roster must not request the pixel atlas",
+    );
+  });
 }
 test("Tall Lark dialogue uses exactly one 48×48 frame", async () => {
   await art.loadArtStyle("pixel");
