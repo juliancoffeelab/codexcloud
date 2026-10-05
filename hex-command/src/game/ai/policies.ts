@@ -1,5 +1,7 @@
 import { Game, TYPES, distance } from "../engine";
 import { enemyActionIds } from "../enemy-turn";
+import { enemyTileOrder } from "../enemy-order";
+import { leaderMayAdvance } from "../leader-restraint";
 import { campaignMission, goalProgress } from "../campaign-progress";
 import type { Side, Unit, UnitType } from "../types";
 import { canPursue, essential, individualObjectives, objectivesFor } from "./objectives";
@@ -215,6 +217,16 @@ function plans(
     if (promotion && beforeRisk < unit.hp)
       result.push({ unit: unit.id, tile: unit.tile, advance: promotion, score: 14 });
     const destinations = [unit.tile, ...game.reachable(unit.id).keys()];
+    const restraint = {
+      units: allies.concat(foes),
+      definitions: TYPES,
+      distance: (first: string, second: string) => distance(game.tile(first)!, game.tile(second)!),
+      recruiting: Boolean(
+        TYPES[unit.type].leader &&
+        game.recruitmentOptions(side).some((type) => game.recruitTiles(unit.id, type).length > 0),
+      ),
+      requiredMovement: objectives.some((goal) => goal.kind === "escape" && goal.actor === unit.id),
+    };
     for (const tileId of destinations) {
       const tile = game.tile(tileId)!;
       let positioning = 0;
@@ -245,16 +257,6 @@ function plans(
       if (
         tileId !== unit.tile &&
         objectives.some((goal) => goal.actor === unit.id && goal.tiles.includes(unit.tile))
-      )
-        positioning -= 24;
-      if (
-        TYPES[unit.type].leader &&
-        tileId !== unit.tile &&
-        game.tile(unit.tile)?.terrain === "keep" &&
-        game.tile(unit.tile)?.owner === side &&
-        allies.length < 6 &&
-        game.recruitmentOptions(side).some((type) => TYPES[type].cost <= game.gold[side]) &&
-        !objectives.some((goal) => goal.kind === "escape" && goal.actor === unit.id)
       )
         positioning -= 24;
       const healingTile =
@@ -353,6 +355,13 @@ function plans(
               (goal.kind === "escape" && unit.role === "leader" && goal.tile === tileId),
           ),
         );
+        if (
+          TYPES[unit.type].leader &&
+          !finishesEscort &&
+          !finishesBattle &&
+          !leaderMayAdvance(unit, tileId, restraint)
+        )
+          continue;
         if (important && lethal && incoming > 0 && !finishesEscort && !finishesBattle) continue;
         const dangerWeight = important
           ? 1.5
@@ -407,6 +416,7 @@ export function playPolicyTurn(game: Game, policy: PolicyId, context: PolicyCont
             canPursue(unit, goal) &&
             (goal.kind !== "capture" || goal.tiles.some((tile) => game.tile(tile)?.owner !== side)),
         );
+      const order = enemyTileOrder(game.tiles, game.units, unit, true);
       const best = eligible
         ?.map((goal) => ({
           goal,
@@ -415,7 +425,17 @@ export function playPolicyTurn(game: Game, policy: PolicyId, context: PolicyCont
               ...goal.tiles.map((tile) => distance(game.tile(unit.tile)!, game.tile(tile)!)),
             ) / goal.weight,
         }))
-        .sort((a, b) => a.distance - b.distance)[0]?.goal;
+        .sort((a, b) => {
+          const nearest = (goal: AiObjective) =>
+            goal.tiles
+              .map((tile) => game.tile(tile)!)
+              .sort(
+                (first, second) =>
+                  distance(game.tile(unit.tile)!, first) -
+                    distance(game.tile(unit.tile)!, second) || order(first, second),
+              )[0]!;
+          return a.distance - b.distance || order(nearest(a.goal), nearest(b.goal));
+        })[0]?.goal;
       game.enemyAct(
         id,
         side,

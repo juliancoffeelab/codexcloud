@@ -25,6 +25,8 @@ import { CAMPAIGN_UNITS } from "./campaign-units";
 import { HEAVY_MOVEMENT, PATHFINDER_MOVEMENT, movementCost } from "./movement";
 import { RACES, resolveUnits } from "./races";
 import { progressionUnits } from "./progression";
+import { enemyTileOrder } from "./enemy-order";
+import { leaderMayAdvance } from "./leader-restraint";
 export { RACES } from "./races";
 import { CAMPAIGNS, LEGACY_ASHEN_REFUGE } from "./campaign-data";
 import {
@@ -746,7 +748,7 @@ export class Game {
     const recruitTiles = this.recruitTiles(commander.id, recruitType);
     if (!recruitTiles.length) return;
 
-    recruitTiles.sort((first, second) => second.col - first.col);
+    recruitTiles.sort(enemyTileOrder(this.tiles, this.units, commander));
     this.recruit(commander.id, recruitType, recruitTiles[0]!.id);
   }
 
@@ -781,7 +783,7 @@ export class Game {
     id: string,
     side: Side = "enemy",
     movementGoals?: Tile[],
-    allowEarlyLeaderMovement = false,
+    requiresLeaderMovement = false,
   ): void {
     if (this.turn !== side || this.winner) return;
     const unit = this.unit(id);
@@ -795,13 +797,37 @@ export class Game {
     const retreat = this.tryEnemyRetreat(unit);
     if (retreat === "acted") return;
     if (this.tryEnemyAttack(unit, retreat === "cornered")) return;
-    if (TYPES[unit.type].leader && this.round < 5 && !allowEarlyLeaderMovement) return;
-
     const goals = movementGoals ?? this.enemyMovementGoals(unit);
     if (!goals.length) return;
     const routes =
       this.mapId === "river" || this.campaign ? this.routeDistances(unit, goals) : null;
     let destinations = [unit.tile, ...this.reachable(id).keys()];
+    if (TYPES[unit.type].leader) {
+      const recruiting = this.recruitmentOptions(side).some(
+        (type) => this.recruitTiles(unit.id, type).length > 0,
+      );
+      const restraint = {
+        units: this.units,
+        definitions: TYPES,
+        distance: (first: string, second: string) =>
+          distance(this.tile(first)!, this.tile(second)!),
+        recruiting,
+        requiredMovement: requiresLeaderMovement,
+      };
+      destinations = destinations.filter(
+        (tile) =>
+          leaderMayAdvance(unit, tile, restraint) ||
+          (!this.campaign &&
+            this.units.some(
+              (target) =>
+                target.side !== side &&
+                TYPES[target.type].leader &&
+                this.attackOptions(unit, target, tile).some(
+                  (attack) => this.preview(unit, target, attack.id, tile).damage >= target.hp,
+                ),
+            )),
+      );
+    }
     const mission = this.campaign && side === "enemy" ? campaignMission(this.campaign) : undefined;
     const guardsPost = mission?.enemyLeaderPost && TYPES[unit.type].leader;
     if ((mission?.defendObjectives || guardsPost) && routes) {
@@ -814,7 +840,11 @@ export class Game {
     const scores = new Map(
       destinations.map((tile) => [tile, this.enemyPositionScore(unit, tile, goals, routes)]),
     );
-    destinations.sort((first, second) => scores.get(second)! - scores.get(first)!);
+    const order = enemyTileOrder(this.tiles, this.units, unit, true);
+    destinations.sort(
+      (first, second) =>
+        scores.get(second)! - scores.get(first)! || order(this.tile(first)!, this.tile(second)!),
+    );
 
     const destination = destinations[0]!;
     if (destination !== unit.tile) this.move(id, destination);
@@ -879,7 +909,10 @@ export class Game {
     };
     const destinations = [unit.tile, ...this.reachable(unit.id).keys()];
     const scores = new Map(destinations.map((tile) => [tile, score(tile)]));
-    destinations.sort((a, b) => scores.get(b)! - scores.get(a)!);
+    const order = enemyTileOrder(this.tiles, this.units, unit, true);
+    destinations.sort(
+      (a, b) => scores.get(b)! - scores.get(a)! || order(this.tile(a)!, this.tile(b)!),
+    );
     const destination = destinations[0]!;
     if (destination !== unit.tile && scores.get(destination)! > scores.get(unit.tile)!) {
       this.move(unit.id, destination);
@@ -913,6 +946,7 @@ export class Game {
   }
 
   private tryEnemyAttack(unit: Unit, desperate = false): boolean {
+    const order = enemyTileOrder(this.tiles, this.units, unit);
     const choices = this.targets(unit.id)
       .flatMap((target) => this.attackOptions(unit, target).map((attack) => ({ target, attack })))
       .filter(
@@ -922,7 +956,8 @@ export class Game {
       .sort(
         (first, second) =>
           this.enemyAttackScore(unit, second.target, unit.tile, second.attack) -
-          this.enemyAttackScore(unit, first.target, unit.tile, first.attack),
+            this.enemyAttackScore(unit, first.target, unit.tile, first.attack) ||
+          order(this.tile(first.target.tile)!, this.tile(second.target.tile)!),
       );
     const choice = choices[0];
     if (!choice) return false;

@@ -4,6 +4,8 @@ import { enemyActionIds } from "../src/game/enemy-turn";
 import { playPolicyTurn } from "../src/game/ai/policies";
 import { canPursue, objectivesFor } from "../src/game/ai/objectives";
 import { createArena, runArena } from "../src/game/ai/simulation";
+import { enemyTileOrder } from "../src/game/enemy-order";
+import { leaderMayAdvance } from "../src/game/leader-restraint";
 import type { AiAction } from "../src/game/ai/policies";
 
 // Generic-side entry points preserve the actual live classic enemy decisions.
@@ -48,6 +50,221 @@ assert.deepEqual(runArena(config), battle, "Seeded results and commands must rep
 assert.equal(battle.phases.length, 2);
 assert.equal(battle.reason, "cap");
 assert.equal(battle.winner, null, "Unfinished games aren't fabricated draws or losses");
+
+// Moving first must not change the recruitment rotation or early leader turn count.
+const reverseInitiative = runArena({
+  ...config,
+  army: "woodland",
+  player: "classic",
+  enemy: "classic",
+  first: "enemy",
+  maxRounds: 2,
+});
+assert.deepEqual(
+  reverseInitiative.phases.map((phase) => phase.round),
+  [1, 1, 2, 2],
+);
+assert.deepEqual(
+  reverseInitiative.phases
+    .slice(0, 2)
+    .map((phase) => phase.actions.find((action) => action.kind === "recruit")?.type),
+  ["boar", "boar"],
+);
+
+const rotate = (id: string) => {
+  const [col, row] = id.split(",").map(Number) as [number, number];
+  return `${8 - col - (row % 2)},${8 - row}`;
+};
+const opposite = (side: "player" | "enemy") => (side === "player" ? "enemy" : "player");
+function rotateState(state: ReturnType<Game["captureState"]>) {
+  const rotated = structuredClone(state);
+  rotated.turn = opposite(state.turn);
+  rotated.gold = { player: state.gold.enemy, enemy: state.gold.player };
+  rotated.tiles = state.tiles.map((tile) => {
+    const partner = state.tiles.find((other) => other.id === rotate(tile.id))!;
+    return {
+      ...tile,
+      terrain: partner.terrain,
+      owner: partner.owner ? opposite(partner.owner) : null,
+    };
+  });
+  rotated.units = state.units.map((unit) => ({
+    ...unit,
+    tile: rotate(unit.tile),
+    side: opposite(unit.side),
+  }));
+  return rotated;
+}
+function assertRotatedCommands(state: ReturnType<Game["captureState"]>) {
+  const original = createArena(config);
+  original.restoreState(state);
+  const rotated = createArena(config);
+  rotated.restoreState(rotateState(state));
+  const objectives = [
+    { id: "territory", kind: "capture" as const, tiles: ["4,4", "3,2", "5,6"], weight: 24 },
+  ];
+  playPolicyTurn(original, "classic", { seed: 1, objectives });
+  playPolicyTurn(rotated, "classic", {
+    seed: 1,
+    objectives: objectives.map((goal) => ({ ...goal, tiles: goal.tiles.map(rotate) })),
+  });
+  assert.deepEqual(
+    rotated.commands,
+    original.commands.map((command) =>
+      "tile" in command ? { ...command, tile: rotate(command.tile) } : command,
+    ),
+    "Classic decisions must rotate with the battlefield, including equal movement/attack scores",
+  );
+}
+for (const army of ["human", "woodland", "undead", "coastal"] as const)
+  for (const landscape of ["open", "wooded", "crossings"] as const) {
+    const sample = createArena({ ...config, army, landscape }).captureState();
+    sample.round = 5;
+    assertRotatedCommands(sample);
+  }
+
+// A wounded troop's retreat follows the same rule when its home changes sides.
+const retreatState = createArena(config).captureState();
+retreatState.round = 5;
+retreatState.gold = { player: 0, enemy: 0 };
+retreatState.tiles = retreatState.tiles.map((tile) => ({
+  ...tile,
+  terrain: tile.terrain === "keep" ? "keep" : "plains",
+}));
+retreatState.units = [
+  {
+    id: "u1",
+    type: "swordsman",
+    side: "player",
+    tile: "4,4",
+    hp: 1,
+    moved: false,
+    attacked: false,
+  },
+  {
+    id: "u2",
+    type: "swordsman",
+    side: "enemy",
+    tile: "5,4",
+    hp: 10,
+    moved: false,
+    attacked: false,
+  },
+];
+assertRotatedCommands(retreatState);
+
+const attackState = structuredClone(retreatState);
+attackState.units[0]!.hp = 10;
+attackState.units.push({
+  id: "u3",
+  type: "swordsman",
+  side: "enemy",
+  tile: "3,4",
+  hp: 10,
+  moved: false,
+  attacked: false,
+});
+assertRotatedCommands(attackState);
+
+const homeArena = createArena(config);
+const homeLeader = homeArena.units.find(
+  (unit) => unit.side === "player" && TYPES[unit.type].leader,
+)!;
+const villageOrder = enemyTileOrder(homeArena.tiles, homeArena.units, homeLeader, true);
+assert.ok(
+  villageOrder(homeArena.tile("1,3")!, homeArena.tile("3,2")!) < 0,
+  "Equal village choices favor the home keep",
+);
+
+// Leader restraint depends on surviving, nearby troops, not elapsed turns.
+const leaderState = createArena({ ...config, army: "human", landscape: "open" }).captureState();
+leaderState.units = leaderState.units.filter((unit) => TYPES[unit.type].leader);
+leaderState.gold = { player: 0, enemy: 0 };
+const ownLeader = leaderState.units.find((unit) => unit.side === "player")!;
+const opposingLeader = leaderState.units.find((unit) => unit.side === "enemy")!;
+for (const policy of ["classic", "rush", "mixed"] as const)
+  for (const round of [1, 99]) {
+    const game = createArena(config);
+    game.restoreState({ ...leaderState, round });
+    playPolicyTurn(game, policy, {
+      seed: 1,
+      recruitLimit: 0,
+      objectives: [{ id: "fort", kind: "capture", tiles: ["4,4"], weight: 24 }],
+    });
+    assert.ok(
+      distance(game.tile(game.unit(ownLeader.id)!.tile)!, game.tile(opposingLeader.tile)!) >=
+        distance(game.tile(ownLeader.tile)!, game.tile(opposingLeader.tile)!),
+      `${policy} must not send an unescorted leader forward on turn ${round}`,
+    );
+  }
+const leadContext = {
+  units: leaderState.units,
+  definitions: TYPES,
+  distance: (first: string, second: string) =>
+    distance(homeArena.tile(first)!, homeArena.tile(second)!),
+  recruiting: false,
+  requiredMovement: false,
+};
+assert.equal(leaderMayAdvance(ownLeader, "4,4", leadContext), false);
+assert.equal(leaderMayAdvance(ownLeader, "0,4", leadContext), true);
+assert.equal(leaderMayAdvance(ownLeader, "4,4", { ...leadContext, requiredMovement: true }), true);
+const escorts: typeof leaderState.units = [
+  {
+    id: "guard1",
+    type: "swordsman",
+    side: "player",
+    tile: "5,4",
+    hp: 10,
+    moved: false,
+    attacked: false,
+  },
+  {
+    id: "guard2",
+    type: "swordsman",
+    side: "player",
+    tile: "4,5",
+    hp: 10,
+    moved: false,
+    attacked: false,
+  },
+];
+assert.equal(
+  leaderMayAdvance(ownLeader, "4,4", { ...leadContext, units: [...leadContext.units, ...escorts] }),
+  true,
+);
+assert.equal(
+  leaderMayAdvance(ownLeader, "4,4", {
+    ...leadContext,
+    units: [...leadContext.units, ...escorts.map((unit) => ({ ...unit, hp: 1 }))],
+  }),
+  false,
+);
+assert.equal(
+  leaderMayAdvance(ownLeader, "4,4", {
+    ...leadContext,
+    units: [...leadContext.units, ...escorts],
+    recruiting: true,
+  }),
+  false,
+);
+
+const escaping = Game.startCampaign("ashen-oath");
+escaping.advanceDialogue(true);
+const escapingState = escaping.captureState();
+const escapeLeader = escapingState.units.find(
+  (unit) => unit.role === "leader" && unit.side === "player",
+)!;
+escapeLeader.tile = "10,1";
+escapingState.units = [escapeLeader];
+escapingState.gold.player = 0;
+// Isolate the escape command from classic's unrelated combat/capture priorities.
+escapingState.tiles = escapingState.tiles.map((tile) => ({ ...tile, terrain: "plains" }));
+for (const policy of ["classic", "rush", "mixed"] as const) {
+  const game = Game.startCampaign("ashen-oath");
+  game.restoreState(escapingState);
+  playPolicyTurn(game, policy, { seed: 1, recruitLimit: 0 });
+  assert.equal(game.winner, "player", `${policy} must permit a required leader escape`);
+}
 
 // Same planner, independently selected recruitment: no shared override leaks between seats.
 const crossed = runArena({

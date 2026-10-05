@@ -30,6 +30,14 @@ const otherSide = (side: Side): Side => (side === "player" ? "enemy" : "player")
 class RecordedGame extends Game {
   commands: AiAction[] = [];
   pool?: RecruitType[];
+  /** Arena rounds contain both seats, regardless of which seat has initiative. */
+  arenaFirst?: Side;
+  override endTurn(): void {
+    if (!this.arenaFirst) return super.endTurn();
+    if (this.winner) throw new Error("The battle is over.");
+    if (this.turn !== this.arenaFirst) this.round++;
+    this.beginTurn(otherSide(this.turn));
+  }
   override recruitmentOptions(side: Side): RecruitType[] {
     return this.pool ? [...this.pool] : super.recruitmentOptions(side);
   }
@@ -199,6 +207,7 @@ export function createArena(
   delete state.lastCombat;
   game.restoreState(state);
   game.pool = [...army.pool];
+  game.arenaFirst = config.first;
   return game;
 }
 
@@ -215,6 +224,8 @@ export interface ArenaResult {
 export function runArena(config: ArenaConfig): ArenaResult {
   const game = createArena(config);
   const initial = game.captureState();
+  // Each seat receives its first turn's income before its first decisions.
+  game.beginTurn(config.first);
   const territory = ["4,4", "3,2", "5,6"];
   const held = { player: 0, enemy: 0 };
   const visits = { player: new Set<string>(), enemy: new Set<string>() };

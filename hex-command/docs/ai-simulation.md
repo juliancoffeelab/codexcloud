@@ -33,11 +33,13 @@ execution speed, not outcomes. Reports can also be replayed from `.json.gz` arch
 ## What each policy does
 
 **Classic** reuses the existing enemy recruitment and action methods, including
-their stable ordering and early leader restraint. Those methods now accept either
+their stable unit ordering. Those methods now accept either
 side, retaining the original enemy defaults. When given testing objectives, classic
 uses them as movement destinations; it still chooses its ordinary combat actions.
 The player-side campaign adapter permits an escape leader to leave early. The
-live enemy retains its authored posts and campaign behavior.
+live enemy retains its authored posts and campaign behavior. Recruit placement
+points toward the opposing keep. Equal movement, retreat, target and objective
+choices use a home-relative orientation; equal village choices favor the home keep.
 
 **Rush** recruits melee units without healing and favors efficient damage and
 durability. It pursues objectives, captures income and protects indispensable
@@ -52,6 +54,19 @@ the front; healers favor adjacent wounded allies with nonstacking healing accoun
 for. Healthy healers defer formation moves while screens can still move. The planner
 recomputes the whole army after each chosen action, so followers can use newly
 vacated routes instead of being trapped by a fixed unit order.
+
+Rush/mixed recruitment places screens nearer the closest current enemy, and
+ranged units/healers farther away. A recruitment override supplies that placement
+even when the action planner is classic.
+
+All planners share dynamic leader restraint. A leader advancing toward contact
+needs two nearby combatants with at least half their HP, including one at least
+as close to the enemy as the leader's destination. Couriers and healers are not
+counted as escorts. An unthreatened leader stays available to recruit while fewer
+than four ordinary combatants remain and recruitment is possible. Retreats,
+required leader escapes and immediate battle-winning attacks remain available;
+elapsed turns alone never release a leader. This is a formation heuristic, not a
+guarantee against losing a leader.
 
 Both new planners estimate next-phase pressure through a restored game and the
 live pathfinder, including authored arrivals. They preserve couriers, leaders and
@@ -77,6 +92,8 @@ melee troops, recruitment pool and per-phase recruitment limit. Pools cover huma
 woodland, undead and coastal units. Both seats and both initiatives are run for
 each nonidentical bot pairing; self-play runs both initiatives. One seed contains
 216 preferred-recruitment games, or 864 games with all six factorial bots.
+Each arena round contains both seats' phases, beginning with the chosen initiative;
+an enemy-first opening is enemy@1 then player@1, not enemy@1 then player@2.
 
 Arena victory is either the real engine's leader defeat or control of the central
 fort and two central villages through two opposing phases. Optional ruins record

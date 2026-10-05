@@ -6,6 +6,12 @@ The run stopped at the user’s request. These tables retain only complete match
 
 Frozen game/policy source: `578fae2`. All three batches use the same source fingerprint. No language models play these games.
 
+The [side-bias and campaign investigation](investigation.md) identifies and fixes
+classic's directional choices and an enemy-first arena round-clock bug, and
+documents the subsequent shared leader-restraint rule. These tables remain
+measurements of the original source; replay their archives on `578fae2`, not the
+current implementation.
+
 ## Preferred recruitment
 
 | Bot   | Opponent | Wins | Losses | Unresolved | Games |
