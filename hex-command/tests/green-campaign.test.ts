@@ -1,3 +1,4 @@
+import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
 import { Game } from "../src/game/engine";
 import { campaignMission, goalProgress, returnsWithStory } from "../src/game/campaign-progress";
@@ -8,12 +9,12 @@ import { loadBattle, saveBattle, SAVE_KEY } from "../src/game/save";
 import { required, TestStorage } from "./helpers";
 
 const storage = new TestStorage();
-globalThis.localStorage = storage;
+
 const companion = (game: Game) =>
   required(game.units.find((unit) => unit.side === "player" && unit.name === "Lark"));
 
 // Occupying guards hold the cutting camps while the company assembles, and retake a lost post.
-{
+test("Cutting camp guards defend their posts", async () => {
   const game = Game.startCampaign("green-accord");
   game.advanceDialogue(true);
   const company = game.units.filter((unit) => unit.side === "player").map((unit) => ({ ...unit }));
@@ -39,10 +40,10 @@ const companion = (game: Game) =>
   raid.enemyAct(guard.id);
   assert.equal(guard.tile, "7,3");
   assert.equal(required(raid.tile("7,3")).owner, "enemy");
-}
+});
 
 // Camps stop the cutting, but the missing workers' ledger is also required.
-{
+test("Both camps and the worker ledger are required", async () => {
   const game = Game.startCampaign("green-accord");
   game.advanceDialogue(true);
   for (const goal of campaignMission(game.campaign!).goals) {
@@ -63,10 +64,10 @@ const companion = (game: Game) =>
   assert(vigil.units.some((unit) => unit.side === "enemy" && unit.name === "The Overseer"));
   saveBattle(vigil);
   assert.deepEqual(loadBattle().game.snapshot(), vigil.snapshot());
-}
+});
 
 // Earlier vigil saves gain the living truce participant, but not a dead Dain.
-{
+test("Story companions cannot be duplicated through recall", async () => {
   const vigil = Game.startCampaign("green-accord", 1);
   const dain = required(vigil.units.find((unit) => unit.name === "Captain Dain"));
   assert(returnsWithStory(vigil.campaign!, dain));
@@ -76,49 +77,59 @@ const companion = (game: Game) =>
   assert(!returnsWithStory(vigil.campaign!, ordinary));
   const next = vigil.nextCampaignMission([ordinary.id]);
   assert.equal(next.units.filter((unit) => unit.name === "Captain Dain").length, 1);
-}
+});
 
 // Earlier vigil saves gain the living truce participant, but not a dead Dain.
 for (const dead of [false, true]) {
-  const game = Game.startCampaign("green-accord", 1, [], 0, dead ? ["green-dain-dead"] : []);
-  game.mapRevision = 1;
-  game.units = game.units.filter((unit) => unit.name !== "Captain Dain");
-  saveBattle(game);
-  const loaded = loadBattle().game;
-  assert.equal(loaded.mapId, "green-vigil");
-  assert.equal(loaded.mapRevision, 2);
-  assert.equal(
-    loaded.units.some((unit) => unit.name === "Captain Dain"),
-    !dead,
-  );
-  assert.equal(loaded.campaign!.marks.includes("dain-fell"), false);
+  test("Legacy truce saves respect Dain mortality — " + JSON.stringify([dead]), async () => {
+    const game = Game.startCampaign("green-accord", 1, [], 0, dead ? ["green-dain-dead"] : []);
+    game.mapRevision = 1;
+    game.units = game.units.filter((unit) => unit.name !== "Captain Dain");
+    saveBattle(game);
+    const loaded = loadBattle().game;
+    assert.equal(loaded.mapId, "green-vigil");
+    assert.equal(loaded.mapRevision, 2);
+    assert.equal(
+      loaded.units.some((unit) => unit.name === "Captain Dain"),
+      !dead,
+    );
+    assert.equal(loaded.campaign!.marks.includes("dain-fell"), false);
+  });
 }
 
 // Lark must survive both early chapters, including dying while attacking.
 for (const mission of [0, 1]) {
-  for (const retaliation of [false, true]) {
-    const game = Game.startCampaign("green-accord", mission);
-    game.advanceDialogue(true);
-    const lark = companion(game);
-    lark.tile = "3,3";
-    lark.hp = 1;
-    game.units = game.units.filter((unit) => unit.tile !== "4,3");
-    const enemy = game.addUnit("warden", "enemy", "4,3");
-    if (retaliation) game.attack(lark.id, enemy.id, "rootstaff");
-    else {
-      game.beginTurn("enemy");
-      game.attack(enemy.id, lark.id, "spear");
-    }
-    assert.equal(game.winner, "enemy");
-    assert.equal(game.campaign?.outcome, "Lark fell. The company cannot continue without them.");
-    saveBattle(game);
-    assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
-    assert.equal(companion(game.retryCampaignMission()).name, "Lark");
-  }
+  test(
+    "Lark must survive early chapters and retaliation — " + JSON.stringify([mission]),
+    async () => {
+      for (const retaliation of [false, true]) {
+        const game = Game.startCampaign("green-accord", mission);
+        game.advanceDialogue(true);
+        const lark = companion(game);
+        lark.tile = "3,3";
+        lark.hp = 1;
+        game.units = game.units.filter((unit) => unit.tile !== "4,3");
+        const enemy = game.addUnit("warden", "enemy", "4,3");
+        if (retaliation) game.attack(lark.id, enemy.id, "rootstaff");
+        else {
+          game.beginTurn("enemy");
+          game.attack(enemy.id, lark.id, "spear");
+        }
+        assert.equal(game.winner, "enemy");
+        assert.equal(
+          game.campaign?.outcome,
+          "Lark fell. The company cannot continue without them.",
+        );
+        saveBattle(game);
+        assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
+        assert.equal(companion(game.retryCampaignMission()).name, "Lark");
+      }
+    },
+  );
 }
 
 // Required companions continue as story characters, never generic recall duplicates.
-{
+test("Lark continues as a unique story character", async () => {
   const game = Game.startCampaign("green-accord", 0);
   for (const goal of campaignMission(game.campaign!).goals) {
     if (goal.kind === "event") game.campaign!.marks.push(`event:${goal.event}`);
@@ -131,7 +142,7 @@ for (const mission of [0, 1]) {
   assert.throws(() => game.nextCampaignMission([companion(game).id]), /surviving recruits/);
   const next = game.nextCampaignMission([]);
   assert.equal(next.units.filter((unit) => unit.name === "Lark").length, 1);
-}
+});
 
 function atVigil(): Game {
   const game = Game.startCampaign("green-accord", 1);
@@ -147,7 +158,7 @@ function atVigil(): Game {
 }
 
 // A late capture or an empty grove cannot complete the vigil by reaching a round number.
-{
+test("Vigil requires defended turns rather than elapsed rounds", async () => {
   const empty = Game.startCampaign("green-accord", 1);
   empty.round = 20;
   empty.beginTurn("player");
@@ -168,10 +179,10 @@ function atVigil(): Game {
     saveBattle(game);
     assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
   }
-}
+});
 
 // Leaving or losing the grove resets progress immediately; undo restores that same progress.
-{
+test("Leaving or losing the grove resets vigil; undo restores it", async () => {
   const game = atVigil();
   game.round = 2;
   game.beginTurn("player");
@@ -189,10 +200,10 @@ function atVigil(): Game {
   game.round = 3;
   game.beginTurn("player");
   assert.equal(game.campaign?.vigil?.heldTurns, 1);
-}
+});
 
 // Legacy saves start the new vigil at zero without resetting the saved company or old victory.
-{
+test("Legacy saves reset the new defense clock without erasing victory", async () => {
   const game = atVigil();
   game.round = 8;
   game.gold.player = 27;
@@ -217,98 +228,117 @@ function atVigil(): Game {
   game.campaign!.outcome = "Mission complete. The company can rest and regroup.";
   saveBattle(game);
   assert.equal(loadBattle().game.winner, "player", "An already won legacy stage stays won");
-}
+});
 
 // Dain's death changes this debrief and future missions, but retry rewinds current-stage deaths.
 for (const mission of [0, 1, 2]) {
-  const game = Game.startCampaign("green-accord", mission);
-  game.units = game.units.filter((unit) => unit.name !== "Captain Dain");
-  game.round = 4;
-  game.gold.player = 23;
-  saveBattle(game);
-  const restored = loadBattle().game;
-  assert.equal(restored.mapId, game.mapId);
-  assert.equal(restored.round, 4);
-  assert.equal(restored.gold.player, 23);
-  assert.deepEqual(restored.units, game.units);
-  assert(restored.campaign?.marks.includes("dain-fell"));
-  assert(
-    !campaignMission(restored.campaign!).victory.some((line) => line.speaker.includes("Dain")),
+  test(
+    "Dain deaths persist but retry restores incoming companions — " + JSON.stringify([mission]),
+    async () => {
+      const game = Game.startCampaign("green-accord", mission);
+      game.units = game.units.filter((unit) => unit.name !== "Captain Dain");
+      game.round = 4;
+      game.gold.player = 23;
+      saveBattle(game);
+      const restored = loadBattle().game;
+      assert.equal(restored.mapId, game.mapId);
+      assert.equal(restored.round, 4);
+      assert.equal(restored.gold.player, 23);
+      assert.deepEqual(restored.units, game.units);
+      assert(restored.campaign?.marks.includes("dain-fell"));
+      assert(
+        !campaignMission(restored.campaign!).victory.some((line) => line.speaker.includes("Dain")),
+      );
+      assert(restored.retryCampaignMission().units.some((unit) => unit.name === "Captain Dain"));
+      saveBattle(restored);
+      assert.deepEqual(loadBattle().game.snapshot(), restored.snapshot());
+    },
   );
-  assert(restored.retryCampaignMission().units.some((unit) => unit.name === "Captain Dain"));
-  saveBattle(restored);
-  assert.deepEqual(loadBattle().game.snapshot(), restored.snapshot());
 }
 
 // A legacy victory cannot resurrect Lark; surviving Lark keeps the already earned victory.
 for (const mission of [0, 1, 2]) {
-  const game = Game.startCampaign("green-accord", mission);
-  game.winner = "player";
-  game.campaign!.outcome = "Mission complete. The company can rest and regroup.";
-  game.campaign!.completed = mission === 2;
-  game.round = 9;
-  game.gold.player = 31;
-  saveBattle(game);
-  assert.equal(loadBattle().game.winner, "player");
-  game.units = game.units.filter((unit) => unit.name !== "Lark");
-  saveBattle(game);
-  const restored = loadBattle().game;
-  assert.equal(restored.mapId, game.mapId);
-  assert.equal(restored.winner, "enemy");
-  assert.equal(restored.campaign?.completed, false);
-  assert.equal(restored.campaign?.outcome, "Lark fell. The company cannot continue without them.");
-  assert.equal(restored.round, 9);
-  assert.equal(restored.gold.player, 31);
-  assert.deepEqual(restored.units, game.units);
-  assert.equal(
-    restored.campaign?.dialogue[restored.campaign.dialogueIndex]?.text,
-    restored.campaign?.outcome,
-  );
-  assert.throws(() => restored.nextCampaignMission([]), /Win this mission/);
-  assert.equal(companion(restored.retryCampaignMission()).name, "Lark");
-  saveBattle(restored);
-  assert.deepEqual(loadBattle().game.snapshot(), restored.snapshot());
+  test("Legacy victory cannot resurrect Lark — " + JSON.stringify([mission]), async () => {
+    const game = Game.startCampaign("green-accord", mission);
+    game.winner = "player";
+    game.campaign!.outcome = "Mission complete. The company can rest and regroup.";
+    game.campaign!.completed = mission === 2;
+    game.round = 9;
+    game.gold.player = 31;
+    saveBattle(game);
+    assert.equal(loadBattle().game.winner, "player");
+    game.units = game.units.filter((unit) => unit.name !== "Lark");
+    saveBattle(game);
+    const restored = loadBattle().game;
+    assert.equal(restored.mapId, game.mapId);
+    assert.equal(restored.winner, "enemy");
+    assert.equal(restored.campaign?.completed, false);
+    assert.equal(
+      restored.campaign?.outcome,
+      "Lark fell. The company cannot continue without them.",
+    );
+    assert.equal(restored.round, 9);
+    assert.equal(restored.gold.player, 31);
+    assert.deepEqual(restored.units, game.units);
+    assert.equal(
+      restored.campaign?.dialogue[restored.campaign.dialogueIndex]?.text,
+      restored.campaign?.outcome,
+    );
+    assert.throws(() => restored.nextCampaignMission([]), /Win this mission/);
+    assert.equal(companion(restored.retryCampaignMission()).name, "Lark");
+    saveBattle(restored);
+    assert.deepEqual(loadBattle().game.snapshot(), restored.snapshot());
+  });
 }
 
 for (const retaliation of [false, true]) {
-  const game = Game.startCampaign("green-accord", 0);
-  game.advanceDialogue(true);
-  const dain = required(game.units.find((unit) => unit.name === "Captain Dain"));
-  dain.tile = "4,4";
-  dain.hp = 1;
-  game.units = game.units.filter((unit) => unit.tile !== "3,4");
-  const wolf = game.addUnit("wolf", "player", "3,4");
-  if (retaliation) {
-    game.beginTurn("enemy");
-    game.attack(dain.id, wolf.id, "sword");
-  } else game.attack(wolf.id, dain.id, "fangs");
-  assert(game.campaign?.marks.includes("dain-fell"));
-  assert(!game.campaign?.choices?.includes("green-dain-dead"));
-  assert(!campaignMission(game.campaign!).victory.some((line) => line.speaker.includes("Dain")));
-  assert(game.retryCampaignMission().units.some((unit) => unit.name === "Captain Dain"));
-  for (const goal of campaignMission(game.campaign!).goals) {
-    if (goal.kind === "event") game.campaign!.marks.push(`event:${goal.event}`);
-    if (goal.kind === "control") {
-      for (const tile of goal.tiles) required(game.tile(tile)).owner = "player";
-    }
-  }
-  game.beginTurn("player");
-  assert.equal(game.winner, "player");
-  saveBattle(game);
-  assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
-  const next = game.nextCampaignMission([]);
-  assert(next.campaign?.choices?.includes("green-dain-dead"));
-  assert(!campaignMission(next.campaign!).victory.some((line) => line.speaker.includes("Dain")));
-  const finale = Game.startCampaign("green-accord", 2, [], 0, next.campaign!.choices);
-  assert(!finale.units.some((unit) => unit.name === "Captain Dain"));
-  assert(finale.units.some((unit) => unit.name === "Adept Tamsin"));
-  assert(!finale.retryCampaignMission().units.some((unit) => unit.name === "Captain Dain"));
-  saveBattle(finale);
-  assert.deepEqual(loadBattle().game.snapshot(), finale.snapshot());
+  test(
+    "Dain death carries into subsequent chapters — " + JSON.stringify([retaliation]),
+    async () => {
+      const game = Game.startCampaign("green-accord", 0);
+      game.advanceDialogue(true);
+      const dain = required(game.units.find((unit) => unit.name === "Captain Dain"));
+      dain.tile = "4,4";
+      dain.hp = 1;
+      game.units = game.units.filter((unit) => unit.tile !== "3,4");
+      const wolf = game.addUnit("wolf", "player", "3,4");
+      if (retaliation) {
+        game.beginTurn("enemy");
+        game.attack(dain.id, wolf.id, "sword");
+      } else game.attack(wolf.id, dain.id, "fangs");
+      assert(game.campaign?.marks.includes("dain-fell"));
+      assert(!game.campaign?.choices?.includes("green-dain-dead"));
+      assert(
+        !campaignMission(game.campaign!).victory.some((line) => line.speaker.includes("Dain")),
+      );
+      assert(game.retryCampaignMission().units.some((unit) => unit.name === "Captain Dain"));
+      for (const goal of campaignMission(game.campaign!).goals) {
+        if (goal.kind === "event") game.campaign!.marks.push(`event:${goal.event}`);
+        if (goal.kind === "control") {
+          for (const tile of goal.tiles) required(game.tile(tile)).owner = "player";
+        }
+      }
+      game.beginTurn("player");
+      assert.equal(game.winner, "player");
+      saveBattle(game);
+      assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
+      const next = game.nextCampaignMission([]);
+      assert(next.campaign?.choices?.includes("green-dain-dead"));
+      assert(
+        !campaignMission(next.campaign!).victory.some((line) => line.speaker.includes("Dain")),
+      );
+      const finale = Game.startCampaign("green-accord", 2, [], 0, next.campaign!.choices);
+      assert(!finale.units.some((unit) => unit.name === "Captain Dain"));
+      assert(finale.units.some((unit) => unit.name === "Adept Tamsin"));
+      assert(!finale.retryCampaignMission().units.some((unit) => unit.name === "Captain Dain"));
+      saveBattle(finale);
+      assert.deepEqual(loadBattle().game.snapshot(), finale.snapshot());
+    },
+  );
 }
 
 // An allied Dain who falls in the finale cannot speak its victory or ending.
-{
+test("Dead Dain cannot speak the finale", async () => {
   const game = Game.startCampaign("green-accord", 2);
   const dain = required(game.units.find((unit) => unit.name === "Captain Dain"));
   dain.hp = 1;
@@ -332,6 +362,12 @@ for (const retaliation of [false, true]) {
   );
   saveBattle(game);
   assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
-}
+});
 
-console.log("PASS: Lark survival, vigil defense, legacy saves, Dain continuity, and retry");
+beforeEach(() => {
+  storage.clear();
+  vi.stubGlobal("localStorage", storage);
+});
+afterEach(() => {
+  vi.unstubAllGlobals();
+});

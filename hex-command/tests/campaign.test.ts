@@ -1,3 +1,4 @@
+import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
 import { Game, TYPES } from "../src/game/engine";
 import { CAMPAIGNS } from "../src/game/campaign-data";
@@ -16,7 +17,6 @@ import { BattleController, type BattleView } from "../src/controller/battle";
 import { required, TestStorage } from "./helpers";
 
 const storage = new TestStorage();
-globalThis.localStorage = storage;
 
 // Delayed deployment changes fresh encounters, not armies already saved with
 // those troops present. Numeric markers import through explicit historical IDs.
@@ -24,54 +24,62 @@ for (const [id, chapter, type, tile, newWave, oldMarks] of [
   ["lantern-road", 1, "bonearcher", "8,7", 1, ["wave:0"]],
   ["ashen-oath", 2, "boar", "9,4", 2, ["wave:0", "wave:1"]],
 ] as const) {
-  const old = Game.startCampaign(id, chapter);
-  old.advanceDialogue(true);
-  old.mapRevision = 1;
-  old.round = 8;
-  old.campaign!.marks.push(...oldMarks);
-  const original = old.addUnit(type, "enemy", tile);
-  original.hp = 1;
-  const survivors = structuredClone(old.units);
-  const gold = { ...old.gold };
-  saveBattle(old, true);
-  const legacy = JSON.parse(storage.getItem(SAVE_KEY)!);
-  delete legacy.campaignDeploymentFormat;
-  storage.setItem(SAVE_KEY, JSON.stringify(legacy));
-  const loaded = loadBattle();
-  assert.equal(loaded.pendingEnemy, true);
-  assert.equal(loaded.game.mapRevision, 2);
-  assert.deepEqual(loaded.game.units, survivors);
-  assert.deepEqual(loaded.game.gold, gold);
-  for (const index of [...oldMarks.map((mark) => Number(mark.slice(5))), newWave])
-    assert(
-      loaded.game.campaign!.marks.includes(
-        `wave:${campaignMission(old.campaign!).waves.find((wave) => wave.legacyIndex === index)!.id}`,
-      ),
-    );
-  loaded.game.beginTurn("enemy");
-  assert.equal(loaded.game.units.length, survivors.length, "No duplicate delayed troop");
-  loaded.game.endTurn();
-  saveBattle(loaded.game);
-  assert.deepEqual(loadBattle().game.snapshot(), loaded.game.snapshot());
+  test(
+    "Delayed waves migrate without duplicate troops — " +
+      JSON.stringify([id, chapter, type, tile, newWave, oldMarks]),
+    async () => {
+      const old = Game.startCampaign(id, chapter);
+      old.advanceDialogue(true);
+      old.mapRevision = 1;
+      old.round = 8;
+      old.campaign!.marks.push(...oldMarks);
+      const original = old.addUnit(type, "enemy", tile);
+      original.hp = 1;
+      const survivors = structuredClone(old.units);
+      const gold = { ...old.gold };
+      saveBattle(old, true);
+      const legacy = JSON.parse(storage.getItem(SAVE_KEY)!);
+      delete legacy.campaignDeploymentFormat;
+      storage.setItem(SAVE_KEY, JSON.stringify(legacy));
+      const loaded = loadBattle();
+      assert.equal(loaded.pendingEnemy, true);
+      assert.equal(loaded.game.mapRevision, 2);
+      assert.deepEqual(loaded.game.units, survivors);
+      assert.deepEqual(loaded.game.gold, gold);
+      for (const index of [...oldMarks.map((mark) => Number(mark.slice(5))), newWave])
+        assert(
+          loaded.game.campaign!.marks.includes(
+            `wave:${campaignMission(old.campaign!).waves.find((wave) => wave.legacyIndex === index)!.id}`,
+          ),
+        );
+      loaded.game.beginTurn("enemy");
+      assert.equal(loaded.game.units.length, survivors.length, "No duplicate delayed troop");
+      loaded.game.endTurn();
+      saveBattle(loaded.game);
+      assert.deepEqual(loadBattle().game.snapshot(), loaded.game.snapshot());
 
-  const fresh = Game.startCampaign(id, chapter);
-  fresh.advanceDialogue(true);
-  const before = fresh.units.filter((unit) => unit.side === "enemy" && unit.type === type).length;
-  const wave = campaignMission(fresh.campaign!).waves[newWave]!;
-  fresh.round = wave.round;
-  saveBattle(fresh);
-  const current = loadBattle().game;
-  assert(!current.campaign!.marks.includes(`wave:${wave.id}`));
-  current.beginTurn("enemy");
-  assert.equal(
-    current.units.filter((unit) => unit.side === "enemy" && unit.type === type).length,
-    before + 1,
-    "Fresh battles still receive the disclosed wave",
+      const fresh = Game.startCampaign(id, chapter);
+      fresh.advanceDialogue(true);
+      const before = fresh.units.filter(
+        (unit) => unit.side === "enemy" && unit.type === type,
+      ).length;
+      const wave = campaignMission(fresh.campaign!).waves[newWave]!;
+      fresh.round = wave.round;
+      saveBattle(fresh);
+      const current = loadBattle().game;
+      assert(!current.campaign!.marks.includes(`wave:${wave.id}`));
+      current.beginTurn("enemy");
+      assert.equal(
+        current.units.filter((unit) => unit.side === "enemy" && unit.type === type).length,
+        before + 1,
+        "Fresh battles still receive the disclosed wave",
+      );
+    },
   );
 }
 
 // A named save carries wave identity even when the author reorders the list.
-{
+test("Named wave IDs survive list reordering", async () => {
   const game = Game.startCampaign("ashen-oath", 2);
   game.advanceDialogue(true);
   const mission = campaignMission(game.campaign!);
@@ -92,11 +100,11 @@ for (const [id, chapter, type, tile, newWave, oldMarks] of [
   numeric.state.campaign.marks = ["wave:0"];
   storage.setItem(SAVE_KEY, JSON.stringify(numeric));
   assert.deepEqual(loadBattle().game.campaign!.marks, ["wave:north-binding-rise"]);
-}
+});
 
 // The quarry's bookkeeper guards his office; regular troops still pursue escapees,
 // and approaching the office still provokes the leader's ordinary attack.
-{
+test("Quarry guard stays at its office while patrols pursue", async () => {
   const game = Game.startCampaign("ashen-oath");
   game.advanceDialogue(true);
   const orin = required(game.units.find((unit) => unit.name === "Orin"));
@@ -127,24 +135,26 @@ for (const [id, chapter, type, tile, newWave, oldMarks] of [
   intrusion.beginTurn("enemy");
   intrusion.enemyAct(defender.id);
   assert.equal(raider.hp, TYPES.skeleton.hp - 4, "The office guard still attacks an adjacent raid");
-}
+});
 
 // Visit sites belong on unoccupied map hexes, not under the opening company.
 for (const campaign of Object.values(CAMPAIGNS)) {
-  for (const mission of campaign.missions) {
-    for (const event of mission.events) {
-      if (event.trigger.kind !== "visit") continue;
-      const target = event.trigger.tile;
-      assert(
-        !mission.map.units.some((unit) => `${unit.col},${unit.row}` === target),
-        `${mission.map.id}: ${event.id} starts occupied`,
-      );
+  test("Visit rewards start on unoccupied hexes — " + campaign.id, async () => {
+    for (const mission of campaign.missions) {
+      for (const event of mission.events) {
+        if (event.trigger.kind !== "visit") continue;
+        const target = event.trigger.tile;
+        assert(
+          !mission.map.units.some((unit) => `${unit.col},${unit.row}` === target),
+          `${mission.map.id}: ${event.id} starts occupied`,
+        );
+      }
     }
-  }
+  });
 }
 
 // The gatherers are reachable on the northern bridge approach; old armies keep progress.
-{
+test("Gatherer reward moves without losing saved progress", async () => {
   const game = Game.startCampaign("lantern-road", 2);
   const adept = required(game.at("4,3"));
   const reward = required(
@@ -177,10 +187,10 @@ for (const campaign of Object.values(CAMPAIGNS)) {
     assert.equal(restored.tile("5,1")?.terrain, "grove");
     assert.equal(restored.tile("5,1")?.owner, "player");
   }
-}
+});
 
 // Starting occupancy cannot award a visit during another move, turn, or reload.
-{
+test("Only arriving visits award once and can be undone", async () => {
   const game = Game.startCampaign("lantern-road", 2);
   game.advanceDialogue(true);
   const adept = required(game.at("4,3"));
@@ -225,45 +235,47 @@ for (const campaign of Object.values(CAMPAIGNS)) {
     loadBattle().game.campaign!.dialogue.find((line) => line.speaker === "Reed gatherer")?.portrait,
     "worker",
   );
-}
+});
 
 // Dain's Ashen finale ending requires his survival, without changing the peaceful mission variant.
 for (const survives of [true, false]) {
-  const game = Game.startCampaign("ashen-oath", 2, [], 0, ["refuge-peace"]);
-  const mission = campaignMission(game.campaign!);
-  game.advanceDialogue(true);
-  const dain = required(game.units.find((unit) => unit.name === "Captain Dain"));
-  if (!survives) {
-    dain.hp = 1;
-    const approach = required(
-      game.neighbors(dain.tile).find((tile) => !game.at(tile.id) && tile.terrain !== "water"),
+  test("Ashen finale dialogue respects Dain survival — " + JSON.stringify([survives]), async () => {
+    const game = Game.startCampaign("ashen-oath", 2, [], 0, ["refuge-peace"]);
+    const mission = campaignMission(game.campaign!);
+    game.advanceDialogue(true);
+    const dain = required(game.units.find((unit) => unit.name === "Captain Dain"));
+    if (!survives) {
+      dain.hp = 1;
+      const approach = required(
+        game.neighbors(dain.tile).find((tile) => !game.at(tile.id) && tile.terrain !== "water"),
+      );
+      const attacker = game.addUnit("skeleton", "enemy", approach.id);
+      game.beginTurn("enemy");
+      game.attack(attacker.id, dain.id, "boneclub");
+      assert(!game.unit(dain.id));
+      game.endTurn();
+      saveBattle(game);
+      const restored = loadBattle().game;
+      assert.deepEqual(restored.snapshot(), game.snapshot());
+      assert.equal(campaignMission(restored.campaign!), mission);
+      assert(!restored.campaign!.marks.includes("dain-fell"));
+    }
+    const dialogueStart = game.campaign!.dialogue.length;
+    game.campaign!.marks.push("sealed:7,2", "sealed:7,6");
+    game.units = game.units.filter((unit) => unit.side === "player");
+    game.beginTurn("player");
+    assert.equal(game.winner, "player");
+    assert.equal(
+      game.campaign!.dialogue.slice(dialogueStart).some((line) => line.speaker === "Dain"),
+      survives,
     );
-    const attacker = game.addUnit("skeleton", "enemy", approach.id);
-    game.beginTurn("enemy");
-    game.attack(attacker.id, dain.id, "boneclub");
-    assert(!game.unit(dain.id));
-    game.endTurn();
     saveBattle(game);
-    const restored = loadBattle().game;
-    assert.deepEqual(restored.snapshot(), game.snapshot());
-    assert.equal(campaignMission(restored.campaign!), mission);
-    assert(!restored.campaign!.marks.includes("dain-fell"));
-  }
-  const dialogueStart = game.campaign!.dialogue.length;
-  game.campaign!.marks.push("sealed:7,2", "sealed:7,6");
-  game.units = game.units.filter((unit) => unit.side === "player");
-  game.beginTurn("player");
-  assert.equal(game.winner, "player");
-  assert.equal(
-    game.campaign!.dialogue.slice(dialogueStart).some((line) => line.speaker === "Dain"),
-    survives,
-  );
-  saveBattle(game);
-  assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
+    assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
+  });
 }
 
 // The previously published refuge save keeps its units, gold and village ownership.
-{
+test("Legacy refuge retains company and ownership", async () => {
   const current = Game.startCampaign("ashen-oath", 1);
   const legacy = new Game("ashen-refuge", 1);
   legacy.campaign = structuredClone(current.campaign!);
@@ -287,10 +299,10 @@ for (const survives of [true, false]) {
   assert.equal(restored.tile("5,1")?.terrain, "plains");
   saveBattle(restored);
   assert.deepEqual(loadBattle().game.snapshot(), restored.snapshot());
-}
+});
 
 // Refuge defense counts completed enemy turns, not repeated publications or captures.
-{
+test("Refuge defense counts completed turns", async () => {
   const game = Game.startCampaign("ashen-oath", 1);
   game.advanceDialogue(true);
   assert.equal(game.tile("3,1")?.terrain, "village");
@@ -314,8 +326,8 @@ for (const survives of [true, false]) {
   const next = game.nextCampaignMission([]);
   assert(next.units.some((unit) => unit.name === "Captain Dain" && unit.side === "player"));
   assert(next.recruitmentOptions("player").includes("adept"));
-}
-{
+});
+test("Lost refuge resets defense and medicine reduces its duration", async () => {
   const game = Game.startCampaign("ashen-oath", 1);
   game.advanceDialogue(true);
   game.round = 3;
@@ -343,9 +355,9 @@ for (const survives of [true, false]) {
   game.round = 8;
   game.beginTurn("player");
   assert.equal(game.winner, "player");
-}
+});
 // Pursuing a withdrawing soldier closes mediation, changes objectives and removes the ally.
-{
+test("Killing a withdrawing patrol closes mediation", async () => {
   const game = Game.startCampaign("ashen-oath", 1);
   game.advanceDialogue(true);
   const defender = required(game.at("5,4"));
@@ -393,9 +405,9 @@ for (const survives of [true, false]) {
   assert.deepEqual(next.retryCampaignMission().snapshot(), next.snapshot());
   saveBattle(next);
   assert.deepEqual(loadBattle().game.snapshot(), next.snapshot());
-}
+});
 // Killing troops who are still fighting does not close the peaceful route.
-{
+test("Fighting troop deaths preserve mediation", async () => {
   const game = Game.startCampaign("ashen-oath", 1);
   const defender = required(game.at("5,4"));
   const target = required(
@@ -405,88 +417,95 @@ for (const survives of [true, false]) {
   target.hp = 1;
   game.attack(defender.id, target.id, "boneclub");
   assert.equal(game.campaign?.refuge?.escalated, false);
-}
+});
 
 // Every withdrawing troop or captain death closes mediation, including a lethal reply.
 for (const scenario of ["retreating", "captain", "fighting", "survives"] as const) {
-  const game = Game.startCampaign("ashen-oath", 1);
-  game.advanceDialogue(true);
-  const defender = required(game.at("5,4"));
-  const attacker = required(
-    game.units.find((unit) =>
-      scenario === "captain"
-        ? unit.side === "enemy" && unit.role === "leader"
-        : unit.side === "enemy" && unit.type === "soldier",
-    ),
+  test(
+    "Mediation reacts to lethal replies and survival — " + JSON.stringify([scenario]),
+    async () => {
+      const game = Game.startCampaign("ashen-oath", 1);
+      game.advanceDialogue(true);
+      const defender = required(game.at("5,4"));
+      const attacker = required(
+        game.units.find((unit) =>
+          scenario === "captain"
+            ? unit.side === "enemy" && unit.role === "leader"
+            : unit.side === "enemy" && unit.type === "soldier",
+        ),
+      );
+      attacker.tile = "6,4";
+      attacker.hp = scenario === "survives" ? TYPES[attacker.type].hp : 1;
+      if (scenario === "retreating" || scenario === "survives") attacker.retreating = true;
+      game.turn = "enemy";
+      const weapon = TYPES[attacker.type].attacks[0]!;
+      assert(game.previewDetails(attacker, defender, weapon.id).retaliation > 0);
+      game.attack(attacker.id, defender.id, weapon.id);
+      const escalated = scenario === "retreating" || scenario === "captain";
+      assert.equal(game.campaign?.refuge?.escalated, escalated, scenario);
+      assert.equal(Boolean(game.unit(attacker.id)), scenario === "survives", scenario);
+      if (escalated) {
+        game.beginTurn("player");
+        saveBattle(game);
+        const restored = loadBattle().game;
+        assert.equal(restored.campaign?.refuge?.escalated, true);
+        restored.advanceDialogue(true);
+        restored.round = 40;
+        restored.beginTurn("player");
+        assert.equal(restored.winner, null, "a lethal reply permanently closes mediation");
+        assert.equal(
+          goalProgress(restored, campaignMission(restored.campaign!).goals[0]!).label,
+          "Defeat the remaining patrol",
+        );
+      }
+    },
   );
-  attacker.tile = "6,4";
-  attacker.hp = scenario === "survives" ? TYPES[attacker.type].hp : 1;
-  if (scenario === "retreating" || scenario === "survives") attacker.retreating = true;
-  game.turn = "enemy";
-  const weapon = TYPES[attacker.type].attacks[0]!;
-  assert(game.previewDetails(attacker, defender, weapon.id).retaliation > 0);
-  game.attack(attacker.id, defender.id, weapon.id);
-  const escalated = scenario === "retreating" || scenario === "captain";
-  assert.equal(game.campaign?.refuge?.escalated, escalated, scenario);
-  assert.equal(Boolean(game.unit(attacker.id)), scenario === "survives", scenario);
-  if (escalated) {
-    game.beginTurn("player");
-    saveBattle(game);
-    const restored = loadBattle().game;
-    assert.equal(restored.campaign?.refuge?.escalated, true);
-    restored.advanceDialogue(true);
-    restored.round = 40;
-    restored.beginTurn("player");
-    assert.equal(restored.winner, null, "a lethal reply permanently closes mediation");
-    assert.equal(
-      goalProgress(restored, campaignMission(restored.campaign!).goals[0]!).label,
-      "Defeat the remaining patrol",
-    );
-  }
 }
 
 // Each mission has reachable objectives, lawful starting armies and a usable recruiting keep.
 for (const definition of Object.values(CAMPAIGNS)) {
-  assert.equal(definition.missions.length, 3);
-  for (const [index, mission] of definition.missions.entries()) {
-    const game = Game.startCampaign(definition.id, index);
-    assert.equal(
-      new Set(mission.map.terrain.map((t) => `${t.col},${t.row}`)).size,
-      mission.map.terrain.length,
-    );
-    assert.equal(new Set(game.units.map((u) => u.tile)).size, game.units.length);
-    for (const side of ["player", "enemy"] as const) {
-      const leader = required(game.units.find((u) => u.side === side && u.role === "leader"));
-      assert.equal(game.tile(leader.tile)?.terrain, "keep");
-      assert.equal(game.tile(leader.tile)?.owner, side);
-      assert(TYPES[leader.type].leader);
-    }
-    for (const unit of game.units)
-      assert(Number.isFinite(game.cost(unit, required(game.tile(unit.tile)))));
-    const leader = required(game.units.find((u) => u.side === "player" && u.role === "leader"));
-    const land = game.tiles.filter((tile) => Number.isFinite(game.cost(leader, tile)));
-    const reached = new Set([leader.tile]);
-    const queue = [leader.tile];
-    while (queue.length)
-      for (const tile of game.neighbors(required(queue.shift()))) {
-        if (Number.isFinite(game.cost(leader, tile)) && !reached.has(tile.id)) {
-          reached.add(tile.id);
-          queue.push(tile.id);
-        }
+  test("Campaign missions have legal armies and reachable goals — " + definition.id, async () => {
+    assert.equal(definition.missions.length, 3);
+    for (const [index, mission] of definition.missions.entries()) {
+      const game = Game.startCampaign(definition.id, index);
+      assert.equal(
+        new Set(mission.map.terrain.map((t) => `${t.col},${t.row}`)).size,
+        mission.map.terrain.length,
+      );
+      assert.equal(new Set(game.units.map((u) => u.tile)).size, game.units.length);
+      for (const side of ["player", "enemy"] as const) {
+        const leader = required(game.units.find((u) => u.side === side && u.role === "leader"));
+        assert.equal(game.tile(leader.tile)?.terrain, "keep");
+        assert.equal(game.tile(leader.tile)?.owner, side);
+        assert(TYPES[leader.type].leader);
       }
-    assert.equal(reached.size, land.length);
-    for (const id of mission.goals.flatMap(goalTiles)) assert(reached.has(id));
-    for (const wave of mission.waves)
-      for (const unit of wave.units) assert(game.tile(`${unit.col},${unit.row}`));
-    assert(dialoguePending(game.campaign));
-    game.advanceDialogue(true);
-    saveBattle(game);
-    assert.deepEqual(loadBattle().game.snapshot(), game.snapshot(), "Campaign save round trip");
-  }
+      for (const unit of game.units)
+        assert(Number.isFinite(game.cost(unit, required(game.tile(unit.tile)))));
+      const leader = required(game.units.find((u) => u.side === "player" && u.role === "leader"));
+      const land = game.tiles.filter((tile) => Number.isFinite(game.cost(leader, tile)));
+      const reached = new Set([leader.tile]);
+      const queue = [leader.tile];
+      while (queue.length)
+        for (const tile of game.neighbors(required(queue.shift()))) {
+          if (Number.isFinite(game.cost(leader, tile)) && !reached.has(tile.id)) {
+            reached.add(tile.id);
+            queue.push(tile.id);
+          }
+        }
+      assert.equal(reached.size, land.length);
+      for (const id of mission.goals.flatMap(goalTiles)) assert(reached.has(id));
+      for (const wave of mission.waves)
+        for (const unit of wave.units) assert(game.tile(`${unit.col},${unit.row}`));
+      assert(dialoguePending(game.campaign));
+      game.advanceDialogue(true);
+      saveBattle(game);
+      assert.deepEqual(loadBattle().game.snapshot(), game.snapshot(), "Campaign save round trip");
+    }
+  });
 }
 
 // Courier objectives win independently of enemy leaders; losing the courier defeats the mission.
-{
+test("Courier survival and destination decide victory", async () => {
   const game = Game.startCampaign("lantern-road");
   const courier = required(game.units.find((u) => u.role === "courier"));
   courier.tile = "10,1";
@@ -512,10 +531,10 @@ for (const definition of Object.values(CAMPAIGNS)) {
   assert.equal(loss.winner, "enemy");
   saveBattle(loss);
   assert.equal(loadBattle().game.winner, "enemy");
-}
+});
 
 // Seals suppress their own waves permanently; killing the commander alone is insufficient.
-{
+test("Sealed stones suppress waves and require all objectives", async () => {
   const game = Game.startCampaign("lantern-road", 2);
   game.advanceDialogue(true);
   game.units = game.units.filter((u) => !(u.side === "enemy" && u.role === "leader"));
@@ -548,10 +567,10 @@ for (const definition of Object.values(CAMPAIGNS)) {
   assert.equal(game.winner, "player");
   saveBattle(game);
   assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
-}
+});
 
 // Side quests and their dialogue are rolled back with the move, then awarded only once.
-{
+test("Side quest rewards and dialogue undo together", async () => {
   const game = Game.startCampaign("lantern-road");
   game.advanceDialogue(true);
   const courier = required(game.units.find((u) => u.role === "courier"));
@@ -595,10 +614,10 @@ for (const definition of Object.values(CAMPAIGNS)) {
     storage.setItem(SAVE_KEY, JSON.stringify(corrupt));
     assert.equal(loadBattle().game.mapId, "mirror");
   }
-}
+});
 
 // Interrupted enemy checkpoints replay waves and campaign ownership deterministically.
-{
+test("Interrupted wave checkpoint replays once", async () => {
   const game = Game.startCampaign("lantern-road", 2);
   game.advanceDialogue(true);
   game.round = campaignMission(game.campaign!).waves[0]!.round;
@@ -615,10 +634,10 @@ for (const definition of Object.values(CAMPAIGNS)) {
   );
   first.dispose();
   replay.dispose();
-}
+});
 
 // New races have real counterplay under flat modifiers and matching retaliation categories.
-{
+test("Race counters use flat damage modifiers", async () => {
   const game = new Game();
   game.units = [];
   game.tile("2,3")!.terrain = "plains";
@@ -638,10 +657,10 @@ for (const definition of Object.values(CAMPAIGNS)) {
   target.type = "soldier";
   assert.equal(game.damage(attacker, target, "spear"), 3);
   assert.equal(game.damage(attacker, target, "hammer"), 3);
-}
+});
 
 // Replacing a session cancels its paused enemy turn; conversations gate player commands.
-{
+test("Replacing a paused session cancels it and dialogue gates commands", async () => {
   storage.clear();
   let release: (() => void) | undefined;
   const controller = new BattleController(
@@ -664,7 +683,12 @@ for (const definition of Object.values(CAMPAIGNS)) {
   assert.equal(required(latest).game.recruitmentOptions("player")[0], "wolf");
   controller.dispose();
   unsubscribe();
-}
-console.log(
-  "PASS: nine connected missions, campaign saves, goals, waves, rewards, recall, counters and cancellation",
-);
+});
+
+beforeEach(() => {
+  storage.clear();
+  vi.stubGlobal("localStorage", storage);
+});
+afterEach(() => {
+  vi.unstubAllGlobals();
+});

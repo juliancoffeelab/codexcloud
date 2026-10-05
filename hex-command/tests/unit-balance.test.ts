@@ -1,24 +1,31 @@
+import { test } from "vitest";
 import { required } from "./helpers.ts";
 import assert from "node:assert/strict";
 import { Game, TYPES } from "../src/game/engine.ts";
 
 // Pathfinder affects forests and hills, while every water crossing keeps its cost.
 for (const type of ["scout", "soldier", "archer", "commander"] as const) {
-  const game = new Game();
-  const unit = game.units.find((unit) => unit.type === type) || game.addUnit(type, "player", "2,3");
-  for (const terrain of ["forest", "hill"] as const) {
-    assert.equal(game.cost(unit, { terrain }), type === "scout" ? 1 : 2);
-  }
-  assert.equal(game.cost(unit, { terrain: "water" }), Infinity);
-  assert.equal(game.cost(unit, { terrain: "bridge" }), 1);
-  assert.equal(
-    game.cost(unit, { terrain: "ford" }),
-    ["soldier", "commander"].includes(type) ? 3 : 2,
+  test(
+    "Pathfinder discounts woods and hills without discounting water — " + JSON.stringify([type]),
+    async () => {
+      const game = new Game();
+      const unit =
+        game.units.find((unit) => unit.type === type) || game.addUnit(type, "player", "2,3");
+      for (const terrain of ["forest", "hill"] as const) {
+        assert.equal(game.cost(unit, { terrain }), type === "scout" ? 1 : 2);
+      }
+      assert.equal(game.cost(unit, { terrain: "water" }), Infinity);
+      assert.equal(game.cost(unit, { terrain: "bridge" }), 1);
+      assert.equal(
+        game.cost(unit, { terrain: "ford" }),
+        ["soldier", "commander"].includes(type) ? 3 : 2,
+      );
+    },
   );
 }
 
 // Actual route planning and movement must use the scout's hill discount.
-{
+test("Scout hill discount applies to real routes", async () => {
   const game = new Game();
   game.units = [];
   for (const tile of game.tiles) tile.terrain = "water";
@@ -29,7 +36,7 @@ for (const type of ["scout", "soldier", "archer", "commander"] as const) {
   game.move(scout.id, "5,0");
   assert.equal(scout.tile, "5,0");
   assert.equal(scout.moved, true);
-}
+});
 
 // Prices govern both affordability and the gold spent on a successful recruit.
 for (const [type, price] of [
@@ -38,25 +45,30 @@ for (const [type, price] of [
   ["swordsman", 6],
   ["spearman", 6],
 ] as const) {
-  const game = new Game();
-  const commander = required(
-    game.units.find((unit) => unit.side === "player" && unit.type === "commander"),
+  test(
+    "Recruit prices control affordability and gold spent — " + JSON.stringify([type, price]),
+    async () => {
+      const game = new Game();
+      const commander = required(
+        game.units.find((unit) => unit.side === "player" && unit.type === "commander"),
+      );
+      assert.equal(TYPES[type].cost, price);
+      game.gold.player = price;
+      const destination = required(game.recruitTiles(commander.id, type)[0]).id;
+      game.gold.player = price - 1;
+      assert.deepEqual(game.recruitTiles(commander.id, type), []);
+      assert.throws(() => game.recruit(commander.id, type, destination), /Cannot recruit/);
+      game.gold.player = price;
+      const recruit = game.recruit(commander.id, type, destination);
+      assert.equal(game.gold.player, 0);
+      assert.equal(recruit.type, type);
+      assert.equal(recruit.moved, true);
+      assert.equal(recruit.attacked, true);
+    },
   );
-  assert.equal(TYPES[type].cost, price);
-  game.gold.player = price;
-  const destination = required(game.recruitTiles(commander.id, type)[0]).id;
-  game.gold.player = price - 1;
-  assert.deepEqual(game.recruitTiles(commander.id, type), []);
-  assert.throws(() => game.recruit(commander.id, type, destination), /Cannot recruit/);
-  game.gold.player = price;
-  const recruit = game.recruit(commander.id, type, destination);
-  assert.equal(game.gold.player, 0);
-  assert.equal(recruit.type, type);
-  assert.equal(recruit.moved, true);
-  assert.equal(recruit.attacked, true);
 }
 // The quarry's initial purse affords a melee screen and a ranged skeleton together.
-{
+test("Quarry purse buys a melee screen and a ranged skeleton", async () => {
   const game = Game.startCampaign("ashen-oath");
   game.advanceDialogue(true);
   const orin = required(
@@ -69,11 +81,11 @@ for (const [type, price] of [
   }
   assert.equal(game.units.length, startingCompany + 2);
   assert.equal(game.gold.player, 0);
-}
+});
 
 // Refuge reinforcements and purchases begin as rookies; its authored elite
 // patrol remains armored, and a recruit can earn that armor through advancement.
-{
+test("Refuge recruits start as rookies and can earn armor", async () => {
   const game = Game.startCampaign("ashen-oath", 1);
   game.advanceDialogue(true);
   assert(game.units.some((unit) => unit.side === "enemy" && unit.type === "soldier"));
@@ -92,10 +104,10 @@ for (const [type, price] of [
   assert.equal(rookie.type, "soldier");
   assert.equal(rookie.hp, 12);
   assert(rookie.moved && rookie.attacked);
-}
+});
 
 // The woodland purse can also field a runner and ranged support instead of one boar.
-{
+test("Woodland purse supports a runner and ranged support", async () => {
   const game = Game.startCampaign("green-accord");
   game.advanceDialogue(true);
   const alder = required(
@@ -117,10 +129,10 @@ for (const [type, price] of [
     13,
     "The front-line body remains sturdy, but spear damage has a counter",
   );
-}
+});
 
 // Thorns can harass armored humans in cover, while skeletal armor remains a counter.
-{
+test("Thorns harass humans in cover but skeletal armor counters them", async () => {
   const game = new Game();
   game.units = [];
   for (const tile of game.tiles) tile.terrain = "plains";
@@ -142,10 +154,10 @@ for (const [type, price] of [
     assert.equal(game.damage(archer, target, "bow"), covered + 1);
     game.units = game.units.filter((unit) => unit.id !== target.id);
   }
-}
+});
 
 // A final coastal purse buys three different roles, rather than only three spear bodies.
-{
+test("Coastal purse affords three complementary roles", async () => {
   const game = Game.startCampaign("borrowed-tide", 2, [], 8);
   game.advanceDialogue(true);
   const mira = required(
@@ -165,57 +177,70 @@ for (const [type, price] of [
   assert.equal(game.preview(caster, armor, "surge").damage, 4);
   assert(TYPES.reefguard.attacks.every((weapon) => weapon.damageType === "pierce"));
   assert(TYPES.tridentguard.attacks.some((weapon) => weapon.damageType === "impact"));
-}
+});
 
 // Light Impact support survives a rookie sword and bow while its screen withdraws;
 // a heavy infantry sword still makes that exposed position fatal.
 for (const support of ["wavemender", "adept"] as const)
   for (const infantry of ["swordsman", "soldier"] as const) {
-    const game = new Game();
-    game.units = [];
-    for (const tile of game.tiles) tile.terrain = "plains";
-    const healer = game.addUnit(support, "player", "2,3");
-    const sword = game.addUnit(infantry, "enemy", "3,3");
-    const archer = game.addUnit("archer", "enemy", "4,3");
-    game.turn = "enemy";
-    game.attack(sword.id, healer.id, "sword");
-    game.attack(archer.id, healer.id, "bow");
-    assert.equal(game.unit(healer.id)?.hp, infantry === "swordsman" ? 1 : undefined);
+    test(
+      "Support survives rookie attacks but remains vulnerable to heavy infantry — " +
+        JSON.stringify([support, infantry]),
+      async () => {
+        const game = new Game();
+        game.units = [];
+        for (const tile of game.tiles) tile.terrain = "plains";
+        const healer = game.addUnit(support, "player", "2,3");
+        const sword = game.addUnit(infantry, "enemy", "3,3");
+        const archer = game.addUnit("archer", "enemy", "4,3");
+        game.turn = "enemy";
+        game.attack(sword.id, healer.id, "sword");
+        game.attack(archer.id, healer.id, "bow");
+        assert.equal(game.unit(healer.id)?.hp, infantry === "swordsman" ? 1 : undefined);
+      },
+    );
   }
 
 // The bow can survive one sword plus an Impact spell, but two spells still
 // kill it: its extra HP does not remove the undead damage-type weakness.
 for (const second of ["swordsman", "adept"] as const) {
-  const game = new Game();
-  game.units = [];
-  for (const tile of game.tiles) tile.terrain = "plains";
-  const bow = game.addUnit("bonearcher", "player", "2,3");
-  const caster = game.addUnit("adept", "enemy", "4,3");
-  const other = game.addUnit(second, "enemy", "3,3");
-  game.turn = "enemy";
-  game.attack(caster.id, bow.id, "spark");
-  game.attack(other.id, bow.id, second === "adept" ? "spark" : "sword");
-  assert.equal(game.unit(bow.id)?.hp, second === "swordsman" ? 1 : undefined);
+  test(
+    "Undead ranged units retain their impact weakness — " + JSON.stringify([second]),
+    async () => {
+      const game = new Game();
+      game.units = [];
+      for (const tile of game.tiles) tile.terrain = "plains";
+      const bow = game.addUnit("bonearcher", "player", "2,3");
+      const caster = game.addUnit("adept", "enemy", "4,3");
+      const other = game.addUnit(second, "enemy", "3,3");
+      game.turn = "enemy";
+      game.attack(caster.id, bow.id, "spark");
+      game.attack(other.id, bow.id, second === "adept" ? "spark" : "sword");
+      assert.equal(game.unit(bow.id)?.hp, second === "swordsman" ? 1 : undefined);
+    },
+  );
 }
 
 // A woodland screen survives a sword and an arrow; the same exposed caster dies.
 for (const terrain of ["forest", "grove", "plains"] as const) {
-  const game = new Game();
-  game.units = [];
-  for (const tile of game.tiles) tile.terrain = "plains";
-  required(game.tile("2,3")).terrain = terrain;
-  const caster = game.addUnit("thorncaller", "player", "2,3");
-  const soldier = game.addUnit("soldier", "enemy", "3,3");
-  const archer = game.addUnit("archer", "enemy", "4,3");
-  game.turn = "enemy";
-  game.attack(soldier.id, caster.id, "sword");
-  game.attack(archer.id, caster.id, "bow");
-  assert.equal(game.unit(caster.id)?.hp, terrain === "plains" ? undefined : 1);
-  assert.equal(game.cost(caster, { terrain }), 1);
+  test("Woodland cover protects a fragile caster — " + JSON.stringify([terrain]), async () => {
+    const game = new Game();
+    game.units = [];
+    for (const tile of game.tiles) tile.terrain = "plains";
+    required(game.tile("2,3")).terrain = terrain;
+    const caster = game.addUnit("thorncaller", "player", "2,3");
+    const soldier = game.addUnit("soldier", "enemy", "3,3");
+    const archer = game.addUnit("archer", "enemy", "4,3");
+    game.turn = "enemy";
+    game.attack(soldier.id, caster.id, "sword");
+    game.attack(archer.id, caster.id, "bow");
+    assert.equal(game.unit(caster.id)?.hp, terrain === "plains" ? undefined : 1);
+    assert.equal(game.cost(caster, { terrain }), 1);
+  });
 }
 
 // Mobility does not turn the fragile skirmisher into a safe melee armor counter.
-{
+test("Mobile skirmishers remain vulnerable in melee", async () => {
   const game = new Game();
   game.units = [];
   for (const tile of game.tiles) tile.terrain = "plains";
@@ -239,7 +264,4 @@ for (const terrain of ["forest", "grove", "plains"] as const) {
   soldier.side = "player";
   thorncaller.side = "enemy";
   assert.equal(game.preview(thorncaller, soldier, "thorns").damage, 2);
-}
-console.log(
-  "PASS: movement, recruitment prices, Thorncaller ranged matchups, and melee counterplay",
-);
+});

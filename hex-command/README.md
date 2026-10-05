@@ -15,9 +15,7 @@ client-only game: no server or account is required. To build and serve the
 production files:
 
 ```sh
-npm run check
-npm test
-npm run build
+npm run verify
 python3 -m http.server 8000 --directory dist
 ```
 
@@ -335,10 +333,36 @@ Generated output and original binary assets are excluded.
 
 ## Checks
 
+`npm run verify` is the complete patch check: formatting, Svelte, TypeScript,
+pixel assets, unit tests and production build. It runs every check group even if
+another fails, prints full diagnostics for failures and ends with a summary and
+the command to rerun failed groups. Successful groups print their elapsed time.
+Checks run sequentially so compilation does not compete with the unit suite's
+20-second budget. Asset verification checks the existing matrices, images and
+atlases; it does not regenerate them. If it reports stale assets, use
+`npm run art:build`, then rerun the affected checks.
+
+Use targeted checks while implementing:
+
+```sh
+npm test -- ai ai-workflows          # Vitest filename filters
+npm test -- combat -t "Zero damage"  # one named scenario
+npm run test:watch -- ai             # watch selected tests (no batch deadline)
+npm run check:types                 # TypeScript, including tests and scripts
+npm run check:ui                    # Svelte diagnostics
+npm run verify -- types tests       # selected verification groups
+```
+
+Vitest runs independent named scenarios and reports all failures across tests and
+files instead of stopping at the first assertion. Filename filters and `-t` select
+tests without a separate discovery script. Filters matching no tests fail.
+
 `npm run check` checks application components and TypeScript tests with `strict`
 and `noUncheckedIndexedAccess`. `npm test` runs small unit checks for rules,
 publication, immutable views, undo, persistence, audio, and asynchronous cancellation.
-The entire unit command has a 20-second limit, enforced by a shared runner budget.
+The entire unit command has a 20-second limit. A small launcher gives the single
+Vitest process 18 seconds, leaving two seconds for npm/tsx startup. Watch mode is
+unbounded so it can stay open while editing.
 Tests use controlled promises instead of waiting through gameplay animations.
 
 There are no browser automation, screenshot, or migration/parity suites. These
@@ -459,4 +483,4 @@ weapons and retaliation, including safer replies and avoiding lethal exchanges.
 Existing saves keep their units, HP, gold, map, and progress and use the new rules.
 
 Run `npm test` for the lightweight unit checks, or
-`node --import tsx tests/combat.ts` for weapon and terrain rules alone.
+`npm test -- combat` for weapon and terrain rules alone.

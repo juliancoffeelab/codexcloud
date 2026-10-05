@@ -1,6 +1,8 @@
+import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
 import { artworkForStyle } from "../src/presentation/art";
-import { BattleController, type BattleView } from "../src/controller/battle";
+import type { BattleController as Controller, BattleView } from "../src/controller/battle";
+let BattleController: typeof Controller;
 import { Game, TYPES } from "../src/game/engine";
 import { campaignMission, dialoguePending } from "../src/game/campaign-progress";
 import { SAVE_KEY, saveBattle, loadBattle } from "../src/game/save";
@@ -9,10 +11,10 @@ import { battlefieldTiles } from "../src/ui/battlefield-view";
 import { unitPanelView } from "../src/ui/unit-panel-view";
 
 const storage = new TestStorage();
-globalThis.localStorage = storage;
+
 const immediatePause = async () => {};
 
-function observe(controller: BattleController) {
+function observe(controller: Controller) {
   let latest: BattleView | undefined;
   const unsubscribe = controller.view.subscribe((view) => {
     latest = view;
@@ -47,9 +49,9 @@ function pauseTurn(callToPause = 1) {
 }
 
 // The developer layout uses ordinary selection, movement, combat, turns and persistence.
-{
+test("Developer map supports normal actions and persistence", async () => {
   storage.clear();
-  const controller = new BattleController(immediatePause);
+  const controller = createController(immediatePause);
   const observed = observe(controller);
   controller.commands.reset("developer");
   const opening = controller.snapshot();
@@ -80,12 +82,12 @@ function pauseTurn(callToPause = 1) {
   controller.dispose();
   observed.unsubscribe();
   storage.clear();
-}
+});
 
 // Dialogue navigation persists its cursor without advancing gameplay or reopening finished lines.
-{
+test("Dialogue navigation persists its cursor without advancing gameplay", async () => {
   storage.clear();
-  const controller = new BattleController(immediatePause);
+  const controller = createController(immediatePause);
   const observed = observe(controller);
   controller.commands.startCampaign("green-accord");
   const opening = observed.view;
@@ -106,11 +108,11 @@ function pauseTurn(callToPause = 1) {
   assert.throws(() => controller.undoMove(), /Finish the conversation/);
   assert.deepEqual(controller.snapshot(), onSecondLine);
 
-  const restored = new BattleController(immediatePause);
+  const restored = createController(immediatePause);
   assert.equal(required(restored.snapshot().campaign).dialogueIndex, 1);
   restored.commands.previousDialogue();
   assert.equal(required(restored.snapshot().campaign).dialogueIndex, 0);
-  const rewound = new BattleController(immediatePause);
+  const rewound = createController(immediatePause);
   assert.equal(required(rewound.snapshot().campaign).dialogueIndex, 0);
   while (dialoguePending(rewound.snapshot().campaign)) rewound.commands.advanceDialogue();
   const finished = rewound.snapshot();
@@ -133,13 +135,13 @@ function pauseTurn(callToPause = 1) {
   finishedView.unsubscribe();
   observed.unsubscribe();
   storage.clear();
-}
+});
 
 // Stray dialogue commands cannot overwrite the checkpoint of a paused enemy turn.
-{
+test("Stray dialogue cannot overwrite a paused turn checkpoint", async () => {
   storage.clear();
   const paused = pauseTurn();
-  const controller = new BattleController(paused.pause);
+  const controller = createController(paused.pause);
   const observed = observe(controller);
   const beforeTurn = controller.snapshot();
   const pending = controller.endTurn();
@@ -157,10 +159,10 @@ function pauseTurn(callToPause = 1) {
   paused.release();
   await pending;
   observed.unsubscribe();
-}
+});
 
 // Real dialogue generated during an enemy turn publishes its cursor but retains the recovery save.
-{
+test("Enemy-turn dialogue keeps the recovery save", async () => {
   storage.clear();
   const fixture = Game.startCampaign("ashen-oath", 1);
   fixture.advanceDialogue(true);
@@ -176,7 +178,7 @@ function pauseTurn(callToPause = 1) {
   fixture.addUnit("commander", "enemy", "10,7");
   saveBattle(fixture);
   const paused = pauseTurn(3);
-  const controller = new BattleController(paused.pause);
+  const controller = createController(paused.pause);
   const observed = observe(controller);
   const pending = controller.endTurn();
   const checkpoint = storage.getItem(SAVE_KEY);
@@ -196,10 +198,10 @@ function pauseTurn(callToPause = 1) {
   paused.release();
   await pending;
   observed.unsubscribe();
-}
+});
 
 // Completing a vigil at the next player turn keeps the published mission outcome status.
-{
+test("Completed vigil publishes and persists its outcome", async () => {
   storage.clear();
   const fixture = Game.startCampaign("green-accord", 1);
   fixture.advanceDialogue(true);
@@ -217,7 +219,7 @@ function pauseTurn(callToPause = 1) {
   required(fixture.campaign).vigil = { heldTurns: 2, lastCountedRound: 3 };
   saveBattle(fixture);
   assert.equal(loadBattle().game.mapId, fixture.mapId);
-  const controller = new BattleController(immediatePause);
+  const controller = createController(immediatePause);
   const observed = observe(controller);
   await controller.endTurn();
   assert.equal(observed.view.game.winner, "player");
@@ -231,10 +233,10 @@ function pauseTurn(callToPause = 1) {
   controller.dispose();
   observed.unsubscribe();
   storage.clear();
-}
+});
 
 // Finished enemy-turn battles persist their outcome conversation normally.
-{
+test("Finished enemy-turn battles persist outcome dialogue", async () => {
   const fixture = Game.startCampaign("green-accord");
   fixture.advanceDialogue(true);
   fixture.units = fixture.units.filter((unit) => unit.role === "leader" || unit.name === "Lark");
@@ -246,7 +248,7 @@ function pauseTurn(callToPause = 1) {
   leader.hp = 1;
   enemy.tile = "4,4";
   saveBattle(fixture);
-  const controller = new BattleController(immediatePause);
+  const controller = createController(immediatePause);
   await controller.endTurn();
   assert.equal(controller.snapshot().turn, "enemy");
   assert.equal(controller.snapshot().winner, "enemy");
@@ -255,11 +257,11 @@ function pauseTurn(callToPause = 1) {
   assert.deepEqual(loadBattle().game.snapshot(), controller.snapshot());
   controller.dispose();
   storage.clear();
-}
+});
 
 // Rejected replacement must not spend undo history or cancel an enemy turn.
-{
-  const controller = new BattleController(immediatePause);
+test("Rejected replacement preserves undo and pending turns", async () => {
+  const controller = createController(immediatePause);
   const observed = observe(controller);
   controller.move("u3", "3,1");
   const before = controller.snapshot();
@@ -276,12 +278,12 @@ function pauseTurn(callToPause = 1) {
   assert.equal(observed.view.game.turn, "player");
   controller.dispose();
   observed.unsubscribe();
-}
+});
 
 // Revisions are immutable, and all availability belongs to the published revision.
-{
+test("Publications are immutable and availability follows the revision", async () => {
   storage.clear();
-  const controller = new BattleController(immediatePause);
+  const controller = createController(immediatePause);
   const observed = observe(controller);
   const opening = observed.view;
   assert.equal(Reflect.get(controller, "game"), undefined);
@@ -331,16 +333,16 @@ function pauseTurn(callToPause = 1) {
   assert(observed.view.recruitment?.stationed);
   controller.dispose();
   observed.unsubscribe();
-}
+});
 
 // Browser tools may only act for the player; preview results cannot mutate rules.
-{
+test("Browser commands are player-only and previews cannot mutate rules", async () => {
   storage.clear();
   const fixture = new Game();
   const enemy = fixture.addUnit("soldier", "enemy", "2,3");
   saveBattle(fixture);
   const paused = pauseTurn();
-  const controller = new BattleController(paused.pause);
+  const controller = createController(paused.pause);
   const observed = observe(controller);
   const preview = required(controller.actions("u2").attacks[0]);
   const weapon = required(preview.weapons[0]);
@@ -362,16 +364,16 @@ function pauseTurn(callToPause = 1) {
   assert.equal(observed.view.game.turn, "player");
   controller.dispose();
   observed.unsubscribe();
-}
+});
 
 // An old unmounted session must never save over its replacement after an await.
-{
+test("Unmounted sessions cannot overwrite replacements", async () => {
   storage.clear();
   const paused = pauseTurn();
-  const previous = new BattleController(paused.pause);
+  const previous = createController(paused.pause);
   const pending = previous.endTurn();
   previous.dispose();
-  const replacement = new BattleController(immediatePause);
+  const replacement = createController(immediatePause);
   replacement.reset("river");
   const saved = storage.getItem(SAVE_KEY);
   paused.release();
@@ -382,7 +384,7 @@ function pauseTurn(callToPause = 1) {
   assert.throws(() => previous.reset(), /session has closed/);
   assert.throws(() => previous.move("u3", "3,1"), /session has closed/);
   replacement.dispose();
-}
+});
 
 // Complete image requests explicitly; no network, browser, or timer is involved.
 class ControlledImage {
@@ -417,18 +419,16 @@ class ControlledImage {
     }
   }
 }
-const nativeImage = Reflect.get(globalThis, "Image") as typeof Image | undefined;
-const restoreCanvas = mockSpriteCanvas();
-globalThis.Image = ControlledImage as unknown as typeof Image;
+
 async function settleCallbacks() {
   for (let turn = 0; turn < 6; turn++) await Promise.resolve();
 }
 
 // A replay is consumed once, and replacement before initialization discards it.
-{
+test("Replay is consumed once and replacement discards pending initialization", async () => {
   storage.clear();
   saveBattle(new Game(), true);
-  const replacement = new BattleController(immediatePause);
+  const replacement = createController(immediatePause);
   const observed = observe(replacement);
   replacement.reset("river");
   replacement.initialize();
@@ -441,7 +441,7 @@ async function settleCallbacks() {
 
   saveBattle(new Game(), true);
   const paused = pauseTurn();
-  const replay = new BattleController(paused.pause);
+  const replay = createController(paused.pause);
   replay.initialize();
   replay.initialize();
   assert.equal(replay.snapshot().turn, "enemy");
@@ -457,12 +457,12 @@ async function settleCallbacks() {
   const saved = JSON.parse(required(storage.getItem(SAVE_KEY))) as { pendingEnemy: boolean };
   assert.equal(saved.pendingEnemy, false);
   replay.dispose();
-}
+});
 
 // Manual preferences supersede fallback work and older manual requests.
-{
+test("Manual art preferences supersede fallback and older requests", async () => {
   storage.clear();
-  const controller = new BattleController(immediatePause);
+  const controller = createController(immediatePause);
   const observed = observe(controller);
   controller.initialize();
   const openingGame = observed.view.game;
@@ -501,12 +501,12 @@ async function settleCallbacks() {
   assert.equal(storage.getItem("hex-command-art-style"), "pixel");
   controller.dispose();
   observed.unsubscribe();
-}
+});
 
 // Initialization cannot cancel a manual preference, and unmount cancels its writes.
-{
+test("Initialization preserves manual preference and unmount cancels writes", async () => {
   storage.clear();
-  const controller = new BattleController(immediatePause);
+  const controller = createController(immediatePause);
   const observed = observe(controller);
   const pending = controller.setArtStyle("normal");
   controller.initialize();
@@ -523,11 +523,26 @@ async function settleCallbacks() {
   assert.equal(observed.view, beforeUnmount);
   assert.equal(storage.getItem("hex-command-art-style"), null);
   observed.unsubscribe();
-}
-if (nativeImage) globalThis.Image = nativeImage;
-else Reflect.deleteProperty(globalThis, "Image");
-restoreCanvas();
+});
 
-console.log(
-  "PASS: immutable publications, player-only tools, isolated previews, cancellation, replay and latest artwork requests",
-);
+const controllers: Controller[] = [];
+function createController(...args: ConstructorParameters<typeof Controller>) {
+  const controller = new BattleController(...args);
+  controllers.push(controller);
+  return controller;
+}
+let restoreCanvas: () => void;
+beforeEach(async () => {
+  vi.resetModules();
+  ({ BattleController } = await import("../src/controller/battle"));
+  storage.clear();
+  ControlledImage.requests = [];
+  vi.stubGlobal("localStorage", storage);
+  vi.stubGlobal("Image", ControlledImage);
+  restoreCanvas = mockSpriteCanvas();
+});
+afterEach(() => {
+  for (const controller of controllers.splice(0)) controller.dispose();
+  restoreCanvas();
+  vi.unstubAllGlobals();
+});

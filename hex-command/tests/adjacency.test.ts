@@ -1,3 +1,4 @@
+import { test } from "vitest";
 import assert from "node:assert/strict";
 import { Game, distance } from "../src/game/engine";
 import type { Tile } from "../src/game/types";
@@ -5,31 +6,45 @@ import { required } from "./helpers";
 
 // Both row parities, edges, and original array order must match hex distance.
 for (const game of [new Game(), new Game("river"), new Game("river", 1)]) {
-  for (const tile of game.tiles) {
-    assert.equal(game.tile(tile.id), tile);
-    assert.deepEqual(
-      game.neighbors(tile.id),
-      game.tiles.filter((neighbor) => distance(tile, neighbor) === 1),
-    );
-  }
-  assert.equal(game.tile(null), undefined);
-  assert.equal(game.tile("missing"), undefined);
-  assert.deepEqual(game.neighbors("missing"), []);
+  test(
+    "Cached adjacency preserves distance, order and restored references — " +
+      JSON.stringify([game.mapId, game.mapRevision]),
+    async () => {
+      for (const tile of game.tiles) {
+        assert.equal(game.tile(tile.id), tile);
+        assert.deepEqual(
+          game.neighbors(tile.id),
+          game.tiles.filter((neighbor) => distance(tile, neighbor) === 1),
+        );
+      }
+      assert.equal(game.tile(null), undefined);
+      assert.equal(game.tile("missing"), undefined);
+      assert.deepEqual(game.neighbors("missing"), []);
 
-  const original = required(game.tile("2,2"));
-  const expected = game.neighbors(original.id);
-  game.neighbors(original.id).reverse().pop();
-  assert.deepEqual(game.neighbors(original.id), expected, "queries cannot modify cached order");
+      const original = required(game.tile("2,2"));
+      const expected = game.neighbors(original.id);
+      game.neighbors(original.id).reverse().pop();
+      assert.deepEqual(game.neighbors(original.id), expected, "queries cannot modify cached order");
 
-  const saved = game.captureState();
-  game.restoreState(saved);
-  assert.notEqual(game.tile(original.id), original, "restore replaces indexed tile references");
-  for (const neighbor of game.neighbors(original.id)) {
-    assert.equal(neighbor, game.tile(neighbor.id), "restored adjacency uses the restored board");
-  }
-  const neighbor = required(game.neighbors(original.id)[0]);
-  neighbor.terrain = "water";
-  assert.equal(game.tile(neighbor.id)?.terrain, "water", "cached neighbors retain live terrain");
+      const saved = game.captureState();
+      game.restoreState(saved);
+      assert.notEqual(game.tile(original.id), original, "restore replaces indexed tile references");
+      for (const neighbor of game.neighbors(original.id)) {
+        assert.equal(
+          neighbor,
+          game.tile(neighbor.id),
+          "restored adjacency uses the restored board",
+        );
+      }
+      const neighbor = required(game.neighbors(original.id)[0]);
+      neighbor.terrain = "water";
+      assert.equal(
+        game.tile(neighbor.id)?.terrain,
+        "water",
+        "cached neighbors retain live terrain",
+      );
+    },
+  );
 }
 
 function routingProbe(cols: number, rows: number): number {
@@ -76,9 +91,8 @@ function routingProbe(cols: number, rows: number): number {
   return neighborsVisited;
 }
 
-const small = routingProbe(15, 9);
-const large = routingProbe(30, 18);
-assert(large / small < 5, "four times the board must not require sixteen times the neighbors");
-console.log(
-  `PASS: indexed adjacency, restore, ordering and routing; ${small} → ${large} neighbors`,
-);
+test("Route neighbor visits scale linearly with board size", async () => {
+  const small = routingProbe(15, 9);
+  const large = routingProbe(30, 18);
+  assert(large / small < 5, "four times the board must not require sixteen times the neighbors");
+});
