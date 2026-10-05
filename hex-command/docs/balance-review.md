@@ -31,3 +31,26 @@ actual finding of the preceding review and prompted the duration-state change.
 Mechanical checks and an absence of a newly found blocker do not establish
 optimal unit balance or browser appearance. Distinct veteran artwork remains
 deferred.
+
+## Old Ashen follow-up
+
+The reviewer independently replayed both completed old Ashen records on
+`8259b39`. The mixed player's first refuge attempt bought no troops despite
+24–30 available gold, sent Orin north and left healthy recalled skeletons near
+their starting positions. The isolated refuge holder died immediately. The
+retry made only one skeleton attack in ten turns and earned no promotions;
+the successful skeleton-only retry maintained ownership, rotated screens and
+promoted Orin and a skeleton. It still used the authored bow and Orin's Impact.
+Mixed's quarry retry was faster and less costly than mono's successful quarry
+attempt: six turns and one casualty versus eleven and five.
+
+There was also an actual encounter bias: recurring heavy infantry took two
+bone-bow damage versus three from skeleton clubs. Rookie recurring swordsmen
+improve that matchup to three bow damage while retaining the initial armored
+patrol. The reviewer recommends this targeted change rather than a further
+global bow or movement buff before the fresh matched records finish. Tactical
+differences and unequal mediation clarification limit the old comparison.
+
+The finished coastal mixed record also replayed independently on `deae30c`:
+8 / 6 / 5 turns, two troop losses and no retry. The reviewer did not replay its
+still-active restricted companion trial or infer the final paired result.
