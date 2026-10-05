@@ -26,7 +26,7 @@ export function progressionUnits(
   units.swordsman = {
     ...units.soldier,
     name: "Swordsman",
-    hp: 9,
+    hp: 10,
     damage: 3,
     cost: 6,
     terrainModifiers: {},
@@ -38,7 +38,7 @@ export function progressionUnits(
   units.spearman = {
     ...units.warden,
     name: "Spearman",
-    hp: 9,
+    hp: 10,
     damage: 3,
     cost: 6,
     terrainModifiers: {},
@@ -193,6 +193,10 @@ export function progressionUnits(
   };
   units.revenant = {
     ...units.revenant,
+    attacks: [
+      weapon("rustblade", "Rust blade", 4, "blade"),
+      weapon("boneclub", "Bone club", 3, "impact"),
+    ],
     damageModifiers: { blade: -1, pierce: -1, impact: 0 },
     ability: "Bone shield",
     description:

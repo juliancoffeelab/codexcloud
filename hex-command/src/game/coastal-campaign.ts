@@ -92,7 +92,7 @@ const missions: MissionDefinition[] = [
       [
         ...keepCompany(2, 2),
         unit("harpooner", "player", 4, 4, "Edda", "courier"),
-        unit("commander", "enemy", 10, 5, "Captain Vale", "leader"),
+        unit("commander", "enemy", 10, 5, "Postmaster Harl", "leader"),
         unit("spearman", "enemy", 6, 2),
         unit("swordsman", "enemy", 8, 5),
         unit("archer", "enemy", 9, 4),
@@ -125,14 +125,21 @@ const missions: MissionDefinition[] = [
         "Vale's men took the sounding posts. I saw a sluice order bearing the council seal, but the date was cut from an older sheet.",
       ),
       line(
-        "Captain Vale",
+        "Postmaster Harl",
         "commander",
-        "The factor pays us to keep this channel clear for salvage. Bring your accusation to the council; you will not cross my posts.",
+        "Captain Vale sent us to hold these posts for the factor's salvage crew. Bring your accusation to the council; you will not cross here.",
       ),
       line(
         "Mira",
         "tidekeeper",
         "Then we take the posts and bring the pilot. Leave the fishing houses standing.",
+      ),
+    ],
+    legacyDialogue: [
+      line(
+        "Captain Vale",
+        "commander",
+        "The factor pays us to keep this channel clear for salvage. Bring your accusation to the council; you will not cross my posts.",
       ),
     ],
     victory: [
@@ -184,7 +191,7 @@ const missions: MissionDefinition[] = [
         ...keepCompany(1, 2),
         unit("harpooner", "player", 3, 3, "Edda", "courier"),
         unit("spearman", "player", 4, 2, "Tomas"),
-        unit("commander", "enemy", 10, 2, "Factor Senn", "leader"),
+        unit("commander", "enemy", 10, 2, "Foreman Cale", "leader"),
         unit("soldier", "enemy", 8, 4),
         unit("archer", "enemy", 8, 5),
         unit("spearman", "enemy", 7, 2),
@@ -196,6 +203,24 @@ const missions: MissionDefinition[] = [
     debrief:
       "The last worker leaves with the ledger. Senn had paid Vale to seize the posts, then charged the villagers for salvage they never requested. Tomas deserted when ordered to burn the hull with workers inside. He knows the wooded route to the upper gate.",
     requiredCompanions: ["Edda"],
+    companionLosses: {
+      Tomas: {
+        debrief:
+          "The workers leave with the ledger, but Tomas dies defending their escape. The rescued clerk explains that Senn's upper gate must open with the lower one to avoid flooding the village. His fellow deserters offer to guide the company along the wooded bank.",
+        victory: [
+          line(
+            "Edda",
+            "harpooner",
+            "Last boat away. The clerk has the books. Tomas did not make it back.",
+          ),
+          line(
+            "Mira",
+            "tidekeeper",
+            "We carry his testimony too. The clerk says we need both gates and the beacon; nobody else will die in a release we could have prevented.",
+          ),
+        ],
+      },
+    },
     hints: [
       "Reach the wreck at 5,4 with any unit. Occupation at the start of turn 6 completes the evacuation; the ledger must also be recovered.",
       "Tomas and other land recruits can use forest cover. Merfolk are exposed there; use the parallel sea and marsh routes.",
@@ -230,12 +255,19 @@ const missions: MissionDefinition[] = [
         "harpooner",
         "I can bring them out along the keel. Hold this landing until the sixth bell; nobody touches the quarry gate before then.",
       ),
-      line("Factor Senn", "commander", "That ledger is company property. Vale, clear the landing."),
+      line(
+        "Foreman Cale",
+        "commander",
+        "The factor's ledger is company property. Clear the landing and burn the books.",
+      ),
       line(
         "Mira",
         "tidekeeper",
         "A debt cannot give you ownership of a person. We take the books after we get everyone out.",
       ),
+    ],
+    legacyDialogue: [
+      line("Factor Senn", "commander", "That ledger is company property. Vale, clear the landing."),
     ],
     victory: [
       line(
@@ -312,6 +344,41 @@ const missions: MissionDefinition[] = [
       { kind: "control", label: "Control both sluice gates", tiles: ["8,2", "8,5"] },
       { kind: "escort", label: "Bring Edda to the release beacon", tile: "9,4" },
     ],
+    companionLosses: {
+      Tomas: {
+        intro: [
+          line(
+            "Mira",
+            "tidekeeper",
+            "Tomas's companions showed us the high bank through the woods. They will lead our land fighters. We take the lower wheel through the reeds.",
+          ),
+          line(
+            "Captain Vale",
+            "commander",
+            "Senn says the council will hang deserters first. Your testimony will not save you.",
+          ),
+          line(
+            "Mira",
+            "tidekeeper",
+            "He forged the council's order. Hear the clerk, or answer for holding this flood above the village.",
+          ),
+          line(
+            "Edda",
+            "harpooner",
+            "Bring me to the beacon. I will signal only when both wheels are ours.",
+          ),
+        ],
+        victory: [
+          line("Edda", "harpooner", "Both flags up. Open together—now."),
+          line("Mira", "tidekeeper", "The tide is home. Tomas should have seen it."),
+          line(
+            "Edda",
+            "harpooner",
+            "Put someone from each shore beside each wheel. Keep this from happening again.",
+          ),
+        ],
+      },
+    },
     recruits: ["reefguard", "harpooner", "wavemender", "swordsman", "spearman", "adept"],
     enemyRecruits: ["swordsman", "spearman", "archer"],
     gold: 16,

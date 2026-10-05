@@ -517,7 +517,7 @@ for (const definition of Object.values(CAMPAIGNS)) {
   assert.equal(game.damage(attacker, target, "sword"), 4);
   assert.equal(game.damage(attacker, target, "mace"), 4);
   attacker.type = "archer";
-  assert.equal(game.damage(attacker, target, "bow"), 1);
+  assert.equal(game.damage(attacker, target, "bow"), 2);
   attacker.type = "adept";
   assert.equal(game.previewDetails(attacker, target, "spark").retaliation, 0);
   assert.equal(game.damage(attacker, target, "spark"), 4);

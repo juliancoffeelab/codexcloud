@@ -118,6 +118,24 @@ function campaignState(
     value.carryGold > 8
   )
     return null;
+  const previousCompanions = new Set(
+    definition.missions
+      .slice(0, missionIndex)
+      .flatMap((chapter) =>
+        chapter.map.units
+          .filter((unit) => unit.side === "player" && unit.name && unit.role !== "leader")
+          .map((unit) => unit.name!),
+      ),
+  );
+  if (
+    value.fallenCompanions !== undefined &&
+    (!Array.isArray(value.fallenCompanions) ||
+      new Set(value.fallenCompanions).size !== value.fallenCompanions.length ||
+      !value.fallenCompanions.every(
+        (name) => typeof name === "string" && previousCompanions.has(name),
+      ))
+  )
+    return null;
   if (
     value.veterans !== undefined &&
     (!Array.isArray(value.veterans) ||
@@ -147,6 +165,9 @@ function campaignState(
   )
     return null;
   const allowedMarks = new Set([
+    ...mission.map.units
+      .filter((unit) => unit.side === "player" && unit.name)
+      .map((unit) => `fallen:${unit.name}`),
     ...(value.id === "green-accord" ? ["dain-fell"] : []),
     ...(mission.refuge ? ["held:5,4"] : []),
     ...mission.events.map((event) => `event:${event.id}`),
@@ -213,6 +234,10 @@ function campaignState(
     ...(mission.refuge?.warVictory ?? []),
     ...(mission.withoutDain?.intro ?? []),
     ...(mission.withoutDain?.victory ?? []),
+    ...Object.values(mission.companionLosses ?? {}).flatMap((changes) => [
+      ...(changes.intro ?? []),
+      ...(changes.victory ?? []),
+    ]),
     ...(mission.legacyDialogue ?? []),
     ...definition.ending,
     ...failure.map((text) => ({ speaker: "The company", portrait: definition.leader, text })),
@@ -252,6 +277,9 @@ function campaignState(
     ...(value.veterans ? { veterans: structuredClone(value.veterans) as CampaignVeteran[] } : {}),
     ...(value.storyVeterans
       ? { storyVeterans: structuredClone(value.storyVeterans) as CampaignVeteran[] }
+      : {}),
+    ...(value.fallenCompanions
+      ? { fallenCompanions: [...value.fallenCompanions] as string[] }
       : {}),
     carryGold: value.carryGold,
     marks: [...value.marks] as string[],
@@ -439,7 +467,9 @@ export function loadBattle(): LoadedBattle {
         ) {
           const origin = game.tile("5,5")!;
           const destination = [...game.tiles]
-            .filter((tile) => tile.terrain !== "water" && !game.at(tile.id))
+            .filter(
+              (tile) => Number.isFinite(game.cost({ type: "warden" }, tile)) && !game.at(tile.id),
+            )
             .sort((a, b) => distance(a, origin) - distance(b, origin))[0];
           if (destination) game.addUnit("warden", "player", destination.id).name = "Captain Dain";
         }

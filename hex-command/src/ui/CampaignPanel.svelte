@@ -149,6 +149,14 @@
                 <span>
                   <strong>{unit.name ?? TYPES[unit.type].name}</strong>
                   <span>{unit.hp} / {TYPES[unit.type].hp} HP</span>
+                  <span>
+                    Level {TYPES[unit.type].level}
+                    {#if TYPES[unit.type].experienceNeeded}
+                      · {unit.experience ?? 0} / {TYPES[unit.type].experienceNeeded} XP
+                    {:else}
+                      · Fully advanced
+                    {/if}
+                  </span>
                 </span>
               </label>
             {/each}

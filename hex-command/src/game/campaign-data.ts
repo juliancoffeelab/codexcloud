@@ -230,12 +230,12 @@ const lantern: MissionDefinition[] = [
       "The ferryman has brought news of three settlements occupied by the dead. Nera’s company is staying to reopen the road and light their windows again. Sella’s wardens will help, but the Tollkeeper is still collecting from the other bank.",
     hints: [
       "One bridge need not carry the whole army.",
-      "A welcoming village can keep a march alive.",
+      "A welcoming village can keep a march alive. Stone sparks punish bones; shield their fragile adepts with infantry.",
     ],
     goals: [
       { kind: "control", label: "Light all three eastern villages", tiles: ["7,1", "7,4", "7,7"] },
     ],
-    recruits: ["swordsman", "archer", "scout", "spearman"],
+    recruits: ["swordsman", "archer", "scout", "spearman", "adept"],
     enemyRecruits: ["skeleton", "bonearcher"],
     gold: 18,
     enemyGold: 0,
@@ -435,7 +435,7 @@ const green: MissionDefinition[] = [
       },
     ],
     recruits: ["wolf", "boar", "thorncaller"],
-    enemyRecruits: ["soldier", "archer", "warden"],
+    enemyRecruits: ["swordsman", "archer", "spearman"],
     gold: 12,
     enemyGold: 0,
     intro: [
@@ -602,9 +602,9 @@ const green: MissionDefinition[] = [
           unit("boar", "player", 2, 4),
           unit("thorncaller", "player", 2, 5, "Lark"),
           unit("commander", "enemy", 9, 4, "Captain Dain", "leader"),
-          unit("warden", "enemy", 7, 3),
-          unit("warden", "enemy", 7, 6),
-          unit("archer", "enemy", 5, 3),
+          unit("spearman", "enemy", 7, 3),
+          unit("spearman", "enemy", 7, 6),
+          unit("archer", "enemy", 6, 2),
           unit("archer", "enemy", 7, 5),
         ],
       ),
@@ -974,7 +974,7 @@ const green: MissionDefinition[] = [
       ],
       debrief:
         "The council heard the branch, examined the ledger and learned of Dain’s death. It revoked the Overseer’s charter and agreed to protect the road with the pack. The Rootbinder remains a danger, but the workers’ murder is exposed and the crossing is held.",
-      recruits: ["wolf", "boar", "thorncaller", "warden", "adept"],
+      recruits: ["wolf", "boar", "thorncaller", "spearman", "adept"],
       reinforcements: [
         {
           type: "boar",

@@ -61,7 +61,7 @@ export const CAMPAIGN_UNITS = {
     cost: 7,
     attacks: [
       attack("rustblade", "Rust blade", 3, "blade"),
-      attack("boneclub", "Bone club", 3, "impact"),
+      attack("boneclub", "Bone club", 2, "impact"),
     ],
     damageModifiers: { blade: 0, pierce: -1, impact: 0 },
     ability: "Bare bones",

@@ -89,3 +89,14 @@ Retain the transcripts and explain practical limits of a small agent sample.
 After balancing, independently review architecture, persistence, combat/progression
 timing, passability and the new campaign. Verify review findings before correcting
 them. Run only lightweight checks within the repository's existing time budget.
+
+## Visual advancement, after balance
+
+Every family must visibly change when it advances. Lower infantry wear leather
+and cloth before earning metal armor. Veteran scouts can use dark clothing and
+two knives; other families need similarly recognizable equipment or silhouette
+changes that express their role. Keep faction recognition and the approved pixel
+material palette. Compare all ranks on one full unit sheet: humanoids should have
+roughly the same height and comparable detail, with deliberate exceptions for
+beasts and tails. Edit the matrices, then render the normal game atlas. This work
+follows the balance pass, as requested on 2026-10-05.

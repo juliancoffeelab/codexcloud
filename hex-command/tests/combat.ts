@@ -29,10 +29,10 @@ const weapons = [
   ["scout", "sling"],
 ] as const;
 for (const [defenderType, expected] of [
-  ["soldier", [3, 4, 2, 1, 2]],
-  ["commander", [3, 3, 3, 1, 1]],
-  ["archer", [4, 3, 3, 2, 1]],
-  ["scout", [4, 3, 3, 2, 1]],
+  ["soldier", [3, 4, 3, 1, 2]],
+  ["commander", [3, 3, 4, 1, 1]],
+  ["archer", [4, 3, 4, 2, 1]],
+  ["scout", [4, 3, 4, 2, 1]],
 ] as const) {
   for (const [index, [attackerType, weapon]] of weapons.entries()) {
     const { game, attacker, target } = fixture(attackerType, defenderType);
@@ -106,7 +106,7 @@ for (const terrain of ["forest", "hill"] as const) {
 {
   const { game, attacker, target } = fixture("archer", "soldier");
   assert.deepEqual(game.preview(attacker, target, "bow"), {
-    damage: 2,
+    damage: 3,
     retaliation: 0,
   });
   assert.deepEqual(game.preview(attacker, target, "knife"), {
@@ -123,8 +123,8 @@ for (const terrain of ["forest", "hill"] as const) {
 {
   const { game, attacker, target } = fixture("archer", "archer", "4,3");
   assert.deepEqual(game.preview(attacker, target, "bow"), {
-    damage: 3,
-    retaliation: 3,
+    damage: 4,
+    retaliation: 4,
   });
   assert.equal(game.canAttackFrom(attacker, attacker.tile, target, "knife"), false);
   assert.throws(() => game.preview(attacker, target, "knife"), /cannot reach/);
@@ -139,7 +139,7 @@ for (const terrain of ["forest", "hill"] as const) {
   const { game, attacker, target } = fixture("scout", "archer");
   assert.deepEqual(game.preview(attacker, target, "sling"), {
     damage: 1,
-    retaliation: 3,
+    retaliation: 4,
   });
   assert.deepEqual(game.preview(attacker, target, "knife"), {
     damage: 2,

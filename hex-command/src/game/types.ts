@@ -304,6 +304,11 @@ export interface MissionDefinition {
   victory: DialogueLine[];
   events: MissionEvent[];
   waves: ReinforcementWave[];
+  /** Authored story changes when a named ally has fallen, without resurrecting them. */
+  companionLosses?: Record<
+    string,
+    Partial<Pick<MissionDefinition, "briefing" | "debrief" | "hints" | "intro" | "victory">>
+  >;
   refuge?: {
     medicineEvent: string;
     medicineTurns: number;
@@ -341,6 +346,8 @@ export interface CampaignState {
   /** Incoming veterans are a checkpoint: retry never keeps failed-attempt XP. */
   veterans?: CampaignVeteran[];
   storyVeterans?: CampaignVeteran[];
+  /** Deaths before this chapter; retry restores this incoming checkpoint. */
+  fallenCompanions?: string[];
   carryGold: number;
   marks: string[];
   dialogue: DialogueLine[];

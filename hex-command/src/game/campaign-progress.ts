@@ -12,14 +12,28 @@ export interface CampaignBoard {
 }
 
 export function campaignMission(state: Immutable<CampaignState>): Immutable<MissionDefinition> {
-  const mission = CAMPAIGNS[state.id].missions[state.mission]!;
+  let mission: Immutable<MissionDefinition> = CAMPAIGNS[state.id].missions[state.mission]!;
   if (
     (state.choices?.includes("refuge-war") ||
       state.choices?.includes("green-dain-dead") ||
       state.marks.includes("dain-fell")) &&
     mission.withoutDain
   )
-    return { ...mission, ...mission.withoutDain };
+    mission = { ...mission, ...mission.withoutDain };
+  const fallen = new Set([
+    ...(state.fallenCompanions ?? []),
+    ...state.marks.filter((mark) => mark.startsWith("fallen:")).map((mark) => mark.slice(7)),
+  ]);
+  for (const name of fallen) {
+    const changes = mission.companionLosses?.[name];
+    if (changes) mission = { ...mission, ...changes };
+  }
+  if ([...mission.intro, ...mission.victory].some((line) => fallen.has(line.speaker)))
+    mission = {
+      ...mission,
+      intro: mission.intro.filter((line) => !fallen.has(line.speaker)),
+      victory: mission.victory.filter((line) => !fallen.has(line.speaker)),
+    };
   if (state.refuge?.escalated && mission.refuge)
     return { ...mission, briefing: mission.refuge.warBriefing, hints: mission.refuge.warHints };
   return mission;

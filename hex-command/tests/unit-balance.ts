@@ -75,7 +75,7 @@ for (const [type, price] of [
     assert.equal(game.damageBreakdown(thorncaller, target, "thorns").damage, exposed);
     tile.terrain = "forest";
     assert.equal(game.damageBreakdown(thorncaller, target, "thorns").damage, covered);
-    assert.equal(game.damage(archer, target, "bow"), covered);
+    assert.equal(game.damage(archer, target, "bow"), covered + 1);
     game.units = game.units.filter((unit) => unit.id !== target.id);
   }
 }

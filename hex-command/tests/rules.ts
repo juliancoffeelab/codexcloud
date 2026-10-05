@@ -28,11 +28,11 @@ g = new Game();
 g.units = [required(g.unit("u1")), required(g.unit("u4"))];
 const archer = g.addUnit("archer", "player", "2,1"),
   enemy = g.addUnit("soldier", "enemy", "3,1");
-assert.deepEqual(g.preview(archer, enemy), { damage: 2, retaliation: 0 });
+assert.deepEqual(g.preview(archer, enemy), { damage: 3, retaliation: 0 });
 required(g.tile(enemy.tile)).terrain = "forest";
-assert.equal(g.damage(archer, enemy), 1);
+assert.equal(g.damage(archer, enemy), 2);
 required(g.tile(enemy.tile)).terrain = "hill";
-assert.equal(g.damage(archer, enemy), 1);
+assert.equal(g.damage(archer, enemy), 2);
 g = new Game();
 g.units = [required(g.unit("u1")), required(g.unit("u4"))];
 const melee = g.addUnit("soldier", "player", "2,1"),

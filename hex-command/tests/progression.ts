@@ -62,7 +62,7 @@ attacker.moved = attacker.attacked = false;
 const before = createGameView(game);
 assert.deepEqual(before.promotionOptions(attacker.id), ["soldier"]);
 game.advanceUnit(attacker.id, "soldier");
-assert.equal(attacker.hp, 9, "Promotion preserves all three wounds");
+assert.equal(attacker.hp, 8, "Promotion preserves all four wounds");
 assert.equal(attacker.id, before.units[0]!.id);
 assert.equal(attacker.experience, 0);
 assert(attacker.moved && attacker.attacked);
@@ -91,14 +91,14 @@ const human = terrainGame.addUnit("swordsman", "enemy", "4,3");
 const swimmer = terrainGame.addUnit("harpooner", "enemy", "4,4");
 for (const terrain of ["forest", "grove", "hill"] as const) {
   required(terrainGame.tile(swimmer.tile)).terrain = terrain;
-  assert.equal(terrainGame.damage(bow, swimmer, "bow"), 4);
+  assert.equal(terrainGame.damage(bow, swimmer, "bow"), 5);
   assert.equal(terrainGame.cost(swimmer, { terrain }), 3);
 }
 for (const terrain of ["ford", "marsh"] as const) {
   required(terrainGame.tile(human.tile)).terrain = terrain;
   required(terrainGame.tile(swimmer.tile)).terrain = terrain;
-  assert.equal(terrainGame.damage(bow, human, "bow"), 4);
-  assert.equal(terrainGame.damage(bow, swimmer, "bow"), terrain === "marsh" ? 2 : 3);
+  assert.equal(terrainGame.damage(bow, human, "bow"), 5);
+  assert.equal(terrainGame.damage(bow, swimmer, "bow"), terrain === "marsh" ? 3 : 4);
 }
 assert.equal(terrainGame.cost(swimmer, { terrain: "plains" }), 1);
 
@@ -154,6 +154,39 @@ assert.equal(
   "marshal",
   "Promoted leaders survive reload outside campaigns",
 );
+// A promoted bow specialist still counts as the classic enemy's ranged family.
+const recruitment = new Game();
+recruitment.addUnit("marksman", "enemy", "8,2");
+recruitment.beginTurn("enemy");
+recruitment.gold.enemy = 100;
+const oldIds = new Set(recruitment.units.map((unit) => unit.id));
+recruitment.enemyRecruit();
+assert.equal(recruitment.units.find((unit) => !oldIds.has(unit.id))?.type, "swordsman");
+
+// A dead optional named ally must stay dead across victory, reload and chapter retry.
+const rescue = Game.startCampaign("borrowed-tide", 1);
+rescue.advanceDialogue(true);
+const tomas = required(rescue.units.find((unit) => unit.name === "Tomas"));
+const shotTile = required(rescue.neighbors(tomas.tile).find((tile) => !rescue.at(tile.id)));
+const guard = rescue.addUnit("archer", "enemy", shotTile.id);
+tomas.hp = 1;
+rescue.beginTurn("enemy");
+rescue.attack(guard.id, tomas.id, "bow");
+rescue.endTurn();
+assert(!rescue.unit(tomas.id));
+assert(
+  rescue.retryCampaignMission().units.some((unit) => unit.name === "Tomas"),
+  "A failed-attempt casualty must not change the incoming checkpoint",
+);
+rescue.winner = "player";
+const gates = rescue.nextCampaignMission([]);
+assert(!gates.units.some((unit) => unit.name === "Tomas"));
+assert(!gates.campaign!.dialogue.some((line) => line.speaker === "Tomas"));
+saveBattle(gates);
+const loadedGates = loadBattle().game;
+assert.equal(loadedGates.campaign?.id, "borrowed-tide");
+assert.deepEqual(loadedGates.campaign?.fallenCompanions, ["Tomas"]);
+assert(!loadedGates.retryCampaignMission().units.some((unit) => unit.name === "Tomas"));
 console.log(
   "PASS: finite race/unit access, terrain weaknesses, every advancement ladder, wounds/actions/XP, veteran checkpoints and saved promoted leaders",
 );

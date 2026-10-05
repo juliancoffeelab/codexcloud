@@ -93,16 +93,17 @@ export const TYPES = immutable<Record<UnitType, UnitDefinition>>(
         race: "human",
         hp: 8,
         move: 3,
-        damage: 3,
+        damage: 4,
         range: 2,
         cost: 8,
         attacks: [
-          weapon("bow", "Bow", 3, "pierce", "ranged", 2, "attack-bow"),
+          weapon("bow", "Bow", 4, "pierce", "ranged", 2, "attack-bow"),
           weapon("knife", "Knife", 2, "blade", "melee", 1),
         ],
         damageModifiers: { blade: 0, pierce: 0, impact: 0 },
         ability: "Bow",
-        description: "Bow reaches 2 hexes. A knife provides a weak melee reply.",
+        description:
+          "Strong Pierce bow reaches 2 hexes. Slower than a scout; its knife is a weak melee reply.",
       },
       scout: {
         name: "Scout",
@@ -615,6 +616,10 @@ export class Game {
       `${sideLabel} ${unitName} used ${attackName} for ${result.damage} damage${retaliationMessage}.`,
     );
     for (const defeated of this.units.filter((unit) => unit.hp <= 0)) {
+      if (this.campaign && defeated.side === "player" && defeated.name) {
+        const mark = `fallen:${defeated.name}`;
+        if (!this.campaign.marks.includes(mark)) this.campaign.marks.push(mark);
+      }
       if (this.campaign?.id === "green-accord" && defeated.name === "Captain Dain") {
         if (!this.campaign.marks.includes("dain-fell")) this.campaign.marks.push("dain-fell");
       }
@@ -718,12 +723,14 @@ export class Game {
     const commander = this.units.find((unit) => unit.side === "enemy" && TYPES[unit.type].leader);
     if (!commander) return;
 
-    const hasArcher = this.units.some((unit) => unit.side === "enemy" && unit.type === "archer");
+    const hasArcher = this.units.some(
+      (unit) => unit.side === "enemy" && TYPES[unit.type].family === "archer",
+    );
     const options = this.recruitmentOptions("enemy");
     const recruitType = this.campaign
       ? options[(this.round - 1) % options.length]!
       : hasArcher
-        ? "soldier"
+        ? "swordsman"
         : "archer";
     const recruitTiles = this.recruitTiles(commander.id, recruitType);
     if (!recruitTiles.length) return;
@@ -1019,6 +1026,7 @@ export class Game {
     choices: NonNullable<CampaignState["choices"]> = [],
     veterans: CampaignVeteran[] = [],
     storyVeterans: CampaignVeteran[] = [],
+    fallenCompanions: string[] = [],
   ): Game {
     const definition = CAMPAIGNS[id];
     const mission = definition?.missions[missionIndex];
@@ -1040,6 +1048,7 @@ export class Game {
         structuredClone(veterans[index] ?? { type, experience: 0 }),
       ),
       storyVeterans: structuredClone(storyVeterans),
+      fallenCompanions: [...fallenCompanions],
       carryGold: Math.min(8, Math.max(0, carryGold)),
       marks: [],
       dialogue: mission.intro.map((line) => ({ ...line })),
@@ -1055,6 +1064,10 @@ export class Game {
         : {}),
     };
     const effectiveMission = campaignMission(game.campaign);
+    game.units = game.units.filter(
+      (unit) => unit.side !== "player" || !unit.name || !fallenCompanions.includes(unit.name),
+    );
+    game.campaign.dialogue = effectiveMission.intro.map((line) => ({ ...line }));
     if (
       (choices.includes("refuge-war") || choices.includes("green-dain-dead")) &&
       mission.withoutDain
@@ -1151,6 +1164,23 @@ export class Game {
           ...(unit.name ? { name: unit.name } : {}),
           ...(unit.role ? { role: unit.role } : {}),
         })),
+      [
+        ...new Set([
+          ...(this.campaign.fallenCompanions ?? []),
+          ...this.campaign.marks
+            .filter((mark) => mark.startsWith("fallen:"))
+            .map((mark) => mark.slice(7)),
+          ...campaignMission(this.campaign)
+            .map.units.filter(
+              (incoming) =>
+                incoming.side === "player" &&
+                incoming.name &&
+                incoming.role !== "leader" &&
+                !this.units.some((unit) => unit.side === "player" && unit.name === incoming.name),
+            )
+            .map((incoming) => incoming.name!),
+        ]),
+      ],
     );
   }
 
@@ -1164,6 +1194,7 @@ export class Game {
       campaignMission(this.campaign).refuge ? [] : (this.campaign.choices ?? []),
       this.campaign.veterans ?? [],
       this.campaign.storyVeterans ?? [],
+      this.campaign.fallenCompanions ?? [],
     );
   }
 
