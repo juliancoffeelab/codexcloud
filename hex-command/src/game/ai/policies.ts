@@ -2,10 +2,20 @@ import { Game, TYPES, distance } from "../engine";
 import { enemyActionIds } from "../enemy-turn";
 import { enemyTileOrder } from "../enemy-order";
 import { leaderMayAdvance } from "../leader-restraint";
-import { campaignMission, goalProgress } from "../campaign-progress";
 import type { Side, Unit, UnitType } from "../types";
-import { canPursue, essential, individualObjectives, objectivesFor } from "./objectives";
+import {
+  canPursue,
+  essential,
+  individualObjectives,
+  objectivesFor,
+  reservedTiles,
+  supportObjective,
+  authoredDestinations,
+  finishesObjective,
+} from "./objectives";
 import type { AiObjective } from "./objectives";
+import { diplomacyAllowsAttack, withdrawalLanes } from "./diplomacy";
+import type { DiplomacyId } from "./diplomacy";
 
 export const POLICY_IDS = ["classic", "rush", "mixed"] as const;
 export type PolicyId = (typeof POLICY_IDS)[number];
@@ -14,8 +24,7 @@ export interface PolicyContext {
   /** Same cap for both seats. The live classic enemy recruits once. */
   recruitLimit?: number;
   objectives?: AiObjective[];
-  /** Hold recruitment style fixed when comparing different planners. */
-  recruitment?: "rush" | "mixed";
+  diplomacy?: DiplomacyId;
   /** A structured record of commands, useful for reproducing a failed game. */
   onAction?: (action: AiAction) => void;
 }
@@ -44,11 +53,46 @@ function role(unit: Pick<Unit, "type">): "screen" | "ranged" | "healer" {
   return definition.healing ? "healer" : definition.range > 1 ? "ranged" : "screen";
 }
 
+function policyObjectives(game: Game, context: PolicyContext): AiObjective[] {
+  const goals = [...(context.objectives ?? objectivesFor(game, game.turn))];
+  for (const leader of game.units.filter(
+    (unit) => unit.side === game.turn && TYPES[unit.type].leader,
+  )) {
+    const requiredMovement = goals.some(
+      (goal) => goal.kind === "escape" && goal.actor === leader.id,
+    );
+    const keeps = game.leaderRebuildGoals(leader, requiredMovement);
+    if (keeps.length)
+      goals.push({
+        id: `rebuild:${leader.id}`,
+        kind: "capture",
+        actor: leader.id,
+        tiles: keeps.map((keep) => keep.id),
+        weight: 80,
+      });
+  }
+  return goals;
+}
+
 function recruit(game: Game, policy: PolicyId, context: PolicyContext): void {
   const side = game.turn;
+  const goals = context.objectives ?? objectivesFor(game, side);
+  const lanes = withdrawalLanes(game, side, context.diplomacy ?? "pragmatic");
+  const placementAllowed = (type: UnitType, tile: { id: string }) => {
+    const recruit: Unit = {
+      id: "new-recruit",
+      type,
+      side,
+      tile: tile.id,
+      hp: TYPES[type].hp,
+      moved: true,
+      attacked: true,
+    };
+    return !reservedTiles(recruit, goals).has(tile.id) && !lanes.has(tile.id);
+  };
   for (let count = 0; count < (context.recruitLimit ?? 1); count++) {
     if (policy === "classic") {
-      game.enemyRecruit(side);
+      game.enemyRecruit(side, placementAllowed);
       continue;
     }
     const leader = game.units.find((unit) => unit.side === side && TYPES[unit.type].leader);
@@ -62,7 +106,7 @@ function recruit(game: Game, policy: PolicyId, context: PolicyContext): void {
       .filter(
         (type) =>
           (policy !== "rush" || role({ type }) === "screen") &&
-          game.recruitTiles(leader.id, type).length,
+          game.recruitTiles(leader.id, type).some((tile) => placementAllowed(type, tile)),
       )
       .map((type) => {
         const definition = TYPES[type];
@@ -96,7 +140,9 @@ function recruit(game: Game, policy: PolicyId, context: PolicyContext): void {
       .sort((a, b) => b.score - a.score);
     const choice = choices[0];
     if (!choice) return;
-    const tiles = game.recruitTiles(leader.id, choice.type);
+    const tiles = game
+      .recruitTiles(leader.id, choice.type)
+      .filter((tile) => placementAllowed(choice.type, tile));
     const enemies = opponents.map((unit) => game.tile(unit.tile)!);
     tiles.sort((a, b) => {
       const proximity = (tile: typeof a) =>
@@ -140,21 +186,16 @@ class Threats {
     const key = `${unit.id}:${unit.type}:${tile}:${eliminated ?? ""}`;
     const cached = this.cache.get(key);
     if (cached !== undefined) return cached;
-    const target = { ...unit, tile };
-    let board = this.shadow,
-      enemies = this.enemies;
-    if (this.important.has(unit.id) && (tile !== unit.tile || eliminated)) {
-      // Vacating the old actor hex can open paths or change a wave's arrival hex.
-      const state = structuredClone(this.source);
-      state.units.find((actor) => actor.id === unit.id)!.tile = tile;
-      if (eliminated) state.units = state.units.filter((actor) => actor.id !== eliminated);
-      board = new Game(state.mapId, state.mapRevision);
-      board.restoreState(state);
-      board.endTurn();
-      enemies = board.units
-        .filter((actor) => actor.side !== unit.side)
-        .map((actor) => ({ unit: actor, from: [actor.tile, ...board.reachable(actor.id).keys()] }));
+    if (this.important.has(unit.id)) {
+      const source = new Game(this.source.mapId, this.source.mapRevision);
+      source.restoreState(this.source);
+      const risk = source.forecastDanger(unit, tile, eliminated);
+      this.cache.set(key, risk);
+      return risk;
     }
+    const target = { ...unit, tile };
+    const board = this.shadow,
+      enemies = this.enemies;
     const damages = enemies
       .filter(({ unit }) => unit.id !== eliminated)
       .map(({ unit: enemy, from }) => {
@@ -180,6 +221,7 @@ interface Plan {
   target?: string;
   weapon?: string;
   advance?: UnitType;
+  withdrawing?: boolean;
 }
 function plans(
   game: Game,
@@ -190,7 +232,8 @@ function plans(
   const side = game.turn;
   const allies = game.units.filter((unit) => unit.side === side);
   const foes = game.units.filter((unit) => unit.side !== side);
-  const objectives = individualObjectives(context.objectives ?? objectivesFor(game, side));
+  const objectives = individualObjectives(policyObjectives(game, context));
+  const lanes = withdrawalLanes(game, side, context.diplomacy ?? "pragmatic");
   const threats = new Threats(game, side);
   const screens = allies.filter((unit) => role(unit) === "screen" && !TYPES[unit.type].leader);
   const movableScreens = screens.some((unit) => !unit.moved && !unit.attacked);
@@ -216,7 +259,18 @@ function plans(
     const promotion = game.promotionOptions(unit.id)[0];
     if (promotion && beforeRisk < unit.hp)
       result.push({ unit: unit.id, tile: unit.tile, advance: promotion, score: 14 });
-    const destinations = [unit.tile, ...game.reachable(unit.id).keys()];
+    const destinations = authoredDestinations(game, unit, [
+      unit.tile,
+      ...game.reachable(unit.id).keys(),
+    ]);
+    const reserved = reservedTiles(unit, objectives);
+    const requiredMovement = objectives.some(
+      (goal) => goal.kind === "escape" && goal.actor === unit.id,
+    );
+    const rebuilding = game.leaderRebuildGoals(unit, requiredMovement);
+    const minimumRisk = important
+      ? Math.min(...destinations.map((tile) => threats.at(unit, tile)))
+      : 0;
     const restraint = {
       units: allies.concat(foes),
       definitions: TYPES,
@@ -225,16 +279,30 @@ function plans(
         TYPES[unit.type].leader &&
         game.recruitmentOptions(side).some((type) => game.recruitTiles(unit.id, type).length > 0),
       ),
-      requiredMovement: objectives.some((goal) => goal.kind === "escape" && goal.actor === unit.id),
+      requiredMovement,
     };
     for (const tileId of destinations) {
       const tile = game.tile(tileId)!;
-      let positioning = 0;
+      let positioning =
+        (reserved.has(unit.tile) ? 80 : 0) -
+        (reserved.has(tileId) ? 160 : 0) -
+        (lanes.has(tileId) ? 100 : 0);
       let objectiveBenefit = 0;
-      for (const original of objectives) {
+      const goals = rebuilding.length
+        ? [
+            {
+              id: "rebuild",
+              kind: "capture" as const,
+              tiles: rebuilding.map((tile) => tile.id),
+              weight: 80,
+            },
+          ]
+        : objectives;
+      for (const original of goals) {
         const assisting = !canPursue(unit, original) && Boolean(original.actor || original.family);
         if (!canPursue(unit, original) && !assisting) continue;
-        const goal = assisting ? { ...original, weight: original.weight * 0.6 } : original;
+        const goal = assisting ? supportObjective(game, unit, original) : original;
+        if (!goal.tiles.length) continue;
         const route = field(unit, goal);
         const before = route.get(unit.tile) ?? 1000,
           after = route.get(tileId) ?? 1000;
@@ -249,11 +317,14 @@ function plans(
               ? weight * 0.6
               : 0),
         );
-        if (assisting && goal.tiles.includes(tileId) && game.unit(goal.actor!)?.tile !== tileId)
-          positioning -= goal.weight * 2;
-        if (assisting && goal.tiles.includes(unit.tile) && tileId !== unit.tile) positioning += 20;
       }
       positioning += objectiveBenefit;
+      if (
+        rebuilding.some((keep) => keep.id === unit.tile) &&
+        tileId !== unit.tile &&
+        threats.at(unit, tileId) >= beforeRisk
+      )
+        continue;
       if (
         tileId !== unit.tile &&
         objectives.some((goal) => goal.actor === unit.id && goal.tiles.includes(unit.tile))
@@ -305,7 +376,19 @@ function plans(
         }
       }
       const attacks = foes.flatMap((target) =>
-        game.attackOptions(unit, target, tileId).map((weapon) => ({ target, weapon })),
+        game
+          .attackOptions(unit, target, tileId)
+          .filter((weapon) =>
+            diplomacyAllowsAttack(
+              game,
+              unit,
+              target,
+              weapon.id,
+              tileId,
+              context.diplomacy ?? "pragmatic",
+            ),
+          )
+          .map((weapon) => ({ target, weapon })),
       );
       const choices = [{ target: undefined, weapon: undefined }, ...attacks];
       for (const { target, weapon } of choices) {
@@ -339,32 +422,29 @@ function plans(
         const incoming = threats.at(unit, tileId, eliminated);
         const lethal = incoming >= unit.hp - retaliation;
         // Required actors avoid a predicted lethal approach; screens may make useful trades.
-        const finishesEscort = Boolean(
-          game.campaign &&
-          side === "player" &&
-          objectives.some(
-            (goal) =>
-              goal.actor === unit.id &&
-              ["escort", "escape"].includes(goal.kind) &&
-              goal.tiles.includes(tileId),
-          ) &&
-          campaignMission(game.campaign).goals.every(
-            (goal) =>
-              goalProgress(game, goal).done ||
-              (goal.kind === "escort" && unit.role === "courier" && goal.tile === tileId) ||
-              (goal.kind === "escape" && unit.role === "leader" && goal.tile === tileId),
-          ),
-        );
+        const finishesEscort =
+          finishesObjective(game, unit, tileId, objectives) && retaliation < unit.hp;
         if (
           TYPES[unit.type].leader &&
           !finishesEscort &&
           !finishesBattle &&
+          !rebuilding.length &&
           !leaderMayAdvance(unit, tileId, restraint)
         )
           continue;
-        if (important && lethal && incoming > 0 && !finishesEscort && !finishesBattle) continue;
+        if (
+          important &&
+          lethal &&
+          incoming > 0 &&
+          !finishesEscort &&
+          !finishesBattle &&
+          (minimumRisk < unit.hp || incoming + retaliation > minimumRisk || incoming >= beforeRisk)
+        )
+          continue;
+        if (important && !finishesEscort && !finishesBattle)
+          combat *= unit.role === "courier" ? 0.1 : 0.5;
         const dangerWeight = important
-          ? 1.5
+          ? 6
           : category === "screen"
             ? policy === "rush"
               ? 0.35
@@ -378,13 +458,19 @@ function plans(
           (lethal && !finishesBattle ? (important ? 40 : 5) : 0) +
           Math.max(0, beforeRisk - incoming) * (important ? 3 : unit.hp <= 4 ? 1.5 : 0.2) +
           jitter(context.seed, `${game.round}:${unit.id}:${tileId}:${target?.id ?? "move"}`);
-        if (score > 0.1)
+        if (score > 0.1 || (important && incoming < beforeRisk && !target))
           result.push({
             unit: unit.id,
             tile: tileId,
             target: target?.id,
             weapon: weapon?.id,
             score,
+            withdrawing:
+              unit.side === "enemy" &&
+              !target &&
+              unit.hp < TYPES[unit.type].hp &&
+              rangeToFoe(tileId) > rangeToFoe(unit.tile) &&
+              (incoming < beforeRisk || healingTile || Boolean(unit.retreating)),
           });
       }
     }
@@ -396,19 +482,30 @@ function plans(
 export function playPolicyTurn(game: Game, policy: PolicyId, context: PolicyContext): void {
   if (game.winner) return;
   const side = game.turn;
-  recruit(game, context.recruitment ?? policy, context);
+  for (const unit of game.units.filter((unit) => unit.side === side && unit.retreating))
+    if (unit.hp === TYPES[unit.type].hp) delete unit.retreating;
+  recruit(game, policy, context);
   if (policy === "classic") {
     // Keep the live enemy's exact stable ordering. For player-side testing, use the same order.
     const roster = game.units
       .filter((unit) => unit.side === side)
       .map((unit) => ({ ...unit, side: "enemy" as const }));
-    for (const id of enemyActionIds(roster)) {
+    // Live enemy duties remain in Game; explicit tests/player campaigns add goals.
+    const goals =
+      context.objectives || (side === "player" && game.campaign)
+        ? policyObjectives(game, context)
+        : policyObjectives(game, { ...context, objectives: [] });
+    const ids = enemyActionIds(roster);
+    if (goals)
+      ids.sort(
+        (a, b) =>
+          Number(reservedTiles(game.unit(b)!, goals).has(game.unit(b)!.tile)) -
+          Number(reservedTiles(game.unit(a)!, goals).has(game.unit(a)!.tile)),
+      );
+    for (const id of ids) {
       if (game.winner) break;
       const unit = game.unit(id);
       if (!unit) continue;
-      const goals =
-        context.objectives ??
-        (side === "player" && game.campaign ? objectivesFor(game, side) : undefined);
       const eligible =
         goals &&
         individualObjectives(goals).filter(
@@ -439,8 +536,13 @@ export function playPolicyTurn(game: Game, policy: PolicyId, context: PolicyCont
       game.enemyAct(
         id,
         side,
-        best?.tiles.map((tile) => game.tile(tile)!).filter(Boolean),
+        reservedTiles(unit, goals ?? []).has(unit.tile)
+          ? game
+              .neighbors(unit.tile)
+              .filter((tile) => !reservedTiles(unit, goals ?? []).has(tile.id))
+          : best?.tiles.map((tile) => game.tile(tile)!).filter(Boolean),
         best?.kind === "escape",
+        classicRules(game, unit, goals ?? [], context),
       );
     }
     return;
@@ -459,9 +561,12 @@ export function playPolicyTurn(game: Game, policy: PolicyId, context: PolicyCont
     } else {
       if (choice.tile !== unit.tile) {
         game.move(unit.id, choice.tile);
+        if (choice.withdrawing) unit.retreating = true;
+        else delete unit.retreating;
         context.onAction?.({ kind: "move", unit: unit.id, tile: choice.tile });
       }
       if (choice.target && choice.weapon && !game.winner) {
+        delete unit.retreating;
         game.attack(unit.id, choice.target, choice.weapon);
         context.onAction?.({
           kind: "attack",
@@ -472,4 +577,45 @@ export function playPolicyTurn(game: Game, policy: PolicyId, context: PolicyCont
       }
     }
   }
+}
+
+function classicRules(game: Game, unit: Unit, goals: AiObjective[], context: PolicyContext) {
+  const reserved = reservedTiles(unit, goals);
+  const lanes = withdrawalLanes(game, unit.side, context.diplomacy ?? "pragmatic");
+  const important = essential(game, unit);
+  const threats = important ? new Threats(game, unit.side) : undefined;
+  const risk = (tile: string, eliminated?: string) => threats?.at(unit, tile, eliminated) ?? 0;
+  const minimum = important
+    ? Math.min(...[unit.tile, ...game.reachable(unit.id).keys()].map((tile) => risk(tile)))
+    : 0;
+  const holdingEndpoint = goals.some(
+    (goal) => goal.actor === unit.id && goal.tiles.includes(unit.tile),
+  );
+  return {
+    positionPenalty: (_actor: Unit, tile: string) =>
+      (reserved.has(tile) ? 160 : 0) +
+      (lanes.has(tile) ? 100 : 0) +
+      (holdingEndpoint && tile !== unit.tile ? 100 : 0) +
+      (finishesObjective(game, unit, tile, goals) ? -1000 : risk(tile) * 12),
+    movementAllowed: (_actor: Unit, tile: string) =>
+      !important ||
+      finishesObjective(game, unit, tile, goals) ||
+      risk(tile) < unit.hp ||
+      risk(tile) <= minimum,
+    attackAllowed: (_actor: Unit, target: Unit, weapon: string, from: string) => {
+      if (
+        !diplomacyAllowsAttack(game, unit, target, weapon, from, context.diplomacy ?? "pragmatic")
+      )
+        return false;
+      if (!important) return true;
+      const preview = game.preview(unit, target, weapon, from);
+      if (preview.retaliation >= unit.hp) return false;
+      if (preview.damage >= target.hp && !game.campaign && TYPES[target.type].leader) return true;
+      const incoming = risk(from, preview.damage >= target.hp ? target.id : undefined);
+      return (
+        incoming + preview.retaliation < unit.hp &&
+        (unit.role !== "courier" || incoming + preview.retaliation === 0)
+      );
+    },
+  };
 }

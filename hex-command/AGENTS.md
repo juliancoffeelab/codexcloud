@@ -16,6 +16,13 @@
   before publishing results or applying feedback.
 - Preserve the game rules, artwork, layout, and existing visible behavior. Keep
   strict TypeScript and Prettier checks passing. Keep this project self-contained.
+- Before announcing final verification, freeze implementation. Run required checks
+  once; fix concrete failures and rerun only affected checks. Put unrelated
+  improvements in TODO.md. Do not restart broad review or add features after this
+  cutoff. Report a failed check explicitly instead of continuing to say "done".
+  Once required checks pass, commit/push the authorized work and respond promptly.
+- Campaign and tournament simulations require the user's explicit instruction to
+  run them. Verification must not start those batches as an extra finishing step.
 - `dist/` contains generated output and is intentionally Git-ignored. Commit the
   source and public assets. For Sites publication, build the selected Site checkout
   with `npm run build`, commit and push its exact source, then package it with

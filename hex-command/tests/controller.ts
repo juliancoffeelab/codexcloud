@@ -168,6 +168,9 @@ function pauseTurn(callToPause = 1) {
   fixture.units = fixture.units.filter((unit) => unit.side === "player" || unit.id === dain.id);
   dain.tile = "7,4";
   dain.hp = 1;
+  // This fixture tests cornered combat dialogue, rather than funded rebuilding.
+  for (const tile of fixture.tiles)
+    if (tile.terrain === "village" && tile.owner === "enemy") tile.owner = null;
   // A surrounded patrol cannot escape its lethal reply; its death triggers the war dialogue.
   for (const tile of fixture.neighbors(dain.tile)) fixture.addUnit("soldier", "player", tile.id);
   fixture.addUnit("commander", "enemy", "10,7");

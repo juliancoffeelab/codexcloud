@@ -128,6 +128,8 @@ export interface Unit {
   role?: "leader" | "courier";
   /** Set by the enemy AI when withdrawing; visible before the player chooses to pursue. */
   retreating?: boolean;
+  /** AI reinforcement hysteresis; saved so reloading does not release a rebuilding leader. */
+  rebuilding?: boolean;
 }
 export interface Weapon {
   id: string;

@@ -86,6 +86,8 @@ function validUnit(
     (value.role === "leader" && !TYPES[value.type].leader) ||
     typeof value.moved !== "boolean" ||
     typeof value.attacked !== "boolean" ||
+    (value.rebuilding !== undefined &&
+      (typeof value.rebuilding !== "boolean" || !TYPES[value.type].leader)) ||
     (value.retreating !== undefined &&
       (typeof value.retreating !== "boolean" || value.side !== "enemy"))
   )

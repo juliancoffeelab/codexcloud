@@ -70,6 +70,15 @@ export function objectivesFor(game: Game, side: Side): AiObjective[] {
           });
       }
     } else {
+      const leader = game.units.find((unit) => unit.side === side && TYPES[unit.type].leader);
+      if (mission.enemyLeaderPost && leader)
+        objectives.push({
+          id: "authored-post",
+          kind: "capture",
+          actor: leader.id,
+          tiles: [mission.enemyLeaderPost],
+          weight: 80,
+        });
       for (const [index, goal] of mission.goals.entries()) {
         if (["control", "hold", "refuge", "vigil"].includes(goal.kind)) {
           objectives.push({
@@ -98,11 +107,82 @@ export function objectivesFor(game: Game, side: Side): AiObjective[] {
   return objectives.filter((goal) => goal.tiles.length);
 }
 
+export function authoredDestinations(game: Game, unit: Unit, destinations: string[]): string[] {
+  if (!game.campaign || unit.side !== "enemy") return destinations;
+  const mission = campaignMission(game.campaign);
+  const post = TYPES[unit.type].leader ? mission.enemyLeaderPost : undefined;
+  const tiles = post
+    ? [post]
+    : mission.defendObjectives
+      ? mission.goals.flatMap((goal) =>
+          goal.kind === "control"
+            ? goal.tiles
+            : goal.kind === "hold" || (goal.kind === "refuge" && !game.campaign?.refuge?.escalated)
+              ? [goal.tile]
+              : [],
+        )
+      : [];
+  if (!tiles.length) return destinations;
+  const routes = game.routeDistances(unit, tiles.map((id) => game.tile(id)!).filter(Boolean));
+  const limit = Math.max(1, Math.min(...destinations.map((id) => routes.get(id) ?? Infinity)));
+  return destinations.filter((id) => (routes.get(id) ?? Infinity) <= limit);
+}
+
+export function finishesObjective(
+  game: Game,
+  unit: Unit,
+  tile: string,
+  objectives: AiObjective[],
+): boolean {
+  return Boolean(
+    game.campaign &&
+    unit.side === "player" &&
+    objectives.some(
+      (goal) =>
+        goal.actor === unit.id &&
+        ["escort", "escape"].includes(goal.kind) &&
+        goal.tiles.includes(tile),
+    ) &&
+    campaignMission(game.campaign).goals.every(
+      (goal) =>
+        goalProgress(game, goal).done ||
+        (goal.kind === "escort" && unit.role === "courier" && goal.tile === tile) ||
+        (goal.kind === "escape" && unit.role === "leader" && goal.tile === tile),
+    ),
+  );
+}
+
 export function canPursue(unit: Unit, goal: AiObjective): boolean {
   return (
+    (!["escort", "escape", "vigil"].includes(goal.kind) || Boolean(goal.actor)) &&
     (!goal.actor || goal.actor === unit.id) &&
     (!goal.family || (TYPES[unit.type].family ?? unit.type) === goal.family)
   );
+}
+
+export function reservedTiles(unit: Unit, goals: AiObjective[]): Set<string> {
+  return new Set(
+    goals
+      .filter(
+        (goal) =>
+          Boolean(goal.actor || goal.family || ["escort", "escape", "vigil"].includes(goal.kind)) &&
+          !canPursue(unit, goal),
+      )
+      .flatMap((goal) => goal.tiles),
+  );
+}
+
+/** Support from the approaches; a reserved endpoint is never an assistance destination. */
+export function supportObjective(game: Game, unit: Unit, goal: AiObjective): AiObjective {
+  if (canPursue(unit, goal)) return goal;
+  const reserved = reservedTiles(unit, [goal]);
+  return {
+    ...goal,
+    weight: goal.weight * 0.35,
+    tiles: [
+      ...new Set(goal.tiles.flatMap((id) => game.neighbors(id).map((tile) => tile.id))),
+    ].filter((id) => !reserved.has(id) && Number.isFinite(game.cost(unit, game.tile(id)!))),
+  };
 }
 
 export function individualObjectives(objectives: AiObjective[]): AiObjective[] {

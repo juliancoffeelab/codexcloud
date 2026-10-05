@@ -1,9 +1,15 @@
 import { Game, TYPES } from "../engine";
-import { campaignMission, goalProgress, returnsWithStory } from "../campaign-progress";
+import {
+  campaignMission,
+  goalProgress,
+  returnsWithStory,
+  endsRefugeMediation,
+} from "../campaign-progress";
 import { CAMPAIGNS } from "../campaign-data";
 import { playPolicyTurn, seededRandom } from "./policies";
 import type { AiAction, PolicyId } from "./policies";
 import type { AiObjective } from "./objectives";
+import type { DiplomacyId } from "./diplomacy";
 import type { CampaignId, RecruitType, Side, TerrainType, Unit, UnitType } from "../types";
 
 export const ARMY_IDS = ["human", "woodland", "undead", "coastal"] as const;
@@ -29,7 +35,18 @@ const otherSide = (side: Side): Side => (side === "player" ? "enemy" : "player")
 /** Same command boundary as gameplay; logging also captures classic's internal commands. */
 class RecordedGame extends Game {
   commands: AiAction[] = [];
-  pool?: RecruitType[];
+  casualties: Unit[] = [];
+  combats: {
+    unit: string;
+    target: string;
+    weapon: string;
+    from: string;
+    targetTile: string;
+    damage: number;
+    retaliation: number;
+    mediationAtRisk: boolean;
+  }[] = [];
+  pools?: Record<Side, RecruitType[]>;
   /** Arena rounds contain both seats, regardless of which seat has initiative. */
   arenaFirst?: Side;
   override endTurn(): void {
@@ -39,7 +56,7 @@ class RecordedGame extends Game {
     this.beginTurn(otherSide(this.turn));
   }
   override recruitmentOptions(side: Side): RecruitType[] {
-    return this.pool ? [...this.pool] : super.recruitmentOptions(side);
+    return this.pools ? [...this.pools[side]] : super.recruitmentOptions(side);
   }
   override move(id: string, tile: string) {
     const result = super.move(id, tile);
@@ -50,8 +67,20 @@ class RecordedGame extends Game {
     const attacker = this.unit(id)!,
       defender = this.unit(target)!;
     const selected = weapon ?? this.bestAttack(attacker, defender)?.id;
+    const before = [structuredClone(attacker), structuredClone(defender)];
+    const mediationAtRisk = endsRefugeMediation(this, defender);
     const result = super.attack(id, target, weapon);
     this.commands.push({ kind: "attack", unit: id, target, weapon: selected! });
+    this.casualties.push(...before.filter((unit) => !this.unit(unit.id)));
+    this.combats.push({
+      unit: id,
+      target,
+      weapon: selected!,
+      from: before[0]!.tile,
+      targetTile: before[1]!.tile,
+      ...result,
+      mediationAtRisk,
+    });
     return result;
   }
   override recruit(id: string, type: UnitType, tile: string) {
@@ -70,10 +99,17 @@ export interface PhaseRecord {
   side: Side;
   round: number;
   actions: AiAction[];
-  losses: { id: string; type: UnitType; side: Side; name?: string }[];
+  losses: Unit[];
+  combats: RecordedGame["combats"];
   living: Record<Side, number>;
   health: Record<Side, number>;
   gold: Record<Side, number>;
+  before: Unit[];
+  units: Unit[];
+  ownership: { tile: string; owner: Side | null }[];
+  goals: ReturnType<typeof goalProgress>[];
+  objectives: AiObjective[];
+  campaign?: ReturnType<Game["captureState"]>["campaign"];
 }
 function phase(
   game: RecordedGame,
@@ -81,36 +117,43 @@ function phase(
   seed: number,
   recruitLimit: number,
   objectives?: AiObjective[],
-  recruitment?: "rush" | "mixed",
+  diplomacy?: DiplomacyId,
 ): PhaseRecord {
   const before = [...game.units].map((unit) => ({ ...unit }));
   const side = game.turn,
     round = game.round;
   game.commands = [];
-  playPolicyTurn(game, policy, { seed, recruitLimit, objectives, recruitment });
+  game.casualties = [];
+  game.combats = [];
+  playPolicyTurn(game, policy, { seed, recruitLimit, objectives, diplomacy });
   game.advanceDialogue(true);
   const count = (owner: Side) => game.units.filter((unit) => unit.side === owner);
   return {
     side,
     round,
     actions: game.commands,
-    losses: before
-      .filter((unit) => !game.unit(unit.id))
-      .map(({ id, type, side, name }) => ({ id, type, side, name })),
+    losses: game.casualties,
+    combats: game.combats,
     living: { player: count("player").length, enemy: count("enemy").length },
     health: {
       player: count("player").reduce((sum, unit) => sum + unit.hp, 0),
       enemy: count("enemy").reduce((sum, unit) => sum + unit.hp, 0),
     },
     gold: { ...game.gold },
+    before,
+    units: structuredClone(game.units),
+    ownership: game.tiles.map(({ id: tile, owner }) => ({ tile, owner })),
+    goals: game.campaign
+      ? campaignMission(game.campaign).goals.map((goal) => goalProgress(game, goal))
+      : [],
+    objectives: structuredClone(objectives ?? []),
+    ...(game.campaign ? { campaign: structuredClone(game.campaign) } : {}),
   };
 }
 
 export interface ArenaConfig {
-  recruitment?: "rush" | "mixed";
-  recruitmentBySide?: Record<Side, "rush" | "mixed">;
   seed: number;
-  army: ArmyId;
+  armies: Record<Side, ArmyId>;
   landscape: Landscape;
   player: PolicyId;
   enemy: PolicyId;
@@ -119,7 +162,7 @@ export interface ArenaConfig {
   recruitLimit: number;
 }
 export function createArena(
-  config: Pick<ArenaConfig, "seed" | "army" | "landscape" | "first">,
+  config: Pick<ArenaConfig, "seed" | "armies" | "landscape" | "first">,
 ): RecordedGame {
   const random = seededRandom(config.seed);
   // Classic's shipped river AI uses route distances, unlike its open-map heuristic.
@@ -176,7 +219,6 @@ export function createArena(
     terrain(0, -1, "bridge");
     terrain(0, 1, "bridge");
   }
-  const army = ARMIES[config.army];
   state.units = [];
   state.nextId = 1;
   const add = (type: UnitType, side: Side, q: number, r: number) =>
@@ -192,6 +234,7 @@ export function createArena(
       ...(TYPES[type].leader ? { role: "leader" as const } : {}),
     });
   for (const side of ["player", "enemy"] as const) {
+    const army = ARMIES[config.armies[side]];
     const sign = side === "player" ? -1 : 1;
     add(army.leader, side, sign * 3, 0);
     add(army.screen, side, sign * 2, 0);
@@ -206,7 +249,10 @@ export function createArena(
   delete state.campaign;
   delete state.lastCombat;
   game.restoreState(state);
-  game.pool = [...army.pool];
+  game.pools = {
+    player: [...ARMIES[config.armies.player].pool],
+    enemy: [...ARMIES[config.armies.enemy].pool],
+  };
   game.arenaFirst = config.first;
   return game;
 }
@@ -261,14 +307,7 @@ export function runArena(config: ArenaConfig): ArenaResult {
           weight: 4,
         })),
     ];
-    const record = phase(
-      game,
-      config[side],
-      config.seed,
-      config.recruitLimit,
-      objectives,
-      config.recruitmentBySide?.[side] ?? config.recruitment,
-    );
+    const record = phase(game, config[side], config.seed, config.recruitLimit, objectives);
     phases.push(record);
     for (const command of record.actions)
       if (command.kind === "move" && game.tile(command.tile)?.terrain === "ruins")
@@ -310,7 +349,7 @@ export function runArena(config: ArenaConfig): ArenaResult {
 }
 
 export interface CampaignConfig {
-  recruitment?: "rush" | "mixed";
+  diplomacy: DiplomacyId;
   campaign: CampaignId;
   player: PolicyId;
   enemy: PolicyId;
@@ -327,6 +366,7 @@ export interface CampaignResult {
     round: number;
     goals: ReturnType<typeof goalProgress>[];
     phases: PhaseRecord[];
+    initial: ReturnType<Game["captureState"]>;
     final: ReturnType<Game["captureState"]>;
   }[];
 }
@@ -340,6 +380,7 @@ export function runCampaign(config: CampaignConfig): CampaignResult {
   const missions: CampaignResult["missions"] = [];
   for (let mission = 0; mission < CAMPAIGNS[config.campaign].missions.length; mission++) {
     game.advanceDialogue(true);
+    const initial = game.captureState();
     const phases: PhaseRecord[] = [];
     for (let index = 0; index < config.maxRounds * 2 && !game.winner; index++) {
       phases.push(
@@ -349,7 +390,7 @@ export function runCampaign(config: CampaignConfig): CampaignResult {
           config.seed,
           config.recruitLimit,
           undefined,
-          config.recruitment,
+          config.diplomacy,
         ),
       );
       if (!game.winner && index + 1 < config.maxRounds * 2) game.endTurn();
@@ -361,6 +402,7 @@ export function runCampaign(config: CampaignConfig): CampaignResult {
       round: game.round,
       goals: definition.goals.map((goal) => goalProgress(game, goal)),
       phases,
+      initial,
       final: game.captureState(),
     });
     if (game.winner !== "player" || game.campaign?.completed) break;

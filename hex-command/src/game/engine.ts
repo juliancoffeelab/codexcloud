@@ -26,8 +26,13 @@ import { HEAVY_MOVEMENT, PATHFINDER_MOVEMENT, movementCost } from "./movement";
 import { RACES, resolveUnits } from "./races";
 import { progressionUnits } from "./progression";
 import { enemyTileOrder } from "./enemy-order";
-import { leaderMayAdvance } from "./leader-restraint";
+import { leaderMayAdvance, ordinaryCombatants, updateLeaderRebuilding } from "./leader-restraint";
 export { RACES } from "./races";
+export interface EnemyActRules {
+  positionPenalty?(unit: Unit, tile: string): number;
+  attackAllowed?(unit: Unit, target: Unit, weapon: string, from: string): boolean;
+  movementAllowed?(unit: Unit, tile: string): boolean;
+}
 import { CAMPAIGNS, LEGACY_ASHEN_REFUGE } from "./campaign-data";
 import {
   campaignMission,
@@ -729,7 +734,10 @@ export class Game {
     }
   }
 
-  enemyRecruit(side: Side = "enemy"): void {
+  enemyRecruit(
+    side: Side = "enemy",
+    placementAllowed?: (type: UnitType, tile: Tile) => boolean,
+  ): void {
     if (this.turn !== side || this.winner) return;
     const commander = this.units.find((unit) => unit.side === side && TYPES[unit.type].leader);
     if (!commander) return;
@@ -745,7 +753,9 @@ export class Game {
         : hasArcher
           ? "swordsman"
           : "archer";
-    const recruitTiles = this.recruitTiles(commander.id, recruitType);
+    const recruitTiles = this.recruitTiles(commander.id, recruitType).filter(
+      (tile) => placementAllowed?.(recruitType, tile) !== false,
+    );
     if (!recruitTiles.length) return;
 
     recruitTiles.sort(enemyTileOrder(this.tiles, this.units, commander));
@@ -784,6 +794,7 @@ export class Game {
     side: Side = "enemy",
     movementGoals?: Tile[],
     requiresLeaderMovement = false,
+    rules: EnemyActRules = {},
   ): void {
     if (this.turn !== side || this.winner) return;
     const unit = this.unit(id);
@@ -794,15 +805,24 @@ export class Game {
       return;
     }
 
-    const retreat = this.tryEnemyRetreat(unit);
+    const rebuild = this.leaderRebuildGoals(unit, requiresLeaderMovement);
+    const retreat = this.tryEnemyRetreat(unit, rules);
     if (retreat === "acted") return;
-    if (this.tryEnemyAttack(unit, retreat === "cornered")) return;
-    const goals = movementGoals ?? this.enemyMovementGoals(unit);
+    if (
+      !rebuild.length &&
+      (rules.positionPenalty?.(unit, unit.tile) ?? 0) < 100 &&
+      this.tryEnemyAttack(unit, retreat === "cornered", rules)
+    )
+      return;
+    const goals = rebuild.length ? rebuild : (movementGoals ?? this.enemyMovementGoals(unit));
     if (!goals.length) return;
     const routes =
-      this.mapId === "river" || this.campaign ? this.routeDistances(unit, goals) : null;
+      this.mapId === "river" || this.campaign || rebuild.length
+        ? this.routeDistances(unit, goals)
+        : null;
     let destinations = [unit.tile, ...this.reachable(id).keys()];
-    if (TYPES[unit.type].leader) {
+    destinations = destinations.filter((tile) => rules.movementAllowed?.(unit, tile) !== false);
+    if (TYPES[unit.type].leader && !rebuild.length) {
       const recruiting = this.recruitmentOptions(side).some(
         (type) => this.recruitTiles(unit.id, type).length > 0,
       );
@@ -838,7 +858,12 @@ export class Game {
       destinations = destinations.filter((tile) => (routes.get(tile) ?? Infinity) <= patrolLimit);
     }
     const scores = new Map(
-      destinations.map((tile) => [tile, this.enemyPositionScore(unit, tile, goals, routes)]),
+      destinations.map((tile) => [
+        tile,
+        this.enemyPositionScore(unit, tile, goals, routes, rules) +
+          (rebuild.some((keep) => keep.id === tile) ? 40 : 0) -
+          (rules.positionPenalty?.(unit, tile) ?? 0),
+      ]),
     );
     const order = enemyTileOrder(this.tiles, this.units, unit, true);
     destinations.sort(
@@ -846,9 +871,58 @@ export class Game {
         scores.get(second)! - scores.get(first)! || order(this.tile(first)!, this.tile(second)!),
     );
 
-    const destination = destinations[0]!;
+    const destination = destinations[0];
+    if (!destination) return;
     if (destination !== unit.tile) this.move(id, destination);
-    this.tryEnemyAttack(unit);
+    this.tryEnemyAttack(unit, false, rules);
+  }
+
+  /** Return to an owned recruitment site until losses have actually been replaced. */
+  leaderRebuildGoals(unit: Unit, requiredMovement = false): Tile[] {
+    if (!TYPES[unit.type].leader || requiredMovement) return [];
+    const keeps = this.tiles.filter((tile) => tile.terrain === "keep" && tile.owner === unit.side);
+    const options = this.recruitmentOptions(unit.side);
+    if (!keeps.length || !options.length) {
+      delete unit.rebuilding;
+      return [];
+    }
+    const count = ordinaryCombatants(unit, { units: this.units, definitions: TYPES }).length;
+    const rebuilding = updateLeaderRebuilding(unit, count);
+    // A penniless side with no income must seek resources, not wait forever on a keep.
+    const canReplenish =
+      this.income(unit.side) > 0 ||
+      options.some((type) => TYPES[type].cost <= this.gold[unit.side]);
+    return rebuilding && canReplenish ? keeps : [];
+  }
+
+  /** Conservative next-phase pressure, allowing other attackers to vacate routes first. */
+  forecastDanger(unit: Unit, tile: string, eliminated?: string): number {
+    const shadow = new Game(this.mapId, this.mapRevision);
+    const state = this.captureState();
+    const actor = state.units.find((other) => other.id === unit.id);
+    if (!actor) return 0;
+    actor.tile = tile;
+    if (eliminated) state.units = state.units.filter((other) => other.id !== eliminated);
+    shadow.restoreState(state);
+    shadow.endTurn();
+    if (shadow.winner) return 0;
+    const roster = shadow.units;
+    const target = shadow.unit(unit.id)!;
+    let pressure = 0;
+    for (const enemy of roster.filter((other) => other.side !== unit.side)) {
+      // Keep friendly screens as obstacles. Opposing movers may open each other's paths.
+      shadow.units = roster.filter((other) => other.side === unit.side || other.id === enemy.id);
+      const from = [enemy.tile, ...shadow.reachable(enemy.id).keys()];
+      pressure += Math.max(
+        0,
+        ...TYPES[enemy.type].attacks.map((weapon) =>
+          from.some((position) => shadow.canAttackFrom(enemy, position, target, weapon.id))
+            ? shadow.damage(enemy, target, weapon.id)
+            : 0,
+        ),
+      );
+    }
+    return pressure;
   }
 
   /** Compare positions when moving; incoming danger alone does not trigger retreat. */
@@ -868,7 +942,7 @@ export class Game {
     return (damage[0] ?? 0) + (damage[1] ?? 0);
   }
 
-  private tryEnemyRetreat(unit: Unit): "acted" | "cornered" | "none" {
+  private tryEnemyRetreat(unit: Unit, rules: EnemyActRules = {}): "acted" | "cornered" | "none" {
     const enemies = this.units.filter((opponent) => opponent.side !== unit.side);
     const retaliations = this.targets(unit.id).flatMap((target) =>
       this.attackOptions(unit, target).map(
@@ -905,15 +979,24 @@ export class Game {
         ...enemies.map((opponent) => distance(tile, this.tile(opponent.tile)!)),
       );
       const healing = villages.some((village) => village.id === id) ? 20 : 0;
-      return -threat * 20 + Math.min(separation, 8) * 2 + healing - (routes?.get(id) ?? 0);
+      return (
+        -threat * 20 +
+        Math.min(separation, 8) * 2 +
+        healing -
+        (routes?.get(id) ?? 0) -
+        (rules.positionPenalty?.(unit, id) ?? 0)
+      );
     };
-    const destinations = [unit.tile, ...this.reachable(unit.id).keys()];
+    const destinations = [unit.tile, ...this.reachable(unit.id).keys()].filter(
+      (tile) => rules.movementAllowed?.(unit, tile) !== false,
+    );
     const scores = new Map(destinations.map((tile) => [tile, score(tile)]));
     const order = enemyTileOrder(this.tiles, this.units, unit, true);
     destinations.sort(
       (a, b) => scores.get(b)! - scores.get(a)! || order(this.tile(a)!, this.tile(b)!),
     );
-    const destination = destinations[0]!;
+    const destination = destinations[0];
+    if (!destination) return "none";
     if (destination !== unit.tile && scores.get(destination)! > scores.get(unit.tile)!) {
       this.move(unit.id, destination);
       unit.retreating = true;
@@ -945,13 +1028,14 @@ export class Game {
     );
   }
 
-  private tryEnemyAttack(unit: Unit, desperate = false): boolean {
+  private tryEnemyAttack(unit: Unit, desperate = false, rules: EnemyActRules = {}): boolean {
     const order = enemyTileOrder(this.tiles, this.units, unit);
     const choices = this.targets(unit.id)
       .flatMap((target) => this.attackOptions(unit, target).map((attack) => ({ target, attack })))
       .filter(
         ({ target, attack }) =>
-          desperate || this.preview(unit, target, attack.id).retaliation < unit.hp,
+          rules.attackAllowed?.(unit, target, attack.id, unit.tile) !== false &&
+          (desperate || this.preview(unit, target, attack.id).retaliation < unit.hp),
       )
       .sort(
         (first, second) =>
@@ -1004,6 +1088,7 @@ export class Game {
     tileId: string,
     goals: Tile[],
     routes: Map<string, number> | null,
+    rules: EnemyActRules = {},
   ): number {
     const tile = this.tile(tileId)!;
     const distanceToGoal = routes
@@ -1012,7 +1097,11 @@ export class Game {
     const attackOpportunity = Math.max(
       0,
       ...this.units
-        .filter((target) => this.canAttackFrom(unit, tileId, target))
+        .filter((target) =>
+          this.attackOptions(unit, target, tileId).some(
+            (weapon) => rules.attackAllowed?.(unit, target, weapon.id, tileId) !== false,
+          ),
+        )
         .map((target) => 5 + this.enemyAttackScore(unit, target, tileId) / 5),
     );
 

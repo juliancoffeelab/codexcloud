@@ -7,7 +7,9 @@ import { gunzipSync } from "node:zlib";
 import { POLICY_IDS, seededRandom } from "../src/game/ai/policies";
 import type { PolicyId } from "../src/game/ai/policies";
 import { ARMY_IDS, LANDSCAPES, runArena, runCampaign } from "../src/game/ai/simulation";
-import type { ArenaResult, CampaignResult, Landscape, ArmyId } from "../src/game/ai/simulation";
+import type { ArenaResult, CampaignResult } from "../src/game/ai/simulation";
+import { arenaMatchups, campaignMatchups } from "../src/game/ai/matchups";
+import { DIPLOMACY_IDS } from "../src/game/ai/diplomacy";
 
 const args = process.argv.slice(2);
 const flags = new Set([
@@ -20,7 +22,7 @@ const flags = new Set([
   "--campaigns",
   "--rounds",
   "--recruits",
-  "--recruitment",
+  "--diplomacy",
   "--workers",
   "--out",
   "--trace",
@@ -39,20 +41,19 @@ const value = (flag: string, fallback: string) => {
 };
 if (args.includes("--help")) {
   console.log(`Usage: npm run ai:simulate -- [options]
-  --mode arena|factorial|campaign default arena
+  --mode arena|campaign           default arena
   --seeds N --seed N              count (default 2) and first seed (default 1)
   --policies classic,rush,mixed   policies to compare
   --armies human,woodland,undead,coastal
   --landscapes open,wooded,crossings
   --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide
   --rounds N --recruits N         bounded rounds (default 30), same recruits/phase (default 1)
-  --recruitment policy|rush|mixed keep composition fixed to isolate planner differences
+  --diplomacy pragmatic,restrained campaign behavior settings (default both)
   --workers N                    independent seed workers (default 1, maximum 8)
   --out PATH                     JSON report plus readable Markdown report
-  --trace                        retain phase commands and full endpoint states
+  --trace                        additionally retain raw runner results; detailed phases always saved
   --replay PATH                  rerun a saved report and require identical outcomes
-Arena: every unordered policy pair, both seats and both initiatives; self-play both initiatives.
-Factorial: cross each planner with both recruitment styles, then compare every pair.
+Arena: every race/policy entrant pair, both seats and both initiatives; self-play both initiatives.
 Campaign: full campaigns from chapter one, earned carryover, no retries. Caps stay unresolved.`);
   process.exit(0);
 }
@@ -103,6 +104,9 @@ function arenaSummary(result: ArenaResult) {
         .filter((action) => action.kind === "advance")
         .map((action) => ({ side: phase.side, type: action.type })),
     ),
+    phases: result.phases,
+    initial: result.initial,
+    final: result.final,
     stateHash: createHash("sha256").update(JSON.stringify(result.final)).digest("hex"),
   };
 }
@@ -127,6 +131,9 @@ function campaignSummary(result: CampaignResult) {
           .filter((action) => action.kind === "advance")
           .map((action) => ({ side: phase.side, type: action.type })),
       ),
+      phases: mission.phases,
+      initial: mission.initial,
+      final: mission.final,
       stateHash: createHash("sha256").update(JSON.stringify(mission.final)).digest("hex"),
     })),
   };
@@ -156,13 +163,19 @@ if (args.includes("--replay")) {
   process.exit(0);
 }
 const mode = value("--mode", "arena");
-if (!["arena", "factorial", "campaign"].includes(mode)) throw new Error("Unknown simulation mode");
-const composition = value("--recruitment", "policy");
-if (!["policy", "rush", "mixed"].includes(composition))
-  throw new Error("Unknown recruitment style");
-const recruitment = composition === "policy" ? undefined : (composition as "rush" | "mixed");
-if (mode === "factorial" && recruitment)
-  throw new Error("Factorial mode assigns both recruitment styles; omit --recruitment");
+if (!["arena", "campaign"].includes(mode))
+  throw new Error(
+    "Unknown simulation mode; use arena or campaign. Recruitment belongs to each policy.",
+  );
+const diplomacy = select("--diplomacy", DIPLOMACY_IDS);
+const armies = select("--armies", ARMY_IDS);
+const landscapes = select("--landscapes", LANDSCAPES);
+const campaigns = select("--campaigns", [
+  "lantern-road",
+  "green-accord",
+  "ashen-oath",
+  "borrowed-tide",
+] as const);
 const policies = select("--policies", POLICY_IDS);
 const output = resolve(value("--out", "artifacts/ai-simulation.json"));
 if (!output.endsWith(".json")) throw new Error("--out must end in .json");
@@ -182,7 +195,7 @@ const append = (result: ArenaResult | CampaignResult) => {
   if (outcomes.length % 10 === 0) {
     writeFileSync(
       partial,
-      JSON.stringify({ schema: 1, status: "running", mode, fingerprint, outcomes }),
+      JSON.stringify({ schema: 2, status: "running", mode, fingerprint, outcomes }),
     );
     console.error(
       `${outcomes.length} games; ${((performance.now() - started) / 1000).toFixed(1)}s`,
@@ -248,77 +261,20 @@ if (workers > 1) {
     outcomes.push(...shard.outcomes);
     traces.push(...(shard.traces ?? []));
   }
-} else if (mode !== "campaign") {
-  const armies = select("--armies", ARMY_IDS),
-    landscapes = select("--landscapes", LANDSCAPES);
-  const bots = policies.flatMap((policy) =>
-    mode === "factorial"
-      ? (["rush", "mixed"] as const).map((style) => ({ policy, style }))
-      : [{ policy, style: recruitment }],
-  );
-  for (let seed = firstSeed; seed < firstSeed + seeds; seed++)
-    for (const army of armies)
-      for (const landscape of landscapes)
-        for (let a = 0; a < bots.length; a++)
-          for (let b = a; b < bots.length; b++) {
-            const left = bots[a]!,
-              right = bots[b]!;
-            const seats: [typeof left, typeof right][] =
-              a === b
-                ? [[left, right]]
-                : [
-                    [left, right],
-                    [right, left],
-                  ];
-            for (const [player, enemy] of seats)
-              for (const first of ["player", "enemy"] as const)
-                append(
-                  runArena({
-                    seed,
-                    army,
-                    landscape,
-                    player: player.policy,
-                    enemy: enemy.policy,
-                    first,
-                    maxRounds,
-                    recruitLimit,
-                    ...(mode === "factorial"
-                      ? {
-                          recruitmentBySide: { player: player.style!, enemy: enemy.style! },
-                        }
-                      : recruitment
-                        ? { recruitment }
-                        : {}),
-                  }),
-                );
-          }
 } else {
-  const campaigns = select("--campaigns", [
-    "lantern-road",
-    "green-accord",
-    "ashen-oath",
-    "borrowed-tide",
-  ] as const);
-  for (let seed = firstSeed; seed < firstSeed + seeds; seed++)
-    for (const campaign of campaigns)
-      for (const player of policies)
-        for (const enemy of policies)
-          append(
-            runCampaign({
-              campaign,
-              player,
-              enemy,
-              seed,
-              maxRounds,
-              recruitLimit,
-              ...(recruitment ? { recruitment } : {}),
-            }),
-          );
+  for (let seed = firstSeed; seed < firstSeed + seeds; seed++) {
+    const limits = { seed, maxRounds, recruitLimit, policies };
+    if (mode === "arena")
+      for (const config of arenaMatchups({ ...limits, armies, landscapes }))
+        append(runArena(config));
+    else
+      for (const config of campaignMatchups({ ...limits, campaigns, diplomacy }))
+        append(runCampaign(config));
+  }
 }
 
 function botLabel(config: ReturnType<typeof arenaSummary>["config"], side: "player" | "enemy") {
-  const style = config.recruitmentBySide?.[side] ?? config.recruitment;
-  return style ? `${config[side]}/${style}` : config[side];
+  return `${config.armies[side]}/${config[side]}`;
 }
 const labels = [
   ...new Set(
@@ -333,22 +289,11 @@ const identities = new Set(
   outcomes.map((outcome) => JSON.stringify([outcome.kind, outcome.config])),
 );
 if (identities.size !== outcomes.length) throw new Error("Duplicate simulation configurations");
-const arenaBots = mode === "factorial" ? policies.length * 2 : policies.length;
 const expected =
-  mode === "campaign"
-    ? seeds *
-      select("--campaigns", [
-        "lantern-road",
-        "green-accord",
-        "ashen-oath",
-        "borrowed-tide",
-      ] as const).length *
-      policies.length ** 2
-    : seeds *
-      select("--armies", ARMY_IDS).length *
-      select("--landscapes", LANDSCAPES).length *
-      2 *
-      arenaBots ** 2;
+  seeds *
+  (mode === "campaign"
+    ? campaigns.length * policies.length ** 2 * diplomacy.length
+    : landscapes.length * 2 * (armies.length * policies.length) ** 2);
 if (outcomes.length !== expected)
   throw new Error(`Incomplete coverage: ${outcomes.length}/${expected}`);
 
@@ -422,40 +367,92 @@ function arenaRows(results: Outcome[]) {
 }
 const rows = mode !== "campaign" ? arenaRows(outcomes) : [];
 const strata =
-  mode !== "campaign"
-    ? ARMY_IDS.flatMap((army: ArmyId) =>
-        LANDSCAPES.map((landscape: Landscape) => ({
-          army,
-          landscape,
-          rows: arenaRows(
-            outcomes.filter(
-              (outcome) =>
-                outcome.kind === "arena" &&
-                outcome.config.army === army &&
-                outcome.config.landscape === landscape,
-            ),
-          ),
-        })).filter((stratum) => stratum.rows.length),
+  mode === "arena"
+    ? armies.flatMap((playerArmy) =>
+        armies.flatMap((enemyArmy) =>
+          landscapes
+            .map((landscape) => ({
+              playerArmy,
+              enemyArmy,
+              landscape,
+              rows: arenaRows(
+                outcomes.filter(
+                  (outcome) =>
+                    outcome.kind === "arena" &&
+                    outcome.config.armies.player === playerArmy &&
+                    outcome.config.armies.enemy === enemyArmy &&
+                    outcome.config.landscape === landscape,
+                ),
+              ),
+            }))
+            .filter((stratum) => stratum.rows.length),
+        ),
       )
     : [];
-const armyCompositions = ARMY_IDS.flatMap((army) =>
-  labels.map((bot) => {
-    const totals: Record<string, { recruited: number; lost: number }> = {};
-    let games = 0;
-    for (const outcome of outcomes) {
-      if (outcome.kind !== "arena" || outcome.config.army !== army) continue;
-      for (const side of ["player", "enemy"] as const) {
-        if (botLabel(outcome.config, side) !== bot) continue;
-        games++;
-        for (const unit of outcome.recruits.filter((unit) => unit.side === side))
-          (totals[unit.type] ??= { recruited: 0, lost: 0 }).recruited++;
-        for (const unit of outcome.casualties.filter((unit) => unit.side === side))
-          (totals[unit.type] ??= { recruited: 0, lost: 0 }).lost++;
-      }
+const campaignStrata =
+  mode === "campaign"
+    ? campaigns.flatMap((campaign) =>
+        policies.flatMap((player) =>
+          policies.flatMap((enemy) =>
+            diplomacy.map((alignment) => {
+              const games = outcomes.filter(
+                (outcome): outcome is ReturnType<typeof campaignSummary> =>
+                  outcome.kind === "campaign" &&
+                  outcome.config.campaign === campaign &&
+                  outcome.config.player === player &&
+                  outcome.config.enemy === enemy &&
+                  outcome.config.diplomacy === alignment,
+              );
+              return {
+                campaign,
+                player,
+                enemy,
+                diplomacy: alignment,
+                games: games.length,
+                completed: games.filter((game) => game.completed).length,
+                defeated: games.filter((game) => game.missions.at(-1)?.winner === "enemy").length,
+                unresolved: games.filter((game) => game.missions.at(-1)?.winner === null).length,
+                escalated: games.filter((game) =>
+                  game.missions.some((mission) => mission.final.campaign?.refuge?.escalated),
+                ).length,
+                missions: [
+                  ...new Set(games.flatMap((game) => game.missions.map((mission) => mission.id))),
+                ].map((id) => {
+                  const chapters = games.flatMap((game) =>
+                    game.missions.filter((mission) => mission.id === id),
+                  );
+                  return {
+                    id,
+                    attempted: chapters.length,
+                    won: chapters.filter((chapter) => chapter.winner === "player").length,
+                    defeated: chapters.filter((chapter) => chapter.winner === "enemy").length,
+                    unresolved: chapters.filter((chapter) => chapter.winner === null).length,
+                  };
+                }),
+              };
+            }),
+          ),
+        ),
+      )
+    : [];
+const armyCompositions = labels.map((bot) => {
+  const totals: Record<string, { recruited: number; lost: number; promoted: number }> = {};
+  let games = 0;
+  for (const outcome of outcomes) {
+    if (outcome.kind !== "arena") continue;
+    for (const side of ["player", "enemy"] as const) {
+      if (botLabel(outcome.config, side) !== bot) continue;
+      games++;
+      for (const unit of outcome.recruits.filter((unit) => unit.side === side))
+        (totals[unit.type] ??= { recruited: 0, lost: 0, promoted: 0 }).recruited++;
+      for (const unit of outcome.casualties.filter((unit) => unit.side === side))
+        (totals[unit.type] ??= { recruited: 0, lost: 0, promoted: 0 }).lost++;
+      for (const unit of outcome.promotions.filter((unit) => unit.side === side))
+        (totals[unit.type] ??= { recruited: 0, lost: 0, promoted: 0 }).promoted++;
     }
-    return { army, bot, games, units: totals };
-  }),
-).filter((entry) => entry.games);
+  }
+  return { bot, games, units: totals };
+});
 let sourceCommit = "unknown";
 try {
   sourceCommit = execFileSync("git", ["rev-parse", "HEAD"], {
@@ -466,7 +463,7 @@ try {
   /* Fingerprint still captures all rule/policy source bytes. */
 }
 const report = {
-  schema: 1,
+  schema: 2,
   status: "complete",
   mode,
   fingerprint,
@@ -475,6 +472,7 @@ const report = {
   seeds: { first: firstSeed, count: seeds },
   rows,
   strata,
+  campaignStrata,
   armyCompositions,
   seatDiagnostics:
     mode !== "campaign"
@@ -503,7 +501,7 @@ const report = {
 writeFileSync(output, JSON.stringify(report, null, 2) + "\n");
 writeFileSync(
   partial,
-  JSON.stringify({ schema: 1, status: "complete", mode, fingerprint, outcomes }),
+  JSON.stringify({ schema: 2, status: "complete", mode, fingerprint, outcomes }),
 );
 const table = [
   "| Policy | Opponent | Games | Wins | Losses | Unresolved | Mean rounds |",
@@ -514,16 +512,16 @@ const table = [
   ),
 ];
 const campaignTable = [
-  "| Campaign | Player policy | Enemy policy | Seed | Completed | Recorded chapters |",
-  "|---|---|---|---:|---|---|",
+  "| Campaign | Player policy | Enemy policy | Diplomacy | Seed | Completed | Recorded chapters |",
+  "|---|---|---|---|---:|---|---|",
   ...outcomes
     .filter((outcome): outcome is ReturnType<typeof campaignSummary> => outcome.kind === "campaign")
     .map(
       (outcome) =>
-        `| ${outcome.config.campaign} | ${outcome.config.player} | ${outcome.config.enemy} | ${outcome.config.seed} | ${outcome.completed} | ${outcome.missions.map((mission) => `${mission.id}: ${mission.winner ?? "unresolved"}@${mission.round}`).join("; ")} |`,
+        `| ${outcome.config.campaign} | ${outcome.config.player} | ${outcome.config.enemy} | ${outcome.config.diplomacy} | ${outcome.config.seed} | ${outcome.completed} | ${outcome.missions.map((mission) => `${mission.id}: ${mission.winner ?? "unresolved"}@${mission.round}`).join("; ")} |`,
     ),
 ];
-const markdown = `# Seeded AI ${mode} results\n\nSource: \`${sourceCommit}\`. Rules/policy fingerprint: \`${fingerprint}\`.\n\n${outcomes.length} games, seeds ${firstSeed}–${firstSeed + seeds - 1}, ${report.elapsedSeconds.toFixed(1)} seconds.\n\n${(mode !== "campaign" ? table : campaignTable).join("\n")}\n\nCaps are unresolved, not draws or defeats. Arena seats and initiative are counterbalanced on identical paired terrain/rosters/resources. Confidence intervals in JSON resample whole seed blocks; they describe this finite scenario distribution and these policies, not optimal play or human balance. Campaigns retain authored asymmetry, earn their carryover, and receive no retries. Combat itself remains deterministic. Full per-roster/per-landscape strata and actual casualties/recruitment are in JSON.\n`;
+const markdown = `# Seeded AI ${mode} results\n\nSource: \`${sourceCommit}\`. Rules/policy fingerprint: \`${fingerprint}\`.\n\n${outcomes.length} games, seeds ${firstSeed}–${firstSeed + seeds - 1}, ${report.elapsedSeconds.toFixed(1)} seconds.\n\n${(mode !== "campaign" ? table : campaignTable).join("\n")}\n\nCaps are unresolved, not draws or defeats. Arena seats and initiative are counterbalanced on identical paired terrain/resources, with race-specific rosters. Confidence intervals in JSON resample whole seed blocks; they describe this finite scenario distribution and these policies, not optimal play or human balance. Campaigns retain authored asymmetry, earn their carryover, and receive no retries. Combat itself remains deterministic. Full race/policy/terrain strata, campaign diplomacy comparisons, casualties, recruitment, promotions, phase commands, troop states, ownership, goals and endpoint states are in JSON.\n`;
 writeFileSync(output.replace(/\.json$/, "") + ".md", markdown);
 console.log(
   JSON.stringify({ output, games: outcomes.length, elapsedSeconds: report.elapsedSeconds, rows }),

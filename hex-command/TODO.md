@@ -106,6 +106,32 @@ not extend to rewriting the other campaigns.
       [simulation guide](docs/ai-simulation.md) and [recorded tournament results](docs/simulations/README.md). The ordinary enemy remains classic;
       a player-facing enemy selector is a later task.
 
+## Implemented AI followups; simulations await explicit authorization
+
+- [x] Cross-race arenas: race × complete classic/rush/mixed policy × terrain,
+      counterbalanced seats and initiatives. Each AI recruits for itself; remove
+      the planner/recruiter split while retaining historical reports. Record full
+      phases, combats, troop states, ownership, goals and campaign state.
+- [x] Stronger courier and required-companion self-preservation: conservative
+      next-phase pressure includes attackers opening one another's routes and all
+      potential attackers. Prefer safe progress and permit withdrawal when every
+      option is dangerous instead of rejecting all escape moves.
+- [x] Reserve actor-specific endpoints and typed seals. Penalize unrelated units
+      staying on them, clear blockers and support from surrounding approaches.
+      Classic now clears blockers before the eligible actor moves.
+- [x] Add pragmatic/restrained diplomacy as a campaign comparison dimension.
+      Restrained AI respects the authored refuge mediation, spares the captain
+      from lethal attacks, avoids pursuing withdrawing soldiers and leaves their
+      homeward routes open. Real escalation ends that protection. Preserve
+      authored enemy posts and patrol duties for every policy.
+- [x] Shared leader reinforcement hysteresis: release at 5 living ordinary
+      combatants, rebuild at 2 or fewer, return to an owned keep and remain until
+      reaching 5. Couriers/healers do not count. Save the mode; required escapes
+      bypass it. Intermediate strengths retain the current mode.
+- [ ] Run the updated campaign/tournament comparisons only when the user explicitly
+      requests simulations. Implementation and focused unit checks do not establish
+      balance or campaign completion. See [the simulation guide](docs/ai-simulation.md).
+
 ## Overnight race and coastal work
 
 Specified in [design/tides-and-progression.md](design/tides-and-progression.md).
@@ -129,16 +155,18 @@ Specified in [design/tides-and-progression.md](design/tides-and-progression.md).
       approved skull pixels and connected limbs/fangs. Published in the ordinary
       game on 2026-10-05; the developer map includes both ranks of every family.
 
-## Pending device confirmation
+## Deployment and mobile rendering
 
 - [x] Fix the blank-page deployment package: Git-ignored generated JavaScript was
       absent from the uploaded archive despite being referenced by its HTML.
       Package the complete build and verify the actual archive's client references
       and bytes. A startup panel also displays backtraces until the app mounts,
       with a reload action that retains the saved battle.
-- [ ] Confirm the reported mobile stray lines and portrait leakage on the user's
-      phone after replacing atlas cropping with isolated frame images. Source
-      extraction is verified; phone appearance has not yet been confirmed.
+- [ ] Investigate and fix mobile stray lines and portrait leakage. The user
+      confirmed that replacing atlas cropping with isolated frame images did
+      not resolve the reported phone issues. Source extraction verification
+      does not establish correct rendering on the device; investigate the
+      remaining rendering cause rather than treating this as pending confirmation.
 
 ## Earlier fixes retained
 
