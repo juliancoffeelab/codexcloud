@@ -92,7 +92,7 @@ export const CAMPAIGN_UNITS = {
     move: 5,
     damage: 3,
     range: 1,
-    cost: 6,
+    cost: 5,
     attacks: [attack("fangs", "Fangs", 3, "blade")],
     damageModifiers: { blade: 0, pierce: 0, impact: 0 },
     ability: "Woodland runner",
@@ -109,10 +109,10 @@ export const CAMPAIGN_UNITS = {
     range: 1,
     cost: 9,
     attacks: [attack("tusks", "Tusks", 4, "pierce")],
-    damageModifiers: { blade: 0, pierce: -1, impact: 0 },
+    damageModifiers: { blade: 0, pierce: 0, impact: 0 },
     ability: "Thick hide",
     description:
-      "Forests and groves cost 1 movement. A sturdy front-line beast. Tusks punish wolves and unarmored units, but it has no ranged reply.",
+      "Forests and groves cost 1 movement. A sturdy front-line beast, vulnerable to piercing like other beasts. Tusks punish unarmored units, but it has no ranged reply.",
   },
   wildkeeper: {
     name: "Wildkeeper",
@@ -157,7 +157,7 @@ export const CAMPAIGN_UNITS = {
     move: 4,
     damage: 3,
     range: 2,
-    cost: 8,
+    cost: 7,
     attacks: [
       attack("thorns", "Thorns", 3, "pierce", "ranged", 2),
       attack("rootstaff", "Root staff", 2, "impact"),

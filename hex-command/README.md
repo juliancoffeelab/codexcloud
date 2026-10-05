@@ -144,8 +144,9 @@ healers apply only the strongest healing amount at turn start.
 
 Recalled recruits and returning named companions retain type and XP. Mission
 retries restore the incoming roster checkpoint. Legacy saves with no XP load at
-zero. Veteran art preserves the approved family silhouettes as editable matrices;
-beginner infantry uses cloth and leather in place of steel. New types have pixel
+zero. All ranks have editable matrices; several veteran frames still copy their
+family's beginner art pending the visual pass after balance. Beginner infantry
+uses cloth and leather in place of steel. New types have pixel
 frames available in every art style until distinct normal/low-poly art is authored.
 
 `scripts/play-campaign.ts` exposes legal actions from the actual engine for
@@ -203,29 +204,30 @@ for others; ruins give 1 ranged cover without blocking shots; forts give 1 cover
 against every attack; sacred groves give ranged cover, block shots through them,
 and heal their owner’s occupant by 2 HP each turn. Forts, ruins and groves are
 capturable but do not generate gold. Woodland units cross forest and grove for
-1 movement. Only scouts also receive that discount on hills. Sealing marked
-ruins stops their future grave waves permanently. Each optional supply quest
-pays six gold once; move undo restores both its reward and conversation.
+1 movement. Scouts and dire wolves also receive a hill discount. Sealing marked
+ruins stops their future grave waves permanently. Optional supply rewards are
+listed in the briefing and paid once; move undo restores reward and conversation.
 
 The nine new unit types have original teal/crimson artwork in Normal, Low-poly
 and Pixel, alongside the four new terrain tiles. Sheets load for the selected style;
-classic skirmishes retain their original three recruits and rules.
+classic skirmishes recruit sword infantry, archers and scouts with the same race
+and progression rules.
 
 | New unit             | Gold |  HP | Move | Weapons                                           | Flat incoming modifiers        |
 | -------------------- | ---: | --: | ---: | ------------------------------------------------- | ------------------------------ |
 | Warden               |    9 |  12 |    3 | Spear 4 Pierce; Hammer 2 Impact                   | Blade −1, Pierce −1, Impact +1 |
 | Adept                |   10 |   7 |    3 | Spark 3 Impact, range 2; Staff 1 Impact           | None                           |
-| Skeleton             |    7 |   9 |    3 | Rust blade 3 Blade; Bone club 3 Impact            | Pierce −2, Impact +1           |
-| Bone archer          |    8 |   7 |    3 | Bone bow 3 Pierce, range 2; Shard 1 Blade         | Pierce −1, Impact +1           |
-| Wolf                 |    6 |   8 |    5 | Fangs 3 Blade                                     | Pierce +1                      |
-| Boar                 |    9 |  13 |    3 | Tusks 4 Pierce                                    | None                           |
-| Thorncaller          |    8 |   7 |    4 | Thorns 3 Pierce, range 2; Root staff 2 Impact     | None                           |
+| Skeleton             |    7 |   9 |    3 | Rust blade 3 Blade; Bone club 2 Impact            | Pierce −2, Impact +1           |
+| Bone archer          |    7 |   7 |    3 | Bone bow 3 Pierce, range 2; Shard 1 Blade         | Pierce −1, Impact +1           |
+| Wolf                 |    5 |   8 |    5 | Fangs 3 Blade                                     | Pierce +1                      |
+| Boar                 |    9 |  13 |    3 | Tusks 4 Pierce                                    | Pierce +1                      |
+| Thorncaller          |    7 |   7 |    4 | Thorns 3 Pierce, range 2; Root staff 2 Impact     | None                           |
 | Wildkeeper (leader)  |    — |  14 |    3 | Bough 3 Impact; Stones 2 Impact, range 2          | Impact −1                      |
 | Necromancer (leader) |    — |  12 |    3 | Bone staff 3 Impact; Grave bolt 3 Impact, range 2 | Pierce −1, Impact +1           |
 
-Balance follows counterplay rather than enemy stat boosts. A bow deals 1 damage
-to an open-ground skeleton; a sword or mace deals 4. Skeleton clubs deal 4 to
-armored soldiers but 3 to unarmored targets. Wardens’ spears deal 5 to wolves;
+Balance follows counterplay rather than enemy stat boosts. A human bow deals 2 damage
+to an open-ground skeleton; a rookie sword deals 3, a veteran sword or mace 4.
+Skeleton clubs deal 3 to armored soldiers but 2 to unarmored targets. Wardens’ spears deal 5 to wolves and boars;
 wolves compensate with speed and woodland routes. Boars survive front-line
 exchanges but cannot reply to ranged attacks. Adepts punish bones and armor but
 have low HP and a weak melee reply. Thorncallers trade raw damage for woodland
@@ -258,21 +260,23 @@ map, units, treasury, briefing, hints, conversations, objectives, side quests an
 announced reinforcements, plus the outcome and any defined debrief after victory. Start and retry also
 return unit definitions, terrain rules and the common action rules.
 Coordinates are zero-based `col,row` on the game's odd-row-offset hex grid.
-Terrain rules expose numeric base costs, or `"impassable"` for water; unit
-`movementModifiers` apply signed changes to those base costs.
+Terrain rules expose finite numeric base costs and explicit `passable` flags.
+Race and unit `terrainModifiers` apply signed changes and optional access
+overrides to those base rules.
 Start refuses to overwrite an existing trial; use next, retry, or a new file path.
 
-| Operation | Parameters and behavior                                                                                                                                  |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `start`   | `campaign`: `lantern-road`, `green-accord` or `ashen-oath`; starts mission one.                                                                          |
-| `observe` | Optional `rules: true`; inspect the current battle.                                                                                                      |
-| `options` | `units: [ids]`; legal moves, weapon forecasts and recruitment hexes. Optional `from: "col,row"` forecasts attacks from a reachable hex without moving.   |
-| `threats` | `unit: id`, `tiles: [up to 12 current/reachable hexes]`; potential next-turn attacks from current enemies, using the same reachability and damage rules. |
-| `act`     | `actions: [...]`, optional `endTurn: true`; move, attack and recruit, then execute the actual enemy AI if requested.                                     |
-| `undo`    | Undo a move until an attack, recruitment or end turn clears the move history.                                                                            |
-| `next`    | `recall: [up to four survivor IDs]`; advance after winning, with actual survivor and gold carryover.                                                     |
-| `retry`   | Restart a defeated mission with its original recall and treasury.                                                                                        |
-| `results` | Recorded mission outcomes, rounds and survivor counts.                                                                                                   |
+| Operation  | Parameters and behavior                                                                                                                                                      |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `start`    | `campaign`: `lantern-road`, `green-accord`, `ashen-oath` or `borrowed-tide`; starts mission one.                                                                             |
+| `observe`  | Optional `rules: true`; inspect the current battle.                                                                                                                          |
+| `options`  | `units: [ids]`; legal moves, weapon forecasts and recruitment hexes. Optional `from: "col,row"` forecasts attacks from a reachable hex without moving.                       |
+| `threats`  | `unit: id`, `tiles: [up to 12 current/reachable hexes]`; potential next-turn attacks from current enemies, using the same reachability and damage rules.                     |
+| `forecast` | Exact live-engine enemy turn from a copy of the current position, including recruitment, waves and healing. Further player actions invalidate it; the trial stays unchanged. |
+| `act`      | `actions: [...]`, optional `endTurn: true`; move, attack, recruit or advance, then execute the actual enemy AI if requested.                                                 |
+| `undo`     | Undo a move until an attack, recruitment or end turn clears the move history.                                                                                                |
+| `next`     | `recall: [up to four survivor IDs]`; advance after winning, with actual survivor and gold carryover.                                                                         |
+| `retry`    | Restart a defeated mission with its original recall and treasury.                                                                                                            |
+| `results`  | Recorded mission outcomes, rounds and survivor counts.                                                                                                                       |
 
 Action objects use `op` and `unit`, plus `tile` for a move, `target` and optional
 `weapon` for an attack, or `type` and `tile` for recruitment. Move before attacking:
@@ -289,6 +293,7 @@ Inside `actions`, use these forms, replacing placeholders with values from
 [
   { "op": "move", "unit": "UNIT_ID", "tile": "col,row" },
   { "op": "attack", "unit": "UNIT_ID", "target": "ENEMY_ID", "weapon": "WEAPON_ID" },
+  { "op": "advance", "unit": "UNIT_ID", "type": "AVAILABLE_ADVANCEMENT" },
   { "op": "recruit", "unit": "LEADER_ID", "type": "RECRUIT_TYPE", "tile": "col,row" }
 ]
 ```

@@ -71,6 +71,31 @@ for (const [type, price] of [
   assert.equal(game.gold.player, 0);
 }
 
+// The woodland purse can also field a runner and ranged support instead of one boar.
+{
+  const game = Game.startCampaign("green-accord");
+  game.advanceDialogue(true);
+  const alder = required(
+    game.units.find((unit) => unit.side === "player" && unit.role === "leader"),
+  );
+  for (const type of ["wolf", "thorncaller"] as const) {
+    const tile = required(game.recruitTiles(alder.id, type)[0]);
+    game.recruit(alder.id, type, tile.id);
+  }
+  assert.equal(game.gold.player, 0);
+  game.units = [];
+  for (const tile of game.tiles) tile.terrain = "plains";
+  const spear = game.addUnit("spearman", "enemy", "3,3");
+  const boar = game.addUnit("boar", "player", "2,3");
+  assert.equal(game.preview(spear, boar, "spear").damage, 4);
+  assert.equal(game.preview(boar, spear, "tusks").damage, 4);
+  assert.equal(
+    TYPES.boar.hp,
+    13,
+    "The front-line body remains sturdy, but spear damage has a counter",
+  );
+}
+
 // Thorns can harass armored humans in cover, while skeletal armor remains a counter.
 {
   const game = new Game();
@@ -113,7 +138,7 @@ for (const [type, price] of [
     retaliation: 4,
   });
   assert.ok(thorncaller.hp < 2 * game.preview(thorncaller, soldier, "rootstaff").retaliation);
-  assert.equal(TYPES.thorncaller.cost, TYPES.archer.cost);
+  assert.ok(TYPES.thorncaller.cost < TYPES.archer.cost);
   assert.ok(TYPES.thorncaller.hp < TYPES.archer.hp);
   assert.ok(TYPES.thorncaller.move > TYPES.archer.move);
 
