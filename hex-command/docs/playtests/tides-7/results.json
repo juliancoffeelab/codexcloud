@@ -1,0 +1,151 @@
+{
+  "sourceCommit": "a8ec02443515cbb266a0613cbc8432a1fee632a6",
+  "trials": [
+    {
+      "file": "round7-green-mixed.json",
+      "verified": true,
+      "campaign": "green-accord",
+      "completed": true,
+      "decisions": 158,
+      "attempts": [
+        {
+          "mission": "green-border",
+          "winner": "player",
+          "round": 11,
+          "losses": [
+            "u2:wolf",
+            "u11:thorncaller"
+          ],
+          "recruits": [
+            "wolf",
+            "thorncaller",
+            "wolf",
+            "wolf",
+            "wolf",
+            "thorncaller",
+            "boar"
+          ],
+          "promotions": [
+            "briarweaver"
+          ],
+          "attacks": {
+            "thorncaller": 11,
+            "wolf": 3,
+            "briarweaver": 2,
+            "boar": 1
+          }
+        },
+        {
+          "mission": "green-vigil",
+          "winner": "player",
+          "round": 4,
+          "losses": [],
+          "recruits": [
+            "thorncaller"
+          ],
+          "promotions": [
+            "direwolf"
+          ],
+          "attacks": {
+            "briarweaver": 3,
+            "boar": 1,
+            "warden": 1,
+            "direwolf": 1,
+            "thorncaller": 1
+          }
+        },
+        {
+          "mission": "green-pact",
+          "winner": "player",
+          "round": 6,
+          "losses": [],
+          "recruits": [
+            "adept",
+            "spearman"
+          ],
+          "promotions": [
+            "briarweaver"
+          ],
+          "attacks": {
+            "briarweaver": 3,
+            "adept": 3,
+            "direwolf": 1,
+            "warden": 2
+          }
+        }
+      ]
+    },
+    {
+      "file": "round7-green-boar.json",
+      "verified": true,
+      "campaign": "green-accord",
+      "completed": true,
+      "decisions": 152,
+      "attempts": [
+        {
+          "mission": "green-border",
+          "winner": "player",
+          "round": 17,
+          "losses": [
+            "u11:boar",
+            "u14:boar"
+          ],
+          "recruits": [
+            "boar",
+            "boar",
+            "boar",
+            "boar",
+            "boar",
+            "boar",
+            "boar"
+          ],
+          "promotions": [
+            "briarweaver"
+          ],
+          "attacks": {
+            "boar": 10,
+            "thorncaller": 5
+          }
+        },
+        {
+          "mission": "green-vigil",
+          "winner": "player",
+          "round": 4,
+          "losses": [
+            "u9:boar"
+          ],
+          "recruits": [
+            "boar",
+            "boar"
+          ],
+          "promotions": [
+            "greatboar"
+          ],
+          "attacks": {
+            "boar": 2,
+            "briarweaver": 1
+          }
+        },
+        {
+          "mission": "green-pact",
+          "winner": "player",
+          "round": 6,
+          "losses": [],
+          "recruits": [
+            "boar",
+            "boar",
+            "boar"
+          ],
+          "promotions": [
+            "greatboar"
+          ],
+          "attacks": {
+            "briarweaver": 3,
+            "adept": 2,
+            "boar": 2
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -27,9 +27,15 @@ them. A developer route study is identified separately.
 | [5](playtests/tides-5/README.md) | Woodland and Lantern              | Woodland mixed attrition remained worse; Lantern mixed completed, while swordsman-only lost its sole sealing mage. |
 | [6](playtests/tides-6/README.md) | Coast and Ashen                   | Mixed coast opened faster but lost six troops versus three; independent Ashen mixed failed the refuge.             |
 
+The [seventh woodland pair](playtests/tides-7/README.md) completed on the revised
+source. Mixed recruitment won in 11 / 4 / 6 turns, lost two troops and retained
+Dain. Boar-only recruitment needed 17 / 4 / 6, lost three troops and killed Dain
+in the opening. Neither needed a retry. This supports the woodland revision in
+its recorded pair.
+
 Subsequent revisions add woodland ranged cover for thorncallers, one HP for
 coastal healers, actual defended-duration tracking for evacuation, and rookie
-Ashen reinforcements that earn heavy armor. Fresh woodland, coastal and Ashen
+Ashen reinforcements that earn heavy armor. Fresh coastal and Ashen
 players are testing these revisions. Their final comparisons will be added
 when actual campaigns finish. The older Lantern pair used the former ten-gold
 adept price; the current price is eight. That difference is disclosed rather
