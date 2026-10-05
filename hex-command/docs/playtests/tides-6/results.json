@@ -12,19 +12,9 @@
           "mission": "tide-nets",
           "winner": "player",
           "round": 8,
-          "losses": [
-            "u2:reefguard",
-            "u11:harpooner"
-          ],
-          "recruits": [
-            "wavemender",
-            "harpooner",
-            "reefguard",
-            "reefguard"
-          ],
-          "promotions": [
-            "tidehunter"
-          ],
+          "losses": ["u2:reefguard", "u11:harpooner"],
+          "recruits": ["wavemender", "harpooner", "reefguard", "reefguard"],
+          "promotions": ["tidehunter"],
           "attacks": {
             "reefguard": 3,
             "harpooner": 9,
@@ -37,17 +27,9 @@
           "mission": "tide-wreck",
           "winner": "player",
           "round": 6,
-          "losses": [
-            "u11:tidehunter"
-          ],
-          "recruits": [
-            "harpooner",
-            "wavemender",
-            "reefguard"
-          ],
-          "promotions": [
-            "tidesage"
-          ],
+          "losses": ["u11:tidehunter"],
+          "recruits": ["harpooner", "wavemender", "reefguard"],
+          "promotions": ["tidesage"],
           "attacks": {
             "harpooner": 3,
             "tidehunter": 3,
@@ -60,16 +42,8 @@
           "mission": "tide-sluice",
           "winner": "player",
           "round": 8,
-          "losses": [
-            "u2:reefguard",
-            "u4:wavemender",
-            "u3:harpooner"
-          ],
-          "recruits": [
-            "adept",
-            "reefguard",
-            "wavemender"
-          ],
+          "losses": ["u2:reefguard", "u4:wavemender", "u3:harpooner"],
+          "recruits": ["adept", "reefguard", "wavemender"],
           "promotions": [],
           "attacks": {
             "tidesage": 5,
@@ -91,18 +65,9 @@
           "mission": "tide-nets",
           "winner": "player",
           "round": 11,
-          "losses": [
-            "u4:wavemender"
-          ],
-          "recruits": [
-            "reefguard",
-            "reefguard",
-            "reefguard",
-            "reefguard"
-          ],
-          "promotions": [
-            "tridentguard"
-          ],
+          "losses": ["u4:wavemender"],
+          "recruits": ["reefguard", "reefguard", "reefguard", "reefguard"],
+          "promotions": ["tridentguard"],
           "attacks": {
             "reefguard": 14,
             "harpooner": 5,
@@ -114,15 +79,8 @@
           "winner": "player",
           "round": 6,
           "losses": [],
-          "recruits": [
-            "reefguard",
-            "reefguard",
-            "reefguard"
-          ],
-          "promotions": [
-            "tridentguard",
-            "tidehunter"
-          ],
+          "recruits": ["reefguard", "reefguard", "reefguard"],
+          "promotions": ["tridentguard", "tidehunter"],
           "attacks": {
             "reefguard": 5,
             "harpooner": 3,
@@ -133,18 +91,9 @@
           "mission": "tide-sluice",
           "winner": "player",
           "round": 8,
-          "losses": [
-            "u3:harpooner",
-            "u14:tidehunter"
-          ],
-          "recruits": [
-            "reefguard",
-            "reefguard",
-            "reefguard"
-          ],
-          "promotions": [
-            "tridentguard"
-          ],
+          "losses": ["u3:harpooner", "u14:tidehunter"],
+          "recruits": ["reefguard", "reefguard", "reefguard"],
+          "promotions": ["tridentguard"],
           "attacks": {
             "harpooner": 4,
             "wavemender": 2,
@@ -166,10 +115,7 @@
           "winner": "player",
           "round": 6,
           "losses": [],
-          "recruits": [
-            "bonearcher",
-            "skeleton"
-          ],
+          "recruits": ["bonearcher", "skeleton"],
           "promotions": [],
           "attacks": {
             "skeleton": 4,
@@ -181,19 +127,9 @@
           "mission": "ashen-refuge",
           "winner": "player",
           "round": 6,
-          "losses": [
-            "u12:skeleton"
-          ],
-          "recruits": [
-            "bonearcher",
-            "skeleton",
-            "skeleton",
-            "bonearcher"
-          ],
-          "promotions": [
-            "revenant",
-            "revenant"
-          ],
+          "losses": ["u12:skeleton"],
+          "recruits": ["bonearcher", "skeleton", "skeleton", "bonearcher"],
+          "promotions": ["revenant", "revenant"],
           "attacks": {
             "skeleton": 6,
             "bonearcher": 4,
@@ -204,21 +140,9 @@
           "mission": "ashen-dawn",
           "winner": "player",
           "round": 8,
-          "losses": [
-            "u14:revenant"
-          ],
-          "recruits": [
-            "adept",
-            "spearman",
-            "bonearcher",
-            "skeleton"
-          ],
-          "promotions": [
-            "deatharcher",
-            "lich",
-            "revenant",
-            "mage"
-          ],
+          "losses": ["u14:revenant"],
+          "recruits": ["adept", "spearman", "bonearcher", "skeleton"],
+          "promotions": ["deatharcher", "lich", "revenant", "mage"],
           "attacks": {
             "warden": 2,
             "necromancer": 3,
@@ -228,6 +152,85 @@
             "deatharcher": 2,
             "spearman": 1,
             "lich": 2
+          }
+        }
+      ]
+    },
+    {
+      "file": "round6-ashen-mixed.json",
+      "verified": true,
+      "campaign": "ashen-oath",
+      "completed": false,
+      "decisions": 219,
+      "attempts": [
+        {
+          "mission": "ashen-quarry",
+          "winner": "enemy",
+          "round": 8,
+          "losses": ["u3:bonearcher", "u2:skeleton", "u4:skeleton", "u9:skeleton", "u1:Orin"],
+          "recruits": ["skeleton", "bonearcher"],
+          "promotions": [],
+          "attacks": {
+            "bonearcher": 1,
+            "necromancer": 1
+          }
+        },
+        {
+          "mission": "ashen-quarry",
+          "winner": "player",
+          "round": 6,
+          "losses": ["u2:skeleton"],
+          "recruits": ["skeleton", "bonearcher"],
+          "promotions": [],
+          "attacks": {
+            "necromancer": 1
+          }
+        },
+        {
+          "mission": "ashen-refuge",
+          "winner": "enemy",
+          "round": 6,
+          "losses": [
+            "u2:skeleton",
+            "u3:skeleton",
+            "u12:bonearcher",
+            "u4:bonearcher",
+            "u10:skeleton",
+            "u11:bonearcher",
+            "u1:Orin"
+          ],
+          "recruits": [],
+          "promotions": [],
+          "attacks": {
+            "skeleton": 1,
+            "necromancer": 3,
+            "bonearcher": 1
+          }
+        },
+        {
+          "mission": "ashen-refuge",
+          "winner": "enemy",
+          "round": 10,
+          "losses": [
+            "u2:skeleton",
+            "u3:skeleton",
+            "u11:bonearcher",
+            "u4:bonearcher",
+            "u12:bonearcher",
+            "u10:skeleton",
+            "u14:bonearcher",
+            "u9:skeleton",
+            "u13:skeleton",
+            "u22:skeleton",
+            "u21:bonearcher",
+            "u1:Orin"
+          ],
+          "recruits": ["skeleton", "bonearcher", "skeleton", "bonearcher", "skeleton"],
+          "promotions": [],
+          "attacks": {
+            "bonearcher": 6,
+            "skeleton": 1,
+            "necromancer": 3
           }
         }
       ]

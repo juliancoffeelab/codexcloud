@@ -38,3 +38,18 @@ requests retained their earlier successful actions; no transcript was rewritten.
 The finale's lost revenant followed an exposed attack against the Master on a
 hill. Independent Luna outcomes remain the authority for the recruitment-policy
 comparison.
+
+## Independent Ashen mixed attempt
+
+`round6-ashen-mixed.json` replays all 219 decisions against the same frozen
+source. The quarry failed on turn eight, then succeeded on turn six. The refuge
+failed on turns six and ten, exhausting its allowed retry. The campaign did not
+reach the finale. Those failures are retained; the developer's successful route
+does not replace them.
+
+The player initially interpreted the mediation rule as prohibiting all attacks
+against Dain and withdrawing soldiers. The actual rule prohibits killing them,
+including lethal retaliation. Clarification arrived during the refuge retry;
+the companion restricted trial received it at a different point. This limits
+comparison of the two old refuge attempts. Fresh players receive the same lethal
+boundary from the outset, on the revised rookie-reinforcement source.
