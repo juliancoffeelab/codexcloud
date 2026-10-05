@@ -51,10 +51,21 @@ its action. Use a mobile unit to take safe villages for income and healing.
 Rotate wounded screens out, bring fresh ones in, and use owned villages or
 groves to rest. Retaliation can be lethal: previews matter for both sides.
 
+Before leaving the starting keep, count how many useful recruits the opening
+purse can afford. Buying one unit and leaving enough gold for a second unused
+means fewer troops doing the first crossing. Deploy the needed screens and
+support while recruitment is available; saving gold is a choice that needs a
+concrete later purpose. A mixed army still needs enough melee bodies to hold
+approaches. Extra bows do not substitute for those bodies.
+
 Promote ready survivors on a fresh turn. Promotion preserves wounds and spends
 the unit's turn; it is not an instant full heal. Recall up to four earned units
 that fit the next chapter's opponents, not just the four with the most HP.
 Veteran ranged support can be worth more than another rookie melee body.
+Check the observation's available promotions at the beginning of every turn,
+especially after a kill. Leaving a ready advancement unused forfeits its
+equipment and durability; consider the spent action before promoting under
+immediate attack.
 
 ## Campaign priorities
 

@@ -117,3 +117,35 @@ and delayed near its start on retry; the old successful route used a scout's
 Impact sling and coordinated support. No relevant opening stat/map/AI regression
 was found. The failed fresh run remains adverse evidence; current matched
 results remain incomplete and cannot be replaced by compatibility checks.
+
+## Extended review: progression artwork and current balance evidence
+
+An independent reviewer inspected gameplay/art source `9ef4a38` and the later
+documentation updates on 2026-10-05. All nineteen test files passed in 7.17
+seconds. The native matrix/atlas check passed. It inspected the complete roster
+and verified all seventeen promotion families, thirty-four ranks and sixty-eight
+faction frames, wound preservation, maximum weapon-range summaries and terrain
+access precedence. No additional source or visible artwork blocker was found.
+Published legacy deployment migration preserves saved armies and suppresses
+duplicate replacement waves. This does not claim phone/browser inspection.
+
+All eight eleventh-cohort records and both archived twelfth-cohort Ashen records
+replayed independently against their frozen sources. The updated reports retain
+adverse and interrupted results. Ashen mixed balance remains unproven: eighteen
+losses versus twelve in cohort eleven, then two quarry defeats in cohort twelve
+while its control remains unfinished. No enemy bone bows appear in the quarry,
+so their increased damage cannot explain those opening defeats.
+
+Both eleventh-cohort refuge policies fetch medicine by turn three. Mixed loses
+ownership, recaptures in turn four and accumulates five defended phases only by
+turn nine; the control never resets ownership and wins at six. The three extra
+pressure phases and different retained bow support confound recruit efficiency.
+The control recalls its surviving authored bow, whereas mixed lost that bow.
+Restrictions concern new purchases, not the absence of all auxiliary troops.
+
+The reviewer recommends no additional global skeleton nerf or auxiliary buff
+from these records alone. Raising skeleton cost would also break the fourteen-
+gold skeleton-plus-bow opening. Stronger bows and reduced quarry pressure address
+specific deficiencies but still need current comparison evidence. Further
+refuge difficulty changes should follow actual competent deployment and pressure
+patterns, rather than treating mechanical correctness as balance approval.
