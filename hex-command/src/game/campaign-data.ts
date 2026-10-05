@@ -1161,7 +1161,6 @@ const ashen: MissionDefinition[] = [
         unit("skeleton", "player", 1, 2),
         unit("commander", "enemy", 11, 5, "The Ledgerkeeper", "leader"),
         unit("swordsman", "enemy", 9, 5),
-        unit("archer", "enemy", 10, 4),
       ],
     ),
     subtitle: "The first order you give yourself.",
