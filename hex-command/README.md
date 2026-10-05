@@ -196,8 +196,11 @@ They heal completely, and up to eight spare gold carries forward. Each mission
 also supplies its own starting company and treasury. Couriers, leaders and required companions have
 fixed story roles rather than occupying recall slots. Losing a leader, required
 courier or story companion ends the mission; Retry mission restores its original company, recall
-and treasury. There is no arbitrary loss deadline. Hold objectives check ownership
-at the beginning of a player turn, starting at the announced turn.
+and treasury. There is no arbitrary loss deadline. The coastal evacuation counts
+three consecutive defended enemy turns after capturing the landing, then waits
+for high tide no earlier than turn six. Troops may leave the owned landing to
+screen the workers; enemy recapture resets this progress. Saves and undo retain
+the defended duration.
 
 New terrain adds tactical choices: marsh costs 3 movement for heavy troops and 2
 for others; ruins give 1 ranged cover without blocking shots; forts give 1 cover

@@ -81,8 +81,10 @@ export function goalProgress(board: CampaignBoard, goal: Immutable<MissionGoal>)
       current = Number(board.campaign?.marks.includes(`event:${goal.event}`));
       break;
     case "hold":
-      total = goal.round;
-      current = board.tile(goal.tile)?.owner === "player" ? Math.min(board.round, total) : 0;
+      total = goal.turns;
+      current = Math.min(board.campaign?.holds?.[goal.tile]?.heldTurns ?? 0, total);
+      if (current === total && board.round < goal.earliestRound)
+        label = `Landing secured; await high tide on turn ${goal.earliestRound}`;
       break;
     case "vigil":
       total = goal.turns;
@@ -107,7 +109,9 @@ export function goalProgress(board: CampaignBoard, goal: Immutable<MissionGoal>)
   const done =
     current === total &&
     (goal.kind !== "hold" ||
-      (board.turn === "player" && board.campaign?.marks.includes(`held:${goal.tile}`)));
+      (board.turn === "player" &&
+        board.round >= goal.earliestRound &&
+        board.tile(goal.tile)?.owner === "player"));
   return { label, current, total, done, tiles };
 }
 

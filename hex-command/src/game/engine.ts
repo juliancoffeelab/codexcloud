@@ -1080,6 +1080,11 @@ export class Game {
       ...(mission.goals.some((goal) => goal.kind === "vigil")
         ? { vigil: { heldTurns: 0, lastCountedRound: 1 } }
         : {}),
+      holds: Object.fromEntries(
+        mission.goals
+          .filter((goal) => goal.kind === "hold")
+          .map((goal) => [goal.tile, { heldTurns: 0, lastCountedRound: 1 }]),
+      ),
     };
     const effectiveMission = campaignMission(game.campaign);
     game.units = game.units.filter(
@@ -1314,14 +1319,20 @@ export class Game {
       }
     }
     for (const goal of mission.goals) {
-      if (
-        atTurnStart &&
-        goal.kind === "hold" &&
-        this.round >= goal.round &&
-        this.tile(goal.tile)?.owner === "player" &&
-        !campaign.marks.includes(`held:${goal.tile}`)
-      )
-        campaign.marks.push(`held:${goal.tile}`);
+      if (goal.kind === "hold") {
+        campaign.holds ??= {};
+        const progress = (campaign.holds[goal.tile] ??= {
+          heldTurns: 0,
+          lastCountedRound: this.round,
+        });
+        if (this.tile(goal.tile)?.owner !== "player") {
+          progress.heldTurns = 0;
+          progress.lastCountedRound = this.round;
+        } else if (atTurnStart && this.round > progress.lastCountedRound) {
+          progress.heldTurns = Math.min(goal.turns, progress.heldTurns + 1);
+          progress.lastCountedRound = this.round;
+        }
+      }
       if (goal.kind !== "seal") continue;
       for (const id of goal.tiles) {
         const occupant = this.at(id);

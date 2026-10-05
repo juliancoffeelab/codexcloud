@@ -1,0 +1,158 @@
+{
+  "sourceCommit": "8259b39d94369c2067bb78190e5d2c68fbd3c025",
+  "trials": [
+    {
+      "file": "round6-tide-mixed.json",
+      "verified": true,
+      "campaign": "borrowed-tide",
+      "completed": true,
+      "decisions": 170,
+      "attempts": [
+        {
+          "mission": "tide-nets",
+          "winner": "player",
+          "round": 8,
+          "losses": [
+            "u2:reefguard",
+            "u11:harpooner"
+          ],
+          "recruits": [
+            "wavemender",
+            "harpooner",
+            "reefguard",
+            "reefguard"
+          ],
+          "promotions": [
+            "tidehunter"
+          ],
+          "attacks": {
+            "reefguard": 3,
+            "harpooner": 9,
+            "wavemender": 7,
+            "tidekeeper": 1,
+            "tidehunter": 1
+          }
+        },
+        {
+          "mission": "tide-wreck",
+          "winner": "player",
+          "round": 6,
+          "losses": [
+            "u11:tidehunter"
+          ],
+          "recruits": [
+            "harpooner",
+            "wavemender",
+            "reefguard"
+          ],
+          "promotions": [
+            "tidesage"
+          ],
+          "attacks": {
+            "harpooner": 3,
+            "tidehunter": 3,
+            "tidesage": 2,
+            "wavemender": 2,
+            "reefguard": 1
+          }
+        },
+        {
+          "mission": "tide-sluice",
+          "winner": "player",
+          "round": 8,
+          "losses": [
+            "u2:reefguard",
+            "u4:wavemender",
+            "u3:harpooner"
+          ],
+          "recruits": [
+            "adept",
+            "reefguard",
+            "wavemender"
+          ],
+          "promotions": [],
+          "attacks": {
+            "tidesage": 5,
+            "reefguard": 2,
+            "harpooner": 11,
+            "wavemender": 3
+          }
+        }
+      ]
+    },
+    {
+      "file": "round6-tide-reefguard.json",
+      "verified": true,
+      "campaign": "borrowed-tide",
+      "completed": true,
+      "decisions": 180,
+      "attempts": [
+        {
+          "mission": "tide-nets",
+          "winner": "player",
+          "round": 11,
+          "losses": [
+            "u4:wavemender"
+          ],
+          "recruits": [
+            "reefguard",
+            "reefguard",
+            "reefguard",
+            "reefguard"
+          ],
+          "promotions": [
+            "tridentguard"
+          ],
+          "attacks": {
+            "reefguard": 14,
+            "harpooner": 5,
+            "wavemender": 2
+          }
+        },
+        {
+          "mission": "tide-wreck",
+          "winner": "player",
+          "round": 6,
+          "losses": [],
+          "recruits": [
+            "reefguard",
+            "reefguard",
+            "reefguard"
+          ],
+          "promotions": [
+            "tridentguard",
+            "tidehunter"
+          ],
+          "attacks": {
+            "reefguard": 5,
+            "harpooner": 3,
+            "tidehunter": 1
+          }
+        },
+        {
+          "mission": "tide-sluice",
+          "winner": "player",
+          "round": 8,
+          "losses": [
+            "u3:harpooner",
+            "u14:tidehunter"
+          ],
+          "recruits": [
+            "reefguard",
+            "reefguard",
+            "reefguard"
+          ],
+          "promotions": [
+            "tridentguard"
+          ],
+          "attacks": {
+            "harpooner": 4,
+            "wavemender": 2,
+            "tidehunter": 3,
+            "tridentguard": 5
+          }
+        }
+      ]
+    }
+  ]
+}

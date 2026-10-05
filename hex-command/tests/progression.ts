@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { describeChanges } from "../src/controller/feedback";
 import { Game, RACES, TERRAIN, TYPES } from "../src/game/engine";
 import { CAMPAIGNS } from "../src/game/campaign-data";
+import { goalProgress } from "../src/game/campaign-progress";
 import { UNIT_TYPES, type UnitType } from "../src/game/types";
 import { movementCost } from "../src/game/movement";
 import { createGameView } from "../src/game/view";
@@ -161,6 +162,71 @@ assert.equal(
 );
 
 Object.defineProperty(globalThis, "localStorage", { configurable: true, value: new TestStorage() });
+// Late arrival cannot borrow elapsed rounds as evacuation defense. Ownership,
+// rather than an occupying unit, sustains progress; reload and repeated views do not add turns.
+{
+  const evacuation = Game.startCampaign("borrowed-tide", 1);
+  evacuation.advanceDialogue(true);
+  evacuation.round = 20;
+  const edda = required(evacuation.units.find((unit) => unit.name === "Edda"));
+  edda.tile = "4,4";
+  const hold = required(
+    CAMPAIGNS["borrowed-tide"].missions[1]!.goals.find((goal) => goal.kind === "hold"),
+  );
+  evacuation.move(edda.id, "5,4");
+  assert.equal(goalProgress(evacuation, hold).current, 0);
+  evacuation.endTurn();
+  evacuation.endTurn();
+  assert.equal(evacuation.round, 21);
+  assert.equal(evacuation.winner, null);
+  assert.equal(goalProgress(evacuation, hold).current, 1);
+  evacuation.move(edda.id, "5,3");
+  evacuation.endTurn();
+  evacuation.endTurn();
+  assert.equal(goalProgress(evacuation, hold).current, 2);
+  saveBattle(evacuation);
+  const restored = loadBattle().game;
+  assert.equal(restored.mapId, "tide-wreck");
+  assert.deepEqual(restored.campaign!.holds, evacuation.campaign!.holds);
+  restored.beginTurn("player");
+  assert.equal(goalProgress(restored, hold).current, 2);
+  restored.endTurn();
+  restored.endTurn();
+  assert.equal(restored.round, 23);
+  assert.equal(restored.winner, "player");
+
+  // An ongoing legacy save has no evidence of defended duration: retain its
+  // battle and ledger, but start the newly explicit defense clock at zero.
+  const legacy = JSON.parse(required(localStorage.getItem(SAVE_KEY)));
+  delete legacy.state.campaign.holds;
+  localStorage.setItem(SAVE_KEY, JSON.stringify(legacy));
+  const migrated = loadBattle().game;
+  assert.equal(migrated.mapId, "tide-wreck");
+  assert.equal(migrated.campaign!.holds!["5,4"]!.heldTurns, 0);
+  assert(migrated.campaign!.marks.includes("event:ledger"));
+  legacy.state.campaign.holds = { "5,4": { heldTurns: 4, lastCountedRound: 22 } };
+  localStorage.setItem(SAVE_KEY, JSON.stringify(legacy));
+  assert.equal(loadBattle().game.mapId, "mirror");
+}
+{
+  const contested = Game.startCampaign("borrowed-tide", 1);
+  contested.advanceDialogue(true);
+  const edda = required(contested.units.find((unit) => unit.name === "Edda"));
+  edda.tile = "4,4";
+  contested.move(edda.id, "5,4");
+  contested.endTurn();
+  contested.endTurn();
+  assert.equal(contested.campaign!.holds!["5,4"]!.heldTurns, 1);
+  contested.move(edda.id, "5,3");
+  const raider = contested.addUnit("swordsman", "enemy", "6,4");
+  contested.endTurn();
+  contested.move(raider.id, "5,4");
+  assert.equal(contested.campaign!.holds!["5,4"]!.heldTurns, 0);
+  contested.endTurn();
+  assert.equal(contested.winner, null);
+  saveBattle(contested);
+  assert.equal(loadBattle().game.campaign!.holds!["5,4"]!.heldTurns, 0);
+}
 saveBattle(next);
 assert.equal(loadBattle().game.campaign?.id, "borrowed-tide");
 assert.deepEqual(loadBattle().game.units, next.units);

@@ -104,7 +104,7 @@ export function progressionUnits(
   units.wavemender = {
     ...sea(
       "Wavemender",
-      7,
+      8,
       4,
       9,
       [weapon("surge", "Surge", 3, "impact", "ranged", 2), weapon("staff", "Staff", 1, "impact")],
@@ -126,7 +126,7 @@ export function progressionUnits(
     ["thorncaller", "briarweaver", "Briarweaver", { hp: 10 }],
     ["reefguard", "tridentguard", "Trident guard", { hp: 14 }],
     ["harpooner", "tidehunter", "Tide hunter", { hp: 11 }],
-    ["wavemender", "tidesage", "Tide sage", { hp: 10, healing: 2 }],
+    ["wavemender", "tidesage", "Tide sage", { hp: 11, healing: 2 }],
     ["commander", "marshal", "Marshal", { hp: 19 }],
     ["wildkeeper", "grovewarden", "Grove warden", { hp: 17 }],
     ["necromancer", "lich", "Lich", { hp: 15 }],

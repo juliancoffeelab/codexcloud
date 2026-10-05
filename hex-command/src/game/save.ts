@@ -188,6 +188,23 @@ function campaignState(
   )
     return null;
   const vigilGoal = mission.goals.find((goal) => goal.kind === "vigil");
+  const holdGoals = mission.goals.filter((goal) => goal.kind === "hold");
+  if (
+    value.holds !== undefined &&
+    (!record(value.holds) ||
+      Object.entries(value.holds).some(([tile, progress]) => {
+        const goal = holdGoals.find((candidate) => candidate.tile === tile);
+        return (
+          !goal ||
+          !record(progress) ||
+          !integer(progress.heldTurns) ||
+          progress.heldTurns > goal.turns ||
+          !integer(progress.lastCountedRound) ||
+          progress.lastCountedRound > round
+        );
+      }))
+  )
+    return null;
   if (
     value.vigil !== undefined &&
     (vigilGoal?.kind !== "vigil" ||
@@ -304,6 +321,17 @@ function campaignState(
             : { heldTurns: 0, lastCountedRound: round },
         }
       : {}),
+    holds: Object.fromEntries(
+      holdGoals.map((goal) => [
+        goal.tile,
+        value.holds && record(value.holds) && record(value.holds[goal.tile])
+          ? { ...(value.holds[goal.tile] as NonNullable<CampaignState["holds"]>[string]) }
+          : {
+              heldTurns: winner === "player" ? goal.turns : 0,
+              lastCountedRound: round,
+            },
+      ]),
+    ) as NonNullable<CampaignState["holds"]>,
     ...(value.choices
       ? { choices: [...(value.choices as NonNullable<CampaignState["choices"]>)] }
       : {}),

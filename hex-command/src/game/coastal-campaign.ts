@@ -199,7 +199,7 @@ const missions: MissionDefinition[] = [
     ),
     subtitle: "The books can wait. The workers cannot.",
     briefing:
-      "Enter the wreck to recover the original ledger, then keep its evacuation landing under your control through turn 6. Edda guides workers through the exposed hull while your company holds the channel.",
+      "Enter the wreck to recover the original ledger, then defend its evacuation landing for three ferry crossings. The final boat leaves at high tide, no earlier than turn 6. Edda guides workers through the exposed hull while your company holds the channel.",
     debrief:
       "The last worker leaves with the ledger. Senn had paid Vale to seize the posts, then charged the villagers for salvage they never requested. Tomas deserted when ordered to burn the hull with workers inside. He knows the wooded route to the upper gate.",
     requiredCompanions: ["Edda"],
@@ -222,7 +222,7 @@ const missions: MissionDefinition[] = [
       },
     },
     hints: [
-      "Reach the wreck at 5,4 with any unit to recover the ledger. Keep the landing under your control until the start of turn 6; your troops can leave it to screen the workers, but enemies must not recapture it.",
+      "Reach the wreck at 5,4 with any unit to recover the ledger. Defend its ownership through three enemy turns, then wait for high tide on turn 6. Your troops can leave it to screen the workers; enemy recapture resets the crossings.",
       "Tomas and other land recruits can use forest cover. Merfolk are exposed there; use the parallel sea and marsh routes.",
       "Promotions preserve wounds, add abilities and consume a turn. Ready veterans can advance before a difficult fight.",
     ],
@@ -235,9 +235,10 @@ const missions: MissionDefinition[] = [
       },
       {
         kind: "hold",
-        label: "Hold the wreck landing through the evacuation on turn 6",
+        label: "Defend three ferry crossings; high tide begins on turn 6",
         tile: "5,4",
-        round: 6,
+        turns: 3,
+        earliestRound: 6,
       },
     ],
     recruits: ["reefguard", "harpooner", "wavemender", "spearman", "adept"],
@@ -253,7 +254,7 @@ const missions: MissionDefinition[] = [
       line(
         "Edda",
         "harpooner",
-        "I can bring them out along the keel. Hold this landing until the sixth bell; nobody touches the quarry gate before then.",
+        "I need three ferry crossings to bring everyone out along the keel. Hold the landing. The last boat leaves with the sixth bell's high tide, or later if we are delayed; nobody touches the quarry gate before then.",
       ),
       line(
         "Foreman Cale",
@@ -268,6 +269,11 @@ const missions: MissionDefinition[] = [
     ],
     legacyDialogue: [
       line("Factor Senn", "commander", "That ledger is company property. Vale, clear the landing."),
+      line(
+        "Edda",
+        "harpooner",
+        "I can bring them out along the keel. Hold this landing until the sixth bell; nobody touches the quarry gate before then.",
+      ),
     ],
     victory: [
       line(

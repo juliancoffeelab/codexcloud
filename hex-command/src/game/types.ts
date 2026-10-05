@@ -268,7 +268,7 @@ export type MissionGoal =
   | { kind: "escort"; label: string; tile: string }
   | { kind: "escape"; label: string; tile: string }
   | { kind: "control"; label: string; tiles: string[] }
-  | { kind: "hold"; label: string; tile: string; round: number }
+  | { kind: "hold"; label: string; tile: string; turns: number; earliestRound: number }
   | { kind: "vigil"; label: string; tile: string; turns: number; companion: string }
   | { kind: "refuge"; label: string; tile: string; turns: number }
   | { kind: "seal"; label: string; tiles: string[]; unitType?: UnitType }
@@ -358,6 +358,7 @@ export interface CampaignState {
   completed: boolean;
   refuge?: { heldTurns: number; lastCountedRound: number; escalated: boolean };
   vigil?: { heldTurns: number; lastCountedRound: number };
+  holds?: Record<string, { heldTurns: number; lastCountedRound: number }>;
   choices?: ("refuge-peace" | "refuge-war" | "green-dain-dead")[];
 }
 export interface CampaignVeteran {

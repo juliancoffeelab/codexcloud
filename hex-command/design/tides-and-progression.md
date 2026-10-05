@@ -97,6 +97,17 @@ After balancing, independently review architecture, persistence, combat/progress
 timing, passability and the new campaign. Verify review findings before correcting
 them. Run only lightweight checks within the repository's existing time budget.
 
+The sixth coastal comparison improved mixed-army speed but retained higher
+attrition. Wavemenders gain one HP (8; veterans 11) to survive a rookie sword
+and bow while a screen withdraws, without adding armor or removing woodland
+exposure. A fresh matched comparison is required before claiming improvement.
+
+The wreck evacuation uses three consecutive defended enemy turns after capture,
+with the final boat departing no earlier than global turn six. Ownership may be
+held without an occupant. Enemy recapture resets the ferry crossings. Late
+arrival cannot claim elapsed global rounds as defended time; saves and undo
+retain the duration, and old ongoing saves start this new counter at zero.
+
 ## Visual advancement, after balance
 
 Every family must visibly change when it advances. Lower infantry wear leather

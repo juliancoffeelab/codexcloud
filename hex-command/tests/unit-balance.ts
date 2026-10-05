@@ -144,6 +144,21 @@ for (const [type, price] of [
   assert(TYPES.tridentguard.attacks.some((weapon) => weapon.damageType === "impact"));
 }
 
+// A wavemender survives a rookie sword and bow while its screen withdraws;
+// a heavy infantry sword still makes that exposed position fatal.
+for (const infantry of ["swordsman", "soldier"] as const) {
+  const game = new Game();
+  game.units = [];
+  for (const tile of game.tiles) tile.terrain = "plains";
+  const healer = game.addUnit("wavemender", "player", "2,3");
+  const sword = game.addUnit(infantry, "enemy", "3,3");
+  const archer = game.addUnit("archer", "enemy", "4,3");
+  game.turn = "enemy";
+  game.attack(sword.id, healer.id, "sword");
+  game.attack(archer.id, healer.id, "bow");
+  assert.equal(game.unit(healer.id)?.hp, infantry === "swordsman" ? 1 : undefined);
+}
+
 // A woodland screen survives a sword and an arrow; the same exposed caster dies.
 for (const terrain of ["forest", "grove", "plains"] as const) {
   const game = new Game();
