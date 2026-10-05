@@ -28,5 +28,15 @@ difficulty evidence, but nineteen inactive turns confound the capped outcome.
 It does not demonstrate overwhelming enemy economy or establish balance. A
 fresh independent player is playing the current version.
 
+The swordsman-purchase player won the ferry in three turns without losses,
+then stopped actively at chapter-two turn sixteen with a null winner, six
+losses, thirteen swordsman purchases and no promotions. No objective village
+was held. It reported lethal exposed approaches to the guarded southern ford,
+but that judgment concerns its current wounded army and its chosen maneuvers;
+it does not prove the recruitment policy or mission impossible. No extra idle
+turns or fabricated defeat were added. Its 122 committed decisions replay
+exactly. Neither ninth-cohort Lantern record completed the campaign, so this
+pair establishes no overall winner.
+
 Other ninth-cohort trials will be added after they finish. In-progress files
 are not represented here as completed campaigns.

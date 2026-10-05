@@ -171,6 +171,62 @@
           }
         }
       ]
+    },
+    {
+      "file": "round9-lantern-swordsman.json",
+      "verified": true,
+      "campaign": "lantern-road",
+      "completed": false,
+      "decisions": 122,
+      "attempts": [
+        {
+          "mission": "lantern-ferry",
+          "winner": "player",
+          "round": 3,
+          "losses": [],
+          "recruits": [
+            "swordsman",
+            "swordsman"
+          ],
+          "promotions": [],
+          "attacks": {
+            "swordsman": 1
+          }
+        },
+        {
+          "mission": "lantern-villages",
+          "winner": null,
+          "round": 16,
+          "losses": [
+            "u3:scout",
+            "u14:swordsman",
+            "u15:swordsman",
+            "u19:swordsman",
+            "u21:swordsman",
+            "u17:swordsman"
+          ],
+          "recruits": [
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman"
+          ],
+          "promotions": [],
+          "attacks": {
+            "warden": 2,
+            "swordsman": 5
+          }
+        }
+      ]
     }
   ]
 }
