@@ -95,7 +95,7 @@ export const TYPES = immutable<Record<UnitType, UnitDefinition>>(
         move: 3,
         damage: 4,
         range: 2,
-        cost: 8,
+        cost: 7,
         attacks: [
           weapon("bow", "Bow", 4, "pierce", "ranged", 2, "attack-bow"),
           weapon("knife", "Knife", 2, "blade", "melee", 1),

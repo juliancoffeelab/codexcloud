@@ -57,7 +57,7 @@ assert(g.canAttackFrom(bow, bow.tile, far));
 g = new Game();
 const recruitTile = required(g.recruitTiles("u1", "archer")[0]).id;
 const recruit = g.recruit("u1", "archer", recruitTile);
-assert.equal(g.gold.player, 4);
+assert.equal(g.gold.player, 5);
 assert(recruit.attacked && recruit.moved);
 assert.throws(() => g.recruit("u1", "archer", recruitTile));
 g.endTurn();

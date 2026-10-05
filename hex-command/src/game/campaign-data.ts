@@ -109,8 +109,8 @@ const lantern: MissionDefinition[] = [
     briefing:
       "The eastern villages have gone dark. Ivo carries their names and a message for the last ferryman; Nera promises to get him across the river. The Tollkeeper’s guards block the road, but this journey is about reaching the living, not conquering the valley.",
     hints: [
-      "Ivo travels better in good company.",
-      "An arrow finds little purchase in bare bones.",
+      "Move Ivo's support first. Keep him outside enemy reach until the company opens a safe path; reaching the landing matters more than clearing the map.",
+      "Arrows find little purchase in bare bones. A scout's stone sling provides ranged Impact without a skeleton's melee reply.",
       "The river has more than one crossing.",
     ],
     goals: [{ kind: "escort", label: "Bring Ivo to the northeastern landing", tile: "11,1" }],
@@ -222,7 +222,6 @@ const lantern: MissionDefinition[] = [
         unit("skeleton", "enemy", 6, 2),
         unit("skeleton", "enemy", 6, 6),
         unit("bonearcher", "enemy", 8, 1),
-        unit("bonearcher", "enemy", 8, 7),
       ],
     ),
     subtitle: "Three crossings. Three homes to reclaim.",
@@ -232,6 +231,7 @@ const lantern: MissionDefinition[] = [
     hints: [
       "One bridge need not carry the whole army.",
       "A welcoming village can keep a march alive. Stone sparks punish bones; shield their fragile adepts with infantry.",
+      "The southern bone bow arrives on turn 7. Capture and defend all three villages together, rotating wounded troops into friendly shelter.",
     ],
     goals: [
       { kind: "control", label: "Light all three eastern villages", tiles: ["7,1", "7,4", "7,7"] },
@@ -285,6 +285,11 @@ const lantern: MissionDefinition[] = [
         round: 5,
         label: "Two skeletons enter from the eastern road on turn 5",
         units: [unit("skeleton", "enemy", 11, 1), unit("skeleton", "enemy", 11, 7)],
+      },
+      {
+        round: 7,
+        label: "A bone bow reaches the southern crossing on turn 7",
+        units: [unit("bonearcher", "enemy", 8, 7)],
       },
     ],
   },
@@ -1417,7 +1422,6 @@ const ashen: MissionDefinition[] = [
         unit("necromancer", "enemy", 13, 4, "The Master", "leader"),
         unit("skeleton", "enemy", 10, 2),
         unit("skeleton", "enemy", 10, 6),
-        unit("boar", "enemy", 9, 4),
         unit("bonearcher", "enemy", 11, 1),
         unit("bonearcher", "enemy", 11, 7),
         unit("thorncaller", "enemy", 12, 4),
@@ -1427,7 +1431,7 @@ const ashen: MissionDefinition[] = [
     briefing:
       "Dain has chosen to stand beside Orin against the man who commanded them both. The Master still binds others to his will through stones along the road. Breaking those chains and confronting him is the company’s chance to secure a freedom he cannot simply revoke.",
     hints: [
-      "Dain’s company has more to offer than swords.",
+      "Dain's hammer and the adepts answer bones; spears answer beasts. Withdraw wounded named allies before they are cut off.",
       "The stones are where the Master’s reach begins.",
     ],
     goals: [
@@ -1493,12 +1497,19 @@ const ashen: MissionDefinition[] = [
         ],
       },
     ],
-    waves: ["7,2", "7,6"].map((tile, index) => ({
-      round: 5,
-      label: "An unsealed binding stone raises a skeleton on turn 5",
-      requiresUnsealed: tile,
-      units: [unit("skeleton", "enemy", 7, [2, 6][index]!)],
-    })),
+    waves: [
+      {
+        round: 4,
+        label: "The Master's boar reaches the central road on turn 4",
+        units: [unit("boar", "enemy", 9, 4)],
+      },
+      ...["7,2", "7,6"].map((tile, index) => ({
+        round: 5,
+        label: "An unsealed binding stone raises a skeleton on turn 5",
+        requiresUnsealed: tile,
+        units: [unit("skeleton", "enemy", 7, [2, 6][index]!)],
+      })),
+    ],
   },
 ];
 

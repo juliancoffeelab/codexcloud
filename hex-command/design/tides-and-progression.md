@@ -1,6 +1,6 @@
 # Tides, race defaults and veteran companies
 
-Night task, 2026-10-05. Target: 09:00 Europe/Kyiv (06:00 UTC).
+Night task, 2026-10-05. Extended target: 13:00 Europe/Kyiv (10:00 UTC).
 
 ## Rules contract
 
@@ -124,6 +124,20 @@ regular soldiers and the incoming adept/warden still pursue. This is encounter
 pacing, not a global unit buff. The game manual and player interface clarify that
 troops do not intercept attacks or exert a zone of control. A fresh full comparison
 is required; the earlier defeats and interrupted control remain recorded.
+
+The extended pass gives both Luna recruitment policies the same
+[tactics guide](../docs/campaign-strategy-guide.md) before chapter one.
+Guidance covers escorts, damage types, cover, retreat, healing and objectives,
+without supplying a winning route. Earlier interrupted and unguided records
+remain identified separately. Slightly better mixed outcomes are sufficient;
+the aim is useful composition choices, not forcing every roster to use all types.
+
+Adepts and bone archers gain one HP (veterans also gain one) without extra damage
+or armor; they can survive one ordinary mixed hit pair while still dying to
+their counters or concentrated heavy attacks. Living bows cost seven rather
+than eight. One southern village bow arrives on turn seven instead of starting
+deployed, and the Master's boar arrives on turn four. These reduce overlapping
+opening pressure while preserving the later troops and disclosed wave schedule.
 
 ## Visual advancement, after balance
 

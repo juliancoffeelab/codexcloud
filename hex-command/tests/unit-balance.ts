@@ -34,7 +34,7 @@ for (const type of ["scout", "soldier", "archer", "commander"] as const) {
 // Prices govern both affordability and the gold spent on a successful recruit.
 for (const [type, price] of [
   ["scout", 5],
-  ["archer", 8],
+  ["archer", 7],
   ["swordsman", 6],
   ["spearman", 6],
 ] as const) {
@@ -167,19 +167,35 @@ for (const [type, price] of [
   assert(TYPES.tridentguard.attacks.some((weapon) => weapon.damageType === "impact"));
 }
 
-// A wavemender survives a rookie sword and bow while its screen withdraws;
+// Light Impact support survives a rookie sword and bow while its screen withdraws;
 // a heavy infantry sword still makes that exposed position fatal.
-for (const infantry of ["swordsman", "soldier"] as const) {
+for (const support of ["wavemender", "adept"] as const)
+  for (const infantry of ["swordsman", "soldier"] as const) {
+    const game = new Game();
+    game.units = [];
+    for (const tile of game.tiles) tile.terrain = "plains";
+    const healer = game.addUnit(support, "player", "2,3");
+    const sword = game.addUnit(infantry, "enemy", "3,3");
+    const archer = game.addUnit("archer", "enemy", "4,3");
+    game.turn = "enemy";
+    game.attack(sword.id, healer.id, "sword");
+    game.attack(archer.id, healer.id, "bow");
+    assert.equal(game.unit(healer.id)?.hp, infantry === "swordsman" ? 1 : undefined);
+  }
+
+// The bow can survive one sword plus an Impact spell, but two spells still
+// kill it: its extra HP does not remove the undead damage-type weakness.
+for (const second of ["swordsman", "adept"] as const) {
   const game = new Game();
   game.units = [];
   for (const tile of game.tiles) tile.terrain = "plains";
-  const healer = game.addUnit("wavemender", "player", "2,3");
-  const sword = game.addUnit(infantry, "enemy", "3,3");
-  const archer = game.addUnit("archer", "enemy", "4,3");
+  const bow = game.addUnit("bonearcher", "player", "2,3");
+  const caster = game.addUnit("adept", "enemy", "4,3");
+  const other = game.addUnit(second, "enemy", "3,3");
   game.turn = "enemy";
-  game.attack(sword.id, healer.id, "sword");
-  game.attack(archer.id, healer.id, "bow");
-  assert.equal(game.unit(healer.id)?.hp, infantry === "swordsman" ? 1 : undefined);
+  game.attack(caster.id, bow.id, "spark");
+  game.attack(other.id, bow.id, second === "adept" ? "spark" : "sword");
+  assert.equal(game.unit(bow.id)?.hp, second === "swordsman" ? 1 : undefined);
 }
 
 // A woodland screen survives a sword and an arrow; the same exposed caster dies.
@@ -215,7 +231,7 @@ for (const terrain of ["forest", "grove", "plains"] as const) {
     retaliation: 4,
   });
   assert.ok(thorncaller.hp < 2 * game.preview(thorncaller, soldier, "rootstaff").retaliation);
-  assert.ok(TYPES.thorncaller.cost < TYPES.archer.cost);
+  assert.ok(TYPES.thorncaller.cost <= TYPES.archer.cost);
   assert.ok(TYPES.thorncaller.hp < TYPES.archer.hp);
   assert.ok(TYPES.thorncaller.move > TYPES.archer.move);
 

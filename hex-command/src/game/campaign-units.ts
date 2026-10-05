@@ -37,7 +37,7 @@ export const CAMPAIGN_UNITS = {
   adept: {
     name: "Adept",
     race: "human",
-    hp: 7,
+    hp: 8,
     move: 3,
     damage: 3,
     range: 2,
@@ -71,7 +71,7 @@ export const CAMPAIGN_UNITS = {
   bonearcher: {
     name: "Bone archer",
     race: "undead",
-    hp: 7,
+    hp: 8,
     move: 3,
     damage: 3,
     range: 2,
