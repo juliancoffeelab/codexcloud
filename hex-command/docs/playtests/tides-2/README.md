@@ -3,8 +3,11 @@
 These are independent Luna runs on the frozen `a1c60ef` rules. Each transcript was
 replayed by that checkout's actual game engine; [results.json](results.json)
 contains the resulting attempts, casualties, recruitment and promotions. No failed
-attempt was removed. Two sword-only Lantern runs are still in progress and will
-be added when they stop.
+attempt was removed. The two older sword-only Lantern runs were stopped during
+chapter three so that a fresh matched pair could use the revised guards and exact
+enemy-turn forecast. Their partial transcripts are included; an unfinished
+chapter is neither a win nor a loss. One run deliberately ended a doomed first
+attempt in chapter two and is unsuitable for a clean casualty comparison.
 
 Policies restrict new recruitment. Starting troops remain usable, so "one type"
 does not mean deleting the authored army. Each failed chapter permits one retry;

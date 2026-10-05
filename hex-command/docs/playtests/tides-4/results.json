@@ -1,0 +1,104 @@
+{
+  "sourceCommit": "06da43c9ad29f893f84efe98287cbfc9b22505b2",
+  "trials": [
+    {
+      "file": "round4-ashen-mixed.json",
+      "verified": true,
+      "campaign": "ashen-oath",
+      "completed": false,
+      "decisions": 144,
+      "attempts": [
+        {
+          "mission": "ashen-quarry",
+          "winner": "enemy",
+          "round": 14,
+          "losses": [
+            "u2:skeleton",
+            "u4:skeleton",
+            "u5:skeleton",
+            "u10:bonearcher",
+            "u9:skeleton",
+            "u3:bonearcher",
+            "u1:Orin"
+          ],
+          "recruits": [
+            "skeleton",
+            "bonearcher"
+          ],
+          "promotions": [],
+          "attacks": {
+            "necromancer": 3,
+            "bonearcher": 2,
+            "skeleton": 6
+          }
+        },
+        {
+          "mission": "ashen-quarry",
+          "winner": "enemy",
+          "round": 7,
+          "losses": [
+            "u4:skeleton",
+            "u10:bonearcher",
+            "u1:Orin"
+          ],
+          "recruits": [
+            "skeleton",
+            "bonearcher"
+          ],
+          "promotions": [],
+          "attacks": {
+            "bonearcher": 2,
+            "necromancer": 1
+          }
+        }
+      ]
+    },
+    {
+      "file": "round4-ashen-skeleton.json",
+      "verified": true,
+      "campaign": "ashen-oath",
+      "completed": false,
+      "decisions": 98,
+      "attempts": [
+        {
+          "mission": "ashen-quarry",
+          "winner": "enemy",
+          "round": 7,
+          "losses": [
+            "u4:skeleton",
+            "u1:Orin"
+          ],
+          "recruits": [
+            "skeleton"
+          ],
+          "promotions": [],
+          "attacks": {
+            "skeleton": 2,
+            "necromancer": 2,
+            "bonearcher": 1
+          }
+        },
+        {
+          "mission": "ashen-quarry",
+          "winner": "enemy",
+          "round": 8,
+          "losses": [
+            "u3:bonearcher",
+            "u2:skeleton",
+            "u1:Orin"
+          ],
+          "recruits": [
+            "skeleton"
+          ],
+          "promotions": [
+            "lich"
+          ],
+          "attacks": {
+            "skeleton": 1,
+            "necromancer": 2
+          }
+        }
+      ]
+    }
+  ]
+}

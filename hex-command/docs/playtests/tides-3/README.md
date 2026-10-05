@@ -2,13 +2,13 @@
 
 The transcripts in [results.json](results.json) were replayed by frozen `208c655`.
 That version adds objective-defense behavior to the woodland camp guards and
-Lantern village guards. Coastal comparisons on the same version are still running.
+Lantern village guards. The coastal comparisons on that version are complete.
 
-| Run | Camp chapter | Vigil | Crossing | Campaign complete | Casualties |
-| --- | --- | --- | --- | --- | --- |
-| Independent Luna, mixed recruits | Win, 22 turns | Loss at turn 2 twice | Unreached | No | 4 in chapter one, 3 across failed vigil attempts |
-| Independent Luna, boar recruits | Win, 19 turns | Win, 4 turns | Win, 8 turns | Yes | 7 |
-| Root developer, mixed route study | Win, 9 turns | Win, 4 turns | Win, 5 turns | Yes | 2 wolves |
+| Run                               | Camp chapter  | Vigil                | Crossing     | Campaign complete | Casualties                                       |
+| --------------------------------- | ------------- | -------------------- | ------------ | ----------------- | ------------------------------------------------ |
+| Independent Luna, mixed recruits  | Win, 22 turns | Loss at turn 2 twice | Unreached    | No                | 4 in chapter one, 3 across failed vigil attempts |
+| Independent Luna, boar recruits   | Win, 19 turns | Win, 4 turns         | Win, 8 turns | Yes               | 7                                                |
+| Root developer, mixed route study | Win, 9 turns  | Win, 4 turns         | Win, 5 turns | Yes               | 2 wolves                                         |
 
 The independent mono-recruitment policy performed better. This prompted a new
 balance pass: boars inherit their race's piercing vulnerability; wolves cost 5
@@ -24,3 +24,20 @@ had read earlier failures. It must not replace the failed independent mixed run.
 No failed attempt or invalid action was erased. Earlier successful actions from an
 invalid batch remain in the trial, as they do in ordinary play. All enemy responses
 and final states were reconstructed exactly by the live engine replay.
+
+## Coastal comparison
+
+| Recruitment policy | Empty Nets    | Drowned Ledger | A Tide for Both               | Retry |
+| ------------------ | ------------- | -------------- | ----------------------------- | ----- |
+| Mixed              | Win, 15 turns | Win, 6 turns   | Loss, 10 turns; win, 13 turns | One   |
+| Reefguard only     | Win, 12 turns | Win, 6 turns   | Win, 7 turns                  | None  |
+
+The Reefguard recruitment policy performed better. Both retained access to the
+authored ranged and support troops, so this does not establish that a pure
+Reefguard army wins. The mixed run lost Tomas during the final retry; the
+Reefguard run lost him in chapter two. Replay, rather than interim player reports,
+is the authority for casualties in `results.json`.
+
+This prompted a further revision: novice Reefguards have only spears, while the
+club is earned on advancement; Harpooners cost 7 and Wavemenders 9. A 24-gold
+budget now affords all three roles. Fresh paired trials use those revised rules.
