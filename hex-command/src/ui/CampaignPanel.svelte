@@ -104,7 +104,7 @@
           {#if view.game.winner === "player"}<strong>✓</strong>{/if}
         </li>
       {/each}
-      {#each mission.events.filter((event) => event.label) as event}
+      {#each mission.events.filter((event) => event.label && !mission.goals.some((goal) => goal.kind === "event" && goal.event === event.id)) as event}
         <li class:completed-goal={campaign.marks.includes(`event:${event.id}`)}>
           <span>
             {event.label}{event.gold ? ` (+${event.gold} gold)` : ""}

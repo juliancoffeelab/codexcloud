@@ -222,7 +222,7 @@ const missions: MissionDefinition[] = [
       },
     },
     hints: [
-      "Reach the wreck at 5,4 with any unit. Occupation at the start of turn 6 completes the evacuation; the ledger must also be recovered.",
+      "Reach the wreck at 5,4 with any unit to recover the ledger. Keep the landing under your control until the start of turn 6; your troops can leave it to screen the workers, but enemies must not recapture it.",
       "Tomas and other land recruits can use forest cover. Merfolk are exposed there; use the parallel sea and marsh routes.",
       "Promotions preserve wounds, add abilities and consume a turn. Ready veterans can advance before a difficult fight.",
     ],
