@@ -236,12 +236,14 @@ exchanges but cannot reply to ranged attacks. Adepts punish bones and armor but
 have low HP and a weak melee reply. Thorncallers trade raw damage for woodland
 mobility. Every faction uses the same unit definitions and combat calculations.
 
-Focused campaign checks cover all nine map layouts, saves, objectives, turn-boundary
+Focused campaign checks cover all twelve map layouts, saves, objectives, turn-boundary
 holds, bounded reinforcement waves, grave suppression, one-time rewards, undo,
 recall, retry, unit counters and session cancellation. Independent Luna 6 players
 also play complete linked campaigns through the headless interface below. Their
 failures inform map and pacing changes; the [playtest report](docs/campaign-playtests.md)
-records the method, results and limitations. Browser interaction and visual parity
+records the historical method, results and limitations. The current race and
+progression comparisons are recorded in [the balance report](docs/balance-playtests.md).
+Browser interaction and visual parity
 have not been automated, in accordance with `AGENTS.md`.
 
 Existing campaign saves retain their deployed units. The refuge’s two village positions and the Lantern finale’s reward grove upgrade on reload; other saved terrain remains unchanged. The reed gatherers occupy the empty grove beside the northern bridge, away from the starting company. Start a new

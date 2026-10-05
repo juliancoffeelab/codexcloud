@@ -1,0 +1,46 @@
+# Race and progression balance trials
+
+The 2026-10-05 balance pass uses Luna players choosing actual legal actions in
+the game engine. It does not substitute a combat simulation or a developer's
+winning route for an independent campaign. Players start at chapter one and
+retain only earned units, XP and gold. Each receives one retry after an actual
+defeat and a thirty-turn limit per chapter. Incomplete attempts retain a null
+winner. Both policies may use their authored starting company and earned
+promotions; only **new purchases** differ.
+
+One run per policy is evidence about those recorded decisions, not an estimate
+of optimal play. Completion and retries, companion survival, casualties and
+turns all matter. A faster opening alone does not establish a better campaign.
+Repeatedly weaker mixed results prompt changes and a fresh matched comparison.
+
+Each cohort records its frozen source commit, full decisions and exact enemy
+responses. `scripts/replay-campaign.ts` verifies those records against that
+source. Old failures remain in the repository; later wins do not overwrite
+them. A developer route study is identified separately.
+
+| Cohort                           | Scope                             | What it established                                                                                                |
+| -------------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| [1](playtests/tides-1/README.md) | Initial four-campaign comparisons | Baseline failures and dominant recruitment prompted revision.                                                      |
+| [2](playtests/tides-2/README.md) | Revised four-campaign comparisons | Failed and interrupted runs remain explicitly recorded.                                                            |
+| [3](playtests/tides-3/README.md) | Woodland and coast                | Boar and reef recruitment still outperformed mixed armies; a developer woodland route is separate.                 |
+| [4](playtests/tides-4/README.md) | Ashen opening                     | Both independent players failed; this did not establish balance.                                                   |
+| [5](playtests/tides-5/README.md) | Woodland and Lantern              | Woodland mixed attrition remained worse; Lantern mixed completed, while swordsman-only lost its sole sealing mage. |
+| [6](playtests/tides-6/README.md) | Coast and Ashen                   | Mixed coast opened faster but lost six troops versus three; independent Ashen mixed failed the refuge.             |
+
+Subsequent revisions add woodland ranged cover for thorncallers, one HP for
+coastal healers, actual defended-duration tracking for evacuation, and rookie
+Ashen reinforcements that earn heavy armor. Fresh woodland, coastal and Ashen
+players are testing these revisions. Their final comparisons will be added
+when actual campaigns finish. The older Lantern pair used the former ten-gold
+adept price; the current price is eight. That difference is disclosed rather
+than claiming its records replay a later version.
+
+The independent mechanics review found that the old evacuation objective could
+borrow elapsed global turns after a late capture. The current rule counts three
+consecutive defended enemy phases after capture, resets on enemy recapture and
+waits until at least turn six. Focused checks cover late arrival, recapture,
+save/load and repeated turn initialization. Mechanical checks support this rule;
+they do not replace the player comparisons.
+
+Distinct veteran sprites remain deferred at the user's request. Browser and
+phone appearance are not claimed as verified by these headless trials.
