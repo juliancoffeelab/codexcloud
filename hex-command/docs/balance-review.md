@@ -91,3 +91,29 @@ isolated advances are difficulty evidence, but the nineteen inactive turns
 substantially confound this result. It establishes neither an overwhelming
 enemy economy nor balanced Lantern play and alone justifies no stat buff or
 economy reduction.
+
+## Deadline checkpoint
+
+The reviewer independently replayed the completed ninth coastal reef record:
+9 / 6 / 6, two ordinary casualties, no retries, eleven reef purchases and three
+earned trident promotions. Mira, Edda and Tomas survive; Edda finishes at one
+HP. Wreck ownership accumulates three actual phases and waits for high tide.
+Types and XP carry forward normally. Its mixed counterpart paused unfinished
+at the user's deadline, so superiority is not established.
+
+Ashen tenth mixed independently replayed 180 decisions to wins 8 / 6 / 9 with
+ten casualties and no retries. Dain survived peaceful mediation but fell on
+finale turn eight. Both binding stones were sealed and the Master defeated.
+This establishes independent mixed viability on the revised encounter, with
+substantial attrition and a named loss. It proves neither a clean victory nor
+causal improvement or superiority over the paused incomplete control.
+
+The reviewer inspected the Lantern route-transfer procedure and independently
+replayed both outputs. Every original player choice and enemy-phase marker
+is preserved. Mixed still wins 5 / 5 / 7; swordsman still ends at the finale's
+turn fifteen after losing its sole mage. These are explicitly scripted
+compatibility checks. Fresh mixed exposed its courier in its first attempt
+and delayed near its start on retry; the old successful route used a scout's
+Impact sling and coordinated support. No relevant opening stat/map/AI regression
+was found. The failed fresh run remains adverse evidence; current matched
+results remain incomplete and cannot be replaced by compatibility checks.

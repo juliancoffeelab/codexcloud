@@ -87,6 +87,11 @@ not extend to rewriting the other campaigns.
 - [ ] Finish the subsequently authorized balance pass with matched Luna campaign
       trials, preserving failed attempts and replaying actual commands. Mechanical
       correctness alone does not establish that diverse armies pay off.
+      At the 09:00 Kyiv deadline, revised woodland and the first coastal pair
+      favored mixed recruitment; Ashen mixed completed with ten losses including
+      Dain. Coastal replication and current Ashen/Lantern controls remain paused
+      and incomplete. Checkpoints and limitations are in
+      [the balance report](docs/balance-playtests.md); extra time is requested.
 
 ## Overnight race and coastal work
 

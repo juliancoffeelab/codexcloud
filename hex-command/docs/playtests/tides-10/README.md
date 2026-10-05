@@ -46,4 +46,27 @@ changed its tactical composition and exposure to the unchanged enemy pursuit.
 No opening stat regression was found. The failed new run remains adverse
 independent evidence; compatibility alone is not a new recruitment comparison.
 
-Fresh Ashen and Lantern control records will be added when those players finish.
+## Completed Ashen mixed and paused controls
+
+Ashen mixed completed in 8 / 6 / 9, without retries. Exact replay verifies 180
+decisions and ten casualties: three quarry skeletons, three refuge skeletons,
+then a bow, skeleton, Revenant and Captain Dain in the finale. Dain survived
+peaceful mediation but fell during finale turn eight. Orin lived; both stones
+were sealed and the Master defeated. Recruits included skeletons, bows, adepts
+and spearmen; a Revenant and Death Archer were earned. Independent replay
+confirmed these outcomes. This is mixed-army viability with substantial losses,
+not a clean victory or proof of superiority over the unfinished control.
+
+Skeleton purchases lost the quarry at nineteen with eleven casualties including
+Orin, then won its retry at six with one skeleton lost. The refuge was recaptured
+before its duration could complete; Orin fell at eight, with eight total
+casualties. Its permitted refuge retry is paused at turn one. No finale was
+played. The exact record verifies 137 decisions.
+
+The current Lantern swordsman player won the ferry at three with no losses,
+then paused at village-battle turn six, zero of three villages controlled and
+two casualties. Captain Nera remains alive. Its 76 decisions replay exactly.
+
+These controls paused at the user's 09:00 Kyiv deadline while the request for
+extra time remained unanswered. Their checkpoints retain null current winners
+and can resume. Neither paired campaign comparison is declared complete.

@@ -41,5 +41,8 @@ pair establishes no overall winner.
 The coastal reef-only repeat completed in 9 / 6 / 6 with two ordinary losses,
 no retry and Mira, Edda and Tomas alive. It bought eleven reef guards and earned
 three trident-guard promotions, while retaining authored support roles. The
-matching mixed repeat is still playing; its unfinished file is not archived
-as a completed campaign here.
+matching mixed repeat paused at the user's 09:00 Kyiv deadline: wins at five
+and six, then an unfinished finale at six. It has zero losses or retries and
+holds both controls, but Edda has not reached the beacon. Its exact 130-decision
+record is included with a null final winner, not a completed campaign. The
+checkpoint can be resumed if more time is authorized.

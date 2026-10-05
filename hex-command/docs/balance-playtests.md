@@ -64,7 +64,24 @@ guards its immediate approaches, returns by legal movement if displaced and
 can still attack or retreat. Regular patrols and reinforcements remain mobile.
 An independent review found no implementation blocker, but its bounded local
 escape probe is not a whole-campaign win. The tenth cohort tests the encounter
-from chapter one.
+from chapter one. Its [mixed campaign](playtests/tides-10/README.md) completed
+8 / 6 / 9 without retries, with ten casualties including Dain. Independent
+replay confirms viability and substantial attrition. Skeleton-only purchases
+failed the quarry once and the refuge once; its refuge retry is paused.
+
+At the user's 09:00 Kyiv deadline, the repeated coastal mixed player had wins
+5 / 6 and an unfinished finale at six, zero casualties and both gates held;
+Edda still needs the beacon escort. Reef-only completed 9 / 6 / 6 with two
+casualties and no retry. Current Lantern mixed failed its opening and stopped
+its retry; the infantry control paused in chapter two. These unfinished pairs
+remain unresolved. An extra-time request is pending.
+
+The tenth archive also retains explicitly labeled **scripted transfers** of
+the original fifth-cohort Lantern decisions. Current rules still execute the
+mixed route to wins 5 / 5 / 7 with three losses; the restricted route still
+stops after losing its sole sealing mage. Independent review verified both
+transfers and found no opening stat regression. These checks establish route
+compatibility, not additional independent players or a replacement balance pair.
 
 The independent mechanics review found that the old evacuation objective could
 borrow elapsed global turns after a late capture. The current rule counts three

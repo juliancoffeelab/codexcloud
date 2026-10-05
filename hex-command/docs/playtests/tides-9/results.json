@@ -303,6 +303,70 @@
           }
         }
       ]
+    },
+    {
+      "file": "round9-tide-mixed.json",
+      "verified": true,
+      "campaign": "borrowed-tide",
+      "completed": false,
+      "decisions": 130,
+      "attempts": [
+        {
+          "mission": "tide-nets",
+          "winner": "player",
+          "round": 5,
+          "losses": [],
+          "recruits": [
+            "wavemender"
+          ],
+          "promotions": [],
+          "attacks": {
+            "wavemender": 5,
+            "tidekeeper": 3,
+            "harpooner": 4,
+            "reefguard": 1
+          }
+        },
+        {
+          "mission": "tide-wreck",
+          "winner": "player",
+          "round": 6,
+          "losses": [],
+          "recruits": [
+            "adept",
+            "reefguard"
+          ],
+          "promotions": [
+            "tidehunter",
+            "tridentguard"
+          ],
+          "attacks": {
+            "harpooner": 4,
+            "wavemender": 3,
+            "reefguard": 2,
+            "spearman": 2
+          }
+        },
+        {
+          "mission": "tide-sluice",
+          "winner": null,
+          "round": 6,
+          "losses": [],
+          "recruits": [
+            "reefguard"
+          ],
+          "promotions": [
+            "warden",
+            "tidehunter"
+          ],
+          "attacks": {
+            "wavemender": 6,
+            "harpooner": 4,
+            "tridentguard": 2,
+            "tidehunter": 2
+          }
+        }
+      ]
     }
   ]
 }

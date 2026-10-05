@@ -50,6 +50,50 @@
       ]
     },
     {
+      "file": "round10-lantern-swordsman.json",
+      "verified": true,
+      "campaign": "lantern-road",
+      "completed": false,
+      "decisions": 76,
+      "attempts": [
+        {
+          "mission": "lantern-ferry",
+          "winner": "player",
+          "round": 3,
+          "losses": [],
+          "recruits": [
+            "swordsman",
+            "swordsman"
+          ],
+          "promotions": [],
+          "attacks": {}
+        },
+        {
+          "mission": "lantern-villages",
+          "winner": null,
+          "round": 6,
+          "losses": [
+            "u4:swordsman",
+            "u3:scout"
+          ],
+          "recruits": [
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman"
+          ],
+          "promotions": [],
+          "attacks": {
+            "warden": 1,
+            "swordsman": 5,
+            "scout": 1
+          }
+        }
+      ]
+    },
+    {
       "file": "round10-lantern-mixed-transferred.json",
       "verified": true,
       "campaign": "lantern-road",
@@ -195,6 +239,176 @@
             "soldier": 1,
             "scout": 1
           }
+        }
+      ]
+    },
+    {
+      "file": "round10-ashen-mixed.json",
+      "verified": true,
+      "campaign": "ashen-oath",
+      "completed": true,
+      "decisions": 180,
+      "attempts": [
+        {
+          "mission": "ashen-quarry",
+          "winner": "player",
+          "round": 8,
+          "losses": [
+            "u2:skeleton",
+            "u4:skeleton",
+            "u5:skeleton"
+          ],
+          "recruits": [
+            "skeleton",
+            "bonearcher"
+          ],
+          "promotions": [],
+          "attacks": {
+            "skeleton": 3,
+            "bonearcher": 2,
+            "necromancer": 1
+          }
+        },
+        {
+          "mission": "ashen-refuge",
+          "winner": "player",
+          "round": 6,
+          "losses": [
+            "u2:skeleton",
+            "u3:skeleton",
+            "u10:skeleton"
+          ],
+          "recruits": [
+            "skeleton",
+            "bonearcher"
+          ],
+          "promotions": [
+            "revenant",
+            "deatharcher"
+          ],
+          "attacks": {
+            "bonearcher": 5,
+            "necromancer": 2,
+            "skeleton": 1
+          }
+        },
+        {
+          "mission": "ashen-dawn",
+          "winner": "player",
+          "round": 9,
+          "losses": [
+            "u12:bonearcher",
+            "u2:skeleton",
+            "u3:Captain Dain",
+            "u14:revenant"
+          ],
+          "recruits": [
+            "adept",
+            "spearman",
+            "adept",
+            "bonearcher",
+            "skeleton",
+            "spearman"
+          ],
+          "promotions": [],
+          "attacks": {
+            "bonearcher": 4,
+            "skeleton": 1,
+            "deatharcher": 3,
+            "adept": 7,
+            "warden": 2,
+            "spearman": 1,
+            "revenant": 1
+          }
+        }
+      ]
+    },
+    {
+      "file": "round10-ashen-skeleton.json",
+      "verified": true,
+      "campaign": "ashen-oath",
+      "completed": false,
+      "decisions": 137,
+      "attempts": [
+        {
+          "mission": "ashen-quarry",
+          "winner": "enemy",
+          "round": 19,
+          "losses": [
+            "u3:bonearcher",
+            "u4:skeleton",
+            "u5:skeleton",
+            "u9:skeleton",
+            "u2:skeleton",
+            "u16:skeleton",
+            "u19:skeleton",
+            "u17:skeleton",
+            "u25:skeleton",
+            "u26:skeleton",
+            "u1:Orin"
+          ],
+          "recruits": [
+            "skeleton",
+            "skeleton",
+            "skeleton",
+            "skeleton",
+            "skeleton",
+            "skeleton"
+          ],
+          "promotions": [],
+          "attacks": {
+            "bonearcher": 1,
+            "skeleton": 9,
+            "necromancer": 1
+          }
+        },
+        {
+          "mission": "ashen-quarry",
+          "winner": "player",
+          "round": 6,
+          "losses": [
+            "u4:skeleton"
+          ],
+          "recruits": [
+            "skeleton"
+          ],
+          "promotions": [],
+          "attacks": {
+            "bonearcher": 3
+          }
+        },
+        {
+          "mission": "ashen-refuge",
+          "winner": "enemy",
+          "round": 8,
+          "losses": [
+            "u2:skeleton",
+            "u3:skeleton",
+            "u12:skeleton",
+            "u4:bonearcher",
+            "u10:bonearcher",
+            "u14:skeleton",
+            "u18:skeleton",
+            "u1:Orin"
+          ],
+          "recruits": [
+            "skeleton",
+            "skeleton",
+            "skeleton"
+          ],
+          "promotions": [],
+          "attacks": {
+            "bonearcher": 2
+          }
+        },
+        {
+          "mission": "ashen-refuge",
+          "winner": null,
+          "round": 1,
+          "losses": [],
+          "recruits": [],
+          "promotions": [],
+          "attacks": {}
         }
       ]
     }
