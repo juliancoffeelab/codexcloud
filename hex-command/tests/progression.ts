@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { describeChanges } from "../src/controller/feedback";
 import { Game, RACES, TERRAIN, TYPES } from "../src/game/engine";
 import { CAMPAIGNS } from "../src/game/campaign-data";
 import { UNIT_TYPES, type UnitType } from "../src/game/types";
@@ -61,8 +62,12 @@ assert.deepEqual(game.promotionOptions(attacker.id), []);
 attacker.experience = 10;
 attacker.moved = attacker.attacked = false;
 const before = createGameView(game);
+const beforePromotion = game.snapshot();
 assert.deepEqual(before.promotionOptions(attacker.id), ["soldier"]);
 game.advanceUnit(attacker.id, "soldier");
+const feedback = describeChanges(beforePromotion, game.snapshot());
+assert(feedback.advanced);
+assert.equal(feedback.attacked, false, "Promotion must not replay the prior combat cue");
 assert.equal(attacker.hp, 8, "Promotion preserves all four wounds");
 assert.equal(attacker.id, before.units[0]!.id);
 assert.equal(attacker.experience, 0);

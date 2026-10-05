@@ -242,7 +242,7 @@ export class BattleController {
       playSound(this.#game.lastCombat?.sound || defaultSound);
     } else if (changes.newWinner) {
       playSound(changes.newWinner === "player" ? "victory" : "defeat");
-    } else if (changes.recruited) {
+    } else if (changes.recruited || changes.advanced) {
       playSound("recruit");
     } else if (changes.movedUnit) {
       playInteraction({

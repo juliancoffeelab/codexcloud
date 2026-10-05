@@ -6,6 +6,7 @@ export function describeChanges(before: GameSnapshot, after: GameSnapshot) {
   const previousUnits = new Map(before.units.map((unit) => [unit.id, unit]));
   const tileEffects = new Map<string, MotionKind>();
   let recruited = false;
+  let advanced = false;
   let attacked = false;
   let movedUnit: Unit | null = null;
 
@@ -15,6 +16,10 @@ export function describeChanges(before: GameSnapshot, after: GameSnapshot) {
       tileEffects.set(unit.tile, "recruit");
       recruited ||= unit.moved && unit.attacked;
     } else {
+      if (previous.type !== unit.type) {
+        advanced = true;
+        tileEffects.set(unit.tile, "recruit");
+      }
       if (previous.tile !== unit.tile) {
         tileEffects.set(unit.tile, "move");
         movedUnit = unit;
@@ -44,7 +49,13 @@ export function describeChanges(before: GameSnapshot, after: GameSnapshot) {
   const attacker =
     after.units.find((unit) => {
       const previous = before.units.find((old) => old.id === unit.id);
-      return unit.side === before.turn && unit.attacked && previous && !previous.attacked;
+      return (
+        unit.side === before.turn &&
+        unit.attacked &&
+        previous &&
+        previous.type === unit.type &&
+        !previous.attacked
+      );
     }) ??
     before.units.find((unit) => {
       return unit.side === before.turn && !after.units.some((alive) => alive.id === unit.id);
@@ -59,6 +70,7 @@ export function describeChanges(before: GameSnapshot, after: GameSnapshot) {
     newWinner: after.winner !== before.winner ? after.winner : null,
     attacked,
     recruited,
+    advanced,
     movedUnit,
     attacker,
   };
