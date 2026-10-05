@@ -230,7 +230,7 @@ export function progressionUnits(
     healing: 1,
     ability: "Living boughs",
     description:
-      "Thorncaller veteran. Heals adjacent allies by 1 at turn start while providing ranged Pierce and a light Impact staff.",
+      "Thorncaller veteran. Retains extra ranged protection in forests and groves, and heals adjacent allies by 1 at turn start while providing ranged Pierce and a light Impact staff.",
   };
   units.tridentguard = {
     ...units.tridentguard,

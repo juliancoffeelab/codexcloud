@@ -144,6 +144,22 @@ for (const [type, price] of [
   assert(TYPES.tridentguard.attacks.some((weapon) => weapon.damageType === "impact"));
 }
 
+// A woodland screen survives a sword and an arrow; the same exposed caster dies.
+for (const terrain of ["forest", "grove", "plains"] as const) {
+  const game = new Game();
+  game.units = [];
+  for (const tile of game.tiles) tile.terrain = "plains";
+  required(game.tile("2,3")).terrain = terrain;
+  const caster = game.addUnit("thorncaller", "player", "2,3");
+  const soldier = game.addUnit("soldier", "enemy", "3,3");
+  const archer = game.addUnit("archer", "enemy", "4,3");
+  game.turn = "enemy";
+  game.attack(soldier.id, caster.id, "sword");
+  game.attack(archer.id, caster.id, "bow");
+  assert.equal(game.unit(caster.id)?.hp, terrain === "plains" ? undefined : 1);
+  assert.equal(game.cost(caster, { terrain }), 1);
+}
+
 // Mobility does not turn the fragile skirmisher into a safe melee armor counter.
 {
   const game = new Game();

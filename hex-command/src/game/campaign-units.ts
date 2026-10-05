@@ -153,6 +153,10 @@ export const CAMPAIGN_UNITS = {
   thorncaller: {
     name: "Thorncaller",
     race: "beast",
+    terrainModifiers: {
+      forest: { damageModifiers: { ranged: -1 } },
+      grove: { damageModifiers: { ranged: -1 } },
+    },
     hp: 7,
     move: 4,
     damage: 3,
@@ -165,6 +169,6 @@ export const CAMPAIGN_UNITS = {
     damageModifiers: { blade: 0, pierce: -1, impact: 0 },
     ability: "Understory",
     description:
-      "Forests and groves cost 1 movement. A fragile ranged skirmisher; its light Impact staff offers a risky answer to armor.",
+      "Forests and groves cost 1 movement and give 1 extra ranged protection. A fragile woodland skirmisher; its light Impact staff offers a risky answer to armor.",
   },
 } satisfies Partial<Record<UnitType, UnitDefinition>>;

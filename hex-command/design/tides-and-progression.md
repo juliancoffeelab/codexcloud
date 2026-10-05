@@ -23,6 +23,13 @@ one additional point of damage but protects merfolk by one. Terrain, race and
 unit modifiers sum by attack category and damage type in the same combat query.
 Individual specializations can override access and alter these defaults.
 
+Thorncallers specialize in protected woodland support: forest and grove add one
+extra point of ranged cover, retained by Briarweavers. They keep seven HP and no
+melee armor. This answers the observed woodland attrition without making exposed
+casters or their staves into substitute front-line boars. A sword plus an arrow
+kills an exposed rookie; in woodland it leaves one HP. Boars still supply the
+durable melee screen, while wolves supply speed and thorncallers supply range.
+
 Units earn experience for damaging enemies and for kills, including retaliation.
 Zero damage earns no experience. Experience never resets movement or attacks.
 Promotions are explicit player choices once experience reaches the threshold;

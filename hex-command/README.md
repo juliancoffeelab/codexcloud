@@ -221,7 +221,7 @@ and progression rules.
 | Bone archer          |    7 |   7 |    3 | Bone bow 3 Pierce, range 2; Shard 1 Blade         | Pierce −1, Impact +1           |
 | Wolf                 |    5 |   8 |    5 | Fangs 3 Blade                                     | Pierce +1                      |
 | Boar                 |    9 |  13 |    3 | Tusks 4 Pierce                                    | Pierce +1                      |
-| Thorncaller          |    7 |   7 |    4 | Thorns 3 Pierce, range 2; Root staff 2 Impact     | None                           |
+| Thorncaller          |    7 |   7 |    4 | Thorns 3 Pierce, range 2; Root staff 2 Impact     | Extra ranged cover in woods    |
 | Wildkeeper (leader)  |    — |  14 |    3 | Bough 3 Impact; Stones 2 Impact, range 2          | Impact −1                      |
 | Necromancer (leader) |    — |  12 |    3 | Bone staff 3 Impact; Grave bolt 3 Impact, range 2 | Pierce −1, Impact +1           |
 
