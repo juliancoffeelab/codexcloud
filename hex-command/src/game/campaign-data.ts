@@ -226,6 +226,7 @@ const lantern: MissionDefinition[] = [
       ],
     ),
     subtitle: "Three crossings. Three homes to reclaim.",
+    defendObjectives: true,
     briefing:
       "The ferryman has brought news of three settlements occupied by the dead. Nera’s company is staying to reopen the road and light their windows again. Sella’s wardens will help, but the Tollkeeper is still collecting from the other bank.",
     hints: [
@@ -414,6 +415,7 @@ const green: MissionDefinition[] = [
     debrief:
       "Both logging camps are captured and the pay ledger contradicts the Overseer’s report. Dain suspends his patrol’s attacks and agrees to protect Lark’s investigation in the central grove. The Overseer’s other guards have accepted no truce.",
     subtitle: "Take their tools. Find the missing workers.",
+    defendObjectives: true,
     briefing:
       "The village council licenses ordinary timber cutting, but its Overseer has sent crews into Alder’s sacred groves. He claims the pack killed the missing woodcutters. His tools and carts are stored in two guarded logging camps. Capture both camps to stop the cutting, and recover the workers’ pay ledger from the northern ruin. Captain Dain commands the patrol protecting those camps; leave him alive if you can.",
     hints: [

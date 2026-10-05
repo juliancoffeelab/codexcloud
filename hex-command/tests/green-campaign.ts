@@ -3,6 +3,7 @@ import { Game } from "../src/game/engine";
 import { campaignMission, goalProgress, returnsWithStory } from "../src/game/campaign-progress";
 import { createGameView } from "../src/game/view";
 import { createMoveUndo } from "../src/game/undo";
+import { enemyActionIds } from "../src/game/enemy-turn";
 import { loadBattle, saveBattle, SAVE_KEY } from "../src/game/save";
 import { required, TestStorage } from "./helpers";
 
@@ -10,6 +11,35 @@ const storage = new TestStorage();
 globalThis.localStorage = storage;
 const companion = (game: Game) =>
   required(game.units.find((unit) => unit.side === "player" && unit.name === "Lark"));
+
+// Occupying guards hold the cutting camps while the company assembles, and retake a lost post.
+{
+  const game = Game.startCampaign("green-accord");
+  game.advanceDialogue(true);
+  const company = game.units.filter((unit) => unit.side === "player").map((unit) => ({ ...unit }));
+  const villages = game.tiles.filter((tile) => tile.owner === "player").map((tile) => tile.id);
+  for (let turn = 0; turn < 5; turn++) {
+    game.endTurn();
+    game.enemyRecruit();
+    for (const id of enemyActionIds(game.units)) game.enemyAct(id);
+    game.endTurn();
+    game.advanceDialogue(true);
+  }
+  assert.equal(game.winner, null);
+  for (const initial of company) {
+    assert.equal(required(game.unit(initial.id)).hp, initial.hp);
+  }
+  for (const village of villages) assert.equal(required(game.tile(village)).owner, "player");
+  const raid = Game.startCampaign("green-accord");
+  raid.advanceDialogue(true);
+  const guard = required(raid.at("7,3"));
+  guard.tile = "9,3";
+  required(raid.tile("7,3")).owner = "player";
+  raid.beginTurn("enemy");
+  raid.enemyAct(guard.id);
+  assert.equal(guard.tile, "7,3");
+  assert.equal(required(raid.tile("7,3")).owner, "enemy");
+}
 
 // Camps stop the cutting, but the missing workers' ledger is also required.
 {

@@ -300,6 +300,8 @@ export interface MissionDefinition {
   enemyRecruits: RecruitType[];
   gold: number;
   enemyGold: number;
+  /** Occupying guards patrol their control objectives instead of raiding the starting camp. */
+  defendObjectives?: boolean;
   intro: DialogueLine[];
   victory: DialogueLine[];
   events: MissionEvent[];

@@ -794,7 +794,14 @@ export class Game {
     if (!goals.length) return;
     const routes =
       this.mapId === "river" || this.campaign ? this.routeDistances(unit, goals) : null;
-    const destinations = [unit.tile, ...this.reachable(id).keys()];
+    let destinations = [unit.tile, ...this.reachable(id).keys()];
+    if (this.campaign && campaignMission(this.campaign).defendObjectives && routes) {
+      // A post is held from its hex and immediate approaches. Troops outside
+      // patrol range return by the nearest available route; retreat remains free.
+      const approach = Math.min(...destinations.map((tile) => routes.get(tile) ?? Infinity));
+      const patrolLimit = Math.max(1, approach);
+      destinations = destinations.filter((tile) => (routes.get(tile) ?? Infinity) <= patrolLimit);
+    }
     const scores = new Map(
       destinations.map((tile) => [tile, this.enemyPositionScore(unit, tile, goals, routes)]),
     );
@@ -937,6 +944,8 @@ export class Game {
       );
       const contested = territory.filter((id) => this.tile(id)?.owner !== "enemy");
       if (contested.length) goals = contested.map((id) => this.tile(id)!);
+      else if (mission.defendObjectives && territory.length)
+        goals = territory.map((id) => this.tile(id)!);
     }
 
     return goals;
