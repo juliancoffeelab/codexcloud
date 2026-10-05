@@ -1,7 +1,15 @@
 # revenant
 
-Veteran of skeleton. Approved skull, rib gaps, bone hands and two connected legs
-remain. Grey steel `A/a` forms the shoulder guard at x18–22,y17–19, plates on
+Veteran of skeleton. The selected face-guard helmet retains the approved
+jagged crown and open eye sockets. Three broken points join the dome at
+x26–34/y4–10; cheek plates and a narrow nose guard descend through y11–14.
+The exposed bone teeth, rib gaps, bone hands and two connected legs remain.
+Helmet shading follows upper-left light: connected `A` planes cover the left
+dome and near cheek, with one connected `S` upper-left highlight. The far dome,
+far cheek, underside and brow rim use `a`. The central nose ridge uses a
+continuous `A` plane with an `a` lower tip. The right crown point is shadowed;
+the near cheek has no alternating light/dark checkerboard cells.
+The level-one skeleton remains bareheaded. Grey steel `A/a` forms the shoulder guard at x18–22,y17–19, plates on
 the exposed shins above the boots, and the shield rim at x35–46,y18–34. Bone
 hands, shield boss and diagonal sword blade retain their original materials.
 Gold `G/g` now belongs to the connected sword guard at x15–17,y29–32 as well as

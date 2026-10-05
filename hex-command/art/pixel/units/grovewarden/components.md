@@ -1,6 +1,6 @@
 # grovewarden
 
-Veteran of wildkeeper. The leaf mantle uses `V/v` across x12–20,y20–23 and x23–26,y21–23. A second staff cluster at x30–34,y21–23 joins the existing branch rather than floating behind the hand. A continuous gold edge follows the lower cloak at rows30–42. The antler crown, skin face/hands, ivory cloth and boots retain their beginner geometry.
+Veteran of wildkeeper. The leaf mantle forms two fitted shoulder caps: the near cap spans x11–18/y21–25 and the far cap x25–28/y22–25. Connected `V` leaf planes sit over `v` shadows along the cloak neckline and cover the top of each ivory sleeve. The hood and neck cloth remain visible between the caps; an `O` seam at x29 separates the far shoulder from the staff leaves. A second staff cluster at x30–34/y21–23 joins the existing branch rather than floating behind the hand. A continuous gold edge follows the lower cloak at rows30–42. The antler crown, skin face/hands, remaining ivory cloth and boots retain their beginner geometry.
 
 Both faction matrices use the same equipment and anatomy, with faction cloth colors changing. Render from these editable 48×48 sources into the ordinary unit atlas. The following notes describe the inherited beginner components; the veteran additions above override their material ownership where specified.
 
