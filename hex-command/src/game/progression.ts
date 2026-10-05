@@ -205,7 +205,7 @@ export function progressionUnits(
   units.deatharcher = {
     ...units.deatharcher,
     attacks: [
-      weapon("bonebow", "Bone bow", 4, "pierce", "ranged", 2),
+      weapon("bonebow", "Bone bow", 5, "pierce", "ranged", 2),
       weapon("shard", "Shard", 2, "blade"),
     ],
     description:

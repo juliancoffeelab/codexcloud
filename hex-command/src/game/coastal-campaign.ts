@@ -305,6 +305,8 @@ const missions: MissionDefinition[] = [
       {
         round: 4,
         label: "Senn's hired guard arrives along the wooded shore",
+        id: "senns-guards",
+        legacyIndex: 0,
         units: [unit("swordsman", "enemy", 10, 1), unit("archer", "enemy", 11, 5)],
       },
     ],

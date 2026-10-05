@@ -1243,8 +1243,8 @@ export class Game {
   private spawnCampaignWaves(): void {
     if (!this.campaign || this.winner) return;
     const campaign = this.campaign;
-    campaignMission(campaign).waves.forEach((wave, index) => {
-      const marker = `wave:${index}`;
+    campaignMission(campaign).waves.forEach((wave) => {
+      const marker = `wave:${wave.id}`;
       if (this.round < wave.round || campaign.marks.includes(marker)) return;
       campaign.marks.push(marker);
       if (wave.requiresUnsealed && campaign.marks.includes(`sealed:${wave.requiresUnsealed}`))

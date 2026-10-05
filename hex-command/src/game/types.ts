@@ -283,6 +283,10 @@ export interface MissionEvent {
   warDialogue?: DialogueLine[];
 }
 export interface ReinforcementWave {
+  /** Stable within its mission; saved deployment must never depend on array order. */
+  id: string;
+  /** Position used by the last published numeric-marker save format. */
+  legacyIndex: number;
   round: number;
   label: string;
   units: StartingUnit[];

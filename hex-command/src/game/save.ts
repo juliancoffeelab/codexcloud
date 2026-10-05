@@ -17,6 +17,7 @@ export function saveBattle(game: Game, pendingEnemy = false): void {
       SAVE_KEY,
       JSON.stringify({
         version: SAVE_VERSION,
+        campaignDeploymentFormat: "named-waves-v1",
         pendingEnemy,
         state: { ...game.snapshot(), nextId: game.nextId, log: game.log },
       }),
@@ -28,6 +29,14 @@ export function saveBattle(game: Game, pendingEnemy = false): void {
 
 const record = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null;
+
+export function importWaveMarker(
+  mark: string,
+  waves: readonly { id: string; legacyIndex: number }[],
+): string {
+  const legacy = waves.find((wave) => mark === `wave:${wave.legacyIndex}`);
+  return legacy ? `wave:${legacy.id}` : mark;
+}
 const side = (value: unknown): value is Side => value === "player" || value === "enemy";
 const integer = (value: unknown): value is number =>
   typeof value === "number" && Number.isSafeInteger(value) && value >= 0;
@@ -97,6 +106,7 @@ function campaignState(
   mapId: string,
   winner: Side | null,
   round: number,
+  namedWaves: boolean,
 ): CampaignState | null {
   if (
     !record(value) ||
@@ -172,7 +182,8 @@ function campaignState(
     ...(value.id === "green-accord" ? ["dain-fell"] : []),
     ...(mission.refuge ? ["held:5,4"] : []),
     ...mission.events.map((event) => `event:${event.id}`),
-    ...mission.waves.map((_, index) => `wave:${index}`),
+    ...mission.waves.map((wave) => `wave:${wave.id}`),
+    ...(namedWaves ? [] : mission.waves.map((wave) => `wave:${wave.legacyIndex}`)),
     ...mission.goals.flatMap((goal) =>
       goal.kind === "seal"
         ? goal.tiles.map((tile) => `sealed:${tile}`)
@@ -187,6 +198,10 @@ function campaignState(
     !value.marks.every((mark) => typeof mark === "string" && allowedMarks.has(mark))
   )
     return null;
+  const marks = (value.marks as string[]).map((mark) =>
+    namedWaves ? mark : importWaveMarker(mark, mission.waves),
+  );
+  if (new Set(marks).size !== marks.length) return null;
   const vigilGoal = mission.goals.find((goal) => goal.kind === "vigil");
   const holdGoals = mission.goals.filter((goal) => goal.kind === "hold");
   if (
@@ -300,7 +315,7 @@ function campaignState(
       ? { fallenCompanions: [...value.fallenCompanions] as string[] }
       : {}),
     carryGold: value.carryGold,
-    marks: [...value.marks] as string[],
+    marks,
     dialogue: value.dialogue.map((line) => ({
       speaker: String(line.speaker),
       portrait: knownLines.find(
@@ -342,7 +357,13 @@ export function loadBattle(): LoadedBattle {
   const fresh = (): LoadedBattle => ({ game: new Game(), pendingEnemy: false });
   try {
     const saved: unknown = JSON.parse(localStorage.getItem(SAVE_KEY) ?? "null");
-    if (!record(saved) || saved.version !== SAVE_VERSION) return fresh();
+    if (
+      !record(saved) ||
+      saved.version !== SAVE_VERSION ||
+      (saved.campaignDeploymentFormat !== undefined &&
+        saved.campaignDeploymentFormat !== "named-waves-v1")
+    )
+      return fresh();
     const s = saved.state;
     if (
       !record(s) ||
@@ -376,7 +397,15 @@ export function loadBattle(): LoadedBattle {
     )
       return fresh();
     const isCampaign = Object.hasOwn(CAMPAIGN_MAPS, game.mapId);
-    const campaign = isCampaign ? campaignState(s.campaign, game.mapId, s.winner, s.round) : null;
+    const campaign = isCampaign
+      ? campaignState(
+          s.campaign,
+          game.mapId,
+          s.winner,
+          s.round,
+          saved.campaignDeploymentFormat === "named-waves-v1",
+        )
+      : null;
     if ((isCampaign && !campaign) || (!isCampaign && s.campaign !== undefined)) return fresh();
     if (campaign) game.campaign = campaign;
     const ids = new Set<string>(),
@@ -542,12 +571,12 @@ export function loadBattle(): LoadedBattle {
     if (campaign) {
       const mission = CAMPAIGNS[campaign.id].missions[campaign.mission]!;
       let migratedDeployment = false;
-      mission.waves.forEach((wave, index) => {
+      mission.waves.forEach((wave) => {
         if (
           wave.previouslyDeployedBeforeRevision !== undefined &&
           game.mapRevision < wave.previouslyDeployedBeforeRevision
         ) {
-          const mark = `wave:${index}`;
+          const mark = `wave:${wave.id}`;
           if (!campaign.marks.includes(mark)) campaign.marks.push(mark);
           migratedDeployment = true;
         }

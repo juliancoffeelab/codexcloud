@@ -150,12 +150,13 @@ function observation(includeRules = false, observedGame = game) {
       gold: event.gold,
       done: game.campaign!.marks.includes(`event:${event.id}`),
     })),
-    waves: mission.waves.map((wave, index) => ({
+    waves: mission.waves.map((wave) => ({
+      id: wave.id,
       round: wave.round,
       label: wave.label,
       at: wave.units.map((unit) => `${unit.col},${unit.row}`),
       requiresUnsealed: wave.requiresUnsealed,
-      resolved: game.campaign!.marks.includes(`wave:${index}`),
+      resolved: game.campaign!.marks.includes(`wave:${wave.id}`),
     })),
     journal: game.log,
     ...(includeRules

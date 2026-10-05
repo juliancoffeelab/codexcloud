@@ -166,6 +166,8 @@ const lantern: MissionDefinition[] = [
       {
         round: 6,
         label: "A skeleton patrol arrives from the southern road on turn 6",
+        id: "southern-patrol",
+        legacyIndex: 0,
         units: [unit("skeleton", "enemy", 11, 6)],
       },
     ],
@@ -285,11 +287,15 @@ const lantern: MissionDefinition[] = [
       {
         round: 5,
         label: "Two skeletons enter from the eastern road on turn 5",
+        id: "eastern-skeletons",
+        legacyIndex: 0,
         units: [unit("skeleton", "enemy", 11, 1), unit("skeleton", "enemy", 11, 7)],
       },
       {
         round: 7,
         label: "A bone bow reaches the southern crossing on turn 7",
+        id: "southern-bow",
+        legacyIndex: 1,
         units: [unit("bonearcher", "enemy", 8, 7)],
         previouslyDeployedBeforeRevision: 2,
       },
@@ -405,12 +411,21 @@ const lantern: MissionDefinition[] = [
         ],
       },
     ],
-    waves: [8, 12].flatMap((round) =>
-      ["9,1", "11,4", "9,7"].map((tile, index) => ({
-        round,
-        label: `An unsealed grave raises a skeleton on turn ${round}`,
-        requiresUnsealed: tile,
-        units: [unit("skeleton", "enemy", [9, 11, 9][index]!, [1, 4, 7][index]!)],
+    waves: [
+      { id: "first-rise", round: 8, legacyOffset: 0 },
+      { id: "second-rise", round: 12, legacyOffset: 3 },
+    ].flatMap((phase) =>
+      [
+        { col: 9, row: 1, legacyIndex: 0 },
+        { col: 11, row: 4, legacyIndex: 1 },
+        { col: 9, row: 7, legacyIndex: 2 },
+      ].map((grave) => ({
+        id: `${phase.id}-${grave.col}-${grave.row}`,
+        legacyIndex: phase.legacyOffset + grave.legacyIndex,
+        round: phase.round,
+        label: `An unsealed grave raises a skeleton on turn ${phase.round}`,
+        requiresUnsealed: `${grave.col},${grave.row}`,
+        units: [unit("skeleton", "enemy", grave.col, grave.row)],
       })),
     ),
   },
@@ -712,6 +727,8 @@ const green: MissionDefinition[] = [
       {
         round: 3,
         label: "A warden and archer arrive from the east on turn 3",
+        id: "eastern-patrol",
+        legacyIndex: 0,
         units: [
           {
             type: "warden",
@@ -730,6 +747,8 @@ const green: MissionDefinition[] = [
       {
         round: 5,
         label: "An adept and soldier arrive from the east on turn 5",
+        id: "eastern-support",
+        legacyIndex: 1,
         units: [
           {
             type: "adept",
@@ -1201,6 +1220,8 @@ const ashen: MissionDefinition[] = [
       {
         round: 6,
         label: "An adept and warden arrive from the southern road on turn 6",
+        id: "southern-capture-party",
+        legacyIndex: 0,
         units: [unit("adept", "enemy", 11, 6), unit("warden", "enemy", 10, 6)],
       },
     ],
@@ -1361,9 +1382,17 @@ const ashen: MissionDefinition[] = [
       {
         round: 3,
         label: "An archer and swordsman arrive on turn 3",
+        id: "eastern-patrol",
+        legacyIndex: 0,
         units: [unit("archer", "enemy", 9, 1), unit("swordsman", "enemy", 9, 7)],
       },
-      { round: 5, label: "An adept arrives on turn 5", units: [unit("adept", "enemy", 9, 3)] },
+      {
+        id: "eastern-adept",
+        legacyIndex: 1,
+        round: 5,
+        label: "An adept arrives on turn 5",
+        units: [unit("adept", "enemy", 9, 3)],
+      },
     ],
   },
   {
@@ -1501,15 +1530,22 @@ const ashen: MissionDefinition[] = [
       },
     ],
     waves: [
-      ...["7,2", "7,6"].map((tile, index) => ({
+      ...[
+        { id: "north-binding-rise", row: 2, legacyIndex: 0 },
+        { id: "south-binding-rise", row: 6, legacyIndex: 1 },
+      ].map((stone) => ({
+        id: stone.id,
+        legacyIndex: stone.legacyIndex,
         round: 5,
         label: "An unsealed binding stone raises a skeleton on turn 5",
-        requiresUnsealed: tile,
-        units: [unit("skeleton", "enemy", 7, [2, 6][index]!)],
+        requiresUnsealed: `7,${stone.row}`,
+        units: [unit("skeleton", "enemy", 7, stone.row)],
       })),
       {
         round: 4,
         label: "The Master's boar reaches the central road on turn 4",
+        id: "masters-boar",
+        legacyIndex: 2,
         units: [unit("boar", "enemy", 9, 4)],
         previouslyDeployedBeforeRevision: 2,
       },

@@ -9,7 +9,7 @@ import {
 } from "../src/game/campaign-progress";
 import { createGameView } from "../src/game/view";
 import { createMoveUndo } from "../src/game/undo";
-import { loadBattle, saveBattle, SAVE_KEY } from "../src/game/save";
+import { loadBattle, saveBattle, SAVE_KEY, importWaveMarker } from "../src/game/save";
 import { describeChanges } from "../src/controller/feedback";
 import { attackChoiceViews } from "../src/ui/combat-view";
 import { BattleController, type BattleView } from "../src/controller/battle";
@@ -19,7 +19,7 @@ const storage = new TestStorage();
 globalThis.localStorage = storage;
 
 // Delayed deployment changes fresh encounters, not armies already saved with
-// those troops present. Existing wave indices and repeated loads stay stable.
+// those troops present. Numeric markers import through explicit historical IDs.
 for (const [id, chapter, type, tile, newWave, oldMarks] of [
   ["lantern-road", 1, "bonearcher", "8,7", 1, ["wave:0"]],
   ["ashen-oath", 2, "boar", "9,4", 2, ["wave:0", "wave:1"]],
@@ -34,13 +34,20 @@ for (const [id, chapter, type, tile, newWave, oldMarks] of [
   const survivors = structuredClone(old.units);
   const gold = { ...old.gold };
   saveBattle(old, true);
+  const legacy = JSON.parse(storage.getItem(SAVE_KEY)!);
+  delete legacy.campaignDeploymentFormat;
+  storage.setItem(SAVE_KEY, JSON.stringify(legacy));
   const loaded = loadBattle();
   assert.equal(loaded.pendingEnemy, true);
   assert.equal(loaded.game.mapRevision, 2);
   assert.deepEqual(loaded.game.units, survivors);
   assert.deepEqual(loaded.game.gold, gold);
-  for (const mark of [...oldMarks, `wave:${newWave}`])
-    assert(loaded.game.campaign!.marks.includes(mark));
+  for (const index of [...oldMarks.map((mark) => Number(mark.slice(5))), newWave])
+    assert(
+      loaded.game.campaign!.marks.includes(
+        `wave:${campaignMission(old.campaign!).waves.find((wave) => wave.legacyIndex === index)!.id}`,
+      ),
+    );
   loaded.game.beginTurn("enemy");
   assert.equal(loaded.game.units.length, survivors.length, "No duplicate delayed troop");
   loaded.game.endTurn();
@@ -54,13 +61,37 @@ for (const [id, chapter, type, tile, newWave, oldMarks] of [
   fresh.round = wave.round;
   saveBattle(fresh);
   const current = loadBattle().game;
-  assert(!current.campaign!.marks.includes(`wave:${newWave}`));
+  assert(!current.campaign!.marks.includes(`wave:${wave.id}`));
   current.beginTurn("enemy");
   assert.equal(
     current.units.filter((unit) => unit.side === "enemy" && unit.type === type).length,
     before + 1,
     "Fresh battles still receive the disclosed wave",
   );
+}
+
+// A named save carries wave identity even when the author reorders the list.
+{
+  const game = Game.startCampaign("ashen-oath", 2);
+  game.advanceDialogue(true);
+  const mission = campaignMission(game.campaign!);
+  game.campaign!.marks.push("wave:north-binding-rise");
+  game.round = 5;
+  saveBattle(game);
+  const reversedWaves = [...mission.waves].reverse();
+  assert.equal(importWaveMarker("wave:0", reversedWaves), "wave:north-binding-rise");
+  assert.equal(importWaveMarker("wave:2", reversedWaves), "wave:masters-boar");
+  const loaded = loadBattle().game;
+  loaded.beginTurn("enemy");
+  assert(loaded.campaign!.marks.includes("wave:north-binding-rise"));
+  assert(loaded.campaign!.marks.includes("wave:south-binding-rise"));
+  assert(loaded.campaign!.marks.includes("wave:masters-boar"));
+  assert.equal(loaded.units.filter((unit) => unit.type === "boar").length, 1);
+  const numeric = JSON.parse(storage.getItem(SAVE_KEY)!);
+  delete numeric.campaignDeploymentFormat;
+  numeric.state.campaign.marks = ["wave:0"];
+  storage.setItem(SAVE_KEY, JSON.stringify(numeric));
+  assert.deepEqual(loadBattle().game.campaign!.marks, ["wave:north-binding-rise"]);
 }
 
 // The quarry's bookkeeper guards his office; regular troops still pursue escapees,
