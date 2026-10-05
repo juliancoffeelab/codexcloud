@@ -8,6 +8,13 @@ defeat and a thirty-turn limit per chapter. Incomplete attempts retain a null
 winner. Both policies may use their authored starting company and earned
 promotions; only **new purchases** differ.
 
+The headless interface supplies legal-action options and can forecast the next
+enemy phase on an exact cloned state. Both policies have that capability. Such
+forecasts are predictions, not recorded victories; subsequent actions invalidate
+them. This gives the agents more information than ordinary browser play and
+limits conclusions about human difficulty. Actual submitted actions and enemy
+responses, including mistakes, remain the evidence used for comparison.
+
 One run per policy is evidence about those recorded decisions, not an estimate
 of optimal play. Completion and retries, companion survival, casualties and
 turns all matter. A faster opening alone does not establish a better campaign.
