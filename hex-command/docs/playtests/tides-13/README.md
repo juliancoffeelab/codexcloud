@@ -22,3 +22,5 @@ chapters, where those opponents actually appear.
 A subsequent cohort keeps the combat rules but clarifies the shared guide's
 opening budget and available-promotion checks for both new players. Its
 results will be labeled separately rather than replacing these defeats.
+It also corrects public weapon summaries while retaining the actual weapon
+profiles. Different information and decisions remain possible confounders.

@@ -116,6 +116,10 @@ per attempt and makes no promotions. A fourteenth cohort keeps the combat rules
 and clarifies opening-purse and ready-advancement checks in the shared guide for
 both fresh players. Guide changes are disclosed rather than attributing every
 new result to stat changes. Its current progress is not yet a completed pair.
+This source also corrects public summary damage to the primary weapon's value
+and summary range to the maximum weapon reach. Weapon profiles and actual
+combat rules remain unchanged, but these summaries can affect a player's
+interpretation. Comparisons across those sources do not isolate guide effects.
 
 The tenth archive also retains explicitly labeled **scripted transfers** of
 the original fifth-cohort Lantern decisions. Current rules still execute the
