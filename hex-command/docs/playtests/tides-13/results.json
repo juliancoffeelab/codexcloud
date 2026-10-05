@@ -1,0 +1,53 @@
+{
+  "sourceCommit": "9d5325419a51c5381659dd084532189a0576e4ec",
+  "trials": [
+    {
+      "file": "round13-ashen-mixed.json",
+      "verified": true,
+      "campaign": "ashen-oath",
+      "completed": false,
+      "decisions": 142,
+      "attempts": [
+        {
+          "mission": "ashen-quarry",
+          "winner": "enemy",
+          "round": 7,
+          "losses": [
+            "u4:skeleton",
+            "u2:skeleton",
+            "u1:Orin"
+          ],
+          "recruits": [
+            "bonearcher"
+          ],
+          "promotions": [],
+          "attacks": {
+            "skeleton": 2,
+            "necromancer": 3
+          }
+        },
+        {
+          "mission": "ashen-quarry",
+          "winner": "enemy",
+          "round": 13,
+          "losses": [
+            "u8:bonearcher",
+            "u2:skeleton",
+            "u3:bonearcher",
+            "u4:skeleton",
+            "u1:Orin"
+          ],
+          "recruits": [
+            "bonearcher"
+          ],
+          "promotions": [],
+          "attacks": {
+            "necromancer": 3,
+            "skeleton": 3,
+            "bonearcher": 3
+          }
+        }
+      ]
+    }
+  ]
+}
