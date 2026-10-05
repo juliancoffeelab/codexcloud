@@ -15,6 +15,14 @@ and `portraits/worker/portrait.png`. Build with `npm run art:build` and check wi
 `npm run art:check`. Both commands handle pixel matrices and these source sprites.
 `scripts/pack-styled-art.ts` losslessly packs each style into its single
 `public/assets/units-<style>.png` and writes `src/presentation/styled-art.ts`.
+Each style also has twelve `terrain/<type>/tile.png` sources, packed into one
+`public/assets/terrain-<style>.png`. The four new fixed surfaces are plains,
+deep water, shallow water (`ford`) and a timber bridge. Their full square textures
+cover the board's exact pointy hex; the bridge is a complete image including its
+water, deck, rails and posts. `terrain-colors.json` supplies matching surface
+colors beneath these textures. The remaining terrain retains its original art.
+The [static terrain specifications](../../design/static-terrain-art.md) and
+2×2 sheets in `reference/` record the surface brief and original generated sources.
 The loader extracts only the recorded whole-frame rectangles into standalone
 images before publishing them to the UI. No rank aliases or pixel fallbacks are
 used in Normal or Low-poly.

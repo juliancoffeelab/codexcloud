@@ -7,7 +7,11 @@ import { TERRAIN, TYPES } from "../src/game/engine";
 let art: typeof import("../src/presentation/art");
 import { campaignSheets } from "../src/presentation/campaign-art";
 import { pixelSources } from "../src/presentation/pixel-art";
-import { styledSheets } from "../src/presentation/styled-art";
+import {
+  styledSheets,
+  styledTerrainSheets,
+  styledTerrainColors,
+} from "../src/presentation/styled-art";
 import { Game } from "../src/game/engine";
 import { createGameView } from "../src/game/view";
 import { battlefieldTiles } from "../src/ui/battlefield-view";
@@ -291,6 +295,57 @@ for (const style of ["normal", "low-poly"] as const) {
       "A styled roster must not request the pixel atlas",
     );
   });
+}
+for (const style of ["normal", "low-poly"] as const) {
+  test(
+    "Static styled surfaces and bridge use complete isolated terrain frames — " + style,
+    async () => {
+      await art.loadArtStyle(style);
+      const sheet = styledTerrainSheets[style];
+      const png = readFileSync(
+        new URL(`../public/assets/${sheet.source.filename}`, import.meta.url),
+      );
+      assert.equal(png.readUInt32BE(16), sheet.source.width);
+      assert.equal(png.readUInt32BE(20), sheet.source.height);
+      assert.equal(
+        createHash("sha256").update(png).digest("hex").slice(0, 12),
+        sheet.source.revision,
+      );
+      assert.deepEqual(
+        Object.keys(sheet.frames).sort(),
+        Object.keys(TERRAIN)
+          .map((name) => `terrain_${name === "grove" ? "sacred_grove" : name}`)
+          .sort(),
+      );
+      const samples = battlefieldTiles(
+        createGameView(new Game("developer")),
+        null,
+        art.artworkForStyle(style),
+        null,
+      );
+      const authoredColors = JSON.parse(
+        readFileSync(new URL("../art/styled/terrain-colors.json", import.meta.url), "utf8"),
+      );
+      for (const name of ["plains", "water", "ford", "bridge"] as const) {
+        const rendered = art.artSprite(art.artworkForStyle(style), "terrain", name, 0, 0, 70, 70);
+        assert.equal((rendered.match(/<image /g) ?? []).length, 1);
+        assert(!rendered.includes("<path"), "The bridge is a complete static sprite");
+        const isolated = extraction(rendered);
+        const [x, y, width, height] = sheet.frames[`terrain_${name}`];
+        assert.equal(width, height, "A full square texture covers the exact board hex");
+        assert.deepEqual(isolated.coordinates, [x, y, width, height, 0, 0, width, height]);
+        assert(
+          isolated.source.includes(`/assets/${sheet.source.filename}?v=${sheet.source.revision}`),
+        );
+        assert.equal(isolated.smoothing, true);
+        assert.equal(styledTerrainColors[style][name], authoredColors[style][name]);
+        assert.equal(
+          samples.find((tile) => tile.terrain === name)?.fill,
+          authoredColors[style][name],
+        );
+      }
+    },
+  );
 }
 test("Tall Lark dialogue uses exactly one 48×48 frame", async () => {
   await art.loadArtStyle("pixel");

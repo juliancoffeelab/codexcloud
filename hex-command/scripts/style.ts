@@ -20,6 +20,7 @@ const files = [
   "art/styled/**/*.{json,md}",
   "docs/ai-simulation.md",
   "design/progression-art.md",
+  "design/static-terrain-art.md",
 ];
 const checks = [
   {

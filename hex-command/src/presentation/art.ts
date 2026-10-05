@@ -9,7 +9,6 @@ import {
   type FrameImage,
 } from "./sprite-images";
 
-const terrainOrder = ["plains", "forest", "hill", "water", "village", "keep"];
 const storageKey = "hex-command-art-style";
 
 export const ART_STYLES = {
@@ -78,98 +77,6 @@ export function loadArtStyle(style: string): Promise<boolean> {
   return loadedStyles.get(style)!;
 }
 
-// Terrain sheets are drawn overhead with regular pointy hexes. Each frame
-// is a square around the hex: cropping and uniform scaling preserve the art.
-const terrainSheets = {
-  normal: {
-    width: 1536,
-    height: 1024,
-    revision: "bc9be76e5658",
-    frames: [
-      {
-        x: 76.0,
-        y: 37.0,
-        size: 424,
-      },
-      {
-        x: 556.0,
-        y: 37.0,
-        size: 424,
-      },
-      {
-        x: 1036.0,
-        y: 37.0,
-        size: 424,
-      },
-      {
-        x: 76.0,
-        y: 518.0,
-        size: 424,
-      },
-      {
-        x: 556.0,
-        y: 518.0,
-        size: 424,
-      },
-      {
-        x: 1036.0,
-        y: 518.0,
-        size: 424,
-      },
-    ],
-  },
-  "low-poly": {
-    width: 1536,
-    height: 1024,
-    revision: "ffabf1089a96",
-    frames: [
-      {
-        x: 41.0,
-        y: 26.0,
-        size: 440,
-      },
-      {
-        x: 548.0,
-        y: 26.0,
-        size: 440,
-      },
-      {
-        x: 1055.0,
-        y: 26.0,
-        size: 440,
-      },
-      {
-        x: 41.0,
-        y: 526.0,
-        size: 440,
-      },
-      {
-        x: 548.0,
-        y: 526.0,
-        size: 440,
-      },
-      {
-        x: 1055.0,
-        y: 526.0,
-        size: 440,
-      },
-    ],
-  },
-};
-function assetURL(style: ArtStyle, kind: SpriteKind) {
-  if (style === "pixel") return campaignAssetURL(pixelSources[kind]);
-  const revision =
-    kind === "terrain" ? terrainSheets[style].revision : styledSheets[style].source.revision;
-  return `${import.meta.env?.BASE_URL ?? "/"}assets/${kind}-${style}.png?v=${revision}`;
-}
-const shallowRevisions = {
-  normal: "e00d7da98abd",
-  "low-poly": "467b3db16f62",
-};
-function shallowAssetURL(style: ArtStyle) {
-  if (style === "pixel") return assetURL(style, "terrain");
-  return `${import.meta.env?.BASE_URL ?? "/"}assets/shallow-${style}.png?v=${shallowRevisions[style]}`;
-}
 interface CampaignSource {
   filename: string;
   width: number;
@@ -201,44 +108,6 @@ function campaignSource(style: ArtStyle, key: CampaignSourceKey, frame?: string)
 function campaignAssetURL(source: CampaignSource) {
   return `${import.meta.env?.BASE_URL ?? "/"}assets/${source.filename}?v=${source.revision}`;
 }
-function frameFor(
-  style: ArtStyle,
-  kind: SpriteKind,
-  name: string,
-  side: Side,
-): SpriteFrame | undefined {
-  const campaignName =
-    name === "bonearcher" ? "bone_archer" : name === "grove" ? "sacred_grove" : name;
-  const frameKey = kind === "terrain" ? `terrain_${campaignName}` : `${side}_${campaignName}`;
-  const sheet = campaignSheets[style];
-  const crop = sheet.frames[frameKey as keyof typeof sheet.frames];
-  if (crop) {
-    const metadata: CampaignSourceMetadata = sheet;
-    return {
-      source: campaignAssetURL(
-        campaignSource(style, kind === "terrain" ? "terrain" : side, frameKey),
-      ),
-      crop,
-      pixel: style === "pixel",
-      mask: kind === "units" ? metadata.clips?.[frameKey] : undefined,
-    };
-  }
-  if (style === "pixel") return undefined;
-  if (kind === "units") {
-    const styled = styledSheets[style];
-    const crop = styled.frames[frameKey as keyof typeof styled.frames];
-    return crop ? { source: campaignAssetURL(styled.source), crop, pixel: false } : undefined;
-  }
-  const index = name === "ford" ? 3 : terrainOrder.indexOf(name);
-  if (index < 0) return undefined;
-  const { x, y, size } = terrainSheets[style].frames[index]!;
-  return {
-    source: name === "ford" ? shallowAssetURL(style) : assetURL(style, kind),
-    crop: [x, y, size, size],
-    pixel: false,
-  };
-}
-
 function workerFrame(style: ArtStyle): SpriteFrame {
   if (style !== "pixel")
     return {
@@ -273,10 +142,6 @@ function styleFrames(style: ArtStyle): Record<string, SpriteFrame> {
     for (const [key, crop] of Object.entries(styled.frames)) {
       frames[key] = { source: campaignAssetURL(styled.source), crop, pixel: false };
     }
-  }
-  for (const name of [...terrainOrder, "ford"]) {
-    const frame = frameFor(style, "terrain", name, "player");
-    if (frame) frames[`terrain_${name}`] = frame;
   }
   return frames;
 }
@@ -318,11 +183,6 @@ export function artSprite(
   extraClass = "",
   side: Side = "player",
 ): string {
-  if (kind === "terrain" && name === "bridge" && artwork.style !== "pixel") {
-    const water = artSprite(artwork, "terrain", "water", 0, 0, 70, 70);
-    const joints = [10, 22, 34, 46, 58].map((at) => `<path d="M${at} 24v22"/>`).join("");
-    return `<svg class="art-sprite ${extraClass}" x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 70 70" aria-hidden="true" focusable="false">${water}<path d="M0 26h70v23H0z" fill="#3e443b" opacity=".45"/><path d="M0 23h70v22H0z" fill="#a6a18a" stroke="#686e58" stroke-width="1"/><g stroke="#777c67" stroke-width="1" opacity=".65">${joints}</g><path d="M0 23h70M0 45h70" stroke="#6a705a" stroke-width="5"/><path d="M0 21h70M0 43h70" stroke="#b6b09a" stroke-width="3"/></svg>`;
-  }
   const frameName =
     name === "bonearcher" ? "bone_archer" : name === "grove" ? "sacred_grove" : name;
   const key = `${kind === "terrain" ? "terrain" : side}_${frameName}`;

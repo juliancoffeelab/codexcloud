@@ -396,25 +396,15 @@ class ControlledImage {
   constructor() {
     ControlledImage.requests.push(this);
   }
-  static finish(style: string, success: boolean, campaignSuccess = success) {
-    const requests = this.requests.filter(
-      (image) =>
-        !image.completed &&
-        (image.src.includes(style) ||
-          (style !== "pixel" && image.src.includes("/units-pixel.png"))),
-    );
-    if (style === "pixel") {
-      assert.equal(requests.length, 2, "Pixel artwork loads one unit atlas and one terrain atlas");
-      assert(requests.some((image) => image.src.includes("/units-pixel.png")));
-      assert(requests.some((image) => image.src.includes("/terrain-pixel.png")));
-    } else {
-      assert(requests.length >= 4, `Expected one pending ${style} artwork family`);
-      assert(requests.some((image) => image.src.includes(`/campaign-${style}`)));
-    }
+  static finish(style: string, success: boolean, terrainSuccess = success) {
+    const requests = this.requests.filter((image) => !image.completed && image.src.includes(style));
+    assert.equal(requests.length, 2, `${style} artwork loads one unit atlas and one terrain atlas`);
+    assert(requests.some((image) => image.src.includes(`/units-${style}.png`)));
+    assert(requests.some((image) => image.src.includes(`/terrain-${style}.png`)));
     assert.equal(new Set(requests.map((image) => image.src)).size, requests.length);
     for (const image of requests) {
       image.completed = true;
-      if (image.src.includes(`/campaign-${style}`) ? campaignSuccess : success) image.onload?.();
+      if (image.src.includes(`/terrain-${style}.png`) ? terrainSuccess : success) image.onload?.();
       else image.onerror?.();
     }
   }

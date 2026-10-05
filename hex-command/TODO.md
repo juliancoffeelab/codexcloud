@@ -157,6 +157,11 @@ Specified in [design/tides-and-progression.md](design/tides-and-progression.md).
 
 ## Merfolk campaign playtest followups
 
+- [ ] Consider terrain-aware shoreline sprites as a separate later art task.
+      The current surface pass uses fixed plains, deep/shallow-water and bridge
+      tiles. Dynamic shoreline rendering was suggested as a possible night task;
+      it is not part of this implementation.
+
 - [ ] Review ground-unit recruitment and enemy access through the coastal maps.
       Ground troops can spawn but struggle to traverse the water tiles. Investigate
       whether this prevents the enemy from threatening the player and makes the

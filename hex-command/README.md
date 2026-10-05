@@ -78,6 +78,10 @@ full sheets. Normal and low-poly use the same isolation pipeline. Their complete
 standalone source sprites in `art/styled` into one unit atlas per style. Beginners
 and veterans have distinct equipment, and veteran merfolk have violet scales;
 neither style falls back to pixel units. `npm run art:build` rebuilds all three styles.
+Normal and Low-poly terrain each use one atlas packed from standalone sources in
+`art/styled`. Plains, deep water, shallows and timber bridges use fixed surface
+textures with quiet detail. Water depth is visible through color and the sandy
+bottom; bridges include their deck, rails, supports and water in one complete frame.
 Civilian conversations use a neutral worker portrait
 from the unit atlas, without adding a worker to the combat roster.
 
