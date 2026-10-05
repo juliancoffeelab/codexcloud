@@ -79,6 +79,103 @@
           }
         }
       ]
+    },
+    {
+      "file": "round14-ashen-skeleton.json",
+      "verified": true,
+      "campaign": "ashen-oath",
+      "completed": false,
+      "decisions": 185,
+      "attempts": [
+        {
+          "mission": "ashen-quarry",
+          "winner": "enemy",
+          "round": 9,
+          "losses": [
+            "u2:skeleton",
+            "u3:bonearcher",
+            "u5:skeleton",
+            "u1:Orin"
+          ],
+          "recruits": [
+            "skeleton",
+            "skeleton"
+          ],
+          "promotions": [],
+          "attacks": {
+            "bonearcher": 1,
+            "skeleton": 2,
+            "necromancer": 1
+          }
+        },
+        {
+          "mission": "ashen-quarry",
+          "winner": "player",
+          "round": 7,
+          "losses": [
+            "u2:skeleton"
+          ],
+          "recruits": [
+            "skeleton",
+            "skeleton"
+          ],
+          "promotions": [],
+          "attacks": {
+            "skeleton": 1,
+            "necromancer": 1,
+            "bonearcher": 1
+          }
+        },
+        {
+          "mission": "ashen-refuge",
+          "winner": "player",
+          "round": 6,
+          "losses": [
+            "u4:bonearcher",
+            "u3:skeleton",
+            "u12:skeleton",
+            "u14:skeleton"
+          ],
+          "recruits": [
+            "skeleton",
+            "skeleton",
+            "skeleton",
+            "skeleton",
+            "skeleton",
+            "skeleton"
+          ],
+          "promotions": [
+            "deatharcher"
+          ],
+          "attacks": {
+            "bonearcher": 3,
+            "skeleton": 1
+          }
+        },
+        {
+          "mission": "ashen-dawn",
+          "winner": null,
+          "round": 7,
+          "losses": [
+            "u3:Captain Dain",
+            "u2:skeleton",
+            "u11:skeleton",
+            "u10:deatharcher",
+            "u13:skeleton"
+          ],
+          "recruits": [
+            "skeleton",
+            "skeleton",
+            "skeleton"
+          ],
+          "promotions": [],
+          "attacks": {
+            "skeleton": 1,
+            "necromancer": 3,
+            "deatharcher": 2
+          }
+        }
+      ]
     }
   ]
 }

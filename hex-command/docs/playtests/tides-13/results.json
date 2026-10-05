@@ -48,6 +48,262 @@
           }
         }
       ]
+    },
+    {
+      "file": "round13-ashen-skeleton.json",
+      "verified": true,
+      "campaign": "ashen-oath",
+      "completed": false,
+      "decisions": 241,
+      "attempts": [
+        {
+          "mission": "ashen-quarry",
+          "winner": "player",
+          "round": 8,
+          "losses": [
+            "u2:skeleton"
+          ],
+          "recruits": [
+            "skeleton",
+            "skeleton"
+          ],
+          "promotions": [],
+          "attacks": {
+            "bonearcher": 3,
+            "skeleton": 2,
+            "necromancer": 1
+          }
+        },
+        {
+          "mission": "ashen-refuge",
+          "winner": "player",
+          "round": 6,
+          "losses": [
+            "u2:skeleton",
+            "u3:skeleton"
+          ],
+          "recruits": [
+            "skeleton",
+            "skeleton",
+            "skeleton",
+            "skeleton",
+            "skeleton",
+            "skeleton"
+          ],
+          "promotions": [],
+          "attacks": {
+            "bonearcher": 4,
+            "skeleton": 2
+          }
+        },
+        {
+          "mission": "ashen-dawn",
+          "winner": null,
+          "round": 17,
+          "losses": [
+            "u15:skeleton",
+            "u14:skeleton",
+            "u24:skeleton",
+            "u17:skeleton",
+            "u11:revenant"
+          ],
+          "recruits": [
+            "skeleton",
+            "skeleton",
+            "skeleton",
+            "skeleton",
+            "skeleton",
+            "skeleton",
+            "skeleton",
+            "skeleton"
+          ],
+          "promotions": [
+            "deatharcher",
+            "revenant",
+            "deatharcher"
+          ],
+          "attacks": {
+            "deatharcher": 7,
+            "revenant": 1,
+            "skeleton": 9,
+            "warden": 2,
+            "bonearcher": 3
+          }
+        }
+      ]
+    },
+    {
+      "file": "round13-green-boar.json",
+      "verified": true,
+      "campaign": "green-accord",
+      "completed": true,
+      "decisions": 201,
+      "attempts": [
+        {
+          "mission": "green-border",
+          "winner": "player",
+          "round": 20,
+          "losses": [
+            "u3:boar",
+            "u10:boar",
+            "u13:boar"
+          ],
+          "recruits": [
+            "boar",
+            "boar",
+            "boar",
+            "boar",
+            "boar",
+            "boar"
+          ],
+          "promotions": [],
+          "attacks": {
+            "boar": 9,
+            "wildkeeper": 2,
+            "thorncaller": 6,
+            "wolf": 1
+          }
+        },
+        {
+          "mission": "green-vigil",
+          "winner": "player",
+          "round": 5,
+          "losses": [],
+          "recruits": [
+            "boar",
+            "boar"
+          ],
+          "promotions": [],
+          "attacks": {}
+        },
+        {
+          "mission": "green-pact",
+          "winner": "player",
+          "round": 9,
+          "losses": [],
+          "recruits": [
+            "boar",
+            "boar"
+          ],
+          "promotions": [
+            "briarweaver",
+            "greatboar"
+          ],
+          "attacks": {
+            "warden": 2,
+            "adept": 1,
+            "briarweaver": 3,
+            "greatboar": 1
+          }
+        }
+      ]
+    },
+    {
+      "file": "round13-green-mixed.json",
+      "verified": true,
+      "campaign": "green-accord",
+      "completed": false,
+      "decisions": 280,
+      "attempts": [
+        {
+          "mission": "green-border",
+          "winner": "player",
+          "round": 26,
+          "losses": [
+            "u3:boar",
+            "u2:wolf",
+            "u17:thorncaller"
+          ],
+          "recruits": [
+            "boar",
+            "thorncaller",
+            "thorncaller",
+            "boar",
+            "boar",
+            "boar",
+            "thorncaller",
+            "thorncaller",
+            "boar",
+            "boar"
+          ],
+          "promotions": [
+            "briarweaver"
+          ],
+          "attacks": {
+            "boar": 5,
+            "thorncaller": 6,
+            "briarweaver": 1
+          }
+        },
+        {
+          "mission": "green-vigil",
+          "winner": "enemy",
+          "round": 4,
+          "losses": [
+            "u3:boar",
+            "u4:Captain Dain",
+            "u2:Lark"
+          ],
+          "recruits": [],
+          "promotions": [],
+          "attacks": {
+            "warden": 1
+          }
+        },
+        {
+          "mission": "green-vigil",
+          "winner": "player",
+          "round": 6,
+          "losses": [
+            "u3:boar",
+            "u11:boar",
+            "u4:Captain Dain"
+          ],
+          "recruits": [],
+          "promotions": [],
+          "attacks": {
+            "warden": 2,
+            "thorncaller": 1,
+            "briarweaver": 1
+          }
+        },
+        {
+          "mission": "green-pact",
+          "winner": "enemy",
+          "round": 5,
+          "losses": [
+            "u13:boar",
+            "u11:boar",
+            "u2:Lark"
+          ],
+          "recruits": [
+            "boar",
+            "adept"
+          ],
+          "promotions": [],
+          "attacks": {
+            "boar": 3,
+            "briarweaver": 4,
+            "adept": 1
+          }
+        },
+        {
+          "mission": "green-pact",
+          "winner": null,
+          "round": 8,
+          "losses": [],
+          "recruits": [
+            "adept",
+            "boar"
+          ],
+          "promotions": [],
+          "attacks": {
+            "adept": 7,
+            "briarweaver": 3,
+            "boar": 6
+          }
+        }
+      ]
     }
   ]
 }

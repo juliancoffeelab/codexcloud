@@ -93,9 +93,11 @@ not extend to rewriting the other campaigns.
       Ashen/Lantern trials test revised bone bows. Actual outcomes and limits are
       preserved in [the balance report](docs/balance-playtests.md).
       Guided fourteenth-cohort Ashen mixed finishes 8/6/8 without retries, with
-      eight losses including Dain; its matching control remains in progress.
-      The twelfth Lantern control reaches the village turn cap without capturing
-      a village. Neither unfinished pairs nor known lethal escort moves are
+      eight losses including Dain; its matching control stops at the deadline
+      with fourteen losses and an unfinished finale. Both twelfth Lantern
+      policies reach the village turn cap without holding any village. Latest
+      woodland boar-only completes while mixed needs two retries and remains
+      unfinished. Neither unfinished pairs nor known lethal escort moves are
       claimed as completed evidence that recruitment diversity is balanced.
 
 ## Overnight race and coastal work

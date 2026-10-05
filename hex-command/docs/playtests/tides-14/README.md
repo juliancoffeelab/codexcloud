@@ -19,6 +19,14 @@ including Dain, remain part of the outcome. It earns Revenant and Death
 Archer promotions and buys thirteen units across the campaign: six
 skeletons, two bone archers, four adepts and one spearman.
 
-The restricted comparison is still running. Its opening required an actual
-defeat and a retry, but a partial opening comparison does not establish a
-whole-campaign mixed advantage. No completed control is claimed here.
+The restricted comparison stopped at the 13:00 Kyiv deadline and replays
+exactly. It loses the opening at nine, wins its retry at seven and the refuge
+at six. Its finale remains unfinished at seven with both stones sealed and
+the Master alive. Fourteen all-attempt losses include Dain and opening Orin;
+finale Orin is still alive at two HP with a ready advancement. It buys thirteen
+skeletons and earns one Death Archer promotion. A player's verbal claim that
+finale Orin died was wrong; the report follows the actual record.
+
+Mixed has a completed campaign, fewer losses and no retry in this pair, while
+the control is a deadline checkpoint. This supports the recorded mixed play
+but does not establish an optimal policy or a completed control campaign.

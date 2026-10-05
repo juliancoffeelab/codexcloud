@@ -155,6 +155,71 @@
           }
         }
       ]
+    },
+    {
+      "file": "round12-lantern-mixed.json",
+      "verified": true,
+      "campaign": "lantern-road",
+      "completed": false,
+      "decisions": 317,
+      "attempts": [
+        {
+          "mission": "lantern-ferry",
+          "winner": "player",
+          "round": 17,
+          "losses": [],
+          "recruits": [
+            "scout",
+            "scout",
+            "swordsman",
+            "archer",
+            "swordsman"
+          ],
+          "promotions": [
+            "soldier"
+          ],
+          "attacks": {
+            "scout": 6,
+            "swordsman": 6,
+            "archer": 3,
+            "soldier": 1
+          }
+        },
+        {
+          "mission": "lantern-villages",
+          "winner": null,
+          "round": 30,
+          "losses": [
+            "u10:scout",
+            "u15:adept",
+            "u2:warden",
+            "u9:soldier",
+            "u18:adept",
+            "u28:swordsman"
+          ],
+          "recruits": [
+            "scout",
+            "adept",
+            "adept",
+            "swordsman",
+            "swordsman",
+            "adept",
+            "adept",
+            "adept",
+            "swordsman"
+          ],
+          "promotions": [
+            "soldier"
+          ],
+          "attacks": {
+            "scout": 7,
+            "warden": 2,
+            "adept": 7,
+            "soldier": 2,
+            "swordsman": 1
+          }
+        }
+      ]
     }
   ]
 }

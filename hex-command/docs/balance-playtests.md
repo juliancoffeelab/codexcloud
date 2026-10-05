@@ -108,7 +108,9 @@ The same archive now includes the Lantern swordsman control: ferry victory
 at twelve, then a thirty-turn village cap with no village captured. It
 retains twenty-one troops against nine enemies and Ivo alive; four total
 losses and nineteen swordsman purchases do not turn that cap into a win.
-The mixed Lantern run remains active.
+The mixed Lantern run also caps at thirty with no village held and a null
+winner. Its ferry win is at seventeen without casualties; its second chapter
+loses six units. Neither policy completes, so this pair does not validate balance.
 
 The thirteenth source `9d53254` removes one initial quarry archer while keeping
 the swordsman, posted Ledgerkeeper and turn-six reinforcements. This reduces
@@ -123,11 +125,22 @@ both fresh players. Guide changes are disclosed rather than attributing every
 new result to stat changes. Its [mixed campaign](playtests/tides-14/README.md)
 now completes 8 / 6 / 8 without a retry, with eight losses including Dain,
 and two promotions. The restricted control is still running after an
-actual opening defeat and a successful retry. This is not yet a completed pair.
+actual opening defeat and a successful retry. It stops at the deadline with
+refuge won at six, finale unfinished at seven and fourteen all-attempt losses.
+Its finale Orin remains alive at two HP; both stones are sealed. Mixed has
+fewer losses and no retry, but this is not two completed campaigns.
 This source also corrects public summary damage to the primary weapon's value
 and summary range to the maximum weapon reach. Weapon profiles and actual
 combat rules remain unchanged, but these summaries can affect a player's
 interpretation. Comparisons across those sources do not isolate guide effects.
+The thirteenth woodland boar control completes 20 / 5 / 9 without retries,
+three opening losses and all named companions alive. The mixed record needs
+vigil and escort retries; this current adverse result remains recorded alongside
+earlier favorable woodland pairs. Mixed stops at the deadline on the escort
+retry at eight, with twelve all-attempt losses and Dain dead; the fort is held
+but Lark has not reached the council. Both records replay exactly. The
+thirteenth Ashen control also remains unfinished at finale seventeen, after
+wins eight and six, eight losses and both stones sealed.
 
 The tenth archive also retains explicitly labeled **scripted transfers** of
 the original fifth-cohort Lantern decisions. Current rules still execute the

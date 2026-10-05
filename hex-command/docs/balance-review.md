@@ -154,8 +154,9 @@ patterns, rather than treating mechanical correctness as balance approval.
 
 Independent replay confirms cohort fourteen's mixed Ashen campaign wins
 8 / 6 / 8 without a retry, with eight losses including Dain. Its matching
-restricted control is still playing; this establishes mixed viability,
-not a completed paired verdict. Cohort twelve's Lantern control ends at
+restricted control later stops at the deadline with fourteen all-attempt
+losses and its finale unfinished. This favors the recorded mixed play but
+does not produce two completed campaigns. Cohort twelve's Lantern control ends at
 the village turn cap with a null winner. It makes only five attacks in the
 entire second chapter despite buying seventeen swordsmen and retaining
 twenty-one troops against nine enemies. A larger idle army does not establish
@@ -175,4 +176,9 @@ Those adverse results remain valid records of player decisions. The reviewer
 finds no causal basis here for claiming that an auxiliary HP buff would repair
 the observed defeats. Current woodland and Ashen comparisons remain unfinished
 until their actual traces stop. No global stat change or universal balance
-approval follows from these deployment-confounded records.
+approval follows from these deployment-confounded records. Final exact replay
+archives the deadline checkpoints: both Lantern policies cap with null winners;
+woodland boar completes while mixed is unfinished after two retries; both
+restricted Ashen finales are unfinished. A reported forecast mismatch was
+checked against the exact preceding state and matched the actual response;
+the player had compared it with a later phase. No source change was made.
