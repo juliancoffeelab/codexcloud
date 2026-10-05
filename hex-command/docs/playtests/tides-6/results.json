@@ -153,6 +153,84 @@
           }
         }
       ]
+    },
+    {
+      "file": "root-ashen6-study.json",
+      "verified": true,
+      "campaign": "ashen-oath",
+      "completed": true,
+      "decisions": 186,
+      "attempts": [
+        {
+          "mission": "ashen-quarry",
+          "winner": "player",
+          "round": 6,
+          "losses": [],
+          "recruits": [
+            "bonearcher",
+            "skeleton"
+          ],
+          "promotions": [],
+          "attacks": {
+            "skeleton": 4,
+            "necromancer": 1,
+            "bonearcher": 2
+          }
+        },
+        {
+          "mission": "ashen-refuge",
+          "winner": "player",
+          "round": 6,
+          "losses": [
+            "u12:skeleton"
+          ],
+          "recruits": [
+            "bonearcher",
+            "skeleton",
+            "skeleton",
+            "bonearcher"
+          ],
+          "promotions": [
+            "revenant",
+            "revenant"
+          ],
+          "attacks": {
+            "skeleton": 6,
+            "bonearcher": 4,
+            "necromancer": 1
+          }
+        },
+        {
+          "mission": "ashen-dawn",
+          "winner": "player",
+          "round": 8,
+          "losses": [
+            "u14:revenant"
+          ],
+          "recruits": [
+            "adept",
+            "spearman",
+            "bonearcher",
+            "skeleton"
+          ],
+          "promotions": [
+            "deatharcher",
+            "lich",
+            "revenant",
+            "mage"
+          ],
+          "attacks": {
+            "warden": 2,
+            "necromancer": 3,
+            "revenant": 4,
+            "skeleton": 3,
+            "adept": 3,
+            "deatharcher": 2,
+            "spearman": 1,
+            "lich": 2
+          }
+        }
+      ]
     }
   ]
 }

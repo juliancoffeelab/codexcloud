@@ -21,3 +21,20 @@ progress with three defended ferry crossings and a minimum high-tide round of
 six. These transcripts validate neither revision; a fresh matched pair is
 required. Individual attacks, purchases and promotions are in `results.json`;
 all actual commands and enemy responses are in the accompanying trial files.
+
+## Developer Ashen route study
+
+`root-ashen6-study.json` uses the same frozen source and replays all 186 recorded
+decisions. It completed the quarry in six turns, the peaceful refuge in six, and
+the final confrontation in eight, with two ordinary-unit casualties overall.
+Dain survived and the medicine shortened the refuge defense; neither Dain nor
+retreating soldiers were attacked. The finale recruited all four available roles
+and used spears, ranged spells, bone bows and melee skeletons together. Earned
+promotions included revenants, a death archer, Orin's lich and a stone mage.
+
+This is developer viability evidence, not an independent balance comparison.
+The developer knows the rules and had read previous trials. Mistaken move/range
+requests retained their earlier successful actions; no transcript was rewritten.
+The finale's lost revenant followed an exposed attack against the Master on a
+hill. Independent Luna outcomes remain the authority for the recruitment-policy
+comparison.
