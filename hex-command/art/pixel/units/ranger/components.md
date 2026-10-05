@@ -1,11 +1,9 @@
-# ranger
+# Ranger — level two scout
 
-Veteran of scout. The approved crouch, hair, cloak, arms and both bent legs remain.
-Cloth `C/c/q` is charcoal with two connected shadow planes; skin hands and leather
-boots/bracers keep their original colors. The original left-screen knife remains.
-A second silver `W/w/g` blade runs diagonally from the free hand at x25–28,
-y32–33 toward x33–34,y28. Its leather grip and guard connect to that hand; the
-blade stays above and to the right of the trousers and never intersects a leg.
-Both factions share anatomy and knife geometry. Lighting remains upper left.
+Components: the approved crouching body, windblown hair, faction cloak, charcoal shirt and trousers, leather bracers/belt/boots, skin hands, and two steel knives. Both bent legs remain attached and grounded.
 
-See [the progression specifications](../../../../design/progression-art.md).
+The original screen-left knife remains. The second knife is held horizontally by the screen-right hand, pointing away from the body. Its fist wraps around a visible leather grip; a steel guard separates the fingers from the blade. The blade lies above the thigh, in front of the cloak.
+
+Materials: charcoal cloth has a base and connected shadow; faction cloth remains teal/red. Hands remain skin, blades silver, grips and cuffs leather. Light comes from upper left; the face looks toward screen right.
+
+Both faction matrices share all geometry and material ownership.

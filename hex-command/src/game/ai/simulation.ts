@@ -14,8 +14,30 @@ import type { CampaignId, RecruitType, Side, TerrainType, Unit, UnitType } from 
 
 export const ARMY_IDS = ["human", "woodland", "undead", "coastal"] as const;
 export type ArmyId = (typeof ARMY_IDS)[number];
-export const LANDSCAPES = ["open", "wooded", "crossings"] as const;
+export const LANDSCAPES = ["open", "wooded", "crossings", "islands"] as const;
 export type Landscape = (typeof LANDSCAPES)[number];
+export const ARENA_TERRITORY_HOLD_TURNS: Record<Landscape, number> = {
+  open: 4,
+  wooded: 4,
+  crossings: 4,
+  islands: 6,
+};
+const ARENA_TERRITORY = ["4,4", "3,2", "5,6"];
+
+/** Count completed opposing turns; losing any objective breaks the hold. */
+export function advanceArenaTerritoryHold(
+  game: Pick<Game, "tile">,
+  held: Record<Side, number>,
+  completedSide: Side,
+  landscape: Landscape,
+): Side | null {
+  for (const owner of ["player", "enemy"] as const) {
+    if (!ARENA_TERRITORY.every((tile) => game.tile(tile)!.owner === owner)) held[owner] = 0;
+    else if (owner !== completedSide) held[owner]++;
+    if (held[owner] >= ARENA_TERRITORY_HOLD_TURNS[landscape]) return owner;
+  }
+  return null;
+}
 const ARMIES: Record<ArmyId, { leader: UnitType; screen: RecruitType; pool: RecruitType[] }> = {
   human: {
     leader: "commander",
@@ -183,8 +205,10 @@ export function createArena(
   config: Pick<ArenaConfig, "seed" | "armies" | "landscape" | "first">,
 ): RecordedGame {
   const random = seededRandom(config.seed);
-  // Classic's shipped river AI uses route distances, unlike its open-map heuristic.
-  const game = new RecordedGame(config.landscape === "crossings" ? "river" : "mirror");
+  // Water arenas need classic's shipped river routing, rather than straight-line goals.
+  const game = new RecordedGame(
+    config.landscape === "crossings" || config.landscape === "islands" ? "river" : "mirror",
+  );
   const state = game.captureState();
   state.cols = state.rows = 9;
   state.tiles = [];
@@ -213,6 +237,31 @@ export function createArena(
       const q = tile.col - Math.floor((tile.row - 4) / 2) - 4;
       terrain = q === 0 ? "water" : draw < 0.2 ? "marsh" : draw < 0.3 ? "forest" : "plains";
     }
+    if (config.landscape === "islands") {
+      const r = tile.row - 4;
+      const q = tile.col - Math.floor(r / 2) - 4;
+      // Two home islands have bays on their inward shores. The fort and the
+      // northern/southern villages each occupy a separate smaller island.
+      const home =
+        Math.abs(q) >= 2 &&
+        Math.abs(r) <= 2 &&
+        !(q === -2 && r > 0) &&
+        !(q === 2 && r < 0) &&
+        !(q === -3 && r === -1) &&
+        !(q === 3 && r === 1);
+      const fort = (q === 0 && r === 0) || (q === -1 && r === 1) || (q === 1 && r === -1);
+      const village = q === 0 && (Math.abs(r) === 2 || Math.abs(r) === 3);
+      terrain =
+        home || fort || village
+          ? draw < 0.15
+            ? "forest"
+            : draw < 0.25
+              ? "hill"
+              : draw < 0.45
+                ? "marsh"
+                : "plains"
+          : "water";
+    }
     tile.terrain = partner.terrain = terrain;
   }
   const terrain = (q: number, r: number, kind: TerrainType, owner: Side | null = null) => {
@@ -236,6 +285,16 @@ export function createArena(
   if (config.landscape === "crossings") {
     terrain(0, -1, "bridge");
     terrain(0, 1, "bridge");
+  }
+  if (config.landscape === "islands") {
+    terrain(-1, 0, "bridge");
+    terrain(1, 0, "bridge");
+    terrain(-2, 1, "ford");
+    terrain(2, -1, "ford");
+    terrain(0, -1, "ford");
+    terrain(0, 1, "ford");
+    terrain(1, -2, "ford");
+    terrain(-1, 2, "ford");
   }
   state.units = [];
   state.nextId = 1;
@@ -293,7 +352,7 @@ export function runArena(
   const initial = game.captureState();
   // Each seat receives its first turn's income before its first decisions.
   game.beginTurn(config.first);
-  const territory = ["4,4", "3,2", "5,6"];
+  const territory = ARENA_TERRITORY;
   const held = { player: 0, enemy: 0 };
   const visits = { player: new Set<string>(), enemy: new Set<string>() };
   const phases: PhaseRecord[] = [];
@@ -346,13 +405,10 @@ export function runArena(
       reason = "leader";
       break;
     }
-    for (const owner of ["player", "enemy"] as const) {
-      if (!territory.every((tile) => game.tile(tile)!.owner === owner)) held[owner] = 0;
-      else if (owner !== side) held[owner]++;
-      if (held[owner] >= 2) {
-        game.winner = owner;
-        reason = "territory";
-      }
+    const territoryWinner = advanceArenaTerritoryHold(game, held, side, config.landscape);
+    if (territoryWinner) {
+      game.winner = territoryWinner;
+      reason = "territory";
     }
     if (!game.winner && index + 1 < config.maxRounds * 2) game.endTurn();
   }

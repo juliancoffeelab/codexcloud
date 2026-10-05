@@ -104,20 +104,27 @@ third faction. Campaigns without those conditions retain ordinary combat behavio
 
 ## Arena coverage and victory
 
-Maps are rotationally paired radius-four hexagons: open, wooded and river crossings.
-Seeds vary paired terrain, equal gold and small policy tie breakers. Crossings retain
-the river identity for classic's routing. Each side gets its selected race's leader,
+Maps are rotationally paired radius-four hexagons: open, wooded, river crossings
+and islands. Islands has two home islands and three separate objective islands:
+the central fort and the northern/southern villages. Bridges link the home islands
+to the fort; shallow crossings reach the village islands and give alternative
+approaches to the fort, including the hex east of the northern village and its
+southern counterpart. Open channels give merfolk routes around those crossings.
+Seeds vary paired terrain, equal gold and small policy tie breakers. Water arenas
+retain the river identity for classic's routing. Each side gets its selected race's leader,
 two melee starters and its own recruitment pool. Human, woodland, undead and coastal
 rosters can face each other; same-race baselines remain included. Initial resources,
 positions and per-phase recruit limits are paired, while race-specific stats differ.
 
 An entrant is `(race, policy)`. Every unordered entrant pair is scheduled in both
 seats and both initiatives; identical entrants run both initiatives once. Four races
-and three policies give 12 entrants, 288 games per terrain, **864 games per seed**
-across the three terrains. Each round contains both phases regardless of initiative.
+and three policies give 12 entrants, 288 games per terrain, **1,152 games per seed**
+across the four terrains. Each round contains both phases regardless of initiative.
 
 Victory means defeating the opposing leader, or owning the central fort and both
-central villages through two opposing phases. Optional ruins record visits without
+central villages through four opposing turns, or six on islands to allow ground
+troops time to reach the objectives. Only completed opposing turns count; losing
+any of the three objectives resets the hold. Optional ruins record visits without
 resources. Territory victory belongs to this testing scenario, not ordinary battles.
 
 Campaigns use the actual authored player and enemy rosters, maps, objectives and

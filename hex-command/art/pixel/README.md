@@ -85,6 +85,8 @@ Skeleton and wolf references are tracked in [skeleton-wolf](reference/skeleton-w
 The selected warrior is B; the selected wolf is A. B's rabid wolf and D's wolf
 are retained for possible future use.
 
+Project nicknames are recorded in the [reference dictionary](reference/dictionary.md).
+
 The renderer uses only the Python standard library. Matrix PNGs use flat colors and
 hard transparency. Store native resolution here; enlarged exports must use nearest
 neighbor. Game atlases belong in `public/assets`.

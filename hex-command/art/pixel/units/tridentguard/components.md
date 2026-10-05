@@ -1,17 +1,11 @@
-# tridentguard
+# Trident guard — level two reef guard
 
-Veteran of reefguard. Silver `A/a` armor reinforces the shell chest and shoulders at x19–29,y17–21. Gold borders run inside the existing shell shield at x8/x17,y20–28 and form a connected belt clasp at x23–26,y27–28. A steel collar at x35–36,y7–8 joins the trident head to its wooden shaft. Scaled hands, continuous tail and both grounded fins retain their original shape.
+Components: violet scaled head, arms, hands and continuous tail with two grounded fins; larger ivory shell shield with a connected gold rim; substantial silver breastplate and shoulder plates; leather cuffs/belt; faction mantle; wider three-tined steel trident.
 
-Both faction matrices use the same equipment and anatomy, with faction cloth colors changing. Render from these editable 48×48 sources into the ordinary unit atlas. The following notes describe the inherited beginner components; the veteran additions above override their material ownership where specified.
+The larger shield has a clear kite silhouette and a gold shell motif. The breastplate covers the torso, while the scaled weapon hand remains visible around the wooden shaft. All three steel tines join one crossbar centered above that shaft.
 
-See [the progression specifications](../../../../design/progression-art.md).
+Materials: muted violet scale base, plum shadow and pale lavender highlight; silver armor, warm ivory shell, flat gold edges, dark leather, brown wood and teal/red cloth. No skin recoloring on level one.
 
-# reefguard
+Orientation: three-quarter view toward the weapon on screen right; upper-left illumination. Preserve head size, attached hands, continuous tail and grounded fins.
 
-Native 48×48 editable matrices. Both sides share anatomy; teal/red marks the mantle, not skin.
-
-Components: scaled head and neck; attached left and right arms; blue-green scaled hands matching the face; leather wrist cuffs and belt; ivory shell clothing; one continuous muscular tail, splitting into two grounded fins; an ivory shell shield and a thin wooden trident with three steel tines.
-
-Materials: blue-green scales with one shadow and a pale highlight; warm ivory shell; dark leather; brown wood; flat gold clasps; teal/red cloth with one darker shadow. O is the dark outer boundary; no JPEG colors or texture noise.
-
-Orientation: three-quarter view toward screen right, eyes aligned toward the weapon. Near shoulder is screen left. Light comes from upper left. Tail and both fins connect beneath the belt; all arms connect to the shoulders.
+Both faction matrices share anatomy and equipment geometry.

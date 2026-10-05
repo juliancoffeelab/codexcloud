@@ -11,8 +11,8 @@ import { reservedTiles, objectivesFor } from "../src/game/ai/objectives";
 const limits = { seed: 4, maxRounds: 30, recruitLimit: 1, policies: POLICY_IDS };
 const schedule = arenaMatchups({ ...limits, armies: ARMY_IDS, landscapes: LANDSCAPES });
 test("Arena schedule covers every race, policy, terrain, seat and initiative", async () => {
-  assert.equal(schedule.length, 864);
-  assert.equal(new Set(schedule.map((config) => JSON.stringify(config))).size, 864);
+  assert.equal(schedule.length, 1152);
+  assert.equal(new Set(schedule.map((config) => JSON.stringify(config))).size, 1152);
   for (const config of schedule) {
     assert.ok(
       schedule.some(

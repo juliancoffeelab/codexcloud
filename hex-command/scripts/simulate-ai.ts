@@ -45,7 +45,7 @@ if (args.includes("--help")) {
   --seeds N --seed N              count (default 2) and first seed (default 1)
   --policies classic,rush,mixed   policies to compare
   --armies human,woodland,undead,coastal
-  --landscapes open,wooded,crossings
+  --landscapes open,wooded,crossings,islands
   --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide
   --rounds N --recruits N         bounded rounds (default 30), same recruits/phase (default 1)
   --diplomacy pragmatic,restrained campaign behavior settings (default both)

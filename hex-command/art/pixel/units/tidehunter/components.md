@@ -1,17 +1,11 @@
-# tidehunter
+# Tide hunter — level two harpooner
 
-Veteran of harpooner. Reinforced dark leather `D/d` forms the shoulder and chest at x16–27,y17–25. The gold belt clasp occupies x23–26,y27–28. A second silver hook at x31–35,y12–13 joins the wooden shaft below the first head and gold collar, keeping it clear of the attached scaled hand. The cloak, cuffs, continuous tail and two fins retain their approved silhouette.
+Components: violet scaled face/hands/tail, light dark-leather breast guard and shoulders, leather cuffs/belt, faction mantle, longer double-barbed steel harpoon, and two spare harpoons carried diagonally behind the shoulder.
 
-Both faction matrices use the same equipment and anatomy, with faction cloth colors changing. Render from these editable 48×48 sources into the ordinary unit atlas. The following notes describe the inherited beginner components; the veteran additions above override their material ownership where specified.
+The main harpoon's barbs join its central blade and shaft. Spare harpoons have narrow wood shafts and small steel heads; their lower lengths disappear behind the mantle. They remain attached to the carried bundle, rather than floating beside the head.
 
-See [the progression specifications](../../../../design/progression-art.md).
+Materials: violet/plum/lavender scales; dark leather with one shadow; brown wood, silver steel, gold clasp and faction cloth. Retain light armor rather than borrowing the guard's breastplate or shield.
 
-# harpooner
+Orientation: three-quarter view toward screen right; light from upper left. Preserve the gripping hand, attached offhand and continuous tail/fins.
 
-Native 48×48 editable matrices. Both sides share anatomy; teal/red marks the mantle, not skin.
-
-Components: scaled head and neck; attached left and right arms; blue-green scaled hands matching the face; leather wrist cuffs and belt; ivory shell clothing; one continuous muscular tail, splitting into two grounded fins; a raised steel harpoon with a thin wooden shaft and a sheathed knife.
-
-Materials: blue-green scales with one shadow and a pale highlight; warm ivory shell; dark leather; brown wood; flat gold clasps; teal/red cloth with one darker shadow. O is the dark outer boundary; no JPEG colors or texture noise.
-
-Orientation: three-quarter view toward screen right, eyes aligned toward the weapon. Near shoulder is screen left. Light comes from upper left. Tail and both fins connect beneath the belt; all arms connect to the shoulders.
+Both factions share anatomy and equipment geometry.

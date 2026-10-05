@@ -1,6 +1,8 @@
 # Hex Command development rules
 
 - Keep changes quick to make and review. Tests must be small, fast, and lightweight.
+- Run `npm run style` for Prettier and staged/unstaged whitespace checks together.
+  Use `npm run format` to apply formatting; do not repeat individual style checks.
 - The entire `npm test` command must finish within 20 seconds. Use controlled
   promises or an injected clock instead of real delays in tests. Vitest runs
   independent named scenarios; the batch launcher enforces a shared time budget; do not raise it to accommodate slow tests.

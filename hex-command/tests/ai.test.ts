@@ -4,7 +4,7 @@ import { Game, TYPES, distance } from "../src/game/engine";
 import { enemyActionIds } from "../src/game/enemy-turn";
 import { playPolicyTurn } from "../src/game/ai/policies";
 import { canPursue, objectivesFor } from "../src/game/ai/objectives";
-import { createArena } from "../src/game/ai/simulation";
+import { advanceArenaTerritoryHold, createArena, LANDSCAPES } from "../src/game/ai/simulation";
 import { enemyTileOrder } from "../src/game/enemy-order";
 import { leaderMayAdvance } from "../src/game/leader-restraint";
 import type { AiAction } from "../src/game/ai/policies";
@@ -32,6 +32,40 @@ const config = {
   maxRounds: 1,
   recruitLimit: 1,
 };
+for (const landscape of LANDSCAPES)
+  for (const owner of ["player", "enemy"] as const) {
+    test(`Territory hold counts opposing turns and resets on loss — ${landscape}/${owner}`, () => {
+      const arena = createArena({ ...config, landscape });
+      const held = { player: 0, enemy: 0 };
+      const opponent = owner === "player" ? "enemy" : "player";
+      const objectives = ["4,4", "3,2", "5,6"];
+      for (const tile of objectives) arena.tile(tile)!.owner = owner;
+
+      // Capturing and then taking another own turn cannot advance the clock.
+      assert.equal(advanceArenaTerritoryHold(arena, held, owner, landscape), null);
+      assert.equal(held[owner], 0);
+      for (let turn = 0; turn < 2; turn++)
+        assert.equal(advanceArenaTerritoryHold(arena, held, opponent, landscape), null);
+      assert.equal(held[owner], 2);
+
+      // Losing just one village breaks continuity, even during the owner's turn.
+      arena.tile("3,2")!.owner = opponent;
+      assert.equal(advanceArenaTerritoryHold(arena, held, owner, landscape), null);
+      assert.equal(held[owner], 0);
+      arena.tile("3,2")!.owner = owner;
+      const required = landscape === "islands" ? 6 : 4;
+      for (let turn = 1; turn <= required; turn++) {
+        assert.equal(advanceArenaTerritoryHold(arena, held, owner, landscape), null);
+        assert.equal(held[owner], turn - 1);
+        assert.equal(
+          advanceArenaTerritoryHold(arena, held, opponent, landscape),
+          turn === required ? owner : null,
+        );
+        assert.equal(held[owner], turn);
+        assert.equal(held[opponent], 0);
+      }
+    });
+  }
 test("Arena terrain, resources and recruit pools are rotationally symmetric", async () => {
   const arena = createArena(config);
   assert.equal(arena.mapId, "river", "Crossing arenas must retain classic's live river routing");
@@ -43,6 +77,69 @@ test("Arena terrain, resources and recruit pools are rotationally symmetric", as
   assert.equal(arena.gold.player, arena.gold.enemy);
   assert.equal(arena.recruitmentOptions("player").join(), arena.recruitmentOptions("enemy").join());
 });
+test.each([1, 17, 41])(
+  "Island objectives are separate, symmetric and reachable (seed %i)",
+  (seed) => {
+    const game = createArena({ ...config, seed, landscape: "islands" });
+    assert.equal(game.mapId, "river", "Classic must use routes around the channels");
+    assert.deepEqual(
+      game.captureState(),
+      createArena({ ...config, seed, landscape: "islands" }).captureState(),
+    );
+    for (const tile of game.tiles) {
+      const partner = game.tile(rotate(tile.id))!;
+      assert.equal(tile.terrain, partner.terrain);
+      assert.equal(tile.owner, partner.owner ? opposite(partner.owner) : null);
+    }
+
+    // Remove the crossing hexes: the three objectives must be on genuinely
+    // separate islands, rather than on a continuous strip through the water.
+    const islands = new Map<string, number>();
+    for (const tile of game.tiles) {
+      if (["water", "bridge", "ford"].includes(tile.terrain) || islands.has(tile.id)) continue;
+      const island = islands.size;
+      const queue = [tile];
+      islands.set(tile.id, island);
+      for (const current of queue) {
+        for (const next of game.neighbors(current.id)) {
+          if (["water", "bridge", "ford"].includes(next.terrain) || islands.has(next.id)) continue;
+          islands.set(next.id, island);
+          queue.push(next);
+        }
+      }
+    }
+    assert.equal(new Set(islands.values()).size, 5, "Two home islands and three objective islands");
+    const goals = ["4,4", "3,2", "5,6"].map((id) => game.tile(id)!);
+    const objectiveIslands = goals.map((goal) => islands.get(goal.id));
+    assert(objectiveIslands.every((island) => island !== undefined));
+    assert.equal(new Set(objectiveIslands).size, 3);
+    assert(game.tiles.filter((tile) => tile.terrain === "water").length > game.tiles.length / 3);
+    assert.equal(game.tiles.filter((tile) => tile.terrain === "bridge").length, 2);
+    assert.equal(game.tiles.filter((tile) => tile.terrain === "ford").length, 6);
+    for (const side of ["player", "enemy"] as const) {
+      game.beginTurn(side);
+      const leader = game.units.find((unit) => unit.side === side && TYPES[unit.type].leader)!;
+      const homeIsland = islands.get(leader.tile);
+      assert(homeIsland !== undefined);
+      assert(!objectiveIslands.includes(homeIsland), "Objectives are offshore from both keeps");
+      for (const type of ["swordsman", "boar", "skeleton", "reefguard"] as const) {
+        for (const goal of goals) {
+          assert(
+            game.routeDistances({ ...leader, type }, [goal]).has(leader.tile),
+            `${side} ${type} can reach ${goal.id}`,
+          );
+        }
+      }
+      const nearVillage = goals[side === "player" ? 1 : 2]!;
+      assert(
+        game.routeDistances({ ...leader, type: "reefguard" }, [nearVillage]).get(leader.tile)! <
+          game.routeDistances({ ...leader, type: "swordsman" }, [nearVillage]).get(leader.tile)!,
+        "Merfolk can bypass ground-army crossing routes",
+      );
+      assert(game.recruitTiles(leader.id, "reefguard").some((tile) => tile.terrain === "water"));
+    }
+  },
+);
 test("Rush purchases legal melee troops", async () => {
   const arena = createArena(config);
   const actions: AiAction[] = [];
@@ -111,7 +208,7 @@ function assertRotatedCommands(state: ReturnType<Game["captureState"]>) {
   );
 }
 for (const army of ["human", "woodland", "undead", "coastal"] as const)
-  for (const landscape of ["open", "wooded", "crossings"] as const) {
+  for (const landscape of LANDSCAPES) {
     test(
       "Classic commands rotate across every race and terrain — " +
         JSON.stringify([army, landscape]),

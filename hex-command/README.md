@@ -328,12 +328,15 @@ without selecting any player actions.
 ## Formatting
 
 Prettier and its Svelte plugin format source, tests, configuration, and this README.
-Use `npm run format` to apply formatting and `npm run format:check` to verify it.
+Use `npm run style` to check formatting and whitespace in both staged and unstaged
+changes. All three checks run even if one fails. Prettier caches unchanged files
+for quick repeat runs, while still checking new or modified files. Use
+`npm run format` to apply formatting; `format:check` remains an alias for `style`.
 Generated output and original binary assets are excluded.
 
 ## Checks
 
-`npm run verify` is the complete patch check: formatting, Svelte, TypeScript,
+`npm run verify` is the complete patch check: style, Svelte, TypeScript,
 pixel assets, unit tests and production build. It runs every check group even if
 another fails, prints full diagnostics for failures and ends with a summary and
 the command to rerun failed groups. Successful groups print their elapsed time.
@@ -350,12 +353,14 @@ npm test -- combat -t "Zero damage"  # one named scenario
 npm run test:watch -- ai             # watch selected tests (no batch deadline)
 npm run check:types                 # TypeScript, including tests and scripts
 npm run check:ui                    # Svelte diagnostics
+npm run style                       # formatting and staged/unstaged whitespace
 npm run verify -- types tests       # selected verification groups
 ```
 
 Vitest runs independent named scenarios and reports all failures across tests and
 files instead of stopping at the first assertion. Filename filters and `-t` select
-tests without a separate discovery script. Filters matching no tests fail.
+tests without a separate discovery script. Files run in two isolated workers;
+filters matching no tests fail.
 
 `npm run check` checks application components and TypeScript tests with `strict`
 and `noUncheckedIndexedAccess`. `npm test` runs small unit checks for rules,

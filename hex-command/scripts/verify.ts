@@ -2,7 +2,7 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const checks = {
-  format: "format:check",
+  style: "style",
   ui: "check:ui",
   types: "check:types",
   art: "art:check",
@@ -10,7 +10,8 @@ const checks = {
   build: "build:check",
 } as const;
 type Check = keyof typeof checks;
-const requested = process.argv.slice(2);
+// Keep the former group name working for existing callers.
+const requested = process.argv.slice(2).map((name) => (name === "format" ? "style" : name));
 if (requested.some((name) => !Object.hasOwn(checks, name))) {
   console.error(`Choose checks from: ${Object.keys(checks).join(", ")}`);
   process.exit(1);
