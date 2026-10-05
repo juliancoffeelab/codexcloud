@@ -310,12 +310,14 @@ function plans(
         if (!target && tileId === unit.tile) continue;
         let combat = 0,
           retaliation = 0,
-          eliminated: string | undefined;
+          eliminated: string | undefined,
+          finishesBattle = false;
         if (target && weapon) {
           const preview = game.preview(unit, target, weapon.id, tileId);
           retaliation = preview.retaliation;
           const killed = preview.damage >= target.hp;
           eliminated = killed ? target.id : undefined;
+          finishesBattle = killed && !game.campaign && Boolean(TYPES[target.type].leader);
           combat =
             Math.min(preview.damage, target.hp) * 2 +
             (killed ? 12 + TYPES[target.type].cost * 0.3 : 0) -
@@ -351,7 +353,7 @@ function plans(
               (goal.kind === "escape" && unit.role === "leader" && goal.tile === tileId),
           ),
         );
-        if (important && lethal && incoming > 0 && !finishesEscort) continue;
+        if (important && lethal && incoming > 0 && !finishesEscort && !finishesBattle) continue;
         const dangerWeight = important
           ? 1.5
           : category === "screen"
@@ -361,10 +363,10 @@ function plans(
             : 0.9;
         const score =
           positioning +
-          (finishesEscort ? 100 : 0) +
+          (finishesEscort || finishesBattle ? 100 : 0) +
           combat -
-          incoming * dangerWeight -
-          (lethal ? (important ? 40 : 5) : 0) +
+          (finishesBattle ? 0 : incoming * dangerWeight) -
+          (lethal && !finishesBattle ? (important ? 40 : 5) : 0) +
           Math.max(0, beforeRisk - incoming) * (important ? 3 : unit.hp <= 4 ? 1.5 : 0.2) +
           jitter(context.seed, `${game.round}:${unit.id}:${tileId}:${target?.id ?? "move"}`);
         if (score > 0.1)

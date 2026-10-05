@@ -136,6 +136,17 @@ playPolicyTurn(finish, "mixed", { seed: 9, recruitLimit: 0 });
 assert.equal(finish.winner, "player");
 assert.ok(finish.unit(actor.id));
 
+// Killing the opposing leader also wins immediately, with no next phase to fear.
+const decisive = new Game("mirror");
+decisive.restoreState(empty);
+const fragile = decisive.addUnit("commander", "player", "4,3");
+fragile.hp = 1;
+decisive.addUnit("commander", "enemy", "5,3").hp = 1;
+decisive.addUnit("bonearcher", "enemy", "7,3");
+playPolicyTurn(decisive, "mixed", { seed: 4, recruitLimit: 0 });
+assert.equal(decisive.winner, "player");
+assert.ok(decisive.unit(fragile.id));
+
 console.log(
   "PASS: classic compatibility, symmetric resources, legal melee recruitment, deterministic caps, courier objectives and healer formation",
 );
