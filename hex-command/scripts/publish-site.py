@@ -68,7 +68,7 @@ def prepare(credential, message):
         "GIT_CONFIG_KEY_1": "credential.helper",
         "GIT_CONFIG_VALUE_1": "",
     })
-    checkout = ROOT / "node_modules/.cache/sites" / hosting["project_id"]
+    checkout = ROOT / ".cache/sites" / hosting["project_id"]
     step("Synchronize Site source")
     if checkout.exists():
         remote = command(["git", "remote", "get-url", "origin"], cwd=checkout)
