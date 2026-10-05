@@ -18,6 +18,51 @@ import { required, TestStorage } from "./helpers";
 const storage = new TestStorage();
 globalThis.localStorage = storage;
 
+// Delayed deployment changes fresh encounters, not armies already saved with
+// those troops present. Existing wave indices and repeated loads stay stable.
+for (const [id, chapter, type, tile, newWave, oldMarks] of [
+  ["lantern-road", 1, "bonearcher", "8,7", 1, ["wave:0"]],
+  ["ashen-oath", 2, "boar", "9,4", 2, ["wave:0", "wave:1"]],
+] as const) {
+  const old = Game.startCampaign(id, chapter);
+  old.advanceDialogue(true);
+  old.mapRevision = 1;
+  old.round = 8;
+  old.campaign!.marks.push(...oldMarks);
+  const original = old.addUnit(type, "enemy", tile);
+  original.hp = 1;
+  const survivors = structuredClone(old.units);
+  const gold = { ...old.gold };
+  saveBattle(old, true);
+  const loaded = loadBattle();
+  assert.equal(loaded.pendingEnemy, true);
+  assert.equal(loaded.game.mapRevision, 2);
+  assert.deepEqual(loaded.game.units, survivors);
+  assert.deepEqual(loaded.game.gold, gold);
+  for (const mark of [...oldMarks, `wave:${newWave}`])
+    assert(loaded.game.campaign!.marks.includes(mark));
+  loaded.game.beginTurn("enemy");
+  assert.equal(loaded.game.units.length, survivors.length, "No duplicate delayed troop");
+  loaded.game.endTurn();
+  saveBattle(loaded.game);
+  assert.deepEqual(loadBattle().game.snapshot(), loaded.game.snapshot());
+
+  const fresh = Game.startCampaign(id, chapter);
+  fresh.advanceDialogue(true);
+  const before = fresh.units.filter((unit) => unit.side === "enemy" && unit.type === type).length;
+  const wave = campaignMission(fresh.campaign!).waves[newWave]!;
+  fresh.round = wave.round;
+  saveBattle(fresh);
+  const current = loadBattle().game;
+  assert(!current.campaign!.marks.includes(`wave:${newWave}`));
+  current.beginTurn("enemy");
+  assert.equal(
+    current.units.filter((unit) => unit.side === "enemy" && unit.type === type).length,
+    before + 1,
+    "Fresh battles still receive the disclosed wave",
+  );
+}
+
 // The quarry's bookkeeper guards his office; regular troops still pursue escapees,
 // and approaching the office still provokes the leader's ordinary attack.
 {

@@ -539,6 +539,21 @@ export function loadBattle(): LoadedBattle {
         game.record(campaign.outcome);
       }
     }
+    if (campaign) {
+      const mission = CAMPAIGNS[campaign.id].missions[campaign.mission]!;
+      let migratedDeployment = false;
+      mission.waves.forEach((wave, index) => {
+        if (
+          wave.previouslyDeployedBeforeRevision !== undefined &&
+          game.mapRevision < wave.previouslyDeployedBeforeRevision
+        ) {
+          const mark = `wave:${index}`;
+          if (!campaign.marks.includes(mark)) campaign.marks.push(mark);
+          migratedDeployment = true;
+        }
+      });
+      if (migratedDeployment) game.mapRevision = mission.map.revision ?? 1;
+    }
     return { game, pendingEnemy: saved.pendingEnemy };
   } catch {
     return fresh();

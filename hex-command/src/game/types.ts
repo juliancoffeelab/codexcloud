@@ -286,6 +286,8 @@ export interface ReinforcementWave {
   round: number;
   label: string;
   units: StartingUnit[];
+  /** This wave replaces troops already present in older saved battles. */
+  previouslyDeployedBeforeRevision?: number;
   requiresUnsealed?: string;
 }
 export interface MissionDefinition {

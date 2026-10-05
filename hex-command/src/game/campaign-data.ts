@@ -223,6 +223,7 @@ const lantern: MissionDefinition[] = [
         unit("skeleton", "enemy", 6, 6),
         unit("bonearcher", "enemy", 8, 1),
       ],
+      2,
     ),
     subtitle: "Three crossings. Three homes to reclaim.",
     defendObjectives: true,
@@ -290,6 +291,7 @@ const lantern: MissionDefinition[] = [
         round: 7,
         label: "A bone bow reaches the southern crossing on turn 7",
         units: [unit("bonearcher", "enemy", 8, 7)],
+        previouslyDeployedBeforeRevision: 2,
       },
     ],
   },
@@ -1426,6 +1428,7 @@ const ashen: MissionDefinition[] = [
         unit("bonearcher", "enemy", 11, 7),
         unit("thorncaller", "enemy", 12, 4),
       ],
+      2,
     ),
     subtitle: "Break the chains. Leave the names.",
     briefing:
@@ -1498,17 +1501,18 @@ const ashen: MissionDefinition[] = [
       },
     ],
     waves: [
-      {
-        round: 4,
-        label: "The Master's boar reaches the central road on turn 4",
-        units: [unit("boar", "enemy", 9, 4)],
-      },
       ...["7,2", "7,6"].map((tile, index) => ({
         round: 5,
         label: "An unsealed binding stone raises a skeleton on turn 5",
         requiresUnsealed: tile,
         units: [unit("skeleton", "enemy", 7, [2, 6][index]!)],
       })),
+      {
+        round: 4,
+        label: "The Master's boar reaches the central road on turn 4",
+        units: [unit("boar", "enemy", 9, 4)],
+        previouslyDeployedBeforeRevision: 2,
+      },
     ],
   },
 ];
