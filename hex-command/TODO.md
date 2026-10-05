@@ -92,6 +92,11 @@ not extend to rewriting the other campaigns.
       caster, and Ashen mixed still has worse attrition. Twelfth-cohort matched
       Ashen/Lantern trials test revised bone bows. Actual outcomes and limits are
       preserved in [the balance report](docs/balance-playtests.md).
+      Guided fourteenth-cohort Ashen mixed finishes 8/6/8 without retries, with
+      eight losses including Dain; its matching control remains in progress.
+      The twelfth Lantern control reaches the village turn cap without capturing
+      a village. Neither unfinished pairs nor known lethal escort moves are
+      claimed as completed evidence that recruitment diversity is balanced.
 
 ## Overnight race and coastal work
 

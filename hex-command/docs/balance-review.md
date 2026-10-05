@@ -149,3 +149,30 @@ gold skeleton-plus-bow opening. Stronger bows and reduced quarry pressure addres
 specific deficiencies but still need current comparison evidence. Further
 refuge difficulty changes should follow actual competent deployment and pressure
 patterns, rather than treating mechanical correctness as balance approval.
+
+## Final guided comparisons and deployment confounds
+
+Independent replay confirms cohort fourteen's mixed Ashen campaign wins
+8 / 6 / 8 without a retry, with eight losses including Dain. Its matching
+restricted control is still playing; this establishes mixed viability,
+not a completed paired verdict. Cohort twelve's Lantern control ends at
+the village turn cap with a null winner. It makes only five attacks in the
+entire second chapter despite buying seventeen swordsmen and retaining
+twenty-one troops against nine enemies. A larger idle army does not establish
+that enemy recruitment overwhelms an actively deployed company.
+
+The current thirteenth woodland mixed player has adverse opening and vigil
+results and an actual escort defeat. Independent replay of its recorded
+phases confirms the fatal escort move sends two-HP Lark from `9,0` to `13,0`,
+where a wolf at `11,2` can reach and kill her for three damage. Its earlier
+escort casualties are boars; no auxiliary HP threshold explains that final
+death. During the failed vigil, a promoted healer and three boars remain at
+their original western positions while Dain and Lark advance. The successful
+retry loses Dain and carries rookie Lark with five XP into the escort; the
+control retains Dain and promotes Lark at the escort's start.
+
+Those adverse results remain valid records of player decisions. The reviewer
+finds no causal basis here for claiming that an auxiliary HP buff would repair
+the observed defeats. Current woodland and Ashen comparisons remain unfinished
+until their actual traces stop. No global stat change or universal balance
+approval follows from these deployment-confounded records.
