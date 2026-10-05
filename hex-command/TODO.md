@@ -84,8 +84,8 @@ not extend to rewriting the other campaigns.
       families have beginner and veteran ranks, experience, promotion actions and
       retained campaign advancement. Swordsmen and spearmen earn heavy armor and
       blunt weapons. Branching alternatives are not part of this first ladder.
-- [ ] Finish the subsequently authorized balance pass with matched Luna campaign
-      trials, preserving failed attempts and replaying actual commands. Mechanical
+- [ ] Finish the subsequently authorized balance pass with matched campaign and
+      seeded AI trials, preserving failed attempts and replaying actual commands. Mechanical
       correctness alone does not establish that diverse armies pay off.
       The user extended work to 13:00 Kyiv. Eleventh-cohort coast and woodland
       favor the recorded mixed armies overall; Lantern control loses its sole
@@ -99,6 +99,12 @@ not extend to rewriting the other campaigns.
       woodland boar-only completes while mixed needs two retries and remains
       unfinished. Neither unfinished pairs nor known lethal escort moves are
       claimed as completed evidence that recruitment diversity is balanced.
+- [x] Add classic, melee-rush and layered-mixed testing policies through real game
+      commands. Compare preferred recruitment and crossed planner/recruitment styles
+      on matched seeds, seats and initiatives, with roster/terrain breakdowns,
+      unresolved caps, actual purchases/losses and exact replay. See the
+      [simulation guide](docs/ai-simulation.md) and [recorded tournament results](docs/simulations/README.md). The ordinary enemy remains classic;
+      a player-facing enemy selector is a later task.
 
 ## Overnight race and coastal work
 

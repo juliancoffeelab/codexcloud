@@ -121,3 +121,7 @@ human campaign difficulty. Crossed comparisons help distinguish army composition
 from planning strength, and the roster/terrain breakdown helps identify where a
 unit or strategy succeeds. Stat changes should follow those breakdowns rather
 than treating every mixed-policy victory as evidence that support units are strong.
+A unit that the recruiter never buys is not meaningfully assessed by those wins;
+check the purchase breakdown before inferring that an individual unit is balanced.
+To compare movement/combat planners with an identical fixed starting army and no
+subsequent purchases, use `--recruits 0`.

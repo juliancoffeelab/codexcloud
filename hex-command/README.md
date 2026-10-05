@@ -49,6 +49,8 @@ planner with both recruitment styles, separating planning from army-composition
 effects. `--mode campaign` runs all four authored campaigns without retries.
 The [simulation guide](docs/ai-simulation.md) explains matched starts, objectives,
 recorded outcomes, seed-block confidence intervals and exact replay.
+[Recorded tournament results](docs/simulations/README.md) compare both planning
+and recruitment and preserve campaign failures.
 
 ## Developer map
 
