@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { Game, RACES, TERRAIN, TYPES } from "../src/game/engine";
+import { CAMPAIGNS } from "../src/game/campaign-data";
 import { UNIT_TYPES, type UnitType } from "../src/game/types";
 import { movementCost } from "../src/game/movement";
 import { createGameView } from "../src/game/view";
@@ -187,6 +188,27 @@ const loadedGates = loadBattle().game;
 assert.equal(loadedGates.campaign?.id, "borrowed-tide");
 assert.deepEqual(loadedGates.campaign?.fallenCompanions, ["Tomas"]);
 assert(!loadedGates.retryCampaignMission().units.some((unit) => unit.name === "Tomas"));
+for (const [chapter, oldName, officerName] of [
+  [0, "Captain Vale", "Postmaster Harl"],
+  [1, "Factor Senn", "Foreman Cale"],
+] as const) {
+  const oldCoast = Game.startCampaign("borrowed-tide", chapter);
+  const officer = required(
+    oldCoast.units.find((unit) => unit.side === "enemy" && unit.role === "leader"),
+  );
+  officer.name = oldName;
+  officer.hp = 5;
+  officer.experience = 7;
+  officer.moved = officer.attacked = true;
+  oldCoast.campaign!.dialogue = [
+    required(CAMPAIGNS["borrowed-tide"].missions[chapter]!.legacyDialogue?.[0]),
+  ];
+  saveBattle(oldCoast);
+  const migrated = loadBattle().game;
+  assert.equal(migrated.campaign?.id, "borrowed-tide");
+  assert.deepEqual(migrated.unit(officer.id), { ...officer, name: officerName });
+  assert.equal(migrated.campaign!.dialogue[0]?.speaker, officerName);
+}
 console.log(
   "PASS: finite race/unit access, terrain weaknesses, every advancement ladder, wounds/actions/XP, veteran checkpoints and saved promoted leaders",
 );

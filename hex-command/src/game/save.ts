@@ -165,6 +165,7 @@ function campaignState(
   )
     return null;
   const allowedMarks = new Set([
+    ...[...previousCompanions].map((name) => `fallen:${name}`),
     ...mission.map.units
       .filter((unit) => unit.side === "player" && unit.name)
       .map((unit) => `fallen:${unit.name}`),
@@ -358,6 +359,23 @@ export function loadBattle(): LoadedBattle {
       ids.add(unit.id);
       occupied.add(unit.tile);
       units.push({ ...unit, experience: unit.experience ?? 0 });
+    }
+    // Earlier coastal previews put recurring off-board villains in these roles.
+    // Recast the saved officers without changing their identity or battle progress.
+    if (campaign?.id === "borrowed-tide" && campaign.mission < 2) {
+      const oldName = campaign.mission === 0 ? "Captain Vale" : "Factor Senn";
+      const mission = CAMPAIGNS[campaign.id].missions[campaign.mission]!;
+      const currentOfficer = mission.map.units.find(
+        (unit) => unit.side === "enemy" && unit.role === "leader",
+      )!;
+      for (const unit of units)
+        if (unit.side === "enemy" && unit.role === "leader" && unit.name === oldName)
+          unit.name = currentOfficer.name;
+      const currentLine = mission.intro.find((line) => line.speaker === currentOfficer.name);
+      if (currentLine)
+        campaign.dialogue = campaign.dialogue.map((line) =>
+          line.speaker === oldName ? { ...currentLine } : line,
+        );
     }
     const villages = game.tiles.filter((tile) => tile.terrain === "village");
     if (

@@ -616,7 +616,16 @@ export class Game {
       `${sideLabel} ${unitName} used ${attackName} for ${result.damage} damage${retaliationMessage}.`,
     );
     for (const defeated of this.units.filter((unit) => unit.hp <= 0)) {
-      if (this.campaign && defeated.side === "player" && defeated.name) {
+      if (
+        this.campaign &&
+        defeated.side === "player" &&
+        defeated.name &&
+        CAMPAIGNS[this.campaign.id].missions.some((chapter) =>
+          chapter.map.units.some(
+            (incoming) => incoming.side === "player" && incoming.name === defeated.name,
+          ),
+        )
+      ) {
         const mark = `fallen:${defeated.name}`;
         if (!this.campaign.marks.includes(mark)) this.campaign.marks.push(mark);
       }
