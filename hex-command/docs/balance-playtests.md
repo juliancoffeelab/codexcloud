@@ -43,7 +43,11 @@ its recorded pair.
 Subsequent revisions add woodland ranged cover for thorncallers, one HP for
 coastal healers, actual defended-duration tracking for evacuation, and rookie
 Ashen reinforcements that earn heavy armor. Fresh coastal and Ashen
-players are testing these revisions. Their final comparisons will be added
+players are testing these revisions. The [eighth coastal pair](playtests/tides-8/README.md)
+also favors mixed recruitment: 8 / 6 / 5 turns, two troop losses and no retry,
+versus 9 / 6 / 7 successful turns, three troop losses and an opening defeat for
+reef-only purchases. Both ultimately kept the named companions. Another
+independent coastal pair checks variation between players. Final comparisons will be added
 when actual campaigns finish. The older Lantern pair used the former ten-gold
 adept price; the current price is eight. That difference is disclosed rather
 than claiming its records replay a later version.

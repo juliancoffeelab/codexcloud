@@ -54,3 +54,19 @@ differences and unequal mediation clarification limit the old comparison.
 The finished coastal mixed record also replayed independently on `deae30c`:
 8 / 6 / 5 turns, two troop losses and no retry. The reviewer did not replay its
 still-active restricted companion trial or infer the final paired result.
+
+## Completed eighth coastal pair
+
+Both records subsequently replayed exactly on `deae30c`: 135 mixed decisions
+and 156 restricted decisions. Mixed won 8 / 6 / 5 with two troop losses and no
+retry. Reef-only purchases won 9 / 6 / 7 after an opening defeat on turn two:
+three troop losses on successful attempts, plus Edda's death in that failed
+opening. Both finally retained Mira, Edda and Tomas. Mixed Edda was a tide
+hunter; restricted Edda remained a harpooner. Authored support roles and their
+promotions remained usable in the restricted policy.
+
+The reviewer judges the recorded mixed result better in turns, casualties and
+retries, unlike the older speed/attrition tradeoff. The control's avoidable
+Edda exposure limits attribution to recruitment. One pair cannot isolate the
+HP change, establish optimal balance or prove the revision caused improvement.
+No further coastal change is justified by this pair alone.
