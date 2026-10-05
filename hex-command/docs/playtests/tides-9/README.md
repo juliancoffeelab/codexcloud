@@ -38,5 +38,8 @@ turns or fabricated defeat were added. Its 122 committed decisions replay
 exactly. Neither ninth-cohort Lantern record completed the campaign, so this
 pair establishes no overall winner.
 
-Other ninth-cohort trials will be added after they finish. In-progress files
-are not represented here as completed campaigns.
+The coastal reef-only repeat completed in 9 / 6 / 6 with two ordinary losses,
+no retry and Mira, Edda and Tomas alive. It bought eleven reef guards and earned
+three trident-guard promotions, while retaining authored support roles. The
+matching mixed repeat is still playing; its unfinished file is not archived
+as a completed campaign here.

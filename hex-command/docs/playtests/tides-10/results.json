@@ -1,0 +1,202 @@
+{
+  "sourceCommit": "3956f5cf630148fc5cc64597657908e6952aee4e",
+  "trials": [
+    {
+      "file": "round10-lantern-mixed.json",
+      "verified": true,
+      "campaign": "lantern-road",
+      "completed": false,
+      "decisions": 106,
+      "attempts": [
+        {
+          "mission": "lantern-ferry",
+          "winner": "enemy",
+          "round": 9,
+          "losses": [
+            "u3:swordsman",
+            "u8:archer",
+            "u2:swordsman",
+            "u4:Ivo"
+          ],
+          "recruits": [
+            "archer"
+          ],
+          "promotions": [],
+          "attacks": {
+            "swordsman": 2,
+            "archer": 1
+          }
+        },
+        {
+          "mission": "lantern-ferry",
+          "winner": null,
+          "round": 12,
+          "losses": [
+            "u2:swordsman",
+            "u8:archer",
+            "u9:swordsman"
+          ],
+          "recruits": [
+            "archer",
+            "swordsman"
+          ],
+          "promotions": [],
+          "attacks": {
+            "swordsman": 3,
+            "archer": 4,
+            "commander": 2
+          }
+        }
+      ]
+    },
+    {
+      "file": "round10-lantern-mixed-transferred.json",
+      "verified": true,
+      "campaign": "lantern-road",
+      "completed": true,
+      "decisions": 161,
+      "attempts": [
+        {
+          "mission": "lantern-ferry",
+          "winner": "player",
+          "round": 5,
+          "losses": [],
+          "recruits": [
+            "archer",
+            "scout"
+          ],
+          "promotions": [],
+          "attacks": {
+            "swordsman": 2,
+            "scout": 3,
+            "archer": 1
+          }
+        },
+        {
+          "mission": "lantern-villages",
+          "winner": "player",
+          "round": 5,
+          "losses": [
+            "u2:warden",
+            "u4:swordsman"
+          ],
+          "recruits": [
+            "adept",
+            "adept"
+          ],
+          "promotions": [],
+          "attacks": {
+            "warden": 2,
+            "scout": 3,
+            "adept": 2,
+            "swordsman": 1
+          }
+        },
+        {
+          "mission": "lantern-bell",
+          "winner": "player",
+          "round": 7,
+          "losses": [
+            "u3:swordsman"
+          ],
+          "recruits": [
+            "adept",
+            "spearman",
+            "scout",
+            "swordsman"
+          ],
+          "promotions": [
+            "mage",
+            "ranger"
+          ],
+          "attacks": {
+            "adept": 9,
+            "scout": 5,
+            "spearman": 1,
+            "swordsman": 3,
+            "ranger": 1
+          }
+        }
+      ]
+    },
+    {
+      "file": "round10-lantern-swordsman-transferred.json",
+      "verified": true,
+      "campaign": "lantern-road",
+      "completed": false,
+      "decisions": 171,
+      "attempts": [
+        {
+          "mission": "lantern-ferry",
+          "winner": "player",
+          "round": 3,
+          "losses": [],
+          "recruits": [
+            "swordsman"
+          ],
+          "promotions": [],
+          "attacks": {}
+        },
+        {
+          "mission": "lantern-villages",
+          "winner": "player",
+          "round": 5,
+          "losses": [
+            "u2:warden",
+            "u3:scout"
+          ],
+          "recruits": [
+            "swordsman",
+            "swordsman",
+            "swordsman"
+          ],
+          "promotions": [],
+          "attacks": {
+            "scout": 3,
+            "swordsman": 3,
+            "warden": 1
+          }
+        },
+        {
+          "mission": "lantern-bell",
+          "winner": null,
+          "round": 15,
+          "losses": [
+            "u12:swordsman",
+            "u18:swordsman",
+            "u13:swordsman",
+            "u3:swordsman",
+            "u15:soldier",
+            "u19:swordsman",
+            "u16:swordsman",
+            "u14:swordsman",
+            "u2:mage",
+            "u22:swordsman"
+          ],
+          "recruits": [
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman",
+            "swordsman"
+          ],
+          "promotions": [
+            "mage",
+            "soldier"
+          ],
+          "attacks": {
+            "swordsman": 10,
+            "adept": 4,
+            "mage": 5,
+            "soldier": 1,
+            "scout": 1
+          }
+        }
+      ]
+    }
+  ]
+}

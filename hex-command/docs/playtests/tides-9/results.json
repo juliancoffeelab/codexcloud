@@ -227,6 +227,82 @@
           }
         }
       ]
+    },
+    {
+      "file": "round9-tide-reefguard.json",
+      "verified": true,
+      "campaign": "borrowed-tide",
+      "completed": true,
+      "decisions": 164,
+      "attempts": [
+        {
+          "mission": "tide-nets",
+          "winner": "player",
+          "round": 9,
+          "losses": [
+            "u4:wavemender"
+          ],
+          "recruits": [
+            "reefguard",
+            "reefguard",
+            "reefguard",
+            "reefguard",
+            "reefguard"
+          ],
+          "promotions": [
+            "tridentguard",
+            "tridentguard"
+          ],
+          "attacks": {
+            "harpooner": 4,
+            "wavemender": 1,
+            "reefguard": 6,
+            "tidekeeper": 2,
+            "tridentguard": 2
+          }
+        },
+        {
+          "mission": "tide-wreck",
+          "winner": "player",
+          "round": 6,
+          "losses": [],
+          "recruits": [
+            "reefguard",
+            "reefguard",
+            "reefguard"
+          ],
+          "promotions": [
+            "tridentguard"
+          ],
+          "attacks": {
+            "harpooner": 2,
+            "wavemender": 2,
+            "spearman": 2,
+            "reefguard": 4,
+            "tridentguard": 3
+          }
+        },
+        {
+          "mission": "tide-sluice",
+          "winner": "player",
+          "round": 6,
+          "losses": [
+            "u14:reefguard"
+          ],
+          "recruits": [
+            "reefguard",
+            "reefguard",
+            "reefguard"
+          ],
+          "promotions": [],
+          "attacks": {
+            "reefguard": 6,
+            "harpooner": 3,
+            "wavemender": 1,
+            "tridentguard": 1
+          }
+        }
+      ]
     }
   ]
 }
