@@ -727,20 +727,22 @@ export class Game {
     }
   }
 
-  enemyRecruit(): void {
-    if (this.turn !== "enemy" || this.winner) return;
-    const commander = this.units.find((unit) => unit.side === "enemy" && TYPES[unit.type].leader);
+  enemyRecruit(side: Side = "enemy"): void {
+    if (this.turn !== side || this.winner) return;
+    const commander = this.units.find((unit) => unit.side === side && TYPES[unit.type].leader);
     if (!commander) return;
 
     const hasArcher = this.units.some(
-      (unit) => unit.side === "enemy" && TYPES[unit.type].family === "archer",
+      (unit) => unit.side === side && TYPES[unit.type].family === "archer",
     );
-    const options = this.recruitmentOptions("enemy");
-    const recruitType = this.campaign
-      ? options[(this.round - 1) % options.length]!
-      : hasArcher
-        ? "swordsman"
-        : "archer";
+    const options = this.recruitmentOptions(side);
+    if (!options.length) return;
+    const recruitType =
+      this.campaign || !options.includes("archer") || !options.includes("swordsman")
+        ? options[(this.round - 1) % options.length]!
+        : hasArcher
+          ? "swordsman"
+          : "archer";
     const recruitTiles = this.recruitTiles(commander.id, recruitType);
     if (!recruitTiles.length) return;
 
@@ -775,10 +777,15 @@ export class Game {
     return distanceToGoal;
   }
 
-  enemyAct(id: string): void {
-    if (this.turn !== "enemy" || this.winner) return;
+  enemyAct(
+    id: string,
+    side: Side = "enemy",
+    movementGoals?: Tile[],
+    allowEarlyLeaderMovement = false,
+  ): void {
+    if (this.turn !== side || this.winner) return;
     const unit = this.unit(id);
-    if (!unit || unit.side !== "enemy" || unit.attacked) return;
+    if (!unit || unit.side !== side || unit.attacked) return;
     const advancement = this.promotionOptions(id)[0];
     if (advancement) {
       this.advanceUnit(id, advancement);
@@ -788,14 +795,14 @@ export class Game {
     const retreat = this.tryEnemyRetreat(unit);
     if (retreat === "acted") return;
     if (this.tryEnemyAttack(unit, retreat === "cornered")) return;
-    if (TYPES[unit.type].leader && this.round < 5) return;
+    if (TYPES[unit.type].leader && this.round < 5 && !allowEarlyLeaderMovement) return;
 
-    const goals = this.enemyMovementGoals(unit);
+    const goals = movementGoals ?? this.enemyMovementGoals(unit);
     if (!goals.length) return;
     const routes =
       this.mapId === "river" || this.campaign ? this.routeDistances(unit, goals) : null;
     let destinations = [unit.tile, ...this.reachable(id).keys()];
-    const mission = this.campaign && campaignMission(this.campaign);
+    const mission = this.campaign && side === "enemy" ? campaignMission(this.campaign) : undefined;
     const guardsPost = mission?.enemyLeaderPost && TYPES[unit.type].leader;
     if ((mission?.defendObjectives || guardsPost) && routes) {
       // A post is held from its hex and immediate approaches. Troops outside
@@ -818,7 +825,7 @@ export class Game {
   private enemyDanger(unit: Unit, tileId: string): number {
     const positioned = { ...unit, tile: tileId };
     const damage = this.units
-      .filter((opponent) => opponent.side === "player")
+      .filter((opponent) => opponent.side !== unit.side)
       .map((opponent) =>
         Math.max(
           0,
@@ -832,7 +839,7 @@ export class Game {
   }
 
   private tryEnemyRetreat(unit: Unit): "acted" | "cornered" | "none" {
-    const enemies = this.units.filter((opponent) => opponent.side === "player");
+    const enemies = this.units.filter((opponent) => opponent.side !== unit.side);
     const retaliations = this.targets(unit.id).flatMap((target) =>
       this.attackOptions(unit, target).map(
         (attack) => this.preview(unit, target, attack.id).retaliation,
@@ -847,7 +854,7 @@ export class Game {
     const villages = this.tiles.filter(
       (tile) =>
         tile.terrain === "village" &&
-        tile.owner === "enemy" &&
+        tile.owner === unit.side &&
         (!this.at(tile.id) || this.at(tile.id)?.id === unit.id) &&
         this.enemyDanger(unit, tile.id) === 0,
     );
@@ -926,18 +933,18 @@ export class Game {
 
   private enemyMovementGoals(unit: Unit): Tile[] {
     const uncapturedVillages = this.tiles.filter(
-      (tile) => tile.terrain === "village" && tile.owner !== "enemy",
+      (tile) => tile.terrain === "village" && tile.owner !== unit.side,
     );
     let goals =
       TYPES[unit.type].family === "scout" && uncapturedVillages.length
         ? uncapturedVillages
         : this.units
-            .filter((target) => target.side === "player")
+            .filter((target) => target.side !== unit.side)
             .map((target) => this.tile(target.tile)!);
 
     if (this.campaign) {
       const mission = campaignMission(this.campaign);
-      if (mission.enemyLeaderPost && TYPES[unit.type].leader) {
+      if (unit.side === "enemy" && mission.enemyLeaderPost && TYPES[unit.type].leader) {
         const post = this.tile(mission.enemyLeaderPost);
         return post ? [post] : [];
       }
@@ -948,7 +955,7 @@ export class Game {
             ? [goal.tile]
             : [],
       );
-      const contested = territory.filter((id) => this.tile(id)?.owner !== "enemy");
+      const contested = territory.filter((id) => this.tile(id)?.owner !== unit.side);
       if (contested.length) goals = contested.map((id) => this.tile(id)!);
       else if (mission.defendObjectives && territory.length)
         goals = territory.map((id) => this.tile(id)!);
@@ -974,10 +981,10 @@ export class Game {
         .map((target) => 5 + this.enemyAttackScore(unit, target, tileId) / 5),
     );
 
-    const canCaptureVillage = tile.terrain === "village" && tile.owner !== "enemy";
+    const canCaptureVillage = tile.terrain === "village" && tile.owner !== unit.side;
     const captureValue = TYPES[unit.type].family === "scout" ? 8 : 5;
     const captureBonus = canCaptureVillage ? captureValue : 0;
-    const canHeal = unit.hp <= 4 && tile.terrain === "village" && tile.owner === "enemy";
+    const canHeal = unit.hp <= 4 && tile.terrain === "village" && tile.owner === unit.side;
     const healingBonus = canHeal ? 9 : 0;
     const hillBonus = tile.terrain === "hill" ? 0.25 : 0;
     const danger = this.enemyDanger(unit, tileId);

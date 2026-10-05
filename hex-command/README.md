@@ -41,6 +41,15 @@ The **Art style** selector in the cog settings menu switches between Normal,
 Low-poly, and Pixel. It remembers your preference in this browser and keeps the
 current battle intact when switching.
 
+## Seeded AI comparisons
+
+`npm run ai:simulate -- --seeds 10 --workers 4` compares classic, melee rush and
+layered mixed armies through the real game rules. `--mode factorial` crosses each
+planner with both recruitment styles, separating planning from army-composition
+effects. `--mode campaign` runs all four authored campaigns without retries.
+The [simulation guide](docs/ai-simulation.md) explains matched starts, objectives,
+recorded outcomes, seed-block confidence intervals and exact replay.
+
 ## Developer map
 
 Open **Settings → New battle → Developer map**, the last option in the picker.

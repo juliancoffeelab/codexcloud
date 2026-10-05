@@ -37,3 +37,6 @@ Thumbs.db
 
 # Production output is generated from src/ and public/.
 /dist/
+
+# Local tournament output; reviewed result snapshots belong in docs/simulations/.
+/artifacts/
