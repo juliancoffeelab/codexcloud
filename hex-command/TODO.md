@@ -28,7 +28,7 @@ Sources:
 
 ## Completed pixel work
 
-- [x] All 26 faction unit frames and 12 terrain frames have editable 48×48 matrices.
+- [x] All 68 faction combat-unit frames and 12 terrain frames have editable 48×48 matrices.
       One unit atlas and one terrain atlas in `public/assets` are rendered from
       those sources and used by the ordinary game renderer.
 - [x] Wolves and skeleton warriors have dark silhouette outlines, retaining their
@@ -113,7 +113,8 @@ Specified in [design/tides-and-progression.md](design/tides-and-progression.md).
       after balance. All seventeen family edits are rendered; independent visual
       review caught and verified the corrected second harpoon hook, crystal
       alignment and Lich chest plate. Both factions retain matching anatomy,
-      approved skull pixels and connected limbs/fangs. Publication is in progress.
+      approved skull pixels and connected limbs/fangs. Published in the ordinary
+      game on 2026-10-05; the developer map includes both ranks of every family.
 
 ## Pending device confirmation
 

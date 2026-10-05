@@ -100,7 +100,17 @@ rookie bow previously dealt less damage than a living bow; Pierce resistance
 is offset by Impact vulnerability. The change also strengthens enemy bows.
 Fresh Ashen and Lantern pairs receive the same guide, including early support
 recruitment and preservation of escorts/sealing casters, and a thirty-turn cap.
-Their unfinished trials are not evidence validating the new damage values.
+The [twelfth Ashen records](playtests/tides-12/README.md) retain mixed quarry
+defeats at turns seven and twelve. The control wins the quarry at seven and
+is interrupted by Luna model capacity in the refuge at turn three. This
+unfinished comparison does not validate the new damage values.
+
+The thirteenth source `9d53254` removes one initial quarry archer while keeping
+the swordsman, posted Ledgerkeeper and turn-six reinforcements. This reduces
+opening pressure without changing the escape objective. A fresh Ashen pair
+tests it. A fresh woodland pair also checks the stronger enemy bone bows in
+later chapters. Model-capacity interruptions remain recorded as checkpoints,
+not victories or defeats.
 
 The tenth archive also retains explicitly labeled **scripted transfers** of
 the original fifth-cohort Lantern decisions. Current rules still execute the
@@ -116,7 +126,9 @@ waits until at least turn six. Focused checks cover late arrival, recapture,
 save/load and repeated turn initialization. Mechanical checks support this rule;
 they do not replace the player comparisons.
 
-The visual progression pass has begun after the guided comparisons: all
+The visual progression pass followed the guided comparisons: all
 seventeen families now have distinct native equipment and a full roster render.
-Independent visual review remains separate from atlas equality. Browser and
+Independent visual review caught and verified corrections to the second
+harpoon hook, crystal alignment and Lich chest plate. The new sprites are
+published in the ordinary game. Visual review remains separate from atlas equality. Browser and
 phone appearance are not claimed as verified by these headless trials.
