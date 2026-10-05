@@ -114,7 +114,8 @@ export function createArena(
   config: Pick<ArenaConfig, "seed" | "army" | "landscape" | "first">,
 ): RecordedGame {
   const random = seededRandom(config.seed);
-  const game = new RecordedGame("mirror");
+  // Classic's shipped river AI uses route distances, unlike its open-map heuristic.
+  const game = new RecordedGame(config.landscape === "crossings" ? "river" : "mirror");
   const state = game.captureState();
   state.cols = state.rows = 9;
   state.tiles = [];

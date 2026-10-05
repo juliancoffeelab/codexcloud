@@ -27,6 +27,7 @@ const config = {
   recruitLimit: 1,
 };
 const arena = createArena(config);
+assert.equal(arena.mapId, "river", "Crossing arenas must retain classic's live river routing");
 for (const tile of arena.tiles) {
   const partner = arena.tile(`${8 - tile.col - (tile.row % 2)},${8 - tile.row}`)!;
   assert.ok(partner, "Every arena hex must have a rotational partner");

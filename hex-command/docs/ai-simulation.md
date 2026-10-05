@@ -69,7 +69,10 @@ success is decided by `Game`, never by the planner's estimate of success.
 
 Arena maps are rotationally paired radius-four hexagons, with open, wooded and
 river-crossing layouts. The seed controls paired terrain, equal starting gold and
-small planning tie breakers. Both sides receive the same leader, two identical
+small planning tie breakers. Crossing arenas retain the river map identity so
+classic uses its existing river route planning; open and wooded arenas use its
+ordinary mirror-map movement heuristic.
+Both sides receive the same leader, two identical
 melee troops, recruitment pool and per-phase recruitment limit. Pools cover human,
 woodland, undead and coastal units. Both seats and both initiatives are run for
 each nonidentical bot pairing; self-play runs both initiatives. One seed contains
