@@ -1,7 +1,7 @@
 # Hex Command
 
 A standalone browser game about capturing villages, recruiting units, and
-defeating the enemy commander on a hex battlefield, with three story campaigns.
+defeating the enemy commander on a hex battlefield, with four story campaigns.
 
 Install and run from this folder (Node.js 22.12+):
 
@@ -34,8 +34,8 @@ Source lives in `src/`; `dist/` is generated and must not be edited.
   and forecasts so templates describe the interface rather than calculate it.
   `src/App.svelte` assembles the interface.
 - `src/presentation/` contains sprite, audio, motion, and icon helpers.
-- `src/style.css` retains the original global styles. `public/assets/` contains
-  the original artwork and audio, copied unchanged into production builds.
+- `src/style.css` contains shared styles. `public/assets/` contains the generated
+  pixel atlases alongside the retained normal/low-poly artwork and audio.
 
 The **Art style** selector in the cog settings menu switches between Normal,
 Low-poly, and Pixel. It remembers your preference in this browser and keeps the
@@ -44,8 +44,8 @@ current battle intact when switching.
 ## Developer map
 
 Open **Settings → New battle → Developer map**, the last option in the picker.
-The 6×10 map contains all 12 terrain types and all 13 unit types for both teams
-(26 units). It uses the ordinary battlefield, controls, stats and game rules.
+The 6×20 map contains all 12 terrain types and all 34 unit types for both teams
+(68 units), including beginners, veterans and merfolk. It uses the ordinary battlefield, controls, stats and game rules.
 Switch artwork through the usual settings menu.
 
 Terrain uses dedicated flat pointy-top hex artwork, rendered with square crops
@@ -81,13 +81,76 @@ Site: https://hex-command-tfhlu4.lightdarkdaughter.chatgpt.site/
 
 ## Campaigns
 
-Open **Settings → New campaign**. Three stories each have three linked missions:
+Open **Settings → New campaign**. Four stories each have three linked missions:
 
-| Campaign         | Your company            | Objectives                                                                                 |
-| ---------------- | ----------------------- | ------------------------------------------------------------------------------------------ |
-| The Lantern Road | Nera’s human army       | Escort Ivo, reclaim villages, silence grave ruins and the Bellwarden                       |
-| The Green Accord | Alder’s woodland beasts | Capture cutting camps, recover a ledger, defend a vigil, deliver evidence across the river |
-| The Ashen Oath   | Orin’s unbound undead   | Escape a quarry, secure a refuge, break the Master’s binding stones                        |
+| Campaign          | Your company              | Objectives                                                                                 |
+| ----------------- | ------------------------- | ------------------------------------------------------------------------------------------ |
+| The Lantern Road  | Nera’s human army         | Escort Ivo, reclaim villages, silence grave ruins and the Bellwarden                       |
+| The Green Accord  | Alder’s woodland beasts   | Capture cutting camps, recover a ledger, defend a vigil, deliver evidence across the river |
+| The Ashen Oath    | Orin’s unbound undead     | Escape a quarry, secure a refuge, break the Master’s binding stones                        |
+| The Borrowed Tide | Mira’s amphibious company | Recover an estuary pilot, protect a wreck evacuation, coordinate two sluice gates          |
+
+The Borrowed Tide uses authored coastal maps with open-water routes, sandbars,
+wooded shores and marsh channels. A salvage factor diverts the tide to uncover
+records he wants destroyed, trapping workers in the exposed wreck. The company
+must evacuate them before restoring the water, then coordinate both gates to
+avoid flooding the village. Human allies can use forest cover while merfolk
+approach through sea and reeds.
+
+## Race rules and advancement
+
+Terrain declares a finite cost and a separate `passable` flag. Race and unit
+terrain modifiers add costs; explicit unit passability overrides the race, which
+overrides terrain. The resolved movement query returns Infinity for blocked
+terrain. Movement, routes, recruitment, reinforcements, recall and saves use that
+same query. Unit specifications contain deviations from race damage resistances;
+resolved `TYPES` exposes final values. Environmental damage sums terrain, race
+and unit modifiers by weapon category and damage type.
+
+Merfolk cross deep water and move normally on plains. Forest, grove and hill
+entry costs 3 movement and exposes them to 1 extra damage. Marsh costs 1 and
+protects them by 1. Shallows cost 1 with no exposure; deep water gives ranged
+protection. Land races take 1 extra damage in both shallow water and marsh.
+Woodland beasts retain their forest/grove movement discount. Undead inherit
+Pierce resistance and Impact weakness; individual units specialize further.
+
+Every unit family has a finite progression path:
+
+| Beginner    | Veteran                                         |
+| ----------- | ----------------------------------------------- |
+| Swordsman   | Heavy infantry, gaining steel armor and a mace  |
+| Spearman    | Shield warden, gaining steel armor and a hammer |
+| Archer      | Marksman, gaining concealment in woodland       |
+| Scout       | Ranger, gaining movement and a stronger sling   |
+| Adept       | Stone mage                                      |
+| Skeleton    | Revenant, gaining a bone shield                 |
+| Bone archer | Death archer                                    |
+| Wolf        | Dire wolf, gaining hill movement                |
+| Boar        | Great boar, gaining an Impact trample           |
+| Thorncaller | Briarweaver, gaining adjacent healing           |
+| Reef guard  | Trident guard                                   |
+| Harpooner   | Tide hunter                                     |
+| Wavemender  | Tide sage, gaining stronger healing             |
+| Commander   | Marshal                                         |
+| Wildkeeper  | Grove warden                                    |
+| Necromancer | Lich                                            |
+| Tidekeeper  | Tide seer                                       |
+
+Positive damage earns 1 XP; a defeat earns 6 XP per enemy level. Retaliation
+can earn XP too, and zero damage earns none. Troops need 10 XP, leaders 18.
+Select a ready unit to advance. Advancement preserves wounds, identity and name,
+and spends its movement and attack. Enemy units obey the same rules. Adjacent
+healers apply only the strongest healing amount at turn start.
+
+Recalled recruits and returning named companions retain type and XP. Mission
+retries restore the incoming roster checkpoint. Legacy saves with no XP load at
+zero. Veteran art preserves the approved family silhouettes as editable matrices;
+beginner infantry uses cloth and leather in place of steel. New types have pixel
+frames available in every art style until distinct normal/low-poly art is authored.
+
+`scripts/play-campaign.ts` exposes legal actions from the actual engine for
+playtesting. `scripts/replay-campaign.ts` verifies recorded decisions and reports
+per-attempt outcomes, losses, recruitment and promotions.
 
 Portrait conversations introduce missions and react to optional side quests and
 outcomes. Move between lines with the previous/next arrows or keyboard arrows;

@@ -23,6 +23,37 @@ function record(value: unknown): Record<string, unknown> {
 let game = Game.startCampaign(trial.state.campaign!.id as CampaignId);
 game.advanceDialogue(true);
 let moves: GameState[] = [];
+const attempts: {
+  mission: string;
+  winner: string | null;
+  round: number;
+  losses: string[];
+  recruits: string[];
+  promotions: string[];
+  attacks: Record<string, number>;
+}[] = [];
+let metrics = freshMetrics();
+function freshMetrics() {
+  return {
+    mission: game.mapId as string,
+    winner: game.winner as string | null,
+    round: game.round,
+    losses: [] as string[],
+    recruits: [] as string[],
+    promotions: [] as string[],
+    attacks: {} as Record<string, number>,
+  };
+}
+function trackDeaths(before: typeof game.units) {
+  for (const unit of before)
+    if (unit.side === "player" && !game.unit(unit.id))
+      metrics.losses.push(`${unit.id}:${unit.name ?? unit.type}`);
+}
+function finishAttempt() {
+  metrics.winner = game.winner;
+  metrics.round = game.round;
+  attempts.push(metrics);
+}
 for (const entry of trial.transcript) {
   if (entry.action) {
     assert.equal(game.winner, null);
@@ -37,13 +68,19 @@ for (const entry of trial.transcript) {
       game.move(id, string(action.tile));
       if (!game.winner) moves.push(before);
     } else if (action.op === "attack") {
+      const before = [...game.units],
+        type = game.unit(id)!.type;
       game.attack(id, string(action.target), action.weapon as string | undefined);
+      metrics.attacks[type] = (metrics.attacks[type] ?? 0) + 1;
+      trackDeaths(before);
       moves = [];
     } else if (action.op === "advance") {
       game.advanceUnit(id, string(action.type) as UnitType);
+      metrics.promotions.push(string(action.type));
       moves = [];
     } else if (action.op === "recruit") {
       game.recruit(id, string(action.type) as RecruitType, string(action.tile));
+      metrics.recruits.push(string(action.type));
       moves = [];
     } else throw new Error("Unknown recorded action.");
   } else if (entry.enemyTurnAfter !== undefined) {
@@ -52,7 +89,9 @@ for (const entry of trial.transcript) {
     game.endTurn();
     game.enemyRecruit();
     for (const id of enemyActionIds(game.units)) {
+      const before = [...game.units];
       game.enemyAct(id);
+      trackDeaths(before);
       if (game.winner) break;
     }
     if (!game.winner) game.endTurn();
@@ -64,12 +103,16 @@ for (const entry of trial.transcript) {
     game.restoreState(moves.pop()!);
   } else if (entry.retry) {
     assert.equal(game.winner, "enemy");
+    finishAttempt();
     game = game.retryCampaignMission();
+    metrics = freshMetrics();
     moves = [];
   } else if (entry.next) {
     assert.equal(game.winner, "player");
     assert(Array.isArray(entry.recall));
+    finishAttempt();
     game = game.nextCampaignMission(entry.recall.map(string));
+    metrics = freshMetrics();
     moves = [];
   } else throw new Error("Unknown transcript entry.");
   game.advanceDialogue(true);
@@ -79,11 +122,13 @@ assert.deepEqual(
   trial.state,
   "Final trial state must match recorded decisions",
 );
+finishAttempt();
 console.log(
   JSON.stringify({
     verified: true,
     campaign: game.campaign!.id,
     completed: game.campaign!.completed,
     decisions: trial.transcript.length,
+    attempts,
   }),
 );
