@@ -75,7 +75,7 @@ export const CAMPAIGN_UNITS = {
     move: 3,
     damage: 3,
     range: 2,
-    cost: 8,
+    cost: 7,
     attacks: [
       attack("bonebow", "Bone bow", 3, "pierce", "ranged", 2),
       attack("shard", "Shard", 1, "blade"),

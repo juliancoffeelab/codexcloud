@@ -55,6 +55,22 @@ for (const [type, price] of [
   assert.equal(recruit.moved, true);
   assert.equal(recruit.attacked, true);
 }
+// The quarry's initial purse affords a melee screen and a ranged skeleton together.
+{
+  const game = Game.startCampaign("ashen-oath");
+  game.advanceDialogue(true);
+  const orin = required(
+    game.units.find((unit) => unit.side === "player" && unit.role === "leader"),
+  );
+  const startingCompany = game.units.length;
+  for (const type of ["skeleton", "bonearcher"] as const) {
+    const tile = required(game.recruitTiles(orin.id, type)[0]);
+    game.recruit(orin.id, type, tile.id);
+  }
+  assert.equal(game.units.length, startingCompany + 2);
+  assert.equal(game.gold.player, 0);
+}
+
 // Thorns can harass armored humans in cover, while skeletal armor remains a counter.
 {
   const game = new Game();

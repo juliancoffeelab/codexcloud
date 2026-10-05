@@ -88,7 +88,8 @@ const symbols = {
   fort: "T",
   grove: "G",
 } as const;
-function observation(includeRules = false) {
+function observation(includeRules = false, observedGame = game) {
+  const game = observedGame;
   const mission = campaignMission(game.campaign!);
   const relevantTypes = new Set([
     ...game.units.map((unit) => unit.type),
@@ -201,6 +202,16 @@ function noteOutcome() {
       survivors: game.units.filter((u) => u.side === "player").length,
     });
 }
+function executeEnemyTurn(target: Game) {
+  target.endTurn();
+  target.enemyRecruit();
+  for (const id of enemyActionIds(target.units)) {
+    target.enemyAct(id);
+    if (target.winner) break;
+  }
+  if (!target.winner) target.endTurn();
+  target.advanceDialogue(true);
+}
 let result: unknown;
 let error: string | undefined;
 try {
@@ -211,6 +222,17 @@ try {
     case "observe":
       result = observation(input.rules === true);
       break;
+    case "forecast": {
+      if (game.winner || game.turn !== "player") throw new Error("No player turn is active.");
+      const projection = new Game(game.mapId, game.mapRevision);
+      projection.restoreState(game.captureState());
+      executeEnemyTurn(projection);
+      result = {
+        note: "Exact live-engine enemy response if you end the turn now. Further player actions invalidate this forecast. The trial is unchanged.",
+        observation: observation(false, projection),
+      };
+      break;
+    }
     case "options": {
       const ids = Array.isArray(input.units) ? input.units.map(string) : [string(input.unit)];
       result = ids.map((id) => {
@@ -339,15 +361,7 @@ try {
       if (input.endTurn === true && !game.winner) {
         const playerRound = game.round;
         trial.moves = [];
-        game.endTurn();
-        game.enemyRecruit();
-        const queue = enemyActionIds(game.units);
-        for (const id of queue) {
-          game.enemyAct(id);
-          if (game.winner) break;
-        }
-        if (!game.winner) game.endTurn();
-        game.advanceDialogue(true);
+        executeEnemyTurn(game);
         trial.transcript.push({
           mission: game.mapId,
           enemyTurnAfter: playerRound,

@@ -64,7 +64,15 @@ try {
   assert.deepEqual(saved().state, game.captureState(), "Prior successful actions persist");
   assert.equal(saved().moves.length, 0, "Recruitment clears move undo");
 
-  call({ op: "act", actions: [], endTurn: true });
+  const beforeForecast = saved();
+  const forecast = call({ op: "forecast" }).result as { observation: unknown };
+  assert.deepEqual(saved(), beforeForecast, "Enemy forecasts must not advance the trial");
+  const actualTurn = call({ op: "act", actions: [], endTurn: true });
+  assert.deepEqual(
+    forecast.observation,
+    actualTurn.result,
+    "Forecast executes the actual enemy turn",
+  );
   game.endTurn();
   game.enemyRecruit();
   for (const id of enemyActionIds(game.units)) {
