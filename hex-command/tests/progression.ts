@@ -19,8 +19,8 @@ for (const type of UNIT_TYPES) {
   );
   assert.equal(
     definition.range,
-    definition.attacks[0].range,
-    `${type} primary range cannot drift from its weapon`,
+    Math.max(...definition.attacks.map((attack) => attack.range)),
+    `${type} range summarizes all available weapons`,
   );
   assert(definition.family && TYPES[definition.family]);
   const family = TYPES[definition.family];
