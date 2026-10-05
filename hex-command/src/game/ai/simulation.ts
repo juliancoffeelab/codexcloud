@@ -111,6 +111,14 @@ export interface PhaseRecord {
   objectives: AiObjective[];
   campaign?: ReturnType<Game["captureState"]>["campaign"];
 }
+export interface PhaseTiming {
+  policy: PolicyId;
+  side: Side;
+  round: number;
+  elapsedMs: number;
+  units: number;
+  actions: number;
+}
 function phase(
   game: RecordedGame,
   policy: PolicyId,
@@ -118,6 +126,7 @@ function phase(
   recruitLimit: number,
   objectives?: AiObjective[],
   diplomacy?: DiplomacyId,
+  onTiming?: (timing: PhaseTiming) => void,
 ): PhaseRecord {
   const before = [...game.units].map((unit) => ({ ...unit }));
   const side = game.turn,
@@ -125,7 +134,16 @@ function phase(
   game.commands = [];
   game.casualties = [];
   game.combats = [];
+  const started = onTiming ? performance.now() : 0;
   playPolicyTurn(game, policy, { seed, recruitLimit, objectives, diplomacy });
+  onTiming?.({
+    policy,
+    side,
+    round,
+    elapsedMs: performance.now() - started,
+    units: before.filter((unit) => unit.side === side).length,
+    actions: game.commands.length,
+  });
   game.advanceDialogue(true);
   const count = (owner: Side) => game.units.filter((unit) => unit.side === owner);
   return {
@@ -267,7 +285,10 @@ export interface ArenaResult {
   initial: ReturnType<Game["captureState"]>;
   final: ReturnType<Game["captureState"]>;
 }
-export function runArena(config: ArenaConfig): ArenaResult {
+export function runArena(
+  config: ArenaConfig,
+  onTiming?: (timing: PhaseTiming) => void,
+): ArenaResult {
   const game = createArena(config);
   const initial = game.captureState();
   // Each seat receives its first turn's income before its first decisions.
@@ -307,7 +328,15 @@ export function runArena(config: ArenaConfig): ArenaResult {
           weight: 4,
         })),
     ];
-    const record = phase(game, config[side], config.seed, config.recruitLimit, objectives);
+    const record = phase(
+      game,
+      config[side],
+      config.seed,
+      config.recruitLimit,
+      objectives,
+      undefined,
+      onTiming,
+    );
     phases.push(record);
     for (const command of record.actions)
       if (command.kind === "move" && game.tile(command.tile)?.terrain === "ruins")
