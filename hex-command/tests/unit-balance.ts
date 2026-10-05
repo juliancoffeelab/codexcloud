@@ -71,6 +71,29 @@ for (const [type, price] of [
   assert.equal(game.gold.player, 0);
 }
 
+// Refuge reinforcements and purchases begin as rookies; its authored elite
+// patrol remains armored, and a recruit can earn that armor through advancement.
+{
+  const game = Game.startCampaign("ashen-oath", 1);
+  game.advanceDialogue(true);
+  assert(game.units.some((unit) => unit.side === "enemy" && unit.type === "soldier"));
+  assert(game.units.some((unit) => unit.side === "enemy" && unit.type === "warden"));
+  game.round = 3;
+  game.beginTurn("enemy");
+  assert.equal(game.at("9,7")?.type, "swordsman");
+  const oldIds = new Set(game.units.map((unit) => unit.id));
+  game.gold.enemy = 6;
+  game.enemyRecruit();
+  const rookie = required(game.units.find((unit) => !oldIds.has(unit.id)));
+  assert.equal(rookie.type, "swordsman");
+  rookie.experience = 10;
+  game.beginTurn("enemy");
+  game.enemyAct(rookie.id);
+  assert.equal(rookie.type, "soldier");
+  assert.equal(rookie.hp, 12);
+  assert(rookie.moved && rookie.attacked);
+}
+
 // The woodland purse can also field a runner and ranged support instead of one boar.
 {
   const game = Game.startCampaign("green-accord");

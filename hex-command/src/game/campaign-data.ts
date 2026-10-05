@@ -1211,9 +1211,9 @@ const ashen: MissionDefinition[] = [
     briefing:
       "Orin’s company has found empty houses beside living villages. Captain Dain has orders to drive the dead away; the villagers want time to judge their new neighbors for themselves. Orin will defend the refuge while they gather. Helping the sick can win their support sooner, but a withdrawing soldier’s death would destroy the chance of peace.",
     hints: [
-      "An empty house can still offer shelter.",
-      "The northern grove may have something for the sick.",
-      "Leave frightened soldiers a way home.",
+      "Defend ownership of the refuge through six enemy turns. Troops can leave the ruins to screen it; enemy recapture resets the count. Medicine reduces the defense to five turns.",
+      "Skeleton clubs punish the armored patrol. Bone bows answer its unarmored swordsmen, archers and adepts; protect those bows with a melee screen.",
+      "Nonlethal defensive attacks are allowed. Killing Dain or a retreating soldier ends mediation; check the combat preview before attacking and leave withdrawing men a way home.",
     ],
     goals: [
       {
@@ -1224,7 +1224,7 @@ const ashen: MissionDefinition[] = [
       },
     ],
     recruits: ["skeleton", "bonearcher"],
-    enemyRecruits: ["soldier", "archer"],
+    enemyRecruits: ["swordsman", "archer"],
     gold: 16,
     enemyGold: 0,
     intro: [
@@ -1351,8 +1351,8 @@ const ashen: MissionDefinition[] = [
     waves: [
       {
         round: 3,
-        label: "An archer and soldier arrive on turn 3",
-        units: [unit("archer", "enemy", 9, 1), unit("soldier", "enemy", 9, 7)],
+        label: "An archer and swordsman arrive on turn 3",
+        units: [unit("archer", "enemy", 9, 1), unit("swordsman", "enemy", 9, 7)],
       },
       { round: 5, label: "An adept arrives on turn 5", units: [unit("adept", "enemy", 9, 3)] },
     ],

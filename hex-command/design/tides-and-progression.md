@@ -108,6 +108,14 @@ held without an occupant. Enemy recapture resets the ferry crossings. Late
 arrival cannot claim elapsed global rounds as defended time; saves and undo
 retain the duration, and old ongoing saves start this new counter at zero.
 
+The Ashen refuge's recurring heavy infantry suppressed bone bows while melee
+skeletons retained an Impact club counter. Its initial armored patrol stays;
+regular recruits and the turn-three sword reinforcement are now rookie
+swordsmen. Bone bows gain an unarmored target, while recruits must earn heavy
+armor through XP. The briefing makes ownership defense and the actual lethal
+mediation boundary explicit. Both players receive those same rules in fresh
+trials; earlier runs retain their stricter interpretation and failed attempts.
+
 ## Visual advancement, after balance
 
 Every family must visibly change when it advances. Lower infantry wear leather
