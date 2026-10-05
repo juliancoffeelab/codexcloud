@@ -53,3 +53,12 @@ including lethal retaliation. Clarification arrived during the refuge retry;
 the companion restricted trial received it at a different point. This limits
 comparison of the two old refuge attempts. Fresh players receive the same lethal
 boundary from the outset, on the revised rookie-reinforcement source.
+
+The completed skeleton-only companion record, `round6-ashen-skeleton.json`,
+replays all 232 decisions. It won the quarry on turn eleven with only Orin
+surviving, lost its first refuge attempt on turn ten, then won peacefully on
+turn six and completed the finale on turn eight. Orin and Dain survived the
+finale. Its two final-chapter casualties and earlier losses remain recorded.
+That completion, compared with the mixed player's exhausted refuge retry,
+reinforces the need for the new matched revision; neither its earlier troop
+losses nor the unequal clarification timing is omitted.

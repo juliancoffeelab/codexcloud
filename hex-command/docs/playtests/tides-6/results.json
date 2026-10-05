@@ -234,6 +234,78 @@
           }
         }
       ]
+    },
+    {
+      "file": "round6-ashen-skeleton.json",
+      "verified": true,
+      "campaign": "ashen-oath",
+      "completed": true,
+      "decisions": 232,
+      "attempts": [
+        {
+          "mission": "ashen-quarry",
+          "winner": "player",
+          "round": 11,
+          "losses": ["u2:skeleton", "u3:bonearcher", "u4:skeleton", "u5:skeleton", "u9:skeleton"],
+          "recruits": ["skeleton"],
+          "promotions": [],
+          "attacks": {
+            "skeleton": 6,
+            "necromancer": 4,
+            "bonearcher": 2
+          }
+        },
+        {
+          "mission": "ashen-refuge",
+          "winner": "enemy",
+          "round": 10,
+          "losses": [
+            "u2:skeleton",
+            "u3:skeleton",
+            "u9:skeleton",
+            "u4:bonearcher",
+            "u10:revenant",
+            "u11:skeleton",
+            "u17:skeleton",
+            "u1:Orin"
+          ],
+          "recruits": ["skeleton", "skeleton", "skeleton", "skeleton"],
+          "promotions": ["lich", "revenant"],
+          "attacks": {
+            "necromancer": 1,
+            "skeleton": 5,
+            "bonearcher": 3,
+            "lich": 2,
+            "revenant": 1
+          }
+        },
+        {
+          "mission": "ashen-refuge",
+          "winner": "player",
+          "round": 6,
+          "losses": ["u2:skeleton", "u9:skeleton"],
+          "recruits": ["skeleton", "skeleton", "skeleton"],
+          "promotions": ["revenant", "lich"],
+          "attacks": {
+            "skeleton": 2,
+            "necromancer": 2,
+            "bonearcher": 1
+          }
+        },
+        {
+          "mission": "ashen-dawn",
+          "winner": "player",
+          "round": 8,
+          "losses": ["u12:skeleton", "u13:skeleton"],
+          "recruits": ["skeleton", "skeleton", "skeleton", "skeleton"],
+          "promotions": [],
+          "attacks": {
+            "lich": 5,
+            "warden": 1,
+            "skeleton": 7
+          }
+        }
+      ]
     }
   ]
 }
