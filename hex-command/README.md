@@ -220,9 +220,9 @@ and progression rules.
 | New unit             | Gold |  HP | Move | Weapons                                           | Flat incoming modifiers        |
 | -------------------- | ---: | --: | ---: | ------------------------------------------------- | ------------------------------ |
 | Warden               |    9 |  12 |    3 | Spear 4 Pierce; Hammer 2 Impact                   | Blade −1, Pierce −1, Impact +1 |
-| Adept                |    8 |   7 |    3 | Spark 3 Impact, range 2; Staff 1 Impact           | None                           |
+| Adept                |    8 |   8 |    3 | Spark 3 Impact, range 2; Staff 1 Impact           | None                           |
 | Skeleton             |    7 |   9 |    3 | Rust blade 3 Blade; Bone club 2 Impact            | Pierce −2, Impact +1           |
-| Bone archer          |    7 |   7 |    3 | Bone bow 3 Pierce, range 2; Shard 1 Blade         | Pierce −1, Impact +1           |
+| Bone archer          |    7 |   8 |    3 | Bone bow 4 Pierce, range 2; Shard 1 Blade         | Pierce −1, Impact +1           |
 | Wolf                 |    5 |   8 |    5 | Fangs 3 Blade                                     | Pierce +1                      |
 | Boar                 |    9 |  13 |    3 | Tusks 4 Pierce                                    | Pierce +1                      |
 | Thorncaller          |    7 |   7 |    4 | Thorns 3 Pierce, range 2; Root staff 2 Impact     | Extra ranged cover in woods    |

@@ -110,7 +110,12 @@ the swordsman, posted Ledgerkeeper and turn-six reinforcements. This reduces
 opening pressure without changing the escape objective. A fresh Ashen pair
 tests it. A fresh woodland pair also checks the stronger enemy bone bows in
 later chapters. Model-capacity interruptions remain recorded as checkpoints,
-not victories or defeats.
+not victories or defeats. The [archived thirteenth mixed Ashen run](playtests/tides-13/README.md)
+still loses the quarry twice, at turns seven and thirteen. It buys only one bow
+per attempt and makes no promotions. A fourteenth cohort keeps the combat rules
+and clarifies opening-purse and ready-advancement checks in the shared guide for
+both fresh players. Guide changes are disclosed rather than attributing every
+new result to stat changes. Its current progress is not yet a completed pair.
 
 The tenth archive also retains explicitly labeled **scripted transfers** of
 the original fifth-cohort Lantern decisions. Current rules still execute the
