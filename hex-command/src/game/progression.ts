@@ -88,8 +88,8 @@ export function progressionUnits(
       11,
       4,
       8,
-      [weapon("spear", "Reef spear", 3, "pierce"), weapon("shellclub", "Shell club", 2, "impact")],
-      "Shell armor stops 1 Blade damage. Strong in shallow water; lacks a ranged reply.",
+      [weapon("spear", "Reef spear", 3, "pierce")],
+      "Shell armor stops 1 Blade damage. A durable spear screen in shallow water; needs Impact support against armor and bones, and lacks a ranged reply.",
     ),
     damageModifiers: { ...neutral, blade: -1 },
   };
@@ -97,7 +97,7 @@ export function progressionUnits(
     "Harpooner",
     8,
     5,
-    8,
+    7,
     [weapon("harpoon", "Harpoon", 3, "pierce", "ranged", 2), weapon("knife", "Knife", 2, "blade")],
     "Fast swimmer with ranged harpoons. Vulnerable to armor and bones; use it to take offshore routes and attack unarmored foes.",
   );
@@ -106,7 +106,7 @@ export function progressionUnits(
       "Wavemender",
       7,
       4,
-      10,
+      9,
       [weapon("surge", "Surge", 3, "impact", "ranged", 2), weapon("staff", "Staff", 1, "impact")],
       "Ranged Impact against armor. Heals adjacent allies by 1 HP at turn start; multiple healers do not stack. Fragile in melee.",
     ),
@@ -236,11 +236,11 @@ export function progressionUnits(
     ...units.tridentguard,
     attacks: [
       weapon("spear", "Trident", 4, "pierce"),
-      weapon("shellclub", "Shell club", 3, "impact"),
+      weapon("shellclub", "Shell club", 2, "impact"),
     ],
     ability: "Reef bulwark",
     description:
-      "A shell-armored merfolk veteran with a stronger club. Controls the shallows; woodland remains dangerous.",
+      "A shell-armored merfolk veteran that gains an Impact club. Controls the shallows; woodland remains dangerous and ranged support still matters.",
   };
   units.tidehunter = {
     ...units.tidehunter,

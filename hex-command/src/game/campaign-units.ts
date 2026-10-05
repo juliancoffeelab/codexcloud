@@ -41,7 +41,7 @@ export const CAMPAIGN_UNITS = {
     move: 3,
     damage: 3,
     range: 2,
-    cost: 10,
+    cost: 8,
     attacks: [
       attack("spark", "Spark", 3, "impact", "ranged", 2),
       attack("staff", "Staff", 1, "impact"),

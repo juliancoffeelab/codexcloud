@@ -1134,7 +1134,7 @@ const ashen: MissionDefinition[] = [
         unit("skeleton", "player", 2, 4),
         unit("skeleton", "player", 1, 2),
         unit("commander", "enemy", 11, 5, "The Ledgerkeeper", "leader"),
-        unit("soldier", "enemy", 9, 5),
+        unit("swordsman", "enemy", 9, 5),
         unit("archer", "enemy", 10, 4),
       ],
     ),
@@ -1148,7 +1148,7 @@ const ashen: MissionDefinition[] = [
     ],
     goals: [{ kind: "escape", label: "Bring Orin to the northern quarry gate", tile: "11,1" }],
     recruits: ["skeleton", "bonearcher"],
-    enemyRecruits: ["soldier", "archer"],
+    enemyRecruits: ["swordsman", "archer"],
     gold: 14,
     enemyGold: 0,
     intro: [

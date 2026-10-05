@@ -121,6 +121,29 @@ for (const [type, price] of [
   }
 }
 
+// A final coastal purse buys three different roles, rather than only three spear bodies.
+{
+  const game = Game.startCampaign("borrowed-tide", 2, [], 8);
+  game.advanceDialogue(true);
+  const mira = required(
+    game.units.find((unit) => unit.side === "player" && unit.role === "leader"),
+  );
+  for (const type of ["reefguard", "harpooner", "wavemender"] as const) {
+    const tile = required(game.recruitTiles(mira.id, type)[0]);
+    game.recruit(mira.id, type, tile.id);
+  }
+  assert.equal(game.gold.player, 0);
+  game.units = [];
+  for (const tile of game.tiles) tile.terrain = "plains";
+  const guard = game.addUnit("reefguard", "player", "2,3");
+  const caster = game.addUnit("wavemender", "player", "2,4");
+  const armor = game.addUnit("warden", "enemy", "3,3");
+  assert.equal(game.preview(guard, armor, "spear").damage, 2);
+  assert.equal(game.preview(caster, armor, "surge").damage, 4);
+  assert(TYPES.reefguard.attacks.every((weapon) => weapon.damageType === "pierce"));
+  assert(TYPES.tridentguard.attacks.some((weapon) => weapon.damageType === "impact"));
+}
+
 // Mobility does not turn the fragile skirmisher into a safe melee armor counter.
 {
   const game = new Game();
