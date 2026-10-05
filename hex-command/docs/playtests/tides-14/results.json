@@ -1,0 +1,84 @@
+{
+  "sourceCommit": "f6a8fbaee2428dceb4205580e0658261f6f06615",
+  "trials": [
+    {
+      "file": "round14-ashen-mixed.json",
+      "verified": true,
+      "campaign": "ashen-oath",
+      "completed": true,
+      "decisions": 186,
+      "attempts": [
+        {
+          "mission": "ashen-quarry",
+          "winner": "player",
+          "round": 8,
+          "losses": [],
+          "recruits": [
+            "skeleton",
+            "bonearcher"
+          ],
+          "promotions": [],
+          "attacks": {
+            "bonearcher": 3,
+            "skeleton": 1,
+            "necromancer": 1
+          }
+        },
+        {
+          "mission": "ashen-refuge",
+          "winner": "player",
+          "round": 6,
+          "losses": [
+            "u2:skeleton",
+            "u3:skeleton",
+            "u15:skeleton",
+            "u11:skeleton"
+          ],
+          "recruits": [
+            "skeleton",
+            "bonearcher",
+            "skeleton",
+            "skeleton",
+            "skeleton",
+            "skeleton"
+          ],
+          "promotions": [],
+          "attacks": {
+            "skeleton": 2,
+            "bonearcher": 3
+          }
+        },
+        {
+          "mission": "ashen-dawn",
+          "winner": "player",
+          "round": 8,
+          "losses": [
+            "u10:skeleton",
+            "u13:skeleton",
+            "u3:Captain Dain",
+            "u2:revenant"
+          ],
+          "recruits": [
+            "adept",
+            "adept",
+            "adept",
+            "spearman",
+            "adept"
+          ],
+          "promotions": [
+            "revenant",
+            "deatharcher"
+          ],
+          "attacks": {
+            "adept": 8,
+            "skeleton": 2,
+            "bonearcher": 1,
+            "warden": 1,
+            "revenant": 1,
+            "deatharcher": 1
+          }
+        }
+      ]
+    }
+  ]
+}

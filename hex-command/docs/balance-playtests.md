@@ -104,6 +104,11 @@ The [twelfth Ashen records](playtests/tides-12/README.md) retain mixed quarry
 defeats at turns seven and twelve. The control wins the quarry at seven and
 is interrupted by Luna model capacity in the refuge at turn three. This
 unfinished comparison does not validate the new damage values.
+The same archive now includes the Lantern swordsman control: ferry victory
+at twelve, then a thirty-turn village cap with no village captured. It
+retains twenty-one troops against nine enemies and Ivo alive; four total
+losses and nineteen swordsman purchases do not turn that cap into a win.
+The mixed Lantern run remains active.
 
 The thirteenth source `9d53254` removes one initial quarry archer while keeping
 the swordsman, posted Ledgerkeeper and turn-six reinforcements. This reduces
@@ -115,7 +120,10 @@ still loses the quarry twice, at turns seven and thirteen. It buys only one bow
 per attempt and makes no promotions. A fourteenth cohort keeps the combat rules
 and clarifies opening-purse and ready-advancement checks in the shared guide for
 both fresh players. Guide changes are disclosed rather than attributing every
-new result to stat changes. Its current progress is not yet a completed pair.
+new result to stat changes. Its [mixed campaign](playtests/tides-14/README.md)
+now completes 8 / 6 / 8 without a retry, with eight losses including Dain,
+and two promotions. The restricted control is still running after an
+actual opening defeat and a successful retry. This is not yet a completed pair.
 This source also corrects public summary damage to the primary weapon's value
 and summary range to the maximum weapon reach. Weapon profiles and actual
 combat rules remain unchanged, but these summaries can affect a player's
