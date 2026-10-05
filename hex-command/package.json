@@ -20,6 +20,7 @@
     "build": "vite build",
     "build:check": "vite build",
     "preview": "vite preview --host 0.0.0.0",
+    "publish": "python3 scripts/publish-site.py",
     "test": "node --import tsx scripts/test-budget.ts",
     "test:watch": "vitest --watch"
   },

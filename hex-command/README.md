@@ -78,13 +78,23 @@ crops. Civilian conversations use a neutral worker portrait
 from the unit atlas, without adding a worker to the combat roster.
 
 The existing OpenAI Sites project is recorded in `.openai/hosting.json`; its
-static directory is `dist`. Publish that entire directory, including the asset
-sheets, through a Sites session with access to the project. After building and
-committing the selected Site source, package with
-`python3 scripts/package-site.py /tmp/hex-command.tar.gz`. The script checks the
-HTML's client references and byte-verifies every file in the uploaded archive.
-Do not use `git archive` for generated output: `dist/` is intentionally ignored,
-so newly named JavaScript and CSS bundles would be omitted.
+static directory is `dist`. Use `scripts/publish-sites-call.js` from a Sites-enabled
+agent session to publish in one orchestration call. It requests a short-lived
+credential, runs `npm run publish -- --message "Describe the changes"`, publishes
+the packaged build and waits for a terminal deployment result. It preserves the
+current site and audience.
+
+The npm command handles asset generation, style checks, project commit/push,
+Site source synchronization, an isolated build from that committed source, and
+packaging. It commits changes only within this project. The native Sites adapter
+handles credentials and deployment; running the npm command alone requires a
+credential on hidden stdin and stops after packaging. No token is saved to disk
+or placed in shell arguments.
+
+The packager includes all of `dist/`, checks the HTML's client references and
+byte-verifies every file in the uploaded archive. Do not use `git archive` for
+generated output: `dist/` is intentionally ignored, so newly named JavaScript
+and CSS bundles would be omitted.
 
 Site: https://hex-command-tfhlu4.lightdarkdaughter.chatgpt.site/
 

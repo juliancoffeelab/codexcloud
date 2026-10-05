@@ -10,7 +10,7 @@ const write = args.includes("--write");
 const cwd = fileURLToPath(new URL("../", import.meta.url));
 const files = [
   "src",
-  "scripts/*.ts",
+  "scripts/*.{ts,js}",
   "tests/*.ts",
   "*.config.ts",
   "*.json",
