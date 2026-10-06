@@ -2,6 +2,7 @@ import { CAMPAIGNS, CAMPAIGN_MAPS } from "./campaign-data";
 import type { CampaignId, CampaignState, CampaignVeteran, RecruitType } from "./types";
 import { MAPS } from "./maps";
 import { distance, Game, TYPES } from "./engine";
+import type { LiveGame } from "./live-game";
 import type { Side, Unit, UnitType, VillageState } from "./types";
 
 export const SAVE_KEY = "hex-command-battle";
@@ -11,7 +12,8 @@ export interface LoadedBattle {
   pendingEnemy: boolean;
 }
 
-export function saveBattle(game: Game, pendingEnemy = false): void {
+export function saveBattle(game: Game | LiveGame, pendingEnemy = false): void {
+  if ("saveNative" in game) return game.saveNative(pendingEnemy);
   try {
     localStorage.setItem(
       SAVE_KEY,

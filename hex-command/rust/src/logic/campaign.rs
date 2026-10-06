@@ -585,7 +585,16 @@ impl<'catalog> Game<'catalog> {
                 })
         })
     }
+    #[cfg(not(target_arch = "wasm32"))]
     pub(crate) fn next_campaign(&self) -> Self {
+        self.continue_campaign(None)
+            .expect("automatic recall is valid")
+    }
+
+    pub(crate) fn continue_campaign(
+        &self,
+        selected: Option<&[UnitId]>,
+    ) -> Result<Self, CommandError> {
         let state = self.campaign.as_ref().unwrap();
         let mission = self.mission.as_ref().unwrap();
         let mut eligible: Vec<_> = self
@@ -610,6 +619,24 @@ impl<'catalog> Game<'catalog> {
                 + u.experience.unwrap_or(0) as f64 / 3.0
         };
         eligible.sort_by(|a, b| value(b).total_cmp(&value(a)));
+        if let Some(selected) = selected {
+            let mut recalled = Vec::new();
+            if selected.len() > 4 {
+                return Err(CommandError::NoNextMission);
+            }
+            for id in selected {
+                if recalled.iter().any(|u: &&Unit| u.id == id.0) {
+                    return Err(CommandError::NoNextMission);
+                }
+                recalled.push(
+                    *eligible
+                        .iter()
+                        .find(|u| u.id == id.0)
+                        .ok_or(CommandError::NoNextMission)?,
+                );
+            }
+            eligible = recalled;
+        }
         let veteran = |u: &Unit, role: bool| Veteran {
             r#type: self.rules.units[u.kind].id.clone(),
             experience: u.experience.unwrap_or(0),
@@ -660,7 +687,7 @@ impl<'catalog> Game<'catalog> {
                 fallen.push(name);
             }
         }
-        Self::start_campaign(
+        Ok(Self::start_campaign(
             self.rules,
             &state.id,
             state.mission + 1,
@@ -669,6 +696,6 @@ impl<'catalog> Game<'catalog> {
             choices,
             story,
             fallen,
-        )
+        ))
     }
 }

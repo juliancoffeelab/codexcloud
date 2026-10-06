@@ -157,6 +157,14 @@ impl NativeEngineFactory {
     pub fn view(&self, id: u32, revision: u32) -> Result<Ts<ViewResponse>, JsError> {
         encode(self.battle(id, revision).map(Battle::view))
     }
+    /// Publish legal actions and display forecasts without exposing mutable state.
+    pub fn inspect(&self, id: u32, revision: u32) -> Result<Ts<InspectionResponse>, JsError> {
+        encode(
+            self.battle(id, revision).map(|battle| {
+                Game::from_state(&self.rules, battle.state.clone()).inspect(revision)
+            }),
+        )
+    }
     /// Return [`ReachableTile`] destinations and costs for a stable unit identity.
     /// The query leaves battle state and revision unchanged.
     pub fn reachable(

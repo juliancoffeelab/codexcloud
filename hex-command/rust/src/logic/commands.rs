@@ -8,7 +8,13 @@ impl Game<'_> {
         if self.winner.is_some()
             && !matches!(
                 command,
-                Command::DismissDialogue | Command::NextMission | Command::SetUnitIntent { .. }
+                Command::DismissDialogue
+                    | Command::PreviousDialogue
+                    | Command::SkipDialogue
+                    | Command::NextMission
+                    | Command::RecallMission { .. }
+                    | Command::RetryMission
+                    | Command::SetUnitIntent { .. }
             )
         {
             return Err(CommandError::BattleFinished);
@@ -96,7 +102,37 @@ impl Game<'_> {
                     campaign.dialogue_index += 1;
                 }
             }
-            Command::NextMission => {
+            Command::PreviousDialogue => {
+                let campaign = self.campaign.as_mut().ok_or(CommandError::NoCampaign)?;
+                if campaign.dialogue_index < campaign.dialogue.len() {
+                    campaign.dialogue_index = campaign.dialogue_index.saturating_sub(1);
+                }
+            }
+            Command::SkipDialogue => {
+                let campaign = self.campaign.as_mut().ok_or(CommandError::NoCampaign)?;
+                campaign.dialogue_index = campaign.dialogue.len();
+            }
+            Command::RetryMission => {
+                let campaign = self.campaign.as_ref().ok_or(CommandError::NoCampaign)?;
+                let records = self.recordings.take();
+                let choices = if self.mission.as_ref().is_some_and(|m| m.refuge.is_some()) {
+                    vec![]
+                } else {
+                    campaign.choices.clone().unwrap_or_default()
+                };
+                *self = Self::start_campaign(
+                    self.rules,
+                    &campaign.id,
+                    campaign.mission,
+                    campaign.veterans.clone().unwrap_or_default(),
+                    campaign.carry_gold,
+                    choices,
+                    campaign.story_veterans.clone().unwrap_or_default(),
+                    campaign.fallen_companions.clone().unwrap_or_default(),
+                );
+                self.recordings = records;
+            }
+            Command::NextMission | Command::RecallMission { .. } => {
                 let campaign = self.campaign.as_ref().ok_or(CommandError::NoCampaign)?;
                 if self.winner != Some(Side::Player)
                     || campaign.completed
@@ -104,8 +140,13 @@ impl Game<'_> {
                 {
                     return Err(CommandError::NoNextMission);
                 }
+                let selected = match &command {
+                    Command::RecallMission { units } => Some(units.as_slice()),
+                    _ => None,
+                };
+                let replacement = self.continue_campaign(selected)?;
                 let records = self.recordings.take();
-                *self = self.next_campaign();
+                *self = replacement;
                 self.recordings = records;
             }
             Command::SetUnitIntent {
@@ -143,5 +184,46 @@ impl Game<'_> {
         }
         effects.winner = self.winner;
         Ok(effects)
+    }
+}
+
+#[cfg(test)]
+mod browser_controls_tests {
+    use super::*;
+
+    #[test]
+    fn explicit_recall_preserves_selection_and_rejects_duplicates_atomically() {
+        let rules = Rules::embedded().unwrap();
+        let mut game =
+            Game::start_campaign(&rules, "lantern-road", 0, vec![], 0, vec![], vec![], vec![]);
+        game.winner = Some(Side::Player);
+        let leader = game
+            .units
+            .iter()
+            .find(|u| rules.units[u.kind].leader && u.side == Side::Player)
+            .unwrap();
+        let kind = rules.types["archer"];
+        let site = game.board.adjacent[leader.tile]
+            .iter()
+            .copied()
+            .find(|&t| game.at(t).is_none())
+            .unwrap();
+        let id = game.add(kind, Side::Player, site);
+        let before = serde_json::to_value(game.state()).unwrap();
+        assert!(
+            game.execute(Command::RecallMission {
+                units: vec![UnitId(id), UnitId(id)]
+            })
+            .is_err()
+        );
+        assert_eq!(serde_json::to_value(game.state()).unwrap(), before);
+        game.execute(Command::RecallMission {
+            units: vec![UnitId(id)],
+        })
+        .unwrap();
+        let campaign = game.campaign.as_ref().unwrap();
+        assert_eq!(campaign.mission, 1);
+        assert_eq!(campaign.veterans.as_ref().unwrap().len(), 1);
+        assert_eq!(campaign.veterans.as_ref().unwrap()[0].r#type, "archer");
     }
 }

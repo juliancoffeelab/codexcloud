@@ -10,7 +10,9 @@ npm ci
 npm run dev
 ```
 
-The game uses Svelte 5 with strict TypeScript, built by Vite. It remains a static,
+The game uses Svelte 5 with strict TypeScript, built by Vite, and a Rust WASM
+engine for battle rules and enemy planning. UI, map selection, presentation and
+browser orchestration remain JavaScript. It remains a static,
 client-only game: no server or account is required. To build and serve the
 production files:
 

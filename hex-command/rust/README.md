@@ -93,13 +93,22 @@ restore; battle handles expose views, movement/combat previews, dispatch, AI
 commands, save and disposal. Revision checks reject stale decisions. Saved games
 retain pending AI commands and planner continuation, excluding disposable caches.
 
-The opt-in TypeScript adapter is `src/game/native-engine.ts`. Engine handles use
+The live TypeScript adapter is `src/game/native-engine.ts`. Engine handles use
 `wasm-bindgen`; commands, snapshots and responses derive `Tsify`. Typed `Ts<T>`
 arguments validate inside the facade, where conversion failures return ordinary
 engine errors. Concrete transparent response types retain the shared
 `EngineResult<T>` envelope without losing generic arguments at the WASM boundary.
 Serialization uses JavaScript objects through Tsify's `js` feature, with maps as
 objects and explicit nulls; omitted optional save fields remain omitted.
+
+The Svelte UI, map picker, artwork, sound, pacing and browser tools remain in
+JavaScript. `src/game/live-game.ts` adapts native state/actions to the existing
+controller. Its published views contain detached state and precomputed Rust
+inspection results; rendering never calls the mutable engine. Moves, combat,
+recruitment, promotion, enemy planning and campaign transitions dispatch through
+WASM. Browser checkpoints retain native state and seed; previous browser saves
+are imported once, including pending enemy-turn recovery. Undo restores a native
+checkpoint. JavaScript continues to own campaign and scenario selection.
 
 `wasm-pack` generates the JavaScript, `.wasm` and `.d.ts` together in Git-ignored
 `rust/pkg/`. The adapter imports those generated types directly and derives its

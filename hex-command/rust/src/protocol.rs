@@ -292,3 +292,62 @@ response!(AiResponse, AiDecision);
 response!(SaveResponse, SavedGame);
 #[cfg(feature = "wasm")]
 response!(UnitResponse, ());
+
+/// Damage accounting for a single weapon against a positioned defender.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
+#[serde(rename_all = "camelCase")]
+pub struct DamageDetail {
+    pub base: i32,
+    pub damage_type: crate::data::DamageType,
+    pub modifier: i32,
+    pub modified: i32,
+    pub protection: i32,
+    pub exposure: i32,
+    pub terrain: String,
+    pub damage: i32,
+}
+
+/// A legal current-position attack and its complete display forecast.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
+#[serde(rename_all = "camelCase")]
+pub struct AttackDetails {
+    pub target: String,
+    pub attack: Weapon,
+    pub response: Option<Weapon>,
+    pub damage: i32,
+    pub retaliation: i32,
+    pub damage_detail: DamageDetail,
+    pub retaliation_detail: Option<DamageDetail>,
+}
+
+/// Legal action choices at one immutable browser publication.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
+pub struct UnitActions {
+    pub unit: String,
+    pub reachable: Vec<ReachableTile>,
+    pub attacks: Vec<AttackDetails>,
+    pub promotions: Vec<String>,
+    pub recruitment: std::collections::BTreeMap<String, Vec<String>>,
+}
+
+/// Detached rule queries, computed in Rust once per state publication.
+/// Rendering performs only lookups against this data, never engine calls.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
+pub struct BattleInspection {
+    pub revision: u32,
+    pub units: Vec<UnitActions>,
+    pub recruitment: std::collections::BTreeMap<String, Vec<String>>,
+    pub costs: std::collections::BTreeMap<String, std::collections::BTreeMap<String, Option<u16>>>,
+    pub neighbors: std::collections::BTreeMap<String, Vec<String>>,
+    pub income: crate::data::Gold,
+}
+#[cfg(feature = "wasm")]
+response!(InspectionResponse, BattleInspection);

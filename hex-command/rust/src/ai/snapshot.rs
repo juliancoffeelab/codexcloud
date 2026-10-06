@@ -81,7 +81,13 @@ impl PlanningSnapshot {
                     friendly(*unit) && catalog.types.contains_key(&kind.0)
                 }
                 Command::SetUnitIntent { unit, .. } => friendly(*unit),
-                Command::EndTurn | Command::DismissDialogue | Command::NextMission => false,
+                Command::EndTurn
+                | Command::DismissDialogue
+                | Command::NextMission
+                | Command::RecallMission { .. }
+                | Command::RetryMission
+                | Command::PreviousDialogue
+                | Command::SkipDialogue => false,
             };
             if !valid {
                 return Err(fail("invalid queued planning command"));

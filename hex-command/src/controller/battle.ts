@@ -6,6 +6,8 @@ import { Game, TYPES, TERRAIN, type Tile, type Unit } from "../game/engine";
 import { enemyActionIds } from "../game/enemy-turn";
 import { createMoveUndo } from "../game/undo";
 import { loadBattle, saveBattle } from "../game/save";
+import { LiveGame, loadLiveBattle } from "../game/live-game";
+import type { GameEngineFactory } from "../game/native-engine";
 import {
   savedArtStyle,
   saveArtStyle,
@@ -60,7 +62,7 @@ const enemyThinkingDelay = 350;
 const enemyActionDelay = 230;
 
 export class BattleController {
-  #game: Game;
+  #game: Game | LiveGame;
   private pendingEnemyReplay: boolean;
   private initialized = false;
   private artRequestVersion = 0;
@@ -75,8 +77,11 @@ export class BattleController {
   readonly view: Readable<BattleView>;
   readonly commands: BattleCommands;
 
-  constructor(private readonly pause: (ms: number) => Promise<void> = delay) {
-    const restored = loadBattle();
+  constructor(
+    private readonly pause: (ms: number) => Promise<void> = delay,
+    private readonly nativeFactory?: GameEngineFactory,
+  ) {
+    const restored = nativeFactory ? loadLiveBattle(nativeFactory) : loadBattle();
     const game = restored.game;
     this.#game = game;
     this.pendingEnemyReplay = restored.pendingEnemy;
@@ -86,9 +91,9 @@ export class BattleController {
       focusedTile: game.units.find((u) => u.side === "player")?.tile ?? game.tiles[0]!.id,
       inspectedTile: null,
       renderRevision: 0,
-      status: game.campaign
-        ? "Follow the mission objectives. Keep your leader safe."
-        : initialMessage,
+      status:
+        ("notice" in restored && restored.notice) ||
+        (game.campaign ? "Follow the mission objectives. Keep your leader safe." : initialMessage),
       artStyle: savedArtStyle(),
       artLoading: false,
       sound: soundEnabled(),
@@ -107,6 +112,7 @@ export class BattleController {
     this.artRequestVersion++;
     cancelSound();
     this.soundRequestVersion++;
+    if (this.#game instanceof LiveGame) this.#game.dispose();
   }
 
   private requireSession(): void {
@@ -468,6 +474,19 @@ export class BattleController {
     if (turnSessionVersion !== this.sessionVersion) {
       return;
     }
+    if (this.#game instanceof LiveGame) {
+      while (this.#game.turn === "enemy" && !this.#game.winner) {
+        this.#game.enemyStep();
+        this.publish();
+        if (this.#game.turn !== "enemy" || this.#game.winner) break;
+        await this.pause(enemyActionDelay);
+        if (turnSessionVersion !== this.sessionVersion) return;
+      }
+      if (!this.#game.winner)
+        this.message("Your turn. Capture villages, recruit reinforcements, or attack.");
+      saveBattle(this.#game);
+      return this.snapshot();
+    }
     this.#game.enemyRecruit();
     this.publish();
     const queue = enemyActionIds(this.#game.units);
@@ -497,12 +516,20 @@ export class BattleController {
     // Validate before changing the current battle, its undo history, or its turn.
     if (mapId !== "mirror" && mapId !== "river" && mapId !== "developer")
       throw new Error("Unknown battlefield. Choose a skirmish or start a campaign.");
-    return this.replaceGame(new Game(mapId));
+    return this.replaceGame(
+      this.nativeFactory
+        ? LiveGame.create(this.nativeFactory, { kind: "scenario", map: mapId })
+        : new Game(mapId),
+    );
   }
 
   startCampaign(id: CampaignId) {
     this.requireSession();
-    return this.replaceGame(Game.startCampaign(id));
+    return this.replaceGame(
+      this.nativeFactory
+        ? LiveGame.create(this.nativeFactory, { kind: "campaign", id })
+        : Game.startCampaign(id),
+    );
   }
 
   nextMission(recallIds: string[]) {
@@ -535,10 +562,11 @@ export class BattleController {
     this.publish({ renderBattle: false, gameChanged: true });
   }
 
-  private replaceGame(replacement: Game) {
+  private replaceGame(replacement: Game | LiveGame) {
     cancelSound();
     this.sessionVersion++;
     this.history.clear();
+    if (this.#game instanceof LiveGame && this.#game !== replacement) this.#game.dispose();
     this.#game = replacement;
     this.pendingEnemyReplay = false;
     this.previousFeedbackState = null;

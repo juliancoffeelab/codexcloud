@@ -1,4 +1,5 @@
 import { Game } from "./engine";
+import { LiveGame } from "./live-game";
 import { immutable as freeze, type Immutable } from "./immutable";
 import type { Tile, Unit } from "./types";
 
@@ -41,7 +42,8 @@ type ReadableGame = Pick<
 export type GameView = Immutable<ReadableGame>;
 
 /** One detached, immutable revision. Only pure rule queries cross this boundary. */
-export function createGameView(source: Game): GameView {
+export function createGameView(source: Game | LiveGame): GameView {
+  if (source instanceof LiveGame) return source.publishedView();
   const game = new Game(source.mapId, source.mapRevision);
   game.restoreState(source.captureState());
   freeze(game.gold);

@@ -59,6 +59,17 @@ function fixture() {
       return { ok: true, value: nextView };
     },
     reachable: () => ({ ok: true, value: [{ tile: "0,0", cost: 0 }] }),
+    inspect: () => ({
+      ok: true,
+      value: {
+        revision: nextView.revision,
+        units: [],
+        recruitment: {},
+        costs: {},
+        neighbors: {},
+        income: { player: 0, enemy: 0 },
+      },
+    }),
     previewAttack: () => ({
       ok: false,
       error: { code: "command", error: "IllegalAttack" },

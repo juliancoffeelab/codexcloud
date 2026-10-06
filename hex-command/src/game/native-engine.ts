@@ -11,6 +11,7 @@ import type {
   EngineError,
   EngineResult,
   EngineView,
+  BattleInspection,
   NativeEngineFactory as WasmEngineFactory,
   ReachableTile,
   SavedGame,
@@ -19,12 +20,13 @@ import type {
 
 export type NativeResponse<T> = EngineResult<Immutable<T>>;
 
-/** A separate opt-in engine boundary; the existing controller still uses BattleView. */
+/** Typed Rust engine boundary used by the live browser controller. */
 export interface GameEngine {
   view(): NativeResponse<EngineView>;
+  inspect(): NativeResponse<BattleInspection>;
   reachable(unit: number): NativeResponse<ReachableTile[]>;
   previewAttack(query: AttackQuery): NativeResponse<AttackPreview>;
-  dispatch(command: Command, expectedRevision?: number): NativeResponse<DispatchResult>;
+  dispatch(command: Immutable<Command>, expectedRevision?: number): NativeResponse<DispatchResult>;
   chooseAiCommand(options: AiOptions): NativeResponse<AiDecision>;
   save(): NativeResponse<SavedGame>;
   dispose(): EngineResult<null>;
@@ -44,6 +46,7 @@ export type NativeBridge = Pick<
   | "create"
   | "restore"
   | "view"
+  | "inspect"
   | "reachable"
   | "previewAttack"
   | "dispatch"
@@ -103,12 +106,13 @@ export function createNativeEngineFactory(bridge: NativeBridge): GameEngineFacto
       released || disposed ? failure({ code: "disposed" }) : call(operation);
     const result: GameEngine = Object.freeze({
       view: () => owned(active(() => bridge.view(handle.id, revision))),
+      inspect: () => owned(active(() => bridge.inspect(handle.id, revision))),
       reachable: (unit: number) => owned(active(() => bridge.reachable(handle.id, revision, unit))),
       previewAttack: (query: AttackQuery) =>
         owned(active(() => bridge.previewAttack(handle.id, revision, structuredClone(query)))),
-      dispatch: (command: Command, expectedRevision = revision) => {
+      dispatch: (command: Immutable<Command>, expectedRevision = revision) => {
         const dispatched = active(() =>
-          bridge.dispatch(handle.id, expectedRevision, structuredClone(command)),
+          bridge.dispatch(handle.id, expectedRevision, structuredClone(command) as Command),
         );
         if (dispatched.ok) revision = dispatched.value.view.revision;
         return owned(dispatched);

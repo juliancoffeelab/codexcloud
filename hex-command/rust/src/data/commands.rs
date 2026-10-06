@@ -31,6 +31,14 @@ pub enum Command {
     EndTurn,
     DismissDialogue,
     NextMission,
+    /// Continue with the browser's explicitly selected surviving recruits.
+    RecallMission {
+        units: Vec<UnitId>,
+    },
+    /// Restore this chapter's incoming veterans, gold and story checkpoint.
+    RetryMission,
+    PreviousDialogue,
+    SkipDialogue,
     SetUnitIntent {
         unit: UnitId,
         retreating: Option<bool>,
