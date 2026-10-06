@@ -137,3 +137,59 @@ test("An invalid native checkpoint preserves the old save and leaves a playable 
   assert.deepEqual(JSON.parse(localStorage.getItem(SAVE_KEY + "-unrestored")!), rejected);
   restored.game.dispose();
 });
+
+test("Reloading an exact enemy-phase checkpoint resumes the saved planner once", async () => {
+  // Node has no image decoder; artwork failure must not affect turn recovery.
+  vi.stubGlobal(
+    "Image",
+    class {
+      onerror: (() => void) | null = null;
+      set src(_source: string) {
+        queueMicrotask(() => this.onerror?.());
+      }
+    },
+  );
+  const game = LiveGame.create(factory, { kind: "scenario", map: "mirror" });
+  game.endTurn();
+  game.enemyStep();
+  game.saveNative();
+  const checkpoint = game.captureState();
+  const phaseSnapshot = game.snapshot();
+  assert.equal(checkpoint.turn, "enemy");
+  for (let steps = 0; game.turn === "enemy"; steps++) {
+    assert(steps < 100, "planner must finish this small phase");
+    game.enemyStep();
+  }
+  const expected = game.snapshot();
+  game.dispose();
+  let release!: () => void;
+  const paused = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  const controller = new BattleController(() => paused, factory);
+  let completed!: () => void;
+  const completion = new Promise<void>((resolve) => {
+    completed = resolve;
+  });
+  const unsubscribe = controller.view.subscribe((view) => {
+    if (view.game.turn === "player" && view.game.round === 2) completed();
+  });
+  controller.initialize();
+  controller.initialize();
+  assert.deepEqual(controller.snapshot(), phaseSnapshot);
+  release();
+  await completion;
+  assert.equal(controller.snapshot().round, 2);
+  assert.deepEqual(
+    controller.snapshot(),
+    expected,
+    "resume must preserve the saved planner continuation",
+  );
+  await Promise.resolve();
+  const restored = loadLiveBattle(factory);
+  assert.equal(restored.pendingEnemy, false);
+  assert.deepEqual(restored.game.snapshot(), controller.snapshot());
+  restored.game.dispose();
+  controller.dispose();
+  unsubscribe();
+});

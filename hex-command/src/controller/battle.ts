@@ -469,6 +469,11 @@ export class BattleController {
     saveBattle(this.#game, true);
     this.#game.endTurn();
     this.publish();
+    return this.runEnemyTurn(turnSessionVersion);
+  }
+
+  /** Continue either a freshly ended turn or an exact restored native enemy phase. */
+  private async runEnemyTurn(turnSessionVersion: number) {
     if (!this.#game.winner) this.message("The enemy is planning its moves…");
     await this.pause(enemyThinkingDelay);
     if (turnSessionVersion !== this.sessionVersion) {
@@ -693,6 +698,12 @@ export class BattleController {
     if (this.pendingEnemyReplay) {
       this.pendingEnemyReplay = false;
       void this.endTurn().catch((error) => this.error(error));
+    } else if (
+      this.#game instanceof LiveGame &&
+      this.#game.turn === "enemy" &&
+      !this.#game.winner
+    ) {
+      void this.runEnemyTurn(this.sessionVersion).catch((error) => this.error(error));
     }
     if (!this.state.artLoading) {
       const requestVersion = ++this.artRequestVersion;

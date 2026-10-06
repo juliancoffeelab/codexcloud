@@ -113,8 +113,7 @@ checkpoint. JavaScript continues to own campaign and scenario selection.
 `wasm-pack` generates the JavaScript, `.wasm` and `.d.ts` together in Git-ignored
 `rust/pkg/`. The adapter imports those generated types directly and derives its
 bridge signatures from the generated class. There is no separate type exporter
-or handwritten bridge contract. The current live controller and renderer remain
-on the previous engine until the next integration stage.
+or handwritten bridge contract.
 
 ```sh
 npm run wasm:build
