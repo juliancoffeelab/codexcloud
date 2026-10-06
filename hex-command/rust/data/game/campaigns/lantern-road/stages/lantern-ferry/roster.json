@@ -1,0 +1,112 @@
+{
+  "initial": {
+    "gold": {
+      "player": 12,
+      "enemy": 12
+    },
+    "units": [
+      {
+        "type": "commander",
+        "side": "player",
+        "col": 1,
+        "row": 3,
+        "name": "Captain Nera",
+        "role": "leader"
+      },
+      {
+        "type": "swordsman",
+        "side": "player",
+        "col": 2,
+        "row": 3
+      },
+      {
+        "type": "swordsman",
+        "side": "player",
+        "col": 2,
+        "row": 4
+      },
+      {
+        "type": "scout",
+        "side": "player",
+        "col": 2,
+        "row": 2,
+        "name": "Ivo",
+        "role": "courier"
+      },
+      {
+        "type": "necromancer",
+        "side": "enemy",
+        "col": 11,
+        "row": 4,
+        "name": "The Tollkeeper",
+        "role": "leader"
+      },
+      {
+        "type": "skeleton",
+        "side": "enemy",
+        "col": 10,
+        "row": 5
+      },
+      {
+        "type": "bonearcher",
+        "side": "enemy",
+        "col": 12,
+        "row": 5
+      }
+    ]
+  },
+  "units": [
+    {
+      "type": "commander",
+      "side": "player",
+      "col": 1,
+      "row": 3,
+      "name": "Captain Nera",
+      "role": "leader"
+    },
+    {
+      "type": "swordsman",
+      "side": "player",
+      "col": 2,
+      "row": 3
+    },
+    {
+      "type": "swordsman",
+      "side": "player",
+      "col": 2,
+      "row": 4
+    },
+    {
+      "type": "scout",
+      "side": "player",
+      "col": 2,
+      "row": 2,
+      "name": "Ivo",
+      "role": "courier"
+    },
+    {
+      "type": "necromancer",
+      "side": "enemy",
+      "col": 11,
+      "row": 4,
+      "name": "The Tollkeeper",
+      "role": "leader"
+    },
+    {
+      "type": "skeleton",
+      "side": "enemy",
+      "col": 10,
+      "row": 5
+    },
+    {
+      "type": "bonearcher",
+      "side": "enemy",
+      "col": 12,
+      "row": 5
+    }
+  ],
+  "recruits": ["swordsman", "archer", "scout"],
+  "enemyRecruits": ["skeleton", "bonearcher"],
+  "gold": 16,
+  "enemyGold": 0
+}

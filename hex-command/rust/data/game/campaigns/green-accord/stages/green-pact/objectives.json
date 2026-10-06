@@ -1,0 +1,15 @@
+{
+  "goals": [
+    {
+      "kind": "control",
+      "label": "Secure the fort beside the bridge",
+      "tiles": ["7,4"]
+    },
+    {
+      "kind": "escort",
+      "label": "Bring Lark to the northern village",
+      "tile": "12,1"
+    }
+  ],
+  "requiredCompanions": ["Lark"]
+}

@@ -18,8 +18,8 @@
     }
   ],
   "stages": [
-    "game/campaigns/borrowed-tide/stages/tide-nets.json",
-    "game/campaigns/borrowed-tide/stages/tide-wreck.json",
-    "game/campaigns/borrowed-tide/stages/tide-sluice.json"
+    "stages/tide-nets/stage.json",
+    "stages/tide-wreck/stage.json",
+    "stages/tide-sluice/stage.json"
   ]
 }

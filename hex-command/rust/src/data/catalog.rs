@@ -8,6 +8,10 @@ use std::{
     fmt,
     path::{Component, Path},
 };
+#[path = "catalog_documents.rs"]
+mod documents;
+#[cfg(any(test, feature = "wasm"))]
+include!(concat!(env!("OUT_DIR"), "/catalog_documents.rs"));
 
 /// Relative document paths mapped to their complete UTF-8 JSON source.
 pub type JsonBundle = BTreeMap<String, String>;
@@ -40,10 +44,24 @@ struct Manifest {
     schema_version: u32,
     terrain: String,
     races: String,
-    units: String,
+    units: UnitDocuments,
     scenarios: Vec<String>,
     campaigns: Vec<String>,
     simulation: SimulationPaths,
+}
+#[derive(Debug, Deserialize)]
+#[serde(untagged)]
+enum UnitDocuments {
+    Legacy(String),
+    Individual(Vec<String>),
+}
+impl UnitDocuments {
+    fn paths(&self) -> &[String] {
+        match self {
+            Self::Legacy(path) => std::slice::from_ref(path),
+            Self::Individual(paths) => paths,
+        }
+    }
 }
 #[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -396,37 +414,12 @@ impl Rules {
     #[cfg(not(target_arch = "wasm32"))]
     pub fn load_from(root: impl AsRef<Path>) -> Result<Self, ContentError> {
         let root = root.as_ref();
-        let mut bundle = JsonBundle::new();
-        fn read(root: &Path, bundle: &mut JsonBundle, path: &str) -> Result<(), ContentError> {
+        documents::collect_bundle(|path| {
             checked_path(path)?;
-            let source = std::fs::read_to_string(root.join(path))
-                .map_err(|error| ContentError::new(path, error.to_string()))?;
-            bundle.insert(path.to_owned(), source);
-            Ok(())
-        }
-        read(root, &mut bundle, "manifest.json")?;
-        let manifest: Manifest = parse(&bundle, "manifest.json")?;
-        for path in [
-            &manifest.terrain,
-            &manifest.races,
-            &manifest.units,
-            &manifest.simulation.rosters,
-            &manifest.simulation.arena,
-            &manifest.simulation.campaign,
-        ]
-        .into_iter()
-        .chain(manifest.scenarios.iter())
-        .chain(manifest.campaigns.iter())
-        {
-            read(root, &mut bundle, path)?;
-        }
-        for path in &manifest.campaigns {
-            let campaign: CampaignFile = parse(&bundle, path)?;
-            for stage in &campaign.stages {
-                read(root, &mut bundle, stage)?;
-            }
-        }
-        Self::from_json_bundle(&bundle)
+            std::fs::read_to_string(root.join(path))
+                .map_err(|error| ContentError::new(path, error.to_string()))
+        })
+        .and_then(|bundle| Self::from_json_bundle(&bundle))
     }
     /// Load the bundled catalog for focused tests and WASM deployment.
     #[cfg(any(test, feature = "wasm"))]
@@ -436,7 +429,7 @@ impl Rules {
     /// Validate named documents and resolve inheritance without filesystem access.
     pub fn from_json_bundle(bundle: &JsonBundle) -> Result<Self, ContentError> {
         let manifest: Manifest = parse(bundle, "manifest.json")?;
-        if manifest.schema_version != 1 {
+        if !matches!(manifest.schema_version, 1 | 2) {
             return Err(ContentError::new(
                 "manifest.json",
                 "unsupported schemaVersion",
@@ -444,7 +437,27 @@ impl Rules {
         }
         let terrain: Vec<TerrainDefinition> = parse(bundle, &manifest.terrain)?;
         let races: Vec<RaceDefinition> = parse(bundle, &manifest.races)?;
-        let specs: Vec<UnitSpecification> = parse(bundle, &manifest.units)?;
+        let specs: Vec<(String, UnitSpecification)> = match &manifest.units {
+            UnitDocuments::Legacy(path) if manifest.schema_version == 1 => {
+                parse::<Vec<UnitSpecification>>(bundle, path)?
+                    .into_iter()
+                    .map(|spec| (path.clone(), spec))
+                    .collect()
+            }
+            UnitDocuments::Individual(paths) if manifest.schema_version == 2 => {
+                unique(paths.iter().map(String::as_str), "manifest.json")?;
+                paths
+                    .iter()
+                    .map(|path| parse(bundle, path).map(|spec| (path.clone(), spec)))
+                    .collect::<Result<_, _>>()?
+            }
+            _ => {
+                return Err(ContentError::new(
+                    "manifest.json",
+                    "units must match the catalog schemaVersion",
+                ));
+            }
+        };
         if terrain.is_empty() || races.is_empty() || specs.is_empty() {
             return Err(ContentError::new(
                 "manifest.json",
@@ -453,7 +466,15 @@ impl Rules {
         }
         unique(terrain.iter().map(|t| t.id.as_str()), &manifest.terrain)?;
         unique(races.iter().map(|r| r.id.as_str()), &manifest.races)?;
-        unique(specs.iter().map(|u| u.id.as_str()), &manifest.units)?;
+        let mut seen_units = HashSet::new();
+        for (path, spec) in &specs {
+            if !seen_units.insert(&spec.id) {
+                return Err(ContentError::new(
+                    path,
+                    format!("duplicate identifier {}", spec.id),
+                ));
+            }
+        }
         let terrain_names: Vec<String> = terrain.iter().map(|t| t.id.as_str().to_owned()).collect();
         let terrains: HashMap<String, usize> = terrain_names
             .iter()
@@ -463,7 +484,7 @@ impl Rules {
         let types: HashMap<String, usize> = specs
             .iter()
             .enumerate()
-            .map(|(i, u)| (u.id.clone(), i))
+            .map(|(i, (_, u))| (u.id.clone(), i))
             .collect();
         let race_by_id: HashMap<Race, &RaceDefinition> = races.iter().map(|r| (r.id, r)).collect();
         let validate_modifiers = |modifiers: &HashMap<Terrain, TerrainModifier>,
@@ -491,11 +512,11 @@ impl Rules {
             validate_modifiers(&race.terrain_modifiers, &manifest.races)?;
         }
         let mut units = Vec::with_capacity(specs.len());
-        for spec in specs {
-            identifier(&spec.id, &manifest.units)?;
-            let race = race_by_id.get(&spec.race).ok_or_else(|| {
-                ContentError::new(&manifest.units, format!("unknown race {}", spec.race))
-            })?;
+        for (path, spec) in specs {
+            identifier(&spec.id, &path)?;
+            let race = race_by_id
+                .get(&spec.race)
+                .ok_or_else(|| ContentError::new(&path, format!("unknown race {}", spec.race)))?;
             if spec.name.is_empty()
                 || spec.ability.is_empty()
                 || spec.description.is_empty()
@@ -506,28 +527,28 @@ impl Rules {
                 || spec.attacks.is_empty()
             {
                 return Err(ContentError::new(
-                    &manifest.units,
+                    &path,
                     format!("invalid required stats for {}", spec.id),
                 ));
             }
-            unique(spec.attacks.iter().map(|w| w.id.as_str()), &manifest.units)?;
+            unique(spec.attacks.iter().map(|w| w.id.as_str()), &path)?;
             for attack in &spec.attacks {
-                identifier(&attack.id, &manifest.units)?;
+                identifier(&attack.id, &path)?;
                 if attack.name.is_empty()
                     || attack.sound.is_empty()
                     || attack.range == 0
                     || attack.damage < 0
                 {
                     return Err(ContentError::new(
-                        &manifest.units,
+                        &path,
                         format!("invalid weapon {}", attack.id),
                     ));
                 }
             }
             for next in &spec.advances_to {
-                reference(next, &types, &manifest.units)?;
+                reference(next, &types, &path)?;
             }
-            validate_modifiers(&spec.terrain_modifiers, &manifest.units)?;
+            validate_modifiers(&spec.terrain_modifiers, &path)?;
             let mut costs = Vec::new();
             let mut environment = Vec::new();
             for t in &terrain {
@@ -542,9 +563,10 @@ impl Rules {
                     + individual.map_or(0, |m| m.cost))
                 .max(1);
                 costs.push(if passable {
-                    Some(u16::try_from(cost).map_err(|_| {
-                        ContentError::new(&manifest.units, "movement cost overflows u16")
-                    })?)
+                    Some(
+                        u16::try_from(cost)
+                            .map_err(|_| ContentError::new(&path, "movement cost overflows u16"))?,
+                    )
                 } else {
                     None
                 });
@@ -592,8 +614,12 @@ impl Rules {
             if !used_paths.insert(path.clone()) {
                 return Err(ContentError::new(path, "duplicate catalog path"));
             }
-            let initial: InitialState = parse(bundle, path)?;
-            let state = initial.resolve(&units, &types, path)?;
+            let (initial, roster_path) = if manifest.schema_version == 1 {
+                (parse::<InitialState>(bundle, path)?, path.clone())
+            } else {
+                documents::scenario(bundle, path)?
+            };
+            let state = initial.resolve(&units, &types, &roster_path)?;
             insert_map(&mut maps, state, &terrains, &types, path)?;
         }
         for path in &manifest.campaigns {
@@ -616,10 +642,15 @@ impl Rules {
             let mut missions = Vec::new();
             let mut stage_ids = HashSet::new();
             for stage_path in source.stages {
+                let stage_path = documents::stage_path(manifest.schema_version, path, &stage_path)?;
                 if !used_paths.insert(stage_path.clone()) {
                     return Err(ContentError::new(&stage_path, "duplicate catalog path"));
                 }
-                let stage: StageFile = parse(bundle, &stage_path)?;
+                let stage: StageFile = if manifest.schema_version == 1 {
+                    parse(bundle, &stage_path)?
+                } else {
+                    documents::stage(bundle, &stage_path)?
+                };
                 let state = stage.state.resolve(&units, &types, &stage_path)?;
                 identifier(&stage.id, &stage_path)?;
                 if !stage_ids.insert(stage.id.clone())
@@ -948,120 +979,14 @@ fn validate_simulation(
 /// The authored documents are also available without native filesystem APIs.
 #[cfg(any(test, feature = "wasm"))]
 pub fn embedded_bundle() -> JsonBundle {
-    [
-        (
-            "game/campaigns/ashen-oath/campaign.json",
-            include_str!("../../data/game/campaigns/ashen-oath/campaign.json"),
-        ),
-        (
-            "game/campaigns/ashen-oath/stages/ashen-dawn.json",
-            include_str!("../../data/game/campaigns/ashen-oath/stages/ashen-dawn.json"),
-        ),
-        (
-            "game/campaigns/ashen-oath/stages/ashen-quarry.json",
-            include_str!("../../data/game/campaigns/ashen-oath/stages/ashen-quarry.json"),
-        ),
-        (
-            "game/campaigns/ashen-oath/stages/ashen-refuge.json",
-            include_str!("../../data/game/campaigns/ashen-oath/stages/ashen-refuge.json"),
-        ),
-        (
-            "game/campaigns/borrowed-tide/campaign.json",
-            include_str!("../../data/game/campaigns/borrowed-tide/campaign.json"),
-        ),
-        (
-            "game/campaigns/borrowed-tide/stages/tide-nets.json",
-            include_str!("../../data/game/campaigns/borrowed-tide/stages/tide-nets.json"),
-        ),
-        (
-            "game/campaigns/borrowed-tide/stages/tide-sluice.json",
-            include_str!("../../data/game/campaigns/borrowed-tide/stages/tide-sluice.json"),
-        ),
-        (
-            "game/campaigns/borrowed-tide/stages/tide-wreck.json",
-            include_str!("../../data/game/campaigns/borrowed-tide/stages/tide-wreck.json"),
-        ),
-        (
-            "game/campaigns/green-accord/campaign.json",
-            include_str!("../../data/game/campaigns/green-accord/campaign.json"),
-        ),
-        (
-            "game/campaigns/green-accord/stages/green-border.json",
-            include_str!("../../data/game/campaigns/green-accord/stages/green-border.json"),
-        ),
-        (
-            "game/campaigns/green-accord/stages/green-pact.json",
-            include_str!("../../data/game/campaigns/green-accord/stages/green-pact.json"),
-        ),
-        (
-            "game/campaigns/green-accord/stages/green-vigil.json",
-            include_str!("../../data/game/campaigns/green-accord/stages/green-vigil.json"),
-        ),
-        (
-            "game/campaigns/lantern-road/campaign.json",
-            include_str!("../../data/game/campaigns/lantern-road/campaign.json"),
-        ),
-        (
-            "game/campaigns/lantern-road/stages/lantern-bell.json",
-            include_str!("../../data/game/campaigns/lantern-road/stages/lantern-bell.json"),
-        ),
-        (
-            "game/campaigns/lantern-road/stages/lantern-ferry.json",
-            include_str!("../../data/game/campaigns/lantern-road/stages/lantern-ferry.json"),
-        ),
-        (
-            "game/campaigns/lantern-road/stages/lantern-villages.json",
-            include_str!("../../data/game/campaigns/lantern-road/stages/lantern-villages.json"),
-        ),
-        (
-            "game/races.json",
-            include_str!("../../data/game/races.json"),
-        ),
-        (
-            "game/scenario/ashen-refuge-v1.json",
-            include_str!("../../data/game/scenario/ashen-refuge-v1.json"),
-        ),
-        (
-            "game/scenario/developer-v1.json",
-            include_str!("../../data/game/scenario/developer-v1.json"),
-        ),
-        (
-            "game/scenario/mirror-v1.json",
-            include_str!("../../data/game/scenario/mirror-v1.json"),
-        ),
-        (
-            "game/scenario/river-v1.json",
-            include_str!("../../data/game/scenario/river-v1.json"),
-        ),
-        (
-            "game/scenario/river-v2.json",
-            include_str!("../../data/game/scenario/river-v2.json"),
-        ),
-        (
-            "game/terrain.json",
-            include_str!("../../data/game/terrain.json"),
-        ),
-        (
-            "game/units.json",
-            include_str!("../../data/game/units.json"),
-        ),
-        ("manifest.json", include_str!("../../data/manifest.json")),
-        (
-            "simulation/arena.json",
-            include_str!("../../data/simulation/arena.json"),
-        ),
-        (
-            "simulation/campaign.json",
-            include_str!("../../data/simulation/campaign.json"),
-        ),
-        (
-            "simulation/rosters.json",
-            include_str!("../../data/simulation/rosters.json"),
-        ),
-    ]
-    .into_iter()
-    .map(|(path, source)| (path.to_owned(), source.to_owned()))
-    .collect()
+    documents::collect_bundle(|path| {
+        EMBEDDED_DOCUMENTS
+            .iter()
+            .find(|(name, _)| *name == path)
+            .map(|(_, source)| (*source).to_owned())
+            .ok_or_else(|| ContentError::new(path, "missing embedded catalog document"))
+    })
+    .expect("compiled catalog document references")
 }
 
 #[cfg(test)]
@@ -1106,10 +1031,10 @@ mod tests {
     #[test]
     fn invalid_references_and_duplicates_report_source_document() {
         let mut bundle = embedded_bundle();
-        let units = bundle.get_mut("game/units.json").unwrap();
+        let units = bundle.get_mut("game/units/warden.json").unwrap();
         *units = units.replacen("\"warden\"", "\"adept\"", 1);
         let error = Rules::from_json_bundle(&bundle).unwrap_err();
-        assert_eq!(error.path, "game/units.json");
+        assert_eq!(error.path, "game/units/adept.json");
         assert!(error.message.contains("duplicate"));
         let mut bundle = embedded_bundle();
         let roster = bundle.get_mut("simulation/rosters.json").unwrap();
@@ -1120,7 +1045,7 @@ mod tests {
     #[test]
     fn missing_required_stats_and_documents_are_errors() {
         let mut bundle = embedded_bundle();
-        let units = bundle.get_mut("game/units.json").unwrap();
+        let units = bundle.get_mut("game/units/warden.json").unwrap();
         *units = units.replacen("\"hp\": 12,", "", 1);
         assert!(
             Rules::from_json_bundle(&bundle)
@@ -1148,7 +1073,7 @@ mod tests {
         );
         let mut bundle = embedded_bundle();
         let manifest = bundle.get_mut("manifest.json").unwrap();
-        *manifest = manifest.replace("\"schemaVersion\": 1", "\"schemaVersion\": 2");
+        *manifest = manifest.replace("\"schemaVersion\": 2", "\"schemaVersion\": 99");
         assert!(
             Rules::from_json_bundle(&bundle)
                 .unwrap_err()
@@ -1170,7 +1095,10 @@ mod tests {
         assert_eq!(rules.content_fingerprint, content_fingerprint(&bundle));
         assert_eq!(rules.content_fingerprint.len(), 64);
         let mut reformatted = bundle.clone();
-        reformatted.get_mut("game/units.json").unwrap().push('\n');
+        reformatted
+            .get_mut("game/units/warden.json")
+            .unwrap()
+            .push('\n');
         let changed = Rules::from_json_bundle(&reformatted).unwrap();
         assert_ne!(rules.content_fingerprint, changed.content_fingerprint);
         assert_eq!(adept.ability, changed.units[changed.types["adept"]].ability);
@@ -1195,12 +1123,18 @@ mod tests {
             std::fs::write(target, source).unwrap();
         }
         let original = Rules::load_from(&root.0).unwrap();
-        let path = root.0.join("game/units.json");
-        let edited = std::fs::read_to_string(&path)
-            .unwrap()
-            .replacen("Stone spark", "Revised spark", 1)
-            .replacen("\"hp\": 16,", "\"hp\": 19,", 1);
+        let path = root.0.join("game/units/adept.json");
+        let edited =
+            std::fs::read_to_string(&path)
+                .unwrap()
+                .replacen("Stone spark", "Revised spark", 1);
         std::fs::write(path, edited).unwrap();
+        let commander = root.0.join("game/units/commander.json");
+        let edited =
+            std::fs::read_to_string(&commander)
+                .unwrap()
+                .replacen("\"hp\": 16,", "\"hp\": 19,", 1);
+        std::fs::write(commander, edited).unwrap();
         let reloaded = Rules::load_from(&root.0).unwrap();
         assert_eq!(
             reloaded.units[reloaded.types["adept"]].ability,
@@ -1222,7 +1156,9 @@ mod tests {
     #[test]
     fn initial_placements_allow_wounds_but_reject_excess_hp() {
         let mut bundle = embedded_bundle();
-        let map = bundle.get_mut("game/scenario/mirror-v1.json").unwrap();
+        let map = bundle
+            .get_mut("game/scenario/mirror-v1/roster.json")
+            .unwrap();
         *map = map.replacen(
             "\"type\": \"commander\",",
             "\"type\": \"commander\",\n      \"hp\": 7,",
@@ -1236,10 +1172,53 @@ mod tests {
         assert_eq!(state.units[0].experience, Some(0));
         assert!(!state.units[0].moved);
         assert!(!state.units[0].attacked);
-        let map = bundle.get_mut("game/scenario/mirror-v1.json").unwrap();
+        let map = bundle
+            .get_mut("game/scenario/mirror-v1/roster.json")
+            .unwrap();
         *map = map.replace("\"hp\": 7,", "\"hp\": 99,");
         let error = Rules::from_json_bundle(&bundle).unwrap_err();
-        assert_eq!(error.path, "game/scenario/mirror-v1.json");
+        assert_eq!(error.path, "game/scenario/mirror-v1/roster.json");
         assert!(error.message.contains("initial HP"));
+    }
+
+    #[test]
+    fn component_references_report_missing_files_and_reject_traversal() {
+        let mut bundle = embedded_bundle();
+        let path = "game/campaigns/borrowed-tide/stages/tide-wreck/objectives.json";
+        bundle.remove(path);
+        assert_eq!(Rules::from_json_bundle(&bundle).unwrap_err().path, path);
+        let mut bundle = embedded_bundle();
+        let descriptor = bundle
+            .get_mut("game/scenario/mirror-v1/scenario.json")
+            .unwrap();
+        *descriptor = descriptor.replace("roster.json", "../roster.json");
+        assert!(
+            Rules::from_json_bundle(&bundle)
+                .unwrap_err()
+                .message
+                .contains("traversal")
+        );
+    }
+
+    #[cfg(not(target_arch = "wasm32"))]
+    #[test]
+    fn native_and_embedded_load_only_manifest_referenced_documents() {
+        let native = Rules::load_from(Path::new(env!("CARGO_MANIFEST_DIR")).join("data")).unwrap();
+        assert_eq!(
+            native.content_fingerprint,
+            Rules::embedded().unwrap().content_fingerprint
+        );
+        // Unreferenced files must not create a different catalog on WASM.
+        let mut sources = embedded_bundle();
+        sources.insert("game/units/unlisted.json".into(), "{}".into());
+        let selected = documents::collect_bundle(|path| {
+            sources
+                .get(path)
+                .cloned()
+                .ok_or_else(|| ContentError::new(path, "missing document"))
+        })
+        .unwrap();
+        assert!(!selected.contains_key("game/units/unlisted.json"));
+        assert_eq!(native.content_fingerprint, content_fingerprint(&selected));
     }
 }

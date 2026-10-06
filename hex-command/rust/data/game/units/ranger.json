@@ -1,0 +1,50 @@
+{
+  "id": "ranger",
+  "name": "Ranger",
+  "race": "human",
+  "terrainModifiers": {
+    "forest": {
+      "cost": -1
+    },
+    "grove": {
+      "cost": -1
+    },
+    "hill": {
+      "cost": -1
+    }
+  },
+  "hp": 11,
+  "move": 6,
+  "cost": 8,
+  "attacks": [
+    {
+      "id": "knife",
+      "name": "Knife",
+      "damage": 3,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "sling",
+      "name": "Sling",
+      "damage": 2,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Trail runner",
+  "description": "Faster capture and flanking specialist with a useful Impact sling. Still lacks armor.",
+  "level": 2,
+  "family": "scout",
+  "experienceNeeded": 0,
+  "advancesTo": []
+}

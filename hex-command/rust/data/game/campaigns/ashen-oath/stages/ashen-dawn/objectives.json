@@ -1,0 +1,13 @@
+{
+  "goals": [
+    {
+      "kind": "seal",
+      "label": "Break both binding stones",
+      "tiles": ["7,2", "7,6"]
+    },
+    {
+      "kind": "defeat",
+      "label": "Defeat the Master"
+    }
+  ]
+}

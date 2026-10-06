@@ -1,0 +1,120 @@
+{
+  "initial": {
+    "gold": {
+      "player": 12,
+      "enemy": 12
+    },
+    "units": [
+      {
+        "type": "necromancer",
+        "side": "player",
+        "col": 1,
+        "row": 4,
+        "name": "Orin",
+        "role": "leader"
+      },
+      {
+        "type": "skeleton",
+        "side": "player",
+        "col": 5,
+        "row": 4
+      },
+      {
+        "type": "skeleton",
+        "side": "player",
+        "col": 2,
+        "row": 5
+      },
+      {
+        "type": "bonearcher",
+        "side": "player",
+        "col": 2,
+        "row": 3
+      },
+      {
+        "type": "commander",
+        "side": "enemy",
+        "col": 9,
+        "row": 4,
+        "name": "Captain Dain",
+        "role": "leader"
+      },
+      {
+        "type": "soldier",
+        "side": "enemy",
+        "col": 7,
+        "row": 3
+      },
+      {
+        "type": "warden",
+        "side": "enemy",
+        "col": 7,
+        "row": 5
+      },
+      {
+        "type": "adept",
+        "side": "enemy",
+        "col": 8,
+        "row": 4
+      }
+    ]
+  },
+  "units": [
+    {
+      "type": "necromancer",
+      "side": "player",
+      "col": 1,
+      "row": 4,
+      "name": "Orin",
+      "role": "leader"
+    },
+    {
+      "type": "skeleton",
+      "side": "player",
+      "col": 5,
+      "row": 4
+    },
+    {
+      "type": "skeleton",
+      "side": "player",
+      "col": 2,
+      "row": 5
+    },
+    {
+      "type": "bonearcher",
+      "side": "player",
+      "col": 2,
+      "row": 3
+    },
+    {
+      "type": "commander",
+      "side": "enemy",
+      "col": 9,
+      "row": 4,
+      "name": "Captain Dain",
+      "role": "leader"
+    },
+    {
+      "type": "soldier",
+      "side": "enemy",
+      "col": 7,
+      "row": 3
+    },
+    {
+      "type": "warden",
+      "side": "enemy",
+      "col": 7,
+      "row": 5
+    },
+    {
+      "type": "adept",
+      "side": "enemy",
+      "col": 8,
+      "row": 4
+    }
+  ],
+  "recruits": ["skeleton", "bonearcher"],
+  "enemyRecruits": ["swordsman", "archer"],
+  "gold": 16,
+  "enemyGold": 0
+}

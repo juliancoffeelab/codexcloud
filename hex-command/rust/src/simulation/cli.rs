@@ -1,5 +1,6 @@
 //! Native schedule, bounded scoped worker pool, reporting and replay.
 use super::{
+    checkpoint::{IndexedOutcome, Progress},
     compare::{JsonDifference, first_difference, read_comparison_detail, strip_derived_metadata},
     error::SimulationError,
     matches,
@@ -345,7 +346,7 @@ fn compare_dump(
                 outcome.clone()
             };
             let config: MatchConfig = serde_json::from_value(expected["config"].clone())?;
-            let mut actual = report::detailed_summary(&matches::run(rules, config)?)?;
+            let mut actual = report::comparison_summary(&matches::run(rules, config)?)?;
             strip_derived_metadata(&mut expected);
             strip_derived_metadata(&mut actual);
             Ok(Compared {
@@ -485,7 +486,11 @@ fn sibling(path: &Path, suffix: &str) -> Result<PathBuf, SimulationError> {
         .ok_or("Invalid report filename")?;
     Ok(path.with_file_name(format!("{stem}{suffix}")))
 }
-fn write_json(path: &Path, value: &Value, pretty: bool) -> Result<(), SimulationError> {
+fn write_json<T: serde::Serialize>(
+    path: &Path,
+    value: &T,
+    pretty: bool,
+) -> Result<(), SimulationError> {
     let mut bytes = if pretty {
         serde_json::to_vec_pretty(value)?
     } else {
@@ -515,6 +520,7 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
     fs::create_dir_all(output.parent().unwrap_or(Path::new(".")))?;
     let partial = sibling(&output, ".partial.json")?;
     let mut journal = ResultJournal::create(&sibling(&output, ".details.jsonl")?)?;
+    let mut index_journal = ResultJournal::create(&sibling(&output, ".outcomes.jsonl")?)?;
     let mut trace = if options.trace {
         Some(ResultJournal::create(&sibling(&output, ".trace.jsonl")?)?)
     } else {
@@ -525,7 +531,18 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
     let mut completed = 0;
     write_json(
         &partial,
-        &json!({"schema":3,"status":"running","mode":options.schedule.mode,"fingerprint":fingerprint,"completed":0,"elapsedSeconds":0,"outcomes":[]}),
+        &Progress::new(
+            "running",
+            options.schedule.mode,
+            fingerprint,
+            0,
+            configs.len(),
+            0.0,
+            &index_journal,
+            &journal,
+            trace.as_ref(),
+            None,
+        ),
         false,
     )?;
     let result = execute_schedule(
@@ -533,18 +550,38 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
         &configs,
         options.workers,
         |index, result, elapsed| {
-            let summary = report::detailed_summary(&result)?;
+            let summary = report::borrowed_summary(&result, true)?;
             let reference = journal.append(&summary)?;
             if let Some(trace) = &mut trace {
                 trace.append(&result)?;
             }
-            outcomes[index] = Some(report::compact_outcome(summary, reference, elapsed)?);
+            let compact = report::compact_summary(&summary, reference, elapsed)?;
+            index_journal.append(&IndexedOutcome {
+                index,
+                outcome: &compact,
+            })?;
+            outcomes[index] = Some(compact);
             completed += 1;
             if completed % 10 == 0 {
                 journal.flush()?;
+                if let Some(trace) = &mut trace {
+                    trace.flush()?;
+                }
+                index_journal.flush()?;
                 write_json(
                     &partial,
-                    &json!({"schema":3,"status":"running","mode":options.schedule.mode,"fingerprint":fingerprint,"completed":completed,"elapsedSeconds":start.elapsed().as_secs_f64(),"outcomes":outcomes.iter().flatten().collect::<Vec<_>>()}),
+                    &Progress::new(
+                        "running",
+                        options.schedule.mode,
+                        fingerprint,
+                        completed,
+                        configs.len(),
+                        start.elapsed().as_secs_f64(),
+                        &index_journal,
+                        &journal,
+                        trace.as_ref(),
+                        None,
+                    ),
                     false,
                 )?;
                 eprintln!("{} games; {:.1}s", completed, start.elapsed().as_secs_f64());
@@ -556,10 +593,23 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
     if let Some(trace) = &mut trace {
         trace.flush()?;
     }
+    index_journal.flush()?;
     if let Err(error) = result {
+        let message = error.to_string();
         write_json(
             &partial,
-            &json!({"schema":3,"status":"failed","mode":options.schedule.mode,"fingerprint":fingerprint,"completed":completed,"elapsedSeconds":start.elapsed().as_secs_f64(),"error":error.to_string(),"outcomes":outcomes.iter().flatten().collect::<Vec<_>>()}),
+            &Progress::new(
+                "failed",
+                options.schedule.mode,
+                fingerprint,
+                completed,
+                configs.len(),
+                start.elapsed().as_secs_f64(),
+                &index_journal,
+                &journal,
+                trace.as_ref(),
+                Some(&message),
+            ),
             false,
         )?;
         return Err(error);
@@ -591,7 +641,18 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
     fs::write(sibling(&output, ".md")?, report::markdown(&report))?;
     write_json(
         &partial,
-        &json!({"schema":3,"status":"complete","mode":options.schedule.mode,"fingerprint":fingerprint,"completed":completed,"outcomes":report["outcomes"]}),
+        &Progress::new(
+            "complete",
+            options.schedule.mode,
+            fingerprint,
+            completed,
+            configs.len(),
+            start.elapsed().as_secs_f64(),
+            &index_journal,
+            &journal,
+            trace.as_ref(),
+            None,
+        ),
         false,
     )?;
     println!(

@@ -1,0 +1,40 @@
+{
+  "id": "tideseer",
+  "name": "Tide seer",
+  "race": "merfolk",
+  "hp": 17,
+  "move": 4,
+  "cost": 0,
+  "attacks": [
+    {
+      "id": "trident",
+      "name": "Trident",
+      "damage": 4,
+      "damageType": "pierce",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "tidebolt",
+      "name": "Tide bolt",
+      "damage": 2,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Amphibious",
+  "description": "Tide seer: an experienced tidekeeper. Merfolk leader. Swims through deep water; recruits on an owned keep. Forests and groves slow and expose merfolk.",
+  "leader": true,
+  "level": 2,
+  "family": "tidekeeper",
+  "experienceNeeded": 0,
+  "advancesTo": []
+}

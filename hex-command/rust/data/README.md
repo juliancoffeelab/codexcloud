@@ -3,7 +3,7 @@
 These JSON files are the native game's source of rules and scenario content. They
 are edited directly; TypeScript exports and generated rules are not inputs.
 
-`manifest.json` declares schema version 1 and all document paths. Array order is
+`manifest.json` declares schema version 2 and all document paths. Array order is
 intentional: terrain and unit arrays determine runtime indices, campaign `stages`
 arrays determine mission order, and simulation arrays determine schedule order.
 Paths are relative to this directory and cannot contain traversal components.
@@ -11,29 +11,39 @@ Paths are relative to this directory and cannot contain traversal components.
 - `game/terrain.json` defines terrain IDs, labels, movement, passability and
   environmental damage modifiers.
 - `game/races.json` defines inherited resistance and terrain modifiers.
-- `game/units.json` defines unit deviations from their race, weapons and
+- `game/units/<unit-id>.json` defines one unit's deviations from its race, weapons and
   progression. Damage and range come from weapons. Movement costs and
   environmental modifiers are resolved once when Rust loads the catalog. Never
   author `costs` or `environment` arrays here.
-- `game/scenario/<id>-v<revision>.json` contains standalone scenarios and retained
-  legacy map revisions with geometry and starting placements.
+- `game/scenario/<id>-v<revision>/scenario.json` references `map.json` (geometry)
+  and `roster.json` (starting gold and placements).
 - `game/campaigns/<id>/campaign.json` contains campaign metadata, ending dialogue
-  and ordered stage document paths. Each stage embeds initial map geometry and
-  placements under `state`, plus mission rules, story, goals, events, recruitment
-  and reinforcements. These are authored starting definitions rather than frozen
-  runtime snapshots. Its
-  `map.units` retains starting-unit definitions used for campaign setup.
+  and ordered stage document paths. Each `stages/<stage-id>/stage.json` references
+  `map.json`, `roster.json`, `objectives.json`, `story.json` and `scripts.json`.
+  Maps contain geometry and metadata; rosters contain placements, recruitment and
+  budgets; objectives contain goals, required companions and defense settings;
+  stories contain briefings, hints and dialogue; scripts contain triggered events,
+  reinforcement waves and conditional story overrides. Components are assembled
+  into typed mission data during loading.
 - `simulation/rosters.json`, `arena.json` and `campaign.json` contain roster and
   simulation defaults. They do not run simulations during loading.
+
+The unit/scenario/campaign paths in the root manifest are catalog-relative.
+Stage paths are relative to their campaign document, and component paths are
+relative to their scenario/stage descriptor. Traversal is rejected at every level.
+Standalone scenarios currently have no separate authored objective definitions;
+their existing commander-defeat rule remains in the core.
 
 Initial placements declare `type`, `side`, `col` and `row`, with optional story
 `name` and `role`. A new troop's HP comes from its unit rule. Author `hp` only for
 an intentionally wounded troop; it must be positive and at most the unit's max
 HP. IDs follow placement order (`u1`, `u2`, ...). Rust creates fresh action flags,
 zero experience, round 1, player turn, next ID and the initial log message. Legacy
-full snapshots remain accepted for frozen reference catalogs; their explicit
-fields preserve their recorded initial values. The story roster in `map.units`
-and the base map placements in `state.units` remain separate definitions.
+schema-v1 snapshots remain accepted for frozen reference catalogs; their explicit
+fields preserve their recorded initial values. A stage roster's `initial` contains
+the base scenario's gold and placements, while its top-level `units`, `recruits`,
+`enemyRecruits`, `gold` and `enemyGold` define campaign deployment and recruitment.
+These preserve the distinct scenario and campaign starting definitions.
 
 A terrain modifier's `cost` adds to the base terrain cost; minimum resolved cost
 is 1. Unit `passable` overrides race `passable`, which overrides terrain

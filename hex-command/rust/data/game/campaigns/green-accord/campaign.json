@@ -18,8 +18,8 @@
     }
   ],
   "stages": [
-    "game/campaigns/green-accord/stages/green-border.json",
-    "game/campaigns/green-accord/stages/green-vigil.json",
-    "game/campaigns/green-accord/stages/green-pact.json"
+    "stages/green-border/stage.json",
+    "stages/green-vigil/stage.json",
+    "stages/green-pact/stage.json"
   ]
 }

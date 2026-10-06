@@ -1,0 +1,14 @@
+{
+  "goals": [
+    {
+      "kind": "seal",
+      "label": "Use an adept to seal the three grave ruins",
+      "tiles": ["9,1", "11,4", "9,7"],
+      "unitType": "adept"
+    },
+    {
+      "kind": "defeat",
+      "label": "Defeat the Bellwarden"
+    }
+  ]
+}

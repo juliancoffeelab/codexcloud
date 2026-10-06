@@ -1,0 +1,14 @@
+{
+  "goals": [
+    {
+      "kind": "control",
+      "label": "Control both sluice gates",
+      "tiles": ["8,2", "8,5"]
+    },
+    {
+      "kind": "escort",
+      "label": "Bring Edda to the release beacon",
+      "tile": "9,4"
+    }
+  ]
+}

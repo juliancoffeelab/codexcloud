@@ -1,0 +1,47 @@
+{
+  "id": "soldier",
+  "name": "Heavy infantry",
+  "race": "human",
+  "terrainModifiers": {
+    "ford": {
+      "cost": 1
+    },
+    "marsh": {
+      "cost": 1
+    }
+  },
+  "hp": 12,
+  "move": 3,
+  "cost": 8,
+  "attacks": [
+    {
+      "id": "sword",
+      "name": "Sword",
+      "damage": 4,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "mace",
+      "name": "Mace",
+      "damage": 3,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": -1,
+    "pierce": -1,
+    "impact": 1
+  },
+  "ability": "Armor",
+  "description": "Takes 1 less Blade/Pierce damage and 1 more Impact damage.",
+  "level": 2,
+  "family": "swordsman",
+  "experienceNeeded": 0,
+  "advancesTo": []
+}

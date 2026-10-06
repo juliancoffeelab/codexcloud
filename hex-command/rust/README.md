@@ -40,6 +40,11 @@ byte-indexed, SHA-256 checked JSONL journals plus compact JSON/Markdown reports.
 Records contain every action, combat, roster, objective and endpoint state. A
 bounded channel limits in-flight results; workers never share mutable battles.
 
+Progress uses an append-only `.outcomes.jsonl` index and a constant-size
+`.partial.json` snapshot. The final report retains its existing schema. See
+[recording and recovery](src/simulation/README.md) for journal formats and
+interrupted-run recovery.
+
 `--replay` requires the recorded engine/content fingerprint. `--compare` accepts
 an older engine's indexed report and checks complete parsed records against native
 results. It ignores object-key order, exact integral number spelling (`24` versus

@@ -1,0 +1,9 @@
+{
+  "goals": [
+    {
+      "kind": "escort",
+      "label": "Bring Ivo to the northeastern landing",
+      "tile": "11,1"
+    }
+  ]
+}

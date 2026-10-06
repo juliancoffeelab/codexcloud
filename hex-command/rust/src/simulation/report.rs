@@ -1,93 +1,22 @@
 //! Compact reports and statistics derived from complete, owned match results.
+pub use super::summaries::{DetailedSummary, borrowed_summary, compact_summary};
 use super::{
     error::SimulationError,
-    records::{DetailRecord, sha256},
     schedule::{Mode, ScheduleOptions},
-    types::*,
+    types::MatchResult,
 };
 use crate::ai::Random;
 use serde::Serialize;
 use serde_json::{Value, json};
 use std::collections::{BTreeMap, BTreeSet};
 
-fn phase_events(phases: &[Value], kind: &str) -> Vec<Value> {
-    phases
-        .iter()
-        .flat_map(|phase| {
-            phase["actions"]
-                .as_array()
-                .into_iter()
-                .flatten()
-                .filter(move |action| action["kind"] == kind)
-                .map(|action| json!({"side":phase["side"],"type":action["type"]}))
-        })
-        .collect()
-}
-fn enrich_phase_summary(value: &mut Value) -> Result<(), SimulationError> {
-    let phases = value["phases"].as_array().ok_or("Result phases missing")?;
-    let casualties: Vec<Value> = phases
-        .iter()
-        .flat_map(|phase| phase["losses"].as_array().into_iter().flatten().cloned())
-        .collect();
-    let recruits = phase_events(phases, "recruit");
-    let promotions = phase_events(phases, "advance");
-    let state_hash = sha256(&serde_json::to_vec(&value["final"])?);
-    value["casualties"] = json!(casualties);
-    value["recruits"] = json!(recruits);
-    value["promotions"] = json!(promotions);
-    value["stateHash"] = json!(state_hash);
-    Ok(())
-}
 /// Add composition events and state hashes while retaining every recorded phase.
 pub fn detailed_summary(result: &MatchResult) -> Result<Value, SimulationError> {
-    let mut value = serde_json::to_value(result)?;
-    match result {
-        MatchResult::Arena(_) => {
-            value["kind"] = json!("arena");
-            enrich_phase_summary(&mut value)?;
-        }
-        MatchResult::Campaign(_) => {
-            value["kind"] = json!("campaign");
-            for mission in value["missions"]
-                .as_array_mut()
-                .ok_or("Result missions missing")?
-            {
-                enrich_phase_summary(mission)?;
-            }
-        }
-    }
-    Ok(value)
+    Ok(serde_json::to_value(borrowed_summary(result, true)?)?)
 }
-/// Replace bulky states with a journal index while retaining outcome statistics.
-pub fn compact_outcome(
-    mut detail: Value,
-    reference: DetailRecord,
-    elapsed_ms: f64,
-) -> Result<Value, SimulationError> {
-    if detail["kind"] == "arena" {
-        strip_states(&mut detail)?;
-    } else {
-        for mission in detail["missions"]
-            .as_array_mut()
-            .ok_or("Result missions missing")?
-        {
-            let escalated = mission["final"]["campaign"]["refuge"]["escalated"]
-                .as_bool()
-                .unwrap_or(false);
-            strip_states(mission)?;
-            mission["escalated"] = json!(escalated);
-        }
-    }
-    detail["detail"] = serde_json::to_value(reference)?;
-    detail["elapsedMs"] = json!(elapsed_ms);
-    Ok(detail)
-}
-fn strip_states(value: &mut Value) -> Result<(), SimulationError> {
-    let object = value.as_object_mut().ok_or("Expected result object")?;
-    object.remove("phases");
-    object.remove("initial");
-    object.remove("final");
-    Ok(())
+/// Build comparable full details without computing derived hashes that comparison ignores.
+pub fn comparison_summary(result: &MatchResult) -> Result<Value, SimulationError> {
+    Ok(serde_json::to_value(borrowed_summary(result, false)?)?)
 }
 fn bot_label(outcome: &Value, side: &str) -> String {
     format!(
@@ -418,37 +347,6 @@ pub fn markdown(report: &Value) -> String {
 mod tests {
     use super::*;
     use crate::ai::{Diplomacy, Policy};
-    #[test]
-    fn summaries_retain_complete_turns_and_compact_only_endpoints() {
-        let mut detail = json!({"kind":"arena","phases":[{"side":"enemy","actions":[{"kind":"recruit","type":"archer"},{"kind":"advance","type":"ranger"}],"losses":[{"type":"spearman","side":"player"}],"combats":[{"damage":3}],"ownership":[{"tile":"1,1","owner":null}]}],"initial":{"round":1},"final":{"round":2}});
-        enrich_phase_summary(&mut detail).unwrap();
-        assert_eq!(
-            detail["recruits"],
-            json!([{"side":"enemy","type":"archer"}])
-        );
-        assert_eq!(
-            detail["promotions"],
-            json!([{"side":"enemy","type":"ranger"}])
-        );
-        assert_eq!(detail["casualties"].as_array().unwrap().len(), 1);
-        assert_eq!(detail["phases"][0]["combats"][0]["damage"], 3);
-        assert_eq!(detail["stateHash"], sha256(b"{\"round\":2}"));
-        let compact = compact_outcome(
-            detail,
-            DetailRecord {
-                file: "details.jsonl".into(),
-                offset: 0,
-                bytes: 1,
-                sha256: "checksum".into(),
-            },
-            2.0,
-        )
-        .unwrap();
-        assert!(compact.get("phases").is_none());
-        assert!(compact.get("final").is_none());
-        assert_eq!(compact["casualties"].as_array().unwrap().len(), 1);
-        assert_eq!(compact["detail"]["file"], "details.jsonl");
-    }
     #[test]
     fn self_play_statistics_use_player_seat_and_whole_seed_blocks() {
         let options = ScheduleOptions {

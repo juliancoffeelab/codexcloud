@@ -18,8 +18,8 @@
     }
   ],
   "stages": [
-    "game/campaigns/ashen-oath/stages/ashen-quarry.json",
-    "game/campaigns/ashen-oath/stages/ashen-refuge.json",
-    "game/campaigns/ashen-oath/stages/ashen-dawn.json"
+    "stages/ashen-quarry/stage.json",
+    "stages/ashen-refuge/stage.json",
+    "stages/ashen-dawn/stage.json"
   ]
 }

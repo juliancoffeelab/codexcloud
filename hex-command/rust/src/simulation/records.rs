@@ -26,6 +26,7 @@ pub struct ResultJournal {
     writer: File,
     pub file: String,
     offset: u64,
+    scratch: Vec<u8>,
 }
 impl ResultJournal {
     /// Create an empty journal and reset its byte cursor.
@@ -39,24 +40,30 @@ impl ResultJournal {
             writer: File::create(path)?,
             file,
             offset: 0,
+            scratch: Vec::new(),
         })
     }
     /// Serialize one record, append a newline, and return its complete byte index.
     pub fn append<T: Serialize>(&mut self, value: &T) -> Result<DetailRecord, SimulationError> {
-        let mut bytes = serde_json::to_vec(value)?;
-        bytes.push(b'\n');
-        self.writer.write_all(&bytes)?;
+        self.scratch.clear();
+        serde_json::to_writer(&mut self.scratch, value)?;
+        self.scratch.push(b'\n');
+        self.writer.write_all(&self.scratch)?;
         let record = DetailRecord {
             file: self.file.clone(),
             offset: self.offset,
-            bytes: bytes.len() as u64,
-            sha256: sha256(&bytes),
+            bytes: self.scratch.len() as u64,
+            sha256: sha256(&self.scratch),
         };
         self.offset = self
             .offset
             .checked_add(record.bytes)
             .ok_or("Journal size overflow")?;
         Ok(record)
+    }
+    /// Number of complete record bytes appended to this journal.
+    pub fn byte_len(&self) -> u64 {
+        self.offset
     }
     /// Flush buffered output before exposing completed journal references.
     pub fn flush(&mut self) -> Result<(), SimulationError> {

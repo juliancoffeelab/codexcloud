@@ -1,0 +1,17 @@
+{
+  "goals": [
+    {
+      "kind": "control",
+      "label": "Capture both logging camps",
+      "tiles": ["7,3", "7,5"]
+    },
+    {
+      "kind": "event",
+      "label": "Recover the workers’ pay ledger",
+      "tile": "6,1",
+      "event": "lost-tools"
+    }
+  ],
+  "requiredCompanions": ["Lark"],
+  "defendObjectives": true
+}

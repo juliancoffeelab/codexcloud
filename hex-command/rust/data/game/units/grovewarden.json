@@ -1,0 +1,40 @@
+{
+  "id": "grovewarden",
+  "name": "Grove warden",
+  "race": "beast",
+  "leader": true,
+  "hp": 17,
+  "move": 3,
+  "cost": 0,
+  "attacks": [
+    {
+      "id": "bough",
+      "name": "Bough",
+      "damage": 4,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "stones",
+      "name": "Stones",
+      "damage": 2,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": -1,
+    "impact": -1
+  },
+  "ability": "Keeper of the grove",
+  "description": "Grove warden: an experienced wildkeeper. Your leader. Forests and groves cost 1 movement and reduce incoming damage by 1. Takes 1 less Impact damage; losing it ends the mission.",
+  "level": 2,
+  "family": "wildkeeper",
+  "experienceNeeded": 0,
+  "advancesTo": []
+}

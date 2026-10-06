@@ -18,8 +18,8 @@
     }
   ],
   "stages": [
-    "game/campaigns/lantern-road/stages/lantern-ferry.json",
-    "game/campaigns/lantern-road/stages/lantern-villages.json",
-    "game/campaigns/lantern-road/stages/lantern-bell.json"
+    "stages/lantern-ferry/stage.json",
+    "stages/lantern-villages/stage.json",
+    "stages/lantern-bell/stage.json"
   ]
 }

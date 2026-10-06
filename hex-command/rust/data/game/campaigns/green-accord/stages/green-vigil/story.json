@@ -1,0 +1,126 @@
+{
+  "debrief": "The vigil revealed a bargain: the Overseer supplied workers to the Rootbinder, who killed and bound them into unpaid logging crews. Lark carries their memories in a living branch. Dain will help bring that evidence to the village council; the Overseer’s false report can no longer be the only account.",
+  "subtitle": "A personal truce. An officer’s cover-up.",
+  "briefing": "Dain has suspended his patrol’s attacks and stands with Alder at the central grove. The Overseer, the council’s timber and toll officer, still commands the other paid charter guards. The ledger threatens his office; he calls Dain a mutineer and orders the grove silenced. Keep Lark in the central grove through three enemy turns while she listens to the workers’ memories. Dain is here to defend the investigation, not command the attacking guards.",
+  "hints": [
+    "Move Lark into the central grove and protect her through three full enemy turns.",
+    "Leaving the grove or losing ownership resets the vigil.",
+    "Dain is your ally; the Overseer’s remaining charter guards are the enemy."
+  ],
+  "legacyDialogue": [
+    {
+      "speaker": "Captain Dain",
+      "portrait": "warden",
+      "text": "I came without my patrol. The truce holds while I watch from the treeline."
+    },
+    {
+      "speaker": "Lark",
+      "portrait": "thorncaller",
+      "text": "Bring me to the central grove. I need three quiet nights with the roots; if I must leave, the memory slips away."
+    },
+    {
+      "speaker": "Alder",
+      "portrait": "wildkeeper",
+      "text": "Then we stand around you. The overseer would not send soldiers to silence an empty story."
+    },
+    {
+      "speaker": "Lark",
+      "portrait": "thorncaller",
+      "text": "The roots have spoken. The Rootbinder killed the woodcutters and raised their bodies to serve the overseer."
+    },
+    {
+      "speaker": "Captain Dain",
+      "portrait": "warden",
+      "text": "I saw his seal on the dead. We fought you on a lie. The villages must hear what happened, even if it costs me my command."
+    },
+    {
+      "speaker": "Lark",
+      "portrait": "thorncaller",
+      "text": "I will bring their memory and this living branch. Let the households hear the dead and judge the living."
+    },
+    {
+      "speaker": "Tamsin",
+      "portrait": "adept",
+      "text": "I will watch from the treeline. Dain is gone, but the families still deserve to know who killed their woodcutters."
+    },
+    {
+      "speaker": "Alder",
+      "portrait": "wildkeeper",
+      "text": "Then we stand around you. Let the roots answer where swords could not."
+    },
+    {
+      "speaker": "Tamsin",
+      "portrait": "adept",
+      "text": "I saw his seal on the dead. I will take you to the village meeting. Dain’s death cannot excuse what his employer has done."
+    },
+    {
+      "speaker": "Lark",
+      "portrait": "thorncaller",
+      "text": "The owls found a forgotten patrol cache. Better six coins for a living grove than for another axe."
+    },
+    {
+      "speaker": "Alder",
+      "portrait": "wildkeeper",
+      "text": "The grove needs one night to recover. We hold it until dawn."
+    },
+    {
+      "speaker": "Lark",
+      "portrait": "thorncaller",
+      "text": "The overseer has sent patrols along both roads. One on the third turn, another on the fifth. The wooden forts are theirs only while they stand in them."
+    },
+    {
+      "speaker": "Captain Dain",
+      "portrait": "warden",
+      "text": "I saw the thing under the stones. It wore a dead man’s face and my lord’s seal."
+    },
+    {
+      "speaker": "Alder",
+      "portrait": "wildkeeper",
+      "text": "Then take our witness to your people. A forest and a village can share a road."
+    }
+  ],
+  "intro": [
+    {
+      "speaker": "Captain Dain",
+      "portrait": "warden",
+      "text": "I suspended my patrol’s orders. These other guards answer to the Overseer. I will stand here with you until we know what happened."
+    },
+    {
+      "speaker": "The Overseer",
+      "portrait": "commander",
+      "text": "Dain is dismissed. His truce binds none of you. Destroy the branch and break their circle before the council hears their lies."
+    },
+    {
+      "speaker": "Lark",
+      "portrait": "thorncaller",
+      "text": "Bring me to the central grove. The roots kept the workers’ last memories. If I am driven out, I must begin again."
+    },
+    {
+      "speaker": "Alder",
+      "portrait": "wildkeeper",
+      "text": "Then we defend the grove, captain included. The Overseer has given us a reason to keep listening."
+    }
+  ],
+  "victory": [
+    {
+      "speaker": "Lark",
+      "portrait": "thorncaller",
+      "text": "The workers asked for the pay he owed them and refused to cut this grove. The Overseer handed them to the Rootbinder. He killed them and bound their bodies to the logging crews."
+    },
+    {
+      "speaker": "Captain Dain",
+      "portrait": "warden",
+      "text": "Unpaid labor for the Overseer. Bodies and protection for the Rootbinder. And my patrol sent to punish you for their murders."
+    },
+    {
+      "speaker": "Lark",
+      "portrait": "thorncaller",
+      "text": "This branch holds what the roots remember. Their families can hear it too."
+    },
+    {
+      "speaker": "Alder",
+      "portrait": "wildkeeper",
+      "text": "The council is meeting across the river. We take the branch and the ledger there. Let the people who gave him his office judge what he did with it."
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "goals": [
+    {
+      "kind": "refuge",
+      "label": "Defend the refuge until the villagers intervene",
+      "tile": "5,4",
+      "turns": 6
+    }
+  ]
+}
