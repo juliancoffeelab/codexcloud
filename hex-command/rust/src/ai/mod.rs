@@ -18,7 +18,8 @@ use std::{
 };
 pub use tactics::Random;
 
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 /// Tactical and recruitment policy, preserving each policy's stable choices.
@@ -40,7 +41,8 @@ impl Policy {
         }
     }
 }
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 /// Treatment of retreating and mediated opponents during campaign battles.
@@ -108,7 +110,8 @@ pub struct PlanningWorkspace {
 }
 /// Serializable continuation of a policy phase. Route caches are rebuilt after
 /// restoration; decisions, unit order and recruitment budgets remain intact.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct PlanningSnapshot {

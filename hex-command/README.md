@@ -361,7 +361,7 @@ Generated output and original binary assets are excluded.
 ## Checks
 
 `npm run verify` is the complete patch check: style, Svelte, TypeScript,
-Rust tests, generated bindings, WASM compilation, pixel assets, unit tests and production build. It runs every check group even if
+Rust tests, the WASM package and its generated declarations, pixel assets, unit tests and production build. It runs every check group even if
 another fails, prints full diagnostics for failures and ends with a summary and
 the command to rerun failed groups. Successful groups print their elapsed time.
 Checks run sequentially so compilation does not compete with the unit suite's

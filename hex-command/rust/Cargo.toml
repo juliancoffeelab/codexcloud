@@ -11,23 +11,16 @@ crate-type = ["rlib", "cdylib"]
 name = "hex-command-sim"
 path = "src/main.rs"
 
-[[bin]]
-name = "export-types"
-path = "src/bin/export-types.rs"
-required-features = ["bindings"]
-
 [features]
 default = []
-bindings = ["dep:ts-rs"]
-wasm = ["bindings", "dep:wasm-bindgen", "dep:serde-wasm-bindgen"]
+wasm = ["dep:tsify", "dep:wasm-bindgen"]
 
 [dependencies]
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 sha2 = "0.10"
-ts-rs = { version = "11", features = ["serde-json-impl"], optional = true }
+tsify = { version = "0.5.8", default-features = false, features = ["js"], optional = true }
 wasm-bindgen = { version = "0.2", optional = true }
-serde-wasm-bindgen = { version = "0.6", optional = true }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 flate2 = "1"

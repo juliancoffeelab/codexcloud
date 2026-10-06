@@ -14,10 +14,6 @@ use std::collections::{BTreeMap, BTreeSet};
 pub fn detailed_summary(result: &MatchResult) -> Result<Value, SimulationError> {
     Ok(serde_json::to_value(borrowed_summary(result, true)?)?)
 }
-/// Build comparable full details without computing derived hashes that comparison ignores.
-pub fn comparison_summary(result: &MatchResult) -> Result<Value, SimulationError> {
-    Ok(serde_json::to_value(borrowed_summary(result, false)?)?)
-}
 fn bot_label(outcome: &Value, side: &str) -> String {
     format!(
         "{}/{}",

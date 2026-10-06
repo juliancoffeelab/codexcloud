@@ -1,7 +1,6 @@
 //! Native schedule, bounded scoped worker pool, reporting and replay.
 use super::{
     checkpoint::{IndexedOutcome, Progress},
-    compare::{JsonDifference, first_difference, read_comparison_detail, strip_derived_metadata},
     error::SimulationError,
     matches,
     records::{DetailRecord, ResultJournal, read_detail, sha256},
@@ -24,7 +23,7 @@ use std::{
     time::Instant,
 };
 
-const HELP: &str = "Usage: hex-command-sim [options]\n  --mode arena|campaign|full      default arena\n  --seeds N --seed N              count (default 2) and first seed (default 1)\n  --seed-start N                  alias for --seed\n  --policies classic,rush,mixed   complete policies to compare\n  --armies human,woodland,undead,coastal\n  --landscapes open,wooded,crossings,islands\n  --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide\n  --rounds N --recruits N         bounded rounds (default 30), recruits/phase (default 1)\n  --diplomacy pragmatic,restrained campaign behavior settings\n  --workers N                    scoped thread pool, CPU quota default, maximum 8\n  --out PATH                     JSON report and readable Markdown report\n  --trace                        also retain raw match results\n  --replay PATH                  verify saved report details and results (strict fingerprint)\n  --compare PATH                 compare saved TS/native detailed dump or report directory\n  --compare-limit N              bound comparison to first N saved configurations\n  --data-dir PATH                authored JSON catalog root (HEX_COMMAND_DATA_ROOT also works)\n  --schedule-only                emit configurations without running any matches\n  --stdio                        compatibility JSON request/result line protocol\n  --fingerprint                  compiled content and engine SHA256 fingerprints\nArena entrants have both seats and both initiatives; self-play has both initiatives.\nCampaigns begin at chapter one, earn carryover and receive no retries. Caps remain unresolved.";
+const HELP: &str = "Usage: hex-command-sim [options]\n  --mode arena|campaign|full      default arena\n  --seeds N --seed N              count (default 2) and first seed (default 1)\n  --seed-start N                  alias for --seed\n  --policies classic,rush,mixed   complete policies to compare\n  --armies human,woodland,undead,coastal\n  --landscapes open,wooded,crossings,islands\n  --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide\n  --rounds N --recruits N         bounded rounds (default 30), recruits/phase (default 1)\n  --diplomacy pragmatic,restrained campaign behavior settings\n  --workers N                    scoped thread pool, CPU quota default, maximum 8\n  --out PATH                     JSON report and readable Markdown report\n  --trace                        also retain raw match results\n  --replay PATH                  verify saved report details and results (strict fingerprint)\n  --data-dir PATH                authored JSON catalog root (HEX_COMMAND_DATA_ROOT also works)\n  --schedule-only                emit configurations without running any matches\n  --stdio                        compatibility JSON request/result line protocol\n  --fingerprint                  compiled content and engine SHA256 fingerprints\nArena entrants have both seats and both initiatives; self-play has both initiatives.\nCampaigns begin at chapter one, earn carryover and receive no retries. Caps remain unresolved.";
 #[derive(Debug)]
 struct CliOptions {
     schedule: ScheduleOptions,
@@ -32,9 +31,6 @@ struct CliOptions {
     out: PathBuf,
     trace: bool,
     replay: Option<PathBuf>,
-    compare: Option<PathBuf>,
-    compare_limit: Option<usize>,
-    explicit_out: bool,
     schedule_only: bool,
 }
 fn flag_integer(
@@ -97,8 +93,6 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
         "--workers",
         "--out",
         "--replay",
-        "--compare",
-        "--compare-limit",
         "--engine",
     ];
     while index < args.len() {
@@ -128,16 +122,8 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
     if values.contains_key("--seed") && values.contains_key("--seed-start") {
         return Err("Specify one of --seed or --seed-start".into());
     }
-    if values.contains_key("--replay") && values.contains_key("--compare") {
-        return Err("Specify one of --replay or --compare".into());
-    }
-    if values.contains_key("--compare-limit") && !values.contains_key("--compare") {
-        return Err("--compare-limit requires --compare".into());
-    }
-    if switches.contains("--schedule-only")
-        && (values.contains_key("--compare") || values.contains_key("--replay"))
-    {
-        return Err("--schedule-only cannot be combined with --compare or --replay".into());
+    if switches.contains("--schedule-only") && values.contains_key("--replay") {
+        return Err("--schedule-only cannot be combined with --replay".into());
     }
     let mut options = ScheduleOptions::defaults(rules)?;
     options.mode = match values.get("--mode").map(String::as_str).unwrap_or("arena") {
@@ -208,13 +194,6 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
         out,
         trace: switches.contains("--trace"),
         replay: values.get("--replay").map(PathBuf::from),
-        compare: values.get("--compare").map(PathBuf::from),
-        compare_limit: if values.contains_key("--compare-limit") {
-            Some(flag_integer(&values, "--compare-limit", 1, 1, u32::MAX)? as usize)
-        } else {
-            None
-        },
-        explicit_out: values.contains_key("--out"),
         schedule_only: switches.contains("--schedule-only"),
     })
 }
@@ -301,93 +280,6 @@ fn replay(rules: &Rules, path: &Path, fingerprint: &str) -> Result<(), Simulatio
         json!({"verified":true,"games":outcomes.len(),"fingerprint":fingerprint})
     );
     Ok(())
-}
-struct Compared {
-    config: Value,
-    difference: Option<JsonDifference>,
-}
-fn compare_dump(
-    rules: &Rules,
-    reference: &Path,
-    limit: Option<usize>,
-    workers: usize,
-    output: Option<&Path>,
-) -> Result<(), SimulationError> {
-    let path = if reference.is_dir() {
-        reference.join("report.json")
-    } else {
-        reference.to_owned()
-    };
-    if output.is_some_and(|output| {
-        fs::canonicalize(output).ok() == fs::canonicalize(&path).ok() || output == path
-    }) {
-        return Err("Comparison output must differ from the reference report".into());
-    }
-    let saved = read_report(&path)?;
-    let outcomes = saved["outcomes"]
-        .as_array()
-        .ok_or("Comparison report outcomes missing")?;
-    if outcomes.is_empty() {
-        return Err("Comparison report has no saved games".into());
-    }
-    let selected = limit.unwrap_or(outcomes.len()).min(outcomes.len());
-    let directory = path.parent().unwrap_or(Path::new("."));
-    let start = Instant::now();
-    let mut games = 0;
-    let mut mismatch = None;
-    let result = execute_jobs(
-        &outcomes[..selected],
-        workers,
-        &|outcome: &Value| {
-            let mut expected = if let Some(reference) = outcome.get("detail") {
-                let reference: DetailRecord = serde_json::from_value(reference.clone())?;
-                read_comparison_detail(directory, &reference)?
-            } else {
-                outcome.clone()
-            };
-            let config: MatchConfig = serde_json::from_value(expected["config"].clone())?;
-            let mut actual = report::comparison_summary(&matches::run(rules, config)?)?;
-            strip_derived_metadata(&mut expected);
-            strip_derived_metadata(&mut actual);
-            Ok(Compared {
-                config: expected["config"].clone(),
-                difference: first_difference(&expected, &actual),
-            })
-        },
-        |index, compared, _| {
-            games += 1;
-            if let Some(difference) = compared.difference {
-                mismatch =
-                    Some(json!({"game":index+1,"config":compared.config,"difference":difference}));
-                return Err(SimulationError::Comparison(difference));
-            }
-            if games % 10 == 0 {
-                eprintln!(
-                    "Compared {games} games; {:.1}s",
-                    start.elapsed().as_secs_f64()
-                );
-            }
-            Ok(())
-        },
-    );
-    let mut summary = json!({"verified":result.is_ok(),"games":games,"selectedGames":selected,"availableGames":outcomes.len(),"limited":selected<outcomes.len(),"workers":workers,"reference":path,"referenceFingerprint":saved["fingerprint"],"fingerprints":fingerprints(rules),"elapsedSeconds":start.elapsed().as_secs_f64()});
-    if let Some(mismatch) = mismatch {
-        summary["firstMismatch"] = mismatch;
-    }
-    if let Err(error) = &result {
-        summary["error"] = json!(error.to_string());
-    }
-    if let Some(output) = output {
-        if let Some(parent) = output
-            .parent()
-            .filter(|parent| !parent.as_os_str().is_empty())
-        {
-            fs::create_dir_all(parent)?;
-        }
-        write_json(output, &summary, true)?;
-    }
-    println!("{summary}");
-    result
 }
 struct Completed<Output> {
     index: usize,
@@ -696,19 +588,6 @@ pub fn run(args: &[String]) -> Result<(), SimulationError> {
     let fingerprint = report_fingerprint(&rules)?;
     if let Some(path) = &options.replay {
         return replay(&rules, path, &fingerprint);
-    }
-    if let Some(path) = &options.compare {
-        return compare_dump(
-            &rules,
-            path,
-            options.compare_limit,
-            options.workers,
-            if options.explicit_out {
-                Some(&options.out)
-            } else {
-                None
-            },
-        );
     }
     run_batch(&rules, options, &fingerprint)
 }

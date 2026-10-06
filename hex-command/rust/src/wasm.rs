@@ -8,21 +8,24 @@ use crate::{
 };
 use serde::{Serialize, de::DeserializeOwned};
 use std::collections::HashMap;
+use tsify::{Ts, Tsify};
 use wasm_bindgen::prelude::*;
 
-fn encode<T: Serialize>(result: Result<T, EngineError>) -> JsValue {
-    EngineResult::from(result)
-        .serialize(
-            &serde_wasm_bindgen::Serializer::new()
-                .serialize_maps_as_objects(true)
-                .serialize_missing_as_null(true),
-        )
-        .expect("typed engine responses contain only serializable values")
+fn encode<T, Response>(result: Result<T, EngineError>) -> Result<Ts<Response>, JsError>
+where
+    Response: Tsify + Serialize + From<Result<T, EngineError>>,
+{
+    Ok(Response::from(result).into_ts()?)
 }
-fn decode<T: DeserializeOwned>(value: JsValue) -> Result<T, EngineError> {
-    serde_wasm_bindgen::from_value(value).map_err(|error| EngineError::InvalidRequest {
-        message: error.to_string(),
-    })
+fn decode<T: Tsify + DeserializeOwned>(value: Ts<T>) -> Result<T, EngineError>
+where
+    T::JsType: Clone,
+{
+    value
+        .to_rust()
+        .map_err(|error| EngineError::InvalidRequest {
+            message: error.to_string(),
+        })
 }
 struct Battle {
     state: State,
@@ -64,21 +67,24 @@ impl NativeEngineFactory {
     /// Omit the bundle for embedded canonical JSON, or pass relative path -> JSON text.
     /// Construction errors carry an encoded [`EngineResult`] failure for the host adapter.
     #[wasm_bindgen(constructor)]
-    pub fn new(bundle: JsValue) -> Result<NativeEngineFactory, JsValue> {
-        let loaded = if bundle.is_null() || bundle.is_undefined() {
-            Rules::embedded().map_err(|error| EngineError::Content {
-                path: error.path,
-                message: error.message,
-            })
-        } else {
-            decode::<JsonBundle>(bundle).and_then(|bundle| {
-                Rules::from_json_bundle(&bundle).map_err(|error| EngineError::Content {
+    pub fn new(bundle: Option<Ts<CatalogDocuments>>) -> Result<NativeEngineFactory, JsValue> {
+        let loaded = if let Some(bundle) = bundle {
+            decode(bundle).and_then(|bundle| {
+                Rules::from_json_bundle(&bundle.0).map_err(|error| EngineError::Content {
                     path: error.path,
                     message: error.message,
                 })
             })
+        } else {
+            Rules::embedded().map_err(|error| EngineError::Content {
+                path: error.path,
+                message: error.message,
+            })
         };
-        let rules = loaded.map_err(|error| encode::<()>(Err(error)))?;
+        let rules = loaded.map_err(|error| match encode::<(), UnitResponse>(Err(error)) {
+            Ok(response) => response.js_value(),
+            Err(error) => error.into(),
+        })?;
         Ok(Self {
             rules,
             battles: HashMap::new(),
@@ -87,7 +93,7 @@ impl NativeEngineFactory {
     }
 
     /// Return owned catalog metadata as an encoded [`EngineResult<CatalogView>`].
-    pub fn catalog(&self) -> JsValue {
+    pub fn catalog(&self) -> Result<Ts<CatalogResponse>, JsError> {
         let mut maps: Vec<_> = self
             .rules
             .maps
@@ -136,7 +142,7 @@ impl NativeEngineFactory {
 
     /// Decode [`Start`] and return a new [`BattleHandle`] at revision zero.
     /// The seed is retained for deterministic AI planning.
-    pub fn create(&mut self, start: JsValue, seed: u32) -> JsValue {
+    pub fn create(&mut self, start: Ts<Start>, seed: u32) -> Result<Ts<BattleResponse>, JsError> {
         let result = decode::<Start>(start)
             .and_then(|start| self.start(start))
             .map(|state| self.insert(state, seed));
@@ -144,16 +150,21 @@ impl NativeEngineFactory {
     }
     /// Validate [`SavedGame`] and restore state and AI continuation under a new handle.
     /// The restored handle starts at revision zero; invalid saves leave the factory unchanged.
-    pub fn restore(&mut self, saved: JsValue) -> JsValue {
+    pub fn restore(&mut self, saved: Ts<SavedGame>) -> Result<Ts<BattleResponse>, JsError> {
         encode(decode::<SavedGame>(saved).and_then(|saved| self.restore_saved(saved)))
     }
     /// Return a detached [`EngineView`] when the handle and expected revision are current.
-    pub fn view(&self, id: u32, revision: u32) -> JsValue {
+    pub fn view(&self, id: u32, revision: u32) -> Result<Ts<ViewResponse>, JsError> {
         encode(self.battle(id, revision).map(Battle::view))
     }
     /// Return [`ReachableTile`] destinations and costs for a stable unit identity.
     /// The query leaves battle state and revision unchanged.
-    pub fn reachable(&self, id: u32, revision: u32, unit: u32) -> JsValue {
+    pub fn reachable(
+        &self,
+        id: u32,
+        revision: u32,
+        unit: u32,
+    ) -> Result<Ts<ReachableResponse>, JsError> {
         encode(self.battle(id, revision).and_then(|battle| {
             let game = Game::from_state(&self.rules, battle.state.clone());
             let actor = game
@@ -172,7 +183,12 @@ impl NativeEngineFactory {
     /// Decode [`AttackQuery`] and return an [`AttackPreview`] for a legal attack.
     /// An optional hypothetical origin affects the query without moving the attacker.
     #[wasm_bindgen(js_name = previewAttack)]
-    pub fn preview_attack(&self, id: u32, revision: u32, query: JsValue) -> JsValue {
+    pub fn preview_attack(
+        &self,
+        id: u32,
+        revision: u32,
+        query: Ts<AttackQuery>,
+    ) -> Result<Ts<AttackResponse>, JsError> {
         encode(decode::<AttackQuery>(query).and_then(|query| {
             let battle = self.battle(id, revision)?;
             let game = Game::from_state(&self.rules, battle.state.clone());
@@ -209,25 +225,35 @@ impl NativeEngineFactory {
     }
     /// Apply one decoded [`Command`] against the expected revision.
     /// Success returns [`DispatchResult`]; rejected commands leave state unchanged.
-    pub fn dispatch(&mut self, id: u32, revision: u32, command: JsValue) -> JsValue {
+    pub fn dispatch(
+        &mut self,
+        id: u32,
+        revision: u32,
+        command: Ts<Command>,
+    ) -> Result<Ts<DispatchResponse>, JsError> {
         encode(decode::<Command>(command).and_then(|command| self.apply(id, revision, command)))
     }
     /// Return an [`AiDecision`] without applying it or advancing the battle revision.
     /// Repeated requests reuse the pending command until dispatch; changed options start a new phase.
     #[wasm_bindgen(js_name = chooseAiCommand)]
-    pub fn choose_ai_command(&mut self, id: u32, revision: u32, options: JsValue) -> JsValue {
+    pub fn choose_ai_command(
+        &mut self,
+        id: u32,
+        revision: u32,
+        options: Ts<AiOptions>,
+    ) -> Result<Ts<AiResponse>, JsError> {
         encode(
             decode::<AiOptions>(options).and_then(|options| self.decision(id, revision, options)),
         )
     }
     /// Return a [`SavedGame`] checkpoint including any pending AI command and continuation.
-    pub fn save(&self, id: u32, revision: u32) -> JsValue {
+    pub fn save(&self, id: u32, revision: u32) -> Result<Ts<SaveResponse>, JsError> {
         encode(self.checkpoint(id, revision))
     }
     /// Release a battle and its planner; later requests return [`EngineError::UnknownBattle`].
     /// All results use the encoded [`EngineResult`] envelope.
     #[wasm_bindgen(js_name = disposeBattle)]
-    pub fn dispose_battle(&mut self, id: u32) -> JsValue {
+    pub fn dispose_battle(&mut self, id: u32) -> Result<Ts<UnitResponse>, JsError> {
         encode(
             self.battles
                 .remove(&id)
@@ -251,9 +277,7 @@ impl NativeEngineFactory {
         battle.check(revision)?;
         let mut game = Game::from_state(&self.rules, battle.state.clone());
         let ends_turn = matches!(command, Command::EndTurn);
-        let planned = battle.pending.as_ref().is_some_and(|pending| {
-            serde_json::to_value(pending).ok() == serde_json::to_value(&command).ok()
-        });
+        let planned = battle.pending.as_ref() == Some(&command);
         let mut effects = game.execute(command.clone())?;
         let state = game.state();
         crate::logic::complete_effects(&battle.state, &state, &command, &mut effects);
@@ -462,10 +486,7 @@ mod tests {
                 serde_json::from_str(&serde_json::to_string(&saved).unwrap()).unwrap();
             let restored = factory.restore_saved(saved).unwrap();
             let repeated = factory.decision(restored.id, 0, options.clone()).unwrap();
-            assert_eq!(
-                serde_json::to_value(&first.command).unwrap(),
-                serde_json::to_value(&repeated.command).unwrap()
-            );
+            assert_eq!(first.command, repeated.command);
             // A few individual decisions exercise the cursor and staged follow-up,
             // without running a turn, campaign, or tournament simulation.
             for revision in 0..3 {
@@ -475,10 +496,7 @@ mod tests {
                 let second = factory
                     .decision(restored.id, revision, options.clone())
                     .unwrap();
-                assert_eq!(
-                    serde_json::to_value(&first.command).unwrap(),
-                    serde_json::to_value(&second.command).unwrap()
-                );
+                assert_eq!(first.command, second.command);
                 factory.apply(original.id, revision, first.command).unwrap();
                 factory
                     .apply(restored.id, revision, second.command)

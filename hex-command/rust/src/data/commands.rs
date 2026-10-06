@@ -3,8 +3,9 @@
 use super::*;
 use serde::{Deserialize, Serialize};
 /// A validated battle mutation expressed with stable authored identifiers.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "camelCase")]
 pub enum Command {
     Move {
@@ -40,7 +41,8 @@ pub enum Command {
     },
 }
 /// Consequences returned after a command has been applied successfully.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Effects {
@@ -52,7 +54,8 @@ pub struct Effects {
     pub winner: Option<Side>,
 }
 /// Validation failures leave the entire battle unchanged.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum CommandError {
     CatalogMismatch,
@@ -77,7 +80,8 @@ impl std::fmt::Display for CommandError {
 }
 impl std::error::Error for CommandError {}
 /// A terrain entry is either impassable or spends a finite movement cost.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", content = "cost", rename_all = "camelCase")]
 pub enum Passability {
@@ -86,7 +90,8 @@ pub enum Passability {
 }
 /// Observable consequences of an accepted command. Hosts can update feedback
 /// from these events while displaying the resulting immutable snapshot.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "camelCase")]
 pub enum GameEvent {

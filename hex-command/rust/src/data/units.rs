@@ -3,7 +3,8 @@
 use super::*;
 use serde::{Deserialize, Serialize};
 /// The two battle allegiances, with a stable index into side-specific arrays.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Side {
@@ -25,7 +26,8 @@ impl Side {
     }
 }
 /// Weapon category used to select compatible retaliation attacks.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Category {
@@ -39,7 +41,8 @@ impl Category {
     }
 }
 /// Physical damage category indexing resistance and terrain modifiers.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum DamageType {
@@ -58,7 +61,8 @@ impl DamageType {
     }
 }
 /// An authored attack option with deterministic damage, range and feedback metadata.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Weapon {
@@ -71,7 +75,8 @@ pub struct Weapon {
     pub sound: String,
 }
 /// Per-damage-type adjustments contributed by a defending unit.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DamageModifiers {
@@ -90,7 +95,8 @@ impl DamageModifiers {
     }
 }
 /// Resolved unit statistics, advancement choices and dense terrain-dependent tables.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UnitRule {
@@ -120,7 +126,8 @@ pub struct UnitRule {
     pub environment: Vec<[[i32; 3]; 2]>,
 }
 /// An owned unit snapshot preserving stable IDs and optional campaign metadata.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PublicUnit {
@@ -131,19 +138,19 @@ pub struct PublicUnit {
     pub hp: i32,
     pub moved: bool,
     pub attacked: bool,
-    #[cfg_attr(feature = "bindings", ts(optional))]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub experience: Option<u32>,
-    #[cfg_attr(feature = "bindings", ts(optional))]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
-    #[cfg_attr(feature = "bindings", ts(optional))]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub role: Option<Role>,
-    #[cfg_attr(feature = "bindings", ts(optional))]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub retreating: Option<bool>,
-    #[cfg_attr(feature = "bindings", ts(optional))]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub rebuilding: Option<bool>,
 }
@@ -163,7 +170,8 @@ pub(crate) struct Unit {
     pub rebuilding: Option<bool>,
 }
 /// Feedback identifying the latest attack until the next turn clears it.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LastCombat {
@@ -172,16 +180,17 @@ pub struct LastCombat {
     pub sound: String,
 }
 /// A surviving unit carried between campaign chapters with its earned experience.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Veteran {
     pub r#type: String,
     pub experience: u32,
-    #[cfg_attr(feature = "bindings", ts(optional))]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
-    #[cfg_attr(feature = "bindings", ts(optional))]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub role: Option<Role>,
 }

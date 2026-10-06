@@ -4,7 +4,8 @@ use super::*;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 /// An authored unit placement, including optional named-companion metadata.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Deserialize)]
 pub struct StartingUnit {
     pub col: i32,
@@ -15,7 +16,8 @@ pub struct StartingUnit {
     pub role: Option<Role>,
 }
 /// An authored objective. Each variant requires the fields its rule consumes.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "lowercase")]
 pub enum Goal {
@@ -166,7 +168,8 @@ impl Goal {
     }
 }
 /// Campaign event activation; required coordinates and rounds are structural.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "lowercase")]
 pub enum Trigger {
@@ -175,7 +178,8 @@ pub enum Trigger {
     Control { tile: String, round: Option<u32> },
 }
 /// A once-per-mission scripted event gated by a typed trigger and prior markers.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Event {
@@ -190,7 +194,8 @@ pub struct Event {
     pub war_dialogue: Option<Vec<Dialogue>>,
 }
 /// A reinforcement group released on or after its authored round.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Wave {
@@ -201,7 +206,8 @@ pub struct Wave {
     pub requires_unsealed: Option<String>,
 }
 /// The peaceful and escalated outcomes of a refuge-defense mission.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Refuge {
@@ -213,7 +219,8 @@ pub struct Refuge {
     pub war_hints: Vec<String>,
 }
 /// Chapter content overrides applied after companion losses or story choices.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MissionPatch {
@@ -226,14 +233,16 @@ pub struct MissionPatch {
     pub victory: Option<Vec<Dialogue>>,
 }
 /// A mission map reference and its authored starting roster.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Deserialize)]
 pub struct Layout {
     pub id: String,
     pub units: Vec<StartingUnit>,
 }
 /// An authored chapter defining objectives, recruits, events and story feedback.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Mission {

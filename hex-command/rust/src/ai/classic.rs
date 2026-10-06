@@ -35,11 +35,12 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         let important = g.essential(u);
         let mut threats = important.then(|| Threats::new(g, u.side));
         let minimum = if let Some(t) = &mut threats {
-            std::iter::once(u.tile)
-                .chain(g.reachable(u).into_iter().map(|(t, _)| t))
-                .map(|tile| t.at(u, tile, None))
-                .min()
-                .unwrap_or(0)
+            let current = t.at(u, u.tile, None);
+            if current == 0 {
+                0
+            } else {
+                current.min(t.minimum(u, g.reachable(u).into_iter().map(|(tile, _)| tile)))
+            }
         } else {
             0
         };

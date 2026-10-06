@@ -84,12 +84,33 @@ impl Game<'_> {
             .collect();
         let movable_screens = screens.iter().any(|u| !u.moved && !u.attacked);
         let board = &self.board;
-        let range_to_foe = |tile| {
-            foes.iter()
-                .map(|u| board.distance(tile, u.tile))
-                .min()
-                .unwrap_or(20)
-        };
+        // These distances and possible targets depend only on this planning
+        // snapshot, not on the unit or candidate move currently being scored.
+        let foe_ranges: Vec<_> = (0..board.ids.len())
+            .map(|tile| {
+                foes.iter()
+                    .map(|u| board.distance(tile, u.tile))
+                    .min()
+                    .unwrap_or(20)
+            })
+            .collect();
+        let range_to_foe = |tile: usize| foe_ranges[tile];
+        let maximum_range = allies
+            .iter()
+            .flat_map(|u| &self.rules.units[u.kind].attacks)
+            .map(|a| a.range as u16)
+            .max()
+            .unwrap_or(0);
+        let mut nearby_foes = vec![Vec::new(); board.ids.len()];
+        // Append in roster order to preserve strict tactical tie-breaking.
+        for &foe in &foes {
+            for (tile, targets) in nearby_foes.iter_mut().enumerate() {
+                let distance = board.distance(tile, foe.tile);
+                if distance > 0 && distance <= maximum_range {
+                    targets.push(foe);
+                }
+            }
+        }
         let mut best: Option<Plan> = None;
         for original_unit in &allies {
             if original_unit.attacked {
@@ -124,11 +145,7 @@ impl Game<'_> {
             planned_unit.rebuilding = *intent;
             let unit = &planned_unit;
             let minimum_risk = if important {
-                destinations
-                    .iter()
-                    .map(|&t| threats.at(&unit, t, None))
-                    .min()
-                    .unwrap_or(i32::MAX)
+                threats.minimum(&unit, destinations.iter().copied())
             } else {
                 0
             };
@@ -252,6 +269,26 @@ impl Game<'_> {
                 0.9
             };
 
+            let other_healing: Vec<_> =
+                if policy == Policy::Mixed && category == TacticalRole::Healer {
+                    allies
+                        .iter()
+                        .map(|ally| {
+                            allies
+                                .iter()
+                                .filter(|o| {
+                                    o.id != unit.id
+                                        && o.id != ally.id
+                                        && self.board.distance(o.tile, ally.tile) == 1
+                                })
+                                .map(|o| self.rules.units[o.kind].healing)
+                                .max()
+                                .unwrap_or(0)
+                        })
+                        .collect()
+                } else {
+                    Vec::new()
+                };
             let mut wait_score = f64::NEG_INFINITY;
             let mut tiles = vec![unit.tile];
             tiles.extend(destinations.iter().copied().filter(|&t| t != unit.tile));
@@ -301,20 +338,11 @@ impl Game<'_> {
                     if category == TacticalRole::Healer {
                         let healing = self.rules.units[unit.kind].healing;
                         let mut value = 0.0;
-                        for ally in &allies {
+                        for (ally_index, ally) in allies.iter().enumerate() {
                             if ally.id == unit.id || self.board.distance(tile, ally.tile) != 1 {
                                 continue;
                             }
-                            let other = allies
-                                .iter()
-                                .filter(|o| {
-                                    o.id != unit.id
-                                        && o.id != ally.id
-                                        && self.board.distance(o.tile, ally.tile) == 1
-                                })
-                                .map(|o| self.rules.units[o.kind].healing)
-                                .max()
-                                .unwrap_or(0);
+                            let other = other_healing[ally_index];
                             value += (healing - other)
                                 .max(0)
                                 .min(self.rules.units[ally.kind].hp - ally.hp)
@@ -375,11 +403,13 @@ impl Game<'_> {
                 if !destinations.contains(&tile) {
                     continue;
                 }
-                let choices =
-                    std::iter::once((None, None)).chain(foes.iter().flat_map(|&target| {
+                let objective_finish = self.finishes_objective(&unit, tile, &objectives);
+                let choices = std::iter::once((None, None)).chain(
+                    nearby_foes[tile].iter().flat_map(|&target| {
                         (0..self.rules.units[unit.kind].attacks.len())
                             .filter_map(move |weapon| Some((Some(target), Some(weapon))))
-                    }));
+                    }),
+                );
                 for (target, weapon) in choices {
                     if let (Some(target), Some(weapon)) = (target, weapon) {
                         if !self.can_attack(unit, tile, target, weapon)
@@ -431,10 +461,42 @@ impl Game<'_> {
                             combat -= 18.0;
                         }
                     }
+                    let finishing = objective_finish && retaliation < unit.hp;
+                    // Even zero incoming damage cannot rescue a candidate below
+                    // this bound. Keep strict winner/tie ordering unchanged.
+                    let weighted_combat = if important && !finishing && !finishes_battle {
+                        combat
+                            * if unit.role == Some(Role::Courier) {
+                                0.1
+                            } else {
+                                0.5
+                            }
+                    } else {
+                        combat
+                    };
+                    let improvement_weight = if important {
+                        3.0
+                    } else if unit.hp <= 4 {
+                        1.5
+                    } else {
+                        0.2
+                    };
+                    let ceiling = positioning
+                        + if finishing || finishes_battle {
+                            100.0
+                        } else {
+                            0.0
+                        }
+                        + weighted_combat
+                        + before_risk as f64 * improvement_weight
+                        + 0.05
+                        - wait_score;
+                    let ceiling = ceiling.next_up();
+                    if ceiling <= best.as_ref().map_or(0.1, |b| b.score.max(0.1)) {
+                        continue;
+                    }
                     let incoming = threats.at(&unit, tile, eliminated);
                     let lethal = incoming >= unit.hp - retaliation;
-                    let finishing =
-                        self.finishes_objective(&unit, tile, &objectives) && retaliation < unit.hp;
                     if self.rules.units[unit.kind].leader
                         && !finishing
                         && !finishes_battle

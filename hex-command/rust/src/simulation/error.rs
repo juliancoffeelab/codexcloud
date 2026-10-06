@@ -1,7 +1,7 @@
 //! Typed failures from loading, planning, recording, replay and worker execution.
 use std::{error::Error, fmt, io};
 #[derive(Debug)]
-/// Native harness failure with an underlying cause or precise comparison mismatch.
+/// Native harness failure with an underlying cause.
 pub enum SimulationError {
     InvalidConfig(String),
     Content(crate::data::ContentError),
@@ -9,7 +9,6 @@ pub enum SimulationError {
     Io(io::Error),
     Json(serde_json::Error),
     Replay(String),
-    Comparison(super::compare::JsonDifference),
     Worker(String),
 }
 impl fmt::Display for SimulationError {
@@ -18,7 +17,6 @@ impl fmt::Display for SimulationError {
             Self::InvalidConfig(message) | Self::Replay(message) | Self::Worker(message) => {
                 f.write_str(message)
             }
-            Self::Comparison(difference) => write!(f, "Comparison mismatch at {difference}"),
             Self::Content(error) => write!(f, "{error}"),
             Self::Planning(error) => write!(f, "Policy command failed: {error}"),
             Self::Io(error) => write!(f, "{error}"),

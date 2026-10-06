@@ -5,7 +5,7 @@ import {
   loadNativeEngineFactory,
   type NativeBridge,
 } from "../src/game/native-engine";
-import type { EngineResult, EngineView, SavedGame, State } from "../src/game/native-types";
+import type { EngineResult, EngineView, SavedGame, State } from "../rust/pkg/hex_command";
 
 function value<T>(result: EngineResult<T>): T {
   assert(result.ok, JSON.stringify(result));

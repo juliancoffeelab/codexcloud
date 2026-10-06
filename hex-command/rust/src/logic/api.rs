@@ -18,14 +18,16 @@ pub struct Battle {
     catalog_fingerprint: String,
 }
 /// A legal movement destination for a unit that still has its action.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Reachable {
     pub tile: TileId,
     pub cost: MovementCost,
 }
 /// Deterministic attack and retaliation damage for a specified position.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CombatPreview {

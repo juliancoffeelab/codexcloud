@@ -15,3 +15,5 @@ pub use restore::{StateError, validate_state};
 pub mod campaign;
 pub use crate::data::{Command, CommandError, Effects};
 pub(crate) use battle::Game;
+
+pub(crate) mod geometry;

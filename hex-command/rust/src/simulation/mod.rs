@@ -1,7 +1,6 @@
 //! Native match execution, deterministic schedules, indexed journals and reports.
 pub mod checkpoint;
 pub mod cli;
-pub mod compare;
 pub mod error;
 pub mod matches;
 pub mod records;

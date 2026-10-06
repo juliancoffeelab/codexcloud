@@ -24,18 +24,7 @@ impl<'catalog> Game<'catalog> {
             return false;
         }
         let attack = &self.rules.units[unit.kind].attacks[weapon];
-        let gap = self.board.distance(from, target_tile);
-        if gap < 1 || gap > attack.range as u16 {
-            return false;
-        }
-        attack.category != Category::Ranged
-            || gap != 2
-            || self.board.adjacent[from].iter().any(|&between| {
-                self.board.distance(between, target_tile) == 1
-                    && !self.terrain_is(between, Terrain::Forest)
-                    && !self.terrain_is(between, Terrain::Hill)
-                    && !self.terrain_is(between, Terrain::Grove)
-            })
+        self.in_attack_range(from, target_tile, attack.category, attack.range)
     }
     pub(crate) fn attack_options(&self, unit: &Unit, target: &Unit, from: usize) -> Vec<usize> {
         (0..self.rules.units[unit.kind].attacks.len())

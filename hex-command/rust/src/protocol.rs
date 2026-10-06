@@ -6,14 +6,15 @@ use serde::{Deserialize, Serialize};
 
 /// Select a scenario or the first mission of an authored campaign.
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[serde(tag = "kind", rename_all = "camelCase")]
 pub enum Start {
     /// Start the requested revision, or the latest revision when omitted.
     Scenario {
         map: String,
         #[serde(default, skip_serializing_if = "Option::is_none")]
-        #[cfg_attr(feature = "bindings", ts(optional))]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
         revision: Option<u32>,
     },
     /// Begin a campaign without incoming veterans or carried gold.
@@ -22,7 +23,8 @@ pub enum Start {
 
 /// Tagged failures from transport validation, lifecycle checks, or battle rules.
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[serde(tag = "code", rename_all = "camelCase")]
 pub enum EngineError {
     InvalidRequest {
@@ -60,16 +62,17 @@ impl From<CommandError> for EngineError {
 
 /// Every operation returns data or a tagged error, without throwing for rule failures.
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[serde(untagged)]
 pub enum EngineResult<T> {
     Success {
-        #[cfg_attr(feature = "bindings", ts(type = "true"))]
+        #[cfg_attr(feature = "wasm", tsify(type = "true"))]
         ok: bool,
         value: T,
     },
     Failure {
-        #[cfg_attr(feature = "bindings", ts(type = "false"))]
+        #[cfg_attr(feature = "wasm", tsify(type = "false"))]
         ok: bool,
         error: EngineError,
     },
@@ -85,7 +88,8 @@ impl<T> From<Result<T, EngineError>> for EngineResult<T> {
 
 /// Detached battle state paired with the revision required by subsequent requests.
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 pub struct EngineView {
     /// Advances only after a successfully dispatched command.
     pub revision: u32,
@@ -95,7 +99,8 @@ pub struct EngineView {
 
 /// Versioned checkpoint containing exact battle state and optional AI continuation.
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct SavedGame {
     /// The current checkpoint format is version 1.
@@ -105,26 +110,28 @@ pub struct SavedGame {
     pub state: State,
     /// Older checkpoints omit this field and resume without an active planner.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "bindings", ts(optional))]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     pub planner: Option<SavedPlanner>,
 }
 
 /// Planner configuration, persistent workspace, and any command awaiting dispatch.
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct SavedPlanner {
     pub options: AiOptions,
     pub workspace: crate::ai::PlanningSnapshot,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "bindings", ts(optional))]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     /// Chosen but unapplied command, returned again after restoration.
     pub pending: Option<Command>,
 }
 
 /// Factory-local battle identity and its initial published snapshot.
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 pub struct BattleHandle {
     pub id: u32,
     pub view: EngineView,
@@ -132,7 +139,8 @@ pub struct BattleHandle {
 
 /// Coherent state publication and rule effects from one successful command.
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 pub struct DispatchResult {
     pub view: EngineView,
     pub effects: Effects,
@@ -140,7 +148,8 @@ pub struct DispatchResult {
 
 /// Reachable destination and its finite accumulated movement cost.
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 pub struct ReachableTile {
     pub tile: TileId,
     pub cost: u16,
@@ -148,21 +157,23 @@ pub struct ReachableTile {
 
 /// Stable identities needed to preview an attack without mutating the battle.
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[serde(rename_all = "camelCase")]
 pub struct AttackQuery {
     pub unit: UnitId,
     pub target: UnitId,
     pub weapon: WeaponId,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "bindings", ts(optional))]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     /// Hypothetical origin; omission uses the attacker's current tile.
     pub from: Option<TileId>,
 }
 
 /// Deterministic damage, retaliation, and the defender's selected response weapon.
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 pub struct AttackPreview {
     pub damage: i32,
     pub retaliation: i32,
@@ -171,18 +182,20 @@ pub struct AttackPreview {
 
 /// Policy configuration retained for the current planning phase.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct AiOptions {
-    pub policy: AiPolicy,
-    pub diplomacy: AiDiplomacy,
+    pub policy: crate::ai::Policy,
+    pub diplomacy: crate::ai::Diplomacy,
     /// Maximum recruit commands the planner may choose during this phase.
     pub recruitment_limit: usize,
 }
 
 /// Chosen command and the battle revision against which it must be dispatched.
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 pub struct AiDecision {
     pub revision: u32,
     pub command: Command,
@@ -190,7 +203,8 @@ pub struct AiDecision {
 
 /// Authored scenario identity, revision, and board dimensions.
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 pub struct MapSummary {
     pub id: String,
     pub revision: u32,
@@ -200,7 +214,8 @@ pub struct MapSummary {
 
 /// Authored campaign identity, display name, and mission count.
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 pub struct CampaignSummary {
     pub id: String,
     pub name: String,
@@ -209,7 +224,8 @@ pub struct CampaignSummary {
 
 /// Display and recruitment metadata for one catalog unit type.
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[serde(rename_all = "camelCase")]
 pub struct UnitSummary {
     pub id: String,
@@ -224,7 +240,8 @@ pub struct UnitSummary {
 
 /// Owned catalog metadata available before a battle is created.
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 pub struct CatalogView {
     pub maps: Vec<MapSummary>,
     pub campaigns: Vec<CampaignSummary>,
@@ -232,44 +249,46 @@ pub struct CatalogView {
     pub terrains: Vec<String>,
 }
 
-/// Emit one module, with all referenced Rust declarations included exactly once.
-#[cfg(feature = "bindings")]
-pub fn typescript() -> String {
-    use std::collections::BTreeMap;
-    use ts_rs::{TS, TypeVisitor};
-    struct Declarations(BTreeMap<String, String>);
-    impl TypeVisitor for Declarations {
-        fn visit<T: TS + 'static + ?Sized>(&mut self) {
-            if T::output_path().is_none() {
-                return;
+/// Optional browser-supplied catalog documents, keyed by their relative paths.
+#[cfg(feature = "wasm")]
+#[derive(Clone, Debug, Serialize, Deserialize, tsify::Tsify)]
+#[serde(transparent)]
+#[tsify(hashmap_as_object)]
+pub struct CatalogDocuments(pub std::collections::BTreeMap<String, String>);
+
+// The WASM ABI needs concrete names; the generic envelope remains shared.
+// Transparent response types retain the existing plain-object wire format.
+#[cfg(feature = "wasm")]
+macro_rules! response {
+    ($name:ident, $value:ty) => {
+        #[doc = concat!("Typed WASM response carrying `", stringify!($value), "` or an engine error.")]
+        #[derive(Clone, Debug, Serialize, Deserialize, tsify::Tsify)]
+        #[serde(transparent)]
+        #[tsify(missing_as_null, hashmap_as_object)]
+        pub struct $name(pub EngineResult<$value>);
+
+        impl From<Result<$value, EngineError>> for $name {
+            fn from(result: Result<$value, EngineError>) -> Self {
+                Self(result.into())
             }
-            let name = T::ident();
-            if self.0.contains_key(&name) {
-                return;
-            }
-            self.0.insert(name, format!("export {}", T::decl()));
-            T::visit_dependencies(self);
         }
-    }
-    let mut declarations = Declarations(BTreeMap::new());
-    declarations.visit::<Start>();
-    // The absence/null override on State.last_combat intentionally uses a TS name.
-    declarations.visit::<crate::data::LastCombat>();
-    declarations.visit::<EngineResult<()>>();
-    declarations.visit::<BattleHandle>();
-    declarations.visit::<DispatchResult>();
-    declarations.visit::<SavedGame>();
-    declarations.visit::<ReachableTile>();
-    declarations.visit::<AttackQuery>();
-    declarations.visit::<AttackPreview>();
-    declarations.visit::<AiOptions>();
-    declarations.visit::<AiDecision>();
-    declarations.visit::<CatalogView>();
-    let mut output = String::from("// Generated by rust/src/bin/export-types.rs. Do not edit.\n\n");
-    for declaration in declarations.0.into_values() {
-        output.push_str("// prettier-ignore\n");
-        output.push_str(&declaration);
-        output.push('\n');
-    }
-    output
+    };
 }
+#[cfg(feature = "wasm")]
+response!(CatalogResponse, CatalogView);
+#[cfg(feature = "wasm")]
+response!(BattleResponse, BattleHandle);
+#[cfg(feature = "wasm")]
+response!(ViewResponse, EngineView);
+#[cfg(feature = "wasm")]
+response!(ReachableResponse, Vec<ReachableTile>);
+#[cfg(feature = "wasm")]
+response!(AttackResponse, AttackPreview);
+#[cfg(feature = "wasm")]
+response!(DispatchResponse, DispatchResult);
+#[cfg(feature = "wasm")]
+response!(AiResponse, AiDecision);
+#[cfg(feature = "wasm")]
+response!(SaveResponse, SavedGame);
+#[cfg(feature = "wasm")]
+response!(UnitResponse, ());

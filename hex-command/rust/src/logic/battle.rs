@@ -79,6 +79,7 @@ pub(crate) struct Game<'catalog> {
     pub(crate) recordings: Option<Records>,
     pub(super) route_cache: RefCell<HashMap<(usize, Vec<usize>, u64), Rc<Vec<u16>>>>,
     pub(super) terrain_revision: u64,
+    pub(super) attack_geometry: super::geometry::AttackGeometry,
     pub(super) route_order: RefCell<VecDeque<(usize, Vec<usize>, u64)>>,
     pub(super) occupancy: Vec<Option<usize>>,
     pub(super) unit_indices: HashMap<u32, usize>,
@@ -144,6 +145,7 @@ impl<'catalog> Game<'catalog> {
             recordings: None,
             route_cache: RefCell::new(HashMap::new()),
             terrain_revision: 0,
+            attack_geometry: Rc::new(RefCell::new(HashMap::new())),
             route_order: RefCell::new(VecDeque::new()),
             occupancy: vec![],
             unit_indices: HashMap::new(),
@@ -286,6 +288,7 @@ impl<'catalog> Game<'catalog> {
     pub(crate) fn set_terrain(&mut self, tile: usize, terrain: usize) {
         if self.terrain[tile] != terrain {
             self.terrain[tile] = terrain;
+            self.attack_geometry = Rc::new(RefCell::new(HashMap::new()));
             self.terrain_revision = self.terrain_revision.wrapping_add(1);
             self.route_cache.get_mut().clear();
             self.route_order.get_mut().clear();
@@ -374,6 +377,7 @@ impl<'catalog> Game<'catalog> {
             recordings: None,
             route_cache: RefCell::new(HashMap::new()),
             terrain_revision: self.terrain_revision,
+            attack_geometry: self.attack_geometry.clone(),
             route_order: RefCell::new(VecDeque::new()),
             occupancy: self.occupancy.clone(),
             unit_indices: self.unit_indices.clone(),

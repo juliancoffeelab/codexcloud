@@ -3,7 +3,8 @@
 use super::*;
 use serde::{Deserialize, Serialize};
 /// Commands recorded by simulations in their established wire shape.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "lowercase")]
 pub enum ActionRecord {
@@ -29,7 +30,8 @@ pub enum ActionRecord {
     },
 }
 /// The positional and damage details of a resolved attack for native reports.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CombatRecord {
@@ -43,7 +45,8 @@ pub struct CombatRecord {
     pub mediation_at_risk: bool,
 }
 /// Exclusively owned action, casualty and combat histories for one simulation session.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct Records {
     pub actions: Vec<ActionRecord>,

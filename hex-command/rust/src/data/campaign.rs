@@ -4,7 +4,8 @@ use super::*;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 /// One scripted dialogue line with its speaker, portrait and display text.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Dialogue {
     pub speaker: String,
@@ -12,7 +13,8 @@ pub struct Dialogue {
     pub text: String,
 }
 /// Consecutive defended turns and the last round counted for an objective.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Counter {
@@ -20,7 +22,8 @@ pub struct Counter {
     pub last_counted_round: u32,
 }
 /// Defended refuge turns and whether mediation has escalated into battle.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RefugeCounter {
@@ -29,20 +32,21 @@ pub struct RefugeCounter {
     pub escalated: bool,
 }
 /// Persistent chapter progress, recalled companions, story choices and dialogue.
-#[cfg_attr(feature = "bindings", derive(ts_rs::TS))]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CampaignState {
     pub id: String,
     pub mission: usize,
     pub recall: Vec<String>,
-    #[cfg_attr(feature = "bindings", ts(optional))]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub veterans: Option<Vec<Veteran>>,
-    #[cfg_attr(feature = "bindings", ts(optional))]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub story_veterans: Option<Vec<Veteran>>,
-    #[cfg_attr(feature = "bindings", ts(optional))]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub fallen_companions: Option<Vec<String>>,
     pub carry_gold: i32,
@@ -51,16 +55,16 @@ pub struct CampaignState {
     pub dialogue_index: usize,
     pub outcome: Option<String>,
     pub completed: bool,
-    #[cfg_attr(feature = "bindings", ts(optional))]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub refuge: Option<RefugeCounter>,
-    #[cfg_attr(feature = "bindings", ts(optional))]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub vigil: Option<Counter>,
-    #[cfg_attr(feature = "bindings", ts(optional))]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub holds: Option<BTreeMap<String, Counter>>,
-    #[cfg_attr(feature = "bindings", ts(optional))]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub choices: Option<Vec<String>>,
 }

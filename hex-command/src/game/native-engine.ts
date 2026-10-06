@@ -11,10 +11,11 @@ import type {
   EngineError,
   EngineResult,
   EngineView,
+  NativeEngineFactory as WasmEngineFactory,
   ReachableTile,
   SavedGame,
   Start,
-} from "./native-types";
+} from "../../rust/pkg/hex_command";
 
 export type NativeResponse<T> = EngineResult<Immutable<T>>;
 
@@ -36,25 +37,26 @@ export interface GameEngineFactory {
   dispose(): EngineResult<null>;
 }
 
-/** Matches the generated wasm-bindgen class and supports a small injected test bridge. */
-export interface NativeBridge {
-  catalog(): EngineResult<CatalogView>;
-  create(start: Start, seed: number): EngineResult<BattleHandle>;
-  restore(saved: SavedGame): EngineResult<BattleHandle>;
-  view(id: number, revision: number): EngineResult<EngineView>;
-  reachable(id: number, revision: number, unit: number): EngineResult<ReachableTile[]>;
-  previewAttack(id: number, revision: number, query: AttackQuery): EngineResult<AttackPreview>;
-  dispatch(id: number, revision: number, command: Command): EngineResult<DispatchResult>;
-  chooseAiCommand(id: number, revision: number, options: AiOptions): EngineResult<AiDecision>;
-  save(id: number, revision: number): EngineResult<SavedGame>;
-  disposeBattle(id: number): EngineResult<null>;
-  free(): void;
-}
+/** Signatures come from wasm-bindgen; tests can supply the same public operations. */
+export type NativeBridge = Pick<
+  WasmEngineFactory,
+  | "catalog"
+  | "create"
+  | "restore"
+  | "view"
+  | "reachable"
+  | "previewAttack"
+  | "dispatch"
+  | "chooseAiCommand"
+  | "save"
+  | "disposeBattle"
+  | "free"
+>;
 
-export interface NativeWasmModule {
-  default?: () => Promise<unknown>;
-  NativeEngineFactory: new (bundle?: Record<string, string>) => NativeBridge;
-}
+export type NativeWasmModule = Pick<
+  typeof import("../../rust/pkg/hex_command"),
+  "default" | "NativeEngineFactory"
+>;
 
 function failure<T>(error: EngineError): EngineResult<T> {
   return { ok: false, error };
@@ -169,7 +171,7 @@ export async function loadNativeEngineFactory(
 ): Promise<EngineResult<GameEngineFactory>> {
   try {
     const module = await loader();
-    await module.default?.();
+    await module.default();
     return {
       ok: true,
       value: createNativeEngineFactory(new module.NativeEngineFactory(bundle)),

@@ -3,18 +3,19 @@ import { fileURLToPath } from "node:url";
 
 const checks = {
   style: "style",
+  wasm: "check:wasm",
   ui: "check:ui",
   types: "check:types",
   rust: "check:rust",
-  bindings: "check:bindings",
-  wasm: "check:wasm",
   art: "art:check",
   tests: "test",
   build: "build:check",
 } as const;
 type Check = keyof typeof checks;
 // Keep the former group name working for existing callers.
-const requested = process.argv.slice(2).map((name) => (name === "format" ? "style" : name));
+const requested = process.argv
+  .slice(2)
+  .map((name) => (name === "format" ? "style" : name === "bindings" ? "wasm" : name));
 if (requested.some((name) => !Object.hasOwn(checks, name))) {
   console.error(`Choose checks from: ${Object.keys(checks).join(", ")}`);
   process.exit(1);

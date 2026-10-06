@@ -25,10 +25,10 @@ npm run ai:simulate -- --armies human,coastal --policies classic,mixed --landsca
 # Replay requires the report's exact source fingerprint.
 npm run ai:simulate -- --replay artifacts/coast-panel.json
 
-# Compare complete traces from an older engine; this runs recorded matches.
-npm run ai:simulate -- --compare artifacts/ai-performance/full-final/report.json
-# Use an explicit cap for a bounded check.
-npm run ai:simulate -- --compare artifacts/ai-performance/full-final/report.json --compare-limit 12
+# Compare saved gameplay dumps without running matches. Convert each dump once.
+uv run --with pyarrow scripts/convert-simulation-dump.py artifacts/baseline.arrow artifacts/baseline.details.jsonl
+uv run --with pyarrow scripts/convert-simulation-dump.py artifacts/current.arrow artifacts/current.details.jsonl
+uv run --with pyarrow --with polars==2.0.0 scripts/compare-simulation-dumps.py artifacts/baseline.arrow artifacts/current.arrow
 ```
 
 `--seed` sets the first seed and `--seeds` the count. `--rounds` defaults to 30;
@@ -49,6 +49,14 @@ compact indexes, so the runner neither rewrites accumulated traces nor keeps
 the entire tournament in memory. Keep a report and its journals together.
 `--trace` adds `.trace.jsonl` files containing the raw runner return values.
 Exact replay reads and validates one journal record at a time.
+
+Dump conversion uses an explicit Arrow schema; pass every detail journal for a
+sharded report. Comparison validates unique `(kind, config)` identities with a
+Polars join, gathers corresponding rows and compares complete gameplay values in
+Arrow without sorting or rerunning simulations. It excludes `stateHash`,
+`elapsedMs`, `elapsedSeconds` and `detail` at match and mission level, preserving
+array order within each match. Stage traces include wall time, CPU time and peak
+memory; `--out PATH` saves the comparison result and wall-time spans.
 
 `npm run ai:benchmark -- --out artifacts/baseline.json` measures 60 representative
 runs spanning every race, terrain and policy plus all four campaigns. After an
