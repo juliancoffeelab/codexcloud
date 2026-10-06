@@ -12,6 +12,7 @@ const files = [
   "src",
   "scripts/*.{ts,js}",
   "tests/*.ts",
+  "tests/fixtures/*.json",
   "*.config.ts",
   "*.json",
   "README.md",
@@ -19,6 +20,7 @@ const files = [
   "art/pixel/**/*.{json,md}",
   "art/styled/**/*.{json,md}",
   "docs/ai-simulation.md",
+  "rust/README.md",
   "design/progression-art.md",
   "design/static-terrain-art.md",
 ];
@@ -34,6 +36,11 @@ const checks = [
       "node_modules/.cache/hex-command-prettier",
       ...files,
     ],
+  },
+  {
+    name: "Rust formatting",
+    command: "cargo",
+    args: ["fmt", "--manifest-path", "rust/Cargo.toml", ...(write ? [] : ["--check"])],
   },
   ...(!write
     ? [

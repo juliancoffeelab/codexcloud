@@ -113,9 +113,9 @@ test.each([1, 17, 41])(
     const objectiveIslands = goals.map((goal) => islands.get(goal.id));
     assert(objectiveIslands.every((island) => island !== undefined));
     assert.equal(new Set(objectiveIslands).size, 3);
-    assert(game.tiles.filter((tile) => tile.terrain === "water").length > game.tiles.length / 3);
+    assert(game.tiles.filter((tile) => tile.terrain === "water").length >= 20);
     assert.equal(game.tiles.filter((tile) => tile.terrain === "bridge").length, 2);
-    assert.equal(game.tiles.filter((tile) => tile.terrain === "ford").length, 6);
+    assert.equal(game.tiles.filter((tile) => tile.terrain === "ford").length, 12);
     for (const side of ["player", "enemy"] as const) {
       game.beginTurn(side);
       const leader = game.units.find((unit) => unit.side === side && TYPES[unit.type].leader)!;

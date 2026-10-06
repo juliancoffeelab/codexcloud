@@ -80,10 +80,10 @@ const missions: MissionDefinition[] = [
       "A tidal estuary, offshore sandbars and a wooded mainland. Swim around the causeway or contest it.",
       [
         "~~~~~~~~ssHH",
-        "~~~~~ss..FFH",
-        "~~K~ssT..FF.",
-        "~~s~~ss..V..",
-        "~ss~sV.=....",
+        "~~sssss..FFH",
+        "~~KsssT..FF.",
+        "~~sssss..V..",
+        "~ssssV.=....",
         "~~~~~~ssT.K.",
         "~~~ss~sM.FF.",
         "~~~ssV.MMFF.",
@@ -106,7 +106,7 @@ const missions: MissionDefinition[] = [
     hints: [
       "Merfolk can cross deep water and move normally on plains. Forests, groves and hills slow them and increase incoming damage.",
       "Shallows are neutral for merfolk; swamps protect them. Land troops are exposed in both.",
-      "Keep Edda alive. A harpooner can skirt the outworks by sea; reef guards and wavemenders counter the armored shore guards.",
+      "Keep Edda alive. Shore guards can reach Mira across the sandbars; protect the approaches while swimmers flank the outworks through deep water.",
     ],
     goals: goalsOne,
     recruits: ["reefguard", "harpooner", "wavemender"],
@@ -178,9 +178,9 @@ const missions: MissionDefinition[] = [
       "A wreck on an exposed sandbar; two sea channels flank a marshy shore and forested quarry road.",
       [
         "~~~~~ssHHFFF",
-        "~~~ss..HFF..",
-        "~K~~sV...FK.",
-        "~ss~~sM..F..",
+        "~ssss..HFF..",
+        "~KsssV...FK.",
+        "~sssssM..F..",
         "~~~~sRss=...",
         "~~~ssMsV.F..",
         "~~~~ssM..T..",
@@ -199,7 +199,7 @@ const missions: MissionDefinition[] = [
     ),
     subtitle: "The books can wait. The workers cannot.",
     briefing:
-      "Enter the wreck to recover the original ledger, then defend its evacuation landing for three ferry crossings. The final boat leaves at high tide, no earlier than turn 6. Edda guides workers through the exposed hull while your company holds the channel.",
+      "Reach the wreck and recover the ledger. The rescue boat arrives at high tide on turn 6. Once the boat is here and the wreck is yours, defend it through three enemy turns to get the workers out.",
     debrief:
       "The last worker leaves with the ledger. Senn had paid Vale to seize the posts, then charged the villagers for salvage they never requested. Tomas deserted when ordered to burn the hull with workers inside. He knows the wooded route to the upper gate.",
     requiredCompanions: ["Edda"],
@@ -222,9 +222,9 @@ const missions: MissionDefinition[] = [
       },
     },
     hints: [
-      "Reach the wreck at 5,4 with any unit to recover the ledger. Defend its ownership through three enemy turns, then wait for high tide on turn 6. Your troops can leave it to screen the workers; enemy recapture resets the crossings.",
-      "Tomas and other land recruits can use forest cover. Merfolk are exposed there; use the parallel sea and marsh routes.",
-      "Promotions preserve wounds, add abilities and consume a turn. Ready veterans can advance before a difficult fight.",
+      "Reach the wreck on the central sandbar. Rescue starts at high tide on turn 6; then defend it for three enemy turns.",
+      "Land allies use the northern sandbar and wooded shore; merfolk flank through sea and marshes.",
+      "Enemy recapture resets the rescue counter. You can leave the wreck, but keep it under your control.",
     ],
     goals: [
       {
@@ -235,10 +235,11 @@ const missions: MissionDefinition[] = [
       },
       {
         kind: "hold",
-        label: "Defend three ferry crossings; high tide begins on turn 6",
+        label: "Defend the wreck through 3 enemy turns during the rescue",
         tile: "5,4",
         turns: 3,
         earliestRound: 6,
+        startEvent: "rescue",
       },
     ],
     recruits: ["reefguard", "harpooner", "wavemender", "spearman", "adept"],
@@ -254,7 +255,7 @@ const missions: MissionDefinition[] = [
       line(
         "Edda",
         "harpooner",
-        "I need three ferry crossings to bring everyone out along the keel. Hold the landing. The last boat leaves with the sixth bell's high tide, or later if we are delayed; nobody touches the quarry gate before then.",
+        "The rescue boat can enter this channel at high tide. First, get us to the wreck. Nobody touches the quarry gate while people are still inside.",
       ),
       line(
         "Foreman Cale",
@@ -264,7 +265,7 @@ const missions: MissionDefinition[] = [
       line(
         "Mira",
         "tidekeeper",
-        "A debt cannot give you ownership of a person. We take the books after we get everyone out.",
+        "A debt cannot give you ownership of a person. We take the wreck and get everyone out.",
       ),
     ],
     legacyDialogue: [
@@ -273,6 +274,16 @@ const missions: MissionDefinition[] = [
         "Edda",
         "harpooner",
         "I can bring them out along the keel. Hold this landing until the sixth bell; nobody touches the quarry gate before then.",
+      ),
+      line(
+        "Edda",
+        "harpooner",
+        "I need three ferry crossings to bring everyone out along the keel. Hold the landing. The last boat leaves with the sixth bell's high tide, or later if we are delayed; nobody touches the quarry gate before then.",
+      ),
+      line(
+        "Mira",
+        "tidekeeper",
+        "A debt cannot give you ownership of a person. We take the books after we get everyone out.",
       ),
     ],
     victory: [
@@ -300,6 +311,43 @@ const missions: MissionDefinition[] = [
           ),
         ],
       },
+      {
+        id: "await-tide",
+        trigger: { kind: "control", tile: "5,4" },
+        requiresEvent: "ledger",
+        beforeRound: 6,
+        dialogue: [
+          line(
+            "Edda",
+            "harpooner",
+            "We have the wreck. Now wait for high tide on turn 6 so the rescue boat can reach us.",
+          ),
+        ],
+      },
+      {
+        id: "rescue",
+        trigger: { kind: "control", tile: "5,4", round: 6 },
+        requiresEvent: "ledger",
+        dialogue: [
+          line(
+            "Edda",
+            "harpooner",
+            "The boat is here. Hold the wreck for three turns while we bring the workers out.",
+          ),
+        ],
+      },
+      {
+        id: "tide-arrived",
+        trigger: { kind: "round", round: 6 },
+        unlessEvent: "rescue",
+        dialogue: [
+          line(
+            "Edda",
+            "harpooner",
+            "High tide. The rescue boat is waiting. Get to the wreck so we can start.",
+          ),
+        ],
+      },
     ],
     waves: [
       {
@@ -318,13 +366,13 @@ const missions: MissionDefinition[] = [
       "Twin sluice channels with a wooded high bank, a marsh bypass and an offshore beacon.",
       [
         "~~~~ssHHFFF.",
-        "~~~sV.HFF..K",
-        "~K~~s.MFT...",
-        "~ss~~sM=....",
+        "~sssV.HFF..K",
+        "~Ksss.MFT...",
+        "~sssssM=....",
         "~~~~sV~~sR..",
         "~~~ssMMsT...",
         "~~~~ssM.FF..",
-        "~~V~~ss.FF..",
+        "~~Vssss.FF..",
         "~~~~~~~~ss..",
       ],
       [
@@ -344,8 +392,8 @@ const missions: MissionDefinition[] = [
     debrief:
       "At Edda's signal both controls release together. The estuary fills without a surge through the village. The recovered books reach the council; Senn loses his lease. The fishing towns and the reef appoint a shared tide crew, with neither shore allowed to operate a gate alone.",
     hints: [
-      "All three objectives are required: controls at 8,2 and 8,5, and Edda at the beacon at 9,4.",
-      "Use land allies through the wooded high bank and swimmers through the lower marsh channel. Neither route requires crossing the other army's strongest terrain.",
+      "Capture both forts: the upper sluice beside the wooded bank and the lower sluice beside the marsh. Bring Edda to the ruined beacon east of the lower channel; all three objectives are required.",
+      "Land allies can cross the northern sandbar to the wooded high bank. Swimmers can flank through deep water and the lower marsh channel. Guard the shallows back to Mira's keep.",
       "Impact attacks break the armored gate guards; harpoons punish scouts and cover advancing allies. Wavemenders heal adjacent allies at turn start.",
     ],
     goals: [

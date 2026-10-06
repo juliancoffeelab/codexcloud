@@ -5,6 +5,7 @@ const checks = {
   style: "style",
   ui: "check:ui",
   types: "check:types",
+  rust: "check:rust",
   art: "art:check",
   tests: "test",
   build: "build:check",

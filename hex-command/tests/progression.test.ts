@@ -244,6 +244,7 @@ test("Evacuation defense counts owned completed turns and migrates legacy clocks
 test("Enemy capture immediately resets evacuation defense", async () => {
   const contested = Game.startCampaign("borrowed-tide", 1);
   contested.advanceDialogue(true);
+  contested.round = 6;
   const edda = required(contested.units.find((unit) => unit.name === "Edda"));
   edda.tile = "4,4";
   contested.move(edda.id, "5,4");
@@ -259,6 +260,41 @@ test("Enemy capture immediately resets evacuation defense", async () => {
   assert.equal(contested.winner, null);
   saveBattle(contested);
   assert.equal(loadBattle().game.campaign!.holds!["5,4"]!.heldTurns, 0);
+});
+test("Legacy pre-tide defense does not count toward the new rescue sequence", () => {
+  const game = Game.startCampaign("borrowed-tide", 1);
+  game.advanceDialogue(true);
+  const edda = required(game.units.find((unit) => unit.name === "Edda"));
+  edda.tile = "4,4";
+  game.move(edda.id, "5,4");
+  saveBattle(game);
+  const legacy = JSON.parse(required(localStorage.getItem(SAVE_KEY)));
+  legacy.state.campaign.holds = { "5,4": { heldTurns: 2, lastCountedRound: 4 } };
+  legacy.state.round = 4;
+  localStorage.setItem(SAVE_KEY, JSON.stringify(legacy));
+  const restored = loadBattle().game;
+  assert.equal(restored.mapId, "tide-wreck");
+  assert.equal(restored.campaign!.holds!["5,4"]!.heldTurns, 0);
+  assert(!restored.campaign!.marks.includes("event:rescue"));
+  restored.round = 6;
+  restored.beginTurn("player");
+  assert(restored.campaign!.marks.includes("event:rescue"));
+  assert.equal(restored.campaign!.holds!["5,4"]!.heldTurns, 0);
+  saveBattle(restored);
+  const resumed = loadBattle().game;
+  assert.equal(resumed.mapId, "tide-wreck");
+  resumed.advanceDialogue(true);
+  resumed.endTurn();
+  resumed.endTurn();
+  assert.equal(resumed.campaign!.holds!["5,4"]!.heldTurns, 1);
+  assert.equal(
+    resumed.campaign!.dialogue.filter(
+      (line) =>
+        line.text ===
+        "The boat is here. Hold the wreck for three turns while we bring the workers out.",
+    ).length,
+    1,
+  );
 });
 test("Progressed campaign units persist and invalid XP is rejected", async () => {
   const campaign = Game.startCampaign("borrowed-tide");

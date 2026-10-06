@@ -139,11 +139,11 @@ test("Thorns harass humans in cover but skeletal armor counters them", async () 
   const thorncaller = game.addUnit("thorncaller", "player", "2,3");
   const archer = game.addUnit("archer", "player", "2,4");
   for (const [type, exposed, covered] of [
-    ["soldier", 2, 1],
-    ["warden", 2, 1],
-    ["archer", 3, 2],
-    ["wolf", 4, 3],
-    ["skeleton", 1, 0],
+    ["soldier", 3, 2],
+    ["warden", 3, 2],
+    ["archer", 4, 3],
+    ["wolf", 5, 3],
+    ["skeleton", 2, 1],
   ] as const) {
     const target = game.addUnit(type, "enemy", "3,3");
     const tile = required(game.tile(target.tile));
@@ -151,23 +151,28 @@ test("Thorns harass humans in cover but skeletal armor counters them", async () 
     assert.equal(game.damageBreakdown(thorncaller, target, "thorns").damage, exposed);
     tile.terrain = "forest";
     assert.equal(game.damageBreakdown(thorncaller, target, "thorns").damage, covered);
-    assert.equal(game.damage(archer, target, "bow"), covered + 1);
+    assert.equal(game.damage(archer, target, "bow"), covered);
     game.units = game.units.filter((unit) => unit.id !== target.id);
   }
 });
 
-// A final coastal purse buys three different roles, rather than only three spear bodies.
-test("Coastal purse affords three complementary roles", async () => {
+// The increased healer price requires another income tick for the complete trio.
+test("Coastal purse buys its third complementary role after village income", async () => {
   const game = Game.startCampaign("borrowed-tide", 2, [], 8);
   game.advanceDialogue(true);
   const mira = required(
     game.units.find((unit) => unit.side === "player" && unit.role === "leader"),
   );
-  for (const type of ["reefguard", "harpooner", "wavemender"] as const) {
+  for (const type of ["reefguard", "harpooner"] as const) {
     const tile = required(game.recruitTiles(mira.id, type)[0]);
     game.recruit(mira.id, type, tile.id);
   }
-  assert.equal(game.gold.player, 0);
+  assert.equal(game.gold.player, 9);
+  assert.deepEqual(game.recruitTiles(mira.id, "wavemender"), []);
+  game.beginTurn("player");
+  assert.equal(game.gold.player, 11);
+  game.recruit(mira.id, "wavemender", required(game.recruitTiles(mira.id, "wavemender")[0]).id);
+  assert.equal(game.gold.player, 1);
   game.units = [];
   for (const tile of game.tiles) tile.terrain = "plains";
   const guard = game.addUnit("reefguard", "player", "2,3");
@@ -234,7 +239,7 @@ for (const terrain of ["forest", "grove", "plains"] as const) {
     game.turn = "enemy";
     game.attack(soldier.id, caster.id, "sword");
     game.attack(archer.id, caster.id, "bow");
-    assert.equal(game.unit(caster.id)?.hp, terrain === "plains" ? undefined : 1);
+    assert.equal(game.unit(caster.id)?.hp, terrain === "plains" ? undefined : 3);
     assert.equal(game.cost(caster, { terrain }), 1);
   });
 }
@@ -247,7 +252,7 @@ test("Mobile skirmishers remain vulnerable in melee", async () => {
   const thorncaller = game.addUnit("thorncaller", "player", "2,3");
   const soldier = game.addUnit("soldier", "enemy", "4,3");
   assert.deepEqual(game.preview(thorncaller, soldier, "thorns"), {
-    damage: 2,
+    damage: 3,
     retaliation: 0,
   });
   soldier.tile = "3,3";
@@ -263,5 +268,77 @@ test("Mobile skirmishers remain vulnerable in melee", async () => {
   // The shared roster gives enemy thorncallers the same weapon rules.
   soldier.side = "player";
   thorncaller.side = "enemy";
-  assert.equal(game.preview(thorncaller, soldier, "thorns").damage, 2);
+  assert.equal(game.preview(thorncaller, soldier, "thorns").damage, 3);
+});
+
+test.each(["forest", "grove"] as const)(
+  "Woodland racial cover protects melee and ranged targets in %s, including veterans",
+  (terrain) => {
+    const game = new Game();
+    game.units = [];
+    const sword = game.addUnit("swordsman", "enemy", "3,3");
+    const bow = game.addUnit("bonearcher", "enemy", "4,3");
+    for (const type of [
+      "wolf",
+      "direwolf",
+      "boar",
+      "greatboar",
+      "wildkeeper",
+      "grovewarden",
+    ] as const) {
+      const target = game.addUnit(type, "player", "2,3");
+      const tile = required(game.tile(target.tile));
+      tile.terrain = "plains";
+      const exposedBow = game.damage(bow, target, "bonebow");
+      assert.equal(game.damage(sword, target, "sword"), 3);
+      tile.terrain = terrain;
+      assert.equal(game.damage(sword, target, "sword"), 2);
+      assert.equal(game.damage(bow, target, "bonebow"), exposedBow - 2);
+      assert.equal(game.cost(target, tile), 1);
+      game.units = game.units.filter((unit) => unit !== target);
+    }
+    for (const type of ["thorncaller", "briarweaver"] as const) {
+      const target = game.addUnit(type, "player", "2,3");
+      assert.equal(
+        game.damage(bow, target, "bonebow"),
+        1,
+        "Individual concealment stacks with race and terrain cover",
+      );
+      game.units = game.units.filter((unit) => unit !== target);
+    }
+  },
+);
+
+test.each(["boar", "greatboar"] as const)(
+  "%s leads with Impact and can use Pierce as an alternative",
+  (type) => {
+    const game = new Game();
+    game.units = [];
+    const attacker = game.addUnit(type, "player", "2,3");
+    const target = game.addUnit("skeleton", "enemy", "3,3");
+    required(game.tile(target.tile)).terrain = "plains";
+    assert.equal(game.damage(attacker, target, "trample"), type === "boar" ? 5 : 6);
+    assert.equal(game.damage(attacker, target, "tusks"), type === "boar" ? 2 : 3);
+    assert.equal(game.previewDetails(attacker, target).attack.id, "trample");
+  },
+);
+
+test("Wavemender purchase costs ten gold and promotion retains healing", () => {
+  const game = Game.startCampaign("borrowed-tide");
+  game.advanceDialogue(true);
+  const leader = required(
+    game.units.find((unit) => unit.side === "player" && TYPES[unit.type].leader),
+  );
+  game.gold.player = 9;
+  assert.equal(game.recruitTiles(leader.id, "wavemender").length, 0);
+  const tile = required(game.recruitPlacementTiles(leader.id, "wavemender")[0]);
+  assert.throws(() => game.recruit(leader.id, "wavemender", tile.id), /Cannot recruit/);
+  game.gold.player = 10;
+  const healer = game.recruit(leader.id, "wavemender", tile.id);
+  assert.equal(game.gold.player, 0);
+  assert.equal(TYPES[healer.type].healing, 1);
+  healer.experience = 10;
+  healer.moved = healer.attacked = false;
+  game.advanceUnit(healer.id, "tidesage");
+  assert.equal(TYPES[healer.type].healing, 2);
 });

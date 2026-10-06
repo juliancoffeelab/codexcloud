@@ -27,7 +27,10 @@ export const RACES = immutable<Record<Race, RaceDefinition>>({
   },
   beast: {
     name: "Woodland beast",
-    terrainModifiers: WOODLAND_MOVEMENT,
+    terrainModifiers: {
+      forest: { ...WOODLAND_MOVEMENT.forest, damageModifiers: { melee: -1, ranged: -1 } },
+      grove: { ...WOODLAND_MOVEMENT.grove, damageModifiers: { melee: -1, ranged: -1 } },
+    },
     damageModifiers: { blade: 0, pierce: 1, impact: 0 },
   },
 });

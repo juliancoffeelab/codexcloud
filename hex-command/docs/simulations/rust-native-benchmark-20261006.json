@@ -1,0 +1,2094 @@
+{
+  "date": "2026-10-06",
+  "scope": "Native Rust simulation only; no browser integration",
+  "comparison": "Every command, combat, phase, objective and endpoint state; JSON object key order ignored",
+  "matches": 120,
+  "allIdentical": true,
+  "typescriptMs": 20997.009331,
+  "rustMs": 4155.525564999996,
+  "speedup": 5.052792722019993,
+  "meanArenaMs": 21.477002135416694,
+  "meanCampaignMs": 87.23888999999974,
+  "fourCoreFullWorkloadEstimateSeconds": 77.55676635000003,
+  "fullWorkloadMeasured": false,
+  "samples": [
+    {
+      "name": "rust-final",
+      "matches": [
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "open",
+            "player": "classic",
+            "enemy": "classic",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 69.733666,
+          "rustMs": 10.878411,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "open",
+            "player": "rush",
+            "enemy": "rush",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 121.52340500000003,
+          "rustMs": 17.113124999999968,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "open",
+            "player": "mixed",
+            "enemy": "mixed",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 165.57597999999996,
+          "rustMs": 33.65038000000004,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "wooded",
+            "player": "classic",
+            "enemy": "classic",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 40.306718000000046,
+          "rustMs": 9.776642000000038,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "wooded",
+            "player": "rush",
+            "enemy": "rush",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 111.27689099999998,
+          "rustMs": 28.599497000000042,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "wooded",
+            "player": "mixed",
+            "enemy": "mixed",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 109.07221900000002,
+          "rustMs": 35.00862699999993,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "crossings",
+            "player": "classic",
+            "enemy": "classic",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 57.28729499999997,
+          "rustMs": 13.830749999999966,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "crossings",
+            "player": "rush",
+            "enemy": "rush",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 168.25629000000004,
+          "rustMs": 33.16868599999998,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "crossings",
+            "player": "mixed",
+            "enemy": "mixed",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 80.85819599999991,
+          "rustMs": 15.66206000000011,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "islands",
+            "player": "classic",
+            "enemy": "classic",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 53.915835000000015,
+          "rustMs": 11.865047999999888,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "islands",
+            "player": "rush",
+            "enemy": "rush",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 166.54350799999997,
+          "rustMs": 38.772740999999996,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "islands",
+            "player": "mixed",
+            "enemy": "mixed",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 74.27129400000013,
+          "rustMs": 21.4596489999999,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "open",
+            "player": "classic",
+            "enemy": "classic",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 22.965508999999884,
+          "rustMs": 5.613580000000184,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "open",
+            "player": "rush",
+            "enemy": "rush",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 35.59187700000007,
+          "rustMs": 10.857794000000013,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "open",
+            "player": "mixed",
+            "enemy": "mixed",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 94.30856600000016,
+          "rustMs": 28.747276000000056,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "wooded",
+            "player": "classic",
+            "enemy": "classic",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 55.27219800000012,
+          "rustMs": 17.769792000000052,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "wooded",
+            "player": "rush",
+            "enemy": "rush",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 100.70926699999995,
+          "rustMs": 16.32773300000008,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "wooded",
+            "player": "mixed",
+            "enemy": "mixed",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 91.75247200000013,
+          "rustMs": 18.164346000000023,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "crossings",
+            "player": "classic",
+            "enemy": "classic",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 30.510686000000078,
+          "rustMs": 6.721212999999807,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "crossings",
+            "player": "rush",
+            "enemy": "rush",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 77.69555300000002,
+          "rustMs": 14.832139999999981,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "crossings",
+            "player": "mixed",
+            "enemy": "mixed",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 96.69173900000033,
+          "rustMs": 22.930863000000045,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "islands",
+            "player": "classic",
+            "enemy": "classic",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 38.19460200000003,
+          "rustMs": 14.085171000000173,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "islands",
+            "player": "rush",
+            "enemy": "rush",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 59.117997999999716,
+          "rustMs": 14.511286000000382,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "islands",
+            "player": "mixed",
+            "enemy": "mixed",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 70.55238999999983,
+          "rustMs": 14.137627000000066,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "open",
+            "player": "classic",
+            "enemy": "classic",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 49.204101000000264,
+          "rustMs": 9.64297600000009,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "open",
+            "player": "rush",
+            "enemy": "rush",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 101.11546899999985,
+          "rustMs": 25.326338000000305,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "open",
+            "player": "mixed",
+            "enemy": "mixed",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 85.00431100000014,
+          "rustMs": 15.053861999999754,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "wooded",
+            "player": "classic",
+            "enemy": "classic",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 32.608378999999786,
+          "rustMs": 10.963905999999952,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "wooded",
+            "player": "rush",
+            "enemy": "rush",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 44.132988000000296,
+          "rustMs": 19.64832800000022,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "wooded",
+            "player": "mixed",
+            "enemy": "mixed",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 119.78527299999996,
+          "rustMs": 30.242799000000105,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "crossings",
+            "player": "classic",
+            "enemy": "classic",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 32.56938900000023,
+          "rustMs": 8.068180000000211,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "crossings",
+            "player": "rush",
+            "enemy": "rush",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 124.82628900000009,
+          "rustMs": 34.626696999999695,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "crossings",
+            "player": "mixed",
+            "enemy": "mixed",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 97.4835320000002,
+          "rustMs": 20.245879999999943,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "islands",
+            "player": "classic",
+            "enemy": "classic",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 28.62161900000001,
+          "rustMs": 9.315759999999955,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "islands",
+            "player": "rush",
+            "enemy": "rush",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 146.69697300000007,
+          "rustMs": 41.044990999999754,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "islands",
+            "player": "mixed",
+            "enemy": "mixed",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 80.32304500000009,
+          "rustMs": 20.68655200000012,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "open",
+            "player": "classic",
+            "enemy": "classic",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 24.22466600000007,
+          "rustMs": 8.575608000000102,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "open",
+            "player": "rush",
+            "enemy": "rush",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 136.09242500000028,
+          "rustMs": 32.930383999999776,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "open",
+            "player": "mixed",
+            "enemy": "mixed",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 97.53400899999951,
+          "rustMs": 24.777627999999822,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "wooded",
+            "player": "classic",
+            "enemy": "classic",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 25.759060999999747,
+          "rustMs": 8.56308799999988,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "wooded",
+            "player": "rush",
+            "enemy": "rush",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 91.49871399999938,
+          "rustMs": 19.37006999999994,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "wooded",
+            "player": "mixed",
+            "enemy": "mixed",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 101.14591999999993,
+          "rustMs": 21.850354000000152,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "crossings",
+            "player": "classic",
+            "enemy": "classic",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 19.45069699999931,
+          "rustMs": 6.931751999999506,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "crossings",
+            "player": "rush",
+            "enemy": "rush",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 130.416244,
+          "rustMs": 38.769357999999556,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "crossings",
+            "player": "mixed",
+            "enemy": "mixed",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 91.04608400000052,
+          "rustMs": 19.96013700000003,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "islands",
+            "player": "classic",
+            "enemy": "classic",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 21.697737000000416,
+          "rustMs": 5.8805789999996705,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "islands",
+            "player": "rush",
+            "enemy": "rush",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 114.41775499999949,
+          "rustMs": 56.166222000000744,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "islands",
+            "player": "mixed",
+            "enemy": "mixed",
+            "first": "player",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 80.1068180000002,
+          "rustMs": 85.25526900000023,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "campaign": "lantern-road",
+            "player": "classic",
+            "enemy": "classic",
+            "diplomacy": "restrained",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 304.0493459999998,
+          "rustMs": 98.5077939999992,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "campaign": "lantern-road",
+            "player": "rush",
+            "enemy": "classic",
+            "diplomacy": "restrained",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 360.82910900000024,
+          "rustMs": 206.5109569999995,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "campaign": "lantern-road",
+            "player": "mixed",
+            "enemy": "classic",
+            "diplomacy": "restrained",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 410.9890970000006,
+          "rustMs": 56.901880999999776,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "campaign": "green-accord",
+            "player": "classic",
+            "enemy": "classic",
+            "diplomacy": "restrained",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 294.7577419999998,
+          "rustMs": 64.98479099999986,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "campaign": "green-accord",
+            "player": "rush",
+            "enemy": "classic",
+            "diplomacy": "restrained",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 255.9864980000002,
+          "rustMs": 62.189924999999675,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "campaign": "green-accord",
+            "player": "mixed",
+            "enemy": "classic",
+            "diplomacy": "restrained",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 345.13295299999936,
+          "rustMs": 58.17979900000046,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "campaign": "ashen-oath",
+            "player": "classic",
+            "enemy": "classic",
+            "diplomacy": "restrained",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 141.6010379999998,
+          "rustMs": 33.896028000000115,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "campaign": "ashen-oath",
+            "player": "rush",
+            "enemy": "classic",
+            "diplomacy": "restrained",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 522.7955510000011,
+          "rustMs": 133.97352299999875,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "campaign": "ashen-oath",
+            "player": "mixed",
+            "enemy": "classic",
+            "diplomacy": "restrained",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 628.0669440000001,
+          "rustMs": 74.5118110000003,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "campaign": "borrowed-tide",
+            "player": "classic",
+            "enemy": "classic",
+            "diplomacy": "restrained",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 198.94997499999954,
+          "rustMs": 33.34726699999919,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "campaign": "borrowed-tide",
+            "player": "rush",
+            "enemy": "classic",
+            "diplomacy": "restrained",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 431.84552900000017,
+          "rustMs": 76.09871000000021,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 17,
+            "campaign": "borrowed-tide",
+            "player": "mixed",
+            "enemy": "classic",
+            "diplomacy": "restrained",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 545.871948,
+          "rustMs": 83.9762780000001,
+          "identical": true
+        }
+      ],
+      "typescriptMs": 8308.621382000001,
+      "rustMs": 2011.4599189999974
+    },
+    {
+      "name": "rust-alternate",
+      "matches": [
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "open",
+            "player": "classic",
+            "enemy": "rush",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 114.51426800000002,
+          "rustMs": 11.25713300000001,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "open",
+            "player": "rush",
+            "enemy": "mixed",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 215.50019799999995,
+          "rustMs": 32.41226700000004,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "open",
+            "player": "mixed",
+            "enemy": "classic",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 105.06510199999991,
+          "rustMs": 43.264948000000004,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "wooded",
+            "player": "classic",
+            "enemy": "rush",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 75.71585100000004,
+          "rustMs": 44.41844000000003,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "wooded",
+            "player": "rush",
+            "enemy": "mixed",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 110.61989200000005,
+          "rustMs": 41.52456900000004,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "wooded",
+            "player": "mixed",
+            "enemy": "classic",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 63.76638900000012,
+          "rustMs": 19.186705000000075,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "crossings",
+            "player": "classic",
+            "enemy": "rush",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 80.83304399999997,
+          "rustMs": 35.33333700000003,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "crossings",
+            "player": "rush",
+            "enemy": "mixed",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 105.301694,
+          "rustMs": 16.308860000000095,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "crossings",
+            "player": "mixed",
+            "enemy": "classic",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 96.649764,
+          "rustMs": 41.743375000000015,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "islands",
+            "player": "classic",
+            "enemy": "rush",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 110.94289300000014,
+          "rustMs": 31.663551000000098,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "islands",
+            "player": "rush",
+            "enemy": "mixed",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 118.8261379999999,
+          "rustMs": 18.304170999999997,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "human",
+              "enemy": "woodland"
+            },
+            "landscape": "islands",
+            "player": "mixed",
+            "enemy": "classic",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 50.450409000000036,
+          "rustMs": 10.0384489999999,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "open",
+            "player": "classic",
+            "enemy": "rush",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 45.595808000000034,
+          "rustMs": 12.449076999999988,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "open",
+            "player": "rush",
+            "enemy": "mixed",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 112.35656300000005,
+          "rustMs": 43.52566899999988,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "open",
+            "player": "mixed",
+            "enemy": "classic",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 59.033078999999816,
+          "rustMs": 10.33562000000029,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "wooded",
+            "player": "classic",
+            "enemy": "rush",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 41.67605399999957,
+          "rustMs": 8.896530999999868,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "wooded",
+            "player": "rush",
+            "enemy": "mixed",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 62.10422400000016,
+          "rustMs": 10.664366999999856,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "wooded",
+            "player": "mixed",
+            "enemy": "classic",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 50.17365999999993,
+          "rustMs": 13.436488000000281,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "crossings",
+            "player": "classic",
+            "enemy": "rush",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 30.112482999999884,
+          "rustMs": 6.591096000000107,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "crossings",
+            "player": "rush",
+            "enemy": "mixed",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 134.95451599999978,
+          "rustMs": 22.497706000000107,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "crossings",
+            "player": "mixed",
+            "enemy": "classic",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 74.42712299999994,
+          "rustMs": 49.75290200000018,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "islands",
+            "player": "classic",
+            "enemy": "rush",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 130.83429000000024,
+          "rustMs": 18.216554000000087,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "islands",
+            "player": "rush",
+            "enemy": "mixed",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 175.8572079999999,
+          "rustMs": 24.132430999999997,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "woodland",
+              "enemy": "undead"
+            },
+            "landscape": "islands",
+            "player": "mixed",
+            "enemy": "classic",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 104.63239999999996,
+          "rustMs": 29.202768000000106,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "open",
+            "player": "classic",
+            "enemy": "rush",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 173.799399,
+          "rustMs": 22.380143999999746,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "open",
+            "player": "rush",
+            "enemy": "mixed",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 302.85901799999965,
+          "rustMs": 20.956922000000304,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "open",
+            "player": "mixed",
+            "enemy": "classic",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 273.0052529999998,
+          "rustMs": 15.41515100000015,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "wooded",
+            "player": "classic",
+            "enemy": "rush",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 159.10053999999946,
+          "rustMs": 11.571727000000465,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "wooded",
+            "player": "rush",
+            "enemy": "mixed",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 270.11112800000046,
+          "rustMs": 34.374847000000045,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "wooded",
+            "player": "mixed",
+            "enemy": "classic",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 454.594325,
+          "rustMs": 31.238620000000083,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "crossings",
+            "player": "classic",
+            "enemy": "rush",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 397.95172999999977,
+          "rustMs": 10.25165300000026,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "crossings",
+            "player": "rush",
+            "enemy": "mixed",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 188.62934500000028,
+          "rustMs": 14.772681999999804,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "crossings",
+            "player": "mixed",
+            "enemy": "classic",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 180.27256699999998,
+          "rustMs": 10.489956999999777,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "islands",
+            "player": "classic",
+            "enemy": "rush",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 223.58865499999956,
+          "rustMs": 14.507072000000335,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "islands",
+            "player": "rush",
+            "enemy": "mixed",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 214.82699299999967,
+          "rustMs": 20.81832099999974,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "undead",
+              "enemy": "coastal"
+            },
+            "landscape": "islands",
+            "player": "mixed",
+            "enemy": "classic",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 106.87691600000016,
+          "rustMs": 14.078911000000517,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "open",
+            "player": "classic",
+            "enemy": "rush",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 114.28871000000072,
+          "rustMs": 33.102866000000176,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "open",
+            "player": "rush",
+            "enemy": "mixed",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 200.50712300000032,
+          "rustMs": 26.263318999999683,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "open",
+            "player": "mixed",
+            "enemy": "classic",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 44.6849600000005,
+          "rustMs": 9.623255999999856,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "wooded",
+            "player": "classic",
+            "enemy": "rush",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 49.75038500000028,
+          "rustMs": 20.79460999999992,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "wooded",
+            "player": "rush",
+            "enemy": "mixed",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 113.19773600000008,
+          "rustMs": 25.06625299999996,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "wooded",
+            "player": "mixed",
+            "enemy": "classic",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 49.1097579999996,
+          "rustMs": 10.936861999999564,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "crossings",
+            "player": "classic",
+            "enemy": "rush",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 46.58854700000029,
+          "rustMs": 9.58349300000009,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "crossings",
+            "player": "rush",
+            "enemy": "mixed",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 101.23122700000022,
+          "rustMs": 19.9432110000007,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "crossings",
+            "player": "mixed",
+            "enemy": "classic",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 60.2891069999996,
+          "rustMs": 11.557757999999922,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "islands",
+            "player": "classic",
+            "enemy": "rush",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 66.60210499999994,
+          "rustMs": 15.679564000000028,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "islands",
+            "player": "rush",
+            "enemy": "mixed",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 105.88578400000006,
+          "rustMs": 19.066289999999753,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "armies": {
+              "player": "coastal",
+              "enemy": "human"
+            },
+            "landscape": "islands",
+            "player": "mixed",
+            "enemy": "classic",
+            "first": "enemy",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 194.50092200000017,
+          "rustMs": 15.780547000000297,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "campaign": "lantern-road",
+            "player": "classic",
+            "enemy": "rush",
+            "diplomacy": "pragmatic",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 562.4809960000011,
+          "rustMs": 98.35123699999895,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "campaign": "lantern-road",
+            "player": "rush",
+            "enemy": "mixed",
+            "diplomacy": "pragmatic",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 458.5278449999987,
+          "rustMs": 94.92902499999946,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "campaign": "lantern-road",
+            "player": "mixed",
+            "enemy": "classic",
+            "diplomacy": "pragmatic",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 638.2307430000001,
+          "rustMs": 80.0169909999986,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "campaign": "green-accord",
+            "player": "classic",
+            "enemy": "rush",
+            "diplomacy": "pragmatic",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 675.7304729999996,
+          "rustMs": 102.64462399999866,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "campaign": "green-accord",
+            "player": "rush",
+            "enemy": "mixed",
+            "diplomacy": "pragmatic",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 829.9829840000002,
+          "rustMs": 165.51568499999848,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "campaign": "green-accord",
+            "player": "mixed",
+            "enemy": "classic",
+            "diplomacy": "pragmatic",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 398.1520100000016,
+          "rustMs": 94.05971099999988,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "campaign": "ashen-oath",
+            "player": "classic",
+            "enemy": "rush",
+            "diplomacy": "pragmatic",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 341.22746299999926,
+          "rustMs": 67.8346300000012,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "campaign": "ashen-oath",
+            "player": "rush",
+            "enemy": "mixed",
+            "diplomacy": "pragmatic",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 438.13570400000026,
+          "rustMs": 79.65867199999957,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "campaign": "ashen-oath",
+            "player": "mixed",
+            "enemy": "classic",
+            "diplomacy": "pragmatic",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 411.1209629999994,
+          "rustMs": 67.86379599999964,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "campaign": "borrowed-tide",
+            "player": "classic",
+            "enemy": "rush",
+            "diplomacy": "pragmatic",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 227.39320099999895,
+          "rustMs": 50.12546000000111,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "campaign": "borrowed-tide",
+            "player": "rush",
+            "enemy": "mixed",
+            "diplomacy": "pragmatic",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 668.811334,
+          "rustMs": 128.31260800000018,
+          "identical": true
+        },
+        {
+          "config": {
+            "seed": 29,
+            "campaign": "borrowed-tide",
+            "player": "mixed",
+            "enemy": "classic",
+            "diplomacy": "pragmatic",
+            "maxRounds": 30,
+            "recruitLimit": 1
+          },
+          "typescriptMs": 676.3989500000007,
+          "rustMs": 81.34215700000095,
+          "identical": true
+        }
+      ],
+      "typescriptMs": 12688.387949,
+      "rustMs": 2144.065645999999
+    }
+  ]
+}

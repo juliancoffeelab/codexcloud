@@ -41,10 +41,14 @@ current battle intact when switching.
 
 ## Seeded AI comparisons
 
-`npm run ai:simulate -- --seeds 10 --workers 4` compares classic, melee rush and
-layered mixed armies through the real game rules. `--mode factorial` crosses each
-planner with both recruitment styles, separating planning from army-composition
-effects. `--mode campaign` runs all four authored campaigns without retries.
+Simulations use the native Rust engine; Rust and its rustfmt component are required.
+The commands export the authored rules and build the native executable. The browser
+continues to use TypeScript. See [native simulation setup](rust/README.md).
+
+`npm run ai:full` runs all 11,520 arena matches and 720 campaign attempts across
+ten seeds. Classic, melee rush and layered mixed policies each choose their own
+recruits. `npm run ai:simulate -- --mode campaign` runs just the four authored
+campaigns without retries. Workers use the available CPU quota by default.
 The [simulation guide](docs/ai-simulation.md) explains matched starts, objectives,
 recorded outcomes, seed-block confidence intervals and exact replay.
 [Recorded tournament results](docs/simulations/README.md) compare both planning
@@ -225,8 +229,8 @@ also supplies its own starting company and treasury. Couriers, leaders and requi
 fixed story roles rather than occupying recall slots. Losing a leader, required
 courier or story companion ends the mission; Retry mission restores its original company, recall
 and treasury. There is no arbitrary loss deadline. The coastal evacuation counts
-three consecutive defended enemy turns after capturing the landing, then waits
-for high tide no earlier than turn six. Troops may leave the owned landing to
+three consecutive defended enemy turns after reaching the wreck and starting
+the rescue at high tide on turn six or later. Troops may leave the owned landing to
 screen the workers; enemy recapture resets this progress. Saves and undo retain
 the defended duration.
 

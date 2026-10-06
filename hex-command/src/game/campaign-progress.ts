@@ -82,9 +82,12 @@ export function goalProgress(board: CampaignBoard, goal: Immutable<MissionGoal>)
       break;
     case "hold":
       total = goal.turns;
-      current = Math.min(board.campaign?.holds?.[goal.tile]?.heldTurns ?? 0, total);
-      if (current === total && board.round < goal.earliestRound)
-        label = `Landing secured; await high tide on turn ${goal.earliestRound}`;
+      if (goal.startEvent && !board.campaign?.marks.includes(`event:${goal.startEvent}`)) {
+        label =
+          board.tile(goal.tile)?.owner !== "player"
+            ? "Reach the wreck to start the rescue"
+            : `Wait for high tide on turn ${goal.earliestRound}`;
+      } else current = Math.min(board.campaign?.holds?.[goal.tile]?.heldTurns ?? 0, total);
       break;
     case "vigil":
       total = goal.turns;

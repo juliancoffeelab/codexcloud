@@ -106,7 +106,7 @@ export function progressionUnits(
       "Wavemender",
       8,
       4,
-      9,
+      10,
       [weapon("surge", "Surge", 3, "impact", "ranged", 2), weapon("staff", "Staff", 1, "impact")],
       "Ranged Impact against armor. Heals adjacent allies by 1 HP at turn start; multiple healers do not stack. Fragile in melee.",
     ),
@@ -216,14 +216,14 @@ export function progressionUnits(
     terrainModifiers: { hill: { cost: -1 } },
     ability: "Ridge runner",
     description:
-      "A wolf veteran that crosses hills as easily as forest. Fast pursuit, but spears still exploit its Pierce weakness.",
+      "A wolf veteran that crosses hills as easily as forest. Forests and groves reduce incoming damage by 1. Fast pursuit, but spears still exploit its Pierce weakness in the open.",
   };
   units.greatboar = {
     ...units.greatboar,
-    attacks: [weapon("tusks", "Tusks", 5, "pierce"), weapon("trample", "Trample", 3, "impact")],
+    attacks: [weapon("trample", "Trample", 5, "impact"), weapon("tusks", "Tusks", 5, "pierce")],
     ability: "Trample",
     description:
-      "A boar veteran with an Impact trample against bones and armor. Remains slow in wetlands and has no ranged reply.",
+      "A boar veteran with stronger Impact trample and Pierce tusks. Forests and groves reduce incoming damage by 1. Remains slow in wetlands and has no ranged reply.",
   };
   units.briarweaver = {
     ...units.briarweaver,

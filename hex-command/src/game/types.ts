@@ -270,7 +270,14 @@ export type MissionGoal =
   | { kind: "escort"; label: string; tile: string }
   | { kind: "escape"; label: string; tile: string }
   | { kind: "control"; label: string; tiles: string[] }
-  | { kind: "hold"; label: string; tile: string; turns: number; earliestRound: number }
+  | {
+      kind: "hold";
+      label: string;
+      tile: string;
+      turns: number;
+      earliestRound: number;
+      startEvent?: string;
+    }
   | { kind: "vigil"; label: string; tile: string; turns: number; companion: string }
   | { kind: "refuge"; label: string; tile: string; turns: number }
   | { kind: "seal"; label: string; tiles: string[]; unitType?: UnitType }
@@ -278,7 +285,13 @@ export type MissionGoal =
   | { kind: "defeat"; label: string };
 export interface MissionEvent {
   id: string;
-  trigger: { kind: "visit"; tile: string } | { kind: "round"; round: number };
+  trigger:
+    | { kind: "visit"; tile: string }
+    | { kind: "round"; round: number }
+    | { kind: "control"; tile: string; round?: number };
+  requiresEvent?: string;
+  unlessEvent?: string;
+  beforeRound?: number;
   label?: string;
   dialogue: DialogueLine[];
   gold?: number;

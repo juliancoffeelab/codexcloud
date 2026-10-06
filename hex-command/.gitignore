@@ -40,3 +40,4 @@ Thumbs.db
 
 # Local tournament output; reviewed result snapshots belong in docs/simulations/.
 /artifacts/
+/rust/target/

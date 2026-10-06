@@ -295,6 +295,16 @@ export function createArena(
     terrain(0, 1, "ford");
     terrain(1, -2, "ford");
     terrain(-1, 2, "ford");
+    // Broad sandbars around both village islands, rather than a single-file
+    // approach. Rotation preserves the same access for either home island.
+    for (const [q, r] of [
+      [-1, -2],
+      [2, -2],
+      [-1, -1],
+    ] as const) {
+      terrain(q, r, "ford");
+      terrain(-q, -r, "ford");
+    }
   }
   state.units = [];
   state.nextId = 1;

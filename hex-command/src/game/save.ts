@@ -222,6 +222,12 @@ function campaignState(
       }))
   )
     return null;
+  // Finished legacy missions stay finished. Ongoing saves cannot count defense
+  // performed before the newly explicit rescue-start event.
+  if (winner === "player")
+    for (const goal of holdGoals)
+      if (goal.startEvent && !marks.includes(`event:${goal.startEvent}`))
+        marks.push(`event:${goal.startEvent}`);
   if (
     value.vigil !== undefined &&
     (vigilGoal?.kind !== "vigil" ||
@@ -341,7 +347,10 @@ function campaignState(
     holds: Object.fromEntries(
       holdGoals.map((goal) => [
         goal.tile,
-        value.holds && record(value.holds) && record(value.holds[goal.tile])
+        (!goal.startEvent || marks.includes(`event:${goal.startEvent}`)) &&
+        value.holds &&
+        record(value.holds) &&
+        record(value.holds[goal.tile])
           ? { ...(value.holds[goal.tile] as NonNullable<CampaignState["holds"]>[string]) }
           : {
               heldTurns: winner === "player" ? goal.turns : 0,

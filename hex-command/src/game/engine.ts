@@ -217,17 +217,64 @@ export function axial(tile: Coordinates) {
   return { q: tile.col - Math.floor(tile.row / 2), r: tile.row };
 }
 export function distance(first: Coordinates, second: Coordinates) {
-  const firstAxial = axial(first);
-  const secondAxial = axial(second);
-  const columnDifference = Math.abs(firstAxial.q - secondAxial.q);
-  const rowDifference = Math.abs(firstAxial.r - secondAxial.r);
-  const diagonalDifference = Math.abs(firstAxial.q + firstAxial.r - secondAxial.q - secondAxial.r);
-  return (columnDifference + rowDifference + diagonalDifference) / 2;
+  const q = first.col - Math.floor(first.row / 2) - second.col + Math.floor(second.row / 2);
+  const r = first.row - second.row;
+  return (Math.abs(q) + Math.abs(r) + Math.abs(q + r)) / 2;
 }
 
+const UNIT_MOVEMENT_COSTS = Object.fromEntries(
+  Object.entries(TYPES).map(([type, definition]) => [
+    type,
+    Object.fromEntries(
+      Object.entries(TERRAIN).map(([terrain, rule]) => [
+        terrain,
+        movementCost(rule, terrain as TerrainType, RACES[definition.race], definition),
+      ]),
+    ),
+  ]),
+) as Record<UnitType, Record<TerrainType, number>>;
+const UNIT_ATTACKS = new Map(
+  Object.entries(TYPES).map(([type, definition]) => [
+    type,
+    new Map(definition.attacks.map((attack) => [attack.id, attack])),
+  ]),
+);
+const UNIT_DEFENSE = Object.fromEntries(
+  Object.entries(TYPES).map(([type, definition]) => [
+    type,
+    Object.fromEntries(
+      Object.keys(TERRAIN).map((terrain) => [
+        terrain,
+        Object.fromEntries(
+          (["melee", "ranged"] as const).map((category) => [
+            category,
+            Object.fromEntries(
+              (["blade", "pierce", "impact"] as const).map((damageType) => {
+                const modifiers = [
+                  TERRAIN[terrain as TerrainType].damageModifiers,
+                  RACES[definition.race].terrainModifiers[terrain as TerrainType]?.damageModifiers,
+                  definition.terrainModifiers?.[terrain as TerrainType]?.damageModifiers,
+                ];
+                return [
+                  damageType,
+                  modifiers.reduce(
+                    (sum, rule) => sum + (rule?.[category] ?? 0) + (rule?.[damageType] ?? 0),
+                    0,
+                  ),
+                ];
+              }),
+            ),
+          ]),
+        ),
+      ]),
+    ),
+  ]),
+) as Record<UnitType, Record<TerrainType, Record<AttackCategory, Record<DamageType, number>>>>;
+
 export class Game {
-  #tilesById = new Map<string, Tile>();
-  #adjacentTiles = new Map<string, readonly Tile[]>();
+  #tileIndices = new Map<string, number>();
+  #adjacentTiles: readonly (readonly number[])[] = [];
+  #routeCache = new Map<string, { terrain: string; distances: Map<string, number> }>();
   mapRevision: number;
   mapId: MapId;
   cols: number;
@@ -243,7 +290,32 @@ export class Game {
   declare lastCombat?: LastCombat | null;
   declare campaign?: CampaignState;
 
-  constructor(mapId: string = "mirror", mapRevision = MAPS[mapId as MapId]?.revision ?? 1) {
+  constructor(
+    mapId: string = "mirror",
+    mapRevision = MAPS[mapId as MapId]?.revision ?? 1,
+    source?: Game,
+  ) {
+    if (source) {
+      this.mapRevision = source.mapRevision;
+      this.mapId = source.mapId;
+      this.cols = source.cols;
+      this.rows = source.rows;
+      this.round = source.round;
+      this.turn = source.turn;
+      this.gold = { ...source.gold };
+      this.winner = source.winner;
+      this.nextId = source.nextId;
+      this.log = [...source.log];
+      this.tiles = source.tiles.map((tile) => ({ ...tile }));
+      this.units = source.units.map((unit) => ({ ...unit }));
+      this.#tileIndices = source.#tileIndices;
+      this.#adjacentTiles = source.#adjacentTiles;
+      this.#routeCache = source.#routeCache;
+      if (source.campaign) this.campaign = structuredClone(source.campaign);
+      if (Object.hasOwn(source, "lastCombat"))
+        this.lastCombat = source.lastCombat ? { ...source.lastCombat } : null;
+      return;
+    }
     if (!Object.hasOwn(MAPS, mapId)) throw new Error("Unknown battlefield.");
     if (![1, MAPS[mapId as MapId].revision ?? 1].includes(mapRevision))
       throw new Error("Unknown battlefield revision.");
@@ -286,33 +358,34 @@ export class Game {
   }
 
   tile(id: string | null | undefined): Tile | undefined {
-    return id == null ? undefined : this.#tilesById.get(id);
+    const index = id == null ? undefined : this.#tileIndices.get(id);
+    return index === undefined ? undefined : this.tiles[index];
   }
 
   private indexTiles(): void {
-    this.#tilesById = new Map(this.tiles.map((tile) => [tile.id, tile]));
-    const coordinates = new Map(this.tiles.map((tile) => [`${tile.col},${tile.row}`, tile]));
-    const order = new Map(this.tiles.map((tile, index) => [tile.id, index]));
-    this.#adjacentTiles = new Map(
-      this.tiles.map((tile) => {
-        const { col, row } = tile;
-        const diagonal = row % 2 === 0 ? -1 : 1;
-        const positions = [
-          [col, row - 1],
-          [col + diagonal, row - 1],
-          [col - 1, row],
-          [col + 1, row],
-          [col, row + 1],
-          [col + diagonal, row + 1],
-        ];
-        const neighbors = positions
-          .map(([column, row]) => coordinates.get(`${column},${row}`))
-          .filter((neighbor): neighbor is Tile => neighbor !== undefined)
-          // Preserve the old array order, including equal-cost routing ties.
-          .sort((first, second) => order.get(first.id)! - order.get(second.id)!);
-        return [tile.id, neighbors];
-      }),
+    this.#routeCache = new Map();
+    this.#tileIndices = new Map(this.tiles.map((tile, index) => [tile.id, index]));
+    const coordinates = new Map(
+      this.tiles.map((tile, index) => [`${tile.col},${tile.row}`, index]),
     );
+    this.#adjacentTiles = this.tiles.map((tile) => {
+      const { col, row } = tile;
+      const diagonal = row % 2 === 0 ? -1 : 1;
+      const positions = [
+        [col, row - 1],
+        [col + diagonal, row - 1],
+        [col - 1, row],
+        [col + 1, row],
+        [col, row + 1],
+        [col + diagonal, row + 1],
+      ];
+      const neighbors = positions
+        .map(([column, row]) => coordinates.get(`${column},${row}`))
+        .filter((neighbor): neighbor is number => neighbor !== undefined)
+        // Preserve the old array order, including equal-cost routing ties.
+        .sort((first, second) => first - second);
+      return neighbors;
+    });
   }
 
   unit(id: string | null | undefined): Unit | undefined {
@@ -325,7 +398,15 @@ export class Game {
 
   neighbors(id: string): Tile[] {
     // Callers may sort/filter their result without changing cached adjacency.
-    return [...(this.#adjacentTiles.get(id) ?? [])];
+    const index = this.#tileIndices.get(id);
+    return (index === undefined ? [] : this.#adjacentTiles[index]!).map(
+      (index) => this.tiles[index]!,
+    );
+  }
+
+  /** Independent mutable battle sharing only its immutable geometry. */
+  fork(): Game {
+    return new Game(this.mapId, this.mapRevision, this);
   }
 
   record(message: string): void {
@@ -392,37 +473,47 @@ export class Game {
   }
 
   cost(unit: Pick<Unit, "type">, tile: Pick<Tile, "terrain">): number {
-    const definition = TYPES[unit.type];
-    return movementCost(TERRAIN[tile.terrain], tile.terrain, RACES[definition.race], definition);
+    return UNIT_MOVEMENT_COSTS[unit.type][tile.terrain];
   }
 
   reachable(id: string | null | undefined): Map<string, number> {
     const unit = this.unit(id);
     if (!unit || unit.moved || unit.attacked || this.winner) return new Map();
 
-    const movementCosts = new Map([[unit.tile, 0]]);
-    const pendingTiles = [unit.tile];
-    while (pendingTiles.length) {
-      // Stable sorting preserves the existing choice between equal-cost routes.
-      pendingTiles.sort((first, second) => movementCosts.get(first)! - movementCosts.get(second)!);
-      const currentTileId = pendingTiles.shift()!;
-      for (const neighbor of this.neighbors(currentTileId)) {
-        if (this.at(neighbor.id)) continue;
-        const movementCost = movementCosts.get(currentTileId)! + this.cost(unit, neighbor);
-        const exceedsMovement = movementCost > TYPES[unit.type].move;
-        const knownCost = movementCosts.get(neighbor.id) ?? Infinity;
-        if (exceedsMovement || movementCost >= knownCost) continue;
+    const movementCosts = new Map<string, number>();
+    const limit = TYPES[unit.type].move;
+    const start = this.#tileIndices.get(unit.tile)!;
+    const spentAt = new Int32Array(this.tiles.length).fill(limit + 1);
+    spentAt[start] = 0;
+    const pendingTiles: number[][] = Array.from({ length: limit + 1 }, () => []);
+    pendingTiles[0]!.push(start);
+    const occupied = new Uint8Array(this.tiles.length);
+    for (const other of this.units) occupied[this.#tileIndices.get(other.tile)!] = 1;
+    const costs = UNIT_MOVEMENT_COSTS[unit.type];
+    // Positive integer movement costs permit FIFO buckets. Entering a hex has
+    // the same cost from every neighbor, preserving stable equal-cost ordering.
+    for (let spent = 0; spent <= limit; spent++)
+      for (const current of pendingTiles[spent]!) {
+        if (spentAt[current] !== spent) continue;
+        for (const index of this.#adjacentTiles[current]!) {
+          const neighbor = this.tiles[index]!;
+          if (occupied[index]) continue;
+          const movementCost = spent + costs[neighbor.terrain];
+          const exceedsMovement = movementCost > limit;
+          const knownCost = spentAt[index]!;
+          if (exceedsMovement || movementCost >= knownCost) continue;
 
-        movementCosts.set(neighbor.id, movementCost);
-        if (!pendingTiles.includes(neighbor.id)) pendingTiles.push(neighbor.id);
+          spentAt[index] = movementCost;
+          movementCosts.set(neighbor.id, movementCost);
+          pendingTiles[movementCost]!.push(index);
+        }
       }
-    }
     movementCosts.delete(unit.tile);
     return movementCosts;
   }
 
   attackProfile(unit: Unit, attackId: string): Weapon | undefined {
-    return TYPES[unit.type].attacks.find((attack) => attack.id === attackId);
+    return UNIT_ATTACKS.get(unit.type)?.get(attackId);
   }
 
   canAttackFrom(
@@ -465,6 +556,31 @@ export class Game {
     );
   }
 
+  /** Terrain-dependent firing positions, independent of units and occupancy. */
+  attackOrigins(target: string, weapon: Pick<Weapon, "category" | "range">): string[] {
+    if (weapon.range < 1) return [];
+    const targetIndex = this.#tileIndices.get(target);
+    if (targetIndex === undefined) return [];
+    const adjacent = this.#adjacentTiles[targetIndex]!;
+    const positions = new Set(adjacent);
+    if (weapon.range >= 2)
+      for (const between of adjacent) {
+        if (
+          weapon.category === "ranged" &&
+          ["forest", "hill", "grove"].includes(this.tiles[between]!.terrain)
+        )
+          continue;
+        for (const origin of this.#adjacentTiles[between]!)
+          if (origin !== targetIndex) positions.add(origin);
+      }
+    if (weapon.range > 2)
+      for (let index = 0; index < this.tiles.length; index++) {
+        const gap = distance(this.tiles[index]!, this.tiles[targetIndex]!);
+        if (gap > 2 && gap <= weapon.range) positions.add(index);
+      }
+    return [...positions].map((index) => this.tiles[index]!.id);
+  }
+
   targets(id: string | null | undefined): Unit[] {
     const unit = this.unit(id);
     if (!unit || unit.attacked || this.winner) return [];
@@ -481,16 +597,7 @@ export class Game {
     const terrain = this.tile(defender.tile)!.terrain;
     const modifier = TYPES[defender.type].damageModifiers[attack.damageType];
     const modified = attack.damage + modifier;
-    const definition = TYPES[defender.type];
-    const environment = [
-      TERRAIN[terrain].damageModifiers,
-      RACES[definition.race].terrainModifiers[terrain]?.damageModifiers,
-      definition.terrainModifiers?.[terrain]?.damageModifiers,
-    ].reduce(
-      (total, modifiers) =>
-        total + (modifiers?.[attack.category] ?? 0) + (modifiers?.[attack.damageType] ?? 0),
-      0,
-    );
+    const environment = UNIT_DEFENSE[defender.type][terrain][attack.category][attack.damageType];
     const protection = Math.max(0, -environment);
     const exposure = Math.max(0, environment);
     const damage = Math.max(0, modified - protection + exposure);
@@ -507,7 +614,15 @@ export class Game {
   }
 
   damage(attacker: Unit, defender: Unit, attackId?: string): number {
-    return this.damageBreakdown(attacker, defender, attackId).damage;
+    const attack = this.attackProfile(attacker, attackId ?? TYPES[attacker.type].attacks[0].id);
+    if (!attack) throw new Error("Unknown attack for this unit.");
+    const terrain = this.tile(defender.tile)!.terrain;
+    return Math.max(
+      0,
+      attack.damage +
+        TYPES[defender.type].damageModifiers[attack.damageType] +
+        UNIT_DEFENSE[defender.type][terrain][attack.category][attack.damageType],
+    );
   }
 
   retaliationProfile(attacker: Unit, target: Unit, attack: Weapon): Weapon | null {
@@ -559,8 +674,17 @@ export class Game {
     attackId?: string | null,
     from = attacker.tile,
   ): CombatPreview {
-    const { damage, retaliation } = this.previewDetails(attacker, target, attackId, from);
-    return { damage, retaliation };
+    const attack =
+      attackId == null
+        ? this.bestAttack(attacker, target, from)
+        : this.attackProfile(attacker, attackId);
+    if (!attack || !this.canAttackFrom(attacker, from, target, attack.id))
+      throw new Error("That attack cannot reach this enemy.");
+    const damage = this.damage(attacker, target, attack.id);
+    const positioned = { ...attacker, tile: from };
+    const response =
+      target.hp > damage ? this.retaliationProfile(positioned, target, attack) : null;
+    return { damage, retaliation: response ? this.damage(target, positioned, response.id) : 0 };
   }
 
   bestAttack(attacker: Unit, target: Unit, from = attacker.tile): Weapon | null {
@@ -654,6 +778,13 @@ export class Game {
 
   recruitTiles(id: string, type: UnitType): Tile[] {
     const commander = this.unit(id);
+    if (!commander || !TYPES[type] || this.gold[commander.side] < TYPES[type].cost) return [];
+    return this.recruitPlacementTiles(id, type);
+  }
+
+  /** Legal placement independent of price, so AI can plan its next purchase. */
+  recruitPlacementTiles(id: string, type: UnitType): Tile[] {
+    const commander = this.unit(id);
     if (
       !commander ||
       !TYPES[commander.type].leader ||
@@ -661,8 +792,7 @@ export class Game {
       TYPES[type].leader ||
       !this.recruitmentOptions(commander.side).includes(type as RecruitType) ||
       this.winner ||
-      commander.side !== this.turn ||
-      this.gold[commander.side] < TYPES[type].cost
+      commander.side !== this.turn
     ) {
       return [];
     }
@@ -766,26 +896,38 @@ export class Game {
     // Long-range routing ignores occupied hexes; reachable() handles actual moves.
     // Search backward from the goals: entering the current tile is the forward
     // movement cost, rather than entering the neighbor we're considering now.
+    const key = `${unit.type}:${goals.map((tile) => tile.id).join(";")}`;
+    // Terrain is mutable, including direct edits and restored games. Ownership,
+    // occupancy and action flags do not affect these long-range routing fields.
+    const terrain = this.tiles.map((tile) => tile.terrain).join(";");
+    const cached = this.#routeCache.get(key);
+    if (cached?.terrain === terrain) return new Map(cached.distances);
     const distanceToGoal = new Map(goals.map((tile) => [tile.id, 0]));
-    const pendingTiles = [...distanceToGoal.keys()];
+    const costs = UNIT_MOVEMENT_COSTS[unit.type];
+    const distances = new Float64Array(this.tiles.length).fill(Infinity);
+    const pendingTiles = [...distanceToGoal.keys()].map((id) => this.#tileIndices.get(id)!);
+    for (const index of pendingTiles) distances[index] = 0;
     while (pendingTiles.length) {
-      pendingTiles.sort(
-        (first, second) => distanceToGoal.get(first)! - distanceToGoal.get(second)!,
-      );
-      const currentTileId = pendingTiles.shift()!;
-      const entryCost = this.cost(unit, this.tile(currentTileId)!);
+      pendingTiles.sort((first, second) => distances[first]! - distances[second]!);
+      const current = pendingTiles.shift()!;
+      const entryCost = costs[this.tiles[current]!.terrain];
       if (!Number.isFinite(entryCost)) continue;
 
-      for (const neighbor of this.neighbors(currentTileId)) {
-        if (!Number.isFinite(this.cost(unit, neighbor))) continue;
-        const routeCost = distanceToGoal.get(currentTileId)! + entryCost;
-        const knownCost = distanceToGoal.get(neighbor.id) ?? Infinity;
+      for (const index of this.#adjacentTiles[current]!) {
+        const neighbor = this.tiles[index]!;
+        if (!Number.isFinite(costs[neighbor.terrain])) continue;
+        const routeCost = distances[current]! + entryCost;
+        const knownCost = distances[index]!;
         if (routeCost >= knownCost) continue;
 
+        distances[index] = routeCost;
         distanceToGoal.set(neighbor.id, routeCost);
-        if (!pendingTiles.includes(neighbor.id)) pendingTiles.push(neighbor.id);
+        if (!pendingTiles.includes(index)) pendingTiles.push(index);
       }
     }
+    if (!this.#routeCache.has(key) && this.#routeCache.size >= 64)
+      this.#routeCache.delete(this.#routeCache.keys().next().value!);
+    this.#routeCache.set(key, { terrain, distances: new Map(distanceToGoal) });
     return distanceToGoal;
   }
 
@@ -897,13 +1039,11 @@ export class Game {
 
   /** Conservative next-phase pressure, allowing other attackers to vacate routes first. */
   forecastDanger(unit: Unit, tile: string, eliminated?: string): number {
-    const shadow = new Game(this.mapId, this.mapRevision);
-    const state = this.captureState();
-    const actor = state.units.find((other) => other.id === unit.id);
+    const shadow = this.fork();
+    const actor = shadow.unit(unit.id);
     if (!actor) return 0;
     actor.tile = tile;
-    if (eliminated) state.units = state.units.filter((other) => other.id !== eliminated);
-    shadow.restoreState(state);
+    if (eliminated) shadow.units = shadow.units.filter((other) => other.id !== eliminated);
     shadow.endTurn();
     if (shadow.winner) return 0;
     const roster = shadow.units;
@@ -923,6 +1063,89 @@ export class Game {
       );
     }
     return pressure;
+  }
+
+  /** Reuse next-phase movement for an unchanged board while scoring candidate hexes. */
+  dangerForecast(unit: Unit): (tile: string, eliminated?: string) => number {
+    if (!this.unit(unit.id)) return () => 0;
+    const mission = this.campaign ? campaignMission(this.campaign) : undefined;
+    const sensitiveTiles = new Set(
+      mission?.goals.flatMap((goal) => {
+        if (
+          (goal.kind === "escort" && unit.role === "courier") ||
+          (goal.kind === "escape" && unit.role === "leader") ||
+          (goal.kind === "vigil" && unit.name === goal.companion)
+        )
+          return [goal.tile];
+        if (
+          goal.kind === "seal" &&
+          (!goal.unitType || TYPES[goal.unitType].family === TYPES[unit.type].family)
+        )
+          return goal.tiles;
+        return [];
+      }),
+    );
+    const arrivingWave =
+      this.turn === "player" &&
+      mission?.waves.some(
+        (wave) => this.round >= wave.round && !this.campaign!.marks.includes(`wave:${wave.id}`),
+      );
+    // Moving an objective actor can complete the mission; changing occupancy
+    // during a wave can change its spawn. Those positions use the exact forecast.
+    if (sensitiveTiles.has(unit.tile) || arrivingWave)
+      return (tile, eliminated) => this.forecastDanger(unit, tile, eliminated);
+    const forecasts = new Map<
+      string,
+      { board: Game; enemies: { unit: Unit; positions: Set<string> }[] }
+    >();
+    const origins = new Map<string, string[]>();
+    return (tile, eliminated) => {
+      if (sensitiveTiles.has(tile)) return this.forecastDanger(unit, tile, eliminated);
+      const key = eliminated ?? "";
+      let forecast = forecasts.get(key);
+      if (!forecast) {
+        const board = this.fork();
+        if (eliminated) board.units = board.units.filter((other) => other.id !== eliminated);
+        board.endTurn();
+        const roster = board.units;
+        const enemies = board.winner
+          ? []
+          : roster
+              .filter((other) => other.side !== unit.side)
+              .map((enemy) => {
+                // The moving target need not be a path obstacle: any path through it
+                // reaches an adjacent attack position first. Other friendly screens
+                // still block movement; opposing troops may vacate each other's paths.
+                board.units = roster.filter(
+                  (other) =>
+                    other.id === enemy.id || (other.side === unit.side && other.id !== unit.id),
+                );
+                return {
+                  unit: enemy,
+                  positions: new Set([enemy.tile, ...board.reachable(enemy.id).keys()]),
+                };
+              });
+        forecast = { board, enemies };
+        forecasts.set(key, forecast);
+      }
+      const target = { ...unit, tile };
+      let pressure = 0;
+      for (const enemy of forecast.enemies) {
+        let best = 0;
+        for (const weapon of TYPES[enemy.unit.type].attacks) {
+          const key = `${tile}:${weapon.category}:${weapon.range}`;
+          let from = origins.get(key);
+          if (!from) {
+            from = forecast.board.attackOrigins(tile, weapon);
+            origins.set(key, from);
+          }
+          if (from.some((position) => enemy.positions.has(position)))
+            best = Math.max(best, forecast.board.damage(enemy.unit, target, weapon.id));
+        }
+        pressure += best;
+      }
+      return pressure;
+    };
   }
 
   /** Compare positions when moving; incoming danger alone does not trigger retreat. */
@@ -1462,7 +1685,8 @@ export class Game {
           heldTurns: 0,
           lastCountedRound: this.round,
         });
-        if (this.tile(goal.tile)?.owner !== "player") {
+        const started = !goal.startEvent || campaign.marks.includes(`event:${goal.startEvent}`);
+        if (!started || this.tile(goal.tile)?.owner !== "player") {
           progress.heldTurns = 0;
           progress.lastCountedRound = this.round;
         } else if (atTurnStart && this.round > progress.lastCountedRound) {
@@ -1491,7 +1715,16 @@ export class Game {
         const triggered =
           event.trigger.kind === "visit"
             ? enteredTile === event.trigger.tile
-            : this.round >= event.trigger.round;
+            : event.trigger.kind === "round"
+              ? this.round >= event.trigger.round
+              : this.tile(event.trigger.tile)?.owner === "player" &&
+                this.round >= (event.trigger.round ?? 1);
+        if (
+          (event.requiresEvent && !campaign.marks.includes(`event:${event.requiresEvent}`)) ||
+          (event.unlessEvent && campaign.marks.includes(`event:${event.unlessEvent}`)) ||
+          (event.beforeRound !== undefined && this.round >= event.beforeRound)
+        )
+          continue;
         if (!triggered || campaign.marks.includes(marker)) continue;
         campaign.marks.push(marker);
         this.gold.player += event.gold ?? 0;

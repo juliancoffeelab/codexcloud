@@ -1,15 +1,18 @@
 # Seeded AI comparisons
 
-Testing policies execute real `Game` commands: movement, terrain and race effects,
+The simulation CLI defaults to the native Rust engine. Testing policies execute
+the same battle commands and rules as `Game`: movement, terrain and race effects,
 combat, healing, recruitment, XP, promotion, scripted arrivals and victory rules.
 The ordinary enemy still uses classic AI. There is no new enemy selector.
 
-The five AI followups are implemented. **No new campaign or tournament simulations
-have been run for them. Run simulations only when the user explicitly requests it.**
+Run campaign or tournament simulations only when the user explicitly requests it.
 
 ## Running a comparison
 
 ```sh
+# Complete ten-seed workload: 11,520 arena matches and 720 campaign attempts.
+npm run ai:full -- --out artifacts/full.json
+
 # Race × complete policy × map, with both seats and initiatives.
 npm run ai:simulate -- --seeds 10 --workers 4 --out artifacts/race-matchups.json
 
@@ -23,19 +26,69 @@ npm run ai:simulate -- --armies human,coastal --policies classic,mixed --landsca
 npm run ai:simulate -- --replay artifacts/coast-panel.json
 ```
 
-These are instructions for a later authorized run, not records of completed runs.
 `--seed` sets the first seed and `--seeds` the count. `--rounds` defaults to 30;
 `--recruits` defaults to one recruitment per phase, or zero for starting-army-only
-comparisons. `--workers` partitions complete seed blocks across up to eight Node
-processes and validates their coverage before combining them. Workers do not change
+comparisons. `--workers` runs seed/map and campaign blocks through a bounded pool
+of up to eight Node workers, each with a persistent Rust process. Its default respects the available CPU quota;
+workers take the next block as they finish. Coverage is validated before combining results. Workers do not change
 outcomes. `--diplomacy pragmatic,restrained` selects campaign settings; both are the
 default. `--trace` additionally retains raw runner results; detailed phases and
 initial/final states are recorded regardless of that flag.
+
+Schema 3 reports keep compact outcomes, composition statistics and timings in
+the main JSON. Each outcome's `detail` gives a file, byte offset, length and SHA-256
+for its complete record in an adjacent `.details.jsonl` journal. This includes
+all commands, combats, troop states, ownership, goals and initial/final states.
+Records are written once as each match finishes. Progress files contain the
+compact indexes, so the runner neither rewrites accumulated traces nor keeps
+the entire tournament in memory. Keep a report and its journals together.
+`--trace` adds `.trace.jsonl` files containing the raw runner return values.
+Exact replay reads and validates one journal record at a time.
+
+`npm run ai:benchmark -- --out artifacts/baseline.json` measures 60 representative
+runs spanning every race, terrain and policy plus all four campaigns. After an
+optimization, use `--compare artifacts/baseline.json --out artifacts/optimized.json`
+to require identical hashes for every complete result, including phase commands.
+This benchmark is separate from the lightweight test suite.
+
+The engine shares immutable indexed hex geometry between forecast copies, uses
+integer movement queues, and precomputes fixed movement and defense rules. Routing
+fields ignore occupancy and can be reused across commands; a terrain signature
+invalidates them after edits, and callers receive independent maps. Threat searches
+reuse movement and firing positions within an unchanged board. Objective endpoints
+and incoming waves retain exact forecasts. Rush and mixed retain the first best
+plan directly, preserving the stable tie order without sorting every candidate.
+These changes preserve the policies' scores and rules rather than reducing the
+simulation schedule or turn limits.
 
 The planner/recruiter split and factorial mode have been removed. Every policy
 chooses its own recruits. Historical split results remain in `docs/simulations/`;
 replaying them requires their original source, rather than converting their labels
 or pretending that they describe these changed policies.
+
+## Native Rust engine
+
+`npm run ai:simulate` and `npm run ai:full` export the authored rules and build the
+Rust executable before launching the selected schedule. Battles, policies and
+campaign transitions run entirely in Rust; Node handles scheduling and reporting.
+A source fingerprint rejects stale native binaries. The browser keeps its current
+TypeScript engine. No WASM integration is included.
+
+Use `npm run ai:typescript -- ...` for the TypeScript reference backend.
+`npm run ai:rust:benchmark -- --out artifacts/rust-sample.json` compares 60 bounded
+matches against that reference, including every command and result field.
+`--alternate` samples different seeds, enemy initiative, opposing policies and
+pragmatic diplomacy. Neither benchmark starts the full workload. See
+[`rust/README.md`](../rust/README.md) for the native interface and build details.
+
+On 2026-10-06, 120 matched samples retained identical complete results. The native
+path, including JSON transport, took 4.16 seconds versus 21.00 seconds for the
+optimized TypeScript reference (5.1×). The sample means project approximately
+78 seconds of match work for the full 12,240-configuration schedule on four cores,
+before reporting and scheduling overhead. This is an estimate: no new full workload
+was run for the port. A separate 12-match two-worker CLI sample, including indexed
+journals and aggregation, completed in 0.64 seconds and replayed exactly.
+[Configurations and timings](simulations/rust-native-benchmark-20261006.json) are recorded.
 
 ## Complete policies
 
@@ -46,11 +99,25 @@ The campaign/test adapter adds objective reservations, required-actor safety and
 selectable mediation behavior. Live enemy actions retain authored posts and patrols.
 
 **Rush** recruits ordinary melee screens and favors efficient damage and durability.
-**Mixed** aims for roughly 50% screens, 35% ranged and 15% healers, subject to its
-race's pool and resources. Mixed places screens ahead of supports, heals adjacent
+**Mixed** aims for roughly 35% tanks, 15% fast melee flankers, 35% ranged and 15%
+healers. Shares are normalized over the roles its recruitment pool offers. Fast
+melee specialists (including scouts with a ranged sidearm) do not fulfill the tank
+quota. A missing tank gets replacement priority. With village income, mixed saves
+for that replacement instead of continually buying cheaper flankers; other preferred
+roles save for at most two income ticks. Without income it buys an affordable option.
+Recruitment effectiveness uses actual target cover and the attack category the
+role delivers, rather than crediting a ranged unit for a risky melee sidearm.
+Mixed places screens ahead of supports, heals adjacent
 wounded allies, and recomputes plans after every command so followers can use newly
 opened routes. Both policies use actual weapon/terrain effectiveness and objectives.
 Their screens recruit toward contact and their supports behind it.
+
+The woodland balance revision gives beast-race units 1 additional melee and ranged
+protection in forests and groves, on top of terrain cover and individual concealment.
+Thorncaller thorns deal 4 Pierce damage (Briarweaver: 5). Boars lead with 4-damage
+Impact Trample (Great boar: 5), retaining equal-strength Pierce tusks as an alternative.
+Wavemender costs 10 gold; its attacks and healing are unchanged. Historical results
+predate these changes; no new win rates are implied by the focused regression tests.
 
 All policies share leader reinforcement hysteresis. Leaders initially rebuild when
 below five living ordinary combatants. They release at five, return to rebuilding
@@ -85,6 +152,21 @@ blockers before moving the actor; rush/mixed recompute after each command.
 Rebuilding leaders also reserve their recruitment sites. An actor holds its endpoint
 until the engine completes the battle. Authored enemy posts and objective patrol
 limits apply to all policies; the scenario's duties do not disappear when changing AI.
+
+Rush and mixed assign each unit a reachable objective before scoring destinations,
+and retain that assignment throughout the turn until the objective is secured.
+Assigned couriers and seal-capable units prioritize their personal duties. Equal
+objective choices use home-relative ordering rather than coordinate labels.
+Progress earns points and retreat loses them against that same objective; gaining
+one movement-cost step is worth a quarter of its weight. Moves are compared with
+waiting, so existing formation, healing and safety do not count as new gains.
+Captured sites stop attracting troops. Hold duties retain a garrison, while other
+troops pursue remaining goals. A rebuilding leader's duty does not recall the army.
+Required-actor safety, retreat and legal movement restrictions still apply.
+
+The woodland regression reuses recorded starting states from the completed full
+run and checks one policy turn, not a campaign simulation. Tournament and campaign
+win rates must be measured again in a separately authorized run after this change.
 
 Campaign diplomacy is a matched comparison dimension:
 
@@ -136,7 +218,7 @@ choices can repeat across seeds.
 
 ## Recorded data and limits
 
-Schema 2 reports contain every configuration, outcome, reason, unresolved cap,
+Reports retain every configuration, outcome, reason, unresolved cap,
 phase command, combat damage/retaliation, casualty, recruit, promotion and initial/
 final state. Phase records include beginning/end rosters with identities, positions,
 HP, XP, action flags and leader mode; gold, ownership, goal progress and full campaign

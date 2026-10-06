@@ -9,6 +9,8 @@ export interface AiObjective {
   kind: "capture" | "visit" | "escort" | "escape" | "seal" | "vigil" | "defeat";
   actor?: string;
   family?: string;
+  /** Remaining on this site is part of the duty, even after capturing it. */
+  hold?: boolean;
 }
 
 export function objectivesFor(game: Game, side: Side): AiObjective[] {
@@ -54,6 +56,7 @@ export function objectivesFor(game: Game, side: Side): AiObjective[] {
             weight: 24,
             actor,
             family: goal.kind === "seal" ? goal.unitType : undefined,
+            hold: goal.kind === "hold" || goal.kind === "refuge",
           });
       }
       for (const event of mission.events) {
@@ -86,6 +89,7 @@ export function objectivesFor(game: Game, side: Side): AiObjective[] {
             tiles: [...activeGoalTiles(game, goal)],
             kind: "capture",
             weight: 24,
+            hold: true,
           });
         }
       }

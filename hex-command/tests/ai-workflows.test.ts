@@ -192,6 +192,60 @@ test("Danger forecasts account for attackers vacating a blocked corridor", async
     "The sword can vacate the corridor, enabling the archer's later attack",
   );
 });
+test("Reusable danger preserves screens, vacated targets and eliminated attackers", () => {
+  const { pressure, courier } = pressureFixture();
+  pressure.addUnit("reefguard", "player", "5,2");
+  const bow = pressure.units.find((unit) => unit.type === "archer")!;
+  const forecast = pressure.dangerForecast(courier);
+  const before = pressure.captureState();
+  for (const tile of ["3,3", "4,3", "5,3", "4,2"])
+    for (const eliminated of [undefined, bow.id])
+      assert.equal(forecast(tile, eliminated), pressure.forecastDanger(courier, tile, eliminated));
+  assert.deepEqual(pressure.captureState(), before);
+});
+test("Battle forks isolate terrain, units, story and ownership while preserving adjacency", () => {
+  const original = Game.startCampaign("borrowed-tide", 1);
+  const before = original.captureState();
+  const fork = original.fork();
+  fork.tile("5,4")!.terrain = "forest";
+  fork.tile("5,4")!.owner = "enemy";
+  fork.units[0]!.hp = 1;
+  fork.gold.player = 0;
+  fork.campaign!.dialogue[0]!.text = "Changed";
+  fork.campaign!.holds!["5,4"]!.heldTurns = 2;
+  assert.equal(fork.neighbors("4,4").find((tile) => tile.id === "5,4")!.terrain, "forest");
+  assert.deepEqual(original.captureState(), before);
+  const neighbors = fork.neighbors("4,4").map((tile) => tile.id);
+  fork.neighbors("4,4").reverse();
+  assert.deepEqual(
+    fork.neighbors("4,4").map((tile) => tile.id),
+    neighbors,
+  );
+});
+test("Reusable danger uses exact forecasts for wave arrivals and objective actors", () => {
+  const wave = Game.startCampaign("borrowed-tide", 1);
+  wave.advanceDialogue(true);
+  wave.round = 4;
+  const mira = wave.units.find((unit) => unit.name === "Mira")!;
+  const danger = wave.dangerForecast(mira);
+  for (const tile of [mira.tile, "10,1", "11,5"])
+    assert.equal(danger(tile), wave.forecastDanger(mira, tile));
+  const escort = Game.startCampaign("lantern-road");
+  escort.advanceDialogue(true);
+  const courier = escort.units.find((unit) => unit.role === "courier")!;
+  const destination =
+    escort.campaign &&
+    objectivesFor(escort, "player").find((goal) => goal.kind === "escort")!.tiles[0]!;
+  assert.equal(
+    escort.dangerForecast(courier)(destination!),
+    escort.forecastDanger(courier, destination!),
+  );
+  for (const tile of [courier.tile, "2,4", "4,2"])
+    assert.equal(escort.dangerForecast(courier)(tile), escort.forecastDanger(courier, tile));
+  courier.tile = destination!;
+  for (const tile of [destination!, "2,4"])
+    assert.equal(escort.dangerForecast(courier)(tile), escort.forecastDanger(courier, tile));
+});
 for (const policy of POLICY_IDS) {
   test(
     "Required actors withdraw from danger under every policy — " + JSON.stringify([policy]),

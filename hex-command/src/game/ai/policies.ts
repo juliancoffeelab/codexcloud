@@ -53,6 +53,15 @@ function role(unit: Pick<Unit, "type">): "screen" | "ranged" | "healer" {
   return definition.healing ? "healer" : definition.range > 1 ? "ranged" : "screen";
 }
 
+type RecruitmentRole = "tank" | "flanker" | "ranged" | "healer";
+function recruitmentRole(type: UnitType): RecruitmentRole {
+  const definition = TYPES[type];
+  if (definition.healing) return "healer";
+  // Fast melee specialists remain flankers after gaining a ranged sidearm.
+  if (definition.move >= 5 && definition.attacks[0].category === "melee") return "flanker";
+  return definition.range > 1 ? "ranged" : "tank";
+}
+
 function policyObjectives(game: Game, context: PolicyContext): AiObjective[] {
   const goals = [...(context.objectives ?? objectivesFor(game, game.turn))];
   for (const leader of game.units.filter(
@@ -99,32 +108,46 @@ function recruit(game: Game, policy: PolicyId, context: PolicyContext): void {
     if (!leader) return;
     const allies = game.units.filter((unit) => unit.side === side && !TYPES[unit.type].leader);
     const opponents = game.units.filter((unit) => unit.side !== side);
-    const counts = { screen: 0, ranged: 0, healer: 0 };
-    for (const ally of allies) counts[role(ally)]++;
-    const choices = game
-      .recruitmentOptions(side)
+    const counts = { tank: 0, flanker: 0, ranged: 0, healer: 0 };
+    for (const ally of allies) counts[recruitmentRole(ally.type)]++;
+    const pool = game.recruitmentOptions(side);
+    const shares = { tank: 0.35, flanker: 0.15, ranged: 0.35, healer: 0.15 };
+    const availableRoles = new Set(pool.map(recruitmentRole));
+    const totalShare = [...availableRoles].reduce((total, category) => total + shares[category], 0);
+    const choices = pool
       .filter(
         (type) =>
           (policy !== "rush" || role({ type }) === "screen") &&
-          game.recruitTiles(leader.id, type).some((tile) => placementAllowed(type, tile)),
+          (policy === "mixed"
+            ? game.recruitPlacementTiles(leader.id, type)
+            : game.recruitTiles(leader.id, type)
+          ).some((tile) => placementAllowed(type, tile)),
       )
       .map((type) => {
         const definition = TYPES[type];
-        const category = role({ type });
-        const desired = category === "screen" ? 0.5 : category === "ranged" ? 0.35 : 0.15;
+        const category = recruitmentRole(type);
+        const desired = shares[category] / totalShare;
         const deficiency = desired * (allies.length + 1) - counts[category];
+        const recruit: Unit = {
+          id: "planned-recruit",
+          type,
+          side,
+          tile: leader.tile,
+          hp: definition.hp,
+          moved: true,
+          attacked: true,
+        };
+        // Value the weapon the formation can deliver, with the target's actual cover.
+        const attacks = definition.attacks.filter((weapon) =>
+          category === "ranged" || category === "healer"
+            ? weapon.category === "ranged"
+            : weapon.category === "melee",
+        );
         const effectiveness = opponents.length
           ? opponents.reduce(
               (total, target) =>
                 total +
-                Math.max(
-                  ...definition.attacks.map((weapon) =>
-                    Math.max(
-                      1,
-                      weapon.damage + TYPES[target.type].damageModifiers[weapon.damageType],
-                    ),
-                  ),
-                ),
+                Math.max(0, ...attacks.map((weapon) => game.damage(recruit, target, weapon.id))),
               0,
             ) / opponents.length
           : definition.damage;
@@ -134,11 +157,20 @@ function recruit(game: Game, policy: PolicyId, context: PolicyContext): void {
             ? efficiency * 5 + definition.hp * 0.15
             : deficiency * 8 +
               efficiency * 2 +
+              (category === "tank" && counts.tank === 0 ? 6 : 0) +
               (category === "healer" && counts.healer === 0 ? 3 : 0);
         return { type, score: score + jitter(context.seed, `recruit:${game.round}:${type}`) };
       })
       .sort((a, b) => b.score - a.score);
-    const choice = choices[0];
+    const preferred = choices[0];
+    if (!preferred) return;
+    if (TYPES[preferred.type].cost > game.gold[side] && game.income(side) > 0) {
+      const missingTank = recruitmentRole(preferred.type) === "tank" && counts.tank === 0;
+      // Preserve a replacement tank's budget; other roles save at most two income ticks.
+      if (missingTank || TYPES[preferred.type].cost - game.gold[side] <= game.income(side) * 2)
+        return;
+    }
+    const choice = choices.find((candidate) => TYPES[candidate.type].cost <= game.gold[side]);
     if (!choice) return;
     const tiles = game
       .recruitTiles(leader.id, choice.type)
@@ -158,28 +190,28 @@ function recruit(game: Game, policy: PolicyId, context: PolicyContext): void {
 
 /** Future movement is estimated with fresh action flags, through the live pathfinder. */
 class Threats {
-  private readonly source: ReturnType<Game["captureState"]>;
+  private readonly source: Game;
   private readonly important: Set<string>;
   private readonly shadow: Game;
-  private readonly enemies: { unit: Unit; from: string[] }[];
+  private readonly enemies: { unit: Unit; from: Set<string> }[];
   private readonly cache = new Map<string, number>();
+  private readonly forecasts = new Map<string, ReturnType<Game["dangerForecast"]>>();
+  private readonly origins = new Map<string, string[]>();
   constructor(game: Game, side: Side) {
-    const state = game.captureState();
-    this.source = state;
+    this.source = game;
     this.important = new Set(
       game.units
         .filter((unit) => unit.side === side && essential(game, unit))
         .map((unit) => unit.id),
     );
-    this.shadow = new Game(game.mapId, game.mapRevision);
-    this.shadow.restoreState(state);
+    this.shadow = game.fork();
     // Authored next-phase arrivals and healing use the real turn boundary.
     this.shadow.endTurn();
     this.enemies = this.shadow.units
       .filter((unit) => unit.side !== side)
       .map((unit) => ({
         unit,
-        from: [unit.tile, ...this.shadow.reachable(unit.id).keys()],
+        from: new Set([unit.tile, ...this.shadow.reachable(unit.id).keys()]),
       }));
   }
   at(unit: Unit, tile: string, eliminated?: string): number {
@@ -187,9 +219,12 @@ class Threats {
     const cached = this.cache.get(key);
     if (cached !== undefined) return cached;
     if (this.important.has(unit.id)) {
-      const source = new Game(this.source.mapId, this.source.mapRevision);
-      source.restoreState(this.source);
-      const risk = source.forecastDanger(unit, tile, eliminated);
+      let forecast = this.forecasts.get(unit.id);
+      if (!forecast) {
+        forecast = this.source.dangerForecast(unit);
+        this.forecasts.set(unit.id, forecast);
+      }
+      const risk = forecast(tile, eliminated);
       this.cache.set(key, risk);
       return risk;
     }
@@ -201,7 +236,13 @@ class Threats {
       .map(({ unit: enemy, from }) => {
         let best = 0;
         for (const weapon of TYPES[enemy.type].attacks) {
-          if (from.some((position) => board.canAttackFrom(enemy, position, target, weapon.id)))
+          const key = `${tile}:${weapon.category}:${weapon.range}`;
+          let origins = this.origins.get(key);
+          if (!origins) {
+            origins = board.attackOrigins(tile, weapon);
+            this.origins.set(key, origins);
+          }
+          if (origins.some((position) => from.has(position)))
             best = Math.max(best, board.damage(enemy, target, weapon.id));
         }
         return best;
@@ -228,20 +269,43 @@ function plans(
   policy: "rush" | "mixed",
   context: PolicyContext,
   routes: Map<string, Map<string, number>>,
+  commitments: Map<string, string>,
 ): Plan[] {
   const side = game.turn;
   const allies = game.units.filter((unit) => unit.side === side);
   const foes = game.units.filter((unit) => unit.side !== side);
   const objectives = individualObjectives(policyObjectives(game, context));
+  if (allies.every((unit) => unit.attacked)) return [];
   const lanes = withdrawalLanes(game, side, context.diplomacy ?? "pragmatic");
   const threats = new Threats(game, side);
   const screens = allies.filter((unit) => role(unit) === "screen" && !TYPES[unit.type].leader);
   const movableScreens = screens.some((unit) => !unit.moved && !unit.attacked);
-  const result: Plan[] = [];
-  const rangeToFoe = (tile: string) =>
-    foes.length
-      ? Math.min(...foes.map((foe) => distance(game.tile(tile)!, game.tile(foe.tile)!)))
-      : 20;
+  let best: Plan | undefined;
+  const ranges = new Map<string, number>();
+  const firingOrigins = new Map<string, Set<string>>();
+  const canFire = (
+    target: Unit,
+    weapon: (typeof TYPES)[UnitType]["attacks"][number],
+    tile: string,
+  ) => {
+    const key = `${target.tile}:${weapon.category}:${weapon.range}`;
+    let origins = firingOrigins.get(key);
+    if (!origins) {
+      origins = new Set(game.attackOrigins(target.tile, weapon));
+      firingOrigins.set(key, origins);
+    }
+    return origins.has(tile);
+  };
+  const rangeToFoe = (tile: string) => {
+    let range = ranges.get(tile);
+    if (range === undefined) {
+      range = foes.length
+        ? Math.min(...foes.map((foe) => distance(game.tile(tile)!, game.tile(foe.tile)!)))
+        : 20;
+      ranges.set(tile, range);
+    }
+    return range;
+  };
   const field = (unit: Unit, goal: AiObjective) => {
     const key = `${unit.type}:${goal.tiles.join(";")}`;
     if (!routes.has(key))
@@ -257,8 +321,8 @@ function plans(
     const important = essential(game, unit);
     const beforeRisk = threats.at(unit, unit.tile);
     const promotion = game.promotionOptions(unit.id)[0];
-    if (promotion && beforeRisk < unit.hp)
-      result.push({ unit: unit.id, tile: unit.tile, advance: promotion, score: 14 });
+    if (promotion && beforeRisk < unit.hp && (!best || best.score < 14))
+      best = { unit: unit.id, tile: unit.tile, advance: promotion, score: 14 };
     const destinations = authoredDestinations(game, unit, [
       unit.tile,
       ...game.reachable(unit.id).keys(),
@@ -281,44 +345,95 @@ function plans(
       ),
       requiredMovement,
     };
-    for (const tileId of destinations) {
+    const goals: AiObjective[] = rebuilding.length
+      ? [
+          {
+            id: "rebuild",
+            kind: "capture",
+            actor: unit.id,
+            tiles: rebuilding.map((tile) => tile.id),
+            weight: 80,
+          },
+        ]
+      : objectives;
+    const duties = goals.flatMap((original) => {
+      if (
+        original.kind === "capture" &&
+        !original.actor &&
+        original.tiles.every((id) => {
+          const occupant = game.at(id);
+          return (
+            game.tile(id)?.owner === side &&
+            (!original.hold || (occupant?.side === side && occupant.id !== unit.id))
+          );
+        })
+      )
+        return [];
+      // Rebuilding is the leader's duty, not a reason to recall the whole army.
+      if (original.id.startsWith("rebuild:") && original.actor !== unit.id) return [];
+      const assisting = !canPursue(unit, original) && Boolean(original.actor || original.family);
+      if (!canPursue(unit, original) && !assisting) return [];
+      const goal = assisting ? supportObjective(game, unit, original) : original;
+      const route = field(unit, goal);
+      const before = route.get(unit.tile);
+      return before !== undefined && Number.isFinite(before) && goal.tiles.length
+        ? [
+            {
+              goal,
+              route,
+              before,
+              assigned: !assisting && Boolean(original.actor || original.family),
+              priority: (before + 3) / goal.weight,
+            },
+          ]
+        : [];
+    });
+    const eligibleDuties = duties.some((duty) => duty.assigned)
+      ? duties.filter((duty) => duty.assigned)
+      : duties;
+    const order = enemyTileOrder(game.tiles, game.units, unit, true);
+    const nearest = (goal: AiObjective) =>
+      goal.tiles
+        .map((id) => game.tile(id)!)
+        .sort(
+          (a, b) =>
+            distance(game.tile(unit.tile)!, a) - distance(game.tile(unit.tile)!, b) || order(a, b),
+        )[0]!;
+    // Select a duty before comparing moves. A move cannot switch objectives just
+    // to hide its retreat from the one this unit was advancing toward.
+    const duty =
+      eligibleDuties.find(({ goal }) => goal.id === commitments.get(unit.id)) ??
+      eligibleDuties.sort(
+        (a, b) => a.priority - b.priority || order(nearest(a.goal), nearest(b.goal)),
+      )[0];
+    if (duty) commitments.set(unit.id, duty.goal.id);
+    else commitments.delete(unit.id);
+    const dangerWeight = important
+      ? 6
+      : category === "screen"
+        ? policy === "rush"
+          ? 0.35
+          : 0.55
+        : 0.9;
+    const unitPlans: Plan[] = [];
+    let waitScore = -Infinity;
+    // Evaluate waiting even when an authored post requires a different destination.
+    for (const tileId of new Set([unit.tile, ...destinations])) {
       const tile = game.tile(tileId)!;
       let positioning =
         (reserved.has(unit.tile) ? 80 : 0) -
         (reserved.has(tileId) ? 160 : 0) -
         (lanes.has(tileId) ? 100 : 0);
-      let objectiveBenefit = 0;
-      const goals = rebuilding.length
-        ? [
-            {
-              id: "rebuild",
-              kind: "capture" as const,
-              tiles: rebuilding.map((tile) => tile.id),
-              weight: 80,
-            },
-          ]
-        : objectives;
-      for (const original of goals) {
-        const assisting = !canPursue(unit, original) && Boolean(original.actor || original.family);
-        if (!canPursue(unit, original) && !assisting) continue;
-        const goal = assisting ? supportObjective(game, unit, original) : original;
-        if (!goal.tiles.length) continue;
-        const route = field(unit, goal);
-        const before = route.get(unit.tile) ?? 1000,
-          after = route.get(tileId) ?? 1000;
-        const occupiedGoal =
-          goal.kind === "capture" &&
-          goal.tiles.every((id) => game.tile(id)?.owner === side && game.at(id)?.side === side);
-        const weight = occupiedGoal ? goal.weight * 0.15 : goal.weight;
-        objectiveBenefit = Math.max(
-          objectiveBenefit,
-          ((before - after) * weight) / 12 +
-            (goal.tiles.includes(tileId) && tileId !== unit.tile && !occupiedGoal
-              ? weight * 0.6
-              : 0),
-        );
+      if (duty) {
+        const after = duty.route.get(tileId);
+        if (after === undefined || !Number.isFinite(after)) continue;
+        const { goal, before } = duty;
+        positioning +=
+          ((before - after) * goal.weight) / 4 +
+          (Number(goal.tiles.includes(tileId)) - Number(goal.tiles.includes(unit.tile))) *
+            goal.weight *
+            0.6;
       }
-      positioning += objectiveBenefit;
       if (
         rebuilding.some((keep) => keep.id === unit.tile) &&
         tileId !== unit.tile &&
@@ -375,9 +490,15 @@ function plans(
           }
         }
       }
+      if (tileId === unit.tile)
+        waitScore =
+          positioning -
+          beforeRisk * dangerWeight -
+          (beforeRisk >= unit.hp ? (important ? 40 : 5) : 0);
+      if (!destinations.includes(tileId)) continue;
       const attacks = foes.flatMap((target) =>
-        game
-          .attackOptions(unit, target, tileId)
+        TYPES[unit.type].attacks
+          .filter((weapon) => canFire(target, weapon, tileId))
           .filter((weapon) =>
             diplomacyAllowsAttack(
               game,
@@ -443,13 +564,6 @@ function plans(
           continue;
         if (important && !finishesEscort && !finishesBattle)
           combat *= unit.role === "courier" ? 0.1 : 0.5;
-        const dangerWeight = important
-          ? 6
-          : category === "screen"
-            ? policy === "rush"
-              ? 0.35
-              : 0.55
-            : 0.9;
         const score =
           positioning +
           (finishesEscort || finishesBattle ? 100 : 0) +
@@ -458,24 +572,30 @@ function plans(
           (lethal && !finishesBattle ? (important ? 40 : 5) : 0) +
           Math.max(0, beforeRisk - incoming) * (important ? 3 : unit.hp <= 4 ? 1.5 : 0.2) +
           jitter(context.seed, `${game.round}:${unit.id}:${tileId}:${target?.id ?? "move"}`);
-        if (score > 0.1 || (important && incoming < beforeRisk && !target))
-          result.push({
-            unit: unit.id,
-            tile: tileId,
-            target: target?.id,
-            weapon: weapon?.id,
-            score,
-            withdrawing:
-              unit.side === "enemy" &&
-              !target &&
-              unit.hp < TYPES[unit.type].hp &&
-              rangeToFoe(tileId) > rangeToFoe(unit.tile) &&
-              (incoming < beforeRisk || healingTile || Boolean(unit.retreating)),
-          });
+        unitPlans.push({
+          unit: unit.id,
+          tile: tileId,
+          target: target?.id,
+          weapon: weapon?.id,
+          score,
+          withdrawing:
+            unit.side === "enemy" &&
+            !target &&
+            unit.hp < TYPES[unit.type].hp &&
+            rangeToFoe(tileId) > rangeToFoe(unit.tile) &&
+            (incoming < beforeRisk || healingTile || Boolean(unit.retreating)),
+        });
       }
     }
+    // Formation, healing and safe ground already available by waiting are not
+    // fresh gains. Tiny tie-breaking jitter alone must never cause a move.
+    for (const plan of unitPlans) {
+      const score = plan.score - waitScore;
+      // Strict comparison retains the first equal-score plan, as stable sorting did.
+      if (score > 0.1 && (!best || score > best.score)) best = { ...plan, score };
+    }
   }
-  return result;
+  return best ? [best] : [];
 }
 
 /** Chooses commands only. Turn transitions, combat, XP, access and victory stay in Game. */
@@ -548,10 +668,11 @@ export function playPolicyTurn(game: Game, policy: PolicyId, context: PolicyCont
     return;
   }
   const routes = new Map<string, Map<string, number>>();
+  const commitments = new Map<string, string>();
   // Every successful command consumes a real action; no fictional waits or unlimited search.
   const actionLimit = game.units.filter((unit) => unit.side === side).length * 3;
   for (let actions = 0; actions < actionLimit && !game.winner; actions++) {
-    const candidates = plans(game, policy, context, routes).sort((a, b) => b.score - a.score);
+    const candidates = plans(game, policy, context, routes, commitments);
     const choice = candidates[0];
     if (!choice) break;
     const unit = game.unit(choice.unit)!;

@@ -97,7 +97,7 @@ export const CAMPAIGN_UNITS = {
     damageModifiers: { blade: 0, pierce: 0, impact: 0 },
     ability: "Woodland runner",
     description:
-      "Forests and groves cost 1 movement. Fast flanking unit; takes 1 extra Pierce damage.",
+      "Forests and groves cost 1 movement and reduce incoming damage by 1. Fast flanking unit; takes 1 extra Pierce damage.",
   },
   boar: {
     name: "Boar",
@@ -108,11 +108,11 @@ export const CAMPAIGN_UNITS = {
     damage: 4,
     range: 1,
     cost: 9,
-    attacks: [attack("tusks", "Tusks", 4, "pierce")],
+    attacks: [attack("trample", "Trample", 4, "impact"), attack("tusks", "Tusks", 4, "pierce")],
     damageModifiers: { blade: 0, pierce: 0, impact: 0 },
     ability: "Thick hide",
     description:
-      "Forests and groves cost 1 movement. A sturdy front-line beast, vulnerable to piercing like other beasts. Tusks punish unarmored units, but it has no ranged reply.",
+      "Forests and groves cost 1 movement and reduce incoming damage by 1. A sturdy front-line beast: Impact trample counters bones and armor, with Pierce tusks as an alternative. Vulnerable to piercing in the open; no ranged reply.",
   },
   wildkeeper: {
     name: "Wildkeeper",
@@ -130,7 +130,7 @@ export const CAMPAIGN_UNITS = {
     damageModifiers: { blade: 0, pierce: -1, impact: -1 },
     ability: "Keeper of the grove",
     description:
-      "Your leader. Forests and groves cost 1 movement. Takes 1 less Impact damage; losing it ends the mission.",
+      "Your leader. Forests and groves cost 1 movement and reduce incoming damage by 1. Takes 1 less Impact damage; losing it ends the mission.",
   },
   necromancer: {
     name: "Necromancer",
@@ -159,16 +159,16 @@ export const CAMPAIGN_UNITS = {
     },
     hp: 7,
     move: 4,
-    damage: 3,
+    damage: 4,
     range: 2,
     cost: 7,
     attacks: [
-      attack("thorns", "Thorns", 3, "pierce", "ranged", 2),
+      attack("thorns", "Thorns", 4, "pierce", "ranged", 2),
       attack("rootstaff", "Root staff", 2, "impact"),
     ],
     damageModifiers: { blade: 0, pierce: -1, impact: 0 },
     ability: "Understory",
     description:
-      "Forests and groves cost 1 movement and give 1 extra ranged protection. A fragile woodland skirmisher; its light Impact staff offers a risky answer to armor.",
+      "Forests and groves cost 1 movement, reduce incoming damage by 1, and give another 1 ranged protection. Strong Pierce thorns; its light Impact staff offers a risky answer to armor.",
   },
 } satisfies Partial<Record<UnitType, UnitDefinition>>;
