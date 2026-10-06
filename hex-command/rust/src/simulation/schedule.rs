@@ -1,0 +1,238 @@
+//! Deterministic race/policy/map schedules with counterbalanced seats and initiative.
+use super::{error::SimulationError, types::*};
+use crate::{
+    ai::{Diplomacy, Policy},
+    data::{Rules, Side},
+};
+use serde::{Deserialize, Serialize};
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
+/// Which independent workload families are scheduled.
+pub enum Mode {
+    Arena,
+    Campaign,
+    Full,
+}
+impl Mode {
+    /// Stable CLI/report label.
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Arena => "arena",
+            Self::Campaign => "campaign",
+            Self::Full => "full",
+        }
+    }
+}
+#[derive(Clone, Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+/// Validated dimensions and per-match limits for a native workload.
+pub struct ScheduleOptions {
+    pub mode: Mode,
+    pub first_seed: u32,
+    pub seeds: u32,
+    pub max_rounds: u32,
+    pub recruit_limit: usize,
+    pub armies: Vec<String>,
+    pub landscapes: Vec<String>,
+    pub campaigns: Vec<String>,
+    pub policies: Vec<Policy>,
+    pub diplomacy: Vec<Diplomacy>,
+}
+impl ScheduleOptions {
+    /// Resolve authored simulation defaults without starting any matches.
+    pub fn defaults(rules: &Rules) -> Result<Self, SimulationError> {
+        let parse = |ids: &[String]| -> Result<Vec<Policy>, SimulationError> {
+            ids.iter()
+                .map(|id| {
+                    serde_json::from_value(serde_json::Value::String(id.clone()))
+                        .map_err(SimulationError::from)
+                })
+                .collect()
+        };
+        Ok(Self {
+            mode: Mode::Arena,
+            first_seed: 1,
+            seeds: 2,
+            max_rounds: rules.arena.default_max_rounds,
+            recruit_limit: rules.arena.default_recruit_limit,
+            armies: rules.rosters.iter().map(|item| item.id.clone()).collect(),
+            landscapes: rules
+                .arena
+                .landscapes
+                .iter()
+                .map(|item| item.id.clone())
+                .collect(),
+            campaigns: rules.campaign_defaults.campaigns.clone(),
+            policies: parse(&rules.arena.policies)?,
+            diplomacy: rules
+                .campaign_defaults
+                .diplomacy
+                .iter()
+                .map(|id| {
+                    serde_json::from_value(serde_json::Value::String(id.clone()))
+                        .map_err(SimulationError::from)
+                })
+                .collect::<Result<_, _>>()?,
+        })
+    }
+    /// Count both seats/initiatives and campaign diplomacy settings with checked arithmetic.
+    pub fn expected_games(&self) -> Result<usize, SimulationError> {
+        let entrants = self
+            .armies
+            .len()
+            .checked_mul(self.policies.len())
+            .ok_or("Schedule too large")?;
+        let arena = if self.mode == Mode::Campaign {
+            0
+        } else {
+            self.landscapes
+                .len()
+                .checked_mul(2)
+                .and_then(|n| n.checked_mul(entrants))
+                .and_then(|n| n.checked_mul(entrants))
+                .ok_or("Schedule too large")?
+        };
+        let campaign = if self.mode == Mode::Arena {
+            0
+        } else {
+            self.campaigns
+                .len()
+                .checked_mul(self.policies.len())
+                .and_then(|n| n.checked_mul(self.policies.len()))
+                .and_then(|n| n.checked_mul(self.diplomacy.len()))
+                .ok_or("Schedule too large")?
+        };
+        arena
+            .checked_add(campaign)
+            .and_then(|n| n.checked_mul(self.seeds as usize))
+            .ok_or_else(|| "Schedule too large".into())
+    }
+}
+/// Deterministic schedule order matches the TypeScript comparison harness.
+pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, SimulationError> {
+    let end = options
+        .first_seed
+        .checked_add(options.seeds)
+        .ok_or("Seed range overflows u32")?;
+    let count = options.expected_games()?;
+    let mut configs = Vec::new();
+    configs.try_reserve(count).map_err(|error| {
+        SimulationError::InvalidConfig(format!("Schedule allocation failed: {error}"))
+    })?;
+    let entrants: Vec<_> = options
+        .armies
+        .iter()
+        .flat_map(|army| options.policies.iter().map(move |policy| (army, *policy)))
+        .collect();
+    for seed in options.first_seed..end {
+        if options.mode != Mode::Campaign {
+            for landscape in &options.landscapes {
+                for a in 0..entrants.len() {
+                    for b in a..entrants.len() {
+                        let seats = if a == b {
+                            vec![(a, b)]
+                        } else {
+                            vec![(a, b), (b, a)]
+                        };
+                        for (left, right) in seats {
+                            for first in [Side::Player, Side::Enemy] {
+                                configs.push(MatchConfig::Arena(ArenaConfig {
+                                    seed,
+                                    max_rounds: options.max_rounds,
+                                    recruit_limit: options.recruit_limit,
+                                    landscape: landscape.clone(),
+                                    first,
+                                    player: entrants[left].1,
+                                    enemy: entrants[right].1,
+                                    armies: Armies {
+                                        player: entrants[left].0.clone(),
+                                        enemy: entrants[right].0.clone(),
+                                    },
+                                }));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if options.mode != Mode::Arena {
+            for campaign in &options.campaigns {
+                for player in &options.policies {
+                    for enemy in &options.policies {
+                        for diplomacy in &options.diplomacy {
+                            configs.push(MatchConfig::Campaign(CampaignConfig {
+                                campaign: campaign.clone(),
+                                player: *player,
+                                enemy: *enemy,
+                                diplomacy: *diplomacy,
+                                seed,
+                                max_rounds: options.max_rounds,
+                                recruit_limit: options.recruit_limit,
+                            }));
+                        }
+                    }
+                }
+            }
+        }
+    }
+    debug_assert_eq!(configs.len(), count);
+    Ok(configs)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn seats_and_initiatives_are_counterbalanced() {
+        let options = ScheduleOptions {
+            mode: Mode::Full,
+            first_seed: 5,
+            seeds: 1,
+            max_rounds: 1,
+            recruit_limit: 0,
+            armies: vec!["a".into(), "b".into()],
+            landscapes: vec!["open".into()],
+            campaigns: vec!["chapter".into()],
+            policies: vec![Policy::Classic],
+            diplomacy: vec![Diplomacy::Pragmatic],
+        };
+        let configs = schedule(&options).unwrap();
+        assert_eq!(configs.len(), 9);
+        let arena: Vec<_> = configs
+            .iter()
+            .filter_map(|config| {
+                if let MatchConfig::Arena(config) = config {
+                    Some(config)
+                } else {
+                    None
+                }
+            })
+            .collect();
+        assert_eq!(
+            arena
+                .iter()
+                .filter(|config| config.armies.player == "a" && config.armies.enemy == "a")
+                .count(),
+            2
+        );
+        assert_eq!(
+            arena
+                .iter()
+                .filter(|config| config.armies.player != config.armies.enemy)
+                .count(),
+            4
+        );
+        assert_eq!(
+            arena
+                .iter()
+                .filter(|config| config.first == Side::Player)
+                .count(),
+            4
+        );
+        let mut unique = std::collections::HashSet::new();
+        for config in configs {
+            assert!(unique.insert(serde_json::to_string(&config).unwrap()));
+        }
+    }
+}

@@ -1,0 +1,100 @@
+use super::PlanningSnapshot;
+use crate::{data::*, logic::StateError};
+use std::collections::HashSet;
+impl PlanningSnapshot {
+    /// Check persisted planning references before resuming them against a saved
+    /// battle. Queued actions are validated for legality when the engine applies
+    /// each action, after its preceding movement and intent changes.
+    pub fn validate(&self, catalog: &Catalog, state: &State) -> Result<(), StateError> {
+        let fail = |message: &str| StateError(message.to_owned());
+        if self.initialized && self.policy.is_none() {
+            return Err(fail("initialized planner has no policy"));
+        }
+        let tiles: HashSet<_> = state.tiles.iter().map(|tile| tile.id.as_str()).collect();
+        let identity = |id: UnitId| id.0 > 0 && id.0 < state.next_id;
+        let actor = |id: UnitId| state.units.iter().find(|u| u.id == format!("u{}", id.0));
+        let friendly = |id: UnitId| actor(id).is_some_and(|u| u.side == state.turn);
+        if self.recruitment_remaining > 1_000_000
+            || self.tactical_remaining.is_some_and(|n| n > 1_000_000)
+        {
+            return Err(fail("planning budget is out of range"));
+        }
+        if self.classic_ids.len() > state.next_id as usize
+            || self.commands.len() > state.next_id as usize * 4 + 16
+        {
+            return Err(fail("planning continuation is out of range"));
+        }
+        if self.classic_ids.iter().any(|id| !identity(*id))
+            || self.commitments.iter().any(|(id, _)| !identity(*id))
+        {
+            return Err(fail("unknown planning unit identity"));
+        }
+        let mut unique = HashSet::new();
+        if self.classic_ids.iter().any(|id| !unique.insert(*id)) {
+            return Err(fail("duplicate classic planning unit"));
+        }
+        unique.clear();
+        if self.commitments.iter().any(|(id, _)| !unique.insert(*id)) {
+            return Err(fail("duplicate planning commitment"));
+        }
+        for goal in self.goals.iter().flatten().chain(&self.classic_objectives) {
+            if !goal.weight.is_finite()
+                || goal.weight <= 0.0
+                || goal.tiles.iter().any(|t| !tiles.contains(t.as_str()))
+            {
+                return Err(fail("invalid planning objective"));
+            }
+            if goal.actor.as_ref().is_some_and(|id| {
+                id.strip_prefix('u')
+                    .and_then(|id| id.parse::<u32>().ok())
+                    .is_none_or(|id| !identity(UnitId(id)))
+            }) {
+                return Err(fail("invalid objective actor"));
+            }
+        }
+        let validate_attack = |unit: UnitId, target: UnitId, weapon: &WeaponId| {
+            friendly(unit)
+                && actor(target).is_some()
+                && actor(unit).is_some_and(|u| {
+                    catalog.types.get(&u.r#type).is_some_and(|kind| {
+                        catalog.units[*kind]
+                            .attacks
+                            .iter()
+                            .any(|a| a.id == weapon.0)
+                    })
+                })
+        };
+        for command in &self.commands {
+            let valid = match command {
+                Command::Move { unit, tile } => friendly(*unit) && tiles.contains(tile.0.as_str()),
+                Command::Attack {
+                    unit,
+                    target,
+                    weapon,
+                } => validate_attack(*unit, *target, weapon),
+                Command::Recruit { unit, kind, tile } => {
+                    friendly(*unit)
+                        && catalog.types.contains_key(&kind.0)
+                        && tiles.contains(tile.0.as_str())
+                }
+                Command::Advance { unit, kind } => {
+                    friendly(*unit) && catalog.types.contains_key(&kind.0)
+                }
+                Command::SetUnitIntent { unit, .. } => friendly(*unit),
+                Command::EndTurn | Command::DismissDialogue | Command::NextMission => false,
+            };
+            if !valid {
+                return Err(fail("invalid queued planning command"));
+            }
+        }
+        if state.winner.is_none()
+            && self
+                .attack_continuation
+                .as_ref()
+                .is_some_and(|(unit, target, weapon)| !validate_attack(*unit, *target, weapon))
+        {
+            return Err(fail("invalid planned attack continuation"));
+        }
+        Ok(())
+    }
+}

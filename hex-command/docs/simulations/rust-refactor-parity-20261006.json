@@ -1,0 +1,15 @@
+{
+  "availableGames": 12240,
+  "elapsedSeconds": 110.634305195,
+  "fingerprints": {
+    "content": "7ad734e710aafa638e9c59d1838963621207ca2981e899d14dbd9351527c31b1",
+    "engine": "57d0ab5bae2fcf3276b2590c19c613d5efc96d8d665546133e179cda295bcf01"
+  },
+  "games": 12240,
+  "limited": false,
+  "reference": "artifacts/ai-performance/full-final/report.json",
+  "referenceFingerprint": "691576764d271f2ed0175303d16c5dc20cb59cb585557c1064dce660b73eb938",
+  "selectedGames": 12240,
+  "verified": true,
+  "workers": 4
+}

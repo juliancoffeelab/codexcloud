@@ -1,5 +1,4 @@
-import { rustFingerprint } from "./ai-fingerprint";
-import { spawn, execFileSync } from "node:child_process";
+import { spawn } from "node:child_process";
 import type { ChildProcessWithoutNullStreams } from "node:child_process";
 import { createInterface } from "node:readline";
 import type {
@@ -16,13 +15,7 @@ export class RustRunner {
   private error: Error | undefined;
   constructor() {
     const binary = new URL("../rust/target/release/hex-command-sim", import.meta.url).pathname;
-    if (execFileSync(binary, ["--fingerprint"], { encoding: "utf8" }).trim() !== rustFingerprint())
-      throw new Error("Rust binary is stale. Run npm run ai:rust:build.");
-    this.process = spawn(
-      new URL("../rust/target/release/hex-command-sim", import.meta.url).pathname,
-      [],
-      { stdio: ["pipe", "pipe", "pipe"] },
-    );
+    this.process = spawn(binary, ["--stdio"], { stdio: ["pipe", "pipe", "pipe"] });
     this.process.stderr.pipe(process.stderr);
     this.process.once("error", (error) => {
       this.error = error;

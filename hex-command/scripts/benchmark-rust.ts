@@ -1,99 +1,111 @@
-import { RustRunner } from "./rust-runner";
-import { mkdirSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
-
+/** Bounded native samples; Rust owns definitions, schedule generation and execution. */
+import { execFileSync, spawn } from "node:child_process";
+import { createHash } from "node:crypto";
+import { createInterface } from "node:readline";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { isDeepStrictEqual } from "node:util";
-import { runArena, runCampaign, ARMY_IDS, LANDSCAPES } from "../src/game/ai/simulation";
-import type { ArenaConfig, CampaignConfig } from "../src/game/ai/simulation";
-import { POLICY_IDS } from "../src/game/ai/policies";
-const args = process.argv.slice(2);
-const option = (key: string, fallback: string) => {
-  const i = args.indexOf(key);
-  return i < 0 ? fallback : args[i + 1]!;
+
+type Config = {
+  seed: number;
+  player: string;
+  enemy: string;
+  campaign?: string;
+  diplomacy?: string;
+  armies?: { player: string; enemy: string };
+  landscape?: string;
+  first?: string;
 };
-const output = resolve(option("--out", "artifacts/ai-performance/rust-sample.json"));
-mkdirSync(resolve(output, ".."), { recursive: true });
-const native = new RustRunner();
-const configs: (ArenaConfig | CampaignConfig)[] = [];
-for (const [index, army] of ARMY_IDS.entries())
-  for (const landscape of LANDSCAPES)
-    for (const policy of POLICY_IDS)
-      configs.push({
-        seed: 17,
-        armies: { player: army, enemy: ARMY_IDS[(index + 1) % ARMY_IDS.length]! },
-        landscape,
-        player: policy,
-        enemy: policy,
-        first: "player",
-        maxRounds: 30,
-        recruitLimit: 1,
-      });
-for (const campaign of ["lantern-road", "green-accord", "ashen-oath", "borrowed-tide"] as const)
-  for (const policy of POLICY_IDS)
-    configs.push({
-      seed: 17,
-      campaign,
-      player: policy,
-      enemy: "classic",
-      diplomacy: "restrained",
-      maxRounds: 30,
-      recruitLimit: 1,
-    });
-if (args.includes("--alternate")) {
-  for (const config of configs) {
-    config.seed = 29;
-    config.enemy = POLICY_IDS[(POLICY_IDS.indexOf(config.player) + 1) % POLICY_IDS.length]!;
-    if ("campaign" in config) config.diplomacy = "pragmatic";
-    else config.first = "enemy";
-  }
+const args = process.argv.slice(2);
+const option = (flag: string, fallback?: string) => {
+  const index = args.indexOf(flag);
+  return index < 0 ? fallback : args[index + 1];
+};
+const cwd = fileURLToPath(new URL("../", import.meta.url));
+const binary = resolve(cwd, "rust/target/release/hex-command-sim");
+const alternate = args.includes("--alternate");
+const schedule = JSON.parse(
+  execFileSync(
+    binary,
+    ["--schedule-only", "--mode", "full", "--seeds", "1", "--seed", alternate ? "29" : "17"],
+    { cwd, encoding: "utf8", maxBuffer: 16 * 1024 * 1024 },
+  ),
+) as { configs: Config[] };
+const representatives = new Map<string, Config>();
+for (const config of schedule.configs) {
+  if (config.campaign) {
+    if (
+      config.enemy !== (alternate ? "mixed" : "classic") ||
+      config.diplomacy !== (alternate ? "pragmatic" : "restrained")
+    )
+      continue;
+  } else if (
+    config.first !== (alternate ? "enemy" : "player") ||
+    config.armies?.player === config.armies?.enemy
+  )
+    continue;
+  const key = config.campaign
+    ? `${config.campaign}:${config.player}`
+    : `${config.armies?.player}:${config.landscape}:${config.player}`;
+  if (!representatives.has(key)) representatives.set(key, config);
 }
-function difference(a: unknown, b: unknown, path = ""): string | undefined {
-  if (isDeepStrictEqual(a, b)) return;
-  if (a && b && typeof a === "object" && typeof b === "object") {
-    for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) {
-      const d = difference(
-        (a as Record<string, unknown>)[k],
-        (b as Record<string, unknown>)[k],
-        `${path}/${k}`,
-      );
-      if (d) return d;
-    }
-  }
-  return `${path}: TS=${JSON.stringify(a)} Rust=${JSON.stringify(b)}`;
-}
-const results = [];
+const skip = Number(option("--skip", "0")),
+  limit = Number(option("--limit", "60"));
+if (
+  !Number.isSafeInteger(skip) ||
+  skip < 0 ||
+  !Number.isSafeInteger(limit) ||
+  limit < 1 ||
+  limit > 60
+)
+  throw new Error("--skip must be nonnegative; --limit must be 1..60");
+const configs = [...representatives.values()].slice(skip, skip + limit);
+const output = resolve(option("--out", "artifacts/ai-performance/native-sample.json")!);
+const baseline = option("--compare")
+  ? (JSON.parse(readFileSync(resolve(option("--compare")!), "utf8")) as {
+      matches: { config: Config; hash: string }[];
+    })
+  : undefined;
+if (
+  baseline &&
+  !isDeepStrictEqual(
+    baseline.matches.map((entry) => entry.config),
+    configs,
+  )
+)
+  throw new Error("Comparison requires identical sample configurations");
+const processHandle = spawn(binary, ["--stdio"], { cwd, stdio: ["pipe", "pipe", "inherit"] });
+const lines = createInterface({ input: processHandle.stdout })[Symbol.asyncIterator]();
+let failure: Error | undefined;
+processHandle.once("error", (error) => {
+  failure = error;
+});
+const matches: { config: Config; rustMs: number; hash: string }[] = [];
 try {
-  for (const config of configs.slice(
-    Number(option("--skip", "0")),
-    Number(option("--skip", "0")) + Number(option("--limit", "60")),
-  )) {
+  for (const [index, config] of configs.entries()) {
     const started = performance.now();
-    const reference = "campaign" in config ? runCampaign(config) : runArena(config);
-    const typescriptMs = performance.now() - started;
-    const nativeStart = performance.now();
-    const actual = await native.run(config);
-    const rustMs = performance.now() - nativeStart;
-    const diff = difference(reference, actual);
-    results.push({ config, typescriptMs, rustMs, identical: !diff });
-    console.log(JSON.stringify(results.at(-1)));
-    if (diff) {
-      writeFileSync(output.replace(/\.json$/, ".expected.json"), JSON.stringify(reference));
-      writeFileSync(output.replace(/\.json$/, ".actual.json"), JSON.stringify(actual));
-      throw new Error(diff);
-    }
+    processHandle.stdin.write(JSON.stringify(config) + "\n");
+    const result = await lines.next();
+    if (result.done) throw failure ?? new Error("Native sample process terminated");
+    const parsed: unknown = JSON.parse(result.value);
+    const hash = createHash("sha256").update(JSON.stringify(parsed)).digest("hex");
+    const entry = { config, rustMs: performance.now() - started, hash };
+    matches.push(entry);
+    if (baseline && baseline.matches[index]?.hash !== hash)
+      throw new Error(`Complete result changed at sample ${index + 1}`);
+    console.log(JSON.stringify(entry));
   }
+  mkdirSync(dirname(output), { recursive: true });
   writeFileSync(
     output,
     JSON.stringify(
-      {
-        matches: results,
-        typescriptMs: results.reduce((s, r) => s + r.typescriptMs, 0),
-        rustMs: results.reduce((s, r) => s + r.rustMs, 0),
-      },
+      { matches, rustMs: matches.reduce((sum, entry) => sum + entry.rustMs, 0) },
       null,
       2,
-    ),
+    ) + "\n",
   );
 } finally {
-  native.close();
+  processHandle.stdin.end();
+  processHandle.kill();
 }

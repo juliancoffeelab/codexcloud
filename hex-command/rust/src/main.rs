@@ -1,25 +1,10 @@
-use hex_command_core::{model::Rules, simulation};
-use std::io::{self, BufRead, Write};
-fn main() {
-    if std::env::args().nth(1).as_deref() == Some("--fingerprint") {
-        let data: serde_json::Value =
-            serde_json::from_str(include_str!("../data/rules.json")).unwrap();
-        println!("{}", data["sourceFingerprint"].as_str().unwrap());
-        return;
-    }
-    let rules = Rules::load();
-    let stdin = io::stdin();
-    let stdout = io::stdout();
-    let mut output = io::BufWriter::new(stdout.lock());
-    for line in stdin.lock().lines() {
-        let line = line.expect("input");
-        if line.trim().is_empty() {
-            continue;
+fn main() -> std::process::ExitCode {
+    let args: Vec<String> = std::env::args().skip(1).collect();
+    match hex_command_core::simulation::cli::run(&args) {
+        Ok(()) => std::process::ExitCode::SUCCESS,
+        Err(error) => {
+            eprintln!("{error}");
+            std::process::ExitCode::FAILURE
         }
-        let request = serde_json::from_str(&line).expect("JSON config");
-        let result = simulation::run(rules.clone(), request);
-        serde_json::to_writer(&mut output, &result).expect("output");
-        writeln!(output).unwrap();
-        output.flush().unwrap();
     }
 }

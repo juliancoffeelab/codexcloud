@@ -42,8 +42,10 @@ current battle intact when switching.
 ## Seeded AI comparisons
 
 Simulations use the native Rust engine; Rust and its rustfmt component are required.
-The commands export the authored rules and build the native executable. The browser
-continues to use TypeScript. See [native simulation setup](rust/README.md).
+The commands build and invoke the native harness, which reads authored JSON and
+owns scheduling, execution and reports. The browser has an opt-in WASM interface;
+the current controller remains on the previous engine.
+See [native simulation setup](rust/README.md).
 
 `npm run ai:full` runs all 11,520 arena matches and 720 campaign attempts across
 ten seeds. Classic, melee rush and layered mixed policies each choose their own
@@ -350,8 +352,8 @@ without selecting any player actions.
 ## Formatting
 
 Prettier and its Svelte plugin format source, tests, configuration, and this README.
-Use `npm run style` to check formatting and whitespace in both staged and unstaged
-changes. All three checks run even if one fails. Prettier caches unchanged files
+Use `npm run style` to check Prettier, Rust formatting, and whitespace in both staged and unstaged
+changes. All checks run even if one fails. Prettier caches unchanged files
 for quick repeat runs, while still checking new or modified files. Use
 `npm run format` to apply formatting; `format:check` remains an alias for `style`.
 Generated output and original binary assets are excluded.
@@ -359,7 +361,7 @@ Generated output and original binary assets are excluded.
 ## Checks
 
 `npm run verify` is the complete patch check: style, Svelte, TypeScript,
-pixel assets, unit tests and production build. It runs every check group even if
+Rust tests, generated bindings, WASM compilation, pixel assets, unit tests and production build. It runs every check group even if
 another fails, prints full diagnostics for failures and ends with a summary and
 the command to rerun failed groups. Successful groups print their elapsed time.
 Checks run sequentially so compilation does not compete with the unit suite's

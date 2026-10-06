@@ -24,14 +24,19 @@ npm run ai:simulate -- --armies human,coastal --policies classic,mixed --landsca
 
 # Replay requires the report's exact source fingerprint.
 npm run ai:simulate -- --replay artifacts/coast-panel.json
+
+# Compare complete traces from an older engine; this runs recorded matches.
+npm run ai:simulate -- --compare artifacts/ai-performance/full-final/report.json
+# Use an explicit cap for a bounded check.
+npm run ai:simulate -- --compare artifacts/ai-performance/full-final/report.json --compare-limit 12
 ```
 
 `--seed` sets the first seed and `--seeds` the count. `--rounds` defaults to 30;
 `--recruits` defaults to one recruitment per phase, or zero for starting-army-only
-comparisons. `--workers` runs seed/map and campaign blocks through a bounded pool
-of up to eight Node workers, each with a persistent Rust process. Its default respects the available CPU quota;
-workers take the next block as they finish. Coverage is validated before combining results. Workers do not change
-outcomes. `--diplomacy pragmatic,restrained` selects campaign settings; both are the
+comparisons. `--workers` runs matches through up to eight scoped Rust threads.
+Its default respects the available CPU quota; workers borrow one immutable catalog
+and take the next match as they finish. Workers do not change outcomes.
+`--diplomacy pragmatic,restrained` selects campaign settings; both are the
 default. `--trace` additionally retains raw runner results; detailed phases and
 initial/final states are recorded regardless of that flag.
 
@@ -53,8 +58,8 @@ This benchmark is separate from the lightweight test suite.
 
 The engine shares immutable indexed hex geometry between forecast copies, uses
 integer movement queues, and precomputes fixed movement and defense rules. Routing
-fields ignore occupancy and can be reused across commands; a terrain signature
-invalidates them after edits, and callers receive independent maps. Threat searches
+fields ignore occupancy and can be reused across commands; terrain revisions
+invalidate them after edits, and planners share immutable distance arrays. Threat searches
 reuse movement and firing positions within an unchanged board. Objective endpoints
 and incoming waves retain exact forecasts. Rush and mixed retain the first best
 plan directly, preserving the stable tie order without sorting every candidate.
@@ -68,18 +73,28 @@ or pretending that they describe these changed policies.
 
 ## Native Rust engine
 
-`npm run ai:simulate` and `npm run ai:full` export the authored rules and build the
-Rust executable before launching the selected schedule. Battles, policies and
-campaign transitions run entirely in Rust; Node handles scheduling and reporting.
-A source fingerprint rejects stale native binaries. The browser keeps its current
-TypeScript engine. No WASM integration is included.
+`npm run ai:simulate` and `npm run ai:full` build and invoke the native harness.
+Rust reads the authored `rust/data` JSON directly and owns scheduling, battle/AI
+execution, campaign transitions, recording and reports. Content fingerprints are
+separate from the compiled engine fingerprint; JSON edits need no export or rebuild.
 
-Use `npm run ai:typescript -- ...` for the TypeScript reference backend.
-`npm run ai:rust:benchmark -- --out artifacts/rust-sample.json` compares 60 bounded
-matches against that reference, including every command and result field.
-`--alternate` samples different seeds, enemy initiative, opposing policies and
-pragmatic diplomacy. Neither benchmark starts the full workload. See
-[`rust/README.md`](../rust/README.md) for the native interface and build details.
+`npm run ai:schedule -- --mode full --seeds 10` enumerates configurations without
+running matches. The browser has an opt-in WASM adapter and Rust-generated transfer
+types; its existing controller is unchanged. See [`rust/README.md`](../rust/README.md)
+for the public API and build details.
+
+The latest complete TS baseline is `artifacts/ai-performance/full-final/report.json`,
+with 12,240 full detail records and the frozen source used to produce them. Its
+matching readable JSON catalog is retained under `full-final/rust-reference-data`.
+Complete comparison uses parsed values, ignores object-key order and derived
+serialization hashes, and preserves array order and missing-versus-null fields.
+The earlier 114-minute run remains separately preserved.
+
+The refactored native engine matched all 12,240 records of the complete TS baseline
+on 2026-10-06. Four workers took 110.63 seconds, including journal reading and full
+semantic trace comparison. [The verification summary](simulations/rust-refactor-parity-20261006.json)
+retains the reference, content and engine fingerprints. This is the measured
+comparison time; it does not include writing a second full native result journal.
 
 On 2026-10-06, 120 matched samples retained identical complete results. The native
 path, including JSON transport, took 4.16 seconds versus 21.00 seconds for the

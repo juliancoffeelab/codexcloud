@@ -6,6 +6,8 @@ const checks = {
   ui: "check:ui",
   types: "check:types",
   rust: "check:rust",
+  bindings: "check:bindings",
+  wasm: "check:wasm",
   art: "art:check",
   tests: "test",
   build: "build:check",

@@ -21,6 +21,7 @@ const files = [
   "art/styled/**/*.{json,md}",
   "docs/ai-simulation.md",
   "rust/README.md",
+  "rust/data/**/*.{json,md}",
   "design/progression-art.md",
   "design/static-terrain-art.md",
 ];
