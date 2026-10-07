@@ -61,7 +61,7 @@
           <tr>
             <th scope="col">Terrain</th>
             <th scope="col">Cost</th>
-            <th scope="col">Damage</th>
+            <th scope="col">Damage received</th>
           </tr>
         </thead>
         <tbody>
