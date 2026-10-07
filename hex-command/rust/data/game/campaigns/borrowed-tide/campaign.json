@@ -1,0 +1,25 @@
+{
+  "id": "borrowed-tide",
+  "name": "The Borrowed Tide",
+  "tagline": "Neither shore can keep the tide alone.",
+  "description": "Lead Mira's merfolk through a drained estuary, rescue a salvage crew and coordinate two sluice gates. Open sea routes, sandbars, wooded shores and marsh channels reward different troops.",
+  "race": "merfolk",
+  "leader": "tidekeeper",
+  "ending": [
+    {
+      "speaker": "Edda",
+      "portrait": "harpooner",
+      "text": "The next sounding chart has two signatures. One from the quay, one from the reef."
+    },
+    {
+      "speaker": "Mira",
+      "portrait": "tidekeeper",
+      "text": "And if the numbers disagree, we go out together and measure again."
+    }
+  ],
+  "stages": [
+    "stages/tide-nets/stage.json",
+    "stages/tide-wreck/stage.json",
+    "stages/tide-sluice/stage.json"
+  ]
+}

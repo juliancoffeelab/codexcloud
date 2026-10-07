@@ -1,5 +1,5 @@
-import { TYPES } from "../game/engine";
-import type { RecruitType, CampaignId } from "../game/types";
+import { TYPES } from "../game/catalog";
+import type { RecruitType, CampaignId, UnitType } from "../game/types";
 import { CAMPAIGNS } from "../game/campaign-data";
 const recruitable = Object.keys(TYPES).filter((type) => !TYPES[type as keyof typeof TYPES].leader);
 import type { BattleController } from "./battle";
@@ -61,6 +61,21 @@ export function registerBattleTools(controller: BattleController): () => void {
   const registry = document.modelContext;
   if (!registry?.registerTool) return () => {};
   const tools: BattleTool[] = [
+    {
+      name: "advance_unit",
+      description:
+        "Advance a ready unit after it earns enough experience. Preserves wounds and consumes this turn.",
+      inputSchema: schema(
+        { unitId: { type: "string" }, type: { type: "string", enum: Object.keys(TYPES) } },
+        ["unitId", "type"],
+      ),
+      execute: (value) => {
+        const input = inputs(value),
+          type = stringInput(input, "type");
+        if (!Object.hasOwn(TYPES, type)) throw new Error("Unknown advancement.");
+        return controller.advance(stringInput(input, "unitId"), type as UnitType);
+      },
+    },
     {
       name: "start_campaign",
       description: "Replace the current battle with a new story campaign.",

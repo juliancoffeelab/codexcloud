@@ -1,0 +1,48 @@
+{
+  "id": "commander",
+  "name": "Commander",
+  "hp": 16,
+  "move": 3,
+  "cost": 0,
+  "leader": true,
+  "race": "human",
+  "terrainModifiers": {
+    "ford": {
+      "cost": 1
+    },
+    "marsh": {
+      "cost": 1
+    }
+  },
+  "attacks": [
+    {
+      "id": "sword",
+      "name": "Sword",
+      "damage": 4,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "mace",
+      "name": "Mace",
+      "damage": 3,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": -1,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Recruit",
+  "description": "Recruit while on your keep. New recruits act next turn.",
+  "level": 1,
+  "family": "commander",
+  "experienceNeeded": 18,
+  "advancesTo": ["marshal"]
+}

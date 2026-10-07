@@ -1,18 +1,18 @@
 import type { TileView } from "../game/view";
 import type { RecruitmentContext, BattleView } from "../controller/view";
-import { TERRAIN, TYPES } from "../game/engine";
+import { TERRAIN, TYPES } from "../game/catalog";
 import type { TerrainType } from "../game/types";
 import { campaignMission } from "../game/campaign-progress";
 
 const descriptions: Record<TerrainType, string> = {
-  marsh: "Soft mud and reeds surround shallow pools.",
+  marsh: "Mud and reeds expose land troops; merfolk find protection here.",
   ruins: "Broken walls shelter against ranged attacks.",
   fort: "Earthworks protect against every damage kind. Capture them to hold a crossing.",
   grove: "A sacred woodland refuge. Its owner’s occupants heal 2 HP each turn.",
   plains: "Open grassland with easy footing.",
-  forest: "Trees shelter units and obstruct ranged shots.",
-  hill: "Rocky high ground offers cover and obstructs ranged shots.",
-  water: "Deep water cannot be crossed.",
+  forest: "Trees shelter land troops and obstruct ranged shots. Merfolk are exposed here.",
+  hill: "High ground shelters land troops and obstructs ranged shots. Merfolk are exposed here.",
+  water: "Deep water is impassable to land units. Merfolk can swim through it.",
   bridge: "A sturdy crossing over water with easy footing, but no protection.",
   ford: "Shallow water can be crossed on foot. The open water leaves units exposed.",
   village: "Capture this settlement by moving a unit onto it.",
@@ -20,8 +20,12 @@ const descriptions: Record<TerrainType, string> = {
 };
 
 function protectionFact(terrain: TerrainType): string {
-  if (terrain === "ford") return "Exposure: +1 damage received from all attacks";
-  if (terrain === "hill" || terrain === "fort") return "Protection: −1 damage from all attacks";
+  if (terrain === "ford") return "Land troops: +1 damage received. Merfolk: no exposure.";
+  if (terrain === "marsh") return "Land troops: +1 damage received. Merfolk: −1 damage received.";
+  if (terrain === "hill") return "Land troops: −1 damage received. Merfolk: +1 damage received.";
+  if (terrain === "fort") return "Protection: −1 damage from all attacks";
+  if (terrain === "forest" || terrain === "grove")
+    return "Land troops: −1 ranged damage. Merfolk: +1 damage from all attacks.";
   if (["forest", "grove", "ruins"].includes(terrain))
     return "Protection: −1 damage from ranged attacks";
   return "Protection: none";
@@ -43,7 +47,7 @@ function terrainFacts(terrain: TerrainType): string[] {
     facts.push("Heals its owner’s occupant by 2 HP at the start of its turn");
   if (terrain === "keep") {
     facts.push(
-      "Its owner’s leader can recruit into adjacent empty land hexes",
+      "Its owner’s leader can recruit into adjacent empty terrain passable to the recruit",
       "Select an empty adjacent hex to recruit",
       "Keeps cannot be captured",
     );

@@ -1,11 +1,13 @@
 import { dialoguePending } from "../game/campaign-progress";
-import type { CampaignId } from "../game/types";
+import type { CampaignId, UnitType } from "../game/types";
 import { writable, type Readable, type Writable } from "svelte/store";
 import { tick } from "svelte";
-import { Game, TYPES, TERRAIN, type Tile, type Unit } from "../game/engine";
-import { enemyActionIds } from "../game/enemy-turn";
+import { TYPES, TERRAIN, type Tile, type Unit } from "../game/catalog";
 import { createMoveUndo } from "../game/undo";
-import { loadBattle, saveBattle } from "../game/save";
+import { loadBattle } from "../save/load";
+import { saveBattle } from "../save/write";
+import { LiveGame } from "../game/live-game";
+import type { GameEngineFactory } from "../game/native-engine";
 import {
   savedArtStyle,
   saveArtStyle,
@@ -60,7 +62,7 @@ const enemyThinkingDelay = 350;
 const enemyActionDelay = 230;
 
 export class BattleController {
-  #game: Game;
+  #game: LiveGame;
   private pendingEnemyReplay: boolean;
   private initialized = false;
   private artRequestVersion = 0;
@@ -68,15 +70,18 @@ export class BattleController {
   private readonly history = createMoveUndo();
   private sessionVersion = 0;
   private disposed = false;
-  private previousFeedbackState: ReturnType<Game["snapshot"]> | null = null;
+  private previousFeedbackState: ReturnType<LiveGame["snapshot"]> | null = null;
   private state: SessionState;
   private store: Writable<BattleView>;
   private gameView: GameView;
   readonly view: Readable<BattleView>;
   readonly commands: BattleCommands;
 
-  constructor(private readonly pause: (ms: number) => Promise<void> = delay) {
-    const restored = loadBattle();
+  constructor(
+    private readonly pause: (ms: number) => Promise<void> = delay,
+    private readonly nativeFactory: GameEngineFactory,
+  ) {
+    const restored = loadBattle(nativeFactory);
     const game = restored.game;
     this.#game = game;
     this.pendingEnemyReplay = restored.pendingEnemy;
@@ -86,9 +91,9 @@ export class BattleController {
       focusedTile: game.units.find((u) => u.side === "player")?.tile ?? game.tiles[0]!.id,
       inspectedTile: null,
       renderRevision: 0,
-      status: game.campaign
-        ? "Follow the mission objectives. Keep your leader safe."
-        : initialMessage,
+      status:
+        ("notice" in restored && restored.notice) ||
+        (game.campaign ? "Follow the mission objectives. Keep your leader safe." : initialMessage),
       artStyle: savedArtStyle(),
       artLoading: false,
       sound: soundEnabled(),
@@ -107,6 +112,7 @@ export class BattleController {
     this.artRequestVersion++;
     cancelSound();
     this.soundRequestVersion++;
+    this.#game.dispose();
   }
 
   private requireSession(): void {
@@ -242,7 +248,7 @@ export class BattleController {
       playSound(this.#game.lastCombat?.sound || defaultSound);
     } else if (changes.newWinner) {
       playSound(changes.newWinner === "player" ? "victory" : "defeat");
-    } else if (changes.recruited) {
+    } else if (changes.recruited || changes.advanced) {
       playSound("recruit");
     } else if (changes.movedUnit) {
       playInteraction({
@@ -432,6 +438,23 @@ export class BattleController {
     }
   }
 
+  advanceUnit(unitId: string, type: UnitType): void {
+    try {
+      this.advance(unitId, type);
+      this.message(`Advanced to ${TYPES[type].name}. Ready next turn.`);
+    } catch (error) {
+      this.error(error);
+    }
+  }
+
+  advance(unitId: string, type: UnitType) {
+    this.requirePlayerActor(unitId);
+    this.#game.advanceUnit(unitId, type);
+    this.history.clear();
+    this.commitAction();
+    return this.snapshot();
+  }
+
   async endTurn() {
     this.requireSession();
     if (!this.active()) {
@@ -446,31 +469,25 @@ export class BattleController {
     saveBattle(this.#game, true);
     this.#game.endTurn();
     this.publish();
+    return this.runEnemyTurn(turnSessionVersion);
+  }
+
+  /** Continue either a freshly ended turn or an exact restored native enemy phase. */
+  private async runEnemyTurn(turnSessionVersion: number) {
     if (!this.#game.winner) this.message("The enemy is planning its moves…");
     await this.pause(enemyThinkingDelay);
     if (turnSessionVersion !== this.sessionVersion) {
       return;
     }
-    this.#game.enemyRecruit();
-    this.publish();
-    const queue = enemyActionIds(this.#game.units);
-    for (const id of queue) {
+    while (this.#game.turn === "enemy" && !this.#game.winner) {
+      this.#game.enemyStep();
+      this.publish();
+      if (this.#game.turn !== "enemy" || this.#game.winner) break;
       await this.pause(enemyActionDelay);
-      if (turnSessionVersion !== this.sessionVersion) {
-        return;
-      }
-      this.#game.enemyAct(id);
-      this.publish();
-      if (this.#game.winner) {
-        break;
-      }
+      if (turnSessionVersion !== this.sessionVersion) return;
     }
-    if (!this.#game.winner) {
-      this.#game.endTurn();
-      this.publish();
-      if (!this.#game.winner)
-        this.message("Your turn. Capture villages, recruit reinforcements, or attack.");
-    }
+    if (!this.#game.winner)
+      this.message("Your turn. Capture villages, recruit reinforcements, or attack.");
     saveBattle(this.#game);
     return this.snapshot();
   }
@@ -480,12 +497,12 @@ export class BattleController {
     // Validate before changing the current battle, its undo history, or its turn.
     if (mapId !== "mirror" && mapId !== "river" && mapId !== "developer")
       throw new Error("Unknown battlefield. Choose a skirmish or start a campaign.");
-    return this.replaceGame(new Game(mapId));
+    return this.replaceGame(LiveGame.create(this.nativeFactory, { kind: "scenario", map: mapId }));
   }
 
   startCampaign(id: CampaignId) {
     this.requireSession();
-    return this.replaceGame(Game.startCampaign(id));
+    return this.replaceGame(LiveGame.create(this.nativeFactory, { kind: "campaign", id }));
   }
 
   nextMission(recallIds: string[]) {
@@ -518,10 +535,11 @@ export class BattleController {
     this.publish({ renderBattle: false, gameChanged: true });
   }
 
-  private replaceGame(replacement: Game) {
+  private replaceGame(replacement: LiveGame) {
     cancelSound();
     this.sessionVersion++;
     this.history.clear();
+    if (this.#game !== replacement) this.#game.dispose();
     this.#game = replacement;
     this.pendingEnemyReplay = false;
     this.previousFeedbackState = null;
@@ -562,6 +580,7 @@ export class BattleController {
       throw new Error("Unknown unit.");
     }
     return structuredClone({
+      promotions: this.#game.promotionOptions(unitId),
       moves: [...this.#game.reachable(unitId)].map(([tile, cost]) => ({
         tile,
         cost,
@@ -647,6 +666,8 @@ export class BattleController {
     if (this.pendingEnemyReplay) {
       this.pendingEnemyReplay = false;
       void this.endTurn().catch((error) => this.error(error));
+    } else if (this.#game.turn === "enemy" && !this.#game.winner) {
+      void this.runEnemyTurn(this.sessionVersion).catch((error) => this.error(error));
     }
     if (!this.state.artLoading) {
       const requestVersion = ++this.artRequestVersion;

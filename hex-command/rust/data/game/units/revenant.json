@@ -1,0 +1,39 @@
+{
+  "id": "revenant",
+  "name": "Revenant",
+  "race": "undead",
+  "hp": 12,
+  "move": 3,
+  "cost": 11,
+  "attacks": [
+    {
+      "id": "rustblade",
+      "name": "Rust blade",
+      "damage": 4,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "boneclub",
+      "name": "Bone club",
+      "damage": 3,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": -1,
+    "pierce": -1,
+    "impact": 0
+  },
+  "ability": "Bone shield",
+  "description": "A shielded skeleton veteran. Gains Blade protection while retaining resistance to Pierce and vulnerability to Impact.",
+  "level": 2,
+  "family": "skeleton",
+  "experienceNeeded": 0,
+  "advancesTo": []
+}

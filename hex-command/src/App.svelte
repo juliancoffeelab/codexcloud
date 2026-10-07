@@ -13,9 +13,9 @@
   import TerrainPanel from "./ui/TerrainPanel.svelte";
   import SettingsDialog from "./ui/SettingsDialog.svelte";
   import MapPicker from "./ui/MapPicker.svelte";
-  const controller = new BattleController();
-  const view = controller.view;
-  const actions = controller.commands;
+  let { controller }: { controller: BattleController } = $props();
+  const view = $derived(controller.view);
+  const actions = $derived(controller.commands);
   let briefingExpanded = $state(false);
   const missionMapId = $derived($view.game.mapId);
   $effect(() => {

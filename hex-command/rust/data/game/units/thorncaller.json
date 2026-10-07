@@ -1,0 +1,51 @@
+{
+  "id": "thorncaller",
+  "name": "Thorncaller",
+  "race": "beast",
+  "terrainModifiers": {
+    "forest": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    },
+    "grove": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    }
+  },
+  "hp": 7,
+  "move": 4,
+  "cost": 7,
+  "attacks": [
+    {
+      "id": "thorns",
+      "name": "Thorns",
+      "damage": 4,
+      "damageType": "pierce",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "rootstaff",
+      "name": "Root staff",
+      "damage": 2,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": -1,
+    "impact": 0
+  },
+  "ability": "Understory",
+  "description": "Forests and groves cost 1 movement, reduce incoming damage by 1, and give another 1 ranged protection. Strong Pierce thorns; its light Impact staff offers a risky answer to armor.",
+  "level": 1,
+  "family": "thorncaller",
+  "experienceNeeded": 10,
+  "advancesTo": ["briarweaver"]
+}

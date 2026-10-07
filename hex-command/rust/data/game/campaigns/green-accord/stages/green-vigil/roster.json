@@ -1,0 +1,124 @@
+{
+  "initial": {
+    "gold": {
+      "player": 12,
+      "enemy": 12
+    },
+    "units": [
+      {
+        "type": "wildkeeper",
+        "side": "player",
+        "col": 2,
+        "row": 4,
+        "name": "Alder",
+        "role": "leader"
+      },
+      {
+        "type": "thorncaller",
+        "side": "player",
+        "col": 2,
+        "row": 3,
+        "name": "Lark"
+      },
+      {
+        "type": "boar",
+        "side": "player",
+        "col": 6,
+        "row": 4
+      },
+      {
+        "type": "warden",
+        "side": "player",
+        "col": 5,
+        "row": 5,
+        "name": "Captain Dain"
+      },
+      {
+        "type": "commander",
+        "side": "enemy",
+        "col": 11,
+        "row": 4,
+        "name": "The Overseer",
+        "role": "leader"
+      },
+      {
+        "type": "warden",
+        "side": "enemy",
+        "col": 9,
+        "row": 2
+      },
+      {
+        "type": "archer",
+        "side": "enemy",
+        "col": 8,
+        "row": 4
+      },
+      {
+        "type": "soldier",
+        "side": "enemy",
+        "col": 10,
+        "row": 6
+      }
+    ]
+  },
+  "units": [
+    {
+      "type": "wildkeeper",
+      "side": "player",
+      "col": 2,
+      "row": 4,
+      "name": "Alder",
+      "role": "leader"
+    },
+    {
+      "type": "thorncaller",
+      "side": "player",
+      "col": 2,
+      "row": 3,
+      "name": "Lark"
+    },
+    {
+      "type": "boar",
+      "side": "player",
+      "col": 6,
+      "row": 4
+    },
+    {
+      "type": "warden",
+      "side": "player",
+      "col": 5,
+      "row": 5,
+      "name": "Captain Dain"
+    },
+    {
+      "type": "commander",
+      "side": "enemy",
+      "col": 11,
+      "row": 4,
+      "name": "The Overseer",
+      "role": "leader"
+    },
+    {
+      "type": "warden",
+      "side": "enemy",
+      "col": 9,
+      "row": 2
+    },
+    {
+      "type": "archer",
+      "side": "enemy",
+      "col": 8,
+      "row": 4
+    },
+    {
+      "type": "soldier",
+      "side": "enemy",
+      "col": 10,
+      "row": 6
+    }
+  ],
+  "recruits": ["wolf", "boar", "thorncaller"],
+  "enemyRecruits": ["soldier", "archer"],
+  "gold": 16,
+  "enemyGold": 0
+}

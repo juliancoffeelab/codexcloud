@@ -1,0 +1,39 @@
+{
+  "id": "tridentguard",
+  "name": "Trident guard",
+  "race": "merfolk",
+  "hp": 14,
+  "move": 4,
+  "cost": 12,
+  "attacks": [
+    {
+      "id": "spear",
+      "name": "Trident",
+      "damage": 4,
+      "damageType": "pierce",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "shellclub",
+      "name": "Shell club",
+      "damage": 2,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": -1,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Reef bulwark",
+  "description": "A shell-armored merfolk veteran that gains an Impact club. Controls the shallows; woodland remains dangerous and ranged support still matters.",
+  "level": 2,
+  "family": "reefguard",
+  "experienceNeeded": 0,
+  "advancesTo": []
+}

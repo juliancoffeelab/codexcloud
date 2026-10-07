@@ -1,0 +1,39 @@
+{
+  "id": "harpooner",
+  "name": "Harpooner",
+  "race": "merfolk",
+  "hp": 8,
+  "move": 5,
+  "cost": 7,
+  "attacks": [
+    {
+      "id": "harpoon",
+      "name": "Harpoon",
+      "damage": 3,
+      "damageType": "pierce",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "knife",
+      "name": "Knife",
+      "damage": 2,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Amphibious",
+  "description": "Fast swimmer with ranged harpoons. Vulnerable to armor and bones; use it to take offshore routes and attack unarmored foes.",
+  "level": 1,
+  "family": "harpooner",
+  "experienceNeeded": 10,
+  "advancesTo": ["tidehunter"]
+}

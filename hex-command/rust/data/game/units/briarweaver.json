@@ -1,0 +1,52 @@
+{
+  "id": "briarweaver",
+  "name": "Briarweaver",
+  "race": "beast",
+  "terrainModifiers": {
+    "forest": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    },
+    "grove": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    }
+  },
+  "hp": 10,
+  "move": 4,
+  "cost": 11,
+  "attacks": [
+    {
+      "id": "thorns",
+      "name": "Thorns",
+      "damage": 5,
+      "damageType": "pierce",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "rootstaff",
+      "name": "Root staff",
+      "damage": 2,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": -1,
+    "impact": 0
+  },
+  "ability": "Living boughs",
+  "description": "Thorncaller veteran. Retains extra ranged protection in forests and groves, and heals adjacent allies by 1 at turn start while providing ranged Pierce and a light Impact staff.",
+  "level": 2,
+  "family": "thorncaller",
+  "experienceNeeded": 0,
+  "advancesTo": [],
+  "healing": 1
+}

@@ -7,7 +7,7 @@
     dialoguePending,
     returnsWithStory,
   } from "../game/campaign-progress";
-  import { TYPES } from "../game/engine";
+  import { TYPES } from "../game/catalog";
   import { artSprite } from "../presentation/art";
   let {
     view,
@@ -104,7 +104,7 @@
           {#if view.game.winner === "player"}<strong>✓</strong>{/if}
         </li>
       {/each}
-      {#each mission.events.filter((event) => event.label) as event}
+      {#each mission.events.filter((event) => event.label && !mission.goals.some((goal) => goal.kind === "event" && goal.event === event.id)) as event}
         <li class:completed-goal={campaign.marks.includes(`event:${event.id}`)}>
           <span>
             {event.label}{event.gold ? ` (+${event.gold} gold)` : ""}
@@ -149,6 +149,14 @@
                 <span>
                   <strong>{unit.name ?? TYPES[unit.type].name}</strong>
                   <span>{unit.hp} / {TYPES[unit.type].hp} HP</span>
+                  <span>
+                    Level {TYPES[unit.type].level}
+                    {#if TYPES[unit.type].experienceNeeded}
+                      · {unit.experience ?? 0} / {TYPES[unit.type].experienceNeeded} XP
+                    {:else}
+                      · Fully advanced
+                    {/if}
+                  </span>
                 </span>
               </label>
             {/each}

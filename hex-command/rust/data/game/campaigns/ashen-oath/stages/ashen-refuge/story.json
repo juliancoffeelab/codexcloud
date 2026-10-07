@@ -1,0 +1,90 @@
+{
+  "subtitle": "A refuge needs neighbors, not another war.",
+  "briefing": "Orin’s company has found empty houses beside living villages. Captain Dain has orders to drive the dead away; the villagers want time to judge their new neighbors for themselves. Orin will defend the refuge while they gather. Helping the sick can win their support sooner, but a withdrawing soldier’s death would destroy the chance of peace.",
+  "hints": [
+    "Defend ownership of the refuge through six enemy turns. Troops can leave the ruins to screen it; enemy recapture resets the count. Medicine reduces the defense to five turns.",
+    "Skeleton clubs punish the armored patrol. Bone bows answer its unarmored swordsmen, archers and adepts; protect those bows with a melee screen.",
+    "Nonlethal defensive attacks are allowed. Killing Dain or a retreating soldier ends mediation; check the combat preview before attacking and leave withdrawing men a way home."
+  ],
+  "legacyDialogue": [
+    {
+      "speaker": "Orin",
+      "portrait": "necromancer",
+      "text": "The houses are empty, but the wells are clean. We can stop running here."
+    },
+    {
+      "speaker": "Captain Dain",
+      "portrait": "warden",
+      "text": "My orders say you are dangerous."
+    },
+    {
+      "speaker": "Orin",
+      "portrait": "necromancer",
+      "text": "Then watch what we do. We will hold the houses, not march on yours."
+    },
+    {
+      "speaker": "Dain",
+      "portrait": "warden",
+      "text": "You put your archers between my patrol and those villagers. My orders did not mention that."
+    },
+    {
+      "speaker": "Orin",
+      "portrait": "necromancer",
+      "text": "The man who wrote your orders used to write mine."
+    },
+    {
+      "speaker": "Dain",
+      "portrait": "warden",
+      "text": "Then I know which road we take next."
+    },
+    {
+      "speaker": "Orin",
+      "portrait": "necromancer",
+      "text": "We have little use for the herbs. The people next door do. They insist on paying us. I think that is what neighbors do."
+    }
+  ],
+  "intro": [
+    {
+      "speaker": "Orin",
+      "portrait": "necromancer",
+      "text": "These houses are empty. The people next door are not. We could be neighbors, if they let us stay."
+    },
+    {
+      "speaker": "Captain Dain",
+      "portrait": "warden",
+      "text": "My orders say the dead must leave. My patrol is coming to enforce them."
+    },
+    {
+      "speaker": "Village elder",
+      "portrait": "worker",
+      "text": "Give us six days to gather the households. Defend your shelter if you must, but let men who turn back go home. There are sick families here who need the herbs in the northern grove."
+    },
+    {
+      "speaker": "Orin",
+      "portrait": "necromancer",
+      "text": "Then we hold our ground. We will not hunt your wounded. And we will bring the medicine."
+    }
+  ],
+  "victory": [
+    {
+      "speaker": "Village elder",
+      "portrait": "worker",
+      "text": "Enough, Captain. They held their shelter and let your wounded leave. These houses are ours to offer. The dead may stay as our neighbors."
+    },
+    {
+      "speaker": "Dain",
+      "portrait": "warden",
+      "text": "My orders did not mention people who would ask the dead to stay. Perhaps the man who wrote them left other things out."
+    },
+    {
+      "speaker": "Orin",
+      "portrait": "necromancer",
+      "text": "He used to write my orders too. Come with us, and see what he has been hiding."
+    },
+    {
+      "speaker": "Dain",
+      "portrait": "warden",
+      "text": "I will. My soldiers can rest here. I know which road we take next."
+    }
+  ]
+}

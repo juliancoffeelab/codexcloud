@@ -1,6 +1,5 @@
 # Wildkeeper: existing artwork transcription
 
-Reference: `art/pixel/legacy/campaign.png`, player crop `[540, 316, 211, 238]`.
 The matching red reference is in the same sheet. Preserve the selected player
 pose for both factions; only cloth and shield/banner fields change color.
 

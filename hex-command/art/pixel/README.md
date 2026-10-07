@@ -42,10 +42,9 @@ npm run art:check
 
 `npm run dev` and `npm run build` regenerate these assets before starting.
 The script reads matrices and palettes from `art/pixel/units/` and
-`art/pixel/terrain/`. Original sheets in `art/pixel/legacy/` are references for
-editing. The script writes exactly two public pixel images:
+`art/pixel/terrain/`. The script writes exactly two public pixel images:
 
-- `public/assets/units-pixel.png`: all 13 units, both factions (26 frames), plus
+- `public/assets/units-pixel.png`: all 34 unit ranks, both factions (68 frames), plus
   the neutral civilian worker portrait.
 - `public/assets/terrain-pixel.png`: all 12 terrain types, including the bridge.
 
@@ -84,6 +83,8 @@ pre-generation component specifications remain in temporary task storage at
 Skeleton and wolf references are tracked in [skeleton-wolf](reference/skeleton-wolf/README.md).
 The selected warrior is B; the selected wolf is A. B's rabid wolf and D's wolf
 are retained for possible future use.
+
+Project nicknames are recorded in the [reference dictionary](reference/dictionary.md).
 
 The renderer uses only the Python standard library. Matrix PNGs use flat colors and
 hard transparency. Store native resolution here; enlarged exports must use nearest

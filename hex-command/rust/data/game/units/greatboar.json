@@ -1,0 +1,47 @@
+{
+  "id": "greatboar",
+  "name": "Great boar",
+  "race": "beast",
+  "terrainModifiers": {
+    "ford": {
+      "cost": 1
+    },
+    "marsh": {
+      "cost": 1
+    }
+  },
+  "hp": 16,
+  "move": 3,
+  "cost": 14,
+  "attacks": [
+    {
+      "id": "trample",
+      "name": "Trample",
+      "damage": 5,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "tusks",
+      "name": "Tusks",
+      "damage": 5,
+      "damageType": "pierce",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Trample",
+  "description": "A boar veteran with stronger Impact trample and Pierce tusks. Forests and groves reduce incoming damage by 1. Remains slow in wetlands and has no ranged reply.",
+  "level": 2,
+  "family": "boar",
+  "experienceNeeded": 0,
+  "advancesTo": []
+}

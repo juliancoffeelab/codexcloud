@@ -1,5 +1,5 @@
 import type { GameView, UnitView } from "../game/view";
-import { DAMAGE_TYPES, TERRAIN, TYPES } from "../game/engine";
+import { DAMAGE_TYPES, TERRAIN, TYPES } from "../game/catalog";
 import type { DamageBreakdown, Side, TerrainType, Weapon } from "../game/types";
 import { damageExplanation } from "../presentation/combat";
 

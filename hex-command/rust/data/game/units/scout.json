@@ -1,0 +1,50 @@
+{
+  "id": "scout",
+  "name": "Scout",
+  "race": "human",
+  "terrainModifiers": {
+    "forest": {
+      "cost": -1
+    },
+    "grove": {
+      "cost": -1
+    },
+    "hill": {
+      "cost": -1
+    }
+  },
+  "hp": 8,
+  "move": 5,
+  "cost": 5,
+  "attacks": [
+    {
+      "id": "knife",
+      "name": "Knife",
+      "damage": 2,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "sling",
+      "name": "Sling",
+      "damage": 1,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "unit-archer"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Pathfinder",
+  "description": "Forests and hills cost only 1 movement.",
+  "level": 1,
+  "family": "scout",
+  "experienceNeeded": 10,
+  "advancesTo": ["ranger"]
+}

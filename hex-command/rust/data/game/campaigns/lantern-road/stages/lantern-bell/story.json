@@ -1,0 +1,37 @@
+{
+  "subtitle": "Silence the graves before silencing the bell.",
+  "briefing": "The villages are lit again, but the bell keeps calling their dead back to war. Nera and the adepts have traced that call to the grave ruins. Breaking those bindings will let the company silence the Bellwarden and leave the valley a road home.",
+  "hints": [
+    "The broken walls still cast a useful shadow.",
+    "Listen for where the bell’s answer comes from."
+  ],
+  "intro": [
+    {
+      "speaker": "Adept Meri",
+      "portrait": "adept",
+      "text": "The bell does not make the dead. It calls them from these graves. Stand on a grave and I can close the binding."
+    },
+    {
+      "speaker": "Nera",
+      "portrait": "commander",
+      "text": "We can hit the walls all day and still lose the road. Seal the flanks, protect Meri, then take the bell."
+    },
+    {
+      "speaker": "Meri",
+      "portrait": "adept",
+      "text": "My stone sparks hurt bones. Do keep their swords away from me."
+    }
+  ],
+  "victory": [
+    {
+      "speaker": "Ivo",
+      "portrait": "scout",
+      "text": "It stopped. Listen. Just frogs."
+    },
+    {
+      "speaker": "Nera",
+      "portrait": "commander",
+      "text": "That is a better bell than any I have heard."
+    }
+  ]
+}

@@ -2,15 +2,17 @@
   import type { Artwork } from "../presentation/art";
   import { iconMarkup } from "../presentation/icons";
   import type { UnitDetailsView } from "./unit-panel-view";
+  import type { UnitType } from "../game/types";
   import UnitCard from "./UnitCard.svelte";
   import Arsenal from "./Arsenal.svelte";
 
   interface Props {
     details: UnitDetailsView;
     artwork: Artwork;
+    onAdvance: (type: UnitType) => void;
   }
 
-  let { details, artwork }: Props = $props();
+  let { details, artwork, onAdvance }: Props = $props();
 </script>
 
 <div class="unit-detail">
@@ -30,6 +32,23 @@
     </div>
     <p class="ability">{details.ability.name}</p>
     <p>{details.ability.description}</p>
+    <p>
+      Level {details.definition.level ?? 1} · {details.definition.experienceNeeded
+        ? `${details.unit.experience ?? 0} / ${details.definition.experienceNeeded} XP`
+        : "Fully advanced"}
+    </p>
+    {#if details.definition.experienceNeeded}
+      <p>
+        Earn experience by dealing damage and defeating enemies. Advance while ready; wounds carry
+        over and advancement uses this turn.
+      </p>
+    {/if}
+    {#each details.promotions as promotion (promotion.type)}
+      <button class="primary" onclick={() => onAdvance(promotion.type)}>
+        Advance to {promotion.name} · {promotion.hp} HP
+      </button>
+      <p>{promotion.description}</p>
+    {/each}
     <Arsenal unit={details.unit} />
     <div class="movement-costs">
       <h3>Movement costs</h3>

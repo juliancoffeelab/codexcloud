@@ -1,0 +1,35 @@
+{
+  "id": "direwolf",
+  "name": "Dire wolf",
+  "race": "beast",
+  "hp": 11,
+  "move": 5,
+  "cost": 8,
+  "attacks": [
+    {
+      "id": "fangs",
+      "name": "Fangs",
+      "damage": 4,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Ridge runner",
+  "description": "A wolf veteran that crosses hills as easily as forest. Forests and groves reduce incoming damage by 1. Fast pursuit, but spears still exploit its Pierce weakness in the open.",
+  "level": 2,
+  "family": "wolf",
+  "experienceNeeded": 0,
+  "advancesTo": [],
+  "terrainModifiers": {
+    "hill": {
+      "cost": -1
+    }
+  }
+}

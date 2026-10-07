@@ -12,14 +12,28 @@ export interface CampaignBoard {
 }
 
 export function campaignMission(state: Immutable<CampaignState>): Immutable<MissionDefinition> {
-  const mission = CAMPAIGNS[state.id].missions[state.mission]!;
+  let mission: Immutable<MissionDefinition> = CAMPAIGNS[state.id].missions[state.mission]!;
   if (
     (state.choices?.includes("refuge-war") ||
       state.choices?.includes("green-dain-dead") ||
       state.marks.includes("dain-fell")) &&
     mission.withoutDain
   )
-    return { ...mission, ...mission.withoutDain };
+    mission = { ...mission, ...mission.withoutDain };
+  const fallen = new Set([
+    ...(state.fallenCompanions ?? []),
+    ...state.marks.filter((mark) => mark.startsWith("fallen:")).map((mark) => mark.slice(7)),
+  ]);
+  for (const name of fallen) {
+    const changes = mission.companionLosses?.[name];
+    if (changes) mission = { ...mission, ...changes };
+  }
+  if ([...mission.intro, ...mission.victory].some((line) => fallen.has(line.speaker)))
+    mission = {
+      ...mission,
+      intro: mission.intro.filter((line) => !fallen.has(line.speaker)),
+      victory: mission.victory.filter((line) => !fallen.has(line.speaker)),
+    };
   if (state.refuge?.escalated && mission.refuge)
     return { ...mission, briefing: mission.refuge.warBriefing, hints: mission.refuge.warHints };
   return mission;
@@ -67,8 +81,13 @@ export function goalProgress(board: CampaignBoard, goal: Immutable<MissionGoal>)
       current = Number(board.campaign?.marks.includes(`event:${goal.event}`));
       break;
     case "hold":
-      total = goal.round;
-      current = board.tile(goal.tile)?.owner === "player" ? Math.min(board.round, total) : 0;
+      total = goal.turns;
+      if (goal.startEvent && !board.campaign?.marks.includes(`event:${goal.startEvent}`)) {
+        label =
+          board.tile(goal.tile)?.owner !== "player"
+            ? "Reach the wreck to start the rescue"
+            : `Wait for high tide on turn ${goal.earliestRound}`;
+      } else current = Math.min(board.campaign?.holds?.[goal.tile]?.heldTurns ?? 0, total);
       break;
     case "vigil":
       total = goal.turns;
@@ -93,7 +112,9 @@ export function goalProgress(board: CampaignBoard, goal: Immutable<MissionGoal>)
   const done =
     current === total &&
     (goal.kind !== "hold" ||
-      (board.turn === "player" && board.campaign?.marks.includes(`held:${goal.tile}`)));
+      (board.turn === "player" &&
+        board.round >= goal.earliestRound &&
+        board.tile(goal.tile)?.owner === "player"));
   return { label, current, total, done, tiles };
 }
 

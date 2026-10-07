@@ -1,6 +1,5 @@
 # Ruins: existing terrain transcription
 
-Reference: `art/pixel/legacy/campaign.png`, crop `[780, 1074, 215, 224]`.
 Preserve landmark positions, pointy hex orientation and upper-left lighting.
 The original crop is fitted without stretching into a 48 by 48 canvas.
 The palette assigns flat colors to grass, stone, wood, foliage and water as

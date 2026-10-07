@@ -1,0 +1,25 @@
+{
+  "id": "lantern-road",
+  "name": "The Lantern Road",
+  "tagline": "A message becomes a road home.",
+  "description": "Lead Captain Nera through a haunted river valley. Escort a courier, reclaim villages, and silence the graves. Human infantry, wardens, and adepts face the undead.",
+  "race": "human",
+  "leader": "commander",
+  "ending": [
+    {
+      "speaker": "Nera",
+      "portrait": "commander",
+      "text": "We will leave a lantern at each crossing. Not as a warning. As a way home."
+    },
+    {
+      "speaker": "Ivo",
+      "portrait": "scout",
+      "text": "I have a new list. This one has everyone who made it."
+    }
+  ],
+  "stages": [
+    "stages/lantern-ferry/stage.json",
+    "stages/lantern-villages/stage.json",
+    "stages/lantern-bell/stage.json"
+  ]
+}

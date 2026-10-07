@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { UnitView } from "../game/view";
-  import { TYPES } from "../game/engine";
+  import { TYPES } from "../game/catalog";
   import { artSprite, type Artwork } from "../presentation/art";
 
   interface Props {

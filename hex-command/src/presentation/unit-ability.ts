@@ -1,4 +1,4 @@
-import { TYPES } from "../game/engine";
+import { TYPES } from "../game/catalog";
 import type { Unit } from "../game/types";
 
 export interface AbilityInfo {

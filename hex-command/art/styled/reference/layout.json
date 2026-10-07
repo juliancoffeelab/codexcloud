@@ -1,0 +1,365 @@
+{
+  "alpha_cutoff": 20,
+  "sheets": {
+    "normal-player": [
+      {
+        "unit": "swordsman",
+        "source_bounds": [26, 30, 237, 261]
+      },
+      {
+        "unit": "spearman",
+        "source_bounds": [275, 10, 510, 261]
+      },
+      {
+        "unit": "marksman",
+        "source_bounds": [520, 4, 755, 261]
+      },
+      {
+        "unit": "ranger",
+        "source_bounds": [782, 69, 1047, 264]
+      },
+      {
+        "unit": "mage",
+        "source_bounds": [1059, 11, 1255, 268]
+      },
+      {
+        "unit": "marshal",
+        "source_bounds": [1247, 1, 1534, 273]
+      },
+      {
+        "unit": "revenant",
+        "source_bounds": [11, 257, 241, 511]
+      },
+      {
+        "unit": "deatharcher",
+        "source_bounds": [262, 257, 512, 513]
+      },
+      {
+        "unit": "necromancer",
+        "source_bounds": [517, 269, 739, 510]
+      },
+      {
+        "unit": "direwolf",
+        "source_bounds": [732, 303, 1023, 509]
+      },
+      {
+        "unit": "greatboar",
+        "source_bounds": [1038, 292, 1305, 506]
+      },
+      {
+        "unit": "briarweaver",
+        "source_bounds": [1306, 263, 1524, 513]
+      },
+      {
+        "unit": "grovewarden",
+        "source_bounds": [5, 507, 257, 755]
+      },
+      {
+        "unit": "reefguard",
+        "source_bounds": [268, 516, 513, 748]
+      },
+      {
+        "unit": "tridentguard",
+        "source_bounds": [506, 505, 759, 750]
+      },
+      {
+        "unit": "harpooner",
+        "source_bounds": [773, 514, 1042, 752]
+      },
+      {
+        "unit": "tidehunter",
+        "source_bounds": [1013, 515, 1318, 755]
+      },
+      {
+        "unit": "wavemender",
+        "source_bounds": [1310, 520, 1527, 754]
+      },
+      {
+        "unit": "tidesage",
+        "source_bounds": [11, 754, 255, 1006]
+      },
+      {
+        "unit": "tidekeeper",
+        "source_bounds": [272, 745, 503, 1007]
+      },
+      {
+        "unit": "tideseer",
+        "source_bounds": [491, 742, 806, 1013]
+      },
+      {
+        "unit": "worker",
+        "source_bounds": [802, 776, 969, 1013]
+      }
+    ],
+    "low-poly-player": [
+      {
+        "unit": "swordsman",
+        "source_bounds": [16, 52, 220, 254]
+      },
+      {
+        "unit": "spearman",
+        "source_bounds": [277, 22, 468, 256]
+      },
+      {
+        "unit": "marksman",
+        "source_bounds": [513, 15, 749, 256]
+      },
+      {
+        "unit": "ranger",
+        "source_bounds": [784, 75, 1011, 256]
+      },
+      {
+        "unit": "mage",
+        "source_bounds": [1051, 19, 1253, 258]
+      },
+      {
+        "unit": "marshal",
+        "source_bounds": [1289, 7, 1530, 261]
+      },
+      {
+        "unit": "revenant",
+        "source_bounds": [17, 265, 231, 510]
+      },
+      {
+        "unit": "deatharcher",
+        "source_bounds": [255, 265, 504, 510]
+      },
+      {
+        "unit": "necromancer",
+        "source_bounds": [523, 263, 717, 511]
+      },
+      {
+        "unit": "direwolf",
+        "source_bounds": [732, 320, 1011, 507]
+      },
+      {
+        "unit": "greatboar",
+        "source_bounds": [1039, 313, 1302, 506]
+      },
+      {
+        "unit": "briarweaver",
+        "source_bounds": [1309, 271, 1525, 510]
+      },
+      {
+        "unit": "grovewarden",
+        "source_bounds": [13, 511, 240, 764]
+      },
+      {
+        "unit": "reefguard",
+        "source_bounds": [257, 508, 486, 761]
+      },
+      {
+        "unit": "tridentguard",
+        "source_bounds": [514, 514, 748, 765]
+      },
+      {
+        "unit": "harpooner",
+        "source_bounds": [767, 531, 1021, 757]
+      },
+      {
+        "unit": "tidehunter",
+        "source_bounds": [1044, 525, 1309, 760]
+      },
+      {
+        "unit": "wavemender",
+        "source_bounds": [1297, 532, 1504, 760]
+      },
+      {
+        "unit": "tidesage",
+        "source_bounds": [11, 768, 251, 1010]
+      },
+      {
+        "unit": "tidekeeper",
+        "source_bounds": [251, 758, 488, 1011]
+      },
+      {
+        "unit": "tideseer",
+        "source_bounds": [506, 758, 761, 1011]
+      },
+      {
+        "unit": "worker",
+        "source_bounds": [806, 786, 948, 1009]
+      }
+    ],
+    "normal-enemy": [
+      {
+        "unit": "swordsman",
+        "source_bounds": [26, 30, 237, 261]
+      },
+      {
+        "unit": "spearman",
+        "source_bounds": [275, 9, 511, 261]
+      },
+      {
+        "unit": "marksman",
+        "source_bounds": [519, 4, 755, 261]
+      },
+      {
+        "unit": "ranger",
+        "source_bounds": [782, 69, 1048, 265]
+      },
+      {
+        "unit": "mage",
+        "source_bounds": [1059, 12, 1255, 269]
+      },
+      {
+        "unit": "marshal",
+        "source_bounds": [1248, 2, 1535, 273]
+      },
+      {
+        "unit": "revenant",
+        "source_bounds": [11, 257, 241, 511]
+      },
+      {
+        "unit": "deatharcher",
+        "source_bounds": [261, 257, 513, 513]
+      },
+      {
+        "unit": "necromancer",
+        "source_bounds": [518, 269, 739, 511]
+      },
+      {
+        "unit": "direwolf",
+        "source_bounds": [732, 303, 1024, 509]
+      },
+      {
+        "unit": "greatboar",
+        "source_bounds": [1038, 293, 1305, 506]
+      },
+      {
+        "unit": "briarweaver",
+        "source_bounds": [1305, 263, 1520, 513]
+      },
+      {
+        "unit": "grovewarden",
+        "source_bounds": [5, 507, 257, 755]
+      },
+      {
+        "unit": "reefguard",
+        "source_bounds": [268, 516, 514, 748]
+      },
+      {
+        "unit": "tridentguard",
+        "source_bounds": [506, 505, 760, 750]
+      },
+      {
+        "unit": "harpooner",
+        "source_bounds": [773, 515, 1042, 752]
+      },
+      {
+        "unit": "tidehunter",
+        "source_bounds": [1014, 515, 1319, 756]
+      },
+      {
+        "unit": "wavemender",
+        "source_bounds": [1310, 520, 1528, 754]
+      },
+      {
+        "unit": "tidesage",
+        "source_bounds": [12, 755, 256, 1006]
+      },
+      {
+        "unit": "tidekeeper",
+        "source_bounds": [272, 745, 504, 1007]
+      },
+      {
+        "unit": "tideseer",
+        "source_bounds": [491, 742, 807, 1012]
+      },
+      {
+        "unit": "worker",
+        "source_bounds": [802, 776, 970, 1013]
+      }
+    ],
+    "low-poly-enemy": [
+      {
+        "unit": "swordsman",
+        "source_bounds": [16, 52, 220, 256]
+      },
+      {
+        "unit": "spearman",
+        "source_bounds": [277, 20, 468, 256]
+      },
+      {
+        "unit": "marksman",
+        "source_bounds": [510, 14, 750, 256]
+      },
+      {
+        "unit": "ranger",
+        "source_bounds": [780, 71, 1013, 258]
+      },
+      {
+        "unit": "mage",
+        "source_bounds": [1049, 16, 1255, 258]
+      },
+      {
+        "unit": "marshal",
+        "source_bounds": [1287, 6, 1532, 261]
+      },
+      {
+        "unit": "revenant",
+        "source_bounds": [17, 264, 232, 510]
+      },
+      {
+        "unit": "deatharcher",
+        "source_bounds": [253, 264, 505, 510]
+      },
+      {
+        "unit": "necromancer",
+        "source_bounds": [519, 263, 718, 511]
+      },
+      {
+        "unit": "direwolf",
+        "source_bounds": [732, 316, 1010, 507]
+      },
+      {
+        "unit": "greatboar",
+        "source_bounds": [1040, 311, 1302, 507]
+      },
+      {
+        "unit": "briarweaver",
+        "source_bounds": [1309, 271, 1526, 511]
+      },
+      {
+        "unit": "grovewarden",
+        "source_bounds": [14, 510, 241, 766]
+      },
+      {
+        "unit": "reefguard",
+        "source_bounds": [256, 507, 485, 761]
+      },
+      {
+        "unit": "tridentguard",
+        "source_bounds": [514, 514, 748, 766]
+      },
+      {
+        "unit": "harpooner",
+        "source_bounds": [766, 531, 1022, 758]
+      },
+      {
+        "unit": "tidehunter",
+        "source_bounds": [1041, 525, 1311, 760]
+      },
+      {
+        "unit": "wavemender",
+        "source_bounds": [1295, 532, 1506, 760]
+      },
+      {
+        "unit": "tidesage",
+        "source_bounds": [12, 768, 253, 1010]
+      },
+      {
+        "unit": "tidekeeper",
+        "source_bounds": [251, 758, 488, 1011]
+      },
+      {
+        "unit": "tideseer",
+        "source_bounds": [504, 757, 763, 1011]
+      },
+      {
+        "unit": "worker",
+        "source_bounds": [805, 784, 949, 1009]
+      }
+    ]
+  }
+}

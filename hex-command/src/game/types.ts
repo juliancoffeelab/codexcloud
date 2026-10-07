@@ -1,7 +1,21 @@
 export type Side = "player" | "enemy";
-export type LeaderType = "commander" | "wildkeeper" | "necromancer";
+export type LeaderType =
+  | "commander"
+  | "wildkeeper"
+  | "necromancer"
+  | "tidekeeper"
+  | "marshal"
+  | "grovewarden"
+  | "lich"
+  | "tideseer";
 export type UnitType =
   | LeaderType
+  | AdvancedTroop
+  | "swordsman"
+  | "spearman"
+  | "reefguard"
+  | "harpooner"
+  | "wavemender"
   | "soldier"
   | "archer"
   | "scout"
@@ -12,8 +26,56 @@ export type UnitType =
   | "wolf"
   | "boar"
   | "thorncaller";
+export type AdvancedTroop =
+  | "marksman"
+  | "ranger"
+  | "mage"
+  | "revenant"
+  | "deatharcher"
+  | "direwolf"
+  | "greatboar"
+  | "briarweaver"
+  | "tridentguard"
+  | "tidehunter"
+  | "tidesage";
 export type RecruitType = Exclude<UnitType, LeaderType>;
-export type Race = "human" | "undead" | "beast";
+export const UNIT_TYPES = [
+  "commander",
+  "soldier",
+  "archer",
+  "scout",
+  "warden",
+  "adept",
+  "skeleton",
+  "bonearcher",
+  "wolf",
+  "boar",
+  "wildkeeper",
+  "necromancer",
+  "thorncaller",
+  "swordsman",
+  "spearman",
+  "tidekeeper",
+  "reefguard",
+  "harpooner",
+  "wavemender",
+  "marksman",
+  "ranger",
+  "mage",
+  "revenant",
+  "deatharcher",
+  "direwolf",
+  "greatboar",
+  "briarweaver",
+  "tridentguard",
+  "tidehunter",
+  "tidesage",
+  "marshal",
+  "grovewarden",
+  "lich",
+  "tideseer",
+] as const satisfies readonly UnitType[];
+export type Race = "human" | "undead" | "beast" | "merfolk";
 export type TerrainType =
   | "plains"
   | "forest"
@@ -29,8 +91,9 @@ export type TerrainType =
   | "grove";
 export type DamageType = "blade" | "pierce" | "impact";
 export type AttackCategory = "melee" | "ranged";
-export type CampaignId = "lantern-road" | "green-accord" | "ashen-oath";
+export type CampaignId = "lantern-road" | "green-accord" | "ashen-oath" | "borrowed-tide";
 export type CampaignMapId =
+  | CoastalMapId
   | "lantern-ferry"
   | "lantern-villages"
   | "lantern-bell"
@@ -40,7 +103,8 @@ export type CampaignMapId =
   | "ashen-quarry"
   | "ashen-refuge"
   | "ashen-dawn";
-export type MapId = "mirror" | "river" | "developer" | CampaignMapId;
+export type CoastalMapId = "tide-nets" | "tide-wreck" | "tide-sluice";
+export type MapId = "mirror" | "river" | "developer" | CampaignMapId | CoastalMapId;
 export interface Coordinates {
   col: number;
   row: number;
@@ -51,6 +115,8 @@ export interface Tile extends Coordinates {
   owner: Side | null;
 }
 export interface Unit {
+  /** Missing on pre-progression saves, which load as zero. */
+  experience?: number;
   id: string;
   type: UnitType;
   side: Side;
@@ -62,6 +128,8 @@ export interface Unit {
   role?: "leader" | "courier";
   /** Set by the enemy AI when withdrawing; visible before the player chooses to pursue. */
   retreating?: boolean;
+  /** AI reinforcement hysteresis; saved so reloading does not release a rebuilding leader. */
+  rebuilding?: boolean;
 }
 export interface Weapon {
   id: string;
@@ -73,6 +141,12 @@ export interface Weapon {
   sound: string;
 }
 export interface UnitDefinition {
+  level?: number;
+  family?: UnitType;
+  experienceNeeded?: number;
+  advancesTo?: UnitType[];
+  /** Adjacent allies healed at the start of this unit's side's turn. */
+  healing?: number;
   name: string;
   hp: number;
   move: number;
@@ -84,14 +158,27 @@ export interface UnitDefinition {
   damageModifiers: Record<DamageType, number>;
   ability: string;
   description: string;
-  race?: Race;
+  race: Race;
   leader?: boolean;
-  /** Signed changes to the terrain's base movement cost. */
-  movementModifiers?: Partial<Record<TerrainType, number>>;
+  /** Overrides applied after the race defaults. */
+  terrainModifiers?: Partial<Record<TerrainType, TerrainModifier>>;
+}
+export interface TerrainModifier {
+  cost?: number;
+  passable?: boolean;
+  damageModifiers?: Partial<Record<DamageType | AttackCategory, number>>;
+}
+export interface RaceDefinition {
+  name: string;
+  terrainModifiers: Partial<Record<TerrainType, TerrainModifier>>;
+  /** Signed damage received, inherited by each unit specification. */
+  damageModifiers: Record<DamageType, number>;
 }
 export interface TerrainDefinition {
   name: string;
   cost: number;
+  passable: boolean;
+  damageModifiers?: TerrainModifier["damageModifiers"];
   description: string;
 }
 export interface TerrainOverride extends Coordinates {
@@ -121,6 +208,7 @@ export interface DamageBreakdown {
   modified: number;
   protection: number;
   exposure: number;
+  terrain?: TerrainType;
   damage: number;
 }
 export interface CombatPreview {
@@ -182,7 +270,14 @@ export type MissionGoal =
   | { kind: "escort"; label: string; tile: string }
   | { kind: "escape"; label: string; tile: string }
   | { kind: "control"; label: string; tiles: string[] }
-  | { kind: "hold"; label: string; tile: string; round: number }
+  | {
+      kind: "hold";
+      label: string;
+      tile: string;
+      turns: number;
+      earliestRound: number;
+      startEvent?: string;
+    }
   | { kind: "vigil"; label: string; tile: string; turns: number; companion: string }
   | { kind: "refuge"; label: string; tile: string; turns: number }
   | { kind: "seal"; label: string; tiles: string[]; unitType?: UnitType }
@@ -190,16 +285,28 @@ export type MissionGoal =
   | { kind: "defeat"; label: string };
 export interface MissionEvent {
   id: string;
-  trigger: { kind: "visit"; tile: string } | { kind: "round"; round: number };
+  trigger:
+    | { kind: "visit"; tile: string }
+    | { kind: "round"; round: number }
+    | { kind: "control"; tile: string; round?: number };
+  requiresEvent?: string;
+  unlessEvent?: string;
+  beforeRound?: number;
   label?: string;
   dialogue: DialogueLine[];
   gold?: number;
   warDialogue?: DialogueLine[];
 }
 export interface ReinforcementWave {
+  /** Stable within its mission; saved deployment must never depend on array order. */
+  id: string;
+  /** Position used by the last published numeric-marker save format. */
+  legacyIndex: number;
   round: number;
   label: string;
   units: StartingUnit[];
+  /** This wave replaces troops already present in older saved battles. */
+  previouslyDeployedBeforeRevision?: number;
   requiresUnsealed?: string;
 }
 export interface MissionDefinition {
@@ -214,10 +321,19 @@ export interface MissionDefinition {
   enemyRecruits: RecruitType[];
   gold: number;
   enemyGold: number;
+  /** Occupying guards patrol their control objectives instead of raiding the starting camp. */
+  defendObjectives?: boolean;
+  /** An enemy leader guards this post and its immediate approaches; retreat remains free. */
+  enemyLeaderPost?: string;
   intro: DialogueLine[];
   victory: DialogueLine[];
   events: MissionEvent[];
   waves: ReinforcementWave[];
+  /** Authored story changes when a named ally has fallen, without resurrecting them. */
+  companionLosses?: Record<
+    string,
+    Partial<Pick<MissionDefinition, "briefing" | "debrief" | "hints" | "intro" | "victory">>
+  >;
   refuge?: {
     medicineEvent: string;
     medicineTurns: number;
@@ -252,6 +368,11 @@ export interface CampaignState {
   id: CampaignId;
   mission: number;
   recall: RecruitType[];
+  /** Incoming veterans are a checkpoint: retry never keeps failed-attempt XP. */
+  veterans?: CampaignVeteran[];
+  storyVeterans?: CampaignVeteran[];
+  /** Deaths before this chapter; retry restores this incoming checkpoint. */
+  fallenCompanions?: string[];
   carryGold: number;
   marks: string[];
   dialogue: DialogueLine[];
@@ -260,7 +381,14 @@ export interface CampaignState {
   completed: boolean;
   refuge?: { heldTurns: number; lastCountedRound: number; escalated: boolean };
   vigil?: { heldTurns: number; lastCountedRound: number };
+  holds?: Record<string, { heldTurns: number; lastCountedRound: number }>;
   choices?: ("refuge-peace" | "refuge-war" | "green-dain-dead")[];
+}
+export interface CampaignVeteran {
+  type: UnitType;
+  experience: number;
+  name?: string;
+  role?: Unit["role"];
 }
 export type Attack = Weapon;
 export type DamageDetail = DamageBreakdown;

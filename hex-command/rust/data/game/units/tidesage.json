@@ -1,0 +1,40 @@
+{
+  "id": "tidesage",
+  "name": "Tide sage",
+  "race": "merfolk",
+  "hp": 11,
+  "move": 4,
+  "cost": 15,
+  "attacks": [
+    {
+      "id": "surge",
+      "name": "Surge",
+      "damage": 4,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "staff",
+      "name": "Staff",
+      "damage": 1,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Amphibious",
+  "description": "Tide sage: an experienced wavemender. Ranged Impact against armor. Heals adjacent allies by 1 HP at turn start; multiple healers do not stack. Fragile in melee.",
+  "healing": 2,
+  "level": 2,
+  "family": "wavemender",
+  "experienceNeeded": 0,
+  "advancesTo": []
+}

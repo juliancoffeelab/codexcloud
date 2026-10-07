@@ -1,0 +1,30 @@
+{
+  "id": "wolf",
+  "name": "Wolf",
+  "race": "beast",
+  "hp": 8,
+  "move": 5,
+  "cost": 5,
+  "attacks": [
+    {
+      "id": "fangs",
+      "name": "Fangs",
+      "damage": 3,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Woodland runner",
+  "description": "Forests and groves cost 1 movement and reduce incoming damage by 1. Fast flanking unit; takes 1 extra Pierce damage.",
+  "level": 1,
+  "family": "wolf",
+  "experienceNeeded": 10,
+  "advancesTo": ["direwolf"]
+}

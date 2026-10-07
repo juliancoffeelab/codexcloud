@@ -1,0 +1,39 @@
+{
+  "id": "deatharcher",
+  "name": "Death archer",
+  "race": "undead",
+  "hp": 11,
+  "move": 3,
+  "cost": 11,
+  "attacks": [
+    {
+      "id": "bonebow",
+      "name": "Bone bow",
+      "damage": 5,
+      "damageType": "pierce",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "shard",
+      "name": "Shard",
+      "damage": 2,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Hollow frame",
+  "description": "A bone-bow veteran with a usable melee shard. Armor and Impact enemies still demand support.",
+  "level": 2,
+  "family": "bonearcher",
+  "experienceNeeded": 0,
+  "advancesTo": []
+}

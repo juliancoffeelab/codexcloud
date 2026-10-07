@@ -1,0 +1,39 @@
+{
+  "id": "adept",
+  "name": "Adept",
+  "race": "human",
+  "hp": 8,
+  "move": 3,
+  "cost": 8,
+  "attacks": [
+    {
+      "id": "spark",
+      "name": "Spark",
+      "damage": 3,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "staff",
+      "name": "Staff",
+      "damage": 1,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Stone spark",
+  "description": "Ranged Impact counters bones and armor. Fragile in close combat; cover still applies.",
+  "level": 1,
+  "family": "adept",
+  "experienceNeeded": 10,
+  "advancesTo": ["mage"]
+}

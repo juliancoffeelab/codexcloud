@@ -1,7 +1,11 @@
-import type { Game } from "./engine";
+import type { LiveGame } from "./live-game";
 import type { GameState, Unit } from "./types";
+type UndoGame = Pick<
+  LiveGame,
+  "round" | "turn" | "winner" | "captureState" | "restoreState" | "move" | "unit"
+>;
 interface UndoEntry {
-  game: Game;
+  game: UndoGame;
   round: number;
   state: GameState;
   unitId: string;
@@ -11,10 +15,10 @@ export interface UndoResult {
   tileId: string;
 }
 export interface MoveUndo {
-  move(game: Game, unitId: string, tileId: string): Unit;
-  undo(game: Game): UndoResult | null;
+  move(game: UndoGame, unitId: string, tileId: string): Unit;
+  undo(game: UndoGame): UndoResult | null;
   clear(): void;
-  canUndo(game: Game): boolean;
+  canUndo(game: UndoGame): boolean;
 }
 // History belongs to this play session; combat and turn changes are barriers.
 export function createMoveUndo(): MoveUndo {
@@ -24,7 +28,7 @@ export function createMoveUndo(): MoveUndo {
     history.length = 0;
   }
 
-  function canUndo(game: Game): boolean {
+  function canUndo(game: UndoGame): boolean {
     const previous = history.at(-1);
     if (!previous) return false;
     if (
@@ -39,7 +43,7 @@ export function createMoveUndo(): MoveUndo {
     return true;
   }
 
-  function move(game: Game, unitId: string, tileId: string): Unit {
+  function move(game: UndoGame, unitId: string, tileId: string): Unit {
     // Check any existing entries before adding a move from another battle/turn.
     canUndo(game);
     const state = game.captureState();
@@ -50,7 +54,7 @@ export function createMoveUndo(): MoveUndo {
     return unit;
   }
 
-  function undo(game: Game): UndoResult | null {
+  function undo(game: UndoGame): UndoResult | null {
     if (!canUndo(game)) return null;
     const previous = history.pop()!;
     game.restoreState(previous.state);

@@ -1,5 +1,5 @@
 import type { UnitView } from "../game/view";
-import { TYPES, DAMAGE_TYPES } from "../game/engine";
+import { TYPES, DAMAGE_TYPES } from "../game/catalog";
 import type { DamageType } from "../game/types";
 
 function modifierClass(modifier: number): string {

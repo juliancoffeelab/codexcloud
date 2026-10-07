@@ -1,0 +1,39 @@
+{
+  "id": "skeleton",
+  "name": "Skeleton",
+  "race": "undead",
+  "hp": 9,
+  "move": 3,
+  "cost": 7,
+  "attacks": [
+    {
+      "id": "rustblade",
+      "name": "Rust blade",
+      "damage": 3,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "boneclub",
+      "name": "Bone club",
+      "damage": 2,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": -1,
+    "impact": 0
+  },
+  "ability": "Bare bones",
+  "description": "Takes 2 less Pierce damage and 1 more Impact damage. Swords and blunt weapons are useful against it.",
+  "level": 1,
+  "family": "skeleton",
+  "experienceNeeded": 10,
+  "advancesTo": ["revenant"]
+}

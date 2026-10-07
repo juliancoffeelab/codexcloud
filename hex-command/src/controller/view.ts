@@ -1,10 +1,15 @@
 import type { GameView, UnitView } from "../game/view";
-import type { GameSnapshot, CampaignId, RecruitType as GameRecruitType } from "../game/types";
-import { TYPES } from "../game/engine";
+import type {
+  GameSnapshot,
+  CampaignId,
+  UnitType,
+  RecruitType as GameRecruitType,
+} from "../game/types";
+import { TYPES } from "../game/catalog";
 import type { ArtStyle, Artwork } from "../presentation/art";
 
 export type RecruitType = GameRecruitType;
-export const recruitTypes = ["soldier", "archer", "scout"] as const;
+export const recruitTypes = ["swordsman", "spearman", "archer", "scout"] as const;
 
 export interface RecruitmentContext {
   readonly commander: UnitView | undefined;
@@ -40,6 +45,7 @@ export interface BattleCommands {
   clearSelection(clearInspection?: boolean): void;
   attackSelected(attackId: string): void;
   recruitHere(type: RecruitType, tileId: string): void;
+  advanceUnit(unitId: string, type: UnitType): void;
   endTurn(): Promise<GameSnapshot | undefined>;
   undoMove(): GameSnapshot;
   reset(mapId?: string): GameSnapshot;
@@ -60,6 +66,7 @@ export function createBattleCommands(controller: BattleCommands): BattleCommands
     clearSelection: controller.clearSelection.bind(controller),
     attackSelected: controller.attackSelected.bind(controller),
     recruitHere: controller.recruitHere.bind(controller),
+    advanceUnit: controller.advanceUnit.bind(controller),
     endTurn: controller.endTurn.bind(controller),
     undoMove: controller.undoMove.bind(controller),
     reset: controller.reset.bind(controller),
@@ -76,7 +83,7 @@ export function recruitmentContext(
   inspectedTile: string | null,
 ): RecruitmentContext | null {
   const tile = game.tile(inspectedTile);
-  if (!tile || tile.terrain === "water" || game.at(tile.id) || game.winner || game.unit(selected)) {
+  if (!tile || game.at(tile.id) || game.winner || game.unit(selected)) {
     return null;
   }
   const keep = game
