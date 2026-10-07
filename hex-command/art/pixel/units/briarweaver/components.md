@@ -8,7 +8,6 @@ See [the progression specifications](../../../../design/progression-art.md).
 
 # Thorncaller: existing artwork transcription
 
-Reference: `art/pixel/legacy/campaign.png`, player crop `[27, 577, 218, 232]`.
 The matching red reference is in the same sheet. Preserve the selected player
 pose for both factions; only cloth and shield/banner fields change color.
 

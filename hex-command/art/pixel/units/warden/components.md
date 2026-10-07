@@ -1,6 +1,5 @@
 # Warden: existing artwork transcription
 
-Reference: `art/pixel/legacy/campaign.png`, player crop `[22, 24, 232, 275]`.
 The matching red reference is in the same sheet. Preserve the selected player
 pose for both factions; only cloth and shield/banner fields change color.
 

@@ -8,7 +8,6 @@ See [the progression specifications](../../../../design/progression-art.md).
 
 # Commander: existing artwork transcription
 
-Reference: `art/pixel/legacy/units.png`, player crop `[1344, 0, 430, 443.5]`.
 The matching red reference is in the same sheet. Preserve the selected player
 pose for both factions; only cloth and shield/banner fields change color.
 

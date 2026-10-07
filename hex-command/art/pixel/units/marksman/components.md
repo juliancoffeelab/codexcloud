@@ -13,7 +13,6 @@ See [the progression specifications](../../../../design/progression-art.md).
 
 # Archer: existing artwork transcription
 
-Reference: `art/pixel/legacy/units.png`, player crop `[443.5, 0, 443.5, 443.5]`.
 The matching red reference is in the same sheet. Preserve the selected player
 pose for both factions; only cloth and shield/banner fields change color.
 

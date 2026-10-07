@@ -58,8 +58,8 @@ and screenshots belong in ignored `tmp/`, outside the default test suite.
   legacy-save metadata. `npm run content:build` generates its import index;
   `content:check` checks that index against the manifest. Values remain in JSON.
 - `src/game/native-engine.ts` and `live-game.ts` adapt generated WASM types to
-  the controller. The remaining TypeScript rules support historical saves,
-  recorded playtests and focused compatibility tests; they do not run live battles.
+  the controller. The remaining TypeScript rules support older browser saves and focused
+  compatibility tests; they do not run live battles.
 - `src/controller/` owns actions, autosaves, undo, turn sequencing and cancellation.
   `src/ui/` renders immutable published views. `src/presentation/` handles artwork,
   motion, sound and icons.
@@ -112,8 +112,7 @@ Rust owns scheduling, workers and reporting. Complete gameplay records are saved
 in indexed JSONL journals alongside compact summaries. The comparison tools
 convert saved journals to Arrow with an explicit schema and compare unordered
 match records without rerunning matches. See the [AI guide](docs/ai-simulation.md)
-for filters, replay and comparison commands. Historical TypeScript playtest tools
-require their matching source and serve as reference tooling only.
+for filters, replay and comparison commands.
 
 For the configured Sites deployment, `npm run publish` builds the release,
 commits and pushes its source, then prepares the deployment archive and manifest.

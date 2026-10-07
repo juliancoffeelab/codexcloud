@@ -42,8 +42,7 @@ npm run art:check
 
 `npm run dev` and `npm run build` regenerate these assets before starting.
 The script reads matrices and palettes from `art/pixel/units/` and
-`art/pixel/terrain/`. Original sheets in `art/pixel/legacy/` are references for
-editing. The script writes exactly two public pixel images:
+`art/pixel/terrain/`. The script writes exactly two public pixel images:
 
 - `public/assets/units-pixel.png`: all 34 unit ranks, both factions (68 frames), plus
   the neutral civilian worker portrait.

@@ -140,11 +140,3 @@ not launch campaign/tournament batches.
 native sample. `--compare artifacts/sample.json` checks complete result hashes for
 identical configurations; `--alternate` changes seed, initiative and campaign
 policy/diplomacy. The Rust scheduler supplies the sample configurations.
-
-Historical complete TS dumps and their frozen sources remain in local artifacts.
-The latest 11-minute run is `artifacts/ai-performance/full-final/report.json`, with
-12,240 indexed detail records. Its matching JSON reference is under
-`full-final/rust-reference-data`. On 2026-10-06, the refactored native engine
-matched all 12,240 complete records in 110.63 seconds with four workers, using the
-former native JSON comparison mode. The [verification summary](../docs/simulations/rust-refactor-parity-20261006.json)
-records the exact content and engine fingerprints.

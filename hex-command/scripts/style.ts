@@ -12,7 +12,6 @@ const files = [
   "src",
   "scripts/*.{ts,js}",
   "tests/*.ts",
-  "tests/fixtures/*.json",
   "*.config.ts",
   "*.json",
   "README.md",

@@ -74,11 +74,6 @@ plan directly, preserving the stable tie order without sorting every candidate.
 These changes preserve the policies' scores and rules rather than reducing the
 simulation schedule or turn limits.
 
-The planner/recruiter split and factorial mode have been removed. Every policy
-chooses its own recruits. Historical split results remain in `docs/simulations/`;
-replaying them requires their original source, rather than converting their labels
-or pretending that they describe these changed policies.
-
 ## Native Rust engine
 
 `npm run ai:simulate` and `npm run ai:full` build and invoke the native harness.
@@ -90,28 +85,6 @@ separate from the compiled engine fingerprint; JSON edits need no export or rebu
 running matches. The browser uses the WASM engine and Rust-generated transfer
 types through its JavaScript controller. See [`rust/README.md`](../rust/README.md)
 for the public API and build details.
-
-The latest complete TS baseline is `artifacts/ai-performance/full-final/report.json`,
-with 12,240 full detail records and the frozen source used to produce them. Its
-matching readable JSON catalog is retained under `full-final/rust-reference-data`.
-Complete comparison uses parsed values, ignores object-key order and derived
-serialization hashes, and preserves array order and missing-versus-null fields.
-The earlier 114-minute run remains separately preserved.
-
-The refactored native engine matched all 12,240 records of the complete TS baseline
-on 2026-10-06. Four workers took 110.63 seconds, including journal reading and full
-semantic trace comparison. [The verification summary](simulations/rust-refactor-parity-20261006.json)
-retains the reference, content and engine fingerprints. This is the measured
-comparison time; it does not include writing a second full native result journal.
-
-On 2026-10-06, 120 matched samples retained identical complete results. The native
-path, including JSON transport, took 4.16 seconds versus 21.00 seconds for the
-optimized TypeScript reference (5.1×). The sample means project approximately
-78 seconds of match work for the full 12,240-configuration schedule on four cores,
-before reporting and scheduling overhead. This is an estimate: no new full workload
-was run for the port. A separate 12-match two-worker CLI sample, including indexed
-journals and aggregation, completed in 0.64 seconds and replayed exactly.
-[Configurations and timings](simulations/rust-native-benchmark-20261006.json) are recorded.
 
 ## Complete policies
 
