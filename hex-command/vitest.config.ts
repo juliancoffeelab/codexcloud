@@ -4,6 +4,7 @@ import { availableParallelism } from "node:os";
 export default defineConfig({
   test: {
     environment: "node",
+    setupFiles: ["tests/setup-wasm.ts"],
     pool: "threads",
     bail: 0,
     include: ["tests/**/*.test.ts"],

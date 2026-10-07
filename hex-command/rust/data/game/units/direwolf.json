@@ -23,7 +23,7 @@
     "impact": 0
   },
   "ability": "Ridge runner",
-  "description": "A wolf veteran that crosses hills as easily as forest. Forests and groves reduce incoming damage by 1. Fast pursuit, but spears still exploit its Pierce weakness in the open.",
+  "description": "A veteran wolf that pursues prey across rough ground but still fears spears.",
   "level": 2,
   "family": "wolf",
   "experienceNeeded": 0,

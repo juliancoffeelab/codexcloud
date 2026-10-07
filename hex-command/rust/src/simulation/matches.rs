@@ -572,7 +572,7 @@ mod tests {
 
     #[test]
     fn arena_charges_starters_to_a_paired_budget_without_changing_placement() {
-        let rules = Rules::embedded().unwrap();
+        let rules = Rules::load().unwrap();
         for seed in [1, 2, 10] {
             for landscape in ["open", "wooded", "crossings", "islands"] {
                 for player in &rules.rosters {

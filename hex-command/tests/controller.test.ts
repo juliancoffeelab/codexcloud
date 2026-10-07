@@ -524,6 +524,13 @@ function createController(pause?: ConstructorParameters<typeof Controller>[0]) {
 let restoreCanvas: () => void;
 beforeEach(async () => {
   vi.resetModules();
+  const { initSync } = await import("../rust/pkg/hex_command");
+  const { readFileSync } = await import("node:fs");
+  initSync({
+    module: new Uint8Array(
+      readFileSync(new URL("../rust/pkg/hex_command_bg.wasm", import.meta.url)),
+    ),
+  });
   ({ BattleController } = await import("../src/controller/battle"));
   storage.clear();
   ControlledImage.requests = [];

@@ -47,5 +47,4 @@
       </span>
     {/each}
   </div>
-  <p class="resistance-hint">Flat changes before terrain. Fully blocked hits deal 0 damage.</p>
 </div>

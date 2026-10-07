@@ -31,8 +31,8 @@
     "pierce": 0,
     "impact": 0
   },
-  "ability": "Amphibious",
-  "description": "Tide sage: an experienced wavemender. Ranged Impact against armor. Heals adjacent allies by 4 HP at turn start; multiple healers do not stack. Fragile in melee.",
+  "ability": "Incoming Tide",
+  "description": "A veteran support caster who sustains nearby allies and threatens armored foes.",
   "healing": 4,
   "level": 2,
   "family": "wavemender",

@@ -1,10 +1,9 @@
 /** Pack complete source sprites; never resize, recolor or infer grid cells. */
 import { createHash } from "node:crypto";
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { PNG } from "pngjs";
 import { format } from "prettier";
-import { TERRAIN, TYPES } from "../src/game/catalog";
 
 const args = process.argv.slice(2);
 if (args.some((arg) => arg !== "--check")) throw new Error("Use --check or no arguments");
@@ -16,6 +15,12 @@ const terrainMetadata: Record<string, unknown> = {};
 const terrainColors = JSON.parse(readFileSync(root + "art/styled/terrain-colors.json", "utf8"));
 const frameName = (name: string) =>
   name === "bonearcher" ? "bone_archer" : name === "grove" ? "sacred_grove" : name;
+function spriteNames(style: string, kind: "units" | "terrain") {
+  return readdirSync(root + `art/styled/${style}/${kind}`, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .sort();
+}
 function output(path: string, data: string | Buffer) {
   if (check) {
     if (!readFileSync(root + path).equals(Buffer.from(data))) {
@@ -76,14 +81,12 @@ function pack(style: string, kind: "units" | "terrain", sprites: { key: string; 
   return result;
 }
 for (const style of styles) {
-  const sprites = Object.keys(TYPES)
-    .sort()
-    .flatMap((type) =>
-      ["enemy", "player"].map((side) => ({
-        key: `${side}_${frameName(type)}`,
-        file: `art/styled/${style}/units/${type}/${side}.png`,
-      })),
-    );
+  const sprites = spriteNames(style, "units").flatMap((type) =>
+    ["enemy", "player"].map((side) => ({
+      key: `${side}_${frameName(type)}`,
+      file: `art/styled/${style}/units/${type}/${side}.png`,
+    })),
+  );
   sprites.push({
     key: "portrait_worker",
     file: `art/styled/${style}/portraits/worker/portrait.png`,
@@ -92,12 +95,10 @@ for (const style of styles) {
   terrainMetadata[style] = pack(
     style,
     "terrain",
-    Object.keys(TERRAIN)
-      .sort()
-      .map((type) => ({
-        key: `terrain_${frameName(type)}`,
-        file: `art/styled/${style}/terrain/${type}/tile.png`,
-      })),
+    spriteNames(style, "terrain").map((type) => ({
+      key: `terrain_${frameName(type)}`,
+      file: `art/styled/${style}/terrain/${type}/tile.png`,
+    })),
   );
 }
 output(

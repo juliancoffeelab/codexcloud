@@ -6,13 +6,15 @@ use std::collections::BTreeMap;
 /// An authored unit placement, including optional named-companion metadata.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct StartingUnit {
     pub col: i32,
     pub row: i32,
     pub r#type: String,
     pub side: Side,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub role: Option<Role>,
 }
 /// An authored objective. Each variant requires the fields its rule consumes.
@@ -180,35 +182,49 @@ pub enum Trigger {
 /// A once-per-mission scripted event gated by a typed trigger and prior markers.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Event {
     pub id: String,
     pub trigger: Trigger,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     pub requires_event: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     pub unless_event: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     pub before_round: Option<u32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     pub label: Option<String>,
     pub dialogue: Vec<Dialogue>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     pub gold: Option<i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     pub war_dialogue: Option<Vec<Dialogue>>,
 }
 /// A reinforcement group released on or after its authored round.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Wave {
     pub id: String,
     pub round: u32,
     pub label: String,
     pub units: Vec<StartingUnit>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     pub requires_unsealed: Option<String>,
 }
 /// The peaceful and escalated outcomes of a refuge-defense mission.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Refuge {
     pub medicine_event: String,
@@ -221,21 +237,35 @@ pub struct Refuge {
 /// Chapter content overrides applied after companion losses or story choices.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MissionPatch {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     pub briefing: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     pub debrief: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     pub hints: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     pub intro: Option<Vec<Dialogue>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     pub recruits: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     pub reinforcements: Option<Vec<StartingUnit>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     pub victory: Option<Vec<Dialogue>>,
 }
 /// A mission map reference and its authored starting roster.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Layout {
     pub id: String,
     pub units: Vec<StartingUnit>,
@@ -243,11 +273,15 @@ pub struct Layout {
 /// An authored chapter defining objectives, recruits, events and story feedback.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Mission {
     pub map: Layout,
+    #[serde(default)]
+    pub subtitle: String,
     pub briefing: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     pub debrief: Option<String>,
     pub hints: Vec<String>,
     #[serde(default)]
@@ -259,13 +293,21 @@ pub struct Mission {
     pub enemy_gold: i32,
     #[serde(default)]
     pub defend_objectives: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     pub enemy_leader_post: Option<String>,
     pub intro: Vec<Dialogue>,
     pub victory: Vec<Dialogue>,
     pub events: Vec<Event>,
     pub waves: Vec<Wave>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     pub companion_losses: Option<BTreeMap<String, MissionPatch>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     pub refuge: Option<Refuge>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
     pub without_dain: Option<MissionPatch>,
 }
 impl Mission {
@@ -292,7 +334,9 @@ impl Mission {
     }
 }
 /// An ordered set of authored chapters and their final dialogue.
-#[derive(Clone, Debug)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Campaign {
     pub tagline: String,
     pub description: String,
@@ -319,4 +363,19 @@ impl Trigger {
             _ => None,
         }
     }
+}
+
+/// Displayable current authored map.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct MapDefinition {
+    pub id: String,
+    pub revision: u32,
+    pub name: String,
+    pub description: String,
+    pub cols: i32,
+    pub rows: i32,
+    pub terrain: Vec<Tile>,
+    pub units: Vec<StartingUnit>,
 }

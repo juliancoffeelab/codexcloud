@@ -32,7 +32,7 @@
     "impact": 0
   },
   "ability": "Living boughs",
-  "description": "Thorncaller veteran. Forests and groves provide 1 melee and 2 ranged protection in total. Heals adjacent allies by 2 HP at turn start while providing ranged Pierce and a light Impact staff.",
+  "description": "A veteran thorncaster who supports nearby allies while fighting from woodland cover.",
   "level": 2,
   "family": "thorncaller",
   "experienceNeeded": 0,

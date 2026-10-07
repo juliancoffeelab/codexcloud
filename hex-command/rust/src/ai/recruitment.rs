@@ -241,7 +241,7 @@ mod tests {
 
     #[test]
     fn mixed_recruitment_keeps_the_authored_role_proportions() {
-        let rules = Rules::embedded().unwrap();
+        let rules = Rules::load().unwrap();
         for (roster, purchases, expected) in [
             (
                 vec!["reefguard", "scout", "harpooner", "wavemender"],

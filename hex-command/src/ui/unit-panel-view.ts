@@ -2,6 +2,8 @@ import type { Immutable, UnitView } from "../game/view";
 import type { BattleView } from "../controller/view";
 import { TERRAIN, TYPES } from "../game/catalog";
 import type { TerrainType, UnitDefinition, UnitType } from "../game/types";
+import { TERRAIN_ORDER } from "../game/authored-content";
+import { terrainDamageFacts } from "./terrain-effects";
 import { abilityInfo } from "../presentation/unit-ability";
 
 export interface UnitDetailsView {
@@ -11,10 +13,11 @@ export interface UnitDetailsView {
   actionStatus: string;
   promotions: { type: UnitType; name: string; description: string; hp: number }[];
   ability: ReturnType<typeof abilityInfo>;
-  movementCosts: {
+  terrainEffects: {
     terrain: TerrainType;
     name: string;
     label: string;
+    facts: ReturnType<typeof terrainDamageFacts>;
     className: "easy" | "slow" | "difficult" | "blocked";
   }[];
 }
@@ -86,12 +89,13 @@ export function unitPanelView(view: BattleView): UnitPanelView {
           hp: TYPES[type].hp,
         })),
       ability: abilityInfo(selectedUnit),
-      movementCosts: (Object.keys(TERRAIN) as TerrainType[]).map((terrain) => {
+      terrainEffects: TERRAIN_ORDER.map((terrain, index) => {
         const cost = game.cost(selectedUnit, { terrain });
         return {
           terrain,
           name: TERRAIN[terrain].name,
-          label: Number.isFinite(cost) ? String(cost) : "Impassable",
+          label: Number.isFinite(cost) ? `${cost} ${cost === 1 ? "Step" : "Steps"}` : "-",
+          facts: terrainDamageFacts(TYPES[selectedUnit.type].environment[index]!),
           className: !Number.isFinite(cost)
             ? "blocked"
             : cost === 1

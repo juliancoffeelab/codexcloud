@@ -22,7 +22,6 @@
       "round": 6,
       "label": "An adept and warden arrive from the southern road on turn 6",
       "id": "southern-capture-party",
-      "legacyIndex": 0,
       "units": [
         {
           "type": "adept",

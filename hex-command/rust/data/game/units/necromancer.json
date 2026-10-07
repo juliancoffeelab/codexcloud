@@ -33,7 +33,7 @@
     "impact": 0
   },
   "ability": "Unbound",
-  "description": "An undead leader with melee and ranged Impact. Takes 2 less Pierce damage and 1 more Impact damage.",
+  "description": "An undead commander who combines close-combat and ranged magic.",
   "level": 1,
   "family": "necromancer",
   "experienceNeeded": 18,

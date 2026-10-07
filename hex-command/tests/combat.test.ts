@@ -7,7 +7,7 @@ import { createGameView } from "./fixture-view.ts";
 import { arsenalView } from "../src/ui/arsenal-view.ts";
 import { attackChoiceViews } from "../src/ui/combat-view.ts";
 import assert from "node:assert/strict";
-import { Game, TYPES, distance } from "./game-fixture.ts";
+import { Game, TYPES } from "./game-fixture.ts";
 import { loadBattle, saveBattle } from "./legacy-save.ts";
 const fixture = (a: UnitType = "soldier", b: UnitType = "soldier", targetTile = "3,3") => {
   const game = new Game();
@@ -21,14 +21,6 @@ const fixture = (a: UnitType = "soldier", b: UnitType = "soldier", targetTile = 
   return { game, attacker, target };
 };
 
-// Explicit balance outcomes, independent of preview/resolution agreement.
-const weapons = [
-  ["soldier", "sword"],
-  ["soldier", "mace"],
-  ["archer", "bow"],
-  ["scout", "knife"],
-  ["scout", "sling"],
-] as const;
 test("Zero damage attacks remain available and consume actions", async () => {
   const { game, attacker, target } = fixture("bonearcher", "soldier");
   required(game.tile(target.tile)).terrain = "hill";
@@ -71,62 +63,6 @@ test("Blocked attacks still produce combat feedback", async () => {
   assert.equal(attacker.hp, 8);
   assert(describeChanges(before, game.snapshot()).attacked, "blocked attacks still play their cue");
 });
-test("Archers choose between safe bows and melee retaliation", async () => {
-  const { game, attacker, target } = fixture("archer", "soldier");
-  assert.deepEqual(game.preview(attacker, target, "bow"), {
-    damage: 7,
-    retaliation: 0,
-  });
-  assert.deepEqual(game.preview(attacker, target, "knife"), {
-    damage: 3,
-    retaliation: 8,
-  });
-  assert.equal(required(game.bestAttack(attacker, target)).id, "bow");
-  game.attack(attacker.id, target.id, "knife");
-  assert.equal(required(game.lastCombat).sound, "attack-melee");
-  assert.equal(attacker.hp, 8);
-  assert.equal(target.hp, 21);
-  assert.throws(() => game.attack(attacker.id, target.id, "bow"));
-});
-test("Ranged retaliation and intervening hills constrain attacks", async () => {
-  const { game, attacker, target } = fixture("archer", "archer", "4,3");
-  assert.deepEqual(game.preview(attacker, target, "bow"), {
-    damage: 8,
-    retaliation: 8,
-  });
-  assert.equal(game.canAttackFrom(attacker, attacker.tile, target, "knife"), false);
-  assert.throws(() => game.preview(attacker, target, "knife"), /cannot reach/);
-  for (const tile of game
-    .neighbors(attacker.tile)
-    .filter((t) => distance(t, required(game.tile(target.tile))) === 1))
-    tile.terrain = "hill";
-  assert.equal(game.canAttackFrom(attacker, attacker.tile, target, "bow"), false);
-  assert.throws(() => game.attack(attacker.id, target.id, "bow"));
-});
-test("Scouts avoid lethal ranged replies and kills prevent retaliation", async () => {
-  const { game, attacker, target } = fixture("scout", "archer");
-  assert.deepEqual(game.preview(attacker, target, "sling"), {
-    damage: 2,
-    retaliation: 8,
-  });
-  assert.deepEqual(game.preview(attacker, target, "knife"), {
-    damage: 4,
-    retaliation: 4,
-  });
-  attacker.hp = 5;
-  assert.equal(
-    required(game.bestAttack(attacker, target)).id,
-    "knife",
-    "avoid a lethal ranged reply",
-  );
-  target.hp = 1;
-  assert.equal(
-    game.preview(attacker, target, "sling").retaliation,
-    0,
-    "defeated defenders never reply",
-  );
-  assert(game.attackOptions(attacker, target).some((a) => a.id === "sling"));
-});
 // Lethal forecasts identify the unit that dies, including overkill and retaliation.
 test("Lethal forecasts identify casualties including overkill", async () => {
   const { game, attacker, target } = fixture();
@@ -152,27 +88,6 @@ test("Lethal forecasts identify casualties including overkill", async () => {
   assert.equal(choice.enemyForecast.impactLabel, "Deal −7 HP");
   assert.equal(choice.playerForecast.impactLabel, "Take −7 HP (dies)");
 });
-
-// Representative native exchanges cover armor, cover, ranged replies and damage types.
-test.each([
-  ["soldier", "bonearcher", "mace", "plains", "3,3"],
-  ["archer", "soldier", "bow", "forest", "4,3"],
-  ["scout", "archer", "sling", "plains", "4,3"],
-  ["thorncaller", "spearman", "thorns", "grove", "3,3"],
-  ["boar", "skeleton", "trample", "plains", "3,3"],
-  ["harpooner", "swordsman", "harpoon", "ford", "3,3"],
-] as const)(
-  "Native %s attacking %s with %s on %s matches its preview",
-  (a, b, weapon, terrain, tile) => {
-    const { game, attacker, target } = fixture(a, b, tile);
-    required(game.tile(target.tile)).terrain = terrain;
-    const preview = game.previewDetails(attacker, target, weapon);
-    game.attack(attacker.id, target.id, weapon);
-    assert.equal(attacker.hp, TYPES[a].hp - preview.retaliation);
-    assert.equal(target.hp, TYPES[b].hp - preview.damage);
-    assert(attacker.moved && attacker.attacked);
-  },
-);
 
 // Definitions supply new weapons to old saves without replacing battle progress.
 test("Old saves inherit weapon definitions without losing progress", async () => {

@@ -40,7 +40,7 @@
     "impact": 1
   },
   "ability": "Armor",
-  "description": "Takes 1 less Blade/Pierce damage and 1 more Impact damage.",
+  "description": "Heavy infantry suited to holding the front. Blunt weapons threaten its armor.",
   "level": 2,
   "family": "swordsman",
   "experienceNeeded": 0,

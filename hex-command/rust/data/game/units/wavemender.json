@@ -31,8 +31,8 @@
     "pierce": 0,
     "impact": 0
   },
-  "ability": "Amphibious",
-  "description": "Ranged Impact against armor. Heals adjacent allies by 2 HP at turn start; multiple healers do not stack. Fragile in melee.",
+  "ability": "Incoming Tide",
+  "description": "A fragile merfolk support caster who tends nearby allies behind the front line.",
   "healing": 2,
   "level": 1,
   "family": "wavemender",

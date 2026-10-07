@@ -143,6 +143,10 @@ export interface Weapon {
   sound: string;
 }
 export interface UnitDefinition {
+  /** Rust-resolved values in canonical terrain order; null means impassable. */
+  costs: (number | null)[];
+  /** Incoming terrain modifiers indexed by terrain, melee/ranged, Blade/Pierce/Impact. */
+  environment: number[][][];
   role: UnitRole;
   level?: number;
   family?: UnitType;
@@ -163,8 +167,6 @@ export interface UnitDefinition {
   description: string;
   race: Race;
   leader?: boolean;
-  /** Overrides applied after the race defaults. */
-  terrainModifiers?: Partial<Record<TerrainType, TerrainModifier>>;
 }
 export interface TerrainModifier {
   cost?: number;
@@ -303,13 +305,9 @@ export interface MissionEvent {
 export interface ReinforcementWave {
   /** Stable within its mission; saved deployment must never depend on array order. */
   id: string;
-  /** Position used by the last published numeric-marker save format. */
-  legacyIndex: number;
   round: number;
   label: string;
   units: StartingUnit[];
-  /** This wave replaces troops already present in older saved battles. */
-  previouslyDeployedBeforeRevision?: number;
   requiresUnsealed?: string;
 }
 export interface MissionDefinition {
@@ -354,8 +352,6 @@ export interface MissionDefinition {
     victory?: DialogueLine[];
     debrief?: string;
   };
-  /** Previously published lines remain valid in ongoing saved conversations. */
-  legacyDialogue?: DialogueLine[];
 }
 export interface CampaignDefinition {
   id: CampaignId;

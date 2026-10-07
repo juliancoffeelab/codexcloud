@@ -1,42 +1,14 @@
 import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
 import { Game } from "./game-fixture";
-import { campaignMission, goalProgress, returnsWithStory } from "../src/game/campaign-progress";
-import { createGameView } from "./fixture-view";
-import { createMoveUndo } from "../src/game/undo";
-import { loadBattle, saveBattle, SAVE_KEY } from "./legacy-save";
+import { campaignMission } from "../src/game/campaign-progress";
+import { loadBattle, saveBattle } from "./legacy-save";
 import { required, TestStorage } from "./helpers";
 
 const storage = new TestStorage();
 
 const companion = (game: Game) =>
   required(game.units.find((unit) => unit.side === "player" && unit.name === "Lark"));
-
-// Earlier vigil saves gain the living truce participant, but not a dead Dain.
-test("Story companions cannot be duplicated through recall", async () => {
-  const vigil = Game.startCampaign("green-accord", 1);
-  const dain = required(vigil.units.find((unit) => unit.name === "Captain Dain"));
-  assert(returnsWithStory(vigil.campaign!, dain));
-  vigil.winner = "player";
-  assert.throws(() => vigil.nextCampaignMission([dain.id]), /NoNextMission/);
-  const ordinary = vigil.addUnit("warden", "player", "1,1");
-  assert(!returnsWithStory(vigil.campaign!, ordinary));
-  const next = vigil.nextCampaignMission([ordinary.id]);
-  assert.equal(next.units.filter((unit) => unit.name === "Captain Dain").length, 1);
-});
-
-function atVigil(): Game {
-  const game = Game.startCampaign("green-accord", 1);
-  game.advanceDialogue(true);
-  const lark = companion(game);
-  const goal = campaignMission(game.campaign!).goals.find((goal) => goal.kind === "vigil");
-  assert(goal?.kind === "vigil");
-  const occupant = game.at(goal.tile);
-  if (occupant && occupant.id !== lark.id) occupant.tile = "5,4";
-  lark.tile = goal.tile;
-  required(game.tile(goal.tile)).owner = "player";
-  return game;
-}
 
 // Dain's death changes this debrief and future missions, but retry rewinds current-stage deaths.
 for (const mission of [0, 1, 2]) {

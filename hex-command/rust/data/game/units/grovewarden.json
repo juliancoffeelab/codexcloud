@@ -33,7 +33,7 @@
     "impact": -1
   },
   "ability": "Keeper of the grove",
-  "description": "Grove warden: an experienced wildkeeper. Your leader. Forests and groves cost 1 movement and reduce incoming damage by 1. Takes 1 less Impact damage; losing it ends the mission.",
+  "description": "An experienced woodland leader who holds the groves and directs reinforcements.",
   "level": 2,
   "family": "wildkeeper",
   "experienceNeeded": 0,

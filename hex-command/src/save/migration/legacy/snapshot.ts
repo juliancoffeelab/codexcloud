@@ -1,4 +1,5 @@
-import { CAMPAIGNS, CAMPAIGN_MAPS } from "../../../game/campaign-data";
+import { CAMPAIGN_MAPS } from "../../../game/campaign-data";
+import { CAMPAIGNS } from "./catalog";
 import { MAPS } from "../../../game/maps";
 import { distance, TYPES } from "../../../game/catalog";
 import type {
@@ -18,9 +19,11 @@ const record = (value: unknown): value is Record<string, unknown> =>
 
 export function importWaveMarker(
   mark: string,
-  waves: readonly { id: string; legacyIndex: number }[],
+  waves: readonly { id: string; legacyIndex?: number }[],
 ): string {
-  const legacy = waves.find((wave) => mark === `wave:${wave.legacyIndex}`);
+  const legacy = waves.find(
+    (wave) => wave.legacyIndex !== undefined && mark === `wave:${wave.legacyIndex}`,
+  );
   return legacy ? `wave:${legacy.id}` : mark;
 }
 const side = (value: unknown): value is Side => value === "player" || value === "enemy";
@@ -171,7 +174,11 @@ function campaignState(
     ...(mission.refuge ? ["held:5,4"] : []),
     ...mission.events.map((event) => `event:${event.id}`),
     ...mission.waves.map((wave) => `wave:${wave.id}`),
-    ...(namedWaves ? [] : mission.waves.map((wave) => `wave:${wave.legacyIndex}`)),
+    ...(namedWaves
+      ? []
+      : mission.waves
+          .filter((wave) => wave.legacyIndex !== undefined)
+          .map((wave) => `wave:${wave.legacyIndex}`)),
     ...mission.goals.flatMap((goal) =>
       goal.kind === "seal"
         ? goal.tiles.map((tile) => `sealed:${tile}`)

@@ -1,7 +1,6 @@
 /** Read-only browser metadata projected from the canonical game documents. */
 import { immutable } from "./immutable";
-import { resolveUnits } from "./races";
-import { UNIT_SPECIFICATIONS, AUTHORED_TERRAIN } from "./authored-content";
+import { AUTHORED_UNITS, AUTHORED_TERRAIN } from "./authored-content";
 import type {
   UnitType,
   UnitDefinition,
@@ -16,7 +15,7 @@ export const DAMAGE_TYPES = Object.freeze({
   pierce: "Pierce",
   impact: "Impact",
 });
-export const TYPES = immutable<Record<UnitType, UnitDefinition>>(resolveUnits(UNIT_SPECIFICATIONS));
+export const TYPES = immutable<Record<UnitType, UnitDefinition>>(AUTHORED_UNITS);
 export const TERRAIN = immutable<Record<TerrainType, TerrainDefinition>>(AUTHORED_TERRAIN);
 export function axial(tile: Coordinates) {
   return { q: tile.col - Math.floor(tile.row / 2), r: tile.row };

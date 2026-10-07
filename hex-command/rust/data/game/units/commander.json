@@ -41,7 +41,7 @@
     "impact": 0
   },
   "ability": "Recruit",
-  "description": "Recruit while on your keep. New recruits act next turn.",
+  "description": "Leads the company and recruits reinforcements from an owned keep.",
   "level": 1,
   "family": "commander",
   "experienceNeeded": 18,

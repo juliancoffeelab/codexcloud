@@ -5,6 +5,7 @@
   import type { UnitType } from "../game/types";
   import UnitCard from "./UnitCard.svelte";
   import Arsenal from "./Arsenal.svelte";
+  import { signedTerrainValue } from "./terrain-effects";
 
   interface Props {
     details: UnitDetailsView;
@@ -31,6 +32,9 @@
       </p>
     </div>
     <p class="ability">{details.ability.name}</p>
+    {#each details.ability.facts as fact}
+      <p class="ability-fact">{fact}</p>
+    {/each}
     <p>{details.ability.description}</p>
     <p>
       Level {details.definition.level ?? 1} · {details.definition.experienceNeeded
@@ -51,16 +55,45 @@
     {/each}
     <Arsenal unit={details.unit} />
     <div class="movement-costs">
-      <h3>Movement costs</h3>
-      <dl>
-        {#each details.movementCosts as movement (movement.terrain)}
-          <div class={`movement-cost-row ${movement.className}`}>
-            <dt>{movement.name}</dt>
-            <dd>{movement.label}</dd>
-          </div>
-        {/each}
-      </dl>
-      <p>Movement spent to enter each terrain.</p>
+      <h3>Terrain effects</h3>
+      <table class="weapon-table terrain-effects-table" aria-label="Unit terrain effects">
+        <thead>
+          <tr>
+            <th scope="col">Terrain</th>
+            <th scope="col">Cost</th>
+            <th scope="col">Damage received</th>
+          </tr>
+        </thead>
+        <tbody>
+          {#each details.terrainEffects as terrain (terrain.terrain)}
+            <tr class={terrain.className}>
+              <th scope="row">{terrain.name}</th>
+              <td
+                class="terrain-cost"
+                title={terrain.className === "blocked" ? "Impassable" : undefined}
+              >
+                <b>{terrain.label}</b>
+              </td>
+              <td>
+                {#each terrain.facts as fact}
+                  <span class="terrain-damage-fact">
+                    <b class:resistant={fact.value < 0} class:vulnerable={fact.value > 0}>
+                      {signedTerrainValue(fact.value)}
+                    </b>
+                    <span class="terrain-damage-kind">
+                      {fact.label ? `${fact.label} Damage` : "Damage"}
+                    </span>
+                  </span>
+                {/each}
+              </td>
+            </tr>
+          {/each}
+        </tbody>
+      </table>
+      <p>
+        Cost is movement spent to enter. Damage is the change per hit, in addition to Damage
+        received above.
+      </p>
     </div>
   </div>
 </div>

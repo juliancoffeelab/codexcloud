@@ -199,52 +199,18 @@ pub struct AiDecision {
     pub command: Command,
 }
 
-/// Authored scenario identity, revision, and board dimensions.
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-pub struct MapSummary {
-    pub id: String,
-    pub revision: u32,
-    pub cols: i32,
-    pub rows: i32,
-}
-
-/// Authored campaign identity, display name, and mission count.
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-pub struct CampaignSummary {
-    pub id: String,
-    pub name: String,
-    pub missions: usize,
-}
-
-/// Display and recruitment metadata for one catalog unit type.
+/// Owned, resolved catalog data available before a battle is created.
+/// Browser code formats this metadata; all rule composition stays in Rust.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[serde(rename_all = "camelCase")]
-pub struct UnitSummary {
-    pub id: String,
-    pub name: String,
-    pub hp: i32,
-    pub movement: usize,
-    pub cost: i32,
-    pub leader: bool,
-    pub attacks: Vec<Weapon>,
-    pub advances_to: Vec<String>,
-}
-
-/// Owned catalog metadata available before a battle is created.
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 pub struct CatalogView {
-    pub maps: Vec<MapSummary>,
-    pub campaigns: Vec<CampaignSummary>,
-    pub units: Vec<UnitSummary>,
-    pub terrains: Vec<String>,
+    pub units: Vec<crate::data::UnitRule>,
+    pub terrain: Vec<crate::data::TerrainDefinition>,
+    pub races: Vec<crate::data::RaceDefinition>,
+    pub maps: Vec<crate::data::MapDefinition>,
+    pub campaigns: Vec<crate::data::Campaign>,
 }
 
 /// Optional browser-supplied catalog documents, keyed by their relative paths.

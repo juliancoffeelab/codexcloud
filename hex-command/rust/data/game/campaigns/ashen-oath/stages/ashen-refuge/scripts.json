@@ -34,7 +34,6 @@
       "round": 3,
       "label": "An archer and swordsman arrive on turn 3",
       "id": "eastern-patrol",
-      "legacyIndex": 0,
       "units": [
         {
           "type": "archer",
@@ -52,7 +51,6 @@
     },
     {
       "id": "eastern-adept",
-      "legacyIndex": 1,
       "round": 5,
       "label": "An adept arrives on turn 5",
       "units": [

@@ -40,7 +40,7 @@
     "impact": 0
   },
   "ability": "Trample",
-  "description": "A boar veteran with stronger Impact trample and Pierce tusks. Thick hide stops 1 Blade damage; forests and groves reduce incoming damage by another 1. Remains slow in wetlands and has no ranged reply.",
+  "description": "A veteran boar with a powerful charge; wetlands and ranged harassment remain hazards.",
   "level": 2,
   "family": "boar",
   "experienceNeeded": 0,

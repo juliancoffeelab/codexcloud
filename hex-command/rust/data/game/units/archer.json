@@ -32,7 +32,7 @@
     "impact": 0
   },
   "ability": "Bow",
-  "description": "Strong Pierce bow reaches 2 hexes. Slower than a scout; its knife is a weak melee reply.",
+  "description": "A bow specialist best kept behind a melee screen.",
   "level": 1,
   "family": "archer",
   "experienceNeeded": 10,

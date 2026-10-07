@@ -39,9 +39,8 @@ Initial placements declare `type`, `side`, `col` and `row`, with optional story
 `name` and `role`. A new troop's HP comes from its unit rule. Author `hp` only for
 an intentionally wounded troop; it must be positive and at most the unit's max
 HP. IDs follow placement order (`u1`, `u2`, ...). Rust creates fresh action flags,
-zero experience, round 1, player turn, next ID and the initial log message. Legacy
-schema-v1 snapshots remain accepted for frozen reference catalogs; their explicit
-fields preserve their recorded initial values. A stage roster's `initial` contains
+zero experience, round 1, player turn, next ID and the initial log message.
+Only the current document schema is accepted. A stage roster's `initial` contains
 the base scenario's gold and placements, while its top-level `units`, `recruits`,
 `enemyRecruits`, `gold` and `enemyGold` define campaign deployment and recruitment.
 These preserve the distinct scenario and campaign starting definitions.
@@ -59,6 +58,12 @@ including on WebAssembly. `Rules::embedded()` and its embedded JSON documents ar
 available only for tests or the `wasm` feature. Default native builds contain no
 embedded JSON, so editing authored data takes effect at the next load without
 recompiling Rust.
+
+The WASM factory exposes typed catalog metadata through `catalog()`. Unit movement
+and terrain damage tables are resolved by Rust, including race and unit deviations.
+The browser formats those values; it does not import JSON or reimplement inheritance.
+Historical layouts, numeric wave markers and old dialogue live exclusively under
+`src/save/migration/legacy/`, outside the live catalog and Rust game data.
 
 Invalid fields, identifiers, references, placements and duplicate IDs produce a
 `ContentError` with its source document path. Unsupported manifest versions are

@@ -23,7 +23,7 @@
     "impact": 0
   },
   "ability": "Woodland runner",
-  "description": "Forests and groves cost 1 movement and reduce incoming damage by 1. Fast flanking unit; takes 1 extra Pierce damage.",
+  "description": "A fast woodland flanker suited to pursuing exposed foes; spears threaten it in the open.",
   "level": 1,
   "family": "wolf",
   "experienceNeeded": 10,

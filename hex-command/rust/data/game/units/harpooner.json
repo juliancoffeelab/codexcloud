@@ -32,7 +32,7 @@
     "impact": 0
   },
   "ability": "Amphibious",
-  "description": "Fast swimmer with ranged harpoons. Vulnerable to armor and bones; use it to take offshore routes and attack unarmored foes.",
+  "description": "A fast swimmer who takes offshore routes to strike exposed foes.",
   "level": 1,
   "family": "harpooner",
   "experienceNeeded": 10,

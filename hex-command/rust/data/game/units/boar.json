@@ -40,7 +40,7 @@
     "impact": 0
   },
   "ability": "Thick hide",
-  "description": "Forests and groves cost 1 movement and reduce incoming damage by 1. Thick hide stops 1 Blade damage. Impact trample counters bones and armor, with Pierce tusks as an alternative. Vulnerable to piercing in the open; no ranged reply.",
+  "description": "A durable woodland screen that tramples armored foes; slow in wetlands and vulnerable to ranged harassment.",
   "level": 1,
   "family": "boar",
   "experienceNeeded": 10,

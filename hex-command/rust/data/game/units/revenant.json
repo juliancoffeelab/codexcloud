@@ -32,7 +32,7 @@
     "impact": 0
   },
   "ability": "Bone shield",
-  "description": "A shielded skeleton veteran. Gains Blade protection while retaining resistance to Pierce and vulnerability to Impact.",
+  "description": "A shielded skeletal veteran built to hold the front against blades and arrows.",
   "level": 2,
   "family": "skeleton",
   "experienceNeeded": 0,

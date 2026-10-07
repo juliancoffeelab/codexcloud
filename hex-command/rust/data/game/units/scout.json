@@ -43,7 +43,7 @@
     "impact": 0
   },
   "ability": "Pathfinder",
-  "description": "Forests and hills cost only 1 movement.",
+  "description": "A mobile runner suited to capturing villages and flanking through rough terrain.",
   "level": 1,
   "family": "scout",
   "experienceNeeded": 10,

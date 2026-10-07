@@ -1,6 +1,6 @@
 import { MAPS } from "../../../game/maps";
-import { TYPES, TERRAIN, RACES } from "../../../game/catalog";
-import { movementCost } from "./movement";
+import { TYPES } from "../../../game/catalog";
+import { TERRAIN_ORDER } from "../../../game/authored-content";
 import type { GameState, MapId, Tile, Unit } from "../../../game/types";
 import { LEGACY_RIVER, LEGACY_ASHEN_REFUGE } from "./layouts";
 
@@ -47,13 +47,7 @@ export function legacyBoard(mapId = "mirror", revision: unknown = 1): LegacyBoar
     tiles,
     tile: (id) => byId.get(id),
     at: (id) => board.units.find((unit) => unit.tile === id),
-    cost: (unit, tile) =>
-      movementCost(
-        TERRAIN[tile.terrain],
-        tile.terrain,
-        RACES[TYPES[unit.type].race],
-        TYPES[unit.type],
-      ),
+    cost: (unit, tile) => TYPES[unit.type].costs[TERRAIN_ORDER.indexOf(tile.terrain)] ?? Infinity,
     addUnit(type, side, tile) {
       const unit: Unit = {
         id: `u${board.nextId++}`,

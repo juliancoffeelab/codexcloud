@@ -62,7 +62,9 @@ fn main() {
     files.sort();
     let mut generated = String::from("const EMBEDDED_DOCUMENTS: &[(&str, &str)] = &[\n");
     for file in files {
-        println!("cargo:rerun-if-changed={}", file.display());
+        if std::env::var_os("CARGO_FEATURE_WASM").is_some() {
+            println!("cargo:rerun-if-changed={}", file.display());
+        }
         let name = file
             .strip_prefix(&data)
             .expect("document within catalog")
@@ -76,5 +78,7 @@ fn main() {
     generated.push_str("];\n");
     let output = PathBuf::from(std::env::var_os("OUT_DIR").expect("build output"));
     fs::write(output.join("catalog_documents.rs"), generated).expect("catalog file table");
-    println!("cargo:rerun-if-changed=data");
+    if std::env::var_os("CARGO_FEATURE_WASM").is_some() {
+        println!("cargo:rerun-if-changed=data");
+    }
 }

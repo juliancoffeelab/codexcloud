@@ -32,7 +32,7 @@
     "impact": 0
   },
   "ability": "Amphibious",
-  "description": "Shell armor stops 1 Blade damage. A durable spear screen in shallow water, with a weak Impact tail strike against bones; lacks a ranged reply.",
+  "description": "A shell-armored spear fighter suited to holding the shallows; needs support against ranged foes.",
   "level": 1,
   "family": "reefguard",
   "experienceNeeded": 10,
