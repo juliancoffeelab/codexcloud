@@ -128,6 +128,12 @@ and `check:bindings` remain aliases for the standard WASM build. When npm runs
 behind an environment proxy, use `NODE_USE_ENV_PROXY=1 npm ci` with Node 24.5 or
 newer so its binary installer uses that proxy.
 
+Browser persistence has one versioned envelope owned by `src/save/`. The generated
+`SavedGame` checkpoint contains seed, state and optional planner continuation;
+it has no separate format version. Historical conversion runs before native
+restore. Rust validates current battle invariants and never migrates browser saves.
+See [save formats and migration](../docs/save-deployment.md).
+
 ## Verification and bounded benchmarks
 
 `npm run verify` batches style, the WASM package build, UI/types, Rust tests,

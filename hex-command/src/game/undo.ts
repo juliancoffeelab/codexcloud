@@ -1,7 +1,7 @@
-import type { Game } from "./engine";
+import type { LiveGame } from "./live-game";
 import type { GameState, Unit } from "./types";
 type UndoGame = Pick<
-  Game,
+  LiveGame,
   "round" | "turn" | "winner" | "captureState" | "restoreState" | "move" | "unit"
 >;
 interface UndoEntry {

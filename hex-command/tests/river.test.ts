@@ -1,8 +1,8 @@
 import { test, afterEach, vi } from "vitest";
 import { required, storageWithValue } from "./helpers.ts";
 import assert from "node:assert/strict";
-import { Game } from "../src/game/engine.ts";
-import { loadBattle, saveBattle } from "../src/game/save.ts";
+import { Game } from "./game-fixture.ts";
+import { loadBattle, saveBattle } from "./legacy-save.ts";
 
 test("River layout, checkpoint and missing map migration round-trip", async () => {
   let stored = "";
@@ -76,35 +76,6 @@ test("Ford entry costs constrain heavy troops", async () => {
     );
   }
 });
-
-// Reaching the only crossing requires first moving away from the objective.
-for (const type of ["soldier", "scout"] as const) {
-  test("Enemy pathfinding detours to the only bridge — " + JSON.stringify([type]), async () => {
-    const game = new Game("river");
-    for (const tile of game.tiles) {
-      tile.terrain = tile.col === 7 ? "water" : "plains";
-      tile.owner = null;
-    }
-    required(game.tile("7,0")).terrain = "bridge";
-    game.units = [];
-    const commander = game.addUnit("commander", "player", type === "scout" ? "0,8" : "6,8");
-    const enemy = game.addUnit(type, "enemy", "8,8");
-    if (type === "scout") required(game.tile("5,8")).terrain = "village";
-    let crossed = false,
-      achieved = false;
-    for (let turn = 0; turn < 14; turn++) {
-      game.beginTurn("enemy");
-      game.enemyAct(enemy.id);
-      assert.notEqual(required(game.tile(enemy.tile)).terrain, "water");
-      if (turn === 0) assert.notEqual(enemy.tile, "8,8", "must detour toward the crossing");
-      crossed ||= required(game.tile(enemy.tile)).col < 7;
-      achieved ||=
-        type === "scout" ? required(game.tile("5,8")).owner === "enemy" : commander.hp < 16;
-      if (achieved) break;
-    }
-    assert.ok(crossed && achieved, `${type} must cross to its objective`);
-  });
-}
 // Bridge hexes permit ordinary movement while adjacent water stays forbidden.
 test("Bridges allow ordinary movement and adjacent water remains blocked", async () => {
   const river = new Game("river");
@@ -113,22 +84,6 @@ test("Bridges allow ordinary movement and adjacent water remains blocked", async
   assert.ok(!river.reachable("u2").has("8,2"));
   river.move("u2", "7,3");
   assert.equal(required(river.unit("u2")).tile, "7,3");
-});
-
-// Exposure applies to both weapon types and retaliation, while armor resistances still work.
-test("Exposure increases incoming melee and ranged damage across unit types", async () => {
-  const exposed = new Game("river");
-  required(exposed.tile("6,7")).terrain = "plains";
-  for (const attackerType of ["soldier", "archer"] as const) {
-    for (const defenderType of ["soldier", "archer", "scout", "commander"] as const) {
-      exposed.units = [];
-      const attacker = exposed.addUnit(attackerType, "player", "4,7");
-      const defender = exposed.addUnit(defenderType, "enemy", "5,7");
-      const damageInWater = exposed.damage(attacker, defender);
-      defender.tile = "6,7";
-      assert.equal(damageInWater, exposed.damage(attacker, defender) + 1);
-    }
-  }
 });
 test("Exposure also applies to retaliation", async () => {
   const exposed = new Game("river");

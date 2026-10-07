@@ -1,8 +1,8 @@
 import { test } from "vitest";
 import assert from "node:assert/strict";
-import { Game, TERRAIN, TYPES } from "../src/game/engine";
+import { Game, TERRAIN, TYPES } from "./game-fixture";
 import { MAPS } from "../src/game/maps";
-import { createGameView } from "../src/game/view";
+import { createGameView } from "./fixture-view";
 import {
   createBattleCommands,
   recruitmentContext,

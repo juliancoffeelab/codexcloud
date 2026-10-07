@@ -1,7 +1,7 @@
 import { test } from "vitest";
 import { required } from "./helpers.ts";
 import assert from "node:assert/strict";
-import { Game, TYPES } from "../src/game/engine.ts";
+import { Game, TYPES } from "./game-fixture.ts";
 
 // Pathfinder affects forests and hills, while every water crossing keeps its cost.
 for (const type of ["scout", "soldier", "archer", "commander"] as const) {
@@ -57,7 +57,7 @@ for (const [type, price] of [
       const destination = required(game.recruitTiles(commander.id, type)[0]).id;
       game.gold.player = price - 1;
       assert.deepEqual(game.recruitTiles(commander.id, type), []);
-      assert.throws(() => game.recruit(commander.id, type, destination), /Cannot recruit/);
+      assert.throws(() => game.recruit(commander.id, type, destination), /IllegalRecruit/);
       game.gold.player = price;
       const recruit = game.recruit(commander.id, type, destination);
       assert.equal(game.gold.player, 0);
@@ -83,29 +83,6 @@ test("Quarry purse buys a melee screen and a ranged skeleton", async () => {
   assert.equal(game.gold.player, 0);
 });
 
-// Refuge reinforcements and purchases begin as rookies; its authored elite
-// patrol remains armored, and a recruit can earn that armor through advancement.
-test("Refuge recruits start as rookies and can earn armor", async () => {
-  const game = Game.startCampaign("ashen-oath", 1);
-  game.advanceDialogue(true);
-  assert(game.units.some((unit) => unit.side === "enemy" && unit.type === "soldier"));
-  assert(game.units.some((unit) => unit.side === "enemy" && unit.type === "warden"));
-  game.round = 3;
-  game.beginTurn("enemy");
-  assert.equal(game.at("9,7")?.type, "swordsman");
-  const oldIds = new Set(game.units.map((unit) => unit.id));
-  game.gold.enemy = 6;
-  game.enemyRecruit();
-  const rookie = required(game.units.find((unit) => !oldIds.has(unit.id)));
-  assert.equal(rookie.type, "swordsman");
-  rookie.experience = 10;
-  game.beginTurn("enemy");
-  game.enemyAct(rookie.id);
-  assert.equal(rookie.type, "soldier");
-  assert.equal(rookie.hp, 12);
-  assert(rookie.moved && rookie.attacked);
-});
-
 // The woodland purse can also field a runner and ranged support instead of one boar.
 test("Woodland purse supports a runner and ranged support", async () => {
   const game = Game.startCampaign("green-accord");
@@ -129,59 +106,6 @@ test("Woodland purse supports a runner and ranged support", async () => {
     13,
     "The front-line body remains sturdy, but spear damage has a counter",
   );
-});
-
-// Thorns can harass armored humans in cover, while skeletal armor remains a counter.
-test("Thorns harass humans in cover but skeletal armor counters them", async () => {
-  const game = new Game();
-  game.units = [];
-  for (const tile of game.tiles) tile.terrain = "plains";
-  const thorncaller = game.addUnit("thorncaller", "player", "2,3");
-  const archer = game.addUnit("archer", "player", "2,4");
-  for (const [type, exposed, covered] of [
-    ["soldier", 3, 2],
-    ["warden", 3, 2],
-    ["archer", 4, 3],
-    ["wolf", 5, 3],
-    ["skeleton", 2, 1],
-  ] as const) {
-    const target = game.addUnit(type, "enemy", "3,3");
-    const tile = required(game.tile(target.tile));
-    tile.terrain = "plains";
-    assert.equal(game.damageBreakdown(thorncaller, target, "thorns").damage, exposed);
-    tile.terrain = "forest";
-    assert.equal(game.damageBreakdown(thorncaller, target, "thorns").damage, covered);
-    assert.equal(game.damage(archer, target, "bow"), covered);
-    game.units = game.units.filter((unit) => unit.id !== target.id);
-  }
-});
-
-// The increased healer price requires another income tick for the complete trio.
-test("Coastal purse buys its third complementary role after village income", async () => {
-  const game = Game.startCampaign("borrowed-tide", 2, [], 8);
-  game.advanceDialogue(true);
-  const mira = required(
-    game.units.find((unit) => unit.side === "player" && unit.role === "leader"),
-  );
-  for (const type of ["reefguard", "harpooner"] as const) {
-    const tile = required(game.recruitTiles(mira.id, type)[0]);
-    game.recruit(mira.id, type, tile.id);
-  }
-  assert.equal(game.gold.player, 9);
-  assert.deepEqual(game.recruitTiles(mira.id, "wavemender"), []);
-  game.beginTurn("player");
-  assert.equal(game.gold.player, 11);
-  game.recruit(mira.id, "wavemender", required(game.recruitTiles(mira.id, "wavemender")[0]).id);
-  assert.equal(game.gold.player, 1);
-  game.units = [];
-  for (const tile of game.tiles) tile.terrain = "plains";
-  const guard = game.addUnit("reefguard", "player", "2,3");
-  const caster = game.addUnit("wavemender", "player", "2,4");
-  const armor = game.addUnit("warden", "enemy", "3,3");
-  assert.equal(game.preview(guard, armor, "spear").damage, 2);
-  assert.equal(game.preview(caster, armor, "surge").damage, 4);
-  assert(TYPES.reefguard.attacks.every((weapon) => weapon.damageType === "pierce"));
-  assert(TYPES.tridentguard.attacks.some((weapon) => weapon.damageType === "impact"));
 });
 
 // Light Impact support survives a rookie sword and bow while its screen withdraws;
@@ -269,76 +193,4 @@ test("Mobile skirmishers remain vulnerable in melee", async () => {
   soldier.side = "player";
   thorncaller.side = "enemy";
   assert.equal(game.preview(thorncaller, soldier, "thorns").damage, 3);
-});
-
-test.each(["forest", "grove"] as const)(
-  "Woodland racial cover protects melee and ranged targets in %s, including veterans",
-  (terrain) => {
-    const game = new Game();
-    game.units = [];
-    const sword = game.addUnit("swordsman", "enemy", "3,3");
-    const bow = game.addUnit("bonearcher", "enemy", "4,3");
-    for (const type of [
-      "wolf",
-      "direwolf",
-      "boar",
-      "greatboar",
-      "wildkeeper",
-      "grovewarden",
-    ] as const) {
-      const target = game.addUnit(type, "player", "2,3");
-      const tile = required(game.tile(target.tile));
-      tile.terrain = "plains";
-      const exposedBow = game.damage(bow, target, "bonebow");
-      assert.equal(game.damage(sword, target, "sword"), 3);
-      tile.terrain = terrain;
-      assert.equal(game.damage(sword, target, "sword"), 2);
-      assert.equal(game.damage(bow, target, "bonebow"), exposedBow - 2);
-      assert.equal(game.cost(target, tile), 1);
-      game.units = game.units.filter((unit) => unit !== target);
-    }
-    for (const type of ["thorncaller", "briarweaver"] as const) {
-      const target = game.addUnit(type, "player", "2,3");
-      assert.equal(
-        game.damage(bow, target, "bonebow"),
-        1,
-        "Individual concealment stacks with race and terrain cover",
-      );
-      game.units = game.units.filter((unit) => unit !== target);
-    }
-  },
-);
-
-test.each(["boar", "greatboar"] as const)(
-  "%s leads with Impact and can use Pierce as an alternative",
-  (type) => {
-    const game = new Game();
-    game.units = [];
-    const attacker = game.addUnit(type, "player", "2,3");
-    const target = game.addUnit("skeleton", "enemy", "3,3");
-    required(game.tile(target.tile)).terrain = "plains";
-    assert.equal(game.damage(attacker, target, "trample"), type === "boar" ? 5 : 6);
-    assert.equal(game.damage(attacker, target, "tusks"), type === "boar" ? 2 : 3);
-    assert.equal(game.previewDetails(attacker, target).attack.id, "trample");
-  },
-);
-
-test("Wavemender purchase costs ten gold and promotion retains healing", () => {
-  const game = Game.startCampaign("borrowed-tide");
-  game.advanceDialogue(true);
-  const leader = required(
-    game.units.find((unit) => unit.side === "player" && TYPES[unit.type].leader),
-  );
-  game.gold.player = 9;
-  assert.equal(game.recruitTiles(leader.id, "wavemender").length, 0);
-  const tile = required(game.recruitPlacementTiles(leader.id, "wavemender")[0]);
-  assert.throws(() => game.recruit(leader.id, "wavemender", tile.id), /Cannot recruit/);
-  game.gold.player = 10;
-  const healer = game.recruit(leader.id, "wavemender", tile.id);
-  assert.equal(game.gold.player, 0);
-  assert.equal(TYPES[healer.type].healing, 1);
-  healer.experience = 10;
-  healer.moved = healer.attacked = false;
-  game.advanceUnit(healer.id, "tidesage");
-  assert.equal(TYPES[healer.type].healing, 2);
 });

@@ -4,7 +4,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { PNG } from "pngjs";
 import { format } from "prettier";
-import { TERRAIN, TYPES } from "../src/game/engine";
+import { TERRAIN, TYPES } from "../src/game/catalog";
 
 const args = process.argv.slice(2);
 if (args.some((arg) => arg !== "--check")) throw new Error("Use --check or no arguments");

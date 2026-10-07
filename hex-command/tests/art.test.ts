@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { inflateSync } from "node:zlib";
-import { TERRAIN, TYPES } from "../src/game/engine";
+import { TERRAIN, TYPES } from "./game-fixture";
 let art: typeof import("../src/presentation/art");
 import { campaignSheets } from "../src/presentation/campaign-art";
 import { pixelSources } from "../src/presentation/pixel-art";
@@ -12,8 +12,8 @@ import {
   styledTerrainSheets,
   styledTerrainColors,
 } from "../src/presentation/styled-art";
-import { Game } from "../src/game/engine";
-import { createGameView } from "../src/game/view";
+import { Game } from "./game-fixture";
+import { createGameView } from "./fixture-view";
 import { battlefieldTiles } from "../src/ui/battlefield-view";
 import { mockSpriteCanvas } from "./helpers";
 

@@ -97,18 +97,16 @@ pub struct EngineView {
     pub state: State,
 }
 
-/// Versioned checkpoint containing exact battle state and optional AI continuation.
+/// Current checkpoint data. Hosts version their save envelope and migrate before restore.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct SavedGame {
-    /// The current checkpoint format is version 1.
-    pub version: u32,
     /// Seed used when creating a new planning workspace.
     pub seed: u32,
     pub state: State,
-    /// Older checkpoints omit this field and resume without an active planner.
+    /// Absent when there is no active planning workspace.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub planner: Option<SavedPlanner>,

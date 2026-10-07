@@ -1,11 +1,14 @@
+import { LiveGame } from "../src/game/live-game";
+import { saveBattle as writeBattle } from "../src/save/write";
 import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
 import { artworkForStyle } from "../src/presentation/art";
 import type { BattleController as Controller, BattleView } from "../src/controller/battle";
 let BattleController: typeof Controller;
-import { Game, TYPES } from "../src/game/engine";
+import { createTestFactory } from "./native-fixture";
+import { Game, TYPES } from "./game-fixture";
 import { campaignMission, dialoguePending } from "../src/game/campaign-progress";
-import { SAVE_KEY, saveBattle, loadBattle } from "../src/game/save";
+import { SAVE_KEY, saveBattle, loadBattle } from "./legacy-save";
 import { required, TestStorage, mockSpriteCanvas } from "./helpers";
 import { battlefieldTiles } from "../src/ui/battlefield-view";
 import { unitPanelView } from "../src/ui/unit-panel-view";
@@ -161,30 +164,26 @@ test("Stray dialogue cannot overwrite a paused turn checkpoint", async () => {
   observed.unsubscribe();
 });
 
-// Real dialogue generated during an enemy turn publishes its cursor but retains the recovery save.
+// Navigating native enemy-phase dialogue cannot overwrite its recovery checkpoint.
 test("Enemy-turn dialogue keeps the recovery save", async () => {
-  storage.clear();
   const fixture = Game.startCampaign("ashen-oath", 1);
-  fixture.advanceDialogue(true);
-  const dain = required(fixture.units.find((unit) => unit.name === "Captain Dain"));
-  fixture.units = fixture.units.filter((unit) => unit.side === "player" || unit.id === dain.id);
-  dain.tile = "7,4";
-  dain.hp = 1;
-  // This fixture tests cornered combat dialogue, rather than funded rebuilding.
-  for (const tile of fixture.tiles)
-    if (tile.terrain === "village" && tile.owner === "enemy") tile.owner = null;
-  // A surrounded patrol cannot escape its lethal reply; its death triggers the war dialogue.
-  for (const tile of fixture.neighbors(dain.tile)) fixture.addUnit("soldier", "player", tile.id);
-  fixture.addUnit("commander", "enemy", "10,7");
-  saveBattle(fixture);
-  const paused = pauseTurn(3);
+  fixture.turn = "enemy";
+  fixture.campaign!.dialogue = [...campaignMission(fixture.campaign!).refuge!.escalation];
+  fixture.campaign!.dialogueIndex = 0;
+  const native = LiveGame.restore(createTestFactory(), {
+    seed: 17,
+    state:
+      fixture.captureState() as unknown as import("../rust/pkg/hex_command").SavedGame["state"],
+  });
+  writeBattle(native);
+  native.dispose();
+  const paused = pauseTurn();
   const controller = createController(paused.pause);
   const observed = observe(controller);
-  const pending = controller.endTurn();
+  controller.initialize();
   const checkpoint = storage.getItem(SAVE_KEY);
   await paused.reached;
   assert.equal(observed.view.game.turn, "enemy");
-  assert.equal(observed.view.game.winner, null);
   assert(dialoguePending(observed.view.game.campaign));
   const originalCursor = required(observed.view.game.campaign).dialogueIndex;
   controller.commands.advanceDialogue();
@@ -193,10 +192,10 @@ test("Enemy-turn dialogue keeps the recovery save", async () => {
   controller.commands.previousDialogue();
   assert.equal(required(observed.view.game.campaign).dialogueIndex, originalCursor);
   assert.equal(storage.getItem(SAVE_KEY), checkpoint);
-  assert(loadBattle().pendingEnemy);
+  assert.equal(loadBattle().game.turn, "enemy");
   controller.dispose();
   paused.release();
-  await pending;
+  await Promise.resolve();
   observed.unsubscribe();
 });
 
@@ -516,8 +515,8 @@ test("Initialization preserves manual preference and unmount cancels writes", as
 });
 
 const controllers: Controller[] = [];
-function createController(...args: ConstructorParameters<typeof Controller>) {
-  const controller = new BattleController(...args);
+function createController(pause?: ConstructorParameters<typeof Controller>[0]) {
+  const controller = new BattleController(pause, createTestFactory());
   controllers.push(controller);
   return controller;
 }

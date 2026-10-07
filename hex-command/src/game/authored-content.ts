@@ -1,6 +1,6 @@
 /** Browser metadata from the same authored JSON embedded in the Rust engine.
  * Rust validates the documents when building the catalog. This module projects
- * their shapes for the UI and historical TypeScript save/replay adapter only.
+ * their shapes for the UI and data-only save migrations.
  */
 import manifest from "../../rust/data/manifest.json";
 import { CONTENT_DOCUMENTS } from "./content-documents";

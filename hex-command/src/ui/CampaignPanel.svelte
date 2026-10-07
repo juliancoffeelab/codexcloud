@@ -7,7 +7,7 @@
     dialoguePending,
     returnsWithStory,
   } from "../game/campaign-progress";
-  import { TYPES } from "../game/engine";
+  import { TYPES } from "../game/catalog";
   import { artSprite } from "../presentation/art";
   let {
     view,

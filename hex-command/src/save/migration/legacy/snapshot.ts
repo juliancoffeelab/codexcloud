@@ -1,34 +1,18 @@
-import { CAMPAIGNS, CAMPAIGN_MAPS } from "./campaign-data";
-import type { CampaignId, CampaignState, CampaignVeteran, RecruitType } from "./types";
-import { MAPS } from "./maps";
-import { distance, Game, TYPES } from "./engine";
-import type { LiveGame } from "./live-game";
-import type { Side, Unit, UnitType, VillageState } from "./types";
-
-export const SAVE_KEY = "hex-command-battle";
-export const SAVE_VERSION = 1;
-export interface LoadedBattle {
-  game: Game;
-  pendingEnemy: boolean;
-}
-
-export function saveBattle(game: Game | LiveGame, pendingEnemy = false): void {
-  if ("saveNative" in game) return game.saveNative(pendingEnemy);
-  try {
-    localStorage.setItem(
-      SAVE_KEY,
-      JSON.stringify({
-        version: SAVE_VERSION,
-        campaignDeploymentFormat: "named-waves-v1",
-        pendingEnemy,
-        state: { ...game.snapshot(), nextId: game.nextId, log: game.log },
-      }),
-    );
-  } catch {
-    // Storage may be unavailable or full. The battle remains playable.
-  }
-}
-
+import { CAMPAIGNS, CAMPAIGN_MAPS } from "../../../game/campaign-data";
+import { MAPS } from "../../../game/maps";
+import { distance, TYPES } from "../../../game/catalog";
+import type {
+  CampaignId,
+  CampaignState,
+  CampaignVeteran,
+  RecruitType,
+  Side,
+  Unit,
+  UnitType,
+  VillageState,
+  GameState,
+} from "../../../game/types";
+import { legacyBoard, boardState, type LegacyBoard } from "./board";
 const record = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null;
 
@@ -60,7 +44,7 @@ function veteran(value: unknown): value is CampaignVeteran {
 
 function validUnit(
   value: unknown,
-  game: Game,
+  game: LegacyBoard,
   nextId: number,
   ids: Set<string>,
   occupied: Set<string>,
@@ -366,238 +350,233 @@ function campaignState(
   };
 }
 
-export function loadBattle(): LoadedBattle {
-  const fresh = (): LoadedBattle => ({ game: new Game(), pendingEnemy: false });
-  try {
-    const saved: unknown = JSON.parse(localStorage.getItem(SAVE_KEY) ?? "null");
-    if (
-      !record(saved) ||
-      saved.version !== SAVE_VERSION ||
-      (saved.campaignDeploymentFormat !== undefined &&
-        saved.campaignDeploymentFormat !== "named-waves-v1")
-    )
-      return fresh();
-    const s = saved.state;
-    if (
-      !record(s) ||
-      (s.mapId !== undefined && (typeof s.mapId !== "string" || !Object.hasOwn(MAPS, s.mapId)))
-    )
-      return fresh();
-    // The constructor rejects unsupported revisions, including malformed persisted values.
-    if (s.mapRevision !== undefined && s.mapRevision !== null && typeof s.mapRevision !== "number")
-      return fresh();
-    const game = new Game(s.mapId as string | undefined, s.mapRevision ?? 1);
-    if (
-      !integer(s.round) ||
-      s.round < 1 ||
-      !side(s.turn) ||
-      !(s.winner === null || side(s.winner)) ||
-      !(s.turn === "player" || s.winner) ||
-      typeof saved.pendingEnemy !== "boolean" ||
-      (saved.pendingEnemy && (s.turn !== "player" || s.winner)) ||
-      !record(s.gold) ||
-      !integer(s.gold.player) ||
-      !integer(s.gold.enemy) ||
-      !integer(s.nextId) ||
-      s.nextId < 1 ||
-      !Array.isArray(s.units) ||
-      !Array.isArray(s.villages) ||
-      !Array.isArray(s.log) ||
-      s.log.length > 8 ||
-      !s.log.every(
-        (line: unknown): line is string => typeof line === "string" && line.length <= 1000,
+/** Convert the historical TS snapshot without executing any game commands. */
+export function importLegacySnapshot(saved: unknown): { state: GameState; pendingEnemy: boolean } {
+  if (
+    !record(saved) ||
+    saved.version !== 1 ||
+    (saved.campaignDeploymentFormat !== undefined &&
+      saved.campaignDeploymentFormat !== "named-waves-v1")
+  )
+    throw new Error("Invalid version-one battle");
+  const s = saved.state;
+  if (
+    !record(s) ||
+    (s.mapId !== undefined && (typeof s.mapId !== "string" || !Object.hasOwn(MAPS, s.mapId)))
+  )
+    throw new Error("Invalid version-one battle");
+  // The constructor rejects unsupported revisions, including malformed persisted values.
+  if (s.mapRevision !== undefined && s.mapRevision !== null && typeof s.mapRevision !== "number")
+    throw new Error("Invalid version-one battle");
+  const game = legacyBoard(s.mapId as string | undefined, s.mapRevision ?? 1);
+  if (
+    !integer(s.round) ||
+    s.round < 1 ||
+    !side(s.turn) ||
+    !(s.winner === null || side(s.winner)) ||
+    !(s.turn === "player" || s.winner) ||
+    typeof saved.pendingEnemy !== "boolean" ||
+    (saved.pendingEnemy && (s.turn !== "player" || s.winner)) ||
+    !record(s.gold) ||
+    !integer(s.gold.player) ||
+    !integer(s.gold.enemy) ||
+    !integer(s.nextId) ||
+    s.nextId < 1 ||
+    !Array.isArray(s.units) ||
+    !Array.isArray(s.villages) ||
+    !Array.isArray(s.log) ||
+    s.log.length > 8 ||
+    !s.log.every((line: unknown): line is string => typeof line === "string" && line.length <= 1000)
+  )
+    throw new Error("Invalid version-one battle");
+  const isCampaign = Object.hasOwn(CAMPAIGN_MAPS, game.mapId);
+  const campaign = isCampaign
+    ? campaignState(
+        s.campaign,
+        game.mapId,
+        s.winner,
+        s.round,
+        saved.campaignDeploymentFormat === "named-waves-v1",
       )
-    )
-      return fresh();
-    const isCampaign = Object.hasOwn(CAMPAIGN_MAPS, game.mapId);
-    const campaign = isCampaign
-      ? campaignState(
-          s.campaign,
-          game.mapId,
-          s.winner,
-          s.round,
-          saved.campaignDeploymentFormat === "named-waves-v1",
-        )
-      : null;
-    if ((isCampaign && !campaign) || (!isCampaign && s.campaign !== undefined)) return fresh();
-    if (campaign) game.campaign = campaign;
-    const ids = new Set<string>(),
-      occupied = new Set<string>();
-    const units: Unit[] = [];
-    for (const unit of s.units as unknown[]) {
-      if (!validUnit(unit, game, s.nextId, ids, occupied)) return fresh();
-      ids.add(unit.id);
-      occupied.add(unit.tile);
-      units.push({ ...unit, experience: unit.experience ?? 0 });
+    : null;
+  if ((isCampaign && !campaign) || (!isCampaign && s.campaign !== undefined))
+    throw new Error("Invalid version-one battle");
+  if (campaign) game.campaign = campaign;
+  const ids = new Set<string>(),
+    occupied = new Set<string>();
+  const units: Unit[] = [];
+  for (const unit of s.units as unknown[]) {
+    if (!validUnit(unit, game, s.nextId, ids, occupied))
+      throw new Error("Invalid version-one battle");
+    ids.add(unit.id);
+    occupied.add(unit.tile);
+    units.push({ ...unit, experience: unit.experience ?? 0 });
+  }
+  // Earlier coastal previews put recurring off-board villains in these roles.
+  // Recast the saved officers without changing their identity or battle progress.
+  if (campaign?.id === "borrowed-tide" && campaign.mission < 2) {
+    const oldName = campaign.mission === 0 ? "Captain Vale" : "Factor Senn";
+    const mission = CAMPAIGNS[campaign.id].missions[campaign.mission]!;
+    const currentOfficer = mission.map.units.find(
+      (unit) => unit.side === "enemy" && unit.role === "leader",
+    )!;
+    for (const unit of units)
+      if (unit.side === "enemy" && unit.role === "leader" && unit.name === oldName)
+        unit.name = currentOfficer.name;
+    const currentLine = mission.intro.find((line) => line.speaker === currentOfficer.name);
+    if (currentLine)
+      campaign.dialogue = campaign.dialogue.map((line) =>
+        line.speaker === oldName ? { ...currentLine } : line,
+      );
+  }
+  const villages = game.tiles.filter((tile) => tile.terrain === "village");
+  if (
+    s.villages.length !== villages.length ||
+    new Set((s.villages as unknown[]).map((v) => (record(v) ? v.id : undefined))).size !==
+      villages.length
+  )
+    throw new Error("Invalid version-one battle");
+  for (const village of s.villages as unknown[]) {
+    if (!validVillage(village, villages)) throw new Error("Invalid version-one battle");
+    game.tile(village.id)!.owner = village.owner;
+  }
+  // Move the refuge's two villages without discarding a player's ongoing company.
+  if (game.mapId === "ashen-refuge" && game.mapRevision === 1) {
+    for (const row of [1, 7]) {
+      const oldTile = game.tile(`5,${row}`)!;
+      const newTile = game.tile(`3,${row}`)!;
+      newTile.terrain = "village";
+      newTile.owner = units.find((unit) => unit.tile === newTile.id)?.side ?? oldTile.owner;
+      oldTile.terrain = "plains";
+      oldTile.owner = null;
     }
-    // Earlier coastal previews put recurring off-board villains in these roles.
-    // Recast the saved officers without changing their identity or battle progress.
-    if (campaign?.id === "borrowed-tide" && campaign.mission < 2) {
-      const oldName = campaign.mission === 0 ? "Captain Vale" : "Factor Senn";
-      const mission = CAMPAIGNS[campaign.id].missions[campaign.mission]!;
-      const currentOfficer = mission.map.units.find(
-        (unit) => unit.side === "enemy" && unit.role === "leader",
-      )!;
-      for (const unit of units)
-        if (unit.side === "enemy" && unit.role === "leader" && unit.name === oldName)
-          unit.name = currentOfficer.name;
-      const currentLine = mission.intro.find((line) => line.speaker === currentOfficer.name);
-      if (currentLine)
-        campaign.dialogue = campaign.dialogue.map((line) =>
-          line.speaker === oldName ? { ...currentLine } : line,
-        );
-    }
-    const villages = game.tiles.filter((tile) => tile.terrain === "village");
+    game.mapRevision = 2;
+  }
+  const sites = game.tiles.filter((tile) => ["grove", "ruins", "fort"].includes(tile.terrain));
+  if (campaign || s.sites !== undefined) {
+    // The reed gatherers moved off the starting adept's hex. Upgrade the old
+    // site's ownership without moving units or awarding the visit again.
+    const savedSites =
+      game.mapId === "lantern-bell" && game.mapRevision === 1 && Array.isArray(s.sites)
+        ? s.sites.map((site) =>
+            record(site) && site.id === "4,3"
+              ? {
+                  ...site,
+                  id: "5,1",
+                  owner: units.find((unit) => unit.tile === "5,1")?.side ?? site.owner,
+                }
+              : site,
+          )
+        : s.sites;
     if (
-      s.villages.length !== villages.length ||
-      new Set((s.villages as unknown[]).map((v) => (record(v) ? v.id : undefined))).size !==
-        villages.length
+      !Array.isArray(savedSites) ||
+      savedSites.length !== sites.length ||
+      new Set(savedSites.map((v) => (record(v) ? v.id : undefined))).size !== sites.length
     )
-      return fresh();
-    for (const village of s.villages as unknown[]) {
-      if (!validVillage(village, villages)) return fresh();
-      game.tile(village.id)!.owner = village.owner;
+      throw new Error("Invalid version-one battle");
+    for (const site of savedSites as unknown[]) {
+      if (!validVillage(site, sites)) throw new Error("Invalid version-one battle");
+      game.tile(site.id)!.owner = site.owner;
     }
-    // Move the refuge's two villages without discarding a player's ongoing company.
-    if (game.mapId === "ashen-refuge" && game.mapRevision === 1) {
-      for (const row of [1, 7]) {
-        const oldTile = game.tile(`5,${row}`)!;
-        const newTile = game.tile(`3,${row}`)!;
-        newTile.terrain = "village";
-        newTile.owner = units.find((unit) => unit.tile === newTile.id)?.side ?? oldTile.owner;
-        oldTile.terrain = "plains";
-        oldTile.owner = null;
+    if (game.mapId === "lantern-bell" && game.mapRevision === 1) game.mapRevision = 2;
+  } else {
+    // Older noncampaign saves did not persist ownership of these sites.
+    for (const site of sites) site.owner = null;
+  }
+  if (campaign) {
+    for (const team of ["player", "enemy"] as const) {
+      if (units.filter((unit) => unit.side === team && unit.role === "leader").length > 1)
+        throw new Error("Invalid version-one battle");
+    }
+    if (!s.winner && !units.some((unit) => unit.side === "player" && unit.role === "leader"))
+      throw new Error("Invalid version-one battle");
+    if (
+      !s.winner &&
+      CAMPAIGNS[campaign.id].missions[campaign.mission]!.goals.some(
+        (goal) => goal.kind === "escort",
+      ) &&
+      !units.some((unit) => unit.side === "player" && unit.role === "courier")
+    )
+      throw new Error("Invalid version-one battle");
+  }
+  if (
+    !campaign &&
+    !s.winner &&
+    ["player", "enemy"].some(
+      (team) =>
+        !units.some((unit) => unit.side === team && TYPES[unit.type].family === "commander"),
+    )
+  )
+    throw new Error("Invalid version-one battle");
+  Object.assign(game, {
+    round: s.round,
+    turn: s.turn,
+    winner: s.winner,
+    gold: { ...s.gold },
+    units,
+    nextId: s.nextId,
+    log: [...s.log],
+  });
+  // Older green saves did not remember named deaths. Infer only what the saved army proves.
+  if (campaign?.id === "green-accord") {
+    if (
+      (campaign.mission !== 1 || game.mapRevision >= 2) &&
+      !campaign.choices?.includes("green-dain-dead") &&
+      !units.some((unit) => unit.name === "Captain Dain") &&
+      !campaign.marks.includes("dain-fell")
+    ) {
+      campaign.marks.push("dain-fell");
+    }
+    // Earlier vigil maps never placed Dain on the board. Bring the living
+    // truce participant into those saves, without inferring an unrecorded death.
+    if (campaign.mission === 1 && game.mapRevision === 1) {
+      if (
+        !campaign.choices?.includes("green-dain-dead") &&
+        !campaign.marks.includes("dain-fell") &&
+        !units.some((unit) => unit.name === "Captain Dain")
+      ) {
+        const origin = game.tile("5,5")!;
+        const destination = [...game.tiles]
+          .filter(
+            (tile) => Number.isFinite(game.cost({ type: "warden" }, tile)) && !game.at(tile.id),
+          )
+          .sort((a, b) => distance(a, origin) - distance(b, origin))[0];
+        if (destination) game.addUnit("warden", "player", destination.id).name = "Captain Dain";
       }
       game.mapRevision = 2;
     }
-    const sites = game.tiles.filter((tile) => ["grove", "ruins", "fort"].includes(tile.terrain));
-    if (campaign || s.sites !== undefined) {
-      // The reed gatherers moved off the starting adept's hex. Upgrade the old
-      // site's ownership without moving units or awarding the visit again.
-      const savedSites =
-        game.mapId === "lantern-bell" && game.mapRevision === 1 && Array.isArray(s.sites)
-          ? s.sites.map((site) =>
-              record(site) && site.id === "4,3"
-                ? {
-                    ...site,
-                    id: "5,1",
-                    owner: units.find((unit) => unit.tile === "5,1")?.side ?? site.owner,
-                  }
-                : site,
-            )
-          : s.sites;
-      if (
-        !Array.isArray(savedSites) ||
-        savedSites.length !== sites.length ||
-        new Set(savedSites.map((v) => (record(v) ? v.id : undefined))).size !== sites.length
-      )
-        return fresh();
-      for (const site of savedSites as unknown[]) {
-        if (!validVillage(site, sites)) return fresh();
-        game.tile(site.id)!.owner = site.owner;
-      }
-      if (game.mapId === "lantern-bell" && game.mapRevision === 1) game.mapRevision = 2;
-    } else {
-      // Older noncampaign saves did not persist ownership of these sites.
-      for (const site of sites) site.owner = null;
-    }
-    if (campaign) {
-      for (const team of ["player", "enemy"] as const) {
-        if (units.filter((unit) => unit.side === team && unit.role === "leader").length > 1)
-          return fresh();
-      }
-      if (!s.winner && !units.some((unit) => unit.side === "player" && unit.role === "leader"))
-        return fresh();
-      if (
-        !s.winner &&
-        CAMPAIGNS[campaign.id].missions[campaign.mission]!.goals.some(
-          (goal) => goal.kind === "escort",
-        ) &&
-        !units.some((unit) => unit.side === "player" && unit.role === "courier")
-      )
-        return fresh();
-    }
-    if (
-      !campaign &&
-      !s.winner &&
-      ["player", "enemy"].some(
-        (team) =>
-          !units.some((unit) => unit.side === team && TYPES[unit.type].family === "commander"),
-      )
-    )
-      return fresh();
-    Object.assign(game, {
-      round: s.round,
-      turn: s.turn,
-      winner: s.winner,
-      gold: { ...s.gold },
-      units,
-      nextId: s.nextId,
-      log: [...s.log],
-    });
-    // Older green saves did not remember named deaths. Infer only what the saved army proves.
-    if (campaign?.id === "green-accord") {
-      if (
-        (campaign.mission !== 1 || game.mapRevision >= 2) &&
-        !campaign.choices?.includes("green-dain-dead") &&
-        !units.some((unit) => unit.name === "Captain Dain") &&
-        !campaign.marks.includes("dain-fell")
-      ) {
-        campaign.marks.push("dain-fell");
-      }
-      // Earlier vigil maps never placed Dain on the board. Bring the living
-      // truce participant into those saves, without inferring an unrecorded death.
-      if (campaign.mission === 1 && game.mapRevision === 1) {
-        if (
-          !campaign.choices?.includes("green-dain-dead") &&
-          !campaign.marks.includes("dain-fell") &&
-          !units.some((unit) => unit.name === "Captain Dain")
-        ) {
-          const origin = game.tile("5,5")!;
-          const destination = [...game.tiles]
-            .filter(
-              (tile) => Number.isFinite(game.cost({ type: "warden" }, tile)) && !game.at(tile.id),
-            )
-            .sort((a, b) => distance(a, origin) - distance(b, origin))[0];
-          if (destination) game.addUnit("warden", "player", destination.id).name = "Captain Dain";
-        }
-        game.mapRevision = 2;
-      }
-      const missingCompanion = CAMPAIGNS[campaign.id].missions[
-        campaign.mission
-      ]!.requiredCompanions?.find(
-        (name) => !units.some((unit) => unit.side === "player" && unit.name === name),
-      );
-      if (game.winner === "player" && missingCompanion) {
-        game.winner = "enemy";
-        campaign.completed = false;
-        campaign.outcome = `${missingCompanion} fell. The company cannot continue without them.`;
-        campaign.dialogueIndex = campaign.dialogue.length;
-        campaign.dialogue.push({
-          speaker: "The company",
-          portrait: CAMPAIGNS[campaign.id].leader,
-          text: campaign.outcome,
-        });
-        game.record(campaign.outcome);
-      }
-    }
-    if (campaign) {
-      const mission = CAMPAIGNS[campaign.id].missions[campaign.mission]!;
-      let migratedDeployment = false;
-      mission.waves.forEach((wave) => {
-        if (
-          wave.previouslyDeployedBeforeRevision !== undefined &&
-          game.mapRevision < wave.previouslyDeployedBeforeRevision
-        ) {
-          const mark = `wave:${wave.id}`;
-          if (!campaign.marks.includes(mark)) campaign.marks.push(mark);
-          migratedDeployment = true;
-        }
+    const missingCompanion = CAMPAIGNS[campaign.id].missions[
+      campaign.mission
+    ]!.requiredCompanions?.find(
+      (name) => !units.some((unit) => unit.side === "player" && unit.name === name),
+    );
+    if (game.winner === "player" && missingCompanion) {
+      game.winner = "enemy";
+      campaign.completed = false;
+      campaign.outcome = `${missingCompanion} fell. The company cannot continue without them.`;
+      campaign.dialogueIndex = campaign.dialogue.length;
+      campaign.dialogue.push({
+        speaker: "The company",
+        portrait: CAMPAIGNS[campaign.id].leader,
+        text: campaign.outcome,
       });
-      if (migratedDeployment) game.mapRevision = mission.map.revision ?? 1;
+      game.record(campaign.outcome);
     }
-    return { game, pendingEnemy: saved.pendingEnemy };
-  } catch {
-    return fresh();
   }
+  if (campaign) {
+    const mission = CAMPAIGNS[campaign.id].missions[campaign.mission]!;
+    let migratedDeployment = false;
+    mission.waves.forEach((wave) => {
+      if (
+        wave.previouslyDeployedBeforeRevision !== undefined &&
+        game.mapRevision < wave.previouslyDeployedBeforeRevision
+      ) {
+        const mark = `wave:${wave.id}`;
+        if (!campaign.marks.includes(mark)) campaign.marks.push(mark);
+        migratedDeployment = true;
+      }
+    });
+    if (migratedDeployment) game.mapRevision = mission.map.revision ?? 1;
+  }
+  return { state: boardState(game), pendingEnemy: saved.pendingEnemy };
 }

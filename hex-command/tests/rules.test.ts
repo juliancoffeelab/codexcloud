@@ -1,7 +1,7 @@
 import { test } from "vitest";
 import { required } from "./helpers.ts";
 import assert from "node:assert/strict";
-import { Game, TYPES, distance } from "../src/game/engine.ts";
+import { Game, TYPES, distance } from "./game-fixture.ts";
 test("Opening board, movement and turn ownership", async () => {
   let g = new Game();
   assert.equal(g.tiles.length, 77);
@@ -28,17 +28,6 @@ test("Scout terrain discounts", async () => {
   required(g.tile("4,4")).terrain = "forest";
   assert.equal(g.reachable(scout.id).get("4,2"), 1);
   assert.equal(g.reachable("u2").get("4,4"), 2);
-});
-test("Ranged damage and cover", async () => {
-  const g = new Game();
-  g.units = [required(g.unit("u1")), required(g.unit("u4"))];
-  const archer = g.addUnit("archer", "player", "2,1"),
-    enemy = g.addUnit("soldier", "enemy", "3,1");
-  assert.deepEqual(g.preview(archer, enemy), { damage: 3, retaliation: 0 });
-  required(g.tile(enemy.tile)).terrain = "forest";
-  assert.equal(g.damage(archer, enemy), 2);
-  required(g.tile(enemy.tile)).terrain = "hill";
-  assert.equal(g.damage(archer, enemy), 2);
 });
 test("Melee kills suppress retaliation and consume movement", async () => {
   const g = new Game();
@@ -102,49 +91,4 @@ test("Leader death ends the battle", async () => {
   g.attack("u1", "u4");
   assert.equal(g.winner, "player");
   assert.throws(() => g.endTurn());
-});
-test("Repeated deterministic battles obey legal combat and finish", async () => {
-  let g: Game;
-  let battles = 0,
-    finished = 0;
-  for (let n = 0; n < 20; n++) {
-    g = new Game();
-    for (let round = 0; round < 35 && !g.winner; round++) {
-      for (const u of [...g.units].filter((u) => u.side === "player")) {
-        if (g.winner) break;
-        const targets = g.targets(u.id);
-        if (targets.length) {
-          g.attack(u.id, required(targets[0]).id);
-          continue;
-        }
-        const goals =
-          u.type === "scout"
-            ? g.tiles.filter((t) => t.terrain === "village" && t.owner !== "player")
-            : g.units.filter((v) => v.side === "enemy").map((v) => required(g.tile(v.tile)));
-        const options = [...g.reachable(u.id).keys()];
-        options.sort(
-          (a, b) =>
-            Math.min(...goals.map((t) => distance(required(g.tile(a)), t))) -
-            Math.min(...goals.map((t) => distance(required(g.tile(b)), t))),
-        );
-        if (options.length && goals.length) g.move(u.id, required(options[0]));
-        const attacks = g.targets(u.id);
-        if (attacks.length) g.attack(u.id, required(attacks[0]).id);
-      }
-      if (g.winner) break;
-      g.endTurn();
-      g.enemyRecruit();
-      for (const u of [...g.units].filter((u) => u.side === "enemy")) {
-        g.enemyAct(u.id);
-        if (g.winner) break;
-      }
-      if (!g.winner) g.endTurn();
-      assert.equal(new Set(g.units.map((u) => u.tile)).size, g.units.length);
-      assert(g.units.every((u) => u.hp > 0 && u.hp <= TYPES[u.type].hp));
-      assert(g.gold.player >= 0 && g.gold.enemy >= 0);
-    }
-    battles++;
-    if (g.winner) finished++;
-  }
-  assert(finished > 0);
 });

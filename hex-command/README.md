@@ -58,8 +58,9 @@ and screenshots belong in ignored `tmp/`, outside the default test suite.
   legacy-save metadata. `npm run content:build` generates its import index;
   `content:check` checks that index against the manifest. Values remain in JSON.
 - `src/game/native-engine.ts` and `live-game.ts` adapt generated WASM types to
-  the controller. The remaining TypeScript rules support older browser saves and focused
-  compatibility tests; they do not run live battles.
+  the controller. Every live battle runs Rust; there is no TypeScript fallback.
+- `src/save/` owns the versioned save envelope, storage, loading and writes.
+  `migration/` contains sequential, data-only compatibility steps.
 - `src/controller/` owns actions, autosaves, undo, turn sequencing and cancellation.
   `src/ui/` renders immutable published views. `src/presentation/` handles artwork,
   motion, sound and icons.
@@ -67,7 +68,7 @@ and screenshots belong in ignored `tmp/`, outside the default test suite.
 See the [Rust API and build guide](rust/README.md),
 [content layout](rust/data/README.md), and [AI comparison guide](docs/ai-simulation.md).
 Native checkpoints preserve enemy-planner continuation. Supported older browser
-saves import through the compatibility adapter; rejected checkpoints are backed
+saves migrate to version 2 only after a successful native restore; rejected checkpoints are backed
 up locally and leave a playable new battle.
 
 ## Playing

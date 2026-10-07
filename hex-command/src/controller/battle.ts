@@ -2,11 +2,11 @@ import { dialoguePending } from "../game/campaign-progress";
 import type { CampaignId, UnitType } from "../game/types";
 import { writable, type Readable, type Writable } from "svelte/store";
 import { tick } from "svelte";
-import { Game, TYPES, TERRAIN, type Tile, type Unit } from "../game/engine";
-import { enemyActionIds } from "../game/enemy-turn";
+import { TYPES, TERRAIN, type Tile, type Unit } from "../game/catalog";
 import { createMoveUndo } from "../game/undo";
-import { loadBattle, saveBattle } from "../game/save";
-import { LiveGame, loadLiveBattle } from "../game/live-game";
+import { loadBattle } from "../save/load";
+import { saveBattle } from "../save/write";
+import { LiveGame } from "../game/live-game";
 import type { GameEngineFactory } from "../game/native-engine";
 import {
   savedArtStyle,
@@ -62,7 +62,7 @@ const enemyThinkingDelay = 350;
 const enemyActionDelay = 230;
 
 export class BattleController {
-  #game: Game | LiveGame;
+  #game: LiveGame;
   private pendingEnemyReplay: boolean;
   private initialized = false;
   private artRequestVersion = 0;
@@ -70,7 +70,7 @@ export class BattleController {
   private readonly history = createMoveUndo();
   private sessionVersion = 0;
   private disposed = false;
-  private previousFeedbackState: ReturnType<Game["snapshot"]> | null = null;
+  private previousFeedbackState: ReturnType<LiveGame["snapshot"]> | null = null;
   private state: SessionState;
   private store: Writable<BattleView>;
   private gameView: GameView;
@@ -79,9 +79,9 @@ export class BattleController {
 
   constructor(
     private readonly pause: (ms: number) => Promise<void> = delay,
-    private readonly nativeFactory?: GameEngineFactory,
+    private readonly nativeFactory: GameEngineFactory,
   ) {
-    const restored = nativeFactory ? loadLiveBattle(nativeFactory) : loadBattle();
+    const restored = loadBattle(nativeFactory);
     const game = restored.game;
     this.#game = game;
     this.pendingEnemyReplay = restored.pendingEnemy;
@@ -112,7 +112,7 @@ export class BattleController {
     this.artRequestVersion++;
     cancelSound();
     this.soundRequestVersion++;
-    if (this.#game instanceof LiveGame) this.#game.dispose();
+    this.#game.dispose();
   }
 
   private requireSession(): void {
@@ -479,39 +479,15 @@ export class BattleController {
     if (turnSessionVersion !== this.sessionVersion) {
       return;
     }
-    if (this.#game instanceof LiveGame) {
-      while (this.#game.turn === "enemy" && !this.#game.winner) {
-        this.#game.enemyStep();
-        this.publish();
-        if (this.#game.turn !== "enemy" || this.#game.winner) break;
-        await this.pause(enemyActionDelay);
-        if (turnSessionVersion !== this.sessionVersion) return;
-      }
-      if (!this.#game.winner)
-        this.message("Your turn. Capture villages, recruit reinforcements, or attack.");
-      saveBattle(this.#game);
-      return this.snapshot();
-    }
-    this.#game.enemyRecruit();
-    this.publish();
-    const queue = enemyActionIds(this.#game.units);
-    for (const id of queue) {
+    while (this.#game.turn === "enemy" && !this.#game.winner) {
+      this.#game.enemyStep();
+      this.publish();
+      if (this.#game.turn !== "enemy" || this.#game.winner) break;
       await this.pause(enemyActionDelay);
-      if (turnSessionVersion !== this.sessionVersion) {
-        return;
-      }
-      this.#game.enemyAct(id);
-      this.publish();
-      if (this.#game.winner) {
-        break;
-      }
+      if (turnSessionVersion !== this.sessionVersion) return;
     }
-    if (!this.#game.winner) {
-      this.#game.endTurn();
-      this.publish();
-      if (!this.#game.winner)
-        this.message("Your turn. Capture villages, recruit reinforcements, or attack.");
-    }
+    if (!this.#game.winner)
+      this.message("Your turn. Capture villages, recruit reinforcements, or attack.");
     saveBattle(this.#game);
     return this.snapshot();
   }
@@ -521,20 +497,12 @@ export class BattleController {
     // Validate before changing the current battle, its undo history, or its turn.
     if (mapId !== "mirror" && mapId !== "river" && mapId !== "developer")
       throw new Error("Unknown battlefield. Choose a skirmish or start a campaign.");
-    return this.replaceGame(
-      this.nativeFactory
-        ? LiveGame.create(this.nativeFactory, { kind: "scenario", map: mapId })
-        : new Game(mapId),
-    );
+    return this.replaceGame(LiveGame.create(this.nativeFactory, { kind: "scenario", map: mapId }));
   }
 
   startCampaign(id: CampaignId) {
     this.requireSession();
-    return this.replaceGame(
-      this.nativeFactory
-        ? LiveGame.create(this.nativeFactory, { kind: "campaign", id })
-        : Game.startCampaign(id),
-    );
+    return this.replaceGame(LiveGame.create(this.nativeFactory, { kind: "campaign", id }));
   }
 
   nextMission(recallIds: string[]) {
@@ -567,11 +535,11 @@ export class BattleController {
     this.publish({ renderBattle: false, gameChanged: true });
   }
 
-  private replaceGame(replacement: Game | LiveGame) {
+  private replaceGame(replacement: LiveGame) {
     cancelSound();
     this.sessionVersion++;
     this.history.clear();
-    if (this.#game instanceof LiveGame && this.#game !== replacement) this.#game.dispose();
+    if (this.#game !== replacement) this.#game.dispose();
     this.#game = replacement;
     this.pendingEnemyReplay = false;
     this.previousFeedbackState = null;
@@ -698,11 +666,7 @@ export class BattleController {
     if (this.pendingEnemyReplay) {
       this.pendingEnemyReplay = false;
       void this.endTurn().catch((error) => this.error(error));
-    } else if (
-      this.#game instanceof LiveGame &&
-      this.#game.turn === "enemy" &&
-      !this.#game.winner
-    ) {
+    } else if (this.#game.turn === "enemy" && !this.#game.winner) {
       void this.runEnemyTurn(this.sessionVersion).catch((error) => this.error(error));
     }
     if (!this.state.artLoading) {

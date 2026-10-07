@@ -20,7 +20,6 @@ import type {
   Weapon,
 } from "./types";
 import { immutable } from "./immutable";
-import { loadBattle, SAVE_KEY } from "./save";
 
 /** Turn native rule errors into the controller's existing error/status path. */
 export function nativeValue<T>(result: EngineResult<T>): T {
@@ -43,7 +42,12 @@ export class LiveGame {
     private readonly factory: GameEngineFactory,
     private engine: GameEngine,
   ) {
-    this.refresh();
+    try {
+      this.refresh();
+    } catch (error) {
+      engine.dispose();
+      throw error;
+    }
   }
   static create(factory: GameEngineFactory, start: Start): LiveGame {
     return new LiveGame(factory, nativeValue(factory.create(start, 17)));
@@ -283,19 +287,9 @@ export class LiveGame {
       ...(campaign || sites.length ? { sites } : {}),
     });
   }
-  saveNative(pendingEnemy = false): void {
-    try {
-      localStorage.setItem(
-        SAVE_KEY,
-        JSON.stringify({
-          engine: "rust-wasm",
-          pendingEnemy,
-          saved: nativeValue(this.engine.save()),
-        }),
-      );
-    } catch {
-      /* Full or unavailable browser storage must not stop play. */
-    }
+  /** Current native checkpoint, including exact AI continuation. */
+  checkpoint(): ReturnType<GameEngine["save"]> {
+    return this.engine.save();
   }
   dispose(): void {
     nativeValue(this.engine.dispose());
@@ -336,65 +330,4 @@ export class LiveGame {
       snapshot: () => immutable(detached.snapshot()),
     }) as GameView;
   }
-}
-
-/** Native checkpoints restore directly; the previous browser format migrates once. */
-export function loadLiveBattle(factory: GameEngineFactory): {
-  game: LiveGame;
-  pendingEnemy: boolean;
-  notice?: string;
-} {
-  let saved: { engine?: string; saved?: SavedGame; pendingEnemy?: boolean } | null = null;
-  try {
-    saved = JSON.parse(localStorage.getItem(SAVE_KEY) ?? "null");
-  } catch {
-    /* New battle below. */
-  }
-  if (saved) {
-    try {
-      if (saved.engine === "rust-wasm") {
-        if (
-          !saved.saved ||
-          (saved.pendingEnemy && (saved.saved.state.turn !== "player" || saved.saved.state.winner))
-        )
-          throw new Error("Invalid recovery checkpoint");
-        return {
-          game: LiveGame.restore(factory, saved.saved),
-          pendingEnemy: saved.pendingEnemy === true,
-        };
-      }
-      const legacy = loadBattle();
-      const state = legacy.game.captureState() as unknown as SavedGame["state"];
-      const catalog = factory.catalog();
-      if (!catalog.ok) throw new Error("Could not load the game catalog");
-      const maps = catalog.value.maps.filter((map) => map.id === state.mapId);
-      if (!maps.some((map) => map.revision === state.mapRevision)) {
-        // The legacy loader already applies the current layout for these revisions.
-        // Explicit historical layouts (river/refuge) retain their catalog revisions.
-        const current = maps.find((map) => map.cols === state.cols && map.rows === state.rows);
-        if (!current) throw new Error("Unsupported legacy battlefield");
-        state.mapRevision = current.revision;
-      }
-      return {
-        game: LiveGame.restore(factory, { version: 1, seed: 17, state }),
-        pendingEnemy: legacy.pendingEnemy,
-      };
-    } catch {
-      // Preserve the rejected checkpoint while allowing the player to start again.
-      try {
-        localStorage.setItem(SAVE_KEY + "-unrestored", JSON.stringify(saved));
-      } catch {
-        /* Storage unavailable. */
-      }
-      return {
-        game: LiveGame.create(factory, { kind: "scenario", map: "mirror" }),
-        pendingEnemy: false,
-        notice: "The saved battle could not be restored. A new battle is ready.",
-      };
-    }
-  }
-  return {
-    game: LiveGame.create(factory, { kind: "scenario", map: "mirror" }),
-    pendingEnemy: false,
-  };
 }

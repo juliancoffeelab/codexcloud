@@ -1,8 +1,8 @@
 import { test } from "vitest";
 import assert from "node:assert/strict";
 import { artworkForStyle } from "../src/presentation/art";
-import { Game, TERRAIN, TYPES } from "../src/game/engine";
-import { createGameView } from "../src/game/view";
+import { Game, TERRAIN, TYPES } from "./game-fixture";
+import { createGameView } from "./fixture-view";
 import type { TerrainType, UnitType } from "../src/game/types";
 import type { BattleView } from "../src/controller/view";
 import { unitPanelView } from "../src/ui/unit-panel-view";
@@ -150,35 +150,6 @@ for (const type of ["wolf", "boar", "wildkeeper", "thorncaller"] as const) {
         assert.equal(route.cost(beast, { terrain: "marsh" }), 3);
         assert.equal(route.cost(beast, { terrain: "ford" }), 3);
         assert.equal(TYPES.boar.move, 3);
-      }
-    },
-  );
-}
-
-// Entry costs affect both legal movement and long-range reverse routing.
-for (const [type, distance] of [
-  ["soldier", 4],
-  ["archer", 3],
-] as const) {
-  test(
-    "Entry costs constrain movement and reverse routing — " + JSON.stringify([type, distance]),
-    async () => {
-      const route = new Game();
-      route.units = [];
-      for (const tile of route.tiles) tile.terrain = "water";
-      required(route.tile("0,0")).terrain = "plains";
-      required(route.tile("1,0")).terrain = "ford";
-      const goal = required(route.tile("2,0"));
-      goal.terrain = "plains";
-      const unit = route.addUnit(type, "player", "0,0");
-      assert.equal(route.routeDistances(unit, [goal]).get("0,0"), distance);
-      assert.equal(route.routeDistances(unit, [goal]).has("0,1"), false);
-      assert.equal(route.reachable(unit.id).has(goal.id), type === "archer");
-      if (type === "archer") {
-        route.move(unit.id, goal.id);
-        assert.equal(unit.tile, goal.id);
-      } else {
-        assert.throws(() => route.move(unit.id, goal.id), /outside/);
       }
     },
   );

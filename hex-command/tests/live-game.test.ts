@@ -1,12 +1,14 @@
+import { loadBattle as loadLiveBattle } from "../src/save/load";
+import { saveBattle as writeBattle } from "../src/save/write";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test, beforeEach, afterEach, vi } from "vitest";
 import { initSync, NativeEngineFactory } from "../rust/pkg/hex_command";
 import { createNativeEngineFactory } from "../src/game/native-engine";
-import { LiveGame, loadLiveBattle } from "../src/game/live-game";
+import { LiveGame } from "../src/game/live-game";
 import { BattleController } from "../src/controller/battle";
-import { Game } from "../src/game/engine";
-import { saveBattle, SAVE_KEY } from "../src/game/save";
+import { Game } from "./game-fixture";
+import { saveBattle, SAVE_KEY } from "./legacy-save";
 import { TestStorage, required } from "./helpers";
 import type { BattleView } from "../src/controller/view";
 
@@ -92,8 +94,8 @@ test("Native combat inspection feeds UI damage breakdowns and old saves migrate 
   assert.equal(previous.unit(target.id)?.hp, target.hp);
   const after = game.unit(target.id);
   assert.equal(after?.hp ?? 0, Math.max(0, target.hp - forecast.damage));
-  game.saveNative();
-  assert.equal(JSON.parse(localStorage.getItem(SAVE_KEY)!).engine, "rust-wasm");
+  writeBattle(game);
+  assert.equal(JSON.parse(localStorage.getItem(SAVE_KEY)!).version, 2);
   const restored = loadLiveBattle(factory).game;
   assert.deepEqual(restored.snapshot(), game.snapshot());
   restored.dispose();
@@ -127,7 +129,7 @@ test("Supported legacy woodland revisions migrate without losing campaign progre
   assert.equal(restored.game.round, 3);
   assert.equal(restored.game.gold.player, 19);
   assert.deepEqual(restored.game.units, old.units);
-  restored.game.saveNative();
+  writeBattle(restored.game);
   const reloaded = loadLiveBattle(factory);
   assert.deepEqual(reloaded.game.snapshot(), restored.game.snapshot());
   reloaded.game.dispose();
@@ -149,16 +151,16 @@ test("A failed legacy import is backed up and cannot prevent startup", () => {
 
 test("Rejected native campaign data leaves the WASM factory usable", () => {
   const game = LiveGame.create(factory, { kind: "campaign", id: "lantern-road" });
-  game.saveNative();
+  writeBattle(game);
   game.dispose();
   const checkpoint = JSON.parse(localStorage.getItem(SAVE_KEY)!);
   const corruptions = [
     () => {
-      checkpoint.saved.state.campaign.fallenCompanions = ["Captain Nera"];
+      checkpoint.checkpoint.state.campaign.fallenCompanions = ["Captain Nera"];
     },
     () => {
-      checkpoint.saved.state.campaign.fallenCompanions = [];
-      checkpoint.saved.state.units[0].experience = 0xffffffff;
+      checkpoint.checkpoint.state.campaign.fallenCompanions = [];
+      checkpoint.checkpoint.state.units[0].experience = 0xffffffff;
     },
   ];
   for (const corrupt of corruptions) {
@@ -188,7 +190,7 @@ test("Live enemy planning finishes a phase and saves the resulting player turn",
 });
 
 test("An invalid native checkpoint preserves the old save and leaves a playable battle", () => {
-  const rejected = { engine: "rust-wasm", pendingEnemy: false, saved: { version: 999 } };
+  const rejected = { version: 999, checkpoint: {}, pendingEnemy: false };
   localStorage.setItem(SAVE_KEY, JSON.stringify(rejected));
   const restored = loadLiveBattle(factory);
   assert(restored.notice);
@@ -211,7 +213,7 @@ test("Reloading an exact enemy-phase checkpoint resumes the saved planner once",
   const game = LiveGame.create(factory, { kind: "scenario", map: "mirror" });
   game.endTurn();
   game.enemyStep();
-  game.saveNative();
+  writeBattle(game);
   const checkpoint = game.captureState();
   const phaseSnapshot = game.snapshot();
   assert.equal(checkpoint.turn, "enemy");

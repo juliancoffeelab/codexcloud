@@ -1,6 +1,6 @@
 import type { TileView } from "../game/view";
 import type { RecruitmentContext, BattleView } from "../controller/view";
-import { TERRAIN, TYPES } from "../game/engine";
+import { TERRAIN, TYPES } from "../game/catalog";
 import type { TerrainType } from "../game/types";
 import { campaignMission } from "../game/campaign-progress";
 

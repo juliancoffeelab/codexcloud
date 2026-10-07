@@ -3,9 +3,6 @@ import { AUTHORED_SCENARIOS } from "./authored-content";
 import { CAMPAIGN_MAPS } from "./campaign-data";
 import type { MapDefinition, MapId } from "./types";
 
-export const LEGACY_RIVER = immutable(
-  AUTHORED_SCENARIOS.find((map) => map.id === "river" && map.revision === 1)!,
-);
 export const MAPS = immutable<Record<MapId, MapDefinition>>({
   ...CAMPAIGN_MAPS,
   // Historical revisions are retained for restore but never replace current maps.

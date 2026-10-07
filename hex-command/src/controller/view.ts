@@ -5,7 +5,7 @@ import type {
   UnitType,
   RecruitType as GameRecruitType,
 } from "../game/types";
-import { TYPES } from "../game/engine";
+import { TYPES } from "../game/catalog";
 import type { ArtStyle, Artwork } from "../presentation/art";
 
 export type RecruitType = GameRecruitType;

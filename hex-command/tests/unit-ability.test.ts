@@ -1,6 +1,6 @@
 import { test } from "vitest";
 import assert from "node:assert/strict";
-import { Game, TYPES } from "../src/game/engine.ts";
+import { Game, TYPES } from "./game-fixture.ts";
 import { abilityInfo, type AbilityInfo } from "../src/presentation/unit-ability.ts";
 
 for (const unit of new Game().units) {

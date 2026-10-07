@@ -1,4 +1,5 @@
 import { defineConfig } from "vitest/config";
+import { availableParallelism } from "node:os";
 
 export default defineConfig({
   test: {
@@ -7,7 +8,7 @@ export default defineConfig({
     bail: 0,
     include: ["tests/**/*.test.ts"],
     fileParallelism: true,
-    maxWorkers: 2,
+    maxWorkers: Math.min(4, availableParallelism()),
     testTimeout: 5_000,
     hookTimeout: 5_000,
     restoreMocks: true,

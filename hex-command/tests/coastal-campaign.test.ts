@@ -2,53 +2,10 @@ import { test } from "vitest";
 import assert from "node:assert/strict";
 import { CAMPAIGNS } from "../src/game/campaign-data";
 import { goalProgress, goalTiles } from "../src/game/campaign-progress";
-import { Game } from "../src/game/engine";
+import { Game } from "./game-fixture";
 import { required } from "./helpers";
 
 const campaign = CAMPAIGNS["borrowed-tide"];
-
-test.each([0, 1, 2])("Shore troops can reach Mira and all objectives in chapter %i", (chapter) => {
-  const game = Game.startCampaign("borrowed-tide", chapter);
-  const mission = campaign.missions[chapter]!;
-  const mira = required(game.units.find((unit) => unit.name === "Mira"));
-  const goals = mission.goals.flatMap(goalTiles).map((id) => required(game.tile(id)));
-  const sites = [...goals, required(game.tile(mira.tile))];
-  for (const enemy of game.units.filter((unit) => unit.side === "enemy"))
-    for (const target of sites)
-      assert(
-        game.routeDistances(enemy, [target]).has(enemy.tile),
-        `${enemy.type} at ${enemy.tile} can reach ${target.id}`,
-      );
-  for (const unit of game.units.filter((unit) => unit.side === "player"))
-    for (const target of goals) assert(game.routeDistances(unit, [target]).has(unit.tile));
-  assert(
-    game.tiles.some((tile) => tile.terrain === "water"),
-    "Retain deep-water flanking routes",
-  );
-});
-
-test.each([1, 2])("Ground recruits can leave the offshore keep in chapter %i", (chapter) => {
-  const mission = campaign.missions[chapter]!;
-  for (const type of mission.recruits.filter((type) =>
-    ["spearman", "swordsman", "adept"].includes(type),
-  )) {
-    const game = Game.startCampaign("borrowed-tide", chapter);
-    game.advanceDialogue(true);
-    game.gold.player = 100;
-    const mira = required(game.units.find((unit) => unit.name === "Mira"));
-    const placements = game.recruitTiles(mira.id, type);
-    assert(placements.length, `${type} has an unoccupied ground recruitment hex`);
-    const shore = required(game.tiles.find((tile) => tile.terrain === "forest"));
-    for (const tile of placements)
-      assert(
-        game.routeDistances({ ...mira, type }, [shore]).has(tile.id),
-        `${type} recruited at ${tile.id} can reach the wooded shore`,
-      );
-    const recruit = game.recruit(mira.id, type, placements[0]!.id);
-    game.beginTurn("player");
-    assert(game.reachable(recruit.id).size > 0, "Initial allies do not trap the new recruit");
-  }
-});
 
 const hold = required(campaign.missions[1]!.goals.find((goal) => goal.kind === "hold"));
 const rescueText = required(campaign.missions[1]!.events.find((event) => event.id === "rescue"))

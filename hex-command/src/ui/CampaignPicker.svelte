@@ -1,6 +1,6 @@
 <script lang="ts">
   import { CAMPAIGNS } from "../game/campaign-data";
-  import { TYPES } from "../game/engine";
+  import { TYPES } from "../game/catalog";
   import { artSprite, type Artwork } from "../presentation/art";
   import type { CampaignId } from "../game/types";
   let {

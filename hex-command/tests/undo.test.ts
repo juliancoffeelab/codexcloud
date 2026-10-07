@@ -2,7 +2,7 @@ import { test } from "vitest";
 import type { UnitType } from "../src/game/types.ts";
 import { required } from "./helpers.ts";
 import assert from "node:assert/strict";
-import { Game } from "../src/game/engine.ts";
+import { Game } from "./game-fixture.ts";
 import { createMoveUndo } from "../src/game/undo.ts";
 
 const snapshot = (game: Game) => structuredClone({ ...game });
@@ -47,13 +47,13 @@ test("Multiple moves unwind in reverse order", async () => {
   undo.move(game, soldier.id, "2,3");
   const afterFirst = snapshot(game);
   undo.move(game, scout.id, "3,1");
-  assert.throws(() => undo.move(game, scout.id, "2,2"), /outside/);
+  assert.throws(() => undo.move(game, scout.id, "2,2"), /IllegalMove/);
   assert.deepEqual(undo.undo(game), { unitId: scout.id, tileId: "1,2" });
   assert.deepEqual(snapshot(game), afterFirst);
   assert.deepEqual(undo.undo(game), { unitId: soldier.id, tileId: "1,3" });
   assert.deepEqual(snapshot(game), before);
   assert.equal(undo.undo(game), null);
-  assert.throws(() => undo.move(game, soldier.id, "0,0"), /outside/);
+  assert.throws(() => undo.move(game, soldier.id, "0,0"), /IllegalMove/);
   assert.equal(undo.canUndo(game), false);
 });
 

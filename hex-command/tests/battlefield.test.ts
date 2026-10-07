@@ -1,9 +1,9 @@
 import { test } from "vitest";
 import assert from "node:assert/strict";
 import { artworkForStyle } from "../src/presentation/art";
-import { Game } from "../src/game/engine";
+import { Game } from "./game-fixture";
 import { campaignMission, goalProgress } from "../src/game/campaign-progress";
-import { createGameView } from "../src/game/view";
+import { createGameView } from "./fixture-view";
 import { battlefieldTiles } from "../src/ui/battlefield-view";
 import { required } from "./helpers";
 

@@ -3,7 +3,8 @@ import type { Coordinates, MapDefinition } from "../src/game/types.ts";
 import type { Immutable } from "../src/game/immutable.ts";
 import { required, TestStorage } from "./helpers.ts";
 import assert from "node:assert/strict";
-import { MAPS, LEGACY_RIVER } from "../src/game/maps.ts";
+import { MAPS } from "../src/game/maps.ts";
+import { LEGACY_RIVER } from "../src/save/migration/legacy/layouts";
 import { DEVELOPER_TERRAIN_SAMPLES, DEVELOPER_UNIT_SAMPLES } from "../src/game/developer-map.ts";
 
 const key = ({ col, row }: Coordinates) => `${col},${row}`;
@@ -176,7 +177,7 @@ test("River forms two asymmetric banks linked by either crossing", async () => {
 });
 
 // Opening village routes no longer require pushing through forest.
-const { Game, TERRAIN, TYPES } = await import("../src/game/engine.ts");
+const { Game, TERRAIN, TYPES } = await import("./game-fixture.ts");
 test("Opening river village routes remain clear", async () => {
   const opening = new Game("river");
   assert(opening.reachable("u2").has("4,1"), "starting soldier can reach the northern village");
@@ -249,7 +250,7 @@ test("Developer units use ordinary movement, combat and turns", async () => {
 });
 
 // Developer snapshots remain noncampaign saves without relaxing ordinary validation.
-const { loadBattle, saveBattle, SAVE_KEY, SAVE_VERSION } = await import("../src/game/save.ts");
+const { loadBattle, saveBattle, SAVE_KEY, SAVE_VERSION } = await import("./legacy-save.ts");
 
 test("Developer saves remain noncampaign and round-trip", async () => {
   const showcase = new Game("developer");

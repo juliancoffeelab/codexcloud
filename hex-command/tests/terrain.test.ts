@@ -2,8 +2,8 @@ import { test, afterEach, vi } from "vitest";
 import type { Tile } from "../src/game/types.ts";
 import { required, storageWithValue } from "./helpers.ts";
 import assert from "node:assert/strict";
-import { Game } from "../src/game/engine.ts";
-import { loadBattle, saveBattle } from "../src/game/save.ts";
+import { Game } from "./game-fixture.ts";
+import { loadBattle, saveBattle } from "./legacy-save.ts";
 
 // Odd rows are offset by half a hex; reflecting across the keeps requires
 // different column transforms for odd and even rows.

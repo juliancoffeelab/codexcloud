@@ -362,18 +362,12 @@ impl NativeEngineFactory {
                     pending: battle.pending.clone(),
                 });
         Ok(SavedGame {
-            version: 1,
             seed: battle.seed,
             state: battle.state.clone(),
             planner,
         })
     }
     fn restore_saved(&mut self, saved: SavedGame) -> Result<BattleHandle, EngineError> {
-        if saved.version != 1 {
-            return Err(EngineError::InvalidSave {
-                message: format!("unsupported save version {}", saved.version),
-            });
-        }
         let game = Game::try_from_state(&self.rules, saved.state).map_err(|error| {
             EngineError::InvalidSave {
                 message: error.to_string(),

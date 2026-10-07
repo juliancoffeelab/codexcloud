@@ -1,6 +1,6 @@
 import type { Immutable, UnitView } from "../game/view";
 import type { BattleView } from "../controller/view";
-import { TERRAIN, TYPES } from "../game/engine";
+import { TERRAIN, TYPES } from "../game/catalog";
 import type { TerrainType, UnitDefinition, UnitType } from "../game/types";
 import { abilityInfo } from "../presentation/unit-ability";
 

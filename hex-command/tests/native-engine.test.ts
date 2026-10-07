@@ -95,7 +95,7 @@ function fixture() {
       ok: true,
       value: { revision, command: { kind: "endTurn" } },
     }),
-    save: () => ({ ok: true, value: { version: 1, seed: 42, state } }),
+    save: () => ({ ok: true, value: { seed: 42, state } }),
     disposeBattle: (id) => {
       releases.push(id);
       return { ok: true, value: null };
