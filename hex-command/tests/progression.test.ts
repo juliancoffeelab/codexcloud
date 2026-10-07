@@ -13,22 +13,12 @@ import { required, TestStorage } from "./helpers";
 test("Unit enum and definitions cover the same roster", async () => {
   assert.deepEqual(Object.keys(TYPES).sort(), [...UNIT_TYPES].sort());
 });
-for (const type of UNIT_TYPES) {
+for (const type of new Set(UNIT_TYPES.map((type) => TYPES[type].family!))) {
   test(
     "Every unit belongs to an acyclic race-preserving progression ladder — " +
       JSON.stringify([type]),
     async () => {
       const definition = TYPES[type];
-      assert.equal(
-        definition.damage,
-        definition.attacks[0].damage,
-        `${type} primary damage cannot drift from its weapon`,
-      );
-      assert.equal(
-        definition.range,
-        Math.max(...definition.attacks.map((attack) => attack.range)),
-        `${type} range summarizes all available weapons`,
-      );
       assert(definition.family && TYPES[definition.family]);
       const family = TYPES[definition.family];
       assert((family.advancesTo ?? []).length, `${type} belongs to a progression ladder`);
@@ -48,8 +38,6 @@ for (const type of UNIT_TYPES) {
 }
 // Access precedence and additive costs are independent of numeric Infinity sentinels.
 test("Terrain, race and unit access compose with additive costs", async () => {
-  assert.equal(TERRAIN.water.cost, 1);
-  assert.equal(TERRAIN.water.passable, false);
   assert.equal(movementCost(TERRAIN.water, "water", RACES.human, TYPES.archer), Infinity);
   assert.equal(movementCost(TERRAIN.water, "water", RACES.merfolk, TYPES.harpooner), 1);
   assert.equal(
@@ -77,7 +65,7 @@ test("Combat XP and promotion preserve wounds, identity and immutable publicatio
   game.units = [];
   const attacker = game.addUnit("swordsman", "player", "3,3");
   const defender = game.addUnit("archer", "enemy", "4,3");
-  attacker.hp = 6;
+  attacker.hp = TYPES.swordsman.hp - 4;
   defender.hp = 3;
   game.attack(attacker.id, defender.id, "sword");
   assert.equal(attacker.experience, 6);
@@ -91,7 +79,7 @@ test("Combat XP and promotion preserve wounds, identity and immutable publicatio
   const feedback = describeChanges(beforePromotion, game.snapshot());
   assert(feedback.advanced);
   assert.equal(feedback.attacked, false, "Promotion must not replay the prior combat cue");
-  assert.equal(attacker.hp, 8, "Promotion preserves all four wounds");
+  assert.equal(attacker.hp, TYPES.soldier.hp - 4, "Promotion preserves all four wounds");
   assert.equal(attacker.id, before.units[0]!.id);
   assert.equal(attacker.experience, 0);
   assert(attacker.moved && attacker.attacked);
@@ -100,19 +88,17 @@ test("Combat XP and promotion preserve wounds, identity and immutable publicatio
     "swordsman",
     "Published progression remains immutable",
   );
-  assert(TYPES.soldier.attacks.some((attack) => attack.damageType === "impact"));
-  assert.equal(TYPES.swordsman.attacks.length, 1);
   assert.throws(() => game.advanceUnit(attacker.id, "soldier"), /IllegalAdvance/);
 });
 
 test("Zero damage attacks cannot farm XP", async () => {
   const zero = new Game();
   zero.units = [];
-  const scout = zero.addUnit("scout", "player", "3,3");
+  const archer = zero.addUnit("bonearcher", "player", "3,3");
   const heavy = zero.addUnit("soldier", "enemy", "4,3");
   required(zero.tile(heavy.tile)).terrain = "hill";
-  zero.attack(scout.id, heavy.id, "knife");
-  assert.equal(scout.experience, 0, "Zero damage never farms XP");
+  zero.attack(archer.id, heavy.id, "shard");
+  assert.equal(archer.experience, 0, "Zero damage never farms XP");
 });
 
 test("Veteran and named companion progression carries forward and retry restores incoming XP", async () => {

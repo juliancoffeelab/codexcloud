@@ -1,15 +1,16 @@
 {
   "id": "tidekeeper",
+  "role": "warrior",
   "name": "Tidekeeper",
   "race": "merfolk",
-  "hp": 14,
+  "hp": 28,
   "move": 4,
   "cost": 0,
   "attacks": [
     {
       "id": "trident",
       "name": "Trident",
-      "damage": 3,
+      "damage": 6,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
@@ -18,7 +19,7 @@
     {
       "id": "tidebolt",
       "name": "Tide bolt",
-      "damage": 2,
+      "damage": 4,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,

@@ -1,16 +1,26 @@
 {
   "id": "reefguard",
+  "role": "warrior",
   "name": "Reef guard",
   "race": "merfolk",
-  "hp": 11,
+  "hp": 22,
   "move": 4,
   "cost": 8,
   "attacks": [
     {
       "id": "spear",
       "name": "Reef spear",
-      "damage": 3,
+      "damage": 6,
       "damageType": "pierce",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "tail",
+      "name": "Tail strike",
+      "damage": 2,
+      "damageType": "impact",
       "category": "melee",
       "range": 1,
       "sound": "attack-melee"
@@ -22,7 +32,7 @@
     "impact": 0
   },
   "ability": "Amphibious",
-  "description": "Shell armor stops 1 Blade damage. A durable spear screen in shallow water; needs Impact support against armor and bones, and lacks a ranged reply.",
+  "description": "Shell armor stops 1 Blade damage. A durable spear screen in shallow water, with a weak Impact tail strike against bones; lacks a ranged reply.",
   "level": 1,
   "family": "reefguard",
   "experienceNeeded": 10,

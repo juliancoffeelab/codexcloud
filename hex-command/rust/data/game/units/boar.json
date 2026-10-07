@@ -1,5 +1,6 @@
 {
   "id": "boar",
+  "role": "warrior",
   "name": "Boar",
   "race": "beast",
   "terrainModifiers": {
@@ -10,14 +11,14 @@
       "cost": 1
     }
   },
-  "hp": 13,
+  "hp": 28,
   "move": 3,
   "cost": 9,
   "attacks": [
     {
       "id": "trample",
       "name": "Trample",
-      "damage": 4,
+      "damage": 6,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
@@ -34,12 +35,12 @@
     }
   ],
   "damageModifiers": {
-    "blade": 0,
+    "blade": -1,
     "pierce": 0,
     "impact": 0
   },
   "ability": "Thick hide",
-  "description": "Forests and groves cost 1 movement and reduce incoming damage by 1. A sturdy front-line beast: Impact trample counters bones and armor, with Pierce tusks as an alternative. Vulnerable to piercing in the open; no ranged reply.",
+  "description": "Forests and groves cost 1 movement and reduce incoming damage by 1. Thick hide stops 1 Blade damage. Impact trample counters bones and armor, with Pierce tusks as an alternative. Vulnerable to piercing in the open; no ranged reply.",
   "level": 1,
   "family": "boar",
   "experienceNeeded": 10,

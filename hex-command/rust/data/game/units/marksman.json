@@ -1,15 +1,16 @@
 {
   "id": "marksman",
+  "role": "ranger",
   "name": "Marksman",
   "race": "human",
-  "hp": 11,
+  "hp": 22,
   "move": 3,
   "cost": 11,
   "attacks": [
     {
       "id": "bow",
       "name": "Bow",
-      "damage": 5,
+      "damage": 10,
       "damageType": "pierce",
       "category": "ranged",
       "range": 2,
@@ -18,7 +19,7 @@
     {
       "id": "knife",
       "name": "Knife",
-      "damage": 2,
+      "damage": 4,
       "damageType": "blade",
       "category": "melee",
       "range": 1,

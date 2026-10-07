@@ -112,6 +112,50 @@ impl<'catalog> Game<'catalog> {
         drop(cache);
         self.route_cache.borrow()[&key].clone()
     }
+    /// Turn-local route fields respect blockers instead of scoring impossible steps.
+    /// With yielding enabled, friendly occupants add a cost and enemies remain blocked.
+    pub(crate) fn occupied_routes(&self, unit: &Unit, goals: &[usize], yielding: bool) -> Vec<u16> {
+        let entry = |tile: usize| {
+            let terrain = self.cost(unit.kind, tile);
+            if terrain == u16::MAX {
+                return terrain;
+            }
+            match self.at(tile) {
+                Some(other) if other.id != unit.id => {
+                    if yielding && other.side == unit.side {
+                        terrain.saturating_add(2)
+                    } else {
+                        u16::MAX
+                    }
+                }
+                _ => terrain,
+            }
+        };
+        let mut costs = vec![u16::MAX; self.terrain.len()];
+        let mut pending = BinaryHeap::new();
+        for &goal in goals {
+            if entry(goal) != u16::MAX {
+                costs[goal] = 0;
+                pending.push(Reverse((0, goal)));
+            }
+        }
+        while let Some(Reverse((spent, current))) = pending.pop() {
+            if spent != costs[current] {
+                continue;
+            }
+            for &next in &self.board.adjacent[current] {
+                if entry(next) == u16::MAX {
+                    continue;
+                }
+                let cost = spent.saturating_add(entry(current));
+                if cost < costs[next] {
+                    costs[next] = cost;
+                    pending.push(Reverse((cost, next)));
+                }
+            }
+        }
+        costs
+    }
     pub(crate) fn move_unit(&mut self, id: u32, tile: usize) {
         let index = self.index(id).unwrap();
         let actor = self.units[index].clone();

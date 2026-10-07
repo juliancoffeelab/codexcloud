@@ -242,7 +242,8 @@ test("Finished enemy-turn battles persist outcome dialogue", async () => {
   const leader = required(
     fixture.units.find((unit) => unit.side === "player" && unit.role === "leader"),
   );
-  const enemy = required(fixture.units.find((unit) => unit.side === "enemy"));
+  // Use a frontline attacker so leader recruitment restraint cannot alter this defeat fixture.
+  const enemy = fixture.addUnit("soldier", "enemy", "4,4");
   leader.tile = "3,4";
   leader.hp = 1;
   enemy.tile = "4,4";

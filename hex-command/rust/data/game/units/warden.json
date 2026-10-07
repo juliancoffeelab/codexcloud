@@ -1,5 +1,6 @@
 {
   "id": "warden",
+  "role": "warrior",
   "name": "Warden",
   "terrainModifiers": {
     "ford": {
@@ -10,23 +11,23 @@
     }
   },
   "race": "human",
-  "hp": 12,
+  "hp": 24,
   "move": 3,
   "cost": 9,
   "attacks": [
     {
       "id": "spear",
       "name": "Spear",
-      "damage": 4,
+      "damage": 8,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
       "sound": "attack-melee"
     },
     {
-      "id": "hammer",
-      "name": "Hammer",
-      "damage": 2,
+      "id": "shieldbash",
+      "name": "Shield bash",
+      "damage": 6,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
@@ -39,7 +40,7 @@
     "impact": 1
   },
   "ability": "Shield wall",
-  "description": "Armored spear infantry. Strong against beasts; carries a light hammer for bones and armor.",
+  "description": "Armored spear infantry. Strong against beasts; uses an Impact shield bash against bones and armor.",
   "level": 2,
   "family": "spearman",
   "experienceNeeded": 0,

@@ -94,6 +94,42 @@ impl DamageModifiers {
         }
     }
 }
+/// Authored battlefield role used for mixed composition and tactical placement.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum UnitRole {
+    Warrior,
+    Flank,
+    Ranger,
+    Healer,
+}
+impl UnitRole {
+    /// All composition roles in stable dense-array order.
+    pub const ALL: [Self; 4] = [Self::Warrior, Self::Flank, Self::Ranger, Self::Healer];
+    /// Index into per-role counts and target weights.
+    pub const fn index(self) -> usize {
+        match self {
+            Self::Warrior => 0,
+            Self::Flank => 1,
+            Self::Ranger => 2,
+            Self::Healer => 3,
+        }
+    }
+    /// Relative mixed-army target; normalize across roles present in the roster.
+    pub const fn weight(self) -> f64 {
+        if matches!(self, Self::Warrior) {
+            0.3
+        } else {
+            0.2
+        }
+    }
+    /// Whether recruitment evaluates the unit's ranged attack options.
+    pub const fn is_ranged(self) -> bool {
+        matches!(self, Self::Ranger | Self::Healer)
+    }
+}
 /// Resolved unit statistics, advancement choices and dense terrain-dependent tables.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
@@ -112,6 +148,7 @@ pub struct UnitRule {
     pub attacks: Vec<Weapon>,
     pub damage_modifiers: DamageModifiers,
     pub race: Race,
+    pub role: UnitRole,
     #[serde(default)]
     pub leader: bool,
     #[serde(default)]

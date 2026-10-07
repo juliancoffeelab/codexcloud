@@ -1,15 +1,16 @@
 {
   "id": "bonearcher",
+  "role": "ranger",
   "name": "Bone archer",
   "race": "undead",
-  "hp": 8,
+  "hp": 16,
   "move": 3,
   "cost": 7,
   "attacks": [
     {
       "id": "bonebow",
       "name": "Bone bow",
-      "damage": 4,
+      "damage": 8,
       "damageType": "pierce",
       "category": "ranged",
       "range": 2,
@@ -18,7 +19,7 @@
     {
       "id": "shard",
       "name": "Shard",
-      "damage": 1,
+      "damage": 2,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
@@ -31,7 +32,7 @@
     "impact": 0
   },
   "ability": "Hollow frame",
-  "description": "Takes 1 less Pierce damage and 1 more Impact damage. A ranged specialist with a weak melee reply.",
+  "description": "Takes 2 less Pierce damage and 1 more Impact damage. A ranged specialist with a weak melee reply.",
   "level": 1,
   "family": "bonearcher",
   "experienceNeeded": 10,

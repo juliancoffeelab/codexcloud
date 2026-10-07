@@ -1,5 +1,6 @@
 {
   "id": "greatboar",
+  "role": "warrior",
   "name": "Great boar",
   "race": "beast",
   "terrainModifiers": {
@@ -10,14 +11,14 @@
       "cost": 1
     }
   },
-  "hp": 16,
+  "hp": 34,
   "move": 3,
   "cost": 14,
   "attacks": [
     {
       "id": "trample",
       "name": "Trample",
-      "damage": 5,
+      "damage": 10,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
@@ -26,7 +27,7 @@
     {
       "id": "tusks",
       "name": "Tusks",
-      "damage": 5,
+      "damage": 10,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
@@ -34,12 +35,12 @@
     }
   ],
   "damageModifiers": {
-    "blade": 0,
+    "blade": -1,
     "pierce": 0,
     "impact": 0
   },
   "ability": "Trample",
-  "description": "A boar veteran with stronger Impact trample and Pierce tusks. Forests and groves reduce incoming damage by 1. Remains slow in wetlands and has no ranged reply.",
+  "description": "A boar veteran with stronger Impact trample and Pierce tusks. Thick hide stops 1 Blade damage; forests and groves reduce incoming damage by another 1. Remains slow in wetlands and has no ranged reply.",
   "level": 2,
   "family": "boar",
   "experienceNeeded": 0,

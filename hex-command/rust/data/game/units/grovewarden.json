@@ -1,16 +1,17 @@
 {
   "id": "grovewarden",
+  "role": "warrior",
   "name": "Grove warden",
   "race": "beast",
   "leader": true,
-  "hp": 17,
+  "hp": 34,
   "move": 3,
   "cost": 0,
   "attacks": [
     {
       "id": "bough",
       "name": "Bough",
-      "damage": 4,
+      "damage": 8,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
@@ -19,7 +20,7 @@
     {
       "id": "stones",
       "name": "Stones",
-      "damage": 2,
+      "damage": 4,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,

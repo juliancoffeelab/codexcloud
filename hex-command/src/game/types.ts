@@ -1,3 +1,5 @@
+import type { UnitRole } from "../../rust/pkg/hex_command";
+
 export type Side = "player" | "enemy";
 export type LeaderType =
   | "commander"
@@ -141,6 +143,7 @@ export interface Weapon {
   sound: string;
 }
 export interface UnitDefinition {
+  role: UnitRole;
   level?: number;
   family?: UnitType;
   experienceNeeded?: number;

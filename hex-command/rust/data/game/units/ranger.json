@@ -1,5 +1,6 @@
 {
   "id": "ranger",
+  "role": "flank",
   "name": "Ranger",
   "race": "human",
   "terrainModifiers": {
@@ -13,14 +14,14 @@
       "cost": -1
     }
   },
-  "hp": 11,
+  "hp": 22,
   "move": 6,
   "cost": 8,
   "attacks": [
     {
       "id": "knife",
       "name": "Knife",
-      "damage": 3,
+      "damage": 6,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
@@ -29,7 +30,7 @@
     {
       "id": "sling",
       "name": "Sling",
-      "damage": 2,
+      "damage": 4,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,

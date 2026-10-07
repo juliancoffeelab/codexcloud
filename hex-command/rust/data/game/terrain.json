@@ -57,7 +57,7 @@
     "name": "Village",
     "cost": 1,
     "passable": true,
-    "description": "+2 gold per turn. Heals a friendly occupant by 2 HP."
+    "description": "+2 gold per turn. Heals a friendly occupant by 4 HP."
   },
   {
     "id": "keep",
@@ -106,6 +106,6 @@
     "name": "Sacred grove",
     "cost": 2,
     "passable": true,
-    "description": "Trees reduce ranged damage by 1 and block shots through the tile. An owned grove heals its friendly occupant by 2 HP, but provides no income."
+    "description": "Trees reduce ranged damage by 1 and block shots through the tile. An owned grove heals its friendly occupant by 4 HP, but provides no income."
   }
 ]

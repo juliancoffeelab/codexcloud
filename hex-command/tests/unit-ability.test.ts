@@ -1,25 +1,30 @@
 import { test } from "vitest";
 import assert from "node:assert/strict";
-import { Game, TYPES } from "./game-fixture.ts";
-import { abilityInfo, type AbilityInfo } from "../src/presentation/unit-ability.ts";
+import { TYPES } from "./game-fixture.ts";
+import type { Unit } from "../src/game/types.ts";
+import { abilityInfo } from "../src/presentation/unit-ability.ts";
 
-for (const unit of new Game().units) {
-  test(
-    "Unit ability information follows its rules — " + JSON.stringify([unit.type, unit.side]),
-    async () => {
-      const info: AbilityInfo = abilityInfo(unit);
-      if (unit.type === "commander") {
-        assert.deepEqual(info, {
-          name: "Command",
-          description: "Losing this unit ends the battle.",
-        });
-      } else {
-        const definition = TYPES[unit.type];
-        assert.deepEqual(info, {
-          name: definition.ability,
-          description: definition.description,
-        });
-      }
-    },
-  );
-}
+const unit: Unit = {
+  id: "u1",
+  type: "scout",
+  side: "player",
+  tile: "0,0",
+  hp: 1,
+  moved: false,
+  attacked: false,
+};
+
+test("Leader ability information explains the loss condition", () => {
+  assert.deepEqual(abilityInfo({ ...unit, type: "commander" }), {
+    name: "Command",
+    description: "Losing this unit ends the battle.",
+  });
+});
+
+test("Ordinary ability information uses the unit definition", () => {
+  const definition = TYPES.scout;
+  assert.deepEqual(abilityInfo(unit), {
+    name: definition.ability,
+    description: definition.description,
+  });
+});

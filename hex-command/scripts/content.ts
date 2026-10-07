@@ -23,11 +23,11 @@ function components(path: string, fields: string[]): void {
 const manifest = JSON.parse(readFileSync(new URL("manifest.json", root), "utf8")) as {
   units: string[];
   terrain: string;
-  races: string;
+  races: string[];
   scenarios: string[];
   campaigns: string[];
 };
-for (const path of [...manifest.units, manifest.terrain, manifest.races]) read(path);
+for (const path of [...manifest.units, manifest.terrain, ...manifest.races]) read(path);
 for (const path of manifest.scenarios) components(path, ["map", "roster"]);
 for (const path of manifest.campaigns) {
   const campaign = read<{ stages: string[] }>(path);

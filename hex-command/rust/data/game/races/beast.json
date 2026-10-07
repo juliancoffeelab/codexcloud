@@ -1,0 +1,25 @@
+{
+  "id": "beast",
+  "name": "Woodland beast",
+  "terrainModifiers": {
+    "forest": {
+      "cost": -1,
+      "damageModifiers": {
+        "melee": -1,
+        "ranged": -1
+      }
+    },
+    "grove": {
+      "cost": -1,
+      "damageModifiers": {
+        "melee": -1,
+        "ranged": -1
+      }
+    }
+  },
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 1,
+    "impact": 0
+  }
+}

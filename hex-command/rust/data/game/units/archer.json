@@ -1,15 +1,16 @@
 {
   "id": "archer",
+  "role": "ranger",
   "name": "Archer",
   "race": "human",
-  "hp": 8,
+  "hp": 16,
   "move": 3,
   "cost": 7,
   "attacks": [
     {
       "id": "bow",
       "name": "Bow",
-      "damage": 4,
+      "damage": 8,
       "damageType": "pierce",
       "category": "ranged",
       "range": 2,
@@ -18,7 +19,7 @@
     {
       "id": "knife",
       "name": "Knife",
-      "damage": 2,
+      "damage": 4,
       "damageType": "blade",
       "category": "melee",
       "range": 1,

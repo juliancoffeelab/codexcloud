@@ -1,16 +1,17 @@
 {
   "id": "necromancer",
+  "role": "ranger",
   "name": "Necromancer",
   "race": "undead",
   "leader": true,
-  "hp": 12,
+  "hp": 24,
   "move": 3,
   "cost": 0,
   "attacks": [
     {
       "id": "gravebolt",
       "name": "Grave bolt",
-      "damage": 3,
+      "damage": 6,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
@@ -19,7 +20,7 @@
     {
       "id": "bonestaff",
       "name": "Bone staff",
-      "damage": 3,
+      "damage": 6,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
@@ -32,7 +33,7 @@
     "impact": 0
   },
   "ability": "Unbound",
-  "description": "An undead leader with melee and ranged Impact. Takes 1 less Pierce damage and 1 more Impact damage.",
+  "description": "An undead leader with melee and ranged Impact. Takes 2 less Pierce damage and 1 more Impact damage.",
   "level": 1,
   "family": "necromancer",
   "experienceNeeded": 18,

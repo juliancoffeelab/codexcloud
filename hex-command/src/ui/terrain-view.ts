@@ -8,7 +8,7 @@ const descriptions: Record<TerrainType, string> = {
   marsh: "Mud and reeds expose land troops; merfolk find protection here.",
   ruins: "Broken walls shelter against ranged attacks.",
   fort: "Earthworks protect against every damage kind. Capture them to hold a crossing.",
-  grove: "A sacred woodland refuge. Its owner’s occupants heal 2 HP each turn.",
+  grove: "A sacred woodland refuge. Its owner’s occupants heal 4 HP each turn.",
   plains: "Open grassland with easy footing.",
   forest: "Trees shelter land troops and obstruct ranged shots. Merfolk are exposed here.",
   hill: "High ground shelters land troops and obstructs ranged shots. Merfolk are exposed here.",
@@ -40,11 +40,11 @@ function terrainFacts(terrain: TerrainType): string[] {
   if (terrain === "village") {
     facts.push(
       "+2 gold at the start of its owner’s turn",
-      "Heals a friendly occupant by 2 HP at the start of its turn",
+      "Heals a friendly occupant by 4 HP at the start of its turn",
     );
   }
   if (terrain === "grove")
-    facts.push("Heals its owner’s occupant by 2 HP at the start of its turn");
+    facts.push("Heals its owner’s occupant by 4 HP at the start of its turn");
   if (terrain === "keep") {
     facts.push(
       "Its owner’s leader can recruit into adjacent empty terrain passable to the recruit",

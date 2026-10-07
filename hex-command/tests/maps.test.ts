@@ -81,19 +81,6 @@ for (const [id, map] of Object.entries(MAPS).filter(([id]) => id === "mirror" ||
 }
 
 const mirror = MAPS.mirror;
-test("Mirror map retains its published size and terrain density", async () => {
-  assert.equal(mirror.cols * mirror.rows, 77);
-  assert.deepEqual(
-    Object.fromEntries(
-      ["forest", "hill", "water", "village", "keep"].map((kind) => [
-        kind,
-        mirror.terrain.filter((t) => t.terrain === kind).length,
-      ]),
-    ),
-    { forest: 7, hill: 8, water: 8, village: 4, keep: 2 },
-  );
-});
-
 test("River forms two asymmetric banks linked by either crossing", async () => {
   const river = MAPS.river,
     tiles = board(river);

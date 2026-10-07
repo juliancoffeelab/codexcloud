@@ -1,7 +1,12 @@
 {
   "schemaVersion": 2,
   "terrain": "game/terrain.json",
-  "races": "game/races.json",
+  "races": [
+    "game/races/merfolk.json",
+    "game/races/human.json",
+    "game/races/undead.json",
+    "game/races/beast.json"
+  ],
   "units": [
     "game/units/warden.json",
     "game/units/adept.json",

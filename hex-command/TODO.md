@@ -14,27 +14,28 @@
       failed attempts and recording actual commands.
 - [ ] Run updated comparisons when explicitly requested. Keep campaign and arena
       rosters, scenarios and results separate.
-
-## Race balance
-
-- [ ] Undead: set racial Pierce protection to −2 and remove duplicate individual
-      skeleton/revenant modifiers. Keep +1 Impact vulnerability.
-- [ ] Remove adepts from the undead arena recruitment pool only. Do not change
-      campaign recruitment, story or hints as part of this arena roster task.
-- [ ] Boar: reduce rookie attacks to 3 Impact Trample and 2 Pierce tusks. Review
-      veteran attacks separately. Keep existing HP and defenses: rookie 13 HP,
-      +1 Pierce weakness and racial forest/grove protection.
-- [ ] Thorncaller/Briarweaver: remove extra individual forest/grove ranged
-      protection, leaving −2 total ranged protection. Keep thorn damage at 4/5.
-- [ ] Shield warden: replace the hammer with 3-damage Impact Shield bash. Keep
-      the spear and update weapon text.
-- [ ] Equalize total starting army budgets in arenas. Keep two starting troops
-      per side and deduct their prices from a shared budget. Preserve paired
-      placement, seats and initiatives.
+- [ ] Review veteran boar attacks separately after the rookie balance changes.
 
 ## Merfolk campaign
 
 - [ ] Consider terrain-aware shoreline sprites.
+
+## Data loading and unit information
+
+- [ ] Make native Rust load game data from disk by default at the start of each run.
+- [ ] Keep WASM as the exception: bundle its game data.
+- [ ] Make TypeScript ask WASM for game data.
+- [ ] Move attacks, resistances and other mechanical stats out of unit descriptions
+      into their structured data and UI fields. Add a separate list for unit/race
+      terrain buffs; consider a two-column table for terrain effects.
+
+## Tests
+
+- [ ] Move gameplay rule tests into Rust: movement, combat, recruitment, economy,
+      healing, progression, campaign objectives and native save validation.
+      Preserve behavioral coverage and remove tests that only repeat JSON values.
+      Keep JS migrations/storage, controller, undo, UI publication, rendering and
+      audio tests in Vitest, plus a small set of real WASM integration tests.
 
 ## Mobile rendering
 
