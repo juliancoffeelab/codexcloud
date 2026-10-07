@@ -77,8 +77,9 @@ for (const type of Object.keys(TYPES) as UnitType[]) {
       const [forest, hill, grove, wetlands] = required(
         expectedMovement[type] ?? expectedMovement[TYPES[type].family ?? type],
       );
+      const ground = TYPES[type].race === "merfolk" ? 2 : 1;
       for (const [terrain, expected] of [
-        ["plains", 1],
+        ["plains", ground],
         ["forest", forest],
         ["hill", hill],
         ["grove", grove],
@@ -86,10 +87,10 @@ for (const type of Object.keys(TYPES) as UnitType[]) {
         ["marsh", wetlands],
         ["water", TYPES[type].race === "merfolk" ? 1 : Infinity],
         ["bridge", 1],
-        ["village", 1],
-        ["keep", 1],
-        ["ruins", 1],
-        ["fort", 2],
+        ["village", ground],
+        ["keep", ground],
+        ["ruins", ground],
+        ["fort", ground + 1],
       ] as const) {
         assert.equal(game.cost(unit, { terrain }), expected, `${type} entering ${terrain}`);
       }
@@ -117,6 +118,25 @@ for (const type of Object.keys(TYPES) as UnitType[]) {
     },
   );
 }
+
+test.each([
+  ["reefguard", "plains", 2],
+  ["reefguard", "water", 4],
+  ["reefguard", "bridge", 4],
+  ["harpooner", "plains", 2],
+  ["harpooner", "water", 5],
+] as const)("%s routes across %s reach %i tiles", (type, terrain, steps) => {
+  const game = new Game();
+  game.units = [];
+  for (const tile of game.tiles) tile.terrain = "forest";
+  for (let col = 0; col <= 5; col++) required(game.tile(`${col},0`)).terrain = terrain;
+  const unit = game.addUnit(type, "player", "0,0");
+  const destination = `${steps},0`;
+  assert.equal(game.reachable(unit.id).get(destination), steps * (terrain === "plains" ? 2 : 1));
+  if (steps < 5) assert.equal(game.reachable(unit.id).has(`${steps + 1},0`), false);
+  game.move(unit.id, destination);
+  assert.equal(unit.tile, destination);
+});
 
 // Every woodland beast can traverse a full movement allowance of forest/grove hexes.
 for (const type of ["wolf", "boar", "wildkeeper", "thorncaller"] as const) {

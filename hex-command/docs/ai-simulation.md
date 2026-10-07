@@ -118,6 +118,11 @@ revenants do not stack another individual Pierce modifier. Wardens retain their
 spear and use a 3-damage Impact Shield bash. Wavemender costs 10 gold.
 Historical reports describe their recorded rules snapshot, not these updated values.
 
+Merfolk pay 2 movement on plains, villages, keeps and ruins, and 3 in
+forests, groves, hills and forts. Water, shallows, marshes and bridges cost 1. This racial
+land slowdown applies to both ranks, leaders and supports; base movement and
+water protection remain intact.
+
 All policies share leader reinforcement hysteresis. Leaders initially rebuild when
 below five living ordinary combatants. They release at five, return to rebuilding
 at two or fewer, and retain their previous mode at three or four. Rebuilding leaders

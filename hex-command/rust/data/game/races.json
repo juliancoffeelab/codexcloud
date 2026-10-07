@@ -3,6 +3,21 @@
     "id": "merfolk",
     "name": "Merfolk",
     "terrainModifiers": {
+      "plains": {
+        "cost": 1
+      },
+      "village": {
+        "cost": 1
+      },
+      "keep": {
+        "cost": 1
+      },
+      "ruins": {
+        "cost": 1
+      },
+      "fort": {
+        "cost": 1
+      },
       "water": {
         "passable": true,
         "damageModifiers": {
