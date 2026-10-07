@@ -522,7 +522,7 @@ mod courier_tests {
 
     #[test]
     fn required_courier_can_detour_around_stationary_allies() {
-        let rules = Rules::embedded().unwrap();
+        let rules = Rules::load().unwrap();
         let mut game = Game::start_campaign(
             &rules,
             "borrowed-tide",
@@ -594,7 +594,7 @@ mod courier_tests {
 
     #[test]
     fn allies_clear_approaches_and_complete_the_escort_for_every_policy() {
-        let rules = Rules::embedded().unwrap();
+        let rules = Rules::load().unwrap();
         for policy in Policy::ALL {
             let mut game = Game::start_campaign(
                 &rules,

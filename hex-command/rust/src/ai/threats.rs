@@ -208,7 +208,7 @@ mod tests {
     use std::cell::Cell;
     #[test]
     fn zero_danger_stops_the_minimum_search_without_visiting_later_tiles() {
-        let rules = Catalog::embedded().unwrap();
+        let rules = Catalog::load().unwrap();
         let mut game = Game::new(&rules, "mirror");
         game.units.retain(|u| u.side == Side::Player);
         game.roster_changed();

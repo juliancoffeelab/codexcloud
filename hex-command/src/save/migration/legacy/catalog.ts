@@ -14,7 +14,7 @@ interface StageHistory {
   waves: WaveHistory[];
 }
 type MigrationMission = Omit<Immutable<MissionDefinition>, "waves"> & {
-  waves: (Immutable<MissionDefinition["waves"][number]> & WaveHistory)[];
+  waves: (Immutable<MissionDefinition["waves"][number]> & Partial<WaveHistory>)[];
   legacyDialogue: DialogueLine[];
 };
 const history = stages as unknown as Record<string, StageHistory>;
@@ -29,7 +29,7 @@ export const CAMPAIGNS = Object.fromEntries(
         legacyDialogue: history[mission.map.id]?.dialogue ?? [],
         waves: mission.waves.map((wave) => ({
           ...wave,
-          ...history[mission.map.id]!.waves.find((old) => old.id === wave.id)!,
+          ...history[mission.map.id]?.waves.find((old) => old.id === wave.id),
         })),
       })),
     },

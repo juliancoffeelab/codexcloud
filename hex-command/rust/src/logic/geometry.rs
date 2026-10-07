@@ -105,7 +105,7 @@ mod tests {
     }
     #[test]
     fn terrain_changes_detach_forecast_geometry_and_preserve_the_parent() {
-        let rules = crate::data::Catalog::embedded().unwrap();
+        let rules = crate::data::Catalog::load().unwrap();
         let mut game = Game::new(&rules, "mirror");
         for tile in 0..game.terrain.len() {
             game.set_terrain(tile, rules.terrains["plains"]);

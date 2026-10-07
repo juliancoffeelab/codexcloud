@@ -10,7 +10,7 @@ use std::{
 };
 #[path = "catalog_documents.rs"]
 mod documents;
-#[cfg(any(test, feature = "wasm"))]
+#[cfg(feature = "wasm")]
 include!(concat!(env!("OUT_DIR"), "/catalog_documents.rs"));
 
 /// Relative document paths mapped to their complete UTF-8 JSON source.
@@ -375,8 +375,8 @@ impl Rules {
         })
         .and_then(|bundle| Self::from_json_bundle(&bundle))
     }
-    /// Load the bundled catalog for focused tests and WASM deployment.
-    #[cfg(any(test, feature = "wasm"))]
+    /// Load the bundled catalog for WASM deployment and embedding checks.
+    #[cfg(feature = "wasm")]
     pub fn embedded() -> Result<Self, ContentError> {
         Self::from_json_bundle(&embedded_bundle())
     }
@@ -935,7 +935,7 @@ fn validate_simulation(
 }
 
 /// The authored documents are also available without native filesystem APIs.
-#[cfg(any(test, feature = "wasm"))]
+#[cfg(feature = "wasm")]
 pub fn embedded_bundle() -> JsonBundle {
     documents::collect_bundle(|path| {
         EMBEDDED_DOCUMENTS
@@ -949,10 +949,24 @@ pub fn embedded_bundle() -> JsonBundle {
 
 #[cfg(test)]
 mod tests {
+    #[cfg(feature = "wasm")]
+    use super::embedded_bundle as test_bundle;
     use super::*;
+    #[cfg(not(feature = "wasm"))]
+    fn test_bundle() -> JsonBundle {
+        documents::collect_bundle(|path| {
+            std::fs::read_to_string(
+                Path::new(env!("CARGO_MANIFEST_DIR"))
+                    .join("data")
+                    .join(path),
+            )
+            .map_err(|error| ContentError::new(path, error.to_string()))
+        })
+        .expect("authored test catalog")
+    }
     #[test]
     fn authored_catalog_resolves_races_and_current_maps() {
-        let rules = Rules::embedded().unwrap();
+        let rules = Rules::from_json_bundle(&test_bundle()).unwrap();
         let skeleton = &rules.units[rules.types["skeleton"]];
         assert_eq!(skeleton.damage_modifiers.pierce, -2);
         let boar = &rules.units[rules.types["boar"]];
@@ -976,13 +990,13 @@ mod tests {
     }
     #[test]
     fn invalid_references_and_duplicates_report_source_document() {
-        let mut bundle = embedded_bundle();
+        let mut bundle = test_bundle();
         let units = bundle.get_mut("game/units/warden.json").unwrap();
         *units = units.replacen("\"warden\"", "\"adept\"", 1);
         let error = Rules::from_json_bundle(&bundle).unwrap_err();
         assert_eq!(error.path, "game/units/adept.json");
         assert!(error.message.contains("duplicate"));
-        let mut bundle = embedded_bundle();
+        let mut bundle = test_bundle();
         let roster = bundle.get_mut("simulation/rosters.json").unwrap();
         *roster = roster.replacen("\"commander\"", "\"missing-unit\"", 1);
         let error = Rules::from_json_bundle(&bundle).unwrap_err();
@@ -990,7 +1004,7 @@ mod tests {
     }
     #[test]
     fn missing_required_stats_and_documents_are_errors() {
-        let mut bundle = embedded_bundle();
+        let mut bundle = test_bundle();
         let units = bundle.get_mut("game/units/warden.json").unwrap();
         let mut document: serde_json::Value = serde_json::from_str(units).unwrap();
         document.as_object_mut().unwrap().remove("hp");
@@ -1001,7 +1015,7 @@ mod tests {
                 .message
                 .contains("missing field")
         );
-        let mut bundle = embedded_bundle();
+        let mut bundle = test_bundle();
         bundle.remove("game/races/merfolk.json");
         assert_eq!(
             Rules::from_json_bundle(&bundle).unwrap_err().path,
@@ -1010,13 +1024,13 @@ mod tests {
     }
     #[test]
     fn roles_are_required_and_race_errors_identify_the_individual_document() {
-        let mut bundle = embedded_bundle();
+        let mut bundle = test_bundle();
         let unit = bundle.get_mut("game/units/scout.json").unwrap();
         *unit = unit.replace("\"role\": \"flank\",", "");
         let error = Rules::from_json_bundle(&bundle).unwrap_err();
         assert_eq!(error.path, "game/units/scout.json");
         assert!(error.message.contains("role"));
-        let mut bundle = embedded_bundle();
+        let mut bundle = test_bundle();
         let race = bundle.get_mut("game/races/human.json").unwrap();
         *race = race.replace("\"id\": \"human\"", "\"id\": \"merfolk\"");
         let error = Rules::from_json_bundle(&bundle).unwrap_err();
@@ -1025,7 +1039,7 @@ mod tests {
     }
     #[test]
     fn manifest_rejects_traversal_and_unsupported_schema() {
-        let mut bundle = embedded_bundle();
+        let mut bundle = test_bundle();
         let manifest = bundle.get_mut("manifest.json").unwrap();
         *manifest = manifest.replace("game/terrain.json", "../terrain.json");
         assert!(
@@ -1034,7 +1048,7 @@ mod tests {
                 .message
                 .contains("traversal")
         );
-        let mut bundle = embedded_bundle();
+        let mut bundle = test_bundle();
         let manifest = bundle.get_mut("manifest.json").unwrap();
         *manifest = manifest.replace("\"schemaVersion\": 2", "\"schemaVersion\": 99");
         assert!(
@@ -1046,7 +1060,7 @@ mod tests {
     }
     #[test]
     fn metadata_and_exact_document_fingerprint_are_preserved() {
-        let bundle = embedded_bundle();
+        let bundle = test_bundle();
         let rules = Rules::from_json_bundle(&bundle).unwrap();
         let adept = &rules.units[rules.types["adept"]];
         let authored: UnitSpecification = parse(&bundle, "game/units/adept.json").unwrap();
@@ -1081,7 +1095,7 @@ mod tests {
             "hex-command-catalog-{}-{}", std::process::id(),
             std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_nanos()
         )));
-        for (path, source) in embedded_bundle() {
+        for (path, source) in test_bundle() {
             let target = root.0.join(path);
             std::fs::create_dir_all(target.parent().unwrap()).unwrap();
             std::fs::write(target, source).unwrap();
@@ -1122,8 +1136,20 @@ mod tests {
         );
     }
     #[test]
+    fn invalid_scenario_placement_returns_a_content_error() {
+        let mut bundle = test_bundle();
+        let path = "game/scenario/mirror-v1/roster.json";
+        let mut roster: serde_json::Value = serde_json::from_str(&bundle[path]).unwrap();
+        roster["units"][0]["col"] = serde_json::json!(999);
+        bundle.insert(path.to_owned(), serde_json::to_string(&roster).unwrap());
+        let error = Rules::from_json_bundle(&bundle).unwrap_err();
+        assert_eq!(error.path, "game/scenario/mirror-v1/scenario.json");
+        assert!(error.message.contains("invalid unit placement u1"));
+    }
+
+    #[test]
     fn initial_placements_allow_wounds_but_reject_excess_hp() {
-        let mut bundle = embedded_bundle();
+        let mut bundle = test_bundle();
         let map = bundle
             .get_mut("game/scenario/mirror-v1/roster.json")
             .unwrap();
@@ -1151,11 +1177,11 @@ mod tests {
 
     #[test]
     fn component_references_report_missing_files_and_reject_traversal() {
-        let mut bundle = embedded_bundle();
+        let mut bundle = test_bundle();
         let path = "game/campaigns/borrowed-tide/stages/tide-wreck/objectives.json";
         bundle.remove(path);
         assert_eq!(Rules::from_json_bundle(&bundle).unwrap_err().path, path);
-        let mut bundle = embedded_bundle();
+        let mut bundle = test_bundle();
         let descriptor = bundle
             .get_mut("game/scenario/mirror-v1/scenario.json")
             .unwrap();
@@ -1168,7 +1194,7 @@ mod tests {
         );
     }
 
-    #[cfg(not(target_arch = "wasm32"))]
+    #[cfg(all(feature = "wasm", not(target_arch = "wasm32")))]
     #[test]
     fn native_and_embedded_load_only_manifest_referenced_documents() {
         let native = Rules::load_from(Path::new(env!("CARGO_MANIFEST_DIR")).join("data")).unwrap();
@@ -1177,7 +1203,7 @@ mod tests {
             Rules::embedded().unwrap().content_fingerprint
         );
         // Unreferenced files must not create a different catalog on WASM.
-        let mut sources = embedded_bundle();
+        let mut sources = test_bundle();
         sources.insert("game/units/unlisted.json".into(), "{}".into());
         let selected = documents::collect_bundle(|path| {
             sources

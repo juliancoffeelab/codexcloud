@@ -152,6 +152,9 @@ policy/diplomacy. The Rust scheduler supplies the sample configurations.
 `npm run check:rust` covers game rules, recruitment/economy/healing, movement,
 combat, progression, campaign objectives and native checkpoint validation. Small
 native scenarios live in `src/tests/`; each can exercise several configurations.
+Plain `cargo test` reads its authored catalog from disk, including document lists
+used by catalog mutation tests. `npm run check:rust` also enables the WASM feature
+and verifies actual embedded content against the native disk catalog.
 `npm test` retains controller, save migration/storage, publication, UI, artwork,
 audio and focused WASM integration tests. Browser spot checks stay outside the
 mandatory suite.

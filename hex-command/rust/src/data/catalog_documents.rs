@@ -236,8 +236,9 @@ pub(super) fn map_metadata(
     }
     let reference: Reference = parse(bundle, descriptor)?;
     let metadata: MapDocument = parse(bundle, &sibling(descriptor, &reference.map)?)?;
-    let units = units.unwrap_or_else(|| {
-        state
+    let units = match units {
+        Some(units) => units,
+        None => state
             .units
             .iter()
             .map(|unit| {
@@ -245,18 +246,20 @@ pub(super) fn map_metadata(
                     .tiles
                     .iter()
                     .find(|tile| tile.id == unit.tile)
-                    .expect("validated placement");
-                StartingUnit {
+                    .ok_or_else(|| {
+                        ContentError::new(descriptor, format!("invalid unit placement {}", unit.id))
+                    })?;
+                Ok(StartingUnit {
                     col: tile.col,
                     row: tile.row,
                     r#type: unit.r#type.clone(),
                     side: unit.side,
                     name: unit.name.clone(),
                     role: unit.role,
-                }
+                })
             })
-            .collect()
-    });
+            .collect::<Result<Vec<_>, ContentError>>()?,
+    };
     Ok(MapDefinition {
         id: state.map_id.clone(),
         revision: state.map_revision,

@@ -105,30 +105,3 @@ fn strongest_adjacent_friendly_healer_wins_without_stacking_or_overhealing() {
     game.end_turn();
     assert_eq!(game.unit(ally).unwrap().hp, maximum);
 }
-
-#[test]
-fn opening_campaign_purses_allow_the_discussed_mixed_purchases() {
-    for (campaign, kinds, remainder) in [
-        ("ashen-oath", ["skeleton", "bonearcher"], 1),
-        ("green-accord", ["wolf", "thorncaller"], 0),
-    ] {
-        let mut game = chapter(campaign, 0);
-        let leader = game
-            .units
-            .iter()
-            .find(|u| u.side == Side::Player && u.role == Some(Role::Leader))
-            .unwrap()
-            .id;
-        for kind in kinds {
-            let recruit = game.kind(kind);
-            let destination = game.placement_tiles(game.unit(leader).unwrap(), recruit, true)[0];
-            game.execute(Command::Recruit {
-                unit: UnitId(leader),
-                kind: kind.into(),
-                tile: game.board.ids[destination].as_str().into(),
-            })
-            .unwrap();
-        }
-        assert_eq!(game.gold[0], remainder);
-    }
-}

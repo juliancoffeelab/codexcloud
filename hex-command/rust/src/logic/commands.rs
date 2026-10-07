@@ -193,7 +193,7 @@ mod browser_controls_tests {
 
     #[test]
     fn explicit_recall_preserves_selection_and_rejects_duplicates_atomically() {
-        let rules = Rules::embedded().unwrap();
+        let rules = Rules::load().unwrap();
         let mut game =
             Game::start_campaign(&rules, "lantern-road", 0, vec![], 0, vec![], vec![], vec![]);
         game.winner = Some(Side::Player);
