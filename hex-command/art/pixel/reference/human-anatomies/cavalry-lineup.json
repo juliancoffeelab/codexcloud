@@ -1,0 +1,44 @@
+[
+  {
+    "id": "lancer-l1",
+    "label": "Rider \u2014 L1",
+    "base": "mounted-lance",
+    "level": 1,
+    "image": "art/pixel/units/rider/player.png"
+  },
+  {
+    "id": "lancer-l2",
+    "label": "Lancer \u2014 L2",
+    "base": "mounted-lance",
+    "level": 2,
+    "image": "art/pixel/units/lancer/player.png"
+  },
+  {
+    "id": "lancer-l3",
+    "label": "Knight \u2014 L3",
+    "base": "mounted-lance",
+    "level": 3,
+    "image": "art/pixel/units/knight/player.png"
+  },
+  {
+    "id": "horse-archer-l1",
+    "label": "Horse archer \u2014 L1",
+    "base": "mounted-bow",
+    "level": 1,
+    "image": "art/pixel/units/horse-archer/player.png"
+  },
+  {
+    "id": "horse-archer-l2",
+    "label": "Horse bowman \u2014 L2",
+    "base": "mounted-bow",
+    "level": 2,
+    "image": "art/pixel/units/horse-bowman/player.png"
+  },
+  {
+    "id": "horse-archer-l3",
+    "label": "Horse marksman \u2014 L3",
+    "base": "mounted-bow",
+    "level": 3,
+    "image": "art/pixel/units/horse-marksman/player.png"
+  }
+]

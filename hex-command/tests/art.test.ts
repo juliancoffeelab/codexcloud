@@ -169,8 +169,7 @@ test("Every unit, terrain and portrait pixel matches its editable matrix", async
         const [cropX, cropY, width, height] =
           campaignSheets.pixel.frames[key as keyof typeof campaignSheets.pixel.frames];
         const rows = readFileSync(new URL(filename, directory), "utf8").trimEnd().split("\n");
-        assert.equal(height, 48);
-        assert.equal(width, 48);
+        assert.equal(width, rows[0]!.length);
         assert.equal(rows.length, height);
         if (kind === "terrain") {
           // Check against the editable source palette, independently of the
@@ -213,12 +212,14 @@ test("Every unit, terrain and portrait pixel matches its editable matrix", async
     ...Object.keys(TERRAIN).map((name) => `terrain_${frameName(name)}`),
     "portrait_worker",
   ].sort();
+  for (const frame of expectedFrames) {
+    assert(matrixFrames.includes(frame), `Game frame has no editable matrix: ${frame}`);
+  }
   assert.deepEqual(
+    Object.keys(frameSources).sort(),
     matrixFrames.sort(),
-    expectedFrames,
-    "Every game unit and terrain has an editable matrix",
+    "Every artwork source is packed, including designs awaiting gameplay registration",
   );
-  assert.deepEqual(Object.keys(frameSources).sort(), expectedFrames);
   assert.deepEqual(
     readdirSync(new URL("../public/assets/", import.meta.url))
       .filter((name) => /pixel.*\.png$/.test(name))

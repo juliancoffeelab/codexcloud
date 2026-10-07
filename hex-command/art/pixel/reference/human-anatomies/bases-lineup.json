@@ -1,0 +1,18 @@
+[
+  {
+    "label": "Crossbow \u2014 cleaned base",
+    "image": "art/pixel/reference/human-anatomies/base-crossbow/player.png"
+  },
+  {
+    "label": "Two-handed staff \u2014 cleaned base",
+    "image": "art/pixel/reference/human-anatomies/base-staff-infantry/player.png"
+  },
+  {
+    "label": "Mounted lance \u2014 cleaned base",
+    "image": "art/pixel/reference/human-anatomies/base-mounted-lance/player.png"
+  },
+  {
+    "label": "Mounted bow \u2014 cleaned base",
+    "image": "art/pixel/reference/human-anatomies/base-mounted-bow/player.png"
+  }
+]

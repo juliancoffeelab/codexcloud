@@ -1,0 +1,50 @@
+[
+  {
+    "label": "Scout — L1",
+    "image": "art/pixel/units/scout/player.png"
+  },
+  {
+    "label": "Ranger — L2",
+    "image": "art/pixel/units/ranger/player.png"
+  },
+  {
+    "label": "Shadowblade — L3",
+    "image": "art/pixel/units/shadowblade/player.png"
+  },
+  {
+    "label": "Scout — L1",
+    "image": "art/pixel/units/scout/player.png"
+  },
+  {
+    "label": "Slinger — L2",
+    "image": "art/pixel/units/slinger/player.png"
+  },
+  {
+    "label": "Fireslinger — L3",
+    "image": "art/pixel/units/fireslinger/player.png"
+  },
+  {
+    "label": "Archer — L1",
+    "image": "art/pixel/units/archer/player.png"
+  },
+  {
+    "label": "Marksman — L2",
+    "image": "art/pixel/units/marksman/player.png"
+  },
+  {
+    "label": "Sharpshooter — L3",
+    "image": "art/pixel/units/sharpshooter/player.png"
+  },
+  {
+    "label": "Archer — L1",
+    "image": "art/pixel/units/archer/player.png"
+  },
+  {
+    "label": "Crossbowman — L2",
+    "image": "art/pixel/units/crossbowman/player.png"
+  },
+  {
+    "label": "Arbalester — L3",
+    "image": "art/pixel/units/arbalester/player.png"
+  }
+]

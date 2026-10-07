@@ -1,0 +1,1426 @@
+{
+  "coordinateSpace": [48, 48],
+  "edits": [
+    {
+      "x": 22,
+      "y": 8,
+      "from": "a",
+      "to": "A",
+      "reason": "Connect helmet highlight plane"
+    },
+    {
+      "x": 23,
+      "y": 8,
+      "from": "b",
+      "to": "k",
+      "reason": "Remove leather/ivory flecks from steel helmet"
+    },
+    {
+      "x": 24,
+      "y": 8,
+      "from": "b",
+      "to": "k",
+      "reason": "Remove leather/ivory flecks from steel helmet"
+    },
+    {
+      "x": 16,
+      "y": 9,
+      "from": "b",
+      "to": "k",
+      "reason": "Remove leather/ivory flecks from steel helmet"
+    },
+    {
+      "x": 21,
+      "y": 9,
+      "from": "a",
+      "to": "A",
+      "reason": "Connect helmet highlight plane"
+    },
+    {
+      "x": 23,
+      "y": 9,
+      "from": "a",
+      "to": "A",
+      "reason": "Connect helmet highlight plane"
+    },
+    {
+      "x": 21,
+      "y": 10,
+      "from": "a",
+      "to": "A",
+      "reason": "Connect helmet highlight plane"
+    },
+    {
+      "x": 23,
+      "y": 10,
+      "from": "a",
+      "to": "A",
+      "reason": "Connect helmet highlight plane"
+    },
+    {
+      "x": 21,
+      "y": 11,
+      "from": "a",
+      "to": "A",
+      "reason": "Connect helmet highlight plane"
+    },
+    {
+      "x": 22,
+      "y": 11,
+      "from": "a",
+      "to": "A",
+      "reason": "Connect helmet highlight plane"
+    },
+    {
+      "x": 23,
+      "y": 11,
+      "from": "a",
+      "to": "A",
+      "reason": "Connect helmet highlight plane"
+    },
+    {
+      "x": 18,
+      "y": 12,
+      "from": "a",
+      "to": "k",
+      "reason": "Make kettle-helmet brim a connected steel shadow"
+    },
+    {
+      "x": 19,
+      "y": 12,
+      "from": "a",
+      "to": "k",
+      "reason": "Make kettle-helmet brim a connected steel shadow"
+    },
+    {
+      "x": 20,
+      "y": 12,
+      "from": "a",
+      "to": "k",
+      "reason": "Make kettle-helmet brim a connected steel shadow"
+    },
+    {
+      "x": 21,
+      "y": 12,
+      "from": "a",
+      "to": "k",
+      "reason": "Make kettle-helmet brim a connected steel shadow"
+    },
+    {
+      "x": 22,
+      "y": 12,
+      "from": "c",
+      "to": "k",
+      "reason": "Make kettle-helmet brim a connected steel shadow"
+    },
+    {
+      "x": 23,
+      "y": 12,
+      "from": "c",
+      "to": "k",
+      "reason": "Make kettle-helmet brim a connected steel shadow"
+    },
+    {
+      "x": 24,
+      "y": 12,
+      "from": "A",
+      "to": "k",
+      "reason": "Make kettle-helmet brim a connected steel shadow"
+    },
+    {
+      "x": 25,
+      "y": 12,
+      "from": "a",
+      "to": "k",
+      "reason": "Make kettle-helmet brim a connected steel shadow"
+    },
+    {
+      "x": 26,
+      "y": 12,
+      "from": "a",
+      "to": "k",
+      "reason": "Make kettle-helmet brim a connected steel shadow"
+    },
+    {
+      "x": 27,
+      "y": 12,
+      "from": "b",
+      "to": "k",
+      "reason": "Remove leather/ivory flecks from steel helmet"
+    },
+    {
+      "x": 15,
+      "y": 13,
+      "from": "a",
+      "to": "k",
+      "reason": "Make kettle-helmet brim a connected steel shadow"
+    },
+    {
+      "x": 16,
+      "y": 13,
+      "from": "a",
+      "to": "k",
+      "reason": "Make kettle-helmet brim a connected steel shadow"
+    },
+    {
+      "x": 17,
+      "y": 13,
+      "from": "a",
+      "to": "k",
+      "reason": "Make kettle-helmet brim a connected steel shadow"
+    },
+    {
+      "x": 18,
+      "y": 13,
+      "from": "a",
+      "to": "k",
+      "reason": "Make kettle-helmet brim a connected steel shadow"
+    },
+    {
+      "x": 19,
+      "y": 13,
+      "from": "b",
+      "to": "k",
+      "reason": "Remove leather/ivory flecks from steel helmet"
+    },
+    {
+      "x": 23,
+      "y": 13,
+      "from": "b",
+      "to": "k",
+      "reason": "Remove leather/ivory flecks from steel helmet"
+    },
+    {
+      "x": 24,
+      "y": 13,
+      "from": "b",
+      "to": "k",
+      "reason": "Remove leather/ivory flecks from steel helmet"
+    },
+    {
+      "x": 19,
+      "y": 14,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 20,
+      "y": 14,
+      "from": "B",
+      "to": "S",
+      "reason": "Remove wrong-color face flecks"
+    },
+    {
+      "x": 21,
+      "y": 14,
+      "from": "s",
+      "to": "S",
+      "reason": "Remove wrong-color face flecks"
+    },
+    {
+      "x": 23,
+      "y": 14,
+      "from": "H",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 24,
+      "y": 14,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 16,
+      "y": 15,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 17,
+      "y": 15,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 18,
+      "y": 15,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 21,
+      "y": 15,
+      "from": "B",
+      "to": "S",
+      "reason": "Remove wrong-color face flecks"
+    },
+    {
+      "x": 24,
+      "y": 15,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 16,
+      "y": 16,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 17,
+      "y": 16,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 18,
+      "y": 16,
+      "from": "H",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 24,
+      "y": 16,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 18,
+      "y": 18,
+      "from": "H",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 22,
+      "y": 18,
+      "from": "H",
+      "to": "S",
+      "reason": "Remove wrong-color face flecks"
+    },
+    {
+      "x": 20,
+      "y": 19,
+      "from": "H",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 21,
+      "y": 19,
+      "from": "H",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 43,
+      "y": 21,
+      "from": "C",
+      "to": "A",
+      "reason": "Keep crossbow prod and string steel-colored"
+    },
+    {
+      "x": 15,
+      "y": 22,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 16,
+      "y": 22,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 17,
+      "y": 22,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 18,
+      "y": 22,
+      "from": "b",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 19,
+      "y": 22,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 20,
+      "y": 22,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 21,
+      "y": 22,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 24,
+      "y": 22,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 25,
+      "y": 22,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 26,
+      "y": 22,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 27,
+      "y": 22,
+      "from": "b",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 28,
+      "y": 22,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 29,
+      "y": 22,
+      "from": "s",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 30,
+      "y": 22,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 31,
+      "y": 22,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 32,
+      "y": 22,
+      "from": "s",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 33,
+      "y": 22,
+      "from": "s",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 34,
+      "y": 22,
+      "from": "s",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 35,
+      "y": 22,
+      "from": "s",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 36,
+      "y": 22,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 37,
+      "y": 22,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 38,
+      "y": 22,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 39,
+      "y": 22,
+      "from": "s",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 40,
+      "y": 22,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 41,
+      "y": 22,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 42,
+      "y": 22,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 44,
+      "y": 22,
+      "from": "c",
+      "to": "a",
+      "reason": "Keep crossbow prod and string steel-colored"
+    },
+    {
+      "x": 21,
+      "y": 23,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 23,
+      "y": 23,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 24,
+      "y": 23,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 25,
+      "y": 23,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 30,
+      "y": 23,
+      "from": "s",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 31,
+      "y": 23,
+      "from": "s",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 32,
+      "y": 23,
+      "from": "s",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 33,
+      "y": 23,
+      "from": "s",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 39,
+      "y": 23,
+      "from": "s",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 40,
+      "y": 23,
+      "from": "s",
+      "to": "H",
+      "reason": "Flatten wooden crossbow stock; remove skin-colored wood artifacts"
+    },
+    {
+      "x": 41,
+      "y": 23,
+      "from": "s",
+      "to": "S",
+      "reason": "Use a flat skin plane on exposed arms and hands"
+    },
+    {
+      "x": 42,
+      "y": 23,
+      "from": "c",
+      "to": "a",
+      "reason": "Keep crossbow prod and string steel-colored"
+    },
+    {
+      "x": 12,
+      "y": 24,
+      "from": "H",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 23,
+      "y": 24,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 30,
+      "y": 24,
+      "from": "b",
+      "to": "h",
+      "reason": "Connect underside shadow of wooden stock"
+    },
+    {
+      "x": 32,
+      "y": 24,
+      "from": "b",
+      "to": "h",
+      "reason": "Connect underside shadow of wooden stock"
+    },
+    {
+      "x": 41,
+      "y": 24,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 42,
+      "y": 24,
+      "from": "c",
+      "to": "a",
+      "reason": "Keep crossbow prod and string steel-colored"
+    },
+    {
+      "x": 16,
+      "y": 25,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 26,
+      "y": 25,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 27,
+      "y": 25,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 35,
+      "y": 25,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 36,
+      "y": 25,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 37,
+      "y": 25,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 38,
+      "y": 25,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 39,
+      "y": 25,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 11,
+      "y": 26,
+      "from": "s",
+      "to": "S",
+      "reason": "Use a flat skin plane on exposed arms and hands"
+    },
+    {
+      "x": 12,
+      "y": 26,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 13,
+      "y": 26,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 14,
+      "y": 26,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 15,
+      "y": 26,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 20,
+      "y": 26,
+      "from": "H",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 23,
+      "y": 26,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 39,
+      "y": 26,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 40,
+      "y": 26,
+      "from": "c",
+      "to": "a",
+      "reason": "Keep crossbow prod and string steel-colored"
+    },
+    {
+      "x": 41,
+      "y": 26,
+      "from": "c",
+      "to": "a",
+      "reason": "Keep crossbow prod and string steel-colored"
+    },
+    {
+      "x": 22,
+      "y": 27,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 27,
+      "y": 27,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 31,
+      "y": 27,
+      "from": "H",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 14,
+      "y": 28,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 15,
+      "y": 28,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 22,
+      "y": 28,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 27,
+      "y": 28,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 28,
+      "y": 28,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 14,
+      "y": 29,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 15,
+      "y": 29,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 16,
+      "y": 29,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 17,
+      "y": 29,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 18,
+      "y": 29,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 21,
+      "y": 29,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 22,
+      "y": 29,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 23,
+      "y": 29,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 9,
+      "y": 30,
+      "from": "k",
+      "to": "b",
+      "reason": "Remove gray flecks from leather bolt-case and leg"
+    },
+    {
+      "x": 10,
+      "y": 30,
+      "from": "a",
+      "to": "b",
+      "reason": "Remove gray flecks from leather bolt-case and leg"
+    },
+    {
+      "x": 11,
+      "y": 30,
+      "from": "a",
+      "to": "b",
+      "reason": "Remove gray flecks from leather bolt-case and leg"
+    },
+    {
+      "x": 12,
+      "y": 30,
+      "from": "a",
+      "to": "b",
+      "reason": "Remove gray flecks from leather bolt-case and leg"
+    },
+    {
+      "x": 13,
+      "y": 30,
+      "from": "k",
+      "to": "b",
+      "reason": "Remove gray flecks from leather bolt-case and leg"
+    },
+    {
+      "x": 17,
+      "y": 30,
+      "from": "H",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 18,
+      "y": 30,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten tunic interior"
+    },
+    {
+      "x": 19,
+      "y": 30,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten tunic interior"
+    },
+    {
+      "x": 21,
+      "y": 30,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten tunic interior"
+    },
+    {
+      "x": 24,
+      "y": 30,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 9,
+      "y": 31,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 10,
+      "y": 31,
+      "from": "k",
+      "to": "b",
+      "reason": "Remove gray flecks from leather bolt-case and leg"
+    },
+    {
+      "x": 11,
+      "y": 31,
+      "from": "a",
+      "to": "b",
+      "reason": "Remove gray flecks from leather bolt-case and leg"
+    },
+    {
+      "x": 12,
+      "y": 31,
+      "from": "k",
+      "to": "b",
+      "reason": "Remove gray flecks from leather bolt-case and leg"
+    },
+    {
+      "x": 13,
+      "y": 31,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 16,
+      "y": 31,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten tunic interior"
+    },
+    {
+      "x": 22,
+      "y": 31,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten tunic interior"
+    },
+    {
+      "x": 23,
+      "y": 31,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 8,
+      "y": 32,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 9,
+      "y": 32,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 10,
+      "y": 32,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 11,
+      "y": 32,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 12,
+      "y": 32,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 13,
+      "y": 32,
+      "from": "b",
+      "to": "B",
+      "reason": "Remove enclosed leather speckle"
+    },
+    {
+      "x": 14,
+      "y": 32,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 15,
+      "y": 32,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten tunic interior"
+    },
+    {
+      "x": 26,
+      "y": 32,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 8,
+      "y": 33,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 9,
+      "y": 33,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 10,
+      "y": 33,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 11,
+      "y": 33,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 12,
+      "y": 33,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 13,
+      "y": 33,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 14,
+      "y": 33,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 33,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 26,
+      "y": 33,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 9,
+      "y": 34,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 10,
+      "y": 34,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 11,
+      "y": 34,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 13,
+      "y": 34,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 12,
+      "y": 35,
+      "from": "H",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 18,
+      "y": 35,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 35,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten tunic interior"
+    },
+    {
+      "x": 12,
+      "y": 36,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 13,
+      "y": 36,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 17,
+      "y": 36,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 36,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 15,
+      "y": 37,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 15,
+      "y": 38,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 29,
+      "y": 38,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 14,
+      "y": 39,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 8,
+      "y": 40,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 13,
+      "y": 40,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 7,
+      "y": 41,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 8,
+      "y": 41,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 9,
+      "y": 41,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 10,
+      "y": 41,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 11,
+      "y": 41,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 26,
+      "y": 41,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 7,
+      "y": 42,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 8,
+      "y": 42,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 9,
+      "y": 42,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 10,
+      "y": 42,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 7,
+      "y": 43,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 8,
+      "y": 43,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 9,
+      "y": 43,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 30,
+      "y": 43,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 6,
+      "y": 44,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 7,
+      "y": 44,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 8,
+      "y": 44,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 31,
+      "y": 44,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 7,
+      "y": 45,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 8,
+      "y": 45,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 9,
+      "y": 45,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 30,
+      "y": 45,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 31,
+      "y": 45,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    },
+    {
+      "x": 32,
+      "y": 45,
+      "from": "h",
+      "to": "B",
+      "reason": "Unify human leather and hair browns"
+    }
+  ]
+}

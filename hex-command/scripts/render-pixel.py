@@ -21,8 +21,8 @@ def read_matrix(matrix):
     rows = matrix.read_text().splitlines()
     if not rows or not rows[0] or any(len(row) != len(rows[0]) for row in rows):
         raise ValueError(f"{matrix}: matrix must be a nonempty rectangle")
-    if matrix.parent.parent in (ART / "units", ART / "terrain", ART / "portraits") and (len(rows[0]), len(rows)) != (48, 48):
-        raise ValueError(f"{matrix}: artwork matrices must be 48×48")
+    if matrix.parent.parent in (ART / "terrain", ART / "portraits") and (len(rows[0]), len(rows)) != (48, 48):
+        raise ValueError(f"{matrix}: terrain and portrait matrices must be 48×48")
     return rows
 
 
@@ -100,8 +100,8 @@ def pixel_atlases():
             if not matrix.exists():
                 raise ValueError(f"{matrix}: both faction matrices are required")
             width, height, pixels = rgba_pixels(matrix)
-            if (width, height) != (48, 48) or not any(pixels[3::4]):
-                raise ValueError(f"{matrix}: expected a nonempty 48×48 sprite")
+            if not any(pixels[3::4]):
+                raise ValueError(f"{matrix}: expected a nonempty unit sprite")
             if alpha is not None and alpha != pixels[3::4]:
                 raise ValueError(f"{directory.name}: factions must share identical silhouettes")
             alpha = pixels[3::4]

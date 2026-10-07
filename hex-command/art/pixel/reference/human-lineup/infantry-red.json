@@ -1,0 +1,50 @@
+[
+  {
+    "label": "Swordsman — L1",
+    "image": "art/pixel/units/leather-swordsman/enemy.png"
+  },
+  {
+    "label": "Sword infantry — L2",
+    "image": "art/pixel/units/swordsman/enemy.png"
+  },
+  {
+    "label": "Champion — L3",
+    "image": "art/pixel/units/champion/enemy.png"
+  },
+  {
+    "label": "Swordsman — L1",
+    "image": "art/pixel/units/leather-swordsman/enemy.png"
+  },
+  {
+    "label": "Hammerman — L2",
+    "image": "art/pixel/units/hammerman/enemy.png"
+  },
+  {
+    "label": "Warhammer — L3",
+    "image": "art/pixel/units/warhammer/enemy.png"
+  },
+  {
+    "label": "Spearman — L1",
+    "image": "art/pixel/units/leather-spearman/enemy.png"
+  },
+  {
+    "label": "Spear infantry — L2",
+    "image": "art/pixel/units/spearman/enemy.png"
+  },
+  {
+    "label": "Sentinel — L3",
+    "image": "art/pixel/units/sentinel/enemy.png"
+  },
+  {
+    "label": "Spearman — L1",
+    "image": "art/pixel/units/leather-spearman/enemy.png"
+  },
+  {
+    "label": "Halberdier — L2",
+    "image": "art/pixel/units/halberdier/enemy.png"
+  },
+  {
+    "label": "Halberd master — L3",
+    "image": "art/pixel/units/halberd-master/enemy.png"
+  }
+]

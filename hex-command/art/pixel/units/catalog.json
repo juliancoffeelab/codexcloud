@@ -1,0 +1,152 @@
+{
+  "leather-swordsman": {
+    "name": "Leather swordsman",
+    "level": 1,
+    "study": "infantry-progression/leather-swordsman",
+    "canvas": [48, 48]
+  },
+  "leather-spearman": {
+    "name": "Leather spearman",
+    "level": 1,
+    "study": "infantry-progression/leather-spearman",
+    "canvas": [48, 48]
+  },
+  "champion": {
+    "name": "Champion",
+    "level": 3,
+    "study": "human-level3/champion",
+    "canvas": [48, 48]
+  },
+  "sentinel": {
+    "name": "Sentinel",
+    "level": 3,
+    "study": "human-level3/sentinel",
+    "canvas": [48, 48]
+  },
+  "sharpshooter": {
+    "name": "Sharpshooter",
+    "level": 3,
+    "study": "human-level3/sharpshooter",
+    "canvas": [48, 48]
+  },
+  "shadowblade": {
+    "name": "Shadowblade",
+    "level": 3,
+    "study": "scout-level3/shadowblade",
+    "canvas": [48, 48]
+  },
+  "fireslinger": {
+    "name": "Fireslinger",
+    "level": 3,
+    "study": "scout-level3/fireslinger",
+    "canvas": [48, 48]
+  },
+  "slinger": {
+    "name": "Slinger",
+    "level": 2,
+    "study": "slinger",
+    "canvas": [48, 48]
+  },
+  "grand-marshal": {
+    "name": "Grand Marshal",
+    "level": 3,
+    "study": "human-level3/grand-marshal",
+    "canvas": [48, 48]
+  },
+  "crossbowman": {
+    "name": "Crossbowman",
+    "level": 2,
+    "study": "human-anatomies/crossbowman-l2",
+    "canvas": [48, 48]
+  },
+  "arbalester": {
+    "name": "Arbalester",
+    "level": 3,
+    "study": "human-anatomies/arbalester-l3",
+    "canvas": [48, 48]
+  },
+  "hammerman": {
+    "name": "Hammerman",
+    "level": 2,
+    "study": "human-anatomies/hammerman-l2",
+    "canvas": [48, 48]
+  },
+  "warhammer": {
+    "name": "Warhammer",
+    "level": 3,
+    "study": "human-anatomies/warhammer-l3",
+    "canvas": [48, 48]
+  },
+  "halberdier": {
+    "name": "Halberdier",
+    "level": 2,
+    "study": "human-anatomies/halberdier-l2",
+    "canvas": [48, 48]
+  },
+  "halberd-master": {
+    "name": "Halberd master",
+    "level": 3,
+    "study": "human-anatomies/halberdmaster-l3",
+    "canvas": [48, 48]
+  },
+  "rider": {
+    "name": "Rider",
+    "level": 1,
+    "study": "human-anatomies/lancer-l1",
+    "canvas": [64, 64]
+  },
+  "lancer": {
+    "name": "Lancer",
+    "level": 2,
+    "study": "human-anatomies/lancer-l2",
+    "canvas": [64, 64]
+  },
+  "knight": {
+    "name": "Knight",
+    "level": 3,
+    "study": "human-anatomies/lancer-l3",
+    "canvas": [64, 64]
+  },
+  "horse-archer": {
+    "name": "Horse archer",
+    "level": 1,
+    "study": "human-anatomies/horse-archer-l1",
+    "canvas": [64, 64]
+  },
+  "horse-bowman": {
+    "name": "Horse bowman",
+    "level": 2,
+    "study": "human-anatomies/horse-archer-l2",
+    "canvas": [64, 64]
+  },
+  "horse-marksman": {
+    "name": "Horse marksman",
+    "level": 3,
+    "study": "human-anatomies/horse-archer-l3",
+    "canvas": [64, 64]
+  },
+  "healer": {
+    "name": "Healer",
+    "level": 2,
+    "study": "human-magic/healer-l2",
+    "canvas": [48, 48]
+  },
+  "high-healer": {
+    "name": "High healer",
+    "level": 3,
+    "study": "human-magic/healer-l3",
+    "canvas": [48, 48]
+  },
+  "storm-mage": {
+    "name": "Storm mage",
+    "level": 2,
+    "study": "human-magic/storm-mage-l2",
+    "canvas": [48, 48]
+  },
+  "archmage": {
+    "name": "Archmage",
+    "level": 3,
+    "study": "human-magic/archmage-l3",
+    "canvas": [48, 48]
+  }
+}

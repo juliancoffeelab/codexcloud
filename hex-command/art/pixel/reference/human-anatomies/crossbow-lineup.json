@@ -1,0 +1,16 @@
+[
+  {
+    "id": "crossbowman-l2",
+    "label": "Crossbowman \u2014 L2",
+    "base": "crossbow",
+    "level": 2,
+    "image": "art/pixel/units/crossbowman/player.png"
+  },
+  {
+    "id": "arbalester-l3",
+    "label": "Arbalester \u2014 L3",
+    "base": "crossbow",
+    "level": 3,
+    "image": "art/pixel/units/arbalester/player.png"
+  }
+]

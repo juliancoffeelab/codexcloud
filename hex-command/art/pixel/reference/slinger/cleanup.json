@@ -1,0 +1,273 @@
+[
+  {
+    "x": 12,
+    "y": 23,
+    "from": "w",
+    "to": "c",
+    "reason": "ivory sleeve shadow"
+  },
+  {
+    "x": 10,
+    "y": 23,
+    "from": "g",
+    "to": "b",
+    "reason": "sleeve outline"
+  },
+  {
+    "x": 13,
+    "y": 25,
+    "from": "g",
+    "to": "b",
+    "reason": "leather shadow"
+  },
+  {
+    "x": 24,
+    "y": 23,
+    "from": "w",
+    "to": "C",
+    "reason": "ivory shoulder cloth"
+  },
+  {
+    "x": 19,
+    "y": 26,
+    "from": "w",
+    "to": "C",
+    "reason": "ivory diagonal sash"
+  },
+  {
+    "x": 20,
+    "y": 27,
+    "from": "w",
+    "to": "C",
+    "reason": "ivory diagonal sash"
+  },
+  {
+    "x": 23,
+    "y": 33,
+    "from": "w",
+    "to": "C",
+    "reason": "ivory tunic"
+  },
+  {
+    "x": 20,
+    "y": 34,
+    "from": "w",
+    "to": "c",
+    "reason": "ivory tunic shadow"
+  },
+  {
+    "x": 24,
+    "y": 34,
+    "from": "w",
+    "to": "C",
+    "reason": "ivory tunic"
+  },
+  {
+    "x": 17,
+    "y": 36,
+    "from": "g",
+    "to": "t",
+    "reason": "teal cloth shadow"
+  },
+  {
+    "x": 19,
+    "y": 40,
+    "from": "g",
+    "to": "t",
+    "reason": "teal cloth shadow"
+  },
+  {
+    "x": 19,
+    "y": 8,
+    "from": "q",
+    "to": "B",
+    "reason": "leather sling cord"
+  },
+  {
+    "x": 38,
+    "y": 5,
+    "from": "q",
+    "to": "g",
+    "reason": "stone shadow"
+  },
+  {
+    "x": 39,
+    "y": 5,
+    "from": "q",
+    "to": "g",
+    "reason": "stone shadow"
+  },
+  {
+    "x": 11,
+    "y": 19,
+    "from": "c",
+    "to": "C",
+    "reason": "Smooth shirt into connected ivory plane and contour shadow"
+  },
+  {
+    "x": 13,
+    "y": 23,
+    "from": "C",
+    "to": "c",
+    "reason": "Smooth shirt into connected ivory plane and contour shadow"
+  },
+  {
+    "x": 23,
+    "y": 24,
+    "from": "c",
+    "to": "C",
+    "reason": "Smooth shirt into connected ivory plane and contour shadow"
+  },
+  {
+    "x": 23,
+    "y": 25,
+    "from": "C",
+    "to": "c",
+    "reason": "Smooth shirt into connected ivory plane and contour shadow"
+  },
+  {
+    "x": 20,
+    "y": 26,
+    "from": "c",
+    "to": "C",
+    "reason": "Smooth shirt into connected ivory plane and contour shadow"
+  },
+  {
+    "x": 21,
+    "y": 26,
+    "from": "c",
+    "to": "C",
+    "reason": "Smooth shirt into connected ivory plane and contour shadow"
+  },
+  {
+    "x": 23,
+    "y": 26,
+    "from": "c",
+    "to": "C",
+    "reason": "Smooth shirt into connected ivory plane and contour shadow"
+  },
+  {
+    "x": 22,
+    "y": 27,
+    "from": "c",
+    "to": "C",
+    "reason": "Smooth shirt into connected ivory plane and contour shadow"
+  },
+  {
+    "x": 15,
+    "y": 32,
+    "from": "c",
+    "to": "C",
+    "reason": "Smooth shirt into connected ivory plane and contour shadow"
+  },
+  {
+    "x": 14,
+    "y": 33,
+    "from": "c",
+    "to": "C",
+    "reason": "Smooth shirt into connected ivory plane and contour shadow"
+  },
+  {
+    "x": 23,
+    "y": 33,
+    "from": "C",
+    "to": "c",
+    "reason": "Smooth shirt into connected ivory plane and contour shadow"
+  },
+  {
+    "x": 18,
+    "y": 34,
+    "from": "c",
+    "to": "C",
+    "reason": "Smooth shirt into connected ivory plane and contour shadow"
+  },
+  {
+    "x": 19,
+    "y": 34,
+    "from": "c",
+    "to": "C",
+    "reason": "Smooth shirt into connected ivory plane and contour shadow"
+  },
+  {
+    "x": 20,
+    "y": 34,
+    "from": "c",
+    "to": "C",
+    "reason": "Smooth shirt into connected ivory plane and contour shadow"
+  },
+  {
+    "x": 24,
+    "y": 34,
+    "from": "C",
+    "to": "c",
+    "reason": "Smooth shirt into connected ivory plane and contour shadow"
+  },
+  {
+    "x": 20,
+    "y": 35,
+    "from": "c",
+    "to": "C",
+    "reason": "Smooth shirt into connected ivory plane and contour shadow"
+  },
+  {
+    "x": 21,
+    "y": 35,
+    "from": "c",
+    "to": "C",
+    "reason": "Smooth shirt into connected ivory plane and contour shadow"
+  },
+  {
+    "x": 24,
+    "y": 35,
+    "from": "C",
+    "to": "c",
+    "reason": "Smooth shirt into connected ivory plane and contour shadow"
+  },
+  {
+    "x": 22,
+    "y": 36,
+    "from": "c",
+    "to": "C",
+    "reason": "Smooth shirt into connected ivory plane and contour shadow"
+  },
+  {
+    "x": 6,
+    "y": 20,
+    "from": "q",
+    "to": "S",
+    "reason": "Restore raised forearm skin",
+    "coordinateSpace": "48x48 native"
+  },
+  {
+    "x": 18,
+    "y": 18,
+    "from": "c",
+    "to": "S",
+    "reason": "Restore cheek skin",
+    "coordinateSpace": "48x48 native"
+  },
+  {
+    "x": 18,
+    "y": 30,
+    "from": "c",
+    "to": "B",
+    "reason": "Remove gray fleck from leather waist",
+    "coordinateSpace": "48x48 native"
+  },
+  {
+    "x": 19,
+    "y": 30,
+    "from": "w",
+    "to": "B",
+    "reason": "Remove gray fleck from leather waist",
+    "coordinateSpace": "48x48 native"
+  },
+  {
+    "x": 20,
+    "y": 30,
+    "from": "c",
+    "to": "B",
+    "reason": "Remove gray fleck from leather waist",
+    "coordinateSpace": "48x48 native"
+  }
+]

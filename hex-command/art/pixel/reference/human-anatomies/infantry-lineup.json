@@ -1,0 +1,30 @@
+[
+  {
+    "id": "hammerman-l2",
+    "label": "Hammerman \u2014 L2",
+    "base": "staff-infantry",
+    "level": 2,
+    "image": "art/pixel/units/hammerman/player.png"
+  },
+  {
+    "id": "warhammer-l3",
+    "label": "Warhammer \u2014 L3",
+    "base": "staff-infantry",
+    "level": 3,
+    "image": "art/pixel/units/warhammer/player.png"
+  },
+  {
+    "id": "halberdier-l2",
+    "label": "Halberdier \u2014 L2",
+    "base": "staff-infantry",
+    "level": 2,
+    "image": "art/pixel/units/halberdier/player.png"
+  },
+  {
+    "id": "halberdmaster-l3",
+    "label": "Halberd master \u2014 L3",
+    "base": "staff-infantry",
+    "level": 3,
+    "image": "art/pixel/units/halberd-master/player.png"
+  }
+]

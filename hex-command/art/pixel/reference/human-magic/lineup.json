@@ -1,0 +1,34 @@
+[
+  {
+    "label": "Healer L2 — Teal",
+    "image": "art/pixel/units/healer/player.png"
+  },
+  {
+    "label": "Healer L2 — Red",
+    "image": "art/pixel/units/healer/enemy.png"
+  },
+  {
+    "label": "High healer L3 — Teal",
+    "image": "art/pixel/units/high-healer/player.png"
+  },
+  {
+    "label": "High healer L3 — Red",
+    "image": "art/pixel/units/high-healer/enemy.png"
+  },
+  {
+    "label": "Storm mage L2 — Teal",
+    "image": "art/pixel/units/storm-mage/player.png"
+  },
+  {
+    "label": "Storm mage L2 — Red",
+    "image": "art/pixel/units/storm-mage/enemy.png"
+  },
+  {
+    "label": "Archmage L3 — Teal",
+    "image": "art/pixel/units/archmage/player.png"
+  },
+  {
+    "label": "Archmage L3 — Red",
+    "image": "art/pixel/units/archmage/enemy.png"
+  }
+]

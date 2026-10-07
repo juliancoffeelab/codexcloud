@@ -5,6 +5,9 @@ Keep editable pixel matrices and their native PNGs here. The Scout is currently
 original Scout: cloth shirt and trousers, leather belt, bracers and boots,
 skin-colored hands, silver knife, and windblown hair and cloak.
 
+Reusable imagegen preparation, extraction, tier recipes and preview commands are
+documented in [the artwork workflow index](WORKFLOWS.md).
+
 Each character in a `.txt` matrix is one pixel. `.` is transparent. Symbols map
 to exact RGBA colors in that unit's `palette.json`; uppercase and lowercase are
 distinct. Scout uses the shared palette in this directory. Other units keep
@@ -44,14 +47,16 @@ npm run art:check
 The script reads matrices and palettes from `art/pixel/units/` and
 `art/pixel/terrain/`. The script writes exactly two public pixel images:
 
-- `public/assets/units-pixel.png`: all 34 unit ranks, both factions (68 frames), plus
-  the neutral civilian worker portrait.
+- `public/assets/units-pixel.png`: every canonical unit source in both factions,
+  including finished designs awaiting gameplay registration, plus the neutral
+  civilian worker portrait.
 - `public/assets/terrain-pixel.png`: all 12 terrain types, including the bridge.
 
 The generated `src/presentation/pixel-art.ts` records each image's dimensions,
 content hash and frame coordinates. The regular game renderer loads these public
 assets. Packing copies pixels without resizing; every frame retains its full
-48×48 canvas, separated by a transparent gutter. Atlas coordinates are integers.
+native canvas, separated by a transparent gutter. Foot units use 48×48 canvases;
+cavalry uses 64×64. Atlas coordinates are integers, with each frame's own dimensions.
 
 During artwork loading, the game extracts each frame into its own native-size
 PNG image, with smoothing disabled for pixels. These images are cached and
@@ -73,7 +78,16 @@ and palette render a portrait without defining a recruit or battlefield unit.
 There is no raster fallback in the pixel build.
 
 Paired factions use identical component geometry, with only faction cloth and
-adept gem colors changing. All unit and terrain matrices must remain 48×48.
+adept gem colors changing. Terrain and portraits remain 48×48. Unit frames retain
+their native rectangular dimensions; rendering and packing never crop or resize them.
+
+Finished human branch artwork lives in `units/`, alongside the existing game
+artwork. [The source catalog](units/catalog.json) records the promoted designs,
+their proposed tiers, canvas sizes and construction studies. Every source has
+both faction matrices, its palette and native PNGs. Catalog tiers describe the
+artwork; gameplay stats and advancement definitions remain separate. Reference
+folders retain generated inputs, workflows and comparison boards, rather than
+duplicate editable copies of the promoted designs.
 
 The chosen design reference is [C](reference/units-c.png). It records the agreed
 appearance; editable matrices define the actual native pixels. Reviews and the

@@ -1,0 +1,10 @@
+{
+  "base": "crossbow",
+  "level": 2,
+  "coordinateSpace": [48, 48],
+  "edits": [],
+  "paletteChanges": {
+    "L": [150, 103, 59, 255],
+    "l": [92, 58, 33, 255]
+  }
+}

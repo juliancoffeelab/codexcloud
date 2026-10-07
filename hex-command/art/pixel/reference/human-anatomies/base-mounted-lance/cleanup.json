@@ -1,0 +1,1356 @@
+{
+  "coordinateSpace": [64, 64],
+  "edits": [
+    {
+      "x": 26,
+      "y": 13,
+      "from": "h",
+      "to": "b",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 27,
+      "y": 14,
+      "from": "h",
+      "to": "b",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 28,
+      "y": 14,
+      "from": "h",
+      "to": "b",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 27,
+      "y": 19,
+      "from": "h",
+      "to": "b",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 46,
+      "y": 19,
+      "from": "h",
+      "to": "b",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 51,
+      "y": 19,
+      "from": "g",
+      "to": "H",
+      "reason": "Remove gold flecks from horse face and ears"
+    },
+    {
+      "x": 26,
+      "y": 20,
+      "from": "h",
+      "to": "b",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 51,
+      "y": 20,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 24,
+      "y": 21,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 21,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 21,
+      "from": "H",
+      "to": "B",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 44,
+      "y": 21,
+      "from": "h",
+      "to": "b",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 45,
+      "y": 21,
+      "from": "h",
+      "to": "b",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 48,
+      "y": 21,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 50,
+      "y": 21,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 52,
+      "y": 21,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 31,
+      "y": 22,
+      "from": "H",
+      "to": "B",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 43,
+      "y": 22,
+      "from": "h",
+      "to": "b",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 44,
+      "y": 22,
+      "from": "h",
+      "to": "b",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 51,
+      "y": 22,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 53,
+      "y": 22,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 27,
+      "y": 23,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 23,
+      "from": "h",
+      "to": "b",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 42,
+      "y": 23,
+      "from": "h",
+      "to": "b",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 46,
+      "y": 23,
+      "from": "H",
+      "to": "B",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 48,
+      "y": 23,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 51,
+      "y": 23,
+      "from": "g",
+      "to": "H",
+      "reason": "Remove gold flecks from horse face and ears"
+    },
+    {
+      "x": 52,
+      "y": 23,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 53,
+      "y": 23,
+      "from": "g",
+      "to": "H",
+      "reason": "Remove gold flecks from horse face and ears"
+    },
+    {
+      "x": 24,
+      "y": 24,
+      "from": "h",
+      "to": "b",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 42,
+      "y": 24,
+      "from": "h",
+      "to": "b",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 45,
+      "y": 24,
+      "from": "H",
+      "to": "B",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 46,
+      "y": 24,
+      "from": "H",
+      "to": "B",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 48,
+      "y": 24,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 50,
+      "y": 24,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 53,
+      "y": 24,
+      "from": "g",
+      "to": "H",
+      "reason": "Remove gold flecks from horse face and ears"
+    },
+    {
+      "x": 41,
+      "y": 25,
+      "from": "h",
+      "to": "b",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 42,
+      "y": 25,
+      "from": "h",
+      "to": "b",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 45,
+      "y": 25,
+      "from": "H",
+      "to": "B",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 46,
+      "y": 25,
+      "from": "H",
+      "to": "B",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 50,
+      "y": 25,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 51,
+      "y": 25,
+      "from": "g",
+      "to": "H",
+      "reason": "Remove gold flecks from horse face and ears"
+    },
+    {
+      "x": 50,
+      "y": 26,
+      "from": "B",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 52,
+      "y": 26,
+      "from": "B",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 54,
+      "y": 26,
+      "from": "g",
+      "to": "H",
+      "reason": "Remove gold flecks from horse face and ears"
+    },
+    {
+      "x": 55,
+      "y": 26,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 40,
+      "y": 27,
+      "from": "h",
+      "to": "b",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 41,
+      "y": 27,
+      "from": "h",
+      "to": "b",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 43,
+      "y": 27,
+      "from": "H",
+      "to": "B",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 48,
+      "y": 27,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 53,
+      "y": 27,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 54,
+      "y": 27,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 28,
+      "from": "h",
+      "to": "b",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 40,
+      "y": 28,
+      "from": "h",
+      "to": "b",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 43,
+      "y": 28,
+      "from": "H",
+      "to": "B",
+      "reason": "Remove horse-palette speckles from rider leather"
+    },
+    {
+      "x": 56,
+      "y": 28,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 54,
+      "y": 29,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 55,
+      "y": 29,
+      "from": "g",
+      "to": "H",
+      "reason": "Remove gold/skin speckles from horse and tack"
+    },
+    {
+      "x": 56,
+      "y": 29,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 21,
+      "y": 30,
+      "from": "s",
+      "to": "H",
+      "reason": "Remove gold/skin speckles from horse and tack"
+    },
+    {
+      "x": 38,
+      "y": 30,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 42,
+      "y": 30,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 54,
+      "y": 30,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 55,
+      "y": 30,
+      "from": "g",
+      "to": "H",
+      "reason": "Remove gold/skin speckles from horse and tack"
+    },
+    {
+      "x": 56,
+      "y": 30,
+      "from": "B",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 13,
+      "y": 31,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 21,
+      "y": 31,
+      "from": "s",
+      "to": "H",
+      "reason": "Remove gold/skin speckles from horse and tack"
+    },
+    {
+      "x": 25,
+      "y": 31,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 31,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 39,
+      "y": 31,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 43,
+      "y": 31,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 44,
+      "y": 31,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 55,
+      "y": 31,
+      "from": "B",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 12,
+      "y": 32,
+      "from": "h",
+      "to": "b",
+      "reason": "Flatten dark horse tail"
+    },
+    {
+      "x": 16,
+      "y": 32,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 19,
+      "y": 32,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 21,
+      "y": 32,
+      "from": "s",
+      "to": "H",
+      "reason": "Remove gold/skin speckles from horse and tack"
+    },
+    {
+      "x": 25,
+      "y": 32,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 32,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 45,
+      "y": 32,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 46,
+      "y": 32,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 10,
+      "y": 33,
+      "from": "h",
+      "to": "b",
+      "reason": "Flatten dark horse tail"
+    },
+    {
+      "x": 11,
+      "y": 33,
+      "from": "h",
+      "to": "b",
+      "reason": "Flatten dark horse tail"
+    },
+    {
+      "x": 15,
+      "y": 33,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 21,
+      "y": 33,
+      "from": "s",
+      "to": "H",
+      "reason": "Remove gold/skin speckles from horse and tack"
+    },
+    {
+      "x": 10,
+      "y": 34,
+      "from": "h",
+      "to": "b",
+      "reason": "Flatten dark horse tail"
+    },
+    {
+      "x": 11,
+      "y": 34,
+      "from": "B",
+      "to": "b",
+      "reason": "Flatten dark horse tail"
+    },
+    {
+      "x": 14,
+      "y": 34,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 15,
+      "y": 34,
+      "from": "g",
+      "to": "H",
+      "reason": "Remove gold/skin speckles from horse and tack"
+    },
+    {
+      "x": 21,
+      "y": 34,
+      "from": "s",
+      "to": "H",
+      "reason": "Remove gold/skin speckles from horse and tack"
+    },
+    {
+      "x": 22,
+      "y": 34,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 10,
+      "y": 35,
+      "from": "h",
+      "to": "b",
+      "reason": "Flatten dark horse tail"
+    },
+    {
+      "x": 11,
+      "y": 35,
+      "from": "B",
+      "to": "b",
+      "reason": "Flatten dark horse tail"
+    },
+    {
+      "x": 21,
+      "y": 35,
+      "from": "s",
+      "to": "H",
+      "reason": "Remove gold/skin speckles from horse and tack"
+    },
+    {
+      "x": 22,
+      "y": 35,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 23,
+      "y": 35,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 24,
+      "y": 35,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 25,
+      "y": 35,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 26,
+      "y": 35,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 11,
+      "y": 36,
+      "from": "B",
+      "to": "b",
+      "reason": "Flatten dark horse tail"
+    },
+    {
+      "x": 20,
+      "y": 36,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 21,
+      "y": 36,
+      "from": "s",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 22,
+      "y": 36,
+      "from": "s",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 23,
+      "y": 36,
+      "from": "s",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 24,
+      "y": 36,
+      "from": "s",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 25,
+      "y": 36,
+      "from": "s",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 26,
+      "y": 36,
+      "from": "s",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 27,
+      "y": 36,
+      "from": "s",
+      "to": "H",
+      "reason": "Remove gold/skin speckles from horse and tack"
+    },
+    {
+      "x": 46,
+      "y": 36,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 19,
+      "y": 37,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 38,
+      "y": 37,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 45,
+      "y": 37,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 44,
+      "y": 38,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 45,
+      "y": 38,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 46,
+      "y": 38,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 22,
+      "y": 39,
+      "from": "B",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 45,
+      "y": 39,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 15,
+      "y": 40,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 25,
+      "y": 40,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 26,
+      "y": 40,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 45,
+      "y": 40,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 6,
+      "y": 41,
+      "from": "h",
+      "to": "b",
+      "reason": "Flatten dark horse tail"
+    },
+    {
+      "x": 21,
+      "y": 41,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 24,
+      "y": 41,
+      "from": "B",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 38,
+      "y": 41,
+      "from": "B",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 39,
+      "y": 41,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 8,
+      "y": 42,
+      "from": "h",
+      "to": "b",
+      "reason": "Flatten dark horse tail"
+    },
+    {
+      "x": 15,
+      "y": 42,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 20,
+      "y": 42,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 40,
+      "y": 42,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 41,
+      "y": 42,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 6,
+      "y": 43,
+      "from": "h",
+      "to": "b",
+      "reason": "Flatten dark horse tail"
+    },
+    {
+      "x": 14,
+      "y": 43,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 19,
+      "y": 43,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 42,
+      "y": 43,
+      "from": "B",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 43,
+      "y": 43,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 44,
+      "y": 43,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 45,
+      "y": 43,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 49,
+      "y": 43,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 17,
+      "y": 44,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 46,
+      "y": 44,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 47,
+      "y": 44,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 12,
+      "y": 45,
+      "from": "B",
+      "to": "b",
+      "reason": "Flatten dark horse tail"
+    },
+    {
+      "x": 16,
+      "y": 45,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 48,
+      "y": 45,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 12,
+      "y": 46,
+      "from": "H",
+      "to": "b",
+      "reason": "Flatten dark horse tail"
+    },
+    {
+      "x": 15,
+      "y": 46,
+      "from": "B",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 12,
+      "y": 47,
+      "from": "H",
+      "to": "b",
+      "reason": "Flatten dark horse tail"
+    },
+    {
+      "x": 14,
+      "y": 47,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 39,
+      "y": 47,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 49,
+      "y": 47,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 12,
+      "y": 48,
+      "from": "H",
+      "to": "b",
+      "reason": "Flatten dark horse tail"
+    },
+    {
+      "x": 38,
+      "y": 48,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 39,
+      "y": 48,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 13,
+      "y": 49,
+      "from": "B",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 23,
+      "y": 49,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 24,
+      "y": 49,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 38,
+      "y": 49,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 39,
+      "y": 49,
+      "from": "B",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 50,
+      "y": 49,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 11,
+      "y": 50,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 24,
+      "y": 50,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 25,
+      "y": 50,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 38,
+      "y": 50,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 51,
+      "y": 50,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 25,
+      "y": 51,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 26,
+      "y": 51,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 38,
+      "y": 51,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 50,
+      "y": 51,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 26,
+      "y": 52,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 27,
+      "y": 52,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 38,
+      "y": 52,
+      "from": "B",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 11,
+      "y": 53,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 12,
+      "y": 53,
+      "from": "H",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 26,
+      "y": 53,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 27,
+      "y": 53,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten horse-coat material planes"
+    },
+    {
+      "x": 37,
+      "y": 53,
+      "from": "B",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 38,
+      "y": 53,
+      "from": "B",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 39,
+      "y": 53,
+      "from": "B",
+      "to": "h",
+      "reason": "Connect underside horse-coat shadow"
+    },
+    {
+      "x": 26,
+      "y": 54,
+      "from": "h",
+      "to": "k",
+      "reason": "Keep hooves dark and distinct from the coat"
+    },
+    {
+      "x": 27,
+      "y": 54,
+      "from": "h",
+      "to": "k",
+      "reason": "Keep hooves dark and distinct from the coat"
+    },
+    {
+      "x": 28,
+      "y": 55,
+      "from": "h",
+      "to": "k",
+      "reason": "Keep hooves dark and distinct from the coat"
+    },
+    {
+      "x": 29,
+      "y": 55,
+      "from": "h",
+      "to": "k",
+      "reason": "Keep hooves dark and distinct from the coat"
+    },
+    {
+      "x": 40,
+      "y": 55,
+      "from": "h",
+      "to": "k",
+      "reason": "Keep hooves dark and distinct from the coat"
+    },
+    {
+      "x": 41,
+      "y": 55,
+      "from": "h",
+      "to": "k",
+      "reason": "Keep hooves dark and distinct from the coat"
+    },
+    {
+      "x": 11,
+      "y": 56,
+      "from": "h",
+      "to": "k",
+      "reason": "Keep hooves dark and distinct from the coat"
+    },
+    {
+      "x": 27,
+      "y": 56,
+      "from": "h",
+      "to": "k",
+      "reason": "Keep hooves dark and distinct from the coat"
+    },
+    {
+      "x": 28,
+      "y": 56,
+      "from": "h",
+      "to": "k",
+      "reason": "Keep hooves dark and distinct from the coat"
+    },
+    {
+      "x": 29,
+      "y": 56,
+      "from": "h",
+      "to": "k",
+      "reason": "Keep hooves dark and distinct from the coat"
+    },
+    {
+      "x": 38,
+      "y": 56,
+      "from": "h",
+      "to": "k",
+      "reason": "Keep hooves dark and distinct from the coat"
+    },
+    {
+      "x": 39,
+      "y": 56,
+      "from": "h",
+      "to": "k",
+      "reason": "Keep hooves dark and distinct from the coat"
+    },
+    {
+      "x": 40,
+      "y": 56,
+      "from": "h",
+      "to": "k",
+      "reason": "Keep hooves dark and distinct from the coat"
+    },
+    {
+      "x": 41,
+      "y": 56,
+      "from": "h",
+      "to": "k",
+      "reason": "Keep hooves dark and distinct from the coat"
+    }
+  ]
+}

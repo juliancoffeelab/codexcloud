@@ -1,0 +1,26 @@
+[
+  {
+    "label": "Commander — L1",
+    "image": "art/pixel/units/commander/enemy.png"
+  },
+  {
+    "label": "Marshal — L2",
+    "image": "art/pixel/units/marshal/enemy.png"
+  },
+  {
+    "label": "Grand Marshal — L3",
+    "image": "art/pixel/units/grand-marshal/enemy.png"
+  },
+  {
+    "label": "Game: Heavy infantry",
+    "image": "art/pixel/units/soldier/enemy.png"
+  },
+  {
+    "label": "Game: Warden",
+    "image": "art/pixel/units/warden/enemy.png"
+  },
+  {
+    "label": "Game: Stone mage",
+    "image": "art/pixel/units/mage/enemy.png"
+  }
+]

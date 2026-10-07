@@ -1,0 +1,733 @@
+{
+  "coordinateSpace": [48, 48],
+  "edits": [
+    {
+      "x": 44,
+      "y": 4,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 23,
+      "y": 6,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 22,
+      "y": 7,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 21,
+      "y": 10,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 39,
+      "y": 10,
+      "from": "H",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 38,
+      "y": 11,
+      "from": "H",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 26,
+      "y": 12,
+      "from": "s",
+      "to": "S",
+      "reason": "Flatten face skin"
+    },
+    {
+      "x": 17,
+      "y": 13,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 37,
+      "y": 13,
+      "from": "H",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 38,
+      "y": 13,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 20,
+      "y": 14,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 36,
+      "y": 14,
+      "from": "H",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 37,
+      "y": 14,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 18,
+      "y": 15,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 19,
+      "y": 15,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 29,
+      "y": 15,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 14,
+      "y": 17,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 14,
+      "y": 18,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 18,
+      "y": 18,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 18,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 18,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 16,
+      "y": 19,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 19,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 22,
+      "y": 19,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 34,
+      "y": 19,
+      "from": "s",
+      "to": "S",
+      "reason": "Flatten upper gripping hand skin"
+    },
+    {
+      "x": 14,
+      "y": 20,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 23,
+      "y": 20,
+      "from": "k",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 20,
+      "from": "H",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 15,
+      "y": 21,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 16,
+      "y": 21,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 30,
+      "y": 21,
+      "from": "H",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 31,
+      "y": 21,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 29,
+      "y": 22,
+      "from": "H",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 34,
+      "y": 22,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 16,
+      "y": 23,
+      "from": "k",
+      "to": "c",
+      "reason": "Keep sleeve/armor shadows in the ivory material"
+    },
+    {
+      "x": 17,
+      "y": 23,
+      "from": "k",
+      "to": "c",
+      "reason": "Keep sleeve/armor shadows in the ivory material"
+    },
+    {
+      "x": 18,
+      "y": 23,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 21,
+      "y": 23,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 23,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 23,
+      "from": "H",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 32,
+      "y": 23,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 33,
+      "y": 23,
+      "from": "k",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 34,
+      "y": 23,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 23,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 15,
+      "y": 24,
+      "from": "k",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 18,
+      "y": 24,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 24,
+      "from": "a",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 23,
+      "y": 24,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 24,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 33,
+      "y": 24,
+      "from": "k",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 34,
+      "y": 24,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 24,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 24,
+      "from": "k",
+      "to": "c",
+      "reason": "Keep sleeve/armor shadows in the ivory material"
+    },
+    {
+      "x": 14,
+      "y": 25,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 19,
+      "y": 25,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 33,
+      "y": 25,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 34,
+      "y": 25,
+      "from": "k",
+      "to": "c",
+      "reason": "Keep sleeve/armor shadows in the ivory material"
+    },
+    {
+      "x": 35,
+      "y": 25,
+      "from": "k",
+      "to": "c",
+      "reason": "Keep sleeve/armor shadows in the ivory material"
+    },
+    {
+      "x": 13,
+      "y": 26,
+      "from": "k",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 13,
+      "y": 27,
+      "from": "k",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 14,
+      "y": 27,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 16,
+      "y": 27,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 27,
+      "from": "s",
+      "to": "S",
+      "reason": "Remove wood-colored speckles from lower gripping hand"
+    },
+    {
+      "x": 23,
+      "y": 27,
+      "from": "H",
+      "to": "S",
+      "reason": "Remove wood-colored speckles from lower gripping hand"
+    },
+    {
+      "x": 28,
+      "y": 27,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 13,
+      "y": 28,
+      "from": "k",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 14,
+      "y": 28,
+      "from": "k",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 15,
+      "y": 28,
+      "from": "a",
+      "to": "c",
+      "reason": "Keep sleeve/armor shadows in the ivory material"
+    },
+    {
+      "x": 16,
+      "y": 28,
+      "from": "H",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 24,
+      "y": 28,
+      "from": "s",
+      "to": "S",
+      "reason": "Remove wood-colored speckles from lower gripping hand"
+    },
+    {
+      "x": 16,
+      "y": 29,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 24,
+      "y": 29,
+      "from": "s",
+      "to": "S",
+      "reason": "Remove wood-colored speckles from lower gripping hand"
+    },
+    {
+      "x": 29,
+      "y": 29,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 20,
+      "y": 30,
+      "from": "s",
+      "to": "S",
+      "reason": "Remove wood-colored speckles from lower gripping hand"
+    },
+    {
+      "x": 23,
+      "y": 30,
+      "from": "s",
+      "to": "S",
+      "reason": "Remove wood-colored speckles from lower gripping hand"
+    },
+    {
+      "x": 30,
+      "y": 30,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 27,
+      "y": 31,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 31,
+      "y": 31,
+      "from": "k",
+      "to": "c",
+      "reason": "Keep sleeve/armor shadows in the ivory material"
+    },
+    {
+      "x": 27,
+      "y": 33,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 27,
+      "y": 34,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 32,
+      "y": 34,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 35,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 36,
+      "from": "a",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 36,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 36,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 37,
+      "from": "k",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 37,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 37,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 38,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 38,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 38,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 15,
+      "y": 39,
+      "from": "k",
+      "to": "b",
+      "reason": "Remove gray flecks from leather boots"
+    },
+    {
+      "x": 16,
+      "y": 39,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 28,
+      "y": 39,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 29,
+      "y": 39,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 39,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 39,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 14,
+      "y": 40,
+      "from": "a",
+      "to": "b",
+      "reason": "Remove gray flecks from leather boots"
+    },
+    {
+      "x": 29,
+      "y": 40,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 40,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 40,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten ivory panel with a connected contour shadow"
+    },
+    {
+      "x": 13,
+      "y": 42,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 31,
+      "y": 42,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    },
+    {
+      "x": 33,
+      "y": 44,
+      "from": "h",
+      "to": "B",
+      "reason": "Separate leather/hair from wooden staff palette"
+    }
+  ]
+}

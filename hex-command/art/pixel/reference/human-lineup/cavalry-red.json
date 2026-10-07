@@ -1,0 +1,26 @@
+[
+  {
+    "label": "Rider — L1",
+    "image": "art/pixel/units/rider/enemy.png"
+  },
+  {
+    "label": "Lancer — L2",
+    "image": "art/pixel/units/lancer/enemy.png"
+  },
+  {
+    "label": "Knight — L3",
+    "image": "art/pixel/units/knight/enemy.png"
+  },
+  {
+    "label": "Horse archer — L1",
+    "image": "art/pixel/units/horse-archer/enemy.png"
+  },
+  {
+    "label": "Horse bowman — L2",
+    "image": "art/pixel/units/horse-bowman/enemy.png"
+  },
+  {
+    "label": "Horse marksman — L3",
+    "image": "art/pixel/units/horse-marksman/enemy.png"
+  }
+]

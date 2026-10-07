@@ -1,0 +1,170 @@
+[
+  {
+    "label": "Swordsman — L1",
+    "image": "art/pixel/units/leather-swordsman/player.png"
+  },
+  {
+    "label": "Sword infantry — L2",
+    "image": "art/pixel/units/swordsman/player.png"
+  },
+  {
+    "label": "Champion — L3",
+    "image": "art/pixel/units/champion/player.png"
+  },
+  {
+    "label": "Swordsman — L1",
+    "image": "art/pixel/units/leather-swordsman/player.png"
+  },
+  {
+    "label": "Hammerman — L2",
+    "image": "art/pixel/units/hammerman/player.png"
+  },
+  {
+    "label": "Warhammer — L3",
+    "image": "art/pixel/units/warhammer/player.png"
+  },
+  {
+    "label": "Spearman — L1",
+    "image": "art/pixel/units/leather-spearman/player.png"
+  },
+  {
+    "label": "Spear infantry — L2",
+    "image": "art/pixel/units/spearman/player.png"
+  },
+  {
+    "label": "Sentinel — L3",
+    "image": "art/pixel/units/sentinel/player.png"
+  },
+  {
+    "label": "Spearman — L1",
+    "image": "art/pixel/units/leather-spearman/player.png"
+  },
+  {
+    "label": "Halberdier — L2",
+    "image": "art/pixel/units/halberdier/player.png"
+  },
+  {
+    "label": "Halberd master — L3",
+    "image": "art/pixel/units/halberd-master/player.png"
+  },
+  {
+    "label": "Scout — L1",
+    "image": "art/pixel/units/scout/player.png"
+  },
+  {
+    "label": "Ranger — L2",
+    "image": "art/pixel/units/ranger/player.png"
+  },
+  {
+    "label": "Shadowblade — L3",
+    "image": "art/pixel/units/shadowblade/player.png"
+  },
+  {
+    "label": "Scout — L1",
+    "image": "art/pixel/units/scout/player.png"
+  },
+  {
+    "label": "Slinger — L2",
+    "image": "art/pixel/units/slinger/player.png"
+  },
+  {
+    "label": "Fireslinger — L3",
+    "image": "art/pixel/units/fireslinger/player.png"
+  },
+  {
+    "label": "Archer — L1",
+    "image": "art/pixel/units/archer/player.png"
+  },
+  {
+    "label": "Marksman — L2",
+    "image": "art/pixel/units/marksman/player.png"
+  },
+  {
+    "label": "Sharpshooter — L3",
+    "image": "art/pixel/units/sharpshooter/player.png"
+  },
+  {
+    "label": "Archer — L1",
+    "image": "art/pixel/units/archer/player.png"
+  },
+  {
+    "label": "Crossbowman — L2",
+    "image": "art/pixel/units/crossbowman/player.png"
+  },
+  {
+    "label": "Arbalester — L3",
+    "image": "art/pixel/units/arbalester/player.png"
+  },
+  {
+    "label": "Adept — L1",
+    "image": "art/pixel/units/adept/player.png"
+  },
+  {
+    "label": "Storm mage — L2",
+    "image": "art/pixel/units/storm-mage/player.png"
+  },
+  {
+    "label": "Archmage — L3",
+    "image": "art/pixel/units/archmage/player.png"
+  },
+  {
+    "label": "Adept — L1",
+    "image": "art/pixel/units/adept/player.png"
+  },
+  {
+    "label": "Healer — L2",
+    "image": "art/pixel/units/healer/player.png"
+  },
+  {
+    "label": "High healer — L3",
+    "image": "art/pixel/units/high-healer/player.png"
+  },
+  {
+    "label": "Rider — L1",
+    "image": "art/pixel/units/rider/player.png"
+  },
+  {
+    "label": "Lancer — L2",
+    "image": "art/pixel/units/lancer/player.png"
+  },
+  {
+    "label": "Knight — L3",
+    "image": "art/pixel/units/knight/player.png"
+  },
+  {
+    "label": "Horse archer — L1",
+    "image": "art/pixel/units/horse-archer/player.png"
+  },
+  {
+    "label": "Horse bowman — L2",
+    "image": "art/pixel/units/horse-bowman/player.png"
+  },
+  {
+    "label": "Horse marksman — L3",
+    "image": "art/pixel/units/horse-marksman/player.png"
+  },
+  {
+    "label": "Commander — L1",
+    "image": "art/pixel/units/commander/player.png"
+  },
+  {
+    "label": "Marshal — L2",
+    "image": "art/pixel/units/marshal/player.png"
+  },
+  {
+    "label": "Grand Marshal — L3",
+    "image": "art/pixel/units/grand-marshal/player.png"
+  },
+  {
+    "label": "Game: Heavy infantry",
+    "image": "art/pixel/units/soldier/player.png"
+  },
+  {
+    "label": "Game: Warden",
+    "image": "art/pixel/units/warden/player.png"
+  },
+  {
+    "label": "Game: Stone mage",
+    "image": "art/pixel/units/mage/player.png"
+  }
+]

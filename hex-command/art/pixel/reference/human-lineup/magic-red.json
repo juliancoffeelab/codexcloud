@@ -1,0 +1,26 @@
+[
+  {
+    "label": "Adept — L1",
+    "image": "art/pixel/units/adept/enemy.png"
+  },
+  {
+    "label": "Storm mage — L2",
+    "image": "art/pixel/units/storm-mage/enemy.png"
+  },
+  {
+    "label": "Archmage — L3",
+    "image": "art/pixel/units/archmage/enemy.png"
+  },
+  {
+    "label": "Adept — L1",
+    "image": "art/pixel/units/adept/enemy.png"
+  },
+  {
+    "label": "Healer — L2",
+    "image": "art/pixel/units/healer/enemy.png"
+  },
+  {
+    "label": "High healer — L3",
+    "image": "art/pixel/units/high-healer/enemy.png"
+  }
+]
