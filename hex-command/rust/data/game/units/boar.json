@@ -17,7 +17,7 @@
     {
       "id": "trample",
       "name": "Trample",
-      "damage": 4,
+      "damage": 3,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
@@ -26,7 +26,7 @@
     {
       "id": "tusks",
       "name": "Tusks",
-      "damage": 4,
+      "damage": 2,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,

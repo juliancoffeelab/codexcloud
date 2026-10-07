@@ -2,18 +2,6 @@
   "id": "thorncaller",
   "name": "Thorncaller",
   "race": "beast",
-  "terrainModifiers": {
-    "forest": {
-      "damageModifiers": {
-        "ranged": -1
-      }
-    },
-    "grove": {
-      "damageModifiers": {
-        "ranged": -1
-      }
-    }
-  },
   "hp": 7,
   "move": 4,
   "cost": 7,
@@ -43,7 +31,7 @@
     "impact": 0
   },
   "ability": "Understory",
-  "description": "Forests and groves cost 1 movement, reduce incoming damage by 1, and give another 1 ranged protection. Strong Pierce thorns; its light Impact staff offers a risky answer to armor.",
+  "description": "Forests and groves cost 1 movement and provide 1 melee and 2 ranged protection in total. Strong Pierce thorns; its light Impact staff offers a risky answer to armor.",
   "level": 1,
   "family": "thorncaller",
   "experienceNeeded": 10,

@@ -100,7 +100,7 @@ test("Woodland purse supports a runner and ranged support", async () => {
   const spear = game.addUnit("spearman", "enemy", "3,3");
   const boar = game.addUnit("boar", "player", "2,3");
   assert.equal(game.preview(spear, boar, "spear").damage, 4);
-  assert.equal(game.preview(boar, spear, "tusks").damage, 4);
+  assert.equal(game.preview(boar, spear, "tusks").damage, 2);
   assert.equal(
     TYPES.boar.hp,
     13,
@@ -163,7 +163,7 @@ for (const terrain of ["forest", "grove", "plains"] as const) {
     game.turn = "enemy";
     game.attack(soldier.id, caster.id, "sword");
     game.attack(archer.id, caster.id, "bow");
-    assert.equal(game.unit(caster.id)?.hp, terrain === "plains" ? undefined : 3);
+    assert.equal(game.unit(caster.id)?.hp, terrain === "plains" ? undefined : 2);
     assert.equal(game.cost(caster, { terrain }), 1);
   });
 }
@@ -193,4 +193,33 @@ test("Mobile skirmishers remain vulnerable in melee", async () => {
   soldier.side = "player";
   thorncaller.side = "enemy";
   assert.equal(game.preview(thorncaller, soldier, "thorns").damage, 3);
+});
+
+test.each(["skeleton", "revenant", "bonearcher", "deatharcher", "necromancer", "lich"] as const)(
+  "%s inherits two Pierce protection without losing its Impact weakness",
+  (type) => {
+    const game = new Game();
+    game.units = [];
+    for (const tile of game.tiles) tile.terrain = "plains";
+    const target = game.addUnit(type, "enemy", "3,3");
+    const archer = game.addUnit("archer", "player", "2,3");
+    const caster = game.addUnit("adept", "player", "4,3");
+    assert.equal(game.preview(archer, target, "bow").damage, 2);
+    assert.equal(game.preview(caster, target, "spark").damage, 4);
+  },
+);
+
+test("Rookie boar and Warden use Impact against bones while Pierce stays blocked", () => {
+  const game = new Game();
+  game.units = [];
+  for (const tile of game.tiles) tile.terrain = "plains";
+  const skeleton = game.addUnit("skeleton", "enemy", "3,3");
+  const boar = game.addUnit("boar", "player", "2,3");
+  const warden = game.addUnit("warden", "player", "4,3");
+  assert.equal(game.preview(boar, skeleton, "tusks").damage, 0);
+  assert.equal(game.preview(warden, skeleton, "spear").damage, 2);
+  game.attack(boar.id, skeleton.id, "trample");
+  assert.equal(skeleton.hp, 5);
+  game.attack(warden.id, skeleton.id, "shieldbash");
+  assert.equal(skeleton.hp, 1, "Two Impact hits no longer kill a full-health skeleton");
 });

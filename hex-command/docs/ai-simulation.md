@@ -108,12 +108,15 @@ wounded allies, and recomputes plans after every command so followers can use ne
 opened routes. Both policies use actual weapon/terrain effectiveness and objectives.
 Their screens recruit toward contact and their supports behind it.
 
-The woodland balance revision gives beast-race units 1 additional melee and ranged
-protection in forests and groves, on top of terrain cover and individual concealment.
-Thorncaller thorns deal 4 Pierce damage (Briarweaver: 5). Boars lead with 4-damage
-Impact Trample (Great boar: 5), retaining equal-strength Pierce tusks as an alternative.
-Wavemender costs 10 gold; its attacks and healing are unchanged. Historical results
-predate these changes; no new win rates are implied by the focused regression tests.
+Beast-race units have 1 additional melee and ranged protection in forests and
+groves, on top of terrain cover. Thorncaller and Briarweaver have no extra individual
+woodland cover: their total protection is 1 melee and 2 ranged. Thorns deal 4 Pierce
+damage (Briarweaver: 5). Rookie boars have 3-damage Impact Trample and 2-damage Pierce
+tusks; Great boar attacks remain at 5. Boar HP and protection are unchanged.
+Undead have 2 racial Pierce protection and 1 Impact vulnerability; skeletons and
+revenants do not stack another individual Pierce modifier. Wardens retain their
+spear and use a 3-damage Impact Shield bash. Wavemender costs 10 gold.
+Historical reports describe their recorded rules snapshot, not these updated values.
 
 All policies share leader reinforcement hysteresis. Leaders initially rebuild when
 below five living ordinary combatants. They release at five, return to rebuilding
@@ -191,8 +194,13 @@ southern counterpart. Open channels give merfolk routes around those crossings.
 Seeds vary paired terrain, equal gold and small policy tie breakers. Water arenas
 retain the river identity for classic's routing. Each side gets its selected race's leader,
 two melee starters and its own recruitment pool. Human, woodland, undead and coastal
-rosters can face each other; same-race baselines remain included. Initial resources,
-positions and per-phase recruit limits are paired, while race-specific stats differ.
+rosters can face each other; same-race baselines remain included. Undead arena
+recruitment includes skeletons and bone archers; campaign pools remain authored
+independently, including their existing adepts. Each side receives the same total
+starting budget: the authored `startingBudget` of 36 gold plus a paired seed-dependent
+0, 3 or 6 gold. Its leader and two starters are charged at their unit prices, and
+the remainder is spendable cash. Positions and per-phase recruit limits are paired,
+while race-specific stats differ.
 
 An entrant is `(race, policy)`. Every unordered entrant pair is scheduled in both
 seats and both initiatives; identical entrants run both initiatives once. Four races

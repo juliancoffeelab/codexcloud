@@ -27,7 +27,7 @@
   ],
   "damageModifiers": {
     "blade": -1,
-    "pierce": -1,
+    "pierce": 0,
     "impact": 0
   },
   "ability": "Bone shield",

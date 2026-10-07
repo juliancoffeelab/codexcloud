@@ -31,7 +31,7 @@
     "impact": 0
   },
   "ability": "Hollow frame",
-  "description": "Takes 1 less Pierce damage and 1 more Impact damage. A ranged specialist with a weak melee reply.",
+  "description": "Takes 2 less Pierce damage and 1 more Impact damage. A ranged specialist with a weak melee reply.",
   "level": 1,
   "family": "bonearcher",
   "experienceNeeded": 10,

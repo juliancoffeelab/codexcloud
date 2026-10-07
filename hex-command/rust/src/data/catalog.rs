@@ -92,6 +92,8 @@ pub struct LandscapeConfig {
 pub struct ArenaDefaults {
     pub landscapes: Vec<LandscapeConfig>,
     pub territory: Vec<String>,
+    /// Minimum total gold value per side, including its leader and two starters.
+    pub starting_budget: i32,
     pub default_max_rounds: u32,
     pub default_recruit_limit: usize,
     pub policies: Vec<String>,
@@ -920,12 +922,13 @@ fn validate_simulation(
     unique(arena.territory.iter().map(String::as_str), path)?;
     if arena.landscapes.is_empty()
         || arena.territory.is_empty()
+        || arena.starting_budget <= 0
         || arena.default_max_rounds == 0
         || campaign.default_max_rounds == 0
     {
         return Err(ContentError::new(
             path,
-            "landscapes, territory and round limits must be nonempty/positive",
+            "landscapes, territory, starting budget and round limits must be nonempty/positive",
         ));
     }
     for landscape in &arena.landscapes {

@@ -23,7 +23,7 @@
     "impact": 0
   },
   "ability": "Spear line",
-  "description": "Affordable spear infantry. Effective against woodland beasts; advances to a shield warden with a hammer.",
+  "description": "Affordable spear infantry. Effective against woodland beasts; advances to a shield warden with an Impact shield bash.",
   "level": 1,
   "family": "spearman",
   "experienceNeeded": 10,

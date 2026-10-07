@@ -170,6 +170,7 @@ pub(crate) fn create_arena<'catalog>(
     }
     state.units.clear();
     state.next_id = 1;
+    let mut starting_cost = [0; 2];
     for side in [Side::Player, Side::Enemy] {
         let roster = roster(
             rules,
@@ -188,6 +189,7 @@ pub(crate) fn create_arena<'catalog>(
             (screen, sign * 3, -sign),
         ] {
             let rule = &rules.units[rules.types[kind]];
+            starting_cost[side.index()] += rule.cost;
             state.units.push(PublicUnit {
                 id: format!("u{}", state.next_id),
                 r#type: kind.into(),
@@ -205,10 +207,13 @@ pub(crate) fn create_arena<'catalog>(
             state.next_id += 1;
         }
     }
-    let gold = 18 + (random.next() * 3.0).floor() as i32 * 3;
+    let budget = rules.arena.starting_budget + (random.next() * 3.0).floor() as i32 * 3;
+    if starting_cost.iter().any(|&cost| cost > budget) {
+        return Err("Arena starting troops exceed the shared budget".into());
+    }
     state.gold = Gold {
-        player: gold,
-        enemy: gold,
+        player: budget - starting_cost[Side::Player.index()],
+        enemy: budget - starting_cost[Side::Enemy.index()],
     };
     state.round = 1;
     state.turn = config.first;
@@ -558,5 +563,71 @@ pub fn run(rules: &Rules, config: MatchConfig) -> Result<MatchResult, Simulation
     match config {
         MatchConfig::Arena(config) => run_arena(rules, config).map(MatchResult::Arena),
         MatchConfig::Campaign(config) => run_campaign(rules, config).map(MatchResult::Campaign),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn arena_charges_starters_to_a_paired_budget_without_changing_placement() {
+        let rules = Rules::embedded().unwrap();
+        for seed in [1, 2, 10] {
+            for landscape in ["open", "wooded", "crossings", "islands"] {
+                for player in &rules.rosters {
+                    for enemy in &rules.rosters {
+                        let config = ArenaConfig {
+                            seed,
+                            armies: Armies {
+                                player: player.id.clone(),
+                                enemy: enemy.id.clone(),
+                            },
+                            landscape: landscape.into(),
+                            player: Policy::Classic,
+                            enemy: Policy::Mixed,
+                            first: Side::Enemy,
+                            max_rounds: 30,
+                            recruit_limit: 1,
+                        };
+                        let game = create_arena(&rules, &config).unwrap();
+                        let total = |side| {
+                            let troops: Vec<_> =
+                                game.units.iter().filter(|u| u.side == side).collect();
+                            assert_eq!(troops.len(), 3);
+                            game.gold[side.index()]
+                                + troops.iter().map(|u| rules.units[u.kind].cost).sum::<i32>()
+                        };
+                        let budget = total(Side::Player);
+                        assert_eq!(budget, total(Side::Enemy));
+                        assert!([36, 39, 42].contains(&budget));
+                        assert!(game.gold.iter().all(|&gold| gold >= 0));
+                        assert_eq!(game.turn, Side::Enemy);
+                        for unit in &game.units {
+                            let sign = if unit.side == Side::Player { -1 } else { 1 };
+                            assert!(
+                                [(sign * 3, 0), (sign * 2, 0), (sign * 3, -sign)]
+                                    .iter()
+                                    .any(|&(q, r)| game.board.ids[unit.tile] == axial_id(q, r))
+                            );
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn removing_arena_adepts_preserves_authored_campaign_recruitment() {
+        let rules = Rules::embedded().unwrap();
+        assert_eq!(
+            roster(&rules, "undead").unwrap().pool,
+            ["skeleton", "bonearcher"]
+        );
+        assert!(
+            rules.campaigns["ashen-oath"].missions[2]
+                .recruits
+                .contains(&"adept".into())
+        );
     }
 }

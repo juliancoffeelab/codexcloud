@@ -24,9 +24,9 @@
       "sound": "attack-melee"
     },
     {
-      "id": "hammer",
-      "name": "Hammer",
-      "damage": 2,
+      "id": "shieldbash",
+      "name": "Shield bash",
+      "damage": 3,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
@@ -39,7 +39,7 @@
     "impact": 1
   },
   "ability": "Shield wall",
-  "description": "Armored spear infantry. Strong against beasts; carries a light hammer for bones and armor.",
+  "description": "Armored spear infantry. Strong against beasts; uses an Impact shield bash against bones and armor.",
   "level": 2,
   "family": "spearman",
   "experienceNeeded": 0,
