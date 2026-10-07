@@ -23,6 +23,7 @@ pub(super) struct ClassicRules<'game, 'catalog> {
     pub unit: Unit,
     pub goals: Vec<Objective>,
     reserved: HashSet<usize>,
+    yielding: HashSet<usize>,
     lanes: HashSet<usize>,
     important: bool,
     threats: Option<Threats<'game, 'catalog>>,
@@ -48,6 +49,7 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
             unit: u.clone(),
             goals: goals.to_vec(),
             reserved: g.reserved(u, goals),
+            yielding: g.escort_lanes(goals).remove(&u.id).unwrap_or_default(),
             lanes: g.withdrawal_lanes(u.side, restrained),
             important,
             threats,
@@ -68,6 +70,10 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         let finishing = g.finishes_objective(&self.unit, tile, &self.goals);
         (if self.reserved.contains(&tile) {
             160.0
+        } else {
+            0.0
+        }) + (if self.yielding.contains(&tile) {
+            80.0
         } else {
             0.0
         }) + (if self.lanes.contains(&tile) {
@@ -392,8 +398,16 @@ impl Game<'_> {
         if goals.is_empty() {
             return;
         }
-        let routes = (self.map_id == "river" || self.campaign.is_some() || !rebuild.is_empty())
-            .then(|| self.routes(u.kind, &goals));
+        let assigned = rules.goals.iter().any(|g| {
+            g.actor.as_ref() == Some(&format!("u{}", id))
+                && matches!(g.kind, ObjectiveKind::Escort | ObjectiveKind::Escape)
+        });
+        let routes = if assigned {
+            Some(std::rc::Rc::new(self.occupied_routes(&u, &goals, false)))
+        } else {
+            (self.map_id == "river" || self.campaign.is_some() || !rebuild.is_empty())
+                .then(|| self.routes(u.kind, &goals))
+        };
         let recruiting = self
             .recruitment_options(u.side)
             .iter()
@@ -510,6 +524,7 @@ impl Game<'_> {
             .filter(|u| u.side == self.turn)
             .map(|u| u.id)
             .collect();
+        let clearing = self.escort_lanes(objectives);
         let order = |u: &Unit| {
             let r = &self.rules.units[u.kind];
             match r.id.as_str() {
@@ -541,7 +556,7 @@ impl Game<'_> {
         ids.sort_by_key(|&id| order(self.unit(id).unwrap()));
         ids.sort_by_key(|&id| {
             let u = self.unit(id).unwrap();
-            !self.reserved(u, &objectives).contains(&u.tile)
+            !self.reserved(u, &objectives).contains(&u.tile) && !clearing.contains_key(&id)
         });
         ids
     }
@@ -598,7 +613,16 @@ impl Game<'_> {
         });
         let best = eligible.first().copied();
         let reserved = self.reserved(&u, objectives);
-        let movement = if reserved.contains(&u.tile) {
+        let clearing = self.escort_lanes(objectives).remove(&u.id);
+        let movement = if let Some(lane) = clearing {
+            Some(
+                self.reachable(&u)
+                    .into_iter()
+                    .map(|(tile, _)| tile)
+                    .filter(|tile| !lane.contains(tile) && !reserved.contains(tile))
+                    .collect(),
+            )
+        } else if reserved.contains(&u.tile) {
             Some(
                 self.board.adjacent[u.tile]
                     .iter()

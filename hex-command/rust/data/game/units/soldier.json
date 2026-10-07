@@ -1,5 +1,6 @@
 {
   "id": "soldier",
+  "role": "warrior",
   "name": "Heavy infantry",
   "race": "human",
   "terrainModifiers": {
@@ -10,14 +11,14 @@
       "cost": 1
     }
   },
-  "hp": 12,
+  "hp": 24,
   "move": 3,
   "cost": 8,
   "attacks": [
     {
       "id": "sword",
       "name": "Sword",
-      "damage": 4,
+      "damage": 8,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
@@ -26,7 +27,7 @@
     {
       "id": "mace",
       "name": "Mace",
-      "damage": 3,
+      "damage": 6,
       "damageType": "impact",
       "category": "melee",
       "range": 1,

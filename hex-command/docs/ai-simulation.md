@@ -64,6 +64,40 @@ optimization, use `--compare artifacts/baseline.json --out artifacts/optimized.j
 to require identical hashes for every complete result, including phase commands.
 This benchmark is separate from the lightweight test suite.
 
+## Analytics from saved results
+
+```sh
+# Existing output only; this command never builds or runs simulations.
+npm run ai:analyze -- artifacts/current/report.json --out artifacts/current/analytics
+
+# Require identical match configurations and calculate before/after deltas.
+npm run ai:analyze -- artifacts/current/report.json --baseline artifacts/previous/report.json --out artifacts/current/analytics
+```
+
+[`scripts/analyze-simulations.py`](../scripts/analyze-simulations.py) uses PyArrow
+to read the adjacent `.outcomes.jsonl` journal with an explicit projected schema,
+then Polars for every match calculation, grouping and baseline join. It does not
+decode gameplay records into Python objects or load the large detail journals.
+Pass multiple report/journal paths for shards; repeat `--baseline` for baseline
+shards. Duplicate match identities and unmatched baseline configurations fail.
+Inputs may be partial runs; the report states how many saved matches it analyzed.
+`uv` installs the script's declared, pinned Python dependencies in its cache.
+
+Output includes a Markdown summary and CSV tables for race/map/policy win rates,
+equal-policy race comparisons, race matchups, seats/initiative, victory conditions,
+arena turn statistics and distributions, campaigns, policy/diplomacy matchups and
+stage completion. Each table gets a comparison CSV when a baseline is supplied.
+Race tables exclude self-play; policy tables count both seats, including self-play.
+Round caps remain in win-rate denominators. Stage denominators include only
+attempts that reached that stage; campaigns retain their authored rosters.
+Rates are percentages and rate deltas are percentage points. P90 uses the nearest
+quantile. Row sorting is for presentation, after aggregation.
+
+`timings.json` records Arrow JSON reading, Arrow-to-Polars transfer, validation,
+configuration matching, analytics, comparison and output wall/CPU times, with
+process peak RSS. Imports are timed separately. These timings cover analysis,
+not match execution; no simulations are started by the analytics command.
+
 The engine shares immutable indexed hex geometry between forecast copies, uses
 integer movement queues, and precomputes fixed movement and defense rules. Routing
 fields ignore occupancy and can be reused across commands; terrain revisions
@@ -95,10 +129,11 @@ The campaign/test adapter adds objective reservations, required-actor safety and
 selectable mediation behavior. Live enemy actions retain authored posts and patrols.
 
 **Rush** recruits ordinary melee screens and favors efficient damage and durability.
-**Mixed** aims for roughly 35% tanks, 15% fast melee flankers, 35% ranged and 15%
-healers. Shares are normalized over the roles its recruitment pool offers. Fast
-melee specialists (including scouts with a ranged sidearm) do not fulfill the tank
-quota. A missing tank gets replacement priority. With village income, mixed saves
+**Mixed** uses relative weights of 0.3 warriors, 0.2 flanks, 0.2 rangers and 0.2
+healers. Every unit JSON declares its role explicitly. Missing roster roles are
+redistributed at runtime: all four roles normalize to 33.3%/22.2%/22.2%/22.2%; a
+warrior/ranger-only roster normalizes to 60%/40%. It chooses the most underrepresented
+role first, then an effective unit within that role. A missing warrior gets replacement priority. With village income, mixed saves
 for that replacement instead of continually buying cheaper flankers; other preferred
 roles save for at most two income ticks. Without income it buys an affordable option.
 Recruitment effectiveness uses actual target cover and the attack category the
@@ -108,14 +143,26 @@ wounded allies, and recomputes plans after every command so followers can use ne
 opened routes. Both policies use actual weapon/terrain effectiveness and objectives.
 Their screens recruit toward contact and their supports behind it.
 
+Required couriers and escaping leaders plan with current occupancy, allowing
+detours that initially increase terrain-only distance. Allies clear their next
+movement corridor instead of permanently occupying the destination's approaches.
+Safety checks still apply to both the actor and units yielding the route.
+
 Beast-race units have 1 additional melee and ranged protection in forests and
 groves, on top of terrain cover. Thorncaller and Briarweaver have no extra individual
-woodland cover: their total protection is 1 melee and 2 ranged. Thorns deal 4 Pierce
-damage (Briarweaver: 5). Rookie boars have 3-damage Impact Trample and 2-damage Pierce
-tusks; Great boar attacks remain at 5. Boar HP and protection are unchanged.
+woodland cover: their total protection is 1 melee and 2 ranged. Thorns deal 8 Pierce
+damage (Briarweaver: 10). Rookie boars have 6-damage Impact Trample and 4-damage Pierce
+tusks; Great boar attacks deal 10. Boars have 28 HP (Great boar: 34) and 1
+individual Blade protection, while their racial Pierce weakness remains.
+Skeleton warriors cost 6 gold; bone archers remain at 7. The experimental ranged
+damage reductions have been reverted. All 34 units now have twice their previous HP
+and weapon base damage, followed by the boar HP adjustment above. All healing
+also doubled: Wavemender 2, Tide sage 4, Briarweaver 2, and villages/groves 4 HP
+per turn. Damage/terrain modifiers, movement, costs and progression thresholds
+retain their previous values.
 Undead have 2 racial Pierce protection and 1 Impact vulnerability; skeletons and
 revenants do not stack another individual Pierce modifier. Wardens retain their
-spear and use a 3-damage Impact Shield bash. Wavemender costs 10 gold.
+spear and use a 6-damage Impact Shield bash. Wavemender costs 10 gold.
 Historical reports describe their recorded rules snapshot, not these updated values.
 
 Merfolk pay 2 movement on plains, villages, keeps and ruins, and 3 in

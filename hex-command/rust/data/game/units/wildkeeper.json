@@ -1,16 +1,17 @@
 {
   "id": "wildkeeper",
+  "role": "warrior",
   "name": "Wildkeeper",
   "race": "beast",
   "leader": true,
-  "hp": 14,
+  "hp": 28,
   "move": 3,
   "cost": 0,
   "attacks": [
     {
       "id": "bough",
       "name": "Bough",
-      "damage": 3,
+      "damage": 6,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
@@ -19,7 +20,7 @@
     {
       "id": "stones",
       "name": "Stones",
-      "damage": 2,
+      "damage": 4,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,

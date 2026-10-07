@@ -1,15 +1,16 @@
 {
   "id": "wolf",
+  "role": "flank",
   "name": "Wolf",
   "race": "beast",
-  "hp": 8,
+  "hp": 16,
   "move": 5,
   "cost": 5,
   "attacks": [
     {
       "id": "fangs",
       "name": "Fangs",
-      "damage": 3,
+      "damage": 6,
       "damageType": "blade",
       "category": "melee",
       "range": 1,

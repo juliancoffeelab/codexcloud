@@ -30,69 +30,69 @@ const weapons = [
   ["scout", "sling"],
 ] as const;
 test("Zero damage attacks remain available and consume actions", async () => {
-  const { game, attacker, target } = fixture("archer", "soldier");
+  const { game, attacker, target } = fixture("bonearcher", "soldier");
   required(game.tile(target.tile)).terrain = "hill";
   const published = createGameView(game);
   const choice = required(
-    attackChoiceViews(published, attacker, target).find((c) => c.id === "knife"),
+    attackChoiceViews(published, attacker, target).find((c) => c.id === "shard"),
   );
   assert(choice.available);
   assert.equal(choice.enemyForecast.remainingHp, target.hp);
   assert.equal(choice.attackCalculation.equation, "2 − 1 (armor) − 1 (cover) = 0");
-  game.attack(attacker.id, target.id, "knife");
-  assert.equal(target.hp, 12);
-  assert.equal(attacker.hp, 4);
+  game.attack(attacker.id, target.id, "shard");
+  assert.equal(target.hp, 24);
+  assert.equal(attacker.hp, 8);
   assert(attacker.moved && attacker.attacked);
-  assert.throws(() => game.attack(attacker.id, target.id, "knife"));
+  assert.throws(() => game.attack(attacker.id, target.id, "shard"));
   assert.deepEqual(
     arsenalView(required(published.unit(target.id))).modifiers.map((m) => m.label),
     ["−1", "−1", "+1"],
   );
 });
 test("Covered retaliation can deal zero damage", async () => {
-  const { game, attacker, target } = fixture("commander", "archer");
+  const { game, attacker, target } = fixture("commander", "bonearcher");
   required(game.tile(attacker.tile)).terrain = "hill";
   const preview = game.previewDetails(attacker, target, "sword");
   assert.equal(preview.retaliation, 0);
-  assert.equal(preview.response?.id, "knife");
+  assert.equal(preview.response?.id, "shard");
   const choice = required(
     attackChoiceViews(createGameView(game), attacker, target).find((c) => c.id === "sword"),
   );
   assert(choice.available);
-  assert(choice.retaliationCalculation.description.includes("knife"));
+  assert(choice.retaliationCalculation.description.includes("shard"));
   assert.equal(choice.retaliationCalculation.equation, "2 − 1 (armor) − 1 (cover) = 0");
 });
 test("Blocked attacks still produce combat feedback", async () => {
-  const { game, attacker, target } = fixture("scout", "commander", "4,3");
+  const { game, attacker, target } = fixture("bonearcher", "commander");
   required(game.tile(target.tile)).terrain = "hill";
   const before = game.snapshot();
-  game.attack(attacker.id, target.id, "sling");
-  assert.equal(target.hp, 16);
+  game.attack(attacker.id, target.id, "shard");
+  assert.equal(target.hp, 32);
   assert.equal(attacker.hp, 8);
   assert(describeChanges(before, game.snapshot()).attacked, "blocked attacks still play their cue");
 });
 test("Archers choose between safe bows and melee retaliation", async () => {
   const { game, attacker, target } = fixture("archer", "soldier");
   assert.deepEqual(game.preview(attacker, target, "bow"), {
-    damage: 3,
+    damage: 7,
     retaliation: 0,
   });
   assert.deepEqual(game.preview(attacker, target, "knife"), {
-    damage: 1,
-    retaliation: 4,
+    damage: 3,
+    retaliation: 8,
   });
   assert.equal(required(game.bestAttack(attacker, target)).id, "bow");
   game.attack(attacker.id, target.id, "knife");
   assert.equal(required(game.lastCombat).sound, "attack-melee");
-  assert.equal(attacker.hp, 4);
-  assert.equal(target.hp, 11);
+  assert.equal(attacker.hp, 8);
+  assert.equal(target.hp, 21);
   assert.throws(() => game.attack(attacker.id, target.id, "bow"));
 });
 test("Ranged retaliation and intervening hills constrain attacks", async () => {
   const { game, attacker, target } = fixture("archer", "archer", "4,3");
   assert.deepEqual(game.preview(attacker, target, "bow"), {
-    damage: 4,
-    retaliation: 4,
+    damage: 8,
+    retaliation: 8,
   });
   assert.equal(game.canAttackFrom(attacker, attacker.tile, target, "knife"), false);
   assert.throws(() => game.preview(attacker, target, "knife"), /cannot reach/);
@@ -106,14 +106,14 @@ test("Ranged retaliation and intervening hills constrain attacks", async () => {
 test("Scouts avoid lethal ranged replies and kills prevent retaliation", async () => {
   const { game, attacker, target } = fixture("scout", "archer");
   assert.deepEqual(game.preview(attacker, target, "sling"), {
-    damage: 1,
-    retaliation: 4,
+    damage: 2,
+    retaliation: 8,
   });
   assert.deepEqual(game.preview(attacker, target, "knife"), {
-    damage: 2,
-    retaliation: 2,
+    damage: 4,
+    retaliation: 4,
   });
-  attacker.hp = 3;
+  attacker.hp = 5;
   assert.equal(
     required(game.bestAttack(attacker, target)).id,
     "knife",
@@ -135,22 +135,22 @@ test("Lethal forecasts identify casualties including overkill", async () => {
     attackChoiceViews(createGameView(game), attacker, target).find((c) => c.id === "mace"),
   );
   assert(choice.available);
-  assert.equal(choice.enemyForecast.impactLabel, "Deal −4 HP (dies)");
+  assert.equal(choice.enemyForecast.impactLabel, "Deal −7 HP (dies)");
   assert.equal(choice.playerForecast.impactLabel, "Take 0 HP");
   target.hp = 3;
   choice = required(
     attackChoiceViews(createGameView(game), attacker, target).find((c) => c.id === "mace"),
   );
   assert(choice.available);
-  assert.equal(choice.enemyForecast.impactLabel, "Deal −4 HP (dies)", "overkill is also lethal");
-  target.hp = 5;
-  attacker.hp = 4;
+  assert.equal(choice.enemyForecast.impactLabel, "Deal −7 HP (dies)", "overkill is also lethal");
+  target.hp = 8;
+  attacker.hp = 7;
   choice = required(
     attackChoiceViews(createGameView(game), attacker, target).find((c) => c.id === "mace"),
   );
   assert(choice.available);
-  assert.equal(choice.enemyForecast.impactLabel, "Deal −4 HP");
-  assert.equal(choice.playerForecast.impactLabel, "Take −4 HP (dies)");
+  assert.equal(choice.enemyForecast.impactLabel, "Deal −7 HP");
+  assert.equal(choice.playerForecast.impactLabel, "Take −7 HP (dies)");
 });
 
 // Representative native exchanges cover armor, cover, ranged replies and damage types.

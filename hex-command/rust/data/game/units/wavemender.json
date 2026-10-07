@@ -1,15 +1,16 @@
 {
   "id": "wavemender",
+  "role": "healer",
   "name": "Wavemender",
   "race": "merfolk",
-  "hp": 8,
+  "hp": 16,
   "move": 4,
   "cost": 10,
   "attacks": [
     {
       "id": "surge",
       "name": "Surge",
-      "damage": 3,
+      "damage": 6,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
@@ -18,7 +19,7 @@
     {
       "id": "staff",
       "name": "Staff",
-      "damage": 1,
+      "damage": 2,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
@@ -31,8 +32,8 @@
     "impact": 0
   },
   "ability": "Amphibious",
-  "description": "Ranged Impact against armor. Heals adjacent allies by 1 HP at turn start; multiple healers do not stack. Fragile in melee.",
-  "healing": 1,
+  "description": "Ranged Impact against armor. Heals adjacent allies by 2 HP at turn start; multiple healers do not stack. Fragile in melee.",
+  "healing": 2,
   "level": 1,
   "family": "wavemender",
   "experienceNeeded": 10,

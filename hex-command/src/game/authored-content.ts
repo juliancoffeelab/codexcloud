@@ -45,7 +45,10 @@ export const UNIT_SPECIFICATIONS = definitions<UnitDefinition>(manifest.units) a
   UnitType,
   UnitDefinition
 >;
-export const AUTHORED_RACES = named<RaceDefinition>(manifest.races) as Record<Race, RaceDefinition>;
+export const AUTHORED_RACES = definitions<RaceDefinition>(manifest.races) as Record<
+  Race,
+  RaceDefinition
+>;
 export const AUTHORED_TERRAIN = named<TerrainDefinition>(manifest.terrain) as Record<
   TerrainType,
   TerrainDefinition

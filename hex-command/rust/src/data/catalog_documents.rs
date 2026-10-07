@@ -152,12 +152,12 @@ pub(super) fn collect_bundle(
     }
     for path in [
         &manifest.terrain,
-        &manifest.races,
         &manifest.simulation.rosters,
         &manifest.simulation.arena,
         &manifest.simulation.campaign,
     ]
     .into_iter()
+    .chain(manifest.races.paths())
     .chain(manifest.units.paths())
     .chain(&manifest.scenarios)
     .chain(&manifest.campaigns)

@@ -1,15 +1,16 @@
 {
   "id": "direwolf",
+  "role": "flank",
   "name": "Dire wolf",
   "race": "beast",
-  "hp": 11,
+  "hp": 22,
   "move": 5,
   "cost": 8,
   "attacks": [
     {
       "id": "fangs",
       "name": "Fangs",
-      "damage": 4,
+      "damage": 8,
       "damageType": "blade",
       "category": "melee",
       "range": 1,

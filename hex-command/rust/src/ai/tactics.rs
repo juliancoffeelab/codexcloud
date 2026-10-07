@@ -46,6 +46,7 @@ impl Game<'_> {
     ) -> Option<Plan> {
         let side = self.turn;
         let objectives = individual(self.policy_objectives(goals));
+        let escort_lanes = self.escort_lanes(&objectives);
         let rebuilds: HashMap<_, _> = self
             .units
             .iter()
@@ -212,9 +213,22 @@ impl Game<'_> {
                     original.clone()
                 };
                 let tiles: Vec<_> = goal.tiles.iter().map(|t| self.site(t)).collect();
-                let route = routes
-                    .entry((unit.kind, tiles.clone()))
-                    .or_insert_with(|| self.routes(unit.kind, &tiles));
+                let route = if pursuing
+                    && original.actor.is_some()
+                    && matches!(original.kind, ObjectiveKind::Escort | ObjectiveKind::Escape)
+                {
+                    let occupied = self.occupied_routes(unit, &tiles, false);
+                    if occupied[unit.tile] == u16::MAX {
+                        self.routes(unit.kind, &tiles)
+                    } else {
+                        std::rc::Rc::new(occupied)
+                    }
+                } else {
+                    routes
+                        .entry((unit.kind, tiles.clone()))
+                        .or_insert_with(|| self.routes(unit.kind, &tiles))
+                        .clone()
+                };
                 let before = route[unit.tile];
                 if before == u16::MAX || goal.tiles.is_empty() {
                     continue;
@@ -223,7 +237,7 @@ impl Game<'_> {
                     priority: (before as f64 + 3.0) / goal.weight,
                     assigned: !assisting && (original.actor.is_some() || original.family.is_some()),
                     goal,
-                    route: route.clone(),
+                    route,
                     before,
                 });
             }
@@ -299,6 +313,12 @@ impl Game<'_> {
                     0.0
                 } - if reserved.contains(&tile) { 160.0 } else { 0.0 }
                     - if lanes.contains(&tile) { 100.0 } else { 0.0 };
+                if escort_lanes
+                    .get(&unit.id)
+                    .is_some_and(|lane| !lane.contains(&tile))
+                {
+                    positioning += 40.0;
+                }
                 if let Some(d) = &duty {
                     let after = d.route[tile];
                     if after == u16::MAX {
@@ -329,7 +349,7 @@ impl Game<'_> {
                     || self.terrain_is(tile, Terrain::Grove))
                     && (self.owners[tile] == Some(side) || self.at(tile).is_none());
                 if healing_tile {
-                    positioning += (self.rules.units[unit.kind].hp - unit.hp).min(2) as f64 * 2.0;
+                    positioning += (self.rules.units[unit.kind].hp - unit.hp).min(4) as f64 * 2.0;
                 }
                 if self.terrain_is(tile, Terrain::Village) && self.owners[tile] != Some(side) {
                     positioning += 3.0;

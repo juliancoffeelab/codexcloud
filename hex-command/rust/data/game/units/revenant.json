@@ -1,15 +1,16 @@
 {
   "id": "revenant",
+  "role": "warrior",
   "name": "Revenant",
   "race": "undead",
-  "hp": 12,
+  "hp": 24,
   "move": 3,
   "cost": 11,
   "attacks": [
     {
       "id": "rustblade",
       "name": "Rust blade",
-      "damage": 4,
+      "damage": 8,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
@@ -18,7 +19,7 @@
     {
       "id": "boneclub",
       "name": "Bone club",
-      "damage": 3,
+      "damage": 6,
       "damageType": "impact",
       "category": "melee",
       "range": 1,

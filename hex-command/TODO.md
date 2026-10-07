@@ -20,6 +20,23 @@
 
 - [ ] Consider terrain-aware shoreline sprites.
 
+## Data loading and unit information
+
+- [ ] Make native Rust load game data from disk by default at the start of each run.
+- [ ] Keep WASM as the exception: bundle its game data.
+- [ ] Make TypeScript ask WASM for game data.
+- [ ] Move attacks, resistances and other mechanical stats out of unit descriptions
+      into their structured data and UI fields. Add a separate list for unit/race
+      terrain buffs; consider a two-column table for terrain effects.
+
+## Tests
+
+- [ ] Move gameplay rule tests into Rust: movement, combat, recruitment, economy,
+      healing, progression, campaign objectives and native save validation.
+      Preserve behavioral coverage and remove tests that only repeat JSON values.
+      Keep JS migrations/storage, controller, undo, UI publication, rendering and
+      audio tests in Vitest, plus a small set of real WASM integration tests.
+
 ## Mobile rendering
 
 - [ ] Investigate and fix mobile stray lines and portrait leakage that remain

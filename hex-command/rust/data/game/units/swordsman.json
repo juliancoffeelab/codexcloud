@@ -1,16 +1,17 @@
 {
   "id": "swordsman",
+  "role": "warrior",
   "name": "Swordsman",
   "race": "human",
   "terrainModifiers": {},
-  "hp": 10,
+  "hp": 20,
   "move": 3,
   "cost": 6,
   "attacks": [
     {
       "id": "sword",
       "name": "Sword",
-      "damage": 3,
+      "damage": 6,
       "damageType": "blade",
       "category": "melee",
       "range": 1,

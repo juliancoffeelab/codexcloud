@@ -34,7 +34,7 @@ test("Melee kills suppress retaliation and consume movement", async () => {
   g.units = [required(g.unit("u1")), required(g.unit("u4"))];
   const melee = g.addUnit("soldier", "player", "2,1"),
     defender = g.addUnit("scout", "enemy", "3,1");
-  assert.deepEqual(g.preview(melee, defender), { damage: 4, retaliation: 1 });
+  assert.deepEqual(g.preview(melee, defender), { damage: 8, retaliation: 3 });
   defender.hp = 4;
   assert.equal(g.preview(melee, defender).retaliation, 0);
   g.attack(melee.id, defender.id);
@@ -76,7 +76,7 @@ test("Village ownership, income and healing", async () => {
   g.endTurn();
   g.endTurn();
   assert.equal(g.gold.player, 14);
-  assert.equal(required(g.unit("u3")).hp, 6);
+  assert.equal(required(g.unit("u3")).hp, 8);
   required(g.unit("u6")).tile = "4,1";
   g.endTurn();
   g.move("u6", "3,2");

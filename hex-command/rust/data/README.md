@@ -10,9 +10,10 @@ Paths are relative to this directory and cannot contain traversal components.
 
 - `game/terrain.json` defines terrain IDs, labels, movement, passability and
   environmental damage modifiers.
-- `game/races.json` defines inherited resistance and terrain modifiers.
+- `game/races/<race-id>.json` defines one race's inherited resistance and terrain modifiers.
 - `game/units/<unit-id>.json` defines one unit's deviations from its race, weapons and
-  progression. Damage and range come from weapons. Movement costs and
+  progression. Every unit explicitly declares `role`: `warrior`, `flank`, `ranger`
+  or `healer`; AI does not infer it from speed, weapons or healing. Damage and range come from weapons. Movement costs and
   environmental modifiers are resolved once when Rust loads the catalog. Never
   author `costs` or `environment` arrays here.
 - `game/scenario/<id>-v<revision>/scenario.json` references `map.json` (geometry)

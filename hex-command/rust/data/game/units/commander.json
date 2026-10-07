@@ -1,7 +1,8 @@
 {
   "id": "commander",
+  "role": "warrior",
   "name": "Commander",
-  "hp": 16,
+  "hp": 32,
   "move": 3,
   "cost": 0,
   "leader": true,
@@ -18,7 +19,7 @@
     {
       "id": "sword",
       "name": "Sword",
-      "damage": 4,
+      "damage": 8,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
@@ -27,7 +28,7 @@
     {
       "id": "mace",
       "name": "Mace",
-      "damage": 3,
+      "damage": 6,
       "damageType": "impact",
       "category": "melee",
       "range": 1,

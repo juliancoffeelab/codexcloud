@@ -1,5 +1,6 @@
 {
   "id": "warden",
+  "role": "warrior",
   "name": "Warden",
   "terrainModifiers": {
     "ford": {
@@ -10,14 +11,14 @@
     }
   },
   "race": "human",
-  "hp": 12,
+  "hp": 24,
   "move": 3,
   "cost": 9,
   "attacks": [
     {
       "id": "spear",
       "name": "Spear",
-      "damage": 4,
+      "damage": 8,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
@@ -26,7 +27,7 @@
     {
       "id": "shieldbash",
       "name": "Shield bash",
-      "damage": 3,
+      "damage": 6,
       "damageType": "impact",
       "category": "melee",
       "range": 1,

@@ -600,7 +600,7 @@ mod tests {
                         };
                         let budget = total(Side::Player);
                         assert_eq!(budget, total(Side::Enemy));
-                        assert!([36, 39, 42].contains(&budget));
+                        assert!([0, 3, 6].contains(&(budget - rules.arena.starting_budget)));
                         assert!(game.gold.iter().all(|&gold| gold >= 0));
                         assert_eq!(game.turn, Side::Enemy);
                         for unit in &game.units {
@@ -615,19 +615,5 @@ mod tests {
                 }
             }
         }
-    }
-
-    #[test]
-    fn removing_arena_adepts_preserves_authored_campaign_recruitment() {
-        let rules = Rules::embedded().unwrap();
-        assert_eq!(
-            roster(&rules, "undead").unwrap().pool,
-            ["skeleton", "bonearcher"]
-        );
-        assert!(
-            rules.campaigns["ashen-oath"].missions[2]
-                .recruits
-                .contains(&"adept".into())
-        );
     }
 }

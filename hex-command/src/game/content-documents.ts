@@ -75,57 +75,60 @@ import document72 from "../../rust/data/game/campaigns/lantern-road/stages/lante
 import document73 from "../../rust/data/game/campaigns/lantern-road/stages/lantern-villages/scripts.json";
 import document74 from "../../rust/data/game/campaigns/lantern-road/stages/lantern-villages/stage.json";
 import document75 from "../../rust/data/game/campaigns/lantern-road/stages/lantern-villages/story.json";
-import document76 from "../../rust/data/game/races.json";
-import document77 from "../../rust/data/game/scenario/ashen-refuge-v1/map.json";
-import document78 from "../../rust/data/game/scenario/ashen-refuge-v1/roster.json";
-import document79 from "../../rust/data/game/scenario/ashen-refuge-v1/scenario.json";
-import document80 from "../../rust/data/game/scenario/developer-v1/map.json";
-import document81 from "../../rust/data/game/scenario/developer-v1/roster.json";
-import document82 from "../../rust/data/game/scenario/developer-v1/scenario.json";
-import document83 from "../../rust/data/game/scenario/mirror-v1/map.json";
-import document84 from "../../rust/data/game/scenario/mirror-v1/roster.json";
-import document85 from "../../rust/data/game/scenario/mirror-v1/scenario.json";
-import document86 from "../../rust/data/game/scenario/river-v1/map.json";
-import document87 from "../../rust/data/game/scenario/river-v1/roster.json";
-import document88 from "../../rust/data/game/scenario/river-v1/scenario.json";
-import document89 from "../../rust/data/game/scenario/river-v2/map.json";
-import document90 from "../../rust/data/game/scenario/river-v2/roster.json";
-import document91 from "../../rust/data/game/scenario/river-v2/scenario.json";
-import document92 from "../../rust/data/game/terrain.json";
-import document93 from "../../rust/data/game/units/adept.json";
-import document94 from "../../rust/data/game/units/archer.json";
-import document95 from "../../rust/data/game/units/boar.json";
-import document96 from "../../rust/data/game/units/bonearcher.json";
-import document97 from "../../rust/data/game/units/briarweaver.json";
-import document98 from "../../rust/data/game/units/commander.json";
-import document99 from "../../rust/data/game/units/deatharcher.json";
-import document100 from "../../rust/data/game/units/direwolf.json";
-import document101 from "../../rust/data/game/units/greatboar.json";
-import document102 from "../../rust/data/game/units/grovewarden.json";
-import document103 from "../../rust/data/game/units/harpooner.json";
-import document104 from "../../rust/data/game/units/lich.json";
-import document105 from "../../rust/data/game/units/mage.json";
-import document106 from "../../rust/data/game/units/marksman.json";
-import document107 from "../../rust/data/game/units/marshal.json";
-import document108 from "../../rust/data/game/units/necromancer.json";
-import document109 from "../../rust/data/game/units/ranger.json";
-import document110 from "../../rust/data/game/units/reefguard.json";
-import document111 from "../../rust/data/game/units/revenant.json";
-import document112 from "../../rust/data/game/units/scout.json";
-import document113 from "../../rust/data/game/units/skeleton.json";
-import document114 from "../../rust/data/game/units/soldier.json";
-import document115 from "../../rust/data/game/units/spearman.json";
-import document116 from "../../rust/data/game/units/swordsman.json";
-import document117 from "../../rust/data/game/units/thorncaller.json";
-import document118 from "../../rust/data/game/units/tidehunter.json";
-import document119 from "../../rust/data/game/units/tidekeeper.json";
-import document120 from "../../rust/data/game/units/tidesage.json";
-import document121 from "../../rust/data/game/units/tideseer.json";
-import document122 from "../../rust/data/game/units/tridentguard.json";
-import document123 from "../../rust/data/game/units/warden.json";
-import document124 from "../../rust/data/game/units/wavemender.json";
-import document125 from "../../rust/data/game/units/wildkeeper.json";
-import document126 from "../../rust/data/game/units/wolf.json";
+import document76 from "../../rust/data/game/races/beast.json";
+import document77 from "../../rust/data/game/races/human.json";
+import document78 from "../../rust/data/game/races/merfolk.json";
+import document79 from "../../rust/data/game/races/undead.json";
+import document80 from "../../rust/data/game/scenario/ashen-refuge-v1/map.json";
+import document81 from "../../rust/data/game/scenario/ashen-refuge-v1/roster.json";
+import document82 from "../../rust/data/game/scenario/ashen-refuge-v1/scenario.json";
+import document83 from "../../rust/data/game/scenario/developer-v1/map.json";
+import document84 from "../../rust/data/game/scenario/developer-v1/roster.json";
+import document85 from "../../rust/data/game/scenario/developer-v1/scenario.json";
+import document86 from "../../rust/data/game/scenario/mirror-v1/map.json";
+import document87 from "../../rust/data/game/scenario/mirror-v1/roster.json";
+import document88 from "../../rust/data/game/scenario/mirror-v1/scenario.json";
+import document89 from "../../rust/data/game/scenario/river-v1/map.json";
+import document90 from "../../rust/data/game/scenario/river-v1/roster.json";
+import document91 from "../../rust/data/game/scenario/river-v1/scenario.json";
+import document92 from "../../rust/data/game/scenario/river-v2/map.json";
+import document93 from "../../rust/data/game/scenario/river-v2/roster.json";
+import document94 from "../../rust/data/game/scenario/river-v2/scenario.json";
+import document95 from "../../rust/data/game/terrain.json";
+import document96 from "../../rust/data/game/units/adept.json";
+import document97 from "../../rust/data/game/units/archer.json";
+import document98 from "../../rust/data/game/units/boar.json";
+import document99 from "../../rust/data/game/units/bonearcher.json";
+import document100 from "../../rust/data/game/units/briarweaver.json";
+import document101 from "../../rust/data/game/units/commander.json";
+import document102 from "../../rust/data/game/units/deatharcher.json";
+import document103 from "../../rust/data/game/units/direwolf.json";
+import document104 from "../../rust/data/game/units/greatboar.json";
+import document105 from "../../rust/data/game/units/grovewarden.json";
+import document106 from "../../rust/data/game/units/harpooner.json";
+import document107 from "../../rust/data/game/units/lich.json";
+import document108 from "../../rust/data/game/units/mage.json";
+import document109 from "../../rust/data/game/units/marksman.json";
+import document110 from "../../rust/data/game/units/marshal.json";
+import document111 from "../../rust/data/game/units/necromancer.json";
+import document112 from "../../rust/data/game/units/ranger.json";
+import document113 from "../../rust/data/game/units/reefguard.json";
+import document114 from "../../rust/data/game/units/revenant.json";
+import document115 from "../../rust/data/game/units/scout.json";
+import document116 from "../../rust/data/game/units/skeleton.json";
+import document117 from "../../rust/data/game/units/soldier.json";
+import document118 from "../../rust/data/game/units/spearman.json";
+import document119 from "../../rust/data/game/units/swordsman.json";
+import document120 from "../../rust/data/game/units/thorncaller.json";
+import document121 from "../../rust/data/game/units/tidehunter.json";
+import document122 from "../../rust/data/game/units/tidekeeper.json";
+import document123 from "../../rust/data/game/units/tidesage.json";
+import document124 from "../../rust/data/game/units/tideseer.json";
+import document125 from "../../rust/data/game/units/tridentguard.json";
+import document126 from "../../rust/data/game/units/warden.json";
+import document127 from "../../rust/data/game/units/wavemender.json";
+import document128 from "../../rust/data/game/units/wildkeeper.json";
+import document129 from "../../rust/data/game/units/wolf.json";
 export const CONTENT_DOCUMENTS: Readonly<Record<string, unknown>> = {
   "game/campaigns/ashen-oath/campaign.json": document0,
   "game/campaigns/ashen-oath/stages/ashen-dawn/map.json": document1,
@@ -203,55 +206,58 @@ export const CONTENT_DOCUMENTS: Readonly<Record<string, unknown>> = {
   "game/campaigns/lantern-road/stages/lantern-villages/scripts.json": document73,
   "game/campaigns/lantern-road/stages/lantern-villages/stage.json": document74,
   "game/campaigns/lantern-road/stages/lantern-villages/story.json": document75,
-  "game/races.json": document76,
-  "game/scenario/ashen-refuge-v1/map.json": document77,
-  "game/scenario/ashen-refuge-v1/roster.json": document78,
-  "game/scenario/ashen-refuge-v1/scenario.json": document79,
-  "game/scenario/developer-v1/map.json": document80,
-  "game/scenario/developer-v1/roster.json": document81,
-  "game/scenario/developer-v1/scenario.json": document82,
-  "game/scenario/mirror-v1/map.json": document83,
-  "game/scenario/mirror-v1/roster.json": document84,
-  "game/scenario/mirror-v1/scenario.json": document85,
-  "game/scenario/river-v1/map.json": document86,
-  "game/scenario/river-v1/roster.json": document87,
-  "game/scenario/river-v1/scenario.json": document88,
-  "game/scenario/river-v2/map.json": document89,
-  "game/scenario/river-v2/roster.json": document90,
-  "game/scenario/river-v2/scenario.json": document91,
-  "game/terrain.json": document92,
-  "game/units/adept.json": document93,
-  "game/units/archer.json": document94,
-  "game/units/boar.json": document95,
-  "game/units/bonearcher.json": document96,
-  "game/units/briarweaver.json": document97,
-  "game/units/commander.json": document98,
-  "game/units/deatharcher.json": document99,
-  "game/units/direwolf.json": document100,
-  "game/units/greatboar.json": document101,
-  "game/units/grovewarden.json": document102,
-  "game/units/harpooner.json": document103,
-  "game/units/lich.json": document104,
-  "game/units/mage.json": document105,
-  "game/units/marksman.json": document106,
-  "game/units/marshal.json": document107,
-  "game/units/necromancer.json": document108,
-  "game/units/ranger.json": document109,
-  "game/units/reefguard.json": document110,
-  "game/units/revenant.json": document111,
-  "game/units/scout.json": document112,
-  "game/units/skeleton.json": document113,
-  "game/units/soldier.json": document114,
-  "game/units/spearman.json": document115,
-  "game/units/swordsman.json": document116,
-  "game/units/thorncaller.json": document117,
-  "game/units/tidehunter.json": document118,
-  "game/units/tidekeeper.json": document119,
-  "game/units/tidesage.json": document120,
-  "game/units/tideseer.json": document121,
-  "game/units/tridentguard.json": document122,
-  "game/units/warden.json": document123,
-  "game/units/wavemender.json": document124,
-  "game/units/wildkeeper.json": document125,
-  "game/units/wolf.json": document126,
+  "game/races/beast.json": document76,
+  "game/races/human.json": document77,
+  "game/races/merfolk.json": document78,
+  "game/races/undead.json": document79,
+  "game/scenario/ashen-refuge-v1/map.json": document80,
+  "game/scenario/ashen-refuge-v1/roster.json": document81,
+  "game/scenario/ashen-refuge-v1/scenario.json": document82,
+  "game/scenario/developer-v1/map.json": document83,
+  "game/scenario/developer-v1/roster.json": document84,
+  "game/scenario/developer-v1/scenario.json": document85,
+  "game/scenario/mirror-v1/map.json": document86,
+  "game/scenario/mirror-v1/roster.json": document87,
+  "game/scenario/mirror-v1/scenario.json": document88,
+  "game/scenario/river-v1/map.json": document89,
+  "game/scenario/river-v1/roster.json": document90,
+  "game/scenario/river-v1/scenario.json": document91,
+  "game/scenario/river-v2/map.json": document92,
+  "game/scenario/river-v2/roster.json": document93,
+  "game/scenario/river-v2/scenario.json": document94,
+  "game/terrain.json": document95,
+  "game/units/adept.json": document96,
+  "game/units/archer.json": document97,
+  "game/units/boar.json": document98,
+  "game/units/bonearcher.json": document99,
+  "game/units/briarweaver.json": document100,
+  "game/units/commander.json": document101,
+  "game/units/deatharcher.json": document102,
+  "game/units/direwolf.json": document103,
+  "game/units/greatboar.json": document104,
+  "game/units/grovewarden.json": document105,
+  "game/units/harpooner.json": document106,
+  "game/units/lich.json": document107,
+  "game/units/mage.json": document108,
+  "game/units/marksman.json": document109,
+  "game/units/marshal.json": document110,
+  "game/units/necromancer.json": document111,
+  "game/units/ranger.json": document112,
+  "game/units/reefguard.json": document113,
+  "game/units/revenant.json": document114,
+  "game/units/scout.json": document115,
+  "game/units/skeleton.json": document116,
+  "game/units/soldier.json": document117,
+  "game/units/spearman.json": document118,
+  "game/units/swordsman.json": document119,
+  "game/units/thorncaller.json": document120,
+  "game/units/tidehunter.json": document121,
+  "game/units/tidekeeper.json": document122,
+  "game/units/tidesage.json": document123,
+  "game/units/tideseer.json": document124,
+  "game/units/tridentguard.json": document125,
+  "game/units/warden.json": document126,
+  "game/units/wavemender.json": document127,
+  "game/units/wildkeeper.json": document128,
+  "game/units/wolf.json": document129,
 };

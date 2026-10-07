@@ -77,7 +77,7 @@
       <p>
         Capture a village by entering it. Each owned village earns
         <strong>2 gold</strong> at the start of your turn and heals a
-        friendly occupant by <strong>2 HP</strong>.
+        friendly occupant by <strong>4 HP</strong>.
       </p>
       <p>
         Select an enemy, then tap a weapon to attack. Use the magnifying glass for damage details.

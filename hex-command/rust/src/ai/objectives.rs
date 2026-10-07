@@ -1,5 +1,8 @@
 use crate::{data::*, logic::Game};
-use std::{cmp::Ordering, collections::HashSet};
+use std::{
+    cmp::Ordering,
+    collections::{HashMap, HashSet},
+};
 pub fn objective(id: &str, kind: ObjectiveKind, tiles: Vec<String>, weight: f64) -> Objective {
     Objective {
         id: id.into(),
@@ -222,6 +225,69 @@ impl Game<'_> {
             .collect();
         result.weight *= 0.35;
         result
+    }
+    /// Identify friendly blockers on a required actor's next movement corridor.
+    /// Escorts clear the path rather than camping beside its destination forever.
+    pub(super) fn escort_lanes(&self, goals: &[Objective]) -> HashMap<u32, HashSet<usize>> {
+        let mut lanes: HashMap<u32, HashSet<usize>> = HashMap::new();
+        for goal in goals
+            .iter()
+            .filter(|g| matches!(g.kind, ObjectiveKind::Escort | ObjectiveKind::Escape))
+        {
+            let Some(actor) = self
+                .units
+                .iter()
+                .find(|u| goal.actor.as_ref() == Some(&format!("u{}", u.id)))
+            else {
+                continue;
+            };
+            let targets: Vec<_> = goal.tiles.iter().map(|t| self.site(t)).collect();
+            if targets.contains(&actor.tile) {
+                continue;
+            }
+            let route = self.occupied_routes(actor, &targets, true);
+            if route[actor.tile] == u16::MAX {
+                continue;
+            }
+            let mut path = vec![actor.tile];
+            let mut current = actor.tile;
+            while !targets.contains(&current) {
+                let next = self.board.adjacent[current]
+                    .iter()
+                    .copied()
+                    .filter(|&t| route[t] < route[current])
+                    .min_by_key(|&t| {
+                        let occupant = self
+                            .at(t)
+                            .is_some_and(|u| u.id != actor.id && u.side == actor.side);
+                        route[t]
+                            .saturating_add(self.cost(actor.kind, t))
+                            .saturating_add(if occupant { 2 } else { 0 })
+                    });
+                let Some(next) = next else {
+                    break;
+                };
+                path.push(next);
+                current = next;
+            }
+            let mut spent = 0;
+            for &tile in path.iter().skip(1) {
+                spent += self.cost(actor.kind, tile) as usize;
+                if spent > self.rules.units[actor.kind].r#move {
+                    break;
+                }
+                if let Some(blocker) = self
+                    .at(tile)
+                    .filter(|u| u.side == actor.side && u.id != actor.id)
+                {
+                    lanes
+                        .entry(blocker.id)
+                        .or_default()
+                        .extend(path.iter().copied());
+                }
+            }
+        }
+        lanes
     }
     pub fn finishes_objective(&self, u: &Unit, tile: usize, goals: &[Objective]) -> bool {
         self.campaign.is_some()

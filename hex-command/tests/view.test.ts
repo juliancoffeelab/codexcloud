@@ -66,6 +66,7 @@ test("Queries retain snapshot identities and freeze combat details", async () =>
   assert(Object.isFrozen(view.targets(soldier.id)));
   assert(Object.isFrozen(view.neighbors(soldier.tile)));
   assert(Object.isFrozen(view.recruitTiles("u1", "soldier")));
+  const originalDamage = TYPES.soldier.attacks[0].damage;
   const details = view.previewDetails(soldier, target, "sword");
   assert.notEqual(details.attack, TYPES.soldier.attacks[0]);
   assert.notEqual(
@@ -82,7 +83,7 @@ test("Queries retain snapshot identities and freeze combat details", async () =>
     if (value) assert(Object.isFrozen(value));
   }
   assert.throws(() => Object.assign(details.attack, { damage: 99 }), TypeError);
-  assert.equal(TYPES.soldier.attacks[0].damage, 4);
+  assert.equal(TYPES.soldier.attacks[0].damage, originalDamage);
 });
 
 // Maps returned by queries may be changed at runtime without changing the revision.
@@ -108,7 +109,10 @@ test("Later engine mutations cannot rewrite an older publication", async () => {
   assert.deepEqual(view.tiles, originalTiles);
   assert.equal(required(view.unit("u3")).tile, "1,2");
   assert.equal(view.gold.player, 12);
-  assert.equal(required(view.unit("u2")).hp, 12);
+  assert.equal(
+    required(view.unit("u2")).hp,
+    required(originalState.units.find((u) => u.id === "u2")).hp,
+  );
   assert.equal(required(view.tile("3,1")).terrain, "village");
 });
 

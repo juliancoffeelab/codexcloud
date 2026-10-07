@@ -1,16 +1,17 @@
 {
   "id": "spearman",
+  "role": "warrior",
   "name": "Spearman",
   "terrainModifiers": {},
   "race": "human",
-  "hp": 10,
+  "hp": 20,
   "move": 3,
   "cost": 6,
   "attacks": [
     {
       "id": "spear",
       "name": "Spear",
-      "damage": 3,
+      "damage": 6,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,

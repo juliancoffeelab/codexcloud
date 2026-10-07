@@ -28,7 +28,7 @@ impl<'catalog> Game<'catalog> {
             if matches!(terrain, Terrain::Village | Terrain::Grove)
                 && self.owners[unit.tile] == Some(side)
             {
-                unit.hp = (unit.hp + 2).min(self.rules.units[unit.kind].hp);
+                unit.hp = (unit.hp + 4).min(self.rules.units[unit.kind].hp);
             }
         }
         for index in 0..self.units.len() {

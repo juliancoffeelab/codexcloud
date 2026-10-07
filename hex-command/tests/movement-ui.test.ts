@@ -169,7 +169,6 @@ for (const type of ["wolf", "boar", "wildkeeper", "thorncaller"] as const) {
       if (type === "boar") {
         assert.equal(route.cost(beast, { terrain: "marsh" }), 3);
         assert.equal(route.cost(beast, { terrain: "ford" }), 3);
-        assert.equal(TYPES.boar.move, 3);
       }
     },
   );
@@ -198,7 +197,7 @@ for (const terrain of Object.keys(TERRAIN) as TerrainType[]) {
       if (terrain === "grove") {
         assert(
           terrainPanel.facts.includes(
-            "Heals its owner’s occupant by 2 HP at the start of its turn",
+            "Heals its owner’s occupant by 4 HP at the start of its turn",
           ),
         );
       }

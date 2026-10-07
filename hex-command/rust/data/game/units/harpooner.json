@@ -1,15 +1,16 @@
 {
   "id": "harpooner",
+  "role": "ranger",
   "name": "Harpooner",
   "race": "merfolk",
-  "hp": 8,
+  "hp": 16,
   "move": 5,
   "cost": 7,
   "attacks": [
     {
       "id": "harpoon",
       "name": "Harpoon",
-      "damage": 3,
+      "damage": 6,
       "damageType": "pierce",
       "category": "ranged",
       "range": 2,
@@ -18,7 +19,7 @@
     {
       "id": "knife",
       "name": "Knife",
-      "damage": 2,
+      "damage": 4,
       "damageType": "blade",
       "category": "melee",
       "range": 1,

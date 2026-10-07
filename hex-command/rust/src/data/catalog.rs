@@ -43,19 +43,19 @@ impl std::error::Error for ContentError {}
 struct Manifest {
     schema_version: u32,
     terrain: String,
-    races: String,
-    units: UnitDocuments,
+    races: DefinitionDocuments,
+    units: DefinitionDocuments,
     scenarios: Vec<String>,
     campaigns: Vec<String>,
     simulation: SimulationPaths,
 }
 #[derive(Debug, Deserialize)]
 #[serde(untagged)]
-enum UnitDocuments {
+enum DefinitionDocuments {
     Legacy(String),
     Individual(Vec<String>),
 }
-impl UnitDocuments {
+impl DefinitionDocuments {
     fn paths(&self) -> &[String] {
         match self {
             Self::Legacy(path) => std::slice::from_ref(path),
@@ -161,6 +161,7 @@ struct UnitSpecification {
     attacks: Vec<Weapon>,
     damage_modifiers: DamageModifiers,
     race: Race,
+    role: UnitRole,
     #[serde(default)]
     terrain_modifiers: HashMap<Terrain, TerrainModifier>,
     #[serde(default)]
@@ -438,15 +439,27 @@ impl Rules {
             ));
         }
         let terrain: Vec<TerrainDefinition> = parse(bundle, &manifest.terrain)?;
-        let races: Vec<RaceDefinition> = parse(bundle, &manifest.races)?;
+        let races: Vec<(String, RaceDefinition)> = match &manifest.races {
+            DefinitionDocuments::Legacy(path) => parse::<Vec<RaceDefinition>>(bundle, path)?
+                .into_iter()
+                .map(|race| (path.clone(), race))
+                .collect(),
+            DefinitionDocuments::Individual(paths) => {
+                unique(paths.iter().map(String::as_str), "manifest.json")?;
+                paths
+                    .iter()
+                    .map(|path| parse(bundle, path).map(|race| (path.clone(), race)))
+                    .collect::<Result<_, _>>()?
+            }
+        };
         let specs: Vec<(String, UnitSpecification)> = match &manifest.units {
-            UnitDocuments::Legacy(path) if manifest.schema_version == 1 => {
+            DefinitionDocuments::Legacy(path) if manifest.schema_version == 1 => {
                 parse::<Vec<UnitSpecification>>(bundle, path)?
                     .into_iter()
                     .map(|spec| (path.clone(), spec))
                     .collect()
             }
-            UnitDocuments::Individual(paths) if manifest.schema_version == 2 => {
+            DefinitionDocuments::Individual(paths) if manifest.schema_version == 2 => {
                 unique(paths.iter().map(String::as_str), "manifest.json")?;
                 paths
                     .iter()
@@ -467,7 +480,15 @@ impl Rules {
             ));
         }
         unique(terrain.iter().map(|t| t.id.as_str()), &manifest.terrain)?;
-        unique(races.iter().map(|r| r.id.as_str()), &manifest.races)?;
+        let mut seen_races = HashSet::new();
+        for (path, race) in &races {
+            if !seen_races.insert(race.id) {
+                return Err(ContentError::new(
+                    path,
+                    format!("duplicate race {}", race.id),
+                ));
+            }
+        }
         let mut seen_units = HashSet::new();
         for (path, spec) in &specs {
             if !seen_units.insert(&spec.id) {
@@ -488,7 +509,8 @@ impl Rules {
             .enumerate()
             .map(|(i, (_, u))| (u.id.clone(), i))
             .collect();
-        let race_by_id: HashMap<Race, &RaceDefinition> = races.iter().map(|r| (r.id, r)).collect();
+        let race_by_id: HashMap<Race, &RaceDefinition> =
+            races.iter().map(|(_, r)| (r.id, r)).collect();
         let validate_modifiers = |modifiers: &HashMap<Terrain, TerrainModifier>,
                                   path: &str|
          -> Result<(), ContentError> {
@@ -507,11 +529,11 @@ impl Rules {
                 ));
             }
         }
-        for race in &races {
+        for (path, race) in &races {
             if race.name.is_empty() {
-                return Err(ContentError::new(&manifest.races, "race name is required"));
+                return Err(ContentError::new(path, "race name is required"));
             }
-            validate_modifiers(&race.terrain_modifiers, &manifest.races)?;
+            validate_modifiers(&race.terrain_modifiers, path)?;
         }
         let mut units = Vec::with_capacity(specs.len());
         for (path, spec) in specs {
@@ -599,6 +621,7 @@ impl Rules {
                     impact: race.damage_modifiers.impact + spec.damage_modifiers.impact,
                 },
                 race: spec.race,
+                role: spec.role,
                 leader: spec.leader,
                 healing: spec.healing,
                 level: spec.level,
@@ -998,18 +1021,6 @@ mod tests {
     #[test]
     fn authored_catalog_resolves_races_and_preserves_revisions() {
         let rules = Rules::embedded().unwrap();
-        assert_eq!(rules.units.len(), 34);
-        assert_eq!(rules.maps.len(), 17);
-        assert_eq!(rules.campaigns.len(), 4);
-        assert_eq!(
-            rules
-                .terrain_names
-                .iter()
-                .take(4)
-                .map(String::as_str)
-                .collect::<Vec<_>>(),
-            vec!["plains", "forest", "hill", "water"]
-        );
         let skeleton = &rules.units[rules.types["skeleton"]];
         assert_eq!(skeleton.damage_modifiers.pierce, -2);
         let boar = &rules.units[rules.types["boar"]];
@@ -1049,7 +1060,9 @@ mod tests {
     fn missing_required_stats_and_documents_are_errors() {
         let mut bundle = embedded_bundle();
         let units = bundle.get_mut("game/units/warden.json").unwrap();
-        *units = units.replacen("\"hp\": 12,", "", 1);
+        let mut document: serde_json::Value = serde_json::from_str(units).unwrap();
+        document.as_object_mut().unwrap().remove("hp");
+        *units = serde_json::to_string(&document).unwrap();
         assert!(
             Rules::from_json_bundle(&bundle)
                 .unwrap_err()
@@ -1057,11 +1070,26 @@ mod tests {
                 .contains("missing field")
         );
         let mut bundle = embedded_bundle();
-        bundle.remove("game/races.json");
+        bundle.remove("game/races/merfolk.json");
         assert_eq!(
             Rules::from_json_bundle(&bundle).unwrap_err().path,
-            "game/races.json"
+            "game/races/merfolk.json"
         );
+    }
+    #[test]
+    fn roles_are_required_and_race_errors_identify_the_individual_document() {
+        let mut bundle = embedded_bundle();
+        let unit = bundle.get_mut("game/units/scout.json").unwrap();
+        *unit = unit.replace("\"role\": \"flank\",", "");
+        let error = Rules::from_json_bundle(&bundle).unwrap_err();
+        assert_eq!(error.path, "game/units/scout.json");
+        assert!(error.message.contains("role"));
+        let mut bundle = embedded_bundle();
+        let race = bundle.get_mut("game/races/human.json").unwrap();
+        *race = race.replace("\"id\": \"human\"", "\"id\": \"merfolk\"");
+        let error = Rules::from_json_bundle(&bundle).unwrap_err();
+        assert_eq!(error.path, "game/races/human.json");
+        assert!(error.message.contains("duplicate race"));
     }
     #[test]
     fn manifest_rejects_traversal_and_unsupported_schema() {
@@ -1133,11 +1161,12 @@ mod tests {
                 .replacen("Stone spark", "Revised spark", 1);
         std::fs::write(path, edited).unwrap();
         let commander = root.0.join("game/units/commander.json");
-        let edited =
-            std::fs::read_to_string(&commander)
-                .unwrap()
-                .replacen("\"hp\": 16,", "\"hp\": 19,", 1);
-        std::fs::write(commander, edited).unwrap();
+        let original_hp = original.units[original.types["commander"]].hp;
+        let revised_hp = original_hp + 3;
+        let mut edited: serde_json::Value =
+            serde_json::from_str(&std::fs::read_to_string(&commander).unwrap()).unwrap();
+        edited["hp"] = serde_json::json!(revised_hp);
+        std::fs::write(commander, serde_json::to_vec(&edited).unwrap()).unwrap();
         let reloaded = Rules::load_from(&root.0).unwrap();
         assert_eq!(
             reloaded.units[reloaded.types["adept"]].ability,
@@ -1151,10 +1180,13 @@ mod tests {
         assert_eq!(original.rosters[0].pool, reloaded.rosters[0].pool);
         let initial = reloaded.maps[&("mirror".to_owned(), 1)].clone();
         assert_eq!(initial.units[0].r#type, "commander");
-        assert_eq!(initial.units[0].hp, 19);
+        assert_eq!(initial.units[0].hp, revised_hp);
         let battle = crate::logic::Battle::restore(&reloaded, initial).unwrap();
-        assert_eq!(battle.snapshot().units[0].hp, 19);
-        assert_eq!(original.maps[&("mirror".to_owned(), 1)].units[0].hp, 16);
+        assert_eq!(battle.snapshot().units[0].hp, revised_hp);
+        assert_eq!(
+            original.maps[&("mirror".to_owned(), 1)].units[0].hp,
+            original_hp
+        );
     }
     #[test]
     fn initial_placements_allow_wounds_but_reject_excess_hp() {

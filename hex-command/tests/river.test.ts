@@ -92,12 +92,12 @@ test("Exposure also applies to retaliation", async () => {
   const wader = exposed.addUnit("soldier", "player", "5,7");
   const defender = exposed.addUnit("soldier", "enemy", "6,7");
   assert.deepEqual(exposed.preview(wader, defender), {
-    damage: 4,
-    retaliation: 5,
+    damage: 7,
+    retaliation: 8,
   });
   exposed.attack(wader.id, defender.id);
-  assert.equal(wader.hp, 7);
-  assert.equal(defender.hp, 8);
+  assert.equal(wader.hp, 16);
+  assert.equal(defender.hp, 17);
 });
 
 afterEach(() => {

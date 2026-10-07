@@ -61,35 +61,12 @@ impl Diplomacy {
     }
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-/// Tactical placement role inferred from a unit's effective weapons and abilities.
+/// Tactical placement grouping of the unit's explicitly authored role.
 pub enum TacticalRole {
     Frontline,
     Ranged,
     Healer,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-/// Composition role used by a complete policy's recruitment heuristic.
-pub enum RecruitRole {
-    Frontline,
-    Scout,
-    Ranged,
-    Healer,
-}
-impl RecruitRole {
-    const ALL: [Self; 4] = [Self::Frontline, Self::Scout, Self::Ranged, Self::Healer];
-    const fn index(self) -> usize {
-        match self {
-            Self::Frontline => 0,
-            Self::Scout => 1,
-            Self::Ranged => 2,
-            Self::Healer => 3,
-        }
-    }
-    const fn is_ranged(self) -> bool {
-        matches!(self, Self::Ranged | Self::Healer)
-    }
-}
-
 /// Reusable turn-local planning state. Create a fresh workspace for each turn
 /// or restore its saved snapshot when resuming the same battle and policy.
 pub struct PlanningWorkspace {
@@ -536,5 +513,127 @@ fn advance_command(game: &Game<'_>, unit: u32, kind: usize) -> Command {
     Command::Advance {
         unit: UnitId(unit),
         kind: UnitTypeId(game.rules.units[kind].id.clone()),
+    }
+}
+
+#[cfg(test)]
+mod courier_tests {
+    use super::*;
+
+    #[test]
+    fn required_courier_can_detour_around_stationary_allies() {
+        let rules = Rules::embedded().unwrap();
+        let mut game = Game::start_campaign(
+            &rules,
+            "borrowed-tide",
+            0,
+            vec![],
+            0,
+            vec![],
+            vec![],
+            vec![],
+        );
+        game.units.retain(|u| [1, 2, 4, 5].contains(&u.id));
+        for (id, tile) in [(1, "8,5"), (2, "7,3"), (4, "8,3"), (5, "8,4")] {
+            let tile = game.site(tile);
+            game.units.iter_mut().find(|u| u.id == id).unwrap().tile = tile;
+        }
+        // Keep allies stationary for this turn: the courier must take a detour.
+        for ally in game.units.iter_mut().filter(|u| u.id != 5) {
+            ally.moved = true;
+            ally.attacked = true;
+        }
+        game.roster_changed();
+        let target = game.site("9,3");
+        // Block the other direct approach as well.
+        game.units.push(Unit {
+            id: 100,
+            kind: rules.types["reefguard"],
+            tile: game.site("9,4"),
+            side: Side::Player,
+            hp: rules.units[rules.types["reefguard"]].hp,
+            moved: true,
+            attacked: true,
+            experience: None,
+            name: None,
+            role: None,
+            retreating: None,
+            rebuilding: None,
+        });
+        game.roster_changed();
+        let courier = game.unit(5).unwrap();
+        let static_route = game.routes(courier.kind, &[target]);
+        assert!(
+            game.reachable(courier)
+                .iter()
+                .all(|&(tile, _)| static_route[tile] >= static_route[courier.tile])
+        );
+        let mut workspace = PlanningWorkspace::new(1, 0, None, Diplomacy::Restrained);
+        let command = loop {
+            let command =
+                choose_game_command(&rules, &game, Policy::Mixed, &mut workspace).unwrap();
+            if matches!(command, Command::SetUnitIntent { .. }) {
+                game.execute(command).unwrap();
+            } else {
+                break command;
+            }
+        };
+        assert!(
+            matches!(
+                command,
+                Command::Move {
+                    unit: UnitId(5),
+                    ..
+                }
+            ),
+            "{command:?}"
+        );
+        game.execute(command).unwrap();
+        assert_ne!(game.board.ids[game.unit(5).unwrap().tile], "8,4");
+    }
+
+    #[test]
+    fn allies_clear_approaches_and_complete_the_escort_for_every_policy() {
+        let rules = Rules::embedded().unwrap();
+        for policy in Policy::ALL {
+            let mut game = Game::start_campaign(
+                &rules,
+                "borrowed-tide",
+                0,
+                vec![],
+                0,
+                vec![],
+                vec![],
+                vec![],
+            );
+            game.units.retain(|u| u.side == Side::Player);
+            for (id, tile) in [(1, "8,5"), (2, "7,3"), (3, "9,4"), (4, "8,3"), (5, "8,4")] {
+                let tile = game.site(tile);
+                game.units.iter_mut().find(|u| u.id == id).unwrap().tile = tile;
+            }
+            for tile in ["6,2", "8,5"] {
+                let tile = game.site(tile);
+                game.owners[tile] = Some(Side::Player);
+            }
+            game.roster_changed();
+            let mut workspace = PlanningWorkspace::new(1, 0, None, Diplomacy::Restrained);
+            for _ in 0..40 {
+                let command = choose_game_command(&rules, &game, policy, &mut workspace).unwrap();
+                if matches!(command, Command::EndTurn) {
+                    break;
+                }
+                game.execute(command).unwrap();
+                if game.winner.is_some() {
+                    break;
+                }
+            }
+            assert_eq!(
+                game.winner,
+                Some(Side::Player),
+                "{policy:?}: {:?}",
+                game.public_units()
+            );
+            assert_eq!(game.board.ids[game.unit(5).unwrap().tile], "9,3");
+        }
     }
 }
