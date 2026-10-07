@@ -1862,35 +1862,31 @@ select {
   font-size: 14px;
   font-weight: 600;
 }
-.movement-costs dl {
-  margin: 0;
-  width: fit-content;
-  max-width: 100%;
-}
-.movement-cost-row {
-  display: grid;
-  grid-template-columns: minmax(0, 9em) max-content;
-  column-gap: 12px;
-  padding: 1px 0;
-  border-bottom: 1px solid var(--line);
-}
-.movement-cost-row dt {
-  color: var(--muted);
-}
-.movement-cost-row dd {
-  margin: 0;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-}
-.movement-cost-row.easy dd {
+.terrain-effects-table tr.easy .terrain-cost {
   color: var(--mint);
 }
-.movement-cost-row.slow dd {
+.terrain-effects-table tr.slow .terrain-cost {
   color: var(--gold);
 }
-.movement-cost-row.difficult dd,
-.movement-cost-row.blocked dd {
+.terrain-effects-table tr.difficult .terrain-cost,
+.terrain-effects-table tr.blocked .terrain-cost {
   color: var(--red);
+}
+.terrain-damage-fact {
+  display: block;
+}
+.terrain-damage-fact .resistant {
+  color: var(--mint);
+}
+.terrain-damage-fact .vulnerable {
+  color: var(--red);
+}
+.terrain-damage-kind {
+  color: var(--muted);
+  font-size: 13px;
+}
+.ability-fact {
+  font-weight: 600;
 }
 .movement-costs p {
   margin-top: 6px;

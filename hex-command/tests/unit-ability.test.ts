@@ -17,7 +17,8 @@ const unit: Unit = {
 test("Leader ability information explains the loss condition", () => {
   assert.deepEqual(abilityInfo({ ...unit, type: "commander" }), {
     name: "Command",
-    description: "Losing this unit ends the battle.",
+    description: TYPES.commander.description,
+    facts: ["Losing this unit ends the battle."],
   });
 });
 
@@ -26,5 +27,12 @@ test("Ordinary ability information uses the unit definition", () => {
   assert.deepEqual(abilityInfo(unit), {
     name: definition.ability,
     description: definition.description,
+    facts: [],
   });
+});
+
+// The value comes from the catalog, not duplicated prose or a fixed healer list.
+test("Healing is presented as a numeric ability fact", () => {
+  const facts = abilityInfo({ ...unit, type: "tidesage" }).facts;
+  assert(facts.some((fact) => fact.includes(`${TYPES.tidesage.healing} HP`)));
 });

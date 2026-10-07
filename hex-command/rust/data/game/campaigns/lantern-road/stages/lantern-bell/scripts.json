@@ -20,7 +20,6 @@
   "waves": [
     {
       "id": "first-rise-9-1",
-      "legacyIndex": 0,
       "round": 8,
       "label": "An unsealed grave raises a skeleton on turn 8",
       "requiresUnsealed": "9,1",
@@ -35,7 +34,6 @@
     },
     {
       "id": "first-rise-11-4",
-      "legacyIndex": 1,
       "round": 8,
       "label": "An unsealed grave raises a skeleton on turn 8",
       "requiresUnsealed": "11,4",
@@ -50,7 +48,6 @@
     },
     {
       "id": "first-rise-9-7",
-      "legacyIndex": 2,
       "round": 8,
       "label": "An unsealed grave raises a skeleton on turn 8",
       "requiresUnsealed": "9,7",
@@ -65,7 +62,6 @@
     },
     {
       "id": "second-rise-9-1",
-      "legacyIndex": 3,
       "round": 12,
       "label": "An unsealed grave raises a skeleton on turn 12",
       "requiresUnsealed": "9,1",
@@ -80,7 +76,6 @@
     },
     {
       "id": "second-rise-11-4",
-      "legacyIndex": 4,
       "round": 12,
       "label": "An unsealed grave raises a skeleton on turn 12",
       "requiresUnsealed": "11,4",
@@ -95,7 +90,6 @@
     },
     {
       "id": "second-rise-9-7",
-      "legacyIndex": 5,
       "round": 12,
       "label": "An unsealed grave raises a skeleton on turn 12",
       "requiresUnsealed": "9,7",

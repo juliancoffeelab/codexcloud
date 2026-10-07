@@ -32,7 +32,7 @@
     "impact": 0
   },
   "ability": "Sea skirmisher",
-  "description": "A harpoon veteran with a stronger knife reply. Exploits sea routes, but cannot replace Impact support against armor.",
+  "description": "A veteran harpoon fighter with a stronger close-combat reply.",
   "level": 2,
   "family": "harpooner",
   "experienceNeeded": 0,

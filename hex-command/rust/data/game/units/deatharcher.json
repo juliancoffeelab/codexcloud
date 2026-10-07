@@ -32,7 +32,7 @@
     "impact": 0
   },
   "ability": "Hollow frame",
-  "description": "A bone-bow veteran with a usable melee shard. Armor and Impact enemies still demand support.",
+  "description": "A veteran skeletal archer who can defend itself at close quarters.",
   "level": 2,
   "family": "bonearcher",
   "experienceNeeded": 0,

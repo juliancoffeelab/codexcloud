@@ -22,7 +22,6 @@
       "round": 5,
       "label": "Two skeletons enter from the eastern road on turn 5",
       "id": "eastern-skeletons",
-      "legacyIndex": 0,
       "units": [
         {
           "type": "skeleton",
@@ -42,7 +41,6 @@
       "round": 7,
       "label": "A bone bow reaches the southern crossing on turn 7",
       "id": "southern-bow",
-      "legacyIndex": 1,
       "units": [
         {
           "type": "bonearcher",
@@ -50,8 +48,7 @@
           "col": 8,
           "row": 7
         }
-      ],
-      "previouslyDeployedBeforeRevision": 2
+      ]
     }
   ]
 }

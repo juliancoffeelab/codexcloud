@@ -7,13 +7,6 @@
     "Shallows are neutral for merfolk; swamps protect them. Land troops are exposed in both.",
     "Keep Edda alive. Shore guards can reach Mira across the sandbars; protect the approaches while swimmers flank the outworks through deep water."
   ],
-  "legacyDialogue": [
-    {
-      "speaker": "Captain Vale",
-      "portrait": "commander",
-      "text": "The factor pays us to keep this channel clear for salvage. Bring your accusation to the council; you will not cross my posts."
-    }
-  ],
   "intro": [
     {
       "speaker": "Mira",

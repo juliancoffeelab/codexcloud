@@ -32,7 +32,7 @@
     "impact": 0
   },
   "ability": "Amphibious",
-  "description": "Tide seer: an experienced tidekeeper. Merfolk leader. Swims through deep water; recruits on an owned keep. Forests and groves slow and expose merfolk.",
+  "description": "A veteran merfolk leader who commands coastal routes; woodland remains dangerous.",
   "leader": true,
   "level": 2,
   "family": "tidekeeper",

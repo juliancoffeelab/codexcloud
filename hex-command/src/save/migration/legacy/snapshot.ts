@@ -1,4 +1,5 @@
-import { CAMPAIGNS, CAMPAIGN_MAPS } from "../../../game/campaign-data";
+import { CAMPAIGN_MAPS } from "../../../game/campaign-data";
+import { CAMPAIGNS } from "./catalog";
 import { MAPS } from "../../../game/maps";
 import { distance, TYPES } from "../../../game/catalog";
 import type {

@@ -146,3 +146,17 @@ not launch campaign/tournament batches.
 native sample. `--compare artifacts/sample.json` checks complete result hashes for
 identical configurations; `--alternate` changes seed, initiative and campaign
 policy/diplomacy. The Rust scheduler supplies the sample configurations.
+
+## Tests and unit information
+
+`npm run check:rust` covers game rules, recruitment/economy/healing, movement,
+combat, progression, campaign objectives and native checkpoint validation. Small
+native scenarios live in `src/tests/`; each can exercise several configurations.
+`npm test` retains controller, save migration/storage, publication, UI, artwork,
+audio and focused WASM integration tests. Browser spot checks stay outside the
+mandatory suite.
+
+The selected unit panel keeps its attacks and permanent damage modifiers. Its
+Terrain effects table shows movement and the resolved additional incoming-damage
+modifiers for each terrain. Numeric abilities such as healing are displayed from
+the catalog, while descriptions explain the unit's role without duplicated stats.

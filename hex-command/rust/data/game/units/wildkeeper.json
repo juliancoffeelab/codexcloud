@@ -33,7 +33,7 @@
     "impact": -1
   },
   "ability": "Keeper of the grove",
-  "description": "Your leader. Forests and groves cost 1 movement and reduce incoming damage by 1. Takes 1 less Impact damage; losing it ends the mission.",
+  "description": "A woodland leader who uses the groves to shelter the company.",
   "level": 1,
   "family": "wildkeeper",
   "experienceNeeded": 18,

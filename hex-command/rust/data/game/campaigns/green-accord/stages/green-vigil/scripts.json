@@ -22,7 +22,6 @@
       "round": 3,
       "label": "A warden and archer arrive from the east on turn 3",
       "id": "eastern-patrol",
-      "legacyIndex": 0,
       "units": [
         {
           "type": "warden",
@@ -42,7 +41,6 @@
       "round": 5,
       "label": "An adept and soldier arrive from the east on turn 5",
       "id": "eastern-support",
-      "legacyIndex": 1,
       "units": [
         {
           "type": "adept",

@@ -133,7 +133,7 @@ impl UnitRole {
 /// Resolved unit statistics, advancement choices and dense terrain-dependent tables.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UnitRule {
     pub ability: String,

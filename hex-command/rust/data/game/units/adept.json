@@ -32,7 +32,7 @@
     "impact": 0
   },
   "ability": "Stone spark",
-  "description": "Ranged Impact counters bones and armor. Fragile in close combat; cover still applies.",
+  "description": "A fragile ranged caster suited to fighting armored and skeletal enemies.",
   "level": 1,
   "family": "adept",
   "experienceNeeded": 10,

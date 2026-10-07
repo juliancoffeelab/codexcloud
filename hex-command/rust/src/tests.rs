@@ -2,7 +2,7 @@ use crate::{ai::Random, data::*, logic::Game};
 use std::sync::OnceLock;
 fn rules() -> &'static Rules {
     static RULES: OnceLock<Rules> = OnceLock::new();
-    RULES.get_or_init(|| Rules::embedded().expect("authored catalog"))
+    RULES.get_or_init(|| Rules::load().expect("authored catalog"))
 }
 #[test]
 fn authored_movement_and_damage_are_preserved() {
@@ -12,24 +12,6 @@ fn authored_movement_and_damage_are_preserved() {
     assert_eq!(human.costs[rules.terrains["water"]], None);
     assert_eq!(merfolk.costs[rules.terrains["water"]], Some(1));
     assert!(merfolk.environment[rules.terrains["forest"]][0][0] > 0);
-}
-#[test]
-fn promotion_preserves_wounds_and_consumes_actions() {
-    let mut game = Game::new(rules(), "mirror");
-    let kind = game.kind("swordsman");
-    let tile = game.site("4,4");
-    game.units.clear();
-    game.roster_changed();
-    let id = game.add(kind, Side::Player, tile);
-    let rule = game.rules.units[kind].clone();
-    game.units[0].experience = rule.experience_needed;
-    game.units[0].hp = rule.hp - 3;
-    let promotion = game.promotion_options(&game.units[0])[0];
-    game.advance(id, promotion);
-    let unit = game.unit(id).unwrap();
-    assert_eq!(unit.hp, game.rules.units[promotion].hp - 3);
-    assert_eq!(unit.experience, Some(0));
-    assert!(unit.moved && unit.attacked);
 }
 #[test]
 fn cloned_forecasts_do_not_mutate_source_or_record_commands() {
@@ -267,4 +249,49 @@ fn tagged_goals_require_the_fields_their_rules_use() {
     let goal: Goal =
         serde_json::from_str(r#"{"kind":"defeat","label":"Defeat the Bellwarden"}"#).unwrap();
     assert!(matches!(goal, Goal::Defeat { .. }));
+}
+
+// Behavioral coverage moved from the web suite. Helpers make small native boards;
+// scenarios remain separately named so one failure cannot hide another category.
+#[path = "tests/campaign.rs"]
+mod campaign;
+#[path = "tests/combat.rs"]
+mod combat;
+#[path = "tests/economy.rs"]
+mod economy;
+#[path = "tests/movement.rs"]
+mod movement;
+#[path = "tests/progression.rs"]
+mod progression;
+
+fn flat() -> Game<'static> {
+    let mut game = Game::new(rules(), "mirror");
+    game.units.clear();
+    game.roster_changed();
+    for tile in 0..game.terrain.len() {
+        game.set_terrain(tile, game.rules.terrains["plains"]);
+    }
+    game.owners.fill(None);
+    game
+}
+fn add(game: &mut Game<'_>, kind: &str, side: Side, tile: &str) -> u32 {
+    game.add(game.kind(kind), side, game.site(tile))
+}
+fn weapon(game: &Game<'_>, id: u32, weapon: &str) -> usize {
+    game.rules.units[game.unit(id).unwrap().kind]
+        .attacks
+        .iter()
+        .position(|w| w.id == weapon)
+        .unwrap()
+}
+fn hit(game: &mut Game<'_>, attacker: u32, target: u32, name: &str) -> Effects {
+    game.execute(Command::Attack {
+        unit: UnitId(attacker),
+        target: UnitId(target),
+        weapon: name.into(),
+    })
+    .unwrap()
+}
+fn chapter(id: &str, mission: usize) -> Game<'static> {
+    Game::start_campaign(rules(), id, mission, vec![], 0, vec![], vec![], vec![])
 }

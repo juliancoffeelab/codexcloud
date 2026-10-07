@@ -22,7 +22,6 @@
       "round": 6,
       "label": "A skeleton patrol arrives from the southern road on turn 6",
       "id": "southern-patrol",
-      "legacyIndex": 0,
       "units": [
         {
           "type": "skeleton",

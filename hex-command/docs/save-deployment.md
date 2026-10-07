@@ -1,10 +1,10 @@
 # Browser saves and migrations
 
-`src/save/schema.ts` defines the current version-2 envelope:
+`src/save/schema.ts` defines the current version-3 envelope:
 
 ```json
 {
-  "version": 2,
+  "version": 3,
   "pendingEnemy": false,
   "checkpoint": { "seed": 17, "state": {}, "planner": {} }
 }
@@ -44,3 +44,12 @@ The unpublished intermediate draft `1acc1dd` reused a revision with a different
 Ashen numeric order. Its format cannot be distinguished reliably from an older
 published save, so that ambiguous draft is not supported. Wave identity is never
 inferred from surviving troop health.
+
+## Version-two migration
+
+The v2-to-v3 step removes the need for historical layouts in the live catalog.
+Revision-one river and refuge checkpoints retain their own tiles, ownership, units
+and planner continuation, while their revision tag is changed to the current
+catalog entry with the same geometry. Normal Rust restoration validates the
+result. The catalog accepts only current authored documents; old layouts, marker
+indices and dialogue are stored under `src/save/migration/legacy/data/`.

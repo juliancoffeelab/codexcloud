@@ -64,7 +64,8 @@ pub struct NativeEngineFactory {
 
 #[wasm_bindgen]
 impl NativeEngineFactory {
-    /// Omit the bundle for embedded canonical JSON, or pass relative path -> JSON text.
+    /// Omit the bundle for the host default: disk on native, embedded JSON on WASM.
+    /// An explicit bundle supplies relative path -> JSON text.
     /// Construction errors carry an encoded [`EngineResult`] failure for the host adapter.
     #[wasm_bindgen(constructor)]
     pub fn new(bundle: Option<Ts<CatalogDocuments>>) -> Result<NativeEngineFactory, JsValue> {
@@ -76,7 +77,7 @@ impl NativeEngineFactory {
                 })
             })
         } else {
-            Rules::embedded().map_err(|error| EngineError::Content {
+            Rules::load().map_err(|error| EngineError::Content {
                 path: error.path,
                 message: error.message,
             })
@@ -94,49 +95,14 @@ impl NativeEngineFactory {
 
     /// Return owned catalog metadata as an encoded [`EngineResult<CatalogView>`].
     pub fn catalog(&self) -> Result<Ts<CatalogResponse>, JsError> {
-        let mut maps: Vec<_> = self
-            .rules
-            .maps
-            .values()
-            .map(|state| MapSummary {
-                id: state.map_id.clone(),
-                revision: state.map_revision,
-                cols: state.cols,
-                rows: state.rows,
-            })
-            .collect();
-        maps.sort_by(|a, b| (&a.id, a.revision).cmp(&(&b.id, b.revision)));
-        let mut campaigns: Vec<_> = self
-            .rules
-            .campaigns
-            .values()
-            .map(|campaign| CampaignSummary {
-                id: campaign.id.clone(),
-                name: campaign.name.clone(),
-                missions: campaign.missions.len(),
-            })
-            .collect();
+        let mut campaigns: Vec<_> = self.rules.campaigns.values().cloned().collect();
         campaigns.sort_by(|a, b| a.id.cmp(&b.id));
-        let units = self
-            .rules
-            .units
-            .iter()
-            .map(|unit| UnitSummary {
-                id: unit.id.clone(),
-                name: unit.name.clone(),
-                hp: unit.hp,
-                movement: unit.r#move,
-                cost: unit.cost,
-                leader: unit.leader,
-                attacks: unit.attacks.clone(),
-                advances_to: unit.advances_to.clone(),
-            })
-            .collect();
         encode(Ok(CatalogView {
-            maps,
+            units: self.rules.units.clone(),
+            terrain: self.rules.terrain_definitions.clone(),
+            races: self.rules.race_definitions.clone(),
+            maps: self.rules.map_definitions.clone(),
             campaigns,
-            units,
-            terrains: self.rules.terrain_names.clone(),
         }))
     }
 

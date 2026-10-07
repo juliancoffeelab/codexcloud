@@ -1,45 +1,8 @@
 import { test, afterEach, vi } from "vitest";
-import type { Tile } from "../src/game/types.ts";
 import { required, storageWithValue } from "./helpers.ts";
 import assert from "node:assert/strict";
 import { Game } from "./game-fixture.ts";
 import { loadBattle, saveBattle } from "./legacy-save.ts";
-
-// Odd rows are offset by half a hex; reflecting across the keeps requires
-// different column transforms for odd and even rows.
-
-test("Starting village approaches mirror across staggered hexes", async () => {
-  const game = new Game();
-  // Odd rows are offset by half a hex; reflecting across the keeps requires
-  // different column transforms for odd and even rows.
-  const mirror = (tile: Tile) =>
-    required(game.tile(`${(tile.row % 2 ? 10 : 11) - tile.col},${tile.row}`));
-  for (const id of ["3,1", "3,5"]) {
-    const village = required(game.tile(id));
-    const enemyVillage = mirror(village);
-    assert.equal(enemyVillage.terrain, "village");
-    const neighbors = game.neighbors(id);
-    assert.equal(
-      neighbors.some((tile) => tile.terrain === "forest"),
-      false,
-    );
-    assert.equal(neighbors.filter((tile) => tile.terrain === "hill").length, 1);
-    for (const neighbor of neighbors) {
-      assert.equal(mirror(neighbor).terrain, neighbor.terrain);
-      assert.ok(game.neighbors(enemyVillage.id).includes(mirror(neighbor)));
-    }
-  }
-});
-test("Central forests and hills mirror across staggered hexes", async () => {
-  const game = new Game();
-  // Odd rows are offset by half a hex; reflecting across the keeps requires
-  // different column transforms for odd and even rows.
-  const mirror = (tile: Tile) =>
-    required(game.tile(`${(tile.row % 2 ? 10 : 11) - tile.col},${tile.row}`));
-  for (const tile of game.tiles.filter((tile) => ["forest", "hill"].includes(tile.terrain))) {
-    assert.equal(mirror(tile).terrain, tile.terrain);
-  }
-});
 
 // Existing v1 saves store battle progress rather than terrain. Updating the map
 // must preserve an ongoing battle, including units on changed ground.

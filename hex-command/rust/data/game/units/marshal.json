@@ -41,7 +41,7 @@
     "impact": 0
   },
   "ability": "Recruit",
-  "description": "Marshal: an experienced commander. Recruit while on your keep. New recruits act next turn.",
+  "description": "A seasoned commander who holds the line and directs reinforcements.",
   "level": 2,
   "family": "commander",
   "experienceNeeded": 0,

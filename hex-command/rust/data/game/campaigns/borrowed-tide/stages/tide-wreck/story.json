@@ -7,28 +7,6 @@
     "Land allies use the northern sandbar and wooded shore; merfolk flank through sea and marshes.",
     "Enemy recapture resets the rescue counter. You can leave the wreck, but keep it under your control."
   ],
-  "legacyDialogue": [
-    {
-      "speaker": "Factor Senn",
-      "portrait": "commander",
-      "text": "That ledger is company property. Vale, clear the landing."
-    },
-    {
-      "speaker": "Edda",
-      "portrait": "harpooner",
-      "text": "I can bring them out along the keel. Hold this landing until the sixth bell; nobody touches the quarry gate before then."
-    },
-    {
-      "speaker": "Edda",
-      "portrait": "harpooner",
-      "text": "I need three ferry crossings to bring everyone out along the keel. Hold the landing. The last boat leaves with the sixth bell's high tide, or later if we are delayed; nobody touches the quarry gate before then."
-    },
-    {
-      "speaker": "Mira",
-      "portrait": "tidekeeper",
-      "text": "A debt cannot give you ownership of a person. We take the books after we get everyone out."
-    }
-  ],
   "intro": [
     {
       "speaker": "Tomas",

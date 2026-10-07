@@ -20,7 +20,6 @@
   "waves": [
     {
       "id": "north-binding-rise",
-      "legacyIndex": 0,
       "round": 5,
       "label": "An unsealed binding stone raises a skeleton on turn 5",
       "requiresUnsealed": "7,2",
@@ -35,7 +34,6 @@
     },
     {
       "id": "south-binding-rise",
-      "legacyIndex": 1,
       "round": 5,
       "label": "An unsealed binding stone raises a skeleton on turn 5",
       "requiresUnsealed": "7,6",
@@ -52,7 +50,6 @@
       "round": 4,
       "label": "The Master's boar reaches the central road on turn 4",
       "id": "masters-boar",
-      "legacyIndex": 2,
       "units": [
         {
           "type": "boar",
@@ -60,8 +57,7 @@
           "col": 9,
           "row": 4
         }
-      ],
-      "previouslyDeployedBeforeRevision": 2
+      ]
     }
   ],
   "withoutDain": {

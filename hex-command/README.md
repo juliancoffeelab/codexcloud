@@ -16,7 +16,7 @@ npm ci
 npm run dev
 ```
 
-Development builds prepare the browser content index, WASM bindings and artwork.
+Development builds prepare WASM bindings and artwork.
 Generated bindings live in ignored `rust/pkg/`; production files live in ignored
 `dist/`. Edit source files and artwork, rather than those directories.
 
@@ -54,9 +54,10 @@ and screenshots belong in ignored `tmp/`, outside the default test suite.
 - `rust/src/data/`, `logic/` and `ai/` implement the catalog, battle rules and
   complete AI policies. `simulation/` runs native workers and records outcomes;
   `protocol.rs` and `wasm.rs` expose typed browser operations.
-- `src/game/authored-content.ts` projects the same JSON into browser display and
-  legacy-save metadata. `npm run content:build` generates its import index;
-  `content:check` checks that index against the manifest. Values remain in JSON.
+- `src/game/authored-content.ts` requests typed catalog metadata from WASM for
+  display. Rust resolves all race/unit inheritance; browser code imports no live
+  authored JSON. The save importer owns its historical metadata separately. `npm run content:check` checks document
+  references. Native runs read JSON from disk at startup; WASM embeds it.
 - `src/game/native-engine.ts` and `live-game.ts` adapt generated WASM types to
   the controller. Every live battle runs Rust; there is no TypeScript fallback.
 - `src/save/` owns the versioned save envelope, storage, loading and writes.
@@ -68,7 +69,7 @@ and screenshots belong in ignored `tmp/`, outside the default test suite.
 See the [Rust API and build guide](rust/README.md),
 [content layout](rust/data/README.md), and [AI comparison guide](docs/ai-simulation.md).
 Native checkpoints preserve enemy-planner continuation. Supported older browser
-saves migrate to version 2 only after a successful native restore; rejected checkpoints are backed
+saves migrate to version 3 only after a successful native restore; rejected checkpoints are backed
 up locally and leave a playable new battle.
 
 ## Playing

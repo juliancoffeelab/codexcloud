@@ -1,7 +1,7 @@
 //! Typed authored JSON catalog. Native loading is rooted at the crate's data directory;
 //! browser callers can supply the same named JSON documents without filesystem access.
 use super::*;
-use serde::{Deserialize, de::DeserializeOwned};
+use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use sha2::{Digest, Sha256};
 use std::{
     collections::{BTreeMap, HashSet},
@@ -21,8 +21,6 @@ pub struct ContentError {
     pub path: String,
     pub message: String,
 }
-/// Compatibility name for a catalog loading/validation failure.
-pub type CatalogError = ContentError;
 impl ContentError {
     fn new(path: impl Into<String>, message: impl Into<String>) -> Self {
         Self {
@@ -43,25 +41,11 @@ impl std::error::Error for ContentError {}
 struct Manifest {
     schema_version: u32,
     terrain: String,
-    races: DefinitionDocuments,
-    units: DefinitionDocuments,
+    races: Vec<String>,
+    units: Vec<String>,
     scenarios: Vec<String>,
     campaigns: Vec<String>,
     simulation: SimulationPaths,
-}
-#[derive(Debug, Deserialize)]
-#[serde(untagged)]
-enum DefinitionDocuments {
-    Legacy(String),
-    Individual(Vec<String>),
-}
-impl DefinitionDocuments {
-    fn paths(&self) -> &[String] {
-        match self {
-            Self::Legacy(path) => std::slice::from_ref(path),
-            Self::Individual(paths) => paths,
-        }
-    }
 }
 #[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -108,47 +92,60 @@ pub struct CampaignDefaults {
     pub policies: Vec<String>,
     pub campaigns: Vec<String>,
 }
-#[derive(Clone, Debug, Default, Deserialize)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(default, deny_unknown_fields)]
-struct EnvironmentalModifiers {
-    melee: i32,
-    ranged: i32,
-    blade: i32,
-    pierce: i32,
-    impact: i32,
+/// Category and damage-type contributions; both apply to an incoming hit.
+pub struct EnvironmentalModifiers {
+    pub melee: i32,
+    pub ranged: i32,
+    pub blade: i32,
+    pub pierce: i32,
+    pub impact: i32,
 }
 impl EnvironmentalModifiers {
     fn value(&self, category: usize, damage: usize) -> i32 {
         [self.melee, self.ranged][category] + [self.blade, self.pierce, self.impact][damage]
     }
 }
-#[derive(Clone, Debug, Default, Deserialize)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
-struct TerrainModifier {
+/// A race or unit deviation from base terrain movement and damage rules.
+pub struct TerrainModifier {
     #[serde(default)]
-    cost: i32,
-    passable: Option<bool>,
+    pub cost: i32,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub passable: Option<bool>,
     #[serde(default)]
-    damage_modifiers: EnvironmentalModifiers,
+    pub damage_modifiers: EnvironmentalModifiers,
 }
-#[derive(Debug, Deserialize)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
-struct TerrainDefinition {
-    id: Terrain,
-    name: String,
-    cost: u16,
-    passable: bool,
-    description: String,
+/// Authored terrain defaults, also exposed to the browser for display.
+pub struct TerrainDefinition {
+    pub id: Terrain,
+    pub name: String,
+    pub cost: u16,
+    pub passable: bool,
+    pub description: String,
     #[serde(default)]
-    damage_modifiers: EnvironmentalModifiers,
+    pub damage_modifiers: EnvironmentalModifiers,
 }
-#[derive(Debug, Deserialize)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
-struct RaceDefinition {
-    id: Race,
-    name: String,
-    terrain_modifiers: HashMap<Terrain, TerrainModifier>,
-    damage_modifiers: DamageModifiers,
+/// Authored racial defaults inherited by every unit of that race.
+pub struct RaceDefinition {
+    pub id: Race,
+    pub name: String,
+    pub terrain_modifiers: HashMap<Terrain, TerrainModifier>,
+    pub damage_modifiers: DamageModifiers,
 }
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -194,31 +191,18 @@ struct StageFile {
     mission: Mission,
 }
 
-/// Authored initial placements accept omitted runtime defaults. Full reference
-/// snapshots remain compatible, but active content derives new troops from rules.
+/// Authored initial placements derive omitted runtime defaults from unit rules.
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct InitialUnit {
     id: Option<String>,
     r#type: String,
     side: Side,
-    tile: Option<String>,
-    col: Option<i32>,
-    row: Option<i32>,
+    col: i32,
+    row: i32,
     hp: Option<i32>,
-    #[serde(default)]
-    moved: bool,
-    #[serde(default)]
-    attacked: bool,
-    #[serde(default = "initial_experience")]
-    experience: Option<u32>,
     name: Option<String>,
     role: Option<Role>,
-    retreating: Option<bool>,
-    rebuilding: Option<bool>,
-}
-fn initial_experience() -> Option<u32> {
-    Some(0)
 }
 fn initial_round() -> u32 {
     1
@@ -233,24 +217,9 @@ struct InitialState {
     map_revision: u32,
     cols: i32,
     rows: i32,
-    #[serde(default = "initial_round")]
-    round: u32,
-    #[serde(default = "initial_turn")]
-    turn: Side,
     gold: Gold,
-    winner: Option<Side>,
-    next_id: Option<u32>,
-    log: Option<Vec<String>>,
     tiles: Vec<Tile>,
     units: Vec<InitialUnit>,
-    campaign: Option<CampaignState>,
-    #[serde(default, deserialize_with = "initial_last_combat")]
-    last_combat: Option<Option<LastCombat>>,
-}
-fn initial_last_combat<'de, D: serde::Deserializer<'de>>(
-    deserializer: D,
-) -> Result<Option<Option<LastCombat>>, D::Error> {
-    Option::<LastCombat>::deserialize(deserializer).map(Some)
 }
 impl InitialState {
     fn resolve(
@@ -284,55 +253,37 @@ impl InitialState {
                     .checked_add(1)
                     .ok_or_else(|| ContentError::new(path, "initial unit identifier overflow"))?,
             );
-            let tile = match (unit.tile, unit.col, unit.row) {
-                (Some(tile), None, None) => tile,
-                (None, Some(col), Some(row)) => format!("{col},{row}"),
-                _ => {
-                    return Err(ContentError::new(
-                        path,
-                        "initial units require col and row or one legacy tile identifier",
-                    ));
-                }
-            };
+            let tile = format!("{},{}", unit.col, unit.row);
             units.push(PublicUnit {
                 id,
                 r#type: unit.r#type,
                 side: unit.side,
                 tile,
                 hp,
-                moved: unit.moved,
-                attacked: unit.attacked,
-                experience: unit.experience,
+                moved: false,
+                attacked: false,
+                experience: Some(0),
                 name: unit.name,
                 role: unit.role,
-                retreating: unit.retreating,
-                rebuilding: unit.rebuilding,
+                retreating: None,
+                rebuilding: None,
             });
-        }
-        let authored_next = self.next_id.unwrap_or(next_id);
-        if authored_next < next_id {
-            return Err(ContentError::new(
-                path,
-                "nextId must exceed all initial unit identifiers",
-            ));
         }
         Ok(State {
             map_id: self.map_id,
             map_revision: self.map_revision,
             cols: self.cols,
             rows: self.rows,
-            round: self.round,
-            turn: self.turn,
+            round: initial_round(),
+            turn: initial_turn(),
             gold: self.gold,
-            winner: self.winner,
-            next_id: authored_next,
-            log: self.log.unwrap_or_else(|| {
-                vec!["Capture villages for gold. Defeat the enemy commander.".to_owned()]
-            }),
+            winner: None,
+            next_id,
+            log: vec!["Capture villages for gold. Defeat the enemy commander.".to_owned()],
             tiles: self.tiles,
             units,
-            campaign: self.campaign,
-            last_combat: self.last_combat,
+            campaign: None,
+            last_combat: None,
         })
     }
 }
@@ -432,47 +383,25 @@ impl Rules {
     /// Validate named documents and resolve inheritance without filesystem access.
     pub fn from_json_bundle(bundle: &JsonBundle) -> Result<Self, ContentError> {
         let manifest: Manifest = parse(bundle, "manifest.json")?;
-        if !matches!(manifest.schema_version, 1 | 2) {
+        if manifest.schema_version != 2 {
             return Err(ContentError::new(
                 "manifest.json",
                 "unsupported schemaVersion",
             ));
         }
         let terrain: Vec<TerrainDefinition> = parse(bundle, &manifest.terrain)?;
-        let races: Vec<(String, RaceDefinition)> = match &manifest.races {
-            DefinitionDocuments::Legacy(path) => parse::<Vec<RaceDefinition>>(bundle, path)?
-                .into_iter()
-                .map(|race| (path.clone(), race))
-                .collect(),
-            DefinitionDocuments::Individual(paths) => {
-                unique(paths.iter().map(String::as_str), "manifest.json")?;
-                paths
-                    .iter()
-                    .map(|path| parse(bundle, path).map(|race| (path.clone(), race)))
-                    .collect::<Result<_, _>>()?
-            }
-        };
-        let specs: Vec<(String, UnitSpecification)> = match &manifest.units {
-            DefinitionDocuments::Legacy(path) if manifest.schema_version == 1 => {
-                parse::<Vec<UnitSpecification>>(bundle, path)?
-                    .into_iter()
-                    .map(|spec| (path.clone(), spec))
-                    .collect()
-            }
-            DefinitionDocuments::Individual(paths) if manifest.schema_version == 2 => {
-                unique(paths.iter().map(String::as_str), "manifest.json")?;
-                paths
-                    .iter()
-                    .map(|path| parse(bundle, path).map(|spec| (path.clone(), spec)))
-                    .collect::<Result<_, _>>()?
-            }
-            _ => {
-                return Err(ContentError::new(
-                    "manifest.json",
-                    "units must match the catalog schemaVersion",
-                ));
-            }
-        };
+        unique(manifest.races.iter().map(String::as_str), "manifest.json")?;
+        let races: Vec<(String, RaceDefinition)> = manifest
+            .races
+            .iter()
+            .map(|path| parse(bundle, path).map(|race| (path.clone(), race)))
+            .collect::<Result<_, _>>()?;
+        unique(manifest.units.iter().map(String::as_str), "manifest.json")?;
+        let specs: Vec<(String, UnitSpecification)> = manifest
+            .units
+            .iter()
+            .map(|path| parse(bundle, path).map(|spec| (path.clone(), spec)))
+            .collect::<Result<_, _>>()?;
         if terrain.is_empty() || races.is_empty() || specs.is_empty() {
             return Err(ContentError::new(
                 "manifest.json",
@@ -632,6 +561,7 @@ impl Rules {
                 environment,
             });
         }
+        let mut map_definitions = Vec::new();
         let mut maps = HashMap::new();
         let mut campaigns = HashMap::new();
         let mut used_paths = HashSet::new();
@@ -639,12 +569,9 @@ impl Rules {
             if !used_paths.insert(path.clone()) {
                 return Err(ContentError::new(path, "duplicate catalog path"));
             }
-            let (initial, roster_path) = if manifest.schema_version == 1 {
-                (parse::<InitialState>(bundle, path)?, path.clone())
-            } else {
-                documents::scenario(bundle, path)?
-            };
+            let (initial, roster_path) = documents::scenario(bundle, path)?;
             let state = initial.resolve(&units, &types, &roster_path)?;
+            map_definitions.push(documents::map_metadata(bundle, path, &state, None)?);
             insert_map(&mut maps, state, &terrains, &types, path)?;
         }
         for path in &manifest.campaigns {
@@ -667,15 +594,11 @@ impl Rules {
             let mut missions = Vec::new();
             let mut stage_ids = HashSet::new();
             for stage_path in source.stages {
-                let stage_path = documents::stage_path(manifest.schema_version, path, &stage_path)?;
+                let stage_path = documents::stage_path(path, &stage_path)?;
                 if !used_paths.insert(stage_path.clone()) {
                     return Err(ContentError::new(&stage_path, "duplicate catalog path"));
                 }
-                let stage: StageFile = if manifest.schema_version == 1 {
-                    parse(bundle, &stage_path)?
-                } else {
-                    documents::stage(bundle, &stage_path)?
-                };
+                let stage = documents::stage(bundle, &stage_path)?;
                 let state = stage.state.resolve(&units, &types, &stage_path)?;
                 identifier(&stage.id, &stage_path)?;
                 if !stage_ids.insert(stage.id.clone())
@@ -688,6 +611,12 @@ impl Rules {
                     ));
                 }
                 validate_mission(&stage.mission, &state, &types, &stage_path)?;
+                map_definitions.push(documents::map_metadata(
+                    bundle,
+                    &stage_path,
+                    &state,
+                    Some(stage.mission.map.units.clone()),
+                )?);
                 insert_map(&mut maps, state, &terrains, &types, &stage_path)?;
                 missions.push(stage.mission);
             }
@@ -731,7 +660,10 @@ impl Rules {
             content_fingerprint: content_fingerprint(bundle),
             terrain_types: terrain.iter().map(|t| t.id).collect(),
             terrain_names,
-            terrain_labels: terrain.into_iter().map(|t| t.name).collect(),
+            terrain_labels: terrain.iter().map(|t| t.name.clone()).collect(),
+            terrain_definitions: terrain,
+            race_definitions: races.into_iter().map(|(_, race)| race).collect(),
+            map_definitions,
             units,
             types,
             terrains,
@@ -1019,7 +951,7 @@ pub fn embedded_bundle() -> JsonBundle {
 mod tests {
     use super::*;
     #[test]
-    fn authored_catalog_resolves_races_and_preserves_revisions() {
+    fn authored_catalog_resolves_races_and_current_maps() {
         let rules = Rules::embedded().unwrap();
         let skeleton = &rules.units[rules.types["skeleton"]];
         assert_eq!(skeleton.damage_modifiers.pierce, -2);
@@ -1033,9 +965,9 @@ mod tests {
         );
         let reefguard = &rules.units[rules.types["reefguard"]];
         assert_eq!(reefguard.costs[rules.terrains["water"]], Some(1));
-        assert!(rules.maps.contains_key(&("river".to_owned(), 1)));
+        assert!(!rules.maps.contains_key(&("river".to_owned(), 1)));
         assert!(rules.maps.contains_key(&("river".to_owned(), 2)));
-        assert!(rules.maps.contains_key(&("ashen-refuge".to_owned(), 1)));
+        assert!(!rules.maps.contains_key(&("ashen-refuge".to_owned(), 1)));
         assert!(rules.maps.contains_key(&("ashen-refuge".to_owned(), 2)));
         assert_eq!(
             rules.campaigns["lantern-road"].missions[0].map.id,
@@ -1117,8 +1049,9 @@ mod tests {
         let bundle = embedded_bundle();
         let rules = Rules::from_json_bundle(&bundle).unwrap();
         let adept = &rules.units[rules.types["adept"]];
-        assert_eq!(adept.ability, "Stone spark");
-        assert!(adept.description.contains("Ranged Impact"));
+        let authored: UnitSpecification = parse(&bundle, "game/units/adept.json").unwrap();
+        assert_eq!(adept.ability, authored.ability);
+        assert_eq!(adept.description, authored.description);
         let campaign = &rules.campaigns["lantern-road"];
         assert!(!campaign.tagline.is_empty());
         assert!(!campaign.description.is_empty());

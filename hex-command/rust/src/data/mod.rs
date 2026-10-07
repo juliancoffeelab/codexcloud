@@ -18,8 +18,8 @@ mod records;
 pub use records::*;
 pub mod catalog;
 pub use catalog::{
-    ArenaDefaults, ArmyRoster, CampaignDefaults, CatalogError, ContentError, JsonBundle,
-    LandscapeConfig,
+    ArenaDefaults, ArmyRoster, CampaignDefaults, ContentError, EnvironmentalModifiers, JsonBundle,
+    LandscapeConfig, RaceDefinition, TerrainDefinition, TerrainModifier,
 };
 #[derive(Debug)]
 /// Loaded, validated content with inheritance resolved into runtime tables.
@@ -41,6 +41,12 @@ pub struct Rules {
     pub terrain_types: Vec<Terrain>,
     /// Display labels corresponding to terrain identifiers.
     pub terrain_labels: Vec<String>,
+    /// Display metadata from the same validated definitions used by the engine.
+    pub terrain_definitions: Vec<TerrainDefinition>,
+    /// Racial display metadata from the validated catalog.
+    pub race_definitions: Vec<RaceDefinition>,
+    /// Current authored map descriptions and layouts.
+    pub map_definitions: Vec<MapDefinition>,
     /// Effective unit rules after terrain, race and unit inheritance.
     pub units: Vec<UnitRule>,
     /// Authored unit identifiers mapped to dense runtime indices.

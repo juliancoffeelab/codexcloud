@@ -46,9 +46,7 @@
   "scenarios": [
     "game/scenario/developer-v1/scenario.json",
     "game/scenario/mirror-v1/scenario.json",
-    "game/scenario/river-v2/scenario.json",
-    "game/scenario/river-v1/scenario.json",
-    "game/scenario/ashen-refuge-v1/scenario.json"
+    "game/scenario/river-v2/scenario.json"
   ],
   "campaigns": [
     "game/campaigns/lantern-road/campaign.json",

@@ -6,43 +6,6 @@
     "Skeleton clubs punish the armored patrol. Bone bows answer its unarmored swordsmen, archers and adepts; protect those bows with a melee screen.",
     "Nonlethal defensive attacks are allowed. Killing Dain or a retreating soldier ends mediation; check the combat preview before attacking and leave withdrawing men a way home."
   ],
-  "legacyDialogue": [
-    {
-      "speaker": "Orin",
-      "portrait": "necromancer",
-      "text": "The houses are empty, but the wells are clean. We can stop running here."
-    },
-    {
-      "speaker": "Captain Dain",
-      "portrait": "warden",
-      "text": "My orders say you are dangerous."
-    },
-    {
-      "speaker": "Orin",
-      "portrait": "necromancer",
-      "text": "Then watch what we do. We will hold the houses, not march on yours."
-    },
-    {
-      "speaker": "Dain",
-      "portrait": "warden",
-      "text": "You put your archers between my patrol and those villagers. My orders did not mention that."
-    },
-    {
-      "speaker": "Orin",
-      "portrait": "necromancer",
-      "text": "The man who wrote your orders used to write mine."
-    },
-    {
-      "speaker": "Dain",
-      "portrait": "warden",
-      "text": "Then I know which road we take next."
-    },
-    {
-      "speaker": "Orin",
-      "portrait": "necromancer",
-      "text": "We have little use for the herbs. The people next door do. They insist on paying us. I think that is what neighbors do."
-    }
-  ],
   "intro": [
     {
       "speaker": "Orin",

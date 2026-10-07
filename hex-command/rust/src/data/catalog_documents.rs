@@ -1,5 +1,4 @@
-//! Typed assembly of schema-v2 scenario/stage components. Legacy schema-v1
-//! snapshots remain readable for the preserved simulation reference catalogs.
+//! Typed assembly of current scenario/stage components.
 use super::*;
 
 #[derive(Deserialize)]
@@ -27,9 +26,9 @@ struct MapDocument {
     rows: i32,
     tiles: Vec<Tile>,
     #[serde(rename = "name")]
-    _name: Option<String>,
+    name: Option<String>,
     #[serde(rename = "description")]
-    _description: Option<String>,
+    description: Option<String>,
     #[serde(rename = "revision")]
     _revision: Option<u32>,
 }
@@ -43,13 +42,6 @@ impl MapDocument {
             tiles: self.tiles,
             gold: roster.gold,
             units: roster.units,
-            round: initial_round(),
-            turn: initial_turn(),
-            winner: None,
-            next_id: None,
-            log: None,
-            campaign: None,
-            last_combat: None,
         }
     }
 }
@@ -83,14 +75,12 @@ struct StageObjectives {
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct StageStory {
     #[serde(rename = "subtitle")]
-    _subtitle: Option<String>,
+    subtitle: Option<String>,
     briefing: String,
     debrief: Option<String>,
     hints: Vec<String>,
     intro: Vec<Dialogue>,
     victory: Vec<Dialogue>,
-    #[serde(rename = "legacyDialogue")]
-    _legacy_dialogue: Option<Vec<Dialogue>>,
 }
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -117,13 +107,8 @@ fn sibling(descriptor: &str, component: &str) -> Result<String, ContentError> {
     checked_path(&path)?;
     Ok(path)
 }
-pub(super) fn stage_path(schema: u32, campaign: &str, stage: &str) -> Result<String, ContentError> {
-    if schema == 1 {
-        checked_path(stage)?;
-        Ok(stage.to_owned())
-    } else {
-        sibling(campaign, stage)
-    }
+pub(super) fn stage_path(campaign: &str, stage: &str) -> Result<String, ContentError> {
+    sibling(campaign, stage)
 }
 /// Load precisely the documents referenced by the manifest; unrelated files
 /// never affect native-versus-embedded catalog fingerprints.
@@ -144,7 +129,7 @@ pub(super) fn collect_bundle(
     let mut bundle = JsonBundle::new();
     read(&mut bundle, &mut source, "manifest.json")?;
     let manifest: Manifest = parse(&bundle, "manifest.json")?;
-    if !matches!(manifest.schema_version, 1 | 2) {
+    if manifest.schema_version != 2 {
         return Err(ContentError::new(
             "manifest.json",
             "unsupported schemaVersion",
@@ -157,37 +142,33 @@ pub(super) fn collect_bundle(
         &manifest.simulation.campaign,
     ]
     .into_iter()
-    .chain(manifest.races.paths())
-    .chain(manifest.units.paths())
+    .chain(&manifest.races)
+    .chain(&manifest.units)
     .chain(&manifest.scenarios)
     .chain(&manifest.campaigns)
     {
         read(&mut bundle, &mut source, path)?;
     }
-    if manifest.schema_version == 2 {
-        for path in &manifest.scenarios {
-            let documents: ScenarioDocuments = parse(&bundle, path)?;
-            for component in [&documents.map, &documents.roster] {
-                read(&mut bundle, &mut source, &sibling(path, component)?)?;
-            }
+    for path in &manifest.scenarios {
+        let documents: ScenarioDocuments = parse(&bundle, path)?;
+        for component in [&documents.map, &documents.roster] {
+            read(&mut bundle, &mut source, &sibling(path, component)?)?;
         }
     }
     for campaign_path in &manifest.campaigns {
         let campaign: CampaignFile = parse(&bundle, campaign_path)?;
         for stage in campaign.stages {
-            let path = stage_path(manifest.schema_version, campaign_path, &stage)?;
+            let path = stage_path(campaign_path, &stage)?;
             read(&mut bundle, &mut source, &path)?;
-            if manifest.schema_version == 2 {
-                let documents: StageDocuments = parse(&bundle, &path)?;
-                for component in [
-                    &documents.map,
-                    &documents.roster,
-                    &documents.objectives,
-                    &documents.story,
-                    &documents.scripts,
-                ] {
-                    read(&mut bundle, &mut source, &sibling(&path, component)?)?;
-                }
+            let documents: StageDocuments = parse(&bundle, &path)?;
+            for component in [
+                &documents.map,
+                &documents.roster,
+                &documents.objectives,
+                &documents.story,
+                &documents.scripts,
+            ] {
+                read(&mut bundle, &mut source, &sibling(&path, component)?)?;
             }
         }
     }
@@ -219,6 +200,7 @@ pub(super) fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, Conten
         state: map.initial(roster.initial),
         mission: Mission {
             map: layout,
+            subtitle: story.subtitle.unwrap_or_default(),
             briefing: story.briefing,
             debrief: story.debrief,
             hints: story.hints,
@@ -238,5 +220,51 @@ pub(super) fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, Conten
             refuge: scripts.refuge,
             without_dain: scripts.without_dain,
         },
+    })
+}
+
+/// Preserve authored display text and placements while the catalog still owns the documents.
+pub(super) fn map_metadata(
+    bundle: &JsonBundle,
+    descriptor: &str,
+    state: &State,
+    units: Option<Vec<StartingUnit>>,
+) -> Result<MapDefinition, ContentError> {
+    #[derive(Deserialize)]
+    struct Reference {
+        map: String,
+    }
+    let reference: Reference = parse(bundle, descriptor)?;
+    let metadata: MapDocument = parse(bundle, &sibling(descriptor, &reference.map)?)?;
+    let units = units.unwrap_or_else(|| {
+        state
+            .units
+            .iter()
+            .map(|unit| {
+                let tile = state
+                    .tiles
+                    .iter()
+                    .find(|tile| tile.id == unit.tile)
+                    .expect("validated placement");
+                StartingUnit {
+                    col: tile.col,
+                    row: tile.row,
+                    r#type: unit.r#type.clone(),
+                    side: unit.side,
+                    name: unit.name.clone(),
+                    role: unit.role,
+                }
+            })
+            .collect()
+    });
+    Ok(MapDefinition {
+        id: state.map_id.clone(),
+        revision: state.map_revision,
+        name: metadata.name.unwrap_or_else(|| state.map_id.clone()),
+        description: metadata.description.unwrap_or_default(),
+        cols: state.cols,
+        rows: state.rows,
+        terrain: state.tiles.clone(),
+        units,
     })
 }

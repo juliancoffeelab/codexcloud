@@ -95,7 +95,7 @@ test("Native combat inspection feeds UI damage breakdowns and old saves migrate 
   const after = game.unit(target.id);
   assert.equal(after?.hp ?? 0, Math.max(0, target.hp - forecast.damage));
   writeBattle(game);
-  assert.equal(JSON.parse(localStorage.getItem(SAVE_KEY)!).version, 2);
+  assert.equal(JSON.parse(localStorage.getItem(SAVE_KEY)!).version, 3);
   const restored = loadLiveBattle(factory).game;
   assert.deepEqual(restored.snapshot(), game.snapshot());
   restored.dispose();

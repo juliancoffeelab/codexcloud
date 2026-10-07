@@ -3,6 +3,8 @@ import { required, storageWithValue } from "./helpers.ts";
 import assert from "node:assert/strict";
 import { Game } from "./game-fixture.ts";
 import { loadBattle, saveBattle } from "./legacy-save.ts";
+import { LEGACY_RIVER } from "../src/save/migration/legacy/layouts";
+import { legacyBoard } from "../src/save/migration/legacy/board";
 
 test("River layout, checkpoint and missing map migration round-trip", async () => {
   let stored = "";
@@ -50,7 +52,13 @@ test("Revision-one river saves retain their crossings and progress", async () =>
       },
     ),
   );
-  const oldRiver = new Game("river", 1);
+  const oldRiver = new Game("river");
+  const board = legacyBoard("river", 1);
+  oldRiver.tiles = board.tiles;
+  oldRiver.units = [];
+  oldRiver.nextId = 1;
+  for (const unit of LEGACY_RIVER.units)
+    oldRiver.addUnit(unit.type, unit.side, `${unit.col},${unit.row}`);
   oldRiver.move("u3", "4,4");
   required(oldRiver.unit("u2")).tile = "7,1";
   saveBattle(oldRiver);
@@ -60,46 +68,6 @@ test("Revision-one river saves retain their crossings and progress", async () =>
   assert.deepEqual(loadBattle().game.snapshot(), oldRiver.snapshot());
   assert.equal(required(loadBattle().game.tile("7,1")).terrain, "bridge");
 });
-test("Ford entry costs constrain heavy troops", async () => {
-  const fordGame = new Game("river");
-  required(fordGame.unit("u2")).tile = "4,7";
-  assert.equal(fordGame.reachable("u2").get("5,7"), 3);
-  assert.equal(fordGame.reachable("u2").has("6,7"), false);
-  assert.equal(fordGame.reachable("u2").has("9,7"), false);
-  assert.equal(fordGame.cost(required(fordGame.unit("u3")), required(fordGame.tile("5,7"))), 2);
-  fordGame.move("u2", "5,7");
-  assert.equal(required(fordGame.unit("u2")).tile, "5,7");
-  for (const type of ["commander", "soldier", "archer", "scout"] as const) {
-    assert.equal(
-      fordGame.cost({ type }, required(fordGame.tile("5,7"))),
-      ["soldier", "commander"].includes(type) ? 3 : 2,
-    );
-  }
-});
-// Bridge hexes permit ordinary movement while adjacent water stays forbidden.
-test("Bridges allow ordinary movement and adjacent water remains blocked", async () => {
-  const river = new Game("river");
-  required(river.unit("u2")).tile = "6,3";
-  assert.ok(river.reachable("u2").has("7,3"));
-  assert.ok(!river.reachable("u2").has("8,2"));
-  river.move("u2", "7,3");
-  assert.equal(required(river.unit("u2")).tile, "7,3");
-});
-test("Exposure also applies to retaliation", async () => {
-  const exposed = new Game("river");
-  required(exposed.tile("6,7")).terrain = "plains";
-  exposed.units = [];
-  const wader = exposed.addUnit("soldier", "player", "5,7");
-  const defender = exposed.addUnit("soldier", "enemy", "6,7");
-  assert.deepEqual(exposed.preview(wader, defender), {
-    damage: 7,
-    retaliation: 8,
-  });
-  exposed.attack(wader.id, defender.id);
-  assert.equal(wader.hp, 16);
-  assert.equal(defender.hp, 17);
-});
-
 afterEach(() => {
   vi.unstubAllGlobals();
 });
