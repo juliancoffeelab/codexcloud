@@ -1,7 +1,7 @@
 # Seeded AI comparisons
 
 The simulation CLI defaults to the native Rust engine. Testing policies execute
-the same battle commands and rules as `Game`: movement, terrain and race effects,
+the same Rust battle commands and rules as the browser: movement, terrain and race effects,
 combat, healing, recruitment, XP, promotion, scripted arrivals and victory rules.
 The ordinary enemy still uses classic AI. There is no new enemy selector.
 
@@ -87,8 +87,8 @@ execution, campaign transitions, recording and reports. Content fingerprints are
 separate from the compiled engine fingerprint; JSON edits need no export or rebuild.
 
 `npm run ai:schedule -- --mode full --seeds 10` enumerates configurations without
-running matches. The browser has an opt-in WASM adapter and Rust-generated transfer
-types; its existing controller is unchanged. See [`rust/README.md`](../rust/README.md)
+running matches. The browser uses the WASM engine and Rust-generated transfer
+types through its JavaScript controller. See [`rust/README.md`](../rust/README.md)
 for the public API and build details.
 
 The latest complete TS baseline is `artifacts/ai-performance/full-final/report.json`,

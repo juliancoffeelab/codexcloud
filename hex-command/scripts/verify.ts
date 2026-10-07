@@ -3,13 +3,14 @@ import { fileURLToPath } from "node:url";
 
 const checks = {
   style: "style",
+  content: "content:check",
   wasm: "check:wasm",
   ui: "check:ui",
   types: "check:types",
   rust: "check:rust",
   art: "art:check",
   tests: "test",
-  build: "build:check",
+  build: "build",
 } as const;
 type Check = keyof typeof checks;
 // Keep the former group name working for existing callers.

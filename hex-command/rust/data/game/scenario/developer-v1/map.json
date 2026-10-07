@@ -844,5 +844,7 @@
       "terrain": "plains",
       "owner": null
     }
-  ]
+  ],
+  "name": "Developer map",
+  "description": "All terrains and both sides of every unit."
 }

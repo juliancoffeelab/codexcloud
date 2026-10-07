@@ -1,4 +1,4 @@
-/** A headless control surface for playtesting the live engine. No substitute rules or player AI. */
+/** Historical TypeScript playtest/replay surface; live battles use the Rust engine. */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname } from "node:path";
 import { createHash } from "node:crypto";
@@ -25,7 +25,7 @@ function rulesFingerprint(id: CampaignId): string {
     "campaign-progress.ts",
     "enemy-turn.ts",
     "movement.ts",
-    "progression.ts",
+    "authored-content.ts",
     "races.ts",
   ])
     hash.update(readFileSync(new URL(`../src/game/${file}`, import.meta.url)));

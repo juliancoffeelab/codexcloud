@@ -115,6 +115,65 @@ test("All campaign dialogue and retry controls dispatch through native hooks", (
   }
 });
 
+test("Supported legacy woodland revisions migrate without losing campaign progress", () => {
+  const old = Game.startCampaign("green-accord");
+  old.mapRevision = 1;
+  old.round = 3;
+  old.gold.player = 19;
+  saveBattle(old);
+  const restored = loadLiveBattle(factory);
+  assert.equal(restored.notice, undefined);
+  assert.equal(restored.game.mapRevision, 2);
+  assert.equal(restored.game.round, 3);
+  assert.equal(restored.game.gold.player, 19);
+  assert.deepEqual(restored.game.units, old.units);
+  restored.game.saveNative();
+  const reloaded = loadLiveBattle(factory);
+  assert.deepEqual(reloaded.game.snapshot(), restored.game.snapshot());
+  reloaded.game.dispose();
+  restored.game.dispose();
+});
+
+test("A failed legacy import is backed up and cannot prevent startup", () => {
+  saveBattle(new Game("mirror"));
+  const rejected = JSON.parse(localStorage.getItem(SAVE_KEY)!);
+  const restored = loadLiveBattle({
+    ...factory,
+    restore: () => ({ ok: false, error: { code: "invalidRequest", message: "Rejected" } }),
+  });
+  assert(restored.notice);
+  assert.equal(restored.game.turn, "player");
+  assert.deepEqual(JSON.parse(localStorage.getItem(SAVE_KEY + "-unrestored")!), rejected);
+  restored.game.dispose();
+});
+
+test("Rejected native campaign data leaves the WASM factory usable", () => {
+  const game = LiveGame.create(factory, { kind: "campaign", id: "lantern-road" });
+  game.saveNative();
+  game.dispose();
+  const checkpoint = JSON.parse(localStorage.getItem(SAVE_KEY)!);
+  const corruptions = [
+    () => {
+      checkpoint.saved.state.campaign.fallenCompanions = ["Captain Nera"];
+    },
+    () => {
+      checkpoint.saved.state.campaign.fallenCompanions = [];
+      checkpoint.saved.state.units[0].experience = 0xffffffff;
+    },
+  ];
+  for (const corrupt of corruptions) {
+    corrupt();
+    localStorage.setItem(SAVE_KEY, JSON.stringify(checkpoint));
+    const restored = loadLiveBattle(factory);
+    assert(restored.notice);
+    restored.game.dispose();
+  }
+  const next = LiveGame.create(factory, { kind: "campaign", id: "lantern-road" });
+  next.retryCampaignMission();
+  assert.equal(next.units.find((unit) => unit.role === "leader")?.name, "Captain Nera");
+  next.dispose();
+});
+
 test("Live enemy planning finishes a phase and saves the resulting player turn", async () => {
   const controller = new BattleController(async () => {}, factory);
   await controller.endTurn();

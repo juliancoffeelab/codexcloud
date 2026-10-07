@@ -159,7 +159,10 @@ test("River forms two asymmetric banks linked by either crossing", async () => {
     ],
   );
   assert.deepEqual(
-    LEGACY_RIVER.terrain.filter((t) => t.terrain === "village").map((t) => [t.col, t.row]),
+    LEGACY_RIVER.terrain
+      .filter((t) => t.terrain === "village")
+      .map((t) => [t.col, t.row])
+      .sort(([ac, ar], [bc, br]) => ac! - bc! || ar! - br!),
     [
       [4, 1],
       [4, 4],

@@ -83,6 +83,9 @@ pub fn validate_state(rules: &Rules, state: &State) -> Result<(), StateError> {
         if unit.hp <= 0 || unit.hp > rules.units[kind].hp {
             return Err(fail("invalid unit hit points"));
         }
+        if unit.experience.unwrap_or(0) > rules.units[kind].experience_needed.unwrap_or(0) {
+            return Err(fail("invalid unit experience"));
+        }
     }
     if let Some(campaign) = &state.campaign {
         let definition = rules
@@ -107,14 +110,73 @@ pub fn validate_state(rules: &Rules, state: &State) -> Result<(), StateError> {
         if campaign.dialogue_index > campaign.dialogue.len() {
             return Err(fail("invalid dialogue index"));
         }
+        if !(0..=8).contains(&campaign.carry_gold)
+            || campaign.recall.len() > 4
+            || campaign.recall.iter().any(|id| {
+                rules
+                    .types
+                    .get(id)
+                    .is_none_or(|&kind| rules.units[kind].leader)
+            })
+        {
+            return Err(fail("invalid campaign carryover"));
+        }
+        let previous_companions: HashSet<_> = definition.missions[..campaign.mission]
+            .iter()
+            .flat_map(|mission| &mission.map.units)
+            .filter(|unit| unit.side == Side::Player && unit.role != Some(Role::Leader))
+            .filter_map(|unit| unit.name.as_deref())
+            .collect();
+        if let Some(fallen) = &campaign.fallen_companions {
+            let unique: HashSet<_> = fallen.iter().collect();
+            if unique.len() != fallen.len()
+                || fallen
+                    .iter()
+                    .any(|name| !previous_companions.contains(name.as_str()))
+            {
+                return Err(fail("invalid fallen companion"));
+            }
+        }
+        if let Some(veterans) = &campaign.veterans {
+            if veterans.len() != campaign.recall.len()
+                || veterans
+                    .iter()
+                    .zip(&campaign.recall)
+                    .any(|(veteran, id)| veteran.r#type != *id || veteran.role.is_some())
+            {
+                return Err(fail("invalid recalled veterans"));
+            }
+        }
         for veteran in campaign
             .veterans
             .iter()
             .chain(&campaign.story_veterans)
             .flatten()
         {
-            if !rules.types.contains_key(&veteran.r#type) {
-                return Err(fail("unknown veteran type"));
+            let kind = *rules
+                .types
+                .get(&veteran.r#type)
+                .ok_or_else(|| fail("unknown veteran type"))?;
+            if veteran.experience > rules.units[kind].experience_needed.unwrap_or(0) {
+                return Err(fail("invalid veteran experience"));
+            }
+        }
+        if let Some(story) = &campaign.story_veterans {
+            if story.len() > 8
+                || story.iter().any(|veteran| {
+                    let family = &rules.units[rules.types[&veteran.r#type]].family;
+                    !mission.map.units.iter().any(|unit| {
+                        unit.side == Side::Player
+                            && (if veteran.role == Some(Role::Leader) {
+                                unit.role == Some(Role::Leader)
+                            } else {
+                                veteran.name.is_some() && veteran.name == unit.name
+                            })
+                            && rules.units[rules.types[&unit.r#type]].family == *family
+                    })
+                })
+            {
+                return Err(fail("invalid story veterans"));
             }
         }
     }

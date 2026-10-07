@@ -75,12 +75,15 @@ def compare(a: pa.Table, b: pa.Table, trace=None):
     owned.extend((a, b))
     if not a.schema.equals(b.schema, check_metadata=False) or a.num_rows != b.num_rows:
         return False, timings, "schema or match count differs", owned
+    if any(key not in table.column_names or table.column(key).null_count
+           for table in (a, b) for key in KEYS):
+        return False, timings, "missing match identity", owned
 
     def match_keys():
         left = pl.from_arrow(a.select(KEYS)).with_row_index("__a")
         right = pl.from_arrow(b.select(KEYS)).with_row_index("__b")
         joined = left.join(right, on=KEYS, how="left", validate="1:1",
-                           nulls_equal=True, maintain_order="left")
+                           maintain_order="left")
         return left, joined
 
     try:

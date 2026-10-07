@@ -949,5 +949,7 @@
       "terrain": "plains",
       "owner": null
     }
-  ]
+  ],
+  "name": "River crossings",
+  "description": "A winding river divides uneven banks. Take the northern bridge or the distant southern shallows."
 }

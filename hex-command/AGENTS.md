@@ -6,10 +6,11 @@
 - The entire `npm test` command must finish within 20 seconds. Use controlled
   promises or an injected clock instead of real delays in tests. Vitest runs
   independent named scenarios; the batch launcher enforces a shared time budget; do not raise it to accommodate slow tests.
-- Do not add or retain Playwright, browser automation, screenshot comparisons,
-  large migration/parity suites, or test infrastructure requiring browser installs,
-  extra services, or Git-history fixtures. Use focused TypeScript unit checks for
-  meaningful rules, state transitions, publication, and cancellation behavior.
+- Keep browser automation out of the default test suite. Playwright is available
+  for explicitly requested browser spot checks; keep scratch probes in ignored
+  `tmp/`. Do not add mandatory browser installs, extra services, large migration
+  suites, or Git-history fixtures. Use focused unit checks for meaningful rules,
+  state transitions, publication, and cancellation behavior.
 - Components derive display state exclusively from the immutable published
   `BattleView`. Pass `BattleCommands` for event handlers. Never query mutable
   controller state during rendering or pass a mutable `Game` into a component.

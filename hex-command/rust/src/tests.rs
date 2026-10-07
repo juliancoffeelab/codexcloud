@@ -153,6 +153,65 @@ fn restore_rejects_colliding_roster_before_indexing() {
     assert!(Game::try_from_state(rules(), state).is_err());
 }
 #[test]
+fn restore_rejects_experience_outside_progression_limits() {
+    let mut state = Game::new(rules(), "developer").state();
+    state.units[0].experience = Some(u32::MAX);
+    assert!(Game::try_from_state(rules(), state).is_err());
+    let opening = Game::start_campaign(
+        rules(),
+        "lantern-road",
+        1,
+        vec![],
+        0,
+        vec![],
+        vec![],
+        vec![],
+    )
+    .state();
+    for story in [false, true] {
+        let mut state = opening.clone();
+        let campaign = state.campaign.as_mut().unwrap();
+        let veteran = Veteran {
+            r#type: if story { "commander" } else { "swordsman" }.into(),
+            experience: u32::MAX,
+            name: story.then(|| "Captain Nera".into()),
+            role: story.then_some(Role::Leader),
+        };
+        if story {
+            campaign.story_veterans = Some(vec![veteran]);
+        } else {
+            campaign.recall = vec!["swordsman".into()];
+            campaign.veterans = Some(vec![veteran]);
+        }
+        assert!(Game::try_from_state(rules(), state).is_err());
+    }
+}
+#[test]
+fn restore_rejects_invalid_campaign_carryover_before_retry() {
+    let game = Game::start_campaign(
+        rules(),
+        "lantern-road",
+        1,
+        vec![],
+        0,
+        vec![],
+        vec![],
+        vec![],
+    );
+    let opening = game.state();
+    for name in ["Captain Nera", "unknown companion"] {
+        let mut state = opening.clone();
+        state.campaign.as_mut().unwrap().fallen_companions = Some(vec![name.into()]);
+        assert!(Game::try_from_state(rules(), state).is_err());
+    }
+    let mut state = opening.clone();
+    state.campaign.as_mut().unwrap().recall = vec!["commander".into()];
+    assert!(Game::try_from_state(rules(), state).is_err());
+    let mut state = opening;
+    state.campaign.as_mut().unwrap().fallen_companions = Some(vec!["Ivo".into()]);
+    assert!(Game::try_from_state(rules(), state).is_ok());
+}
+#[test]
 fn public_battle_applies_typed_moves_with_feedback() {
     use crate::logic::Battle;
     let mut battle = Battle::new(rules(), MapId("mirror".into()), None).unwrap();

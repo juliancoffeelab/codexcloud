@@ -350,16 +350,34 @@ export function loadLiveBattle(factory: GameEngineFactory): {
   } catch {
     /* New battle below. */
   }
-  if (saved?.engine === "rust-wasm") {
+  if (saved) {
     try {
-      if (
-        !saved.saved ||
-        (saved.pendingEnemy && (saved.saved.state.turn !== "player" || saved.saved.state.winner))
-      )
-        throw new Error("Invalid recovery checkpoint");
+      if (saved.engine === "rust-wasm") {
+        if (
+          !saved.saved ||
+          (saved.pendingEnemy && (saved.saved.state.turn !== "player" || saved.saved.state.winner))
+        )
+          throw new Error("Invalid recovery checkpoint");
+        return {
+          game: LiveGame.restore(factory, saved.saved),
+          pendingEnemy: saved.pendingEnemy === true,
+        };
+      }
+      const legacy = loadBattle();
+      const state = legacy.game.captureState() as unknown as SavedGame["state"];
+      const catalog = factory.catalog();
+      if (!catalog.ok) throw new Error("Could not load the game catalog");
+      const maps = catalog.value.maps.filter((map) => map.id === state.mapId);
+      if (!maps.some((map) => map.revision === state.mapRevision)) {
+        // The legacy loader already applies the current layout for these revisions.
+        // Explicit historical layouts (river/refuge) retain their catalog revisions.
+        const current = maps.find((map) => map.cols === state.cols && map.rows === state.rows);
+        if (!current) throw new Error("Unsupported legacy battlefield");
+        state.mapRevision = current.revision;
+      }
       return {
-        game: LiveGame.restore(factory, saved.saved),
-        pendingEnemy: saved.pendingEnemy === true,
+        game: LiveGame.restore(factory, { version: 1, seed: 17, state }),
+        pendingEnemy: legacy.pendingEnemy,
       };
     } catch {
       // Preserve the rejected checkpoint while allowing the player to start again.
@@ -374,17 +392,6 @@ export function loadLiveBattle(factory: GameEngineFactory): {
         notice: "The saved battle could not be restored. A new battle is ready.",
       };
     }
-  }
-  if (saved) {
-    const legacy = loadBattle();
-    return {
-      game: LiveGame.restore(factory, {
-        version: 1,
-        seed: 17,
-        state: legacy.game.captureState() as unknown as SavedGame["state"],
-      }),
-      pendingEnemy: legacy.pendingEnemy,
-    };
   }
   return {
     game: LiveGame.create(factory, { kind: "scenario", map: "mirror" }),

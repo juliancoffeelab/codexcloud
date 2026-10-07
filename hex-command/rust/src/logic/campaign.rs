@@ -487,7 +487,9 @@ impl<'catalog> Game<'catalog> {
         });
         game.refresh_mission();
         game.units.retain(|u| {
-            u.side != Side::Player || u.name.as_ref().is_none_or(|n| !fallen.contains(n))
+            u.side != Side::Player
+                || u.role == Some(Role::Leader)
+                || u.name.as_ref().is_none_or(|n| !fallen.contains(n))
         });
         game.roster_changed();
         game.campaign.as_mut().unwrap().dialogue = game.mission.as_ref().unwrap().intro.clone();
@@ -545,10 +547,14 @@ impl<'catalog> Game<'catalog> {
         slots.sort_by_key(|&t| game.board.distance(t, leader));
         for veteran in veterans {
             let kind = game.kind(&veteran.r#type);
-            let slot = slots
-                .iter()
-                .position(|&t| game.cost(kind, t) != u16::MAX)
-                .expect("recall space");
+            let Some(slot) = slots.iter().position(|&t| game.cost(kind, t) != u16::MAX) else {
+                // A changed map may not have a passable recall tile for this family.
+                game.record(format!(
+                    "No safe recall space for {}.",
+                    game.rules.units[kind].name
+                ));
+                continue;
+            };
             let tile = slots.remove(slot);
             game.add(kind, Side::Player, tile);
             let unit = game.units.last_mut().unwrap();

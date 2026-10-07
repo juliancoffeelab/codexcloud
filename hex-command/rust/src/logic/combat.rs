@@ -135,8 +135,14 @@ impl<'catalog> Game<'catalog> {
                 } else {
                     1
                 };
-                self.units[own].experience =
-                    Some(limit.min(self.units[own].experience.unwrap_or(0) + reward));
+                self.units[own].experience = Some(
+                    limit.min(
+                        self.units[own]
+                            .experience
+                            .unwrap_or(0)
+                            .saturating_add(reward),
+                    ),
+                );
             }
         }
         let message = if retaliation > 0 {

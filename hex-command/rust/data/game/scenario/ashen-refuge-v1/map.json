@@ -697,5 +697,7 @@
       "terrain": "plains",
       "owner": null
     }
-  ]
+  ],
+  "name": "The Quiet Refuge",
+  "description": "The Quiet Refuge"
 }

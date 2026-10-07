@@ -949,5 +949,7 @@
       "terrain": "plains",
       "owner": null
     }
-  ]
+  ],
+  "name": "River crossings",
+  "description": "A larger battlefield split by a river. Fight for three bridges and six villages."
 }

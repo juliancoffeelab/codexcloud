@@ -1,39 +1,8 @@
 import { immutable } from "./immutable";
-import { WOODLAND_MOVEMENT } from "./movement";
+import { AUTHORED_RACES } from "./authored-content";
 import type { Race, RaceDefinition, UnitDefinition, UnitType } from "./types";
 
-export const RACES = immutable<Record<Race, RaceDefinition>>({
-  merfolk: {
-    name: "Merfolk",
-    terrainModifiers: {
-      water: { passable: true, damageModifiers: { ranged: -1 } },
-      ford: { cost: -1, damageModifiers: { melee: -1, ranged: -1 } },
-      marsh: { cost: -1, damageModifiers: { melee: -2, ranged: -2 } },
-      forest: { cost: 1, damageModifiers: { melee: 1, ranged: 2 } },
-      grove: { cost: 1, damageModifiers: { melee: 1, ranged: 2 } },
-      hill: { cost: 1, damageModifiers: { melee: 2, ranged: 2 } },
-    },
-    damageModifiers: { blade: 0, pierce: 0, impact: 0 },
-  },
-  human: {
-    name: "Human",
-    terrainModifiers: {},
-    damageModifiers: { blade: 0, pierce: 0, impact: 0 },
-  },
-  undead: {
-    name: "Undead",
-    terrainModifiers: {},
-    damageModifiers: { blade: 0, pierce: -1, impact: 1 },
-  },
-  beast: {
-    name: "Woodland beast",
-    terrainModifiers: {
-      forest: { ...WOODLAND_MOVEMENT.forest, damageModifiers: { melee: -1, ranged: -1 } },
-      grove: { ...WOODLAND_MOVEMENT.grove, damageModifiers: { melee: -1, ranged: -1 } },
-    },
-    damageModifiers: { blade: 0, pierce: 1, impact: 0 },
-  },
-});
+export const RACES = immutable<Record<Race, RaceDefinition>>(AUTHORED_RACES);
 
 /** Specifications hold unit deviations; consumers receive final race + unit stats. */
 export function resolveUnits(

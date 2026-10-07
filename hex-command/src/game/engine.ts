@@ -21,10 +21,9 @@ import type {
 export type * from "./types";
 import { MAPS, LEGACY_RIVER } from "./maps";
 import { immutable } from "./immutable";
-import { CAMPAIGN_UNITS } from "./campaign-units";
-import { HEAVY_MOVEMENT, PATHFINDER_MOVEMENT, movementCost } from "./movement";
+import { movementCost } from "./movement";
 import { RACES, resolveUnits } from "./races";
-import { progressionUnits } from "./progression";
+import { UNIT_SPECIFICATIONS, AUTHORED_TERRAIN } from "./authored-content";
 import { enemyTileOrder } from "./enemy-order";
 import { leaderMayAdvance, ordinaryCombatants, updateLeaderRebuilding } from "./leader-restraint";
 export { RACES } from "./races";
@@ -47,172 +46,8 @@ export const DAMAGE_TYPES = Object.freeze({
   pierce: "Pierce",
   impact: "Impact",
 });
-const weapon = (
-  id: string,
-  name: string,
-  damage: number,
-  damageType: DamageType,
-  category: AttackCategory,
-  range: number,
-  sound = "attack-melee",
-): Weapon => ({ id, name, damage, damageType, category, range, sound });
-export const TYPES = immutable<Record<UnitType, UnitDefinition>>(
-  resolveUnits(
-    progressionUnits({
-      ...CAMPAIGN_UNITS,
-      commander: {
-        name: "Commander",
-        hp: 16,
-        move: 3,
-        damage: 4,
-        range: 1,
-        cost: 0,
-        leader: true,
-        race: "human",
-        terrainModifiers: HEAVY_MOVEMENT,
-        attacks: [
-          weapon("sword", "Sword", 4, "blade", "melee", 1),
-          weapon("mace", "Mace", 3, "impact", "melee", 1),
-        ],
-        damageModifiers: { blade: -1, pierce: 0, impact: 0 },
-        ability: "Recruit",
-        description: "Recruit while on your keep. New recruits act next turn.",
-      },
-      soldier: {
-        name: "Soldier",
-        race: "human",
-        terrainModifiers: HEAVY_MOVEMENT,
-        hp: 12,
-        move: 3,
-        damage: 4,
-        range: 1,
-        cost: 8,
-        attacks: [
-          weapon("sword", "Sword", 4, "blade", "melee", 1),
-          weapon("mace", "Mace", 3, "impact", "melee", 1),
-        ],
-        damageModifiers: { blade: -1, pierce: -1, impact: 1 },
-        ability: "Armor",
-        description: "Takes 1 less Blade/Pierce damage and 1 more Impact damage.",
-      },
-      archer: {
-        name: "Archer",
-        race: "human",
-        hp: 8,
-        move: 3,
-        damage: 4,
-        range: 2,
-        cost: 7,
-        attacks: [
-          weapon("bow", "Bow", 4, "pierce", "ranged", 2, "attack-bow"),
-          weapon("knife", "Knife", 2, "blade", "melee", 1),
-        ],
-        damageModifiers: { blade: 0, pierce: 0, impact: 0 },
-        ability: "Bow",
-        description:
-          "Strong Pierce bow reaches 2 hexes. Slower than a scout; its knife is a weak melee reply.",
-      },
-      scout: {
-        name: "Scout",
-        race: "human",
-        terrainModifiers: PATHFINDER_MOVEMENT,
-        hp: 8,
-        move: 5,
-        damage: 2,
-        range: 2,
-        cost: 5,
-        attacks: [
-          weapon("knife", "Knife", 2, "blade", "melee", 1),
-          weapon("sling", "Sling", 1, "impact", "ranged", 2, "unit-archer"),
-        ],
-        damageModifiers: { blade: 0, pierce: 0, impact: 0 },
-        ability: "Pathfinder",
-        description: "Forests and hills cost only 1 movement.",
-      },
-    }),
-  ),
-);
-export const TERRAIN = immutable<Record<TerrainType, TerrainDefinition>>({
-  plains: {
-    name: "Plains",
-    cost: 1,
-    passable: true,
-    description: "Normal movement. No protection.",
-  },
-  forest: {
-    damageModifiers: { ranged: -1 },
-    name: "Forest",
-    cost: 2,
-    passable: true,
-    description: "Costs 2 movement; ranged damage reduced by 1.",
-  },
-  hill: {
-    damageModifiers: { melee: -1, ranged: -1 },
-    name: "Hills",
-    cost: 2,
-    passable: true,
-    description: "Costs 2 movement; all damage reduced by 1.",
-  },
-  water: { name: "Water", cost: 1, passable: false, description: "Impassable to land units." },
-  bridge: {
-    name: "Bridge",
-    cost: 1,
-    passable: true,
-    description: "A crossing over water. Normal movement; no protection.",
-  },
-  ford: {
-    damageModifiers: { melee: 1, ranged: 1 },
-    name: "Shallow water",
-    cost: 2,
-    passable: true,
-    description:
-      "Costs 3 movement for soldiers and commanders, 2 for archers and scouts. Units here take 1 extra damage.",
-  },
-  village: {
-    name: "Village",
-    cost: 1,
-    passable: true,
-    description: "+2 gold per turn. Heals a friendly occupant by 2 HP.",
-  },
-  keep: {
-    name: "Keep",
-    cost: 1,
-    passable: true,
-    description: "Your commander can recruit into adjacent empty hexes.",
-  },
-  marsh: {
-    damageModifiers: { melee: 1, ranged: 1 },
-    name: "Marsh",
-    cost: 2,
-    passable: true,
-    description:
-      "Mud slows land units and exposes them to 1 extra damage. Merfolk move easily here and take 1 less damage.",
-  },
-  ruins: {
-    damageModifiers: { ranged: -1 },
-    name: "Ruins",
-    cost: 1,
-    passable: true,
-    description:
-      "Broken walls reduce ranged damage by 1 without blocking shots through the tile. Some campaign ruins contain binding stones; their objectives specify who can seal them.",
-  },
-  fort: {
-    damageModifiers: { melee: -1, ranged: -1 },
-    name: "Fort",
-    cost: 2,
-    passable: true,
-    description:
-      "Earthworks reduce all incoming damage by 1. Capture by entering; forts provide no income or healing.",
-  },
-  grove: {
-    damageModifiers: { ranged: -1 },
-    name: "Sacred grove",
-    cost: 2,
-    passable: true,
-    description:
-      "Trees reduce ranged damage by 1 and block shots through the tile. An owned grove heals its friendly occupant by 2 HP, but provides no income.",
-  },
-});
+export const TYPES = immutable<Record<UnitType, UnitDefinition>>(resolveUnits(UNIT_SPECIFICATIONS));
+export const TERRAIN = immutable<Record<TerrainType, TerrainDefinition>>(AUTHORED_TERRAIN);
 export function axial(tile: Coordinates) {
   return { q: tile.col - Math.floor(tile.row / 2), r: tile.row };
 }
