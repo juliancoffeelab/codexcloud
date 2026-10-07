@@ -1102,11 +1102,6 @@ select {
 .resistance.vulnerable b {
   color: var(--red);
 }
-.resistance-hint {
-  font-size: 13px;
-  color: var(--muted);
-  margin-top: 6px;
-}
 .attack-actions {
   margin-top: 12px;
   font:
@@ -1248,9 +1243,6 @@ select {
   display: flex;
   flex-wrap: wrap;
   gap: 5px 14px;
-}
-.unit-detail .resistance-hint {
-  margin-top: 5px;
 }
 @media (max-width: 540px) {
   .unit-detail > .combatant {
