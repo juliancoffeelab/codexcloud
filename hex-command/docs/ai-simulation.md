@@ -191,7 +191,7 @@ the central fort and the northern/southern villages. Bridges link the home islan
 to the fort; shallow crossings reach the village islands and give alternative
 approaches to the fort, including the hex east of the northern village and its
 southern counterpart. Open channels give merfolk routes around those crossings.
-Seeds vary paired terrain, equal gold and small policy tie breakers. Water arenas
+Seeds vary paired terrain, equal total budgets and small policy tie breakers. Water arenas
 retain the river identity for classic's routing. Each side gets its selected race's leader,
 two melee starters and its own recruitment pool. Human, woodland, undead and coastal
 rosters can face each other; same-race baselines remain included. Undead arena
