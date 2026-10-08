@@ -1,7 +1,7 @@
-# Dwarf axe and shield — L3
+# dwarf-axeguard-l3
 
-Short broad dwarf with huge brown beard and stout leather boots, one hand grips a short broad axe and the other holds a round wooden shield. Leather jerkin, teal scarf, beginner iron accents, stern funny big nose.
+L3 artwork derived from the cleaned `dwarf-axeguard` pose. The branch assignment is in `art/pixel/lineups/dwarves.json`.
 
-Anatomy source: dwarf-axeguard. Race appearance: Short, broad, tough dwarves, about three quarters human height. Chunky arms, squat strong legs, big noses and bushy beards. Slightly funny stubborn faces, not baby proportions. Practical leather workwear, iron equipment and teal faction cloth. Do not draw full-height humans.
+Armour: L1 leather; L2 metal helmet, shoulders, cuirass and arm guards over leather leggings, boots and apron; L3 complete silver coverage. Face, hands, beard, wooden shafts, weapon steel, faction fabric and mount/tack remain their own materials.
 
-Native canvas: 64×64. Source generation and extraction are in art/pixel/reference/faction-expansion/. Both factions share the same geometry; T/t faction cloth becomes R/r. O is outline; G is gold. H/h tissue, I/i bone or ivory, B/b leather, W/w wood, V/v body clothing, C/c coral equipment, A/a metal, E spell effect. Tier edits preserve this source pose and grips.
+The exact native inputs and ownership masks are saved under `art/pixel/reference/dwarf-progression/bases/dwarf-axeguard/`. Edit that recipe and run `python3 art/pixel/reference/dwarf-progression/build.py`; do not patch PNGs or reuse the older armour rectangles.

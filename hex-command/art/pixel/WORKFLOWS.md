@@ -80,6 +80,15 @@ infantry use the saved pose masks in
 templates use actual dwarf scale anchors. Keep those masks paired with their new
 source generations; the older metal-apron rectangles belong to different poses.
 
+The nine non-rune dwarf families now use the
+[reviewed armour progression](reference/dwarf-progression/README.md), derived from
+the cleaned native inputs and full material ownership masks saved there.
+`process.cjs tiers` delegates these families to its `build.py` recipe.
+L1 armour is leather, L2 mixes complete metal pieces with leather, and L3 covers
+all wearer armour in silver. The rune family remains on the earlier recipe.
+Update the saved input or ownership mask for later edits, then rebuild and run
+`python3 art/pixel/reference/dwarf-progression/build.py --check` to verify coverage.
+
 Regenerate the full boards without changing artwork:
 
 ```sh

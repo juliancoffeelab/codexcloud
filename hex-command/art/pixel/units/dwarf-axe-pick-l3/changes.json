@@ -1,626 +1,3249 @@
 {
   "base": "dwarf-axe-pick",
+  "source": "dwarf-progression/bases/dwarf-axe-pick",
   "level": 3,
   "changes": [
     {
+      "x": 30,
+      "y": 17,
+      "from": "M",
+      "to": "P",
+      "part": "K"
+    },
+    {
+      "x": 31,
+      "y": 17,
+      "from": "M",
+      "to": "P",
+      "part": "K"
+    },
+    {
+      "x": 32,
+      "y": 17,
+      "from": "A",
+      "to": "S",
+      "part": "K"
+    },
+    {
+      "x": 44,
+      "y": 17,
+      "from": "a",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 28,
+      "y": 18,
+      "from": "a",
+      "to": "p",
+      "part": "K"
+    },
+    {
+      "x": 29,
+      "y": 18,
+      "from": "a",
+      "to": "p",
+      "part": "K"
+    },
+    {
+      "x": 30,
+      "y": 18,
+      "from": "M",
+      "to": "P",
+      "part": "K"
+    },
+    {
+      "x": 31,
+      "y": 18,
+      "from": "M",
+      "to": "P",
+      "part": "K"
+    },
+    {
+      "x": 32,
+      "y": 18,
+      "from": "A",
+      "to": "S",
+      "part": "K"
+    },
+    {
+      "x": 33,
+      "y": 18,
+      "from": "A",
+      "to": "S",
+      "part": "K"
+    },
+    {
+      "x": 28,
+      "y": 19,
+      "from": "a",
+      "to": "p",
+      "part": "K"
+    },
+    {
+      "x": 29,
+      "y": 19,
+      "from": "a",
+      "to": "p",
+      "part": "K"
+    },
+    {
+      "x": 30,
+      "y": 19,
+      "from": "M",
+      "to": "P",
+      "part": "K"
+    },
+    {
+      "x": 31,
+      "y": 19,
+      "from": "M",
+      "to": "P",
+      "part": "K"
+    },
+    {
+      "x": 32,
+      "y": 19,
+      "from": "A",
+      "to": "S",
+      "part": "K"
+    },
+    {
+      "x": 33,
+      "y": 19,
+      "from": "A",
+      "to": "S",
+      "part": "K"
+    },
+    {
+      "x": 34,
+      "y": 19,
+      "from": "A",
+      "to": "S",
+      "part": "K"
+    },
+    {
+      "x": 35,
+      "y": 19,
+      "from": "M",
+      "to": "P",
+      "part": "K"
+    },
+    {
+      "x": 52,
+      "y": 19,
+      "from": "E",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 28,
+      "y": 20,
+      "from": "a",
+      "to": "p",
+      "part": "K"
+    },
+    {
+      "x": 29,
+      "y": 20,
+      "from": "a",
+      "to": "p",
+      "part": "K"
+    },
+    {
+      "x": 30,
+      "y": 20,
+      "from": "M",
+      "to": "P",
+      "part": "K"
+    },
+    {
+      "x": 31,
+      "y": 20,
+      "from": "M",
+      "to": "P",
+      "part": "K"
+    },
+    {
+      "x": 32,
+      "y": 20,
+      "from": "M",
+      "to": "P",
+      "part": "K"
+    },
+    {
+      "x": 33,
+      "y": 20,
+      "from": "M",
+      "to": "P",
+      "part": "K"
+    },
+    {
+      "x": 34,
+      "y": 20,
+      "from": "M",
+      "to": "P",
+      "part": "K"
+    },
+    {
+      "x": 35,
+      "y": 20,
+      "from": "M",
+      "to": "P",
+      "part": "K"
+    },
+    {
+      "x": 53,
+      "y": 20,
+      "from": "E",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 26,
+      "y": 21,
+      "from": "a",
+      "to": "p",
+      "part": "K"
+    },
+    {
+      "x": 27,
+      "y": 21,
+      "from": "a",
+      "to": "p",
+      "part": "K"
+    },
+    {
+      "x": 28,
+      "y": 21,
+      "from": "a",
+      "to": "p",
+      "part": "K"
+    },
+    {
+      "x": 29,
+      "y": 21,
+      "from": "a",
+      "to": "p",
+      "part": "K"
+    },
+    {
+      "x": 30,
+      "y": 21,
+      "from": "M",
+      "to": "P",
+      "part": "K"
+    },
+    {
+      "x": 31,
+      "y": 21,
+      "from": "M",
+      "to": "P",
+      "part": "K"
+    },
+    {
+      "x": 32,
+      "y": 21,
+      "from": "M",
+      "to": "P",
+      "part": "K"
+    },
+    {
+      "x": 33,
+      "y": 21,
+      "from": "M",
+      "to": "P",
+      "part": "K"
+    },
+    {
+      "x": 34,
+      "y": 21,
+      "from": "M",
+      "to": "P",
+      "part": "K"
+    },
+    {
+      "x": 35,
+      "y": 21,
+      "from": "M",
+      "to": "P",
+      "part": "K"
+    },
+    {
+      "x": 36,
+      "y": 21,
+      "from": "M",
+      "to": "P",
+      "part": "K"
+    },
+    {
+      "x": 27,
+      "y": 22,
+      "from": "a",
+      "to": "p",
+      "part": "K"
+    },
+    {
+      "x": 28,
+      "y": 22,
+      "from": "a",
+      "to": "p",
+      "part": "K"
+    },
+    {
+      "x": 29,
+      "y": 22,
+      "from": "a",
+      "to": "p",
+      "part": "K"
+    },
+    {
+      "x": 30,
+      "y": 22,
+      "from": "a",
+      "to": "p",
+      "part": "K"
+    },
+    {
+      "x": 31,
+      "y": 22,
+      "from": "a",
+      "to": "p",
+      "part": "K"
+    },
+    {
+      "x": 32,
+      "y": 22,
+      "from": "a",
+      "to": "p",
+      "part": "K"
+    },
+    {
+      "x": 33,
+      "y": 22,
+      "from": "a",
+      "to": "p",
+      "part": "K"
+    },
+    {
+      "x": 34,
+      "y": 22,
+      "from": "a",
+      "to": "p",
+      "part": "K"
+    },
+    {
+      "x": 35,
+      "y": 22,
+      "from": "a",
+      "to": "p",
+      "part": "K"
+    },
+    {
+      "x": 36,
+      "y": 22,
+      "from": "a",
+      "to": "p",
+      "part": "K"
+    },
+    {
+      "x": 37,
+      "y": 22,
+      "from": "a",
+      "to": "p",
+      "part": "K"
+    },
+    {
+      "x": 51,
+      "y": 23,
+      "from": "V",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 53,
+      "y": 23,
+      "from": "b",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 11,
+      "y": 24,
+      "from": "w",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 31,
+      "y": 24,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 50,
+      "y": 24,
+      "from": "h",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 27,
+      "y": 26,
+      "from": "b",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 51,
+      "y": 26,
+      "from": "b",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 20,
+      "y": 27,
+      "from": "b",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 27,
+      "y": 27,
+      "from": "B",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 8,
+      "y": 28,
+      "from": "b",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 20,
+      "y": 28,
+      "from": "I",
+      "to": "S",
+      "part": "P"
+    },
+    {
+      "x": 21,
+      "y": 28,
+      "from": "I",
+      "to": "p",
+      "part": "P"
+    },
+    {
+      "x": 22,
+      "y": 28,
+      "from": "i",
+      "to": "p",
+      "part": "P"
+    },
+    {
+      "x": 26,
+      "y": 28,
+      "from": "b",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 27,
+      "y": 28,
+      "from": "B",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 28,
+      "y": 28,
+      "from": "B",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 40,
+      "y": 28,
+      "from": "b",
+      "to": "S",
+      "part": "P"
+    },
+    {
+      "x": 41,
+      "y": 28,
+      "from": "I",
+      "to": "P",
+      "part": "P"
+    },
+    {
+      "x": 42,
+      "y": 28,
+      "from": "I",
+      "to": "p",
+      "part": "P"
+    },
+    {
+      "x": 43,
+      "y": 28,
+      "from": "i",
+      "to": "p",
+      "part": "P"
+    },
+    {
+      "x": 20,
+      "y": 29,
+      "from": "I",
+      "to": "S",
+      "part": "P"
+    },
+    {
       "x": 21,
       "y": 29,
       "from": "I",
       "to": "P",
-      "reason": "Small shoulder plate above the intact cream work sleeve"
+      "part": "P"
     },
     {
       "x": 22,
       "y": 29,
       "from": "I",
-      "to": "P",
-      "reason": "Small shoulder plate above the intact cream work sleeve"
-    },
-    {
-      "x": 21,
-      "y": 30,
-      "from": "I",
-      "to": "P",
-      "reason": "Small shoulder plate above the intact cream work sleeve"
-    },
-    {
-      "x": 22,
-      "y": 30,
-      "from": "I",
-      "to": "P",
-      "reason": "Small shoulder plate above the intact cream work sleeve"
+      "to": "p",
+      "part": "P"
     },
     {
       "x": 23,
-      "y": 30,
-      "from": "i",
+      "y": 29,
+      "from": "B",
       "to": "p",
-      "reason": "Small shoulder plate above the intact cream work sleeve"
+      "part": "P"
     },
     {
-      "x": 21,
-      "y": 31,
-      "from": "i",
-      "to": "p",
-      "reason": "Small shoulder plate above the intact cream work sleeve"
-    },
-    {
-      "x": 22,
-      "y": 31,
-      "from": "I",
+      "x": 27,
+      "y": 29,
+      "from": "B",
       "to": "P",
-      "reason": "Small shoulder plate above the intact cream work sleeve"
+      "part": "C"
     },
     {
-      "x": 23,
-      "y": 31,
-      "from": "i",
-      "to": "p",
-      "reason": "Small shoulder plate above the intact cream work sleeve"
-    },
-    {
-      "x": 22,
-      "y": 32,
-      "from": "i",
-      "to": "p",
-      "reason": "Small shoulder plate above the intact cream work sleeve"
-    },
-    {
-      "x": 23,
-      "y": 32,
-      "from": "i",
-      "to": "p",
-      "reason": "Small shoulder plate above the intact cream work sleeve"
+      "x": 28,
+      "y": 29,
+      "from": "B",
+      "to": "P",
+      "part": "C"
     },
     {
       "x": 40,
       "y": 29,
       "from": "I",
-      "to": "P",
-      "reason": "Small shoulder plate above the intact cream work sleeve"
+      "to": "S",
+      "part": "P"
     },
     {
       "x": 41,
       "y": 29,
       "from": "I",
       "to": "P",
-      "reason": "Small shoulder plate above the intact cream work sleeve"
+      "part": "P"
     },
     {
       "x": 42,
       "y": 29,
       "from": "I",
+      "to": "p",
+      "part": "P"
+    },
+    {
+      "x": 43,
+      "y": 29,
+      "from": "i",
+      "to": "p",
+      "part": "P"
+    },
+    {
+      "x": 45,
+      "y": 29,
+      "from": "H",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 20,
+      "y": 30,
+      "from": "B",
+      "to": "S",
+      "part": "P"
+    },
+    {
+      "x": 21,
+      "y": 30,
+      "from": "I",
       "to": "P",
-      "reason": "Small shoulder plate above the intact cream work sleeve"
+      "part": "P"
+    },
+    {
+      "x": 22,
+      "y": 30,
+      "from": "I",
+      "to": "p",
+      "part": "P"
+    },
+    {
+      "x": 23,
+      "y": 30,
+      "from": "i",
+      "to": "p",
+      "part": "P"
+    },
+    {
+      "x": 25,
+      "y": 30,
+      "from": "v",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 27,
+      "y": 30,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 28,
+      "y": 30,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 29,
+      "y": 30,
+      "from": "B",
+      "to": "P",
+      "part": "C"
     },
     {
       "x": 39,
       "y": 30,
       "from": "i",
-      "to": "p",
-      "reason": "Small shoulder plate above the intact cream work sleeve"
+      "to": "S",
+      "part": "P"
     },
     {
       "x": 40,
       "y": 30,
       "from": "I",
       "to": "P",
-      "reason": "Small shoulder plate above the intact cream work sleeve"
+      "part": "P"
     },
     {
       "x": 41,
       "y": 30,
       "from": "I",
       "to": "P",
-      "reason": "Small shoulder plate above the intact cream work sleeve"
+      "part": "P"
+    },
+    {
+      "x": 42,
+      "y": 30,
+      "from": "i",
+      "to": "p",
+      "part": "P"
+    },
+    {
+      "x": 43,
+      "y": 30,
+      "from": "I",
+      "to": "p",
+      "part": "P"
+    },
+    {
+      "x": 45,
+      "y": 30,
+      "from": "H",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 20,
+      "y": 31,
+      "from": "B",
+      "to": "p",
+      "part": "P"
+    },
+    {
+      "x": 21,
+      "y": 31,
+      "from": "i",
+      "to": "p",
+      "part": "P"
+    },
+    {
+      "x": 22,
+      "y": 31,
+      "from": "I",
+      "to": "p",
+      "part": "P"
+    },
+    {
+      "x": 23,
+      "y": 31,
+      "from": "i",
+      "to": "p",
+      "part": "P"
+    },
+    {
+      "x": 25,
+      "y": 31,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 26,
+      "y": 31,
+      "from": "w",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 28,
+      "y": 31,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 29,
+      "y": 31,
+      "from": "B",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 30,
+      "y": 31,
+      "from": "B",
+      "to": "p",
+      "part": "C"
     },
     {
       "x": 39,
       "y": 31,
       "from": "i",
       "to": "p",
-      "reason": "Small shoulder plate above the intact cream work sleeve"
+      "part": "P"
     },
     {
       "x": 40,
       "y": 31,
       "from": "I",
+      "to": "p",
+      "part": "P"
+    },
+    {
+      "x": 41,
+      "y": 31,
+      "from": "B",
+      "to": "S",
+      "part": "A"
+    },
+    {
+      "x": 42,
+      "y": 31,
+      "from": "B",
       "to": "P",
-      "reason": "Small shoulder plate above the intact cream work sleeve"
+      "part": "A"
+    },
+    {
+      "x": 43,
+      "y": 31,
+      "from": "B",
+      "to": "P",
+      "part": "A"
+    },
+    {
+      "x": 45,
+      "y": 31,
+      "from": "H",
+      "to": "p",
+      "part": "A"
+    },
+    {
+      "x": 20,
+      "y": 32,
+      "from": "B",
+      "to": "S",
+      "part": "A"
+    },
+    {
+      "x": 21,
+      "y": 32,
+      "from": "B",
+      "to": "P",
+      "part": "A"
+    },
+    {
+      "x": 22,
+      "y": 32,
+      "from": "i",
+      "to": "P",
+      "part": "A"
+    },
+    {
+      "x": 23,
+      "y": 32,
+      "from": "i",
+      "to": "P",
+      "part": "A"
+    },
+    {
+      "x": 25,
+      "y": 32,
+      "from": "B",
+      "to": "p",
+      "part": "A"
+    },
+    {
+      "x": 26,
+      "y": 32,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 27,
+      "y": 32,
+      "from": "b",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 29,
+      "y": 32,
+      "from": "b",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 30,
+      "y": 32,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 31,
+      "y": 32,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 38,
+      "y": 32,
+      "from": "i",
+      "to": "P",
+      "part": "C"
     },
     {
       "x": 39,
       "y": 32,
       "from": "i",
       "to": "p",
-      "reason": "Small shoulder plate above the intact cream work sleeve"
+      "part": "C"
     },
     {
       "x": 40,
       "y": 32,
       "from": "i",
       "to": "p",
-      "reason": "Small shoulder plate above the intact cream work sleeve"
+      "part": "C"
     },
     {
-      "x": 28,
-      "y": 37,
-      "from": "b",
-      "to": "S",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 29,
-      "y": 37,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 30,
-      "y": 37,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 31,
-      "y": 37,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 32,
-      "y": 37,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 33,
-      "y": 37,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 34,
-      "y": 37,
-      "from": "B",
-      "to": "p",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 35,
-      "y": 37,
-      "from": "b",
-      "to": "p",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 28,
-      "y": 38,
+      "x": 41,
+      "y": 32,
       "from": "B",
       "to": "S",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "part": "A"
     },
     {
-      "x": 29,
-      "y": 38,
+      "x": 42,
+      "y": 32,
       "from": "B",
       "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "part": "A"
     },
     {
-      "x": 30,
-      "y": 38,
+      "x": 43,
+      "y": 32,
       "from": "B",
       "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "part": "A"
     },
     {
-      "x": 31,
-      "y": 38,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 32,
-      "y": 38,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 33,
-      "y": 38,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 34,
-      "y": 38,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 35,
-      "y": 38,
-      "from": "B",
-      "to": "p",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 36,
-      "y": 38,
+      "x": 44,
+      "y": 32,
       "from": "b",
-      "to": "p",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "to": "P",
+      "part": "A"
     },
     {
-      "x": 28,
-      "y": 39,
+      "x": 46,
+      "y": 32,
+      "from": "H",
+      "to": "p",
+      "part": "A"
+    },
+    {
+      "x": 20,
+      "y": 33,
       "from": "B",
       "to": "S",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "part": "A"
+    },
+    {
+      "x": 21,
+      "y": 33,
+      "from": "B",
+      "to": "p",
+      "part": "A"
+    },
+    {
+      "x": 22,
+      "y": 33,
+      "from": "i",
+      "to": "p",
+      "part": "A"
+    },
+    {
+      "x": 26,
+      "y": 33,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 27,
+      "y": 33,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 28,
+      "y": 33,
+      "from": "b",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 31,
+      "y": 33,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 32,
+      "y": 33,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 39,
+      "y": 33,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 40,
+      "y": 33,
+      "from": "i",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 41,
+      "y": 33,
+      "from": "B",
+      "to": "S",
+      "part": "A"
+    },
+    {
+      "x": 42,
+      "y": 33,
+      "from": "B",
+      "to": "P",
+      "part": "A"
+    },
+    {
+      "x": 43,
+      "y": 33,
+      "from": "w",
+      "to": "P",
+      "part": "A"
+    },
+    {
+      "x": 45,
+      "y": 33,
+      "from": "H",
+      "to": "p",
+      "part": "A"
+    },
+    {
+      "x": 49,
+      "y": 33,
+      "from": "V",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 20,
+      "y": 34,
+      "from": "B",
+      "to": "S",
+      "part": "A"
+    },
+    {
+      "x": 22,
+      "y": 34,
+      "from": "i",
+      "to": "P",
+      "part": "A"
+    },
+    {
+      "x": 25,
+      "y": 34,
+      "from": "b",
+      "to": "p",
+      "part": "A"
+    },
+    {
+      "x": 26,
+      "y": 34,
+      "from": "v",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 27,
+      "y": 34,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 28,
+      "y": 34,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 29,
+      "y": 34,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 30,
+      "y": 34,
+      "from": "v",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 32,
+      "y": 34,
+      "from": "w",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 33,
+      "y": 34,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 36,
+      "y": 34,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 37,
+      "y": 34,
+      "from": "v",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 40,
+      "y": 34,
+      "from": "W",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 41,
+      "y": 34,
+      "from": "B",
+      "to": "P",
+      "part": "A"
+    },
+    {
+      "x": 42,
+      "y": 34,
+      "from": "B",
+      "to": "P",
+      "part": "A"
+    },
+    {
+      "x": 43,
+      "y": 34,
+      "from": "b",
+      "to": "P",
+      "part": "A"
+    },
+    {
+      "x": 46,
+      "y": 34,
+      "from": "H",
+      "to": "p",
+      "part": "A"
+    },
+    {
+      "x": 49,
+      "y": 34,
+      "from": "b",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 15,
+      "y": 35,
+      "from": "b",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 17,
+      "y": 35,
+      "from": "b",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 18,
+      "y": 35,
+      "from": "v",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 27,
+      "y": 35,
+      "from": "w",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 28,
+      "y": 35,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 29,
+      "y": 35,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 30,
+      "y": 35,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 31,
+      "y": 35,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 32,
+      "y": 35,
+      "from": "b",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 34,
+      "y": 35,
+      "from": "w",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 35,
+      "y": 35,
+      "from": "B",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 36,
+      "y": 35,
+      "from": "B",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 41,
+      "y": 35,
+      "from": "B",
+      "to": "P",
+      "part": "A"
+    },
+    {
+      "x": 42,
+      "y": 35,
+      "from": "B",
+      "to": "P",
+      "part": "A"
+    },
+    {
+      "x": 43,
+      "y": 35,
+      "from": "B",
+      "to": "p",
+      "part": "A"
+    },
+    {
+      "x": 44,
+      "y": 35,
+      "from": "B",
+      "to": "p",
+      "part": "A"
+    },
+    {
+      "x": 15,
+      "y": 36,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 17,
+      "y": 36,
+      "from": "v",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 18,
+      "y": 36,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 19,
+      "y": 36,
+      "from": "b",
+      "to": "p",
+      "part": "A"
+    },
+    {
+      "x": 26,
+      "y": 36,
+      "from": "v",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 27,
+      "y": 36,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 28,
+      "y": 36,
+      "from": "w",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 31,
+      "y": 36,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 32,
+      "y": 36,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 33,
+      "y": 36,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 34,
+      "y": 36,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 35,
+      "y": 36,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 36,
+      "y": 36,
+      "from": "v",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 38,
+      "y": 36,
+      "from": "v",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 41,
+      "y": 36,
+      "from": "B",
+      "to": "p",
+      "part": "A"
+    },
+    {
+      "x": 42,
+      "y": 36,
+      "from": "b",
+      "to": "p",
+      "part": "A"
+    },
+    {
+      "x": 44,
+      "y": 36,
+      "from": "B",
+      "to": "p",
+      "part": "A"
+    },
+    {
+      "x": 45,
+      "y": 36,
+      "from": "B",
+      "to": "p",
+      "part": "A"
+    },
+    {
+      "x": 47,
+      "y": 36,
+      "from": "v",
+      "to": "p",
+      "part": "A"
+    },
+    {
+      "x": 17,
+      "y": 37,
+      "from": "b",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 18,
+      "y": 37,
+      "from": "a",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 19,
+      "y": 37,
+      "from": "V",
+      "to": "p",
+      "part": "A"
+    },
+    {
+      "x": 23,
+      "y": 37,
+      "from": "b",
+      "to": "p",
+      "part": "A"
+    },
+    {
+      "x": 24,
+      "y": 37,
+      "from": "V",
+      "to": "p",
+      "part": "A"
+    },
+    {
+      "x": 28,
+      "y": 37,
+      "from": "b",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 29,
+      "y": 37,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 30,
+      "y": 37,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 31,
+      "y": 37,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 32,
+      "y": 37,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 33,
+      "y": 37,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 34,
+      "y": 37,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 35,
+      "y": 37,
+      "from": "b",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 37,
+      "y": 37,
+      "from": "b",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 38,
+      "y": 37,
+      "from": "V",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 39,
+      "y": 37,
+      "from": "w",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 43,
+      "y": 37,
+      "from": "a",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 44,
+      "y": 37,
+      "from": "V",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 45,
+      "y": 37,
+      "from": "w",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 17,
+      "y": 38,
+      "from": "v",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 19,
+      "y": 38,
+      "from": "v",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 22,
+      "y": 38,
+      "from": "b",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 24,
+      "y": 38,
+      "from": "i",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 25,
+      "y": 38,
+      "from": "i",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 27,
+      "y": 38,
+      "from": "b",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 28,
+      "y": 38,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 29,
+      "y": 38,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 30,
+      "y": 38,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 31,
+      "y": 38,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 32,
+      "y": 38,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 33,
+      "y": 38,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 34,
+      "y": 38,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 35,
+      "y": 38,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 36,
+      "y": 38,
+      "from": "b",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 37,
+      "y": 38,
+      "from": "i",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 38,
+      "y": 38,
+      "from": "i",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 39,
+      "y": 38,
+      "from": "W",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 40,
+      "y": 38,
+      "from": "b",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 43,
+      "y": 38,
+      "from": "B",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 44,
+      "y": 38,
+      "from": "a",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 45,
+      "y": 38,
+      "from": "a",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 25,
+      "y": 39,
+      "from": "i",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 26,
+      "y": 39,
+      "from": "i",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 27,
+      "y": 39,
+      "from": "i",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 28,
+      "y": 39,
+      "from": "B",
+      "to": "P",
+      "part": "C"
     },
     {
       "x": 29,
       "y": 39,
       "from": "B",
       "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "part": "C"
     },
     {
       "x": 30,
       "y": 39,
       "from": "B",
       "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "part": "C"
     },
     {
       "x": 31,
       "y": 39,
       "from": "B",
       "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "part": "C"
     },
     {
       "x": 32,
       "y": 39,
       "from": "B",
       "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "part": "C"
     },
     {
       "x": 33,
       "y": 39,
       "from": "B",
       "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "part": "C"
     },
     {
       "x": 34,
       "y": 39,
       "from": "B",
       "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "part": "C"
     },
     {
       "x": 35,
       "y": 39,
       "from": "B",
-      "to": "p",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "to": "P",
+      "part": "C"
     },
     {
       "x": 36,
       "y": 39,
       "from": "b",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 37,
+      "y": 39,
+      "from": "b",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 39,
+      "y": 39,
+      "from": "v",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 40,
+      "y": 39,
+      "from": "v",
+      "to": "P",
+      "part": "C"
+    },
+    {
+      "x": 43,
+      "y": 39,
+      "from": "B",
       "to": "p",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "part": "C"
+    },
+    {
+      "x": 44,
+      "y": 39,
+      "from": "B",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 21,
+      "y": 40,
+      "from": "w",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 22,
+      "y": 40,
+      "from": "B",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 25,
+      "y": 40,
+      "from": "V",
+      "to": "p",
+      "part": "C"
+    },
+    {
+      "x": 26,
+      "y": 40,
+      "from": "B",
+      "to": "p",
+      "part": "C"
     },
     {
       "x": 27,
       "y": 40,
       "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "to": "p",
+      "part": "C"
     },
     {
       "x": 28,
       "y": 40,
       "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "to": "p",
+      "part": "C"
     },
     {
       "x": 29,
       "y": 40,
       "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "to": "p",
+      "part": "C"
     },
     {
       "x": 30,
       "y": 40,
       "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "to": "p",
+      "part": "C"
     },
     {
       "x": 31,
       "y": 40,
       "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "to": "p",
+      "part": "C"
     },
     {
       "x": 32,
       "y": 40,
       "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "to": "p",
+      "part": "C"
     },
     {
       "x": 33,
       "y": 40,
       "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "to": "p",
+      "part": "C"
     },
     {
       "x": 34,
       "y": 40,
       "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "to": "p",
+      "part": "C"
     },
     {
       "x": 35,
       "y": 40,
       "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "to": "p",
+      "part": "C"
     },
     {
       "x": 36,
       "y": 40,
       "from": "B",
       "to": "p",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "part": "C"
     },
     {
-      "x": 27,
-      "y": 41,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 28,
-      "y": 41,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 29,
-      "y": 41,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 30,
-      "y": 41,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 31,
-      "y": 41,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 32,
-      "y": 41,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 33,
-      "y": 41,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 34,
-      "y": 41,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 35,
-      "y": 41,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 36,
-      "y": 41,
-      "from": "B",
+      "x": 38,
+      "y": 40,
+      "from": "i",
       "to": "p",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "part": "C"
     },
     {
-      "x": 27,
-      "y": 42,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 28,
-      "y": 42,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 29,
-      "y": 42,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 30,
-      "y": 42,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 31,
-      "y": 42,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 32,
-      "y": 42,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 33,
-      "y": 42,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 34,
-      "y": 42,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 35,
-      "y": 42,
-      "from": "B",
-      "to": "P",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
-    },
-    {
-      "x": 36,
-      "y": 42,
-      "from": "B",
+      "x": 39,
+      "y": 40,
+      "from": "I",
       "to": "p",
-      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+      "part": "C"
+    },
+    {
+      "x": 23,
+      "y": 41,
+      "from": "I",
+      "to": "S",
+      "part": "B"
+    },
+    {
+      "x": 24,
+      "y": 41,
+      "from": "i",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 26,
+      "y": 41,
+      "from": "v",
+      "to": "P",
+      "part": "B"
     },
     {
       "x": 27,
-      "y": 43,
+      "y": 41,
       "from": "B",
-      "to": "b",
-      "reason": "Dark leather waist belt; apron and trousers below remain leather"
+      "to": "P",
+      "part": "B"
     },
     {
       "x": 28,
-      "y": 43,
+      "y": 41,
       "from": "B",
-      "to": "b",
-      "reason": "Dark leather waist belt; apron and trousers below remain leather"
+      "to": "P",
+      "part": "B"
     },
     {
       "x": 29,
-      "y": 43,
+      "y": 41,
       "from": "B",
-      "to": "b",
-      "reason": "Dark leather waist belt; apron and trousers below remain leather"
+      "to": "P",
+      "part": "B"
     },
     {
       "x": 30,
-      "y": 43,
+      "y": 41,
       "from": "B",
-      "to": "b",
-      "reason": "Dark leather waist belt; apron and trousers below remain leather"
+      "to": "P",
+      "part": "B"
     },
     {
       "x": 31,
-      "y": 43,
+      "y": 41,
       "from": "B",
-      "to": "b",
-      "reason": "Dark leather waist belt; apron and trousers below remain leather"
+      "to": "P",
+      "part": "B"
     },
     {
       "x": 32,
-      "y": 43,
+      "y": 41,
       "from": "B",
-      "to": "b",
-      "reason": "Dark leather waist belt; apron and trousers below remain leather"
+      "to": "P",
+      "part": "B"
     },
     {
       "x": 33,
-      "y": 43,
+      "y": 41,
       "from": "B",
-      "to": "b",
-      "reason": "Dark leather waist belt; apron and trousers below remain leather"
+      "to": "P",
+      "part": "B"
     },
     {
       "x": 34,
-      "y": 43,
+      "y": 41,
       "from": "B",
-      "to": "b",
-      "reason": "Dark leather waist belt; apron and trousers below remain leather"
+      "to": "P",
+      "part": "B"
     },
     {
       "x": 35,
-      "y": 43,
+      "y": 41,
       "from": "B",
-      "to": "b",
-      "reason": "Dark leather waist belt; apron and trousers below remain leather"
+      "to": "P",
+      "part": "B"
     },
     {
       "x": 36,
-      "y": 43,
+      "y": 41,
       "from": "B",
-      "to": "b",
-      "reason": "Dark leather waist belt; apron and trousers below remain leather"
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 38,
+      "y": 41,
+      "from": "I",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 39,
+      "y": 41,
+      "from": "I",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 40,
+      "y": 41,
+      "from": "i",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 41,
+      "y": 41,
+      "from": "i",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 20,
+      "y": 42,
+      "from": "h",
+      "to": "S",
+      "part": "B"
+    },
+    {
+      "x": 21,
+      "y": 42,
+      "from": "I",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 22,
+      "y": 42,
+      "from": "I",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 23,
+      "y": 42,
+      "from": "I",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 24,
+      "y": 42,
+      "from": "I",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 25,
+      "y": 42,
+      "from": "b",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 26,
+      "y": 42,
+      "from": "b",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 27,
+      "y": 42,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 28,
+      "y": 42,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 29,
+      "y": 42,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 30,
+      "y": 42,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 31,
+      "y": 42,
+      "from": "B",
+      "to": "P",
+      "part": "B"
     },
     {
       "x": 32,
+      "y": 42,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 33,
+      "y": 42,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 34,
+      "y": 42,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 35,
+      "y": 42,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 36,
+      "y": 42,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 38,
+      "y": 42,
+      "from": "I",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 39,
+      "y": 42,
+      "from": "I",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 40,
+      "y": 42,
+      "from": "I",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 41,
+      "y": 42,
+      "from": "i",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 42,
+      "y": 42,
+      "from": "i",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 19,
+      "y": 43,
+      "from": "V",
+      "to": "S",
+      "part": "B"
+    },
+    {
+      "x": 20,
+      "y": 43,
+      "from": "I",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 21,
+      "y": 43,
+      "from": "I",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 22,
+      "y": 43,
+      "from": "I",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 23,
+      "y": 43,
+      "from": "I",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 24,
+      "y": 43,
+      "from": "i",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 25,
       "y": 43,
       "from": "b",
-      "to": "G",
-      "reason": "Small buckle at actual waist instead of a floating stripe"
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 27,
+      "y": 43,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 28,
+      "y": 43,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 29,
+      "y": 43,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 30,
+      "y": 43,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 31,
+      "y": 43,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 32,
+      "y": 43,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 33,
+      "y": 43,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 34,
+      "y": 43,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 35,
+      "y": 43,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 36,
+      "y": 43,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 38,
+      "y": 43,
+      "from": "i",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 39,
+      "y": 43,
+      "from": "I",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 40,
+      "y": 43,
+      "from": "I",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 41,
+      "y": 43,
+      "from": "I",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 42,
+      "y": 43,
+      "from": "I",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 21,
+      "y": 44,
+      "from": "V",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 22,
+      "y": 44,
+      "from": "i",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 23,
+      "y": 44,
+      "from": "i",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 24,
+      "y": 44,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 25,
+      "y": 44,
+      "from": "w",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 27,
+      "y": 44,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 28,
+      "y": 44,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 29,
+      "y": 44,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 30,
+      "y": 44,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 31,
+      "y": 44,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 32,
+      "y": 44,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 33,
+      "y": 44,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 34,
+      "y": 44,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 35,
+      "y": 44,
+      "from": "B",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 36,
+      "y": 44,
+      "from": "b",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 38,
+      "y": 44,
+      "from": "i",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 39,
+      "y": 44,
+      "from": "V",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 40,
+      "y": 44,
+      "from": "w",
+      "to": "P",
+      "part": "B"
+    },
+    {
+      "x": 42,
+      "y": 44,
+      "from": "w",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 43,
+      "y": 44,
+      "from": "w",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 18,
+      "y": 45,
+      "from": "b",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 19,
+      "y": 45,
+      "from": "B",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 20,
+      "y": 45,
+      "from": "B",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 21,
+      "y": 45,
+      "from": "B",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 22,
+      "y": 45,
+      "from": "w",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 24,
+      "y": 45,
+      "from": "w",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 25,
+      "y": 45,
+      "from": "w",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 28,
+      "y": 45,
+      "from": "B",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 29,
+      "y": 45,
+      "from": "B",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 30,
+      "y": 45,
+      "from": "B",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 31,
+      "y": 45,
+      "from": "B",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 32,
+      "y": 45,
+      "from": "B",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 33,
+      "y": 45,
+      "from": "B",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 34,
+      "y": 45,
+      "from": "b",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 35,
+      "y": 45,
+      "from": "b",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 39,
+      "y": 45,
+      "from": "B",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 40,
+      "y": 45,
+      "from": "B",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 41,
+      "y": 45,
+      "from": "B",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 42,
+      "y": 45,
+      "from": "B",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 43,
+      "y": 45,
+      "from": "B",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 44,
+      "y": 45,
+      "from": "b",
+      "to": "p",
+      "part": "B"
+    },
+    {
+      "x": 17,
+      "y": 46,
+      "from": "b",
+      "to": "S",
+      "part": "L"
+    },
+    {
+      "x": 18,
+      "y": 46,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 19,
+      "y": 46,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 20,
+      "y": 46,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 21,
+      "y": 46,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 22,
+      "y": 46,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 23,
+      "y": 46,
+      "from": "B",
+      "to": "p",
+      "part": "L"
+    },
+    {
+      "x": 24,
+      "y": 46,
+      "from": "w",
+      "to": "p",
+      "part": "L"
+    },
+    {
+      "x": 36,
+      "y": 46,
+      "from": "b",
+      "to": "S",
+      "part": "L"
+    },
+    {
+      "x": 37,
+      "y": 46,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 38,
+      "y": 46,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 39,
+      "y": 46,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 40,
+      "y": 46,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 41,
+      "y": 46,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 42,
+      "y": 46,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 43,
+      "y": 46,
+      "from": "B",
+      "to": "p",
+      "part": "L"
+    },
+    {
+      "x": 44,
+      "y": 46,
+      "from": "b",
+      "to": "p",
+      "part": "L"
+    },
+    {
+      "x": 15,
+      "y": 47,
+      "from": "b",
+      "to": "S",
+      "part": "L"
+    },
+    {
+      "x": 17,
+      "y": 47,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 18,
+      "y": 47,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 19,
+      "y": 47,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 20,
+      "y": 47,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 21,
+      "y": 47,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 22,
+      "y": 47,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 23,
+      "y": 47,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 24,
+      "y": 47,
+      "from": "w",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 28,
+      "y": 47,
+      "from": "v",
+      "to": "p",
+      "part": "L"
+    },
+    {
+      "x": 36,
+      "y": 47,
+      "from": "b",
+      "to": "S",
+      "part": "L"
+    },
+    {
+      "x": 37,
+      "y": 47,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 38,
+      "y": 47,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 39,
+      "y": 47,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 40,
+      "y": 47,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 41,
+      "y": 47,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 42,
+      "y": 47,
+      "from": "B",
+      "to": "p",
+      "part": "L"
+    },
+    {
+      "x": 43,
+      "y": 47,
+      "from": "w",
+      "to": "p",
+      "part": "L"
+    },
+    {
+      "x": 19,
+      "y": 48,
+      "from": "B",
+      "to": "S",
+      "part": "L"
+    },
+    {
+      "x": 20,
+      "y": 48,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 21,
+      "y": 48,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 22,
+      "y": 48,
+      "from": "B",
+      "to": "p",
+      "part": "L"
+    },
+    {
+      "x": 23,
+      "y": 48,
+      "from": "w",
+      "to": "p",
+      "part": "L"
+    },
+    {
+      "x": 37,
+      "y": 48,
+      "from": "b",
+      "to": "S",
+      "part": "L"
+    },
+    {
+      "x": 38,
+      "y": 48,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 39,
+      "y": 48,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 40,
+      "y": 48,
+      "from": "B",
+      "to": "P",
+      "part": "L"
+    },
+    {
+      "x": 41,
+      "y": 48,
+      "from": "w",
+      "to": "p",
+      "part": "L"
+    },
+    {
+      "x": 42,
+      "y": 48,
+      "from": "b",
+      "to": "p",
+      "part": "L"
+    },
+    {
+      "x": 17,
+      "y": 49,
+      "from": "w",
+      "to": "p",
+      "part": "L"
+    },
+    {
+      "x": 18,
+      "y": 49,
+      "from": "b",
+      "to": "p",
+      "part": "L"
+    },
+    {
+      "x": 22,
+      "y": 49,
+      "from": "b",
+      "to": "p",
+      "part": "L"
+    },
+    {
+      "x": 43,
+      "y": 49,
+      "from": "w",
+      "to": "p",
+      "part": "L"
+    },
+    {
+      "x": 44,
+      "y": 49,
+      "from": "w",
+      "to": "p",
+      "part": "L"
+    },
+    {
+      "x": 17,
+      "y": 50,
+      "from": "B",
+      "to": "S",
+      "part": "F"
+    },
+    {
+      "x": 18,
+      "y": 50,
+      "from": "B",
+      "to": "P",
+      "part": "F"
+    },
+    {
+      "x": 19,
+      "y": 50,
+      "from": "B",
+      "to": "P",
+      "part": "F"
+    },
+    {
+      "x": 20,
+      "y": 50,
+      "from": "B",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 21,
+      "y": 50,
+      "from": "v",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 40,
+      "y": 50,
+      "from": "B",
+      "to": "S",
+      "part": "F"
+    },
+    {
+      "x": 41,
+      "y": 50,
+      "from": "B",
+      "to": "P",
+      "part": "F"
+    },
+    {
+      "x": 42,
+      "y": 50,
+      "from": "B",
+      "to": "P",
+      "part": "F"
+    },
+    {
+      "x": 43,
+      "y": 50,
+      "from": "B",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 44,
+      "y": 50,
+      "from": "w",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 16,
+      "y": 51,
+      "from": "B",
+      "to": "S",
+      "part": "F"
+    },
+    {
+      "x": 17,
+      "y": 51,
+      "from": "B",
+      "to": "P",
+      "part": "F"
+    },
+    {
+      "x": 18,
+      "y": 51,
+      "from": "B",
+      "to": "P",
+      "part": "F"
+    },
+    {
+      "x": 19,
+      "y": 51,
+      "from": "B",
+      "to": "P",
+      "part": "F"
+    },
+    {
+      "x": 20,
+      "y": 51,
+      "from": "B",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 21,
+      "y": 51,
+      "from": "v",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 40,
+      "y": 51,
+      "from": "B",
+      "to": "S",
+      "part": "F"
+    },
+    {
+      "x": 41,
+      "y": 51,
+      "from": "B",
+      "to": "P",
+      "part": "F"
+    },
+    {
+      "x": 42,
+      "y": 51,
+      "from": "B",
+      "to": "P",
+      "part": "F"
+    },
+    {
+      "x": 43,
+      "y": 51,
+      "from": "B",
+      "to": "P",
+      "part": "F"
+    },
+    {
+      "x": 44,
+      "y": 51,
+      "from": "B",
+      "to": "P",
+      "part": "F"
+    },
+    {
+      "x": 45,
+      "y": 51,
+      "from": "B",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 46,
+      "y": 51,
+      "from": "w",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 14,
+      "y": 52,
+      "from": "b",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 15,
+      "y": 52,
+      "from": "B",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 16,
+      "y": 52,
+      "from": "B",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 17,
+      "y": 52,
+      "from": "B",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 18,
+      "y": 52,
+      "from": "B",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 19,
+      "y": 52,
+      "from": "B",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 20,
+      "y": 52,
+      "from": "B",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 21,
+      "y": 52,
+      "from": "w",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 40,
+      "y": 52,
+      "from": "B",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 41,
+      "y": 52,
+      "from": "B",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 42,
+      "y": 52,
+      "from": "B",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 43,
+      "y": 52,
+      "from": "B",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 44,
+      "y": 52,
+      "from": "B",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 45,
+      "y": 52,
+      "from": "B",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 46,
+      "y": 52,
+      "from": "B",
+      "to": "p",
+      "part": "F"
+    },
+    {
+      "x": 47,
+      "y": 52,
+      "from": "b",
+      "to": "p",
+      "part": "F"
     }
   ],
   "paletteChanges": {
-    "A": [219, 232, 239, 255],
-    "a": [109, 139, 154, 255],
-    "G": [249, 197, 58, 255],
-    "M": [160, 186, 200, 255],
-    "P": [177, 199, 211, 255],
-    "p": [99, 126, 143, 255],
-    "S": [229, 241, 246, 255],
-    "R": [185, 24, 37, 255],
-    "r": [112, 14, 24, 255]
+    "P": [218, 231, 235, 255],
+    "p": [129, 151, 160, 255],
+    "S": [249, 251, 245, 255],
+    "L": [150, 103, 59, 255],
+    "l": [92, 58, 33, 255],
+    "k": [190, 140, 88, 255]
   }
 }

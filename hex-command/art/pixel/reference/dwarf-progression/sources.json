@@ -1,0 +1,81 @@
+{
+  "sourceCommit": "b559200283b3279239a3225cfd2d20617e777d74",
+  "legend": {
+    "K": "helmet",
+    "C": "cuirass",
+    "P": "shoulder plate",
+    "A": "arm guard",
+    "B": "lower apron/skirt",
+    "L": "leggings",
+    "F": "boots",
+    "D": "shield",
+    "h": "exposed skin",
+    "b": "beard/hair",
+    "w": "wooden weapon/shaft",
+    "m": "metal weapon",
+    "c": "faction cloth",
+    "n": "mount/tack",
+    "o": "preserved outline",
+    ".": "transparent"
+  },
+  "poses": [
+    "axeguard",
+    "axe-pick",
+    "pickaxe",
+    "hammerer",
+    "poleaxe",
+    "crossbow",
+    "arquebus",
+    "goat-rider",
+    "pistol-goat-rider"
+  ],
+  "sourceCorrections": {
+    "dwarf-pickaxe": [
+      {
+        "x": 52,
+        "y": 19,
+        "from": "h",
+        "to": "a"
+      },
+      {
+        "x": 41,
+        "y": 29,
+        "from": "A",
+        "to": "H"
+      }
+    ],
+    "dwarf-axe-pick": [
+      {
+        "x": 48,
+        "y": 35,
+        "from": "V",
+        "to": "h"
+      }
+    ],
+    "dwarf-poleaxe": [
+      {
+        "x": 47,
+        "y": 21,
+        "from": "B",
+        "to": "a"
+      }
+    ],
+    "dwarf-goat-rider": [
+      {
+        "x": 37,
+        "y": 7,
+        "from": "B",
+        "to": "a"
+      }
+    ],
+    "dwarf-pistol-goat-rider": [
+      {
+        "x": 42,
+        "y": 10,
+        "from": "i",
+        "to": "a"
+      }
+    ]
+  },
+  "styleReference": "art/pixel/reference/infantry-progression/preview.png"
+}

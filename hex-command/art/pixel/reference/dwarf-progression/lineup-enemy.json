@@ -1,0 +1,98 @@
+[
+  {
+    "label": "Axe and shield L1",
+    "image": "art/pixel/units/dwarf-axeguard/enemy.png"
+  },
+  {
+    "label": "Shieldguard L2",
+    "image": "art/pixel/units/dwarf-axeguard-l2/enemy.png"
+  },
+  {
+    "label": "Shieldguard veteran L3",
+    "image": "art/pixel/units/dwarf-axeguard-l3/enemy.png"
+  },
+  {
+    "label": "Axe and shield L1",
+    "image": "art/pixel/units/dwarf-axeguard/enemy.png"
+  },
+  {
+    "label": "Axe and pick fighter L2",
+    "image": "art/pixel/units/dwarf-axe-pick-l2/enemy.png"
+  },
+  {
+    "label": "Axe and pick fighter veteran L3",
+    "image": "art/pixel/units/dwarf-axe-pick-l3/enemy.png"
+  },
+  {
+    "label": "Miner L1",
+    "image": "art/pixel/units/dwarf-pickaxe/enemy.png"
+  },
+  {
+    "label": "Hammerer L2",
+    "image": "art/pixel/units/dwarf-hammerer-l2/enemy.png"
+  },
+  {
+    "label": "Hammerer veteran L3",
+    "image": "art/pixel/units/dwarf-hammerer-l3/enemy.png"
+  },
+  {
+    "label": "Miner L1",
+    "image": "art/pixel/units/dwarf-pickaxe/enemy.png"
+  },
+  {
+    "label": "Poleaxe fighter L2",
+    "image": "art/pixel/units/dwarf-poleaxe-l2/enemy.png"
+  },
+  {
+    "label": "Poleaxe fighter veteran L3",
+    "image": "art/pixel/units/dwarf-poleaxe-l3/enemy.png"
+  },
+  {
+    "label": "Crossbowman L1",
+    "image": "art/pixel/units/dwarf-crossbow/enemy.png"
+  },
+  {
+    "label": "Crossbow specialist L2",
+    "image": "art/pixel/units/dwarf-crossbow-l2/enemy.png"
+  },
+  {
+    "label": "Crossbow specialist veteran L3",
+    "image": "art/pixel/units/dwarf-crossbow-l3/enemy.png"
+  },
+  {
+    "label": "Crossbowman L1",
+    "image": "art/pixel/units/dwarf-crossbow/enemy.png"
+  },
+  {
+    "label": "Arquebusier L2",
+    "image": "art/pixel/units/dwarf-arquebus-l2/enemy.png"
+  },
+  {
+    "label": "Arquebusier veteran L3",
+    "image": "art/pixel/units/dwarf-arquebus-l3/enemy.png"
+  },
+  {
+    "label": "Goat rider L1",
+    "image": "art/pixel/units/dwarf-goat-rider/enemy.png"
+  },
+  {
+    "label": "Mounted hammerer L2",
+    "image": "art/pixel/units/dwarf-goat-rider-l2/enemy.png"
+  },
+  {
+    "label": "Mounted hammerer veteran L3",
+    "image": "art/pixel/units/dwarf-goat-rider-l3/enemy.png"
+  },
+  {
+    "label": "Goat rider L1",
+    "image": "art/pixel/units/dwarf-goat-rider/enemy.png"
+  },
+  {
+    "label": "Pistol rider L2",
+    "image": "art/pixel/units/dwarf-pistol-goat-rider-l2/enemy.png"
+  },
+  {
+    "label": "Pistol rider veteran L3",
+    "image": "art/pixel/units/dwarf-pistol-goat-rider-l3/enemy.png"
+  }
+]

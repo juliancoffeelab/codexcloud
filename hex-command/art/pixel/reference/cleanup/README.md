@@ -37,9 +37,11 @@ flag repairs the reviewed dark notch at the axeguard helmet edge: at least seven
 pixels in its 3×3 neighborhood and three direct neighbors must be opaque. Neither
 flag can change transparency or add an outline; unflagged outlines remain protected.
 Pupils, facial features, weapon seams and grips are retained by the pose review.
-L2/L3 artwork is left for a later derivation pass.
-The [current L1 dwarf grid](dwarf-l1.png) covers all ten base poses; higher-tier
-comparison sheets retain the earlier L2/L3 artwork until that derivation.
+The [L1 dwarf grid](dwarf-l1.png) covers all ten base poses.
+The nine non-rune families now derive their leather → metal → silver tiers from
+the [full armour progression recipe](../dwarf-progression/README.md), which owns
+their complete material masks. Only the three unchanged rune tiers still have
+records in `dwarf.json`. Earlier comparison sheets document historical studies.
 
 The marked L1 follow-up separates steel weapon heads and barrels, wooden shafts,
 skin grips and cream cuffs with pose-specific corrections. The runesmith retains
