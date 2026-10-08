@@ -1,0 +1,308 @@
+{
+  "base": "skeleton-rider",
+  "level": 2,
+  "changes": [
+    {
+      "x": 26,
+      "y": 18,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 29,
+      "y": 18,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 30,
+      "y": 18,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 18,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 28,
+      "y": 19,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 29,
+      "y": 19,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 19,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 30,
+      "y": 20,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 20,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 27,
+      "y": 21,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 28,
+      "y": 21,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 29,
+      "y": 21,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 30,
+      "y": 21,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 21,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 27,
+      "y": 22,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 28,
+      "y": 22,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 29,
+      "y": 22,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 30,
+      "y": 22,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 31,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 32,
+      "y": 31,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 33,
+      "y": 31,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 32,
+      "y": 32,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 33,
+      "y": 32,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 33,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 32,
+      "y": 33,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 33,
+      "y": 33,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 34,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 32,
+      "y": 34,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 30,
+      "y": 35,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 35,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 32,
+      "y": 35,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 34,
+      "y": 35,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 30,
+      "y": 36,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 36,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 34,
+      "y": 36,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 29,
+      "y": 10,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 30,
+      "y": 10,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 31,
+      "y": 10,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 28,
+      "y": 11,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 29,
+      "y": 11,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 30,
+      "y": 11,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 31,
+      "y": 11,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    }
+  ],
+  "paletteChanges": {
+    "V": [108, 87, 126, 255],
+    "v": [64, 47, 81, 255],
+    "A": [222, 232, 235, 255],
+    "a": [129, 151, 160, 255],
+    "R": [185, 24, 37, 255],
+    "r": [112, 14, 24, 255]
+  }
+}

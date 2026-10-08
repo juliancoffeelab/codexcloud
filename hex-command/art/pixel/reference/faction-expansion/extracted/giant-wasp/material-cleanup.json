@@ -1,0 +1,3197 @@
+{
+  "coordinates": "64x64 original slot",
+  "edits": [
+    {
+      "x": 7,
+      "y": 3,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 8,
+      "y": 3,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 9,
+      "y": 3,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 10,
+      "y": 3,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 12,
+      "y": 3,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 13,
+      "y": 3,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 7,
+      "y": 4,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 9,
+      "y": 4,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 14,
+      "y": 4,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 16,
+      "y": 4,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 7,
+      "y": 5,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 14,
+      "y": 5,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 17,
+      "y": 5,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 18,
+      "y": 5,
+      "from": "v",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 7,
+      "y": 6,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 11,
+      "y": 6,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 12,
+      "y": 6,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 13,
+      "y": 6,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 14,
+      "y": 6,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 19,
+      "y": 6,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 20,
+      "y": 6,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 7,
+      "y": 7,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 11,
+      "y": 7,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 15,
+      "y": 7,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 16,
+      "y": 7,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 8,
+      "y": 8,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 11,
+      "y": 8,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 16,
+      "y": 8,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 17,
+      "y": 8,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 22,
+      "y": 8,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 8,
+      "y": 9,
+      "from": "b",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 9,
+      "y": 9,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 10,
+      "y": 9,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 36,
+      "y": 9,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 37,
+      "y": 9,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 9,
+      "y": 10,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 19,
+      "y": 10,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 24,
+      "y": 10,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 39,
+      "y": 10,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 34,
+      "y": 11,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 40,
+      "y": 11,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 10,
+      "y": 12,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 15,
+      "y": 12,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 17,
+      "y": 12,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 26,
+      "y": 12,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 34,
+      "y": 12,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 40,
+      "y": 12,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 41,
+      "y": 12,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 10,
+      "y": 13,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 11,
+      "y": 13,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 12,
+      "y": 13,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 14,
+      "y": 13,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 23,
+      "y": 13,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 27,
+      "y": 13,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 34,
+      "y": 13,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 37,
+      "y": 13,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 41,
+      "y": 13,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 11,
+      "y": 14,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 23,
+      "y": 14,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 24,
+      "y": 14,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 27,
+      "y": 14,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 28,
+      "y": 14,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 34,
+      "y": 14,
+      "from": "a",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 37,
+      "y": 14,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 38,
+      "y": 14,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 41,
+      "y": 14,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 12,
+      "y": 15,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 20,
+      "y": 15,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 21,
+      "y": 15,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 23,
+      "y": 15,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 28,
+      "y": 15,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 33,
+      "y": 15,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 38,
+      "y": 15,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 42,
+      "y": 15,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 20,
+      "y": 16,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 22,
+      "y": 16,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 23,
+      "y": 16,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 24,
+      "y": 16,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 28,
+      "y": 16,
+      "from": "b",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 29,
+      "y": 16,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 33,
+      "y": 16,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 38,
+      "y": 16,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 39,
+      "y": 16,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 42,
+      "y": 16,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 14,
+      "y": 17,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 19,
+      "y": 17,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 24,
+      "y": 17,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 25,
+      "y": 17,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 27,
+      "y": 17,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 29,
+      "y": 17,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 30,
+      "y": 17,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 33,
+      "y": 17,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 36,
+      "y": 17,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 39,
+      "y": 17,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 26,
+      "y": 18,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 27,
+      "y": 18,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 34,
+      "y": 18,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 36,
+      "y": 18,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 37,
+      "y": 18,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 41,
+      "y": 18,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 42,
+      "y": 18,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 7,
+      "y": 19,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 8,
+      "y": 19,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 9,
+      "y": 19,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 10,
+      "y": 19,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 11,
+      "y": 19,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 26,
+      "y": 19,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 31,
+      "y": 19,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 34,
+      "y": 19,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 37,
+      "y": 19,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 38,
+      "y": 19,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 39,
+      "y": 19,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 41,
+      "y": 19,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 42,
+      "y": 19,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 53,
+      "y": 19,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 57,
+      "y": 19,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 5,
+      "y": 20,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 6,
+      "y": 20,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 11,
+      "y": 20,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 13,
+      "y": 20,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 18,
+      "y": 20,
+      "from": "v",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 25,
+      "y": 20,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 32,
+      "y": 20,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 35,
+      "y": 20,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 37,
+      "y": 20,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 38,
+      "y": 20,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 40,
+      "y": 20,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 41,
+      "y": 20,
+      "from": "i",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 52,
+      "y": 20,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 5,
+      "y": 21,
+      "from": "v",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 11,
+      "y": 21,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 15,
+      "y": 21,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 16,
+      "y": 21,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 19,
+      "y": 21,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 32,
+      "y": 21,
+      "from": "b",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 38,
+      "y": 21,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 39,
+      "y": 21,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 40,
+      "y": 21,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 42,
+      "y": 21,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 50,
+      "y": 21,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 4,
+      "y": 22,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 10,
+      "y": 22,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 11,
+      "y": 22,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 12,
+      "y": 22,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 18,
+      "y": 22,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 21,
+      "y": 22,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 22,
+      "y": 22,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 31,
+      "y": 22,
+      "from": "A",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 33,
+      "y": 22,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 39,
+      "y": 22,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 40,
+      "y": 22,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 42,
+      "y": 22,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 49,
+      "y": 22,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 4,
+      "y": 23,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 9,
+      "y": 23,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 21,
+      "y": 23,
+      "from": "B",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 22,
+      "y": 23,
+      "from": "b",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 23,
+      "y": 23,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 24,
+      "y": 23,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 25,
+      "y": 23,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 30,
+      "y": 23,
+      "from": "A",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 32,
+      "y": 23,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 34,
+      "y": 23,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 36,
+      "y": 23,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 39,
+      "y": 23,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 40,
+      "y": 23,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 48,
+      "y": 23,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 5,
+      "y": 24,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 24,
+      "y": 24,
+      "from": "B",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 26,
+      "y": 24,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 32,
+      "y": 24,
+      "from": "A",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 33,
+      "y": 24,
+      "from": "A",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 47,
+      "y": 24,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 52,
+      "y": 24,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 53,
+      "y": 24,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 57,
+      "y": 24,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 6,
+      "y": 25,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 27,
+      "y": 25,
+      "from": "W",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 33,
+      "y": 25,
+      "from": "W",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 35,
+      "y": 25,
+      "from": "W",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 39,
+      "y": 25,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 40,
+      "y": 25,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 47,
+      "y": 25,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 51,
+      "y": 25,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 8,
+      "y": 26,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 14,
+      "y": 26,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 21,
+      "y": 26,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 23,
+      "y": 26,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 25,
+      "y": 26,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 26,
+      "y": 26,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 30,
+      "y": 26,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 34,
+      "y": 26,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 36,
+      "y": 26,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 38,
+      "y": 26,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 39,
+      "y": 26,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 40,
+      "y": 26,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 41,
+      "y": 26,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 42,
+      "y": 26,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 43,
+      "y": 26,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 47,
+      "y": 26,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 50,
+      "y": 26,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 8,
+      "y": 27,
+      "from": "v",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 9,
+      "y": 27,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 10,
+      "y": 27,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 13,
+      "y": 27,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 21,
+      "y": 27,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 22,
+      "y": 27,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 26,
+      "y": 27,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 27,
+      "y": 27,
+      "from": "A",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 28,
+      "y": 27,
+      "from": "A",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 27,
+      "from": "A",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 36,
+      "y": 27,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 38,
+      "y": 27,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 39,
+      "y": 27,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 40,
+      "y": 27,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 41,
+      "y": 27,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 42,
+      "y": 27,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 11,
+      "y": 28,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 13,
+      "y": 28,
+      "from": "i",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 23,
+      "y": 28,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 24,
+      "y": 28,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 25,
+      "y": 28,
+      "from": "V",
+      "to": "O",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 27,
+      "y": 28,
+      "from": "i",
+      "to": "I",
+      "reason": "Flat ivory wing membrane with a dark connected rim, no speckles"
+    },
+    {
+      "x": 29,
+      "y": 28,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 32,
+      "y": 28,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 37,
+      "y": 28,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 38,
+      "y": 28,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 39,
+      "y": 28,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 40,
+      "y": 28,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 41,
+      "y": 28,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 25,
+      "y": 29,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 26,
+      "y": 29,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 31,
+      "y": 29,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 38,
+      "y": 29,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 39,
+      "y": 29,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 40,
+      "y": 29,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 41,
+      "y": 29,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 47,
+      "y": 29,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 50,
+      "y": 29,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 19,
+      "y": 30,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 24,
+      "y": 30,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 25,
+      "y": 30,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 26,
+      "y": 30,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 27,
+      "y": 30,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 30,
+      "y": 30,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 31,
+      "y": 30,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 38,
+      "y": 30,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 39,
+      "y": 30,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 40,
+      "y": 30,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 41,
+      "y": 30,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 47,
+      "y": 30,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 48,
+      "y": 30,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 18,
+      "y": 31,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 19,
+      "y": 31,
+      "from": "W",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 24,
+      "y": 31,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 25,
+      "y": 31,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 26,
+      "y": 31,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 27,
+      "y": 31,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 30,
+      "y": 31,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 31,
+      "y": 31,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 32,
+      "y": 31,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 34,
+      "y": 31,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 39,
+      "y": 31,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 40,
+      "y": 31,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 41,
+      "y": 31,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 16,
+      "y": 32,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 17,
+      "y": 32,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 18,
+      "y": 32,
+      "from": "W",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 19,
+      "y": 32,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 25,
+      "y": 32,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 26,
+      "y": 32,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 27,
+      "y": 32,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 28,
+      "y": 32,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 29,
+      "y": 32,
+      "from": "W",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 32,
+      "y": 32,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 33,
+      "y": 32,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 34,
+      "y": 32,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 35,
+      "y": 32,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 40,
+      "y": 32,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 41,
+      "y": 32,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 43,
+      "y": 32,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 45,
+      "y": 32,
+      "from": "W",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 15,
+      "y": 33,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 16,
+      "y": 33,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 17,
+      "y": 33,
+      "from": "W",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 18,
+      "y": 33,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 19,
+      "y": 33,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 20,
+      "y": 33,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 25,
+      "y": 33,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 26,
+      "y": 33,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 27,
+      "y": 33,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 31,
+      "y": 33,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 33,
+      "y": 33,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 34,
+      "y": 33,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 35,
+      "y": 33,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 36,
+      "y": 33,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 42,
+      "y": 33,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 43,
+      "y": 33,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 46,
+      "y": 33,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 50,
+      "y": 33,
+      "from": "W",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 15,
+      "y": 34,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 16,
+      "y": 34,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 17,
+      "y": 34,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 18,
+      "y": 34,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 19,
+      "y": 34,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 20,
+      "y": 34,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 26,
+      "y": 34,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 30,
+      "y": 34,
+      "from": "W",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 31,
+      "y": 34,
+      "from": "W",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 33,
+      "y": 34,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 36,
+      "y": 34,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 37,
+      "y": 34,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 41,
+      "y": 34,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 51,
+      "y": 34,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 15,
+      "y": 35,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 16,
+      "y": 35,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 17,
+      "y": 35,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 18,
+      "y": 35,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 19,
+      "y": 35,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 20,
+      "y": 35,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 21,
+      "y": 35,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 26,
+      "y": 35,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 30,
+      "y": 35,
+      "from": "W",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 31,
+      "y": 35,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 33,
+      "y": 35,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 34,
+      "y": 35,
+      "from": "W",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 35,
+      "y": 35,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 37,
+      "y": 35,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 38,
+      "y": 35,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 50,
+      "y": 35,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 16,
+      "y": 36,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 17,
+      "y": 36,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 18,
+      "y": 36,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 19,
+      "y": 36,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 20,
+      "y": 36,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 21,
+      "y": 36,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 29,
+      "y": 36,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 30,
+      "y": 36,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 38,
+      "y": 36,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 43,
+      "y": 36,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 47,
+      "y": 36,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 49,
+      "y": 36,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 16,
+      "y": 37,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 17,
+      "y": 37,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 18,
+      "y": 37,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 19,
+      "y": 37,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 20,
+      "y": 37,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 21,
+      "y": 37,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 22,
+      "y": 37,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 28,
+      "y": 37,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 29,
+      "y": 37,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 32,
+      "y": 37,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 11,
+      "y": 38,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 12,
+      "y": 38,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 17,
+      "y": 38,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 18,
+      "y": 38,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 19,
+      "y": 38,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 20,
+      "y": 38,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 21,
+      "y": 38,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 22,
+      "y": 38,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 26,
+      "y": 38,
+      "from": "W",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 32,
+      "y": 38,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 47,
+      "y": 38,
+      "from": "W",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 48,
+      "y": 38,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 10,
+      "y": 39,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 11,
+      "y": 39,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 12,
+      "y": 39,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 18,
+      "y": 39,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 19,
+      "y": 39,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 20,
+      "y": 39,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 21,
+      "y": 39,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 25,
+      "y": 39,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 31,
+      "y": 39,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 35,
+      "y": 39,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 48,
+      "y": 39,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 11,
+      "y": 40,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 12,
+      "y": 40,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 13,
+      "y": 40,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 14,
+      "y": 40,
+      "from": "W",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 19,
+      "y": 40,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 31,
+      "y": 40,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 39,
+      "y": 40,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 40,
+      "y": 40,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 41,
+      "y": 40,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 49,
+      "y": 40,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 12,
+      "y": 41,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 13,
+      "y": 41,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 14,
+      "y": 41,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 27,
+      "y": 41,
+      "from": "W",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 29,
+      "y": 41,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 30,
+      "y": 41,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 40,
+      "y": 41,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 41,
+      "y": 41,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 42,
+      "y": 41,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 49,
+      "y": 41,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 13,
+      "y": 42,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 14,
+      "y": 42,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 15,
+      "y": 42,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 30,
+      "y": 42,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 44,
+      "y": 42,
+      "from": "W",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 50,
+      "y": 42,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 9,
+      "y": 43,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 14,
+      "y": 43,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 15,
+      "y": 43,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 16,
+      "y": 43,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 17,
+      "y": 43,
+      "from": "W",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 24,
+      "y": 43,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 25,
+      "y": 43,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 29,
+      "y": 43,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 50,
+      "y": 43,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 9,
+      "y": 44,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 10,
+      "y": 44,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 11,
+      "y": 44,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 17,
+      "y": 44,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 29,
+      "y": 44,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 10,
+      "y": 45,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 11,
+      "y": 45,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 12,
+      "y": 45,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 28,
+      "y": 45,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 45,
+      "y": 45,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 11,
+      "y": 46,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 13,
+      "y": 46,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 28,
+      "y": 46,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 46,
+      "y": 46,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 11,
+      "y": 47,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 27,
+      "y": 47,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 37,
+      "y": 47,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 38,
+      "y": 47,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 46,
+      "y": 47,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 8,
+      "y": 48,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 26,
+      "y": 48,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 38,
+      "y": 48,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 47,
+      "y": 48,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 8,
+      "y": 49,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 25,
+      "y": 49,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 37,
+      "y": 49,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 38,
+      "y": 49,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 39,
+      "y": 49,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 47,
+      "y": 49,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 48,
+      "y": 49,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 7,
+      "y": 50,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 21,
+      "y": 50,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 24,
+      "y": 50,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 39,
+      "y": 50,
+      "from": "B",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 48,
+      "y": 50,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 21,
+      "y": 51,
+      "from": "W",
+      "to": "V",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 40,
+      "y": 51,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 40,
+      "y": 52,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 41,
+      "y": 53,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 41,
+      "y": 54,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 18,
+      "y": 55,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 17,
+      "y": 56,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 18,
+      "y": 56,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 16,
+      "y": 57,
+      "from": "w",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 17,
+      "y": 57,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    },
+    {
+      "x": 15,
+      "y": 58,
+      "from": "b",
+      "to": "v",
+      "reason": "Dark wasp chitin distinct from gold abdominal bands"
+    }
+  ]
+}

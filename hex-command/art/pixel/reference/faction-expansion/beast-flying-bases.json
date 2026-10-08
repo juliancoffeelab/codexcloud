@@ -1,0 +1,18 @@
+[
+  {
+    "label": "Giant raven",
+    "image": "art/pixel/reference/faction-expansion/extracted/giant-raven/player.png"
+  },
+  {
+    "label": "Giant owl",
+    "image": "art/pixel/reference/faction-expansion/extracted/giant-owl/player.png"
+  },
+  {
+    "label": "Giant wasp",
+    "image": "art/pixel/reference/faction-expansion/extracted/giant-wasp/player.png"
+  },
+  {
+    "label": "Giant bat",
+    "image": "art/pixel/reference/faction-expansion/extracted/giant-bat/player.png"
+  }
+]

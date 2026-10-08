@@ -1,0 +1,50 @@
+[
+  {
+    "label": "Merfolk two-handed trident L1",
+    "image": "art/pixel/units/merfolk-trident/player.png"
+  },
+  {
+    "label": "Merfolk two-handed trident L2",
+    "image": "art/pixel/units/merfolk-trident-l2/player.png"
+  },
+  {
+    "label": "Merfolk two-handed trident L3",
+    "image": "art/pixel/units/merfolk-trident-l3/player.png"
+  },
+  {
+    "label": "Merfolk net and spear L1",
+    "image": "art/pixel/units/merfolk-netter/player.png"
+  },
+  {
+    "label": "Merfolk net and spear L2",
+    "image": "art/pixel/units/merfolk-netter-l2/player.png"
+  },
+  {
+    "label": "Merfolk net and spear L3",
+    "image": "art/pixel/units/merfolk-netter-l3/player.png"
+  },
+  {
+    "label": "Merfolk mace and shield L1",
+    "image": "art/pixel/units/merfolk-maceguard/player.png"
+  },
+  {
+    "label": "Merfolk mace and shield L2",
+    "image": "art/pixel/units/merfolk-maceguard-l2/player.png"
+  },
+  {
+    "label": "Merfolk mace and shield L3",
+    "image": "art/pixel/units/merfolk-maceguard-l3/player.png"
+  },
+  {
+    "label": "Merfolk harpoon thrower L1",
+    "image": "art/pixel/units/merfolk-harpoonthrower/player.png"
+  },
+  {
+    "label": "Merfolk harpoon thrower L2",
+    "image": "art/pixel/units/merfolk-harpoonthrower-l2/player.png"
+  },
+  {
+    "label": "Merfolk harpoon thrower L3",
+    "image": "art/pixel/units/merfolk-harpoonthrower-l3/player.png"
+  }
+]

@@ -1,0 +1,272 @@
+[
+  {
+    "code": "A1",
+    "x": 96,
+    "y": 142,
+    "width": 64,
+    "height": 64,
+    "existing": "swordsman",
+    "design": "Swordsman L1"
+  },
+  {
+    "code": "A2",
+    "x": 306,
+    "y": 142,
+    "width": 64,
+    "height": 64,
+    "existing": "soldier",
+    "design": "Soldier L2"
+  },
+  {
+    "code": "A3",
+    "x": 516,
+    "y": 142,
+    "width": 64,
+    "height": 64,
+    "existing": null,
+    "design": "Champion L3"
+  },
+  {
+    "code": "A4",
+    "x": 726,
+    "y": 142,
+    "width": 64,
+    "height": 64,
+    "existing": null,
+    "design": "Duelist L2"
+  },
+  {
+    "code": "A5",
+    "x": 936,
+    "y": 142,
+    "width": 64,
+    "height": 64,
+    "existing": null,
+    "design": "Blademaster L3"
+  },
+  {
+    "code": "B1",
+    "x": 96,
+    "y": 332,
+    "width": 64,
+    "height": 64,
+    "existing": "spearman",
+    "design": "Spearman L1"
+  },
+  {
+    "code": "B2",
+    "x": 306,
+    "y": 332,
+    "width": 64,
+    "height": 64,
+    "existing": "warden",
+    "design": "Warden L2"
+  },
+  {
+    "code": "B3",
+    "x": 516,
+    "y": 332,
+    "width": 64,
+    "height": 64,
+    "existing": null,
+    "design": "Bulwark L3"
+  },
+  {
+    "code": "B4",
+    "x": 726,
+    "y": 332,
+    "width": 64,
+    "height": 64,
+    "existing": null,
+    "design": "Pikeman L2"
+  },
+  {
+    "code": "B5",
+    "x": 936,
+    "y": 332,
+    "width": 64,
+    "height": 64,
+    "existing": null,
+    "design": "Halberdier L3"
+  },
+  {
+    "code": "C1",
+    "x": 96,
+    "y": 522,
+    "width": 64,
+    "height": 64,
+    "existing": "scout",
+    "design": "Scout L1"
+  },
+  {
+    "code": "C2",
+    "x": 306,
+    "y": 522,
+    "width": 64,
+    "height": 64,
+    "existing": "ranger",
+    "design": "Ranger L2"
+  },
+  {
+    "code": "C3",
+    "x": 516,
+    "y": 522,
+    "width": 64,
+    "height": 64,
+    "existing": null,
+    "design": "Shadowblade L3"
+  },
+  {
+    "code": "C4",
+    "x": 726,
+    "y": 522,
+    "width": 64,
+    "height": 64,
+    "existing": null,
+    "design": "Bow Scout L2"
+  },
+  {
+    "code": "C5",
+    "x": 936,
+    "y": 522,
+    "width": 64,
+    "height": 64,
+    "existing": null,
+    "design": "Pathfinder L3"
+  },
+  {
+    "code": "D1",
+    "x": 96,
+    "y": 712,
+    "width": 64,
+    "height": 64,
+    "existing": "archer",
+    "design": "Archer L1"
+  },
+  {
+    "code": "D2",
+    "x": 306,
+    "y": 712,
+    "width": 64,
+    "height": 64,
+    "existing": "marksman",
+    "design": "Marksman L2"
+  },
+  {
+    "code": "D3",
+    "x": 516,
+    "y": 712,
+    "width": 64,
+    "height": 64,
+    "existing": null,
+    "design": "Longbowman L3"
+  },
+  {
+    "code": "D4",
+    "x": 726,
+    "y": 712,
+    "width": 64,
+    "height": 64,
+    "existing": null,
+    "design": "Crossbowman L2"
+  },
+  {
+    "code": "D5",
+    "x": 936,
+    "y": 712,
+    "width": 64,
+    "height": 64,
+    "existing": null,
+    "design": "Arbalester L3"
+  },
+  {
+    "code": "E1",
+    "x": 96,
+    "y": 902,
+    "width": 64,
+    "height": 64,
+    "existing": "adept",
+    "design": "Adept L1"
+  },
+  {
+    "code": "E2",
+    "x": 306,
+    "y": 902,
+    "width": 64,
+    "height": 64,
+    "existing": "mage",
+    "design": "Mage L2"
+  },
+  {
+    "code": "E3",
+    "x": 516,
+    "y": 902,
+    "width": 64,
+    "height": 64,
+    "existing": null,
+    "design": "Archmage L3"
+  },
+  {
+    "code": "E4",
+    "x": 726,
+    "y": 902,
+    "width": 64,
+    "height": 64,
+    "existing": null,
+    "design": "Healer L2"
+  },
+  {
+    "code": "E5",
+    "x": 936,
+    "y": 902,
+    "width": 64,
+    "height": 64,
+    "existing": null,
+    "design": "High Healer L3"
+  },
+  {
+    "code": "F1",
+    "x": 96,
+    "y": 1092,
+    "width": 64,
+    "height": 64,
+    "existing": null,
+    "design": "Rider L1"
+  },
+  {
+    "code": "F2",
+    "x": 306,
+    "y": 1092,
+    "width": 64,
+    "height": 64,
+    "existing": null,
+    "design": "Cavalier L2"
+  },
+  {
+    "code": "F3",
+    "x": 516,
+    "y": 1092,
+    "width": 64,
+    "height": 64,
+    "existing": null,
+    "design": "Knight L3"
+  },
+  {
+    "code": "F4",
+    "x": 726,
+    "y": 1092,
+    "width": 64,
+    "height": 64,
+    "existing": null,
+    "design": "Outrider L2"
+  },
+  {
+    "code": "F5",
+    "x": 936,
+    "y": 1092,
+    "width": 64,
+    "height": 64,
+    "existing": null,
+    "design": "Horse Archer L3"
+  }
+]

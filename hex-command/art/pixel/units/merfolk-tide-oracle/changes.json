@@ -1,0 +1,687 @@
+{
+  "base": "tidesage",
+  "level": 3,
+  "changes": [
+    {
+      "side": "player",
+      "x": 20,
+      "y": 22,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 21,
+      "y": 22,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 24,
+      "y": 22,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 25,
+      "y": 22,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 26,
+      "y": 22,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 27,
+      "y": 22,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 28,
+      "y": 22,
+      "from": "t",
+      "to": "c",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 20,
+      "y": 23,
+      "from": "t",
+      "to": "c",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 21,
+      "y": 23,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 22,
+      "y": 23,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 23,
+      "y": 23,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 24,
+      "y": 23,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 25,
+      "y": 23,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 26,
+      "y": 23,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 27,
+      "y": 23,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 28,
+      "y": 23,
+      "from": "t",
+      "to": "c",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 20,
+      "y": 24,
+      "from": "t",
+      "to": "c",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 21,
+      "y": 24,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 22,
+      "y": 24,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 23,
+      "y": 24,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 24,
+      "y": 24,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 25,
+      "y": 24,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 26,
+      "y": 24,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 27,
+      "y": 24,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 28,
+      "y": 24,
+      "from": "t",
+      "to": "c",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 20,
+      "y": 25,
+      "from": "t",
+      "to": "c",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 21,
+      "y": 25,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 22,
+      "y": 25,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 23,
+      "y": 25,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 24,
+      "y": 25,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 25,
+      "y": 25,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 26,
+      "y": 25,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 27,
+      "y": 25,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 28,
+      "y": 25,
+      "from": "t",
+      "to": "c",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 21,
+      "y": 26,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 22,
+      "y": 26,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 23,
+      "y": 26,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 24,
+      "y": 26,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 25,
+      "y": 26,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 26,
+      "y": 26,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 27,
+      "y": 26,
+      "from": "T",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "player",
+      "x": 28,
+      "y": 26,
+      "from": "t",
+      "to": "c",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 20,
+      "y": 22,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 21,
+      "y": 22,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 24,
+      "y": 22,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 25,
+      "y": 22,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 26,
+      "y": 22,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 27,
+      "y": 22,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 28,
+      "y": 22,
+      "from": "r",
+      "to": "c",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 20,
+      "y": 23,
+      "from": "r",
+      "to": "c",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 21,
+      "y": 23,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 22,
+      "y": 23,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 23,
+      "y": 23,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 24,
+      "y": 23,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 25,
+      "y": 23,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 26,
+      "y": 23,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 27,
+      "y": 23,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 28,
+      "y": 23,
+      "from": "r",
+      "to": "c",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 20,
+      "y": 24,
+      "from": "r",
+      "to": "c",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 21,
+      "y": 24,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 22,
+      "y": 24,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 23,
+      "y": 24,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 24,
+      "y": 24,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 25,
+      "y": 24,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 26,
+      "y": 24,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 27,
+      "y": 24,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 28,
+      "y": 24,
+      "from": "r",
+      "to": "c",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 20,
+      "y": 25,
+      "from": "r",
+      "to": "c",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 21,
+      "y": 25,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 22,
+      "y": 25,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 23,
+      "y": 25,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 24,
+      "y": 25,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 25,
+      "y": 25,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 26,
+      "y": 25,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 27,
+      "y": 25,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 28,
+      "y": 25,
+      "from": "r",
+      "to": "c",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 21,
+      "y": 26,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 22,
+      "y": 26,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 23,
+      "y": 26,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 24,
+      "y": 26,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 25,
+      "y": 26,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 26,
+      "y": 26,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 27,
+      "y": 26,
+      "from": "R",
+      "to": "C",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    },
+    {
+      "side": "enemy",
+      "x": 28,
+      "y": 26,
+      "from": "r",
+      "to": "c",
+      "reason": "Ivory body robe beneath faction hood and mantle"
+    }
+  ],
+  "paletteChanges": {
+    "S": [162, 139, 204, 255],
+    "s": [92, 69, 132, 255],
+    "H": [196, 178, 226, 255],
+    "G": [255, 203, 66, 255],
+    "g": [185, 126, 34, 255],
+    "A": [243, 247, 239, 255],
+    "a": [151, 174, 181, 255]
+  }
+}

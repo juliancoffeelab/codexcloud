@@ -1,0 +1,112 @@
+{
+  "base": "elf-caster",
+  "level": 2,
+  "changes": [
+    {
+      "x": 30,
+      "y": 23,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 23,
+      "from": "v",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 33,
+      "y": 23,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 34,
+      "y": 23,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 30,
+      "y": 24,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 24,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 32,
+      "y": 24,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 33,
+      "y": 24,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 34,
+      "y": 24,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 30,
+      "y": 25,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 25,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 32,
+      "y": 25,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 33,
+      "y": 25,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 34,
+      "y": 25,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    }
+  ],
+  "paletteChanges": {
+    "V": [164, 179, 109, 255],
+    "v": [100, 122, 63, 255],
+    "A": [222, 232, 235, 255],
+    "a": [129, 151, 160, 255],
+    "R": [185, 24, 37, 255],
+    "r": [112, 14, 24, 255]
+  }
+}

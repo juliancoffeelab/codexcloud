@@ -1,0 +1,1212 @@
+{
+  "base": "dwarf-axeguard",
+  "level": 3,
+  "changes": [
+    {
+      "x": 35,
+      "y": 30,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 36,
+      "y": 30,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 37,
+      "y": 30,
+      "from": "b",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 40,
+      "y": 30,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 41,
+      "y": 30,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 35,
+      "y": 31,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 36,
+      "y": 31,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 37,
+      "y": 31,
+      "from": "b",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 39,
+      "y": 31,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 40,
+      "y": 31,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 41,
+      "y": 31,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 35,
+      "y": 32,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 36,
+      "y": 32,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 37,
+      "y": 32,
+      "from": "b",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 39,
+      "y": 32,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 40,
+      "y": 32,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 41,
+      "y": 32,
+      "from": "w",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 35,
+      "y": 33,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 36,
+      "y": 33,
+      "from": "b",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 38,
+      "y": 33,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 39,
+      "y": 33,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 40,
+      "y": 33,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 41,
+      "y": 33,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 35,
+      "y": 34,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 36,
+      "y": 34,
+      "from": "b",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 38,
+      "y": 34,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 39,
+      "y": 34,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 40,
+      "y": 34,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 41,
+      "y": 34,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 35,
+      "y": 35,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 36,
+      "y": 35,
+      "from": "b",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 38,
+      "y": 35,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 39,
+      "y": 35,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 40,
+      "y": 35,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 41,
+      "y": 35,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 28,
+      "y": 39,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 29,
+      "y": 39,
+      "from": "b",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 39,
+      "from": "W",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 34,
+      "y": 39,
+      "from": "b",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 30,
+      "y": 40,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 40,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 32,
+      "y": 40,
+      "from": "b",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 33,
+      "y": 42,
+      "from": "v",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 33,
+      "y": 44,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 33,
+      "y": 45,
+      "from": "W",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 33,
+      "y": 46,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 35,
+      "y": 43,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 36,
+      "y": 43,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 37,
+      "y": 43,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 38,
+      "y": 43,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 39,
+      "y": 43,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 35,
+      "y": 44,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 36,
+      "y": 44,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 37,
+      "y": 44,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 38,
+      "y": 44,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 39,
+      "y": 44,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 35,
+      "y": 45,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 36,
+      "y": 45,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 38,
+      "y": 45,
+      "from": "b",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 40,
+      "y": 45,
+      "from": "w",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 37,
+      "y": 46,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 38,
+      "y": 46,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 39,
+      "y": 46,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 40,
+      "y": 46,
+      "from": "B",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 22,
+      "y": 37,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 23,
+      "y": 37,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 24,
+      "y": 37,
+      "from": "i",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 25,
+      "y": 37,
+      "from": "i",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 27,
+      "y": 37,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 28,
+      "y": 37,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 30,
+      "y": 37,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 31,
+      "y": 37,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 32,
+      "y": 37,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 33,
+      "y": 37,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 34,
+      "y": 37,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 36,
+      "y": 37,
+      "from": "v",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 37,
+      "y": 37,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 41,
+      "y": 37,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 42,
+      "y": 37,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 43,
+      "y": 37,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 22,
+      "y": 38,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 23,
+      "y": 38,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 24,
+      "y": 38,
+      "from": "i",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 25,
+      "y": 38,
+      "from": "i",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 27,
+      "y": 38,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 28,
+      "y": 38,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 29,
+      "y": 38,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 32,
+      "y": 38,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 33,
+      "y": 38,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 35,
+      "y": 38,
+      "from": "w",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 38,
+      "y": 38,
+      "from": "w",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 43,
+      "y": 38,
+      "from": "v",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 22,
+      "y": 39,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 23,
+      "y": 39,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 24,
+      "y": 39,
+      "from": "i",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 25,
+      "y": 39,
+      "from": "i",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 27,
+      "y": 39,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 36,
+      "y": 39,
+      "from": "W",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 37,
+      "y": 39,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 42,
+      "y": 39,
+      "from": "V",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 22,
+      "y": 40,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 23,
+      "y": 40,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 24,
+      "y": 40,
+      "from": "i",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 25,
+      "y": 40,
+      "from": "i",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 36,
+      "y": 40,
+      "from": "i",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 37,
+      "y": 40,
+      "from": "V",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 38,
+      "y": 40,
+      "from": "w",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 42,
+      "y": 40,
+      "from": "v",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 43,
+      "y": 40,
+      "from": "W",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 22,
+      "y": 41,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 23,
+      "y": 41,
+      "from": "i",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 24,
+      "y": 41,
+      "from": "i",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 35,
+      "y": 41,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 36,
+      "y": 41,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 38,
+      "y": 41,
+      "from": "W",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 39,
+      "y": 41,
+      "from": "v",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 22,
+      "y": 42,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 23,
+      "y": 42,
+      "from": "i",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 24,
+      "y": 42,
+      "from": "i",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 26,
+      "y": 42,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 35,
+      "y": 42,
+      "from": "w",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 36,
+      "y": 42,
+      "from": "I",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 37,
+      "y": 42,
+      "from": "I",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 22,
+      "y": 43,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 23,
+      "y": 43,
+      "from": "i",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 24,
+      "y": 43,
+      "from": "i",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 26,
+      "y": 43,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 27,
+      "y": 43,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 22,
+      "y": 44,
+      "from": "i",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 25,
+      "y": 44,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 26,
+      "y": 44,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 27,
+      "y": 44,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 22,
+      "y": 45,
+      "from": "i",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 23,
+      "y": 45,
+      "from": "v",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 25,
+      "y": 45,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 26,
+      "y": 45,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 27,
+      "y": 45,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 22,
+      "y": 46,
+      "from": "v",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 24,
+      "y": 46,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 25,
+      "y": 46,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 26,
+      "y": 46,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 41,
+      "y": 46,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 23,
+      "y": 47,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 24,
+      "y": 47,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 25,
+      "y": 47,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 29,
+      "y": 47,
+      "from": "v",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 32,
+      "y": 47,
+      "from": "v",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 35,
+      "y": 47,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 36,
+      "y": 47,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 37,
+      "y": 47,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 38,
+      "y": 47,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 39,
+      "y": 47,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 40,
+      "y": 47,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 41,
+      "y": 47,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 22,
+      "y": 48,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 23,
+      "y": 48,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 24,
+      "y": 48,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 25,
+      "y": 48,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 34,
+      "y": 48,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 35,
+      "y": 48,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 36,
+      "y": 48,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 37,
+      "y": 48,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 38,
+      "y": 48,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 39,
+      "y": 48,
+      "from": "B",
+      "to": "A",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 40,
+      "y": 48,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 42,
+      "y": 48,
+      "from": "b",
+      "to": "a",
+      "reason": "Full fitted iron/silver apron armor; preserve diagonal wooden shaft and grips"
+    },
+    {
+      "x": 28,
+      "y": 25,
+      "from": "a",
+      "to": "G",
+      "reason": "Gold brow rim on the veteran helmet"
+    },
+    {
+      "x": 29,
+      "y": 25,
+      "from": "a",
+      "to": "G",
+      "reason": "Gold brow rim on the veteran helmet"
+    },
+    {
+      "x": 31,
+      "y": 25,
+      "from": "a",
+      "to": "G",
+      "reason": "Gold brow rim on the veteran helmet"
+    },
+    {
+      "x": 32,
+      "y": 25,
+      "from": "a",
+      "to": "G",
+      "reason": "Gold brow rim on the veteran helmet"
+    },
+    {
+      "x": 33,
+      "y": 25,
+      "from": "a",
+      "to": "G",
+      "reason": "Gold brow rim on the veteran helmet"
+    }
+  ],
+  "paletteChanges": {
+    "V": [235, 230, 209, 255],
+    "v": [157, 171, 168, 255],
+    "A": [244, 248, 241, 255],
+    "a": [155, 184, 191, 255],
+    "G": [249, 197, 58, 255],
+    "R": [185, 24, 37, 255],
+    "r": [112, 14, 24, 255]
+  }
+}

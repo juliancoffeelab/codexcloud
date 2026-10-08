@@ -1,0 +1,2784 @@
+{
+  "coordinates": "64x64 original slot",
+  "edits": [
+    {
+      "x": 29,
+      "y": 7,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 34,
+      "y": 7,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 10,
+      "y": 8,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 11,
+      "y": 8,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 32,
+      "y": 8,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 52,
+      "y": 8,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 53,
+      "y": 8,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 56,
+      "y": 8,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 10,
+      "y": 9,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 11,
+      "y": 9,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 9,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 31,
+      "y": 9,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 32,
+      "y": 9,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 33,
+      "y": 9,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 35,
+      "y": 9,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 38,
+      "y": 9,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 58,
+      "y": 9,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 9,
+      "y": 10,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 14,
+      "y": 10,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 10,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 28,
+      "y": 10,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 31,
+      "y": 10,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 32,
+      "y": 10,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 35,
+      "y": 10,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 36,
+      "y": 10,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 37,
+      "y": 10,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 49,
+      "y": 10,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 54,
+      "y": 10,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 5,
+      "y": 11,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 7,
+      "y": 11,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 11,
+      "y": 11,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 11,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 26,
+      "y": 11,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 27,
+      "y": 11,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 31,
+      "y": 11,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 32,
+      "y": 11,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 36,
+      "y": 11,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 37,
+      "y": 11,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 38,
+      "y": 11,
+      "from": "i",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 52,
+      "y": 11,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 57,
+      "y": 11,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 58,
+      "y": 11,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 15,
+      "y": 12,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 12,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 12,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 26,
+      "y": 12,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 37,
+      "y": 12,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 38,
+      "y": 12,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 47,
+      "y": 12,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 12,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 12,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 15,
+      "y": 13,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 13,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 13,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 23,
+      "y": 13,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 25,
+      "y": 13,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 46,
+      "y": 13,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 47,
+      "y": 13,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 13,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 13,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 14,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 14,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 31,
+      "y": 14,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 32,
+      "y": 14,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 42,
+      "y": 14,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 45,
+      "y": 14,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 46,
+      "y": 14,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 47,
+      "y": 14,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 14,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 15,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 15,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 20,
+      "y": 15,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 22,
+      "y": 15,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 23,
+      "y": 15,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 31,
+      "y": 15,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 32,
+      "y": 15,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 40,
+      "y": 15,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 41,
+      "y": 15,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 42,
+      "y": 15,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 43,
+      "y": 15,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 44,
+      "y": 15,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 16,
+      "y": 16,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 16,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 22,
+      "y": 16,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 26,
+      "y": 16,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 31,
+      "y": 16,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 32,
+      "y": 16,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 37,
+      "y": 16,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 41,
+      "y": 16,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 42,
+      "y": 16,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 47,
+      "y": 16,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 7,
+      "y": 17,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 17,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 26,
+      "y": 17,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 27,
+      "y": 17,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 31,
+      "y": 17,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 32,
+      "y": 17,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 36,
+      "y": 17,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 37,
+      "y": 17,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 42,
+      "y": 17,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 56,
+      "y": 17,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 7,
+      "y": 18,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 8,
+      "y": 18,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 12,
+      "y": 18,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 18,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 18,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 18,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 27,
+      "y": 18,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 36,
+      "y": 18,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 37,
+      "y": 18,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 38,
+      "y": 18,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 46,
+      "y": 18,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 18,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 55,
+      "y": 18,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 56,
+      "y": 18,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 7,
+      "y": 19,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 12,
+      "y": 19,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 13,
+      "y": 19,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 14,
+      "y": 19,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 19,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 26,
+      "y": 19,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 27,
+      "y": 19,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 36,
+      "y": 19,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 37,
+      "y": 19,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 38,
+      "y": 19,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 19,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 50,
+      "y": 19,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 19,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 55,
+      "y": 19,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 56,
+      "y": 19,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 3,
+      "y": 20,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 8,
+      "y": 20,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 10,
+      "y": 20,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 12,
+      "y": 20,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 20,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 38,
+      "y": 20,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 46,
+      "y": 20,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 50,
+      "y": 20,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 53,
+      "y": 20,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 60,
+      "y": 20,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 4,
+      "y": 21,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 5,
+      "y": 21,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 21,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 22,
+      "y": 21,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 31,
+      "y": 21,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 32,
+      "y": 21,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 41,
+      "y": 21,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 42,
+      "y": 21,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 58,
+      "y": 21,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 59,
+      "y": 21,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 15,
+      "y": 22,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 22,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 22,
+      "y": 22,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 23,
+      "y": 22,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 31,
+      "y": 22,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 32,
+      "y": 22,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 40,
+      "y": 22,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 41,
+      "y": 22,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 42,
+      "y": 22,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 48,
+      "y": 22,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 23,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 22,
+      "y": 23,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 25,
+      "y": 23,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 30,
+      "y": 23,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 31,
+      "y": 23,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 32,
+      "y": 23,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 41,
+      "y": 23,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 42,
+      "y": 23,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 43,
+      "y": 23,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 47,
+      "y": 23,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 12,
+      "y": 24,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 13,
+      "y": 24,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 24,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 24,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 24,
+      "from": "I",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 31,
+      "y": 24,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 32,
+      "y": 24,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 42,
+      "y": 24,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 24,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 55,
+      "y": 24,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 25,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 25,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 25,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 25,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 31,
+      "y": 25,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 32,
+      "y": 25,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 33,
+      "y": 25,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 37,
+      "y": 25,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 6,
+      "y": 26,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 8,
+      "y": 26,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 14,
+      "y": 26,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 15,
+      "y": 26,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 26,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 26,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 26,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 26,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 26,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 26,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 30,
+      "y": 26,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 31,
+      "y": 26,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 32,
+      "y": 26,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 33,
+      "y": 26,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 34,
+      "y": 26,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 35,
+      "y": 26,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 36,
+      "y": 26,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 45,
+      "y": 26,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 55,
+      "y": 26,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 6,
+      "y": 27,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 8,
+      "y": 27,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 12,
+      "y": 27,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 27,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 27,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 27,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 30,
+      "y": 27,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 31,
+      "y": 27,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 32,
+      "y": 27,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 33,
+      "y": 27,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 34,
+      "y": 27,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 35,
+      "y": 27,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 36,
+      "y": 27,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 42,
+      "y": 27,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 44,
+      "y": 27,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 45,
+      "y": 27,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 51,
+      "y": 27,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 55,
+      "y": 27,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 57,
+      "y": 27,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 7,
+      "y": 28,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 8,
+      "y": 28,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 28,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 28,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 28,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 31,
+      "y": 28,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 32,
+      "y": 28,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 35,
+      "y": 28,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 36,
+      "y": 28,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 41,
+      "y": 28,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 46,
+      "y": 28,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 55,
+      "y": 28,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 56,
+      "y": 28,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 29,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 29,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 26,
+      "y": 29,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 29,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 29,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 29,
+      "y": 29,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 34,
+      "y": 29,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 35,
+      "y": 29,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 36,
+      "y": 29,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 37,
+      "y": 29,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 39,
+      "y": 29,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 40,
+      "y": 29,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 6,
+      "y": 30,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 30,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 25,
+      "y": 30,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 30,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 30,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 28,
+      "y": 30,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 29,
+      "y": 30,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 30,
+      "y": 30,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 31,
+      "y": 30,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 32,
+      "y": 30,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 33,
+      "y": 30,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 34,
+      "y": 30,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 35,
+      "y": 30,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 36,
+      "y": 30,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 37,
+      "y": 30,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 38,
+      "y": 30,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 39,
+      "y": 30,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 57,
+      "y": 30,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 31,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 31,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 31,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 31,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 26,
+      "y": 31,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 27,
+      "y": 31,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 28,
+      "y": 31,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 29,
+      "y": 31,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 30,
+      "y": 31,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 31,
+      "y": 31,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 32,
+      "y": 31,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 33,
+      "y": 31,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 34,
+      "y": 31,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 35,
+      "y": 31,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 36,
+      "y": 31,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 37,
+      "y": 31,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 38,
+      "y": 31,
+      "from": "G",
+      "to": "H",
+      "reason": "Flat coral carapace instead of ivory/gold texture spots"
+    },
+    {
+      "x": 39,
+      "y": 31,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 45,
+      "y": 31,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 46,
+      "y": 31,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 59,
+      "y": 31,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 36,
+      "y": 32,
+      "from": "E",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 38,
+      "y": 32,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 15,
+      "y": 33,
+      "from": "a",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 43,
+      "y": 33,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 46,
+      "y": 33,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 33,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 14,
+      "y": 34,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 15,
+      "y": 34,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 34,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 34,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 34,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 45,
+      "y": 34,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 34,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 34,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 15,
+      "y": 35,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 35,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 35,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 47,
+      "y": 35,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 35,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 35,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 36,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 47,
+      "y": 36,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 37,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 38,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 38,
+      "y": 38,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 50,
+      "y": 38,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 15,
+      "y": 39,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 39,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 36,
+      "y": 39,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 56,
+      "y": 39,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 40,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 40,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 40,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 38,
+      "y": 40,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 41,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 38,
+      "y": 41,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 57,
+      "y": 41,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 42,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 42,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 37,
+      "y": 42,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 39,
+      "y": 42,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 12,
+      "y": 43,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 15,
+      "y": 43,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 43,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 38,
+      "y": 43,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 43,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 43,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 11,
+      "y": 44,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 52,
+      "y": 44,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 10,
+      "y": 45,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 45,
+      "from": "A",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 53,
+      "y": 45,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 9,
+      "y": 46,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 20,
+      "y": 46,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 43,
+      "y": 46,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 54,
+      "y": 46,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 9,
+      "y": 47,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 47,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 54,
+      "y": 47,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 58,
+      "y": 47,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 55,
+      "y": 48,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 8,
+      "y": 49,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 49,
+      "from": "a",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 46,
+      "y": 49,
+      "from": "a",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 49,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 55,
+      "y": 49,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 57,
+      "y": 49,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 7,
+      "y": 51,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 14,
+      "y": 51,
+      "from": "A",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 51,
+      "from": "A",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 56,
+      "y": 51,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 8,
+      "y": 52,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 15,
+      "y": 52,
+      "from": "a",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 55,
+      "y": 52,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 9,
+      "y": 53,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 15,
+      "y": 53,
+      "from": "a",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 54,
+      "y": 53,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 10,
+      "y": 9,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 15,
+      "y": 12,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 48,
+      "y": 12,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 7,
+      "y": 18,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 56,
+      "y": 18,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 51,
+      "y": 19,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 49,
+      "y": 13,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 49,
+      "y": 10,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 52,
+      "y": 10,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 14,
+      "y": 13,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 16,
+      "y": 13,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 12,
+      "y": 19,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 14,
+      "y": 19,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 55,
+      "y": 19,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 59,
+      "y": 19,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 6,
+      "y": 26,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 12,
+      "y": 26,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 18,
+      "y": 26,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 7,
+      "y": 28,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 8,
+      "y": 28,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 56,
+      "y": 28,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 59,
+      "y": 28,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 15,
+      "y": 43,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 43,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 48,
+      "y": 43,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 49,
+      "y": 43,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 33,
+      "from": "t",
+      "to": "T",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 34,
+      "from": "t",
+      "to": "T",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 34,
+      "from": "t",
+      "to": "T",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 38,
+      "y": 34,
+      "from": "t",
+      "to": "T",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    }
+  ]
+}

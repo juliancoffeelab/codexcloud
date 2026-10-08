@@ -1,0 +1,1643 @@
+{
+  "coordinates": "64x64 original slot",
+  "edits": [
+    {
+      "x": 51,
+      "y": 9,
+      "from": "H",
+      "to": "A",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 50,
+      "y": 10,
+      "from": "H",
+      "to": "A",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 48,
+      "y": 11,
+      "from": "H",
+      "to": "A",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 50,
+      "y": 11,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 48,
+      "y": 12,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 49,
+      "y": 12,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 51,
+      "y": 12,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 55,
+      "y": 12,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 47,
+      "y": 13,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 48,
+      "y": 13,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 49,
+      "y": 13,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 50,
+      "y": 13,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 45,
+      "y": 14,
+      "from": "H",
+      "to": "A",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 46,
+      "y": 14,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 47,
+      "y": 14,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 48,
+      "y": 14,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 49,
+      "y": 14,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 50,
+      "y": 14,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 51,
+      "y": 14,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 45,
+      "y": 15,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 46,
+      "y": 15,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 47,
+      "y": 15,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 48,
+      "y": 15,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 49,
+      "y": 15,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 50,
+      "y": 15,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 44,
+      "y": 16,
+      "from": "H",
+      "to": "A",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 45,
+      "y": 16,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 46,
+      "y": 16,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 47,
+      "y": 16,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 48,
+      "y": 16,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 49,
+      "y": 16,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 45,
+      "y": 17,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 47,
+      "y": 17,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 48,
+      "y": 17,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 54,
+      "y": 17,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 55,
+      "y": 17,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 59,
+      "y": 17,
+      "from": "H",
+      "to": "A",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 48,
+      "y": 18,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 53,
+      "y": 18,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 54,
+      "y": 18,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 55,
+      "y": 18,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 57,
+      "y": 18,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 58,
+      "y": 18,
+      "from": "H",
+      "to": "A",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 52,
+      "y": 19,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 53,
+      "y": 19,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 54,
+      "y": 19,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 55,
+      "y": 19,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 56,
+      "y": 19,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 57,
+      "y": 19,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 51,
+      "y": 20,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 52,
+      "y": 20,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 53,
+      "y": 20,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 54,
+      "y": 20,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 55,
+      "y": 20,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 56,
+      "y": 20,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 57,
+      "y": 20,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 50,
+      "y": 21,
+      "from": "H",
+      "to": "A",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 51,
+      "y": 21,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 52,
+      "y": 21,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 53,
+      "y": 21,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 54,
+      "y": 21,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 55,
+      "y": 21,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 56,
+      "y": 21,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 52,
+      "y": 22,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 53,
+      "y": 22,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 54,
+      "y": 22,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 55,
+      "y": 22,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 56,
+      "y": 22,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 53,
+      "y": 23,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 54,
+      "y": 23,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 55,
+      "y": 23,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 52,
+      "y": 24,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 53,
+      "y": 24,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 54,
+      "y": 24,
+      "from": "H",
+      "to": "A",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 42,
+      "y": 25,
+      "from": "I",
+      "to": "A",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 42,
+      "y": 26,
+      "from": "I",
+      "to": "A",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 51,
+      "y": 26,
+      "from": "H",
+      "to": "A",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 42,
+      "y": 27,
+      "from": "I",
+      "to": "A",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 11,
+      "y": 27,
+      "from": "V",
+      "to": "T",
+      "reason": "Remove robe-color artifacts from the actual faction cloak"
+    },
+    {
+      "x": 28,
+      "y": 18,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 28,
+      "y": 19,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 28,
+      "y": 20,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 32,
+      "y": 22,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 22,
+      "y": 25,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 40,
+      "y": 25,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 39,
+      "y": 26,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 40,
+      "y": 28,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 42,
+      "y": 28,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 41,
+      "y": 29,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 27,
+      "y": 30,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 41,
+      "y": 30,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 16,
+      "y": 32,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 25,
+      "y": 32,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 28,
+      "y": 32,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 39,
+      "y": 32,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 41,
+      "y": 32,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 40,
+      "y": 33,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 23,
+      "y": 35,
+      "from": "h",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 34,
+      "y": 37,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 24,
+      "y": 38,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 25,
+      "y": 39,
+      "from": "h",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 36,
+      "y": 39,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 23,
+      "y": 41,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 39,
+      "y": 42,
+      "from": "h",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 40,
+      "y": 43,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 21,
+      "y": 44,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 41,
+      "y": 44,
+      "from": "h",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 18,
+      "y": 45,
+      "from": "h",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 20,
+      "y": 45,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 41,
+      "y": 45,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 42,
+      "y": 46,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 42,
+      "y": 47,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 42,
+      "y": 48,
+      "from": "H",
+      "to": "i",
+      "reason": "One coherent shadow material on exposed bone"
+    },
+    {
+      "x": 24,
+      "y": 22,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 22,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 20,
+      "y": 23,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 23,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 18,
+      "y": 24,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 24,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 24,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 24,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 15,
+      "y": 25,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 16,
+      "y": 25,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 25,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 14,
+      "y": 26,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 18,
+      "y": 26,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 19,
+      "y": 26,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 26,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 26,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 12,
+      "y": 27,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 13,
+      "y": 27,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 27,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 18,
+      "y": 27,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 27,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 27,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 10,
+      "y": 28,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 11,
+      "y": 28,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 16,
+      "y": 28,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 28,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 9,
+      "y": 29,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 10,
+      "y": 29,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 15,
+      "y": 29,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 16,
+      "y": 29,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 8,
+      "y": 30,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 9,
+      "y": 30,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 14,
+      "y": 30,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 15,
+      "y": 30,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 8,
+      "y": 31,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 9,
+      "y": 31,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 13,
+      "y": 31,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 14,
+      "y": 31,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 31,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 31,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 7,
+      "y": 32,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 8,
+      "y": 32,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 12,
+      "y": 32,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 13,
+      "y": 32,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 14,
+      "y": 32,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 20,
+      "y": 32,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 32,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 32,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 7,
+      "y": 33,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 8,
+      "y": 33,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 9,
+      "y": 33,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 11,
+      "y": 33,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 12,
+      "y": 33,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 15,
+      "y": 33,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 33,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 23,
+      "y": 33,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 8,
+      "y": 34,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 9,
+      "y": 34,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 12,
+      "y": 34,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 15,
+      "y": 34,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 12,
+      "y": 35,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 12,
+      "y": 36,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 38,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 38,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 43,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 43,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 44,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 44,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 45,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 46,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 46,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 16,
+      "from": "I",
+      "to": "i",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 17,
+      "from": "I",
+      "to": "i",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 18,
+      "from": "i",
+      "to": "I",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 18,
+      "from": "I",
+      "to": "i",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 19,
+      "from": "i",
+      "to": "I",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 19,
+      "from": "I",
+      "to": "i",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 21,
+      "from": "I",
+      "to": "i",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 23,
+      "from": "I",
+      "to": "i",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 25,
+      "from": "i",
+      "to": "I",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 25,
+      "from": "I",
+      "to": "i",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 39,
+      "y": 26,
+      "from": "i",
+      "to": "I",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 41,
+      "y": 26,
+      "from": "I",
+      "to": "i",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 27,
+      "from": "I",
+      "to": "i",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 40,
+      "y": 28,
+      "from": "i",
+      "to": "I",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 29,
+      "from": "I",
+      "to": "i",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 30,
+      "from": "i",
+      "to": "I",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 30,
+      "from": "I",
+      "to": "i",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 16,
+      "y": 32,
+      "from": "i",
+      "to": "I",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 18,
+      "y": 32,
+      "from": "I",
+      "to": "i",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 32,
+      "from": "i",
+      "to": "I",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 39,
+      "y": 32,
+      "from": "i",
+      "to": "I",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 40,
+      "y": 32,
+      "from": "i",
+      "to": "I",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 36,
+      "from": "i",
+      "to": "I",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 36,
+      "from": "I",
+      "to": "i",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 37,
+      "from": "I",
+      "to": "i",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 37,
+      "from": "i",
+      "to": "I",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 38,
+      "from": "i",
+      "to": "I",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 40,
+      "from": "i",
+      "to": "I",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 18,
+      "y": 45,
+      "from": "i",
+      "to": "I",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 15,
+      "y": 49,
+      "from": "W",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 49,
+      "from": "w",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 18,
+      "y": 49,
+      "from": "w",
+      "to": "b",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 14,
+      "y": 50,
+      "from": "W",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 16,
+      "y": 50,
+      "from": "w",
+      "to": "b",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 42,
+      "y": 50,
+      "from": "W",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 43,
+      "y": 50,
+      "from": "w",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 44,
+      "y": 50,
+      "from": "w",
+      "to": "b",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 43,
+      "y": 51,
+      "from": "W",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 44,
+      "y": 51,
+      "from": "w",
+      "to": "b",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 43,
+      "y": 52,
+      "from": "W",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 45,
+      "y": 52,
+      "from": "w",
+      "to": "b",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 13,
+      "y": 53,
+      "from": "W",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 14,
+      "y": 53,
+      "from": "B",
+      "to": "b",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 46,
+      "y": 53,
+      "from": "w",
+      "to": "b",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 12,
+      "y": 54,
+      "from": "W",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 13,
+      "y": 54,
+      "from": "W",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 14,
+      "y": 54,
+      "from": "W",
+      "to": "b",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 48,
+      "y": 54,
+      "from": "W",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 49,
+      "y": 54,
+      "from": "W",
+      "to": "b",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 53,
+      "y": 15,
+      "from": "W",
+      "to": "B",
+      "reason": "Remove enclosed single-pixel surface fleck"
+    }
+  ]
+}

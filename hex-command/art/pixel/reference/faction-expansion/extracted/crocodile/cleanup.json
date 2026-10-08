@@ -1,0 +1,82 @@
+{
+  "coordinates": "64x64 logical slot before native crop",
+  "changes": [
+    {
+      "x": 0,
+      "y": 0,
+      "from": "O",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 8,
+      "y": 17,
+      "from": "B",
+      "to": "W",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 36,
+      "y": 26,
+      "from": "t",
+      "to": "T",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 35,
+      "y": 27,
+      "from": "t",
+      "to": "T",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 12,
+      "y": 28,
+      "from": "W",
+      "to": "V",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 34,
+      "y": 28,
+      "from": "t",
+      "to": "T",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 10,
+      "y": 29,
+      "from": "W",
+      "to": "V",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 32,
+      "y": 33,
+      "from": "t",
+      "to": "T",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 37,
+      "y": 33,
+      "from": "v",
+      "to": "B",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 51,
+      "y": 35,
+      "from": "V",
+      "to": "W",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 28,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    }
+  ]
+}

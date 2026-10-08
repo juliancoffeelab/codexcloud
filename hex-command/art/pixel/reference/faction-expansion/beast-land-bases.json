@@ -1,0 +1,26 @@
+[
+  {
+    "label": "Bear",
+    "image": "art/pixel/reference/faction-expansion/extracted/bear/player.png"
+  },
+  {
+    "label": "Lynx",
+    "image": "art/pixel/reference/faction-expansion/extracted/lynx/player.png"
+  },
+  {
+    "label": "Stag",
+    "image": "art/pixel/reference/faction-expansion/extracted/stag/player.png"
+  },
+  {
+    "label": "Giant spider",
+    "image": "art/pixel/reference/faction-expansion/extracted/giant-spider/player.png"
+  },
+  {
+    "label": "Giant tortoise",
+    "image": "art/pixel/reference/faction-expansion/extracted/giant-tortoise/player.png"
+  },
+  {
+    "label": "Giant snake",
+    "image": "art/pixel/reference/faction-expansion/extracted/giant-snake/player.png"
+  }
+]

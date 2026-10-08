@@ -1,0 +1,761 @@
+{
+  "coordinates": "64x64 original slot",
+  "edits": [
+    {
+      "x": 49,
+      "y": 8,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 51,
+      "y": 8,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 55,
+      "y": 9,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 52,
+      "y": 11,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 42,
+      "y": 12,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 43,
+      "y": 13,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 49,
+      "y": 14,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 41,
+      "y": 15,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 43,
+      "y": 15,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 53,
+      "y": 15,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 51,
+      "y": 16,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 44,
+      "y": 17,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 58,
+      "y": 17,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 59,
+      "y": 17,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 38,
+      "y": 18,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 43,
+      "y": 18,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 41,
+      "y": 19,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 15,
+      "y": 20,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 17,
+      "y": 20,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 60,
+      "y": 20,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 11,
+      "y": 21,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 15,
+      "y": 21,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 18,
+      "y": 21,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 35,
+      "y": 21,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 43,
+      "y": 21,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 59,
+      "y": 21,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 19,
+      "y": 22,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 43,
+      "y": 22,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 59,
+      "y": 22,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 36,
+      "y": 23,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 38,
+      "y": 23,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 8,
+      "y": 24,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 9,
+      "y": 24,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 13,
+      "y": 25,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 17,
+      "y": 25,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 33,
+      "y": 25,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 13,
+      "y": 26,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 16,
+      "y": 26,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 33,
+      "y": 26,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 39,
+      "y": 26,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 40,
+      "y": 26,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 39,
+      "y": 27,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 6,
+      "y": 28,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 12,
+      "y": 28,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 17,
+      "y": 28,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 13,
+      "y": 29,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 38,
+      "y": 29,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 14,
+      "y": 30,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 14,
+      "y": 31,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 19,
+      "y": 31,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 26,
+      "y": 31,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 32,
+      "y": 31,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 33,
+      "y": 31,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 38,
+      "y": 31,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 19,
+      "y": 32,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 26,
+      "y": 32,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 31,
+      "y": 32,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 36,
+      "y": 32,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 34,
+      "y": 33,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 21,
+      "y": 34,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 29,
+      "y": 34,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 31,
+      "y": 34,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 21,
+      "y": 35,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 22,
+      "y": 35,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 29,
+      "y": 35,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 33,
+      "y": 35,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 37,
+      "y": 35,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 44,
+      "y": 35,
+      "from": "a",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 17,
+      "y": 36,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 20,
+      "y": 36,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 22,
+      "y": 36,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 43,
+      "y": 36,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 46,
+      "y": 36,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 21,
+      "y": 37,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 36,
+      "y": 37,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 14,
+      "y": 38,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 19,
+      "y": 38,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 37,
+      "y": 39,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 20,
+      "y": 40,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 38,
+      "y": 40,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 39,
+      "y": 40,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 50,
+      "y": 40,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 8,
+      "y": 41,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 11,
+      "y": 41,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 39,
+      "y": 41,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 17,
+      "y": 42,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 38,
+      "y": 42,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 52,
+      "y": 42,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 9,
+      "y": 43,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 17,
+      "y": 43,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 52,
+      "y": 43,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 40,
+      "y": 44,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 52,
+      "y": 44,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 8,
+      "y": 45,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 20,
+      "y": 45,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 39,
+      "y": 45,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 39,
+      "y": 47,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 51,
+      "y": 48,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 21,
+      "y": 49,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 41,
+      "y": 49,
+      "from": "v",
+      "to": "i",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 24,
+      "y": 52,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 6,
+      "y": 53,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 7,
+      "y": 55,
+      "from": "V",
+      "to": "I",
+      "reason": "Single ivory bone material; preserve dark gaps"
+    },
+    {
+      "x": 21,
+      "y": 20,
+      "from": "t",
+      "to": "T",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 21,
+      "from": "t",
+      "to": "T",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 21,
+      "from": "T",
+      "to": "t",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 23,
+      "y": 22,
+      "from": "t",
+      "to": "T",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 23,
+      "from": "t",
+      "to": "T",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "coordinates": "64x64 logical slot before native crop",
+  "changes": [
+    {
+      "x": 33,
+      "y": 35,
+      "from": "W",
+      "to": "T",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 44,
+      "y": 38,
+      "from": "H",
+      "to": "A",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    }
+  ]
+}

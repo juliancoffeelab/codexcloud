@@ -8,6 +8,13 @@ skin-colored hands, silver knife, and windblown hair and cloak.
 Reusable imagegen preparation, extraction, tier recipes and preview commands are
 documented in [the artwork workflow index](WORKFLOWS.md).
 
+Future faction bodies, poses and equipment are listed in the
+[anatomy and weapon references](reference/faction-anatomies.md).
+
+The [faction expansion](reference/faction-expansion/README.md) contains 61 new
+anatomies, both faction colors through L3, saved generation masks/prompts,
+cleanup recipes, numbered comparison grids and review sheets.
+
 Each character in a `.txt` matrix is one pixel. `.` is transparent. Symbols map
 to exact RGBA colors in that unit's `palette.json`; uppercase and lowercase are
 distinct. Scout uses the shared palette in this directory. Other units keep

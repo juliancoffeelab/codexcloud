@@ -1,0 +1,1720 @@
+{
+  "coordinates": "64x64 original slot",
+  "edits": [
+    {
+      "x": 19,
+      "y": 10,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 30,
+      "y": 11,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 29,
+      "y": 12,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 30,
+      "y": 12,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 31,
+      "y": 12,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 34,
+      "y": 15,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 35,
+      "y": 15,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 32,
+      "y": 16,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 33,
+      "y": 16,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 34,
+      "y": 16,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 35,
+      "y": 16,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 43,
+      "y": 30,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 29,
+      "y": 47,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 27,
+      "y": 48,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 26,
+      "y": 49,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 23,
+      "y": 50,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 24,
+      "y": 50,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 25,
+      "y": 51,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 20,
+      "y": 10,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 33,
+      "y": 13,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 32,
+      "y": 14,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 33,
+      "y": 14,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 34,
+      "y": 14,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 32,
+      "y": 15,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 33,
+      "y": 15,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 28,
+      "y": 47,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 26,
+      "y": 48,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 28,
+      "y": 48,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 24,
+      "y": 49,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 25,
+      "y": 49,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 27,
+      "y": 49,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 21,
+      "y": 50,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 22,
+      "y": 50,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 25,
+      "y": 50,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 26,
+      "y": 50,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 37,
+      "y": 50,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 21,
+      "y": 51,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 22,
+      "y": 51,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 23,
+      "y": 51,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 24,
+      "y": 51,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 37,
+      "y": 51,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 38,
+      "y": 51,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 39,
+      "y": 51,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 40,
+      "y": 51,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 38,
+      "y": 52,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 39,
+      "y": 52,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 40,
+      "y": 52,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 41,
+      "y": 52,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 42,
+      "y": 52,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 25,
+      "y": 21,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 23,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 24,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 25,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 25,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 25,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 27,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 20,
+      "y": 28,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 28,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 28,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 20,
+      "y": 29,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 29,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 29,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 19,
+      "y": 30,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 20,
+      "y": 30,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 30,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 30,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 15,
+      "y": 31,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 31,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 18,
+      "y": 31,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 19,
+      "y": 31,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 20,
+      "y": 31,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 31,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 31,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 23,
+      "y": 31,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 18,
+      "y": 32,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 19,
+      "y": 32,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 20,
+      "y": 32,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 32,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 32,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 33,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 33,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 23,
+      "y": 33,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 20,
+      "y": 10,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 10,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 11,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 12,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 14,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 14,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 14,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 15,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 15,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 15,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 15,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 15,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 15,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 15,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 16,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 16,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 16,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 16,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 16,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 16,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 16,
+      "y": 17,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 17,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 17,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 17,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 17,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 17,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 18,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 18,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 18,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 18,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 18,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 18,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 14,
+      "y": 19,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 15,
+      "y": 19,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 19,
+      "y": 19,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 19,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 19,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 19,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 19,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 15,
+      "y": 20,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 20,
+      "y": 20,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 20,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 20,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 20,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 16,
+      "y": 21,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 20,
+      "y": 21,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 34,
+      "y": 21,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 22,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 22,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 22,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 23,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 23,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 23,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 39,
+      "y": 31,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 45,
+      "y": 31,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 32,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 41,
+      "y": 32,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 43,
+      "y": 32,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 46,
+      "y": 32,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 39,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 39,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 39,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 40,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 40,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 40,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 41,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 41,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 41,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 42,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 42,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 42,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 42,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 43,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 43,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 43,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 43,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 44,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 44,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 44,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 45,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 45,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 46,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 47,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 47,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 34,
+      "y": 47,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 47,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 48,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 48,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 48,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 48,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 34,
+      "y": 48,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 49,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 49,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 49,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 49,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 49,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 49,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 49,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 34,
+      "y": 49,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 49,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 49,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 20,
+      "y": 50,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 50,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 50,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 50,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 50,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 50,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 50,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 34,
+      "y": 50,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 50,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 50,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 19,
+      "y": 51,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 20,
+      "y": 51,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 51,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 51,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 23,
+      "y": 51,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 51,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 51,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 34,
+      "y": 51,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 51,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 51,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 37,
+      "y": 51,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 38,
+      "y": 51,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 39,
+      "y": 51,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 18,
+      "y": 52,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 19,
+      "y": 52,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 20,
+      "y": 52,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 52,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 52,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 23,
+      "y": 52,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 52,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 52,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 34,
+      "y": 52,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 52,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 52,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 38,
+      "y": 52,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 39,
+      "y": 52,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 40,
+      "y": 52,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 41,
+      "y": 52,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 53,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 53,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 37,
+      "y": 53,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 38,
+      "y": 53,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 39,
+      "y": 53,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 40,
+      "y": 53,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 41,
+      "y": 53,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 42,
+      "y": 53,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 43,
+      "y": 53,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 44,
+      "y": 53,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 45,
+      "y": 53,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 46,
+      "y": 53,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 38,
+      "y": 54,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 39,
+      "y": 54,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 40,
+      "y": 54,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 41,
+      "y": 54,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 42,
+      "y": 54,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 43,
+      "y": 54,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 44,
+      "y": 54,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 45,
+      "y": 54,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 42,
+      "y": 55,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 43,
+      "y": 55,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 44,
+      "y": 55,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 31,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten material plane with one connected contour shadow"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "label": "Skeleton dagger flanker L1",
+    "image": "art/pixel/units/skeleton-flanker/player.png"
+  },
+  {
+    "label": "Skeleton dagger flanker L2",
+    "image": "art/pixel/units/skeleton-flanker-l2/player.png"
+  },
+  {
+    "label": "Skeleton dagger flanker L3",
+    "image": "art/pixel/units/skeleton-flanker-l3/player.png"
+  },
+  {
+    "label": "Skeleton impact caster L1",
+    "image": "art/pixel/units/skeleton-impact-caster/player.png"
+  },
+  {
+    "label": "Skeleton impact caster L2",
+    "image": "art/pixel/units/skeleton-impact-caster-l2/player.png"
+  },
+  {
+    "label": "Skeleton impact caster L3",
+    "image": "art/pixel/units/skeleton-impact-caster-l3/player.png"
+  },
+  {
+    "label": "Skeleton scythe caster L1",
+    "image": "art/pixel/units/skeleton-scythe-caster/player.png"
+  },
+  {
+    "label": "Skeleton scythe caster L2",
+    "image": "art/pixel/units/skeleton-scythe-caster-l2/player.png"
+  },
+  {
+    "label": "Skeleton scythe caster L3",
+    "image": "art/pixel/units/skeleton-scythe-caster-l3/player.png"
+  },
+  {
+    "label": "Skeleton two-handed axeman L1",
+    "image": "art/pixel/units/skeleton-axeman/player.png"
+  },
+  {
+    "label": "Skeleton two-handed axeman L2",
+    "image": "art/pixel/units/skeleton-axeman-l2/player.png"
+  },
+  {
+    "label": "Skeleton two-handed axeman L3",
+    "image": "art/pixel/units/skeleton-axeman-l3/player.png"
+  },
+  {
+    "label": "Skeleton mounted spearman L1",
+    "image": "art/pixel/units/skeleton-rider/player.png"
+  },
+  {
+    "label": "Skeleton mounted spearman L2",
+    "image": "art/pixel/units/skeleton-rider-l2/player.png"
+  },
+  {
+    "label": "Skeleton mounted spearman L3",
+    "image": "art/pixel/units/skeleton-rider-l3/player.png"
+  }
+]

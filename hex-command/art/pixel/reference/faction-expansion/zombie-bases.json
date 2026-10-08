@@ -1,0 +1,50 @@
+[
+  {
+    "label": "Zombie shambler",
+    "image": "art/pixel/reference/faction-expansion/extracted/zombie-shambler/player.png"
+  },
+  {
+    "label": "Zombie weakling wretch",
+    "image": "art/pixel/reference/faction-expansion/extracted/zombie-wretch/player.png"
+  },
+  {
+    "label": "Zombie weakling crawler",
+    "image": "art/pixel/reference/faction-expansion/extracted/zombie-crawler/player.png"
+  },
+  {
+    "label": "Zombie weakling cleaver",
+    "image": "art/pixel/reference/faction-expansion/extracted/zombie-light-cleaver/player.png"
+  },
+  {
+    "label": "Zombie weakling corruption caster",
+    "image": "art/pixel/reference/faction-expansion/extracted/zombie-novice-caster/player.png"
+  },
+  {
+    "label": "Zombie skeleton-sized walker",
+    "image": "art/pixel/reference/faction-expansion/extracted/zombie-walker/player.png"
+  },
+  {
+    "label": "Zombie skeleton-sized fighter",
+    "image": "art/pixel/reference/faction-expansion/extracted/zombie-fighter/player.png"
+  },
+  {
+    "label": "Zombie skeleton-sized caster",
+    "image": "art/pixel/reference/faction-expansion/extracted/zombie-decay-caster/player.png"
+  },
+  {
+    "label": "Zombie cleaver fighter",
+    "image": "art/pixel/reference/faction-expansion/extracted/zombie-cleaver/player.png"
+  },
+  {
+    "label": "Zombie ghoul",
+    "image": "art/pixel/reference/faction-expansion/extracted/zombie-ghoul/player.png"
+  },
+  {
+    "label": "Zombie plague carrier",
+    "image": "art/pixel/reference/faction-expansion/extracted/zombie-plague-carrier/player.png"
+  },
+  {
+    "label": "Zombie corruption mage",
+    "image": "art/pixel/reference/faction-expansion/extracted/zombie-corruption-mage/player.png"
+  }
+]

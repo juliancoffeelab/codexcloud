@@ -1,0 +1,367 @@
+{
+  "base": "tidehunter",
+  "level": 3,
+  "changes": [
+    {
+      "side": "player",
+      "x": 31,
+      "y": 21,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "player",
+      "x": 32,
+      "y": 21,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "player",
+      "x": 31,
+      "y": 22,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "player",
+      "x": 32,
+      "y": 22,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "player",
+      "x": 31,
+      "y": 23,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "player",
+      "x": 32,
+      "y": 23,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "player",
+      "x": 31,
+      "y": 24,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "player",
+      "x": 32,
+      "y": 24,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "player",
+      "x": 20,
+      "y": 27,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "player",
+      "x": 21,
+      "y": 27,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "player",
+      "x": 22,
+      "y": 27,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "player",
+      "x": 27,
+      "y": 27,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "player",
+      "x": 20,
+      "y": 28,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "player",
+      "x": 21,
+      "y": 28,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "player",
+      "x": 22,
+      "y": 28,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "player",
+      "x": 27,
+      "y": 28,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "player",
+      "x": 20,
+      "y": 29,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "player",
+      "x": 21,
+      "y": 29,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "player",
+      "x": 22,
+      "y": 29,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "player",
+      "x": 25,
+      "y": 29,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "player",
+      "x": 26,
+      "y": 29,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "player",
+      "x": 27,
+      "y": 29,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 31,
+      "y": 21,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 32,
+      "y": 21,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 31,
+      "y": 22,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 32,
+      "y": 22,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 31,
+      "y": 23,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 32,
+      "y": 23,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 31,
+      "y": 24,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 32,
+      "y": 24,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 20,
+      "y": 27,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 21,
+      "y": 27,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 22,
+      "y": 27,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 27,
+      "y": 27,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 20,
+      "y": 28,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 21,
+      "y": 28,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 22,
+      "y": 28,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 27,
+      "y": 28,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 20,
+      "y": 29,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 21,
+      "y": 29,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 22,
+      "y": 29,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 25,
+      "y": 29,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 26,
+      "y": 29,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    },
+    {
+      "side": "enemy",
+      "x": 27,
+      "y": 29,
+      "from": "B",
+      "to": "A",
+      "reason": "Fitted silver breast guard; gripping hand and shaft unchanged"
+    }
+  ],
+  "paletteChanges": {
+    "S": [162, 139, 204, 255],
+    "s": [92, 69, 132, 255],
+    "H": [196, 178, 226, 255],
+    "G": [255, 203, 66, 255],
+    "g": [185, 126, 34, 255],
+    "A": [243, 247, 239, 255],
+    "a": [151, 174, 181, 255]
+  }
+}

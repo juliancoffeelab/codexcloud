@@ -1,0 +1,11 @@
+[
+  { "label": "revenant", "image": "art/pixel/units/revenant/player.png" },
+  { "label": "deatharcher", "image": "art/pixel/units/deatharcher/player.png" },
+  { "label": "direwolf", "image": "art/pixel/units/direwolf/player.png" },
+  { "label": "greatboar", "image": "art/pixel/units/greatboar/player.png" },
+  { "label": "briarweaver", "image": "art/pixel/units/briarweaver/player.png" },
+  { "label": "grovewarden", "image": "art/pixel/units/grovewarden/player.png" },
+  { "label": "tridentguard", "image": "art/pixel/units/tridentguard/player.png" },
+  { "label": "tidehunter", "image": "art/pixel/units/tidehunter/player.png" },
+  { "label": "tidesage", "image": "art/pixel/units/tidesage/player.png" }
+]

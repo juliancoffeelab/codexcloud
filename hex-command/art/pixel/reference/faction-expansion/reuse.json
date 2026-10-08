@@ -1,0 +1,65 @@
+[
+  {
+    "base": "revenant",
+    "id": "skeleton-dreadguard",
+    "name": "Dreadguard",
+    "race": "skeleton",
+    "note": "Silver face guard and shoulder steel; gold shield rim."
+  },
+  {
+    "base": "deatharcher",
+    "id": "skeleton-bow-master",
+    "name": "Bone bow master",
+    "race": "skeleton",
+    "note": "Silver arm guards and gold bow bindings."
+  },
+  {
+    "base": "direwolf",
+    "id": "woodland-alpha-wolf",
+    "name": "Alpha wolf",
+    "race": "woodland",
+    "note": "Pitch-dark coat with silver-gray bristles and muzzle; approved back-fur anatomy."
+  },
+  {
+    "base": "greatboar",
+    "id": "woodland-ancient-boar",
+    "name": "Ancient boar",
+    "race": "woodland",
+    "note": "Ivory coat, dark mane, and gold-trimmed shoulder harness."
+  },
+  {
+    "base": "briarweaver",
+    "id": "woodland-thorn-oracle",
+    "name": "Thorn oracle",
+    "race": "woodland",
+    "note": "Pale ivory body garments and bronze-gold leaf mantle; orange fox fur retained."
+  },
+  {
+    "base": "grovewarden",
+    "id": "woodland-grove-oracle",
+    "name": "Grove oracle",
+    "race": "woodland",
+    "note": "Ivory robes and pale leaf mantle; antlers, face and fitted shoulders retained."
+  },
+  {
+    "base": "tridentguard",
+    "id": "merfolk-reef-champion",
+    "name": "Reef champion",
+    "race": "merfolk",
+    "note": "Lavender scales, bright silver armor and gold shield rim."
+  },
+  {
+    "base": "tidehunter",
+    "id": "merfolk-harpoon-master",
+    "name": "Harpoon master",
+    "race": "merfolk",
+    "note": "Lavender scales and silver breast guard, with the same harpoon grip and spare shafts."
+  },
+  {
+    "base": "tidesage",
+    "id": "merfolk-tide-oracle",
+    "name": "Tide oracle",
+    "race": "merfolk",
+    "note": "Lavender scales and ivory body robe, while mantle and hood remain faction colors."
+  }
+]

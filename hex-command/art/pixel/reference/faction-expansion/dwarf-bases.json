@@ -1,0 +1,34 @@
+[
+  {
+    "label": "Dwarf axe and shield",
+    "image": "art/pixel/reference/faction-expansion/extracted/dwarf-axeguard/player.png"
+  },
+  {
+    "label": "Dwarf two-handed hammer",
+    "image": "art/pixel/reference/faction-expansion/extracted/dwarf-hammerer/player.png"
+  },
+  {
+    "label": "Dwarf pickaxe",
+    "image": "art/pixel/reference/faction-expansion/extracted/dwarf-pickaxe/player.png"
+  },
+  {
+    "label": "Dwarf poleaxe",
+    "image": "art/pixel/reference/faction-expansion/extracted/dwarf-poleaxe/player.png"
+  },
+  {
+    "label": "Dwarf crossbow",
+    "image": "art/pixel/reference/faction-expansion/extracted/dwarf-crossbow/player.png"
+  },
+  {
+    "label": "Dwarf arquebus",
+    "image": "art/pixel/reference/faction-expansion/extracted/dwarf-arquebus/player.png"
+  },
+  {
+    "label": "Dwarf rune caster",
+    "image": "art/pixel/reference/faction-expansion/extracted/dwarf-runesmith/player.png"
+  },
+  {
+    "label": "Dwarf goat-mounted hammerman",
+    "image": "art/pixel/reference/faction-expansion/extracted/dwarf-goat-rider/player.png"
+  }
+]

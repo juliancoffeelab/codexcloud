@@ -1,0 +1,89 @@
+{
+  "coordinates": "64x64 logical slot before native crop",
+  "changes": [
+    {
+      "x": 0,
+      "y": 0,
+      "from": "O",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 42,
+      "y": 22,
+      "from": "W",
+      "to": "w",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 32,
+      "y": 23,
+      "from": "B",
+      "to": "V",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 42,
+      "y": 23,
+      "from": "W",
+      "to": "w",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 45,
+      "y": 28,
+      "from": "B",
+      "to": "w",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 14,
+      "y": 37,
+      "from": "t",
+      "to": "T",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 13,
+      "y": 38,
+      "from": "t",
+      "to": "T",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 45,
+      "y": 38,
+      "from": "W",
+      "to": "w",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 45,
+      "y": 39,
+      "from": "W",
+      "to": "w",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 45,
+      "y": 40,
+      "from": "W",
+      "to": "w",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 40,
+      "y": 47,
+      "from": "w",
+      "to": "B",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 21,
+      "y": 49,
+      "from": "b",
+      "to": "B",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    }
+  ]
+}

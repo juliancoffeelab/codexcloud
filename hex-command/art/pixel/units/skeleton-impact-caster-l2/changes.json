@@ -1,0 +1,126 @@
+{
+  "base": "skeleton-impact-caster",
+  "level": 2,
+  "changes": [
+    {
+      "x": 25,
+      "y": 26,
+      "from": "v",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 21,
+      "y": 27,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 22,
+      "y": 27,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 21,
+      "y": 28,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 22,
+      "y": 28,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 37,
+      "y": 26,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 39,
+      "y": 27,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 37,
+      "y": 28,
+      "from": "v",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 38,
+      "y": 28,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 34,
+      "y": 17,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 35,
+      "y": 17,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 36,
+      "y": 17,
+      "from": "i",
+      "to": "a",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 33,
+      "y": 18,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 34,
+      "y": 18,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 35,
+      "y": 18,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 36,
+      "y": 18,
+      "from": "i",
+      "to": "a",
+      "reason": "Connected skull helmet band"
+    }
+  ],
+  "paletteChanges": {
+    "V": [108, 87, 126, 255],
+    "v": [64, 47, 81, 255],
+    "A": [222, 232, 235, 255],
+    "a": [129, 151, 160, 255],
+    "R": [185, 24, 37, 255],
+    "r": [112, 14, 24, 255]
+  }
+}

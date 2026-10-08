@@ -1,0 +1,184 @@
+{
+  "base": "skeleton-impact-caster",
+  "level": 3,
+  "changes": [
+    {
+      "x": 25,
+      "y": 26,
+      "from": "v",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 21,
+      "y": 27,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 22,
+      "y": 27,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 21,
+      "y": 28,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 22,
+      "y": 28,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 37,
+      "y": 26,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 39,
+      "y": 27,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 37,
+      "y": 28,
+      "from": "v",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 38,
+      "y": 28,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 34,
+      "y": 17,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 35,
+      "y": 17,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 36,
+      "y": 17,
+      "from": "i",
+      "to": "a",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 33,
+      "y": 18,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 34,
+      "y": 18,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 35,
+      "y": 18,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 36,
+      "y": 18,
+      "from": "i",
+      "to": "a",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 32,
+      "y": 19,
+      "from": "i",
+      "to": "a",
+      "reason": "Near face-guard plate; eye sockets stay open"
+    },
+    {
+      "x": 32,
+      "y": 20,
+      "from": "I",
+      "to": "A",
+      "reason": "Near face-guard plate; eye sockets stay open"
+    },
+    {
+      "x": 33,
+      "y": 20,
+      "from": "I",
+      "to": "A",
+      "reason": "Near face-guard plate; eye sockets stay open"
+    },
+    {
+      "x": 33,
+      "y": 21,
+      "from": "I",
+      "to": "A",
+      "reason": "Near face-guard plate; eye sockets stay open"
+    },
+    {
+      "x": 33,
+      "y": 22,
+      "from": "I",
+      "to": "A",
+      "reason": "Near face-guard plate; eye sockets stay open"
+    },
+    {
+      "x": 32,
+      "y": 34,
+      "from": "B",
+      "to": "G",
+      "reason": "Connected gold belt clasp/trim"
+    },
+    {
+      "x": 34,
+      "y": 34,
+      "from": "B",
+      "to": "G",
+      "reason": "Connected gold belt clasp/trim"
+    },
+    {
+      "x": 31,
+      "y": 35,
+      "from": "B",
+      "to": "G",
+      "reason": "Connected gold belt clasp/trim"
+    }
+  ],
+  "paletteChanges": {
+    "V": [155, 51, 78, 255],
+    "v": [85, 28, 53, 255],
+    "A": [244, 248, 241, 255],
+    "a": [155, 184, 191, 255],
+    "G": [255, 204, 65, 255],
+    "E": [151, 232, 174, 255],
+    "R": [185, 24, 37, 255],
+    "r": [112, 14, 24, 255]
+  }
+}

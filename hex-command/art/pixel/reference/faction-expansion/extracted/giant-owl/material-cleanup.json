@@ -1,0 +1,6130 @@
+{
+  "coordinates": "64x64 original slot",
+  "edits": [
+    {
+      "x": 12,
+      "y": 3,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 13,
+      "y": 3,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 3,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 6,
+      "y": 4,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 12,
+      "y": 4,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 13,
+      "y": 4,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 14,
+      "y": 4,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 4,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 4,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 6,
+      "y": 5,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 7,
+      "y": 5,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 8,
+      "y": 5,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 13,
+      "y": 5,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 14,
+      "y": 5,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 15,
+      "y": 5,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 5,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 5,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 5,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 6,
+      "y": 6,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 7,
+      "y": 6,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 8,
+      "y": 6,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 9,
+      "y": 6,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 10,
+      "y": 6,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 11,
+      "y": 6,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 14,
+      "y": 6,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 15,
+      "y": 6,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 6,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 6,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 6,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 20,
+      "y": 6,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 7,
+      "y": 7,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 8,
+      "y": 7,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 9,
+      "y": 7,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 10,
+      "y": 7,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 11,
+      "y": 7,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 12,
+      "y": 7,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 15,
+      "y": 7,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 7,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 7,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 7,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 7,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 20,
+      "y": 7,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 7,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 7,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 59,
+      "y": 7,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 3,
+      "y": 8,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 8,
+      "y": 8,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 9,
+      "y": 8,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 10,
+      "y": 8,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 8,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 8,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 8,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 8,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 20,
+      "y": 8,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 8,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 8,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 58,
+      "y": 8,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 59,
+      "y": 8,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 3,
+      "y": 9,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 4,
+      "y": 9,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 5,
+      "y": 9,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 6,
+      "y": 9,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 7,
+      "y": 9,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 10,
+      "y": 9,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 9,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 9,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 9,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 9,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 20,
+      "y": 9,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 9,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 9,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 9,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 9,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 54,
+      "y": 9,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 58,
+      "y": 9,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 59,
+      "y": 9,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 4,
+      "y": 10,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 5,
+      "y": 10,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 6,
+      "y": 10,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 7,
+      "y": 10,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 8,
+      "y": 10,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 9,
+      "y": 10,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 10,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 10,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 10,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 10,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 20,
+      "y": 10,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 10,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 10,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 10,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 10,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 54,
+      "y": 10,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 55,
+      "y": 10,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 57,
+      "y": 10,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 58,
+      "y": 10,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 59,
+      "y": 10,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 4,
+      "y": 11,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 5,
+      "y": 11,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 6,
+      "y": 11,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 7,
+      "y": 11,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 11,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 11,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 11,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 20,
+      "y": 11,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 11,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 11,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 11,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 11,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 11,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 53,
+      "y": 11,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 54,
+      "y": 11,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 55,
+      "y": 11,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 57,
+      "y": 11,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 58,
+      "y": 11,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 59,
+      "y": 11,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 6,
+      "y": 12,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 7,
+      "y": 12,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 12,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 12,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 12,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 12,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 20,
+      "y": 12,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 12,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 12,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 12,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 50,
+      "y": 12,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 12,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 53,
+      "y": 12,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 54,
+      "y": 12,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 55,
+      "y": 12,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 57,
+      "y": 12,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 58,
+      "y": 12,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 8,
+      "y": 13,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 13,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 13,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 13,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 13,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 20,
+      "y": 13,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 13,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 13,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 13,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 13,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 13,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 13,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 50,
+      "y": 13,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 13,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 52,
+      "y": 13,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 54,
+      "y": 13,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 55,
+      "y": 13,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 57,
+      "y": 13,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 58,
+      "y": 13,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 3,
+      "y": 14,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 4,
+      "y": 14,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 5,
+      "y": 14,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 6,
+      "y": 14,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 7,
+      "y": 14,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 14,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 14,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 14,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 20,
+      "y": 14,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 14,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 14,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 14,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 14,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 14,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 47,
+      "y": 14,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 14,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 14,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 50,
+      "y": 14,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 14,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 52,
+      "y": 14,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 53,
+      "y": 14,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 54,
+      "y": 14,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 55,
+      "y": 14,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 56,
+      "y": 14,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 57,
+      "y": 14,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 58,
+      "y": 14,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 3,
+      "y": 15,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 4,
+      "y": 15,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 5,
+      "y": 15,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 6,
+      "y": 15,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 15,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 15,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 15,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 15,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 20,
+      "y": 15,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 15,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 15,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 15,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 15,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 15,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 15,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 47,
+      "y": 15,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 15,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 15,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 15,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 52,
+      "y": 15,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 53,
+      "y": 15,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 54,
+      "y": 15,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 55,
+      "y": 15,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 56,
+      "y": 15,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 57,
+      "y": 15,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 4,
+      "y": 16,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 5,
+      "y": 16,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 6,
+      "y": 16,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 16,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 16,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 16,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 16,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 20,
+      "y": 16,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 16,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 16,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 16,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 16,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 16,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 16,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 44,
+      "y": 16,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 45,
+      "y": 16,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 46,
+      "y": 16,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 16,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 16,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 50,
+      "y": 16,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 16,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 52,
+      "y": 16,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 53,
+      "y": 16,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 54,
+      "y": 16,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 55,
+      "y": 16,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 56,
+      "y": 16,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 57,
+      "y": 16,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 6,
+      "y": 17,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 7,
+      "y": 17,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 17,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 17,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 17,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 20,
+      "y": 17,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 17,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 17,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 17,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 17,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 17,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 17,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 17,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 44,
+      "y": 17,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 45,
+      "y": 17,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 46,
+      "y": 17,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 47,
+      "y": 17,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 17,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 50,
+      "y": 17,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 17,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 52,
+      "y": 17,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 53,
+      "y": 17,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 54,
+      "y": 17,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 55,
+      "y": 17,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 18,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 18,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 18,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 20,
+      "y": 18,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 18,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 18,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 18,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 18,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 18,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 18,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 18,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 42,
+      "y": 18,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 43,
+      "y": 18,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 45,
+      "y": 18,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 46,
+      "y": 18,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 47,
+      "y": 18,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 18,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 18,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 50,
+      "y": 18,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 18,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 52,
+      "y": 18,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 5,
+      "y": 19,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 6,
+      "y": 19,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 7,
+      "y": 19,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 19,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 19,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 20,
+      "y": 19,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 19,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 19,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 19,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 19,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 19,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 19,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 19,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 41,
+      "y": 19,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 42,
+      "y": 19,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 43,
+      "y": 19,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 44,
+      "y": 19,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 46,
+      "y": 19,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 47,
+      "y": 19,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 19,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 19,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 50,
+      "y": 19,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 56,
+      "y": 19,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 5,
+      "y": 20,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 6,
+      "y": 20,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 7,
+      "y": 20,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 20,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 20,
+      "y": 20,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 20,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 20,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 20,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 20,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 20,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 20,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 20,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 39,
+      "y": 20,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 40,
+      "y": 20,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 41,
+      "y": 20,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 42,
+      "y": 20,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 43,
+      "y": 20,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 44,
+      "y": 20,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 45,
+      "y": 20,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 46,
+      "y": 20,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 47,
+      "y": 20,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 20,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 20,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 6,
+      "y": 21,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 7,
+      "y": 21,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 8,
+      "y": 21,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 20,
+      "y": 21,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 21,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 21,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 21,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 21,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 21,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 21,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 21,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 39,
+      "y": 21,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 40,
+      "y": 21,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 41,
+      "y": 21,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 42,
+      "y": 21,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 43,
+      "y": 21,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 44,
+      "y": 21,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 45,
+      "y": 21,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 46,
+      "y": 21,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 47,
+      "y": 21,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 21,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 22,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 22,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 22,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 22,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 22,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 22,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 22,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 22,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 37,
+      "y": 22,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 38,
+      "y": 22,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 39,
+      "y": 22,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 40,
+      "y": 22,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 41,
+      "y": 22,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 47,
+      "y": 22,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 9,
+      "y": 23,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 20,
+      "y": 23,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 23,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 23,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 23,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 23,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 23,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 23,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 23,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 23,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 37,
+      "y": 23,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 38,
+      "y": 23,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 39,
+      "y": 23,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 42,
+      "y": 23,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 43,
+      "y": 23,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 44,
+      "y": 23,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 45,
+      "y": 23,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 46,
+      "y": 23,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 47,
+      "y": 23,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 8,
+      "y": 24,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 9,
+      "y": 24,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 24,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 24,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 24,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 24,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 24,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 24,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 24,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 24,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 40,
+      "y": 24,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 41,
+      "y": 24,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 42,
+      "y": 24,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 43,
+      "y": 24,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 44,
+      "y": 24,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 45,
+      "y": 24,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 46,
+      "y": 24,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 47,
+      "y": 24,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 24,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 24,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 50,
+      "y": 24,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 10,
+      "y": 25,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 25,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 25,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 25,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 25,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 25,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 25,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 25,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 25,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 32,
+      "y": 25,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 39,
+      "y": 25,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 40,
+      "y": 25,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 41,
+      "y": 25,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 42,
+      "y": 25,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 43,
+      "y": 25,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 45,
+      "y": 25,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 46,
+      "y": 25,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 47,
+      "y": 25,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 25,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 25,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 50,
+      "y": 25,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 25,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 26,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 26,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 26,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 26,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 26,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 26,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 26,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 26,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 33,
+      "y": 26,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 38,
+      "y": 26,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 39,
+      "y": 26,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 40,
+      "y": 26,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 41,
+      "y": 26,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 42,
+      "y": 26,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 43,
+      "y": 26,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 46,
+      "y": 26,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 47,
+      "y": 26,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 26,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 26,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 50,
+      "y": 26,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 26,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 52,
+      "y": 26,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 10,
+      "y": 27,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 11,
+      "y": 27,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 27,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 27,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 27,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 27,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 27,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 27,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 27,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 27,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 31,
+      "y": 27,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 34,
+      "y": 27,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 37,
+      "y": 27,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 38,
+      "y": 27,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 39,
+      "y": 27,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 40,
+      "y": 27,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 41,
+      "y": 27,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 27,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 27,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 50,
+      "y": 27,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 27,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 52,
+      "y": 27,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 53,
+      "y": 27,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 10,
+      "y": 28,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 11,
+      "y": 28,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 28,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 28,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 28,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 28,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 28,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 28,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 28,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 28,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 31,
+      "y": 28,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 32,
+      "y": 28,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 38,
+      "y": 28,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 39,
+      "y": 28,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 40,
+      "y": 28,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 28,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 50,
+      "y": 28,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 28,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 29,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 29,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 29,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 29,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 29,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 29,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 31,
+      "y": 29,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 32,
+      "y": 29,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 33,
+      "y": 29,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 38,
+      "y": 29,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 39,
+      "y": 29,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 40,
+      "y": 29,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 45,
+      "y": 29,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 50,
+      "y": 29,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 13,
+      "y": 30,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 14,
+      "y": 30,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 30,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 30,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 30,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 30,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 30,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 30,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 31,
+      "y": 30,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 32,
+      "y": 30,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 33,
+      "y": 30,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 34,
+      "y": 30,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 38,
+      "y": 30,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 39,
+      "y": 30,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 50,
+      "y": 30,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 53,
+      "y": 30,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 13,
+      "y": 31,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 14,
+      "y": 31,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 31,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 31,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 31,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 31,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 31,
+      "y": 31,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 32,
+      "y": 31,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 33,
+      "y": 31,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 34,
+      "y": 31,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 35,
+      "y": 31,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 39,
+      "y": 31,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 32,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 32,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 32,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 31,
+      "y": 32,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 32,
+      "y": 32,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 33,
+      "y": 32,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 34,
+      "y": 32,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 35,
+      "y": 32,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 40,
+      "y": 32,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 32,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 33,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 33,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 33,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 31,
+      "y": 33,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 32,
+      "y": 33,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 33,
+      "y": 33,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 34,
+      "y": 33,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 35,
+      "y": 33,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 40,
+      "y": 33,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 33,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 33,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 34,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 34,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 34,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 34,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 31,
+      "y": 34,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 32,
+      "y": 34,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 33,
+      "y": 34,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 34,
+      "y": 34,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 35,
+      "y": 34,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 36,
+      "y": 34,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 41,
+      "y": 34,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 34,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 34,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 35,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 35,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 35,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 31,
+      "y": 35,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 32,
+      "y": 35,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 33,
+      "y": 35,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 34,
+      "y": 35,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 35,
+      "y": 35,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 36,
+      "y": 35,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 42,
+      "y": 35,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 35,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 36,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 20,
+      "y": 36,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 36,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 36,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 36,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 36,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 36,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 31,
+      "y": 36,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 32,
+      "y": 36,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 33,
+      "y": 36,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 34,
+      "y": 36,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 35,
+      "y": 36,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 36,
+      "y": 36,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 37,
+      "y": 36,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 36,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 37,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 37,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 37,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 37,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 37,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 37,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 37,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 31,
+      "y": 37,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 32,
+      "y": 37,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 33,
+      "y": 37,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 34,
+      "y": 37,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 35,
+      "y": 37,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 38,
+      "y": 37,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 46,
+      "y": 37,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 47,
+      "y": 37,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 37,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 20,
+      "y": 38,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 38,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 38,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 38,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 38,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 38,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 38,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 38,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 31,
+      "y": 38,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 32,
+      "y": 38,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 33,
+      "y": 38,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 34,
+      "y": 38,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 35,
+      "y": 38,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 36,
+      "y": 38,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 39,
+      "y": 38,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 15,
+      "y": 39,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 39,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 39,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 39,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 39,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 39,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 39,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 39,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 39,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 39,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 39,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 31,
+      "y": 39,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 32,
+      "y": 39,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 33,
+      "y": 39,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 34,
+      "y": 39,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 40,
+      "y": 39,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 12,
+      "y": 40,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 40,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 40,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 40,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 40,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 40,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 40,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 40,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 40,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 40,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 40,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 31,
+      "y": 40,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 32,
+      "y": 40,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 33,
+      "y": 40,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 10,
+      "y": 41,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 11,
+      "y": 41,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 12,
+      "y": 41,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 41,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 41,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 41,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 41,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 41,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 41,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 41,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 41,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 41,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 41,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 31,
+      "y": 41,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 32,
+      "y": 41,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 34,
+      "y": 41,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 42,
+      "y": 41,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 9,
+      "y": 42,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 10,
+      "y": 42,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 11,
+      "y": 42,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 12,
+      "y": 42,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 13,
+      "y": 42,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 20,
+      "y": 42,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 42,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 42,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 42,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 42,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 42,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 42,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 42,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 42,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 42,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 35,
+      "y": 42,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 9,
+      "y": 43,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 10,
+      "y": 43,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 11,
+      "y": 43,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 12,
+      "y": 43,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 14,
+      "y": 43,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 43,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 43,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 43,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 43,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 43,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 43,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 43,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 43,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 35,
+      "y": 43,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 42,
+      "y": 43,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 44,
+      "y": 43,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 13,
+      "y": 44,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 44,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 44,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 44,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 26,
+      "y": 44,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 44,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 44,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 44,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 30,
+      "y": 44,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 41,
+      "y": 44,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 12,
+      "y": 45,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 13,
+      "y": 45,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 14,
+      "y": 45,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 45,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 45,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 45,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 27,
+      "y": 45,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 45,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 29,
+      "y": 45,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 38,
+      "y": 45,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 39,
+      "y": 45,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 40,
+      "y": 45,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 11,
+      "y": 46,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 12,
+      "y": 46,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 13,
+      "y": 46,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 14,
+      "y": 46,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 46,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 25,
+      "y": 46,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 28,
+      "y": 46,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 38,
+      "y": 46,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 39,
+      "y": 46,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 40,
+      "y": 46,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 11,
+      "y": 47,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 12,
+      "y": 47,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 13,
+      "y": 47,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 15,
+      "y": 47,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 39,
+      "y": 47,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 50,
+      "y": 47,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 47,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 14,
+      "y": 48,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 15,
+      "y": 48,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 48,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 48,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 52,
+      "y": 48,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 13,
+      "y": 49,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 14,
+      "y": 49,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 15,
+      "y": 49,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 49,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 24,
+      "y": 49,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 34,
+      "y": 49,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 41,
+      "y": 49,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 45,
+      "y": 49,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 48,
+      "y": 49,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 53,
+      "y": 49,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 13,
+      "y": 50,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 14,
+      "y": 50,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 15,
+      "y": 50,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 16,
+      "y": 50,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 50,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 50,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 32,
+      "y": 50,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 47,
+      "y": 50,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 49,
+      "y": 50,
+      "from": "W",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 50,
+      "y": 50,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 13,
+      "y": 51,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 14,
+      "y": 51,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 15,
+      "y": 51,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 51,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 51,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 51,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 51,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 51,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 51,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 46,
+      "y": 51,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 51,
+      "y": 51,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 52,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 52,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 52,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 52,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 52,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 23,
+      "y": 52,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 46,
+      "y": 52,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 53,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 18,
+      "y": 53,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 19,
+      "y": 53,
+      "from": "b",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 21,
+      "y": 53,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 22,
+      "y": 53,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 32,
+      "y": 53,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 34,
+      "y": 53,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 38,
+      "y": 53,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 40,
+      "y": 53,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 45,
+      "y": 53,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 31,
+      "y": 54,
+      "from": "w",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 39,
+      "y": 54,
+      "from": "V",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 40,
+      "y": 54,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 46,
+      "y": 54,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 31,
+      "y": 55,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 37,
+      "y": 55,
+      "from": "B",
+      "to": "H",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 40,
+      "y": 55,
+      "from": "v",
+      "to": "h",
+      "reason": "One natural coat/scale/feather material instead of quantization aliases"
+    },
+    {
+      "x": 17,
+      "y": 9,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 19,
+      "y": 9,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 21,
+      "y": 10,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 18,
+      "y": 12,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 23,
+      "y": 13,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 18,
+      "y": 15,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 53,
+      "y": 15,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 23,
+      "y": 16,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 26,
+      "y": 17,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 46,
+      "y": 17,
+      "from": "H",
+      "to": "h",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 26,
+      "y": 19,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 21,
+      "y": 22,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 27,
+      "y": 22,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 22,
+      "y": 24,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 24,
+      "y": 26,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 29,
+      "y": 26,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 25,
+      "y": 28,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 31,
+      "y": 28,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 26,
+      "y": 30,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 33,
+      "y": 31,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 32,
+      "y": 32,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 31,
+      "y": 33,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 25,
+      "y": 41,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 26,
+      "y": 42,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 23,
+      "y": 43,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 17,
+      "y": 12,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 53,
+      "y": 14,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 17,
+      "y": 15,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 27,
+      "y": 21,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 28,
+      "y": 25,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 32,
+      "y": 29,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 33,
+      "y": 30,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 26,
+      "y": 43,
+      "from": "h",
+      "to": "H",
+      "reason": "Remove isolated natural-material fleck inside a connected plane"
+    },
+    {
+      "x": 14,
+      "y": 6,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 6,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 7,
+      "y": 7,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 12,
+      "y": 7,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 16,
+      "y": 8,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 4,
+      "y": 10,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 5,
+      "y": 10,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 9,
+      "y": 10,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 16,
+      "y": 12,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 23,
+      "y": 12,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 16,
+      "y": 15,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 15,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 15,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 48,
+      "y": 16,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 57,
+      "y": 16,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 17,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 17,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 18,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 18,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 45,
+      "y": 18,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 46,
+      "y": 18,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 52,
+      "y": 18,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 19,
+      "y": 20,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 20,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 20,
+      "y": 23,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 23,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 25,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 25,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 37,
+      "y": 27,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 41,
+      "y": 27,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 32,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 32,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 33,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 33,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 35,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 35,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 36,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 37,
+      "y": 36,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 23,
+      "y": 40,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 40,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 40,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 44,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 44,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 44,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 13,
+      "y": 49,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 16,
+      "y": 49,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 16,
+      "y": 50,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 50,
+      "from": "h",
+      "to": "H",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 18,
+      "y": 50,
+      "from": "H",
+      "to": "h",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 39,
+      "y": 37,
+      "from": "t",
+      "to": "T",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    },
+    {
+      "x": 41,
+      "y": 39,
+      "from": "t",
+      "to": "T",
+      "reason": "Smooth a broad lit material plane, preserve its right contour shadow"
+    }
+  ]
+}

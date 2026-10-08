@@ -1,0 +1,146 @@
+[
+  {
+    "label": "1. Skeleton dagger flanker",
+    "image": "art/pixel/units/skeleton-flanker/player.png"
+  },
+  {
+    "label": "2. Skeleton impact caster",
+    "image": "art/pixel/units/skeleton-impact-caster/player.png"
+  },
+  {
+    "label": "3. Skeleton scythe caster",
+    "image": "art/pixel/units/skeleton-scythe-caster/player.png"
+  },
+  {
+    "label": "4. Skeleton two-handed axeman",
+    "image": "art/pixel/units/skeleton-axeman/player.png"
+  },
+  {
+    "label": "5. Skeleton mounted spearman",
+    "image": "art/pixel/units/skeleton-rider/player.png"
+  },
+  {
+    "label": "6. Zombie shambler",
+    "image": "art/pixel/units/zombie-shambler/player.png"
+  },
+  {
+    "label": "7. Zombie weakling wretch",
+    "image": "art/pixel/units/zombie-wretch/player.png"
+  },
+  {
+    "label": "8. Zombie weakling crawler",
+    "image": "art/pixel/units/zombie-crawler/player.png"
+  },
+  {
+    "label": "9. Zombie weakling cleaver",
+    "image": "art/pixel/units/zombie-light-cleaver/player.png"
+  },
+  {
+    "label": "10. Zombie weakling corruption caster",
+    "image": "art/pixel/units/zombie-novice-caster/player.png"
+  },
+  {
+    "label": "11. Zombie skeleton-sized walker",
+    "image": "art/pixel/units/zombie-walker/player.png"
+  },
+  {
+    "label": "12. Zombie skeleton-sized fighter",
+    "image": "art/pixel/units/zombie-fighter/player.png"
+  },
+  {
+    "label": "13. Zombie skeleton-sized caster",
+    "image": "art/pixel/units/zombie-decay-caster/player.png"
+  },
+  {
+    "label": "14. Zombie cleaver fighter",
+    "image": "art/pixel/units/zombie-cleaver/player.png"
+  },
+  {
+    "label": "15. Zombie ghoul",
+    "image": "art/pixel/units/zombie-ghoul/player.png"
+  },
+  {
+    "label": "16. Zombie plague carrier",
+    "image": "art/pixel/units/zombie-plague-carrier/player.png"
+  },
+  {
+    "label": "17. Zombie corruption mage",
+    "image": "art/pixel/units/zombie-corruption-mage/player.png"
+  },
+  {
+    "label": "18. Elf spear and shield",
+    "image": "art/pixel/units/elf-spearman/player.png"
+  },
+  {
+    "label": "19. Elf two-handed sword",
+    "image": "art/pixel/units/elf-bladedancer/player.png"
+  },
+  {
+    "label": "20. Elf archer",
+    "image": "art/pixel/units/elf-archer/player.png"
+  },
+  {
+    "label": "21. Elf dual knife flanker",
+    "image": "art/pixel/units/elf-flanker/player.png"
+  },
+  {
+    "label": "22. Elf branch staff caster",
+    "image": "art/pixel/units/elf-caster/player.png"
+  },
+  {
+    "label": "23. Elf deer-mounted archer",
+    "image": "art/pixel/units/elf-deer-archer/player.png"
+  },
+  {
+    "label": "24. Dwarf axe and shield",
+    "image": "art/pixel/units/dwarf-axeguard/player.png"
+  },
+  {
+    "label": "25. Dwarf two-handed hammer",
+    "image": "art/pixel/units/dwarf-hammerer/player.png"
+  },
+  {
+    "label": "26. Dwarf pickaxe",
+    "image": "art/pixel/units/dwarf-pickaxe/player.png"
+  },
+  {
+    "label": "27. Dwarf poleaxe",
+    "image": "art/pixel/units/dwarf-poleaxe/player.png"
+  },
+  {
+    "label": "28. Dwarf crossbow",
+    "image": "art/pixel/units/dwarf-crossbow/player.png"
+  },
+  {
+    "label": "29. Dwarf arquebus",
+    "image": "art/pixel/units/dwarf-arquebus/player.png"
+  },
+  {
+    "label": "30. Dwarf rune caster",
+    "image": "art/pixel/units/dwarf-runesmith/player.png"
+  },
+  {
+    "label": "31. Dwarf goat-mounted hammerman",
+    "image": "art/pixel/units/dwarf-goat-rider/player.png"
+  },
+  {
+    "label": "32. Fox spear and shield",
+    "image": "art/pixel/units/fox-spearguard/player.png"
+  },
+  {
+    "label": "33. Merfolk two-handed trident",
+    "image": "art/pixel/units/merfolk-trident/player.png"
+  },
+  {
+    "label": "34. Merfolk net and spear",
+    "image": "art/pixel/units/merfolk-netter/player.png"
+  },
+  {
+    "label": "35. Merfolk mace and shield",
+    "image": "art/pixel/units/merfolk-maceguard/player.png"
+  },
+  {
+    "label": "36. Merfolk harpoon thrower",
+    "image": "art/pixel/units/merfolk-harpoonthrower/player.png"
+  }
+]

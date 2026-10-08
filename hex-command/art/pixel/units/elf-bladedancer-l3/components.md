@@ -1,0 +1,7 @@
+# Elf two-handed sword — L3
+
+Tall slim elf in graceful wide stance, BOTH hands grip ONE long gently curved steel sword diagonally in front of body. Pointed ears, green tunic, light leather protection, short teal cloak. Blade clear of face, correct connected hilt and hands.
+
+Anatomy source: elf-bladedancer. Race appearance: Slim tall woodland elves: long slender limbs, small heads, visible pointed ears, graceful but practical athletic poses. Slightly taller than human anchors, not stretched. Leaf-green garments, light cream details, warm brown hair and leather, teal faction cloaks. Elegant and restrained, not bulky human armor.
+
+Native canvas: 48×48. Source generation and extraction are in art/pixel/reference/faction-expansion/. Both factions share the same geometry; T/t faction cloth becomes R/r. O is outline; G is gold. H/h tissue, I/i bone or ivory, B/b leather, W/w wood, V/v body clothing, C/c coral equipment, A/a metal, E spell effect. Tier edits preserve this source pose and grips.

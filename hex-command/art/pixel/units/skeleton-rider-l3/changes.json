@@ -1,0 +1,401 @@
+{
+  "base": "skeleton-rider",
+  "level": 3,
+  "changes": [
+    {
+      "x": 26,
+      "y": 18,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 29,
+      "y": 18,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 30,
+      "y": 18,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 18,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 28,
+      "y": 19,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 29,
+      "y": 19,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 19,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 30,
+      "y": 20,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 20,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 27,
+      "y": 21,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 28,
+      "y": 21,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 29,
+      "y": 21,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 30,
+      "y": 21,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 21,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 27,
+      "y": 22,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 28,
+      "y": 22,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 29,
+      "y": 22,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 30,
+      "y": 22,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 31,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 32,
+      "y": 31,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 33,
+      "y": 31,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 32,
+      "y": 32,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 33,
+      "y": 32,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 33,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 32,
+      "y": 33,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 33,
+      "y": 33,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 34,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 32,
+      "y": 34,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 30,
+      "y": 35,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 35,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 32,
+      "y": 35,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 34,
+      "y": 35,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 30,
+      "y": 36,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 31,
+      "y": 36,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 34,
+      "y": 36,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 29,
+      "y": 10,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 30,
+      "y": 10,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 31,
+      "y": 10,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 28,
+      "y": 11,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 29,
+      "y": 11,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 30,
+      "y": 11,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 31,
+      "y": 11,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 28,
+      "y": 12,
+      "from": "I",
+      "to": "A",
+      "reason": "Near face-guard plate; eye sockets stay open"
+    },
+    {
+      "x": 30,
+      "y": 12,
+      "from": "I",
+      "to": "a",
+      "reason": "Far face-guard plate; eye sockets stay open"
+    },
+    {
+      "x": 31,
+      "y": 12,
+      "from": "I",
+      "to": "a",
+      "reason": "Far face-guard plate; eye sockets stay open"
+    },
+    {
+      "x": 30,
+      "y": 13,
+      "from": "I",
+      "to": "a",
+      "reason": "Far face-guard plate; eye sockets stay open"
+    },
+    {
+      "x": 31,
+      "y": 13,
+      "from": "i",
+      "to": "a",
+      "reason": "Far face-guard plate; eye sockets stay open"
+    },
+    {
+      "x": 30,
+      "y": 14,
+      "from": "I",
+      "to": "a",
+      "reason": "Far face-guard plate; eye sockets stay open"
+    },
+    {
+      "x": 31,
+      "y": 14,
+      "from": "I",
+      "to": "a",
+      "reason": "Far face-guard plate; eye sockets stay open"
+    },
+    {
+      "x": 28,
+      "y": 9,
+      "from": ".",
+      "to": "A",
+      "reason": "Connected jagged crown point"
+    },
+    {
+      "x": 28,
+      "y": 8,
+      "from": ".",
+      "to": "O",
+      "reason": "Crown contour"
+    },
+    {
+      "x": 29,
+      "y": 9,
+      "from": "O",
+      "to": "A",
+      "reason": "Connected jagged crown point"
+    },
+    {
+      "x": 29,
+      "y": 8,
+      "from": ".",
+      "to": "O",
+      "reason": "Crown contour"
+    },
+    {
+      "x": 30,
+      "y": 9,
+      "from": "O",
+      "to": "A",
+      "reason": "Connected jagged crown point"
+    },
+    {
+      "x": 30,
+      "y": 8,
+      "from": ".",
+      "to": "O",
+      "reason": "Crown contour"
+    }
+  ],
+  "paletteChanges": {
+    "V": [155, 51, 78, 255],
+    "v": [85, 28, 53, 255],
+    "A": [244, 248, 241, 255],
+    "a": [155, 184, 191, 255],
+    "G": [255, 204, 65, 255],
+    "E": [151, 232, 174, 255],
+    "R": [185, 24, 37, 255],
+    "r": [112, 14, 24, 255]
+  }
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "label": "Fox spear and shield L1",
+    "image": "art/pixel/units/fox-spearguard/player.png"
+  },
+  {
+    "label": "Fox spear and shield L2",
+    "image": "art/pixel/units/fox-spearguard-l2/player.png"
+  },
+  {
+    "label": "Fox spear and shield L3",
+    "image": "art/pixel/units/fox-spearguard-l3/player.png"
+  }
+]

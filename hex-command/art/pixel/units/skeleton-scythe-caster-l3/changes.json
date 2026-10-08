@@ -1,0 +1,219 @@
+{
+  "base": "skeleton-scythe-caster",
+  "level": 3,
+  "changes": [
+    {
+      "x": 20,
+      "y": 28,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 23,
+      "y": 28,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 24,
+      "y": 28,
+      "from": "v",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 20,
+      "y": 29,
+      "from": "i",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 23,
+      "y": 29,
+      "from": "v",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 23,
+      "y": 30,
+      "from": "v",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 26,
+      "y": 30,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 39,
+      "y": 28,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 40,
+      "y": 28,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 42,
+      "y": 28,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 37,
+      "y": 29,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 38,
+      "y": 29,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 39,
+      "y": 29,
+      "from": "v",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 41,
+      "y": 29,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 42,
+      "y": 29,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 37,
+      "y": 30,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 38,
+      "y": 30,
+      "from": "v",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 40,
+      "y": 30,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 41,
+      "y": 30,
+      "from": "I",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 32,
+      "y": 18,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 33,
+      "y": 18,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 34,
+      "y": 18,
+      "from": "i",
+      "to": "a",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 32,
+      "y": 19,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 33,
+      "y": 19,
+      "from": "I",
+      "to": "A",
+      "reason": "Connected skull helmet band"
+    },
+    {
+      "x": 32,
+      "y": 20,
+      "from": "I",
+      "to": "A",
+      "reason": "Near face-guard plate; eye sockets stay open"
+    },
+    {
+      "x": 32,
+      "y": 21,
+      "from": "I",
+      "to": "A",
+      "reason": "Near face-guard plate; eye sockets stay open"
+    },
+    {
+      "x": 33,
+      "y": 21,
+      "from": "I",
+      "to": "A",
+      "reason": "Near face-guard plate; eye sockets stay open"
+    },
+    {
+      "x": 32,
+      "y": 22,
+      "from": "I",
+      "to": "A",
+      "reason": "Near face-guard plate; eye sockets stay open"
+    },
+    {
+      "x": 33,
+      "y": 22,
+      "from": "I",
+      "to": "A",
+      "reason": "Near face-guard plate; eye sockets stay open"
+    }
+  ],
+  "paletteChanges": {
+    "V": [155, 51, 78, 255],
+    "v": [85, 28, 53, 255],
+    "A": [244, 248, 241, 255],
+    "a": [155, 184, 191, 255],
+    "G": [255, 204, 65, 255],
+    "E": [151, 232, 174, 255],
+    "R": [185, 24, 37, 255],
+    "r": [112, 14, 24, 255]
+  }
+}

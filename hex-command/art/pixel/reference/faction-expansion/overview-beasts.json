@@ -1,0 +1,102 @@
+[
+  {
+    "label": "1. Bear",
+    "image": "art/pixel/units/bear/player.png"
+  },
+  {
+    "label": "2. Lynx",
+    "image": "art/pixel/units/lynx/player.png"
+  },
+  {
+    "label": "3. Stag",
+    "image": "art/pixel/units/stag/player.png"
+  },
+  {
+    "label": "4. Giant spider",
+    "image": "art/pixel/units/giant-spider/player.png"
+  },
+  {
+    "label": "5. Giant tortoise",
+    "image": "art/pixel/units/giant-tortoise/player.png"
+  },
+  {
+    "label": "6. Giant snake",
+    "image": "art/pixel/units/giant-snake/player.png"
+  },
+  {
+    "label": "7. Giant raven",
+    "image": "art/pixel/units/giant-raven/player.png"
+  },
+  {
+    "label": "8. Giant owl",
+    "image": "art/pixel/units/giant-owl/player.png"
+  },
+  {
+    "label": "9. Giant wasp",
+    "image": "art/pixel/units/giant-wasp/player.png"
+  },
+  {
+    "label": "10. Giant bat",
+    "image": "art/pixel/units/giant-bat/player.png"
+  },
+  {
+    "label": "11. Giant crab",
+    "image": "art/pixel/units/giant-crab/player.png"
+  },
+  {
+    "label": "12. Crocodile",
+    "image": "art/pixel/units/crocodile/player.png"
+  },
+  {
+    "label": "13. Shark",
+    "image": "art/pixel/units/shark/player.png"
+  },
+  {
+    "label": "14. Ray",
+    "image": "art/pixel/units/ray/player.png"
+  },
+  {
+    "label": "15. Octopus",
+    "image": "art/pixel/units/octopus/player.png"
+  },
+  {
+    "label": "16. Skeletal hound",
+    "image": "art/pixel/units/skeletal-hound/player.png"
+  },
+  {
+    "label": "17. Corpse vulture",
+    "image": "art/pixel/units/corpse-vulture/player.png"
+  },
+  {
+    "label": "18. Skeletal horse",
+    "image": "art/pixel/units/skeletal-horse/player.png"
+  },
+  {
+    "label": "19. Zombie bear",
+    "image": "art/pixel/units/zombie-bear/player.png"
+  },
+  {
+    "label": "20. Gryphon",
+    "image": "art/pixel/units/gryphon/player.png"
+  },
+  {
+    "label": "21. Dragon",
+    "image": "art/pixel/units/dragon/player.png"
+  },
+  {
+    "label": "22. Basilisk",
+    "image": "art/pixel/units/basilisk/player.png"
+  },
+  {
+    "label": "23. Treant",
+    "image": "art/pixel/units/treant/player.png"
+  },
+  {
+    "label": "24. Sea serpent",
+    "image": "art/pixel/units/sea-serpent/player.png"
+  },
+  {
+    "label": "25. Bone dragon",
+    "image": "art/pixel/units/bone-dragon/player.png"
+  }
+]

@@ -1,0 +1,334 @@
+{
+  "coordinates": "64x64 logical slot before native crop",
+  "changes": [
+    {
+      "x": 0,
+      "y": 0,
+      "from": "O",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 29,
+      "y": 8,
+      "from": "V",
+      "to": "v",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 31,
+      "y": 8,
+      "from": "V",
+      "to": "a",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 34,
+      "y": 8,
+      "from": "V",
+      "to": "a",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 33,
+      "y": 9,
+      "from": "v",
+      "to": "a",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 27,
+      "y": 10,
+      "from": "V",
+      "to": "v",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 31,
+      "y": 11,
+      "from": "v",
+      "to": "a",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 32,
+      "y": 13,
+      "from": "v",
+      "to": "a",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 23,
+      "y": 14,
+      "from": "v",
+      "to": "V",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 31,
+      "y": 14,
+      "from": "V",
+      "to": "a",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 17,
+      "y": 18,
+      "from": "V",
+      "to": "v",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 18,
+      "y": 18,
+      "from": "V",
+      "to": "v",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 25,
+      "y": 18,
+      "from": "V",
+      "to": "a",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 12,
+      "y": 19,
+      "from": "b",
+      "to": "v",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 27,
+      "y": 19,
+      "from": "V",
+      "to": "a",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 49,
+      "y": 19,
+      "from": "B",
+      "to": "V",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 22,
+      "y": 20,
+      "from": "V",
+      "to": "a",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 48,
+      "y": 20,
+      "from": "w",
+      "to": "V",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 21,
+      "y": 21,
+      "from": "v",
+      "to": "a",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 24,
+      "y": 21,
+      "from": "V",
+      "to": "a",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 20,
+      "y": 22,
+      "from": "V",
+      "to": "a",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 47,
+      "y": 22,
+      "from": "B",
+      "to": "V",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 48,
+      "y": 22,
+      "from": "B",
+      "to": "V",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 19,
+      "y": 23,
+      "from": "v",
+      "to": "a",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 38,
+      "y": 23,
+      "from": "t",
+      "to": "T",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 10,
+      "y": 24,
+      "from": "V",
+      "to": "v",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 11,
+      "y": 24,
+      "from": "V",
+      "to": "v",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 44,
+      "y": 24,
+      "from": "v",
+      "to": "V",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 8,
+      "y": 25,
+      "from": "V",
+      "to": "v",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 9,
+      "y": 25,
+      "from": "V",
+      "to": "v",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 14,
+      "y": 30,
+      "from": "V",
+      "to": "v",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 11,
+      "y": 31,
+      "from": "b",
+      "to": "v",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 12,
+      "y": 32,
+      "from": "a",
+      "to": "v",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 14,
+      "y": 32,
+      "from": "V",
+      "to": "v",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 41,
+      "y": 32,
+      "from": "V",
+      "to": "v",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 34,
+      "y": 34,
+      "from": "t",
+      "to": "v",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 8,
+      "y": 35,
+      "from": "V",
+      "to": "v",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 20,
+      "y": 35,
+      "from": "b",
+      "to": "v",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 37,
+      "y": 35,
+      "from": "t",
+      "to": "v",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 41,
+      "y": 35,
+      "from": "V",
+      "to": "a",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 43,
+      "y": 35,
+      "from": "v",
+      "to": "a",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 41,
+      "y": 36,
+      "from": "V",
+      "to": "a",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 44,
+      "y": 38,
+      "from": "v",
+      "to": "a",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 46,
+      "y": 38,
+      "from": "V",
+      "to": "a",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 45,
+      "y": 42,
+      "from": "b",
+      "to": "v",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 46,
+      "y": 42,
+      "from": "a",
+      "to": "v",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    },
+    {
+      "x": 49,
+      "y": 43,
+      "from": "V",
+      "to": "v",
+      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
+    }
+  ]
+}

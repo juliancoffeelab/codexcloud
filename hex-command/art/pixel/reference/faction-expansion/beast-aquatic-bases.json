@@ -1,0 +1,26 @@
+[
+  {
+    "label": "Giant crab",
+    "image": "art/pixel/reference/faction-expansion/extracted/giant-crab/player.png"
+  },
+  {
+    "label": "Crocodile",
+    "image": "art/pixel/reference/faction-expansion/extracted/crocodile/player.png"
+  },
+  {
+    "label": "Shark",
+    "image": "art/pixel/reference/faction-expansion/extracted/shark/player.png"
+  },
+  {
+    "label": "Ray",
+    "image": "art/pixel/reference/faction-expansion/extracted/ray/player.png"
+  },
+  {
+    "label": "Octopus",
+    "image": "art/pixel/reference/faction-expansion/extracted/octopus/player.png"
+  },
+  {
+    "label": "Sea serpent",
+    "image": "art/pixel/reference/faction-expansion/extracted/sea-serpent/player.png"
+  }
+]

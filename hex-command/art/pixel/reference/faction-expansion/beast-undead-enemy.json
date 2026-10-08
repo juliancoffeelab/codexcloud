@@ -1,0 +1,62 @@
+[
+  {
+    "label": "Skeletal hound L1",
+    "image": "art/pixel/units/skeletal-hound/enemy.png"
+  },
+  {
+    "label": "Skeletal hound L2",
+    "image": "art/pixel/units/skeletal-hound-l2/enemy.png"
+  },
+  {
+    "label": "Skeletal hound L3",
+    "image": "art/pixel/units/skeletal-hound-l3/enemy.png"
+  },
+  {
+    "label": "Corpse vulture L1",
+    "image": "art/pixel/units/corpse-vulture/enemy.png"
+  },
+  {
+    "label": "Corpse vulture L2",
+    "image": "art/pixel/units/corpse-vulture-l2/enemy.png"
+  },
+  {
+    "label": "Corpse vulture L3",
+    "image": "art/pixel/units/corpse-vulture-l3/enemy.png"
+  },
+  {
+    "label": "Skeletal horse L1",
+    "image": "art/pixel/units/skeletal-horse/enemy.png"
+  },
+  {
+    "label": "Skeletal horse L2",
+    "image": "art/pixel/units/skeletal-horse-l2/enemy.png"
+  },
+  {
+    "label": "Skeletal horse L3",
+    "image": "art/pixel/units/skeletal-horse-l3/enemy.png"
+  },
+  {
+    "label": "Zombie bear L1",
+    "image": "art/pixel/units/zombie-bear/enemy.png"
+  },
+  {
+    "label": "Zombie bear L2",
+    "image": "art/pixel/units/zombie-bear-l2/enemy.png"
+  },
+  {
+    "label": "Zombie bear L3",
+    "image": "art/pixel/units/zombie-bear-l3/enemy.png"
+  },
+  {
+    "label": "Bone dragon L1",
+    "image": "art/pixel/units/bone-dragon/enemy.png"
+  },
+  {
+    "label": "Bone dragon L2",
+    "image": "art/pixel/units/bone-dragon-l2/enemy.png"
+  },
+  {
+    "label": "Bone dragon L3",
+    "image": "art/pixel/units/bone-dragon-l3/enemy.png"
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "label": "Skeleton dagger flanker",
+    "image": "art/pixel/reference/faction-expansion/extracted/skeleton-flanker/player.png"
+  },
+  {
+    "label": "Skeleton impact caster",
+    "image": "art/pixel/reference/faction-expansion/extracted/skeleton-impact-caster/player.png"
+  },
+  {
+    "label": "Skeleton scythe caster",
+    "image": "art/pixel/reference/faction-expansion/extracted/skeleton-scythe-caster/player.png"
+  },
+  {
+    "label": "Skeleton two-handed axeman",
+    "image": "art/pixel/reference/faction-expansion/extracted/skeleton-axeman/player.png"
+  },
+  {
+    "label": "Skeleton mounted spearman",
+    "image": "art/pixel/reference/faction-expansion/extracted/skeleton-rider/player.png"
+  }
+]

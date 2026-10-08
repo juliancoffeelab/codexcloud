@@ -1,0 +1,120 @@
+{
+  "base": "elf-deer-archer",
+  "level": 3,
+  "changes": [
+    {
+      "x": 27,
+      "y": 20,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 28,
+      "y": 20,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 29,
+      "y": 20,
+      "from": "v",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 27,
+      "y": 21,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 28,
+      "y": 21,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 29,
+      "y": 21,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 30,
+      "y": 21,
+      "from": "v",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 27,
+      "y": 22,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 28,
+      "y": 22,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 29,
+      "y": 22,
+      "from": "V",
+      "to": "A",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 30,
+      "y": 22,
+      "from": "v",
+      "to": "a",
+      "reason": "Tier shoulder/chest/leg armor on the saved pose"
+    },
+    {
+      "x": 29,
+      "y": 26,
+      "from": "V",
+      "to": "G",
+      "reason": "Connected gold belt clasp/trim"
+    },
+    {
+      "x": 30,
+      "y": 26,
+      "from": "V",
+      "to": "G",
+      "reason": "Connected gold belt clasp/trim"
+    },
+    {
+      "x": 31,
+      "y": 26,
+      "from": "V",
+      "to": "G",
+      "reason": "Connected gold belt clasp/trim"
+    },
+    {
+      "x": 32,
+      "y": 26,
+      "from": "v",
+      "to": "G",
+      "reason": "Connected gold belt clasp/trim"
+    }
+  ],
+  "paletteChanges": {
+    "V": [232, 227, 184, 255],
+    "v": [159, 173, 107, 255],
+    "A": [244, 248, 241, 255],
+    "a": [155, 184, 191, 255],
+    "G": [255, 204, 65, 255],
+    "R": [185, 24, 37, 255],
+    "r": [112, 14, 24, 255]
+  }
+}

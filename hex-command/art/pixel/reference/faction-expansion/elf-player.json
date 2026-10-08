@@ -1,0 +1,74 @@
+[
+  {
+    "label": "Elf spear and shield L1",
+    "image": "art/pixel/units/elf-spearman/player.png"
+  },
+  {
+    "label": "Elf spear and shield L2",
+    "image": "art/pixel/units/elf-spearman-l2/player.png"
+  },
+  {
+    "label": "Elf spear and shield L3",
+    "image": "art/pixel/units/elf-spearman-l3/player.png"
+  },
+  {
+    "label": "Elf two-handed sword L1",
+    "image": "art/pixel/units/elf-bladedancer/player.png"
+  },
+  {
+    "label": "Elf two-handed sword L2",
+    "image": "art/pixel/units/elf-bladedancer-l2/player.png"
+  },
+  {
+    "label": "Elf two-handed sword L3",
+    "image": "art/pixel/units/elf-bladedancer-l3/player.png"
+  },
+  {
+    "label": "Elf archer L1",
+    "image": "art/pixel/units/elf-archer/player.png"
+  },
+  {
+    "label": "Elf archer L2",
+    "image": "art/pixel/units/elf-archer-l2/player.png"
+  },
+  {
+    "label": "Elf archer L3",
+    "image": "art/pixel/units/elf-archer-l3/player.png"
+  },
+  {
+    "label": "Elf dual knife flanker L1",
+    "image": "art/pixel/units/elf-flanker/player.png"
+  },
+  {
+    "label": "Elf dual knife flanker L2",
+    "image": "art/pixel/units/elf-flanker-l2/player.png"
+  },
+  {
+    "label": "Elf dual knife flanker L3",
+    "image": "art/pixel/units/elf-flanker-l3/player.png"
+  },
+  {
+    "label": "Elf branch staff caster L1",
+    "image": "art/pixel/units/elf-caster/player.png"
+  },
+  {
+    "label": "Elf branch staff caster L2",
+    "image": "art/pixel/units/elf-caster-l2/player.png"
+  },
+  {
+    "label": "Elf branch staff caster L3",
+    "image": "art/pixel/units/elf-caster-l3/player.png"
+  },
+  {
+    "label": "Elf deer-mounted archer L1",
+    "image": "art/pixel/units/elf-deer-archer/player.png"
+  },
+  {
+    "label": "Elf deer-mounted archer L2",
+    "image": "art/pixel/units/elf-deer-archer-l2/player.png"
+  },
+  {
+    "label": "Elf deer-mounted archer L3",
+    "image": "art/pixel/units/elf-deer-archer-l3/player.png"
+  }
+]

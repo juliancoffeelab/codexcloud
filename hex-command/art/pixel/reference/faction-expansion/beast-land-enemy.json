@@ -1,0 +1,74 @@
+[
+  {
+    "label": "Bear L1",
+    "image": "art/pixel/units/bear/enemy.png"
+  },
+  {
+    "label": "Bear L2",
+    "image": "art/pixel/units/bear-l2/enemy.png"
+  },
+  {
+    "label": "Bear L3",
+    "image": "art/pixel/units/bear-l3/enemy.png"
+  },
+  {
+    "label": "Lynx L1",
+    "image": "art/pixel/units/lynx/enemy.png"
+  },
+  {
+    "label": "Lynx L2",
+    "image": "art/pixel/units/lynx-l2/enemy.png"
+  },
+  {
+    "label": "Lynx L3",
+    "image": "art/pixel/units/lynx-l3/enemy.png"
+  },
+  {
+    "label": "Stag L1",
+    "image": "art/pixel/units/stag/enemy.png"
+  },
+  {
+    "label": "Stag L2",
+    "image": "art/pixel/units/stag-l2/enemy.png"
+  },
+  {
+    "label": "Stag L3",
+    "image": "art/pixel/units/stag-l3/enemy.png"
+  },
+  {
+    "label": "Giant spider L1",
+    "image": "art/pixel/units/giant-spider/enemy.png"
+  },
+  {
+    "label": "Giant spider L2",
+    "image": "art/pixel/units/giant-spider-l2/enemy.png"
+  },
+  {
+    "label": "Giant spider L3",
+    "image": "art/pixel/units/giant-spider-l3/enemy.png"
+  },
+  {
+    "label": "Giant tortoise L1",
+    "image": "art/pixel/units/giant-tortoise/enemy.png"
+  },
+  {
+    "label": "Giant tortoise L2",
+    "image": "art/pixel/units/giant-tortoise-l2/enemy.png"
+  },
+  {
+    "label": "Giant tortoise L3",
+    "image": "art/pixel/units/giant-tortoise-l3/enemy.png"
+  },
+  {
+    "label": "Giant snake L1",
+    "image": "art/pixel/units/giant-snake/enemy.png"
+  },
+  {
+    "label": "Giant snake L2",
+    "image": "art/pixel/units/giant-snake-l2/enemy.png"
+  },
+  {
+    "label": "Giant snake L3",
+    "image": "art/pixel/units/giant-snake-l3/enemy.png"
+  }
+]

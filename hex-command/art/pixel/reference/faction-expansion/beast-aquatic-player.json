@@ -1,0 +1,74 @@
+[
+  {
+    "label": "Giant crab L1",
+    "image": "art/pixel/units/giant-crab/player.png"
+  },
+  {
+    "label": "Giant crab L2",
+    "image": "art/pixel/units/giant-crab-l2/player.png"
+  },
+  {
+    "label": "Giant crab L3",
+    "image": "art/pixel/units/giant-crab-l3/player.png"
+  },
+  {
+    "label": "Crocodile L1",
+    "image": "art/pixel/units/crocodile/player.png"
+  },
+  {
+    "label": "Crocodile L2",
+    "image": "art/pixel/units/crocodile-l2/player.png"
+  },
+  {
+    "label": "Crocodile L3",
+    "image": "art/pixel/units/crocodile-l3/player.png"
+  },
+  {
+    "label": "Shark L1",
+    "image": "art/pixel/units/shark/player.png"
+  },
+  {
+    "label": "Shark L2",
+    "image": "art/pixel/units/shark-l2/player.png"
+  },
+  {
+    "label": "Shark L3",
+    "image": "art/pixel/units/shark-l3/player.png"
+  },
+  {
+    "label": "Ray L1",
+    "image": "art/pixel/units/ray/player.png"
+  },
+  {
+    "label": "Ray L2",
+    "image": "art/pixel/units/ray-l2/player.png"
+  },
+  {
+    "label": "Ray L3",
+    "image": "art/pixel/units/ray-l3/player.png"
+  },
+  {
+    "label": "Octopus L1",
+    "image": "art/pixel/units/octopus/player.png"
+  },
+  {
+    "label": "Octopus L2",
+    "image": "art/pixel/units/octopus-l2/player.png"
+  },
+  {
+    "label": "Octopus L3",
+    "image": "art/pixel/units/octopus-l3/player.png"
+  },
+  {
+    "label": "Sea serpent L1",
+    "image": "art/pixel/units/sea-serpent/player.png"
+  },
+  {
+    "label": "Sea serpent L2",
+    "image": "art/pixel/units/sea-serpent-l2/player.png"
+  },
+  {
+    "label": "Sea serpent L3",
+    "image": "art/pixel/units/sea-serpent-l3/player.png"
+  }
+]

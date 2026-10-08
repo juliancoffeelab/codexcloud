@@ -1,0 +1,18 @@
+[
+  {
+    "label": "Gryphon",
+    "image": "art/pixel/reference/faction-expansion/extracted/gryphon/player.png"
+  },
+  {
+    "label": "Dragon",
+    "image": "art/pixel/reference/faction-expansion/extracted/dragon/player.png"
+  },
+  {
+    "label": "Basilisk",
+    "image": "art/pixel/reference/faction-expansion/extracted/basilisk/player.png"
+  },
+  {
+    "label": "Treant",
+    "image": "art/pixel/reference/faction-expansion/extracted/treant/player.png"
+  }
+]

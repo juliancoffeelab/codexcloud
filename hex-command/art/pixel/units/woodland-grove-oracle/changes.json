@@ -1,0 +1,1470 @@
+{
+  "base": "grovewarden",
+  "level": 3,
+  "changes": [
+    {
+      "side": "player",
+      "x": 16,
+      "y": 25,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 17,
+      "y": 25,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 18,
+      "y": 25,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 19,
+      "y": 25,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 20,
+      "y": 25,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 24,
+      "y": 25,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 15,
+      "y": 26,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 16,
+      "y": 26,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 17,
+      "y": 26,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 18,
+      "y": 26,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 19,
+      "y": 26,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 20,
+      "y": 26,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 21,
+      "y": 26,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 22,
+      "y": 26,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 23,
+      "y": 26,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 24,
+      "y": 26,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 25,
+      "y": 26,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 14,
+      "y": 27,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 15,
+      "y": 27,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 16,
+      "y": 27,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 17,
+      "y": 27,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 18,
+      "y": 27,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 19,
+      "y": 27,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 20,
+      "y": 27,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 23,
+      "y": 27,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 24,
+      "y": 27,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 25,
+      "y": 27,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 16,
+      "y": 28,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 17,
+      "y": 28,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 18,
+      "y": 28,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 19,
+      "y": 28,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 24,
+      "y": 28,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 13,
+      "y": 29,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 16,
+      "y": 29,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 17,
+      "y": 29,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 18,
+      "y": 29,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 19,
+      "y": 29,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 20,
+      "y": 29,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 13,
+      "y": 30,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 16,
+      "y": 30,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 17,
+      "y": 30,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 18,
+      "y": 30,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 19,
+      "y": 30,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 20,
+      "y": 30,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 13,
+      "y": 31,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 14,
+      "y": 31,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 15,
+      "y": 31,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 16,
+      "y": 31,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 17,
+      "y": 31,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 18,
+      "y": 31,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 19,
+      "y": 31,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 20,
+      "y": 31,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 22,
+      "y": 31,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 23,
+      "y": 31,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 24,
+      "y": 31,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 25,
+      "y": 31,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 14,
+      "y": 32,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 15,
+      "y": 32,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 16,
+      "y": 32,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 17,
+      "y": 32,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 18,
+      "y": 32,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 25,
+      "y": 32,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 14,
+      "y": 33,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 15,
+      "y": 33,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 16,
+      "y": 33,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 17,
+      "y": 33,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 18,
+      "y": 33,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 19,
+      "y": 33,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 14,
+      "y": 34,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 15,
+      "y": 34,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 16,
+      "y": 34,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 17,
+      "y": 34,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 18,
+      "y": 34,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 14,
+      "y": 35,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 15,
+      "y": 35,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 16,
+      "y": 35,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 13,
+      "y": 36,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 14,
+      "y": 36,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 15,
+      "y": 36,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 16,
+      "y": 36,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 13,
+      "y": 37,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 14,
+      "y": 37,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 15,
+      "y": 37,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 16,
+      "y": 37,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 13,
+      "y": 38,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 14,
+      "y": 38,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 15,
+      "y": 38,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 13,
+      "y": 39,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 14,
+      "y": 39,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 15,
+      "y": 39,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "player",
+      "x": 13,
+      "y": 40,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 16,
+      "y": 25,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 17,
+      "y": 25,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 18,
+      "y": 25,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 19,
+      "y": 25,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 20,
+      "y": 25,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 24,
+      "y": 25,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 15,
+      "y": 26,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 16,
+      "y": 26,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 17,
+      "y": 26,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 18,
+      "y": 26,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 19,
+      "y": 26,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 20,
+      "y": 26,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 21,
+      "y": 26,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 22,
+      "y": 26,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 23,
+      "y": 26,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 24,
+      "y": 26,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 25,
+      "y": 26,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 14,
+      "y": 27,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 15,
+      "y": 27,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 16,
+      "y": 27,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 17,
+      "y": 27,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 18,
+      "y": 27,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 19,
+      "y": 27,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 20,
+      "y": 27,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 23,
+      "y": 27,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 24,
+      "y": 27,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 25,
+      "y": 27,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 16,
+      "y": 28,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 17,
+      "y": 28,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 18,
+      "y": 28,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 19,
+      "y": 28,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 24,
+      "y": 28,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 13,
+      "y": 29,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 16,
+      "y": 29,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 17,
+      "y": 29,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 18,
+      "y": 29,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 19,
+      "y": 29,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 20,
+      "y": 29,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 13,
+      "y": 30,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 16,
+      "y": 30,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 17,
+      "y": 30,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 18,
+      "y": 30,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 19,
+      "y": 30,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 20,
+      "y": 30,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 13,
+      "y": 31,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 14,
+      "y": 31,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 15,
+      "y": 31,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 16,
+      "y": 31,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 17,
+      "y": 31,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 18,
+      "y": 31,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 19,
+      "y": 31,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 20,
+      "y": 31,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 22,
+      "y": 31,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 23,
+      "y": 31,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 24,
+      "y": 31,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 25,
+      "y": 31,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 14,
+      "y": 32,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 15,
+      "y": 32,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 16,
+      "y": 32,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 17,
+      "y": 32,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 18,
+      "y": 32,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 25,
+      "y": 32,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 14,
+      "y": 33,
+      "from": "b",
+      "to": "c",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 15,
+      "y": 33,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 16,
+      "y": 33,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 17,
+      "y": 33,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 18,
+      "y": 33,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 19,
+      "y": 33,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 14,
+      "y": 34,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 15,
+      "y": 34,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 16,
+      "y": 34,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 17,
+      "y": 34,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 18,
+      "y": 34,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 14,
+      "y": 35,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 15,
+      "y": 35,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 16,
+      "y": 35,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 13,
+      "y": 36,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 14,
+      "y": 36,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 15,
+      "y": 36,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 16,
+      "y": 36,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 13,
+      "y": 37,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 14,
+      "y": 37,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 15,
+      "y": 37,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 16,
+      "y": 37,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 13,
+      "y": 38,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 14,
+      "y": 38,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 15,
+      "y": 38,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 13,
+      "y": 39,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 14,
+      "y": 39,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 15,
+      "y": 39,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    },
+    {
+      "side": "enemy",
+      "x": 13,
+      "y": 40,
+      "from": "B",
+      "to": "C",
+      "reason": "Ivory body garment inside existing silhouette; boots and staff remain wood/leather"
+    }
+  ],
+  "paletteChanges": {
+    "G": [255, 203, 66, 255],
+    "g": [185, 126, 34, 255],
+    "V": [218, 222, 156, 255],
+    "v": [129, 151, 80, 255],
+    "A": [243, 247, 239, 255],
+    "a": [151, 174, 181, 255]
+  }
+}

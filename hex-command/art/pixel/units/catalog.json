@@ -148,5 +148,1157 @@
     "level": 3,
     "study": "human-magic/archmage-l3",
     "canvas": [48, 48]
+  },
+  "skeleton-flanker": {
+    "name": "Skeleton dagger flanker",
+    "level": 1,
+    "study": "faction-expansion/skeleton-flanker",
+    "canvas": [64, 64]
+  },
+  "skeleton-flanker-l2": {
+    "name": "Skeleton dagger flanker L2",
+    "level": 2,
+    "study": "faction-expansion/skeleton-flanker-l2",
+    "canvas": [64, 64]
+  },
+  "skeleton-flanker-l3": {
+    "name": "Skeleton dagger flanker L3",
+    "level": 3,
+    "study": "faction-expansion/skeleton-flanker-l3",
+    "canvas": [64, 64]
+  },
+  "skeleton-impact-caster": {
+    "name": "Skeleton impact caster",
+    "level": 1,
+    "study": "faction-expansion/skeleton-impact-caster",
+    "canvas": [64, 64]
+  },
+  "skeleton-impact-caster-l2": {
+    "name": "Skeleton impact caster L2",
+    "level": 2,
+    "study": "faction-expansion/skeleton-impact-caster-l2",
+    "canvas": [64, 64]
+  },
+  "skeleton-impact-caster-l3": {
+    "name": "Skeleton impact caster L3",
+    "level": 3,
+    "study": "faction-expansion/skeleton-impact-caster-l3",
+    "canvas": [64, 64]
+  },
+  "skeleton-scythe-caster": {
+    "name": "Skeleton scythe caster",
+    "level": 1,
+    "study": "faction-expansion/skeleton-scythe-caster",
+    "canvas": [64, 64]
+  },
+  "skeleton-scythe-caster-l2": {
+    "name": "Skeleton scythe caster L2",
+    "level": 2,
+    "study": "faction-expansion/skeleton-scythe-caster-l2",
+    "canvas": [64, 64]
+  },
+  "skeleton-scythe-caster-l3": {
+    "name": "Skeleton scythe caster L3",
+    "level": 3,
+    "study": "faction-expansion/skeleton-scythe-caster-l3",
+    "canvas": [64, 64]
+  },
+  "skeleton-axeman": {
+    "name": "Skeleton two-handed axeman",
+    "level": 1,
+    "study": "faction-expansion/skeleton-axeman",
+    "canvas": [64, 64]
+  },
+  "skeleton-axeman-l2": {
+    "name": "Skeleton two-handed axeman L2",
+    "level": 2,
+    "study": "faction-expansion/skeleton-axeman-l2",
+    "canvas": [64, 64]
+  },
+  "skeleton-axeman-l3": {
+    "name": "Skeleton two-handed axeman L3",
+    "level": 3,
+    "study": "faction-expansion/skeleton-axeman-l3",
+    "canvas": [64, 64]
+  },
+  "skeleton-rider": {
+    "name": "Skeleton mounted spearman",
+    "level": 1,
+    "study": "faction-expansion/skeleton-rider",
+    "canvas": [64, 64]
+  },
+  "skeleton-rider-l2": {
+    "name": "Skeleton mounted spearman L2",
+    "level": 2,
+    "study": "faction-expansion/skeleton-rider-l2",
+    "canvas": [64, 64]
+  },
+  "skeleton-rider-l3": {
+    "name": "Skeleton mounted spearman L3",
+    "level": 3,
+    "study": "faction-expansion/skeleton-rider-l3",
+    "canvas": [64, 64]
+  },
+  "zombie-shambler": {
+    "name": "Zombie shambler",
+    "level": 1,
+    "study": "faction-expansion/zombie-shambler",
+    "canvas": [48, 48]
+  },
+  "zombie-shambler-l2": {
+    "name": "Zombie shambler L2",
+    "level": 2,
+    "study": "faction-expansion/zombie-shambler-l2",
+    "canvas": [48, 48]
+  },
+  "zombie-shambler-l3": {
+    "name": "Zombie shambler L3",
+    "level": 3,
+    "study": "faction-expansion/zombie-shambler-l3",
+    "canvas": [48, 48]
+  },
+  "zombie-wretch": {
+    "name": "Zombie weakling wretch",
+    "level": 1,
+    "study": "faction-expansion/zombie-wretch",
+    "canvas": [48, 48]
+  },
+  "zombie-wretch-l2": {
+    "name": "Zombie weakling wretch L2",
+    "level": 2,
+    "study": "faction-expansion/zombie-wretch-l2",
+    "canvas": [48, 48]
+  },
+  "zombie-wretch-l3": {
+    "name": "Zombie weakling wretch L3",
+    "level": 3,
+    "study": "faction-expansion/zombie-wretch-l3",
+    "canvas": [48, 48]
+  },
+  "zombie-crawler": {
+    "name": "Zombie weakling crawler",
+    "level": 1,
+    "study": "faction-expansion/zombie-crawler",
+    "canvas": [48, 48]
+  },
+  "zombie-crawler-l2": {
+    "name": "Zombie weakling crawler L2",
+    "level": 2,
+    "study": "faction-expansion/zombie-crawler-l2",
+    "canvas": [48, 48]
+  },
+  "zombie-crawler-l3": {
+    "name": "Zombie weakling crawler L3",
+    "level": 3,
+    "study": "faction-expansion/zombie-crawler-l3",
+    "canvas": [48, 48]
+  },
+  "zombie-light-cleaver": {
+    "name": "Zombie weakling cleaver",
+    "level": 1,
+    "study": "faction-expansion/zombie-light-cleaver",
+    "canvas": [48, 48]
+  },
+  "zombie-light-cleaver-l2": {
+    "name": "Zombie weakling cleaver L2",
+    "level": 2,
+    "study": "faction-expansion/zombie-light-cleaver-l2",
+    "canvas": [48, 48]
+  },
+  "zombie-light-cleaver-l3": {
+    "name": "Zombie weakling cleaver L3",
+    "level": 3,
+    "study": "faction-expansion/zombie-light-cleaver-l3",
+    "canvas": [64, 64]
+  },
+  "zombie-novice-caster": {
+    "name": "Zombie weakling corruption caster",
+    "level": 1,
+    "study": "faction-expansion/zombie-novice-caster",
+    "canvas": [48, 48]
+  },
+  "zombie-novice-caster-l2": {
+    "name": "Zombie weakling corruption caster L2",
+    "level": 2,
+    "study": "faction-expansion/zombie-novice-caster-l2",
+    "canvas": [48, 48]
+  },
+  "zombie-novice-caster-l3": {
+    "name": "Zombie weakling corruption caster L3",
+    "level": 3,
+    "study": "faction-expansion/zombie-novice-caster-l3",
+    "canvas": [64, 64]
+  },
+  "zombie-walker": {
+    "name": "Zombie skeleton-sized walker",
+    "level": 1,
+    "study": "faction-expansion/zombie-walker",
+    "canvas": [48, 48]
+  },
+  "zombie-walker-l2": {
+    "name": "Zombie skeleton-sized walker L2",
+    "level": 2,
+    "study": "faction-expansion/zombie-walker-l2",
+    "canvas": [48, 48]
+  },
+  "zombie-walker-l3": {
+    "name": "Zombie skeleton-sized walker L3",
+    "level": 3,
+    "study": "faction-expansion/zombie-walker-l3",
+    "canvas": [48, 48]
+  },
+  "zombie-fighter": {
+    "name": "Zombie skeleton-sized fighter",
+    "level": 1,
+    "study": "faction-expansion/zombie-fighter",
+    "canvas": [48, 48]
+  },
+  "zombie-fighter-l2": {
+    "name": "Zombie skeleton-sized fighter L2",
+    "level": 2,
+    "study": "faction-expansion/zombie-fighter-l2",
+    "canvas": [48, 48]
+  },
+  "zombie-fighter-l3": {
+    "name": "Zombie skeleton-sized fighter L3",
+    "level": 3,
+    "study": "faction-expansion/zombie-fighter-l3",
+    "canvas": [48, 48]
+  },
+  "zombie-decay-caster": {
+    "name": "Zombie skeleton-sized caster",
+    "level": 1,
+    "study": "faction-expansion/zombie-decay-caster",
+    "canvas": [48, 48]
+  },
+  "zombie-decay-caster-l2": {
+    "name": "Zombie skeleton-sized caster L2",
+    "level": 2,
+    "study": "faction-expansion/zombie-decay-caster-l2",
+    "canvas": [48, 48]
+  },
+  "zombie-decay-caster-l3": {
+    "name": "Zombie skeleton-sized caster L3",
+    "level": 3,
+    "study": "faction-expansion/zombie-decay-caster-l3",
+    "canvas": [48, 48]
+  },
+  "zombie-cleaver": {
+    "name": "Zombie cleaver fighter",
+    "level": 1,
+    "study": "faction-expansion/zombie-cleaver",
+    "canvas": [64, 64]
+  },
+  "zombie-cleaver-l2": {
+    "name": "Zombie cleaver fighter L2",
+    "level": 2,
+    "study": "faction-expansion/zombie-cleaver-l2",
+    "canvas": [64, 64]
+  },
+  "zombie-cleaver-l3": {
+    "name": "Zombie cleaver fighter L3",
+    "level": 3,
+    "study": "faction-expansion/zombie-cleaver-l3",
+    "canvas": [64, 64]
+  },
+  "zombie-ghoul": {
+    "name": "Zombie ghoul",
+    "level": 1,
+    "study": "faction-expansion/zombie-ghoul",
+    "canvas": [48, 48]
+  },
+  "zombie-ghoul-l2": {
+    "name": "Zombie ghoul L2",
+    "level": 2,
+    "study": "faction-expansion/zombie-ghoul-l2",
+    "canvas": [48, 48]
+  },
+  "zombie-ghoul-l3": {
+    "name": "Zombie ghoul L3",
+    "level": 3,
+    "study": "faction-expansion/zombie-ghoul-l3",
+    "canvas": [48, 48]
+  },
+  "zombie-plague-carrier": {
+    "name": "Zombie plague carrier",
+    "level": 1,
+    "study": "faction-expansion/zombie-plague-carrier",
+    "canvas": [64, 64]
+  },
+  "zombie-plague-carrier-l2": {
+    "name": "Zombie plague carrier L2",
+    "level": 2,
+    "study": "faction-expansion/zombie-plague-carrier-l2",
+    "canvas": [64, 64]
+  },
+  "zombie-plague-carrier-l3": {
+    "name": "Zombie plague carrier L3",
+    "level": 3,
+    "study": "faction-expansion/zombie-plague-carrier-l3",
+    "canvas": [64, 64]
+  },
+  "zombie-corruption-mage": {
+    "name": "Zombie corruption mage",
+    "level": 1,
+    "study": "faction-expansion/zombie-corruption-mage",
+    "canvas": [64, 64]
+  },
+  "zombie-corruption-mage-l2": {
+    "name": "Zombie corruption mage L2",
+    "level": 2,
+    "study": "faction-expansion/zombie-corruption-mage-l2",
+    "canvas": [64, 64]
+  },
+  "zombie-corruption-mage-l3": {
+    "name": "Zombie corruption mage L3",
+    "level": 3,
+    "study": "faction-expansion/zombie-corruption-mage-l3",
+    "canvas": [64, 64]
+  },
+  "elf-spearman": {
+    "name": "Elf spear and shield",
+    "level": 1,
+    "study": "faction-expansion/elf-spearman",
+    "canvas": [64, 64]
+  },
+  "elf-spearman-l2": {
+    "name": "Elf spear and shield L2",
+    "level": 2,
+    "study": "faction-expansion/elf-spearman-l2",
+    "canvas": [64, 64]
+  },
+  "elf-spearman-l3": {
+    "name": "Elf spear and shield L3",
+    "level": 3,
+    "study": "faction-expansion/elf-spearman-l3",
+    "canvas": [64, 64]
+  },
+  "elf-bladedancer": {
+    "name": "Elf two-handed sword",
+    "level": 1,
+    "study": "faction-expansion/elf-bladedancer",
+    "canvas": [48, 48]
+  },
+  "elf-bladedancer-l2": {
+    "name": "Elf two-handed sword L2",
+    "level": 2,
+    "study": "faction-expansion/elf-bladedancer-l2",
+    "canvas": [48, 48]
+  },
+  "elf-bladedancer-l3": {
+    "name": "Elf two-handed sword L3",
+    "level": 3,
+    "study": "faction-expansion/elf-bladedancer-l3",
+    "canvas": [48, 48]
+  },
+  "elf-archer": {
+    "name": "Elf archer",
+    "level": 1,
+    "study": "faction-expansion/elf-archer",
+    "canvas": [64, 64]
+  },
+  "elf-archer-l2": {
+    "name": "Elf archer L2",
+    "level": 2,
+    "study": "faction-expansion/elf-archer-l2",
+    "canvas": [64, 64]
+  },
+  "elf-archer-l3": {
+    "name": "Elf archer L3",
+    "level": 3,
+    "study": "faction-expansion/elf-archer-l3",
+    "canvas": [64, 64]
+  },
+  "elf-flanker": {
+    "name": "Elf dual knife flanker",
+    "level": 1,
+    "study": "faction-expansion/elf-flanker",
+    "canvas": [64, 64]
+  },
+  "elf-flanker-l2": {
+    "name": "Elf dual knife flanker L2",
+    "level": 2,
+    "study": "faction-expansion/elf-flanker-l2",
+    "canvas": [64, 64]
+  },
+  "elf-flanker-l3": {
+    "name": "Elf dual knife flanker L3",
+    "level": 3,
+    "study": "faction-expansion/elf-flanker-l3",
+    "canvas": [64, 64]
+  },
+  "elf-caster": {
+    "name": "Elf branch staff caster",
+    "level": 1,
+    "study": "faction-expansion/elf-caster",
+    "canvas": [64, 64]
+  },
+  "elf-caster-l2": {
+    "name": "Elf branch staff caster L2",
+    "level": 2,
+    "study": "faction-expansion/elf-caster-l2",
+    "canvas": [64, 64]
+  },
+  "elf-caster-l3": {
+    "name": "Elf branch staff caster L3",
+    "level": 3,
+    "study": "faction-expansion/elf-caster-l3",
+    "canvas": [64, 64]
+  },
+  "elf-deer-archer": {
+    "name": "Elf deer-mounted archer",
+    "level": 1,
+    "study": "faction-expansion/elf-deer-archer",
+    "canvas": [64, 64]
+  },
+  "elf-deer-archer-l2": {
+    "name": "Elf deer-mounted archer L2",
+    "level": 2,
+    "study": "faction-expansion/elf-deer-archer-l2",
+    "canvas": [64, 64]
+  },
+  "elf-deer-archer-l3": {
+    "name": "Elf deer-mounted archer L3",
+    "level": 3,
+    "study": "faction-expansion/elf-deer-archer-l3",
+    "canvas": [64, 64]
+  },
+  "dwarf-axeguard": {
+    "name": "Dwarf axe and shield",
+    "level": 1,
+    "study": "faction-expansion/dwarf-axeguard",
+    "canvas": [64, 64]
+  },
+  "dwarf-axeguard-l2": {
+    "name": "Dwarf axe and shield L2",
+    "level": 2,
+    "study": "faction-expansion/dwarf-axeguard-l2",
+    "canvas": [64, 64]
+  },
+  "dwarf-axeguard-l3": {
+    "name": "Dwarf axe and shield L3",
+    "level": 3,
+    "study": "faction-expansion/dwarf-axeguard-l3",
+    "canvas": [64, 64]
+  },
+  "dwarf-hammerer": {
+    "name": "Dwarf two-handed hammer",
+    "level": 1,
+    "study": "faction-expansion/dwarf-hammerer",
+    "canvas": [64, 64]
+  },
+  "dwarf-hammerer-l2": {
+    "name": "Dwarf two-handed hammer L2",
+    "level": 2,
+    "study": "faction-expansion/dwarf-hammerer-l2",
+    "canvas": [64, 64]
+  },
+  "dwarf-hammerer-l3": {
+    "name": "Dwarf two-handed hammer L3",
+    "level": 3,
+    "study": "faction-expansion/dwarf-hammerer-l3",
+    "canvas": [64, 64]
+  },
+  "dwarf-pickaxe": {
+    "name": "Dwarf pickaxe",
+    "level": 1,
+    "study": "faction-expansion/dwarf-pickaxe",
+    "canvas": [48, 48]
+  },
+  "dwarf-pickaxe-l2": {
+    "name": "Dwarf pickaxe L2",
+    "level": 2,
+    "study": "faction-expansion/dwarf-pickaxe-l2",
+    "canvas": [48, 48]
+  },
+  "dwarf-pickaxe-l3": {
+    "name": "Dwarf pickaxe L3",
+    "level": 3,
+    "study": "faction-expansion/dwarf-pickaxe-l3",
+    "canvas": [48, 48]
+  },
+  "dwarf-poleaxe": {
+    "name": "Dwarf poleaxe",
+    "level": 1,
+    "study": "faction-expansion/dwarf-poleaxe",
+    "canvas": [64, 64]
+  },
+  "dwarf-poleaxe-l2": {
+    "name": "Dwarf poleaxe L2",
+    "level": 2,
+    "study": "faction-expansion/dwarf-poleaxe-l2",
+    "canvas": [64, 64]
+  },
+  "dwarf-poleaxe-l3": {
+    "name": "Dwarf poleaxe L3",
+    "level": 3,
+    "study": "faction-expansion/dwarf-poleaxe-l3",
+    "canvas": [64, 64]
+  },
+  "dwarf-crossbow": {
+    "name": "Dwarf crossbow",
+    "level": 1,
+    "study": "faction-expansion/dwarf-crossbow",
+    "canvas": [48, 48]
+  },
+  "dwarf-crossbow-l2": {
+    "name": "Dwarf crossbow L2",
+    "level": 2,
+    "study": "faction-expansion/dwarf-crossbow-l2",
+    "canvas": [48, 48]
+  },
+  "dwarf-crossbow-l3": {
+    "name": "Dwarf crossbow L3",
+    "level": 3,
+    "study": "faction-expansion/dwarf-crossbow-l3",
+    "canvas": [48, 48]
+  },
+  "dwarf-arquebus": {
+    "name": "Dwarf arquebus",
+    "level": 1,
+    "study": "faction-expansion/dwarf-arquebus",
+    "canvas": [64, 64]
+  },
+  "dwarf-arquebus-l2": {
+    "name": "Dwarf arquebus L2",
+    "level": 2,
+    "study": "faction-expansion/dwarf-arquebus-l2",
+    "canvas": [64, 64]
+  },
+  "dwarf-arquebus-l3": {
+    "name": "Dwarf arquebus L3",
+    "level": 3,
+    "study": "faction-expansion/dwarf-arquebus-l3",
+    "canvas": [64, 64]
+  },
+  "dwarf-runesmith": {
+    "name": "Dwarf rune caster",
+    "level": 1,
+    "study": "faction-expansion/dwarf-runesmith",
+    "canvas": [64, 64]
+  },
+  "dwarf-runesmith-l2": {
+    "name": "Dwarf rune caster L2",
+    "level": 2,
+    "study": "faction-expansion/dwarf-runesmith-l2",
+    "canvas": [64, 64]
+  },
+  "dwarf-runesmith-l3": {
+    "name": "Dwarf rune caster L3",
+    "level": 3,
+    "study": "faction-expansion/dwarf-runesmith-l3",
+    "canvas": [64, 64]
+  },
+  "dwarf-goat-rider": {
+    "name": "Dwarf goat-mounted hammerman",
+    "level": 1,
+    "study": "faction-expansion/dwarf-goat-rider",
+    "canvas": [64, 64]
+  },
+  "dwarf-goat-rider-l2": {
+    "name": "Dwarf goat-mounted hammerman L2",
+    "level": 2,
+    "study": "faction-expansion/dwarf-goat-rider-l2",
+    "canvas": [64, 64]
+  },
+  "dwarf-goat-rider-l3": {
+    "name": "Dwarf goat-mounted hammerman L3",
+    "level": 3,
+    "study": "faction-expansion/dwarf-goat-rider-l3",
+    "canvas": [64, 64]
+  },
+  "fox-spearguard": {
+    "name": "Fox spear and shield",
+    "level": 1,
+    "study": "faction-expansion/fox-spearguard",
+    "canvas": [64, 64]
+  },
+  "fox-spearguard-l2": {
+    "name": "Fox spear and shield L2",
+    "level": 2,
+    "study": "faction-expansion/fox-spearguard-l2",
+    "canvas": [64, 64]
+  },
+  "fox-spearguard-l3": {
+    "name": "Fox spear and shield L3",
+    "level": 3,
+    "study": "faction-expansion/fox-spearguard-l3",
+    "canvas": [64, 64]
+  },
+  "merfolk-trident": {
+    "name": "Merfolk two-handed trident",
+    "level": 1,
+    "study": "faction-expansion/merfolk-trident",
+    "canvas": [64, 64]
+  },
+  "merfolk-trident-l2": {
+    "name": "Merfolk two-handed trident L2",
+    "level": 2,
+    "study": "faction-expansion/merfolk-trident-l2",
+    "canvas": [64, 64]
+  },
+  "merfolk-trident-l3": {
+    "name": "Merfolk two-handed trident L3",
+    "level": 3,
+    "study": "faction-expansion/merfolk-trident-l3",
+    "canvas": [64, 64]
+  },
+  "merfolk-netter": {
+    "name": "Merfolk net and spear",
+    "level": 1,
+    "study": "faction-expansion/merfolk-netter",
+    "canvas": [64, 64]
+  },
+  "merfolk-netter-l2": {
+    "name": "Merfolk net and spear L2",
+    "level": 2,
+    "study": "faction-expansion/merfolk-netter-l2",
+    "canvas": [64, 64]
+  },
+  "merfolk-netter-l3": {
+    "name": "Merfolk net and spear L3",
+    "level": 3,
+    "study": "faction-expansion/merfolk-netter-l3",
+    "canvas": [64, 64]
+  },
+  "merfolk-maceguard": {
+    "name": "Merfolk mace and shield",
+    "level": 1,
+    "study": "faction-expansion/merfolk-maceguard",
+    "canvas": [64, 64]
+  },
+  "merfolk-maceguard-l2": {
+    "name": "Merfolk mace and shield L2",
+    "level": 2,
+    "study": "faction-expansion/merfolk-maceguard-l2",
+    "canvas": [64, 64]
+  },
+  "merfolk-maceguard-l3": {
+    "name": "Merfolk mace and shield L3",
+    "level": 3,
+    "study": "faction-expansion/merfolk-maceguard-l3",
+    "canvas": [64, 64]
+  },
+  "bear": {
+    "name": "Bear",
+    "level": 1,
+    "study": "faction-expansion/bear",
+    "canvas": [64, 64]
+  },
+  "bear-l2": {
+    "name": "Bear L2",
+    "level": 2,
+    "study": "faction-expansion/bear-l2",
+    "canvas": [64, 64]
+  },
+  "bear-l3": {
+    "name": "Bear L3",
+    "level": 3,
+    "study": "faction-expansion/bear-l3",
+    "canvas": [64, 64]
+  },
+  "lynx": {
+    "name": "Lynx",
+    "level": 1,
+    "study": "faction-expansion/lynx",
+    "canvas": [64, 64]
+  },
+  "lynx-l2": {
+    "name": "Lynx L2",
+    "level": 2,
+    "study": "faction-expansion/lynx-l2",
+    "canvas": [64, 64]
+  },
+  "lynx-l3": {
+    "name": "Lynx L3",
+    "level": 3,
+    "study": "faction-expansion/lynx-l3",
+    "canvas": [64, 64]
+  },
+  "stag": {
+    "name": "Stag",
+    "level": 1,
+    "study": "faction-expansion/stag",
+    "canvas": [64, 64]
+  },
+  "stag-l2": {
+    "name": "Stag L2",
+    "level": 2,
+    "study": "faction-expansion/stag-l2",
+    "canvas": [64, 64]
+  },
+  "stag-l3": {
+    "name": "Stag L3",
+    "level": 3,
+    "study": "faction-expansion/stag-l3",
+    "canvas": [64, 64]
+  },
+  "giant-spider": {
+    "name": "Giant spider",
+    "level": 1,
+    "study": "faction-expansion/giant-spider",
+    "canvas": [64, 64]
+  },
+  "giant-spider-l2": {
+    "name": "Giant spider L2",
+    "level": 2,
+    "study": "faction-expansion/giant-spider-l2",
+    "canvas": [64, 64]
+  },
+  "giant-spider-l3": {
+    "name": "Giant spider L3",
+    "level": 3,
+    "study": "faction-expansion/giant-spider-l3",
+    "canvas": [64, 64]
+  },
+  "giant-tortoise": {
+    "name": "Giant tortoise",
+    "level": 1,
+    "study": "faction-expansion/giant-tortoise",
+    "canvas": [64, 64]
+  },
+  "giant-tortoise-l2": {
+    "name": "Giant tortoise L2",
+    "level": 2,
+    "study": "faction-expansion/giant-tortoise-l2",
+    "canvas": [64, 64]
+  },
+  "giant-tortoise-l3": {
+    "name": "Giant tortoise L3",
+    "level": 3,
+    "study": "faction-expansion/giant-tortoise-l3",
+    "canvas": [64, 64]
+  },
+  "giant-snake": {
+    "name": "Giant snake",
+    "level": 1,
+    "study": "faction-expansion/giant-snake",
+    "canvas": [64, 64]
+  },
+  "giant-snake-l2": {
+    "name": "Giant snake L2",
+    "level": 2,
+    "study": "faction-expansion/giant-snake-l2",
+    "canvas": [64, 64]
+  },
+  "giant-snake-l3": {
+    "name": "Giant snake L3",
+    "level": 3,
+    "study": "faction-expansion/giant-snake-l3",
+    "canvas": [64, 64]
+  },
+  "giant-raven": {
+    "name": "Giant raven",
+    "level": 1,
+    "study": "faction-expansion/giant-raven",
+    "canvas": [64, 64]
+  },
+  "giant-raven-l2": {
+    "name": "Giant raven L2",
+    "level": 2,
+    "study": "faction-expansion/giant-raven-l2",
+    "canvas": [64, 64]
+  },
+  "giant-raven-l3": {
+    "name": "Giant raven L3",
+    "level": 3,
+    "study": "faction-expansion/giant-raven-l3",
+    "canvas": [64, 64]
+  },
+  "giant-owl": {
+    "name": "Giant owl",
+    "level": 1,
+    "study": "faction-expansion/giant-owl",
+    "canvas": [64, 64]
+  },
+  "giant-owl-l2": {
+    "name": "Giant owl L2",
+    "level": 2,
+    "study": "faction-expansion/giant-owl-l2",
+    "canvas": [64, 64]
+  },
+  "giant-owl-l3": {
+    "name": "Giant owl L3",
+    "level": 3,
+    "study": "faction-expansion/giant-owl-l3",
+    "canvas": [64, 64]
+  },
+  "giant-wasp": {
+    "name": "Giant wasp",
+    "level": 1,
+    "study": "faction-expansion/giant-wasp",
+    "canvas": [64, 64]
+  },
+  "giant-wasp-l2": {
+    "name": "Giant wasp L2",
+    "level": 2,
+    "study": "faction-expansion/giant-wasp-l2",
+    "canvas": [64, 64]
+  },
+  "giant-wasp-l3": {
+    "name": "Giant wasp L3",
+    "level": 3,
+    "study": "faction-expansion/giant-wasp-l3",
+    "canvas": [64, 64]
+  },
+  "giant-bat": {
+    "name": "Giant bat",
+    "level": 1,
+    "study": "faction-expansion/giant-bat",
+    "canvas": [64, 64]
+  },
+  "giant-bat-l2": {
+    "name": "Giant bat L2",
+    "level": 2,
+    "study": "faction-expansion/giant-bat-l2",
+    "canvas": [64, 64]
+  },
+  "giant-bat-l3": {
+    "name": "Giant bat L3",
+    "level": 3,
+    "study": "faction-expansion/giant-bat-l3",
+    "canvas": [64, 64]
+  },
+  "giant-crab": {
+    "name": "Giant crab",
+    "level": 1,
+    "study": "faction-expansion/giant-crab",
+    "canvas": [64, 64]
+  },
+  "giant-crab-l2": {
+    "name": "Giant crab L2",
+    "level": 2,
+    "study": "faction-expansion/giant-crab-l2",
+    "canvas": [64, 64]
+  },
+  "giant-crab-l3": {
+    "name": "Giant crab L3",
+    "level": 3,
+    "study": "faction-expansion/giant-crab-l3",
+    "canvas": [64, 64]
+  },
+  "crocodile": {
+    "name": "Crocodile",
+    "level": 1,
+    "study": "faction-expansion/crocodile",
+    "canvas": [64, 64]
+  },
+  "crocodile-l2": {
+    "name": "Crocodile L2",
+    "level": 2,
+    "study": "faction-expansion/crocodile-l2",
+    "canvas": [64, 64]
+  },
+  "crocodile-l3": {
+    "name": "Crocodile L3",
+    "level": 3,
+    "study": "faction-expansion/crocodile-l3",
+    "canvas": [64, 64]
+  },
+  "shark": {
+    "name": "Shark",
+    "level": 1,
+    "study": "faction-expansion/shark",
+    "canvas": [64, 64]
+  },
+  "shark-l2": {
+    "name": "Shark L2",
+    "level": 2,
+    "study": "faction-expansion/shark-l2",
+    "canvas": [64, 64]
+  },
+  "shark-l3": {
+    "name": "Shark L3",
+    "level": 3,
+    "study": "faction-expansion/shark-l3",
+    "canvas": [64, 64]
+  },
+  "ray": {
+    "name": "Ray",
+    "level": 1,
+    "study": "faction-expansion/ray",
+    "canvas": [64, 64]
+  },
+  "ray-l2": {
+    "name": "Ray L2",
+    "level": 2,
+    "study": "faction-expansion/ray-l2",
+    "canvas": [64, 64]
+  },
+  "ray-l3": {
+    "name": "Ray L3",
+    "level": 3,
+    "study": "faction-expansion/ray-l3",
+    "canvas": [64, 64]
+  },
+  "octopus": {
+    "name": "Octopus",
+    "level": 1,
+    "study": "faction-expansion/octopus",
+    "canvas": [64, 64]
+  },
+  "octopus-l2": {
+    "name": "Octopus L2",
+    "level": 2,
+    "study": "faction-expansion/octopus-l2",
+    "canvas": [64, 64]
+  },
+  "octopus-l3": {
+    "name": "Octopus L3",
+    "level": 3,
+    "study": "faction-expansion/octopus-l3",
+    "canvas": [64, 64]
+  },
+  "skeletal-hound": {
+    "name": "Skeletal hound",
+    "level": 1,
+    "study": "faction-expansion/skeletal-hound",
+    "canvas": [64, 64]
+  },
+  "skeletal-hound-l2": {
+    "name": "Skeletal hound L2",
+    "level": 2,
+    "study": "faction-expansion/skeletal-hound-l2",
+    "canvas": [64, 64]
+  },
+  "skeletal-hound-l3": {
+    "name": "Skeletal hound L3",
+    "level": 3,
+    "study": "faction-expansion/skeletal-hound-l3",
+    "canvas": [64, 64]
+  },
+  "corpse-vulture": {
+    "name": "Corpse vulture",
+    "level": 1,
+    "study": "faction-expansion/corpse-vulture",
+    "canvas": [64, 64]
+  },
+  "corpse-vulture-l2": {
+    "name": "Corpse vulture L2",
+    "level": 2,
+    "study": "faction-expansion/corpse-vulture-l2",
+    "canvas": [64, 64]
+  },
+  "corpse-vulture-l3": {
+    "name": "Corpse vulture L3",
+    "level": 3,
+    "study": "faction-expansion/corpse-vulture-l3",
+    "canvas": [64, 64]
+  },
+  "skeletal-horse": {
+    "name": "Skeletal horse",
+    "level": 1,
+    "study": "faction-expansion/skeletal-horse",
+    "canvas": [64, 64]
+  },
+  "skeletal-horse-l2": {
+    "name": "Skeletal horse L2",
+    "level": 2,
+    "study": "faction-expansion/skeletal-horse-l2",
+    "canvas": [64, 64]
+  },
+  "skeletal-horse-l3": {
+    "name": "Skeletal horse L3",
+    "level": 3,
+    "study": "faction-expansion/skeletal-horse-l3",
+    "canvas": [64, 64]
+  },
+  "zombie-bear": {
+    "name": "Zombie bear",
+    "level": 1,
+    "study": "faction-expansion/zombie-bear",
+    "canvas": [64, 64]
+  },
+  "zombie-bear-l2": {
+    "name": "Zombie bear L2",
+    "level": 2,
+    "study": "faction-expansion/zombie-bear-l2",
+    "canvas": [64, 64]
+  },
+  "zombie-bear-l3": {
+    "name": "Zombie bear L3",
+    "level": 3,
+    "study": "faction-expansion/zombie-bear-l3",
+    "canvas": [64, 64]
+  },
+  "gryphon": {
+    "name": "Gryphon",
+    "level": 1,
+    "study": "faction-expansion/gryphon",
+    "canvas": [64, 64]
+  },
+  "gryphon-l2": {
+    "name": "Gryphon L2",
+    "level": 2,
+    "study": "faction-expansion/gryphon-l2",
+    "canvas": [64, 64]
+  },
+  "gryphon-l3": {
+    "name": "Gryphon L3",
+    "level": 3,
+    "study": "faction-expansion/gryphon-l3",
+    "canvas": [64, 64]
+  },
+  "dragon": {
+    "name": "Dragon",
+    "level": 1,
+    "study": "faction-expansion/dragon",
+    "canvas": [64, 64]
+  },
+  "dragon-l2": {
+    "name": "Dragon L2",
+    "level": 2,
+    "study": "faction-expansion/dragon-l2",
+    "canvas": [64, 64]
+  },
+  "dragon-l3": {
+    "name": "Dragon L3",
+    "level": 3,
+    "study": "faction-expansion/dragon-l3",
+    "canvas": [64, 64]
+  },
+  "basilisk": {
+    "name": "Basilisk",
+    "level": 1,
+    "study": "faction-expansion/basilisk",
+    "canvas": [64, 64]
+  },
+  "basilisk-l2": {
+    "name": "Basilisk L2",
+    "level": 2,
+    "study": "faction-expansion/basilisk-l2",
+    "canvas": [64, 64]
+  },
+  "basilisk-l3": {
+    "name": "Basilisk L3",
+    "level": 3,
+    "study": "faction-expansion/basilisk-l3",
+    "canvas": [64, 64]
+  },
+  "treant": {
+    "name": "Treant",
+    "level": 1,
+    "study": "faction-expansion/treant",
+    "canvas": [64, 64]
+  },
+  "treant-l2": {
+    "name": "Treant L2",
+    "level": 2,
+    "study": "faction-expansion/treant-l2",
+    "canvas": [64, 64]
+  },
+  "treant-l3": {
+    "name": "Treant L3",
+    "level": 3,
+    "study": "faction-expansion/treant-l3",
+    "canvas": [64, 64]
+  },
+  "sea-serpent": {
+    "name": "Sea serpent",
+    "level": 1,
+    "study": "faction-expansion/sea-serpent",
+    "canvas": [64, 64]
+  },
+  "sea-serpent-l2": {
+    "name": "Sea serpent L2",
+    "level": 2,
+    "study": "faction-expansion/sea-serpent-l2",
+    "canvas": [64, 64]
+  },
+  "sea-serpent-l3": {
+    "name": "Sea serpent L3",
+    "level": 3,
+    "study": "faction-expansion/sea-serpent-l3",
+    "canvas": [64, 64]
+  },
+  "bone-dragon": {
+    "name": "Bone dragon",
+    "level": 1,
+    "study": "faction-expansion/bone-dragon",
+    "canvas": [64, 64]
+  },
+  "bone-dragon-l2": {
+    "name": "Bone dragon L2",
+    "level": 2,
+    "study": "faction-expansion/bone-dragon-l2",
+    "canvas": [64, 64]
+  },
+  "bone-dragon-l3": {
+    "name": "Bone dragon L3",
+    "level": 3,
+    "study": "faction-expansion/bone-dragon-l3",
+    "canvas": [64, 64]
+  },
+  "merfolk-harpoonthrower": {
+    "name": "Merfolk harpoon thrower",
+    "level": 1,
+    "study": "faction-expansion/merfolk-harpoonthrower",
+    "canvas": [64, 64]
+  },
+  "merfolk-harpoonthrower-l2": {
+    "name": "Merfolk harpoon thrower L2",
+    "level": 2,
+    "study": "faction-expansion/merfolk-harpoonthrower-l2",
+    "canvas": [64, 64]
+  },
+  "merfolk-harpoonthrower-l3": {
+    "name": "Merfolk harpoon thrower L3",
+    "level": 3,
+    "study": "faction-expansion/merfolk-harpoonthrower-l3",
+    "canvas": [64, 64]
+  },
+  "skeleton-dreadguard": {
+    "name": "Dreadguard",
+    "level": 3,
+    "study": "faction-expansion/skeleton-dreadguard",
+    "canvas": [48, 48]
+  },
+  "skeleton-bow-master": {
+    "name": "Bone bow master",
+    "level": 3,
+    "study": "faction-expansion/skeleton-bow-master",
+    "canvas": [48, 48]
+  },
+  "woodland-alpha-wolf": {
+    "name": "Alpha wolf",
+    "level": 3,
+    "study": "faction-expansion/woodland-alpha-wolf",
+    "canvas": [48, 48]
+  },
+  "woodland-ancient-boar": {
+    "name": "Ancient boar",
+    "level": 3,
+    "study": "faction-expansion/woodland-ancient-boar",
+    "canvas": [48, 48]
+  },
+  "woodland-thorn-oracle": {
+    "name": "Thorn oracle",
+    "level": 3,
+    "study": "faction-expansion/woodland-thorn-oracle",
+    "canvas": [48, 48]
+  },
+  "woodland-grove-oracle": {
+    "name": "Grove oracle",
+    "level": 3,
+    "study": "faction-expansion/woodland-grove-oracle",
+    "canvas": [48, 48]
+  },
+  "merfolk-reef-champion": {
+    "name": "Reef champion",
+    "level": 3,
+    "study": "faction-expansion/merfolk-reef-champion",
+    "canvas": [48, 48]
+  },
+  "merfolk-harpoon-master": {
+    "name": "Harpoon master",
+    "level": 3,
+    "study": "faction-expansion/merfolk-harpoon-master",
+    "canvas": [48, 48]
+  },
+  "merfolk-tide-oracle": {
+    "name": "Tide oracle",
+    "level": 3,
+    "study": "faction-expansion/merfolk-tide-oracle",
+    "canvas": [48, 48]
   }
 }

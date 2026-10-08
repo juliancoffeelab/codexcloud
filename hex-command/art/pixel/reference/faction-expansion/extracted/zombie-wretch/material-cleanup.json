@@ -1,0 +1,775 @@
+{
+  "coordinates": "64x64 original slot",
+  "edits": [
+    {
+      "x": 35,
+      "y": 23,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 36,
+      "y": 23,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 37,
+      "y": 23,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 38,
+      "y": 23,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 35,
+      "y": 24,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 36,
+      "y": 24,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 37,
+      "y": 24,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 38,
+      "y": 24,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 39,
+      "y": 24,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 34,
+      "y": 25,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 35,
+      "y": 25,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 38,
+      "y": 25,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 35,
+      "y": 26,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 36,
+      "y": 26,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 37,
+      "y": 26,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 38,
+      "y": 26,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 31,
+      "y": 27,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 32,
+      "y": 27,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 37,
+      "y": 27,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 31,
+      "y": 28,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 36,
+      "y": 28,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 32,
+      "y": 29,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 33,
+      "y": 29,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 36,
+      "y": 29,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 37,
+      "y": 29,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 32,
+      "y": 30,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 27,
+      "y": 33,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 26,
+      "y": 34,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 31,
+      "y": 34,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 35,
+      "y": 34,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 25,
+      "y": 35,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 30,
+      "y": 35,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 35,
+      "y": 35,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 25,
+      "y": 36,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 30,
+      "y": 36,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 35,
+      "y": 36,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 25,
+      "y": 37,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 35,
+      "y": 37,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 36,
+      "y": 37,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 24,
+      "y": 38,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 36,
+      "y": 38,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 37,
+      "y": 38,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 24,
+      "y": 39,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 37,
+      "y": 39,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 24,
+      "y": 40,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 37,
+      "y": 40,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 24,
+      "y": 41,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 36,
+      "y": 41,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 37,
+      "y": 41,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 38,
+      "y": 41,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 23,
+      "y": 42,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 24,
+      "y": 42,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 36,
+      "y": 42,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 38,
+      "y": 42,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 22,
+      "y": 43,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 23,
+      "y": 43,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 38,
+      "y": 43,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 22,
+      "y": 44,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 38,
+      "y": 44,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 22,
+      "y": 45,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 37,
+      "y": 45,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 27,
+      "y": 47,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 34,
+      "y": 47,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 26,
+      "y": 48,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 33,
+      "y": 48,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 26,
+      "y": 49,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 33,
+      "y": 49,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 25,
+      "y": 50,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 25,
+      "y": 51,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 25,
+      "y": 52,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 24,
+      "y": 53,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 25,
+      "y": 53,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 26,
+      "y": 53,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 23,
+      "y": 54,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 24,
+      "y": 54,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 25,
+      "y": 54,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 26,
+      "y": 54,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 27,
+      "y": 54,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 23,
+      "y": 55,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 27,
+      "y": 55,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 28,
+      "y": 38,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 38,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 38,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 23,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 23,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 37,
+      "y": 23,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 24,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 24,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 37,
+      "y": 24,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 38,
+      "y": 24,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 26,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 26,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 37,
+      "y": 26,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 35,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 35,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 41,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 37,
+      "y": 41,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 53,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 53,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 23,
+      "y": 54,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 54,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 54,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 54,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 50,
+      "from": "w",
+      "to": "b",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 52,
+      "from": "w",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 53,
+      "from": "w",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 53,
+      "from": "w",
+      "to": "b",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 54,
+      "from": "w",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 34,
+      "y": 54,
+      "from": "w",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 38,
+      "y": 54,
+      "from": "w",
+      "to": "b",
+      "reason": "Flatten material plane with one connected contour shadow"
+    }
+  ]
+}

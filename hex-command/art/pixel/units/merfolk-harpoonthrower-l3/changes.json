@@ -1,0 +1,213 @@
+{
+  "base": "merfolk-harpoonthrower",
+  "level": 3,
+  "changes": [
+    {
+      "x": 12,
+      "y": 11,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 18,
+      "y": 14,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 27,
+      "y": 21,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 28,
+      "y": 22,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 29,
+      "y": 23,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 34,
+      "y": 23,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 30,
+      "y": 24,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 34,
+      "y": 24,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 31,
+      "y": 25,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 35,
+      "y": 25,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 30,
+      "y": 26,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 31,
+      "y": 26,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 34,
+      "y": 26,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 35,
+      "y": 26,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 30,
+      "y": 28,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 29,
+      "y": 29,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 30,
+      "y": 29,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 34,
+      "y": 29,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 35,
+      "y": 29,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 28,
+      "y": 30,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 29,
+      "y": 30,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 35,
+      "y": 30,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 26,
+      "y": 31,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 27,
+      "y": 31,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 28,
+      "y": 31,
+      "from": "c",
+      "to": "a",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 35,
+      "y": 31,
+      "from": "c",
+      "to": "a",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 25,
+      "y": 32,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    },
+    {
+      "x": 26,
+      "y": 32,
+      "from": "C",
+      "to": "A",
+      "reason": "Silver coral equipment on advanced merfolk"
+    }
+  ],
+  "paletteChanges": {
+    "V": [226, 227, 211, 255],
+    "v": [139, 165, 179, 255],
+    "H": [164, 143, 201, 255],
+    "h": [95, 73, 141, 255],
+    "A": [244, 248, 241, 255],
+    "a": [155, 184, 191, 255],
+    "G": [255, 204, 65, 255],
+    "R": [185, 24, 37, 255],
+    "r": [112, 14, 24, 255]
+  }
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "label": "Gryphon L1",
+    "image": "art/pixel/units/gryphon/player.png"
+  },
+  {
+    "label": "Gryphon L2",
+    "image": "art/pixel/units/gryphon-l2/player.png"
+  },
+  {
+    "label": "Gryphon L3",
+    "image": "art/pixel/units/gryphon-l3/player.png"
+  },
+  {
+    "label": "Dragon L1",
+    "image": "art/pixel/units/dragon/player.png"
+  },
+  {
+    "label": "Dragon L2",
+    "image": "art/pixel/units/dragon-l2/player.png"
+  },
+  {
+    "label": "Dragon L3",
+    "image": "art/pixel/units/dragon-l3/player.png"
+  },
+  {
+    "label": "Basilisk L1",
+    "image": "art/pixel/units/basilisk/player.png"
+  },
+  {
+    "label": "Basilisk L2",
+    "image": "art/pixel/units/basilisk-l2/player.png"
+  },
+  {
+    "label": "Basilisk L3",
+    "image": "art/pixel/units/basilisk-l3/player.png"
+  },
+  {
+    "label": "Treant L1",
+    "image": "art/pixel/units/treant/player.png"
+  },
+  {
+    "label": "Treant L2",
+    "image": "art/pixel/units/treant-l2/player.png"
+  },
+  {
+    "label": "Treant L3",
+    "image": "art/pixel/units/treant-l3/player.png"
+  }
+]

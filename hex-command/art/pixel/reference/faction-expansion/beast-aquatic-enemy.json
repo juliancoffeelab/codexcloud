@@ -1,0 +1,74 @@
+[
+  {
+    "label": "Giant crab L1",
+    "image": "art/pixel/units/giant-crab/enemy.png"
+  },
+  {
+    "label": "Giant crab L2",
+    "image": "art/pixel/units/giant-crab-l2/enemy.png"
+  },
+  {
+    "label": "Giant crab L3",
+    "image": "art/pixel/units/giant-crab-l3/enemy.png"
+  },
+  {
+    "label": "Crocodile L1",
+    "image": "art/pixel/units/crocodile/enemy.png"
+  },
+  {
+    "label": "Crocodile L2",
+    "image": "art/pixel/units/crocodile-l2/enemy.png"
+  },
+  {
+    "label": "Crocodile L3",
+    "image": "art/pixel/units/crocodile-l3/enemy.png"
+  },
+  {
+    "label": "Shark L1",
+    "image": "art/pixel/units/shark/enemy.png"
+  },
+  {
+    "label": "Shark L2",
+    "image": "art/pixel/units/shark-l2/enemy.png"
+  },
+  {
+    "label": "Shark L3",
+    "image": "art/pixel/units/shark-l3/enemy.png"
+  },
+  {
+    "label": "Ray L1",
+    "image": "art/pixel/units/ray/enemy.png"
+  },
+  {
+    "label": "Ray L2",
+    "image": "art/pixel/units/ray-l2/enemy.png"
+  },
+  {
+    "label": "Ray L3",
+    "image": "art/pixel/units/ray-l3/enemy.png"
+  },
+  {
+    "label": "Octopus L1",
+    "image": "art/pixel/units/octopus/enemy.png"
+  },
+  {
+    "label": "Octopus L2",
+    "image": "art/pixel/units/octopus-l2/enemy.png"
+  },
+  {
+    "label": "Octopus L3",
+    "image": "art/pixel/units/octopus-l3/enemy.png"
+  },
+  {
+    "label": "Sea serpent L1",
+    "image": "art/pixel/units/sea-serpent/enemy.png"
+  },
+  {
+    "label": "Sea serpent L2",
+    "image": "art/pixel/units/sea-serpent-l2/enemy.png"
+  },
+  {
+    "label": "Sea serpent L3",
+    "image": "art/pixel/units/sea-serpent-l3/enemy.png"
+  }
+]

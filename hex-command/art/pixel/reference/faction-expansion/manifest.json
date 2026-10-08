@@ -1,0 +1,1741 @@
+{
+  "deadline": "2026-10-08T08:00:00Z",
+  "races": {
+    "skeleton": {
+      "anchors": ["skeleton", "bonearcher", "revenant"],
+      "vibe": "Scary skeletal undead. Anatomically readable ivory skull, deep black eye sockets, exposed ribs, elbows and knee bones, no living flesh. Lean roughly human-height bodies; rough rusty equipment and ragged teal faction cloth. Bias strongly toward the skeleton WARRIOR proportions. Skull width about 7-9 logical pixels and height 8-10; never the oversized lich head. Avoid oversized cartoon skulls.",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [98, 82, 107, 255],
+        "v": [54, 42, 65, 255],
+        "H": [181, 171, 148, 255],
+        "h": [118, 108, 91, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [99, 207, 170, 255]
+      }
+    },
+    "zombie": {
+      "anchors": ["skeleton", "leather-swordsman", "necromancer"],
+      "vibe": "Hideous walking corpses, NOT skeletons. Heavy or hunched decaying fleshy bodies, asymmetric torn clothes, sick yellow-green dead skin, sunken faces and missing chunks. Ugly, unsettling, grounded pixel silhouettes, no cute faces. Teal scraps identify faction.",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [117, 95, 74, 255],
+        "v": [69, 54, 43, 255],
+        "H": [143, 154, 92, 255],
+        "h": [86, 102, 58, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [188, 217, 70, 255]
+      }
+    },
+    "elf": {
+      "anchors": ["archer", "ranger", "healer"],
+      "vibe": "Slim tall woodland elves: long slender limbs, small heads, visible pointed ears, graceful but practical athletic poses. Slightly taller than human anchors, not stretched. Leaf-green garments, light cream details, warm brown hair and leather, teal faction cloaks. Elegant and restrained, not bulky human armor.",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [118, 149, 64, 255],
+        "v": [65, 93, 43, 255],
+        "H": [247, 190, 140, 255],
+        "h": [177, 118, 81, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [165, 211, 116, 255]
+      }
+    },
+    "dwarf": {
+      "anchors": ["leather-swordsman", "hammerman", "crossbowman"],
+      "vibe": "Short, broad, tough dwarves, about three quarters human height. Chunky arms, squat strong legs, big noses and bushy beards. Slightly funny stubborn faces, not baby proportions. Practical leather workwear, iron equipment and teal faction cloth. Do not draw full-height humans.",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [148, 106, 57, 255],
+        "v": [88, 61, 36, 255],
+        "H": [247, 190, 140, 255],
+        "h": [177, 118, 81, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [122, 198, 227, 255]
+      }
+    },
+    "woodland": {
+      "anchors": ["thorncaller", "grovewarden", "boar"],
+      "vibe": "Anthropomorphic woodland fox with orange fur, cream muzzle, upright pointed ears, digitigrade-looking boots and visible bushy tail. Same scale/detail as existing fox casters, natural bark/wicker equipment, teal faction cloak.",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [130, 147, 60, 255],
+        "v": [72, 89, 36, 255],
+        "H": [241, 112, 26, 255],
+        "h": [158, 64, 22, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      }
+    },
+    "merfolk": {
+      "anchors": ["tidehunter", "reefguard", "tidesage"],
+      "vibe": "Merfolk with a human-like upper torso and ONE long curling fish tail instead of legs. Sea-green skin, fin ears, coral/bronze equipment, teal faction cloth. Strong readable shoulders and hands, flowing tail planted as support. Match the existing merfolk anchors.",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [121, 138, 164, 255],
+        "v": [61, 79, 105, 255],
+        "H": [92, 167, 138, 255],
+        "h": [46, 103, 88, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [130, 215, 218, 255],
+        "C": [207, 112, 69, 255],
+        "c": [143, 70, 48, 255]
+      }
+    },
+    "beast-land": {
+      "anchors": ["boar", "wolf", "dwarf-goat-rider"],
+      "vibe": "A natural dangerous animal, not a humanoid. Exact species anatomy, grounded readable pose and complete limbs. Chunky restrained pixel art matching existing wolves/boars. Small teal neck collar or harness identifies faction, no rider. Coat/scales use two flat tones, no noise.",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [130, 147, 60, 255],
+        "v": [72, 89, 36, 255],
+        "H": [241, 112, 26, 255],
+        "h": [158, 64, 22, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      }
+    },
+    "beast-flying": {
+      "anchors": ["boar", "wolf", "elf-deer-archer"],
+      "vibe": "A powerful flying creature, not a person. Complete species anatomy and readable wings, side three-quarter view. Chunky native pixel art with flat connected feathers or membranes, no noise. Small teal neck band identifies faction, no rider.",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [130, 147, 60, 255],
+        "v": [72, 89, 36, 255],
+        "H": [241, 112, 26, 255],
+        "h": [158, 64, 22, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      }
+    },
+    "beast-aquatic": {
+      "anchors": ["merfolk-trident", "merfolk-netter", "reefguard"],
+      "vibe": "A complete aquatic animal or monster, NOT a merfolk. No human torso or hands. Strong natural swimming silhouette, no water or bubbles. Small teal harness/marking identifies faction. Flat connected colored tissue/scales, no noise.",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [130, 147, 60, 255],
+        "v": [72, 89, 36, 255],
+        "H": [241, 112, 26, 255],
+        "h": [158, 64, 22, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      }
+    },
+    "beast-undead": {
+      "anchors": ["skeleton-rider", "wolf", "skeleton-axeman"],
+      "vibe": "Scary undead beast with real animal anatomy, not a human. Exposed bones or rotten flesh as specified, dark sockets and complete limb attachments. Small ragged teal harness identifies faction, no rider. Chunky pixel clusters and flat tissue/bone planes.",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [130, 147, 60, 255],
+        "v": [72, 89, 36, 255],
+        "H": [241, 112, 26, 255],
+        "h": [158, 64, 22, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      }
+    },
+    "beast-fantasy": {
+      "anchors": ["boar", "wolf", "skeleton-rider"],
+      "vibe": "A menacing fantasy beast, complete nonhuman anatomy, no rider. Readable species silhouette, deliberate limb attachments and small teal collar/harness for faction. Same native pixel detail as references, flat materials with no noisy textures.",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [130, 147, 60, 255],
+        "v": [72, 89, 36, 255],
+        "H": [241, 112, 26, 255],
+        "h": [158, 64, 22, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      }
+    }
+  },
+  "jobs": [
+    {
+      "race": "skeleton",
+      "id": "skeleton-flanker",
+      "name": "Skeleton dagger flanker",
+      "pose": "Low forward-leaning athletic stance. TWO separate steel daggers, each visibly gripped by an ivory skeletal hand beside the body. Short torn teal cloak, exposed ribs, minimal rusty leather. Both elbows and knees readable.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "skeleton",
+      "id": "skeleton-impact-caster",
+      "name": "Skeleton impact caster",
+      "pose": "Standing skeletal caster. New proportionate angular skull and hood opening. One hand grips a staff capped with a chunky blunt stone cube, other skeletal hand opens outward casting a small pale cyan force orb. Simple muted violet tunic, teal hood/cloak, bare bone hands.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "skeleton",
+      "id": "skeleton-scythe-caster",
+      "name": "Skeleton scythe caster",
+      "pose": "Skeletal reaper caster. A long wooden scythe shaft held visibly in one bony hand, real large curved steel scythe blade attached above and beside its skull, other hand casting a small green soul flame. Modest ragged violet robe and teal hood/cloak, readable skull with black eye sockets.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "skeleton",
+      "id": "skeleton-axeman",
+      "name": "Skeleton two-handed axeman",
+      "pose": "Exposed-rib skeleton in a wide grounded stance, BOTH hands visibly grip ONE diagonal wooden shaft, broad double-edged rusty steel axe head at its upper free end. Simple belt and short teal mantle, no full plate armor.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "skeleton",
+      "id": "skeleton-rider",
+      "name": "Skeleton mounted spearman",
+      "pose": "A skeletal warrior seated correctly on a SKELETAL HORSE, not a living horse. Four separate bony legs, ribcage, horse skull with long muzzle, dark sockets. Rider holds a long wooden spear with steel tip in one hand and reins in other. Teal small cloak, beginner light equipment. Full horse, spear tip and tail inside slot.",
+      "size": 64,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "zombie",
+      "id": "zombie-shambler",
+      "name": "Zombie shambler",
+      "pose": "Hunched upright corpse with TWO reaching open hands, torn brown civilian tunic, teal scarf scrap, yellow-green decaying flesh, exposed wounds but no red background. Two awkward planted feet. No weapon, no door or prop.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [48, 48]
+    },
+    {
+      "race": "zombie",
+      "id": "zombie-wretch",
+      "name": "Zombie weakling wretch",
+      "pose": "Weak emaciated civilian corpse, only 28-32 logical pixels tall and 16-20 wide: visibly MUCH THINNER and smaller than the soldier anchors. Narrow shoulders, skinny dangling arms, ragged short brown shirt, one bare foot and one worn boot, tiny teal cloth scrap. Small sick gray-green fleshy face and arms, slack jaw, hunched spine. No armor, no weapon, no huge muscles. Full two-legged standing anatomy. Keep extra empty pink space around this small weak unit, do not enlarge it to fill the slot.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [48, 48]
+    },
+    {
+      "race": "zombie",
+      "id": "zombie-crawler",
+      "name": "Zombie weakling crawler",
+      "pose": "Weak decayed fleshy zombie crawling low on the ground, only 14-18 logical pixels high and 28-32 wide. Two thin hands planted in front pulling its body, two wasted legs dragging behind. Small head and shoulders low, torn brown peasant shirt, tiny teal cloth scrap, gray-green flesh. No muscles, no armor, no weapon. Complete crawling silhouette with hands and dragging legs. Keep lots of empty pink above it, do not fill the slot.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [48, 48]
+    },
+    {
+      "race": "zombie",
+      "id": "zombie-light-cleaver",
+      "name": "Zombie weakling cleaver",
+      "pose": "Small skinny low-tier civilian zombie only 28-32 logical pixels tall, narrow chest and wasted arms, small head. One hand grips a small chipped kitchen cleaver, other hand empty and drooping. Torn plain brown shirt, tiny teal scarf scrap, no shield, no armor, no bulky equipment, sick gray-green skin. Two thin planted legs. Extra pink padding: deliberately much smaller and squishier than anchors.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [48, 48]
+    },
+    {
+      "race": "zombie",
+      "id": "zombie-novice-caster",
+      "name": "Zombie weakling corruption caster",
+      "pose": "Small frail decayed novice caster only 28-32 logical pixels tall, narrow hunched shoulders, tiny skull-like FLESHY green face. Ragged short brown robe and little teal cowl, wasted thin arms. One hand holds a thin plain dead branch staff with a tiny green bud, other hand open casting a tiny lime spark. No huge staff head, no heavy armor, no enormous robe or cloak. Much smaller and squishier than anchors, extra pink padding.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [48, 48]
+    },
+    {
+      "race": "zombie",
+      "id": "zombie-walker",
+      "name": "Zombie skeleton-sized walker",
+      "pose": "Thin adult corpse at EXACTLY the skeleton WARRIOR anchor height, about 36-40 logical pixels head to feet, narrow torso, normal small head and wasted limbs, not a bulky giant and not a miniature. Two drooping reaching fleshy hands, torn brown civilian shirt and trousers, tiny teal scarf scrap, gray-green corpse skin. No weapons or armor. Match warrior body scale but with flesh and ragged clothes.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [48, 48]
+    },
+    {
+      "race": "zombie",
+      "id": "zombie-fighter",
+      "name": "Zombie skeleton-sized fighter",
+      "pose": "Thin adult corpse at EXACTLY skeleton WARRIOR anchor height, 36-40 logical pixels head to feet, narrow torso, small head, wasted arms and legs. One hand visibly grips a SMALL chipped cleaver and other a SMALL battered wooden shield. Ragged brown shirt and trousers, teal scarf scrap, gray-green corpse skin. No huge armor or muscles, all equipment proportional.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [48, 48]
+    },
+    {
+      "race": "zombie",
+      "id": "zombie-decay-caster",
+      "name": "Zombie skeleton-sized caster",
+      "pose": "Thin adult decayed corpse at EXACTLY skeleton WARRIOR body scale, 36-40 logical pixels head to feet, small head and narrow shoulders. Simple ragged brown robe and short teal hood/cloak, wasted fleshy gray-green hands. One hand grips a thin dead-branch staff with small green gem, other casts a compact lime corruption flame. Staff may extend above head but body must match warrior height. No enormous shoulders, hood, head or robe.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [48, 48]
+    },
+    {
+      "race": "zombie",
+      "id": "zombie-cleaver",
+      "name": "Zombie cleaver fighter",
+      "pose": "Ugly upright zombie corpse visibly gripping a chipped broad cleaver in one hand and a battered small wooden shield in the other. Torn brown work clothes, teal cloth scrap, sick yellow-green flesh. Low-level equipment and exposed dead face.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "zombie",
+      "id": "zombie-ghoul",
+      "name": "Zombie ghoul",
+      "pose": "Low crouched FLESHY ghoul, long arms with broad three-clawed hands, bent legs and hunched spine. Sick yellow-green flesh, ugly sunken face, torn shorts and small teal cloth scrap. Clear hand/foot separation, no animal quadruped, no weapons.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [48, 48]
+    },
+    {
+      "race": "zombie",
+      "id": "zombie-plague-carrier",
+      "name": "Zombie plague carrier",
+      "pose": "Bulky swollen walking corpse, big crooked basket of bones and remains strapped to its back, ragged brown apron, teal sash. One hand holds a simple short walking club, other open. Yellow-green decayed face and thick arms, two distinct feet.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "zombie",
+      "id": "zombie-corruption-mage",
+      "name": "Zombie corruption mage",
+      "pose": "Hideous decayed fleshy zombie caster, sick greenish skin, ragged dirty robe, teal faction hood/cloak. One hand visibly grips a gnarled rotten staff with crooked dead branches and a sick lime-green gem, other hand casts a compact corruption flame. Not a clean skeleton, not cute.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "elf",
+      "id": "elf-spearman",
+      "name": "Elf spear and shield",
+      "pose": "Tall slim elf gripping a long wooden spear with slender steel leaf tip and a narrow leaf-shaped wooden shield. Pointed ears, simple green tunic, light leather protection, small teal cloak. Both hands and slim legs distinct.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "elf",
+      "id": "elf-bladedancer",
+      "name": "Elf two-handed sword",
+      "pose": "Tall slim elf in graceful wide stance, BOTH hands grip ONE long gently curved steel sword diagonally in front of body. Pointed ears, green tunic, light leather protection, short teal cloak. Blade clear of face, correct connected hilt and hands.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [48, 48]
+    },
+    {
+      "race": "elf",
+      "id": "elf-archer",
+      "name": "Elf archer",
+      "pose": "Tall slender elf with pointed ears, drawing a wooden longbow, one hand on bow grip and other drawing string beside cheek. Arrow properly seated along bow. Green simple tunic, brown boots, teal cloak, small quiver behind shoulder with arrows up.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "elf",
+      "id": "elf-flanker",
+      "name": "Elf dual knife flanker",
+      "pose": "Tall slim elf in low mobile stance with TWO short steel knives, each held visibly in a separate hand outside torso. Pointed ears, green fitted tunic, brown boots and short teal cloak. No knives stuck in body or belt.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "elf",
+      "id": "elf-caster",
+      "name": "Elf branch staff caster",
+      "pose": "Tall slim elf with pointed ears, plain green robe, teal faction cloak. One hand visibly grips a slender branch staff topped with a small leaf-shaped green crystal, other open casting hand. Clear feet, face and staff head.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "elf",
+      "id": "elf-deer-archer",
+      "name": "Elf deer-mounted archer",
+      "pose": "Tall slim elf seated naturally on a lean DEER with small branching antlers, four slim legs and short tail, drawing a bow. Pointed ears, green tunic, teal small cloak. Hands on bow and string, no horse anatomy. Keep antlers bow and all four legs inside frame.",
+      "size": 64,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "dwarf",
+      "id": "dwarf-axeguard",
+      "name": "Dwarf axe and shield",
+      "pose": "Short broad dwarf with huge brown beard and stout leather boots, one hand grips a short broad axe and the other holds a round wooden shield. Leather jerkin, teal scarf, beginner iron accents, stern funny big nose.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "dwarf",
+      "id": "dwarf-hammerer",
+      "name": "Dwarf two-handed hammer",
+      "pose": "Short squat dwarf, wide stance, BOTH chunky hands gripping ONE diagonal shaft. Large rectangular steel HAMMER head centered across its upper end, broad striking face points downward, short opposite poll; NOT mace, not axe. Leather apron, teal scarf, big beard.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "dwarf",
+      "id": "dwarf-pickaxe",
+      "name": "Dwarf pickaxe",
+      "pose": "Short broad bearded dwarf with leather mining apron and teal scarf, BOTH hands gripping one diagonal wooden pickaxe shaft. A curved pointed steel pick and a short flat counterweight clearly attached across upper shaft. Chunky arms, distinct feet.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [48, 48]
+    },
+    {
+      "race": "dwarf",
+      "id": "dwarf-poleaxe",
+      "name": "Dwarf poleaxe",
+      "pose": "Short broad bearded dwarf gripping a long poleaxe with both hands. Head has a steel axe blade perpendicular to shaft, spear point aligned with shaft, and rear hook. Entire weapon visible, blade clear of face, leather work clothes and teal scarf.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "dwarf",
+      "id": "dwarf-crossbow",
+      "name": "Dwarf crossbow",
+      "pose": "Short broad bearded dwarf holding a compact CROSSBOW across the front of body, stock against shoulder, trigger hand at grip and supporting hand under stock. Horizontal bow limbs and seated bolt visible, not ordinary bow. Leather jerkin, teal scarf.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [48, 48]
+    },
+    {
+      "race": "dwarf",
+      "id": "dwarf-arquebus",
+      "name": "Dwarf arquebus",
+      "pose": "Short tough dwarf with big beard and nose aiming an early ARQUEBUS: wooden butt against shoulder, ONE long straight metal barrel points diagonally outward, trigger hand on grip, other hand under barrel. Small muzzle opening, no modern rifle magazine. Leather clothes, teal scarf.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "dwarf",
+      "id": "dwarf-runesmith",
+      "name": "Dwarf rune caster",
+      "pose": "Short broad bushy-bearded dwarf holding a short rectangular smith hammer in one hand and a glowing small cyan RUNE STONE in the other. Simple leather apron, teal scarf, clear hammer grip and stone resting in hand, sturdy boots.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "dwarf",
+      "id": "dwarf-goat-rider",
+      "name": "Dwarf goat-mounted hammerman",
+      "pose": "Short broad bearded dwarf seated on a stocky MOUNTAIN GOAT, curved horns, four sturdy legs and short tail. Rider holds a rectangular steel hammer in one hand and reins in other, leather clothes and teal cloak. Clearly goat not horse, complete hammer head and all legs.",
+      "size": 64,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "woodland",
+      "id": "fox-spearguard",
+      "name": "Fox spear and shield",
+      "pose": "Orange anthropomorphic fox warrior holding a spear and wicker/bark round shield. Both hands visibly grip equipment. Cream muzzle, upright pointed ears, bushy tail, simple brown tunic, teal faction cloak. Match scale and fox anatomy of anchors.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "merfolk",
+      "id": "merfolk-trident",
+      "name": "Merfolk two-handed trident",
+      "pose": "Merfolk with teal-green skin and a single curling fish tail, BOTH hands grip one long bronze/wooden TRIDENT with three clearly connected pointed prongs. Forward attacking reach, head clear of trident. Simple coral chest straps and teal cloth.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "merfolk",
+      "id": "merfolk-netter",
+      "name": "Merfolk net and spear",
+      "pose": "Merfolk with one curling tail, one hand gripping a short spear and other hand visibly holding a GATHERED fishing NET with connected diamond mesh and a loop of rope. Keep mesh simple readable pixels, no loose noise. Simple coral straps and teal cloth.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "merfolk",
+      "id": "merfolk-maceguard",
+      "name": "Merfolk mace and shield",
+      "pose": "Broad-shouldered merfolk with one curling tail, one hand grips a short blunt iron MACE with chunky flanged head, other holds a large round coral shield ready to bash. Simple bronze chest straps, fin ears, teal cloth. Not spear shield variant.",
+      "size": 48,
+      "status": "tiers",
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-land",
+      "id": "bear",
+      "name": "Bear",
+      "pose": "Large adult brown bear in low powerful walking stance, FOUR distinct strong legs and paws, round ears, short tail, heavy shoulders and broad short muzzle. Mouth slightly open with attached ivory fangs.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [133, 88, 51, 255],
+        "v": [73, 46, 32, 255],
+        "H": [133, 88, 51, 255],
+        "h": [73, 46, 32, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [53, 56, 59, 255],
+          "h": [28, 32, 36, 255],
+          "V": [53, 56, 59, 255],
+          "v": [28, 32, 36, 255]
+        },
+        {
+          "H": [196, 199, 188, 255],
+          "h": [109, 121, 120, 255],
+          "V": [196, 199, 188, 255],
+          "v": [109, 121, 120, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-land",
+      "id": "lynx",
+      "name": "Lynx",
+      "pose": "Athletic wild CAT, tufted pointed ears, broad cheek ruff, short feline muzzle and SHORT stub tail, four paws, stalking stance. Warm tawny fur with only a few large deliberate dark cheek marks; NOT wolf, not long dog muzzle.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [166, 116, 63, 255],
+        "v": [99, 67, 39, 255],
+        "H": [166, 116, 63, 255],
+        "h": [99, 67, 39, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [132, 145, 151, 255],
+          "h": [68, 78, 87, 255],
+          "V": [132, 145, 151, 255],
+          "v": [68, 78, 87, 255]
+        },
+        {
+          "H": [225, 222, 207, 255],
+          "h": [143, 149, 143, 255],
+          "V": [225, 222, 207, 255],
+          "v": [143, 149, 143, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-land",
+      "id": "stag",
+      "name": "Stag",
+      "pose": "Adult stag with branching antlers, upright proud slender neck, short deer muzzle, FOUR long slim legs with split hooves, short tail, brown coat and cream belly. Antlers attach correctly above ears.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [133, 88, 51, 255],
+        "v": [73, 46, 32, 255],
+        "H": [133, 88, 51, 255],
+        "h": [73, 46, 32, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [161, 136, 97, 255],
+          "h": [92, 79, 57, 255],
+          "V": [161, 136, 97, 255],
+          "v": [92, 79, 57, 255]
+        },
+        {
+          "H": [229, 224, 202, 255],
+          "h": [155, 162, 138, 255],
+          "V": [229, 224, 202, 255],
+          "v": [155, 162, 138, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-land",
+      "id": "giant-spider",
+      "name": "Giant spider",
+      "pose": "Elevated top-view gray-violet spider with eight long walking legs, four separated tips on each side. Two connected body segments, small dark eyes and tiny ivory fangs. Teal body band.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [108, 91, 132, 255],
+        "v": [57, 47, 76, 255],
+        "H": [108, 91, 132, 255],
+        "h": [57, 47, 76, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [136, 51, 68, 255],
+          "h": [76, 31, 45, 255],
+          "V": [136, 51, 68, 255],
+          "v": [76, 31, 45, 255]
+        },
+        {
+          "H": [42, 48, 57, 255],
+          "h": [22, 26, 34, 255],
+          "V": [42, 48, 57, 255],
+          "v": [22, 26, 34, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-land",
+      "id": "giant-tortoise",
+      "name": "Giant tortoise",
+      "pose": "Heavy tortoise, broad domed olive shell with a few large polygon scutes, FOUR short stout reptilian legs, small beaked head on short neck, small tail. Shell and neck connect naturally, no teeth.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [99, 141, 67, 255],
+        "v": [49, 83, 43, 255],
+        "H": [99, 141, 67, 255],
+        "h": [49, 83, 43, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [79, 139, 115, 255],
+          "h": [38, 79, 68, 255],
+          "V": [79, 139, 115, 255],
+          "v": [38, 79, 68, 255]
+        },
+        {
+          "H": [198, 196, 143, 255],
+          "h": [109, 126, 82, 255],
+          "V": [198, 196, 143, 255],
+          "v": [109, 126, 82, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-land",
+      "id": "giant-snake",
+      "name": "Giant snake",
+      "pose": "Long thick coiled snake with raised menacing head, connected looping body and tapered tail, NO legs. Broad reptile head, small attached forked tongue, two tiny fixed fangs, olive scales and cream belly. One coil supports the raised neck.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [99, 141, 67, 255],
+        "v": [49, 83, 43, 255],
+        "H": [99, 141, 67, 255],
+        "h": [49, 83, 43, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [174, 116, 68, 255],
+          "h": [105, 63, 39, 255],
+          "V": [174, 116, 68, 255],
+          "v": [105, 63, 39, 255]
+        },
+        {
+          "H": [227, 224, 204, 255],
+          "h": [143, 153, 135, 255],
+          "V": [227, 224, 204, 255],
+          "v": [143, 153, 135, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-flying",
+      "id": "giant-raven",
+      "name": "Giant raven",
+      "pose": "Large black raven, hooked heavy beak, broad partly raised wings, TWO clawed feet, long wedge tail and feathered body. Wings connect at shoulders, not free floating. Flat blue-black feather planes, no speckling.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [47, 55, 65, 255],
+        "v": [23, 29, 36, 255],
+        "H": [47, 55, 65, 255],
+        "h": [23, 29, 36, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [41, 62, 89, 255],
+          "h": [22, 35, 53, 255],
+          "V": [41, 62, 89, 255],
+          "v": [22, 35, 53, 255]
+        },
+        {
+          "H": [68, 47, 91, 255],
+          "h": [37, 26, 56, 255],
+          "V": [68, 47, 91, 255],
+          "v": [37, 26, 56, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-flying",
+      "id": "giant-owl",
+      "name": "Giant owl",
+      "pose": "Large owl, TWO broad partly spread wings, TWO clawed feet, rounded head with deliberate facial disk and big stern eyes, tiny hooked beak, short fan tail. Brown/cream feathers, only large feather groups.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [133, 88, 51, 255],
+        "v": [73, 46, 32, 255],
+        "H": [133, 88, 51, 255],
+        "h": [73, 46, 32, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [132, 145, 151, 255],
+          "h": [68, 78, 87, 255],
+          "V": [132, 145, 151, 255],
+          "v": [68, 78, 87, 255]
+        },
+        {
+          "H": [227, 226, 210, 255],
+          "h": [144, 152, 143, 255],
+          "V": [227, 226, 210, 255],
+          "v": [144, 152, 143, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-flying",
+      "id": "giant-wasp",
+      "name": "Giant wasp",
+      "pose": "Huge wasp with THREE body segments, SIX insect legs, TWO pairs of transparent ivory/cyan wings visibly attached to thorax, antennae and a connected pointed sting. Yellow-and-black broad abdominal stripes, NOT bee fur.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [29, 28, 22, 255],
+        "v": [16, 17, 15, 255],
+        "H": [191, 155, 41, 255],
+        "h": [104, 77, 27, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [220, 150, 35, 255],
+          "h": [115, 65, 25, 255],
+          "V": [29, 28, 22, 255],
+          "v": [16, 17, 15, 255]
+        },
+        {
+          "H": [236, 191, 69, 255],
+          "h": [140, 103, 30, 255],
+          "V": [29, 28, 22, 255],
+          "v": [16, 17, 15, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-flying",
+      "id": "giant-bat",
+      "name": "Giant bat",
+      "pose": "Large bat with TWO spread leathery wings attached to forelimb fingers, TWO small clawed hind feet, large pointed ears, short snout with tiny attached fangs. Dark brown fur and purple-brown wing membranes, no extra limbs.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [114, 78, 86, 255],
+        "v": [61, 42, 52, 255],
+        "H": [114, 78, 86, 255],
+        "h": [61, 42, 52, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [100, 74, 132, 255],
+          "h": [51, 37, 76, 255],
+          "V": [100, 74, 132, 255],
+          "v": [51, 37, 76, 255]
+        },
+        {
+          "H": [190, 168, 166, 255],
+          "h": [105, 85, 108, 255],
+          "V": [190, 168, 166, 255],
+          "v": [105, 85, 108, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-aquatic",
+      "id": "giant-crab",
+      "name": "Giant crab",
+      "pose": "Top-view coral crab, two large forward pincers plus eight walking legs, four fanned on each side with separated tips. Dark natural leg hinges, ivory claw interiors and tiny eye stalks, teal central harness.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [58, 63, 40, 255],
+        "v": [31, 36, 28, 255],
+        "H": [196, 94, 59, 255],
+        "h": [112, 46, 36, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [123, 84, 157, 255],
+          "h": [66, 44, 89, 255],
+          "V": [58, 63, 40, 255],
+          "v": [31, 36, 28, 255]
+        },
+        {
+          "H": [177, 47, 49, 255],
+          "h": [96, 27, 37, 255],
+          "V": [58, 63, 40, 255],
+          "v": [31, 36, 28, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-aquatic",
+      "id": "crocodile",
+      "name": "Crocodile",
+      "pose": "Four-legged crocodile seen diagonally from above, head lower right and thick tapering tail upper left. Four separate splayed legs, two on each side, all joined to the torso. Olive scutes and ivory belly.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [99, 141, 67, 255],
+        "v": [49, 83, 43, 255],
+        "H": [99, 141, 67, 255],
+        "h": [49, 83, 43, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [132, 145, 151, 255],
+          "h": [68, 78, 87, 255],
+          "V": [132, 145, 151, 255],
+          "v": [68, 78, 87, 255]
+        },
+        {
+          "H": [213, 216, 185, 255],
+          "h": [128, 145, 114, 255],
+          "V": [213, 216, 185, 255],
+          "v": [128, 145, 114, 255]
+        }
+      ],
+      "canvas": [64, 64],
+      "anchors": ["boar", "wolf", "dwarf-goat-rider"]
+    },
+    {
+      "race": "beast-aquatic",
+      "id": "shark",
+      "name": "Shark",
+      "pose": "Complete shark swimming side-on, pointed shark snout with mouth/attached teeth, ONE dorsal fin, TWO pectoral fins, small pelvic fins and correct vertical crescent tail with upper/lower lobes. Gray-blue upper body, cream underside, visible gill lines, NO legs.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [100, 135, 153, 255],
+        "v": [50, 76, 96, 255],
+        "H": [100, 135, 153, 255],
+        "h": [50, 76, 96, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [60, 76, 92, 255],
+          "h": [29, 44, 59, 255],
+          "V": [60, 76, 92, 255],
+          "v": [29, 44, 59, 255]
+        },
+        {
+          "H": [211, 221, 216, 255],
+          "h": [128, 153, 161, 255],
+          "V": [211, 221, 216, 255],
+          "v": [128, 153, 161, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-aquatic",
+      "id": "ray",
+      "name": "Ray",
+      "pose": "Large stingray swimming in three-quarter top view, ONE continuous broad diamond body with TWO attached wing-like pectoral fins, two eyes on top and ONE long thin whip tail with attached barb. No separate bird wings or legs.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [94, 138, 153, 255],
+        "v": [44, 76, 98, 255],
+        "H": [94, 138, 153, 255],
+        "h": [44, 76, 98, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [117, 83, 150, 255],
+          "h": [61, 45, 89, 255],
+          "V": [117, 83, 150, 255],
+          "v": [61, 45, 89, 255]
+        },
+        {
+          "H": [175, 130, 74, 255],
+          "h": [100, 75, 41, 255],
+          "V": [175, 130, 74, 255],
+          "v": [100, 75, 41, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-aquatic",
+      "id": "octopus",
+      "name": "Octopus",
+      "pose": "Frontal coral octopus, one mantle and eight curled arms, four on each side, all joined to the mantle base. Ivory suckers in deliberate connected runs.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [173, 84, 68, 255],
+        "v": [101, 44, 43, 255],
+        "H": [173, 84, 68, 255],
+        "h": [101, 44, 43, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [135, 80, 164, 255],
+          "h": [74, 41, 97, 255],
+          "V": [135, 80, 164, 255],
+          "v": [74, 41, 97, 255]
+        },
+        {
+          "H": [93, 169, 171, 255],
+          "h": [42, 94, 111, 255],
+          "V": [93, 169, 171, 255],
+          "v": [42, 94, 111, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-undead",
+      "id": "skeletal-hound",
+      "name": "Skeletal hound",
+      "pose": "Scary skeletal dog, FOUR distinct articulated bone legs/paws, exposed ribs and spine, canine skull with long muzzle and open black sockets, attached jaws and teeth, bony tail. No fur or fleshy ears.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [224, 215, 182, 255],
+        "v": [153, 146, 118, 255],
+        "H": [224, 215, 182, 255],
+        "h": [153, 146, 118, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [227, 229, 212, 255],
+          "h": [138, 158, 146, 255],
+          "V": [227, 229, 212, 255],
+          "v": [138, 158, 146, 255],
+          "I": [227, 229, 212, 255],
+          "i": [138, 158, 146, 255]
+        },
+        {
+          "H": [241, 230, 189, 255],
+          "h": [174, 150, 96, 255],
+          "V": [241, 230, 189, 255],
+          "v": [174, 150, 96, 255],
+          "I": [241, 230, 189, 255],
+          "i": [174, 150, 96, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-undead",
+      "id": "corpse-vulture",
+      "name": "Corpse vulture",
+      "pose": "Rotten large vulture, hunched ragged dark wings, TWO clawed legs, long partly bare crooked neck with decayed olive tissue, hooked beak and sunken eyes. No skeleton human face. Thick connected ragged feather groups.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [111, 108, 72, 255],
+        "v": [60, 62, 45, 255],
+        "H": [111, 108, 72, 255],
+        "h": [60, 62, 45, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [84, 96, 68, 255],
+          "h": [42, 56, 39, 255],
+          "V": [84, 96, 68, 255],
+          "v": [42, 56, 39, 255]
+        },
+        {
+          "H": [128, 105, 129, 255],
+          "h": [65, 51, 76, 255],
+          "V": [128, 105, 129, 255],
+          "v": [65, 51, 76, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-undead",
+      "id": "skeletal-horse",
+      "name": "Skeletal horse",
+      "pose": "Complete RIDERLESS skeletal horse, FOUR articulated bony legs with hooves, exposed ribcage and spine, long horse skull, attached jaw and dark sockets, bony tail and small ragged teal saddlecloth. No person seated on it.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [224, 215, 182, 255],
+        "v": [153, 146, 118, 255],
+        "H": [224, 215, 182, 255],
+        "h": [153, 146, 118, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [227, 229, 212, 255],
+          "h": [138, 158, 146, 255],
+          "V": [227, 229, 212, 255],
+          "v": [138, 158, 146, 255],
+          "I": [227, 229, 212, 255],
+          "i": [138, 158, 146, 255]
+        },
+        {
+          "H": [241, 230, 189, 255],
+          "h": [174, 150, 96, 255],
+          "V": [241, 230, 189, 255],
+          "v": [174, 150, 96, 255],
+          "I": [241, 230, 189, 255],
+          "i": [174, 150, 96, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-undead",
+      "id": "zombie-bear",
+      "name": "Zombie bear",
+      "pose": "Huge hideous rotten FLESHY bear, four heavy decaying paws, round ears, broad bear muzzle, sunken eyes and two exposed patches of ribs/limb bone, sick olive dead flesh and ragged remaining brown fur. Not a clean skeleton and no human torso.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [137, 146, 83, 255],
+        "v": [73, 89, 48, 255],
+        "H": [137, 146, 83, 255],
+        "h": [73, 89, 48, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [113, 128, 75, 255],
+          "h": [59, 77, 41, 255],
+          "V": [113, 128, 75, 255],
+          "v": [59, 77, 41, 255]
+        },
+        {
+          "H": [159, 149, 104, 255],
+          "h": [86, 82, 52, 255],
+          "V": [159, 149, 104, 255],
+          "v": [86, 82, 52, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-fantasy",
+      "id": "gryphon",
+      "name": "Gryphon",
+      "pose": "Complete gryphon: lion hindquarters and tail, eagle chest/head with hooked beak, FOUR legs (eagle front talons and lion hind paws), TWO folded raised feathered wings attached above forelegs. Ivory eagle feathers and tawny lion coat. No rider.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [168, 118, 59, 255],
+        "v": [94, 61, 35, 255],
+        "H": [168, 118, 59, 255],
+        "h": [94, 61, 35, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [148, 153, 154, 255],
+          "h": [78, 85, 99, 255],
+          "V": [148, 153, 154, 255],
+          "v": [78, 85, 99, 255]
+        },
+        {
+          "H": [231, 222, 190, 255],
+          "h": [155, 142, 108, 255],
+          "V": [231, 222, 190, 255],
+          "v": [155, 142, 108, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-fantasy",
+      "id": "dragon",
+      "name": "Dragon",
+      "pose": "Complete young dragon in side three-quarter grounded stance, FOUR separate reptilian legs PLUS TWO folded partially raised bat-like wings, long neck, clear dragon head with attached jaw/fangs, long tapering tail, olive scales and muted red membranes. No rider.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [99, 141, 67, 255],
+        "v": [49, 83, 43, 255],
+        "H": [99, 141, 67, 255],
+        "h": [49, 83, 43, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255],
+        "M": [158, 65, 49, 255],
+        "m": [92, 36, 38, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [110, 86, 151, 255],
+          "h": [55, 43, 88, 255],
+          "V": [110, 86, 151, 255],
+          "v": [55, 43, 88, 255]
+        },
+        {
+          "H": [170, 55, 62, 255],
+          "h": [95, 29, 43, 255],
+          "V": [170, 55, 62, 255],
+          "v": [95, 29, 43, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-fantasy",
+      "id": "basilisk",
+      "name": "Basilisk",
+      "pose": "Top-view six-legged basilisk, head toward bottom and connected tail toward top. Three stout articulated walking legs fan out on each side, all six feet exposed with gaps. Amber-olive scutes, royal head crest, ivory fangs, small teal neck band.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [154, 136, 68, 255],
+        "v": [86, 79, 39, 255],
+        "H": [154, 136, 68, 255],
+        "h": [86, 79, 39, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [99, 141, 67, 255],
+          "h": [49, 83, 43, 255],
+          "V": [99, 141, 67, 255],
+          "v": [49, 83, 43, 255]
+        },
+        {
+          "H": [216, 211, 172, 255],
+          "h": [132, 142, 102, 255],
+          "V": [216, 211, 172, 255],
+          "v": [132, 142, 102, 255]
+        }
+      ],
+      "canvas": [64, 64],
+      "anchors": ["giant-spider", "giant-crab", "crocodile"]
+    },
+    {
+      "race": "beast-fantasy",
+      "id": "treant",
+      "name": "Treant",
+      "pose": "Walking living tree, thick trunk torso, TWO branch arms ending in branch fingers and TWO distinct root feet supporting it. Stern face integrated into bark, connected leafy canopy above and on shoulders. Brown bark and green leaves, no human clothes or metal.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [133, 88, 51, 255],
+        "v": [73, 46, 32, 255],
+        "H": [133, 88, 51, 255],
+        "h": [73, 46, 32, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255],
+        "L": [72, 125, 49, 255],
+        "l": [39, 74, 35, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [111, 95, 72, 255],
+          "h": [65, 53, 42, 255],
+          "V": [111, 95, 72, 255],
+          "v": [65, 53, 42, 255],
+          "L": [96, 146, 56, 255],
+          "l": [50, 84, 36, 255]
+        },
+        {
+          "H": [155, 143, 102, 255],
+          "h": [91, 84, 59, 255],
+          "V": [155, 143, 102, 255],
+          "v": [91, 84, 59, 255],
+          "L": [158, 173, 81, 255],
+          "l": [81, 103, 47, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-aquatic",
+      "id": "sea-serpent",
+      "name": "Sea serpent",
+      "pose": "Complete sea serpent, ONE long thick curling/coiled aquatic body, raised dragonlike head with attached jaw, fin ears and TWO paired small flippers, long tapering tail and dorsal fins. No human upper torso, no walking legs. Cyan sea-green scales, cream belly.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [90, 163, 145, 255],
+        "v": [43, 94, 87, 255],
+        "H": [90, 163, 145, 255],
+        "h": [43, 94, 87, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [133, 100, 175, 255],
+          "h": [71, 49, 111, 255],
+          "V": [133, 100, 175, 255],
+          "v": [71, 49, 111, 255]
+        },
+        {
+          "H": [181, 160, 77, 255],
+          "h": [102, 94, 39, 255],
+          "V": [181, 160, 77, 255],
+          "v": [102, 94, 39, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "beast-undead",
+      "id": "bone-dragon",
+      "name": "Bone dragon",
+      "pose": "Complete skeletal dragon, FOUR separate articulated bone legs PLUS TWO raised folded wings composed of connected long wing finger bones, ribcage/spine, long bony neck, dragon skull with attached jaw and fangs, bony tapering tail. NO skin or membrane, no rider.",
+      "size": 64,
+      "status": "tiers",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [224, 215, 182, 255],
+        "v": [153, 146, 118, 255],
+        "H": [224, 215, 182, 255],
+        "h": [153, 146, 118, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [159, 196, 64, 255]
+      },
+      "tierColors": [
+        null,
+        {
+          "H": [227, 229, 212, 255],
+          "h": [138, 158, 146, 255],
+          "V": [227, 229, 212, 255],
+          "v": [138, 158, 146, 255],
+          "I": [227, 229, 212, 255],
+          "i": [138, 158, 146, 255]
+        },
+        {
+          "H": [241, 230, 189, 255],
+          "h": [174, 150, 96, 255],
+          "V": [241, 230, 189, 255],
+          "v": [174, 150, 96, 255],
+          "I": [241, 230, 189, 255],
+          "i": [174, 150, 96, 255]
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    {
+      "id": "merfolk-harpoonthrower",
+      "race": "merfolk",
+      "name": "Merfolk harpoon thrower",
+      "size": 48,
+      "status": "tiers",
+      "pose": "Thin adult fish torso with ONE continuous curled supporting tail, no legs. Throwing arm raised and drawn back behind the head, hand visibly grips a horizontal short barbed harpoon poised to throw toward screen right. Other hand holds two spare harpoons upright beside the body. Spearheads attach to shafts, fingers close around shafts. Sea-green skin, coral chest straps, short faction teal mantle.",
+      "palette": {
+        ".": [0, 0, 0, 0],
+        "O": [25, 22, 20, 255],
+        "B": [111, 72, 43, 255],
+        "b": [64, 40, 28, 255],
+        "T": [5, 100, 111, 255],
+        "t": [4, 57, 65, 255],
+        "V": [121, 138, 164, 255],
+        "v": [61, 79, 105, 255],
+        "H": [92, 167, 138, 255],
+        "h": [46, 103, 88, 255],
+        "A": [203, 215, 218, 255],
+        "a": [101, 119, 127, 255],
+        "G": [238, 184, 52, 255],
+        "W": [132, 88, 51, 255],
+        "w": [76, 49, 31, 255],
+        "I": [240, 229, 198, 255],
+        "i": [180, 163, 127, 255],
+        "E": [130, 215, 218, 255],
+        "C": [207, 112, 69, 255],
+        "c": [143, 70, 48, 255]
+      },
+      "canvas": [64, 64]
+    }
+  ]
+}

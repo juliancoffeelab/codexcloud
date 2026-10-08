@@ -1,0 +1,50 @@
+[
+  {
+    "label": "Giant raven L1",
+    "image": "art/pixel/units/giant-raven/player.png"
+  },
+  {
+    "label": "Giant raven L2",
+    "image": "art/pixel/units/giant-raven-l2/player.png"
+  },
+  {
+    "label": "Giant raven L3",
+    "image": "art/pixel/units/giant-raven-l3/player.png"
+  },
+  {
+    "label": "Giant owl L1",
+    "image": "art/pixel/units/giant-owl/player.png"
+  },
+  {
+    "label": "Giant owl L2",
+    "image": "art/pixel/units/giant-owl-l2/player.png"
+  },
+  {
+    "label": "Giant owl L3",
+    "image": "art/pixel/units/giant-owl-l3/player.png"
+  },
+  {
+    "label": "Giant wasp L1",
+    "image": "art/pixel/units/giant-wasp/player.png"
+  },
+  {
+    "label": "Giant wasp L2",
+    "image": "art/pixel/units/giant-wasp-l2/player.png"
+  },
+  {
+    "label": "Giant wasp L3",
+    "image": "art/pixel/units/giant-wasp-l3/player.png"
+  },
+  {
+    "label": "Giant bat L1",
+    "image": "art/pixel/units/giant-bat/player.png"
+  },
+  {
+    "label": "Giant bat L2",
+    "image": "art/pixel/units/giant-bat-l2/player.png"
+  },
+  {
+    "label": "Giant bat L3",
+    "image": "art/pixel/units/giant-bat-l3/player.png"
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "label": "Bear L1",
+    "image": "art/pixel/units/bear/player.png"
+  },
+  {
+    "label": "Bear L2",
+    "image": "art/pixel/units/bear-l2/player.png"
+  },
+  {
+    "label": "Bear L3",
+    "image": "art/pixel/units/bear-l3/player.png"
+  },
+  {
+    "label": "Lynx L1",
+    "image": "art/pixel/units/lynx/player.png"
+  },
+  {
+    "label": "Lynx L2",
+    "image": "art/pixel/units/lynx-l2/player.png"
+  },
+  {
+    "label": "Lynx L3",
+    "image": "art/pixel/units/lynx-l3/player.png"
+  },
+  {
+    "label": "Stag L1",
+    "image": "art/pixel/units/stag/player.png"
+  },
+  {
+    "label": "Stag L2",
+    "image": "art/pixel/units/stag-l2/player.png"
+  },
+  {
+    "label": "Stag L3",
+    "image": "art/pixel/units/stag-l3/player.png"
+  },
+  {
+    "label": "Giant spider L1",
+    "image": "art/pixel/units/giant-spider/player.png"
+  },
+  {
+    "label": "Giant spider L2",
+    "image": "art/pixel/units/giant-spider-l2/player.png"
+  },
+  {
+    "label": "Giant spider L3",
+    "image": "art/pixel/units/giant-spider-l3/player.png"
+  },
+  {
+    "label": "Giant tortoise L1",
+    "image": "art/pixel/units/giant-tortoise/player.png"
+  },
+  {
+    "label": "Giant tortoise L2",
+    "image": "art/pixel/units/giant-tortoise-l2/player.png"
+  },
+  {
+    "label": "Giant tortoise L3",
+    "image": "art/pixel/units/giant-tortoise-l3/player.png"
+  },
+  {
+    "label": "Giant snake L1",
+    "image": "art/pixel/units/giant-snake/player.png"
+  },
+  {
+    "label": "Giant snake L2",
+    "image": "art/pixel/units/giant-snake-l2/player.png"
+  },
+  {
+    "label": "Giant snake L3",
+    "image": "art/pixel/units/giant-snake-l3/player.png"
+  }
+]

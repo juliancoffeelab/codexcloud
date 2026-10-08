@@ -1,0 +1,18 @@
+[
+  {
+    "label": "Merfolk two-handed trident",
+    "image": "art/pixel/reference/faction-expansion/extracted/merfolk-trident/player.png"
+  },
+  {
+    "label": "Merfolk net and spear",
+    "image": "art/pixel/reference/faction-expansion/extracted/merfolk-netter/player.png"
+  },
+  {
+    "label": "Merfolk mace and shield",
+    "image": "art/pixel/reference/faction-expansion/extracted/merfolk-maceguard/player.png"
+  },
+  {
+    "label": "Merfolk harpoon thrower",
+    "image": "art/pixel/reference/faction-expansion/extracted/merfolk-harpoonthrower/player.png"
+  }
+]

@@ -46,7 +46,8 @@
     "wasm:build:release": "wasm-pack build rust --target web --release --out-dir pkg --out-name hex_command --no-pack --no-opt --locked --features wasm",
     "bindings:generate": "npm run wasm:build",
     "check:bindings": "npm run check:wasm",
-    "check:wasm": "npm run wasm:build && tsc --noEmit --strict --target ES2022 --module ESNext --moduleResolution Bundler rust/pkg/hex_command.d.ts"
+    "check:wasm": "npm run wasm:build && tsc --noEmit --strict --target ES2022 --module ESNext --moduleResolution Bundler rust/pkg/hex_command.d.ts",
+    "art:expansion": "node art/pixel/reference/faction-expansion/rebuild.cjs"
   },
   "dependencies": {
     "svelte": "^5.0.0"

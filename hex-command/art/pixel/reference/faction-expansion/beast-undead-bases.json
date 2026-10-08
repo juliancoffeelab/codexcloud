@@ -1,0 +1,22 @@
+[
+  {
+    "label": "Skeletal hound",
+    "image": "art/pixel/reference/faction-expansion/extracted/skeletal-hound/player.png"
+  },
+  {
+    "label": "Corpse vulture",
+    "image": "art/pixel/reference/faction-expansion/extracted/corpse-vulture/player.png"
+  },
+  {
+    "label": "Skeletal horse",
+    "image": "art/pixel/reference/faction-expansion/extracted/skeletal-horse/player.png"
+  },
+  {
+    "label": "Zombie bear",
+    "image": "art/pixel/reference/faction-expansion/extracted/zombie-bear/player.png"
+  },
+  {
+    "label": "Bone dragon",
+    "image": "art/pixel/reference/faction-expansion/extracted/bone-dragon/player.png"
+  }
+]

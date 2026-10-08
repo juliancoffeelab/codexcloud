@@ -1,0 +1,74 @@
+[
+  {
+    "label": "revenant",
+    "image": "art/pixel/units/revenant/player.png"
+  },
+  {
+    "label": "skeleton-dreadguard",
+    "image": "art/pixel/units/skeleton-dreadguard/player.png"
+  },
+  {
+    "label": "deatharcher",
+    "image": "art/pixel/units/deatharcher/player.png"
+  },
+  {
+    "label": "skeleton-bow-master",
+    "image": "art/pixel/units/skeleton-bow-master/player.png"
+  },
+  {
+    "label": "direwolf",
+    "image": "art/pixel/units/direwolf/player.png"
+  },
+  {
+    "label": "woodland-alpha-wolf",
+    "image": "art/pixel/units/woodland-alpha-wolf/player.png"
+  },
+  {
+    "label": "greatboar",
+    "image": "art/pixel/units/greatboar/player.png"
+  },
+  {
+    "label": "woodland-ancient-boar",
+    "image": "art/pixel/units/woodland-ancient-boar/player.png"
+  },
+  {
+    "label": "briarweaver",
+    "image": "art/pixel/units/briarweaver/player.png"
+  },
+  {
+    "label": "woodland-thorn-oracle",
+    "image": "art/pixel/units/woodland-thorn-oracle/player.png"
+  },
+  {
+    "label": "grovewarden",
+    "image": "art/pixel/units/grovewarden/player.png"
+  },
+  {
+    "label": "woodland-grove-oracle",
+    "image": "art/pixel/units/woodland-grove-oracle/player.png"
+  },
+  {
+    "label": "tridentguard",
+    "image": "art/pixel/units/tridentguard/player.png"
+  },
+  {
+    "label": "merfolk-reef-champion",
+    "image": "art/pixel/units/merfolk-reef-champion/player.png"
+  },
+  {
+    "label": "tidehunter",
+    "image": "art/pixel/units/tidehunter/player.png"
+  },
+  {
+    "label": "merfolk-harpoon-master",
+    "image": "art/pixel/units/merfolk-harpoon-master/player.png"
+  },
+  {
+    "label": "tidesage",
+    "image": "art/pixel/units/tidesage/player.png"
+  },
+  {
+    "label": "merfolk-tide-oracle",
+    "image": "art/pixel/units/merfolk-tide-oracle/player.png"
+  }
+]

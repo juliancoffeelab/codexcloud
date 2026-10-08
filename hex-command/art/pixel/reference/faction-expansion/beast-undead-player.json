@@ -1,0 +1,62 @@
+[
+  {
+    "label": "Skeletal hound L1",
+    "image": "art/pixel/units/skeletal-hound/player.png"
+  },
+  {
+    "label": "Skeletal hound L2",
+    "image": "art/pixel/units/skeletal-hound-l2/player.png"
+  },
+  {
+    "label": "Skeletal hound L3",
+    "image": "art/pixel/units/skeletal-hound-l3/player.png"
+  },
+  {
+    "label": "Corpse vulture L1",
+    "image": "art/pixel/units/corpse-vulture/player.png"
+  },
+  {
+    "label": "Corpse vulture L2",
+    "image": "art/pixel/units/corpse-vulture-l2/player.png"
+  },
+  {
+    "label": "Corpse vulture L3",
+    "image": "art/pixel/units/corpse-vulture-l3/player.png"
+  },
+  {
+    "label": "Skeletal horse L1",
+    "image": "art/pixel/units/skeletal-horse/player.png"
+  },
+  {
+    "label": "Skeletal horse L2",
+    "image": "art/pixel/units/skeletal-horse-l2/player.png"
+  },
+  {
+    "label": "Skeletal horse L3",
+    "image": "art/pixel/units/skeletal-horse-l3/player.png"
+  },
+  {
+    "label": "Zombie bear L1",
+    "image": "art/pixel/units/zombie-bear/player.png"
+  },
+  {
+    "label": "Zombie bear L2",
+    "image": "art/pixel/units/zombie-bear-l2/player.png"
+  },
+  {
+    "label": "Zombie bear L3",
+    "image": "art/pixel/units/zombie-bear-l3/player.png"
+  },
+  {
+    "label": "Bone dragon L1",
+    "image": "art/pixel/units/bone-dragon/player.png"
+  },
+  {
+    "label": "Bone dragon L2",
+    "image": "art/pixel/units/bone-dragon-l2/player.png"
+  },
+  {
+    "label": "Bone dragon L3",
+    "image": "art/pixel/units/bone-dragon-l3/player.png"
+  }
+]

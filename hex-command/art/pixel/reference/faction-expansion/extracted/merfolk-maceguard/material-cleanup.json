@@ -1,0 +1,2266 @@
+{
+  "coordinates": "64x64 original slot",
+  "edits": [
+    {
+      "x": 53,
+      "y": 14,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 50,
+      "y": 15,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 51,
+      "y": 15,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 52,
+      "y": 15,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 50,
+      "y": 16,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 51,
+      "y": 16,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 55,
+      "y": 16,
+      "from": "i",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 56,
+      "y": 16,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 49,
+      "y": 17,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 50,
+      "y": 17,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 51,
+      "y": 17,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 49,
+      "y": 18,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 50,
+      "y": 18,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 48,
+      "y": 19,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 49,
+      "y": 19,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 50,
+      "y": 19,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 51,
+      "y": 19,
+      "from": "i",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 55,
+      "y": 19,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 48,
+      "y": 20,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 49,
+      "y": 20,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 50,
+      "y": 20,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 56,
+      "y": 20,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 48,
+      "y": 21,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 49,
+      "y": 21,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 50,
+      "y": 22,
+      "from": "v",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 49,
+      "y": 23,
+      "from": "I",
+      "to": "A",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 51,
+      "y": 23,
+      "from": "V",
+      "to": "a",
+      "reason": "Remove bone/cloth quantization colors from the actual metal weapon"
+    },
+    {
+      "x": 31,
+      "y": 11,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 31,
+      "y": 12,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 32,
+      "y": 12,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 33,
+      "y": 14,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 34,
+      "y": 14,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 35,
+      "y": 14,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 33,
+      "y": 15,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 34,
+      "y": 15,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 35,
+      "y": 15,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 33,
+      "y": 16,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 34,
+      "y": 16,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 35,
+      "y": 16,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 37,
+      "y": 29,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 48,
+      "y": 32,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 12,
+      "y": 47,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 14,
+      "y": 49,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 33,
+      "y": 49,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 34,
+      "y": 49,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 35,
+      "y": 49,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 14,
+      "y": 50,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 15,
+      "y": 50,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 32,
+      "y": 50,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 33,
+      "y": 50,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 34,
+      "y": 50,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 35,
+      "y": 50,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 14,
+      "y": 51,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 15,
+      "y": 51,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 30,
+      "y": 51,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 31,
+      "y": 51,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 32,
+      "y": 51,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 33,
+      "y": 51,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 34,
+      "y": 51,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 17,
+      "y": 52,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 29,
+      "y": 52,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 30,
+      "y": 52,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 31,
+      "y": 52,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 32,
+      "y": 52,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 26,
+      "y": 53,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 28,
+      "y": 53,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 17,
+      "y": 54,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 16,
+      "y": 55,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 17,
+      "y": 55,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 15,
+      "y": 56,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 16,
+      "y": 56,
+      "from": "E",
+      "to": "H",
+      "reason": "Remove glitter from skin; use a flat sea-green tissue plane"
+    },
+    {
+      "x": 35,
+      "y": 48,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 36,
+      "y": 48,
+      "from": "V",
+      "to": "h",
+      "reason": "Gray flecks on merfolk face/tail belong to skin shadow"
+    },
+    {
+      "x": 19,
+      "y": 21,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 20,
+      "y": 21,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 21,
+      "y": 21,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 22,
+      "y": 22,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 27,
+      "y": 22,
+      "from": "B",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 18,
+      "y": 23,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 24,
+      "y": 23,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 27,
+      "y": 23,
+      "from": "w",
+      "to": "c",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 18,
+      "y": 24,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 25,
+      "y": 24,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 16,
+      "y": 25,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 17,
+      "y": 25,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 18,
+      "y": 25,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 25,
+      "y": 25,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 26,
+      "y": 25,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 17,
+      "y": 26,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 25,
+      "y": 26,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 26,
+      "y": 26,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 17,
+      "y": 27,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 19,
+      "y": 27,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 20,
+      "y": 27,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 24,
+      "y": 27,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 25,
+      "y": 27,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 26,
+      "y": 27,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 13,
+      "y": 28,
+      "from": "i",
+      "to": "c",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 16,
+      "y": 28,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 18,
+      "y": 28,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 19,
+      "y": 28,
+      "from": "i",
+      "to": "c",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 23,
+      "y": 28,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 24,
+      "y": 28,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 12,
+      "y": 29,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 13,
+      "y": 29,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 16,
+      "y": 29,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 17,
+      "y": 29,
+      "from": "B",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 18,
+      "y": 29,
+      "from": "B",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 23,
+      "y": 29,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 24,
+      "y": 29,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 26,
+      "y": 29,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 13,
+      "y": 30,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 16,
+      "y": 30,
+      "from": "B",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 19,
+      "y": 30,
+      "from": "B",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 20,
+      "y": 30,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 23,
+      "y": 30,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 26,
+      "y": 30,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 13,
+      "y": 31,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 15,
+      "y": 31,
+      "from": "w",
+      "to": "c",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 20,
+      "y": 31,
+      "from": "w",
+      "to": "c",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 23,
+      "y": 31,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 26,
+      "y": 31,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 12,
+      "y": 32,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 14,
+      "y": 32,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 15,
+      "y": 32,
+      "from": "B",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 18,
+      "y": 32,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 20,
+      "y": 32,
+      "from": "w",
+      "to": "c",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 21,
+      "y": 32,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 22,
+      "y": 32,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 23,
+      "y": 32,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 24,
+      "y": 32,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 26,
+      "y": 32,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 13,
+      "y": 33,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 15,
+      "y": 33,
+      "from": "w",
+      "to": "c",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 17,
+      "y": 33,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 18,
+      "y": 33,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 20,
+      "y": 33,
+      "from": "B",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 22,
+      "y": 33,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 23,
+      "y": 33,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 24,
+      "y": 33,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 26,
+      "y": 33,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 16,
+      "y": 34,
+      "from": "w",
+      "to": "c",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 19,
+      "y": 34,
+      "from": "b",
+      "to": "c",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 22,
+      "y": 34,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 27,
+      "y": 34,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 16,
+      "y": 35,
+      "from": "i",
+      "to": "c",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 17,
+      "y": 35,
+      "from": "w",
+      "to": "c",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 18,
+      "y": 35,
+      "from": "w",
+      "to": "c",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 22,
+      "y": 35,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 23,
+      "y": 35,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 25,
+      "y": 35,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 16,
+      "y": 36,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 23,
+      "y": 36,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 25,
+      "y": 36,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 12,
+      "y": 37,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 15,
+      "y": 37,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 16,
+      "y": 37,
+      "from": "i",
+      "to": "c",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 19,
+      "y": 37,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 24,
+      "y": 37,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 26,
+      "y": 37,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 14,
+      "y": 38,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 15,
+      "y": 38,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 20,
+      "y": 38,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 21,
+      "y": 38,
+      "from": "i",
+      "to": "c",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 24,
+      "y": 38,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 13,
+      "y": 39,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 14,
+      "y": 39,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 20,
+      "y": 39,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 23,
+      "y": 39,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 25,
+      "y": 39,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 14,
+      "y": 40,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 19,
+      "y": 40,
+      "from": "I",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 24,
+      "y": 40,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 16,
+      "y": 41,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 19,
+      "y": 41,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 23,
+      "y": 41,
+      "from": "W",
+      "to": "C",
+      "reason": "Solid coral shield face, remove mottled surface artifacts"
+    },
+    {
+      "x": 32,
+      "y": 23,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 23,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 35,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 35,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 38,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 34,
+      "y": 38,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 38,
+      "y": 38,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 39,
+      "y": 39,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 39,
+      "y": 40,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 40,
+      "y": 41,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 42,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 42,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 43,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 43,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 44,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 44,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 45,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 34,
+      "y": 45,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 15,
+      "y": 46,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 46,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 34,
+      "y": 46,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 47,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 47,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 47,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 41,
+      "y": 47,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 18,
+      "y": 48,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 19,
+      "y": 49,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 40,
+      "y": 49,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 20,
+      "y": 51,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 52,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 38,
+      "y": 52,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 53,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 53,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 23,
+      "y": 54,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 54,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 55,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 12,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 34,
+      "y": 13,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 14,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 15,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 16,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 16,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 17,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 17,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 17,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 17,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 18,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 18,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 18,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 19,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 19,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 19,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 37,
+      "y": 19,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 37,
+      "y": 20,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 21,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 21,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 22,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 22,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 24,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 34,
+      "y": 24,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 24,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 25,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 37,
+      "y": 26,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 39,
+      "y": 26,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 27,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 28,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 38,
+      "y": 29,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 40,
+      "y": 29,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 38,
+      "y": 30,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 41,
+      "y": 30,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 47,
+      "y": 30,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 49,
+      "y": 30,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 31,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 41,
+      "y": 31,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 32,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 39,
+      "y": 32,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 41,
+      "y": 32,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 49,
+      "y": 32,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 33,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 33,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 34,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 34,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 39,
+      "y": 44,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 39,
+      "y": 45,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 39,
+      "y": 46,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 14,
+      "y": 47,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 38,
+      "y": 47,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 15,
+      "y": 48,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 48,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 48,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 38,
+      "y": 48,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 16,
+      "y": 49,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 49,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 37,
+      "y": 49,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 50,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 51,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 18,
+      "y": 52,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 19,
+      "y": 53,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 33,
+      "y": 53,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 19,
+      "y": 54,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 54,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 18,
+      "y": 55,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 56,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 21,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 16,
+      "y": 23,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 23,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 15,
+      "y": 24,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 14,
+      "y": 25,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 25,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 25,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 13,
+      "y": 26,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 26,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 27,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 13,
+      "y": 28,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 19,
+      "y": 28,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 28,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 29,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 29,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 16,
+      "y": 30,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 30,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 30,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 20,
+      "y": 31,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 31,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 15,
+      "y": 32,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 20,
+      "y": 32,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 32,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 15,
+      "y": 33,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 26,
+      "y": 33,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 16,
+      "y": 34,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 19,
+      "y": 34,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 16,
+      "y": 35,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 35,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 18,
+      "y": 35,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 35,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 36,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 25,
+      "y": 36,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 16,
+      "y": 37,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 37,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 38,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 23,
+      "y": 38,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 38,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 39,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 23,
+      "y": 39,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 15,
+      "y": 40,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 41,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 18,
+      "y": 41,
+      "from": "c",
+      "to": "C",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 20,
+      "y": 41,
+      "from": "C",
+      "to": "c",
+      "reason": "Flatten material plane with one connected contour shadow"
+    }
+  ]
+}

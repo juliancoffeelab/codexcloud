@@ -1,0 +1,98 @@
+[
+  {
+    "label": "Dwarf axe and shield L1",
+    "image": "art/pixel/units/dwarf-axeguard/enemy.png"
+  },
+  {
+    "label": "Dwarf axe and shield L2",
+    "image": "art/pixel/units/dwarf-axeguard-l2/enemy.png"
+  },
+  {
+    "label": "Dwarf axe and shield L3",
+    "image": "art/pixel/units/dwarf-axeguard-l3/enemy.png"
+  },
+  {
+    "label": "Dwarf two-handed hammer L1",
+    "image": "art/pixel/units/dwarf-hammerer/enemy.png"
+  },
+  {
+    "label": "Dwarf two-handed hammer L2",
+    "image": "art/pixel/units/dwarf-hammerer-l2/enemy.png"
+  },
+  {
+    "label": "Dwarf two-handed hammer L3",
+    "image": "art/pixel/units/dwarf-hammerer-l3/enemy.png"
+  },
+  {
+    "label": "Dwarf pickaxe L1",
+    "image": "art/pixel/units/dwarf-pickaxe/enemy.png"
+  },
+  {
+    "label": "Dwarf pickaxe L2",
+    "image": "art/pixel/units/dwarf-pickaxe-l2/enemy.png"
+  },
+  {
+    "label": "Dwarf pickaxe L3",
+    "image": "art/pixel/units/dwarf-pickaxe-l3/enemy.png"
+  },
+  {
+    "label": "Dwarf poleaxe L1",
+    "image": "art/pixel/units/dwarf-poleaxe/enemy.png"
+  },
+  {
+    "label": "Dwarf poleaxe L2",
+    "image": "art/pixel/units/dwarf-poleaxe-l2/enemy.png"
+  },
+  {
+    "label": "Dwarf poleaxe L3",
+    "image": "art/pixel/units/dwarf-poleaxe-l3/enemy.png"
+  },
+  {
+    "label": "Dwarf crossbow L1",
+    "image": "art/pixel/units/dwarf-crossbow/enemy.png"
+  },
+  {
+    "label": "Dwarf crossbow L2",
+    "image": "art/pixel/units/dwarf-crossbow-l2/enemy.png"
+  },
+  {
+    "label": "Dwarf crossbow L3",
+    "image": "art/pixel/units/dwarf-crossbow-l3/enemy.png"
+  },
+  {
+    "label": "Dwarf arquebus L1",
+    "image": "art/pixel/units/dwarf-arquebus/enemy.png"
+  },
+  {
+    "label": "Dwarf arquebus L2",
+    "image": "art/pixel/units/dwarf-arquebus-l2/enemy.png"
+  },
+  {
+    "label": "Dwarf arquebus L3",
+    "image": "art/pixel/units/dwarf-arquebus-l3/enemy.png"
+  },
+  {
+    "label": "Dwarf rune caster L1",
+    "image": "art/pixel/units/dwarf-runesmith/enemy.png"
+  },
+  {
+    "label": "Dwarf rune caster L2",
+    "image": "art/pixel/units/dwarf-runesmith-l2/enemy.png"
+  },
+  {
+    "label": "Dwarf rune caster L3",
+    "image": "art/pixel/units/dwarf-runesmith-l3/enemy.png"
+  },
+  {
+    "label": "Dwarf goat-mounted hammerman L1",
+    "image": "art/pixel/units/dwarf-goat-rider/enemy.png"
+  },
+  {
+    "label": "Dwarf goat-mounted hammerman L2",
+    "image": "art/pixel/units/dwarf-goat-rider-l2/enemy.png"
+  },
+  {
+    "label": "Dwarf goat-mounted hammerman L3",
+    "image": "art/pixel/units/dwarf-goat-rider-l3/enemy.png"
+  }
+]

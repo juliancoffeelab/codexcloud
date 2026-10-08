@@ -1,0 +1,1615 @@
+{
+  "coordinates": "64x64 original slot",
+  "edits": [
+    {
+      "x": 36,
+      "y": 11,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 37,
+      "y": 11,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 35,
+      "y": 12,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 36,
+      "y": 12,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 37,
+      "y": 12,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 38,
+      "y": 12,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 36,
+      "y": 13,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 37,
+      "y": 13,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 38,
+      "y": 13,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 35,
+      "y": 14,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 36,
+      "y": 14,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 39,
+      "y": 14,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 34,
+      "y": 15,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 38,
+      "y": 15,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 39,
+      "y": 15,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 34,
+      "y": 16,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 37,
+      "y": 16,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 38,
+      "y": 16,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 30,
+      "y": 17,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 34,
+      "y": 17,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 29,
+      "y": 18,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 30,
+      "y": 18,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 36,
+      "y": 18,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 34,
+      "y": 20,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 21,
+      "y": 21,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 22,
+      "y": 21,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 34,
+      "y": 21,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 21,
+      "y": 22,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 22,
+      "y": 22,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 23,
+      "y": 22,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 24,
+      "y": 22,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 30,
+      "y": 22,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 31,
+      "y": 22,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 35,
+      "y": 22,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 36,
+      "y": 22,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 22,
+      "y": 23,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 23,
+      "y": 23,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 24,
+      "y": 23,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 30,
+      "y": 23,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 31,
+      "y": 23,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 19,
+      "y": 24,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 20,
+      "y": 24,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 22,
+      "y": 24,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 23,
+      "y": 24,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 30,
+      "y": 24,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 31,
+      "y": 24,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 32,
+      "y": 24,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 19,
+      "y": 25,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 20,
+      "y": 25,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 21,
+      "y": 25,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 30,
+      "y": 25,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 31,
+      "y": 25,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 32,
+      "y": 25,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 18,
+      "y": 26,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 19,
+      "y": 26,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 20,
+      "y": 26,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 30,
+      "y": 26,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 31,
+      "y": 26,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 19,
+      "y": 27,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 40,
+      "y": 29,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 40,
+      "y": 30,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 40,
+      "y": 32,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 40,
+      "y": 33,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 41,
+      "y": 33,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 45,
+      "y": 33,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 42,
+      "y": 34,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 44,
+      "y": 34,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 46,
+      "y": 36,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 39,
+      "y": 42,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 39,
+      "y": 43,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 40,
+      "y": 43,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 16,
+      "y": 52,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 17,
+      "y": 52,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 18,
+      "y": 52,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 16,
+      "y": 53,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 17,
+      "y": 53,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 18,
+      "y": 53,
+      "from": "E",
+      "to": "H",
+      "reason": "Reserve lime for magic; corpse flesh stays muted"
+    },
+    {
+      "x": 35,
+      "y": 13,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 37,
+      "y": 14,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 35,
+      "y": 17,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 36,
+      "y": 17,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 37,
+      "y": 17,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 38,
+      "y": 18,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 30,
+      "y": 19,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 33,
+      "y": 19,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 34,
+      "y": 26,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 19,
+      "y": 48,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 19,
+      "y": 49,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 20,
+      "y": 49,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 17,
+      "y": 51,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 19,
+      "y": 53,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 19,
+      "y": 54,
+      "from": "i",
+      "to": "h",
+      "reason": "Unify corpse skin instead of accidental ivory highlights"
+    },
+    {
+      "x": 52,
+      "y": 21,
+      "from": "v",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 53,
+      "y": 21,
+      "from": "V",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 56,
+      "y": 21,
+      "from": "v",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 52,
+      "y": 22,
+      "from": "V",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 54,
+      "y": 22,
+      "from": "v",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 56,
+      "y": 22,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 58,
+      "y": 22,
+      "from": "v",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 52,
+      "y": 23,
+      "from": "V",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 53,
+      "y": 23,
+      "from": "V",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 56,
+      "y": 23,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 58,
+      "y": 23,
+      "from": "v",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 51,
+      "y": 24,
+      "from": "V",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 53,
+      "y": 24,
+      "from": "V",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 54,
+      "y": 24,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 55,
+      "y": 24,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 50,
+      "y": 25,
+      "from": "V",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 51,
+      "y": 25,
+      "from": "V",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 54,
+      "y": 25,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 55,
+      "y": 25,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 57,
+      "y": 25,
+      "from": "v",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 50,
+      "y": 26,
+      "from": "V",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 51,
+      "y": 26,
+      "from": "V",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 53,
+      "y": 26,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 54,
+      "y": 26,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 56,
+      "y": 26,
+      "from": "v",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 52,
+      "y": 27,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 53,
+      "y": 27,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 54,
+      "y": 27,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 56,
+      "y": 27,
+      "from": "v",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 49,
+      "y": 28,
+      "from": "V",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 50,
+      "y": 28,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 53,
+      "y": 28,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 55,
+      "y": 28,
+      "from": "v",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 49,
+      "y": 29,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 50,
+      "y": 29,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 51,
+      "y": 29,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 48,
+      "y": 30,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 49,
+      "y": 30,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 50,
+      "y": 30,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 51,
+      "y": 30,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 48,
+      "y": 31,
+      "from": "v",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 49,
+      "y": 31,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 50,
+      "y": 31,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 51,
+      "y": 31,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 52,
+      "y": 31,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 50,
+      "y": 32,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 51,
+      "y": 32,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 53,
+      "y": 32,
+      "from": "v",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 53,
+      "y": 33,
+      "from": "v",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 46,
+      "y": 34,
+      "from": "V",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 52,
+      "y": 34,
+      "from": "v",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 47,
+      "y": 35,
+      "from": "i",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 48,
+      "y": 35,
+      "from": "v",
+      "to": "a",
+      "reason": "Keep chipped cleaver steel"
+    },
+    {
+      "x": 22,
+      "y": 19,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 37,
+      "y": 23,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 38,
+      "y": 23,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 39,
+      "y": 23,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 24,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 37,
+      "y": 24,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 25,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 40,
+      "y": 25,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 38,
+      "y": 26,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 39,
+      "y": 26,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 27,
+      "y": 34,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 34,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 34,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 35,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 35,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 35,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 35,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 36,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 36,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 36,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 36,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 37,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 37,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 30,
+      "y": 37,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 38,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 39,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 28,
+      "y": 40,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 41,
+      "from": "T",
+      "to": "t",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 29,
+      "y": 42,
+      "from": "t",
+      "to": "T",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 38,
+      "y": 12,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 13,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 38,
+      "y": 13,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 37,
+      "y": 14,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 39,
+      "y": 14,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 39,
+      "y": 15,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 35,
+      "y": 17,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 17,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 31,
+      "y": 18,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 21,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 22,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 22,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 24,
+      "y": 23,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 23,
+      "y": 24,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 24,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 25,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 25,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 26,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 32,
+      "y": 26,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 20,
+      "y": 27,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 38,
+      "y": 29,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 40,
+      "y": 29,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 38,
+      "y": 32,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 40,
+      "y": 32,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 44,
+      "y": 33,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 45,
+      "y": 33,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 45,
+      "y": 34,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 45,
+      "y": 36,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 47,
+      "y": 36,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 40,
+      "y": 42,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 40,
+      "y": 43,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 40,
+      "y": 44,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 23,
+      "y": 47,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 19,
+      "y": 48,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 22,
+      "y": 48,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 19,
+      "y": 49,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 20,
+      "y": 49,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 21,
+      "y": 49,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 17,
+      "y": 50,
+      "from": "h",
+      "to": "H",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 19,
+      "y": 50,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 18,
+      "y": 52,
+      "from": "H",
+      "to": "h",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 37,
+      "y": 50,
+      "from": "w",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 40,
+      "y": 50,
+      "from": "B",
+      "to": "b",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 37,
+      "y": 51,
+      "from": "w",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 38,
+      "y": 51,
+      "from": "w",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 40,
+      "y": 51,
+      "from": "w",
+      "to": "b",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 52,
+      "from": "b",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 41,
+      "y": 52,
+      "from": "B",
+      "to": "b",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 36,
+      "y": 53,
+      "from": "b",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 42,
+      "y": 53,
+      "from": "B",
+      "to": "b",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 37,
+      "y": 54,
+      "from": "b",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 38,
+      "y": 54,
+      "from": "w",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 39,
+      "y": 54,
+      "from": "w",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 40,
+      "y": 54,
+      "from": "w",
+      "to": "B",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 44,
+      "y": 54,
+      "from": "w",
+      "to": "b",
+      "reason": "Flatten material plane with one connected contour shadow"
+    },
+    {
+      "x": 34,
+      "y": 18,
+      "from": "V",
+      "to": "H",
+      "reason": "Remove enclosed single-pixel surface fleck"
+    }
+  ]
+}

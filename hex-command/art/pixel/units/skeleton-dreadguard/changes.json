@@ -1,0 +1,734 @@
+{
+  "base": "revenant",
+  "level": 3,
+  "changes": [
+    {
+      "side": "player",
+      "x": 38,
+      "y": 18,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 39,
+      "y": 18,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 40,
+      "y": 18,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 37,
+      "y": 19,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 38,
+      "y": 19,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 40,
+      "y": 19,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 41,
+      "y": 19,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 36,
+      "y": 20,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 37,
+      "y": 20,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 42,
+      "y": 20,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 35,
+      "y": 21,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 36,
+      "y": 21,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 35,
+      "y": 22,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 35,
+      "y": 23,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 35,
+      "y": 24,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 35,
+      "y": 25,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 41,
+      "y": 25,
+      "from": "S",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 35,
+      "y": 26,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 39,
+      "y": 26,
+      "from": "S",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 40,
+      "y": 26,
+      "from": "S",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 41,
+      "y": 26,
+      "from": "S",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 35,
+      "y": 27,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 39,
+      "y": 27,
+      "from": "S",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 40,
+      "y": 27,
+      "from": "s",
+      "to": "g",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 41,
+      "y": 27,
+      "from": "s",
+      "to": "g",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 35,
+      "y": 28,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 39,
+      "y": 28,
+      "from": "s",
+      "to": "g",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 40,
+      "y": 28,
+      "from": "s",
+      "to": "g",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 35,
+      "y": 29,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 35,
+      "y": 30,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 35,
+      "y": 31,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 36,
+      "y": 31,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 42,
+      "y": 31,
+      "from": "a",
+      "to": "g",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 36,
+      "y": 32,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 41,
+      "y": 32,
+      "from": "a",
+      "to": "g",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 42,
+      "y": 32,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 37,
+      "y": 33,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 40,
+      "y": 33,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 41,
+      "y": 33,
+      "from": "a",
+      "to": "g",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 31,
+      "y": 34,
+      "from": "S",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 36,
+      "y": 34,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 37,
+      "y": 34,
+      "from": "a",
+      "to": "g",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 38,
+      "y": 34,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 39,
+      "y": 34,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "player",
+      "x": 40,
+      "y": 34,
+      "from": "a",
+      "to": "g",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 38,
+      "y": 18,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 39,
+      "y": 18,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 40,
+      "y": 18,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 37,
+      "y": 19,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 38,
+      "y": 19,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 40,
+      "y": 19,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 41,
+      "y": 19,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 36,
+      "y": 20,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 37,
+      "y": 20,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 42,
+      "y": 20,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 35,
+      "y": 21,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 36,
+      "y": 21,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 35,
+      "y": 22,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 35,
+      "y": 23,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 35,
+      "y": 24,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 35,
+      "y": 25,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 41,
+      "y": 25,
+      "from": "S",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 35,
+      "y": 26,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 39,
+      "y": 26,
+      "from": "S",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 40,
+      "y": 26,
+      "from": "S",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 41,
+      "y": 26,
+      "from": "S",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 35,
+      "y": 27,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 39,
+      "y": 27,
+      "from": "S",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 40,
+      "y": 27,
+      "from": "s",
+      "to": "g",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 41,
+      "y": 27,
+      "from": "s",
+      "to": "g",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 35,
+      "y": 28,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 39,
+      "y": 28,
+      "from": "s",
+      "to": "g",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 40,
+      "y": 28,
+      "from": "s",
+      "to": "g",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 35,
+      "y": 29,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 35,
+      "y": 30,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 35,
+      "y": 31,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 36,
+      "y": 31,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 42,
+      "y": 31,
+      "from": "a",
+      "to": "g",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 36,
+      "y": 32,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 41,
+      "y": 32,
+      "from": "a",
+      "to": "g",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 42,
+      "y": 32,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 37,
+      "y": 33,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 40,
+      "y": 33,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 41,
+      "y": 33,
+      "from": "a",
+      "to": "g",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 31,
+      "y": 34,
+      "from": "S",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 36,
+      "y": 34,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 37,
+      "y": 34,
+      "from": "a",
+      "to": "g",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 38,
+      "y": 34,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 39,
+      "y": 34,
+      "from": "A",
+      "to": "G",
+      "reason": "Gold shield rim, with faction shield face retained"
+    },
+    {
+      "side": "enemy",
+      "x": 40,
+      "y": 34,
+      "from": "a",
+      "to": "g",
+      "reason": "Gold shield rim, with faction shield face retained"
+    }
+  ],
+  "paletteChanges": {
+    "S": [233, 239, 229, 255],
+    "s": [139, 160, 168, 255],
+    "g": [185, 126, 34, 255],
+    "G": [255, 203, 66, 255],
+    "A": [243, 247, 239, 255],
+    "a": [151, 174, 181, 255]
+  }
+}
