@@ -44,11 +44,10 @@ their cleaned native matrices and detected fill regions, including the five
 extra poses saved as branch references. The
 [branch upgrade recipe](../dwarf-upgrades/README.md) fills these complete surfaces
 for L2/L3, with gold trim and red enemy cloth. The rejected progression is archived.
-Only the three rune tiers still have
-records in `dwarf.json`. Earlier comparison sheets document historical studies.
-The apprentice's magic stone uses its own dark green `z` border and cyan `E`
-interior; faction swapping only affects its surrounding cloth. This specific
-correction does not advance the postponed rune tree.
+The [rune-line recipe](../rune-line/README.md) now owns the apprentice and both
+advanced branches. Its stone uses a darker cyan `z` border and the original cyan
+`E` interior; faction swapping only affects surrounding cloth. `dwarf.json` has
+no active records; earlier comparison sheets document historical studies.
 
 The marked L1 follow-up separates steel weapon heads and barrels, wooden shafts,
 skin grips and cream cuffs with pose-specific corrections. The runesmith retains

@@ -19,7 +19,7 @@
     "cloth": "TtRr",
     "steel": "MaA"
   },
-  "runeLine": "Excluded",
+  "runeLine": "Separate rune-line recipe",
   "advancedTiers": "Whole-surface upgrades in dwarf-upgrades; old progression archived",
   "branchReferences": {
     "dwarf-axe-pick": "dwarf-axeguard",

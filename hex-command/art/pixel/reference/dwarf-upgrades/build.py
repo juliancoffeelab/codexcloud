@@ -25,7 +25,7 @@ ARMOUR = {"helmet", "upper", "lower", "shield"}
 def branches():
     lineup = json.loads((PROJECT / "art/pixel/lineups/dwarves.json").read_text())
     return {branch["units"][0]["id"].removesuffix("-l2"): tree["base"]["id"]
-            for tree in lineup["trees"] if tree.get("status") != "postponed"
+            for tree in lineup["trees"] if tree.get("status") != "postponed" and tree["base"]["id"] != "dwarf-runesmith"
             for branch in tree["branches"]}
 
 

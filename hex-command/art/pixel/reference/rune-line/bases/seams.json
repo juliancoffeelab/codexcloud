@@ -1,0 +1,202 @@
+[
+  {
+    "x": 18,
+    "y": 48,
+    "part": "left boot cuff"
+  },
+  {
+    "x": 19,
+    "y": 48,
+    "part": "left boot cuff"
+  },
+  {
+    "x": 20,
+    "y": 48,
+    "part": "left boot cuff"
+  },
+  {
+    "x": 21,
+    "y": 41,
+    "part": "waist"
+  },
+  {
+    "x": 21,
+    "y": 48,
+    "part": "left boot cuff"
+  },
+  {
+    "x": 22,
+    "y": 41,
+    "part": "waist"
+  },
+  {
+    "x": 23,
+    "y": 41,
+    "part": "waist"
+  },
+  {
+    "x": 23,
+    "y": 48,
+    "part": "left boot cuff"
+  },
+  {
+    "x": 24,
+    "y": 41,
+    "part": "waist"
+  },
+  {
+    "x": 24,
+    "y": 42,
+    "part": "trouser/skirt"
+  },
+  {
+    "x": 24,
+    "y": 43,
+    "part": "trouser/skirt"
+  },
+  {
+    "x": 24,
+    "y": 44,
+    "part": "trouser/skirt"
+  },
+  {
+    "x": 24,
+    "y": 48,
+    "part": "left boot cuff"
+  },
+  {
+    "x": 25,
+    "y": 41,
+    "part": "waist"
+  },
+  {
+    "x": 26,
+    "y": 41,
+    "part": "waist"
+  },
+  {
+    "x": 27,
+    "y": 41,
+    "part": "waist"
+  },
+  {
+    "x": 28,
+    "y": 37,
+    "part": "apron contour"
+  },
+  {
+    "x": 28,
+    "y": 38,
+    "part": "apron contour"
+  },
+  {
+    "x": 28,
+    "y": 41,
+    "part": "apron contour"
+  },
+  {
+    "x": 29,
+    "y": 35,
+    "part": "apron contour"
+  },
+  {
+    "x": 29,
+    "y": 42,
+    "part": "apron contour"
+  },
+  {
+    "x": 29,
+    "y": 43,
+    "part": "apron contour"
+  },
+  {
+    "x": 30,
+    "y": 44,
+    "part": "apron contour"
+  },
+  {
+    "x": 31,
+    "y": 45,
+    "part": "apron contour"
+  },
+  {
+    "x": 32,
+    "y": 45,
+    "part": "apron contour"
+  },
+  {
+    "x": 33,
+    "y": 44,
+    "part": "apron contour"
+  },
+  {
+    "x": 34,
+    "y": 43,
+    "part": "apron contour"
+  },
+  {
+    "x": 35,
+    "y": 41,
+    "part": "apron contour"
+  },
+  {
+    "x": 35,
+    "y": 42,
+    "part": "apron contour"
+  },
+  {
+    "x": 36,
+    "y": 36,
+    "part": "apron contour"
+  },
+  {
+    "x": 36,
+    "y": 37,
+    "part": "apron contour"
+  },
+  {
+    "x": 36,
+    "y": 38,
+    "part": "apron contour"
+  },
+  {
+    "x": 36,
+    "y": 39,
+    "part": "apron contour"
+  },
+  {
+    "x": 36,
+    "y": 40,
+    "part": "apron contour"
+  },
+  {
+    "x": 36,
+    "y": 41,
+    "part": "waist"
+  },
+  {
+    "x": 37,
+    "y": 41,
+    "part": "waist"
+  },
+  {
+    "x": 37,
+    "y": 47,
+    "part": "skirt/leg"
+  },
+  {
+    "x": 39,
+    "y": 49,
+    "part": "right boot cuff"
+  },
+  {
+    "x": 40,
+    "y": 49,
+    "part": "right boot cuff"
+  },
+  {
+    "x": 41,
+    "y": 49,
+    "part": "right boot cuff"
+  }
+]

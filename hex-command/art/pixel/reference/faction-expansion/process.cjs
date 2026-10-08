@@ -4,7 +4,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { PNG } = require("pngjs");
 const { execFileSync } = require("node:child_process");
-const { sourceDirectory, catalogEntry, isArchived } = require("./source-directory.cjs");
+const { sourceDirectory, catalogEntry, isArchived, tierIds } = require("./source-directory.cjs");
 const root = __dirname,
   project = path.resolve(root, "../../../..");
 const manifest = JSON.parse(fs.readFileSync(path.join(root, "manifest.json")));
@@ -233,6 +233,15 @@ function extract(job) {
   console.log(`${job.id}: ${size}x${size}, ${changes.length} recorded cleanup edits`);
 }
 function tiers(job) {
+  if (job.id === "dwarf-runesmith") {
+    execFileSync("python3", ["art/pixel/reference/rune-line/build.py"], {
+      cwd: project,
+      stdio: "inherit",
+    });
+    job.status = "tiers";
+    console.log("dwarf-runesmith: rune apprentice, Thundersmith and Stonespell, both factions");
+    return;
+  }
   if (dwarfBases.has(job.id)) {
     execFileSync("python3", ["art/pixel/reference/dwarf-base-cleanup/build.py", job.id], {
       cwd: project,
@@ -405,17 +414,25 @@ function boards() {
       { cwd: project },
     );
     for (const side of ["player", "enemy"]) {
-      const entries = jobs
-        .filter((j) => j.status === "tiers")
-        .flatMap((j) =>
-          [1, 2, 3].map((l) => ({
-            label: `${j.name} L${l}`,
-            image: path.relative(
-              project,
-              path.join(sourceDirectory(`${j.id}${l === 1 ? "" : `-l${l}`}`), `${side}.png`),
-            ),
-          })),
-        );
+      const entries =
+        race === "dwarf"
+          ? require("../../lineups/dwarves.json")
+              .trees.flatMap((tree) => [
+                tree.base,
+                ...tree.branches.flatMap((branch) => branch.units),
+              ])
+              .map((unit) => ({
+                label: `${unit.name} L${unit.level}`,
+                image: path.relative(project, path.join(sourceDirectory(unit.id), `${side}.png`)),
+              }))
+          : jobs
+              .filter((j) => j.status === "tiers")
+              .flatMap((j) =>
+                tierIds(j).map((id) => ({
+                  label: `${catalogEntry(id, { name: j.name }).name} L${id === j.id ? 1 : Number(id.slice(-1))}`,
+                  image: path.relative(project, path.join(sourceDirectory(id), `${side}.png`)),
+                })),
+              );
       if (!entries.length) continue;
       const q = path.join(root, `${race}-${side}.json`);
       writeJSON(q, entries);

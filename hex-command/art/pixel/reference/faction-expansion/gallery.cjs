@@ -5,7 +5,7 @@ const fs = require("node:fs"),
   { execFileSync } = require("node:child_process");
 const root = __dirname,
   project = path.resolve(root, "../../../..");
-const { sourceDirectory, catalogEntry, isArchived } = require("./source-directory.cjs");
+const { sourceDirectory, catalogEntry, isArchived, tierIds } = require("./source-directory.cjs");
 const m = JSON.parse(fs.readFileSync(path.join(root, "manifest.json"))),
   reuse = JSON.parse(fs.readFileSync(path.join(root, "reuse.json")));
 const rel = (p) => path.relative(project, p);
@@ -111,19 +111,23 @@ const escape = (s) => s.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replace
 const cards = m.jobs
   .map(
     (j) =>
-      `<article data-race="${j.race}"><h2>${escape(j.name)}</h2><div class="tiers">${[1, 2, 3]
-        .map((l) => {
-          const id = `${j.id}${l === 1 ? "" : "-l" + l}`;
+      `<article data-race="${j.race}"><h2>${escape(j.name)}</h2><div class="tiers">${tierIds(j)
+        .map((id) => {
+          const l = id === j.id ? 1 : Number(id.slice(-1));
           const directory = path.relative(root, sourceDirectory(id));
           const entry = catalogEntry(id, { level: l });
           const caption =
-            j.race !== "zombie"
-              ? `L${l}`
-              : isArchived(id)
-                ? `Study L${l} (reference)`
-                : entry.role === "commander"
-                  ? "Commander"
-                  : `Chosen L${entry.level}`;
+            j.race === "dwarf"
+              ? isArchived(id)
+                ? "Pose reference"
+                : `${escape(entry.name || j.name)} · L${entry.level}`
+              : j.race !== "zombie"
+                ? `L${l}`
+                : isArchived(id)
+                  ? `Study L${l} (reference)`
+                  : entry.role === "commander"
+                    ? "Commander"
+                    : `Chosen L${entry.level}`;
           return `<figure><img class="unit" data-directory="${directory}" src="${directory}/player.png"><figcaption>${caption}</figcaption></figure>`;
         })
         .join(

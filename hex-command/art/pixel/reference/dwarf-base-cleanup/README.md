@@ -9,7 +9,8 @@ remain unchanged. This pass cleans the existing designs; it does not advance
 them into leather or silver armour. The scout is the palette/linework reference.
 Four are active L1 starters; five are saved as
 [branch pose references](../dwarf-branch-references/README.md). The rune family is
-excluded for the separate Thundersmith / Enchanter idea.
+owned by the separate [rune-line recipe](../rune-line/README.md), which cleans
+the apprentice and derives Thundersmith / Stonespell.
 
 Faces and hands share one skin colour and shadow. Leather, hair and wood share
 one brown colour and shadow. Cream fabric, faction cloth and steel have their

@@ -1,4 +1,4 @@
-"""Render the actual five dwarf trees, including the postponed rune tree."""
+"""Render the actual five dwarf trees and their chosen branches."""
 
 import json
 from pathlib import Path
@@ -12,10 +12,11 @@ small = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 12
 title = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 20)
 
 for side in ("player", "enemy"):
-    board = Image.new("RGB", (792, 2144), (20, 31, 26))
+    board_height = 92 + sum(212 if tree.get("status") == "postponed" else 460 for tree in lineup["trees"])
+    board = Image.new("RGB", (792, board_height), (20, 31, 26))
     draw = ImageDraw.Draw(board)
     draw.text((24, 14), f"Dwarves · {'teal' if side == 'player' else 'red'} faction", font=title, fill=(238, 230, 206))
-    for x, text in zip((24, 288, 552), ("L1 starter", "L2 · steel + leather", "L3 · silver + gold")):
+    for x, text in zip((24, 288, 552), ("L1 starter", "L2 branches", "L3 upgrades")):
         draw.text((x, 47), text, font=font, fill=(202, 205, 190))
     cursor = 84
     for tree in lineup["trees"]:
@@ -50,4 +51,4 @@ for side in ("player", "enemy"):
                 draw.text((288, y + 174), branch["purpose"], font=small, fill=(167, 182, 169))
         cursor += height
     board.save(HERE / f"tree-{side}.png")
-    print(f"Rendered five starting trees for {side}; rune development postponed")
+    print(f"Rendered five starting trees for {side}")

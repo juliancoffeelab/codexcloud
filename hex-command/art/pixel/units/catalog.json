@@ -480,18 +480,6 @@
     "study": "faction-expansion/dwarf-runesmith",
     "canvas": [64, 64]
   },
-  "dwarf-runesmith-l2": {
-    "name": "Dwarf rune caster L2",
-    "level": 2,
-    "study": "faction-expansion/dwarf-runesmith-l2",
-    "canvas": [64, 64]
-  },
-  "dwarf-runesmith-l3": {
-    "name": "Dwarf rune caster L3",
-    "level": 3,
-    "study": "faction-expansion/dwarf-runesmith-l3",
-    "canvas": [64, 64]
-  },
   "dwarf-goat-rider": {
     "name": "Goat rider",
     "level": 1,
@@ -1126,6 +1114,30 @@
     "name": "Axe and pick fighter veteran",
     "level": 3,
     "study": "faction-expansion/dwarf-axe-pick-l3",
+    "canvas": [64, 64]
+  },
+  "dwarf-thundersmith-l2": {
+    "name": "Thundersmith",
+    "level": 2,
+    "study": "rune-line/dwarf-thundersmith-l2",
+    "canvas": [64, 64]
+  },
+  "dwarf-thundersmith-l3": {
+    "name": "Thundersmith veteran",
+    "level": 3,
+    "study": "rune-line/dwarf-thundersmith-l3",
+    "canvas": [64, 64]
+  },
+  "dwarf-stonespell-l2": {
+    "name": "Stonespell",
+    "level": 2,
+    "study": "rune-line/dwarf-stonespell-l2",
+    "canvas": [64, 64]
+  },
+  "dwarf-stonespell-l3": {
+    "name": "Stonespell veteran",
+    "level": 3,
+    "study": "rune-line/dwarf-stonespell-l3",
     "canvas": [64, 64]
   }
 }

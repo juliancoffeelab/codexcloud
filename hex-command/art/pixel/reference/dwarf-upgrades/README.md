@@ -3,8 +3,8 @@
 [Teal trees](tree-player.png) · [Red trees](tree-enemy.png).
 
 The actual lineup is in [dwarves.json](../../lineups/dwarves.json): five L1
-starters, with the rune tree postponed. Four working trees have two L2 branches
-apiece, each with its own L3. Axe + pick, hammerer, poleaxe, arquebusier and pistol
+starters. All five trees have two L2 branches apiece, each with its own L3.
+The [rune-line recipe](../rune-line/README.md) owns Thundersmith and Stonespell. Axe + pick, hammerer, poleaxe, arquebusier and pistol
 rider are [pose references](../dwarf-branch-references/README.md), not extra L1
 starters. The miner does not have a separate pickaxe L2/L3 branch.
 
@@ -13,8 +13,8 @@ Equipment and grips come from the corresponding cleaned pose reference. L2 fills
 complete helmet, cuirass, sleeves and bracer regions with steel, leaving leather
 lower armour. L3 fills all assigned armour and the shield face with silver, then
 adds gold hems, cuff trim and stitching in the faction cloth. Teal cloth becomes
-red for enemies; silver and gold remain shared. Rune upgrades are postponed;
-the apprentice's stone now has a dedicated dark green border in both factions.
+red for enemies; silver and gold remain shared. Rune branches have their own
+complete armour/robe ramps and a darker cyan crystal border in both factions.
 
 `regions.json` assigns every **detected four-way fill component** from the cleaned
 sources to helmet, upper armour, lower armour, shield, faction cloth or protected
@@ -49,9 +49,11 @@ Run from the project root:
 ```sh
 python3 art/pixel/reference/dwarf-base-cleanup/build.py
 python3 art/pixel/reference/dwarf-upgrades/build.py
+python3 art/pixel/reference/rune-line/build.py
 python3 art/pixel/reference/dwarf-upgrades/preview.py
 python3 art/pixel/reference/dwarf-upgrades/build.py --check
 python3 tests/dwarf_upgrades_test.py
+python3 tests/rune_line_test.py
 npm run art:build
 npm run art:check
 npm run style

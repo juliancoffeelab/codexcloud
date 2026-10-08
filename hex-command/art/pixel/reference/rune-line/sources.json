@@ -1,0 +1,10 @@
+{
+  "sourceCommit": "619b07f1ecfa40f254d22f1d88d64b122c840a25",
+  "base": "dwarf-runesmith",
+  "branches": [
+    "dwarf-thundersmith-l2",
+    "dwarf-thundersmith-l3",
+    "dwarf-stonespell-l2",
+    "dwarf-stonespell-l3"
+  ]
+}

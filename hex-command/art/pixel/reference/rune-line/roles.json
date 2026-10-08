@@ -1,0 +1,222 @@
+[
+  {
+    "id": "00",
+    "name": "helmet",
+    "role": "garment"
+  },
+  {
+    "id": "01",
+    "name": "hammer-head",
+    "role": "hammer"
+  },
+  {
+    "id": "02",
+    "name": "beard",
+    "role": "protected"
+  },
+  {
+    "id": "03",
+    "name": "face",
+    "role": "protected"
+  },
+  {
+    "id": "04",
+    "name": "brown-fragment-04",
+    "role": "protected"
+  },
+  {
+    "id": "05",
+    "name": "crystal",
+    "role": "protected"
+  },
+  {
+    "id": "06",
+    "name": "stone-border-fragment-06",
+    "role": "protected"
+  },
+  {
+    "id": "07",
+    "name": "left-cloak",
+    "role": "faction-cloth"
+  },
+  {
+    "id": "08",
+    "name": "right-cloak",
+    "role": "faction-cloth"
+  },
+  {
+    "id": "09",
+    "name": "upper-shaft",
+    "role": "protected"
+  },
+  {
+    "id": "0a",
+    "name": "left-sleeve",
+    "role": "garment"
+  },
+  {
+    "id": "0b",
+    "name": "brown-fragment-0b",
+    "role": "protected"
+  },
+  {
+    "id": "0c",
+    "name": "right-hand",
+    "role": "protected"
+  },
+  {
+    "id": "0d",
+    "name": "cream-fragment-0d",
+    "role": "garment"
+  },
+  {
+    "id": "0e",
+    "name": "brown-fragment-0e",
+    "role": "protected"
+  },
+  {
+    "id": "0f",
+    "name": "left-cuirass",
+    "role": "garment"
+  },
+  {
+    "id": "10",
+    "name": "cloth-fragment-10",
+    "role": "faction-cloth"
+  },
+  {
+    "id": "11",
+    "name": "right-sleeve",
+    "role": "garment"
+  },
+  {
+    "id": "12",
+    "name": "right-bracer",
+    "role": "garment"
+  },
+  {
+    "id": "13",
+    "name": "stone-border-fragment-13",
+    "role": "protected"
+  },
+  {
+    "id": "14",
+    "name": "cloth-fragment-14",
+    "role": "faction-cloth"
+  },
+  {
+    "id": "15",
+    "name": "left-glove",
+    "role": "glove"
+  },
+  {
+    "id": "16",
+    "name": "stone-border-fragment-16",
+    "role": "protected"
+  },
+  {
+    "id": "17",
+    "name": "brown-fragment-17",
+    "role": "garment"
+  },
+  {
+    "id": "18",
+    "name": "collar",
+    "role": "faction-cloth"
+  },
+  {
+    "id": "19",
+    "name": "right-cuirass",
+    "role": "garment"
+  },
+  {
+    "id": "1a",
+    "name": "brown-fragment-1a",
+    "role": "protected"
+  },
+  {
+    "id": "1b",
+    "name": "stone-border-fragment-1b",
+    "role": "protected"
+  },
+  {
+    "id": "1c",
+    "name": "brown-fragment-1c",
+    "role": "garment"
+  },
+  {
+    "id": "1d",
+    "name": "cloth-fragment-1d",
+    "role": "faction-cloth"
+  },
+  {
+    "id": "1e",
+    "name": "lower-shaft",
+    "role": "protected"
+  },
+  {
+    "id": "1f",
+    "name": "upper-fastener",
+    "role": "fastener"
+  },
+  {
+    "id": "20",
+    "name": "apron",
+    "role": "garment"
+  },
+  {
+    "id": "21",
+    "name": "cloth-fragment-21",
+    "role": "faction-cloth"
+  },
+  {
+    "id": "22",
+    "name": "belt-buckle",
+    "role": "fastener"
+  },
+  {
+    "id": "23",
+    "name": "knee-trim",
+    "role": "garment"
+  },
+  {
+    "id": "24",
+    "name": "left-trouser",
+    "role": "garment"
+  },
+  {
+    "id": "25",
+    "name": "overskirt",
+    "role": "garment"
+  },
+  {
+    "id": "26",
+    "name": "right-knee-cloth",
+    "role": "garment"
+  },
+  {
+    "id": "27",
+    "name": "right-trouser",
+    "role": "garment"
+  },
+  {
+    "id": "28",
+    "name": "brown-fragment-28",
+    "role": "garment"
+  },
+  {
+    "id": "29",
+    "name": "tabard",
+    "role": "faction-cloth"
+  },
+  {
+    "id": "2a",
+    "name": "left-boot",
+    "role": "boot"
+  },
+  {
+    "id": "2b",
+    "name": "right-boot",
+    "role": "boot"
+  }
+]

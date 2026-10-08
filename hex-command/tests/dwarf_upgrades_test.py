@@ -104,7 +104,7 @@ class DwarfUpgradesTest(unittest.TestCase):
 
     def test_rune_apprentice_stone_has_no_faction_colour_on_its_border(self):
         palette = json.loads((upgrades.UNITS / "dwarf-runesmith/palette.json").read_text())
-        self.assertEqual(palette["z"], [28, 70, 52, 255])
+        self.assertEqual(palette["z"], [46, 112, 132, 255])
         for side in ("player", "enemy"):
             rows = (upgrades.UNITS / f"dwarf-runesmith/{side}.txt").read_text().splitlines()
             self.assertTrue(all(rows[y][x] not in "TtRr" for y in range(26, 36) for x in range(14, 21)))

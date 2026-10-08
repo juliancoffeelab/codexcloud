@@ -40,4 +40,19 @@ function catalogEntry(id, generated) {
   return { ...generated, ...metadata };
 }
 
-module.exports = { sourceDirectory, catalogEntry, isArchived };
+function tierIds(job) {
+  if (job.id === "dwarf-runesmith") {
+    return [
+      job.id,
+      "dwarf-thundersmith-l2",
+      "dwarf-thundersmith-l3",
+      "dwarf-stonespell-l2",
+      "dwarf-stonespell-l3",
+    ];
+  }
+  return [job.id, `${job.id}-l2`, `${job.id}-l3`].filter(
+    (id) => job.race !== "dwarf" || selected.has(id) || Object.hasOwn(dwarfArchive, id),
+  );
+}
+
+module.exports = { sourceDirectory, catalogEntry, isArchived, tierIds };

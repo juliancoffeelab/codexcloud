@@ -130,15 +130,41 @@
       "base": {
         "id": "dwarf-runesmith",
         "name": "Rune apprentice",
-        "level": 1
+        "level": 1,
+        "status": "starter"
       },
-      "status": "postponed",
       "branches": [
         {
-          "role": "Runesmith",
-          "purpose": "Magic and support",
-          "status": "postponed",
-          "units": []
+          "role": "Thundersmith",
+          "purpose": "Crystal hammer and infantry armour",
+          "units": [
+            {
+              "id": "dwarf-thundersmith-l2",
+              "name": "Thundersmith",
+              "level": 2
+            },
+            {
+              "id": "dwarf-thundersmith-l3",
+              "name": "Thundersmith veteran",
+              "level": 3
+            }
+          ]
+        },
+        {
+          "role": "Stonespell",
+          "purpose": "Green-robed support mage",
+          "units": [
+            {
+              "id": "dwarf-stonespell-l2",
+              "name": "Stonespell",
+              "level": 2
+            },
+            {
+              "id": "dwarf-stonespell-l3",
+              "name": "Stonespell veteran",
+              "level": 3
+            }
+          ]
         }
       ]
     },
@@ -185,13 +211,6 @@
       ]
     }
   ],
-  "deferred": {
-    "line": "Rune line",
-    "base": "dwarf-runesmith",
-    "branches": ["Thundersmith", "Enchanter"],
-    "status": "Upgrade designs reserved; apprentice magic-stone border repaired separately",
-    "baseName": "Rune apprentice"
-  },
   "poseReferences": {
     "dwarf-axe-pick": "dwarf-axeguard",
     "dwarf-hammerer": "dwarf-pickaxe",
