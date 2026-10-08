@@ -1,22 +1,22 @@
 {
   "dwarf-thundersmith-l2": {
-    "uncoveredGarmentPixels": 0,
     "goldPixels": 0,
-    "independentBasePartSeeds": 28
+    "source": "guarded apprentice parts",
+    "partialArmour": true
   },
   "dwarf-thundersmith-l3": {
-    "uncoveredGarmentPixels": 0,
     "goldPixels": 52,
-    "independentBasePartSeeds": 28
+    "source": "guarded apprentice parts",
+    "partialArmour": false
   },
   "dwarf-stonespell-l2": {
-    "uncoveredGarmentPixels": 0,
     "goldPixels": 0,
-    "independentBasePartSeeds": 28
+    "source": "approved native design",
+    "partialArmour": false
   },
   "dwarf-stonespell-l3": {
-    "uncoveredGarmentPixels": 0,
-    "goldPixels": 52,
-    "independentBasePartSeeds": 28
+    "goldPixels": 69,
+    "source": "approved native design",
+    "partialArmour": false
   }
 }

@@ -4,10 +4,20 @@
 
 The cleaned L1 rune apprentice branches into Thundersmith and Stonespell at L2,
 with an individual L3 for each. These complete the fifth dwarf tree.
-Thundersmith has a crystal-blue hammer, full steel armour at L2 and silver armour
-with gold trim at L3. Stonespell wears green robes at L2 and darker green robes
-with gold trim at L3. Enemy faction cloth is red; crystal blue and robe green
-stay the same in both factions.
+Thundersmith has a sun-gold hand crystal and a crystal-blue hammer, steel helmet, chest plates and bracer at
+L2, with cloth sleeves and leather gloves, apron, trousers and boots. L3 upgrades
+to full silver armour with gold trim. Stonespell wears a heavy slate hood and
+robes; L3 adds carved stone shoulders, simple edging and a crystal-blue rune
+tablet. Faction cloth alone swaps teal to red. No green robes or scattered gold
+ornaments remain.
+
+The approved image-tool result is retained in `designs/generated-board.png`.
+`node art/pixel/reference/rune-line/designs/extract.cjs` samples its two Stonespell
+frames to 64×64 matrices with nearest-palette majority voting and transparent
+background removal. The saved masks and palette are canonical recipe inputs;
+`build.py` copies them to the editable unit sources and derives red faction cloth.
+Stonespell has its own hood and equipment silhouette rather than a recoloured
+apprentice helmet. Inspect the native boards, not only the generated proposal.
 
 `bases/player.mask` and its palette own the cleaned native L1 design. The saved
 original from commit `619b07f` guards its silhouette, facial details, hand and
@@ -22,8 +32,9 @@ records their exact coverage and `anchors.json` names 28 independently fillable
 parts. `roles.json` assigns every visible fragment to garments, fasteners, gloves,
 boots, hammer, faction cloth or protected materials. Beard, face, hand, shafts,
 crystal and outline retain their colours. No rectangular armour overlays are used.
-Every assigned armour or robe pixel must use its complete tier ramp or L3 gold;
-the checker rejects remaining skin/leather/metal within those selected surfaces.
+Every assigned Thundersmith armour pixel uses its complete tier ramp or L3 gold.
+L2 lower leather and sleeves are protected from metal fills. The checker verifies
+Stonespell against its independent native hood, robe and tablet designs.
 
 The requested orthogonal equal-RGBA speck check dropped from 115 to 42 on L1.
 Remaining flags include eyes, diagonal internal seams, thin shaft edges, fasteners

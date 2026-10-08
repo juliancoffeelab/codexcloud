@@ -1,4 +1,4 @@
-"""Clean rune apprentice and derive complete Thundersmith/Stonespell surfaces."""
+"""Build rune tiers from guarded material regions and approved Stonespell art."""
 
 import argparse
 import importlib.util
@@ -18,9 +18,26 @@ parts_module.OWNER.update({"E": "magic", "z": "stone-border"})
 spec = importlib.util.spec_from_file_location("rune_trim", HERE.parent / "dwarf-upgrades/build.py")
 trim = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(trim)
-GREEN = {"U": [82, 133, 72, 255], "u": [38, 78, 47, 255], "F": [133, 177, 104, 255]}
-DARK_GREEN = {"U": [41, 83, 54, 255], "u": [22, 49, 35, 255], "F": [80, 128, 78, 255]}
 CRYSTAL = {"E": [122, 198, 227, 255], "e": [67, 147, 175, 255], "J": [181, 229, 244, 255]}
+BLUE_HAMMER = {"C": CRYSTAL["E"], "c": CRYSTAL["e"], "K": CRYSTAL["J"]}
+GOLD_CRYSTAL = {"E": [239, 179, 57, 255], "e": [175, 108, 29, 255], "J": [255, 234, 151, 255], "z": [126, 76, 25, 255]}
+L2_ARMOUR = {"helmet", "left-cuirass", "right-cuirass", "right-bracer", "upper-fastener", "belt-buckle"}
+
+
+def armoured(part, level):
+    return part["role"] in {"garment", "glove", "boot", "fastener"} and (level == 3 or part["name"] in L2_ARMOUR)
+
+
+def stonespell(level):
+    # Approved imagegen design, quantized to native editable pixels. These
+    # independent hood/stone shapes cannot be derived by recolouring a helmet.
+    rows = (HERE / "designs" / f"stonespell-l{level}.mask").read_text().splitlines()
+    palette = json.loads((HERE / "designs/palette.json").read_text())
+    if len(rows) != 64 or any(len(row) != 64 for row in rows):
+        raise ValueError("Stonespell must retain its native 64x64 frame")
+    used = set("".join(rows) + "Rr")
+    gold = {(x, y) for y, row in enumerate(rows) for x, c in enumerate(row) if c in "YG"}
+    return rows, {k: v for k, v in palette.items() if k in used}, gold
 
 
 def load():
@@ -53,22 +70,21 @@ def load():
 
 
 def derive(source, palette, roles, pixels, branch, level):
+    if branch == "stonespell":
+        return stonespell(level)
     output = [list(row) for row in source]
-    ramp = (trim.SILVER if level == 3 else trim.IRON) if branch == "thundersmith" else (DARK_GREEN if level == 3 else GREEN)
-    result_palette = {**palette, **ramp, **(CRYSTAL if branch == "thundersmith" else {}), **(trim.GOLD if level == 3 else {})}
+    ramp = trim.SILVER if level == 3 else trim.IRON
+    result_palette = {**palette, **ramp, **GOLD_CRYSTAL, **BLUE_HAMMER, **(trim.GOLD if level == 3 else {})}
     gold = set()
     for part in roles:
         role, points = part["role"], pixels[part["id"]]
-        armour = branch == "thundersmith" and role in {"garment", "glove", "boot", "fastener"}
-        robe = branch == "stonespell" and role == "garment"
+        armour = branch == "thundersmith" and armoured(part, level)
         for x, y in points:
             before = source[y][x]
             if armour:
                 output[y][x] = "S" if before == "A" else "p" if before in "bhita" else "P"
-            elif robe:
-                output[y][x] = "F" if before == "A" else "u" if before in "bhita" else "U"
             elif branch == "thundersmith" and role == "hammer":
-                output[y][x] = "J" if before == "A" else "e" if before == "a" else "E"
+                output[y][x] = "K" if before == "A" else "c" if before == "a" else "C"
         if level == 3 and role in {"garment", "glove", "boot", "faction-cloth", "fastener"}:
             stroke = points if role == "fastener" else trim.band(points, limit=min(len(points) // 4, 8), minimum=4)
             if role != "fastener" and (len(points) < 12 or len(stroke) < 2):
@@ -83,6 +99,11 @@ def derive(source, palette, roles, pixels, branch, level):
 
 
 def verify(source, source_palette, rows, palette, roles, pixels, branch, level, gold):
+    if branch == "stonespell":
+        expected_rows, expected_palette, expected_gold = stonespell(level)
+        if rows != expected_rows or palette != expected_palette or gold != expected_gold:
+            raise ValueError("Stonespell departs from the approved hood, robe or stone design")
+        return
     for y, row in enumerate(source):
         for x, before in enumerate(row):
             after = rows[y][x]
@@ -91,19 +112,20 @@ def verify(source, source_palette, rows, palette, roles, pixels, branch, level, 
     for part in roles:
         role = part["role"]
         for x, y in pixels[part["id"]]:
+            before = source[y][x]
             c = rows[y][x]
             if (x, y) in gold:
                 if level != 3 or c not in "YG" or palette[c] != trim.GOLD[c]:
                     raise ValueError("Gold trim uses the wrong material")
-            elif branch == "thundersmith" and role in {"garment", "glove", "boot", "fastener"}:
+            elif branch == "thundersmith" and armoured(part, level):
                 if c not in "PpS" or palette[c] != (trim.SILVER if level == 3 else trim.IRON)[c]:
                     raise ValueError(f"Incomplete armour on {part['name']}")
-            elif branch == "stonespell" and role == "garment":
-                if c not in "UuF" or palette[c] != (DARK_GREEN if level == 3 else GREEN)[c]:
-                    raise ValueError(f"Incomplete robe on {part['name']}")
             elif branch == "thundersmith" and role == "hammer":
-                if c not in "EeJ" or palette[c] != CRYSTAL[c]:
-                    raise ValueError("Hammer is not completely crystal blue")
+                if c not in "CcK" or palette[c] != BLUE_HAMMER[c]:
+                    raise ValueError("Hammer is not completely blue crystal")
+            elif before in "Ez":
+                if c != before or palette[c] != GOLD_CRYSTAL[c]:
+                    raise ValueError(f"Branch changes protected crystal shape or golden material on {part['name']}")
             elif c != source[y][x] or palette[c] != source_palette[c]:
                 raise ValueError(f"Branch recolours protected {part['name']}")
 
@@ -117,13 +139,14 @@ def write_unit(unit, source, rows, palette, check, branch=None, level=1):
     files = {"player.txt": player, "enemy.txt": enemy,
              "palette.json": json.dumps(palette, indent=2) + "\n",
              "changes.json": json.dumps({"base": "dwarf-runesmith", "level": level, "branch": branch,
-                                          "source": "rune-line/bases/player.mask", "changes": edits}, indent=2) + "\n",
+                                          "source": f"rune-line/designs/stonespell-l{level}.mask" if branch == "stonespell" else "rune-line/bases/player.mask", "changes": edits}, indent=2) + "\n",
              "components.md": f"# {unit}\n\nNative rune-line artwork from `art/pixel/reference/rune-line/`. "
-             "Face, gripping hand, beard, wooden shafts and crystal keep their own materials. "
+             "Face, gripping hand, beard and wooden shafts keep their own materials. "
              "The pointed apron, torso, overskirt, trousers and boots have independent fill seeds. "
-             "Thundersmith uses a crystal-blue hammer and steel L2 / silver-and-gold L3 armour. "
-             "Stonespell uses green L2 / darker green-and-gold L3 robes and leather boots. "
-             "Faction cloth swaps teal to red; magic and robe greens remain shared.\n\n"
+             "Thundersmith uses a sun-gold hand crystal and crystal-blue hammer, partial steel L2 armour with leather lower garments, "
+             "and full silver-and-gold L3 armour. Stonespell uses a heavy slate hood and robes; "
+             "L3 adds stone shoulders, restrained edging and a crystal-blue rune tablet. "
+             "Faction cloth swaps teal to red; stone and crystal colours remain shared.\n\n"
              "Run `python3 art/pixel/reference/rune-line/build.py` to rebuild, or add `--check` to verify.\n"}
     for name, contents in files.items():
         path = output / name
@@ -146,8 +169,8 @@ def run(check=False):
             unit = f"dwarf-{branch}-l{level}"
             rows, result_palette, gold = derive(source, palette, roles, pixels, branch, level)
             paths += write_unit(unit, source, rows, result_palette, check, branch, level)
-            coverage[unit] = {"uncoveredGarmentPixels": 0, "goldPixels": len(gold),
-                              "independentBasePartSeeds": len(json.loads((SOURCE / "anchors.json").read_text()))}
+            coverage[unit] = {"goldPixels": len(gold), "source": "approved native design" if branch == "stonespell" else "guarded apprentice parts",
+                              "partialArmour": branch == "thundersmith" and level == 2}
     path = HERE / "coverage.json"
     if check:
         if json.loads(path.read_text()) != coverage:

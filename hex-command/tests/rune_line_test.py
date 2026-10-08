@@ -26,11 +26,11 @@ class RuneLineTest(unittest.TestCase):
             rune.parts_module.verify_anchors(rows, anchors)
 
     def test_every_assigned_armour_and_robe_part_rejects_leftover_material(self):
-        for branch in ("thundersmith", "stonespell"):
+        for branch in ("thundersmith",):
             for level in (2, 3):
                 rows, palette, gold = rune.derive(self.source, self.palette, self.roles, self.pixels, branch, level)
                 for role in self.roles:
-                    if role["role"] not in ({"garment", "glove", "boot", "fastener"} if branch == "thundersmith" else {"garment"}):
+                    if not rune.armoured(role, level):
                         continue
                     point = next((p for p in self.pixels[role["id"]] if p not in gold), None)
                     if point is None:
@@ -44,7 +44,7 @@ class RuneLineTest(unittest.TestCase):
                                 rune.verify(self.source, self.palette, changed, palette, self.roles, self.pixels, branch, level, gold)
 
     def test_protected_face_hand_wood_and_crystal_cannot_be_recoloured(self):
-        for branch in ("thundersmith", "stonespell"):
+        for branch in ("thundersmith",):
             rows, palette, gold = rune.derive(self.source, self.palette, self.roles, self.pixels, branch, 3)
             for role in self.roles:
                 if role["role"] != "protected":
@@ -56,23 +56,46 @@ class RuneLineTest(unittest.TestCase):
                     with self.assertRaisesRegex(ValueError, "protected"):
                         rune.verify(self.source, self.palette, changed, palette, self.roles, self.pixels, branch, 3, gold)
 
-    def test_crystal_hammer_and_darker_robes_with_gold_and_enemy_cloth(self):
+    def test_blue_hammer_golden_crystal_and_blue_stonespell_with_enemy_cloth(self):
         hammer = next(r for r in self.roles if r["role"] == "hammer")
         for branch in ("thundersmith", "stonespell"):
             for level in (2, 3):
                 rows, palette, gold = rune.derive(self.source, self.palette, self.roles, self.pixels, branch, level)
                 if branch == "thundersmith":
-                    self.assertTrue(all(rows[y][x] in "EeJ" for x, y in self.pixels[hammer["id"]]))
+                    self.assertTrue(all(rows[y][x] in "CcK" for x, y in self.pixels[hammer["id"]]))
                 else:
-                    self.assertEqual(palette["U"], (rune.GREEN if level == 2 else rune.DARK_GREEN)["U"])
+                    self.assertEqual(palette["W"], [88, 108, 121, 255])
+                    self.assertFalse(any(c in "UuF" for row in rows for c in row))
                 self.assertEqual(bool(gold), level == 3)
                 directory = rune.UNITS / f"dwarf-{branch}-l{level}"
                 player = (directory / "player.txt").read_text()
                 enemy = (directory / "enemy.txt").read_text()
                 self.assertEqual(enemy, player.translate(str.maketrans("Tt", "Rr")))
                 self.assertGreater(enemy.count("R") + enemy.count("r"), 0)
-                self.assertEqual(palette["E"], rune.CRYSTAL["E"])
-                self.assertEqual(palette["z"], [46, 112, 132, 255])
+                self.assertEqual(palette["E"], (rune.GOLD_CRYSTAL if branch == "thundersmith" else rune.CRYSTAL)["E"])
+                if branch == "thundersmith":
+                    self.assertEqual(palette["z"], rune.GOLD_CRYSTAL["z"])
+
+    def test_l2_preserves_lower_leather_but_l3_covers_it(self):
+        for level in (2, 3):
+            rows, palette, gold = rune.derive(self.source, self.palette, self.roles, self.pixels, "thundersmith", level)
+            for part in self.roles:
+                if part["name"] not in {"apron", "left-trouser", "right-trouser", "left-boot", "right-boot", "left-glove"}:
+                    continue
+                for x, y in self.pixels[part["id"]]:
+                    if level == 2:
+                        self.assertEqual(rows[y][x], self.source[y][x])
+                        self.assertEqual(palette[rows[y][x]], self.palette[self.source[y][x]])
+                    else:
+                        self.assertIn(rows[y][x], "PpSYG")
+
+    def test_stonespell_native_design_guard_and_blue_tablet(self):
+        rows, palette, gold = rune.stonespell(3)
+        self.assertTrue(any(c in "EeJ" for row in rows[20:34] for c in row[45:58]))
+        changed = rows[:]
+        changed[24] = "." * 64
+        with self.assertRaisesRegex(ValueError, "approved"):
+            rune.verify(self.source, self.palette, changed, palette, self.roles, self.pixels, "stonespell", 3, gold)
 
     def test_lineup_has_ten_branches_and_only_the_chosen_twenty_five_dwarves(self):
         lineup = json.loads((rune.PROJECT / "art/pixel/lineups/dwarves.json").read_text())
