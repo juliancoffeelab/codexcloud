@@ -26,9 +26,17 @@ palette stays unchanged. A different source symbol, palette or canvas fails with
 a stale-source error instead of applying a pose-specific correction to unrelated
 artwork. `npm run art:check` verifies the corrections are already present.
 
-Anatomy, weapons, canvas dimensions, transparency and outlines are preserved.
+Anatomy, weapons, canvas dimensions, transparency and outer contours are preserved.
 Only material ownership, internal stray color pixels and connected shading planes
 are corrected. Natural beast markings and human magical branch colors are kept.
+
+Reviewed L1 dwarf records may flag `removeInteriorOutline` for a specific stray
+dark pixel inside a helmet, face or garment. Replay permits that removal only
+when the entire 3×3 neighborhood is opaque; pixels touching transparency remain
+protected. Pupils, facial features, weapon seams and grips are retained by the
+pose review. L2/L3 artwork is left for a later derivation pass.
+The [current L1 dwarf grid](dwarf-l1.png) covers all ten base poses; higher-tier
+comparison sheets retain the earlier L2/L3 artwork until that derivation.
 
 For future matrix edits, update the owning cleanup recipe alongside the source
 so rebuilding retains the change. Recipe coordinates refer to the canonical

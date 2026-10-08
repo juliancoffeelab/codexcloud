@@ -72,6 +72,27 @@ class MaterialReplayTest(unittest.TestCase):
                     self.apply()
                 self.assertEqual(self.matrices[0].read_text(), "AB\n")
 
+    def test_reviewed_interior_outline_removal_preserves_outer_contour(self):
+        file = self.recipes / "race.json"
+        recipe = json.loads(file.read_text())
+        unit = recipe["units"]["example"]
+        unit["canvas"] = [3, 3]
+        edit = {"x": 1, "y": 1, "from": "O", "to": "A", "removeInteriorOutline": True}
+        unit["matrixChanges"] = [edit]
+        unit["enemyMatrixChanges"] = [edit]
+        for matrix in self.matrices:
+            matrix.write_text("AAA\nAOA\nAAA\n")
+        file.write_text(json.dumps(recipe))
+        self.apply()
+        self.assertEqual(self.matrices[0].read_text(), "AAA\nAAA\nAAA\n")
+        self.assertEqual(self.matrices[1].read_text(), "AAA\nAAA\nAAA\n")
+        edit["x"] = 0
+        file.write_text(json.dumps(recipe))
+        self.matrices[0].write_text("AAA\nOAA\nAAA\n")
+        with self.assertRaisesRegex(ValueError, "must preserve outlines"):
+            self.apply()
+        self.assertEqual(self.matrices[0].read_text(), "AAA\nOAA\nAAA\n")
+
 
 if __name__ == "__main__":
     unittest.main()

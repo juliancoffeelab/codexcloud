@@ -34,7 +34,19 @@ def apply_cleanup(matrices, check=False, units_root=UNITS, recipe_root=RECIPES):
             if (before == ".") != (after == "."):
                 raise ValueError(f"{unit}: material cleanup must preserve transparency")
             if (before == "O") != (after == "O"):
-                raise ValueError(f"{unit}: material cleanup must preserve outlines")
+                interior = (
+                    change.get("removeInteriorOutline") is True
+                    and before == "O"
+                    and 0 < x < len(rows[0]) - 1
+                    and 0 < y < len(rows) - 1
+                    and all(
+                        rows[yy][xx] != "."
+                        for yy in range(y - 1, y + 2)
+                        for xx in range(x - 1, x + 2)
+                    )
+                )
+                if not interior:
+                    raise ValueError(f"{unit}: material cleanup must preserve outlines")
             current = rows[y][x]
             if current == after:
                 continue

@@ -122,6 +122,14 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 21,
+          "y": 20,
+          "from": "O",
+          "to": "a",
+          "reason": "Remove the enclosed thick-outline bump in the helmet shadow plane",
+          "removeInteriorOutline": true
+        },
+        {
           "x": 22,
           "y": 20,
           "from": "B",
@@ -225,6 +233,142 @@
           "from": "A",
           "to": "a",
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
+        },
+        {
+          "x": 21,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 22,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 23,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 24,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 25,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 26,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 27,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 28,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 29,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 30,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 21,
+          "y": 23,
+          "from": "G",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 22,
+          "y": 23,
+          "from": "w",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 23,
+          "y": 23,
+          "from": "a",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 25,
+          "y": 23,
+          "from": "a",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 27,
+          "y": 23,
+          "from": "a",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 31,
+          "y": 23,
+          "from": "a",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 26,
+          "y": 24,
+          "from": "V",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 31,
+          "y": 24,
+          "from": "W",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
         },
         {
           "x": 46,
@@ -514,6 +658,20 @@
           "reason": "Clean the bounded rear gunstock into continuous wood, keeping adjacent hands and receiver."
         },
         {
+          "x": 26,
+          "y": 29,
+          "from": "V",
+          "to": "B",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
+          "x": 27,
+          "y": 29,
+          "from": "V",
+          "to": "B",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
           "x": 29,
           "y": 29,
           "from": "i",
@@ -631,6 +789,48 @@
           "from": "b",
           "to": "w",
           "reason": "Clean the bounded rear gunstock into continuous wood, keeping adjacent hands and receiver."
+        },
+        {
+          "x": 31,
+          "y": 40,
+          "from": "h",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 32,
+          "y": 41,
+          "from": "v",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 32,
+          "y": 42,
+          "from": "H",
+          "to": "B",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 15,
+          "y": 44,
+          "from": "b",
+          "to": "i",
+          "reason": "Remove an enclosed wrong-material fleck in the cream shirt or cuff without changing its edge"
+        },
+        {
+          "x": 33,
+          "y": 44,
+          "from": "v",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 34,
+          "y": 46,
+          "from": "v",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
         }
       ],
       "enemyMatrixChanges": [
@@ -754,6 +954,14 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 21,
+          "y": 20,
+          "from": "O",
+          "to": "a",
+          "reason": "Remove the enclosed thick-outline bump in the helmet shadow plane",
+          "removeInteriorOutline": true
+        },
+        {
           "x": 22,
           "y": 20,
           "from": "B",
@@ -857,6 +1065,142 @@
           "from": "A",
           "to": "a",
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
+        },
+        {
+          "x": 21,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 22,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 23,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 24,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 25,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 26,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 27,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 28,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 29,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 30,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 21,
+          "y": 23,
+          "from": "G",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 22,
+          "y": 23,
+          "from": "w",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 23,
+          "y": 23,
+          "from": "a",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 25,
+          "y": 23,
+          "from": "a",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 27,
+          "y": 23,
+          "from": "a",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 31,
+          "y": 23,
+          "from": "a",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 26,
+          "y": 24,
+          "from": "V",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 31,
+          "y": 24,
+          "from": "W",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
         },
         {
           "x": 46,
@@ -1146,6 +1490,20 @@
           "reason": "Clean the bounded rear gunstock into continuous wood, keeping adjacent hands and receiver."
         },
         {
+          "x": 26,
+          "y": 29,
+          "from": "V",
+          "to": "B",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
+          "x": 27,
+          "y": 29,
+          "from": "V",
+          "to": "B",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
           "x": 29,
           "y": 29,
           "from": "i",
@@ -1263,6 +1621,48 @@
           "from": "b",
           "to": "w",
           "reason": "Clean the bounded rear gunstock into continuous wood, keeping adjacent hands and receiver."
+        },
+        {
+          "x": 31,
+          "y": 40,
+          "from": "h",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 32,
+          "y": 41,
+          "from": "v",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 32,
+          "y": 42,
+          "from": "H",
+          "to": "B",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 15,
+          "y": 44,
+          "from": "b",
+          "to": "i",
+          "reason": "Remove an enclosed wrong-material fleck in the cream shirt or cuff without changing its edge"
+        },
+        {
+          "x": 33,
+          "y": 44,
+          "from": "v",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 34,
+          "y": 46,
+          "from": "v",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
         }
       ],
       "paletteChanges": {
@@ -8018,6 +8418,14 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 33,
+          "y": 22,
+          "from": "O",
+          "to": "M",
+          "reason": "Remove a dark extraction hole inside the helmet steel plane; keep the outer cap contour",
+          "removeInteriorOutline": true
+        },
+        {
           "x": 34,
           "y": 22,
           "from": "a",
@@ -8032,6 +8440,14 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 30,
+          "y": 23,
+          "from": "O",
+          "to": "M",
+          "reason": "Remove a dark extraction hole inside the helmet steel plane; keep the outer cap contour",
+          "removeInteriorOutline": true
+        },
+        {
           "x": 31,
           "y": 23,
           "from": "a",
@@ -8044,6 +8460,14 @@
           "from": "A",
           "to": "M",
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
+        },
+        {
+          "x": 33,
+          "y": 23,
+          "from": "O",
+          "to": "M",
+          "reason": "Remove a dark extraction hole inside the helmet steel plane; keep the outer cap contour",
+          "removeInteriorOutline": true
         },
         {
           "x": 34,
@@ -8116,11 +8540,80 @@
           "reason": "Remove warm extraction flecks from the steel weapon head, preserving wood below the socket."
         },
         {
+          "x": 25,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 26,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 27,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 30,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 34,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 35,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
           "x": 50,
           "y": 25,
           "from": "B",
           "to": "a",
           "reason": "Remove warm extraction flecks from the steel weapon head, preserving wood below the socket."
+        },
+        {
+          "x": 26,
+          "y": 26,
+          "from": "v",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 27,
+          "y": 26,
+          "from": "w",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 26,
+          "y": 27,
+          "from": "v",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
         },
         {
           "x": 26,
@@ -9059,6 +9552,13 @@
           "from": "i",
           "to": "a",
           "reason": "Round shield has wooden boards and a steel rim/boss, separate from the leather gloves and boots."
+        },
+        {
+          "x": 31,
+          "y": 39,
+          "from": "W",
+          "to": "B",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
         },
         {
           "x": 11,
@@ -9721,6 +10221,14 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 33,
+          "y": 22,
+          "from": "O",
+          "to": "M",
+          "reason": "Remove a dark extraction hole inside the helmet steel plane; keep the outer cap contour",
+          "removeInteriorOutline": true
+        },
+        {
           "x": 34,
           "y": 22,
           "from": "a",
@@ -9735,6 +10243,14 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 30,
+          "y": 23,
+          "from": "O",
+          "to": "M",
+          "reason": "Remove a dark extraction hole inside the helmet steel plane; keep the outer cap contour",
+          "removeInteriorOutline": true
+        },
+        {
           "x": 31,
           "y": 23,
           "from": "a",
@@ -9747,6 +10263,14 @@
           "from": "A",
           "to": "M",
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
+        },
+        {
+          "x": 33,
+          "y": 23,
+          "from": "O",
+          "to": "M",
+          "reason": "Remove a dark extraction hole inside the helmet steel plane; keep the outer cap contour",
+          "removeInteriorOutline": true
         },
         {
           "x": 34,
@@ -9819,11 +10343,80 @@
           "reason": "Remove warm extraction flecks from the steel weapon head, preserving wood below the socket."
         },
         {
+          "x": 25,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 26,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 27,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 30,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 34,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 35,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
           "x": 50,
           "y": 25,
           "from": "B",
           "to": "a",
           "reason": "Remove warm extraction flecks from the steel weapon head, preserving wood below the socket."
+        },
+        {
+          "x": 26,
+          "y": 26,
+          "from": "v",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 27,
+          "y": 26,
+          "from": "w",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 26,
+          "y": 27,
+          "from": "v",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
         },
         {
           "x": 26,
@@ -10762,6 +11355,13 @@
           "from": "i",
           "to": "a",
           "reason": "Round shield has wooden boards and a steel rim/boss, separate from the leather gloves and boots."
+        },
+        {
+          "x": 31,
+          "y": 39,
+          "from": "W",
+          "to": "B",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
         },
         {
           "x": 11,
@@ -19072,6 +19672,114 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 22,
+          "y": 24,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 23,
+          "y": 24,
+          "from": "b",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features"
+        },
+        {
+          "x": 24,
+          "y": 24,
+          "from": "v",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features"
+        },
+        {
+          "x": 25,
+          "y": 24,
+          "from": "b",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features"
+        },
+        {
+          "x": 26,
+          "y": 24,
+          "from": "b",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features"
+        },
+        {
+          "x": 27,
+          "y": 24,
+          "from": "b",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features"
+        },
+        {
+          "x": 28,
+          "y": 24,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 29,
+          "y": 24,
+          "from": "b",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features"
+        },
+        {
+          "x": 30,
+          "y": 24,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 31,
+          "y": 24,
+          "from": "v",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features"
+        },
+        {
+          "x": 22,
+          "y": 25,
+          "from": "w",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 23,
+          "y": 25,
+          "from": "V",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 25,
+          "y": 25,
+          "from": "a",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 27,
+          "y": 25,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 23,
+          "y": 26,
+          "from": "v",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
           "x": 47,
           "y": 26,
           "from": "v",
@@ -19140,6 +19848,27 @@
           "from": "v",
           "to": "b",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 29,
+          "y": 30,
+          "from": "W",
+          "to": "B",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
+          "x": 30,
+          "y": 30,
+          "from": "W",
+          "to": "B",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
+          "x": 16,
+          "y": 31,
+          "from": "B",
+          "to": "I",
+          "reason": "Remove an enclosed wrong-material fleck in the cream shirt or cuff without changing its edge"
         },
         {
           "x": 31,
@@ -19392,6 +20121,20 @@
           "from": "W",
           "to": "B",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 31,
+          "y": 41,
+          "from": "h",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 33,
+          "y": 43,
+          "from": "h",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
         },
         {
           "x": 31,
@@ -19606,6 +20349,114 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 22,
+          "y": 24,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 23,
+          "y": 24,
+          "from": "b",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features"
+        },
+        {
+          "x": 24,
+          "y": 24,
+          "from": "v",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features"
+        },
+        {
+          "x": 25,
+          "y": 24,
+          "from": "b",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features"
+        },
+        {
+          "x": 26,
+          "y": 24,
+          "from": "b",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features"
+        },
+        {
+          "x": 27,
+          "y": 24,
+          "from": "b",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features"
+        },
+        {
+          "x": 28,
+          "y": 24,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 29,
+          "y": 24,
+          "from": "b",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features"
+        },
+        {
+          "x": 30,
+          "y": 24,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 31,
+          "y": 24,
+          "from": "v",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features"
+        },
+        {
+          "x": 22,
+          "y": 25,
+          "from": "w",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 23,
+          "y": 25,
+          "from": "V",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 25,
+          "y": 25,
+          "from": "a",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 27,
+          "y": 25,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 23,
+          "y": 26,
+          "from": "v",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
           "x": 47,
           "y": 26,
           "from": "v",
@@ -19674,6 +20525,27 @@
           "from": "v",
           "to": "b",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 29,
+          "y": 30,
+          "from": "W",
+          "to": "B",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
+          "x": 30,
+          "y": 30,
+          "from": "W",
+          "to": "B",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
+          "x": 16,
+          "y": 31,
+          "from": "B",
+          "to": "I",
+          "reason": "Remove an enclosed wrong-material fleck in the cream shirt or cuff without changing its edge"
         },
         {
           "x": 31,
@@ -19926,6 +20798,20 @@
           "from": "W",
           "to": "B",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 31,
+          "y": 41,
+          "from": "h",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 33,
+          "y": 43,
+          "from": "h",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
         },
         {
           "x": 31,
@@ -24284,6 +25170,102 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 25,
+          "y": 13,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 26,
+          "y": 13,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 27,
+          "y": 13,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 28,
+          "y": 13,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 29,
+          "y": 13,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 22,
+          "y": 14,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore the short rider sideburn below the helmet rather than steel-colored facial hair"
+        },
+        {
+          "x": 23,
+          "y": 14,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore the short rider sideburn below the helmet rather than steel-colored facial hair"
+        },
+        {
+          "x": 27,
+          "y": 14,
+          "from": "a",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 29,
+          "y": 14,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore the short rider sideburn below the helmet rather than steel-colored facial hair"
+        },
+        {
+          "x": 24,
+          "y": 15,
+          "from": "W",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 23,
+          "y": 21,
+          "from": "v",
+          "to": "b",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
+          "x": 24,
+          "y": 22,
+          "from": "v",
+          "to": "b",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
+          "x": 27,
+          "y": 27,
+          "from": "w",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
           "x": 48,
           "y": 28,
           "from": "v",
@@ -24886,6 +25868,102 @@
           "from": "a",
           "to": "M",
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
+        },
+        {
+          "x": 25,
+          "y": 13,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 26,
+          "y": 13,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 27,
+          "y": 13,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 28,
+          "y": 13,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 29,
+          "y": 13,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 22,
+          "y": 14,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore the short rider sideburn below the helmet rather than steel-colored facial hair"
+        },
+        {
+          "x": 23,
+          "y": 14,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore the short rider sideburn below the helmet rather than steel-colored facial hair"
+        },
+        {
+          "x": 27,
+          "y": 14,
+          "from": "a",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 29,
+          "y": 14,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore the short rider sideburn below the helmet rather than steel-colored facial hair"
+        },
+        {
+          "x": 24,
+          "y": 15,
+          "from": "W",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 23,
+          "y": 21,
+          "from": "v",
+          "to": "b",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
+          "x": 24,
+          "y": 22,
+          "from": "v",
+          "to": "b",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
+          "x": 27,
+          "y": 27,
+          "from": "w",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
         },
         {
           "x": 48,
@@ -28897,6 +29975,72 @@
           "from": "a",
           "to": "M",
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
+        },
+        {
+          "x": 25,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 32,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 33,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 26,
+          "y": 26,
+          "from": "W",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 34,
+          "y": 26,
+          "from": "G",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 25,
+          "y": 27,
+          "from": "V",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 34,
+          "y": 27,
+          "from": "G",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 33,
+          "y": 28,
+          "from": "W",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 34,
+          "y": 28,
+          "from": "w",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
         }
       ],
       "enemyMatrixChanges": [
@@ -29018,6 +30162,72 @@
           "from": "a",
           "to": "M",
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
+        },
+        {
+          "x": 25,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 32,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 33,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 26,
+          "y": 26,
+          "from": "W",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 34,
+          "y": 26,
+          "from": "G",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 25,
+          "y": 27,
+          "from": "V",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 34,
+          "y": 27,
+          "from": "G",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 33,
+          "y": 28,
+          "from": "W",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 34,
+          "y": 28,
+          "from": "w",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
         }
       ],
       "paletteChanges": {
@@ -33478,6 +34688,14 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 25,
+          "y": 23,
+          "from": "O",
+          "to": "a",
+          "reason": "Remove the enclosed thick-outline bump in the helmet shadow plane",
+          "removeInteriorOutline": true
+        },
+        {
           "x": 28,
           "y": 23,
           "from": "a",
@@ -33548,6 +34766,86 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 25,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 26,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 27,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 28,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 29,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 30,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 31,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 32,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 33,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 34,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
           "x": 45,
           "y": 25,
           "from": "V",
@@ -33576,6 +34874,20 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 25,
+          "y": 27,
+          "from": "V",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 27,
+          "y": 27,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
           "x": 43,
           "y": 27,
           "from": "V",
@@ -33588,6 +34900,20 @@
           "from": "v",
           "to": "w",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 30,
+          "y": 28,
+          "from": "w",
+          "to": "b",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
+          "x": 34,
+          "y": 28,
+          "from": "w",
+          "to": "b",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
         },
         {
           "x": 42,
@@ -33686,6 +35012,27 @@
           "from": "w",
           "to": "b",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 36,
+          "y": 43,
+          "from": "H",
+          "to": "B",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 37,
+          "y": 43,
+          "from": "h",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 37,
+          "y": 44,
+          "from": "w",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
         }
       ],
       "enemyMatrixChanges": [
@@ -33788,6 +35135,14 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 25,
+          "y": 23,
+          "from": "O",
+          "to": "a",
+          "reason": "Remove the enclosed thick-outline bump in the helmet shadow plane",
+          "removeInteriorOutline": true
+        },
+        {
           "x": 28,
           "y": 23,
           "from": "a",
@@ -33858,6 +35213,86 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 25,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 26,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 27,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 28,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 29,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 30,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 31,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 32,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 33,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 34,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
           "x": 45,
           "y": 25,
           "from": "V",
@@ -33886,6 +35321,20 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 25,
+          "y": 27,
+          "from": "V",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 27,
+          "y": 27,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
           "x": 43,
           "y": 27,
           "from": "V",
@@ -33898,6 +35347,20 @@
           "from": "v",
           "to": "w",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 30,
+          "y": 28,
+          "from": "w",
+          "to": "b",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
+          "x": 34,
+          "y": 28,
+          "from": "w",
+          "to": "b",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
         },
         {
           "x": 42,
@@ -33996,6 +35459,27 @@
           "from": "w",
           "to": "b",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 36,
+          "y": 43,
+          "from": "H",
+          "to": "B",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 37,
+          "y": 43,
+          "from": "h",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 37,
+          "y": 44,
+          "from": "w",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
         }
       ],
       "paletteChanges": {
@@ -37367,6 +38851,60 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 24,
+          "y": 25,
+          "from": "v",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features"
+        },
+        {
+          "x": 25,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 26,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 27,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 28,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 29,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 26,
+          "y": 27,
+          "from": "W",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
           "x": 33,
           "y": 32,
           "from": "v",
@@ -37549,6 +39087,60 @@
           "from": "a",
           "to": "M",
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
+        },
+        {
+          "x": 24,
+          "y": 25,
+          "from": "v",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features"
+        },
+        {
+          "x": 25,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 26,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 27,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 28,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 29,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 26,
+          "y": 27,
+          "from": "W",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
         },
         {
           "x": 33,
@@ -41217,6 +42809,114 @@
           "reason": "Remove warm extraction flecks from the steel weapon head, preserving wood below the socket."
         },
         {
+          "x": 27,
+          "y": 23,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
+          "x": 28,
+          "y": 23,
+          "from": "O",
+          "to": "B",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 29,
+          "y": 23,
+          "from": "O",
+          "to": "b",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 30,
+          "y": 23,
+          "from": "a",
+          "to": "H",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
+          "x": 36,
+          "y": 23,
+          "from": "a",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 26,
+          "y": 24,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
+          "x": 27,
+          "y": 24,
+          "from": "O",
+          "to": "B",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 28,
+          "y": 24,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
+          "x": 25,
+          "y": 25,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
+          "x": 26,
+          "y": 25,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
+          "x": 27,
+          "y": 25,
+          "from": "a",
+          "to": "b",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
+          "x": 28,
+          "y": 25,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
+          "x": 31,
+          "y": 25,
+          "from": "a",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 36,
+          "y": 25,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
+          "x": 37,
+          "y": 25,
+          "from": "a",
+          "to": "b",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
           "x": 48,
           "y": 26,
           "from": "b",
@@ -41278,6 +42978,62 @@
           "from": "A",
           "to": "E",
           "reason": "Blue rune flame uses cyan light and shadow, not stray steel colors."
+        },
+        {
+          "x": 34,
+          "y": 34,
+          "from": "w",
+          "to": "b",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
+          "x": 27,
+          "y": 36,
+          "from": "v",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 28,
+          "y": 36,
+          "from": "A",
+          "to": "B",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 27,
+          "y": 39,
+          "from": "a",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 28,
+          "y": 39,
+          "from": "A",
+          "to": "B",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 26,
+          "y": 40,
+          "from": "W",
+          "to": "B",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 27,
+          "y": 40,
+          "from": "a",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 28,
+          "y": 40,
+          "from": "a",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
         }
       ],
       "enemyMatrixChanges": [
@@ -41513,6 +43269,114 @@
           "reason": "Remove warm extraction flecks from the steel weapon head, preserving wood below the socket."
         },
         {
+          "x": 27,
+          "y": 23,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
+          "x": 28,
+          "y": 23,
+          "from": "O",
+          "to": "B",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 29,
+          "y": 23,
+          "from": "O",
+          "to": "b",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 30,
+          "y": 23,
+          "from": "a",
+          "to": "H",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
+          "x": 36,
+          "y": 23,
+          "from": "a",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 26,
+          "y": 24,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
+          "x": 27,
+          "y": 24,
+          "from": "O",
+          "to": "B",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 28,
+          "y": 24,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
+          "x": 25,
+          "y": 25,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
+          "x": 26,
+          "y": 25,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
+          "x": 27,
+          "y": 25,
+          "from": "a",
+          "to": "b",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
+          "x": 28,
+          "y": 25,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
+          "x": 31,
+          "y": 25,
+          "from": "a",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 36,
+          "y": 25,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
+          "x": 37,
+          "y": 25,
+          "from": "a",
+          "to": "b",
+          "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
           "x": 48,
           "y": 26,
           "from": "b",
@@ -41574,6 +43438,62 @@
           "from": "A",
           "to": "E",
           "reason": "Blue rune flame uses cyan light and shadow, not stray steel colors."
+        },
+        {
+          "x": 34,
+          "y": 34,
+          "from": "w",
+          "to": "b",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
+          "x": 27,
+          "y": 36,
+          "from": "v",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 28,
+          "y": 36,
+          "from": "A",
+          "to": "B",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 27,
+          "y": 39,
+          "from": "a",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 28,
+          "y": 39,
+          "from": "A",
+          "to": "B",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 26,
+          "y": 40,
+          "from": "W",
+          "to": "B",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 27,
+          "y": 40,
+          "from": "a",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 28,
+          "y": 40,
+          "from": "a",
+          "to": "b",
+          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
         }
       ],
       "paletteChanges": {
@@ -48198,6 +50118,46 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 25,
+          "y": 14,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 26,
+          "y": 14,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 27,
+          "y": 14,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 28,
+          "y": 14,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 29,
+          "y": 14,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
           "x": 44,
           "y": 14,
           "from": "v",
@@ -48224,6 +50184,13 @@
           "from": "b",
           "to": "w",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 29,
+          "y": 15,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
         },
         {
           "x": 23,
@@ -48718,6 +50685,46 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 25,
+          "y": 14,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 26,
+          "y": 14,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 27,
+          "y": 14,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 28,
+          "y": 14,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 29,
+          "y": 14,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
           "x": 44,
           "y": 14,
           "from": "v",
@@ -48744,6 +50751,13 @@
           "from": "b",
           "to": "w",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 29,
+          "y": 15,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
         },
         {
           "x": 23,
@@ -52076,6 +54090,46 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 27,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 28,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 31,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 35,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 36,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
           "x": 13,
           "y": 23,
           "from": "v",
@@ -52090,11 +54144,46 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 27,
+          "y": 23,
+          "from": "v",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 30,
+          "y": 23,
+          "from": "V",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
           "x": 14,
           "y": 24,
           "from": "V",
           "to": "W",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 27,
+          "y": 24,
+          "from": "v",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 29,
+          "y": 24,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 36,
+          "y": 24,
+          "from": "v",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
         },
         {
           "x": 14,
@@ -52146,6 +54235,13 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 38,
+          "y": 27,
+          "from": "w",
+          "to": "b",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
           "x": 48,
           "y": 27,
           "from": "b",
@@ -52181,6 +54277,13 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 38,
+          "y": 28,
+          "from": "w",
+          "to": "b",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
           "x": 47,
           "y": 28,
           "from": "b",
@@ -52195,11 +54298,25 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 37,
+          "y": 29,
+          "from": "v",
+          "to": "b",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
           "x": 49,
           "y": 29,
           "from": "b",
           "to": "w",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 37,
+          "y": 30,
+          "from": "w",
+          "to": "b",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
         },
         {
           "x": 27,
@@ -52221,6 +54338,13 @@
           "from": "v",
           "to": "b",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 37,
+          "y": 33,
+          "from": "w",
+          "to": "b",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
         },
         {
           "x": 35,
@@ -52680,6 +54804,46 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 27,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 28,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 31,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 35,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 36,
+          "y": 22,
+          "from": "O",
+          "to": "a",
+          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
           "x": 13,
           "y": 23,
           "from": "v",
@@ -52694,11 +54858,46 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 27,
+          "y": 23,
+          "from": "v",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 30,
+          "y": 23,
+          "from": "V",
+          "to": "H",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
           "x": 14,
           "y": 24,
           "from": "V",
           "to": "W",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 27,
+          "y": 24,
+          "from": "v",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 29,
+          "y": 24,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 36,
+          "y": 24,
+          "from": "v",
+          "to": "h",
+          "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
         },
         {
           "x": 14,
@@ -52750,6 +54949,13 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 38,
+          "y": 27,
+          "from": "w",
+          "to": "b",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
           "x": 48,
           "y": 27,
           "from": "b",
@@ -52785,6 +54991,13 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 38,
+          "y": 28,
+          "from": "w",
+          "to": "b",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
           "x": 47,
           "y": 28,
           "from": "b",
@@ -52799,11 +55012,25 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 37,
+          "y": 29,
+          "from": "v",
+          "to": "b",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
           "x": 49,
           "y": 29,
           "from": "b",
           "to": "w",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 37,
+          "y": 30,
+          "from": "w",
+          "to": "b",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
         },
         {
           "x": 27,
@@ -52825,6 +55052,13 @@
           "from": "v",
           "to": "b",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 37,
+          "y": 33,
+          "from": "w",
+          "to": "b",
+          "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
         },
         {
           "x": 35,

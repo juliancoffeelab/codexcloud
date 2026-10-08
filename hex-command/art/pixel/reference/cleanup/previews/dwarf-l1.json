@@ -1,0 +1,42 @@
+[
+  {
+    "label": "Dwarf axe and shield L1",
+    "image": "art/pixel/units/dwarf-axeguard/player.png"
+  },
+  {
+    "label": "Dwarf two-handed hammer L1",
+    "image": "art/pixel/units/dwarf-hammerer/player.png"
+  },
+  {
+    "label": "Dwarf pickaxe L1",
+    "image": "art/pixel/units/dwarf-pickaxe/player.png"
+  },
+  {
+    "label": "Dwarf poleaxe L1",
+    "image": "art/pixel/units/dwarf-poleaxe/player.png"
+  },
+  {
+    "label": "Dwarf crossbow L1",
+    "image": "art/pixel/units/dwarf-crossbow/player.png"
+  },
+  {
+    "label": "Dwarf arquebus L1",
+    "image": "art/pixel/units/dwarf-arquebus/player.png"
+  },
+  {
+    "label": "Dwarf rune caster L1",
+    "image": "art/pixel/units/dwarf-runesmith/player.png"
+  },
+  {
+    "label": "Dwarf goat-mounted hammerman L1",
+    "image": "art/pixel/units/dwarf-goat-rider/player.png"
+  },
+  {
+    "label": "Dwarf pistol goat rider L1",
+    "image": "art/pixel/units/dwarf-pistol-goat-rider/player.png"
+  },
+  {
+    "label": "Dwarf axe and pick infantry L1",
+    "image": "art/pixel/units/dwarf-axe-pick/player.png"
+  }
+]
