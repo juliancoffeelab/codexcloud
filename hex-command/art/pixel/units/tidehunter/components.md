@@ -9,3 +9,5 @@ Materials: violet/plum/lavender scales; dark leather with one shadow; brown wood
 Orientation: three-quarter view toward screen right; light from upper left. Preserve the gripping hand, attached offhand and continuous tail/fins.
 
 Both factions share anatomy and equipment geometry.
+
+Cleanup: sea-green scale colors stay consistent across advancement tiers. Corrected material specks use local scale, ivory, or wood colors; pose, outlines, eye placement, weapon silhouettes, and native alpha mask are unchanged. Tier identity remains in equipment and trim.

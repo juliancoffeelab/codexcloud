@@ -25,19 +25,19 @@
   },
   {
     "label": "7. Zombie weakling wretch",
-    "image": "art/pixel/units/zombie-wretch/player.png"
+    "image": "art/pixel/reference/zombies/units/zombie-wretch/player.png"
   },
   {
     "label": "8. Zombie weakling crawler",
-    "image": "art/pixel/units/zombie-crawler/player.png"
+    "image": "art/pixel/reference/zombies/units/zombie-crawler/player.png"
   },
   {
     "label": "9. Zombie weakling cleaver",
-    "image": "art/pixel/units/zombie-light-cleaver/player.png"
+    "image": "art/pixel/reference/zombies/units/zombie-light-cleaver/player.png"
   },
   {
     "label": "10. Zombie weakling corruption caster",
-    "image": "art/pixel/units/zombie-novice-caster/player.png"
+    "image": "art/pixel/reference/zombies/units/zombie-novice-caster/player.png"
   },
   {
     "label": "11. Zombie skeleton-sized walker",

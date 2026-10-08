@@ -1,4 +1,6 @@
-# Zombie ghoul — L1
+# Ghoul — L3
+
+Chosen zombie lineup artwork. Source recipe tier: L1; lineup tiers are recorded in `../../lineups/zombies.json`.
 
 Low crouched FLESHY ghoul, long arms with broad three-clawed hands, bent legs and hunched spine. Sick yellow-green flesh, ugly sunken face, torn shorts and small teal cloth scrap. Clear hand/foot separation, no animal quadruped, no weapons.
 

@@ -1,0 +1,5801 @@
+{
+  "units": {
+    "bonearcher": {
+      "matrixChanges": [],
+      "paletteChanges": {
+        "b": {
+          "from": [205, 187, 152, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Use a consistent muted warm bone shadow, separate from leather."
+        },
+        "S": {
+          "from": [200, 204, 203, 255],
+          "to": [203, 215, 218, 255],
+          "reason": "Keep blade highlights on a cool steel ramp rather than neutral grey or green ivory."
+        },
+        "s": {
+          "from": [119, 123, 122, 255],
+          "to": [109, 130, 138, 255],
+          "reason": "Maintain cool steel shadow hue and clear contrast."
+        }
+      },
+      "enemyMatrixChanges": [],
+      "canvas": [48, 48]
+    },
+    "deatharcher": {
+      "matrixChanges": [],
+      "paletteChanges": {
+        "b": {
+          "from": [205, 187, 152, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Use a consistent muted warm bone shadow, separate from leather."
+        },
+        "S": {
+          "from": [200, 204, 203, 255],
+          "to": [203, 215, 218, 255],
+          "reason": "Keep blade highlights on a cool steel ramp rather than neutral grey or green ivory."
+        },
+        "s": {
+          "from": [119, 123, 122, 255],
+          "to": [109, 130, 138, 255],
+          "reason": "Maintain cool steel shadow hue and clear contrast."
+        }
+      },
+      "enemyMatrixChanges": [],
+      "canvas": [48, 48]
+    },
+    "lich": {
+      "matrixChanges": [
+        {
+          "x": 30,
+          "y": 20,
+          "from": "N",
+          "to": "L",
+          "reason": "Merge the single near-duplicate leather pixel into its surrounding robe-belt material."
+        }
+      ],
+      "paletteChanges": {
+        "B": {
+          "from": [244, 227, 197, 255],
+          "to": [242, 230, 202, 255],
+          "reason": "Use the same warm ivory for skulls and bones throughout the skeleton faction."
+        },
+        "b": {
+          "from": [199, 173, 139, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Use a consistent muted warm bone shadow, separate from leather."
+        },
+        "I": {
+          "from": [239, 230, 203, 255],
+          "to": [224, 214, 188, 255],
+          "reason": "Keep the inner robe a warm linen color visibly distinct from ivory skulls and hands."
+        },
+        "i": {
+          "from": [206, 193, 159, 255],
+          "to": [176, 159, 125, 255],
+          "reason": "Match shaded linen to the warmer robe ramp."
+        }
+      },
+      "enemyMatrixChanges": [
+        {
+          "x": 30,
+          "y": 20,
+          "from": "N",
+          "to": "L",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        }
+      ],
+      "canvas": [48, 48]
+    },
+    "necromancer": {
+      "matrixChanges": [
+        {
+          "x": 30,
+          "y": 20,
+          "from": "N",
+          "to": "L",
+          "reason": "Merge the single near-duplicate leather pixel into its surrounding robe-belt material."
+        }
+      ],
+      "paletteChanges": {
+        "B": {
+          "from": [244, 227, 197, 255],
+          "to": [242, 230, 202, 255],
+          "reason": "Use the same warm ivory for skulls and bones throughout the skeleton faction."
+        },
+        "b": {
+          "from": [199, 173, 139, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Use a consistent muted warm bone shadow, separate from leather."
+        },
+        "I": {
+          "from": [239, 230, 203, 255],
+          "to": [224, 214, 188, 255],
+          "reason": "Keep the inner robe a warm linen color visibly distinct from ivory skulls and hands."
+        },
+        "i": {
+          "from": [206, 193, 159, 255],
+          "to": [176, 159, 125, 255],
+          "reason": "Match shaded linen to the warmer robe ramp."
+        }
+      },
+      "enemyMatrixChanges": [
+        {
+          "x": 30,
+          "y": 20,
+          "from": "N",
+          "to": "L",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        }
+      ],
+      "canvas": [48, 48]
+    },
+    "revenant": {
+      "matrixChanges": [],
+      "paletteChanges": {
+        "b": {
+          "from": [205, 187, 152, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Use a consistent muted warm bone shadow, separate from leather."
+        },
+        "S": {
+          "from": [200, 204, 203, 255],
+          "to": [203, 215, 218, 255],
+          "reason": "Keep blade highlights on a cool steel ramp rather than neutral grey or green ivory."
+        },
+        "s": {
+          "from": [119, 123, 122, 255],
+          "to": [109, 130, 138, 255],
+          "reason": "Maintain cool steel shadow hue and clear contrast."
+        }
+      },
+      "enemyMatrixChanges": [],
+      "canvas": [48, 48]
+    },
+    "skeleton": {
+      "matrixChanges": [],
+      "paletteChanges": {
+        "b": {
+          "from": [205, 187, 152, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Use a consistent muted warm bone shadow, separate from leather."
+        },
+        "S": {
+          "from": [200, 204, 203, 255],
+          "to": [203, 215, 218, 255],
+          "reason": "Keep blade highlights on a cool steel ramp rather than neutral grey or green ivory."
+        },
+        "s": {
+          "from": [119, 123, 122, 255],
+          "to": [109, 130, 138, 255],
+          "reason": "Maintain cool steel shadow hue and clear contrast."
+        }
+      },
+      "enemyMatrixChanges": [],
+      "canvas": [48, 48]
+    },
+    "skeleton-axeman": {
+      "matrixChanges": [
+        {
+          "x": 55,
+          "y": 12,
+          "from": "a",
+          "to": "w",
+          "reason": "Wooden axe-shaft cap must not share steel-blade shading."
+        },
+        {
+          "x": 36,
+          "y": 25,
+          "from": "V",
+          "to": "t",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 34,
+          "y": 32,
+          "from": "v",
+          "to": "b",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 33,
+          "y": 33,
+          "from": "V",
+          "to": "b",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 34,
+          "y": 34,
+          "from": "V",
+          "to": "b",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 40,
+          "y": 34,
+          "from": "v",
+          "to": "i",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 16,
+          "y": 36,
+          "from": "v",
+          "to": "t",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 33,
+          "y": 45,
+          "from": "v",
+          "to": "t",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 12,
+          "y": 51,
+          "from": "v",
+          "to": "b",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 17,
+          "y": 51,
+          "from": "v",
+          "to": "b",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 41,
+          "y": 52,
+          "from": "V",
+          "to": "b",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        }
+      ],
+      "paletteChanges": {
+        "I": {
+          "from": [240, 229, 198, 255],
+          "to": [242, 230, 202, 255],
+          "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
+        },
+        "i": {
+          "from": [180, 163, 127, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Unify bone shadows with the classic skeleton palette."
+        }
+      },
+      "enemyMatrixChanges": [
+        {
+          "x": 55,
+          "y": 12,
+          "from": "a",
+          "to": "w",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 36,
+          "y": 25,
+          "from": "V",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 32,
+          "from": "v",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 33,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 34,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 40,
+          "y": 34,
+          "from": "v",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 16,
+          "y": 36,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 45,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 12,
+          "y": 51,
+          "from": "v",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 17,
+          "y": 51,
+          "from": "v",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 41,
+          "y": 52,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    "skeleton-axeman-l2": {
+      "matrixChanges": [
+        {
+          "x": 55,
+          "y": 12,
+          "from": "a",
+          "to": "w",
+          "reason": "Wooden axe-shaft cap must not share steel-blade shading."
+        },
+        {
+          "x": 36,
+          "y": 25,
+          "from": "V",
+          "to": "t",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 34,
+          "y": 32,
+          "from": "v",
+          "to": "b",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 33,
+          "y": 33,
+          "from": "V",
+          "to": "b",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 34,
+          "y": 34,
+          "from": "V",
+          "to": "b",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 40,
+          "y": 34,
+          "from": "v",
+          "to": "i",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 16,
+          "y": 36,
+          "from": "v",
+          "to": "t",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 33,
+          "y": 45,
+          "from": "v",
+          "to": "t",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 12,
+          "y": 51,
+          "from": "v",
+          "to": "b",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 17,
+          "y": 51,
+          "from": "v",
+          "to": "b",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 41,
+          "y": 52,
+          "from": "V",
+          "to": "b",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        }
+      ],
+      "paletteChanges": {
+        "I": {
+          "from": [240, 229, 198, 255],
+          "to": [242, 230, 202, 255],
+          "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
+        },
+        "i": {
+          "from": [180, 163, 127, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Unify bone shadows with the classic skeleton palette."
+        }
+      },
+      "enemyMatrixChanges": [
+        {
+          "x": 55,
+          "y": 12,
+          "from": "a",
+          "to": "w",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 36,
+          "y": 25,
+          "from": "V",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 32,
+          "from": "v",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 33,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 34,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 40,
+          "y": 34,
+          "from": "v",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 16,
+          "y": 36,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 45,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 12,
+          "y": 51,
+          "from": "v",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 17,
+          "y": 51,
+          "from": "v",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 41,
+          "y": 52,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    "skeleton-axeman-l3": {
+      "matrixChanges": [
+        {
+          "x": 55,
+          "y": 12,
+          "from": "a",
+          "to": "w",
+          "reason": "Wooden axe-shaft cap must not share steel-blade shading."
+        },
+        {
+          "x": 36,
+          "y": 25,
+          "from": "V",
+          "to": "t",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 34,
+          "y": 32,
+          "from": "v",
+          "to": "b",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 33,
+          "y": 33,
+          "from": "V",
+          "to": "b",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 34,
+          "y": 34,
+          "from": "V",
+          "to": "b",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 40,
+          "y": 34,
+          "from": "v",
+          "to": "i",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 16,
+          "y": 36,
+          "from": "v",
+          "to": "t",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 33,
+          "y": 45,
+          "from": "v",
+          "to": "t",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 12,
+          "y": 51,
+          "from": "v",
+          "to": "b",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 17,
+          "y": 51,
+          "from": "v",
+          "to": "b",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        },
+        {
+          "x": 41,
+          "y": 52,
+          "from": "V",
+          "to": "b",
+          "reason": "Remove stray purple from the adjacent cloak, leather or bone material."
+        }
+      ],
+      "paletteChanges": {
+        "I": {
+          "from": [240, 229, 198, 255],
+          "to": [242, 230, 202, 255],
+          "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
+        },
+        "i": {
+          "from": [180, 163, 127, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Unify bone shadows with the classic skeleton palette."
+        },
+        "A": {
+          "from": [244, 248, 241, 255],
+          "to": [236, 244, 246, 255],
+          "reason": "Keep high-tier metal cool silver rather than yellow-green bone."
+        },
+        "a": {
+          "from": [155, 184, 191, 255],
+          "to": [143, 169, 181, 255],
+          "reason": "Use a cool subdued steel shadow for high-tier equipment."
+        }
+      },
+      "enemyMatrixChanges": [
+        {
+          "x": 55,
+          "y": 12,
+          "from": "a",
+          "to": "w",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 36,
+          "y": 25,
+          "from": "V",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 32,
+          "from": "v",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 33,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 34,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 40,
+          "y": 34,
+          "from": "v",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 16,
+          "y": 36,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 45,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 12,
+          "y": 51,
+          "from": "v",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 17,
+          "y": 51,
+          "from": "v",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 41,
+          "y": 52,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    "skeleton-bow-master": {
+      "matrixChanges": [],
+      "paletteChanges": {
+        "b": {
+          "from": [205, 187, 152, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Use a consistent muted warm bone shadow, separate from leather."
+        },
+        "S": {
+          "from": [233, 239, 229, 255],
+          "to": [222, 232, 235, 255],
+          "reason": "Keep blade highlights on a cool steel ramp rather than neutral grey or green ivory."
+        }
+      },
+      "enemyMatrixChanges": [],
+      "canvas": [48, 48]
+    },
+    "skeleton-dreadguard": {
+      "matrixChanges": [],
+      "paletteChanges": {
+        "b": {
+          "from": [205, 187, 152, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Use a consistent muted warm bone shadow, separate from leather."
+        },
+        "S": {
+          "from": [233, 239, 229, 255],
+          "to": [222, 232, 235, 255],
+          "reason": "Keep blade highlights on a cool steel ramp rather than neutral grey or green ivory."
+        }
+      },
+      "enemyMatrixChanges": [],
+      "canvas": [48, 48]
+    },
+    "skeleton-flanker": {
+      "matrixChanges": [
+        {
+          "x": 39,
+          "y": 31,
+          "from": "v",
+          "to": "t",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        },
+        {
+          "x": 39,
+          "y": 32,
+          "from": "v",
+          "to": "t",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        },
+        {
+          "x": 17,
+          "y": 33,
+          "from": "V",
+          "to": "i",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        },
+        {
+          "x": 17,
+          "y": 34,
+          "from": "V",
+          "to": "i",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        },
+        {
+          "x": 42,
+          "y": 39,
+          "from": "V",
+          "to": "i",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        },
+        {
+          "x": 22,
+          "y": 45,
+          "from": "V",
+          "to": "i",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        },
+        {
+          "x": 19,
+          "y": 48,
+          "from": "V",
+          "to": "b",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        },
+        {
+          "x": 45,
+          "y": 48,
+          "from": "v",
+          "to": "b",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        }
+      ],
+      "paletteChanges": {
+        "I": {
+          "from": [240, 229, 198, 255],
+          "to": [242, 230, 202, 255],
+          "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
+        },
+        "i": {
+          "from": [180, 163, 127, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Unify bone shadows with the classic skeleton palette."
+        }
+      },
+      "enemyMatrixChanges": [
+        {
+          "x": 39,
+          "y": 31,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 39,
+          "y": 32,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 17,
+          "y": 33,
+          "from": "V",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 17,
+          "y": 34,
+          "from": "V",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 42,
+          "y": 39,
+          "from": "V",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 22,
+          "y": 45,
+          "from": "V",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 19,
+          "y": 48,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 45,
+          "y": 48,
+          "from": "v",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    "skeleton-flanker-l2": {
+      "matrixChanges": [
+        {
+          "x": 39,
+          "y": 31,
+          "from": "v",
+          "to": "t",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        },
+        {
+          "x": 39,
+          "y": 32,
+          "from": "v",
+          "to": "t",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        },
+        {
+          "x": 17,
+          "y": 33,
+          "from": "V",
+          "to": "i",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        },
+        {
+          "x": 17,
+          "y": 34,
+          "from": "V",
+          "to": "i",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        },
+        {
+          "x": 42,
+          "y": 39,
+          "from": "V",
+          "to": "i",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        },
+        {
+          "x": 22,
+          "y": 45,
+          "from": "V",
+          "to": "i",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        },
+        {
+          "x": 19,
+          "y": 48,
+          "from": "V",
+          "to": "b",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        },
+        {
+          "x": 45,
+          "y": 48,
+          "from": "v",
+          "to": "b",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        }
+      ],
+      "paletteChanges": {
+        "I": {
+          "from": [240, 229, 198, 255],
+          "to": [242, 230, 202, 255],
+          "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
+        },
+        "i": {
+          "from": [180, 163, 127, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Unify bone shadows with the classic skeleton palette."
+        }
+      },
+      "enemyMatrixChanges": [
+        {
+          "x": 39,
+          "y": 31,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 39,
+          "y": 32,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 17,
+          "y": 33,
+          "from": "V",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 17,
+          "y": 34,
+          "from": "V",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 42,
+          "y": 39,
+          "from": "V",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 22,
+          "y": 45,
+          "from": "V",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 19,
+          "y": 48,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 45,
+          "y": 48,
+          "from": "v",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    "skeleton-flanker-l3": {
+      "matrixChanges": [
+        {
+          "x": 39,
+          "y": 31,
+          "from": "v",
+          "to": "t",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        },
+        {
+          "x": 39,
+          "y": 32,
+          "from": "v",
+          "to": "t",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        },
+        {
+          "x": 17,
+          "y": 33,
+          "from": "V",
+          "to": "i",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        },
+        {
+          "x": 17,
+          "y": 34,
+          "from": "V",
+          "to": "i",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        },
+        {
+          "x": 42,
+          "y": 39,
+          "from": "V",
+          "to": "i",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        },
+        {
+          "x": 22,
+          "y": 45,
+          "from": "V",
+          "to": "i",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        },
+        {
+          "x": 19,
+          "y": 48,
+          "from": "V",
+          "to": "b",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        },
+        {
+          "x": 45,
+          "y": 48,
+          "from": "v",
+          "to": "b",
+          "reason": "Resolve isolated purple into the adjoining cape, bone or boot material."
+        }
+      ],
+      "paletteChanges": {
+        "I": {
+          "from": [240, 229, 198, 255],
+          "to": [242, 230, 202, 255],
+          "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
+        },
+        "i": {
+          "from": [180, 163, 127, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Unify bone shadows with the classic skeleton palette."
+        },
+        "A": {
+          "from": [244, 248, 241, 255],
+          "to": [236, 244, 246, 255],
+          "reason": "Keep high-tier metal cool silver rather than yellow-green bone."
+        },
+        "a": {
+          "from": [155, 184, 191, 255],
+          "to": [143, 169, 181, 255],
+          "reason": "Use a cool subdued steel shadow for high-tier equipment."
+        }
+      },
+      "enemyMatrixChanges": [
+        {
+          "x": 39,
+          "y": 31,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 39,
+          "y": 32,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 17,
+          "y": 33,
+          "from": "V",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 17,
+          "y": 34,
+          "from": "V",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 42,
+          "y": 39,
+          "from": "V",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 22,
+          "y": 45,
+          "from": "V",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 19,
+          "y": 48,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 45,
+          "y": 48,
+          "from": "v",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    "skeleton-impact-caster": {
+      "matrixChanges": [
+        {
+          "x": 17,
+          "y": 17,
+          "from": "v",
+          "to": "w",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 50,
+          "y": 20,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 51,
+          "y": 20,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 52,
+          "y": 20,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 54,
+          "y": 20,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 49,
+          "y": 21,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 50,
+          "y": 21,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 51,
+          "y": 21,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 52,
+          "y": 21,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 53,
+          "y": 21,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 49,
+          "y": 22,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 50,
+          "y": 22,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 51,
+          "y": 22,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 52,
+          "y": 22,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 53,
+          "y": 22,
+          "from": "E",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 47,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 48,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 50,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 51,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 52,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 51,
+          "y": 24,
+          "from": "E",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 54,
+          "y": 24,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 23,
+          "y": 25,
+          "from": "a",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 47,
+          "y": 25,
+          "from": "V",
+          "to": "i",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 54,
+          "y": 25,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 24,
+          "y": 26,
+          "from": "a",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 25,
+          "y": 26,
+          "from": "v",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 37,
+          "y": 26,
+          "from": "V",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 38,
+          "y": 26,
+          "from": "a",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 37,
+          "y": 27,
+          "from": "a",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 38,
+          "y": 27,
+          "from": "a",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 39,
+          "y": 27,
+          "from": "V",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 37,
+          "y": 28,
+          "from": "v",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 38,
+          "y": 28,
+          "from": "V",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 29,
+          "y": 36,
+          "from": "V",
+          "to": "b",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 33,
+          "y": 36,
+          "from": "V",
+          "to": "b",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 29,
+          "y": 37,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 29,
+          "y": 38,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 30,
+          "y": 38,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 38,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 30,
+          "y": 39,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 39,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 34,
+          "y": 39,
+          "from": "V",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 30,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 31,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 32,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 34,
+          "y": 40,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 30,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 31,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 32,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 34,
+          "y": 41,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 35,
+          "y": 41,
+          "from": "V",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 30,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 31,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 32,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 34,
+          "y": 42,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 35,
+          "y": 42,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 31,
+          "y": 43,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 32,
+          "y": 43,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 43,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 34,
+          "y": 43,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 35,
+          "y": 43,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 32,
+          "y": 44,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 44,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 34,
+          "y": 44,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 35,
+          "y": 44,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 32,
+          "y": 45,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 45,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 35,
+          "y": 45,
+          "from": "V",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 39,
+          "y": 45,
+          "from": "v",
+          "to": "i",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 33,
+          "y": 46,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 47,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 27,
+          "y": 48,
+          "from": "V",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 27,
+          "y": 49,
+          "from": "V",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        }
+      ],
+      "paletteChanges": {
+        "I": {
+          "from": [240, 229, 198, 255],
+          "to": [242, 230, 202, 255],
+          "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
+        },
+        "i": {
+          "from": [180, 163, 127, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Unify bone shadows with the classic skeleton palette."
+        },
+        "E": {
+          "from": [99, 207, 170, 255],
+          "to": [154, 234, 200, 255],
+          "reason": "Bright mint spell color remains distinct from the teal faction cloak and steel."
+        },
+        "e": {
+          "from": null,
+          "to": [77, 166, 136, 255],
+          "reason": "A darker magic edge smooths the spell without adding blur or transparency."
+        }
+      },
+      "enemyMatrixChanges": [
+        {
+          "x": 17,
+          "y": 17,
+          "from": "v",
+          "to": "w",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 50,
+          "y": 20,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 51,
+          "y": 20,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 52,
+          "y": 20,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 54,
+          "y": 20,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 49,
+          "y": 21,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 50,
+          "y": 21,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 51,
+          "y": 21,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 52,
+          "y": 21,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 53,
+          "y": 21,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 49,
+          "y": 22,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 50,
+          "y": 22,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 51,
+          "y": 22,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 52,
+          "y": 22,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 53,
+          "y": 22,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 47,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 48,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 50,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 51,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 52,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 51,
+          "y": 24,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 54,
+          "y": 24,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 23,
+          "y": 25,
+          "from": "a",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 47,
+          "y": 25,
+          "from": "V",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 54,
+          "y": 25,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 24,
+          "y": 26,
+          "from": "a",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 25,
+          "y": 26,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 37,
+          "y": 26,
+          "from": "V",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 38,
+          "y": 26,
+          "from": "a",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 37,
+          "y": 27,
+          "from": "a",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 38,
+          "y": 27,
+          "from": "a",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 39,
+          "y": 27,
+          "from": "V",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 37,
+          "y": 28,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 38,
+          "y": 28,
+          "from": "V",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 29,
+          "y": 36,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 36,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 29,
+          "y": 37,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 29,
+          "y": 38,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 30,
+          "y": 38,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 38,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 30,
+          "y": 39,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 39,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 39,
+          "from": "V",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 30,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 31,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 32,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 40,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 30,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 31,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 32,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 41,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 35,
+          "y": 41,
+          "from": "V",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 30,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 31,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 32,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 42,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 35,
+          "y": 42,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 31,
+          "y": 43,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 32,
+          "y": 43,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 43,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 43,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 35,
+          "y": 43,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 32,
+          "y": 44,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 44,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 44,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 35,
+          "y": 44,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 32,
+          "y": 45,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 45,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 35,
+          "y": 45,
+          "from": "V",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 39,
+          "y": 45,
+          "from": "v",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 46,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 47,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 27,
+          "y": 48,
+          "from": "V",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 27,
+          "y": 49,
+          "from": "V",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    "skeleton-impact-caster-l2": {
+      "matrixChanges": [
+        {
+          "x": 17,
+          "y": 17,
+          "from": "v",
+          "to": "w",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 50,
+          "y": 20,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 51,
+          "y": 20,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 52,
+          "y": 20,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 54,
+          "y": 20,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 49,
+          "y": 21,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 50,
+          "y": 21,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 51,
+          "y": 21,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 52,
+          "y": 21,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 53,
+          "y": 21,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 49,
+          "y": 22,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 50,
+          "y": 22,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 51,
+          "y": 22,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 52,
+          "y": 22,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 53,
+          "y": 22,
+          "from": "E",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 47,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 48,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 50,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 51,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 52,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 51,
+          "y": 24,
+          "from": "E",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 54,
+          "y": 24,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 23,
+          "y": 25,
+          "from": "a",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 47,
+          "y": 25,
+          "from": "V",
+          "to": "i",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 54,
+          "y": 25,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 24,
+          "y": 26,
+          "from": "a",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 25,
+          "y": 26,
+          "from": "a",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 38,
+          "y": 26,
+          "from": "a",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 37,
+          "y": 27,
+          "from": "a",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 38,
+          "y": 27,
+          "from": "a",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 37,
+          "y": 28,
+          "from": "a",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 29,
+          "y": 36,
+          "from": "V",
+          "to": "b",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 33,
+          "y": 36,
+          "from": "V",
+          "to": "b",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 29,
+          "y": 37,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 29,
+          "y": 38,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 30,
+          "y": 38,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 38,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 30,
+          "y": 39,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 39,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 34,
+          "y": 39,
+          "from": "V",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 30,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 31,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 32,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 34,
+          "y": 40,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 30,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 31,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 32,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 34,
+          "y": 41,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 35,
+          "y": 41,
+          "from": "V",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 30,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 31,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 32,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 34,
+          "y": 42,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 35,
+          "y": 42,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 31,
+          "y": 43,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 32,
+          "y": 43,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 43,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 34,
+          "y": 43,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 35,
+          "y": 43,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 32,
+          "y": 44,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 44,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 34,
+          "y": 44,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 35,
+          "y": 44,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 32,
+          "y": 45,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 45,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 35,
+          "y": 45,
+          "from": "V",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 39,
+          "y": 45,
+          "from": "v",
+          "to": "i",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 33,
+          "y": 46,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 47,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 27,
+          "y": 48,
+          "from": "V",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 27,
+          "y": 49,
+          "from": "V",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        }
+      ],
+      "paletteChanges": {
+        "I": {
+          "from": [240, 229, 198, 255],
+          "to": [242, 230, 202, 255],
+          "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
+        },
+        "i": {
+          "from": [180, 163, 127, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Unify bone shadows with the classic skeleton palette."
+        },
+        "E": {
+          "from": [99, 207, 170, 255],
+          "to": [154, 234, 200, 255],
+          "reason": "Bright mint spell color remains distinct from the teal faction cloak and steel."
+        },
+        "e": {
+          "from": null,
+          "to": [77, 166, 136, 255],
+          "reason": "A darker magic edge smooths the spell without adding blur or transparency."
+        }
+      },
+      "enemyMatrixChanges": [
+        {
+          "x": 17,
+          "y": 17,
+          "from": "v",
+          "to": "w",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 50,
+          "y": 20,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 51,
+          "y": 20,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 52,
+          "y": 20,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 54,
+          "y": 20,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 49,
+          "y": 21,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 50,
+          "y": 21,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 51,
+          "y": 21,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 52,
+          "y": 21,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 53,
+          "y": 21,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 49,
+          "y": 22,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 50,
+          "y": 22,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 51,
+          "y": 22,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 52,
+          "y": 22,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 53,
+          "y": 22,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 47,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 48,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 50,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 51,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 52,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 51,
+          "y": 24,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 54,
+          "y": 24,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 23,
+          "y": 25,
+          "from": "a",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 47,
+          "y": 25,
+          "from": "V",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 54,
+          "y": 25,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 24,
+          "y": 26,
+          "from": "a",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 25,
+          "y": 26,
+          "from": "a",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 38,
+          "y": 26,
+          "from": "a",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 37,
+          "y": 27,
+          "from": "a",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 38,
+          "y": 27,
+          "from": "a",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 37,
+          "y": 28,
+          "from": "a",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 29,
+          "y": 36,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 36,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 29,
+          "y": 37,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 29,
+          "y": 38,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 30,
+          "y": 38,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 38,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 30,
+          "y": 39,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 39,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 39,
+          "from": "V",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 30,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 31,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 32,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 40,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 30,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 31,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 32,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 41,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 35,
+          "y": 41,
+          "from": "V",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 30,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 31,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 32,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 42,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 35,
+          "y": 42,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 31,
+          "y": 43,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 32,
+          "y": 43,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 43,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 43,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 35,
+          "y": 43,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 32,
+          "y": 44,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 44,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 44,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 35,
+          "y": 44,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 32,
+          "y": 45,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 45,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 35,
+          "y": 45,
+          "from": "V",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 39,
+          "y": 45,
+          "from": "v",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 46,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 47,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 27,
+          "y": 48,
+          "from": "V",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 27,
+          "y": 49,
+          "from": "V",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    "skeleton-impact-caster-l3": {
+      "matrixChanges": [
+        {
+          "x": 17,
+          "y": 17,
+          "from": "v",
+          "to": "w",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 50,
+          "y": 20,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 51,
+          "y": 20,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 52,
+          "y": 20,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 54,
+          "y": 20,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 49,
+          "y": 21,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 50,
+          "y": 21,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 51,
+          "y": 21,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 52,
+          "y": 21,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 53,
+          "y": 21,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 49,
+          "y": 22,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 50,
+          "y": 22,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 51,
+          "y": 22,
+          "from": "A",
+          "to": "E",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 52,
+          "y": 22,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 53,
+          "y": 22,
+          "from": "E",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 47,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 48,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 50,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 51,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 52,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 51,
+          "y": 24,
+          "from": "E",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 54,
+          "y": 24,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 23,
+          "y": 25,
+          "from": "a",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 47,
+          "y": 25,
+          "from": "V",
+          "to": "i",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 54,
+          "y": 25,
+          "from": "A",
+          "to": "e",
+          "reason": "Make the floating spell mint magic with a contiguous bright core and darker edge, distinct from steel."
+        },
+        {
+          "x": 24,
+          "y": 26,
+          "from": "a",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 25,
+          "y": 26,
+          "from": "a",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 38,
+          "y": 26,
+          "from": "a",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 37,
+          "y": 27,
+          "from": "a",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 38,
+          "y": 27,
+          "from": "a",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 37,
+          "y": 28,
+          "from": "a",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 29,
+          "y": 36,
+          "from": "V",
+          "to": "b",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 33,
+          "y": 36,
+          "from": "V",
+          "to": "b",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 29,
+          "y": 37,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 29,
+          "y": 38,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 30,
+          "y": 38,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 38,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 30,
+          "y": 39,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 39,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 34,
+          "y": 39,
+          "from": "V",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 30,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 31,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 32,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 34,
+          "y": 40,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 30,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 31,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 32,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 34,
+          "y": 41,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 35,
+          "y": 41,
+          "from": "V",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 30,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 31,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 32,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 34,
+          "y": 42,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 35,
+          "y": 42,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 31,
+          "y": 43,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 32,
+          "y": 43,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 43,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 34,
+          "y": 43,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 35,
+          "y": 43,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 32,
+          "y": 44,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 44,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 34,
+          "y": 44,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 35,
+          "y": 44,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 32,
+          "y": 45,
+          "from": "a",
+          "to": "V",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 45,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 35,
+          "y": 45,
+          "from": "V",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 39,
+          "y": 45,
+          "from": "v",
+          "to": "i",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 33,
+          "y": 46,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 33,
+          "y": 47,
+          "from": "a",
+          "to": "v",
+          "reason": "Smooth the cloth robe into coherent lit and shadow regions; remove steel-grey cloth noise."
+        },
+        {
+          "x": 27,
+          "y": 48,
+          "from": "V",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        },
+        {
+          "x": 27,
+          "y": 49,
+          "from": "V",
+          "to": "t",
+          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
+        }
+      ],
+      "paletteChanges": {
+        "I": {
+          "from": [240, 229, 198, 255],
+          "to": [242, 230, 202, 255],
+          "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
+        },
+        "i": {
+          "from": [180, 163, 127, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Unify bone shadows with the classic skeleton palette."
+        },
+        "A": {
+          "from": [244, 248, 241, 255],
+          "to": [236, 244, 246, 255],
+          "reason": "Keep high-tier metal cool silver rather than yellow-green bone."
+        },
+        "a": {
+          "from": [155, 184, 191, 255],
+          "to": [143, 169, 181, 255],
+          "reason": "Use a cool subdued steel shadow for high-tier equipment."
+        },
+        "E": {
+          "from": [151, 232, 174, 255],
+          "to": [154, 234, 200, 255],
+          "reason": "Bright mint spell color remains distinct from the teal faction cloak and steel."
+        },
+        "e": {
+          "from": null,
+          "to": [77, 166, 136, 255],
+          "reason": "A darker magic edge smooths the spell without adding blur or transparency."
+        }
+      },
+      "enemyMatrixChanges": [
+        {
+          "x": 17,
+          "y": 17,
+          "from": "v",
+          "to": "w",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 50,
+          "y": 20,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 51,
+          "y": 20,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 52,
+          "y": 20,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 54,
+          "y": 20,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 49,
+          "y": 21,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 50,
+          "y": 21,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 51,
+          "y": 21,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 52,
+          "y": 21,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 53,
+          "y": 21,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 49,
+          "y": 22,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 50,
+          "y": 22,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 51,
+          "y": 22,
+          "from": "A",
+          "to": "E",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 52,
+          "y": 22,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 53,
+          "y": 22,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 47,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 48,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 50,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 51,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 52,
+          "y": 23,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 51,
+          "y": 24,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 54,
+          "y": 24,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 23,
+          "y": 25,
+          "from": "a",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 47,
+          "y": 25,
+          "from": "V",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 54,
+          "y": 25,
+          "from": "A",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 24,
+          "y": 26,
+          "from": "a",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 25,
+          "y": 26,
+          "from": "a",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 38,
+          "y": 26,
+          "from": "a",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 37,
+          "y": 27,
+          "from": "a",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 38,
+          "y": 27,
+          "from": "a",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 37,
+          "y": 28,
+          "from": "a",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 29,
+          "y": 36,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 36,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 29,
+          "y": 37,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 29,
+          "y": 38,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 30,
+          "y": 38,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 38,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 30,
+          "y": 39,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 39,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 39,
+          "from": "V",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 30,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 31,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 32,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 40,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 40,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 30,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 31,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 32,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 41,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 41,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 35,
+          "y": 41,
+          "from": "V",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 30,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 31,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 32,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 42,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 42,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 35,
+          "y": 42,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 31,
+          "y": 43,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 32,
+          "y": 43,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 43,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 43,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 35,
+          "y": 43,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 32,
+          "y": 44,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 44,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 44,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 35,
+          "y": 44,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 32,
+          "y": 45,
+          "from": "a",
+          "to": "V",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 45,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 35,
+          "y": 45,
+          "from": "V",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 39,
+          "y": 45,
+          "from": "v",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 46,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 33,
+          "y": 47,
+          "from": "a",
+          "to": "v",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 27,
+          "y": 48,
+          "from": "V",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 27,
+          "y": 49,
+          "from": "V",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    "skeleton-rider": {
+      "matrixChanges": [
+        {
+          "x": 46,
+          "y": 21,
+          "from": "v",
+          "to": "i",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 32,
+          "y": 24,
+          "from": "v",
+          "to": "w",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 43,
+          "y": 24,
+          "from": "v",
+          "to": "i",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 23,
+          "y": 25,
+          "from": "V",
+          "to": "t",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 22,
+          "y": 26,
+          "from": "v",
+          "to": "t",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 14,
+          "y": 32,
+          "from": "v",
+          "to": "i",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 34,
+          "y": 35,
+          "from": "V",
+          "to": "b",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 34,
+          "y": 36,
+          "from": "V",
+          "to": "b",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 34,
+          "y": 37,
+          "from": "V",
+          "to": "b",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 47,
+          "y": 39,
+          "from": "v",
+          "to": "t",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 24,
+          "y": 45,
+          "from": "V",
+          "to": "t",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 44,
+          "y": 51,
+          "from": "v",
+          "to": "i",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 13,
+          "y": 54,
+          "from": "v",
+          "to": "i",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        }
+      ],
+      "paletteChanges": {
+        "I": {
+          "from": [240, 229, 198, 255],
+          "to": [242, 230, 202, 255],
+          "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
+        },
+        "i": {
+          "from": [180, 163, 127, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Unify bone shadows with the classic skeleton palette."
+        }
+      },
+      "enemyMatrixChanges": [
+        {
+          "x": 46,
+          "y": 21,
+          "from": "v",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 32,
+          "y": 24,
+          "from": "v",
+          "to": "w",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 43,
+          "y": 24,
+          "from": "v",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 23,
+          "y": 25,
+          "from": "V",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 22,
+          "y": 26,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 14,
+          "y": 32,
+          "from": "v",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 35,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 36,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 37,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 47,
+          "y": 39,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 24,
+          "y": 45,
+          "from": "V",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 44,
+          "y": 51,
+          "from": "v",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 13,
+          "y": 54,
+          "from": "v",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    "skeleton-rider-l2": {
+      "matrixChanges": [
+        {
+          "x": 46,
+          "y": 21,
+          "from": "v",
+          "to": "i",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 32,
+          "y": 24,
+          "from": "v",
+          "to": "w",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 43,
+          "y": 24,
+          "from": "v",
+          "to": "i",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 23,
+          "y": 25,
+          "from": "V",
+          "to": "t",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 22,
+          "y": 26,
+          "from": "v",
+          "to": "t",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 14,
+          "y": 32,
+          "from": "v",
+          "to": "i",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 34,
+          "y": 37,
+          "from": "V",
+          "to": "b",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 47,
+          "y": 39,
+          "from": "v",
+          "to": "t",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 24,
+          "y": 45,
+          "from": "V",
+          "to": "t",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 44,
+          "y": 51,
+          "from": "v",
+          "to": "i",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 13,
+          "y": 54,
+          "from": "v",
+          "to": "i",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        }
+      ],
+      "paletteChanges": {
+        "I": {
+          "from": [240, 229, 198, 255],
+          "to": [242, 230, 202, 255],
+          "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
+        },
+        "i": {
+          "from": [180, 163, 127, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Unify bone shadows with the classic skeleton palette."
+        }
+      },
+      "enemyMatrixChanges": [
+        {
+          "x": 46,
+          "y": 21,
+          "from": "v",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 32,
+          "y": 24,
+          "from": "v",
+          "to": "w",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 43,
+          "y": 24,
+          "from": "v",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 23,
+          "y": 25,
+          "from": "V",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 22,
+          "y": 26,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 14,
+          "y": 32,
+          "from": "v",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 37,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 47,
+          "y": 39,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 24,
+          "y": 45,
+          "from": "V",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 44,
+          "y": 51,
+          "from": "v",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 13,
+          "y": 54,
+          "from": "v",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    "skeleton-rider-l3": {
+      "matrixChanges": [
+        {
+          "x": 46,
+          "y": 21,
+          "from": "v",
+          "to": "i",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 32,
+          "y": 24,
+          "from": "v",
+          "to": "w",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 43,
+          "y": 24,
+          "from": "v",
+          "to": "i",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 23,
+          "y": 25,
+          "from": "V",
+          "to": "t",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 22,
+          "y": 26,
+          "from": "v",
+          "to": "t",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 14,
+          "y": 32,
+          "from": "v",
+          "to": "i",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 34,
+          "y": 37,
+          "from": "V",
+          "to": "b",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 47,
+          "y": 39,
+          "from": "v",
+          "to": "t",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 24,
+          "y": 45,
+          "from": "V",
+          "to": "t",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 44,
+          "y": 51,
+          "from": "v",
+          "to": "i",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        },
+        {
+          "x": 13,
+          "y": 54,
+          "from": "v",
+          "to": "i",
+          "reason": "Replace stray purple with neighboring bone, cloak, saddle or rein material."
+        }
+      ],
+      "paletteChanges": {
+        "I": {
+          "from": [240, 229, 198, 255],
+          "to": [242, 230, 202, 255],
+          "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
+        },
+        "i": {
+          "from": [180, 163, 127, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Unify bone shadows with the classic skeleton palette."
+        },
+        "A": {
+          "from": [244, 248, 241, 255],
+          "to": [236, 244, 246, 255],
+          "reason": "Keep high-tier metal cool silver rather than yellow-green bone."
+        },
+        "a": {
+          "from": [155, 184, 191, 255],
+          "to": [143, 169, 181, 255],
+          "reason": "Use a cool subdued steel shadow for high-tier equipment."
+        }
+      },
+      "enemyMatrixChanges": [
+        {
+          "x": 46,
+          "y": 21,
+          "from": "v",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 32,
+          "y": 24,
+          "from": "v",
+          "to": "w",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 43,
+          "y": 24,
+          "from": "v",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 23,
+          "y": 25,
+          "from": "V",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 22,
+          "y": 26,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 14,
+          "y": 32,
+          "from": "v",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 34,
+          "y": 37,
+          "from": "V",
+          "to": "b",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 47,
+          "y": 39,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 24,
+          "y": 45,
+          "from": "V",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 44,
+          "y": 51,
+          "from": "v",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 13,
+          "y": 54,
+          "from": "v",
+          "to": "i",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    "skeleton-scythe-caster": {
+      "matrixChanges": [
+        {
+          "x": 40,
+          "y": 8,
+          "from": "V",
+          "to": "w",
+          "reason": "Remove isolated robe-purple from wooden staff or teal cape edges."
+        },
+        {
+          "x": 13,
+          "y": 12,
+          "from": "i",
+          "to": "e",
+          "reason": "Replace bone-colored flecks in the spell flame with shaded mint magic."
+        },
+        {
+          "x": 14,
+          "y": 13,
+          "from": "i",
+          "to": "e",
+          "reason": "Replace bone-colored flecks in the spell flame with shaded mint magic."
+        },
+        {
+          "x": 15,
+          "y": 15,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 15,
+          "y": 16,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 11,
+          "y": 17,
+          "from": "i",
+          "to": "e",
+          "reason": "Replace bone-colored flecks in the spell flame with shaded mint magic."
+        },
+        {
+          "x": 15,
+          "y": 17,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 10,
+          "y": 21,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 10,
+          "y": 22,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 15,
+          "y": 22,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 22,
+          "y": 22,
+          "from": "v",
+          "to": "t",
+          "reason": "Remove isolated robe-purple from wooden staff or teal cape edges."
+        },
+        {
+          "x": 10,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 11,
+          "y": 23,
+          "from": "w",
+          "to": "e",
+          "reason": "Replace brown spell-base fleck with magic shade without changing the hand grip."
+        },
+        {
+          "x": 12,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 13,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 15,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 47,
+          "y": 30,
+          "from": "v",
+          "to": "w",
+          "reason": "Remove isolated robe-purple from wooden staff or teal cape edges."
+        },
+        {
+          "x": 17,
+          "y": 47,
+          "from": "v",
+          "to": "t",
+          "reason": "Remove isolated robe-purple from wooden staff or teal cape edges."
+        }
+      ],
+      "paletteChanges": {
+        "I": {
+          "from": [240, 229, 198, 255],
+          "to": [242, 230, 202, 255],
+          "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
+        },
+        "i": {
+          "from": [180, 163, 127, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Unify bone shadows with the classic skeleton palette."
+        },
+        "E": {
+          "from": [99, 207, 170, 255],
+          "to": [154, 234, 200, 255],
+          "reason": "Bright mint spell color remains distinct from the teal faction cloak and steel."
+        },
+        "e": {
+          "from": null,
+          "to": [77, 166, 136, 255],
+          "reason": "A darker magic edge smooths the spell without adding blur or transparency."
+        }
+      },
+      "enemyMatrixChanges": [
+        {
+          "x": 40,
+          "y": 8,
+          "from": "V",
+          "to": "w",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 13,
+          "y": 12,
+          "from": "i",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 14,
+          "y": 13,
+          "from": "i",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 15,
+          "y": 15,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 15,
+          "y": 16,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 11,
+          "y": 17,
+          "from": "i",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 15,
+          "y": 17,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 10,
+          "y": 21,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 10,
+          "y": 22,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 15,
+          "y": 22,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 22,
+          "y": 22,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 10,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 11,
+          "y": 23,
+          "from": "w",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 12,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 13,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 15,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 47,
+          "y": 30,
+          "from": "v",
+          "to": "w",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 17,
+          "y": 47,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    "skeleton-scythe-caster-l2": {
+      "matrixChanges": [
+        {
+          "x": 40,
+          "y": 8,
+          "from": "V",
+          "to": "w",
+          "reason": "Remove isolated robe-purple from wooden staff or teal cape edges."
+        },
+        {
+          "x": 13,
+          "y": 12,
+          "from": "i",
+          "to": "e",
+          "reason": "Replace bone-colored flecks in the spell flame with shaded mint magic."
+        },
+        {
+          "x": 14,
+          "y": 13,
+          "from": "i",
+          "to": "e",
+          "reason": "Replace bone-colored flecks in the spell flame with shaded mint magic."
+        },
+        {
+          "x": 15,
+          "y": 15,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 15,
+          "y": 16,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 11,
+          "y": 17,
+          "from": "i",
+          "to": "e",
+          "reason": "Replace bone-colored flecks in the spell flame with shaded mint magic."
+        },
+        {
+          "x": 15,
+          "y": 17,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 10,
+          "y": 21,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 10,
+          "y": 22,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 15,
+          "y": 22,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 22,
+          "y": 22,
+          "from": "v",
+          "to": "t",
+          "reason": "Remove isolated robe-purple from wooden staff or teal cape edges."
+        },
+        {
+          "x": 10,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 11,
+          "y": 23,
+          "from": "w",
+          "to": "e",
+          "reason": "Replace brown spell-base fleck with magic shade without changing the hand grip."
+        },
+        {
+          "x": 12,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 13,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 15,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 47,
+          "y": 30,
+          "from": "v",
+          "to": "w",
+          "reason": "Remove isolated robe-purple from wooden staff or teal cape edges."
+        },
+        {
+          "x": 17,
+          "y": 47,
+          "from": "v",
+          "to": "t",
+          "reason": "Remove isolated robe-purple from wooden staff or teal cape edges."
+        }
+      ],
+      "paletteChanges": {
+        "I": {
+          "from": [240, 229, 198, 255],
+          "to": [242, 230, 202, 255],
+          "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
+        },
+        "i": {
+          "from": [180, 163, 127, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Unify bone shadows with the classic skeleton palette."
+        },
+        "E": {
+          "from": [99, 207, 170, 255],
+          "to": [154, 234, 200, 255],
+          "reason": "Bright mint spell color remains distinct from the teal faction cloak and steel."
+        },
+        "e": {
+          "from": null,
+          "to": [77, 166, 136, 255],
+          "reason": "A darker magic edge smooths the spell without adding blur or transparency."
+        }
+      },
+      "enemyMatrixChanges": [
+        {
+          "x": 40,
+          "y": 8,
+          "from": "V",
+          "to": "w",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 13,
+          "y": 12,
+          "from": "i",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 14,
+          "y": 13,
+          "from": "i",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 15,
+          "y": 15,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 15,
+          "y": 16,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 11,
+          "y": 17,
+          "from": "i",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 15,
+          "y": 17,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 10,
+          "y": 21,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 10,
+          "y": 22,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 15,
+          "y": 22,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 22,
+          "y": 22,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 10,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 11,
+          "y": 23,
+          "from": "w",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 12,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 13,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 15,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 47,
+          "y": 30,
+          "from": "v",
+          "to": "w",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 17,
+          "y": 47,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        }
+      ],
+      "canvas": [64, 64]
+    },
+    "skeleton-scythe-caster-l3": {
+      "matrixChanges": [
+        {
+          "x": 40,
+          "y": 8,
+          "from": "V",
+          "to": "w",
+          "reason": "Remove isolated robe-purple from wooden staff or teal cape edges."
+        },
+        {
+          "x": 13,
+          "y": 12,
+          "from": "i",
+          "to": "e",
+          "reason": "Replace bone-colored flecks in the spell flame with shaded mint magic."
+        },
+        {
+          "x": 14,
+          "y": 13,
+          "from": "i",
+          "to": "e",
+          "reason": "Replace bone-colored flecks in the spell flame with shaded mint magic."
+        },
+        {
+          "x": 15,
+          "y": 15,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 15,
+          "y": 16,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 11,
+          "y": 17,
+          "from": "i",
+          "to": "e",
+          "reason": "Replace bone-colored flecks in the spell flame with shaded mint magic."
+        },
+        {
+          "x": 15,
+          "y": 17,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 10,
+          "y": 21,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 10,
+          "y": 22,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 15,
+          "y": 22,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 22,
+          "y": 22,
+          "from": "v",
+          "to": "t",
+          "reason": "Remove isolated robe-purple from wooden staff or teal cape edges."
+        },
+        {
+          "x": 10,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 11,
+          "y": 23,
+          "from": "w",
+          "to": "e",
+          "reason": "Replace brown spell-base fleck with magic shade without changing the hand grip."
+        },
+        {
+          "x": 12,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 13,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 15,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Shape a coherent darker edge around the bright magic flame."
+        },
+        {
+          "x": 47,
+          "y": 30,
+          "from": "v",
+          "to": "w",
+          "reason": "Remove isolated robe-purple from wooden staff or teal cape edges."
+        },
+        {
+          "x": 17,
+          "y": 47,
+          "from": "v",
+          "to": "t",
+          "reason": "Remove isolated robe-purple from wooden staff or teal cape edges."
+        }
+      ],
+      "paletteChanges": {
+        "I": {
+          "from": [240, 229, 198, 255],
+          "to": [242, 230, 202, 255],
+          "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
+        },
+        "i": {
+          "from": [180, 163, 127, 255],
+          "to": [192, 174, 139, 255],
+          "reason": "Unify bone shadows with the classic skeleton palette."
+        },
+        "A": {
+          "from": [244, 248, 241, 255],
+          "to": [236, 244, 246, 255],
+          "reason": "Keep high-tier metal cool silver rather than yellow-green bone."
+        },
+        "a": {
+          "from": [155, 184, 191, 255],
+          "to": [143, 169, 181, 255],
+          "reason": "Use a cool subdued steel shadow for high-tier equipment."
+        },
+        "E": {
+          "from": [151, 232, 174, 255],
+          "to": [154, 234, 200, 255],
+          "reason": "Bright mint spell color remains distinct from the teal faction cloak and steel."
+        },
+        "e": {
+          "from": null,
+          "to": [77, 166, 136, 255],
+          "reason": "A darker magic edge smooths the spell without adding blur or transparency."
+        }
+      },
+      "enemyMatrixChanges": [
+        {
+          "x": 40,
+          "y": 8,
+          "from": "V",
+          "to": "w",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 13,
+          "y": 12,
+          "from": "i",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 14,
+          "y": 13,
+          "from": "i",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 15,
+          "y": 15,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 15,
+          "y": 16,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 11,
+          "y": 17,
+          "from": "i",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 15,
+          "y": 17,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 10,
+          "y": 21,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 10,
+          "y": 22,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 15,
+          "y": 22,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 22,
+          "y": 22,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 10,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 11,
+          "y": 23,
+          "from": "w",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 12,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 13,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 15,
+          "y": 23,
+          "from": "E",
+          "to": "e",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 47,
+          "y": 30,
+          "from": "v",
+          "to": "w",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        },
+        {
+          "x": 17,
+          "y": 47,
+          "from": "v",
+          "to": "r",
+          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
+        }
+      ],
+      "canvas": [64, 64]
+    }
+  }
+}

@@ -2,6 +2,16 @@
 
 Branch: `art/human-unit-trees`. Pull request: [#10](https://github.com/juliancoffeelab/codexcloud/pull/10).
 
+## Subsequent zombie lineup selection
+
+The user selected Thin walker as L1, branching into Thin fighter → Cleaver fighter,
+Thin caster → Plague carrier, and Shambler → Ghoul at L2/L3. The Corruption mage is
+the separate commander. Those eight reviewed base designs remain active; the
+other 28 humanoid zombie variants are archived in
+[../zombies/](../zombies/README.md). See the [lineup](../../lineups/zombies.json)
+for current artwork tiers. The expansion counts and family sheets below describe
+the original generation studies, not the current active zombie roster.
+
 ## What is saved
 
 The previous commit contains 25 approved human designs through L3 in both faction

@@ -7,6 +7,8 @@ from pathlib import Path
 import struct
 import zlib
 
+from pixel_cleanup import apply_cleanup
+
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "art" / "pixel"
 FRAME_NAMES = {"bonearcher": "bone_archer", "grove": "sacred_grove"}
@@ -176,6 +178,7 @@ def main():
     parser.add_argument("--atlas", action="store_true", help="Build the public unit and terrain atlases")
     args = parser.parse_args()
     matrices = [matrix.resolve() for matrix in args.matrices] or sorted(ART.rglob("*.txt"))
+    apply_cleanup(matrices, check=args.check)
     for matrix in matrices:
         png = matrix.with_suffix(".png")
         data = png_bytes(*rgba_pixels(matrix))

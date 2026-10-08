@@ -1,0 +1,252 @@
+{
+  "units": {
+    "arbalester": {
+      "matrixChanges": [
+        {
+          "x": 14,
+          "y": 21,
+          "from": "c",
+          "to": "a",
+          "reason": "Replace cream cloth residue in plated sleeve with the matching steel shade."
+        },
+        {
+          "x": 25,
+          "y": 21,
+          "from": "C",
+          "to": "A",
+          "reason": "Replace cream cloth residue in plated sleeve with the matching steel shade."
+        },
+        {
+          "x": 26,
+          "y": 21,
+          "from": "C",
+          "to": "A",
+          "reason": "Replace cream cloth residue in plated sleeve with the matching steel shade."
+        },
+        {
+          "x": 8,
+          "y": 23,
+          "from": "c",
+          "to": "a",
+          "reason": "Replace cream cloth residue in plated sleeve with the matching steel shade."
+        },
+        {
+          "x": 8,
+          "y": 24,
+          "from": "c",
+          "to": "a",
+          "reason": "Replace cream cloth residue in plated sleeve with the matching steel shade."
+        },
+        {
+          "x": 8,
+          "y": 25,
+          "from": "c",
+          "to": "a",
+          "reason": "Replace cream cloth residue in plated sleeve with the matching steel shade."
+        }
+      ],
+      "paletteChanges": {},
+      "enemyMatrixChanges": [
+        {
+          "x": 14,
+          "y": 21,
+          "from": "c",
+          "to": "a",
+          "reason": "Replace cream cloth residue in plated sleeve with the matching steel shade."
+        },
+        {
+          "x": 25,
+          "y": 21,
+          "from": "C",
+          "to": "A",
+          "reason": "Replace cream cloth residue in plated sleeve with the matching steel shade."
+        },
+        {
+          "x": 26,
+          "y": 21,
+          "from": "C",
+          "to": "A",
+          "reason": "Replace cream cloth residue in plated sleeve with the matching steel shade."
+        },
+        {
+          "x": 8,
+          "y": 23,
+          "from": "c",
+          "to": "a",
+          "reason": "Replace cream cloth residue in plated sleeve with the matching steel shade."
+        },
+        {
+          "x": 8,
+          "y": 24,
+          "from": "c",
+          "to": "a",
+          "reason": "Replace cream cloth residue in plated sleeve with the matching steel shade."
+        },
+        {
+          "x": 8,
+          "y": 25,
+          "from": "c",
+          "to": "a",
+          "reason": "Replace cream cloth residue in plated sleeve with the matching steel shade."
+        }
+      ],
+      "canvas": [48, 48]
+    },
+    "warhammer": {
+      "matrixChanges": [
+        {
+          "x": 17,
+          "y": 19,
+          "from": "a",
+          "to": "A",
+          "reason": "Join broken steel highlight on the armor plate; keep its edge shading and silhouette."
+        },
+        {
+          "x": 16,
+          "y": 23,
+          "from": "a",
+          "to": "A",
+          "reason": "Join broken steel highlight on the armor plate; keep its edge shading and silhouette."
+        },
+        {
+          "x": 17,
+          "y": 23,
+          "from": "a",
+          "to": "A",
+          "reason": "Join broken steel highlight on the armor plate; keep its edge shading and silhouette."
+        },
+        {
+          "x": 32,
+          "y": 34,
+          "from": "a",
+          "to": "A",
+          "reason": "Join broken steel highlight on the armor plate; keep its edge shading and silhouette."
+        },
+        {
+          "x": 31,
+          "y": 38,
+          "from": "a",
+          "to": "A",
+          "reason": "Join broken steel highlight on the armor plate; keep its edge shading and silhouette."
+        }
+      ],
+      "paletteChanges": {},
+      "enemyMatrixChanges": [
+        {
+          "x": 17,
+          "y": 19,
+          "from": "a",
+          "to": "A",
+          "reason": "Join broken steel highlight on the armor plate; keep its edge shading and silhouette."
+        },
+        {
+          "x": 16,
+          "y": 23,
+          "from": "a",
+          "to": "A",
+          "reason": "Join broken steel highlight on the armor plate; keep its edge shading and silhouette."
+        },
+        {
+          "x": 17,
+          "y": 23,
+          "from": "a",
+          "to": "A",
+          "reason": "Join broken steel highlight on the armor plate; keep its edge shading and silhouette."
+        },
+        {
+          "x": 32,
+          "y": 34,
+          "from": "a",
+          "to": "A",
+          "reason": "Join broken steel highlight on the armor plate; keep its edge shading and silhouette."
+        },
+        {
+          "x": 31,
+          "y": 38,
+          "from": "a",
+          "to": "A",
+          "reason": "Join broken steel highlight on the armor plate; keep its edge shading and silhouette."
+        }
+      ],
+      "canvas": [48, 48]
+    },
+    "halberd-master": {
+      "matrixChanges": [
+        {
+          "x": 17,
+          "y": 19,
+          "from": "a",
+          "to": "A",
+          "reason": "Join broken steel highlight on the armor plate; keep its edge shading and silhouette."
+        },
+        {
+          "x": 16,
+          "y": 23,
+          "from": "a",
+          "to": "A",
+          "reason": "Join broken steel highlight on the armor plate; keep its edge shading and silhouette."
+        },
+        {
+          "x": 17,
+          "y": 23,
+          "from": "a",
+          "to": "A",
+          "reason": "Join broken steel highlight on the armor plate; keep its edge shading and silhouette."
+        },
+        {
+          "x": 32,
+          "y": 34,
+          "from": "a",
+          "to": "A",
+          "reason": "Join broken steel highlight on the armor plate; keep its edge shading and silhouette."
+        },
+        {
+          "x": 31,
+          "y": 38,
+          "from": "a",
+          "to": "A",
+          "reason": "Join broken steel highlight on the armor plate; keep its edge shading and silhouette."
+        }
+      ],
+      "paletteChanges": {},
+      "enemyMatrixChanges": [
+        {
+          "x": 17,
+          "y": 19,
+          "from": "a",
+          "to": "A",
+          "reason": "Join broken steel highlight on the armor plate; keep its edge shading and silhouette."
+        },
+        {
+          "x": 16,
+          "y": 23,
+          "from": "a",
+          "to": "A",
+          "reason": "Join broken steel highlight on the armor plate; keep its edge shading and silhouette."
+        },
+        {
+          "x": 17,
+          "y": 23,
+          "from": "a",
+          "to": "A",
+          "reason": "Join broken steel highlight on the armor plate; keep its edge shading and silhouette."
+        },
+        {
+          "x": 32,
+          "y": 34,
+          "from": "a",
+          "to": "A",
+          "reason": "Join broken steel highlight on the armor plate; keep its edge shading and silhouette."
+        },
+        {
+          "x": 31,
+          "y": 38,
+          "from": "a",
+          "to": "A",
+          "reason": "Join broken steel highlight on the armor plate; keep its edge shading and silhouette."
+        }
+      ],
+      "canvas": [48, 48]
+    }
+  }
+}

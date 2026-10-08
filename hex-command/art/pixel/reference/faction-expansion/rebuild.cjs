@@ -14,5 +14,6 @@ run("clean-beasts.cjs", ...ids);
 run("process.cjs", "tiers", ...ids);
 run("reuse.cjs");
 run("process.cjs", "boards");
+run("../zombies/lineup.cjs");
 run("gallery.cjs");
 execFileSync("npm", ["run", "art:build"], { cwd: project, stdio: "inherit" });

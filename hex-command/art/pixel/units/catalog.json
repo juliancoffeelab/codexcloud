@@ -240,220 +240,53 @@
     "canvas": [64, 64]
   },
   "zombie-shambler": {
-    "name": "Zombie shambler",
-    "level": 1,
+    "name": "Shambler",
+    "level": 2,
     "study": "faction-expansion/zombie-shambler",
     "canvas": [48, 48]
   },
-  "zombie-shambler-l2": {
-    "name": "Zombie shambler L2",
-    "level": 2,
-    "study": "faction-expansion/zombie-shambler-l2",
-    "canvas": [48, 48]
-  },
-  "zombie-shambler-l3": {
-    "name": "Zombie shambler L3",
-    "level": 3,
-    "study": "faction-expansion/zombie-shambler-l3",
-    "canvas": [48, 48]
-  },
-  "zombie-wretch": {
-    "name": "Zombie weakling wretch",
-    "level": 1,
-    "study": "faction-expansion/zombie-wretch",
-    "canvas": [48, 48]
-  },
-  "zombie-wretch-l2": {
-    "name": "Zombie weakling wretch L2",
-    "level": 2,
-    "study": "faction-expansion/zombie-wretch-l2",
-    "canvas": [48, 48]
-  },
-  "zombie-wretch-l3": {
-    "name": "Zombie weakling wretch L3",
-    "level": 3,
-    "study": "faction-expansion/zombie-wretch-l3",
-    "canvas": [48, 48]
-  },
-  "zombie-crawler": {
-    "name": "Zombie weakling crawler",
-    "level": 1,
-    "study": "faction-expansion/zombie-crawler",
-    "canvas": [48, 48]
-  },
-  "zombie-crawler-l2": {
-    "name": "Zombie weakling crawler L2",
-    "level": 2,
-    "study": "faction-expansion/zombie-crawler-l2",
-    "canvas": [48, 48]
-  },
-  "zombie-crawler-l3": {
-    "name": "Zombie weakling crawler L3",
-    "level": 3,
-    "study": "faction-expansion/zombie-crawler-l3",
-    "canvas": [48, 48]
-  },
-  "zombie-light-cleaver": {
-    "name": "Zombie weakling cleaver",
-    "level": 1,
-    "study": "faction-expansion/zombie-light-cleaver",
-    "canvas": [48, 48]
-  },
-  "zombie-light-cleaver-l2": {
-    "name": "Zombie weakling cleaver L2",
-    "level": 2,
-    "study": "faction-expansion/zombie-light-cleaver-l2",
-    "canvas": [48, 48]
-  },
-  "zombie-light-cleaver-l3": {
-    "name": "Zombie weakling cleaver L3",
-    "level": 3,
-    "study": "faction-expansion/zombie-light-cleaver-l3",
-    "canvas": [64, 64]
-  },
-  "zombie-novice-caster": {
-    "name": "Zombie weakling corruption caster",
-    "level": 1,
-    "study": "faction-expansion/zombie-novice-caster",
-    "canvas": [48, 48]
-  },
-  "zombie-novice-caster-l2": {
-    "name": "Zombie weakling corruption caster L2",
-    "level": 2,
-    "study": "faction-expansion/zombie-novice-caster-l2",
-    "canvas": [48, 48]
-  },
-  "zombie-novice-caster-l3": {
-    "name": "Zombie weakling corruption caster L3",
-    "level": 3,
-    "study": "faction-expansion/zombie-novice-caster-l3",
-    "canvas": [64, 64]
-  },
   "zombie-walker": {
-    "name": "Zombie skeleton-sized walker",
+    "name": "Thin walker",
     "level": 1,
     "study": "faction-expansion/zombie-walker",
     "canvas": [48, 48]
   },
-  "zombie-walker-l2": {
-    "name": "Zombie skeleton-sized walker L2",
-    "level": 2,
-    "study": "faction-expansion/zombie-walker-l2",
-    "canvas": [48, 48]
-  },
-  "zombie-walker-l3": {
-    "name": "Zombie skeleton-sized walker L3",
-    "level": 3,
-    "study": "faction-expansion/zombie-walker-l3",
-    "canvas": [48, 48]
-  },
   "zombie-fighter": {
-    "name": "Zombie skeleton-sized fighter",
-    "level": 1,
+    "name": "Thin fighter",
+    "level": 2,
     "study": "faction-expansion/zombie-fighter",
     "canvas": [48, 48]
   },
-  "zombie-fighter-l2": {
-    "name": "Zombie skeleton-sized fighter L2",
-    "level": 2,
-    "study": "faction-expansion/zombie-fighter-l2",
-    "canvas": [48, 48]
-  },
-  "zombie-fighter-l3": {
-    "name": "Zombie skeleton-sized fighter L3",
-    "level": 3,
-    "study": "faction-expansion/zombie-fighter-l3",
-    "canvas": [48, 48]
-  },
   "zombie-decay-caster": {
-    "name": "Zombie skeleton-sized caster",
-    "level": 1,
+    "name": "Thin caster",
+    "level": 2,
     "study": "faction-expansion/zombie-decay-caster",
     "canvas": [48, 48]
   },
-  "zombie-decay-caster-l2": {
-    "name": "Zombie skeleton-sized caster L2",
-    "level": 2,
-    "study": "faction-expansion/zombie-decay-caster-l2",
-    "canvas": [48, 48]
-  },
-  "zombie-decay-caster-l3": {
-    "name": "Zombie skeleton-sized caster L3",
-    "level": 3,
-    "study": "faction-expansion/zombie-decay-caster-l3",
-    "canvas": [48, 48]
-  },
   "zombie-cleaver": {
-    "name": "Zombie cleaver fighter",
-    "level": 1,
+    "name": "Cleaver fighter",
+    "level": 3,
     "study": "faction-expansion/zombie-cleaver",
     "canvas": [64, 64]
   },
-  "zombie-cleaver-l2": {
-    "name": "Zombie cleaver fighter L2",
-    "level": 2,
-    "study": "faction-expansion/zombie-cleaver-l2",
-    "canvas": [64, 64]
-  },
-  "zombie-cleaver-l3": {
-    "name": "Zombie cleaver fighter L3",
-    "level": 3,
-    "study": "faction-expansion/zombie-cleaver-l3",
-    "canvas": [64, 64]
-  },
   "zombie-ghoul": {
-    "name": "Zombie ghoul",
-    "level": 1,
+    "name": "Ghoul",
+    "level": 3,
     "study": "faction-expansion/zombie-ghoul",
     "canvas": [48, 48]
   },
-  "zombie-ghoul-l2": {
-    "name": "Zombie ghoul L2",
-    "level": 2,
-    "study": "faction-expansion/zombie-ghoul-l2",
-    "canvas": [48, 48]
-  },
-  "zombie-ghoul-l3": {
-    "name": "Zombie ghoul L3",
-    "level": 3,
-    "study": "faction-expansion/zombie-ghoul-l3",
-    "canvas": [48, 48]
-  },
   "zombie-plague-carrier": {
-    "name": "Zombie plague carrier",
-    "level": 1,
+    "name": "Plague carrier",
+    "level": 3,
     "study": "faction-expansion/zombie-plague-carrier",
     "canvas": [64, 64]
   },
-  "zombie-plague-carrier-l2": {
-    "name": "Zombie plague carrier L2",
-    "level": 2,
-    "study": "faction-expansion/zombie-plague-carrier-l2",
-    "canvas": [64, 64]
-  },
-  "zombie-plague-carrier-l3": {
-    "name": "Zombie plague carrier L3",
-    "level": 3,
-    "study": "faction-expansion/zombie-plague-carrier-l3",
-    "canvas": [64, 64]
-  },
   "zombie-corruption-mage": {
-    "name": "Zombie corruption mage",
+    "name": "Corruption mage",
     "level": 1,
     "study": "faction-expansion/zombie-corruption-mage",
-    "canvas": [64, 64]
-  },
-  "zombie-corruption-mage-l2": {
-    "name": "Zombie corruption mage L2",
-    "level": 2,
-    "study": "faction-expansion/zombie-corruption-mage-l2",
-    "canvas": [64, 64]
-  },
-  "zombie-corruption-mage-l3": {
-    "name": "Zombie corruption mage L3",
-    "level": 3,
-    "study": "faction-expansion/zombie-corruption-mage-l3",
-    "canvas": [64, 64]
+    "canvas": [64, 64],
+    "role": "commander"
   },
   "elf-spearman": {
     "name": "Elf spear and shield",

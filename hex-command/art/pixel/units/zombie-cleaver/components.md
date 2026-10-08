@@ -1,4 +1,6 @@
-# Zombie cleaver fighter — L1
+# Cleaver fighter — L3
+
+Chosen zombie lineup artwork. Source recipe tier: L1; lineup tiers are recorded in `../../lineups/zombies.json`.
 
 Ugly upright zombie corpse visibly gripping a chipped broad cleaver in one hand and a battered small wooden shield in the other. Torn brown work clothes, teal cloth scrap, sick yellow-green flesh. Low-level equipment and exposed dead face.
 

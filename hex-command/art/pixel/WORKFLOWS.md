@@ -6,6 +6,12 @@ construction scripts and comparison boards. Run commands from the project root
 after `npm install`. Image composition uses `pngjs` and ImageMagick's `magick`;
 matrix rendering uses Python's standard library.
 
+The chosen [zombie lineup](lineups/zombies.json) uses the eight reviewed base
+sprites with new branch and tier assignments. Unused variants live in
+[reference/zombies/](reference/zombies/README.md); the expansion source resolver
+keeps rebuild outputs in their active or archived locations and preserves the
+chosen catalog metadata. Historical study boards are not advancement trees.
+
 ## New anatomy through imagegen
 
 Read the [Slinger pipeline](reference/slinger/PIPELINE.md) first. The image model
@@ -61,6 +67,12 @@ pose-specific coordinates; do not apply those corrections to a different pose.
 Construction scripts replace the outputs they own, including canonical matrices.
 They are recipes for the saved designs. For later manual edits, edit the matrix
 and render it; update its construction recipe before using that recipe again.
+
+The [reviewed material-cleanup recipes](reference/cleanup/README.md) preserve the
+race-specific color and shading corrections across construction rebuilds. The
+matrix renderer replays their guarded player/enemy and palette edits before
+rendering; check mode verifies they are present. Update the owning cleanup recipe
+alongside future edits to corrected pixels or palette colors.
 
 Regenerate the full boards without changing artwork:
 

@@ -7,3 +7,5 @@ The crown's crest joins its band. The shoulder mantle connects to the neck and f
 Materials: violet/plum/lavender scales, ivory ceremonial shell, gold crown/trim, brown wood, leather and teal/red cloth. Light comes from upper left; the face looks toward screen right.
 
 Retain the approved body height, scaled hands, continuous tail and grounded fins. Both factions share anatomy and equipment geometry.
+
+Cleanup: sea-green scale colors stay consistent across advancement tiers. Corrected material specks use local scale, ivory, or wood colors; pose, outlines, eye placement, weapon silhouettes, and native alpha mask are unchanged. Tier identity remains in equipment and trim.

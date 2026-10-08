@@ -1,4 +1,6 @@
-# Zombie skeleton-sized caster — L1
+# Thin caster — L2
+
+Chosen zombie lineup artwork. Source recipe tier: L1; lineup tiers are recorded in `../../lineups/zombies.json`.
 
 Thin adult decayed corpse at EXACTLY skeleton WARRIOR body scale, 36-40 logical pixels head to feet, small head and narrow shoulders. Simple ragged brown robe and short teal hood/cloak, wasted fleshy gray-green hands. One hand grips a thin dead-branch staff with small green gem, other casts a compact lime corruption flame. Staff may extend above head but body must match warrior height. No enormous shoulders, hood, head or robe.
 

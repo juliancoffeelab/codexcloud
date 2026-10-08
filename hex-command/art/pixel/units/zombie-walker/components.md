@@ -1,4 +1,6 @@
-# Zombie skeleton-sized walker — L1
+# Thin walker — L1
+
+Chosen zombie lineup artwork. Source recipe tier: L1; lineup tiers are recorded in `../../lineups/zombies.json`.
 
 Thin adult corpse at EXACTLY the skeleton WARRIOR anchor height, about 36-40 logical pixels head to feet, narrow torso, normal small head and wasted limbs, not a bulky giant and not a miniature. Two drooping reaching fleshy hands, torn brown civilian shirt and trousers, tiny teal scarf scrap, gray-green corpse skin. No weapons or armor. Match warrior body scale but with flesh and ragged clothes.
 

@@ -1,4 +1,6 @@
-# Zombie plague carrier — L1
+# Plague carrier — L3
+
+Chosen zombie lineup artwork. Source recipe tier: L1; lineup tiers are recorded in `../../lineups/zombies.json`.
 
 Bulky swollen walking corpse, big crooked basket of bones and remains strapped to its back, ragged brown apron, teal sash. One hand holds a simple short walking club, other open. Yellow-green decayed face and thick arms, two distinct feet.
 

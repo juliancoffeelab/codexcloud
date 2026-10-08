@@ -19,6 +19,7 @@ const files = [
   "TODO.md",
   "art/pixel/**/*.{json,md}",
   "art/pixel/reference/faction-expansion/*.cjs",
+  "art/pixel/reference/zombies/*.cjs",
   "art/pixel/reference/human-anatomies/preview.cjs",
   "art/styled/**/*.{json,md}",
   "docs/ai-simulation.md",

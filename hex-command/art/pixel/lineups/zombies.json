@@ -1,0 +1,59 @@
+{
+  "base": {
+    "id": "zombie-walker",
+    "name": "Thin walker",
+    "level": 1
+  },
+  "branches": [
+    {
+      "role": "Armed melee",
+      "units": [
+        {
+          "id": "zombie-fighter",
+          "name": "Thin fighter",
+          "level": 2
+        },
+        {
+          "id": "zombie-cleaver",
+          "name": "Cleaver fighter",
+          "level": 3
+        }
+      ]
+    },
+    {
+      "role": "Disease and debuffs",
+      "units": [
+        {
+          "id": "zombie-decay-caster",
+          "name": "Thin caster",
+          "level": 2
+        },
+        {
+          "id": "zombie-plague-carrier",
+          "name": "Plague carrier",
+          "level": 3
+        }
+      ]
+    },
+    {
+      "role": "Unarmed melee",
+      "units": [
+        {
+          "id": "zombie-shambler",
+          "name": "Shambler",
+          "level": 2
+        },
+        {
+          "id": "zombie-ghoul",
+          "name": "Ghoul",
+          "level": 3
+        }
+      ]
+    }
+  ],
+  "commander": {
+    "id": "zombie-corruption-mage",
+    "name": "Corruption mage",
+    "role": "commander"
+  }
+}

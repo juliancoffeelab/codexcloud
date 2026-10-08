@@ -9,3 +9,5 @@ Materials: muted violet scale base, plum shadow and pale lavender highlight; sil
 Orientation: three-quarter view toward the weapon on screen right; upper-left illumination. Preserve head size, attached hands, continuous tail and grounded fins.
 
 Both faction matrices share anatomy and equipment geometry.
+
+Cleanup: sea-green scale colors stay consistent across advancement tiers. Corrected material specks use local scale, ivory, or wood colors; pose, outlines, eye placement, weapon silhouettes, and native alpha mask are unchanged. Tier identity remains in equipment and trim.

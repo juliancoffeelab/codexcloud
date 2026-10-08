@@ -1,4 +1,6 @@
-# Zombie skeleton-sized fighter — L1
+# Thin fighter — L2
+
+Chosen zombie lineup artwork. Source recipe tier: L1; lineup tiers are recorded in `../../lineups/zombies.json`.
 
 Thin adult corpse at EXACTLY skeleton WARRIOR anchor height, 36-40 logical pixels head to feet, narrow torso, small head, wasted arms and legs. One hand visibly grips a SMALL chipped cleaver and other a SMALL battered wooden shield. Ragged brown shirt and trousers, teal scarf scrap, gray-green corpse skin. No huge armor or muscles, all equipment proportional.
 

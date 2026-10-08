@@ -1,4 +1,6 @@
-# Zombie shambler — L1
+# Shambler — L2
+
+Chosen zombie lineup artwork. Source recipe tier: L1; lineup tiers are recorded in `../../lineups/zombies.json`.
 
 Hunched upright corpse with TWO reaching open hands, torn brown civilian tunic, teal scarf scrap, yellow-green decaying flesh, exposed wounds but no red background. Two awkward planted feet. No weapon, no door or prop.
 

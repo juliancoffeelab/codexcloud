@@ -1,11 +1,16 @@
 const path = require('node:path');
 const catalog = require('../art/pixel/units/catalog.json');
+const archived = require('../art/pixel/reference/zombies/catalog.json');
 const units = path.resolve(__dirname, '../art/pixel/units');
-const byStudy = new Map(Object.entries(catalog).map(([id, entry]) => [entry.study, id]));
+const references = path.resolve(__dirname, '../art/pixel/reference/zombies/units');
+const byStudy = new Map([
+  ...Object.entries(catalog).map(([id, entry]) => [entry.study, path.join(units, id)]),
+  ...Object.entries(archived).map(([id, entry]) => [entry.study, path.join(references, id)]),
+]);
 
 /** Resolve a construction study to its canonical editable unit source. */
 module.exports = function sourceDirectory(study) {
-  const id = byStudy.get(study);
-  if (!id) throw new Error(`Unknown promoted artwork study: ${study}`);
-  return path.join(units, id);
+  const directory = byStudy.get(study);
+  if (!directory) throw new Error(`Unknown artwork study: ${study}`);
+  return directory;
 };

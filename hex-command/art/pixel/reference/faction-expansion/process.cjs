@@ -4,6 +4,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { PNG } = require("pngjs");
 const { execFileSync } = require("node:child_process");
+const { sourceDirectory, catalogEntry, isArchived } = require("./source-directory.cjs");
 const root = __dirname,
   project = path.resolve(root, "../../../..");
 const manifest = JSON.parse(fs.readFileSync(path.join(root, "manifest.json")));
@@ -230,10 +231,12 @@ function extract(job) {
 }
 function tiers(job) {
   const catalogPath = path.join(project, "art/pixel/units/catalog.json"),
-    catalog = JSON.parse(fs.readFileSync(catalogPath));
+    catalog = JSON.parse(fs.readFileSync(catalogPath)),
+    archivePath = path.join(root, "../zombies/catalog.json"),
+    archived = JSON.parse(fs.readFileSync(archivePath));
   for (let level = 1; level <= 3; level++) {
     const id = level === 1 ? job.id : `${job.id}-l${level}`,
-      out = path.join(project, "art/pixel/units", id);
+      out = sourceDirectory(id);
     fs.mkdirSync(out, { recursive: true });
     const chains = {
       "zombie-wretch": ["zombie-wretch", "zombie-walker", "zombie-shambler"],
@@ -334,22 +337,31 @@ function tiers(job) {
       ),
     });
     const sourceJob = manifest.jobs.find((j) => j.id === sourceId);
+    const entry = catalogEntry(id, {
+      name: job.name + (level > 1 ? ` L${level}` : ""),
+      level,
+      study: `faction-expansion/${id}`,
+      canvas: [rows[0].length, rows.length],
+    });
+    const title =
+      job.race !== "zombie" || isArchived(id)
+        ? `${job.name} — L${level}`
+        : entry.role === "commander"
+          ? `${entry.name} — commander`
+          : `${entry.name} — L${entry.level}`;
     const materials = job.race.startsWith("beast-")
       ? "H/h natural coat, scales or feathers; I/i bone, belly, claws or suckers; B/b remaining fur on zombie bear; L/l treant leaves; M/m dragon wing membrane."
       : "H/h tissue, I/i bone or ivory, B/b leather, W/w wood, V/v body clothing, C/c coral equipment, A/a metal, E spell effect.";
     fs.writeFileSync(
       path.join(out, "components.md"),
-      `# ${job.name} — L${level}\n\n${sourceJob.pose}\n\nAnatomy source: ${sourceId}. Race appearance: ${manifest.races[job.race].vibe}\n\nNative canvas: ${rows[0].length}×${rows.length}. Source generation and extraction are in art/pixel/reference/faction-expansion/. Both factions share the same geometry; T/t faction cloth becomes R/r. O is outline; G is gold. ${materials} Tier edits preserve this source pose and grips.\n`,
+      `# ${title}\n\n${sourceJob.pose}\n\nAnatomy source: ${sourceId}. Race appearance: ${manifest.races[job.race].vibe}\n\nNative canvas: ${rows[0].length}×${rows.length}. Source generation and extraction are in art/pixel/reference/faction-expansion/. Both factions share the same geometry; T/t faction cloth becomes R/r. O is outline; G is gold. ${materials} Tier edits preserve this source pose and grips.\n${job.race === "zombie" ? `\nSource recipe tier: L${level}. Chosen lineup tiers and commander role are recorded in art/pixel/lineups/zombies.json.\n` : ""}`,
     );
     render(out);
-    catalog[id] = {
-      name: job.name + (level > 1 ? ` L${level}` : ""),
-      level,
-      study: `faction-expansion/${id}`,
-      canvas: [rows[0].length, rows.length],
-    };
+    if (isArchived(id)) archived[id] = entry;
+    else catalog[id] = entry;
   }
   writeJSON(catalogPath, catalog);
+  writeJSON(archivePath, archived);
   job.status = "tiers";
   console.log(`${job.id}: L1-L3, both factions`);
 }
@@ -382,7 +394,10 @@ function boards() {
         .flatMap((j) =>
           [1, 2, 3].map((l) => ({
             label: `${j.name} L${l}`,
-            image: `art/pixel/units/${j.id}${l === 1 ? "" : `-l${l}`}/${side}.png`,
+            image: path.relative(
+              project,
+              path.join(sourceDirectory(`${j.id}${l === 1 ? "" : `-l${l}`}`), `${side}.png`),
+            ),
           })),
         );
       if (!entries.length) continue;

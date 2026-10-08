@@ -15,6 +15,12 @@ The [faction expansion](reference/faction-expansion/README.md) contains 61 new
 anatomies, both faction colors through L3, saved generation masks/prompts,
 cleanup recipes, numbered comparison grids and review sheets.
 
+The [chosen zombie lineup](lineups/zombies.json) keeps eight designs active in
+`units/`. Unused zombie studies are archived under
+[reference/zombies/](reference/zombies/README.md), with the approved branch layout
+and review grid. Artwork selection and tier assignments do not define gameplay
+stats or advancement rules.
+
 Each character in a `.txt` matrix is one pixel. `.` is transparent. Symbols map
 to exact RGBA colors in that unit's `palette.json`; uppercase and lowercase are
 distinct. Scout uses the shared palette in this directory. Other units keep
