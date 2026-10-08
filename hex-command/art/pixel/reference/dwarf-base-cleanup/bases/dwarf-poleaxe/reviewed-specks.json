@@ -12,5 +12,29 @@
     "from": "O",
     "to": "B",
     "reason": "Isolated dark speck inside cuirass: all eight neighbours are brown; outside face and boundaries"
+  },
+  {
+    "x": 25,
+    "y": 29,
+    "from": "h",
+    "to": "B",
+    "feature": "skin-fleck",
+    "reason": "Skin fleck enclosed by beard brown"
+  },
+  {
+    "x": 38,
+    "y": 37,
+    "from": "H",
+    "to": "I",
+    "feature": "skin-fleck",
+    "reason": "Skin flecks at the sleeve cuff"
+  },
+  {
+    "x": 38,
+    "y": 38,
+    "from": "H",
+    "to": "I",
+    "feature": "skin-fleck",
+    "reason": "Skin flecks at the sleeve cuff"
   }
 ]

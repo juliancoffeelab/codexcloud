@@ -7,7 +7,7 @@ from pathlib import Path
 import subprocess
 from PIL import Image, ImageDraw, ImageFont
 
-from build import HERE, PROJECT, UNITS, surfaces, verify_anchors
+from build import HERE, PROJECT, source_directory, surfaces, verify_anchors
 
 spec = importlib.util.spec_from_file_location("isolated_pixels", PROJECT / "scripts/check_isolated_pixels.py")
 checker = importlib.util.module_from_spec(spec)
@@ -22,8 +22,9 @@ font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 15)
 report = {}
 for i, pose in enumerate(meta["poses"]):
     unit = "dwarf-" + pose
-    rows = (UNITS / unit / "player.txt").read_text().splitlines()
-    palette = json.loads((UNITS / unit / "palette.json").read_text())
+    directory = source_directory(unit)
+    rows = (directory / "player.txt").read_text().splitlines()
+    palette = json.loads((directory / "palette.json").read_text())
     verify_anchors(rows, json.loads((HERE / "bases" / unit / "anchors.json").read_text()))
     filled = Image.new("RGBA", (64, 64))
     filled.putdata([tuple(palette[c]) for row in rows for c in row])
@@ -32,10 +33,10 @@ for i, pose in enumerate(meta["poses"]):
         rgb = tuple(round(c * 255) for c in colorsys.hsv_to_rgb((number * 0.381966) % 1, 0.57, 0.96))
         for x, y in pixels:
             filled.putpixel((x, y), (*rgb, 255))
-    actual = Image.open(UNITS / unit / "player.png").convert("RGBA")
+    actual = Image.open(directory / "player.png").convert("RGBA")
     bx, by = 16 + i % 3 * step, 44 + i // 3 * row_height
     flags = checker.isolated(rows, palette)
-    report[f"art/pixel/units/{unit}/player.txt"] = flags
+    report[str((directory / "player.txt").relative_to(PROJECT))] = flags
     for board, frame in ((fill_board, filled), (flag_board, actual)):
         draw = ImageDraw.Draw(board)
         for y in range(0, cell, 32):

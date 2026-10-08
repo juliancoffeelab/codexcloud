@@ -1,0 +1,56 @@
+{
+  "dwarf-axe-pick": {
+    "name": "Dwarf axe and pick infantry",
+    "level": 1,
+    "study": "faction-expansion/dwarf-axe-pick",
+    "canvas": [64, 64],
+    "role": "branch-reference",
+    "starter": "dwarf-axeguard"
+  },
+  "dwarf-hammerer": {
+    "name": "Dwarf two-handed hammer",
+    "level": 1,
+    "study": "faction-expansion/dwarf-hammerer",
+    "canvas": [64, 64],
+    "role": "branch-reference",
+    "starter": "dwarf-pickaxe"
+  },
+  "dwarf-poleaxe": {
+    "name": "Dwarf poleaxe",
+    "level": 1,
+    "study": "faction-expansion/dwarf-poleaxe",
+    "canvas": [64, 64],
+    "role": "branch-reference",
+    "starter": "dwarf-pickaxe"
+  },
+  "dwarf-arquebus": {
+    "name": "Dwarf arquebus",
+    "level": 1,
+    "study": "faction-expansion/dwarf-arquebus",
+    "canvas": [64, 64],
+    "role": "branch-reference",
+    "starter": "dwarf-crossbow"
+  },
+  "dwarf-pistol-goat-rider": {
+    "name": "Dwarf pistol goat rider",
+    "level": 1,
+    "study": "faction-expansion/dwarf-pistol-goat-rider",
+    "canvas": [64, 64],
+    "role": "branch-reference",
+    "starter": "dwarf-goat-rider"
+  },
+  "dwarf-pickaxe-l2": {
+    "name": "Dwarf pickaxe L2",
+    "level": 2,
+    "study": "faction-expansion/dwarf-pickaxe-l2",
+    "canvas": [64, 64],
+    "role": "unused-miner-tier-study"
+  },
+  "dwarf-pickaxe-l3": {
+    "name": "Dwarf pickaxe L3",
+    "level": 3,
+    "study": "faction-expansion/dwarf-pickaxe-l3",
+    "canvas": [64, 64],
+    "role": "unused-miner-tier-study"
+  }
+}

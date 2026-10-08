@@ -1,7 +1,5 @@
 # dwarf-hammerer-l2
 
-L2 artwork derived from the cleaned `dwarf-hammerer` pose. The branch assignment is in `art/pixel/lineups/dwarves.json`.
+L2 branch of `dwarf-pickaxe`, using the cleaned `dwarf-hammerer` pose reference at the starter's native scale and material palette. Complete detected surfaces are filled. L2 has steel upper armour over leather lower armour; L3 has silver armour with gold hems and faction-cloth embroidery. Faces, hands, beard, weapon wood/steel, mount and tack retain their base materials. Teal cloth becomes red for the enemy; gold is shared. L1 and the rune family are untouched.
 
-Armour: L1 leather; L2 metal helmet, shoulders, cuirass and arm guards over leather leggings, boots and apron; L3 complete silver coverage. Face, hands, beard, wooden shafts, weapon steel, faction fabric and mount/tack remain their own materials.
-
-The exact native inputs and ownership masks are saved under `art/pixel/reference/dwarf-progression/bases/dwarf-hammerer/`. Edit that recipe and run `python3 art/pixel/reference/dwarf-progression/build.py`; do not patch PNGs or reuse the older armour rectangles.
+Rebuild with `python3 art/pixel/reference/dwarf-upgrades/build.py`; assignments are in that folder's `regions.json` and must match the exact detected base surfaces.

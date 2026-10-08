@@ -47,5 +47,85 @@
     "from": "B",
     "to": "I",
     "reason": "Brown fleck in cream fur"
+  },
+  {
+    "x": 34,
+    "y": 19,
+    "from": "H",
+    "to": "I",
+    "feature": "skin-fleck",
+    "reason": "Skin flecks in the raised sleeve cuff"
+  },
+  {
+    "x": 34,
+    "y": 20,
+    "from": "H",
+    "to": "I",
+    "feature": "skin-fleck",
+    "reason": "Skin flecks in the raised sleeve cuff"
+  },
+  {
+    "x": 34,
+    "y": 21,
+    "from": "H",
+    "to": "I",
+    "feature": "skin-fleck",
+    "reason": "Skin flecks in the raised sleeve cuff"
+  },
+  {
+    "x": 28,
+    "y": 27,
+    "from": "H",
+    "to": "B",
+    "feature": "skin-fleck",
+    "reason": "Skin fleck enclosed by cuirass leather"
+  },
+  {
+    "x": 19,
+    "y": 22,
+    "from": "H",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 20,
+    "y": 22,
+    "from": "H",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 17,
+    "y": 23,
+    "from": "H",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 18,
+    "y": 23,
+    "from": "H",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 19,
+    "y": 23,
+    "from": "H",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 18,
+    "y": 24,
+    "from": "H",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
   }
 ]

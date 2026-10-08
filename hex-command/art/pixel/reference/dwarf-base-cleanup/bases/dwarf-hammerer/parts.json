@@ -73,8 +73,8 @@
     "id": "0a",
     "material": "cream",
     "seed": [18, 30],
-    "pixels": 25,
-    "bounds": [17, 30, 22, 34]
+    "pixels": 43,
+    "bounds": [16, 30, 22, 38]
   },
   {
     "id": "0b",
@@ -108,109 +108,95 @@
     "id": "0f",
     "material": "brown",
     "seed": [42, 33],
-    "pixels": 20,
+    "pixels": 27,
     "bounds": [37, 33, 43, 38]
   },
   {
     "id": "10",
-    "material": "skin",
-    "seed": [21, 34],
-    "pixels": 18,
-    "bounds": [16, 34, 21, 38]
-  },
-  {
-    "id": "11",
     "material": "cloth",
     "seed": [27, 34],
     "pixels": 2,
     "bounds": [27, 34, 28, 34]
   },
   {
-    "id": "12",
-    "material": "skin",
-    "seed": [43, 35],
-    "pixels": 7,
-    "bounds": [40, 35, 43, 37]
-  },
-  {
-    "id": "13",
+    "id": "11",
     "material": "brown",
     "seed": [19, 37],
     "pixels": 3,
     "bounds": [19, 37, 21, 37]
   },
   {
-    "id": "14",
+    "id": "12",
     "material": "brown",
     "seed": [35, 37],
     "pixels": 7,
     "bounds": [32, 37, 35, 39]
   },
   {
-    "id": "15",
+    "id": "13",
     "material": "brown",
     "seed": [22, 38],
     "pixels": 18,
     "bounds": [17, 38, 23, 42]
   },
   {
-    "id": "16",
+    "id": "14",
     "material": "skin",
     "seed": [24, 40],
     "pixels": 19,
     "bounds": [21, 40, 26, 44]
   },
   {
-    "id": "17",
+    "id": "15",
     "material": "brown",
     "seed": [30, 41],
     "pixels": 79,
     "bounds": [22, 41, 35, 48]
   },
   {
-    "id": "18",
+    "id": "16",
     "material": "brown",
     "seed": [37, 41],
     "pixels": 30,
     "bounds": [37, 41, 41, 49]
   },
   {
-    "id": "19",
+    "id": "17",
     "material": "brown",
     "seed": [16, 43],
     "pixels": 6,
     "bounds": [16, 43, 19, 44]
   },
   {
-    "id": "1a",
+    "id": "18",
     "material": "brown",
     "seed": [20, 45],
     "pixels": 12,
     "bounds": [15, 45, 21, 49]
   },
   {
-    "id": "1b",
+    "id": "19",
     "material": "brown",
     "seed": [23, 45],
     "pixels": 1,
     "bounds": [23, 45, 23, 45]
   },
   {
-    "id": "1c",
+    "id": "1a",
     "material": "brown",
     "seed": [20, 48],
     "pixels": 4,
     "bounds": [19, 48, 21, 49]
   },
   {
-    "id": "1d",
+    "id": "1b",
     "material": "brown",
     "seed": [15, 51],
     "pixels": 15,
     "bounds": [13, 51, 18, 53]
   },
   {
-    "id": "1e",
+    "id": "1c",
     "material": "brown",
     "seed": [37, 51],
     "pixels": 16,

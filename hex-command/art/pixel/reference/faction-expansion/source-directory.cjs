@@ -1,19 +1,35 @@
-// Keep chosen zombie designs active and exploratory variants in references.
+// Keep chosen lineups active and exploratory poses in references.
 const path = require("node:path");
 const lineup = require("../../lineups/zombies.json");
 const archived = require("../zombies/catalog.json");
+const dwarfArchive = require("../dwarf-branch-references/catalog.json");
+const dwarves = require("../../lineups/dwarves.json");
 const selected = new Map(
-  [lineup.base, ...lineup.branches.flatMap((branch) => branch.units), lineup.commander].map(
-    (unit) => [unit.id, unit],
-  ),
+  [
+    lineup.base,
+    ...lineup.branches.flatMap((branch) => branch.units),
+    lineup.commander,
+    ...dwarves.trees.flatMap((tree) => [
+      tree.base,
+      ...tree.branches.flatMap((branch) => branch.units),
+    ]),
+  ].map((unit) => [unit.id, unit]),
 );
 
 function isArchived(id) {
-  return Object.hasOwn(archived, id);
+  return Object.hasOwn(archived, id) || Object.hasOwn(dwarfArchive, id);
 }
 
 function sourceDirectory(id) {
-  return path.resolve(__dirname, isArchived(id) ? "../zombies/units" : "../../units", id);
+  return path.resolve(
+    __dirname,
+    Object.hasOwn(dwarfArchive, id)
+      ? "../dwarf-branch-references/units"
+      : Object.hasOwn(archived, id)
+        ? "../zombies/units"
+        : "../../units",
+    id,
+  );
 }
 
 function catalogEntry(id, generated) {

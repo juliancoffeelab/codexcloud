@@ -238,8 +238,12 @@ function tiers(job) {
       cwd: project,
       stdio: "inherit",
     });
+    execFileSync("python3", ["art/pixel/reference/dwarf-upgrades/build.py", job.id], {
+      cwd: project,
+      stdio: "inherit",
+    });
     job.status = "tiers";
-    console.log(`${job.id}: restored and cleaned base, both factions; advanced tiers deferred`);
+    console.log(`${job.id}: cleaned base and whole-surface L2/L3 upgrades, both factions`);
     return;
   }
   const catalogPath = path.join(project, "art/pixel/units/catalog.json"),

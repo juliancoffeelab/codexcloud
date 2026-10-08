@@ -40,9 +40,15 @@ Pupils, facial features, weapon seams and grips are retained by the pose review.
 The [L1 dwarf grid](dwarf-l1.png) covers all ten base poses.
 The nine non-rune L1 poses now use the
 [restored base cleanup recipe](../dwarf-base-cleanup/README.md), which owns
-their cleaned native matrices and detected fill regions. Their advanced tiers
-remain frozen historical studies. Only the three unchanged rune tiers still have
+their cleaned native matrices and detected fill regions, including the five
+extra poses saved as branch references. The
+[branch upgrade recipe](../dwarf-upgrades/README.md) fills these complete surfaces
+for L2/L3, with gold trim and red enemy cloth. The rejected progression is archived.
+Only the three rune tiers still have
 records in `dwarf.json`. Earlier comparison sheets document historical studies.
+The apprentice's magic stone uses its own dark green `z` border and cyan `E`
+interior; faction swapping only affects its surrounding cloth. This specific
+correction does not advance the postponed rune tree.
 
 The marked L1 follow-up separates steel weapon heads and barrels, wooden shafts,
 skin grips and cream cuffs with pose-specific corrections. The runesmith retains

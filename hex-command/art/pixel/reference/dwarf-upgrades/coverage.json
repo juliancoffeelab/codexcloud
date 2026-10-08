@@ -1,0 +1,180 @@
+{
+  "dwarf-axeguard-l2": {
+    "pixelsByRole": {
+      "cloth": 56,
+      "helmet": 49,
+      "lower": 77,
+      "protected": 227,
+      "shield": 128,
+      "upper": 198
+    },
+    "goldPixels": 0,
+    "uncoveredArmourPixels": 0
+  },
+  "dwarf-axeguard-l3": {
+    "pixelsByRole": {
+      "cloth": 56,
+      "helmet": 49,
+      "lower": 77,
+      "protected": 227,
+      "shield": 128,
+      "upper": 198
+    },
+    "goldPixels": 46,
+    "uncoveredArmourPixels": 0
+  },
+  "dwarf-axe-pick-l2": {
+    "pixelsByRole": {
+      "cloth": 31,
+      "helmet": 47,
+      "lower": 195,
+      "protected": 282,
+      "upper": 130
+    },
+    "goldPixels": 0,
+    "uncoveredArmourPixels": 0
+  },
+  "dwarf-axe-pick-l3": {
+    "pixelsByRole": {
+      "cloth": 31,
+      "helmet": 47,
+      "lower": 195,
+      "protected": 282,
+      "upper": 130
+    },
+    "goldPixels": 41,
+    "uncoveredArmourPixels": 0
+  },
+  "dwarf-hammerer-l2": {
+    "pixelsByRole": {
+      "cloth": 23,
+      "helmet": 42,
+      "lower": 163,
+      "protected": 270,
+      "upper": 127
+    },
+    "goldPixels": 0,
+    "uncoveredArmourPixels": 0
+  },
+  "dwarf-hammerer-l3": {
+    "pixelsByRole": {
+      "cloth": 23,
+      "helmet": 42,
+      "lower": 163,
+      "protected": 270,
+      "upper": 127
+    },
+    "goldPixels": 38,
+    "uncoveredArmourPixels": 0
+  },
+  "dwarf-poleaxe-l2": {
+    "pixelsByRole": {
+      "cloth": 26,
+      "helmet": 36,
+      "lower": 161,
+      "protected": 270,
+      "upper": 108
+    },
+    "goldPixels": 0,
+    "uncoveredArmourPixels": 0
+  },
+  "dwarf-poleaxe-l3": {
+    "pixelsByRole": {
+      "cloth": 26,
+      "helmet": 36,
+      "lower": 161,
+      "protected": 270,
+      "upper": 108
+    },
+    "goldPixels": 40,
+    "uncoveredArmourPixels": 0
+  },
+  "dwarf-crossbow-l2": {
+    "pixelsByRole": {
+      "cloth": 37,
+      "helmet": 59,
+      "lower": 204,
+      "protected": 233,
+      "upper": 130
+    },
+    "goldPixels": 0,
+    "uncoveredArmourPixels": 0
+  },
+  "dwarf-crossbow-l3": {
+    "pixelsByRole": {
+      "cloth": 37,
+      "helmet": 59,
+      "lower": 204,
+      "protected": 233,
+      "upper": 130
+    },
+    "goldPixels": 54,
+    "uncoveredArmourPixels": 0
+  },
+  "dwarf-arquebus-l2": {
+    "pixelsByRole": {
+      "cloth": 27,
+      "helmet": 59,
+      "lower": 203,
+      "protected": 226,
+      "upper": 150
+    },
+    "goldPixels": 0,
+    "uncoveredArmourPixels": 0
+  },
+  "dwarf-arquebus-l3": {
+    "pixelsByRole": {
+      "cloth": 27,
+      "helmet": 59,
+      "lower": 203,
+      "protected": 226,
+      "upper": 150
+    },
+    "goldPixels": 54,
+    "uncoveredArmourPixels": 0
+  },
+  "dwarf-goat-rider-l2": {
+    "pixelsByRole": {
+      "cloth": 131,
+      "helmet": 31,
+      "lower": 101,
+      "protected": 774,
+      "upper": 73
+    },
+    "goldPixels": 0,
+    "uncoveredArmourPixels": 0
+  },
+  "dwarf-goat-rider-l3": {
+    "pixelsByRole": {
+      "cloth": 131,
+      "helmet": 31,
+      "lower": 101,
+      "protected": 774,
+      "upper": 73
+    },
+    "goldPixels": 38,
+    "uncoveredArmourPixels": 0
+  },
+  "dwarf-pistol-goat-rider-l2": {
+    "pixelsByRole": {
+      "cloth": 100,
+      "helmet": 38,
+      "lower": 90,
+      "protected": 744,
+      "upper": 82
+    },
+    "goldPixels": 0,
+    "uncoveredArmourPixels": 0
+  },
+  "dwarf-pistol-goat-rider-l3": {
+    "pixelsByRole": {
+      "cloth": 100,
+      "helmet": 38,
+      "lower": 90,
+      "protected": 744,
+      "upper": 82
+    },
+    "goldPixels": 39,
+    "uncoveredArmourPixels": 0
+  }
+}

@@ -84,12 +84,19 @@ The nine non-rune dwarf bases now use the
 [base cleanup recipe](reference/dwarf-base-cleanup/README.md). Their pre-progression
 equipment is restored; the saved native matrices use flat material colours,
 simple shading and cleaned boundaries, with fill regions detected from the art.
-`process.cjs tiers` rebuilds their bases only. The rune family remains on the
-earlier recipe. Advanced dwarf tiers are deferred historical studies: the
-[dwarf progression checker](reference/dwarf-progression/README.md) cannot write art.
+Five L1 starters are recorded in [dwarves.json](lineups/dwarves.json), including
+the postponed rune tree. Extra poses are saved as
+[branch references](reference/dwarf-branch-references/README.md).
+`process.cjs tiers` rebuilds cleaned sources and the sixteen
+[whole-surface branch upgrades](reference/dwarf-upgrades/README.md), including
+red enemy cloth and L3 gold trim/inlays. The rune family remains on the earlier
+recipe. The rejected [dwarf progression](reference/dwarf-progression/README.md)
+checks its archived tier studies and cannot write art.
 Update the owning base matrix and its detected region records for later edits,
 then rebuild and run
 `python3 art/pixel/reference/dwarf-base-cleanup/build.py --check`.
+For branch upgrades also run `python3 art/pixel/reference/dwarf-upgrades/build.py --check`.
+Render the actual five trees with `python3 art/pixel/reference/dwarf-upgrades/preview.py`.
 
 Regenerate the full boards without changing artwork:
 

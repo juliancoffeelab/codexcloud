@@ -9,7 +9,7 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 PROJECT = HERE.parents[3]
-UNITS = PROJECT / "art/pixel/units"
+UNITS = HERE / "tiers"
 ARMOUR = "KCPABLF"
 PROTECTED = "hbwmcn"
 LEATHER = {"L": [150, 103, 59, 255], "l": [92, 58, 33, 255], "k": [190, 140, 88, 255]}

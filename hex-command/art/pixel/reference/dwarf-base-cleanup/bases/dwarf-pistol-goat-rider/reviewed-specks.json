@@ -68,5 +68,125 @@
     "from": "B",
     "to": "I",
     "reason": "Brown fleck in cream fur"
+  },
+  {
+    "x": 34,
+    "y": 17,
+    "from": "h",
+    "to": "I",
+    "feature": "skin-fleck",
+    "reason": "Skin flecks in the raised sleeve cuff"
+  },
+  {
+    "x": 34,
+    "y": 18,
+    "from": "h",
+    "to": "I",
+    "feature": "skin-fleck",
+    "reason": "Skin flecks in the raised sleeve cuff"
+  },
+  {
+    "x": 34,
+    "y": 19,
+    "from": "h",
+    "to": "I",
+    "feature": "skin-fleck",
+    "reason": "Skin flecks in the raised sleeve cuff"
+  },
+  {
+    "x": 35,
+    "y": 19,
+    "from": "h",
+    "to": "I",
+    "feature": "skin-fleck",
+    "reason": "Skin flecks in the raised sleeve cuff"
+  },
+  {
+    "x": 16,
+    "y": 20,
+    "from": "H",
+    "to": "I",
+    "feature": "skin-fleck",
+    "reason": "Skin fleck in shirt edge"
+  },
+  {
+    "x": 21,
+    "y": 20,
+    "from": "H",
+    "to": "I",
+    "feature": "skin-fleck",
+    "reason": "Skin fleck in shirt edge"
+  },
+  {
+    "x": 34,
+    "y": 20,
+    "from": "h",
+    "to": "I",
+    "feature": "skin-fleck",
+    "reason": "Skin flecks in the raised sleeve cuff"
+  },
+  {
+    "x": 19,
+    "y": 21,
+    "from": "H",
+    "to": "I",
+    "feature": "skin-fleck",
+    "reason": "Skin fleck in shirt edge"
+  },
+  {
+    "x": 18,
+    "y": 22,
+    "from": "H",
+    "to": "I",
+    "feature": "skin-fleck",
+    "reason": "Skin fleck in shirt edge"
+  },
+  {
+    "x": 17,
+    "y": 23,
+    "from": "H",
+    "to": "I",
+    "feature": "skin-fleck",
+    "reason": "Skin fleck in shirt edge"
+  },
+  {
+    "x": 25,
+    "y": 28,
+    "from": "H",
+    "to": "I",
+    "feature": "skin-fleck",
+    "reason": "Skin flecks in trouser cloth"
+  },
+  {
+    "x": 24,
+    "y": 29,
+    "from": "H",
+    "to": "I",
+    "feature": "skin-fleck",
+    "reason": "Skin flecks in trouser cloth"
+  },
+  {
+    "x": 25,
+    "y": 29,
+    "from": "H",
+    "to": "I",
+    "feature": "skin-fleck",
+    "reason": "Skin flecks in trouser cloth"
+  },
+  {
+    "x": 20,
+    "y": 31,
+    "from": "H",
+    "to": "I",
+    "feature": "skin-fleck",
+    "reason": "Skin flecks in trouser cloth"
+  },
+  {
+    "x": 21,
+    "y": 31,
+    "from": "H",
+    "to": "I",
+    "feature": "skin-fleck",
+    "reason": "Skin flecks in trouser cloth"
   }
 ]

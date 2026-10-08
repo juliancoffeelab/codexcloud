@@ -1,0 +1,98 @@
+[
+  {
+    "label": "axeguard L1",
+    "image": "art/pixel/units/dwarf-axeguard/enemy.png"
+  },
+  {
+    "label": "axeguard L2",
+    "image": "art/pixel/units/dwarf-axeguard-l2/enemy.png"
+  },
+  {
+    "label": "axeguard L3",
+    "image": "art/pixel/units/dwarf-axeguard-l3/enemy.png"
+  },
+  {
+    "label": "axe-pick reference",
+    "image": "art/pixel/reference/dwarf-branch-references/units/dwarf-axe-pick/enemy.png"
+  },
+  {
+    "label": "axe-pick L2",
+    "image": "art/pixel/units/dwarf-axe-pick-l2/enemy.png"
+  },
+  {
+    "label": "axe-pick L3",
+    "image": "art/pixel/units/dwarf-axe-pick-l3/enemy.png"
+  },
+  {
+    "label": "hammerer reference",
+    "image": "art/pixel/reference/dwarf-branch-references/units/dwarf-hammerer/enemy.png"
+  },
+  {
+    "label": "hammerer L2",
+    "image": "art/pixel/units/dwarf-hammerer-l2/enemy.png"
+  },
+  {
+    "label": "hammerer L3",
+    "image": "art/pixel/units/dwarf-hammerer-l3/enemy.png"
+  },
+  {
+    "label": "poleaxe reference",
+    "image": "art/pixel/reference/dwarf-branch-references/units/dwarf-poleaxe/enemy.png"
+  },
+  {
+    "label": "poleaxe L2",
+    "image": "art/pixel/units/dwarf-poleaxe-l2/enemy.png"
+  },
+  {
+    "label": "poleaxe L3",
+    "image": "art/pixel/units/dwarf-poleaxe-l3/enemy.png"
+  },
+  {
+    "label": "crossbow L1",
+    "image": "art/pixel/units/dwarf-crossbow/enemy.png"
+  },
+  {
+    "label": "crossbow L2",
+    "image": "art/pixel/units/dwarf-crossbow-l2/enemy.png"
+  },
+  {
+    "label": "crossbow L3",
+    "image": "art/pixel/units/dwarf-crossbow-l3/enemy.png"
+  },
+  {
+    "label": "arquebus reference",
+    "image": "art/pixel/reference/dwarf-branch-references/units/dwarf-arquebus/enemy.png"
+  },
+  {
+    "label": "arquebus L2",
+    "image": "art/pixel/units/dwarf-arquebus-l2/enemy.png"
+  },
+  {
+    "label": "arquebus L3",
+    "image": "art/pixel/units/dwarf-arquebus-l3/enemy.png"
+  },
+  {
+    "label": "goat-rider L1",
+    "image": "art/pixel/units/dwarf-goat-rider/enemy.png"
+  },
+  {
+    "label": "goat-rider L2",
+    "image": "art/pixel/units/dwarf-goat-rider-l2/enemy.png"
+  },
+  {
+    "label": "goat-rider L3",
+    "image": "art/pixel/units/dwarf-goat-rider-l3/enemy.png"
+  },
+  {
+    "label": "pistol-goat-rider reference",
+    "image": "art/pixel/reference/dwarf-branch-references/units/dwarf-pistol-goat-rider/enemy.png"
+  },
+  {
+    "label": "pistol-goat-rider L2",
+    "image": "art/pixel/units/dwarf-pistol-goat-rider-l2/enemy.png"
+  },
+  {
+    "label": "pistol-goat-rider L3",
+    "image": "art/pixel/units/dwarf-pistol-goat-rider-l3/enemy.png"
+  }
+]

@@ -1,0 +1,118 @@
+{
+  "dwarf-goat-rider": [
+    {
+      "x": 34,
+      "y": 19,
+      "role": "upper"
+    },
+    {
+      "x": 34,
+      "y": 20,
+      "role": "upper"
+    },
+    {
+      "x": 34,
+      "y": 21,
+      "role": "upper"
+    },
+    {
+      "x": 28,
+      "y": 27,
+      "role": "upper"
+    }
+  ],
+  "dwarf-pistol-goat-rider": [
+    {
+      "x": 34,
+      "y": 17,
+      "role": "upper"
+    },
+    {
+      "x": 34,
+      "y": 18,
+      "role": "upper"
+    },
+    {
+      "x": 34,
+      "y": 19,
+      "role": "upper"
+    },
+    {
+      "x": 35,
+      "y": 19,
+      "role": "upper"
+    },
+    {
+      "x": 16,
+      "y": 20,
+      "role": "upper"
+    },
+    {
+      "x": 21,
+      "y": 20,
+      "role": "upper"
+    },
+    {
+      "x": 34,
+      "y": 20,
+      "role": "upper"
+    },
+    {
+      "x": 19,
+      "y": 21,
+      "role": "upper"
+    },
+    {
+      "x": 18,
+      "y": 22,
+      "role": "upper"
+    },
+    {
+      "x": 17,
+      "y": 23,
+      "role": "upper"
+    },
+    {
+      "x": 25,
+      "y": 28,
+      "role": "lower"
+    },
+    {
+      "x": 24,
+      "y": 29,
+      "role": "lower"
+    },
+    {
+      "x": 25,
+      "y": 29,
+      "role": "lower"
+    },
+    {
+      "x": 20,
+      "y": 31,
+      "role": "lower"
+    },
+    {
+      "x": 21,
+      "y": 31,
+      "role": "lower"
+    }
+  ],
+  "dwarf-poleaxe": [
+    {
+      "x": 25,
+      "y": 29,
+      "role": "protected"
+    },
+    {
+      "x": 38,
+      "y": 37,
+      "role": "upper"
+    },
+    {
+      "x": 38,
+      "y": 38,
+      "role": "upper"
+    }
+  ]
+}

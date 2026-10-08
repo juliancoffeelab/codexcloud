@@ -5,11 +5,11 @@
   },
   {
     "label": "Shieldguard L2",
-    "image": "art/pixel/units/dwarf-axeguard-l2/player.png"
+    "image": "art/pixel/reference/dwarf-progression/tiers/dwarf-axeguard-l2/player.png"
   },
   {
     "label": "Shieldguard veteran L3",
-    "image": "art/pixel/units/dwarf-axeguard-l3/player.png"
+    "image": "art/pixel/reference/dwarf-progression/tiers/dwarf-axeguard-l3/player.png"
   },
   {
     "label": "Axe and shield L1",
@@ -17,11 +17,11 @@
   },
   {
     "label": "Axe and pick fighter L2",
-    "image": "art/pixel/units/dwarf-axe-pick-l2/player.png"
+    "image": "art/pixel/reference/dwarf-progression/tiers/dwarf-axe-pick-l2/player.png"
   },
   {
     "label": "Axe and pick fighter veteran L3",
-    "image": "art/pixel/units/dwarf-axe-pick-l3/player.png"
+    "image": "art/pixel/reference/dwarf-progression/tiers/dwarf-axe-pick-l3/player.png"
   },
   {
     "label": "Miner L1",
@@ -29,11 +29,11 @@
   },
   {
     "label": "Hammerer L2",
-    "image": "art/pixel/units/dwarf-hammerer-l2/player.png"
+    "image": "art/pixel/reference/dwarf-progression/tiers/dwarf-hammerer-l2/player.png"
   },
   {
     "label": "Hammerer veteran L3",
-    "image": "art/pixel/units/dwarf-hammerer-l3/player.png"
+    "image": "art/pixel/reference/dwarf-progression/tiers/dwarf-hammerer-l3/player.png"
   },
   {
     "label": "Miner L1",
@@ -41,11 +41,11 @@
   },
   {
     "label": "Poleaxe fighter L2",
-    "image": "art/pixel/units/dwarf-poleaxe-l2/player.png"
+    "image": "art/pixel/reference/dwarf-progression/tiers/dwarf-poleaxe-l2/player.png"
   },
   {
     "label": "Poleaxe fighter veteran L3",
-    "image": "art/pixel/units/dwarf-poleaxe-l3/player.png"
+    "image": "art/pixel/reference/dwarf-progression/tiers/dwarf-poleaxe-l3/player.png"
   },
   {
     "label": "Crossbowman L1",
@@ -53,11 +53,11 @@
   },
   {
     "label": "Crossbow specialist L2",
-    "image": "art/pixel/units/dwarf-crossbow-l2/player.png"
+    "image": "art/pixel/reference/dwarf-progression/tiers/dwarf-crossbow-l2/player.png"
   },
   {
     "label": "Crossbow specialist veteran L3",
-    "image": "art/pixel/units/dwarf-crossbow-l3/player.png"
+    "image": "art/pixel/reference/dwarf-progression/tiers/dwarf-crossbow-l3/player.png"
   },
   {
     "label": "Crossbowman L1",
@@ -65,11 +65,11 @@
   },
   {
     "label": "Arquebusier L2",
-    "image": "art/pixel/units/dwarf-arquebus-l2/player.png"
+    "image": "art/pixel/reference/dwarf-progression/tiers/dwarf-arquebus-l2/player.png"
   },
   {
     "label": "Arquebusier veteran L3",
-    "image": "art/pixel/units/dwarf-arquebus-l3/player.png"
+    "image": "art/pixel/reference/dwarf-progression/tiers/dwarf-arquebus-l3/player.png"
   },
   {
     "label": "Goat rider L1",
@@ -77,11 +77,11 @@
   },
   {
     "label": "Mounted hammerer L2",
-    "image": "art/pixel/units/dwarf-goat-rider-l2/player.png"
+    "image": "art/pixel/reference/dwarf-progression/tiers/dwarf-goat-rider-l2/player.png"
   },
   {
     "label": "Mounted hammerer veteran L3",
-    "image": "art/pixel/units/dwarf-goat-rider-l3/player.png"
+    "image": "art/pixel/reference/dwarf-progression/tiers/dwarf-goat-rider-l3/player.png"
   },
   {
     "label": "Goat rider L1",
@@ -89,10 +89,10 @@
   },
   {
     "label": "Pistol rider L2",
-    "image": "art/pixel/units/dwarf-pistol-goat-rider-l2/player.png"
+    "image": "art/pixel/reference/dwarf-progression/tiers/dwarf-pistol-goat-rider-l2/player.png"
   },
   {
     "label": "Pistol rider veteran L3",
-    "image": "art/pixel/units/dwarf-pistol-goat-rider-l3/player.png"
+    "image": "art/pixel/reference/dwarf-progression/tiers/dwarf-pistol-goat-rider-l3/player.png"
   }
 ]

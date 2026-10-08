@@ -1230,6 +1230,118 @@
           "from": "B",
           "to": "b",
           "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 18,
+          "y": 26,
+          "from": "T",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 18,
+          "y": 27,
+          "from": "T",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 19,
+          "y": 27,
+          "from": "T",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 19,
+          "y": 28,
+          "from": "T",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 20,
+          "y": 28,
+          "from": "T",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 20,
+          "y": 29,
+          "from": "T",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 20,
+          "y": 30,
+          "from": "T",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 20,
+          "y": 31,
+          "from": "T",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 20,
+          "y": 32,
+          "from": "T",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 15,
+          "y": 33,
+          "from": "T",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 20,
+          "y": 33,
+          "from": "T",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 16,
+          "y": 34,
+          "from": "T",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 19,
+          "y": 34,
+          "from": "T",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 20,
+          "y": 34,
+          "from": "t",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 17,
+          "y": 35,
+          "from": "T",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 18,
+          "y": 35,
+          "from": "T",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
         }
       ],
       "enemyMatrixChanges": [
@@ -2461,6 +2573,118 @@
           "from": "B",
           "to": "b",
           "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 18,
+          "y": 26,
+          "from": "R",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 18,
+          "y": 27,
+          "from": "R",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 19,
+          "y": 27,
+          "from": "R",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 19,
+          "y": 28,
+          "from": "R",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 20,
+          "y": 28,
+          "from": "R",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 20,
+          "y": 29,
+          "from": "R",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 20,
+          "y": 30,
+          "from": "R",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 20,
+          "y": 31,
+          "from": "R",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 20,
+          "y": 32,
+          "from": "R",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 15,
+          "y": 33,
+          "from": "R",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 20,
+          "y": 33,
+          "from": "R",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 16,
+          "y": 34,
+          "from": "R",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 19,
+          "y": 34,
+          "from": "R",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 20,
+          "y": 34,
+          "from": "r",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 17,
+          "y": 35,
+          "from": "R",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
+        },
+        {
+          "x": 18,
+          "y": 35,
+          "from": "R",
+          "to": "z",
+          "reason": "Requested dark green rune stone border; independent of faction cloth"
         }
       ],
       "paletteChanges": {
@@ -2483,6 +2707,10 @@
           "from": null,
           "to": [139, 160, 173, 255],
           "reason": "Dedicated connected helmet/plate tonal ramp, separate from weapon steel and skin."
+        },
+        "z": {
+          "from": null,
+          "to": [28, 70, 52, 255]
         }
       }
     },

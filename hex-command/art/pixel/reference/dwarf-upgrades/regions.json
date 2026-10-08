@@ -1,0 +1,2062 @@
+{
+  "dwarf-axeguard": {
+    "baseMatrixSha256": "8b25debd8f9b9c07477357c182fa6bbc5ae90efa78b8b2a633171fc388e7215d",
+    "surfaces": [
+      {
+        "id": "00",
+        "name": "steel-fragment-00",
+        "role": "protected"
+      },
+      {
+        "id": "01",
+        "name": "helmet",
+        "role": "helmet"
+      },
+      {
+        "id": "02",
+        "name": "brown-fragment-02",
+        "role": "protected"
+      },
+      {
+        "id": "03",
+        "name": "face",
+        "role": "protected"
+      },
+      {
+        "id": "04",
+        "name": "brown-fragment-04",
+        "role": "protected"
+      },
+      {
+        "id": "05",
+        "name": "brown-fragment-05",
+        "role": "protected"
+      },
+      {
+        "id": "06",
+        "name": "cloth-fragment-06",
+        "role": "cloth"
+      },
+      {
+        "id": "07",
+        "name": "beard",
+        "role": "protected"
+      },
+      {
+        "id": "08",
+        "name": "cloth-fragment-08",
+        "role": "cloth"
+      },
+      {
+        "id": "09",
+        "name": "brown-fragment-09",
+        "role": "protected"
+      },
+      {
+        "id": "0a",
+        "name": "shield-rim",
+        "role": "upper"
+      },
+      {
+        "id": "0b",
+        "name": "shaft",
+        "role": "protected"
+      },
+      {
+        "id": "0c",
+        "name": "right-shoulder",
+        "role": "upper"
+      },
+      {
+        "id": "0d",
+        "name": "shield-face",
+        "role": "shield"
+      },
+      {
+        "id": "0e",
+        "name": "right-bracer",
+        "role": "upper"
+      },
+      {
+        "id": "0f",
+        "name": "right-hand",
+        "role": "protected"
+      },
+      {
+        "id": "10",
+        "name": "brown-fragment-10",
+        "role": "protected"
+      },
+      {
+        "id": "11",
+        "name": "shield-boss",
+        "role": "upper"
+      },
+      {
+        "id": "12",
+        "name": "brown-fragment-12",
+        "role": "protected"
+      },
+      {
+        "id": "13",
+        "name": "cuirass",
+        "role": "upper"
+      },
+      {
+        "id": "14",
+        "name": "brown-fragment-14",
+        "role": "protected"
+      },
+      {
+        "id": "15",
+        "name": "upper-fragment-15",
+        "role": "upper"
+      },
+      {
+        "id": "16",
+        "name": "upper-fragment-16",
+        "role": "upper"
+      },
+      {
+        "id": "17",
+        "name": "brown-fragment-17",
+        "role": "protected"
+      },
+      {
+        "id": "18",
+        "name": "upper-fragment-18",
+        "role": "upper"
+      },
+      {
+        "id": "19",
+        "name": "right-shirt",
+        "role": "upper"
+      },
+      {
+        "id": "1a",
+        "name": "front-cloth",
+        "role": "cloth"
+      },
+      {
+        "id": "1b",
+        "name": "lower-fragment-1b",
+        "role": "lower"
+      },
+      {
+        "id": "1c",
+        "name": "left-leg",
+        "role": "lower"
+      },
+      {
+        "id": "1d",
+        "name": "lower-fragment-1d",
+        "role": "lower"
+      },
+      {
+        "id": "1e",
+        "name": "right-leg",
+        "role": "lower"
+      },
+      {
+        "id": "1f",
+        "name": "left-boot",
+        "role": "lower"
+      },
+      {
+        "id": "20",
+        "name": "right-boot",
+        "role": "lower"
+      }
+    ]
+  },
+  "dwarf-axe-pick": {
+    "baseMatrixSha256": "76b0000d2c819550d8495c3b811ea262521afd2da9354ca7a025a7f71ab35185",
+    "surfaces": [
+      {
+        "id": "00",
+        "name": "left-head",
+        "role": "protected"
+      },
+      {
+        "id": "01",
+        "name": "helmet",
+        "role": "helmet"
+      },
+      {
+        "id": "02",
+        "name": "right-head",
+        "role": "protected"
+      },
+      {
+        "id": "03",
+        "name": "steel-fragment-03",
+        "role": "protected"
+      },
+      {
+        "id": "04",
+        "name": "steel-fragment-04",
+        "role": "protected"
+      },
+      {
+        "id": "05",
+        "name": "brown-fragment-05",
+        "role": "protected"
+      },
+      {
+        "id": "06",
+        "name": "skin-fragment-06",
+        "role": "protected"
+      },
+      {
+        "id": "07",
+        "name": "beard",
+        "role": "protected"
+      },
+      {
+        "id": "08",
+        "name": "face",
+        "role": "protected"
+      },
+      {
+        "id": "09",
+        "name": "left-shaft",
+        "role": "protected"
+      },
+      {
+        "id": "0a",
+        "name": "cloth-fragment-0a",
+        "role": "cloth"
+      },
+      {
+        "id": "0b",
+        "name": "cloth-fragment-0b",
+        "role": "cloth"
+      },
+      {
+        "id": "0c",
+        "name": "right-shaft",
+        "role": "protected"
+      },
+      {
+        "id": "0d",
+        "name": "left-shirt",
+        "role": "upper"
+      },
+      {
+        "id": "0e",
+        "name": "upper-fragment-0e",
+        "role": "upper"
+      },
+      {
+        "id": "0f",
+        "name": "brown-fragment-0f",
+        "role": "protected"
+      },
+      {
+        "id": "10",
+        "name": "right-shirt",
+        "role": "upper"
+      },
+      {
+        "id": "11",
+        "name": "left-hand",
+        "role": "protected"
+      },
+      {
+        "id": "12",
+        "name": "right-hand",
+        "role": "protected"
+      },
+      {
+        "id": "13",
+        "name": "cuirass",
+        "role": "upper"
+      },
+      {
+        "id": "14",
+        "name": "upper-fragment-14",
+        "role": "upper"
+      },
+      {
+        "id": "15",
+        "name": "right-bracer",
+        "role": "upper"
+      },
+      {
+        "id": "16",
+        "name": "upper-fragment-16",
+        "role": "upper"
+      },
+      {
+        "id": "17",
+        "name": "upper-fragment-17",
+        "role": "upper"
+      },
+      {
+        "id": "18",
+        "name": "upper-fragment-18",
+        "role": "upper"
+      },
+      {
+        "id": "19",
+        "name": "left-bracer",
+        "role": "upper"
+      },
+      {
+        "id": "1a",
+        "name": "lower-fragment-1a",
+        "role": "lower"
+      },
+      {
+        "id": "1b",
+        "name": "upper-fragment-1b",
+        "role": "upper"
+      },
+      {
+        "id": "1c",
+        "name": "upper-fragment-1c",
+        "role": "upper"
+      },
+      {
+        "id": "1d",
+        "name": "upper-fragment-1d",
+        "role": "upper"
+      },
+      {
+        "id": "1e",
+        "name": "upper-fragment-1e",
+        "role": "upper"
+      },
+      {
+        "id": "1f",
+        "name": "upper-fragment-1f",
+        "role": "upper"
+      },
+      {
+        "id": "20",
+        "name": "upper-fragment-20",
+        "role": "upper"
+      },
+      {
+        "id": "21",
+        "name": "lower-fragment-21",
+        "role": "lower"
+      },
+      {
+        "id": "22",
+        "name": "apron",
+        "role": "lower"
+      },
+      {
+        "id": "23",
+        "name": "upper-fragment-23",
+        "role": "upper"
+      },
+      {
+        "id": "24",
+        "name": "upper-fragment-24",
+        "role": "upper"
+      },
+      {
+        "id": "25",
+        "name": "right-trouser",
+        "role": "lower"
+      },
+      {
+        "id": "26",
+        "name": "left-trouser",
+        "role": "lower"
+      },
+      {
+        "id": "27",
+        "name": "left-leg",
+        "role": "lower"
+      },
+      {
+        "id": "28",
+        "name": "right-leg",
+        "role": "lower"
+      },
+      {
+        "id": "29",
+        "name": "cloth-fragment-29",
+        "role": "cloth"
+      },
+      {
+        "id": "2a",
+        "name": "left-boot",
+        "role": "lower"
+      },
+      {
+        "id": "2b",
+        "name": "right-boot",
+        "role": "lower"
+      }
+    ]
+  },
+  "dwarf-hammerer": {
+    "baseMatrixSha256": "50fe08bc959d209bcb300c5e862c190225755b6c1185bcddc1844b2795160325",
+    "surfaces": [
+      {
+        "id": "00",
+        "name": "hammer-head",
+        "role": "protected"
+      },
+      {
+        "id": "01",
+        "name": "helmet",
+        "role": "helmet"
+      },
+      {
+        "id": "02",
+        "name": "face",
+        "role": "protected"
+      },
+      {
+        "id": "03",
+        "name": "brown-fragment-03",
+        "role": "protected"
+      },
+      {
+        "id": "04",
+        "name": "cloth-fragment-04",
+        "role": "cloth"
+      },
+      {
+        "id": "05",
+        "name": "beard",
+        "role": "protected"
+      },
+      {
+        "id": "06",
+        "name": "brown-fragment-06",
+        "role": "protected"
+      },
+      {
+        "id": "07",
+        "name": "cloth-fragment-07",
+        "role": "cloth"
+      },
+      {
+        "id": "08",
+        "name": "brown-fragment-08",
+        "role": "protected"
+      },
+      {
+        "id": "09",
+        "name": "steel-fragment-09",
+        "role": "protected"
+      },
+      {
+        "id": "0a",
+        "name": "left-shirt",
+        "role": "upper"
+      },
+      {
+        "id": "0b",
+        "name": "upper-hand",
+        "role": "protected"
+      },
+      {
+        "id": "0c",
+        "name": "left-cuirass",
+        "role": "upper"
+      },
+      {
+        "id": "0d",
+        "name": "cloth-fragment-0d",
+        "role": "cloth"
+      },
+      {
+        "id": "0e",
+        "name": "shaft",
+        "role": "protected"
+      },
+      {
+        "id": "0f",
+        "name": "right-bracer",
+        "role": "upper"
+      },
+      {
+        "id": "10",
+        "name": "cloth-fragment-11",
+        "role": "cloth"
+      },
+      {
+        "id": "11",
+        "name": "left-bracer",
+        "role": "upper"
+      },
+      {
+        "id": "12",
+        "name": "right-cuirass",
+        "role": "upper"
+      },
+      {
+        "id": "13",
+        "name": "left-wrist",
+        "role": "upper"
+      },
+      {
+        "id": "14",
+        "name": "lower-hand",
+        "role": "protected"
+      },
+      {
+        "id": "15",
+        "name": "apron",
+        "role": "lower"
+      },
+      {
+        "id": "16",
+        "name": "right-leg",
+        "role": "lower"
+      },
+      {
+        "id": "17",
+        "name": "lower-fragment-19",
+        "role": "lower"
+      },
+      {
+        "id": "18",
+        "name": "lower-fragment-1a",
+        "role": "lower"
+      },
+      {
+        "id": "19",
+        "name": "lower-fragment-1b",
+        "role": "lower"
+      },
+      {
+        "id": "1a",
+        "name": "left-leg",
+        "role": "lower"
+      },
+      {
+        "id": "1b",
+        "name": "left-boot",
+        "role": "lower"
+      },
+      {
+        "id": "1c",
+        "name": "right-boot",
+        "role": "lower"
+      }
+    ]
+  },
+  "dwarf-poleaxe": {
+    "baseMatrixSha256": "278f2b8e44a935c2bf985e0220b28000620730e7ff679f3e6cc73ce48de137ef",
+    "surfaces": [
+      {
+        "id": "00",
+        "name": "poleaxe-head",
+        "role": "protected"
+      },
+      {
+        "id": "01",
+        "name": "steel-fragment-01",
+        "role": "protected"
+      },
+      {
+        "id": "02",
+        "name": "shaft",
+        "role": "protected"
+      },
+      {
+        "id": "03",
+        "name": "helmet",
+        "role": "helmet"
+      },
+      {
+        "id": "04",
+        "name": "brown-fragment-04",
+        "role": "protected"
+      },
+      {
+        "id": "05",
+        "name": "brown-fragment-05",
+        "role": "protected"
+      },
+      {
+        "id": "06",
+        "name": "face",
+        "role": "protected"
+      },
+      {
+        "id": "07",
+        "name": "beard",
+        "role": "protected"
+      },
+      {
+        "id": "08",
+        "name": "cloth-fragment-08",
+        "role": "cloth"
+      },
+      {
+        "id": "09",
+        "name": "upper-hand",
+        "role": "protected"
+      },
+      {
+        "id": "0a",
+        "name": "cloth-fragment-0b",
+        "role": "cloth"
+      },
+      {
+        "id": "0b",
+        "name": "left-cuirass",
+        "role": "upper"
+      },
+      {
+        "id": "0c",
+        "name": "cloth-fragment-0d",
+        "role": "cloth"
+      },
+      {
+        "id": "0d",
+        "name": "brown-fragment-0e",
+        "role": "protected"
+      },
+      {
+        "id": "0e",
+        "name": "right-bracer",
+        "role": "upper"
+      },
+      {
+        "id": "0f",
+        "name": "left-shirt",
+        "role": "upper"
+      },
+      {
+        "id": "10",
+        "name": "cloth-fragment-11",
+        "role": "cloth"
+      },
+      {
+        "id": "11",
+        "name": "cloth-fragment-12",
+        "role": "cloth"
+      },
+      {
+        "id": "12",
+        "name": "brown-fragment-13",
+        "role": "protected"
+      },
+      {
+        "id": "13",
+        "name": "cloth-fragment-14",
+        "role": "cloth"
+      },
+      {
+        "id": "14",
+        "name": "cloth-fragment-15",
+        "role": "cloth"
+      },
+      {
+        "id": "15",
+        "name": "brown-fragment-16",
+        "role": "protected"
+      },
+      {
+        "id": "16",
+        "name": "brown-fragment-17",
+        "role": "protected"
+      },
+      {
+        "id": "17",
+        "name": "skin-fragment-1c",
+        "role": "upper"
+      },
+      {
+        "id": "18",
+        "name": "left-bracer",
+        "role": "upper"
+      },
+      {
+        "id": "19",
+        "name": "brown-fragment-1a",
+        "role": "protected"
+      },
+      {
+        "id": "1a",
+        "name": "right-cuirass",
+        "role": "upper"
+      },
+      {
+        "id": "1b",
+        "name": "brown-fragment-1d",
+        "role": "protected"
+      },
+      {
+        "id": "1c",
+        "name": "lower-hand",
+        "role": "protected"
+      },
+      {
+        "id": "1d",
+        "name": "skin-fragment-1f",
+        "role": "protected"
+      },
+      {
+        "id": "1e",
+        "name": "lower-fragment-20",
+        "role": "lower"
+      },
+      {
+        "id": "1f",
+        "name": "lower-fragment-21",
+        "role": "lower"
+      },
+      {
+        "id": "20",
+        "name": "apron",
+        "role": "lower"
+      },
+      {
+        "id": "21",
+        "name": "lower-fragment-23",
+        "role": "lower"
+      },
+      {
+        "id": "22",
+        "name": "left-leg",
+        "role": "lower"
+      },
+      {
+        "id": "23",
+        "name": "right-trouser",
+        "role": "lower"
+      },
+      {
+        "id": "24",
+        "name": "lower-fragment-26",
+        "role": "lower"
+      },
+      {
+        "id": "25",
+        "name": "lower-fragment-27",
+        "role": "lower"
+      },
+      {
+        "id": "26",
+        "name": "left-boot",
+        "role": "lower"
+      },
+      {
+        "id": "27",
+        "name": "right-boot",
+        "role": "lower"
+      }
+    ]
+  },
+  "dwarf-crossbow": {
+    "baseMatrixSha256": "09a67c4e7cb0b6c7fc4fca6929ec662a4519c89a3480757b93f735a898803ab1",
+    "surfaces": [
+      {
+        "id": "00",
+        "name": "helmet",
+        "role": "helmet"
+      },
+      {
+        "id": "01",
+        "name": "cloth-fragment-01",
+        "role": "cloth"
+      },
+      {
+        "id": "02",
+        "name": "beard",
+        "role": "protected"
+      },
+      {
+        "id": "03",
+        "name": "face",
+        "role": "protected"
+      },
+      {
+        "id": "04",
+        "name": "bow-steel",
+        "role": "protected"
+      },
+      {
+        "id": "05",
+        "name": "cloth-fragment-05",
+        "role": "cloth"
+      },
+      {
+        "id": "06",
+        "name": "steel-fragment-06",
+        "role": "protected"
+      },
+      {
+        "id": "07",
+        "name": "brown-fragment-07",
+        "role": "protected"
+      },
+      {
+        "id": "08",
+        "name": "cloth-fragment-08",
+        "role": "cloth"
+      },
+      {
+        "id": "09",
+        "name": "steel-fragment-09",
+        "role": "protected"
+      },
+      {
+        "id": "0a",
+        "name": "cloth-fragment-0a",
+        "role": "cloth"
+      },
+      {
+        "id": "0b",
+        "name": "left-shirt",
+        "role": "upper"
+      },
+      {
+        "id": "0c",
+        "name": "upper-fragment-0c",
+        "role": "upper"
+      },
+      {
+        "id": "0d",
+        "name": "cloth-fragment-0d",
+        "role": "cloth"
+      },
+      {
+        "id": "0e",
+        "name": "left-bracer",
+        "role": "upper"
+      },
+      {
+        "id": "0f",
+        "name": "stock",
+        "role": "protected"
+      },
+      {
+        "id": "10",
+        "name": "lower-hand",
+        "role": "protected"
+      },
+      {
+        "id": "11",
+        "name": "upper-fragment-11",
+        "role": "upper"
+      },
+      {
+        "id": "12",
+        "name": "upper-fragment-12",
+        "role": "upper"
+      },
+      {
+        "id": "13",
+        "name": "upper-hand",
+        "role": "protected"
+      },
+      {
+        "id": "14",
+        "name": "upper-fragment-14",
+        "role": "upper"
+      },
+      {
+        "id": "15",
+        "name": "cuirass",
+        "role": "upper"
+      },
+      {
+        "id": "16",
+        "name": "upper-fragment-16",
+        "role": "upper"
+      },
+      {
+        "id": "17",
+        "name": "steel-fragment-17",
+        "role": "protected"
+      },
+      {
+        "id": "18",
+        "name": "steel-fragment-18",
+        "role": "protected"
+      },
+      {
+        "id": "19",
+        "name": "cloth-fragment-19",
+        "role": "cloth"
+      },
+      {
+        "id": "1a",
+        "name": "right-shirt",
+        "role": "upper"
+      },
+      {
+        "id": "1b",
+        "name": "right-bracer",
+        "role": "upper"
+      },
+      {
+        "id": "1c",
+        "name": "upper-fragment-1c",
+        "role": "upper"
+      },
+      {
+        "id": "1d",
+        "name": "cloth-fragment-1d",
+        "role": "cloth"
+      },
+      {
+        "id": "1e",
+        "name": "left-leg",
+        "role": "lower"
+      },
+      {
+        "id": "1f",
+        "name": "apron",
+        "role": "lower"
+      },
+      {
+        "id": "20",
+        "name": "right-leg",
+        "role": "lower"
+      },
+      {
+        "id": "21",
+        "name": "lower-fragment-21",
+        "role": "lower"
+      },
+      {
+        "id": "22",
+        "name": "lower-fragment-22",
+        "role": "lower"
+      },
+      {
+        "id": "23",
+        "name": "cloth-fragment-23",
+        "role": "cloth"
+      },
+      {
+        "id": "24",
+        "name": "left-boot",
+        "role": "lower"
+      },
+      {
+        "id": "25",
+        "name": "right-boot",
+        "role": "lower"
+      }
+    ]
+  },
+  "dwarf-arquebus": {
+    "baseMatrixSha256": "fdedc907958c25d59a15158e7c2a5874124cda4835dce03c876f801d30c99d3a",
+    "surfaces": [
+      {
+        "id": "00",
+        "name": "helmet",
+        "role": "helmet"
+      },
+      {
+        "id": "01",
+        "name": "beard",
+        "role": "protected"
+      },
+      {
+        "id": "02",
+        "name": "face",
+        "role": "protected"
+      },
+      {
+        "id": "03",
+        "name": "barrel",
+        "role": "protected"
+      },
+      {
+        "id": "04",
+        "name": "cloth-fragment-04",
+        "role": "cloth"
+      },
+      {
+        "id": "05",
+        "name": "steel-fragment-05",
+        "role": "protected"
+      },
+      {
+        "id": "06",
+        "name": "stock",
+        "role": "protected"
+      },
+      {
+        "id": "07",
+        "name": "brown-fragment-07",
+        "role": "protected"
+      },
+      {
+        "id": "08",
+        "name": "brown-fragment-08",
+        "role": "protected"
+      },
+      {
+        "id": "09",
+        "name": "steel-fragment-09",
+        "role": "protected"
+      },
+      {
+        "id": "0a",
+        "name": "brown-fragment-0a",
+        "role": "protected"
+      },
+      {
+        "id": "0b",
+        "name": "left-shirt",
+        "role": "upper"
+      },
+      {
+        "id": "0c",
+        "name": "left-bracer",
+        "role": "upper"
+      },
+      {
+        "id": "0d",
+        "name": "upper-hand",
+        "role": "protected"
+      },
+      {
+        "id": "0e",
+        "name": "lower-hand",
+        "role": "protected"
+      },
+      {
+        "id": "0f",
+        "name": "brown-fragment-0f",
+        "role": "protected"
+      },
+      {
+        "id": "10",
+        "name": "upper-fragment-10",
+        "role": "upper"
+      },
+      {
+        "id": "11",
+        "name": "upper-fragment-11",
+        "role": "upper"
+      },
+      {
+        "id": "12",
+        "name": "right-shirt",
+        "role": "upper"
+      },
+      {
+        "id": "13",
+        "name": "right-bracer",
+        "role": "upper"
+      },
+      {
+        "id": "14",
+        "name": "upper-fragment-14",
+        "role": "upper"
+      },
+      {
+        "id": "15",
+        "name": "cuirass",
+        "role": "upper"
+      },
+      {
+        "id": "16",
+        "name": "upper-fragment-16",
+        "role": "upper"
+      },
+      {
+        "id": "17",
+        "name": "upper-fragment-17",
+        "role": "upper"
+      },
+      {
+        "id": "18",
+        "name": "lower-fragment-18",
+        "role": "lower"
+      },
+      {
+        "id": "19",
+        "name": "left-leg",
+        "role": "lower"
+      },
+      {
+        "id": "1a",
+        "name": "apron",
+        "role": "lower"
+      },
+      {
+        "id": "1b",
+        "name": "lower-fragment-1b",
+        "role": "lower"
+      },
+      {
+        "id": "1c",
+        "name": "right-leg",
+        "role": "lower"
+      },
+      {
+        "id": "1d",
+        "name": "lower-fragment-1d",
+        "role": "lower"
+      },
+      {
+        "id": "1e",
+        "name": "lower-fragment-1e",
+        "role": "lower"
+      },
+      {
+        "id": "1f",
+        "name": "lower-fragment-1f",
+        "role": "lower"
+      },
+      {
+        "id": "20",
+        "name": "cloth-fragment-20",
+        "role": "cloth"
+      },
+      {
+        "id": "21",
+        "name": "left-boot",
+        "role": "lower"
+      },
+      {
+        "id": "22",
+        "name": "right-boot",
+        "role": "lower"
+      }
+    ]
+  },
+  "dwarf-goat-rider": {
+    "baseMatrixSha256": "a878802a7075abeae406019529b4d457cce9c01d94350838ab70576483d71627",
+    "surfaces": [
+      {
+        "id": "00",
+        "name": "hammer-head",
+        "role": "protected"
+      },
+      {
+        "id": "01",
+        "name": "helmet",
+        "role": "helmet"
+      },
+      {
+        "id": "02",
+        "name": "brown-fragment-02",
+        "role": "protected"
+      },
+      {
+        "id": "03",
+        "name": "brown-fragment-03",
+        "role": "protected"
+      },
+      {
+        "id": "04",
+        "name": "face",
+        "role": "protected"
+      },
+      {
+        "id": "05",
+        "name": "brown-fragment-05",
+        "role": "protected"
+      },
+      {
+        "id": "06",
+        "name": "shaft",
+        "role": "protected"
+      },
+      {
+        "id": "07",
+        "name": "brown-fragment-07",
+        "role": "protected"
+      },
+      {
+        "id": "08",
+        "name": "upper-hand",
+        "role": "protected"
+      },
+      {
+        "id": "09",
+        "name": "cloth-fragment-09",
+        "role": "cloth"
+      },
+      {
+        "id": "0a",
+        "name": "beard",
+        "role": "protected"
+      },
+      {
+        "id": "0b",
+        "name": "cloth-fragment-0b",
+        "role": "cloth"
+      },
+      {
+        "id": "0c",
+        "name": "right-bracer",
+        "role": "upper"
+      },
+      {
+        "id": "0d",
+        "name": "brown-fragment-0d",
+        "role": "protected"
+      },
+      {
+        "id": "0e",
+        "name": "cloth-fragment-0e",
+        "role": "cloth"
+      },
+      {
+        "id": "0f",
+        "name": "right-cuff",
+        "role": "upper"
+      },
+      {
+        "id": "10",
+        "name": "upper-fragment-11",
+        "role": "upper"
+      },
+      {
+        "id": "11",
+        "name": "left-shirt",
+        "role": "upper"
+      },
+      {
+        "id": "12",
+        "name": "brown-fragment-13",
+        "role": "protected"
+      },
+      {
+        "id": "13",
+        "name": "upper-fragment-14",
+        "role": "upper"
+      },
+      {
+        "id": "14",
+        "name": "cloth-fragment-15",
+        "role": "cloth"
+      },
+      {
+        "id": "15",
+        "name": "horn",
+        "role": "protected"
+      },
+      {
+        "id": "16",
+        "name": "left-bracer",
+        "role": "upper"
+      },
+      {
+        "id": "17",
+        "name": "upper-fragment-19",
+        "role": "upper"
+      },
+      {
+        "id": "18",
+        "name": "lower-hand",
+        "role": "protected"
+      },
+      {
+        "id": "19",
+        "name": "cloth-fragment-1c",
+        "role": "cloth"
+      },
+      {
+        "id": "1a",
+        "name": "cuirass",
+        "role": "upper"
+      },
+      {
+        "id": "1b",
+        "name": "brown-fragment-1f",
+        "role": "protected"
+      },
+      {
+        "id": "1c",
+        "name": "lower-fragment-20",
+        "role": "lower"
+      },
+      {
+        "id": "1d",
+        "name": "brown-fragment-23",
+        "role": "protected"
+      },
+      {
+        "id": "1e",
+        "name": "brown-fragment-24",
+        "role": "protected"
+      },
+      {
+        "id": "1f",
+        "name": "brown-fragment-25",
+        "role": "protected"
+      },
+      {
+        "id": "20",
+        "name": "cream-fragment-26",
+        "role": "protected"
+      },
+      {
+        "id": "21",
+        "name": "trouser",
+        "role": "lower"
+      },
+      {
+        "id": "22",
+        "name": "lower-fragment-28",
+        "role": "lower"
+      },
+      {
+        "id": "23",
+        "name": "cloth-fragment-29",
+        "role": "cloth"
+      },
+      {
+        "id": "24",
+        "name": "cream-fragment-2a",
+        "role": "protected"
+      },
+      {
+        "id": "25",
+        "name": "brown-fragment-2b",
+        "role": "protected"
+      },
+      {
+        "id": "26",
+        "name": "lower-fragment-2c",
+        "role": "lower"
+      },
+      {
+        "id": "27",
+        "name": "mane",
+        "role": "protected"
+      },
+      {
+        "id": "28",
+        "name": "brown-fragment-2e",
+        "role": "protected"
+      },
+      {
+        "id": "29",
+        "name": "brown-fragment-2f",
+        "role": "protected"
+      },
+      {
+        "id": "2a",
+        "name": "brown-fragment-30",
+        "role": "protected"
+      },
+      {
+        "id": "2b",
+        "name": "cloth-fragment-31",
+        "role": "cloth"
+      },
+      {
+        "id": "2c",
+        "name": "brown-fragment-32",
+        "role": "protected"
+      },
+      {
+        "id": "2d",
+        "name": "saddle",
+        "role": "protected"
+      },
+      {
+        "id": "2e",
+        "name": "brown-fragment-34",
+        "role": "protected"
+      },
+      {
+        "id": "2f",
+        "name": "brown-fragment-35",
+        "role": "protected"
+      },
+      {
+        "id": "30",
+        "name": "fur",
+        "role": "protected"
+      },
+      {
+        "id": "31",
+        "name": "cream-fragment-37",
+        "role": "protected"
+      },
+      {
+        "id": "32",
+        "name": "cream-fragment-38",
+        "role": "protected"
+      },
+      {
+        "id": "33",
+        "name": "rider-boot",
+        "role": "lower"
+      },
+      {
+        "id": "34",
+        "name": "cream-fragment-3a",
+        "role": "protected"
+      },
+      {
+        "id": "35",
+        "name": "cream-fragment-3b",
+        "role": "protected"
+      },
+      {
+        "id": "36",
+        "name": "brown-fragment-3c",
+        "role": "protected"
+      },
+      {
+        "id": "37",
+        "name": "cream-fragment-3d",
+        "role": "protected"
+      },
+      {
+        "id": "38",
+        "name": "lower-fragment-3e",
+        "role": "lower"
+      },
+      {
+        "id": "39",
+        "name": "brown-fragment-3f",
+        "role": "protected"
+      },
+      {
+        "id": "3a",
+        "name": "brown-fragment-40",
+        "role": "protected"
+      },
+      {
+        "id": "3b",
+        "name": "cream-fragment-41",
+        "role": "protected"
+      },
+      {
+        "id": "3c",
+        "name": "brown-fragment-42",
+        "role": "protected"
+      },
+      {
+        "id": "3d",
+        "name": "brown-fragment-43",
+        "role": "protected"
+      },
+      {
+        "id": "3e",
+        "name": "brown-fragment-44",
+        "role": "protected"
+      },
+      {
+        "id": "3f",
+        "name": "brown-fragment-45",
+        "role": "protected"
+      },
+      {
+        "id": "40",
+        "name": "lower-fragment-46",
+        "role": "lower"
+      },
+      {
+        "id": "41",
+        "name": "cream-fragment-47",
+        "role": "protected"
+      },
+      {
+        "id": "42",
+        "name": "brown-fragment-48",
+        "role": "protected"
+      },
+      {
+        "id": "43",
+        "name": "cream-fragment-49",
+        "role": "protected"
+      },
+      {
+        "id": "44",
+        "name": "cream-fragment-4a",
+        "role": "protected"
+      },
+      {
+        "id": "45",
+        "name": "brown-fragment-4b",
+        "role": "protected"
+      },
+      {
+        "id": "46",
+        "name": "cloth-fragment-4c",
+        "role": "cloth"
+      },
+      {
+        "id": "47",
+        "name": "cloth-fragment-4d",
+        "role": "cloth"
+      },
+      {
+        "id": "48",
+        "name": "cream-fragment-4e",
+        "role": "protected"
+      },
+      {
+        "id": "49",
+        "name": "cloth-fragment-4f",
+        "role": "cloth"
+      },
+      {
+        "id": "4a",
+        "name": "brown-fragment-50",
+        "role": "protected"
+      },
+      {
+        "id": "4b",
+        "name": "brown-fragment-51",
+        "role": "protected"
+      },
+      {
+        "id": "4c",
+        "name": "brown-fragment-52",
+        "role": "protected"
+      },
+      {
+        "id": "4d",
+        "name": "cloth-fragment-53",
+        "role": "cloth"
+      },
+      {
+        "id": "4e",
+        "name": "brown-fragment-54",
+        "role": "protected"
+      },
+      {
+        "id": "4f",
+        "name": "brown-fragment-55",
+        "role": "protected"
+      },
+      {
+        "id": "50",
+        "name": "brown-fragment-56",
+        "role": "protected"
+      },
+      {
+        "id": "51",
+        "name": "brown-fragment-57",
+        "role": "protected"
+      },
+      {
+        "id": "52",
+        "name": "brown-fragment-58",
+        "role": "protected"
+      },
+      {
+        "id": "53",
+        "name": "brown-fragment-59",
+        "role": "protected"
+      },
+      {
+        "id": "54",
+        "name": "brown-fragment-5a",
+        "role": "protected"
+      },
+      {
+        "id": "55",
+        "name": "brown-fragment-5b",
+        "role": "protected"
+      },
+      {
+        "id": "56",
+        "name": "cream-fragment-5c",
+        "role": "protected"
+      },
+      {
+        "id": "57",
+        "name": "brown-fragment-5d",
+        "role": "protected"
+      },
+      {
+        "id": "58",
+        "name": "brown-fragment-5e",
+        "role": "protected"
+      },
+      {
+        "id": "59",
+        "name": "brown-fragment-5f",
+        "role": "protected"
+      },
+      {
+        "id": "5a",
+        "name": "brown-fragment-60",
+        "role": "protected"
+      },
+      {
+        "id": "5b",
+        "name": "brown-fragment-61",
+        "role": "protected"
+      },
+      {
+        "id": "5c",
+        "name": "brown-fragment-62",
+        "role": "protected"
+      },
+      {
+        "id": "5d",
+        "name": "brown-fragment-63",
+        "role": "protected"
+      },
+      {
+        "id": "5e",
+        "name": "brown-fragment-64",
+        "role": "protected"
+      }
+    ]
+  },
+  "dwarf-pistol-goat-rider": {
+    "baseMatrixSha256": "17e321d072b81d794599da21eb83a30fd6de3efbea83686922dd21d7e455ae4f",
+    "surfaces": [
+      {
+        "id": "00",
+        "name": "helmet",
+        "role": "helmet"
+      },
+      {
+        "id": "01",
+        "name": "steel-fragment-01",
+        "role": "protected"
+      },
+      {
+        "id": "02",
+        "name": "barrel",
+        "role": "protected"
+      },
+      {
+        "id": "03",
+        "name": "stock",
+        "role": "protected"
+      },
+      {
+        "id": "04",
+        "name": "steel-fragment-04",
+        "role": "protected"
+      },
+      {
+        "id": "05",
+        "name": "upper-hand",
+        "role": "protected"
+      },
+      {
+        "id": "06",
+        "name": "beard",
+        "role": "protected"
+      },
+      {
+        "id": "07",
+        "name": "face",
+        "role": "protected"
+      },
+      {
+        "id": "08",
+        "name": "cream-fragment-08",
+        "role": "protected"
+      },
+      {
+        "id": "09",
+        "name": "cloth-fragment-09",
+        "role": "cloth"
+      },
+      {
+        "id": "0a",
+        "name": "cloth-fragment-0a",
+        "role": "cloth"
+      },
+      {
+        "id": "0b",
+        "name": "right-bracer",
+        "role": "upper"
+      },
+      {
+        "id": "0c",
+        "name": "cream-fragment-0c",
+        "role": "protected"
+      },
+      {
+        "id": "0d",
+        "name": "steel-fragment-0d",
+        "role": "protected"
+      },
+      {
+        "id": "0e",
+        "name": "right-cuff",
+        "role": "upper"
+      },
+      {
+        "id": "0f",
+        "name": "skin-fragment-10",
+        "role": "protected"
+      },
+      {
+        "id": "10",
+        "name": "left-shirt",
+        "role": "upper"
+      },
+      {
+        "id": "11",
+        "name": "upper-fragment-12",
+        "role": "upper"
+      },
+      {
+        "id": "12",
+        "name": "cloth-fragment-15",
+        "role": "cloth"
+      },
+      {
+        "id": "13",
+        "name": "brown-fragment-17",
+        "role": "protected"
+      },
+      {
+        "id": "14",
+        "name": "left-bracer",
+        "role": "upper"
+      },
+      {
+        "id": "15",
+        "name": "cloth-fragment-1a",
+        "role": "cloth"
+      },
+      {
+        "id": "16",
+        "name": "upper-fragment-1b",
+        "role": "upper"
+      },
+      {
+        "id": "17",
+        "name": "horn",
+        "role": "protected"
+      },
+      {
+        "id": "18",
+        "name": "lower-hand",
+        "role": "protected"
+      },
+      {
+        "id": "19",
+        "name": "cloth-fragment-20",
+        "role": "cloth"
+      },
+      {
+        "id": "1a",
+        "name": "upper-fragment-21",
+        "role": "upper"
+      },
+      {
+        "id": "1b",
+        "name": "cream-fragment-22",
+        "role": "protected"
+      },
+      {
+        "id": "1c",
+        "name": "cloth-fragment-24",
+        "role": "cloth"
+      },
+      {
+        "id": "1d",
+        "name": "upper-fragment-25",
+        "role": "upper"
+      },
+      {
+        "id": "1e",
+        "name": "cuirass",
+        "role": "upper"
+      },
+      {
+        "id": "1f",
+        "name": "brown-fragment-27",
+        "role": "protected"
+      },
+      {
+        "id": "20",
+        "name": "lower-fragment-28",
+        "role": "lower"
+      },
+      {
+        "id": "21",
+        "name": "brown-fragment-29",
+        "role": "protected"
+      },
+      {
+        "id": "22",
+        "name": "cream-fragment-39",
+        "role": "lower"
+      },
+      {
+        "id": "23",
+        "name": "lower-fragment-2c",
+        "role": "lower"
+      },
+      {
+        "id": "24",
+        "name": "cloth-fragment-2d",
+        "role": "cloth"
+      },
+      {
+        "id": "25",
+        "name": "brown-fragment-2e",
+        "role": "protected"
+      },
+      {
+        "id": "26",
+        "name": "brown-fragment-2f",
+        "role": "protected"
+      },
+      {
+        "id": "27",
+        "name": "cream-fragment-30",
+        "role": "protected"
+      },
+      {
+        "id": "28",
+        "name": "brown-fragment-32",
+        "role": "protected"
+      },
+      {
+        "id": "29",
+        "name": "trouser",
+        "role": "lower"
+      },
+      {
+        "id": "2a",
+        "name": "brown-fragment-34",
+        "role": "protected"
+      },
+      {
+        "id": "2b",
+        "name": "cream-fragment-35",
+        "role": "protected"
+      },
+      {
+        "id": "2c",
+        "name": "brown-fragment-36",
+        "role": "protected"
+      },
+      {
+        "id": "2d",
+        "name": "cream-fragment-37",
+        "role": "protected"
+      },
+      {
+        "id": "2e",
+        "name": "saddle",
+        "role": "protected"
+      },
+      {
+        "id": "2f",
+        "name": "mane",
+        "role": "protected"
+      },
+      {
+        "id": "30",
+        "name": "cloth-fragment-3c",
+        "role": "cloth"
+      },
+      {
+        "id": "31",
+        "name": "brown-fragment-3d",
+        "role": "protected"
+      },
+      {
+        "id": "32",
+        "name": "fur",
+        "role": "protected"
+      },
+      {
+        "id": "33",
+        "name": "brown-fragment-3f",
+        "role": "protected"
+      },
+      {
+        "id": "34",
+        "name": "brown-fragment-40",
+        "role": "protected"
+      },
+      {
+        "id": "35",
+        "name": "cream-fragment-41",
+        "role": "protected"
+      },
+      {
+        "id": "36",
+        "name": "rider-boot",
+        "role": "lower"
+      },
+      {
+        "id": "37",
+        "name": "lower-fragment-43",
+        "role": "lower"
+      },
+      {
+        "id": "38",
+        "name": "cream-fragment-44",
+        "role": "protected"
+      },
+      {
+        "id": "39",
+        "name": "brown-fragment-45",
+        "role": "protected"
+      },
+      {
+        "id": "3a",
+        "name": "brown-fragment-46",
+        "role": "protected"
+      },
+      {
+        "id": "3b",
+        "name": "lower-fragment-47",
+        "role": "lower"
+      },
+      {
+        "id": "3c",
+        "name": "lower-fragment-48",
+        "role": "lower"
+      },
+      {
+        "id": "3d",
+        "name": "lower-fragment-49",
+        "role": "lower"
+      },
+      {
+        "id": "3e",
+        "name": "lower-fragment-4a",
+        "role": "lower"
+      },
+      {
+        "id": "3f",
+        "name": "cream-fragment-4b",
+        "role": "protected"
+      },
+      {
+        "id": "40",
+        "name": "brown-fragment-4c",
+        "role": "protected"
+      },
+      {
+        "id": "41",
+        "name": "cloth-fragment-4d",
+        "role": "cloth"
+      },
+      {
+        "id": "42",
+        "name": "lower-fragment-4e",
+        "role": "lower"
+      },
+      {
+        "id": "43",
+        "name": "cream-fragment-4f",
+        "role": "protected"
+      },
+      {
+        "id": "44",
+        "name": "cloth-fragment-50",
+        "role": "cloth"
+      },
+      {
+        "id": "45",
+        "name": "brown-fragment-51",
+        "role": "protected"
+      },
+      {
+        "id": "46",
+        "name": "brown-fragment-52",
+        "role": "protected"
+      },
+      {
+        "id": "47",
+        "name": "brown-fragment-53",
+        "role": "protected"
+      },
+      {
+        "id": "48",
+        "name": "cloth-fragment-54",
+        "role": "cloth"
+      },
+      {
+        "id": "49",
+        "name": "brown-fragment-55",
+        "role": "protected"
+      },
+      {
+        "id": "4a",
+        "name": "brown-fragment-56",
+        "role": "protected"
+      },
+      {
+        "id": "4b",
+        "name": "brown-fragment-57",
+        "role": "protected"
+      },
+      {
+        "id": "4c",
+        "name": "cream-fragment-58",
+        "role": "protected"
+      },
+      {
+        "id": "4d",
+        "name": "cream-fragment-59",
+        "role": "protected"
+      },
+      {
+        "id": "4e",
+        "name": "brown-fragment-5a",
+        "role": "protected"
+      },
+      {
+        "id": "4f",
+        "name": "brown-fragment-5b",
+        "role": "protected"
+      },
+      {
+        "id": "50",
+        "name": "brown-fragment-5c",
+        "role": "protected"
+      },
+      {
+        "id": "51",
+        "name": "brown-fragment-5d",
+        "role": "protected"
+      },
+      {
+        "id": "52",
+        "name": "brown-fragment-5e",
+        "role": "protected"
+      },
+      {
+        "id": "53",
+        "name": "brown-fragment-5f",
+        "role": "protected"
+      },
+      {
+        "id": "54",
+        "name": "brown-fragment-60",
+        "role": "protected"
+      },
+      {
+        "id": "55",
+        "name": "brown-fragment-61",
+        "role": "protected"
+      },
+      {
+        "id": "56",
+        "name": "brown-fragment-62",
+        "role": "protected"
+      },
+      {
+        "id": "57",
+        "name": "brown-fragment-63",
+        "role": "protected"
+      },
+      {
+        "id": "58",
+        "name": "brown-fragment-64",
+        "role": "protected"
+      },
+      {
+        "id": "59",
+        "name": "brown-fragment-65",
+        "role": "protected"
+      }
+    ]
+  }
+}

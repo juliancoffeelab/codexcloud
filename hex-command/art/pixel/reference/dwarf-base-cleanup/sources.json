@@ -20,5 +20,12 @@
     "steel": "MaA"
   },
   "runeLine": "Excluded",
-  "advancedTiers": "Deferred; preserved as historical studies"
+  "advancedTiers": "Whole-surface upgrades in dwarf-upgrades; old progression archived",
+  "branchReferences": {
+    "dwarf-axe-pick": "dwarf-axeguard",
+    "dwarf-hammerer": "dwarf-pickaxe",
+    "dwarf-poleaxe": "dwarf-pickaxe",
+    "dwarf-arquebus": "dwarf-crossbow",
+    "dwarf-pistol-goat-rider": "dwarf-goat-rider"
+  }
 }

@@ -1,6 +1,6 @@
 {
   "rule": "Exact RGBA match at left/right/up/down; black pixels beside transparent neighbours are excluded by default",
-  "specificReviewedMaterialAndInteriorSpecks": 45,
+  "specificReviewedMaterialAndInteriorSpecks": 67,
   "units": {
     "dwarf-arquebus": {
       "beforeIncludingExteriorBlack": 102,
@@ -35,8 +35,8 @@
     "dwarf-goat-rider": {
       "beforeIncludingExteriorBlack": 227,
       "beforeIgnoringExteriorBlack": 193,
-      "afterIncludingExteriorBlack": 121,
-      "afterIgnoringExteriorBlack": 87,
+      "afterIncludingExteriorBlack": 117,
+      "afterIgnoringExteriorBlack": 83,
       "namedIndependentParts": 18
     },
     "dwarf-hammerer": {
@@ -56,17 +56,19 @@
     "dwarf-pistol-goat-rider": {
       "beforeIncludingExteriorBlack": 187,
       "beforeIgnoringExteriorBlack": 163,
-      "afterIncludingExteriorBlack": 97,
-      "afterIgnoringExteriorBlack": 73,
+      "afterIncludingExteriorBlack": 89,
+      "afterIgnoringExteriorBlack": 65,
       "namedIndependentParts": 18
     },
     "dwarf-poleaxe": {
       "beforeIncludingExteriorBlack": 147,
       "beforeIgnoringExteriorBlack": 118,
-      "afterIncludingExteriorBlack": 74,
-      "afterIgnoringExteriorBlack": 45,
+      "afterIncludingExteriorBlack": 73,
+      "afterIgnoringExteriorBlack": 44,
       "namedIndependentParts": 17
     }
   },
-  "remaining": "Suspect pixels, including eyes, internal diagonal boundaries, thin shafts and fittings. These are flags for visual review, not proof that a pixel must be removed."
+  "remaining": "Suspect pixels, including eyes, internal diagonal boundaries, thin shafts and fittings. These are flags for visual review, not proof that a pixel must be removed.",
+  "reviewedSkinFlecksCovered": 22,
+  "reviewedForearmPixelsCovered": 31
 }

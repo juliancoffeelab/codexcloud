@@ -26,5 +26,205 @@
     "from": "O",
     "to": "B",
     "reason": "Isolated dark speck inside cuirass: all eight neighbours are brown; outside face and boundaries"
+  },
+  {
+    "x": 21,
+    "y": 34,
+    "from": "h",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 16,
+    "y": 35,
+    "from": "H",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 17,
+    "y": 35,
+    "from": "H",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 18,
+    "y": 35,
+    "from": "H",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 19,
+    "y": 35,
+    "from": "H",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 20,
+    "y": 35,
+    "from": "H",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 21,
+    "y": 35,
+    "from": "h",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 43,
+    "y": 35,
+    "from": "h",
+    "to": "B",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 16,
+    "y": 36,
+    "from": "H",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 17,
+    "y": 36,
+    "from": "H",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 18,
+    "y": 36,
+    "from": "H",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 19,
+    "y": 36,
+    "from": "H",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 20,
+    "y": 36,
+    "from": "H",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 21,
+    "y": 36,
+    "from": "h",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 41,
+    "y": 36,
+    "from": "H",
+    "to": "B",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 42,
+    "y": 36,
+    "from": "H",
+    "to": "B",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 43,
+    "y": 36,
+    "from": "h",
+    "to": "B",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 16,
+    "y": 37,
+    "from": "H",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 17,
+    "y": 37,
+    "from": "H",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 18,
+    "y": 37,
+    "from": "H",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 40,
+    "y": 37,
+    "from": "h",
+    "to": "B",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 41,
+    "y": 37,
+    "from": "h",
+    "to": "B",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 42,
+    "y": 37,
+    "from": "h",
+    "to": "B",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 16,
+    "y": 38,
+    "from": "h",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
+  },
+  {
+    "x": 17,
+    "y": 38,
+    "from": "h",
+    "to": "I",
+    "feature": "arm-covering",
+    "reason": "Requested complete forearm sleeve/guard coverage"
   }
 ]

@@ -157,7 +157,7 @@
       "rgba": [25, 22, 20, 255]
     }
   ],
-  "art/pixel/units/dwarf-axe-pick/player.txt": [
+  "art/pixel/reference/dwarf-branch-references/units/dwarf-axe-pick/player.txt": [
     {
       "x": 31,
       "y": 23,
@@ -533,7 +533,7 @@
       "rgba": [25, 22, 20, 255]
     }
   ],
-  "art/pixel/units/dwarf-hammerer/player.txt": [
+  "art/pixel/reference/dwarf-branch-references/units/dwarf-hammerer/player.txt": [
     {
       "x": 28,
       "y": 26,
@@ -619,7 +619,7 @@
       "rgba": [25, 22, 20, 255]
     }
   ],
-  "art/pixel/units/dwarf-poleaxe/player.txt": [
+  "art/pixel/reference/dwarf-branch-references/units/dwarf-poleaxe/player.txt": [
     {
       "x": 39,
       "y": 17,
@@ -649,12 +649,6 @@
       "y": 29,
       "symbol": "O",
       "rgba": [25, 22, 20, 255]
-    },
-    {
-      "x": 25,
-      "y": 29,
-      "symbol": "h",
-      "rgba": [177, 118, 81, 255]
     },
     {
       "x": 17,
@@ -1061,7 +1055,7 @@
       "rgba": [111, 72, 43, 255]
     }
   ],
-  "art/pixel/units/dwarf-arquebus/player.txt": [
+  "art/pixel/reference/dwarf-branch-references/units/dwarf-arquebus/player.txt": [
     {
       "x": 20,
       "y": 22,
@@ -1353,12 +1347,6 @@
       "rgba": [25, 22, 20, 255]
     },
     {
-      "x": 17,
-      "y": 24,
-      "symbol": "I",
-      "rgba": [240, 229, 198, 255]
-    },
-    {
       "x": 30,
       "y": 24,
       "symbol": "T",
@@ -1371,12 +1359,6 @@
       "rgba": [25, 22, 20, 255]
     },
     {
-      "x": 18,
-      "y": 25,
-      "symbol": "I",
-      "rgba": [240, 229, 198, 255]
-    },
-    {
       "x": 27,
       "y": 26,
       "symbol": "O",
@@ -1387,18 +1369,6 @@
       "y": 26,
       "symbol": "B",
       "rgba": [111, 72, 43, 255]
-    },
-    {
-      "x": 27,
-      "y": 27,
-      "symbol": "B",
-      "rgba": [111, 72, 43, 255]
-    },
-    {
-      "x": 28,
-      "y": 27,
-      "symbol": "H",
-      "rgba": [247, 190, 140, 255]
     },
     {
       "x": 53,
@@ -1767,7 +1737,7 @@
       "rgba": [111, 72, 43, 255]
     }
   ],
-  "art/pixel/units/dwarf-pistol-goat-rider/player.txt": [
+  "art/pixel/reference/dwarf-branch-references/units/dwarf-pistol-goat-rider/player.txt": [
     {
       "x": 43,
       "y": 13,
@@ -1829,18 +1799,6 @@
       "rgba": [25, 22, 20, 255]
     },
     {
-      "x": 16,
-      "y": 20,
-      "symbol": "H",
-      "rgba": [247, 190, 140, 255]
-    },
-    {
-      "x": 21,
-      "y": 20,
-      "symbol": "H",
-      "rgba": [247, 190, 140, 255]
-    },
-    {
       "x": 23,
       "y": 20,
       "symbol": "T",
@@ -1853,34 +1811,16 @@
       "rgba": [25, 22, 20, 255]
     },
     {
-      "x": 19,
-      "y": 21,
-      "symbol": "H",
-      "rgba": [247, 190, 140, 255]
-    },
-    {
       "x": 24,
       "y": 21,
       "symbol": "T",
       "rgba": [5, 100, 111, 255]
     },
     {
-      "x": 18,
-      "y": 22,
-      "symbol": "H",
-      "rgba": [247, 190, 140, 255]
-    },
-    {
       "x": 13,
       "y": 23,
       "symbol": "O",
       "rgba": [25, 22, 20, 255]
-    },
-    {
-      "x": 17,
-      "y": 23,
-      "symbol": "H",
-      "rgba": [247, 190, 140, 255]
     },
     {
       "x": 30,
@@ -1899,12 +1839,6 @@
       "y": 24,
       "symbol": "O",
       "rgba": [25, 22, 20, 255]
-    },
-    {
-      "x": 17,
-      "y": 24,
-      "symbol": "I",
-      "rgba": [240, 229, 198, 255]
     },
     {
       "x": 29,
@@ -1931,12 +1865,6 @@
       "rgba": [111, 72, 43, 255]
     },
     {
-      "x": 26,
-      "y": 29,
-      "symbol": "I",
-      "rgba": [240, 229, 198, 255]
-    },
-    {
       "x": 35,
       "y": 29,
       "symbol": "O",
@@ -1953,12 +1881,6 @@
       "y": 30,
       "symbol": "B",
       "rgba": [111, 72, 43, 255]
-    },
-    {
-      "x": 19,
-      "y": 31,
-      "symbol": "I",
-      "rgba": [240, 229, 198, 255]
     },
     {
       "x": 30,

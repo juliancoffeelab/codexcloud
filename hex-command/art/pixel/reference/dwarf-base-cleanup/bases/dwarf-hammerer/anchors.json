@@ -27,19 +27,19 @@
     "name": "left-bracer",
     "material": "brown",
     "seed": [19, 37],
-    "region": "13"
+    "region": "11"
   },
   {
     "name": "left-wrist",
     "material": "brown",
     "seed": [21, 41],
-    "region": "15"
+    "region": "13"
   },
   {
     "name": "lower-hand",
     "material": "skin",
     "seed": [25, 42],
-    "region": "16"
+    "region": "14"
   },
   {
     "name": "upper-hand",
@@ -57,37 +57,37 @@
     "name": "right-cuirass",
     "material": "brown",
     "seed": [35, 38],
-    "region": "14"
+    "region": "12"
   },
   {
     "name": "apron",
     "material": "brown",
     "seed": [30, 45],
-    "region": "17"
+    "region": "15"
   },
   {
     "name": "right-leg",
     "material": "brown",
     "seed": [39, 46],
-    "region": "18"
+    "region": "16"
   },
   {
     "name": "left-leg",
     "material": "brown",
     "seed": [20, 48],
-    "region": "1c"
+    "region": "1a"
   },
   {
     "name": "left-boot",
     "material": "brown",
     "seed": [16, 52],
-    "region": "1d"
+    "region": "1b"
   },
   {
     "name": "right-boot",
     "material": "brown",
     "seed": [41, 52],
-    "region": "1e"
+    "region": "1c"
   },
   {
     "name": "shaft",

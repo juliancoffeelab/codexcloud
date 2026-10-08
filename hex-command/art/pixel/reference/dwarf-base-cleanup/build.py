@@ -10,9 +10,15 @@ import sys
 HERE = Path(__file__).resolve().parent
 PROJECT = HERE.parents[3]
 UNITS = PROJECT / "art/pixel/units"
+REFERENCES = HERE.parent / "dwarf-branch-references/units"
 # A shade is part of its main colour, never a separate edge/fill region.
 MATERIALS = {"brown": "Bb", "skin": "Hh", "cream": "Ii", "cloth": "TtRr", "steel": "MaA"}
 OWNER = {symbol: material for material, symbols in MATERIALS.items() for symbol in symbols}
+
+
+def source_directory(unit, destination=UNITS):
+    references = json.loads((HERE / "sources.json").read_text())["branchReferences"]
+    return (REFERENCES if destination == UNITS and unit in references else destination) / unit
 
 
 def surfaces(rows):
@@ -81,7 +87,15 @@ def verify_anchors(rows, anchors):
 
 def verify_original_details(original, rows, reviewed):
     eyes = set()
+    skin_flecks = set()
     for edit in reviewed:
+        if edit.get("feature") in {"skin-fleck", "arm-covering"}:
+            x, y = edit["x"], edit["y"]
+            if (edit["from"] not in "Hh" or edit["to"] not in "BbIi"
+                    or original[y][x] not in ("HhBb" if edit.get("feature") == "arm-covering" else "Hh")
+                    or rows[y][x] != edit["to"]):
+                raise ValueError("Reviewed skin fleck must take the adjacent garment or brown material")
+            skin_flecks.add((x, y))
         if edit.get("feature") != "eye":
             continue
         x, y = edit["x"], edit["y"]
@@ -109,7 +123,7 @@ def verify_original_details(original, rows, reviewed):
     normal = [row.translate(str.maketrans({c: "B" for c in "VvWwGE"})) for row in original]
     for material, points in surfaces(normal):
         if material == "skin" and len(points) >= 3:
-            if any(OWNER.get(rows[y][x]) != "skin" and (x, y) not in eyes for x, y in points):
+            if any(OWNER.get(rows[y][x]) != "skin" and (x, y) not in eyes | skin_flecks for x, y in points):
                 raise ValueError("Cleanup swallowed an original face, hand or bare arm")
 
 
@@ -121,7 +135,7 @@ def run(ids, destination, check=False):
     matrices = []
     for pose in chosen:
         unit = "dwarf-" + pose
-        source, out = HERE / "bases" / unit, destination / unit
+        source, out = HERE / "bases" / unit, source_directory(unit, destination)
         rows = (source / "player.mask").read_text().splitlines()
         original = (HERE.parent / "dwarf-progression/bases" / unit / "player.txt").read_text().splitlines()
         if len(rows) != 64 or any(len(row) != 64 for row in rows):
@@ -152,7 +166,7 @@ def run(ids, destination, check=False):
                  "leather, beard and wood share the brown ramp. Cream cloth, faction cloth and steel "
                  "have separate ramps.\n\nThe native source and detected fill regions live in "
                  f"`art/pixel/reference/dwarf-base-cleanup/bases/{unit}/`. "
-                 "Run that folder's `build.py` from the project root. Advanced tiers are deferred; "
+                 "Run that folder's `build.py` from the project root. Whole-surface upgrades use `dwarf-upgrades/build.py`; "
                  "the rune line is excluded.\n"}
         if not check:
             out.mkdir(parents=True, exist_ok=True)

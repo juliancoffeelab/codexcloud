@@ -4,35 +4,35 @@
     "image": "art/pixel/units/dwarf-axeguard/player.png"
   },
   {
-    "label": "dwarf-axe-pick",
-    "image": "art/pixel/units/dwarf-axe-pick/player.png"
+    "label": "dwarf-axe-pick (branch reference)",
+    "image": "art/pixel/reference/dwarf-branch-references/units/dwarf-axe-pick/player.png"
   },
   {
     "label": "dwarf-pickaxe",
     "image": "art/pixel/units/dwarf-pickaxe/player.png"
   },
   {
-    "label": "dwarf-hammerer",
-    "image": "art/pixel/units/dwarf-hammerer/player.png"
+    "label": "dwarf-hammerer (branch reference)",
+    "image": "art/pixel/reference/dwarf-branch-references/units/dwarf-hammerer/player.png"
   },
   {
-    "label": "dwarf-poleaxe",
-    "image": "art/pixel/units/dwarf-poleaxe/player.png"
+    "label": "dwarf-poleaxe (branch reference)",
+    "image": "art/pixel/reference/dwarf-branch-references/units/dwarf-poleaxe/player.png"
   },
   {
     "label": "dwarf-crossbow",
     "image": "art/pixel/units/dwarf-crossbow/player.png"
   },
   {
-    "label": "dwarf-arquebus",
-    "image": "art/pixel/units/dwarf-arquebus/player.png"
+    "label": "dwarf-arquebus (branch reference)",
+    "image": "art/pixel/reference/dwarf-branch-references/units/dwarf-arquebus/player.png"
   },
   {
     "label": "dwarf-goat-rider",
     "image": "art/pixel/units/dwarf-goat-rider/player.png"
   },
   {
-    "label": "dwarf-pistol-goat-rider",
-    "image": "art/pixel/units/dwarf-pistol-goat-rider/player.png"
+    "label": "dwarf-pistol-goat-rider (branch reference)",
+    "image": "art/pixel/reference/dwarf-branch-references/units/dwarf-pistol-goat-rider/player.png"
   }
 ]

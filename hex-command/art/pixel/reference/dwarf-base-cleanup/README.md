@@ -3,11 +3,13 @@
 [Base review grid](lineup-player.png) · [Independent fills](fill-regions.png) ·
 [Marked suspect pixels](isolated-pixels.png).
 
-The nine non-rune L1 poses have their equipment and colours restored from before
+The nine non-rune starter/reference poses have their equipment and colours restored from before
 the rejected armour progression. Their silhouettes and native 64×64 canvases
 remain unchanged. This pass cleans the existing designs; it does not advance
 them into leather or silver armour. The scout is the palette/linework reference.
-The rune family is excluded for the separate Thundersmith / Enchanter idea.
+Four are active L1 starters; five are saved as
+[branch pose references](../dwarf-branch-references/README.md). The rune family is
+excluded for the separate Thundersmith / Enchanter idea.
 
 Faces and hands share one skin colour and shadow. Leather, hair and wood share
 one brown colour and shadow. Cream fabric, faction cloth and steel have their
@@ -17,11 +19,16 @@ The crossbowman and arquebusier each have one added eye toward their weapon,
 recorded explicitly in `reviewed-specks.json`; their original eyes remain.
 Only two reviewed, enclosed dark specks in cuirasses are removed. Isolated shades
 join a neighbouring shade of the same material; this does not erase a boundary.
-`reviewed-specks.json` records 45 specific material/ink corrections across the
+`reviewed-specks.json` records 67 specific material/ink corrections across the
 poses, including stray skin in sleeves, brown in steel and teal in the pick head. Forearm, apron, trouser
 and boot seams separate pieces that had merged into large brown fields. Steel
 helmets, weapon heads, shoulder fittings and the axeguard shield retain their
 pre-progression materials.
+The later 22 skin-fleck corrections cover shirt edges, cuffs, trouser cloth,
+one cuirass speck and one beard speck with adjacent cream/brown materials.
+Their exact pixels become gold inlays in L3; faces and grips remain skin.
+Another 31 requested forearm pixels on the hammerer and goat hammerer are covered
+with cloth/leather sleeves and guards, then armour in advanced tiers.
 
 ## Source and fills
 
@@ -47,7 +54,8 @@ outlines and transparency. `--check` compares region coverage as well as the exa
 canonical matrices, palettes and PNGs. It rejects a changed material boundary or
 a gap that joins previously separated parts. Original facial/contour pixels are
 protected, with explicit guarded exceptions for the two interior ink specks;
-connected original skin fields cannot be swallowed by armour. The two reviewed
+connected original skin fields cannot be swallowed by armour, except for the
+explicitly recorded garment flecks. The two reviewed
 eye additions are single facial pixels below the helmet, with skin on either
 side and beneath. Pixel/PNG equality alone cannot
 establish visual quality, so inspect the grid after any source edit.
@@ -62,7 +70,9 @@ same material still count as different colours for this check.
 
 The filtered count dropped from **964 to 363** after the speck pass. The unfiltered
 count dropped from 1,161 to 559. Adding the two eyes subsequently brings the
-current counts to **365 filtered / 561 unfiltered**. The remaining suspects are marked in red in the
+counts to 365 filtered / 561 unfiltered. Covering the 22 skin flecks brings the
+counts to 354 filtered / 550 unfiltered. The requested forearm coverage brings
+the current counts to **352 filtered / 548 unfiltered**. The remaining suspects are marked in red in the
 [review sheet](isolated-pixels.png), with native coordinates and colours in
 [isolated-pixels.json](isolated-pixels.json). The counts are recorded in
 [check-summary.json](check-summary.json). Eyes, internal diagonal boundaries,
@@ -86,9 +96,10 @@ npm run style
 
 After a reviewed source edit, update its palette and explicitly record the new
 regions with `build.py dwarf-axeguard --record-parts`, then inspect and check them.
-The faction expansion `process.cjs tiers` command rebuilds these bases only.
+The faction expansion `process.cjs tiers` command rebuilds these sources and their
+[whole-surface branch upgrades](../dwarf-upgrades/README.md).
 The rejected L2/L3 study is frozen and its former builder refuses to write art.
-New advanced tiers should wait until the base designs are reviewed.
+The current upgrades use the detected fills, keeping the older study separate.
 
 Regenerate all three review boards and the suspect-pixel report without editing sources:
 

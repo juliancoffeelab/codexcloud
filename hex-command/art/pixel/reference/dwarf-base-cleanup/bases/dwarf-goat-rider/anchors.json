@@ -21,19 +21,19 @@
     "name": "left-shirt",
     "material": "cream",
     "seed": [19, 21],
-    "region": "12"
+    "region": "11"
   },
   {
     "name": "left-bracer",
     "material": "brown",
     "seed": [20, 24],
-    "region": "18"
+    "region": "16"
   },
   {
     "name": "lower-hand",
     "material": "skin",
     "seed": [25, 24],
-    "region": "1a"
+    "region": "18"
   },
   {
     "name": "right-cuff",
@@ -57,43 +57,43 @@
     "name": "cuirass",
     "material": "brown",
     "seed": [27, 27],
-    "region": "21"
+    "region": "1a"
   },
   {
     "name": "trouser",
     "material": "cream",
     "seed": [24, 30],
-    "region": "27"
+    "region": "21"
   },
   {
     "name": "rider-boot",
     "material": "brown",
     "seed": [25, 36],
-    "region": "39"
+    "region": "33"
   },
   {
     "name": "saddle",
     "material": "brown",
     "seed": [16, 36],
-    "region": "33"
+    "region": "2d"
   },
   {
     "name": "horn",
     "material": "brown",
     "seed": [45, 23],
-    "region": "16"
+    "region": "15"
   },
   {
     "name": "mane",
     "material": "brown",
     "seed": [30, 37],
-    "region": "2d"
+    "region": "27"
   },
   {
     "name": "fur",
     "material": "cream",
     "seed": [34, 35],
-    "region": "36"
+    "region": "30"
   },
   {
     "name": "shaft",

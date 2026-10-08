@@ -1,3246 +1,2984 @@
 {
-  "base": "dwarf-axe-pick",
-  "source": "dwarf-progression/bases/dwarf-axe-pick",
+  "base": "dwarf-axeguard",
+  "poseReference": "dwarf-axe-pick",
   "level": 2,
+  "source": "dwarf-upgrades/regions.json",
   "changes": [
     {
       "x": 30,
       "y": 17,
       "from": "M",
       "to": "P",
-      "part": "K"
+      "part": "helmet",
+      "region": "01"
     },
     {
       "x": 31,
       "y": 17,
       "from": "M",
       "to": "P",
-      "part": "K"
-    },
-    {
-      "x": 32,
-      "y": 17,
-      "from": "A",
-      "to": "S",
-      "part": "K"
-    },
-    {
-      "x": 44,
-      "y": 17,
-      "from": "a",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 28,
-      "y": 18,
-      "from": "a",
-      "to": "p",
-      "part": "K"
-    },
-    {
-      "x": 29,
-      "y": 18,
-      "from": "a",
-      "to": "p",
-      "part": "K"
+      "part": "helmet",
+      "region": "01"
     },
     {
       "x": 30,
       "y": 18,
       "from": "M",
       "to": "P",
-      "part": "K"
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 32,
+      "y": 17,
+      "from": "A",
+      "to": "S",
+      "part": "helmet",
+      "region": "01"
     },
     {
       "x": 31,
       "y": 18,
       "from": "M",
       "to": "P",
-      "part": "K"
-    },
-    {
-      "x": 32,
-      "y": 18,
-      "from": "A",
-      "to": "S",
-      "part": "K"
-    },
-    {
-      "x": 33,
-      "y": 18,
-      "from": "A",
-      "to": "S",
-      "part": "K"
-    },
-    {
-      "x": 28,
-      "y": 19,
-      "from": "a",
-      "to": "p",
-      "part": "K"
+      "part": "helmet",
+      "region": "01"
     },
     {
       "x": 29,
-      "y": 19,
+      "y": 18,
       "from": "a",
       "to": "p",
-      "part": "K"
+      "part": "helmet",
+      "region": "01"
     },
     {
       "x": 30,
       "y": 19,
       "from": "M",
       "to": "P",
-      "part": "K"
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 32,
+      "y": 18,
+      "from": "A",
+      "to": "S",
+      "part": "helmet",
+      "region": "01"
     },
     {
       "x": 31,
       "y": 19,
       "from": "M",
       "to": "P",
-      "part": "K"
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 28,
+      "y": 18,
+      "from": "a",
+      "to": "p",
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 29,
+      "y": 19,
+      "from": "a",
+      "to": "p",
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 30,
+      "y": 20,
+      "from": "M",
+      "to": "P",
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 33,
+      "y": 18,
+      "from": "A",
+      "to": "S",
+      "part": "helmet",
+      "region": "01"
     },
     {
       "x": 32,
       "y": 19,
       "from": "A",
       "to": "S",
-      "part": "K"
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 31,
+      "y": 20,
+      "from": "M",
+      "to": "P",
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 28,
+      "y": 19,
+      "from": "a",
+      "to": "p",
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 29,
+      "y": 20,
+      "from": "a",
+      "to": "p",
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 30,
+      "y": 21,
+      "from": "M",
+      "to": "P",
+      "part": "helmet",
+      "region": "01"
     },
     {
       "x": 33,
       "y": 19,
       "from": "A",
       "to": "S",
-      "part": "K"
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 32,
+      "y": 20,
+      "from": "M",
+      "to": "P",
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 31,
+      "y": 21,
+      "from": "M",
+      "to": "P",
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 28,
+      "y": 20,
+      "from": "a",
+      "to": "p",
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 29,
+      "y": 21,
+      "from": "a",
+      "to": "p",
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 30,
+      "y": 22,
+      "from": "a",
+      "to": "p",
+      "part": "helmet",
+      "region": "01"
     },
     {
       "x": 34,
       "y": 19,
       "from": "A",
       "to": "S",
-      "part": "K"
-    },
-    {
-      "x": 35,
-      "y": 19,
-      "from": "M",
-      "to": "P",
-      "part": "K"
-    },
-    {
-      "x": 52,
-      "y": 19,
-      "from": "E",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 28,
-      "y": 20,
-      "from": "a",
-      "to": "p",
-      "part": "K"
-    },
-    {
-      "x": 29,
-      "y": 20,
-      "from": "a",
-      "to": "p",
-      "part": "K"
-    },
-    {
-      "x": 30,
-      "y": 20,
-      "from": "M",
-      "to": "P",
-      "part": "K"
-    },
-    {
-      "x": 31,
-      "y": 20,
-      "from": "M",
-      "to": "P",
-      "part": "K"
-    },
-    {
-      "x": 32,
-      "y": 20,
-      "from": "M",
-      "to": "P",
-      "part": "K"
+      "part": "helmet",
+      "region": "01"
     },
     {
       "x": 33,
       "y": 20,
       "from": "M",
       "to": "P",
-      "part": "K"
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 32,
+      "y": 21,
+      "from": "M",
+      "to": "P",
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 31,
+      "y": 22,
+      "from": "a",
+      "to": "p",
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 28,
+      "y": 21,
+      "from": "a",
+      "to": "p",
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 29,
+      "y": 22,
+      "from": "a",
+      "to": "p",
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 35,
+      "y": 19,
+      "from": "M",
+      "to": "P",
+      "part": "helmet",
+      "region": "01"
     },
     {
       "x": 34,
       "y": 20,
       "from": "M",
       "to": "P",
-      "part": "K"
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 33,
+      "y": 21,
+      "from": "M",
+      "to": "P",
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 32,
+      "y": 22,
+      "from": "a",
+      "to": "p",
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 27,
+      "y": 21,
+      "from": "a",
+      "to": "p",
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 28,
+      "y": 22,
+      "from": "a",
+      "to": "p",
+      "part": "helmet",
+      "region": "01"
     },
     {
       "x": 35,
       "y": 20,
       "from": "M",
       "to": "P",
-      "part": "K"
+      "part": "helmet",
+      "region": "01"
     },
     {
-      "x": 53,
-      "y": 20,
-      "from": "E",
+      "x": 34,
+      "y": 21,
+      "from": "M",
+      "to": "P",
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 33,
+      "y": 22,
+      "from": "a",
       "to": "p",
-      "part": "C"
+      "part": "helmet",
+      "region": "01"
     },
     {
       "x": 26,
       "y": 21,
       "from": "a",
       "to": "p",
-      "part": "K"
-    },
-    {
-      "x": 27,
-      "y": 21,
-      "from": "a",
-      "to": "p",
-      "part": "K"
-    },
-    {
-      "x": 28,
-      "y": 21,
-      "from": "a",
-      "to": "p",
-      "part": "K"
-    },
-    {
-      "x": 29,
-      "y": 21,
-      "from": "a",
-      "to": "p",
-      "part": "K"
-    },
-    {
-      "x": 30,
-      "y": 21,
-      "from": "M",
-      "to": "P",
-      "part": "K"
-    },
-    {
-      "x": 31,
-      "y": 21,
-      "from": "M",
-      "to": "P",
-      "part": "K"
-    },
-    {
-      "x": 32,
-      "y": 21,
-      "from": "M",
-      "to": "P",
-      "part": "K"
-    },
-    {
-      "x": 33,
-      "y": 21,
-      "from": "M",
-      "to": "P",
-      "part": "K"
-    },
-    {
-      "x": 34,
-      "y": 21,
-      "from": "M",
-      "to": "P",
-      "part": "K"
-    },
-    {
-      "x": 35,
-      "y": 21,
-      "from": "M",
-      "to": "P",
-      "part": "K"
-    },
-    {
-      "x": 36,
-      "y": 21,
-      "from": "M",
-      "to": "P",
-      "part": "K"
+      "part": "helmet",
+      "region": "01"
     },
     {
       "x": 27,
       "y": 22,
       "from": "a",
       "to": "p",
-      "part": "K"
+      "part": "helmet",
+      "region": "01"
     },
     {
-      "x": 28,
-      "y": 22,
-      "from": "a",
-      "to": "p",
-      "part": "K"
-    },
-    {
-      "x": 29,
-      "y": 22,
-      "from": "a",
-      "to": "p",
-      "part": "K"
-    },
-    {
-      "x": 30,
-      "y": 22,
-      "from": "a",
-      "to": "p",
-      "part": "K"
-    },
-    {
-      "x": 31,
-      "y": 22,
-      "from": "a",
-      "to": "p",
-      "part": "K"
-    },
-    {
-      "x": 32,
-      "y": 22,
-      "from": "a",
-      "to": "p",
-      "part": "K"
-    },
-    {
-      "x": 33,
-      "y": 22,
-      "from": "a",
-      "to": "p",
-      "part": "K"
+      "x": 35,
+      "y": 21,
+      "from": "M",
+      "to": "P",
+      "part": "helmet",
+      "region": "01"
     },
     {
       "x": 34,
       "y": 22,
       "from": "a",
       "to": "p",
-      "part": "K"
+      "part": "helmet",
+      "region": "01"
+    },
+    {
+      "x": 36,
+      "y": 21,
+      "from": "M",
+      "to": "P",
+      "part": "helmet",
+      "region": "01"
     },
     {
       "x": 35,
       "y": 22,
       "from": "a",
       "to": "p",
-      "part": "K"
+      "part": "helmet",
+      "region": "01"
     },
     {
       "x": 36,
       "y": 22,
       "from": "a",
       "to": "p",
-      "part": "K"
+      "part": "helmet",
+      "region": "01"
     },
     {
       "x": 37,
       "y": 22,
       "from": "a",
       "to": "p",
-      "part": "K"
-    },
-    {
-      "x": 51,
-      "y": 23,
-      "from": "V",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 53,
-      "y": 23,
-      "from": "b",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 11,
-      "y": 24,
-      "from": "w",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 31,
-      "y": 24,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 50,
-      "y": 24,
-      "from": "h",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 27,
-      "y": 26,
-      "from": "b",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 51,
-      "y": 26,
-      "from": "b",
-      "to": "p",
-      "part": "C"
+      "part": "helmet",
+      "region": "01"
     },
     {
       "x": 20,
       "y": 27,
-      "from": "b",
+      "from": "I",
       "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 27,
-      "y": 27,
-      "from": "B",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 8,
-      "y": 28,
-      "from": "b",
-      "to": "P",
-      "part": "C"
+      "part": "left-shirt",
+      "region": "0d"
     },
     {
       "x": 20,
       "y": 28,
       "from": "I",
-      "to": "S",
-      "part": "P"
+      "to": "P",
+      "part": "left-shirt",
+      "region": "0d"
     },
     {
       "x": 21,
       "y": 28,
       "from": "I",
-      "to": "p",
-      "part": "P"
-    },
-    {
-      "x": 22,
-      "y": 28,
-      "from": "i",
-      "to": "p",
-      "part": "P"
-    },
-    {
-      "x": 26,
-      "y": 28,
-      "from": "b",
       "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 27,
-      "y": 28,
-      "from": "B",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 28,
-      "y": 28,
-      "from": "B",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 40,
-      "y": 28,
-      "from": "b",
-      "to": "S",
-      "part": "P"
-    },
-    {
-      "x": 41,
-      "y": 28,
-      "from": "I",
-      "to": "P",
-      "part": "P"
-    },
-    {
-      "x": 42,
-      "y": 28,
-      "from": "I",
-      "to": "p",
-      "part": "P"
-    },
-    {
-      "x": 43,
-      "y": 28,
-      "from": "i",
-      "to": "p",
-      "part": "P"
+      "part": "left-shirt",
+      "region": "0d"
     },
     {
       "x": 20,
       "y": 29,
       "from": "I",
-      "to": "S",
-      "part": "P"
+      "to": "P",
+      "part": "left-shirt",
+      "region": "0d"
+    },
+    {
+      "x": 22,
+      "y": 28,
+      "from": "I",
+      "to": "P",
+      "part": "left-shirt",
+      "region": "0d"
     },
     {
       "x": 21,
       "y": 29,
       "from": "I",
       "to": "P",
-      "part": "P"
+      "part": "left-shirt",
+      "region": "0d"
+    },
+    {
+      "x": 20,
+      "y": 30,
+      "from": "I",
+      "to": "P",
+      "part": "left-shirt",
+      "region": "0d"
     },
     {
       "x": 22,
       "y": 29,
       "from": "I",
-      "to": "p",
-      "part": "P"
+      "to": "P",
+      "part": "left-shirt",
+      "region": "0d"
+    },
+    {
+      "x": 21,
+      "y": 30,
+      "from": "I",
+      "to": "P",
+      "part": "left-shirt",
+      "region": "0d"
     },
     {
       "x": 23,
       "y": 29,
-      "from": "B",
-      "to": "p",
-      "part": "P"
-    },
-    {
-      "x": 27,
-      "y": 29,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 28,
-      "y": 29,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 40,
-      "y": 29,
-      "from": "I",
-      "to": "S",
-      "part": "P"
-    },
-    {
-      "x": 41,
-      "y": 29,
-      "from": "I",
-      "to": "P",
-      "part": "P"
-    },
-    {
-      "x": 42,
-      "y": 29,
-      "from": "I",
-      "to": "p",
-      "part": "P"
-    },
-    {
-      "x": 43,
-      "y": 29,
       "from": "i",
       "to": "p",
-      "part": "P"
-    },
-    {
-      "x": 45,
-      "y": 29,
-      "from": "H",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 20,
-      "y": 30,
-      "from": "B",
-      "to": "S",
-      "part": "P"
-    },
-    {
-      "x": 21,
-      "y": 30,
-      "from": "I",
-      "to": "P",
-      "part": "P"
+      "part": "left-shirt",
+      "region": "0d"
     },
     {
       "x": 22,
       "y": 30,
       "from": "I",
-      "to": "p",
-      "part": "P"
+      "to": "P",
+      "part": "left-shirt",
+      "region": "0d"
+    },
+    {
+      "x": 21,
+      "y": 31,
+      "from": "I",
+      "to": "P",
+      "part": "left-shirt",
+      "region": "0d"
     },
     {
       "x": 23,
       "y": 30,
       "from": "i",
       "to": "p",
-      "part": "P"
+      "part": "left-shirt",
+      "region": "0d"
     },
     {
-      "x": 25,
-      "y": 30,
-      "from": "v",
+      "x": 22,
+      "y": 31,
+      "from": "I",
       "to": "P",
-      "part": "C"
+      "part": "left-shirt",
+      "region": "0d"
     },
     {
-      "x": 27,
-      "y": 30,
+      "x": 21,
+      "y": 32,
+      "from": "I",
+      "to": "P",
+      "part": "left-shirt",
+      "region": "0d"
+    },
+    {
+      "x": 23,
+      "y": 31,
+      "from": "i",
+      "to": "p",
+      "part": "left-shirt",
+      "region": "0d"
+    },
+    {
+      "x": 22,
+      "y": 32,
+      "from": "I",
+      "to": "P",
+      "part": "left-shirt",
+      "region": "0d"
+    },
+    {
+      "x": 23,
+      "y": 32,
+      "from": "i",
+      "to": "p",
+      "part": "left-shirt",
+      "region": "0d"
+    },
+    {
+      "x": 22,
+      "y": 33,
+      "from": "i",
+      "to": "p",
+      "part": "left-shirt",
+      "region": "0d"
+    },
+    {
+      "x": 23,
+      "y": 33,
+      "from": "i",
+      "to": "p",
+      "part": "left-shirt",
+      "region": "0d"
+    },
+    {
+      "x": 22,
+      "y": 34,
+      "from": "i",
+      "to": "p",
+      "part": "left-shirt",
+      "region": "0d"
+    },
+    {
+      "x": 19,
+      "y": 28,
       "from": "B",
       "to": "P",
-      "part": "C"
+      "part": "upper-fragment-0e",
+      "region": "0e"
     },
     {
-      "x": 28,
-      "y": 30,
-      "from": "B",
+      "x": 40,
+      "y": 28,
+      "from": "I",
       "to": "P",
-      "part": "C"
+      "part": "right-shirt",
+      "region": "10"
     },
     {
-      "x": 29,
-      "y": 30,
-      "from": "B",
+      "x": 41,
+      "y": 28,
+      "from": "I",
       "to": "P",
-      "part": "C"
+      "part": "right-shirt",
+      "region": "10"
+    },
+    {
+      "x": 40,
+      "y": 29,
+      "from": "I",
+      "to": "P",
+      "part": "right-shirt",
+      "region": "10"
+    },
+    {
+      "x": 42,
+      "y": 28,
+      "from": "I",
+      "to": "P",
+      "part": "right-shirt",
+      "region": "10"
+    },
+    {
+      "x": 41,
+      "y": 29,
+      "from": "I",
+      "to": "P",
+      "part": "right-shirt",
+      "region": "10"
+    },
+    {
+      "x": 40,
+      "y": 30,
+      "from": "I",
+      "to": "P",
+      "part": "right-shirt",
+      "region": "10"
+    },
+    {
+      "x": 43,
+      "y": 28,
+      "from": "I",
+      "to": "P",
+      "part": "right-shirt",
+      "region": "10"
+    },
+    {
+      "x": 42,
+      "y": 29,
+      "from": "I",
+      "to": "P",
+      "part": "right-shirt",
+      "region": "10"
+    },
+    {
+      "x": 41,
+      "y": 30,
+      "from": "I",
+      "to": "P",
+      "part": "right-shirt",
+      "region": "10"
     },
     {
       "x": 39,
       "y": 30,
-      "from": "i",
-      "to": "S",
-      "part": "P"
+      "from": "I",
+      "to": "P",
+      "part": "right-shirt",
+      "region": "10"
     },
     {
       "x": 40,
-      "y": 30,
-      "from": "I",
-      "to": "P",
-      "part": "P"
+      "y": 31,
+      "from": "i",
+      "to": "p",
+      "part": "right-shirt",
+      "region": "10"
     },
     {
-      "x": 41,
-      "y": 30,
-      "from": "I",
-      "to": "P",
-      "part": "P"
+      "x": 43,
+      "y": 29,
+      "from": "i",
+      "to": "p",
+      "part": "right-shirt",
+      "region": "10"
     },
     {
       "x": 42,
       "y": 30,
-      "from": "i",
-      "to": "p",
-      "part": "P"
-    },
-    {
-      "x": 43,
-      "y": 30,
       "from": "I",
-      "to": "p",
-      "part": "P"
-    },
-    {
-      "x": 45,
-      "y": 30,
-      "from": "H",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 20,
-      "y": 31,
-      "from": "B",
-      "to": "p",
-      "part": "P"
-    },
-    {
-      "x": 21,
-      "y": 31,
-      "from": "i",
-      "to": "p",
-      "part": "P"
-    },
-    {
-      "x": 22,
-      "y": 31,
-      "from": "I",
-      "to": "p",
-      "part": "P"
-    },
-    {
-      "x": 23,
-      "y": 31,
-      "from": "i",
-      "to": "p",
-      "part": "P"
-    },
-    {
-      "x": 25,
-      "y": 31,
-      "from": "B",
       "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 26,
-      "y": 31,
-      "from": "w",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 28,
-      "y": 31,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 29,
-      "y": 31,
-      "from": "B",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 30,
-      "y": 31,
-      "from": "B",
-      "to": "p",
-      "part": "C"
+      "part": "right-shirt",
+      "region": "10"
     },
     {
       "x": 39,
       "y": 31,
-      "from": "i",
-      "to": "p",
-      "part": "P"
+      "from": "I",
+      "to": "P",
+      "part": "right-shirt",
+      "region": "10"
     },
     {
       "x": 40,
-      "y": 31,
-      "from": "I",
+      "y": 32,
+      "from": "i",
       "to": "p",
-      "part": "P"
-    },
-    {
-      "x": 41,
-      "y": 31,
-      "from": "B",
-      "to": "S",
-      "part": "A"
-    },
-    {
-      "x": 42,
-      "y": 31,
-      "from": "B",
-      "to": "P",
-      "part": "A"
+      "part": "right-shirt",
+      "region": "10"
     },
     {
       "x": 43,
-      "y": 31,
-      "from": "B",
-      "to": "P",
-      "part": "A"
-    },
-    {
-      "x": 45,
-      "y": 31,
-      "from": "H",
-      "to": "p",
-      "part": "A"
-    },
-    {
-      "x": 20,
-      "y": 32,
-      "from": "B",
-      "to": "S",
-      "part": "A"
-    },
-    {
-      "x": 21,
-      "y": 32,
-      "from": "B",
-      "to": "P",
-      "part": "A"
-    },
-    {
-      "x": 22,
-      "y": 32,
+      "y": 30,
       "from": "i",
-      "to": "P",
-      "part": "A"
-    },
-    {
-      "x": 23,
-      "y": 32,
-      "from": "i",
-      "to": "P",
-      "part": "A"
-    },
-    {
-      "x": 25,
-      "y": 32,
-      "from": "B",
       "to": "p",
-      "part": "A"
+      "part": "right-shirt",
+      "region": "10"
     },
     {
-      "x": 26,
+      "x": 39,
       "y": 32,
-      "from": "B",
+      "from": "I",
       "to": "P",
-      "part": "C"
+      "part": "right-shirt",
+      "region": "10"
     },
     {
-      "x": 27,
-      "y": 32,
-      "from": "b",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 29,
-      "y": 32,
-      "from": "b",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 30,
-      "y": 32,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 31,
-      "y": 32,
-      "from": "B",
-      "to": "P",
-      "part": "C"
+      "x": 40,
+      "y": 33,
+      "from": "i",
+      "to": "p",
+      "part": "right-shirt",
+      "region": "10"
     },
     {
       "x": 38,
       "y": 32,
-      "from": "i",
+      "from": "I",
       "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 39,
-      "y": 32,
-      "from": "i",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 40,
-      "y": 32,
-      "from": "i",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 41,
-      "y": 32,
-      "from": "B",
-      "to": "S",
-      "part": "A"
-    },
-    {
-      "x": 42,
-      "y": 32,
-      "from": "B",
-      "to": "P",
-      "part": "A"
-    },
-    {
-      "x": 43,
-      "y": 32,
-      "from": "B",
-      "to": "P",
-      "part": "A"
-    },
-    {
-      "x": 44,
-      "y": 32,
-      "from": "b",
-      "to": "P",
-      "part": "A"
-    },
-    {
-      "x": 46,
-      "y": 32,
-      "from": "H",
-      "to": "p",
-      "part": "A"
-    },
-    {
-      "x": 20,
-      "y": 33,
-      "from": "B",
-      "to": "S",
-      "part": "A"
-    },
-    {
-      "x": 21,
-      "y": 33,
-      "from": "B",
-      "to": "p",
-      "part": "A"
-    },
-    {
-      "x": 22,
-      "y": 33,
-      "from": "i",
-      "to": "p",
-      "part": "A"
-    },
-    {
-      "x": 26,
-      "y": 33,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 27,
-      "y": 33,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 28,
-      "y": 33,
-      "from": "b",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 31,
-      "y": 33,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 32,
-      "y": 33,
-      "from": "B",
-      "to": "P",
-      "part": "C"
+      "part": "right-shirt",
+      "region": "10"
     },
     {
       "x": 39,
       "y": 33,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 40,
-      "y": 33,
       "from": "i",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 41,
-      "y": 33,
-      "from": "B",
-      "to": "S",
-      "part": "A"
-    },
-    {
-      "x": 42,
-      "y": 33,
-      "from": "B",
-      "to": "P",
-      "part": "A"
-    },
-    {
-      "x": 43,
-      "y": 33,
-      "from": "w",
-      "to": "P",
-      "part": "A"
-    },
-    {
-      "x": 45,
-      "y": 33,
-      "from": "H",
       "to": "p",
-      "part": "A"
-    },
-    {
-      "x": 49,
-      "y": 33,
-      "from": "V",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 20,
-      "y": 34,
-      "from": "B",
-      "to": "S",
-      "part": "A"
-    },
-    {
-      "x": 22,
-      "y": 34,
-      "from": "i",
-      "to": "P",
-      "part": "A"
+      "part": "right-shirt",
+      "region": "10"
     },
     {
       "x": 25,
-      "y": 34,
-      "from": "b",
-      "to": "p",
-      "part": "A"
+      "y": 30,
+      "from": "B",
+      "to": "P",
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 25,
+      "y": 31,
+      "from": "B",
+      "to": "P",
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 26,
+      "y": 31,
+      "from": "B",
+      "to": "P",
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 25,
+      "y": 32,
+      "from": "B",
+      "to": "P",
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 26,
+      "y": 32,
+      "from": "B",
+      "to": "P",
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 27,
+      "y": 32,
+      "from": "B",
+      "to": "P",
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 26,
+      "y": 33,
+      "from": "B",
+      "to": "P",
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 27,
+      "y": 33,
+      "from": "B",
+      "to": "P",
+      "part": "cuirass",
+      "region": "13"
     },
     {
       "x": 26,
       "y": 34,
-      "from": "v",
+      "from": "B",
       "to": "P",
-      "part": "C"
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 28,
+      "y": 33,
+      "from": "B",
+      "to": "P",
+      "part": "cuirass",
+      "region": "13"
     },
     {
       "x": 27,
       "y": 34,
       "from": "B",
       "to": "P",
-      "part": "C"
+      "part": "cuirass",
+      "region": "13"
     },
     {
       "x": 28,
       "y": 34,
       "from": "B",
       "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 29,
-      "y": 34,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 30,
-      "y": 34,
-      "from": "v",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 32,
-      "y": 34,
-      "from": "w",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 33,
-      "y": 34,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 36,
-      "y": 34,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 37,
-      "y": 34,
-      "from": "v",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 40,
-      "y": 34,
-      "from": "W",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 41,
-      "y": 34,
-      "from": "B",
-      "to": "P",
-      "part": "A"
-    },
-    {
-      "x": 42,
-      "y": 34,
-      "from": "B",
-      "to": "P",
-      "part": "A"
-    },
-    {
-      "x": 43,
-      "y": 34,
-      "from": "b",
-      "to": "P",
-      "part": "A"
-    },
-    {
-      "x": 46,
-      "y": 34,
-      "from": "H",
-      "to": "p",
-      "part": "A"
-    },
-    {
-      "x": 49,
-      "y": 34,
-      "from": "b",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 15,
-      "y": 35,
-      "from": "b",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 17,
-      "y": 35,
-      "from": "b",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 18,
-      "y": 35,
-      "from": "v",
-      "to": "P",
-      "part": "C"
+      "part": "cuirass",
+      "region": "13"
     },
     {
       "x": 27,
       "y": 35,
-      "from": "w",
+      "from": "B",
       "to": "P",
-      "part": "C"
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 29,
+      "y": 34,
+      "from": "B",
+      "to": "P",
+      "part": "cuirass",
+      "region": "13"
     },
     {
       "x": 28,
       "y": 35,
       "from": "B",
       "to": "P",
-      "part": "C"
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 27,
+      "y": 36,
+      "from": "b",
+      "to": "p",
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 30,
+      "y": 34,
+      "from": "B",
+      "to": "P",
+      "part": "cuirass",
+      "region": "13"
     },
     {
       "x": 29,
       "y": 35,
       "from": "B",
       "to": "P",
-      "part": "C"
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 28,
+      "y": 36,
+      "from": "b",
+      "to": "p",
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 26,
+      "y": 36,
+      "from": "b",
+      "to": "p",
+      "part": "cuirass",
+      "region": "13"
     },
     {
       "x": 30,
       "y": 35,
       "from": "B",
       "to": "P",
-      "part": "C"
+      "part": "cuirass",
+      "region": "13"
     },
     {
       "x": 31,
       "y": 35,
       "from": "B",
       "to": "P",
-      "part": "C"
+      "part": "cuirass",
+      "region": "13"
     },
     {
       "x": 32,
       "y": 35,
       "from": "b",
-      "to": "P",
-      "part": "C"
+      "to": "p",
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 31,
+      "y": 36,
+      "from": "b",
+      "to": "p",
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 32,
+      "y": 34,
+      "from": "b",
+      "to": "p",
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 32,
+      "y": 36,
+      "from": "b",
+      "to": "p",
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 33,
+      "y": 36,
+      "from": "b",
+      "to": "p",
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 34,
+      "y": 36,
+      "from": "b",
+      "to": "p",
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 35,
+      "y": 36,
+      "from": "b",
+      "to": "p",
+      "part": "cuirass",
+      "region": "13"
     },
     {
       "x": 34,
       "y": 35,
-      "from": "w",
+      "from": "B",
       "to": "P",
-      "part": "C"
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 36,
+      "y": 36,
+      "from": "b",
+      "to": "p",
+      "part": "cuirass",
+      "region": "13"
     },
     {
       "x": 35,
       "y": 35,
       "from": "B",
-      "to": "p",
-      "part": "C"
+      "to": "P",
+      "part": "cuirass",
+      "region": "13"
     },
     {
       "x": 36,
       "y": 35,
-      "from": "B",
+      "from": "b",
       "to": "p",
-      "part": "C"
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 36,
+      "y": 34,
+      "from": "b",
+      "to": "p",
+      "part": "cuirass",
+      "region": "13"
+    },
+    {
+      "x": 19,
+      "y": 31,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-14",
+      "region": "14"
+    },
+    {
+      "x": 19,
+      "y": 32,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-14",
+      "region": "14"
+    },
+    {
+      "x": 42,
+      "y": 32,
+      "from": "B",
+      "to": "P",
+      "part": "right-bracer",
+      "region": "15"
+    },
+    {
+      "x": 43,
+      "y": 32,
+      "from": "B",
+      "to": "P",
+      "part": "right-bracer",
+      "region": "15"
+    },
+    {
+      "x": 42,
+      "y": 33,
+      "from": "B",
+      "to": "P",
+      "part": "right-bracer",
+      "region": "15"
+    },
+    {
+      "x": 44,
+      "y": 32,
+      "from": "B",
+      "to": "P",
+      "part": "right-bracer",
+      "region": "15"
+    },
+    {
+      "x": 43,
+      "y": 33,
+      "from": "b",
+      "to": "p",
+      "part": "right-bracer",
+      "region": "15"
+    },
+    {
+      "x": 42,
+      "y": 34,
+      "from": "B",
+      "to": "P",
+      "part": "right-bracer",
+      "region": "15"
+    },
+    {
+      "x": 43,
+      "y": 34,
+      "from": "b",
+      "to": "p",
+      "part": "right-bracer",
+      "region": "15"
     },
     {
       "x": 41,
-      "y": 35,
+      "y": 34,
       "from": "B",
       "to": "P",
-      "part": "A"
+      "part": "right-bracer",
+      "region": "15"
     },
     {
       "x": 42,
       "y": 35,
       "from": "B",
       "to": "P",
-      "part": "A"
+      "part": "right-bracer",
+      "region": "15"
     },
     {
       "x": 43,
       "y": 35,
       "from": "B",
-      "to": "p",
-      "part": "A"
+      "to": "P",
+      "part": "right-bracer",
+      "region": "15"
+    },
+    {
+      "x": 41,
+      "y": 35,
+      "from": "B",
+      "to": "P",
+      "part": "right-bracer",
+      "region": "15"
+    },
+    {
+      "x": 42,
+      "y": 36,
+      "from": "B",
+      "to": "P",
+      "part": "right-bracer",
+      "region": "15"
     },
     {
       "x": 44,
       "y": 35,
       "from": "B",
-      "to": "p",
-      "part": "A"
+      "to": "P",
+      "part": "right-bracer",
+      "region": "15"
     },
     {
-      "x": 15,
+      "x": 41,
       "y": 36,
       "from": "B",
       "to": "P",
-      "part": "C"
+      "part": "right-bracer",
+      "region": "15"
     },
     {
-      "x": 17,
+      "x": 44,
       "y": 36,
-      "from": "v",
+      "from": "B",
       "to": "P",
-      "part": "C"
+      "part": "right-bracer",
+      "region": "15"
+    },
+    {
+      "x": 45,
+      "y": 36,
+      "from": "b",
+      "to": "p",
+      "part": "right-bracer",
+      "region": "15"
+    },
+    {
+      "x": 44,
+      "y": 37,
+      "from": "b",
+      "to": "p",
+      "part": "right-bracer",
+      "region": "15"
+    },
+    {
+      "x": 45,
+      "y": 37,
+      "from": "b",
+      "to": "p",
+      "part": "right-bracer",
+      "region": "15"
+    },
+    {
+      "x": 31,
+      "y": 33,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-16",
+      "region": "16"
+    },
+    {
+      "x": 37,
+      "y": 33,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-17",
+      "region": "17"
+    },
+    {
+      "x": 21,
+      "y": 34,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-18",
+      "region": "18"
+    },
+    {
+      "x": 21,
+      "y": 35,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-18",
+      "region": "18"
+    },
+    {
+      "x": 20,
+      "y": 35,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-18",
+      "region": "18"
+    },
+    {
+      "x": 18,
+      "y": 35,
+      "from": "B",
+      "to": "P",
+      "part": "left-bracer",
+      "region": "19"
     },
     {
       "x": 18,
       "y": 36,
       "from": "B",
       "to": "P",
-      "part": "C"
+      "part": "left-bracer",
+      "region": "19"
+    },
+    {
+      "x": 17,
+      "y": 36,
+      "from": "B",
+      "to": "P",
+      "part": "left-bracer",
+      "region": "19"
     },
     {
       "x": 19,
       "y": 36,
       "from": "b",
       "to": "p",
-      "part": "A"
-    },
-    {
-      "x": 26,
-      "y": 36,
-      "from": "v",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 27,
-      "y": 36,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 28,
-      "y": 36,
-      "from": "w",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 31,
-      "y": 36,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 32,
-      "y": 36,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 33,
-      "y": 36,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 34,
-      "y": 36,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 35,
-      "y": 36,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 36,
-      "y": 36,
-      "from": "v",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 38,
-      "y": 36,
-      "from": "v",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 41,
-      "y": 36,
-      "from": "B",
-      "to": "p",
-      "part": "A"
-    },
-    {
-      "x": 42,
-      "y": 36,
-      "from": "b",
-      "to": "p",
-      "part": "A"
-    },
-    {
-      "x": 44,
-      "y": 36,
-      "from": "B",
-      "to": "p",
-      "part": "A"
-    },
-    {
-      "x": 45,
-      "y": 36,
-      "from": "B",
-      "to": "p",
-      "part": "A"
-    },
-    {
-      "x": 47,
-      "y": 36,
-      "from": "v",
-      "to": "p",
-      "part": "A"
+      "part": "left-bracer",
+      "region": "19"
     },
     {
       "x": 17,
       "y": 37,
-      "from": "b",
+      "from": "B",
       "to": "P",
-      "part": "C"
+      "part": "left-bracer",
+      "region": "19"
+    },
+    {
+      "x": 19,
+      "y": 37,
+      "from": "b",
+      "to": "p",
+      "part": "left-bracer",
+      "region": "19"
+    },
+    {
+      "x": 25,
+      "y": 35,
+      "from": "B",
+      "to": "L",
+      "part": "lower-fragment-1a",
+      "region": "1a"
+    },
+    {
+      "x": 38,
+      "y": 36,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-1b",
+      "region": "1b"
+    },
+    {
+      "x": 38,
+      "y": 37,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-1b",
+      "region": "1b"
+    },
+    {
+      "x": 37,
+      "y": 37,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-1b",
+      "region": "1b"
+    },
+    {
+      "x": 39,
+      "y": 37,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-1b",
+      "region": "1b"
+    },
+    {
+      "x": 38,
+      "y": 38,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-1b",
+      "region": "1b"
+    },
+    {
+      "x": 37,
+      "y": 38,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-1b",
+      "region": "1b"
+    },
+    {
+      "x": 39,
+      "y": 38,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-1b",
+      "region": "1b"
+    },
+    {
+      "x": 37,
+      "y": 39,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-1b",
+      "region": "1b"
+    },
+    {
+      "x": 40,
+      "y": 38,
+      "from": "b",
+      "to": "p",
+      "part": "upper-fragment-1b",
+      "region": "1b"
+    },
+    {
+      "x": 40,
+      "y": 39,
+      "from": "b",
+      "to": "p",
+      "part": "upper-fragment-1b",
+      "region": "1b"
     },
     {
       "x": 18,
       "y": 37,
       "from": "a",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 19,
-      "y": 37,
-      "from": "V",
       "to": "p",
-      "part": "A"
+      "part": "upper-fragment-1c",
+      "region": "1c"
     },
     {
-      "x": 23,
-      "y": 37,
-      "from": "b",
-      "to": "p",
-      "part": "A"
-    },
-    {
-      "x": 24,
-      "y": 37,
-      "from": "V",
-      "to": "p",
-      "part": "A"
-    },
-    {
-      "x": 28,
-      "y": 37,
-      "from": "b",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 29,
+      "x": 25,
       "y": 37,
       "from": "B",
       "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 30,
-      "y": 37,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 31,
-      "y": 37,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 32,
-      "y": 37,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 33,
-      "y": 37,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 34,
-      "y": 37,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 35,
-      "y": 37,
-      "from": "b",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 37,
-      "y": 37,
-      "from": "b",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 38,
-      "y": 37,
-      "from": "V",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 39,
-      "y": 37,
-      "from": "w",
-      "to": "P",
-      "part": "C"
+      "part": "upper-fragment-1d",
+      "region": "1d"
     },
     {
       "x": 43,
       "y": 37,
       "from": "a",
+      "to": "p",
+      "part": "upper-fragment-1e",
+      "region": "1e"
+    },
+    {
+      "x": 18,
+      "y": 38,
+      "from": "B",
       "to": "P",
-      "part": "C"
+      "part": "upper-fragment-1f",
+      "region": "1f"
+    },
+    {
+      "x": 23,
+      "y": 38,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-20",
+      "region": "20"
+    },
+    {
+      "x": 23,
+      "y": 39,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-20",
+      "region": "20"
+    },
+    {
+      "x": 22,
+      "y": 39,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-20",
+      "region": "20"
+    },
+    {
+      "x": 24,
+      "y": 39,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-20",
+      "region": "20"
+    },
+    {
+      "x": 24,
+      "y": 38,
+      "from": "I",
+      "to": "L",
+      "part": "lower-fragment-21",
+      "region": "21"
+    },
+    {
+      "x": 25,
+      "y": 38,
+      "from": "I",
+      "to": "L",
+      "part": "lower-fragment-21",
+      "region": "21"
+    },
+    {
+      "x": 25,
+      "y": 39,
+      "from": "I",
+      "to": "L",
+      "part": "lower-fragment-21",
+      "region": "21"
+    },
+    {
+      "x": 26,
+      "y": 39,
+      "from": "I",
+      "to": "L",
+      "part": "lower-fragment-21",
+      "region": "21"
+    },
+    {
+      "x": 25,
+      "y": 40,
+      "from": "I",
+      "to": "L",
+      "part": "lower-fragment-21",
+      "region": "21"
+    },
+    {
+      "x": 27,
+      "y": 39,
+      "from": "I",
+      "to": "L",
+      "part": "lower-fragment-21",
+      "region": "21"
+    },
+    {
+      "x": 28,
+      "y": 38,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 29,
+      "y": 38,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 30,
+      "y": 38,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 29,
+      "y": 39,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 31,
+      "y": 38,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 30,
+      "y": 39,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 29,
+      "y": 40,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 32,
+      "y": 38,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 31,
+      "y": 39,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 30,
+      "y": 40,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 28,
+      "y": 40,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 29,
+      "y": 41,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 33,
+      "y": 38,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 32,
+      "y": 39,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 31,
+      "y": 40,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 30,
+      "y": 41,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 28,
+      "y": 41,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 29,
+      "y": 42,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 34,
+      "y": 38,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 33,
+      "y": 39,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 32,
+      "y": 40,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 31,
+      "y": 41,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 30,
+      "y": 42,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 27,
+      "y": 41,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 28,
+      "y": 42,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 29,
+      "y": 43,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 35,
+      "y": 38,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 34,
+      "y": 39,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 33,
+      "y": 40,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 32,
+      "y": 41,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 31,
+      "y": 42,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 30,
+      "y": 43,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 27,
+      "y": 42,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 28,
+      "y": 43,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 29,
+      "y": 44,
+      "from": "b",
+      "to": "l",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 35,
+      "y": 39,
+      "from": "b",
+      "to": "l",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 34,
+      "y": 40,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 33,
+      "y": 41,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 32,
+      "y": 42,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 31,
+      "y": 43,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 30,
+      "y": 44,
+      "from": "b",
+      "to": "l",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 27,
+      "y": 43,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 28,
+      "y": 44,
+      "from": "b",
+      "to": "l",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 35,
+      "y": 40,
+      "from": "b",
+      "to": "l",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 34,
+      "y": 41,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 33,
+      "y": 42,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 32,
+      "y": 43,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 31,
+      "y": 44,
+      "from": "b",
+      "to": "l",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 27,
+      "y": 44,
+      "from": "b",
+      "to": "l",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 35,
+      "y": 41,
+      "from": "b",
+      "to": "l",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 34,
+      "y": 42,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 33,
+      "y": 43,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 32,
+      "y": 44,
+      "from": "b",
+      "to": "l",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 35,
+      "y": 42,
+      "from": "b",
+      "to": "l",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 34,
+      "y": 43,
+      "from": "B",
+      "to": "L",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 33,
+      "y": 44,
+      "from": "b",
+      "to": "l",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 35,
+      "y": 43,
+      "from": "b",
+      "to": "l",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 34,
+      "y": 44,
+      "from": "b",
+      "to": "l",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 35,
+      "y": 44,
+      "from": "b",
+      "to": "l",
+      "part": "apron",
+      "region": "22"
+    },
+    {
+      "x": 43,
+      "y": 38,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-23",
+      "region": "23"
+    },
+    {
+      "x": 43,
+      "y": 39,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-23",
+      "region": "23"
     },
     {
       "x": 44,
-      "y": 37,
-      "from": "V",
+      "y": 39,
+      "from": "B",
+      "to": "P",
+      "part": "upper-fragment-23",
+      "region": "23"
+    },
+    {
+      "x": 44,
+      "y": 38,
+      "from": "a",
       "to": "p",
-      "part": "C"
+      "part": "upper-fragment-24",
+      "region": "24"
     },
     {
       "x": 45,
-      "y": 37,
-      "from": "w",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 17,
-      "y": 38,
-      "from": "v",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 19,
-      "y": 38,
-      "from": "v",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 22,
-      "y": 38,
-      "from": "b",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 24,
-      "y": 38,
-      "from": "i",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 25,
-      "y": 38,
-      "from": "i",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 27,
-      "y": 38,
-      "from": "b",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 28,
-      "y": 38,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 29,
-      "y": 38,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 30,
-      "y": 38,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 31,
-      "y": 38,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 32,
-      "y": 38,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 33,
-      "y": 38,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 34,
-      "y": 38,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 35,
-      "y": 38,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 36,
-      "y": 38,
-      "from": "b",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 37,
-      "y": 38,
-      "from": "i",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 38,
-      "y": 38,
-      "from": "i",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 39,
-      "y": 38,
-      "from": "W",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 40,
-      "y": 38,
-      "from": "b",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 43,
-      "y": 38,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 44,
       "y": 38,
       "from": "a",
       "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 45,
-      "y": 38,
-      "from": "a",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 25,
-      "y": 39,
-      "from": "i",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 26,
-      "y": 39,
-      "from": "i",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 27,
-      "y": 39,
-      "from": "i",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 28,
-      "y": 39,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 29,
-      "y": 39,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 30,
-      "y": 39,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 31,
-      "y": 39,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 32,
-      "y": 39,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 33,
-      "y": 39,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 34,
-      "y": 39,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 35,
-      "y": 39,
-      "from": "B",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 36,
-      "y": 39,
-      "from": "b",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 37,
-      "y": 39,
-      "from": "b",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 39,
-      "y": 39,
-      "from": "v",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 40,
-      "y": 39,
-      "from": "v",
-      "to": "P",
-      "part": "C"
-    },
-    {
-      "x": 43,
-      "y": 39,
-      "from": "B",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 44,
-      "y": 39,
-      "from": "B",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 21,
-      "y": 40,
-      "from": "w",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 22,
-      "y": 40,
-      "from": "B",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 25,
-      "y": 40,
-      "from": "V",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 26,
-      "y": 40,
-      "from": "B",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 27,
-      "y": 40,
-      "from": "B",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 28,
-      "y": 40,
-      "from": "B",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 29,
-      "y": 40,
-      "from": "B",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 30,
-      "y": 40,
-      "from": "B",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 31,
-      "y": 40,
-      "from": "B",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 32,
-      "y": 40,
-      "from": "B",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 33,
-      "y": 40,
-      "from": "B",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 34,
-      "y": 40,
-      "from": "B",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 35,
-      "y": 40,
-      "from": "B",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 36,
-      "y": 40,
-      "from": "B",
-      "to": "p",
-      "part": "C"
+      "part": "upper-fragment-24",
+      "region": "24"
     },
     {
       "x": 38,
       "y": 40,
-      "from": "i",
-      "to": "p",
-      "part": "C"
+      "from": "I",
+      "to": "L",
+      "part": "right-trouser",
+      "region": "25"
     },
     {
       "x": 39,
       "y": 40,
       "from": "I",
-      "to": "p",
-      "part": "C"
-    },
-    {
-      "x": 23,
-      "y": 41,
-      "from": "I",
-      "to": "k",
-      "part": "B"
-    },
-    {
-      "x": 24,
-      "y": 41,
-      "from": "i",
       "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 26,
-      "y": 41,
-      "from": "v",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 27,
-      "y": 41,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 28,
-      "y": 41,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 29,
-      "y": 41,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 30,
-      "y": 41,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 31,
-      "y": 41,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 32,
-      "y": 41,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 33,
-      "y": 41,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 34,
-      "y": 41,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 35,
-      "y": 41,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 36,
-      "y": 41,
-      "from": "B",
-      "to": "L",
-      "part": "B"
+      "part": "right-trouser",
+      "region": "25"
     },
     {
       "x": 38,
       "y": 41,
       "from": "I",
       "to": "L",
-      "part": "B"
+      "part": "right-trouser",
+      "region": "25"
     },
     {
       "x": 39,
       "y": 41,
       "from": "I",
       "to": "L",
-      "part": "B"
+      "part": "right-trouser",
+      "region": "25"
+    },
+    {
+      "x": 38,
+      "y": 42,
+      "from": "I",
+      "to": "L",
+      "part": "right-trouser",
+      "region": "25"
     },
     {
       "x": 40,
       "y": 41,
-      "from": "i",
-      "to": "l",
-      "part": "B"
+      "from": "I",
+      "to": "L",
+      "part": "right-trouser",
+      "region": "25"
+    },
+    {
+      "x": 39,
+      "y": 42,
+      "from": "I",
+      "to": "L",
+      "part": "right-trouser",
+      "region": "25"
+    },
+    {
+      "x": 38,
+      "y": 43,
+      "from": "I",
+      "to": "L",
+      "part": "right-trouser",
+      "region": "25"
     },
     {
       "x": 41,
       "y": 41,
-      "from": "i",
-      "to": "l",
-      "part": "B"
-    },
-    {
-      "x": 20,
-      "y": 42,
-      "from": "h",
-      "to": "k",
-      "part": "B"
-    },
-    {
-      "x": 21,
-      "y": 42,
       "from": "I",
       "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 22,
-      "y": 42,
-      "from": "I",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 23,
-      "y": 42,
-      "from": "I",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 24,
-      "y": 42,
-      "from": "I",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 25,
-      "y": 42,
-      "from": "b",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 26,
-      "y": 42,
-      "from": "b",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 27,
-      "y": 42,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 28,
-      "y": 42,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 29,
-      "y": 42,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 30,
-      "y": 42,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 31,
-      "y": 42,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 32,
-      "y": 42,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 33,
-      "y": 42,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 34,
-      "y": 42,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 35,
-      "y": 42,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 36,
-      "y": 42,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 38,
-      "y": 42,
-      "from": "I",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 39,
-      "y": 42,
-      "from": "I",
-      "to": "L",
-      "part": "B"
+      "part": "right-trouser",
+      "region": "25"
     },
     {
       "x": 40,
       "y": 42,
       "from": "I",
       "to": "L",
-      "part": "B"
+      "part": "right-trouser",
+      "region": "25"
+    },
+    {
+      "x": 39,
+      "y": 43,
+      "from": "I",
+      "to": "L",
+      "part": "right-trouser",
+      "region": "25"
+    },
+    {
+      "x": 38,
+      "y": 44,
+      "from": "I",
+      "to": "L",
+      "part": "right-trouser",
+      "region": "25"
     },
     {
       "x": 41,
       "y": 42,
-      "from": "i",
-      "to": "l",
-      "part": "B"
+      "from": "I",
+      "to": "L",
+      "part": "right-trouser",
+      "region": "25"
+    },
+    {
+      "x": 40,
+      "y": 43,
+      "from": "I",
+      "to": "L",
+      "part": "right-trouser",
+      "region": "25"
     },
     {
       "x": 42,
       "y": 42,
       "from": "i",
       "to": "l",
-      "part": "B"
+      "part": "right-trouser",
+      "region": "25"
+    },
+    {
+      "x": 41,
+      "y": 43,
+      "from": "I",
+      "to": "L",
+      "part": "right-trouser",
+      "region": "25"
+    },
+    {
+      "x": 42,
+      "y": 43,
+      "from": "i",
+      "to": "l",
+      "part": "right-trouser",
+      "region": "25"
+    },
+    {
+      "x": 23,
+      "y": 41,
+      "from": "I",
+      "to": "L",
+      "part": "left-trouser",
+      "region": "26"
+    },
+    {
+      "x": 24,
+      "y": 41,
+      "from": "I",
+      "to": "L",
+      "part": "left-trouser",
+      "region": "26"
+    },
+    {
+      "x": 23,
+      "y": 42,
+      "from": "I",
+      "to": "L",
+      "part": "left-trouser",
+      "region": "26"
+    },
+    {
+      "x": 24,
+      "y": 42,
+      "from": "i",
+      "to": "l",
+      "part": "left-trouser",
+      "region": "26"
+    },
+    {
+      "x": 22,
+      "y": 42,
+      "from": "I",
+      "to": "L",
+      "part": "left-trouser",
+      "region": "26"
+    },
+    {
+      "x": 23,
+      "y": 43,
+      "from": "I",
+      "to": "L",
+      "part": "left-trouser",
+      "region": "26"
+    },
+    {
+      "x": 24,
+      "y": 43,
+      "from": "i",
+      "to": "l",
+      "part": "left-trouser",
+      "region": "26"
+    },
+    {
+      "x": 21,
+      "y": 42,
+      "from": "I",
+      "to": "L",
+      "part": "left-trouser",
+      "region": "26"
+    },
+    {
+      "x": 22,
+      "y": 43,
+      "from": "I",
+      "to": "L",
+      "part": "left-trouser",
+      "region": "26"
+    },
+    {
+      "x": 23,
+      "y": 44,
+      "from": "i",
+      "to": "l",
+      "part": "left-trouser",
+      "region": "26"
+    },
+    {
+      "x": 20,
+      "y": 42,
+      "from": "I",
+      "to": "L",
+      "part": "left-trouser",
+      "region": "26"
+    },
+    {
+      "x": 21,
+      "y": 43,
+      "from": "I",
+      "to": "L",
+      "part": "left-trouser",
+      "region": "26"
+    },
+    {
+      "x": 22,
+      "y": 44,
+      "from": "i",
+      "to": "l",
+      "part": "left-trouser",
+      "region": "26"
+    },
+    {
+      "x": 20,
+      "y": 43,
+      "from": "I",
+      "to": "L",
+      "part": "left-trouser",
+      "region": "26"
     },
     {
       "x": 19,
       "y": 43,
-      "from": "V",
-      "to": "k",
-      "part": "B"
+      "from": "I",
+      "to": "L",
+      "part": "left-trouser",
+      "region": "26"
+    },
+    {
+      "x": 25,
+      "y": 44,
+      "from": "b",
+      "to": "l",
+      "part": "left-leg",
+      "region": "27"
+    },
+    {
+      "x": 25,
+      "y": 45,
+      "from": "b",
+      "to": "l",
+      "part": "left-leg",
+      "region": "27"
+    },
+    {
+      "x": 24,
+      "y": 45,
+      "from": "b",
+      "to": "l",
+      "part": "left-leg",
+      "region": "27"
+    },
+    {
+      "x": 24,
+      "y": 46,
+      "from": "b",
+      "to": "l",
+      "part": "left-leg",
+      "region": "27"
+    },
+    {
+      "x": 23,
+      "y": 46,
+      "from": "B",
+      "to": "L",
+      "part": "left-leg",
+      "region": "27"
+    },
+    {
+      "x": 24,
+      "y": 47,
+      "from": "b",
+      "to": "l",
+      "part": "left-leg",
+      "region": "27"
+    },
+    {
+      "x": 22,
+      "y": 46,
+      "from": "B",
+      "to": "L",
+      "part": "left-leg",
+      "region": "27"
+    },
+    {
+      "x": 23,
+      "y": 47,
+      "from": "B",
+      "to": "L",
+      "part": "left-leg",
+      "region": "27"
+    },
+    {
+      "x": 21,
+      "y": 46,
+      "from": "B",
+      "to": "L",
+      "part": "left-leg",
+      "region": "27"
+    },
+    {
+      "x": 22,
+      "y": 47,
+      "from": "B",
+      "to": "L",
+      "part": "left-leg",
+      "region": "27"
+    },
+    {
+      "x": 23,
+      "y": 48,
+      "from": "b",
+      "to": "l",
+      "part": "left-leg",
+      "region": "27"
     },
     {
       "x": 20,
-      "y": 43,
-      "from": "I",
+      "y": 46,
+      "from": "B",
       "to": "L",
-      "part": "B"
+      "part": "left-leg",
+      "region": "27"
     },
     {
       "x": 21,
-      "y": 43,
-      "from": "I",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 22,
-      "y": 43,
-      "from": "I",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 23,
-      "y": 43,
-      "from": "I",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 24,
-      "y": 43,
-      "from": "i",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 25,
-      "y": 43,
-      "from": "b",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 27,
-      "y": 43,
+      "y": 45,
       "from": "B",
       "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 28,
-      "y": 43,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 29,
-      "y": 43,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 30,
-      "y": 43,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 31,
-      "y": 43,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 32,
-      "y": 43,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 33,
-      "y": 43,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 34,
-      "y": 43,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 35,
-      "y": 43,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 36,
-      "y": 43,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 38,
-      "y": 43,
-      "from": "i",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 39,
-      "y": 43,
-      "from": "I",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 40,
-      "y": 43,
-      "from": "I",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 41,
-      "y": 43,
-      "from": "I",
-      "to": "l",
-      "part": "B"
-    },
-    {
-      "x": 42,
-      "y": 43,
-      "from": "I",
-      "to": "l",
-      "part": "B"
+      "part": "left-leg",
+      "region": "27"
     },
     {
       "x": 21,
-      "y": 44,
-      "from": "V",
+      "y": 47,
+      "from": "B",
       "to": "L",
-      "part": "B"
+      "part": "left-leg",
+      "region": "27"
     },
     {
       "x": 22,
-      "y": 44,
-      "from": "i",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 23,
-      "y": 44,
-      "from": "i",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 24,
-      "y": 44,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 25,
-      "y": 44,
-      "from": "w",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 27,
-      "y": 44,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 28,
-      "y": 44,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 29,
-      "y": 44,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 30,
-      "y": 44,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 31,
-      "y": 44,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 32,
-      "y": 44,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 33,
-      "y": 44,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 34,
-      "y": 44,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 35,
-      "y": 44,
-      "from": "B",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 36,
-      "y": 44,
+      "y": 48,
       "from": "b",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 38,
-      "y": 44,
-      "from": "i",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 39,
-      "y": 44,
-      "from": "V",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 40,
-      "y": 44,
-      "from": "w",
-      "to": "L",
-      "part": "B"
-    },
-    {
-      "x": 42,
-      "y": 44,
-      "from": "w",
       "to": "l",
-      "part": "B"
+      "part": "left-leg",
+      "region": "27"
     },
     {
-      "x": 43,
-      "y": 44,
-      "from": "w",
+      "x": 19,
+      "y": 46,
+      "from": "B",
+      "to": "L",
+      "part": "left-leg",
+      "region": "27"
+    },
+    {
+      "x": 20,
+      "y": 45,
+      "from": "B",
+      "to": "L",
+      "part": "left-leg",
+      "region": "27"
+    },
+    {
+      "x": 20,
+      "y": 47,
+      "from": "B",
+      "to": "L",
+      "part": "left-leg",
+      "region": "27"
+    },
+    {
+      "x": 21,
+      "y": 48,
+      "from": "b",
       "to": "l",
-      "part": "B"
+      "part": "left-leg",
+      "region": "27"
     },
     {
       "x": 18,
-      "y": 45,
-      "from": "b",
-      "to": "l",
-      "part": "B"
+      "y": 46,
+      "from": "B",
+      "to": "L",
+      "part": "left-leg",
+      "region": "27"
     },
     {
       "x": 19,
       "y": 45,
       "from": "B",
-      "to": "l",
-      "part": "B"
+      "to": "L",
+      "part": "left-leg",
+      "region": "27"
+    },
+    {
+      "x": 19,
+      "y": 47,
+      "from": "B",
+      "to": "L",
+      "part": "left-leg",
+      "region": "27"
     },
     {
       "x": 20,
-      "y": 45,
-      "from": "B",
-      "to": "l",
-      "part": "B"
-    },
-    {
-      "x": 21,
-      "y": 45,
-      "from": "B",
-      "to": "l",
-      "part": "B"
-    },
-    {
-      "x": 22,
-      "y": 45,
-      "from": "w",
-      "to": "l",
-      "part": "B"
-    },
-    {
-      "x": 24,
-      "y": 45,
-      "from": "w",
-      "to": "l",
-      "part": "B"
-    },
-    {
-      "x": 25,
-      "y": 45,
-      "from": "w",
-      "to": "l",
-      "part": "B"
-    },
-    {
-      "x": 28,
-      "y": 45,
-      "from": "B",
-      "to": "l",
-      "part": "B"
-    },
-    {
-      "x": 29,
-      "y": 45,
-      "from": "B",
-      "to": "l",
-      "part": "B"
-    },
-    {
-      "x": 30,
-      "y": 45,
-      "from": "B",
-      "to": "l",
-      "part": "B"
-    },
-    {
-      "x": 31,
-      "y": 45,
-      "from": "B",
-      "to": "l",
-      "part": "B"
-    },
-    {
-      "x": 32,
-      "y": 45,
-      "from": "B",
-      "to": "l",
-      "part": "B"
-    },
-    {
-      "x": 33,
-      "y": 45,
-      "from": "B",
-      "to": "l",
-      "part": "B"
-    },
-    {
-      "x": 34,
-      "y": 45,
+      "y": 48,
       "from": "b",
       "to": "l",
-      "part": "B"
-    },
-    {
-      "x": 35,
-      "y": 45,
-      "from": "b",
-      "to": "l",
-      "part": "B"
-    },
-    {
-      "x": 39,
-      "y": 45,
-      "from": "B",
-      "to": "l",
-      "part": "B"
-    },
-    {
-      "x": 40,
-      "y": 45,
-      "from": "B",
-      "to": "l",
-      "part": "B"
-    },
-    {
-      "x": 41,
-      "y": 45,
-      "from": "B",
-      "to": "l",
-      "part": "B"
-    },
-    {
-      "x": 42,
-      "y": 45,
-      "from": "B",
-      "to": "l",
-      "part": "B"
-    },
-    {
-      "x": 43,
-      "y": 45,
-      "from": "B",
-      "to": "l",
-      "part": "B"
-    },
-    {
-      "x": 44,
-      "y": 45,
-      "from": "b",
-      "to": "l",
-      "part": "B"
+      "part": "left-leg",
+      "region": "27"
     },
     {
       "x": 17,
       "y": 46,
-      "from": "b",
-      "to": "k",
-      "part": "L"
+      "from": "B",
+      "to": "L",
+      "part": "left-leg",
+      "region": "27"
     },
     {
       "x": 18,
-      "y": 46,
+      "y": 45,
       "from": "B",
       "to": "L",
-      "part": "L"
+      "part": "left-leg",
+      "region": "27"
+    },
+    {
+      "x": 18,
+      "y": 47,
+      "from": "B",
+      "to": "L",
+      "part": "left-leg",
+      "region": "27"
     },
     {
       "x": 19,
-      "y": 46,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 20,
-      "y": 46,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 21,
-      "y": 46,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 22,
-      "y": 46,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 23,
-      "y": 46,
-      "from": "B",
-      "to": "l",
-      "part": "L"
-    },
-    {
-      "x": 24,
-      "y": 46,
-      "from": "w",
-      "to": "l",
-      "part": "L"
-    },
-    {
-      "x": 36,
-      "y": 46,
-      "from": "b",
-      "to": "k",
-      "part": "L"
-    },
-    {
-      "x": 37,
-      "y": 46,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 38,
-      "y": 46,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 39,
-      "y": 46,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 40,
-      "y": 46,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 41,
-      "y": 46,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 42,
-      "y": 46,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 43,
-      "y": 46,
-      "from": "B",
-      "to": "l",
-      "part": "L"
-    },
-    {
-      "x": 44,
-      "y": 46,
+      "y": 48,
       "from": "b",
       "to": "l",
-      "part": "L"
-    },
-    {
-      "x": 15,
-      "y": 47,
-      "from": "b",
-      "to": "k",
-      "part": "L"
+      "part": "left-leg",
+      "region": "27"
     },
     {
       "x": 17,
       "y": 47,
       "from": "B",
       "to": "L",
-      "part": "L"
+      "part": "left-leg",
+      "region": "27"
     },
     {
-      "x": 18,
-      "y": 47,
+      "x": 43,
+      "y": 44,
       "from": "B",
       "to": "L",
-      "part": "L"
+      "part": "right-leg",
+      "region": "28"
     },
     {
-      "x": 19,
-      "y": 47,
+      "x": 43,
+      "y": 45,
       "from": "B",
       "to": "L",
-      "part": "L"
+      "part": "right-leg",
+      "region": "28"
     },
     {
-      "x": 20,
-      "y": 47,
+      "x": 42,
+      "y": 45,
       "from": "B",
       "to": "L",
-      "part": "L"
+      "part": "right-leg",
+      "region": "28"
     },
     {
-      "x": 21,
-      "y": 47,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 22,
-      "y": 47,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 23,
-      "y": 47,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 24,
-      "y": 47,
-      "from": "w",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 28,
-      "y": 47,
-      "from": "v",
+      "x": 44,
+      "y": 45,
+      "from": "b",
       "to": "l",
-      "part": "L"
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 43,
+      "y": 46,
+      "from": "B",
+      "to": "L",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 41,
+      "y": 45,
+      "from": "B",
+      "to": "L",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 42,
+      "y": 46,
+      "from": "B",
+      "to": "L",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 44,
+      "y": 46,
+      "from": "b",
+      "to": "l",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 43,
+      "y": 47,
+      "from": "B",
+      "to": "L",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 40,
+      "y": 45,
+      "from": "B",
+      "to": "L",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 41,
+      "y": 46,
+      "from": "B",
+      "to": "L",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 42,
+      "y": 47,
+      "from": "B",
+      "to": "L",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 39,
+      "y": 45,
+      "from": "B",
+      "to": "L",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 40,
+      "y": 46,
+      "from": "B",
+      "to": "L",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 41,
+      "y": 47,
+      "from": "B",
+      "to": "L",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 42,
+      "y": 48,
+      "from": "b",
+      "to": "l",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 39,
+      "y": 46,
+      "from": "B",
+      "to": "L",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 40,
+      "y": 47,
+      "from": "B",
+      "to": "L",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 41,
+      "y": 48,
+      "from": "b",
+      "to": "l",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 38,
+      "y": 46,
+      "from": "B",
+      "to": "L",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 39,
+      "y": 47,
+      "from": "B",
+      "to": "L",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 40,
+      "y": 48,
+      "from": "b",
+      "to": "l",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 37,
+      "y": 46,
+      "from": "B",
+      "to": "L",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 38,
+      "y": 47,
+      "from": "B",
+      "to": "L",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 39,
+      "y": 48,
+      "from": "b",
+      "to": "l",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 36,
+      "y": 46,
+      "from": "B",
+      "to": "L",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 37,
+      "y": 47,
+      "from": "B",
+      "to": "L",
+      "part": "right-leg",
+      "region": "28"
+    },
+    {
+      "x": 38,
+      "y": 48,
+      "from": "b",
+      "to": "l",
+      "part": "right-leg",
+      "region": "28"
     },
     {
       "x": 36,
       "y": 47,
-      "from": "b",
-      "to": "k",
-      "part": "L"
-    },
-    {
-      "x": 37,
-      "y": 47,
       "from": "B",
       "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 38,
-      "y": 47,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 39,
-      "y": 47,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 40,
-      "y": 47,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 41,
-      "y": 47,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 42,
-      "y": 47,
-      "from": "B",
-      "to": "l",
-      "part": "L"
-    },
-    {
-      "x": 43,
-      "y": 47,
-      "from": "w",
-      "to": "l",
-      "part": "L"
-    },
-    {
-      "x": 19,
-      "y": 48,
-      "from": "B",
-      "to": "k",
-      "part": "L"
-    },
-    {
-      "x": 20,
-      "y": 48,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 21,
-      "y": 48,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 22,
-      "y": 48,
-      "from": "B",
-      "to": "l",
-      "part": "L"
-    },
-    {
-      "x": 23,
-      "y": 48,
-      "from": "w",
-      "to": "l",
-      "part": "L"
+      "part": "right-leg",
+      "region": "28"
     },
     {
       "x": 37,
       "y": 48,
       "from": "b",
-      "to": "k",
-      "part": "L"
-    },
-    {
-      "x": 38,
-      "y": 48,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 39,
-      "y": 48,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 40,
-      "y": 48,
-      "from": "B",
-      "to": "L",
-      "part": "L"
-    },
-    {
-      "x": 41,
-      "y": 48,
-      "from": "w",
       "to": "l",
-      "part": "L"
-    },
-    {
-      "x": 42,
-      "y": 48,
-      "from": "b",
-      "to": "l",
-      "part": "L"
-    },
-    {
-      "x": 17,
-      "y": 49,
-      "from": "w",
-      "to": "l",
-      "part": "L"
-    },
-    {
-      "x": 18,
-      "y": 49,
-      "from": "b",
-      "to": "l",
-      "part": "L"
-    },
-    {
-      "x": 22,
-      "y": 49,
-      "from": "b",
-      "to": "l",
-      "part": "L"
-    },
-    {
-      "x": 43,
-      "y": 49,
-      "from": "w",
-      "to": "l",
-      "part": "L"
-    },
-    {
-      "x": 44,
-      "y": 49,
-      "from": "w",
-      "to": "l",
-      "part": "L"
+      "part": "right-leg",
+      "region": "28"
     },
     {
       "x": 17,
       "y": 50,
       "from": "B",
-      "to": "k",
-      "part": "F"
+      "to": "L",
+      "part": "left-boot",
+      "region": "2a"
     },
     {
       "x": 18,
       "y": 50,
       "from": "B",
       "to": "L",
-      "part": "F"
+      "part": "left-boot",
+      "region": "2a"
+    },
+    {
+      "x": 17,
+      "y": 51,
+      "from": "B",
+      "to": "L",
+      "part": "left-boot",
+      "region": "2a"
     },
     {
       "x": 19,
       "y": 50,
       "from": "B",
       "to": "L",
-      "part": "F"
+      "part": "left-boot",
+      "region": "2a"
     },
     {
-      "x": 20,
-      "y": 50,
-      "from": "B",
-      "to": "l",
-      "part": "F"
-    },
-    {
-      "x": 21,
-      "y": 50,
-      "from": "v",
-      "to": "l",
-      "part": "F"
-    },
-    {
-      "x": 40,
-      "y": 50,
-      "from": "B",
-      "to": "k",
-      "part": "F"
-    },
-    {
-      "x": 41,
-      "y": 50,
+      "x": 18,
+      "y": 51,
       "from": "B",
       "to": "L",
-      "part": "F"
-    },
-    {
-      "x": 42,
-      "y": 50,
-      "from": "B",
-      "to": "L",
-      "part": "F"
-    },
-    {
-      "x": 43,
-      "y": 50,
-      "from": "B",
-      "to": "l",
-      "part": "F"
-    },
-    {
-      "x": 44,
-      "y": 50,
-      "from": "w",
-      "to": "l",
-      "part": "F"
+      "part": "left-boot",
+      "region": "2a"
     },
     {
       "x": 16,
       "y": 51,
       "from": "B",
-      "to": "k",
-      "part": "F"
+      "to": "L",
+      "part": "left-boot",
+      "region": "2a"
     },
     {
       "x": 17,
-      "y": 51,
-      "from": "B",
-      "to": "L",
-      "part": "F"
+      "y": 52,
+      "from": "b",
+      "to": "l",
+      "part": "left-boot",
+      "region": "2a"
     },
     {
-      "x": 18,
-      "y": 51,
+      "x": 20,
+      "y": 50,
       "from": "B",
       "to": "L",
-      "part": "F"
+      "part": "left-boot",
+      "region": "2a"
     },
     {
       "x": 19,
       "y": 51,
       "from": "B",
       "to": "L",
-      "part": "F"
+      "part": "left-boot",
+      "region": "2a"
+    },
+    {
+      "x": 18,
+      "y": 52,
+      "from": "b",
+      "to": "l",
+      "part": "left-boot",
+      "region": "2a"
+    },
+    {
+      "x": 16,
+      "y": 52,
+      "from": "b",
+      "to": "l",
+      "part": "left-boot",
+      "region": "2a"
+    },
+    {
+      "x": 21,
+      "y": 50,
+      "from": "B",
+      "to": "L",
+      "part": "left-boot",
+      "region": "2a"
     },
     {
       "x": 20,
       "y": 51,
       "from": "B",
+      "to": "L",
+      "part": "left-boot",
+      "region": "2a"
+    },
+    {
+      "x": 19,
+      "y": 52,
+      "from": "b",
       "to": "l",
-      "part": "F"
+      "part": "left-boot",
+      "region": "2a"
+    },
+    {
+      "x": 15,
+      "y": 52,
+      "from": "b",
+      "to": "l",
+      "part": "left-boot",
+      "region": "2a"
     },
     {
       "x": 21,
       "y": 51,
-      "from": "v",
+      "from": "b",
       "to": "l",
-      "part": "F"
+      "part": "left-boot",
+      "region": "2a"
     },
     {
-      "x": 40,
-      "y": 51,
-      "from": "B",
-      "to": "k",
-      "part": "F"
-    },
-    {
-      "x": 41,
-      "y": 51,
-      "from": "B",
-      "to": "L",
-      "part": "F"
-    },
-    {
-      "x": 42,
-      "y": 51,
-      "from": "B",
-      "to": "L",
-      "part": "F"
-    },
-    {
-      "x": 43,
-      "y": 51,
-      "from": "B",
-      "to": "L",
-      "part": "F"
-    },
-    {
-      "x": 44,
-      "y": 51,
-      "from": "B",
-      "to": "L",
-      "part": "F"
-    },
-    {
-      "x": 45,
-      "y": 51,
-      "from": "B",
+      "x": 20,
+      "y": 52,
+      "from": "b",
       "to": "l",
-      "part": "F"
-    },
-    {
-      "x": 46,
-      "y": 51,
-      "from": "w",
-      "to": "l",
-      "part": "F"
+      "part": "left-boot",
+      "region": "2a"
     },
     {
       "x": 14,
       "y": 52,
       "from": "b",
       "to": "l",
-      "part": "F"
-    },
-    {
-      "x": 15,
-      "y": 52,
-      "from": "B",
-      "to": "l",
-      "part": "F"
-    },
-    {
-      "x": 16,
-      "y": 52,
-      "from": "B",
-      "to": "l",
-      "part": "F"
-    },
-    {
-      "x": 17,
-      "y": 52,
-      "from": "B",
-      "to": "l",
-      "part": "F"
-    },
-    {
-      "x": 18,
-      "y": 52,
-      "from": "B",
-      "to": "l",
-      "part": "F"
-    },
-    {
-      "x": 19,
-      "y": 52,
-      "from": "B",
-      "to": "l",
-      "part": "F"
-    },
-    {
-      "x": 20,
-      "y": 52,
-      "from": "B",
-      "to": "l",
-      "part": "F"
+      "part": "left-boot",
+      "region": "2a"
     },
     {
       "x": 21,
       "y": 52,
-      "from": "w",
+      "from": "b",
       "to": "l",
-      "part": "F"
+      "part": "left-boot",
+      "region": "2a"
+    },
+    {
+      "x": 40,
+      "y": 50,
+      "from": "B",
+      "to": "L",
+      "part": "right-boot",
+      "region": "2b"
+    },
+    {
+      "x": 41,
+      "y": 50,
+      "from": "B",
+      "to": "L",
+      "part": "right-boot",
+      "region": "2b"
+    },
+    {
+      "x": 40,
+      "y": 51,
+      "from": "B",
+      "to": "L",
+      "part": "right-boot",
+      "region": "2b"
+    },
+    {
+      "x": 42,
+      "y": 50,
+      "from": "B",
+      "to": "L",
+      "part": "right-boot",
+      "region": "2b"
+    },
+    {
+      "x": 41,
+      "y": 51,
+      "from": "B",
+      "to": "L",
+      "part": "right-boot",
+      "region": "2b"
     },
     {
       "x": 40,
       "y": 52,
-      "from": "B",
+      "from": "b",
       "to": "l",
-      "part": "F"
+      "part": "right-boot",
+      "region": "2b"
+    },
+    {
+      "x": 43,
+      "y": 50,
+      "from": "B",
+      "to": "L",
+      "part": "right-boot",
+      "region": "2b"
+    },
+    {
+      "x": 42,
+      "y": 51,
+      "from": "B",
+      "to": "L",
+      "part": "right-boot",
+      "region": "2b"
     },
     {
       "x": 41,
       "y": 52,
-      "from": "B",
+      "from": "b",
       "to": "l",
-      "part": "F"
+      "part": "right-boot",
+      "region": "2b"
+    },
+    {
+      "x": 44,
+      "y": 50,
+      "from": "B",
+      "to": "L",
+      "part": "right-boot",
+      "region": "2b"
+    },
+    {
+      "x": 43,
+      "y": 51,
+      "from": "B",
+      "to": "L",
+      "part": "right-boot",
+      "region": "2b"
     },
     {
       "x": 42,
       "y": 52,
-      "from": "B",
+      "from": "b",
       "to": "l",
-      "part": "F"
+      "part": "right-boot",
+      "region": "2b"
+    },
+    {
+      "x": 44,
+      "y": 51,
+      "from": "B",
+      "to": "L",
+      "part": "right-boot",
+      "region": "2b"
     },
     {
       "x": 43,
       "y": 52,
-      "from": "B",
+      "from": "b",
       "to": "l",
-      "part": "F"
+      "part": "right-boot",
+      "region": "2b"
+    },
+    {
+      "x": 45,
+      "y": 51,
+      "from": "B",
+      "to": "L",
+      "part": "right-boot",
+      "region": "2b"
     },
     {
       "x": 44,
       "y": 52,
-      "from": "B",
+      "from": "b",
       "to": "l",
-      "part": "F"
+      "part": "right-boot",
+      "region": "2b"
+    },
+    {
+      "x": 46,
+      "y": 51,
+      "from": "b",
+      "to": "l",
+      "part": "right-boot",
+      "region": "2b"
     },
     {
       "x": 45,
       "y": 52,
-      "from": "B",
+      "from": "b",
       "to": "l",
-      "part": "F"
+      "part": "right-boot",
+      "region": "2b"
     },
     {
       "x": 46,
       "y": 52,
-      "from": "B",
+      "from": "b",
       "to": "l",
-      "part": "F"
+      "part": "right-boot",
+      "region": "2b"
     },
     {
       "x": 47,
       "y": 52,
       "from": "b",
       "to": "l",
-      "part": "F"
+      "part": "right-boot",
+      "region": "2b"
     }
-  ],
-  "paletteChanges": {
-    "L": [150, 103, 59, 255],
-    "l": [92, 58, 33, 255],
-    "k": [190, 140, 88, 255]
-  }
+  ]
 }

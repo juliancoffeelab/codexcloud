@@ -21,73 +21,73 @@
     "name": "left-shirt",
     "material": "cream",
     "seed": [16, 35],
-    "region": "10"
+    "region": "0f"
   },
   {
     "name": "left-bracer",
     "material": "brown",
     "seed": [17, 38],
-    "region": "19"
+    "region": "18"
   },
   {
     "name": "lower-hand",
     "material": "skin",
     "seed": [24, 41],
-    "region": "1e"
+    "region": "1c"
   },
   {
     "name": "right-bracer",
     "material": "brown",
     "seed": [37, 35],
-    "region": "0f"
+    "region": "0e"
   },
   {
     "name": "upper-hand",
     "material": "skin",
     "seed": [36, 31],
-    "region": "0a"
+    "region": "09"
   },
   {
     "name": "left-cuirass",
     "material": "brown",
     "seed": [23, 36],
-    "region": "0c"
+    "region": "0b"
   },
   {
     "name": "right-cuirass",
     "material": "brown",
     "seed": [30, 38],
-    "region": "1b"
+    "region": "1a"
   },
   {
     "name": "apron",
     "material": "brown",
     "seed": [29, 46],
-    "region": "22"
+    "region": "20"
   },
   {
     "name": "left-leg",
     "material": "brown",
     "seed": [17, 46],
-    "region": "24"
+    "region": "22"
   },
   {
     "name": "right-trouser",
     "material": "cream",
     "seed": [33, 46],
-    "region": "25"
+    "region": "23"
   },
   {
     "name": "left-boot",
     "material": "brown",
     "seed": [12, 52],
-    "region": "28"
+    "region": "26"
   },
   {
     "name": "right-boot",
     "material": "brown",
     "seed": [37, 52],
-    "region": "29"
+    "region": "27"
   },
   {
     "name": "shaft",

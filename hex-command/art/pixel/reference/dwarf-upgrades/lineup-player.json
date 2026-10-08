@@ -1,0 +1,98 @@
+[
+  {
+    "label": "axeguard L1",
+    "image": "art/pixel/units/dwarf-axeguard/player.png"
+  },
+  {
+    "label": "axeguard L2",
+    "image": "art/pixel/units/dwarf-axeguard-l2/player.png"
+  },
+  {
+    "label": "axeguard L3",
+    "image": "art/pixel/units/dwarf-axeguard-l3/player.png"
+  },
+  {
+    "label": "axe-pick reference",
+    "image": "art/pixel/reference/dwarf-branch-references/units/dwarf-axe-pick/player.png"
+  },
+  {
+    "label": "axe-pick L2",
+    "image": "art/pixel/units/dwarf-axe-pick-l2/player.png"
+  },
+  {
+    "label": "axe-pick L3",
+    "image": "art/pixel/units/dwarf-axe-pick-l3/player.png"
+  },
+  {
+    "label": "hammerer reference",
+    "image": "art/pixel/reference/dwarf-branch-references/units/dwarf-hammerer/player.png"
+  },
+  {
+    "label": "hammerer L2",
+    "image": "art/pixel/units/dwarf-hammerer-l2/player.png"
+  },
+  {
+    "label": "hammerer L3",
+    "image": "art/pixel/units/dwarf-hammerer-l3/player.png"
+  },
+  {
+    "label": "poleaxe reference",
+    "image": "art/pixel/reference/dwarf-branch-references/units/dwarf-poleaxe/player.png"
+  },
+  {
+    "label": "poleaxe L2",
+    "image": "art/pixel/units/dwarf-poleaxe-l2/player.png"
+  },
+  {
+    "label": "poleaxe L3",
+    "image": "art/pixel/units/dwarf-poleaxe-l3/player.png"
+  },
+  {
+    "label": "crossbow L1",
+    "image": "art/pixel/units/dwarf-crossbow/player.png"
+  },
+  {
+    "label": "crossbow L2",
+    "image": "art/pixel/units/dwarf-crossbow-l2/player.png"
+  },
+  {
+    "label": "crossbow L3",
+    "image": "art/pixel/units/dwarf-crossbow-l3/player.png"
+  },
+  {
+    "label": "arquebus reference",
+    "image": "art/pixel/reference/dwarf-branch-references/units/dwarf-arquebus/player.png"
+  },
+  {
+    "label": "arquebus L2",
+    "image": "art/pixel/units/dwarf-arquebus-l2/player.png"
+  },
+  {
+    "label": "arquebus L3",
+    "image": "art/pixel/units/dwarf-arquebus-l3/player.png"
+  },
+  {
+    "label": "goat-rider L1",
+    "image": "art/pixel/units/dwarf-goat-rider/player.png"
+  },
+  {
+    "label": "goat-rider L2",
+    "image": "art/pixel/units/dwarf-goat-rider-l2/player.png"
+  },
+  {
+    "label": "goat-rider L3",
+    "image": "art/pixel/units/dwarf-goat-rider-l3/player.png"
+  },
+  {
+    "label": "pistol-goat-rider reference",
+    "image": "art/pixel/reference/dwarf-branch-references/units/dwarf-pistol-goat-rider/player.png"
+  },
+  {
+    "label": "pistol-goat-rider L2",
+    "image": "art/pixel/units/dwarf-pistol-goat-rider-l2/player.png"
+  },
+  {
+    "label": "pistol-goat-rider L3",
+    "image": "art/pixel/units/dwarf-pistol-goat-rider-l3/player.png"
+  }
+]
