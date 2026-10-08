@@ -33,5 +33,13 @@
     "from": "H",
     "to": "h",
     "reason": "Join adjacent shade of the same material"
+  },
+  {
+    "x": 30,
+    "y": 25,
+    "from": "H",
+    "to": "O",
+    "feature": "eye",
+    "reason": "Requested second eye toward the weapon"
   }
 ]

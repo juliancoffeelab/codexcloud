@@ -54,6 +54,25 @@ class DwarfPartsTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Fill leaks between cuirass and apron"):
             bases.verify_anchors(rows, anchors)
 
+    def test_reviewed_second_eye_does_not_allow_other_skin_to_be_erased(self):
+        import json
+
+        for unit in ("dwarf-crossbow", "dwarf-arquebus"):
+            with self.subTest(unit=unit):
+                directory = bases.HERE / "bases" / unit
+                original = (bases.HERE.parent / "dwarf-progression/bases" / unit / "player.txt").read_text().splitlines()
+                rows = (directory / "player.mask").read_text().splitlines()
+                reviewed = json.loads((directory / "reviewed-specks.json").read_text())
+                bases.verify_original_details(original, rows, reviewed)
+                with self.assertRaisesRegex(ValueError, "original face, hand or bare arm"):
+                    bases.verify_original_details(original, rows, [p for p in reviewed if p.get("feature") != "eye"])
+                eye = next(p for p in reviewed if p.get("feature") == "eye")
+                x, y = eye["x"], eye["y"] + 1
+                erased = rows[:]
+                erased[y] = erased[y][:x] + "B" + erased[y][x + 1:]
+                with self.assertRaisesRegex(ValueError, "Reviewed eye"):
+                    bases.verify_original_details(original, erased, reviewed)
+
 
 if __name__ == "__main__":
     unittest.main()

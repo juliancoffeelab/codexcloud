@@ -5,9 +5,10 @@
     "dwarf-arquebus": {
       "beforeIncludingExteriorBlack": 102,
       "beforeIgnoringExteriorBlack": 87,
-      "afterIncludingExteriorBlack": 44,
-      "afterIgnoringExteriorBlack": 29,
-      "namedIndependentParts": 17
+      "afterIncludingExteriorBlack": 45,
+      "afterIgnoringExteriorBlack": 30,
+      "namedIndependentParts": 17,
+      "reviewedEyeAdditions": 1
     },
     "dwarf-axe-pick": {
       "beforeIncludingExteriorBlack": 99,
@@ -26,9 +27,10 @@
     "dwarf-crossbow": {
       "beforeIncludingExteriorBlack": 98,
       "beforeIgnoringExteriorBlack": 82,
-      "afterIncludingExteriorBlack": 43,
-      "afterIgnoringExteriorBlack": 27,
-      "namedIndependentParts": 17
+      "afterIncludingExteriorBlack": 44,
+      "afterIgnoringExteriorBlack": 28,
+      "namedIndependentParts": 17,
+      "reviewedEyeAdditions": 1
     },
     "dwarf-goat-rider": {
       "beforeIncludingExteriorBlack": 227,

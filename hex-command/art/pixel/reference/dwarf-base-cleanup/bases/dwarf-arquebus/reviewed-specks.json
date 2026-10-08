@@ -33,5 +33,13 @@
     "from": "B",
     "to": "H",
     "reason": "Brown fleck in palm"
+  },
+  {
+    "x": 29,
+    "y": 23,
+    "from": "H",
+    "to": "O",
+    "feature": "eye",
+    "reason": "Requested second eye toward the weapon"
   }
 ]

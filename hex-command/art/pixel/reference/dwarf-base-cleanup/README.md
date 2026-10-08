@@ -13,6 +13,8 @@ Faces and hands share one skin colour and shadow. Leather, hair and wood share
 one brown colour and shadow. Cream fabric, faction cloth and steel have their
 own ramps. The original facial features and dark boundaries have been restored,
 including the exposed skin fields that the rejected masks had treated as armour.
+The crossbowman and arquebusier each have one added eye toward their weapon,
+recorded explicitly in `reviewed-specks.json`; their original eyes remain.
 Only two reviewed, enclosed dark specks in cuirasses are removed. Isolated shades
 join a neighbouring shade of the same material; this does not erase a boundary.
 `reviewed-specks.json` records 45 specific material/ink corrections across the
@@ -45,7 +47,9 @@ outlines and transparency. `--check` compares region coverage as well as the exa
 canonical matrices, palettes and PNGs. It rejects a changed material boundary or
 a gap that joins previously separated parts. Original facial/contour pixels are
 protected, with explicit guarded exceptions for the two interior ink specks;
-connected original skin fields cannot be swallowed by armour. Pixel/PNG equality alone cannot
+connected original skin fields cannot be swallowed by armour. The two reviewed
+eye additions are single facial pixels below the helmet, with skin on either
+side and beneath. Pixel/PNG equality alone cannot
 establish visual quality, so inspect the grid after any source edit.
 
 ## Orthogonal speck check
@@ -57,7 +61,8 @@ not count. Black pixels beside transparent X/Y neighbours are excluded by defaul
 same material still count as different colours for this check.
 
 The filtered count dropped from **964 to 363** after the speck pass. The unfiltered
-count dropped from 1,161 to 559. The remaining suspects are marked in red in the
+count dropped from 1,161 to 559. Adding the two eyes subsequently brings the
+current counts to **365 filtered / 561 unfiltered**. The remaining suspects are marked in red in the
 [review sheet](isolated-pixels.png), with native coordinates and colours in
 [isolated-pixels.json](isolated-pixels.json). The counts are recorded in
 [check-summary.json](check-summary.json). Eyes, internal diagonal boundaries,

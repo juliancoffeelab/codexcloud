@@ -80,6 +80,19 @@ def verify_anchors(rows, anchors):
 
 
 def verify_original_details(original, rows, reviewed):
+    eyes = set()
+    for edit in reviewed:
+        if edit.get("feature") != "eye":
+            continue
+        x, y = edit["x"], edit["y"]
+        if (not (0 < x < 63 and 0 < y < 63)
+                or edit["from"] not in "Hh" or edit["to"] != "O"
+                or original[y][x] not in "Hh" or rows[y][x] != "O"
+                or rows[y - 1][x] not in "MaA"
+                or any(rows[yy][xx] not in "Hh" for xx, yy in
+                       ((x - 1, y), (x + 1, y), (x, y + 1)))):
+            raise ValueError("Reviewed eye must be a single facial pixel below the helmet")
+        eyes.add((x, y))
     removals = {(p["x"], p["y"]) for p in reviewed if p["from"] == "O"}
     for x, y in removals:
         if original[y][x] != "O" or not (0 < x < 63 and 0 < y < 63):
@@ -96,7 +109,7 @@ def verify_original_details(original, rows, reviewed):
     normal = [row.translate(str.maketrans({c: "B" for c in "VvWwGE"})) for row in original]
     for material, points in surfaces(normal):
         if material == "skin" and len(points) >= 3:
-            if any(OWNER.get(rows[y][x]) != "skin" for x, y in points):
+            if any(OWNER.get(rows[y][x]) != "skin" and (x, y) not in eyes for x, y in points):
                 raise ValueError("Cleanup swallowed an original face, hand or bare arm")
 
 
