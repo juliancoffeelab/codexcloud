@@ -1,28 +1,18 @@
-# Deferred dwarf armour progression
+# Original dwarf inputs
 
-This leather → mixed metal → silver pass was rejected: its hand-assigned masks
-proved colour coverage but did not prove that the artwork had clean part borders.
-The rejected L2/L3 files are saved under `tiers/`, with their original native
-inputs under `bases/`. They remain historical studies.
-`build.py` is read-only and `--check` checks those 18 archived L2/L3 designs only.
-It deliberately refuses to write art.
+`bases/` retains the nine original native matrices, palettes and rendered images
+from commit `b559200283b3279239a3225cfd2d20617e777d74`. The
+[base cleanup recipe](../dwarf-base-cleanup/README.md) uses these inputs to guard
+silhouettes, eyes, gripping hands and reviewed cleanup changes.
 
-L1 has been restored to its earlier equipment and cleaned separately. The
-[dwarf base cleanup](../dwarf-base-cleanup/README.md) owns all nine non-rune L1
-pose matrices. Five extra base poses are branch references; the
-[current upgrade recipe](../dwarf-upgrades/README.md) owns active L2/L3 artwork.
-The rune family remains untouched for the future Thundersmith /
-Enchanter design. Do not use this study's masks to recolour those cleaned bases.
+The rejected hand-assigned armour masks, 18 intermediate L2/L3 studies, comparison
+boards, coverage report and obsolete builder have been removed. Previous versions
+remain in Git history. Their old coverage check could not verify real part borders;
+the current recipes check independent fill components detected from the cleaned art.
 
-The [branch board](lineup-player.png) contains the restored bases beside the
-historical advanced tiers. It is a comparison, not an approved progression.
-The [chosen trees](../../lineups/dwarves.json) define the current artwork branches;
-gameplay definitions are unchanged.
+The [current branch upgrades](../dwarf-upgrades/README.md) and
+[rune line](../rune-line/README.md) own all chosen advanced dwarf tiers.
+The [lineup definition](../../lineups/dwarves.json) selects five L1 starters and
+ten L2 branches, each with an L3. Gameplay definitions are unchanged.
 
-```sh
-python3 art/pixel/reference/dwarf-progression/build.py --check
-python3 art/pixel/reference/dwarf-base-cleanup/build.py --check
-```
-
-The original `sources.json`, `bases/` and armour masks are kept for provenance.
-`coverage.json` explicitly records the limitation of the historical mask check.
+Do not remove `bases/`: these files are required rebuild inputs.

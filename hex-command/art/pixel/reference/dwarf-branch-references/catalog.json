@@ -38,19 +38,5 @@
     "canvas": [64, 64],
     "role": "branch-reference",
     "starter": "dwarf-goat-rider"
-  },
-  "dwarf-pickaxe-l2": {
-    "name": "Dwarf pickaxe L2",
-    "level": 2,
-    "study": "faction-expansion/dwarf-pickaxe-l2",
-    "canvas": [64, 64],
-    "role": "unused-miner-tier-study"
-  },
-  "dwarf-pickaxe-l3": {
-    "name": "Dwarf pickaxe L3",
-    "level": 3,
-    "study": "faction-expansion/dwarf-pickaxe-l3",
-    "canvas": [64, 64],
-    "role": "unused-miner-tier-study"
   }
 }

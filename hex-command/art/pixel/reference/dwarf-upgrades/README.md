@@ -61,5 +61,6 @@ npm run style
 
 The faction expansion `process.cjs tiers` routes these dwarf jobs through the
 cleaned sources and this upgrade recipe. Passing a starter ID rebuilds its two
-branches. The older rejected [dwarf progression](../dwarf-progression/README.md)
-has its own archived tier outputs and remains a read-only historical study.
+branches. The rejected progression tiers and unused miner studies have been removed.
+[Original inputs](../dwarf-progression/README.md) and five branch pose references
+remain available for guarded rebuilds.

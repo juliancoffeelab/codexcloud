@@ -20,7 +20,7 @@
     "steel": "MaA"
   },
   "runeLine": "Separate rune-line recipe",
-  "advancedTiers": "Whole-surface upgrades in dwarf-upgrades; old progression archived",
+  "advancedTiers": "Whole-surface upgrades in dwarf-upgrades; obsolete tier outputs removed; original inputs retained",
   "branchReferences": {
     "dwarf-axe-pick": "dwarf-axeguard",
     "dwarf-hammerer": "dwarf-pickaxe",

@@ -99,8 +99,8 @@ After a reviewed source edit, update its palette and explicitly record the new
 regions with `build.py dwarf-axeguard --record-parts`, then inspect and check them.
 The faction expansion `process.cjs tiers` command rebuilds these sources and their
 [whole-surface branch upgrades](../dwarf-upgrades/README.md).
-The rejected L2/L3 study is frozen and its former builder refuses to write art.
-The current upgrades use the detected fills, keeping the older study separate.
+The rejected L2/L3 study and its obsolete builder have been removed.
+The saved original `dwarf-progression/bases/` inputs remain required for these checks.
 
 Regenerate all three review boards and the suspect-pixel report without editing sources:
 

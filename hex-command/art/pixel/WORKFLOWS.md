@@ -91,8 +91,8 @@ the rune apprentice tree. Extra poses are saved as
 [whole-surface branch upgrades](reference/dwarf-upgrades/README.md), including
 red enemy cloth and L3 gold trim/inlays. The separate
 [rune-line recipe](reference/rune-line/README.md) owns the cleaned apprentice and
-Thundersmith / Stonespell L2–L3, completing ten branches across five trees. The rejected [dwarf progression](reference/dwarf-progression/README.md)
-checks its archived tier studies and cannot write art.
+Thundersmith / Stonespell L2–L3, completing ten branches across five trees. The rejected intermediate dwarf tiers and obsolete builder have been removed;
+[original inputs](reference/dwarf-progression/README.md) remain required for rebuild guards.
 Update the owning base matrix and its detected region records for later edits,
 then rebuild and run
 `python3 art/pixel/reference/dwarf-base-cleanup/build.py --check`.

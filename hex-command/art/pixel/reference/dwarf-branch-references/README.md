@@ -7,9 +7,10 @@ Their cleaned matrices are rebuilt by `dwarf-base-cleanup/build.py` from its
 authoritative `bases/*/player.mask` files.
 
 `catalog.json` records their original study IDs and parent starters, so construction
-scripts and galleries resolve them here. The two unused miner tier studies are
-also preserved here. The rejected older progression has a separate frozen copy
-under `../dwarf-progression/tiers/`.
+scripts and galleries resolve them here. The unused miner L2/L3 studies and
+rejected older progression tiers have been removed; previous designs remain in
+Git history. Original baseline inputs required by the cleanup checks remain in
+`../dwarf-progression/bases/`.
 
 See the [actual five trees](../dwarf-upgrades/README.md) and
-[lineup definition](../../lineups/dwarves.json). Rune development is postponed.
+[lineup definition](../../lineups/dwarves.json). The rune tree is complete.

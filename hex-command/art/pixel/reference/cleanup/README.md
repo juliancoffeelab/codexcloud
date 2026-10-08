@@ -43,7 +43,7 @@ The nine non-rune L1 poses now use the
 their cleaned native matrices and detected fill regions, including the five
 extra poses saved as branch references. The
 [branch upgrade recipe](../dwarf-upgrades/README.md) fills these complete surfaces
-for L2/L3, with gold trim and red enemy cloth. The rejected progression is archived.
+for L2/L3, with gold trim and red enemy cloth. Rejected progression tiers have been removed.
 The [rune-line recipe](../rune-line/README.md) now owns the apprentice and both
 advanced branches. Its stone uses a darker cyan `z` border and the original cyan
 `E` interior; faction swapping only affects surrounding cloth. `dwarf.json` has
