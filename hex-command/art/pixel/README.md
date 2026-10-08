@@ -11,7 +11,7 @@ documented in [the artwork workflow index](WORKFLOWS.md).
 Future faction bodies, poses and equipment are listed in the
 [anatomy and weapon references](reference/faction-anatomies.md).
 
-The [faction expansion](reference/faction-expansion/README.md) contains 61 new
+The [faction expansion](reference/faction-expansion/README.md) contains 63 new
 anatomies, both faction colors through L3, saved generation masks/prompts,
 cleanup recipes, numbered comparison grids and review sheets.
 

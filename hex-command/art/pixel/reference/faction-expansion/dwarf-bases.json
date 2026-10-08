@@ -30,5 +30,13 @@
   {
     "label": "Dwarf goat-mounted hammerman",
     "image": "art/pixel/reference/faction-expansion/extracted/dwarf-goat-rider/player.png"
+  },
+  {
+    "label": "Dwarf pistol goat rider",
+    "image": "art/pixel/reference/faction-expansion/extracted/dwarf-pistol-goat-rider/player.png"
+  },
+  {
+    "label": "Dwarf axe and pick infantry",
+    "image": "art/pixel/reference/faction-expansion/extracted/dwarf-axe-pick/player.png"
   }
 ]

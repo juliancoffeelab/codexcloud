@@ -111,6 +111,8 @@ const belts = {
   "fox-spearguard": [30, 39, 35, 39],
 };
 module.exports = function ({ job, level, rows, palette, origin }) {
+  const renewed = require("./dwarf-renewed.cjs");
+  if (renewed.owns(job.id)) return renewed.upgrade({ job, level, rows, palette, origin });
   const changes = [],
     [ox, oy] = origin;
   function set(gx, gy, to, reason) {

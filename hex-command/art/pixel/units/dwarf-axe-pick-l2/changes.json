@@ -1,0 +1,621 @@
+{
+  "base": "dwarf-axe-pick",
+  "level": 2,
+  "changes": [
+    {
+      "x": 21,
+      "y": 29,
+      "from": "I",
+      "to": "P",
+      "reason": "Small shoulder plate above the intact cream work sleeve"
+    },
+    {
+      "x": 22,
+      "y": 29,
+      "from": "I",
+      "to": "P",
+      "reason": "Small shoulder plate above the intact cream work sleeve"
+    },
+    {
+      "x": 21,
+      "y": 30,
+      "from": "I",
+      "to": "P",
+      "reason": "Small shoulder plate above the intact cream work sleeve"
+    },
+    {
+      "x": 22,
+      "y": 30,
+      "from": "I",
+      "to": "P",
+      "reason": "Small shoulder plate above the intact cream work sleeve"
+    },
+    {
+      "x": 23,
+      "y": 30,
+      "from": "i",
+      "to": "p",
+      "reason": "Small shoulder plate above the intact cream work sleeve"
+    },
+    {
+      "x": 21,
+      "y": 31,
+      "from": "i",
+      "to": "p",
+      "reason": "Small shoulder plate above the intact cream work sleeve"
+    },
+    {
+      "x": 22,
+      "y": 31,
+      "from": "I",
+      "to": "P",
+      "reason": "Small shoulder plate above the intact cream work sleeve"
+    },
+    {
+      "x": 23,
+      "y": 31,
+      "from": "i",
+      "to": "p",
+      "reason": "Small shoulder plate above the intact cream work sleeve"
+    },
+    {
+      "x": 22,
+      "y": 32,
+      "from": "i",
+      "to": "p",
+      "reason": "Small shoulder plate above the intact cream work sleeve"
+    },
+    {
+      "x": 23,
+      "y": 32,
+      "from": "i",
+      "to": "p",
+      "reason": "Small shoulder plate above the intact cream work sleeve"
+    },
+    {
+      "x": 40,
+      "y": 29,
+      "from": "I",
+      "to": "P",
+      "reason": "Small shoulder plate above the intact cream work sleeve"
+    },
+    {
+      "x": 41,
+      "y": 29,
+      "from": "I",
+      "to": "P",
+      "reason": "Small shoulder plate above the intact cream work sleeve"
+    },
+    {
+      "x": 42,
+      "y": 29,
+      "from": "I",
+      "to": "P",
+      "reason": "Small shoulder plate above the intact cream work sleeve"
+    },
+    {
+      "x": 39,
+      "y": 30,
+      "from": "i",
+      "to": "p",
+      "reason": "Small shoulder plate above the intact cream work sleeve"
+    },
+    {
+      "x": 40,
+      "y": 30,
+      "from": "I",
+      "to": "P",
+      "reason": "Small shoulder plate above the intact cream work sleeve"
+    },
+    {
+      "x": 41,
+      "y": 30,
+      "from": "I",
+      "to": "P",
+      "reason": "Small shoulder plate above the intact cream work sleeve"
+    },
+    {
+      "x": 39,
+      "y": 31,
+      "from": "i",
+      "to": "p",
+      "reason": "Small shoulder plate above the intact cream work sleeve"
+    },
+    {
+      "x": 40,
+      "y": 31,
+      "from": "I",
+      "to": "P",
+      "reason": "Small shoulder plate above the intact cream work sleeve"
+    },
+    {
+      "x": 39,
+      "y": 32,
+      "from": "i",
+      "to": "p",
+      "reason": "Small shoulder plate above the intact cream work sleeve"
+    },
+    {
+      "x": 40,
+      "y": 32,
+      "from": "i",
+      "to": "p",
+      "reason": "Small shoulder plate above the intact cream work sleeve"
+    },
+    {
+      "x": 28,
+      "y": 37,
+      "from": "b",
+      "to": "S",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 29,
+      "y": 37,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 30,
+      "y": 37,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 31,
+      "y": 37,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 32,
+      "y": 37,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 33,
+      "y": 37,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 34,
+      "y": 37,
+      "from": "B",
+      "to": "p",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 35,
+      "y": 37,
+      "from": "b",
+      "to": "p",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 28,
+      "y": 38,
+      "from": "B",
+      "to": "S",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 29,
+      "y": 38,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 30,
+      "y": 38,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 31,
+      "y": 38,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 32,
+      "y": 38,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 33,
+      "y": 38,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 34,
+      "y": 38,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 35,
+      "y": 38,
+      "from": "B",
+      "to": "p",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 36,
+      "y": 38,
+      "from": "b",
+      "to": "p",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 28,
+      "y": 39,
+      "from": "B",
+      "to": "S",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 29,
+      "y": 39,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 30,
+      "y": 39,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 31,
+      "y": 39,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 32,
+      "y": 39,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 33,
+      "y": 39,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 34,
+      "y": 39,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 35,
+      "y": 39,
+      "from": "B",
+      "to": "p",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 36,
+      "y": 39,
+      "from": "b",
+      "to": "p",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 27,
+      "y": 40,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 28,
+      "y": 40,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 29,
+      "y": 40,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 30,
+      "y": 40,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 31,
+      "y": 40,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 32,
+      "y": 40,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 33,
+      "y": 40,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 34,
+      "y": 40,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 35,
+      "y": 40,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 36,
+      "y": 40,
+      "from": "B",
+      "to": "p",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 27,
+      "y": 41,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 28,
+      "y": 41,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 29,
+      "y": 41,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 30,
+      "y": 41,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 31,
+      "y": 41,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 32,
+      "y": 41,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 33,
+      "y": 41,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 34,
+      "y": 41,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 35,
+      "y": 41,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 36,
+      "y": 41,
+      "from": "B",
+      "to": "p",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 27,
+      "y": 42,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 28,
+      "y": 42,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 29,
+      "y": 42,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 30,
+      "y": 42,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 31,
+      "y": 42,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 32,
+      "y": 42,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 33,
+      "y": 42,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 34,
+      "y": 42,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 35,
+      "y": 42,
+      "from": "B",
+      "to": "P",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 36,
+      "y": 42,
+      "from": "B",
+      "to": "p",
+      "reason": "Fitted continuous cuirass above waist, preserving the beard, hands and diagonal shaft"
+    },
+    {
+      "x": 27,
+      "y": 43,
+      "from": "B",
+      "to": "b",
+      "reason": "Dark leather waist belt; apron and trousers below remain leather"
+    },
+    {
+      "x": 28,
+      "y": 43,
+      "from": "B",
+      "to": "b",
+      "reason": "Dark leather waist belt; apron and trousers below remain leather"
+    },
+    {
+      "x": 29,
+      "y": 43,
+      "from": "B",
+      "to": "b",
+      "reason": "Dark leather waist belt; apron and trousers below remain leather"
+    },
+    {
+      "x": 30,
+      "y": 43,
+      "from": "B",
+      "to": "b",
+      "reason": "Dark leather waist belt; apron and trousers below remain leather"
+    },
+    {
+      "x": 31,
+      "y": 43,
+      "from": "B",
+      "to": "b",
+      "reason": "Dark leather waist belt; apron and trousers below remain leather"
+    },
+    {
+      "x": 32,
+      "y": 43,
+      "from": "B",
+      "to": "b",
+      "reason": "Dark leather waist belt; apron and trousers below remain leather"
+    },
+    {
+      "x": 33,
+      "y": 43,
+      "from": "B",
+      "to": "b",
+      "reason": "Dark leather waist belt; apron and trousers below remain leather"
+    },
+    {
+      "x": 34,
+      "y": 43,
+      "from": "B",
+      "to": "b",
+      "reason": "Dark leather waist belt; apron and trousers below remain leather"
+    },
+    {
+      "x": 35,
+      "y": 43,
+      "from": "B",
+      "to": "b",
+      "reason": "Dark leather waist belt; apron and trousers below remain leather"
+    },
+    {
+      "x": 36,
+      "y": 43,
+      "from": "B",
+      "to": "b",
+      "reason": "Dark leather waist belt; apron and trousers below remain leather"
+    },
+    {
+      "x": 32,
+      "y": 43,
+      "from": "b",
+      "to": "a",
+      "reason": "Small buckle at actual waist instead of a floating stripe"
+    }
+  ],
+  "paletteChanges": {
+    "A": [193, 211, 221, 255],
+    "a": [91, 119, 136, 255],
+    "R": [185, 24, 37, 255],
+    "r": [112, 14, 24, 255]
+  }
+}

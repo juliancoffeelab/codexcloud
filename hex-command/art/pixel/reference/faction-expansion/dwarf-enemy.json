@@ -94,5 +94,29 @@
   {
     "label": "Dwarf goat-mounted hammerman L3",
     "image": "art/pixel/units/dwarf-goat-rider-l3/enemy.png"
+  },
+  {
+    "label": "Dwarf pistol goat rider L1",
+    "image": "art/pixel/units/dwarf-pistol-goat-rider/enemy.png"
+  },
+  {
+    "label": "Dwarf pistol goat rider L2",
+    "image": "art/pixel/units/dwarf-pistol-goat-rider-l2/enemy.png"
+  },
+  {
+    "label": "Dwarf pistol goat rider L3",
+    "image": "art/pixel/units/dwarf-pistol-goat-rider-l3/enemy.png"
+  },
+  {
+    "label": "Dwarf axe and pick infantry L1",
+    "image": "art/pixel/units/dwarf-axe-pick/enemy.png"
+  },
+  {
+    "label": "Dwarf axe and pick infantry L2",
+    "image": "art/pixel/units/dwarf-axe-pick-l2/enemy.png"
+  },
+  {
+    "label": "Dwarf axe and pick infantry L3",
+    "image": "art/pixel/units/dwarf-axe-pick-l3/enemy.png"
   }
 ]

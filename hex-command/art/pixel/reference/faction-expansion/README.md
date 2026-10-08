@@ -1,6 +1,6 @@
 # Faction anatomy expansion
 
-61 generated anatomies: 36 humanoid/mounted poses and 25 beasts. Each has cleaned
+63 generated anatomies: 38 humanoid/mounted poses and 25 beasts. Each has cleaned
 L1–L3 matrices in both faction colors under `art/pixel/units/`. `reuse.cjs` adds
 nine L3 variants from existing L2 poses without overwriting those sources.
 These are artwork prototypes; game definitions and advancement trees are separate.
@@ -40,6 +40,16 @@ counts; the basilisk uses a direct top view with three feet on each side. The
 selected crocodile is seen diagonally from above to expose all four feet. The
 selected octopus is frontal with four joined arms on each side. Rejected raw
 outputs remain in `rejected/` for comparison and are never atlas inputs.
+
+The crossbow and pickaxe dwarves were regenerated from empty pink slots with
+actual dwarf anchors to correct their size. Both use complete 64px native frames
+alongside the other dwarves. The pistol goat rider and axe-and-pick infantry are
+two additional complete generated poses, with L1–L3 artwork in both factions.
+Their current pose-specific material and tier masks live in
+[dwarf-renewed.cjs](dwarf-renewed.cjs); the older helmet and metal-apron masks
+must not be applied to those new anatomies. Previous crossbow/pickaxe sources,
+prompts, templates and extracted studies remain in
+[rejected/dwarf-scale-2026-10-08/](rejected/dwarf-scale-2026-10-08/README.md).
 
 ## Rebuild saved artwork
 

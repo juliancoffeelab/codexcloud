@@ -436,19 +436,19 @@
     "name": "Dwarf pickaxe",
     "level": 1,
     "study": "faction-expansion/dwarf-pickaxe",
-    "canvas": [48, 48]
+    "canvas": [64, 64]
   },
   "dwarf-pickaxe-l2": {
     "name": "Dwarf pickaxe L2",
     "level": 2,
     "study": "faction-expansion/dwarf-pickaxe-l2",
-    "canvas": [48, 48]
+    "canvas": [64, 64]
   },
   "dwarf-pickaxe-l3": {
     "name": "Dwarf pickaxe L3",
     "level": 3,
     "study": "faction-expansion/dwarf-pickaxe-l3",
-    "canvas": [48, 48]
+    "canvas": [64, 64]
   },
   "dwarf-poleaxe": {
     "name": "Dwarf poleaxe",
@@ -472,19 +472,19 @@
     "name": "Dwarf crossbow",
     "level": 1,
     "study": "faction-expansion/dwarf-crossbow",
-    "canvas": [48, 48]
+    "canvas": [64, 64]
   },
   "dwarf-crossbow-l2": {
     "name": "Dwarf crossbow L2",
     "level": 2,
     "study": "faction-expansion/dwarf-crossbow-l2",
-    "canvas": [48, 48]
+    "canvas": [64, 64]
   },
   "dwarf-crossbow-l3": {
     "name": "Dwarf crossbow L3",
     "level": 3,
     "study": "faction-expansion/dwarf-crossbow-l3",
-    "canvas": [48, 48]
+    "canvas": [64, 64]
   },
   "dwarf-arquebus": {
     "name": "Dwarf arquebus",
@@ -1133,5 +1133,41 @@
     "level": 3,
     "study": "faction-expansion/merfolk-tide-oracle",
     "canvas": [48, 48]
+  },
+  "dwarf-pistol-goat-rider": {
+    "name": "Dwarf pistol goat rider",
+    "level": 1,
+    "study": "faction-expansion/dwarf-pistol-goat-rider",
+    "canvas": [64, 64]
+  },
+  "dwarf-pistol-goat-rider-l2": {
+    "name": "Dwarf pistol goat rider L2",
+    "level": 2,
+    "study": "faction-expansion/dwarf-pistol-goat-rider-l2",
+    "canvas": [64, 64]
+  },
+  "dwarf-pistol-goat-rider-l3": {
+    "name": "Dwarf pistol goat rider L3",
+    "level": 3,
+    "study": "faction-expansion/dwarf-pistol-goat-rider-l3",
+    "canvas": [64, 64]
+  },
+  "dwarf-axe-pick": {
+    "name": "Dwarf axe and pick infantry",
+    "level": 1,
+    "study": "faction-expansion/dwarf-axe-pick",
+    "canvas": [64, 64]
+  },
+  "dwarf-axe-pick-l2": {
+    "name": "Dwarf axe and pick infantry L2",
+    "level": 2,
+    "study": "faction-expansion/dwarf-axe-pick-l2",
+    "canvas": [64, 64]
+  },
+  "dwarf-axe-pick-l3": {
+    "name": "Dwarf axe and pick infantry L3",
+    "level": 3,
+    "study": "faction-expansion/dwarf-axe-pick-l3",
+    "canvas": [64, 64]
   }
 }

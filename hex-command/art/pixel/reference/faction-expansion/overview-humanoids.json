@@ -142,5 +142,13 @@
   {
     "label": "36. Merfolk harpoon thrower",
     "image": "art/pixel/units/merfolk-harpoonthrower/player.png"
+  },
+  {
+    "label": "37. Dwarf pistol goat rider",
+    "image": "art/pixel/units/dwarf-pistol-goat-rider/player.png"
+  },
+  {
+    "label": "38. Dwarf axe and pick infantry",
+    "image": "art/pixel/units/dwarf-axe-pick/player.png"
   }
 ]

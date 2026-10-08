@@ -49,6 +49,35 @@ for (const job of manifest.jobs.filter((j) => !ids.length || ids.includes(j.id))
   source.forEach((r, y) => [...r].forEach((s, x) => (original[y + oy][x + ox] = s)));
   const rows = original.map((r) => r.slice()),
     edits = [];
+  const renewed = require("./dwarf-renewed.cjs");
+  if (renewed.owns(job.id)) {
+    if (ox !== 0 || oy !== 0 || source.length !== 64 || source[0].length !== 64)
+      throw Error(job.id + ": regenerated dwarf requires its reviewed 64x64 frame");
+    const palettePath = path.join(dir, "palette.json");
+    const palette = JSON.parse(fs.readFileSync(palettePath));
+    const changes = renewed.clean(job.id, rows, palette);
+    if (
+      rows.some((r, y) =>
+        r.some(
+          (s, x) =>
+            (s === ".") !== (original[y][x] === ".") || (s === "O") !== (original[y][x] === "O"),
+        ),
+      )
+    )
+      throw Error(job.id + ": regenerated material cleanup changed outline or silhouette");
+    fs.writeFileSync(path.join(dir, "player.txt"), rows.map((r) => r.join("")).join("\n") + "\n");
+    fs.writeFileSync(palettePath, JSON.stringify(palette, null, 2) + "\n");
+    fs.writeFileSync(
+      path.join(dir, "material-cleanup.json"),
+      JSON.stringify({ coordinates: "64x64 original slot", edits: changes }, null, 2) + "\n",
+    );
+    execFileSync("python3", ["scripts/render-pixel.py", path.join(dir, "player.txt")], {
+      cwd: project,
+      stdio: "pipe",
+    });
+    console.log(job.id + ": " + changes.length + " regenerated-pose material corrections");
+    continue;
+  }
   const set = (x, y, to, reason) => {
     const from = rows[y][x];
     if (from === to) return;

@@ -1,0 +1,523 @@
+{
+  "coordinates": "64x64 original slot",
+  "edits": [
+    {
+      "x": 23,
+      "y": 21,
+      "from": "v",
+      "to": "b",
+      "reason": "Warm contiguous beard hair below the face"
+    },
+    {
+      "x": 29,
+      "y": 27,
+      "from": "w",
+      "to": "b",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 26,
+      "y": 28,
+      "from": "W",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 27,
+      "y": 29,
+      "from": "w",
+      "to": "b",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 23,
+      "y": 30,
+      "from": "W",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 24,
+      "y": 30,
+      "from": "V",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 25,
+      "y": 30,
+      "from": "V",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 26,
+      "y": 30,
+      "from": "V",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 22,
+      "y": 31,
+      "from": "v",
+      "to": "b",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 25,
+      "y": 31,
+      "from": "W",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 26,
+      "y": 31,
+      "from": "W",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 21,
+      "y": 32,
+      "from": "v",
+      "to": "b",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 22,
+      "y": 32,
+      "from": "w",
+      "to": "b",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 24,
+      "y": 32,
+      "from": "V",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 25,
+      "y": 32,
+      "from": "V",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 27,
+      "y": 32,
+      "from": "w",
+      "to": "b",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 23,
+      "y": 33,
+      "from": "V",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 24,
+      "y": 33,
+      "from": "V",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 24,
+      "y": 35,
+      "from": "v",
+      "to": "b",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 28,
+      "y": 35,
+      "from": "v",
+      "to": "b",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 29,
+      "y": 35,
+      "from": "v",
+      "to": "b",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 30,
+      "y": 35,
+      "from": "W",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 23,
+      "y": 36,
+      "from": "v",
+      "to": "b",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 24,
+      "y": 36,
+      "from": "W",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 30,
+      "y": 36,
+      "from": "W",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 24,
+      "y": 37,
+      "from": "W",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 29,
+      "y": 37,
+      "from": "W",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 30,
+      "y": 37,
+      "from": "W",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 29,
+      "y": 38,
+      "from": "W",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 30,
+      "y": 38,
+      "from": "V",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 29,
+      "y": 39,
+      "from": "W",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 27,
+      "y": 40,
+      "from": "W",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 28,
+      "y": 40,
+      "from": "v",
+      "to": "b",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 29,
+      "y": 40,
+      "from": "W",
+      "to": "B",
+      "reason": "Leather apron and trousers stay warm, separate from tier steel"
+    },
+    {
+      "x": 49,
+      "y": 13,
+      "from": "B",
+      "to": "W",
+      "reason": "Wooden stock or shaft has a coherent warm material ramp"
+    },
+    {
+      "x": 50,
+      "y": 13,
+      "from": "v",
+      "to": "w",
+      "reason": "Wooden stock or shaft has a coherent warm material ramp"
+    },
+    {
+      "x": 51,
+      "y": 13,
+      "from": "v",
+      "to": "w",
+      "reason": "Wooden stock or shaft has a coherent warm material ramp"
+    },
+    {
+      "x": 44,
+      "y": 14,
+      "from": "v",
+      "to": "w",
+      "reason": "Wooden stock or shaft has a coherent warm material ramp"
+    },
+    {
+      "x": 46,
+      "y": 14,
+      "from": "v",
+      "to": "w",
+      "reason": "Wooden stock or shaft has a coherent warm material ramp"
+    },
+    {
+      "x": 48,
+      "y": 14,
+      "from": "b",
+      "to": "w",
+      "reason": "Wooden stock or shaft has a coherent warm material ramp"
+    },
+    {
+      "x": 49,
+      "y": 14,
+      "from": "b",
+      "to": "w",
+      "reason": "Wooden stock or shaft has a coherent warm material ramp"
+    },
+    {
+      "x": 18,
+      "y": 33,
+      "from": "v",
+      "to": "j",
+      "reason": "Goat coat stays warm ivory and natural shadows, separate from rider skin and tier armor"
+    },
+    {
+      "x": 16,
+      "y": 35,
+      "from": "H",
+      "to": "I",
+      "reason": "Goat coat stays warm ivory and natural shadows, separate from rider skin and tier armor"
+    },
+    {
+      "x": 20,
+      "y": 35,
+      "from": "v",
+      "to": "j",
+      "reason": "Goat coat stays warm ivory and natural shadows, separate from rider skin and tier armor"
+    },
+    {
+      "x": 12,
+      "y": 39,
+      "from": "H",
+      "to": "I",
+      "reason": "Goat coat stays warm ivory and natural shadows, separate from rider skin and tier armor"
+    },
+    {
+      "x": 12,
+      "y": 43,
+      "from": "h",
+      "to": "i",
+      "reason": "Goat coat stays warm ivory and natural shadows, separate from rider skin and tier armor"
+    },
+    {
+      "x": 20,
+      "y": 43,
+      "from": "h",
+      "to": "i",
+      "reason": "Goat coat stays warm ivory and natural shadows, separate from rider skin and tier armor"
+    },
+    {
+      "x": 18,
+      "y": 44,
+      "from": "h",
+      "to": "i",
+      "reason": "Goat coat stays warm ivory and natural shadows, separate from rider skin and tier armor"
+    },
+    {
+      "x": 21,
+      "y": 44,
+      "from": "V",
+      "to": "J",
+      "reason": "Goat coat stays warm ivory and natural shadows, separate from rider skin and tier armor"
+    },
+    {
+      "x": 21,
+      "y": 49,
+      "from": "v",
+      "to": "j",
+      "reason": "Goat coat stays warm ivory and natural shadows, separate from rider skin and tier armor"
+    },
+    {
+      "x": 21,
+      "y": 50,
+      "from": "V",
+      "to": "J",
+      "reason": "Goat coat stays warm ivory and natural shadows, separate from rider skin and tier armor"
+    },
+    {
+      "x": 10,
+      "y": 53,
+      "from": "V",
+      "to": "J",
+      "reason": "Goat coat stays warm ivory and natural shadows, separate from rider skin and tier armor"
+    },
+    {
+      "x": 32,
+      "y": 33,
+      "from": "v",
+      "to": "j",
+      "reason": "Goat coat stays warm ivory and natural shadows, separate from rider skin and tier armor"
+    },
+    {
+      "x": 31,
+      "y": 37,
+      "from": "V",
+      "to": "J",
+      "reason": "Goat coat stays warm ivory and natural shadows, separate from rider skin and tier armor"
+    },
+    {
+      "x": 33,
+      "y": 47,
+      "from": "v",
+      "to": "j",
+      "reason": "Goat coat stays warm ivory and natural shadows, separate from rider skin and tier armor"
+    },
+    {
+      "x": 51,
+      "y": 28,
+      "from": "h",
+      "to": "i",
+      "reason": "Goat coat stays warm ivory and natural shadows, separate from rider skin and tier armor"
+    },
+    {
+      "x": 47,
+      "y": 37,
+      "from": "v",
+      "to": "j",
+      "reason": "Goat coat stays warm ivory and natural shadows, separate from rider skin and tier armor"
+    },
+    {
+      "x": 45,
+      "y": 41,
+      "from": "v",
+      "to": "j",
+      "reason": "Goat coat stays warm ivory and natural shadows, separate from rider skin and tier armor"
+    },
+    {
+      "x": 24,
+      "y": 10,
+      "from": "a",
+      "to": "M",
+      "reason": "Broad helmet midtone, connected upper-right highlight and left/bottom shadow"
+    },
+    {
+      "x": 25,
+      "y": 10,
+      "from": "i",
+      "to": "M",
+      "reason": "Broad helmet midtone, connected upper-right highlight and left/bottom shadow"
+    },
+    {
+      "x": 24,
+      "y": 11,
+      "from": "a",
+      "to": "M",
+      "reason": "Broad helmet midtone, connected upper-right highlight and left/bottom shadow"
+    },
+    {
+      "x": 25,
+      "y": 11,
+      "from": "i",
+      "to": "M",
+      "reason": "Broad helmet midtone, connected upper-right highlight and left/bottom shadow"
+    },
+    {
+      "x": 24,
+      "y": 12,
+      "from": "a",
+      "to": "M",
+      "reason": "Broad helmet midtone, connected upper-right highlight and left/bottom shadow"
+    },
+    {
+      "x": 25,
+      "y": 12,
+      "from": "i",
+      "to": "M",
+      "reason": "Broad helmet midtone, connected upper-right highlight and left/bottom shadow"
+    },
+    {
+      "x": 26,
+      "y": 12,
+      "from": "i",
+      "to": "A",
+      "reason": "Broad helmet midtone, connected upper-right highlight and left/bottom shadow"
+    },
+    {
+      "x": 29,
+      "y": 12,
+      "from": "i",
+      "to": "M",
+      "reason": "Broad helmet midtone, connected upper-right highlight and left/bottom shadow"
+    },
+    {
+      "x": 24,
+      "y": 13,
+      "from": "a",
+      "to": "M",
+      "reason": "Broad helmet midtone, connected upper-right highlight and left/bottom shadow"
+    },
+    {
+      "x": 25,
+      "y": 13,
+      "from": "a",
+      "to": "M",
+      "reason": "Broad helmet midtone, connected upper-right highlight and left/bottom shadow"
+    },
+    {
+      "x": 26,
+      "y": 13,
+      "from": "a",
+      "to": "M",
+      "reason": "Broad helmet midtone, connected upper-right highlight and left/bottom shadow"
+    },
+    {
+      "x": 27,
+      "y": 13,
+      "from": "a",
+      "to": "M",
+      "reason": "Broad helmet midtone, connected upper-right highlight and left/bottom shadow"
+    },
+    {
+      "x": 28,
+      "y": 13,
+      "from": "a",
+      "to": "M",
+      "reason": "Broad helmet midtone, connected upper-right highlight and left/bottom shadow"
+    },
+    {
+      "x": 29,
+      "y": 13,
+      "from": "a",
+      "to": "M",
+      "reason": "Broad helmet midtone, connected upper-right highlight and left/bottom shadow"
+    },
+    {
+      "x": 30,
+      "y": 13,
+      "from": "a",
+      "to": "M",
+      "reason": "Broad helmet midtone, connected upper-right highlight and left/bottom shadow"
+    },
+    {
+      "x": 24,
+      "y": 14,
+      "from": "B",
+      "to": "a",
+      "reason": "Broad helmet midtone, connected upper-right highlight and left/bottom shadow"
+    }
+  ]
+}

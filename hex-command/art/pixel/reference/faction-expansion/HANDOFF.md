@@ -14,6 +14,13 @@ the original generation studies, not the current active zombie roster.
 
 ## What is saved
 
+Subsequent dwarf work regenerated the crossbow and pickaxe using dwarf-sized pink
+templates, added a pistol goat rider and axe-and-pick infantry, and refined the
+helmets and fitted torso armour across the dwarf roster. The current manifest has
+63 generated base poses (38 humanoid/mounted, 25 beasts). The original expansion
+counts below are retained as historical context. New dwarf pose masks live in
+`dwarf-renewed.cjs`; reviewed material overlays live in `../cleanup/dwarf.json`.
+
 The previous commit contains 25 approved human designs through L3 in both faction
 colors. This expansion adds 61 generated base poses, each with L1–L3 artwork, plus
 nine L3 variants built from existing L2 units: **192 additional designs / 384
@@ -50,7 +57,7 @@ merge was performed as part of this handoff.
 
 Read project `AGENTS.md`, `art/pixel/WORKFLOWS.md`, then [this workflow's README](README.md).
 
-- [Humanoid overview](overview-humanoids.png): 36 numbered base poses.
+- [Humanoid overview](overview-humanoids.png): 38 numbered base poses.
 - [Beast overview](overview-beasts.png): 25 numbered base poses.
 - [Local review gallery](gallery.html): L1–L3, teal/red selector, raw generations,
   component notes, and numbered source/matrix overlays. Open locally or serve

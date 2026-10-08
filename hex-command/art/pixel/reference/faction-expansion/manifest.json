@@ -501,7 +501,8 @@
       "pose": "Short broad bearded dwarf with leather mining apron and teal scarf, BOTH hands gripping one diagonal wooden pickaxe shaft. A curved pointed steel pick and a short flat counterweight clearly attached across upper shaft. Chunky arms, distinct feet.",
       "size": 48,
       "status": "tiers",
-      "canvas": [48, 48]
+      "canvas": [64, 64],
+      "anchors": ["dwarf-axeguard", "dwarf-hammerer", "dwarf-arquebus"]
     },
     {
       "race": "dwarf",
@@ -519,7 +520,8 @@
       "pose": "Short broad bearded dwarf holding a compact CROSSBOW across the front of body, stock against shoulder, trigger hand at grip and supporting hand under stock. Horizontal bow limbs and seated bolt visible, not ordinary bow. Leather jerkin, teal scarf.",
       "size": 48,
       "status": "tiers",
-      "canvas": [48, 48]
+      "canvas": [64, 64],
+      "anchors": ["dwarf-axeguard", "dwarf-hammerer", "dwarf-arquebus"]
     },
     {
       "race": "dwarf",
@@ -1735,6 +1737,26 @@
         "C": [207, 112, 69, 255],
         "c": [143, 70, 48, 255]
       },
+      "canvas": [64, 64]
+    },
+    {
+      "race": "dwarf",
+      "id": "dwarf-pistol-goat-rider",
+      "name": "Dwarf pistol goat rider",
+      "pose": "Short bearded dwarf riding a sturdy compact horned mountain goat, one hand holding reins and the other aiming a short flintlock pistol forward. Connected saddle, stirrups and four distinct goat legs. Match the existing dwarf goat rider scale.",
+      "size": 64,
+      "status": "tiers",
+      "anchors": ["dwarf-goat-rider", "dwarf-arquebus", "dwarf-hammerer"],
+      "canvas": [64, 64]
+    },
+    {
+      "race": "dwarf",
+      "id": "dwarf-axe-pick",
+      "name": "Dwarf axe and pick infantry",
+      "pose": "Short broad infantry dwarf with one compact axe in one hand and one compact pick in the other. Two separate short wooden hafts and readable grips, stout arms, plain leather workwear and teal scarf. Match existing foot dwarf body size.",
+      "size": 64,
+      "status": "tiers",
+      "anchors": ["dwarf-axeguard", "dwarf-hammerer", "dwarf-arquebus"],
       "canvas": [64, 64]
     }
   ]

@@ -5,6 +5,15 @@ the active unit sources, including both factions; archived studies stay unchange
 The [before/after review grid](review-before-after.png) shows one example from
 each of the eight independent passes.
 
+The dwarf follow-up replaces scattered helmet highlights with connected steel
+shading. Cuirasses follow the visible torso, with leather work aprons below the
+waist rather than rectangular sheets of armour between the legs. Material fixes
+keep beards, hands and wooden weapon shafts separate from plate.
+See the [helmet and cuirass comparison](dwarf-refinement.png) and the
+[regenerated/new dwarf tiers](dwarf-new-poses.png). Crossbow and pickaxe now use
+new dwarf-sized imagegen poses; the pistol goat rider and axe-and-pick infantry
+are additional families. Their material overlays preserve these new anatomies.
+
 These are native pixel edits, not image filters. Each matrix record gives an exact
 coordinate, expected old symbol, reviewed replacement and reason. Palette records
 give the expected old and replacement RGBA values. Player and enemy corrections

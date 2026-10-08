@@ -74,6 +74,12 @@ matrix renderer replays their guarded player/enemy and palette edits before
 rendering; check mode verifies they are present. Update the owning cleanup recipe
 alongside future edits to corrected pixels or palette colors.
 
+The regenerated dwarf crossbow/pickaxe, pistol goat rider and axe-and-pick
+infantry use the saved pose masks in
+[dwarf-renewed.cjs](reference/faction-expansion/dwarf-renewed.cjs). Their pink
+templates use actual dwarf scale anchors. Keep those masks paired with their new
+source generations; the older metal-apron rectangles belong to different poses.
+
 Regenerate the full boards without changing artwork:
 
 ```sh
