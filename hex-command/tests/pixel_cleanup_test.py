@@ -93,6 +93,26 @@ class MaterialReplayTest(unittest.TestCase):
             self.apply()
         self.assertEqual(self.matrices[0].read_text(), "AAA\nOAA\nAAA\n")
 
+    def test_reviewed_material_notch_does_not_change_silhouette(self):
+        file = self.recipes / "race.json"
+        recipe = json.loads(file.read_text())
+        unit = recipe["units"]["example"]
+        unit["canvas"] = [3, 3]
+        edit = {"x": 1, "y": 1, "from": "O", "to": "A", "repairMaterialBoundary": True}
+        unit["matrixChanges"] = [edit]
+        unit["enemyMatrixChanges"] = [edit]
+        file.write_text(json.dumps(recipe))
+        for matrix in self.matrices:
+            matrix.write_text("AA.\nAO.\nAAA\n")
+        self.apply()
+        self.assertEqual(self.matrices[0].read_text(), "AA.\nAA.\nAAA\n")
+        self.assertEqual(self.matrices[1].read_text(), "AA.\nAA.\nAAA\n")
+        self.apply(check=True)
+        self.matrices[0].write_text("AA.\nAO.\nA..\n")
+        with self.assertRaisesRegex(ValueError, "must preserve outlines"):
+            self.apply()
+        self.assertEqual(self.matrices[0].read_text(), "AA.\nAO.\nA..\n")
+
 
 if __name__ == "__main__":
     unittest.main()

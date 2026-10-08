@@ -26,17 +26,25 @@ palette stays unchanged. A different source symbol, palette or canvas fails with
 a stale-source error instead of applying a pose-specific correction to unrelated
 artwork. `npm run art:check` verifies the corrections are already present.
 
-Anatomy, weapons, canvas dimensions, transparency and outer contours are preserved.
+Anatomy, weapons, canvas dimensions, transparency and silhouettes are preserved.
 Only material ownership, internal stray color pixels and connected shading planes
 are corrected. Natural beast markings and human magical branch colors are kept.
 
 Reviewed L1 dwarf records may flag `removeInteriorOutline` for a specific stray
 dark pixel inside a helmet, face or garment. Replay permits that removal only
-when the entire 3×3 neighborhood is opaque; pixels touching transparency remain
-protected. Pupils, facial features, weapon seams and grips are retained by the
-pose review. L2/L3 artwork is left for a later derivation pass.
+when the entire 3×3 neighborhood is opaque. A separate `repairMaterialBoundary`
+flag repairs the reviewed dark notch at the axeguard helmet edge: at least seven
+pixels in its 3×3 neighborhood and three direct neighbors must be opaque. Neither
+flag can change transparency or add an outline; unflagged outlines remain protected.
+Pupils, facial features, weapon seams and grips are retained by the pose review.
+L2/L3 artwork is left for a later derivation pass.
 The [current L1 dwarf grid](dwarf-l1.png) covers all ten base poses; higher-tier
 comparison sheets retain the earlier L2/L3 artwork until that derivation.
+
+The marked L1 follow-up separates steel weapon heads and barrels, wooden shafts,
+skin grips and cream cuffs with pose-specific corrections. The runesmith retains
+the pointed front apron flap and small strap fasteners visible in its saved raw
+generation, rather than flattening them into a rectangular leather panel.
 
 For future matrix edits, update the owning cleanup recipe alongside the source
 so rebuilding retains the change. Recipe coordinates refer to the canonical

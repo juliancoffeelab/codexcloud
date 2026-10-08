@@ -45,7 +45,22 @@ def apply_cleanup(matrices, check=False, units_root=UNITS, recipe_root=RECIPES):
                         for xx in range(x - 1, x + 2)
                     )
                 )
-                if not interior:
+                boundary = (
+                    change.get("repairMaterialBoundary") is True
+                    and before == "O"
+                    and 0 < x < len(rows[0]) - 1
+                    and 0 < y < len(rows) - 1
+                    and sum(
+                        rows[yy][xx] != "."
+                        for yy in range(y - 1, y + 2)
+                        for xx in range(x - 1, x + 2)
+                    ) >= 7
+                    and sum(
+                        rows[yy][xx] != "."
+                        for xx, yy in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1))
+                    ) >= 3
+                )
+                if not (interior or boundary):
                     raise ValueError(f"{unit}: material cleanup must preserve outlines")
             current = rows[y][x]
             if current == after:

@@ -357,6 +357,27 @@
           "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
         },
         {
+          "x": 55,
+          "y": 23,
+          "from": "v",
+          "to": "a",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
+        },
+        {
+          "x": 57,
+          "y": 23,
+          "from": "b",
+          "to": "a",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
+        },
+        {
+          "x": 58,
+          "y": 23,
+          "from": "b",
+          "to": "a",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
+        },
+        {
           "x": 26,
           "y": 24,
           "from": "V",
@@ -374,64 +395,78 @@
           "x": 46,
           "y": 24,
           "from": "B",
-          "to": "W",
-          "reason": "Warm wooden firearm furniture remains distinct from its steel barrel."
+          "to": "A",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
         },
         {
           "x": 47,
           "y": 24,
           "from": "B",
-          "to": "W",
-          "reason": "Warm wooden firearm furniture remains distinct from its steel barrel."
+          "to": "A",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
         },
         {
           "x": 48,
           "y": 24,
           "from": "B",
-          "to": "W",
-          "reason": "Warm wooden firearm furniture remains distinct from its steel barrel."
+          "to": "A",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
         },
         {
           "x": 49,
           "y": 24,
           "from": "B",
-          "to": "W",
-          "reason": "Warm wooden firearm furniture remains distinct from its steel barrel."
+          "to": "A",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
         },
         {
           "x": 50,
           "y": 24,
           "from": "B",
-          "to": "W",
-          "reason": "Warm wooden firearm furniture remains distinct from its steel barrel."
+          "to": "A",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
         },
         {
           "x": 51,
           "y": 24,
           "from": "B",
-          "to": "W",
-          "reason": "Warm wooden firearm furniture remains distinct from its steel barrel."
+          "to": "A",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
         },
         {
           "x": 52,
           "y": 24,
           "from": "B",
-          "to": "W",
-          "reason": "Warm wooden firearm furniture remains distinct from its steel barrel."
+          "to": "A",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
         },
         {
           "x": 53,
           "y": 24,
           "from": "B",
-          "to": "W",
-          "reason": "Warm wooden firearm furniture remains distinct from its steel barrel."
+          "to": "A",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
         },
         {
           "x": 54,
           "y": 24,
           "from": "b",
-          "to": "w",
-          "reason": "Warm wooden firearm furniture remains distinct from its steel barrel."
+          "to": "a",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
+        },
+        {
+          "x": 56,
+          "y": 24,
+          "from": "I",
+          "to": "A",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
+        },
+        {
+          "x": 57,
+          "y": 24,
+          "from": "i",
+          "to": "a",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
         },
         {
           "x": 46,
@@ -474,6 +509,13 @@
           "from": "b",
           "to": "w",
           "reason": "Warm wooden firearm furniture remains distinct from its steel barrel."
+        },
+        {
+          "x": 58,
+          "y": 26,
+          "from": "b",
+          "to": "a",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
         },
         {
           "x": 29,
@@ -742,6 +784,27 @@
           "reason": "Clean the bounded rear gunstock into continuous wood, keeping adjacent hands and receiver."
         },
         {
+          "x": 39,
+          "y": 29,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 40,
+          "y": 29,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 41,
+          "y": 29,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
           "x": 29,
           "y": 30,
           "from": "a",
@@ -789,6 +852,41 @@
           "from": "b",
           "to": "w",
           "reason": "Clean the bounded rear gunstock into continuous wood, keeping adjacent hands and receiver."
+        },
+        {
+          "x": 31,
+          "y": 33,
+          "from": "V",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 32,
+          "y": 33,
+          "from": "b",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 32,
+          "y": 34,
+          "from": "b",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 31,
+          "y": 35,
+          "from": "b",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 32,
+          "y": 36,
+          "from": "b",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 31,
@@ -1189,6 +1287,27 @@
           "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
         },
         {
+          "x": 55,
+          "y": 23,
+          "from": "v",
+          "to": "a",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
+        },
+        {
+          "x": 57,
+          "y": 23,
+          "from": "b",
+          "to": "a",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
+        },
+        {
+          "x": 58,
+          "y": 23,
+          "from": "b",
+          "to": "a",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
+        },
+        {
           "x": 26,
           "y": 24,
           "from": "V",
@@ -1206,64 +1325,78 @@
           "x": 46,
           "y": 24,
           "from": "B",
-          "to": "W",
-          "reason": "Warm wooden firearm furniture remains distinct from its steel barrel."
+          "to": "A",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
         },
         {
           "x": 47,
           "y": 24,
           "from": "B",
-          "to": "W",
-          "reason": "Warm wooden firearm furniture remains distinct from its steel barrel."
+          "to": "A",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
         },
         {
           "x": 48,
           "y": 24,
           "from": "B",
-          "to": "W",
-          "reason": "Warm wooden firearm furniture remains distinct from its steel barrel."
+          "to": "A",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
         },
         {
           "x": 49,
           "y": 24,
           "from": "B",
-          "to": "W",
-          "reason": "Warm wooden firearm furniture remains distinct from its steel barrel."
+          "to": "A",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
         },
         {
           "x": 50,
           "y": 24,
           "from": "B",
-          "to": "W",
-          "reason": "Warm wooden firearm furniture remains distinct from its steel barrel."
+          "to": "A",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
         },
         {
           "x": 51,
           "y": 24,
           "from": "B",
-          "to": "W",
-          "reason": "Warm wooden firearm furniture remains distinct from its steel barrel."
+          "to": "A",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
         },
         {
           "x": 52,
           "y": 24,
           "from": "B",
-          "to": "W",
-          "reason": "Warm wooden firearm furniture remains distinct from its steel barrel."
+          "to": "A",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
         },
         {
           "x": 53,
           "y": 24,
           "from": "B",
-          "to": "W",
-          "reason": "Warm wooden firearm furniture remains distinct from its steel barrel."
+          "to": "A",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
         },
         {
           "x": 54,
           "y": 24,
           "from": "b",
-          "to": "w",
-          "reason": "Warm wooden firearm furniture remains distinct from its steel barrel."
+          "to": "a",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
+        },
+        {
+          "x": 56,
+          "y": 24,
+          "from": "I",
+          "to": "A",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
+        },
+        {
+          "x": 57,
+          "y": 24,
+          "from": "i",
+          "to": "a",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
         },
         {
           "x": 46,
@@ -1306,6 +1439,13 @@
           "from": "b",
           "to": "w",
           "reason": "Warm wooden firearm furniture remains distinct from its steel barrel."
+        },
+        {
+          "x": 58,
+          "y": 26,
+          "from": "b",
+          "to": "a",
+          "reason": "Separate the steel barrel and muzzle from the wooden stock underneath"
         },
         {
           "x": 29,
@@ -1574,6 +1714,27 @@
           "reason": "Clean the bounded rear gunstock into continuous wood, keeping adjacent hands and receiver."
         },
         {
+          "x": 39,
+          "y": 29,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 40,
+          "y": 29,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 41,
+          "y": 29,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
           "x": 29,
           "y": 30,
           "from": "a",
@@ -1621,6 +1782,41 @@
           "from": "b",
           "to": "w",
           "reason": "Clean the bounded rear gunstock into continuous wood, keeping adjacent hands and receiver."
+        },
+        {
+          "x": 31,
+          "y": 33,
+          "from": "V",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 32,
+          "y": 33,
+          "from": "b",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 32,
+          "y": 34,
+          "from": "b",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 31,
+          "y": 35,
+          "from": "b",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 32,
+          "y": 36,
+          "from": "b",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 31,
@@ -8362,6 +8558,14 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 32,
+          "y": 20,
+          "from": "O",
+          "to": "A",
+          "reason": "Close the enclosed dark notch in the helmet highlight",
+          "repairMaterialBoundary": true
+        },
+        {
           "x": 50,
           "y": 20,
           "from": "b",
@@ -8480,8 +8684,8 @@
           "x": 23,
           "y": 24,
           "from": "W",
-          "to": "a",
-          "reason": "Steel helmet rim, not stray wood."
+          "to": "B",
+          "reason": "Detached gray helmet-mask fleck belongs to hair below the cap"
         },
         {
           "x": 29,
@@ -8609,11 +8813,25 @@
           "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
         },
         {
+          "x": 48,
+          "y": 26,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
           "x": 26,
           "y": 27,
           "from": "v",
           "to": "h",
           "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 47,
+          "y": 27,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
         },
         {
           "x": 26,
@@ -8670,6 +8888,34 @@
           "from": "i",
           "to": "a",
           "reason": "Round shield has wooden boards and a steel rim/boss, separate from the leather gloves and boots."
+        },
+        {
+          "x": 45,
+          "y": 29,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 46,
+          "y": 29,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 47,
+          "y": 29,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 48,
+          "y": 29,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
         },
         {
           "x": 14,
@@ -8798,6 +9044,13 @@
           "reason": "Unify the small shoulder guard as iron rather than ivory."
         },
         {
+          "x": 47,
+          "y": 31,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
           "x": 12,
           "y": 32,
           "from": "i",
@@ -8887,6 +9140,20 @@
           "from": "I",
           "to": "A",
           "reason": "Unify the small shoulder guard as iron rather than ivory."
+        },
+        {
+          "x": 47,
+          "y": 32,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 48,
+          "y": 32,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
         },
         {
           "x": 11,
@@ -9188,6 +9455,13 @@
           "from": "i",
           "to": "a",
           "reason": "Unify the small shoulder guard as iron rather than ivory."
+        },
+        {
+          "x": 44,
+          "y": 35,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
         },
         {
           "x": 10,
@@ -9293,6 +9567,13 @@
           "from": "i",
           "to": "a",
           "reason": "Unify the small shoulder guard as iron rather than ivory."
+        },
+        {
+          "x": 47,
+          "y": 36,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
         },
         {
           "x": 11,
@@ -9477,6 +9758,20 @@
           "reason": "Keep warm beard hair contiguous; remove unrelated wood, cloth and ivory specks below the face."
         },
         {
+          "x": 43,
+          "y": 38,
+          "from": "v",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 44,
+          "y": 38,
+          "from": "v",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
           "x": 11,
           "y": 39,
           "from": "v",
@@ -9561,6 +9856,27 @@
           "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
         },
         {
+          "x": 42,
+          "y": 39,
+          "from": "V",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 43,
+          "y": 39,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 44,
+          "y": 39,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
           "x": 11,
           "y": 40,
           "from": "B",
@@ -9636,6 +9952,34 @@
           "from": "i",
           "to": "a",
           "reason": "Round shield has wooden boards and a steel rim/boss, separate from the leather gloves and boots."
+        },
+        {
+          "x": 37,
+          "y": 40,
+          "from": "V",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 38,
+          "y": 40,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 42,
+          "y": 40,
+          "from": "v",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 44,
+          "y": 40,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
         },
         {
           "x": 11,
@@ -9797,6 +10141,13 @@
           "from": "i",
           "to": "a",
           "reason": "Round shield has wooden boards and a steel rim/boss, separate from the leather gloves and boots."
+        },
+        {
+          "x": 35,
+          "y": 42,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 12,
@@ -10042,6 +10393,13 @@
           "from": "B",
           "to": "W",
           "reason": "Round shield has wooden boards and a steel rim/boss, separate from the leather gloves and boots."
+        },
+        {
+          "x": 36,
+          "y": 45,
+          "from": "I",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 12,
@@ -10165,6 +10523,14 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 32,
+          "y": 20,
+          "from": "O",
+          "to": "A",
+          "reason": "Close the enclosed dark notch in the helmet highlight",
+          "repairMaterialBoundary": true
+        },
+        {
           "x": 50,
           "y": 20,
           "from": "b",
@@ -10283,8 +10649,8 @@
           "x": 23,
           "y": 24,
           "from": "W",
-          "to": "a",
-          "reason": "Steel helmet rim, not stray wood."
+          "to": "B",
+          "reason": "Detached gray helmet-mask fleck belongs to hair below the cap"
         },
         {
           "x": 29,
@@ -10412,11 +10778,25 @@
           "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
         },
         {
+          "x": 48,
+          "y": 26,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
           "x": 26,
           "y": 27,
           "from": "v",
           "to": "h",
           "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 47,
+          "y": 27,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
         },
         {
           "x": 26,
@@ -10473,6 +10853,34 @@
           "from": "i",
           "to": "a",
           "reason": "Round shield has wooden boards and a steel rim/boss, separate from the leather gloves and boots."
+        },
+        {
+          "x": 45,
+          "y": 29,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 46,
+          "y": 29,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 47,
+          "y": 29,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 48,
+          "y": 29,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
         },
         {
           "x": 14,
@@ -10601,6 +11009,13 @@
           "reason": "Unify the small shoulder guard as iron rather than ivory."
         },
         {
+          "x": 47,
+          "y": 31,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
           "x": 12,
           "y": 32,
           "from": "i",
@@ -10690,6 +11105,20 @@
           "from": "I",
           "to": "A",
           "reason": "Unify the small shoulder guard as iron rather than ivory."
+        },
+        {
+          "x": 47,
+          "y": 32,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 48,
+          "y": 32,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
         },
         {
           "x": 11,
@@ -10991,6 +11420,13 @@
           "from": "i",
           "to": "a",
           "reason": "Unify the small shoulder guard as iron rather than ivory."
+        },
+        {
+          "x": 44,
+          "y": 35,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
         },
         {
           "x": 10,
@@ -11096,6 +11532,13 @@
           "from": "i",
           "to": "a",
           "reason": "Unify the small shoulder guard as iron rather than ivory."
+        },
+        {
+          "x": 47,
+          "y": 36,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
         },
         {
           "x": 11,
@@ -11280,6 +11723,20 @@
           "reason": "Keep warm beard hair contiguous; remove unrelated wood, cloth and ivory specks below the face."
         },
         {
+          "x": 43,
+          "y": 38,
+          "from": "v",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 44,
+          "y": 38,
+          "from": "v",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
           "x": 11,
           "y": 39,
           "from": "v",
@@ -11364,6 +11821,27 @@
           "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
         },
         {
+          "x": 42,
+          "y": 39,
+          "from": "V",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 43,
+          "y": 39,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 44,
+          "y": 39,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
           "x": 11,
           "y": 40,
           "from": "B",
@@ -11439,6 +11917,34 @@
           "from": "i",
           "to": "a",
           "reason": "Round shield has wooden boards and a steel rim/boss, separate from the leather gloves and boots."
+        },
+        {
+          "x": 37,
+          "y": 40,
+          "from": "V",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 38,
+          "y": 40,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 42,
+          "y": 40,
+          "from": "v",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 44,
+          "y": 40,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
         },
         {
           "x": 11,
@@ -11600,6 +12106,13 @@
           "from": "i",
           "to": "a",
           "reason": "Round shield has wooden boards and a steel rim/boss, separate from the leather gloves and boots."
+        },
+        {
+          "x": 35,
+          "y": 42,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 12,
@@ -11845,6 +12358,13 @@
           "from": "B",
           "to": "W",
           "reason": "Round shield has wooden boards and a steel rim/boss, separate from the leather gloves and boots."
+        },
+        {
+          "x": 36,
+          "y": 45,
+          "from": "I",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 12,
@@ -19885,6 +20405,20 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 36,
+          "y": 32,
+          "from": "A",
+          "to": "W",
+          "reason": "Keep the crossbow wooden stock continuous below its steel rail"
+        },
+        {
+          "x": 37,
+          "y": 32,
+          "from": "A",
+          "to": "W",
+          "reason": "Keep the crossbow wooden stock continuous below its steel rail"
+        },
+        {
           "x": 39,
           "y": 32,
           "from": "V",
@@ -19946,6 +20480,13 @@
           "from": "V",
           "to": "W",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 49,
+          "y": 32,
+          "from": "V",
+          "to": "W",
+          "reason": "Keep the crossbow wooden stock continuous below its steel rail"
         },
         {
           "x": 32,
@@ -20067,6 +20608,27 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 25,
+          "y": 34,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 40,
+          "y": 34,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 41,
+          "y": 34,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
           "x": 52,
           "y": 34,
           "from": "b",
@@ -20074,11 +20636,67 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 14,
+          "y": 35,
+          "from": "v",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 15,
+          "y": 35,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 16,
+          "y": 35,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
           "x": 51,
           "y": 35,
           "from": "v",
           "to": "a",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 14,
+          "y": 36,
+          "from": "v",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 15,
+          "y": 36,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 16,
+          "y": 36,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 17,
+          "y": 36,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 36,
+          "y": 36,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
         },
         {
           "x": 50,
@@ -20095,11 +20713,46 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 15,
+          "y": 37,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 16,
+          "y": 37,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 17,
+          "y": 37,
+          "from": "v",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
           "x": 49,
           "y": 37,
           "from": "b",
           "to": "a",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 36,
+          "y": 38,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 37,
+          "y": 38,
+          "from": "v",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 21,
@@ -20114,6 +20767,13 @@
           "from": "v",
           "to": "b",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 37,
+          "y": 39,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 21,
@@ -20562,6 +21222,20 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 36,
+          "y": 32,
+          "from": "A",
+          "to": "W",
+          "reason": "Keep the crossbow wooden stock continuous below its steel rail"
+        },
+        {
+          "x": 37,
+          "y": 32,
+          "from": "A",
+          "to": "W",
+          "reason": "Keep the crossbow wooden stock continuous below its steel rail"
+        },
+        {
           "x": 39,
           "y": 32,
           "from": "V",
@@ -20623,6 +21297,13 @@
           "from": "V",
           "to": "W",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 49,
+          "y": 32,
+          "from": "V",
+          "to": "W",
+          "reason": "Keep the crossbow wooden stock continuous below its steel rail"
         },
         {
           "x": 32,
@@ -20744,6 +21425,27 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 25,
+          "y": 34,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 40,
+          "y": 34,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 41,
+          "y": 34,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
           "x": 52,
           "y": 34,
           "from": "b",
@@ -20751,11 +21453,67 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 14,
+          "y": 35,
+          "from": "v",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 15,
+          "y": 35,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 16,
+          "y": 35,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
           "x": 51,
           "y": 35,
           "from": "v",
           "to": "a",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 14,
+          "y": 36,
+          "from": "v",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 15,
+          "y": 36,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 16,
+          "y": 36,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 17,
+          "y": 36,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 36,
+          "y": 36,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
         },
         {
           "x": 50,
@@ -20772,11 +21530,46 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 15,
+          "y": 37,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 16,
+          "y": 37,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 17,
+          "y": 37,
+          "from": "v",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
           "x": 49,
           "y": 37,
           "from": "b",
           "to": "a",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 36,
+          "y": 38,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 37,
+          "y": 38,
+          "from": "v",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 21,
@@ -20791,6 +21584,13 @@
           "from": "v",
           "to": "b",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 37,
+          "y": 39,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 21,
@@ -25128,6 +25928,27 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 40,
+          "y": 11,
+          "from": "B",
+          "to": "a",
+          "reason": "Hammerhead is steel; brown belongs only to its shaft below"
+        },
+        {
+          "x": 43,
+          "y": 11,
+          "from": "B",
+          "to": "a",
+          "reason": "Hammerhead is steel; brown belongs only to its shaft below"
+        },
+        {
+          "x": 45,
+          "y": 11,
+          "from": "B",
+          "to": "a",
+          "reason": "Hammerhead is steel; brown belongs only to its shaft below"
+        },
+        {
           "x": 25,
           "y": 12,
           "from": "a",
@@ -25170,6 +25991,20 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 39,
+          "y": 12,
+          "from": "W",
+          "to": "a",
+          "reason": "Hammerhead is steel; brown belongs only to its shaft below"
+        },
+        {
+          "x": 40,
+          "y": 12,
+          "from": "B",
+          "to": "a",
+          "reason": "Hammerhead is steel; brown belongs only to its shaft below"
+        },
+        {
           "x": 25,
           "y": 13,
           "from": "O",
@@ -25210,6 +26045,20 @@
           "removeInteriorOutline": true
         },
         {
+          "x": 39,
+          "y": 13,
+          "from": "V",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 21,
+          "y": 14,
+          "from": "a",
+          "to": "B",
+          "reason": "Remove the remaining gray cap-mask spill from the left sideburn"
+        },
+        {
           "x": 22,
           "y": 14,
           "from": "a",
@@ -25245,6 +26094,20 @@
           "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
         },
         {
+          "x": 37,
+          "y": 16,
+          "from": "w",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 37,
+          "y": 17,
+          "from": "v",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
           "x": 23,
           "y": 21,
           "from": "v",
@@ -25257,6 +26120,13 @@
           "from": "v",
           "to": "b",
           "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
+          "x": 33,
+          "y": 22,
+          "from": "W",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 27,
@@ -25828,6 +26698,27 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 40,
+          "y": 11,
+          "from": "B",
+          "to": "a",
+          "reason": "Hammerhead is steel; brown belongs only to its shaft below"
+        },
+        {
+          "x": 43,
+          "y": 11,
+          "from": "B",
+          "to": "a",
+          "reason": "Hammerhead is steel; brown belongs only to its shaft below"
+        },
+        {
+          "x": 45,
+          "y": 11,
+          "from": "B",
+          "to": "a",
+          "reason": "Hammerhead is steel; brown belongs only to its shaft below"
+        },
+        {
           "x": 25,
           "y": 12,
           "from": "a",
@@ -25870,6 +26761,20 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 39,
+          "y": 12,
+          "from": "W",
+          "to": "a",
+          "reason": "Hammerhead is steel; brown belongs only to its shaft below"
+        },
+        {
+          "x": 40,
+          "y": 12,
+          "from": "B",
+          "to": "a",
+          "reason": "Hammerhead is steel; brown belongs only to its shaft below"
+        },
+        {
           "x": 25,
           "y": 13,
           "from": "O",
@@ -25910,6 +26815,20 @@
           "removeInteriorOutline": true
         },
         {
+          "x": 39,
+          "y": 13,
+          "from": "V",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 21,
+          "y": 14,
+          "from": "a",
+          "to": "B",
+          "reason": "Remove the remaining gray cap-mask spill from the left sideburn"
+        },
+        {
           "x": 22,
           "y": 14,
           "from": "a",
@@ -25945,6 +26864,20 @@
           "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
         },
         {
+          "x": 37,
+          "y": 16,
+          "from": "w",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 37,
+          "y": 17,
+          "from": "v",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
           "x": 23,
           "y": 21,
           "from": "v",
@@ -25957,6 +26890,13 @@
           "from": "v",
           "to": "b",
           "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
+          "x": 33,
+          "y": 22,
+          "from": "W",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 27,
@@ -29907,6 +30847,13 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 41,
+          "y": 21,
+          "from": "b",
+          "to": "a",
+          "reason": "Steel hammerhead cannot contain wooden or leather chips"
+        },
+        {
           "x": 28,
           "y": 22,
           "from": "a",
@@ -29940,6 +30887,13 @@
           "from": "a",
           "to": "M",
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
+        },
+        {
+          "x": 43,
+          "y": 22,
+          "from": "w",
+          "to": "a",
+          "reason": "Steel hammerhead cannot contain wooden or leather chips"
         },
         {
           "x": 28,
@@ -29977,6 +30931,13 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 43,
+          "y": 23,
+          "from": "b",
+          "to": "a",
+          "reason": "Steel hammerhead cannot contain wooden or leather chips"
+        },
+        {
           "x": 25,
           "y": 25,
           "from": "O",
@@ -29998,6 +30959,14 @@
           "from": "O",
           "to": "a",
           "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 34,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Connect the helmet brim above the eye instead of a dark extraction bite",
           "removeInteriorOutline": true
         },
         {
@@ -30041,6 +31010,111 @@
           "from": "w",
           "to": "h",
           "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 40,
+          "y": 29,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 41,
+          "y": 29,
+          "from": "A",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 40,
+          "y": 30,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 41,
+          "y": 30,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 42,
+          "y": 30,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 40,
+          "y": 31,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 41,
+          "y": 31,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 42,
+          "y": 31,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 50,
+          "y": 31,
+          "from": "b",
+          "to": "a",
+          "reason": "Restore the lower steel lobe of the hammerhead"
+        },
+        {
+          "x": 51,
+          "y": 31,
+          "from": "b",
+          "to": "a",
+          "reason": "Restore the lower steel lobe of the hammerhead"
+        },
+        {
+          "x": 50,
+          "y": 32,
+          "from": "b",
+          "to": "a",
+          "reason": "Restore the lower steel lobe of the hammerhead"
+        },
+        {
+          "x": 20,
+          "y": 35,
+          "from": "V",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 21,
+          "y": 35,
+          "from": "V",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 21,
+          "y": 36,
+          "from": "w",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 44,
+          "y": 37,
+          "from": "a",
+          "to": "b",
+          "reason": "Remove the projecting gray fleck at the leather bracer edge"
         }
       ],
       "enemyMatrixChanges": [
@@ -30094,6 +31168,13 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 41,
+          "y": 21,
+          "from": "b",
+          "to": "a",
+          "reason": "Steel hammerhead cannot contain wooden or leather chips"
+        },
+        {
           "x": 28,
           "y": 22,
           "from": "a",
@@ -30127,6 +31208,13 @@
           "from": "a",
           "to": "M",
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
+        },
+        {
+          "x": 43,
+          "y": 22,
+          "from": "w",
+          "to": "a",
+          "reason": "Steel hammerhead cannot contain wooden or leather chips"
         },
         {
           "x": 28,
@@ -30164,6 +31252,13 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 43,
+          "y": 23,
+          "from": "b",
+          "to": "a",
+          "reason": "Steel hammerhead cannot contain wooden or leather chips"
+        },
+        {
           "x": 25,
           "y": 25,
           "from": "O",
@@ -30185,6 +31280,14 @@
           "from": "O",
           "to": "a",
           "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "removeInteriorOutline": true
+        },
+        {
+          "x": 34,
+          "y": 25,
+          "from": "O",
+          "to": "a",
+          "reason": "Connect the helmet brim above the eye instead of a dark extraction bite",
           "removeInteriorOutline": true
         },
         {
@@ -30228,6 +31331,111 @@
           "from": "w",
           "to": "h",
           "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 40,
+          "y": 29,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 41,
+          "y": 29,
+          "from": "A",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 40,
+          "y": 30,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 41,
+          "y": 30,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 42,
+          "y": 30,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 40,
+          "y": 31,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 41,
+          "y": 31,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 42,
+          "y": 31,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 50,
+          "y": 31,
+          "from": "b",
+          "to": "a",
+          "reason": "Restore the lower steel lobe of the hammerhead"
+        },
+        {
+          "x": 51,
+          "y": 31,
+          "from": "b",
+          "to": "a",
+          "reason": "Restore the lower steel lobe of the hammerhead"
+        },
+        {
+          "x": 50,
+          "y": 32,
+          "from": "b",
+          "to": "a",
+          "reason": "Restore the lower steel lobe of the hammerhead"
+        },
+        {
+          "x": 20,
+          "y": 35,
+          "from": "V",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 21,
+          "y": 35,
+          "from": "V",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 21,
+          "y": 36,
+          "from": "w",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 44,
+          "y": 37,
+          "from": "a",
+          "to": "b",
+          "reason": "Remove the projecting gray fleck at the leather bracer edge"
         }
       ],
       "paletteChanges": {
@@ -34738,6 +35946,13 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 52,
+          "y": 23,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
           "x": 29,
           "y": 24,
           "from": "A",
@@ -34853,6 +36068,13 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 48,
+          "y": 25,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
           "x": 52,
           "y": 25,
           "from": "b",
@@ -34937,11 +36159,39 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 41,
+          "y": 30,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 42,
+          "y": 30,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
           "x": 35,
           "y": 31,
           "from": "w",
           "to": "b",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 21,
+          "y": 33,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 22,
+          "y": 33,
+          "from": "b",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 27,
@@ -34956,6 +36206,34 @@
           "from": "W",
           "to": "B",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 22,
+          "y": 34,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 23,
+          "y": 34,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 39,
+          "y": 35,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 40,
+          "y": 35,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 30,
@@ -34977,6 +36255,27 @@
           "from": "V",
           "to": "W",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 38,
+          "y": 36,
+          "from": "V",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 39,
+          "y": 36,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 40,
+          "y": 36,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 30,
@@ -35033,6 +36332,55 @@
           "from": "w",
           "to": "b",
           "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 22,
+          "y": 45,
+          "from": "b",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 24,
+          "y": 45,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 25,
+          "y": 45,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 24,
+          "y": 46,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 25,
+          "y": 46,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 22,
+          "y": 47,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 24,
+          "y": 47,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         }
       ],
       "enemyMatrixChanges": [
@@ -35185,6 +36533,13 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 52,
+          "y": 23,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
           "x": 29,
           "y": 24,
           "from": "A",
@@ -35300,6 +36655,13 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 48,
+          "y": 25,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
           "x": 52,
           "y": 25,
           "from": "b",
@@ -35384,11 +36746,39 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 41,
+          "y": 30,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 42,
+          "y": 30,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
           "x": 35,
           "y": 31,
           "from": "w",
           "to": "b",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 21,
+          "y": 33,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 22,
+          "y": 33,
+          "from": "b",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 27,
@@ -35403,6 +36793,34 @@
           "from": "W",
           "to": "B",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 22,
+          "y": 34,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 23,
+          "y": 34,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 39,
+          "y": 35,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 40,
+          "y": 35,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 30,
@@ -35424,6 +36842,27 @@
           "from": "V",
           "to": "W",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 38,
+          "y": 36,
+          "from": "V",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 39,
+          "y": 36,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 40,
+          "y": 36,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 30,
@@ -35480,6 +36919,55 @@
           "from": "w",
           "to": "b",
           "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+        },
+        {
+          "x": 22,
+          "y": 45,
+          "from": "b",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 24,
+          "y": 45,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 25,
+          "y": 45,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 24,
+          "y": 46,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 25,
+          "y": 46,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 22,
+          "y": 47,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 24,
+          "y": 47,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         }
       ],
       "paletteChanges": {
@@ -38725,6 +40213,20 @@
           "reason": "Remove warm extraction flecks from the steel weapon head, preserving wood below the socket."
         },
         {
+          "x": 44,
+          "y": 19,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 45,
+          "y": 19,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
           "x": 50,
           "y": 19,
           "from": "B",
@@ -38767,6 +40269,27 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 43,
+          "y": 21,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 44,
+          "y": 21,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 45,
+          "y": 21,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
           "x": 56,
           "y": 21,
           "from": "b",
@@ -38800,6 +40323,41 @@
           "from": "a",
           "to": "A",
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
+        },
+        {
+          "x": 42,
+          "y": 22,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 43,
+          "y": 22,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 44,
+          "y": 22,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 45,
+          "y": 22,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 20,
+          "y": 23,
+          "from": "b",
+          "to": "a",
+          "reason": "Replace the brown chip inside the helmet dome with connected steel shadow"
         },
         {
           "x": 22,
@@ -38847,55 +40405,160 @@
           "x": 30,
           "y": 23,
           "from": "a",
-          "to": "M",
-          "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
+          "to": "b",
+          "reason": "Restore hair at the right edge below the actual cap instead of a projecting steel pixel"
+        },
+        {
+          "x": 42,
+          "y": 23,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 43,
+          "y": 23,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 44,
+          "y": 23,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 41,
+          "y": 24,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 42,
+          "y": 24,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 43,
+          "y": 24,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 23,
+          "y": 25,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore the warm sideburn instead of helmet-mask spill"
         },
         {
           "x": 24,
           "y": 25,
           "from": "v",
-          "to": "a",
-          "reason": "Make the helmet lower rim one connected shadow plane above the facial features"
+          "to": "b",
+          "reason": "Helmet ends at row 24; the brow shadow below it belongs to the face"
         },
         {
           "x": 25,
           "y": 25,
           "from": "O",
-          "to": "a",
-          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "to": "b",
+          "reason": "Helmet ends at row 24; the brow shadow below it belongs to the face",
           "removeInteriorOutline": true
         },
         {
           "x": 26,
           "y": 25,
           "from": "O",
-          "to": "a",
-          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "to": "b",
+          "reason": "Helmet ends at row 24; the brow shadow below it belongs to the face",
           "removeInteriorOutline": true
         },
         {
           "x": 27,
           "y": 25,
           "from": "O",
-          "to": "a",
-          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "to": "b",
+          "reason": "Helmet ends at row 24; the brow shadow below it belongs to the face",
           "removeInteriorOutline": true
         },
         {
           "x": 28,
           "y": 25,
           "from": "O",
-          "to": "a",
-          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "to": "b",
+          "reason": "Helmet ends at row 24; the brow shadow below it belongs to the face",
           "removeInteriorOutline": true
         },
         {
           "x": 29,
           "y": 25,
           "from": "O",
-          "to": "a",
-          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "to": "b",
+          "reason": "Helmet ends at row 24; the brow shadow below it belongs to the face",
           "removeInteriorOutline": true
+        },
+        {
+          "x": 40,
+          "y": 25,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 41,
+          "y": 25,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 42,
+          "y": 25,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 19,
+          "y": 26,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore the left temple and sideburn below the helmet"
+        },
+        {
+          "x": 20,
+          "y": 26,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore the left temple and sideburn below the helmet"
+        },
+        {
+          "x": 21,
+          "y": 26,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore the left temple and sideburn below the helmet"
+        },
+        {
+          "x": 39,
+          "y": 26,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 40,
+          "y": 26,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
         },
         {
           "x": 26,
@@ -38903,6 +40566,27 @@
           "from": "W",
           "to": "H",
           "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 40,
+          "y": 27,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 39,
+          "y": 28,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 38,
+          "y": 30,
+          "from": "A",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
         },
         {
           "x": 33,
@@ -38917,6 +40601,27 @@
           "from": "v",
           "to": "b",
           "reason": "Keep warm beard hair contiguous; remove unrelated wood, cloth and ivory specks below the face."
+        },
+        {
+          "x": 24,
+          "y": 39,
+          "from": "B",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 35,
+          "y": 47,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 34,
+          "y": 48,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         }
       ],
       "enemyMatrixChanges": [
@@ -38963,6 +40668,20 @@
           "reason": "Remove warm extraction flecks from the steel weapon head, preserving wood below the socket."
         },
         {
+          "x": 44,
+          "y": 19,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 45,
+          "y": 19,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
           "x": 50,
           "y": 19,
           "from": "B",
@@ -39005,6 +40724,27 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 43,
+          "y": 21,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 44,
+          "y": 21,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 45,
+          "y": 21,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
           "x": 56,
           "y": 21,
           "from": "b",
@@ -39038,6 +40778,41 @@
           "from": "a",
           "to": "A",
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
+        },
+        {
+          "x": 42,
+          "y": 22,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 43,
+          "y": 22,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 44,
+          "y": 22,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 45,
+          "y": 22,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 20,
+          "y": 23,
+          "from": "b",
+          "to": "a",
+          "reason": "Replace the brown chip inside the helmet dome with connected steel shadow"
         },
         {
           "x": 22,
@@ -39085,55 +40860,160 @@
           "x": 30,
           "y": 23,
           "from": "a",
-          "to": "M",
-          "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
+          "to": "b",
+          "reason": "Restore hair at the right edge below the actual cap instead of a projecting steel pixel"
+        },
+        {
+          "x": 42,
+          "y": 23,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 43,
+          "y": 23,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 44,
+          "y": 23,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 41,
+          "y": 24,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 42,
+          "y": 24,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 43,
+          "y": 24,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 23,
+          "y": 25,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore the warm sideburn instead of helmet-mask spill"
         },
         {
           "x": 24,
           "y": 25,
           "from": "v",
-          "to": "a",
-          "reason": "Make the helmet lower rim one connected shadow plane above the facial features"
+          "to": "b",
+          "reason": "Helmet ends at row 24; the brow shadow below it belongs to the face"
         },
         {
           "x": 25,
           "y": 25,
           "from": "O",
-          "to": "a",
-          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "to": "b",
+          "reason": "Helmet ends at row 24; the brow shadow below it belongs to the face",
           "removeInteriorOutline": true
         },
         {
           "x": 26,
           "y": 25,
           "from": "O",
-          "to": "a",
-          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "to": "b",
+          "reason": "Helmet ends at row 24; the brow shadow below it belongs to the face",
           "removeInteriorOutline": true
         },
         {
           "x": 27,
           "y": 25,
           "from": "O",
-          "to": "a",
-          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "to": "b",
+          "reason": "Helmet ends at row 24; the brow shadow below it belongs to the face",
           "removeInteriorOutline": true
         },
         {
           "x": 28,
           "y": 25,
           "from": "O",
-          "to": "a",
-          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "to": "b",
+          "reason": "Helmet ends at row 24; the brow shadow below it belongs to the face",
           "removeInteriorOutline": true
         },
         {
           "x": 29,
           "y": 25,
           "from": "O",
-          "to": "a",
-          "reason": "Make the helmet lower rim one connected shadow plane above the facial features",
+          "to": "b",
+          "reason": "Helmet ends at row 24; the brow shadow below it belongs to the face",
           "removeInteriorOutline": true
+        },
+        {
+          "x": 40,
+          "y": 25,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 41,
+          "y": 25,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 42,
+          "y": 25,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 19,
+          "y": 26,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore the left temple and sideburn below the helmet"
+        },
+        {
+          "x": 20,
+          "y": 26,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore the left temple and sideburn below the helmet"
+        },
+        {
+          "x": 21,
+          "y": 26,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore the left temple and sideburn below the helmet"
+        },
+        {
+          "x": 39,
+          "y": 26,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 40,
+          "y": 26,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
         },
         {
           "x": 26,
@@ -39141,6 +41021,27 @@
           "from": "W",
           "to": "H",
           "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
+        },
+        {
+          "x": 40,
+          "y": 27,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 39,
+          "y": 28,
+          "from": "a",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 38,
+          "y": 30,
+          "from": "A",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
         },
         {
           "x": 33,
@@ -39155,6 +41056,27 @@
           "from": "v",
           "to": "b",
           "reason": "Keep warm beard hair contiguous; remove unrelated wood, cloth and ivory specks below the face."
+        },
+        {
+          "x": 24,
+          "y": 39,
+          "from": "B",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 35,
+          "y": 47,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 34,
+          "y": 48,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         }
       ],
       "paletteChanges": {
@@ -42802,11 +44724,60 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 49,
+          "y": 21,
+          "from": "a",
+          "to": "A",
+          "reason": "One connected upper-right reflection on the steel hammerhead"
+        },
+        {
+          "x": 50,
+          "y": 21,
+          "from": "a",
+          "to": "A",
+          "reason": "One connected upper-right reflection on the steel hammerhead"
+        },
+        {
+          "x": 50,
+          "y": 22,
+          "from": "a",
+          "to": "A",
+          "reason": "One connected upper-right reflection on the steel hammerhead"
+        },
+        {
+          "x": 51,
+          "y": 22,
+          "from": "a",
+          "to": "A",
+          "reason": "One connected upper-right reflection on the steel hammerhead"
+        },
+        {
           "x": 52,
           "y": 22,
           "from": "B",
-          "to": "a",
-          "reason": "Remove warm extraction flecks from the steel weapon head, preserving wood below the socket."
+          "to": "A",
+          "reason": "One connected upper-right reflection on the steel hammerhead"
+        },
+        {
+          "x": 24,
+          "y": 23,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore hair below the helmet rim; gray must not leak into the temple"
+        },
+        {
+          "x": 25,
+          "y": 23,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore hair below the helmet rim; gray must not leak into the temple"
+        },
+        {
+          "x": 26,
+          "y": 23,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore hair below the helmet rim; gray must not leak into the temple"
         },
         {
           "x": 27,
@@ -42846,6 +44817,27 @@
           "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
         },
         {
+          "x": 38,
+          "y": 23,
+          "from": "a",
+          "to": "b",
+          "reason": "Right temple shadow is hair, not helmet steel"
+        },
+        {
+          "x": 51,
+          "y": 23,
+          "from": "a",
+          "to": "A",
+          "reason": "One connected upper-right reflection on the steel hammerhead"
+        },
+        {
+          "x": 54,
+          "y": 23,
+          "from": "a",
+          "to": "A",
+          "reason": "One connected upper-right reflection on the steel hammerhead"
+        },
+        {
           "x": 26,
           "y": 24,
           "from": "a",
@@ -42866,6 +44858,20 @@
           "from": "a",
           "to": "B",
           "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
+          "x": 52,
+          "y": 24,
+          "from": "a",
+          "to": "M",
+          "reason": "Middle steel plane between the head reflection and shadow"
+        },
+        {
+          "x": 53,
+          "y": 24,
+          "from": "a",
+          "to": "M",
+          "reason": "Middle steel plane between the head reflection and shadow"
         },
         {
           "x": 25,
@@ -42931,6 +44937,14 @@
           "reason": "Remove warm extraction flecks from the steel weapon head, preserving wood below the socket."
         },
         {
+          "x": 49,
+          "y": 27,
+          "from": "O",
+          "to": "a",
+          "reason": "Close an enclosed dark bite in the steel hammerhead",
+          "removeInteriorOutline": true
+        },
+        {
           "x": 54,
           "y": 27,
           "from": "B",
@@ -42938,11 +44952,60 @@
           "reason": "Remove warm extraction flecks from the steel weapon head, preserving wood below the socket."
         },
         {
+          "x": 47,
+          "y": 28,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 48,
+          "y": 28,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 49,
+          "y": 28,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 52,
+          "y": 28,
+          "from": "B",
+          "to": "a",
+          "reason": "Remove a brown chip from the lower steel lobe"
+        },
+        {
           "x": 18,
           "y": 29,
           "from": "A",
           "to": "E",
           "reason": "Blue rune flame uses cyan light and shadow, not stray steel colors."
+        },
+        {
+          "x": 47,
+          "y": 29,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 48,
+          "y": 29,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 49,
+          "y": 29,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
         },
         {
           "x": 19,
@@ -42959,11 +45022,32 @@
           "reason": "Blue rune flame uses cyan light and shadow, not stray steel colors."
         },
         {
+          "x": 44,
+          "y": 31,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
           "x": 17,
           "y": 32,
           "from": "A",
           "to": "E",
           "reason": "Blue rune flame uses cyan light and shadow, not stray steel colors."
+        },
+        {
+          "x": 45,
+          "y": 32,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 48,
+          "y": 32,
+          "from": "v",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
         },
         {
           "x": 17,
@@ -42980,11 +45064,46 @@
           "reason": "Blue rune flame uses cyan light and shadow, not stray steel colors."
         },
         {
+          "x": 48,
+          "y": 33,
+          "from": "W",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
           "x": 34,
           "y": 34,
           "from": "w",
           "to": "b",
           "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
+          "x": 47,
+          "y": 34,
+          "from": "W",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 21,
+          "y": 35,
+          "from": "W",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 46,
+          "y": 35,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 47,
+          "y": 35,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
         },
         {
           "x": 27,
@@ -42994,25 +45113,312 @@
           "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
         },
         {
-          "x": 28,
+          "x": 29,
           "y": 36,
-          "from": "A",
-          "to": "B",
-          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 30,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 31,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 32,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 33,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 34,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 35,
+          "y": 36,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 40,
+          "y": 36,
+          "from": "H",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 44,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 45,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 46,
+          "y": 36,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
         },
         {
           "x": 27,
-          "y": 39,
-          "from": "a",
+          "y": 37,
+          "from": "B",
           "to": "b",
-          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
         },
         {
-          "x": 28,
+          "x": 29,
+          "y": 37,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 30,
+          "y": 37,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 31,
+          "y": 37,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 32,
+          "y": 37,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 33,
+          "y": 37,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 34,
+          "y": 37,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 35,
+          "y": 37,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 36,
+          "y": 37,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 40,
+          "y": 37,
+          "from": "h",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 44,
+          "y": 37,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 45,
+          "y": 37,
+          "from": "v",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 27,
+          "y": 38,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 29,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 30,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 31,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 32,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 33,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 34,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 35,
+          "y": 38,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 37,
+          "y": 38,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 43,
+          "y": 38,
+          "from": "v",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 44,
+          "y": 38,
+          "from": "i",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 45,
+          "y": 38,
+          "from": "v",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 29,
           "y": 39,
-          "from": "A",
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 30,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 31,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 32,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 33,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 34,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 35,
+          "y": 39,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 36,
+          "y": 39,
+          "from": "b",
           "to": "B",
-          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 37,
+          "y": 39,
+          "from": "i",
+          "to": "W",
+          "reason": "Apron edge highlight belongs to leather, not a cream shirt pixel"
         },
         {
           "x": 26,
@@ -43022,18 +45428,305 @@
           "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
         },
         {
-          "x": 27,
+          "x": 29,
           "y": 40,
-          "from": "a",
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 30,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 31,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 32,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 33,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 34,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 35,
+          "y": 40,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 27,
+          "y": 41,
+          "from": "B",
           "to": "b",
-          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 29,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 30,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 31,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 32,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 33,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 34,
+          "y": 41,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 22,
+          "y": 42,
+          "from": "h",
+          "to": "w",
+          "reason": "Remove skin quantization from the trouser thigh below the apron"
+        },
+        {
+          "x": 23,
+          "y": 42,
+          "from": "h",
+          "to": "w",
+          "reason": "Remove skin quantization from the trouser thigh below the apron"
+        },
+        {
+          "x": 27,
+          "y": 42,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 30,
+          "y": 42,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 31,
+          "y": 42,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 32,
+          "y": 42,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 33,
+          "y": 42,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 34,
+          "y": 42,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 21,
+          "y": 43,
+          "from": "H",
+          "to": "W",
+          "reason": "Remove skin quantization from the trouser thigh below the apron"
+        },
+        {
+          "x": 22,
+          "y": 43,
+          "from": "H",
+          "to": "W",
+          "reason": "Remove skin quantization from the trouser thigh below the apron"
+        },
+        {
+          "x": 23,
+          "y": 43,
+          "from": "h",
+          "to": "w",
+          "reason": "Remove skin quantization from the trouser thigh below the apron"
+        },
+        {
+          "x": 27,
+          "y": 43,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 30,
+          "y": 43,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 31,
+          "y": 43,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 32,
+          "y": 43,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 33,
+          "y": 43,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 36,
+          "y": 43,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 24,
+          "y": 44,
+          "from": "h",
+          "to": "w",
+          "reason": "Remove skin quantization from the trouser thigh below the apron"
         },
         {
           "x": 28,
-          "y": 40,
-          "from": "a",
+          "y": 44,
+          "from": "B",
           "to": "b",
-          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 31,
+          "y": 44,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 32,
+          "y": 44,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 36,
+          "y": 44,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 29,
+          "y": 45,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 35,
+          "y": 45,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 30,
+          "y": 46,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 31,
+          "y": 46,
+          "from": "B",
+          "to": "b",
+          "reason": "Curved apron hem separates the leather panel from the trousers"
+        },
+        {
+          "x": 32,
+          "y": 46,
+          "from": "B",
+          "to": "b",
+          "reason": "Curved apron hem separates the leather panel from the trousers"
+        },
+        {
+          "x": 33,
+          "y": 46,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 34,
+          "y": 46,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
         }
       ],
       "enemyMatrixChanges": [
@@ -43262,11 +45955,60 @@
           "reason": "Helmet dome has a broad connected midtone, left/bottom shadow and one upper-right highlight plane; no alternating specks."
         },
         {
+          "x": 49,
+          "y": 21,
+          "from": "a",
+          "to": "A",
+          "reason": "One connected upper-right reflection on the steel hammerhead"
+        },
+        {
+          "x": 50,
+          "y": 21,
+          "from": "a",
+          "to": "A",
+          "reason": "One connected upper-right reflection on the steel hammerhead"
+        },
+        {
+          "x": 50,
+          "y": 22,
+          "from": "a",
+          "to": "A",
+          "reason": "One connected upper-right reflection on the steel hammerhead"
+        },
+        {
+          "x": 51,
+          "y": 22,
+          "from": "a",
+          "to": "A",
+          "reason": "One connected upper-right reflection on the steel hammerhead"
+        },
+        {
           "x": 52,
           "y": 22,
           "from": "B",
-          "to": "a",
-          "reason": "Remove warm extraction flecks from the steel weapon head, preserving wood below the socket."
+          "to": "A",
+          "reason": "One connected upper-right reflection on the steel hammerhead"
+        },
+        {
+          "x": 24,
+          "y": 23,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore hair below the helmet rim; gray must not leak into the temple"
+        },
+        {
+          "x": 25,
+          "y": 23,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore hair below the helmet rim; gray must not leak into the temple"
+        },
+        {
+          "x": 26,
+          "y": 23,
+          "from": "a",
+          "to": "B",
+          "reason": "Restore hair below the helmet rim; gray must not leak into the temple"
         },
         {
           "x": 27,
@@ -43306,6 +46048,27 @@
           "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
         },
         {
+          "x": 38,
+          "y": 23,
+          "from": "a",
+          "to": "b",
+          "reason": "Right temple shadow is hair, not helmet steel"
+        },
+        {
+          "x": 51,
+          "y": 23,
+          "from": "a",
+          "to": "A",
+          "reason": "One connected upper-right reflection on the steel hammerhead"
+        },
+        {
+          "x": 54,
+          "y": 23,
+          "from": "a",
+          "to": "A",
+          "reason": "One connected upper-right reflection on the steel hammerhead"
+        },
+        {
           "x": 26,
           "y": 24,
           "from": "a",
@@ -43326,6 +46089,20 @@
           "from": "a",
           "to": "B",
           "reason": "Restore warm sideburns below the actual helmet rim instead of leftover gray helmet-mask pixels"
+        },
+        {
+          "x": 52,
+          "y": 24,
+          "from": "a",
+          "to": "M",
+          "reason": "Middle steel plane between the head reflection and shadow"
+        },
+        {
+          "x": 53,
+          "y": 24,
+          "from": "a",
+          "to": "M",
+          "reason": "Middle steel plane between the head reflection and shadow"
         },
         {
           "x": 25,
@@ -43391,6 +46168,14 @@
           "reason": "Remove warm extraction flecks from the steel weapon head, preserving wood below the socket."
         },
         {
+          "x": 49,
+          "y": 27,
+          "from": "O",
+          "to": "a",
+          "reason": "Close an enclosed dark bite in the steel hammerhead",
+          "removeInteriorOutline": true
+        },
+        {
           "x": 54,
           "y": 27,
           "from": "B",
@@ -43398,11 +46183,60 @@
           "reason": "Remove warm extraction flecks from the steel weapon head, preserving wood below the socket."
         },
         {
+          "x": 47,
+          "y": 28,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 48,
+          "y": 28,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 49,
+          "y": 28,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 52,
+          "y": 28,
+          "from": "B",
+          "to": "a",
+          "reason": "Remove a brown chip from the lower steel lobe"
+        },
+        {
           "x": 18,
           "y": 29,
           "from": "A",
           "to": "E",
           "reason": "Blue rune flame uses cyan light and shadow, not stray steel colors."
+        },
+        {
+          "x": 47,
+          "y": 29,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 48,
+          "y": 29,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 49,
+          "y": 29,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
         },
         {
           "x": 19,
@@ -43419,11 +46253,32 @@
           "reason": "Blue rune flame uses cyan light and shadow, not stray steel colors."
         },
         {
+          "x": 44,
+          "y": 31,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
           "x": 17,
           "y": 32,
           "from": "A",
           "to": "E",
           "reason": "Blue rune flame uses cyan light and shadow, not stray steel colors."
+        },
+        {
+          "x": 45,
+          "y": 32,
+          "from": "i",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 48,
+          "y": 32,
+          "from": "v",
+          "to": "h",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
         },
         {
           "x": 17,
@@ -43440,11 +46295,46 @@
           "reason": "Blue rune flame uses cyan light and shadow, not stray steel colors."
         },
         {
+          "x": 48,
+          "y": 33,
+          "from": "W",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
           "x": 34,
           "y": 34,
           "from": "w",
           "to": "b",
           "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
+          "x": 47,
+          "y": 34,
+          "from": "W",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 21,
+          "y": 35,
+          "from": "W",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 46,
+          "y": 35,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 47,
+          "y": 35,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
         },
         {
           "x": 27,
@@ -43454,25 +46344,312 @@
           "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
         },
         {
-          "x": 28,
+          "x": 29,
           "y": 36,
-          "from": "A",
-          "to": "B",
-          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 30,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 31,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 32,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 33,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 34,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 35,
+          "y": 36,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 40,
+          "y": 36,
+          "from": "H",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 44,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 45,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 46,
+          "y": 36,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
         },
         {
           "x": 27,
-          "y": 39,
-          "from": "a",
+          "y": 37,
+          "from": "B",
           "to": "b",
-          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
         },
         {
-          "x": 28,
+          "x": 29,
+          "y": 37,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 30,
+          "y": 37,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 31,
+          "y": 37,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 32,
+          "y": 37,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 33,
+          "y": 37,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 34,
+          "y": 37,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 35,
+          "y": 37,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 36,
+          "y": 37,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 40,
+          "y": 37,
+          "from": "h",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 44,
+          "y": 37,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 45,
+          "y": 37,
+          "from": "v",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 27,
+          "y": 38,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 29,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 30,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 31,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 32,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 33,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 34,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 35,
+          "y": 38,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 37,
+          "y": 38,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 43,
+          "y": 38,
+          "from": "v",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 44,
+          "y": 38,
+          "from": "i",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 45,
+          "y": 38,
+          "from": "v",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 29,
           "y": 39,
-          "from": "A",
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 30,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 31,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 32,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 33,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 34,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 35,
+          "y": 39,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 36,
+          "y": 39,
+          "from": "b",
           "to": "B",
-          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 37,
+          "y": 39,
+          "from": "i",
+          "to": "W",
+          "reason": "Apron edge highlight belongs to leather, not a cream shirt pixel"
         },
         {
           "x": 26,
@@ -43482,18 +46659,305 @@
           "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
         },
         {
-          "x": 27,
+          "x": 29,
           "y": 40,
-          "from": "a",
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 30,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 31,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 32,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 33,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 34,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 35,
+          "y": 40,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 27,
+          "y": 41,
+          "from": "B",
           "to": "b",
-          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 29,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 30,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 31,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 32,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 33,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 34,
+          "y": 41,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 22,
+          "y": 42,
+          "from": "h",
+          "to": "w",
+          "reason": "Remove skin quantization from the trouser thigh below the apron"
+        },
+        {
+          "x": 23,
+          "y": 42,
+          "from": "h",
+          "to": "w",
+          "reason": "Remove skin quantization from the trouser thigh below the apron"
+        },
+        {
+          "x": 27,
+          "y": 42,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 30,
+          "y": 42,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 31,
+          "y": 42,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 32,
+          "y": 42,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 33,
+          "y": 42,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 34,
+          "y": 42,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 21,
+          "y": 43,
+          "from": "H",
+          "to": "W",
+          "reason": "Remove skin quantization from the trouser thigh below the apron"
+        },
+        {
+          "x": 22,
+          "y": 43,
+          "from": "H",
+          "to": "W",
+          "reason": "Remove skin quantization from the trouser thigh below the apron"
+        },
+        {
+          "x": 23,
+          "y": 43,
+          "from": "h",
+          "to": "w",
+          "reason": "Remove skin quantization from the trouser thigh below the apron"
+        },
+        {
+          "x": 27,
+          "y": 43,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 30,
+          "y": 43,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 31,
+          "y": 43,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 32,
+          "y": 43,
+          "from": "B",
+          "to": "W",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 33,
+          "y": 43,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 36,
+          "y": 43,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 24,
+          "y": 44,
+          "from": "h",
+          "to": "w",
+          "reason": "Remove skin quantization from the trouser thigh below the apron"
         },
         {
           "x": 28,
-          "y": 40,
-          "from": "a",
+          "y": 44,
+          "from": "B",
           "to": "b",
-          "reason": "Remove stray wood, skin and steel colors from leather work apron and trouser planes"
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 31,
+          "y": 44,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 32,
+          "y": 44,
+          "from": "B",
+          "to": "w",
+          "reason": "Restore the pointed front flap over the darker leather apron backing"
+        },
+        {
+          "x": 36,
+          "y": 44,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 29,
+          "y": 45,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 35,
+          "y": 45,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 30,
+          "y": 46,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 31,
+          "y": 46,
+          "from": "B",
+          "to": "b",
+          "reason": "Curved apron hem separates the leather panel from the trousers"
+        },
+        {
+          "x": 32,
+          "y": 46,
+          "from": "B",
+          "to": "b",
+          "reason": "Curved apron hem separates the leather panel from the trousers"
+        },
+        {
+          "x": 33,
+          "y": 46,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
+        },
+        {
+          "x": 34,
+          "y": 46,
+          "from": "B",
+          "to": "b",
+          "reason": "Tapered leather apron with connected side folds; stop before sleeves, hands and trouser legs"
         }
       ],
       "paletteChanges": {
@@ -53901,6 +57365,13 @@
       "canvas": [64, 64],
       "matrixChanges": [
         {
+          "x": 13,
+          "y": 17,
+          "from": "B",
+          "to": "a",
+          "reason": "Steel axe poll cannot contain a brown leather pixel"
+        },
+        {
           "x": 30,
           "y": 17,
           "from": "i",
@@ -53992,6 +57463,13 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 54,
+          "y": 19,
+          "from": "V",
+          "to": "M",
+          "reason": "Remove cyan crystal and ochre flecks from the steel pick head"
+        },
+        {
           "x": 29,
           "y": 20,
           "from": "i",
@@ -54039,6 +57517,13 @@
           "from": "a",
           "to": "M",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 54,
+          "y": 20,
+          "from": "E",
+          "to": "M",
+          "reason": "Remove cyan crystal and ochre flecks from the steel pick head"
         },
         {
           "x": 30,
@@ -54186,6 +57671,20 @@
           "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
         },
         {
+          "x": 51,
+          "y": 24,
+          "from": "V",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 52,
+          "y": 24,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
           "x": 14,
           "y": 25,
           "from": "V",
@@ -54198,6 +57697,20 @@
           "from": "V",
           "to": "W",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 50,
+          "y": 25,
+          "from": "h",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 51,
+          "y": 25,
+          "from": "v",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
         },
         {
           "x": 15,
@@ -54305,6 +57818,13 @@
           "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
         },
         {
+          "x": 43,
+          "y": 29,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
           "x": 49,
           "y": 29,
           "from": "b",
@@ -54312,11 +57832,46 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 14,
+          "y": 30,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
           "x": 37,
           "y": 30,
           "from": "w",
           "to": "b",
           "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
+          "x": 42,
+          "y": 30,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 43,
+          "y": 30,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 48,
+          "y": 30,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 49,
+          "y": 31,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
         },
         {
           "x": 27,
@@ -54370,9 +57925,9 @@
         {
           "x": 27,
           "y": 39,
-          "from": "v",
-          "to": "b",
-          "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+          "from": "b",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 29,
@@ -54445,6 +58000,13 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 41,
+          "y": 41,
+          "from": "b",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
           "x": 30,
           "y": 42,
           "from": "W",
@@ -54464,6 +58026,13 @@
           "from": "W",
           "to": "B",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 42,
+          "y": 42,
+          "from": "b",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 27,
@@ -54506,6 +58075,13 @@
           "from": "W",
           "to": "B",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 42,
+          "y": 43,
+          "from": "W",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 27,
@@ -54615,6 +58191,13 @@
       ],
       "enemyMatrixChanges": [
         {
+          "x": 13,
+          "y": 17,
+          "from": "B",
+          "to": "a",
+          "reason": "Steel axe poll cannot contain a brown leather pixel"
+        },
+        {
           "x": 30,
           "y": 17,
           "from": "i",
@@ -54706,6 +58289,13 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 54,
+          "y": 19,
+          "from": "V",
+          "to": "M",
+          "reason": "Remove cyan crystal and ochre flecks from the steel pick head"
+        },
+        {
           "x": 29,
           "y": 20,
           "from": "i",
@@ -54753,6 +58343,13 @@
           "from": "a",
           "to": "M",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 54,
+          "y": 20,
+          "from": "E",
+          "to": "M",
+          "reason": "Remove cyan crystal and ochre flecks from the steel pick head"
         },
         {
           "x": 30,
@@ -54900,6 +58497,20 @@
           "reason": "Remove wood, cloth, ivory or metal flecks from the skin plane; pupils and beard are unchanged"
         },
         {
+          "x": 51,
+          "y": 24,
+          "from": "V",
+          "to": "W",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 52,
+          "y": 24,
+          "from": "b",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
           "x": 14,
           "y": 25,
           "from": "V",
@@ -54912,6 +58523,20 @@
           "from": "V",
           "to": "W",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 50,
+          "y": 25,
+          "from": "h",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
+        },
+        {
+          "x": 51,
+          "y": 25,
+          "from": "v",
+          "to": "w",
+          "reason": "Restore the inspected wooden shaft, stopping at the steel socket and skin grip"
         },
         {
           "x": 15,
@@ -55019,6 +58644,13 @@
           "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
         },
         {
+          "x": 43,
+          "y": 29,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
           "x": 49,
           "y": 29,
           "from": "b",
@@ -55026,11 +58658,46 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 14,
+          "y": 30,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
           "x": 37,
           "y": 30,
           "from": "w",
           "to": "b",
           "reason": "Unify the connected beard hair material; keep eyes, mouth and the wooden weapon outside this beard region"
+        },
+        {
+          "x": 42,
+          "y": 30,
+          "from": "w",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 43,
+          "y": 30,
+          "from": "B",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
+          "x": 48,
+          "y": 30,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
+        },
+        {
+          "x": 49,
+          "y": 31,
+          "from": "A",
+          "to": "H",
+          "reason": "Remove metal, ivory and wood flecks from the actual hand; retain the grip and finger outlines"
         },
         {
           "x": 27,
@@ -55084,9 +58751,9 @@
         {
           "x": 27,
           "y": 39,
-          "from": "v",
-          "to": "b",
-          "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+          "from": "b",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 29,
@@ -55159,6 +58826,13 @@
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
         },
         {
+          "x": 41,
+          "y": 41,
+          "from": "b",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
+        },
+        {
           "x": 30,
           "y": 42,
           "from": "W",
@@ -55178,6 +58852,13 @@
           "from": "W",
           "to": "B",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 42,
+          "y": 42,
+          "from": "b",
+          "to": "i",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 27,
@@ -55220,6 +58901,13 @@
           "from": "W",
           "to": "B",
           "reason": "Material cleanup and fitted tier equipment on the newly regenerated dwarf anatomy."
+        },
+        {
+          "x": 42,
+          "y": 43,
+          "from": "W",
+          "to": "I",
+          "reason": "Follow this pose-specific shirt fold and cuff instead of scattered leather, wood or metal colors"
         },
         {
           "x": 27,
