@@ -38,9 +38,10 @@ pixels in its 3×3 neighborhood and three direct neighbors must be opaque. Neith
 flag can change transparency or add an outline; unflagged outlines remain protected.
 Pupils, facial features, weapon seams and grips are retained by the pose review.
 The [L1 dwarf grid](dwarf-l1.png) covers all ten base poses.
-The nine non-rune families now derive their leather → metal → silver tiers from
-the [full armour progression recipe](../dwarf-progression/README.md), which owns
-their complete material masks. Only the three unchanged rune tiers still have
+The nine non-rune L1 poses now use the
+[restored base cleanup recipe](../dwarf-base-cleanup/README.md), which owns
+their cleaned native matrices and detected fill regions. Their advanced tiers
+remain frozen historical studies. Only the three unchanged rune tiers still have
 records in `dwarf.json`. Earlier comparison sheets document historical studies.
 
 The marked L1 follow-up separates steel weapon heads and barrels, wooden shafts,

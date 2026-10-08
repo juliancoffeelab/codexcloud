@@ -1,0 +1,289 @@
+[
+  {
+    "id": "00",
+    "material": "steel",
+    "seed": [43, 16],
+    "pixels": 17,
+    "bounds": [43, 16, 50, 20]
+  },
+  {
+    "id": "01",
+    "material": "steel",
+    "seed": [52, 19],
+    "pixels": 1,
+    "bounds": [52, 19, 52, 19]
+  },
+  {
+    "id": "02",
+    "material": "steel",
+    "seed": [28, 20],
+    "pixels": 50,
+    "bounds": [25, 20, 34, 25]
+  },
+  {
+    "id": "03",
+    "material": "steel",
+    "seed": [50, 20],
+    "pixels": 8,
+    "bounds": [49, 20, 52, 22]
+  },
+  {
+    "id": "04",
+    "material": "steel",
+    "seed": [53, 20],
+    "pixels": 1,
+    "bounds": [53, 20, 53, 20]
+  },
+  {
+    "id": "05",
+    "material": "brown",
+    "seed": [48, 22],
+    "pixels": 21,
+    "bounds": [42, 22, 49, 29]
+  },
+  {
+    "id": "06",
+    "material": "steel",
+    "seed": [53, 22],
+    "pixels": 20,
+    "bounds": [52, 22, 55, 30]
+  },
+  {
+    "id": "07",
+    "material": "cloth",
+    "seed": [21, 26],
+    "pixels": 25,
+    "bounds": [17, 26, 25, 31]
+  },
+  {
+    "id": "08",
+    "material": "skin",
+    "seed": [25, 26],
+    "pixels": 2,
+    "bounds": [25, 26, 25, 27]
+  },
+  {
+    "id": "09",
+    "material": "brown",
+    "seed": [26, 26],
+    "pixels": 52,
+    "bounds": [26, 26, 35, 33]
+  },
+  {
+    "id": "0a",
+    "material": "skin",
+    "seed": [27, 26],
+    "pixels": 16,
+    "bounds": [27, 26, 34, 28]
+  },
+  {
+    "id": "0b",
+    "material": "cloth",
+    "seed": [36, 28],
+    "pixels": 4,
+    "bounds": [36, 28, 38, 29]
+  },
+  {
+    "id": "0c",
+    "material": "cloth",
+    "seed": [16, 29],
+    "pixels": 1,
+    "bounds": [16, 29, 16, 29]
+  },
+  {
+    "id": "0d",
+    "material": "skin",
+    "seed": [40, 29],
+    "pixels": 21,
+    "bounds": [37, 29, 42, 33]
+  },
+  {
+    "id": "0e",
+    "material": "cream",
+    "seed": [17, 30],
+    "pixels": 50,
+    "bounds": [14, 30, 23, 38]
+  },
+  {
+    "id": "0f",
+    "material": "brown",
+    "seed": [23, 32],
+    "pixels": 1,
+    "bounds": [23, 32, 23, 32]
+  },
+  {
+    "id": "10",
+    "material": "brown",
+    "seed": [42, 32],
+    "pixels": 7,
+    "bounds": [41, 32, 43, 35]
+  },
+  {
+    "id": "11",
+    "material": "brown",
+    "seed": [24, 33],
+    "pixels": 18,
+    "bounds": [23, 33, 28, 37]
+  },
+  {
+    "id": "12",
+    "material": "brown",
+    "seed": [34, 33],
+    "pixels": 23,
+    "bounds": [27, 33, 36, 39]
+  },
+  {
+    "id": "13",
+    "material": "brown",
+    "seed": [38, 34],
+    "pixels": 1,
+    "bounds": [38, 34, 38, 34]
+  },
+  {
+    "id": "14",
+    "material": "skin",
+    "seed": [43, 34],
+    "pixels": 4,
+    "bounds": [42, 34, 43, 36]
+  },
+  {
+    "id": "15",
+    "material": "brown",
+    "seed": [29, 35],
+    "pixels": 1,
+    "bounds": [29, 35, 29, 35]
+  },
+  {
+    "id": "16",
+    "material": "cream",
+    "seed": [37, 35],
+    "pixels": 18,
+    "bounds": [37, 35, 42, 38]
+  },
+  {
+    "id": "17",
+    "material": "brown",
+    "seed": [20, 36],
+    "pixels": 13,
+    "bounds": [18, 36, 23, 39]
+  },
+  {
+    "id": "18",
+    "material": "brown",
+    "seed": [35, 36],
+    "pixels": 10,
+    "bounds": [31, 36, 35, 39]
+  },
+  {
+    "id": "19",
+    "material": "skin",
+    "seed": [24, 39],
+    "pixels": 18,
+    "bounds": [21, 39, 26, 43]
+  },
+  {
+    "id": "1a",
+    "material": "brown",
+    "seed": [18, 40],
+    "pixels": 5,
+    "bounds": [18, 40, 21, 41]
+  },
+  {
+    "id": "1b",
+    "material": "brown",
+    "seed": [26, 40],
+    "pixels": 1,
+    "bounds": [26, 40, 26, 40]
+  },
+  {
+    "id": "1c",
+    "material": "brown",
+    "seed": [29, 41],
+    "pixels": 64,
+    "bounds": [25, 41, 34, 48]
+  },
+  {
+    "id": "1d",
+    "material": "brown",
+    "seed": [37, 41],
+    "pixels": 6,
+    "bounds": [37, 41, 38, 44]
+  },
+  {
+    "id": "1e",
+    "material": "brown",
+    "seed": [18, 42],
+    "pixels": 8,
+    "bounds": [17, 42, 20, 44]
+  },
+  {
+    "id": "1f",
+    "material": "brown",
+    "seed": [26, 42],
+    "pixels": 1,
+    "bounds": [26, 42, 26, 42]
+  },
+  {
+    "id": "20",
+    "material": "cream",
+    "seed": [21, 44],
+    "pixels": 15,
+    "bounds": [16, 44, 22, 47]
+  },
+  {
+    "id": "21",
+    "material": "brown",
+    "seed": [19, 45],
+    "pixels": 1,
+    "bounds": [19, 45, 19, 45]
+  },
+  {
+    "id": "22",
+    "material": "cream",
+    "seed": [24, 45],
+    "pixels": 5,
+    "bounds": [24, 45, 25, 47]
+  },
+  {
+    "id": "23",
+    "material": "brown",
+    "seed": [38, 45],
+    "pixels": 16,
+    "bounds": [37, 45, 40, 49]
+  },
+  {
+    "id": "24",
+    "material": "brown",
+    "seed": [17, 47],
+    "pixels": 8,
+    "bounds": [15, 47, 18, 49]
+  },
+  {
+    "id": "25",
+    "material": "brown",
+    "seed": [21, 48],
+    "pixels": 4,
+    "bounds": [19, 48, 21, 49]
+  },
+  {
+    "id": "26",
+    "material": "cloth",
+    "seed": [26, 50],
+    "pixels": 8,
+    "bounds": [26, 50, 30, 51]
+  },
+  {
+    "id": "27",
+    "material": "brown",
+    "seed": [14, 51],
+    "pixels": 17,
+    "bounds": [12, 51, 18, 53]
+  },
+  {
+    "id": "28",
+    "material": "brown",
+    "seed": [37, 51],
+    "pixels": 17,
+    "bounds": [37, 51, 44, 53]
+  }
+]

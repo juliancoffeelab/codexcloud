@@ -1,4 +1,4 @@
-"""Derive dwarf tiers from reviewed native bases and full material ownership masks."""
+"""Check the frozen dwarf L2/L3 studies; the rejected recipe no longer writes art."""
 
 import argparse
 from collections import defaultdict
@@ -108,6 +108,8 @@ def verify(source, mask, original_palette, rows, palette, level):
 
 
 def run(ids, destination, check=False, render=True):
+    if not check:
+        raise ValueError("This rejected progression recipe is frozen. Use dwarf-base-cleanup/build.py for the restored bases.")
     poses = json.loads((HERE / "sources.json").read_text())["poses"]
     chosen = [pose for pose in poses if not ids or "dwarf-" + pose in ids]
     if ids and len(chosen) != len(set(ids)):
@@ -117,7 +119,7 @@ def run(ids, destination, check=False, render=True):
     for pose in chosen:
         base_id = "dwarf-" + pose
         source, mask, original_palette = read_pose(HERE / "bases" / base_id)
-        for level in (1, 2, 3):
+        for level in (2, 3):
             unit = base_id + (f"-l{level}" if level > 1 else "")
             output = destination / unit
             rows, palette = derive(source, mask, original_palette, level)
@@ -165,11 +167,12 @@ def run(ids, destination, check=False, render=True):
     if not ids and destination == UNITS:
         report = {
             "armourPixelsByUnitAndPart": coverage,
-            "l1": "Every wearer armour part is leather",
+            "l1": "Excluded; restored and cleaned by dwarf-base-cleanup/build.py",
             "l2": "Helmet, cuirass, shoulders and arm guards are metal; apron, leggings and boots are leather",
             "l3": "Every wearer armour part and the shield is silver",
             "protected": "Skin, beard, shafts, weapon steel, faction cloth, goat coat and mount tack",
             "runeLine": "Excluded",
+            "status": "Rejected progression study; mask coverage is not proof of clean visible part boundaries",
         }
         file = HERE / "coverage.json"
         if check:
@@ -177,7 +180,7 @@ def run(ids, destination, check=False, render=True):
                 raise ValueError("Regenerate the saved armour coverage report")
         else:
             file.write_text(json.dumps(report, indent=2) + "\n")
-    print(f"{'Verified' if check else 'Derived'} {len(coverage)} dwarf tiers: every armour piece has complete material coverage; protected pixels unchanged")
+    print(f"Checked {len(coverage)} historical dwarf tier studies against their frozen masks; base cleanup is separate")
     return coverage
 
 

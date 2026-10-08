@@ -1,0 +1,37 @@
+[
+  {
+    "x": 14,
+    "y": 29,
+    "from": "H",
+    "to": "I",
+    "reason": "Skin fleck in cream sleeve"
+  },
+  {
+    "x": 17,
+    "y": 29,
+    "from": "H",
+    "to": "I",
+    "reason": "Skin fleck in cream sleeve"
+  },
+  {
+    "x": 12,
+    "y": 37,
+    "from": "H",
+    "to": "I",
+    "reason": "Skin fleck in cream sleeve"
+  },
+  {
+    "x": 35,
+    "y": 36,
+    "from": "B",
+    "to": "H",
+    "reason": "Brown fleck at hand grip"
+  },
+  {
+    "x": 35,
+    "y": 36,
+    "from": "H",
+    "to": "h",
+    "reason": "Join adjacent shade of the same material"
+  }
+]

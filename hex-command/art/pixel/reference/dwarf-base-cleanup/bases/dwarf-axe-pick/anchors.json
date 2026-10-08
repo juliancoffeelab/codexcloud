@@ -1,0 +1,128 @@
+[
+  {
+    "name": "helmet",
+    "material": "steel",
+    "seed": [31, 20],
+    "region": "01"
+  },
+  {
+    "name": "face",
+    "material": "skin",
+    "seed": [33, 24],
+    "region": "08"
+  },
+  {
+    "name": "beard",
+    "material": "brown",
+    "seed": [34, 29],
+    "region": "07"
+  },
+  {
+    "name": "left-shaft",
+    "material": "brown",
+    "seed": [14, 25],
+    "region": "09"
+  },
+  {
+    "name": "right-shaft",
+    "material": "brown",
+    "seed": [50, 26],
+    "region": "0c"
+  },
+  {
+    "name": "left-head",
+    "material": "steel",
+    "seed": [10, 23],
+    "region": "00"
+  },
+  {
+    "name": "right-head",
+    "material": "steel",
+    "seed": [54, 21],
+    "region": "02"
+  },
+  {
+    "name": "left-hand",
+    "material": "skin",
+    "seed": [16, 32],
+    "region": "11"
+  },
+  {
+    "name": "right-hand",
+    "material": "skin",
+    "seed": [48, 32],
+    "region": "12"
+  },
+  {
+    "name": "left-shirt",
+    "material": "cream",
+    "seed": [22, 30],
+    "region": "0d"
+  },
+  {
+    "name": "right-shirt",
+    "material": "cream",
+    "seed": [40, 30],
+    "region": "10"
+  },
+  {
+    "name": "left-bracer",
+    "material": "brown",
+    "seed": [18, 35],
+    "region": "19"
+  },
+  {
+    "name": "right-bracer",
+    "material": "brown",
+    "seed": [43, 35],
+    "region": "15"
+  },
+  {
+    "name": "cuirass",
+    "material": "brown",
+    "seed": [31, 35],
+    "region": "13"
+  },
+  {
+    "name": "apron",
+    "material": "brown",
+    "seed": [31, 42],
+    "region": "22"
+  },
+  {
+    "name": "left-trouser",
+    "material": "cream",
+    "seed": [22, 42],
+    "region": "26"
+  },
+  {
+    "name": "right-trouser",
+    "material": "cream",
+    "seed": [40, 42],
+    "region": "25"
+  },
+  {
+    "name": "left-leg",
+    "material": "brown",
+    "seed": [21, 46],
+    "region": "27"
+  },
+  {
+    "name": "right-leg",
+    "material": "brown",
+    "seed": [41, 46],
+    "region": "28"
+  },
+  {
+    "name": "left-boot",
+    "material": "brown",
+    "seed": [19, 51],
+    "region": "2a"
+  },
+  {
+    "name": "right-boot",
+    "material": "brown",
+    "seed": [42, 51],
+    "region": "2b"
+  }
+]

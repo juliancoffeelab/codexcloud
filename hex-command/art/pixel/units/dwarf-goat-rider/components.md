@@ -1,7 +1,5 @@
 # dwarf-goat-rider
 
-L1 artwork derived from the cleaned `dwarf-goat-rider` pose. The branch assignment is in `art/pixel/lineups/dwarves.json`.
+Restored pre-progression equipment and pose, with flat material colours, simple shading and reviewed surface boundaries. Face and hands share the skin ramp; leather, beard and wood share the brown ramp. Cream cloth, faction cloth and steel have separate ramps.
 
-Armour: L1 leather; L2 metal helmet, shoulders, cuirass and arm guards over leather leggings, boots and apron; L3 complete silver coverage. Face, hands, beard, wooden shafts, weapon steel, faction fabric and mount/tack remain their own materials.
-
-The exact native inputs and ownership masks are saved under `art/pixel/reference/dwarf-progression/bases/dwarf-goat-rider/`. Edit that recipe and run `python3 art/pixel/reference/dwarf-progression/build.py`; do not patch PNGs or reuse the older armour rectangles.
+The native source and detected fill regions live in `art/pixel/reference/dwarf-base-cleanup/bases/dwarf-goat-rider/`. Run that folder's `build.py` from the project root. Advanced tiers are deferred; the rune line is excluded.

@@ -8,8 +8,8 @@ const { sourceDirectory, catalogEntry, isArchived } = require("./source-director
 const root = __dirname,
   project = path.resolve(root, "../../../..");
 const manifest = JSON.parse(fs.readFileSync(path.join(root, "manifest.json")));
-const dwarfProgression = new Set(
-  require("../dwarf-progression/sources.json").poses.map((pose) => `dwarf-${pose}`),
+const dwarfBases = new Set(
+  require("../dwarf-base-cleanup/sources.json").poses.map((pose) => `dwarf-${pose}`),
 );
 const [mode, ...ids] = process.argv.slice(2);
 const selected = manifest.jobs.filter((j) => !ids.length || ids.includes(j.id));
@@ -233,13 +233,13 @@ function extract(job) {
   console.log(`${job.id}: ${size}x${size}, ${changes.length} recorded cleanup edits`);
 }
 function tiers(job) {
-  if (dwarfProgression.has(job.id)) {
-    execFileSync("python3", ["art/pixel/reference/dwarf-progression/build.py", job.id], {
+  if (dwarfBases.has(job.id)) {
+    execFileSync("python3", ["art/pixel/reference/dwarf-base-cleanup/build.py", job.id], {
       cwd: project,
       stdio: "inherit",
     });
     job.status = "tiers";
-    console.log(`${job.id}: reviewed leather/metal/silver L1-L3, both factions`);
+    console.log(`${job.id}: restored and cleaned base, both factions; advanced tiers deferred`);
     return;
   }
   const catalogPath = path.join(project, "art/pixel/units/catalog.json"),

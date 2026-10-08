@@ -1,0 +1,104 @@
+[
+  {
+    "name": "helmet",
+    "material": "steel",
+    "seed": [30, 23],
+    "region": "01"
+  },
+  {
+    "name": "face",
+    "material": "skin",
+    "seed": [31, 27],
+    "region": "03"
+  },
+  {
+    "name": "beard",
+    "material": "brown",
+    "seed": [31, 34],
+    "region": "07"
+  },
+  {
+    "name": "cuirass",
+    "material": "brown",
+    "seed": [28, 38],
+    "region": "13"
+  },
+  {
+    "name": "right-shoulder",
+    "material": "steel",
+    "seed": [39, 32],
+    "region": "0c"
+  },
+  {
+    "name": "right-bracer",
+    "material": "brown",
+    "seed": [42, 35],
+    "region": "0e"
+  },
+  {
+    "name": "right-hand",
+    "material": "skin",
+    "seed": [46, 33],
+    "region": "0f"
+  },
+  {
+    "name": "shaft",
+    "material": "brown",
+    "seed": [47, 29],
+    "region": "0b"
+  },
+  {
+    "name": "shield-face",
+    "material": "brown",
+    "seed": [19, 42],
+    "region": "0d"
+  },
+  {
+    "name": "shield-rim",
+    "material": "steel",
+    "seed": [11, 35],
+    "region": "0a"
+  },
+  {
+    "name": "shield-boss",
+    "material": "steel",
+    "seed": [17, 38],
+    "region": "11"
+  },
+  {
+    "name": "front-cloth",
+    "material": "cloth",
+    "seed": [31, 44],
+    "region": "1a"
+  },
+  {
+    "name": "right-shirt",
+    "material": "cream",
+    "seed": [38, 43],
+    "region": "19"
+  },
+  {
+    "name": "left-leg",
+    "material": "brown",
+    "seed": [24, 46],
+    "region": "1c"
+  },
+  {
+    "name": "right-leg",
+    "material": "brown",
+    "seed": [37, 48],
+    "region": "1e"
+  },
+  {
+    "name": "left-boot",
+    "material": "brown",
+    "seed": [19, 52],
+    "region": "1f"
+  },
+  {
+    "name": "right-boot",
+    "material": "brown",
+    "seed": [40, 52],
+    "region": "20"
+  }
+]

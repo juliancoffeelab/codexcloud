@@ -1,0 +1,30 @@
+[
+  {
+    "x": 38,
+    "y": 28,
+    "from": "a",
+    "to": "O",
+    "reason": "Stray steel fleck outside hammer and leather"
+  },
+  {
+    "x": 18,
+    "y": 30,
+    "from": "H",
+    "to": "I",
+    "reason": "Skin fleck in cream sleeve"
+  },
+  {
+    "x": 38,
+    "y": 34,
+    "from": "B",
+    "to": "H",
+    "reason": "Brown fleck in hand grip"
+  },
+  {
+    "x": 24,
+    "y": 36,
+    "from": "O",
+    "to": "B",
+    "reason": "Isolated dark speck inside cuirass: all eight neighbours are brown; outside face and boundaries"
+  }
+]

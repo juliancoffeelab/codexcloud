@@ -1,0 +1,37 @@
+[
+  {
+    "x": 48,
+    "y": 20,
+    "from": "T",
+    "to": "a",
+    "reason": "Teal fleck in pickaxe head"
+  },
+  {
+    "x": 52,
+    "y": 23,
+    "from": "B",
+    "to": "a",
+    "reason": "Wood fleck inside pickaxe head"
+  },
+  {
+    "x": 22,
+    "y": 31,
+    "from": "H",
+    "to": "I",
+    "reason": "Skin fleck inside cream sleeve"
+  },
+  {
+    "x": 40,
+    "y": 37,
+    "from": "H",
+    "to": "I",
+    "reason": "Skin fleck inside cream cuff"
+  },
+  {
+    "x": 22,
+    "y": 31,
+    "from": "I",
+    "to": "i",
+    "reason": "Join adjacent shade of the same material"
+  }
+]

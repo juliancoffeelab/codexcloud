@@ -1,0 +1,30 @@
+[
+  {
+    "x": 50,
+    "y": 24,
+    "from": "H",
+    "to": "B",
+    "reason": "Skin fleck in wooden pick shaft"
+  },
+  {
+    "x": 23,
+    "y": 33,
+    "from": "B",
+    "to": "I",
+    "reason": "Brown fleck inside cream sleeve"
+  },
+  {
+    "x": 17,
+    "y": 34,
+    "from": "B",
+    "to": "H",
+    "reason": "Brown fleck inside palm"
+  },
+  {
+    "x": 23,
+    "y": 33,
+    "from": "I",
+    "to": "i",
+    "reason": "Join adjacent shade of the same material"
+  }
+]

@@ -1,0 +1,110 @@
+[
+  {
+    "name": "helmet",
+    "material": "steel",
+    "seed": [26, 11],
+    "region": "01"
+  },
+  {
+    "name": "face",
+    "material": "skin",
+    "seed": [27, 14],
+    "region": "04"
+  },
+  {
+    "name": "beard",
+    "material": "brown",
+    "seed": [27, 19],
+    "region": "0a"
+  },
+  {
+    "name": "left-shirt",
+    "material": "cream",
+    "seed": [19, 21],
+    "region": "12"
+  },
+  {
+    "name": "left-bracer",
+    "material": "brown",
+    "seed": [20, 24],
+    "region": "18"
+  },
+  {
+    "name": "lower-hand",
+    "material": "skin",
+    "seed": [25, 24],
+    "region": "1a"
+  },
+  {
+    "name": "right-cuff",
+    "material": "cream",
+    "seed": [33, 21],
+    "region": "0f"
+  },
+  {
+    "name": "right-bracer",
+    "material": "brown",
+    "seed": [35, 19],
+    "region": "0c"
+  },
+  {
+    "name": "upper-hand",
+    "material": "skin",
+    "seed": [38, 16],
+    "region": "08"
+  },
+  {
+    "name": "cuirass",
+    "material": "brown",
+    "seed": [27, 27],
+    "region": "21"
+  },
+  {
+    "name": "trouser",
+    "material": "cream",
+    "seed": [24, 30],
+    "region": "27"
+  },
+  {
+    "name": "rider-boot",
+    "material": "brown",
+    "seed": [25, 36],
+    "region": "39"
+  },
+  {
+    "name": "saddle",
+    "material": "brown",
+    "seed": [16, 36],
+    "region": "33"
+  },
+  {
+    "name": "horn",
+    "material": "brown",
+    "seed": [45, 23],
+    "region": "16"
+  },
+  {
+    "name": "mane",
+    "material": "brown",
+    "seed": [30, 37],
+    "region": "2d"
+  },
+  {
+    "name": "fur",
+    "material": "cream",
+    "seed": [34, 35],
+    "region": "36"
+  },
+  {
+    "name": "shaft",
+    "material": "brown",
+    "seed": [36, 14],
+    "region": "06"
+  },
+  {
+    "name": "hammer-head",
+    "material": "steel",
+    "seed": [42, 8],
+    "region": "00"
+  }
+]

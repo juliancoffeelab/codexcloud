@@ -1,0 +1,104 @@
+[
+  {
+    "name": "helmet",
+    "material": "steel",
+    "seed": [26, 23],
+    "region": "03"
+  },
+  {
+    "name": "face",
+    "material": "skin",
+    "seed": [27, 26],
+    "region": "06"
+  },
+  {
+    "name": "beard",
+    "material": "brown",
+    "seed": [26, 30],
+    "region": "07"
+  },
+  {
+    "name": "left-shirt",
+    "material": "cream",
+    "seed": [16, 35],
+    "region": "10"
+  },
+  {
+    "name": "left-bracer",
+    "material": "brown",
+    "seed": [17, 38],
+    "region": "19"
+  },
+  {
+    "name": "lower-hand",
+    "material": "skin",
+    "seed": [24, 41],
+    "region": "1e"
+  },
+  {
+    "name": "right-bracer",
+    "material": "brown",
+    "seed": [37, 35],
+    "region": "0f"
+  },
+  {
+    "name": "upper-hand",
+    "material": "skin",
+    "seed": [36, 31],
+    "region": "0a"
+  },
+  {
+    "name": "left-cuirass",
+    "material": "brown",
+    "seed": [23, 36],
+    "region": "0c"
+  },
+  {
+    "name": "right-cuirass",
+    "material": "brown",
+    "seed": [30, 38],
+    "region": "1b"
+  },
+  {
+    "name": "apron",
+    "material": "brown",
+    "seed": [29, 46],
+    "region": "22"
+  },
+  {
+    "name": "left-leg",
+    "material": "brown",
+    "seed": [17, 46],
+    "region": "24"
+  },
+  {
+    "name": "right-trouser",
+    "material": "cream",
+    "seed": [33, 46],
+    "region": "25"
+  },
+  {
+    "name": "left-boot",
+    "material": "brown",
+    "seed": [12, 52],
+    "region": "28"
+  },
+  {
+    "name": "right-boot",
+    "material": "brown",
+    "seed": [37, 52],
+    "region": "29"
+  },
+  {
+    "name": "shaft",
+    "material": "brown",
+    "seed": [41, 25],
+    "region": "02"
+  },
+  {
+    "name": "poleaxe-head",
+    "material": "steel",
+    "seed": [51, 22],
+    "region": "00"
+  }
+]

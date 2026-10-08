@@ -1,0 +1,16 @@
+[
+  {
+    "x": 47,
+    "y": 19,
+    "from": "B",
+    "to": "a",
+    "reason": "Wood fleck inside steel poleaxe head"
+  },
+  {
+    "x": 21,
+    "y": 34,
+    "from": "O",
+    "to": "B",
+    "reason": "Isolated dark speck inside cuirass: all eight neighbours are brown; outside face and boundaries"
+  }
+]

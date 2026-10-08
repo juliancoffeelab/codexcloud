@@ -1,0 +1,24 @@
+{
+  "restoredFrom": "b559200283b3279239a3225cfd2d20617e777d74",
+  "reference": "art/pixel/units/scout/player.txt",
+  "poses": [
+    "axeguard",
+    "axe-pick",
+    "pickaxe",
+    "hammerer",
+    "poleaxe",
+    "crossbow",
+    "arquebus",
+    "goat-rider",
+    "pistol-goat-rider"
+  ],
+  "materials": {
+    "brown": "Bb",
+    "skin": "Hh",
+    "cream": "Ii",
+    "cloth": "TtRr",
+    "steel": "MaA"
+  },
+  "runeLine": "Excluded",
+  "advancedTiers": "Deferred; preserved as historical studies"
+}

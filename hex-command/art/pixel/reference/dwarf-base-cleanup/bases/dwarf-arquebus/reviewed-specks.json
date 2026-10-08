@@ -1,0 +1,37 @@
+[
+  {
+    "x": 46,
+    "y": 25,
+    "from": "B",
+    "to": "A",
+    "reason": "Wood fleck in steel barrel"
+  },
+  {
+    "x": 35,
+    "y": 26,
+    "from": "a",
+    "to": "B",
+    "reason": "Steel fleck in wooden stock"
+  },
+  {
+    "x": 28,
+    "y": 29,
+    "from": "a",
+    "to": "B",
+    "reason": "Steel fleck in wooden stock"
+  },
+  {
+    "x": 18,
+    "y": 28,
+    "from": "H",
+    "to": "I",
+    "reason": "Skin fleck in cream sleeve"
+  },
+  {
+    "x": 22,
+    "y": 30,
+    "from": "B",
+    "to": "H",
+    "reason": "Brown fleck in palm"
+  }
+]

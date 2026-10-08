@@ -1,0 +1,70 @@
+{
+  "rule": "Exact RGBA match at left/right/up/down; black pixels beside transparent neighbours are excluded by default",
+  "specificReviewedMaterialAndInteriorSpecks": 45,
+  "units": {
+    "dwarf-arquebus": {
+      "beforeIncludingExteriorBlack": 102,
+      "beforeIgnoringExteriorBlack": 87,
+      "afterIncludingExteriorBlack": 44,
+      "afterIgnoringExteriorBlack": 29,
+      "namedIndependentParts": 17
+    },
+    "dwarf-axe-pick": {
+      "beforeIncludingExteriorBlack": 99,
+      "beforeIgnoringExteriorBlack": 81,
+      "afterIncludingExteriorBlack": 48,
+      "afterIgnoringExteriorBlack": 30,
+      "namedIndependentParts": 21
+    },
+    "dwarf-axeguard": {
+      "beforeIncludingExteriorBlack": 87,
+      "beforeIgnoringExteriorBlack": 73,
+      "afterIncludingExteriorBlack": 40,
+      "afterIgnoringExteriorBlack": 26,
+      "namedIndependentParts": 17
+    },
+    "dwarf-crossbow": {
+      "beforeIncludingExteriorBlack": 98,
+      "beforeIgnoringExteriorBlack": 82,
+      "afterIncludingExteriorBlack": 43,
+      "afterIgnoringExteriorBlack": 27,
+      "namedIndependentParts": 17
+    },
+    "dwarf-goat-rider": {
+      "beforeIncludingExteriorBlack": 227,
+      "beforeIgnoringExteriorBlack": 193,
+      "afterIncludingExteriorBlack": 121,
+      "afterIgnoringExteriorBlack": 87,
+      "namedIndependentParts": 18
+    },
+    "dwarf-hammerer": {
+      "beforeIncludingExteriorBlack": 96,
+      "beforeIgnoringExteriorBlack": 72,
+      "afterIncludingExteriorBlack": 37,
+      "afterIgnoringExteriorBlack": 14,
+      "namedIndependentParts": 18
+    },
+    "dwarf-pickaxe": {
+      "beforeIncludingExteriorBlack": 118,
+      "beforeIgnoringExteriorBlack": 95,
+      "afterIncludingExteriorBlack": 55,
+      "afterIgnoringExteriorBlack": 32,
+      "namedIndependentParts": 18
+    },
+    "dwarf-pistol-goat-rider": {
+      "beforeIncludingExteriorBlack": 187,
+      "beforeIgnoringExteriorBlack": 163,
+      "afterIncludingExteriorBlack": 97,
+      "afterIgnoringExteriorBlack": 73,
+      "namedIndependentParts": 18
+    },
+    "dwarf-poleaxe": {
+      "beforeIncludingExteriorBlack": 147,
+      "beforeIgnoringExteriorBlack": 118,
+      "afterIncludingExteriorBlack": 74,
+      "afterIgnoringExteriorBlack": 45,
+      "namedIndependentParts": 17
+    }
+  },
+  "remaining": "Suspect pixels, including eyes, internal diagonal boundaries, thin shafts and fittings. These are flags for visual review, not proof that a pixel must be removed."
+}

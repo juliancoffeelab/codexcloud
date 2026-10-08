@@ -1,0 +1,44 @@
+[
+  {
+    "x": 14,
+    "y": 29,
+    "from": "B",
+    "to": "a",
+    "reason": "Wood fleck in steel shield rim"
+  },
+  {
+    "x": 11,
+    "y": 45,
+    "from": "B",
+    "to": "a",
+    "reason": "Wood fleck in steel shield rim"
+  },
+  {
+    "x": 12,
+    "y": 46,
+    "from": "B",
+    "to": "a",
+    "reason": "Wood fleck in steel shield rim"
+  },
+  {
+    "x": 23,
+    "y": 45,
+    "from": "B",
+    "to": "a",
+    "reason": "Wood fleck in steel shield rim"
+  },
+  {
+    "x": 22,
+    "y": 46,
+    "from": "B",
+    "to": "a",
+    "reason": "Wood fleck in steel shield rim"
+  },
+  {
+    "x": 40,
+    "y": 37,
+    "from": "H",
+    "to": "B",
+    "reason": "Isolated skin colour in leather bracer"
+  }
+]
