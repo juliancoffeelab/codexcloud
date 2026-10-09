@@ -1,0 +1,390 @@
+{
+  "units": {
+    "tridentguard": {
+      "matrixChanges": [],
+      "enemyMatrixChanges": [],
+      "paletteChanges": {
+        "S": {
+          "from": [116, 86, 158, 255],
+          "to": [89, 154, 144, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        },
+        "s": {
+          "from": [66, 43, 92, 255],
+          "to": [48, 102, 103, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        },
+        "H": {
+          "from": [175, 148, 204, 255],
+          "to": [139, 193, 165, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        }
+      },
+      "canvas": [48, 48]
+    },
+    "merfolk-reef-champion": {
+      "matrixChanges": [],
+      "enemyMatrixChanges": [],
+      "paletteChanges": {
+        "S": {
+          "from": [162, 139, 204, 255],
+          "to": [89, 154, 144, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        },
+        "s": {
+          "from": [92, 69, 132, 255],
+          "to": [48, 102, 103, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        },
+        "H": {
+          "from": [196, 178, 226, 255],
+          "to": [139, 193, 165, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        }
+      },
+      "canvas": [48, 48]
+    },
+    "tidesage": {
+      "matrixChanges": [],
+      "enemyMatrixChanges": [],
+      "paletteChanges": {
+        "S": {
+          "from": [116, 86, 158, 255],
+          "to": [89, 154, 144, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        },
+        "s": {
+          "from": [66, 43, 92, 255],
+          "to": [48, 102, 103, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        },
+        "H": {
+          "from": [175, 148, 204, 255],
+          "to": [139, 193, 165, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        }
+      },
+      "canvas": [48, 48]
+    },
+    "merfolk-tide-oracle": {
+      "matrixChanges": [],
+      "enemyMatrixChanges": [],
+      "paletteChanges": {
+        "S": {
+          "from": [162, 139, 204, 255],
+          "to": [89, 154, 144, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        },
+        "s": {
+          "from": [92, 69, 132, 255],
+          "to": [48, 102, 103, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        },
+        "H": {
+          "from": [196, 178, 226, 255],
+          "to": [139, 193, 165, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        }
+      },
+      "canvas": [48, 48]
+    },
+    "tidehunter": {
+      "matrixChanges": [],
+      "enemyMatrixChanges": [],
+      "paletteChanges": {
+        "S": {
+          "from": [116, 86, 158, 255],
+          "to": [89, 154, 144, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        },
+        "s": {
+          "from": [66, 43, 92, 255],
+          "to": [48, 102, 103, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        },
+        "H": {
+          "from": [175, 148, 204, 255],
+          "to": [139, 193, 165, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        }
+      },
+      "canvas": [48, 48]
+    },
+    "merfolk-harpoon-master": {
+      "matrixChanges": [],
+      "enemyMatrixChanges": [],
+      "paletteChanges": {
+        "S": {
+          "from": [162, 139, 204, 255],
+          "to": [89, 154, 144, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        },
+        "s": {
+          "from": [92, 69, 132, 255],
+          "to": [48, 102, 103, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        },
+        "H": {
+          "from": [196, 178, 226, 255],
+          "to": [139, 193, 165, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        }
+      },
+      "canvas": [48, 48]
+    },
+    "tidekeeper": {
+      "matrixChanges": [],
+      "enemyMatrixChanges": [],
+      "paletteChanges": {},
+      "canvas": [48, 48]
+    },
+    "tideseer": {
+      "matrixChanges": [
+        {
+          "x": 18,
+          "y": 16,
+          "from": "O",
+          "to": "T",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 19,
+          "y": 16,
+          "from": "O",
+          "to": "T",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 20,
+          "y": 16,
+          "from": "O",
+          "to": "T",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 21,
+          "y": 16,
+          "from": "O",
+          "to": "T",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 26,
+          "y": 16,
+          "from": "O",
+          "to": "T",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 27,
+          "y": 16,
+          "from": "O",
+          "to": "T",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 28,
+          "y": 16,
+          "from": "O",
+          "to": "T",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 18,
+          "y": 17,
+          "from": "O",
+          "to": "t",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 18,
+          "y": 18,
+          "from": "O",
+          "to": "t",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 18,
+          "y": 19,
+          "from": "O",
+          "to": "t",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 18,
+          "y": 20,
+          "from": "O",
+          "to": "t",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 22,
+          "y": 17,
+          "from": "O",
+          "to": "T",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 24,
+          "y": 17,
+          "from": "O",
+          "to": "T",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 25,
+          "y": 17,
+          "from": "O",
+          "to": "T",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        }
+      ],
+      "enemyMatrixChanges": [
+        {
+          "x": 18,
+          "y": 16,
+          "from": "O",
+          "to": "R",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 19,
+          "y": 16,
+          "from": "O",
+          "to": "R",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 20,
+          "y": 16,
+          "from": "O",
+          "to": "R",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 21,
+          "y": 16,
+          "from": "O",
+          "to": "R",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 26,
+          "y": 16,
+          "from": "O",
+          "to": "R",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 27,
+          "y": 16,
+          "from": "O",
+          "to": "R",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 28,
+          "y": 16,
+          "from": "O",
+          "to": "R",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 18,
+          "y": 17,
+          "from": "O",
+          "to": "r",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 18,
+          "y": 18,
+          "from": "O",
+          "to": "r",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 18,
+          "y": 19,
+          "from": "O",
+          "to": "r",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 18,
+          "y": 20,
+          "from": "O",
+          "to": "r",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 22,
+          "y": 17,
+          "from": "O",
+          "to": "R",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 24,
+          "y": 17,
+          "from": "O",
+          "to": "R",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        },
+        {
+          "x": 25,
+          "y": 17,
+          "from": "O",
+          "to": "R",
+          "repairMaterialBoundary": true,
+          "reason": "Cloak and shield overlap the cuirass; remove its hidden top and left outlines."
+        }
+      ],
+      "paletteChanges": {
+        "S": {
+          "from": [116, 86, 158, 255],
+          "to": [89, 154, 144, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        },
+        "s": {
+          "from": [66, 43, 92, 255],
+          "to": [48, 102, 103, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        },
+        "H": {
+          "from": [175, 148, 204, 255],
+          "to": [139, 193, 165, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        }
+      },
+      "canvas": [48, 48]
+    }
+  }
+}

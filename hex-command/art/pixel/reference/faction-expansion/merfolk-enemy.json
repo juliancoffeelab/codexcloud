@@ -1,50 +1,98 @@
 [
   {
-    "label": "Merfolk two-handed trident L1",
-    "image": "art/pixel/units/merfolk-trident/enemy.png"
+    "label": "Harpooner → Harpooner L1",
+    "image": "art/pixel/units/harpooner/enemy.png"
   },
   {
-    "label": "Merfolk two-handed trident L2",
-    "image": "art/pixel/units/merfolk-trident-l2/enemy.png"
+    "label": "Tide hunter L2",
+    "image": "art/pixel/units/tidehunter/enemy.png"
   },
   {
-    "label": "Merfolk two-handed trident L3",
-    "image": "art/pixel/units/merfolk-trident-l3/enemy.png"
+    "label": "Harpoon master L3",
+    "image": "art/pixel/units/merfolk-harpoon-master/enemy.png"
   },
   {
-    "label": "Merfolk net and spear L1",
-    "image": "art/pixel/units/merfolk-netter/enemy.png"
+    "label": "Harpooner → Netter L1",
+    "image": "art/pixel/units/harpooner/enemy.png"
   },
   {
-    "label": "Merfolk net and spear L2",
+    "label": "Netter L2",
     "image": "art/pixel/units/merfolk-netter-l2/enemy.png"
   },
   {
-    "label": "Merfolk net and spear L3",
+    "label": "Netter veteran L3",
     "image": "art/pixel/units/merfolk-netter-l3/enemy.png"
   },
   {
-    "label": "Merfolk mace and shield L1",
+    "label": "Reef guard → Reef guard L1",
+    "image": "art/pixel/units/reefguard/enemy.png"
+  },
+  {
+    "label": "Trident guard L2",
+    "image": "art/pixel/units/tridentguard/enemy.png"
+  },
+  {
+    "label": "Reef champion L3",
+    "image": "art/pixel/units/merfolk-reef-champion/enemy.png"
+  },
+  {
+    "label": "Reef guard → Two handed trident L1",
+    "image": "art/pixel/units/reefguard/enemy.png"
+  },
+  {
+    "label": "Two handed trident L2",
+    "image": "art/pixel/units/merfolk-trident-l2/enemy.png"
+  },
+  {
+    "label": "Trident veteran L3",
+    "image": "art/pixel/units/merfolk-trident-l3/enemy.png"
+  },
+  {
+    "label": "Wavemender → Support mage L1",
+    "image": "art/pixel/units/wavemender/enemy.png"
+  },
+  {
+    "label": "Tide sage L2",
+    "image": "art/pixel/units/tidesage/enemy.png"
+  },
+  {
+    "label": "Tide oracle L3",
+    "image": "art/pixel/units/merfolk-tide-oracle/enemy.png"
+  },
+  {
+    "label": "Wavemender → Crushing mage L1",
+    "image": "art/pixel/units/wavemender/enemy.png"
+  },
+  {
+    "label": "Tide crusher L2",
+    "image": "art/pixel/units/merfolk-tidecrusher-l2/enemy.png"
+  },
+  {
+    "label": "Tide breaker L3",
+    "image": "art/pixel/units/merfolk-tidecrusher-l3/enemy.png"
+  },
+  {
+    "label": "Macer → Macer L1",
     "image": "art/pixel/units/merfolk-maceguard/enemy.png"
   },
   {
-    "label": "Merfolk mace and shield L2",
+    "label": "Macer L2",
     "image": "art/pixel/units/merfolk-maceguard-l2/enemy.png"
   },
   {
-    "label": "Merfolk mace and shield L3",
+    "label": "Macer veteran L3",
     "image": "art/pixel/units/merfolk-maceguard-l3/enemy.png"
   },
   {
-    "label": "Merfolk harpoon thrower L1",
-    "image": "art/pixel/units/merfolk-harpoonthrower/enemy.png"
+    "label": "Tidekeeper (commander) L1",
+    "image": "art/pixel/units/tidekeeper/enemy.png"
   },
   {
-    "label": "Merfolk harpoon thrower L2",
-    "image": "art/pixel/units/merfolk-harpoonthrower-l2/enemy.png"
+    "label": "Tide seer (commander) L2",
+    "image": "art/pixel/units/tideseer/enemy.png"
   },
   {
-    "label": "Merfolk harpoon thrower L3",
-    "image": "art/pixel/units/merfolk-harpoonthrower-l3/enemy.png"
+    "label": "Tide sovereign (commander) L3",
+    "image": "art/pixel/units/merfolk-tide-sovereign/enemy.png"
   }
 ]

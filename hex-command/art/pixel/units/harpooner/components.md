@@ -7,3 +7,5 @@ Components: scaled head and neck; attached left and right arms; blue-green scale
 Materials: blue-green scales with one shadow and a pale highlight; warm ivory shell; dark leather; brown wood; flat gold clasps; teal/red cloth with one darker shadow. O is the dark outer boundary; no JPEG colors or texture noise.
 
 Orientation: three-quarter view toward screen right, eyes aligned toward the weapon. Near shoulder is screen left. Light comes from upper left. Tail and both fins connect beneath the belt; all arms connect to the shoulders.
+
+Weapon update: the upright spear head and gold collar are copied from Tide hunter L2 by `reference/faction-expansion/merfolk-tridents.cjs`; L1 body, armour, hands and shaft remain intact.

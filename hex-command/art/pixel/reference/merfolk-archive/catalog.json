@@ -1,0 +1,20 @@
+{
+  "merfolk-harpoonthrower": {
+    "name": "Merfolk harpoon thrower",
+    "level": 1,
+    "study": "faction-expansion/merfolk-harpoonthrower",
+    "canvas": [64, 64]
+  },
+  "merfolk-harpoonthrower-l2": {
+    "name": "Merfolk harpoon thrower L2",
+    "level": 2,
+    "study": "faction-expansion/merfolk-harpoonthrower-l2",
+    "canvas": [64, 64]
+  },
+  "merfolk-harpoonthrower-l3": {
+    "name": "Merfolk harpoon thrower L3",
+    "level": 3,
+    "study": "faction-expansion/merfolk-harpoonthrower-l3",
+    "canvas": [64, 64]
+  }
+}

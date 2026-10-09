@@ -97,7 +97,7 @@
   },
   {
     "label": "25. Dwarf two-handed hammer",
-    "image": "art/pixel/units/dwarf-hammerer/player.png"
+    "image": "art/pixel/reference/dwarf-branch-references/units/dwarf-hammerer/player.png"
   },
   {
     "label": "26. Dwarf pickaxe",
@@ -105,7 +105,7 @@
   },
   {
     "label": "27. Dwarf poleaxe",
-    "image": "art/pixel/units/dwarf-poleaxe/player.png"
+    "image": "art/pixel/reference/dwarf-branch-references/units/dwarf-poleaxe/player.png"
   },
   {
     "label": "28. Dwarf crossbow",
@@ -113,7 +113,7 @@
   },
   {
     "label": "29. Dwarf arquebus",
-    "image": "art/pixel/units/dwarf-arquebus/player.png"
+    "image": "art/pixel/reference/dwarf-branch-references/units/dwarf-arquebus/player.png"
   },
   {
     "label": "30. Dwarf rune caster",
@@ -145,10 +145,10 @@
   },
   {
     "label": "37. Dwarf pistol goat rider",
-    "image": "art/pixel/units/dwarf-pistol-goat-rider/player.png"
+    "image": "art/pixel/reference/dwarf-branch-references/units/dwarf-pistol-goat-rider/player.png"
   },
   {
     "label": "38. Dwarf axe and pick infantry",
-    "image": "art/pixel/units/dwarf-axe-pick/player.png"
+    "image": "art/pixel/reference/dwarf-branch-references/units/dwarf-axe-pick/player.png"
   }
 ]

@@ -1,492 +1,868 @@
 {
   "base": "merfolk-trident",
   "level": 2,
+  "recipe": "merfolk-renewed.cjs",
   "changes": [
     {
-      "x": 49,
-      "y": 20,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "x": 19,
+      "y": 17,
+      "from": "b",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
     },
     {
-      "x": 47,
-      "y": 21,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 21,
-      "y": 23,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "x": 20,
+      "y": 17,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
     },
     {
       "x": 21,
-      "y": 24,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "y": 17,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
     },
     {
       "x": 22,
-      "y": 24,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 50,
-      "y": 24,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 21,
-      "y": 25,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 22,
-      "y": 25,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 28,
-      "y": 25,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 42,
-      "y": 25,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 43,
-      "y": 25,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 45,
-      "y": 25,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 46,
-      "y": 25,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 24,
-      "y": 26,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "y": 17,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
     },
     {
       "x": 27,
-      "y": 26,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "y": 17,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
     },
     {
       "x": 28,
-      "y": 26,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "y": 17,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
     },
     {
-      "x": 40,
-      "y": 26,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "x": 20,
+      "y": 18,
+      "from": "b",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
     },
     {
       "x": 21,
-      "y": 27,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "y": 18,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
     },
     {
       "x": 22,
-      "y": 27,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "y": 18,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
     },
     {
       "x": 23,
-      "y": 27,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "y": 18,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
+    },
+    {
+      "x": 27,
+      "y": 18,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
+    },
+    {
+      "x": 28,
+      "y": 18,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
+    },
+    {
+      "x": 21,
+      "y": 19,
+      "from": "b",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
+    },
+    {
+      "x": 22,
+      "y": 19,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
     },
     {
       "x": 24,
-      "y": 27,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "y": 19,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
+    },
+    {
+      "x": 27,
+      "y": 19,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
+    },
+    {
+      "x": 28,
+      "y": 19,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
+    },
+    {
+      "x": 23,
+      "y": 20,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
     },
     {
       "x": 25,
-      "y": 27,
-      "from": "c",
+      "y": 20,
+      "from": "w",
       "to": "a",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 27,
-      "y": 27,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 21,
-      "y": 28,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 22,
-      "y": 28,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 23,
-      "y": 28,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 24,
-      "y": 28,
-      "from": "c",
-      "to": "a",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "reason": "Steel chest harness following generated straps"
     },
     {
       "x": 26,
-      "y": 28,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "y": 20,
+      "from": "b",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
     },
     {
       "x": 27,
-      "y": 28,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 33,
-      "y": 28,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 34,
-      "y": 28,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 21,
-      "y": 29,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 22,
-      "y": 29,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 23,
-      "y": 29,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "y": 20,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
     },
     {
       "x": 24,
-      "y": 29,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "y": 21,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
     },
     {
       "x": 25,
-      "y": 29,
-      "from": "c",
+      "y": 21,
+      "from": "w",
       "to": "a",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "reason": "Steel chest harness following generated straps"
+    },
+    {
+      "x": 26,
+      "y": 21,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
     },
     {
       "x": 27,
-      "y": 29,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "y": 21,
+      "from": "b",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
     },
     {
-      "x": 30,
-      "y": 29,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "x": 25,
+      "y": 22,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
     },
     {
-      "x": 31,
-      "y": 29,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 13,
-      "y": 30,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 22,
-      "y": 30,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "x": 26,
+      "y": 22,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
     },
     {
       "x": 27,
-      "y": 30,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "y": 22,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
     },
     {
       "x": 28,
-      "y": 30,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 29,
-      "y": 30,
-      "from": "c",
+      "y": 22,
+      "from": "b",
       "to": "a",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "reason": "Steel chest harness following generated straps"
     },
     {
-      "x": 34,
-      "y": 30,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 35,
-      "y": 30,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 36,
-      "y": 30,
-      "from": "c",
+      "x": 26,
+      "y": 23,
+      "from": "w",
       "to": "a",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "reason": "Steel chest harness following generated straps"
     },
     {
-      "x": 11,
-      "y": 31,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 12,
-      "y": 31,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 13,
-      "y": 31,
-      "from": "c",
+      "x": 27,
+      "y": 23,
+      "from": "w",
       "to": "a",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "reason": "Steel chest harness following generated straps"
     },
     {
-      "x": 24,
-      "y": 31,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 34,
-      "y": 31,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 35,
-      "y": 31,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 36,
-      "y": 31,
-      "from": "c",
+      "x": 28,
+      "y": 23,
+      "from": "w",
       "to": "a",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "reason": "Steel chest harness following generated straps"
     },
     {
-      "x": 11,
-      "y": 32,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 12,
-      "y": 32,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
-    },
-    {
-      "x": 13,
-      "y": 32,
-      "from": "c",
+      "x": 19,
+      "y": 27,
+      "from": "b",
       "to": "a",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "reason": "Steel chest harness following generated straps"
+    },
+    {
+      "x": 20,
+      "y": 27,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
     },
     {
       "x": 21,
-      "y": 32,
+      "y": 27,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
+    },
+    {
+      "x": 22,
+      "y": 27,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
+    },
+    {
+      "x": 27,
+      "y": 27,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
+    },
+    {
+      "x": 20,
+      "y": 28,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
+    },
+    {
+      "x": 21,
+      "y": 28,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
+    },
+    {
+      "x": 22,
+      "y": 28,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
+    },
+    {
+      "x": 25,
+      "y": 28,
       "from": "C",
       "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "reason": "Steel chest harness following generated straps"
+    },
+    {
+      "x": 27,
+      "y": 28,
+      "from": "B",
+      "to": "A",
+      "reason": "Steel chest harness following generated straps"
+    },
+    {
+      "x": 28,
+      "y": 28,
+      "from": "w",
+      "to": "a",
+      "reason": "Steel chest harness following generated straps"
+    },
+    {
+      "x": 34,
+      "y": 0,
+      "from": "O",
+      "to": ".",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 36,
+      "y": 0,
+      "from": "I",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 37,
+      "y": 0,
+      "from": "A",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 39,
+      "y": 0,
+      "from": "O",
+      "to": ".",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 31,
+      "y": 1,
+      "from": ".",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 32,
+      "y": 1,
+      "from": ".",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 34,
+      "y": 1,
+      "from": "A",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 37,
+      "y": 1,
+      "from": "I",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 39,
+      "y": 1,
+      "from": "I",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 41,
+      "y": 1,
+      "from": ".",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 42,
+      "y": 1,
+      "from": ".",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 31,
+      "y": 2,
+      "from": ".",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 32,
+      "y": 2,
+      "from": ".",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 33,
+      "y": 2,
+      "from": "O",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 34,
+      "y": 2,
+      "from": "A",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 36,
+      "y": 2,
+      "from": "I",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 37,
+      "y": 2,
+      "from": "I",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 39,
+      "y": 2,
+      "from": "A",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 40,
+      "y": 2,
+      "from": "O",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 41,
+      "y": 2,
+      "from": ".",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 42,
+      "y": 2,
+      "from": ".",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 31,
+      "y": 3,
+      "from": ".",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 32,
+      "y": 3,
+      "from": ".",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 33,
+      "y": 3,
+      "from": "O",
+      "to": "a",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 34,
+      "y": 3,
+      "from": "A",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 37,
+      "y": 3,
+      "from": "A",
+      "to": "a",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 39,
+      "y": 3,
+      "from": "A",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 40,
+      "y": 3,
+      "from": "O",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 41,
+      "y": 3,
+      "from": ".",
+      "to": "a",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 42,
+      "y": 3,
+      "from": ".",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 31,
+      "y": 4,
+      "from": ".",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 32,
+      "y": 4,
+      "from": ".",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 33,
+      "y": 4,
+      "from": "O",
+      "to": "a",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 34,
+      "y": 4,
+      "from": "I",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
     },
     {
       "x": 35,
-      "y": 32,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "y": 4,
+      "from": "G",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
     },
     {
-      "x": 11,
-      "y": 33,
-      "from": "c",
+      "x": 36,
+      "y": 4,
+      "from": "I",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 37,
+      "y": 4,
+      "from": "I",
       "to": "a",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "reason": "Shared Trident guard head; body and hand grips preserved"
     },
     {
-      "x": 18,
-      "y": 33,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "x": 38,
+      "y": 4,
+      "from": "G",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
     },
     {
-      "x": 8,
-      "y": 36,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "x": 39,
+      "y": 4,
+      "from": "I",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
     },
     {
-      "x": 10,
-      "y": 36,
-      "from": "C",
+      "x": 40,
+      "y": 4,
+      "from": "O",
       "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "reason": "Shared Trident guard head; body and hand grips preserved"
     },
     {
-      "x": 7,
-      "y": 37,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "x": 41,
+      "y": 4,
+      "from": ".",
+      "to": "a",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
     },
     {
-      "x": 8,
-      "y": 37,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "x": 42,
+      "y": 4,
+      "from": ".",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
     },
     {
-      "x": 17,
-      "y": 40,
-      "from": "C",
-      "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "x": 31,
+      "y": 5,
+      "from": ".",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
     },
     {
-      "x": 17,
-      "y": 41,
-      "from": "C",
+      "x": 32,
+      "y": 5,
+      "from": ".",
       "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "reason": "Shared Trident guard head; body and hand grips preserved"
     },
     {
-      "x": 16,
-      "y": 45,
-      "from": "C",
+      "x": 33,
+      "y": 5,
+      "from": "O",
+      "to": "a",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 34,
+      "y": 5,
+      "from": "G",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 35,
+      "y": 5,
+      "from": "G",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 36,
+      "y": 5,
+      "from": "G",
       "to": "A",
-      "reason": "Silver coral equipment on advanced merfolk"
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 37,
+      "y": 5,
+      "from": "G",
+      "to": "a",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 38,
+      "y": 5,
+      "from": "G",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 39,
+      "y": 5,
+      "from": "G",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 40,
+      "y": 5,
+      "from": "O",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 41,
+      "y": 5,
+      "from": ".",
+      "to": "a",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 42,
+      "y": 5,
+      "from": ".",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 31,
+      "y": 6,
+      "from": ".",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 32,
+      "y": 6,
+      "from": ".",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 33,
+      "y": 6,
+      "from": "O",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 34,
+      "y": 6,
+      "from": "G",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 35,
+      "y": 6,
+      "from": "G",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 36,
+      "y": 6,
+      "from": "G",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 37,
+      "y": 6,
+      "from": "G",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 38,
+      "y": 6,
+      "from": "G",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 39,
+      "y": 6,
+      "from": "G",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 40,
+      "y": 6,
+      "from": "O",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 41,
+      "y": 6,
+      "from": ".",
+      "to": "A",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 42,
+      "y": 6,
+      "from": ".",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 32,
+      "y": 7,
+      "from": ".",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 33,
+      "y": 7,
+      "from": ".",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 36,
+      "y": 7,
+      "from": "b",
+      "to": "a",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 37,
+      "y": 7,
+      "from": "B",
+      "to": "a",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 40,
+      "y": 7,
+      "from": ".",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 41,
+      "y": 7,
+      "from": ".",
+      "to": "O",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 35,
+      "y": 8,
+      "from": "O",
+      "to": "G",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 36,
+      "y": 8,
+      "from": "b",
+      "to": "G",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 37,
+      "y": 8,
+      "from": "w",
+      "to": "G",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 38,
+      "y": 8,
+      "from": "O",
+      "to": "G",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 35,
+      "y": 9,
+      "from": "O",
+      "to": "g",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 36,
+      "y": 9,
+      "from": "b",
+      "to": "g",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 37,
+      "y": 9,
+      "from": "w",
+      "to": "g",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
+    },
+    {
+      "x": 38,
+      "y": 9,
+      "from": "O",
+      "to": "g",
+      "reason": "Shared Trident guard head; body and hand grips preserved"
     }
-  ],
-  "paletteChanges": {
-    "V": [159, 172, 199, 255],
-    "v": [86, 109, 143, 255],
-    "H": [136, 116, 178, 255],
-    "h": [78, 61, 117, 255],
-    "A": [222, 232, 235, 255],
-    "a": [129, 151, 160, 255],
-    "R": [185, 24, 37, 255],
-    "r": [112, 14, 24, 255]
-  }
+  ]
 }

@@ -39,6 +39,11 @@ const helmets = {
 };
 for (const job of manifest.jobs.filter((j) => !ids.length || ids.includes(j.id))) {
   if (job.race.startsWith("beast-")) continue; // Separate animal material ownership, see clean-beasts.cjs.
+  if (job.level === 3) continue; // Independent generated tier, not an L1 anatomy mask.
+  if (job.recipe === "merfolk-renewed") {
+    require("./merfolk-renewed.cjs").clean(job);
+    continue;
+  }
   const dir = path.join(root, "extracted", job.id),
     p = path.join(dir, "sampled.txt");
   if (!fs.existsSync(p)) continue;

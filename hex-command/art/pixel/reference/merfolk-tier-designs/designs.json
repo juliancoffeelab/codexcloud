@@ -1,0 +1,104 @@
+[
+  {
+    "id": "tridentguard",
+    "family": "reefguard",
+    "level": 2,
+    "name": "Trident guard"
+  },
+  {
+    "id": "merfolk-reef-champion",
+    "family": "reefguard",
+    "level": 3,
+    "name": "Reef champion"
+  },
+  {
+    "id": "merfolk-trident-l2",
+    "family": "trident",
+    "level": 2,
+    "name": "Two handed trident"
+  },
+  {
+    "id": "merfolk-trident-l3",
+    "family": "trident",
+    "level": 3,
+    "name": "Trident veteran"
+  },
+  {
+    "id": "merfolk-maceguard-l2",
+    "family": "macer",
+    "level": 2,
+    "name": "Macer"
+  },
+  {
+    "id": "merfolk-maceguard-l3",
+    "family": "macer",
+    "level": 3,
+    "name": "Macer veteran"
+  },
+  {
+    "id": "merfolk-tidecrusher-l2",
+    "family": "crushing",
+    "level": 2,
+    "name": "Tide crusher"
+  },
+  {
+    "id": "merfolk-tidecrusher-l3",
+    "family": "crushing",
+    "level": 3,
+    "name": "Tide breaker"
+  },
+  {
+    "id": "tidesage",
+    "family": "support",
+    "level": 2,
+    "name": "Tide sage"
+  },
+  {
+    "id": "merfolk-tide-oracle",
+    "family": "support",
+    "level": 3,
+    "name": "Tide oracle"
+  },
+  {
+    "id": "tidehunter",
+    "family": "hunter",
+    "level": 2,
+    "name": "Tide hunter"
+  },
+  {
+    "id": "merfolk-harpoon-master",
+    "family": "hunter",
+    "level": 3,
+    "name": "Harpoon master"
+  },
+  {
+    "id": "merfolk-netter-l2",
+    "family": "netter",
+    "level": 2,
+    "name": "Netter"
+  },
+  {
+    "id": "merfolk-netter-l3",
+    "family": "netter",
+    "level": 3,
+    "name": "Netter veteran"
+  },
+  {
+    "id": "tidekeeper",
+    "family": "commander",
+    "level": 1,
+    "name": "Tidekeeper"
+  },
+  {
+    "id": "tideseer",
+    "family": "commander",
+    "level": 2,
+    "name": "Tide seer"
+  },
+  {
+    "id": "merfolk-tide-sovereign",
+    "family": "commander",
+    "level": 3,
+    "name": "Tide sovereign"
+  }
+]

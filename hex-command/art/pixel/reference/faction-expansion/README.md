@@ -92,3 +92,44 @@ than humans, elves slender and taller, and weakling zombies shorter or hunched.
 The generated poses have more equipment detail than some older sprites. The
 overview sheets are intended for art-direction review before gameplay integration,
 including deciding which zombie branches and beast tiers to retain.
+
+## Merfolk body and tail renewal
+
+The trident, net-and-spear and mace-and-shield families were regenerated against
+Reef guard, Tide hunter and Tidekeeper. They use compact upright bodies and the
+old roster's connected curled supporting tail. Tridents are upright too. The
+harpoon thrower and existing roster remain unchanged.
+
+The three `templates/merfolk-{trident,netter,maceguard}.png` files retain the actual generation
+inputs; current raw outputs live in `sources/`. The previous raw generations,
+extracted sources and pose-specific material records are retained under
+`rejected/merfolk-tail-2026-10-09/`. Never replay those masks on the new anatomy.
+`merfolk-renewed.cjs` owns connected-surface skin cleanup and the new equipment
+tiers; selected extraction and tier rebuilds route through that recipe.
+
+```sh
+npm run art:expansion -- merfolk-trident merfolk-netter merfolk-maceguard
+```
+
+The merfolk faction boards follow the selected trees in `art/pixel/lineups/merfolk.json`:
+Harpooner branches into Harpooner or Netter; Reef guard branches into Reef guard
+or Two handed trident. Wavemender branches into support and crushing mages; Macer retains one branch. Tidekeeper →
+Tide seer → Tide sovereign is the commander line. Each board row shows one L1–L3
+path, repeating the shared starter for branching trees. Netter and Two handed
+trident prototype L1 artwork remains available as source material rather than
+separate starters. The duplicate harpoon-thrower family is archived in
+`../merfolk-archive/`. This defines the artwork lineup; gameplay registrations
+and balance remain separate.
+
+The Tide sovereign is an independently generated L3 artwork tier. Its template
+uses Tidekeeper, Tide seer and Tide sage as anchors. The saved source and native
+extraction remain under `sources/` and `extracted/`. It adds regal shell armour,
+shield and crown without a skin-colour change. Gameplay currently ends at L2
+Tide seer; registering L3 progression and balancing stats is separate from this
+artwork grid. Generate only the merfolk boards with:
+
+```sh
+node art/pixel/reference/faction-expansion/process.cjs boards merfolk
+```
+
+Aquatic infantry tiers and both mage branches are rebuilt from `../merfolk-tier-designs/`; see its README for saved generation templates, source images, extraction and native verification.

@@ -3,7 +3,7 @@
   "crop": [627, 627, 627, 627],
   "native": [64, 64],
   "origin": [0, 0],
-  "bounds": [8, 7, 52, 56],
+  "bounds": [12, 7, 47, 54],
   "retainedFullFrame": true,
-  "foregroundComponents": [1281]
+  "foregroundComponents": [998]
 }

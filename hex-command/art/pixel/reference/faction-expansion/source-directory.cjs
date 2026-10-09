@@ -4,8 +4,15 @@ const lineup = require("../../lineups/zombies.json");
 const archived = require("../zombies/catalog.json");
 const dwarfArchive = require("../dwarf-branch-references/catalog.json");
 const dwarves = require("../../lineups/dwarves.json");
+const merfolkArchive = require("../merfolk-archive/catalog.json");
+const merfolk = require("../../lineups/merfolk.json");
 const selected = new Map(
   [
+    ...merfolk.trees.flatMap((tree) => [
+      tree.base,
+      ...tree.branches.flatMap((branch) => branch.units),
+    ]),
+    ...merfolk.commander.units,
     lineup.base,
     ...lineup.branches.flatMap((branch) => branch.units),
     lineup.commander,
@@ -17,17 +24,23 @@ const selected = new Map(
 );
 
 function isArchived(id) {
-  return Object.hasOwn(archived, id) || Object.hasOwn(dwarfArchive, id);
+  return (
+    Object.hasOwn(archived, id) ||
+    Object.hasOwn(dwarfArchive, id) ||
+    Object.hasOwn(merfolkArchive, id)
+  );
 }
 
 function sourceDirectory(id) {
   return path.resolve(
     __dirname,
-    Object.hasOwn(dwarfArchive, id)
-      ? "../dwarf-branch-references/units"
-      : Object.hasOwn(archived, id)
-        ? "../zombies/units"
-        : "../../units",
+    Object.hasOwn(merfolkArchive, id)
+      ? "../merfolk-archive/units"
+      : Object.hasOwn(dwarfArchive, id)
+        ? "../dwarf-branch-references/units"
+        : Object.hasOwn(archived, id)
+          ? "../zombies/units"
+          : "../../units",
     id,
   );
 }
@@ -41,6 +54,7 @@ function catalogEntry(id, generated) {
 }
 
 function tierIds(job) {
+  if (job.level === 3) return [job.id];
   if (job.id === "dwarf-runesmith") {
     return [
       job.id,

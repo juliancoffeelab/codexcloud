@@ -2,101 +2,283 @@
   "coordinates": "64x64 logical slot before native crop",
   "changes": [
     {
+      "x": 0,
+      "y": 0,
+      "from": "O",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 2,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 3,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 4,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 5,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 6,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 7,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 8,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 10,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 12,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 14,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 15,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 16,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 17,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 18,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 19,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 22,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 23,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 24,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 25,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 26,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
       "x": 28,
-      "y": 18,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 29,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 30,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 31,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 32,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 33,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 35,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 40,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 41,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 42,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 43,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 46,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 47,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 49,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 50,
+      "y": 2,
+      "from": "I",
+      "to": ".",
+      "reason": "Disconnected generation debris or slot label; connected weapon tips are retained"
+    },
+    {
+      "x": 44,
+      "y": 12,
       "from": "a",
-      "to": "h",
+      "to": "A",
       "reason": "Enclosed single-pixel material fleck in a broad flat surface"
     },
     {
-      "x": 36,
+      "x": 35,
       "y": 18,
       "from": "h",
       "to": "H",
       "reason": "Enclosed single-pixel material fleck in a broad flat surface"
     },
     {
-      "x": 20,
-      "y": 26,
-      "from": "I",
-      "to": "C",
-      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
-    },
-    {
-      "x": 38,
-      "y": 27,
-      "from": "a",
-      "to": "H",
-      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
-    },
-    {
-      "x": 17,
-      "y": 31,
-      "from": "I",
+      "x": 32,
+      "y": 36,
+      "from": "c",
       "to": "G",
       "reason": "Enclosed single-pixel material fleck in a broad flat surface"
     },
     {
-      "x": 23,
-      "y": 33,
-      "from": "C",
-      "to": "I",
-      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
-    },
-    {
-      "x": 13,
-      "y": 34,
-      "from": "I",
-      "to": "C",
-      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
-    },
-    {
-      "x": 13,
-      "y": 35,
-      "from": "I",
-      "to": "C",
-      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
-    },
-    {
-      "x": 19,
-      "y": 36,
-      "from": "I",
-      "to": "C",
-      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
-    },
-    {
-      "x": 18,
-      "y": 38,
-      "from": "I",
-      "to": "C",
-      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
-    },
-    {
-      "x": 37,
-      "y": 41,
-      "from": "H",
-      "to": "T",
-      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
-    },
-    {
-      "x": 36,
+      "x": 28,
       "y": 47,
       "from": "V",
       "to": "H",
-      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
-    },
-    {
-      "x": 21,
-      "y": 53,
-      "from": "H",
-      "to": "T",
-      "reason": "Enclosed single-pixel material fleck in a broad flat surface"
-    },
-    {
-      "x": 22,
-      "y": 53,
-      "from": "H",
-      "to": "T",
       "reason": "Enclosed single-pixel material fleck in a broad flat surface"
     }
   ]

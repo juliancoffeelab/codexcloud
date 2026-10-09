@@ -233,6 +233,46 @@ function extract(job) {
   console.log(`${job.id}: ${size}x${size}, ${changes.length} recorded cleanup edits`);
 }
 function tiers(job) {
+  if (job.level === 3) {
+    const dir = path.join(root, "extracted", job.id);
+    const out = sourceDirectory(job.id);
+    fs.mkdirSync(out, { recursive: true });
+    const player = fs.readFileSync(path.join(dir, "player.txt"), "utf8");
+    const palette = JSON.parse(fs.readFileSync(path.join(dir, "palette.json")));
+    palette.R = [185, 24, 37, 255];
+    palette.r = [112, 14, 24, 255];
+    fs.writeFileSync(path.join(out, "player.txt"), player);
+    fs.writeFileSync(path.join(out, "enemy.txt"), player.replaceAll("T", "R").replaceAll("t", "r"));
+    writeJSON(path.join(out, "palette.json"), palette);
+    writeJSON(path.join(out, "changes.json"), {
+      base: "tideseer",
+      level: 3,
+      source: `faction-expansion/sources/${job.id}.png`,
+      changes: [],
+    });
+    fs.writeFileSync(
+      path.join(out, "components.md"),
+      `# ${job.name}\n\nL3 leader artwork after Tidekeeper and Tide seer. Sea-green body and compact curled tail, gold reef crown, ivory shell shoulder guards and shield, faction tabard and mantle, upright trident. Artwork only: gameplay advancement and stats are unchanged. Rebuild with \`npm run art:expansion -- ${job.id}\`.\n`,
+    );
+    const catalogPath = path.join(project, "art/pixel/units/catalog.json");
+    const catalog = JSON.parse(fs.readFileSync(catalogPath));
+    const rows = player.trimEnd().split("\n");
+    catalog[job.id] = {
+      name: job.name,
+      level: 3,
+      study: `faction-expansion/${job.id}`,
+      canvas: [rows[0].length, rows.length],
+    };
+    writeJSON(catalogPath, catalog);
+    render(out);
+    job.status = "tiers";
+    return;
+  }
+  if (job.recipe === "merfolk-renewed") {
+    require("./merfolk-renewed.cjs").build(job);
+    job.status = "tiers";
+    return;
+  }
   if (job.id === "dwarf-runesmith") {
     execFileSync("python3", ["art/pixel/reference/rune-line/build.py"], {
       cwd: project,
@@ -392,6 +432,7 @@ function tiers(job) {
 }
 function boards() {
   for (const race of Object.keys(manifest.races)) {
+    if (ids.length && !ids.includes(race)) continue;
     const jobs = manifest.jobs.filter(
       (j) => j.race === race && fs.existsSync(path.join(root, "extracted", j.id, "player.png")),
     );
@@ -414,7 +455,7 @@ function boards() {
       { cwd: project },
     );
     for (const side of ["player", "enemy"]) {
-      const entries =
+      let entries =
         race === "dwarf"
           ? require("../../lineups/dwarves.json")
               .trees.flatMap((tree) => [
@@ -433,6 +474,21 @@ function boards() {
                   image: path.relative(project, path.join(sourceDirectory(id), `${side}.png`)),
                 })),
               );
+      if (race === "merfolk") {
+        const lineup = require("../../lineups/merfolk.json");
+        entries = [
+          ...lineup.trees.flatMap((tree) =>
+            tree.branches.flatMap((branch) => [
+              { ...tree.base, name: `${tree.base.name} → ${branch.role}` },
+              ...branch.units,
+            ]),
+          ),
+          ...lineup.commander.units.map((unit) => ({ ...unit, name: `${unit.name} (commander)` })),
+        ].map((unit) => ({
+          label: `${unit.name} L${unit.level}`,
+          image: path.relative(project, path.join(sourceDirectory(unit.id), `${side}.png`)),
+        }));
+      }
       if (!entries.length) continue;
       const q = path.join(root, `${race}-${side}.json`);
       writeJSON(q, entries);
@@ -443,7 +499,7 @@ function boards() {
           q,
           path.join(root, `${race}-${side}.png`),
           "3",
-          "6",
+          race === "merfolk" ? "3" : "6",
         ],
         { cwd: project },
       );

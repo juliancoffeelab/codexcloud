@@ -520,19 +520,19 @@
     "name": "Merfolk two-handed trident",
     "level": 1,
     "study": "faction-expansion/merfolk-trident",
-    "canvas": [64, 64]
+    "canvas": [48, 48]
   },
   "merfolk-trident-l2": {
-    "name": "Merfolk two-handed trident L2",
+    "name": "Two handed trident",
     "level": 2,
-    "study": "faction-expansion/merfolk-trident-l2",
-    "canvas": [64, 64]
+    "study": "merfolk-tier-designs/trident-l2",
+    "canvas": [48, 48]
   },
   "merfolk-trident-l3": {
-    "name": "Merfolk two-handed trident L3",
+    "name": "Trident veteran",
     "level": 3,
-    "study": "faction-expansion/merfolk-trident-l3",
-    "canvas": [64, 64]
+    "study": "merfolk-tier-designs/trident-l3",
+    "canvas": [48, 48]
   },
   "merfolk-netter": {
     "name": "Merfolk net and spear",
@@ -541,33 +541,33 @@
     "canvas": [64, 64]
   },
   "merfolk-netter-l2": {
-    "name": "Merfolk net and spear L2",
+    "name": "Netter",
     "level": 2,
-    "study": "faction-expansion/merfolk-netter-l2",
+    "study": "merfolk-tier-designs/netter-l2",
     "canvas": [64, 64]
   },
   "merfolk-netter-l3": {
-    "name": "Merfolk net and spear L3",
+    "name": "Netter veteran",
     "level": 3,
-    "study": "faction-expansion/merfolk-netter-l3",
+    "study": "merfolk-tier-designs/netter-l3",
     "canvas": [64, 64]
   },
   "merfolk-maceguard": {
     "name": "Merfolk mace and shield",
     "level": 1,
     "study": "faction-expansion/merfolk-maceguard",
-    "canvas": [64, 64]
+    "canvas": [48, 48]
   },
   "merfolk-maceguard-l2": {
-    "name": "Merfolk mace and shield L2",
+    "name": "Macer",
     "level": 2,
-    "study": "faction-expansion/merfolk-maceguard-l2",
+    "study": "merfolk-tier-designs/macer-l2",
     "canvas": [64, 64]
   },
   "merfolk-maceguard-l3": {
-    "name": "Merfolk mace and shield L3",
+    "name": "Macer veteran",
     "level": 3,
-    "study": "faction-expansion/merfolk-maceguard-l3",
+    "study": "merfolk-tier-designs/macer-l3",
     "canvas": [64, 64]
   },
   "bear": {
@@ -1020,24 +1020,6 @@
     "study": "faction-expansion/bone-dragon-l3",
     "canvas": [64, 64]
   },
-  "merfolk-harpoonthrower": {
-    "name": "Merfolk harpoon thrower",
-    "level": 1,
-    "study": "faction-expansion/merfolk-harpoonthrower",
-    "canvas": [64, 64]
-  },
-  "merfolk-harpoonthrower-l2": {
-    "name": "Merfolk harpoon thrower L2",
-    "level": 2,
-    "study": "faction-expansion/merfolk-harpoonthrower-l2",
-    "canvas": [64, 64]
-  },
-  "merfolk-harpoonthrower-l3": {
-    "name": "Merfolk harpoon thrower L3",
-    "level": 3,
-    "study": "faction-expansion/merfolk-harpoonthrower-l3",
-    "canvas": [64, 64]
-  },
   "skeleton-dreadguard": {
     "name": "Dreadguard",
     "level": 3,
@@ -1077,20 +1059,20 @@
   "merfolk-reef-champion": {
     "name": "Reef champion",
     "level": 3,
-    "study": "faction-expansion/merfolk-reef-champion",
+    "study": "merfolk-tier-designs/reefguard-l3",
     "canvas": [48, 48]
   },
   "merfolk-harpoon-master": {
     "name": "Harpoon master",
     "level": 3,
-    "study": "faction-expansion/merfolk-harpoon-master",
-    "canvas": [48, 48]
+    "study": "merfolk-tier-designs/hunter-l3",
+    "canvas": [64, 64]
   },
   "merfolk-tide-oracle": {
     "name": "Tide oracle",
     "level": 3,
-    "study": "faction-expansion/merfolk-tide-oracle",
-    "canvas": [48, 48]
+    "study": "merfolk-tier-designs/support-l3",
+    "canvas": [64, 64]
   },
   "dwarf-pistol-goat-rider-l2": {
     "name": "Pistol rider",
@@ -1138,6 +1120,54 @@
     "name": "Stonespell veteran",
     "level": 3,
     "study": "rune-line/dwarf-stonespell-l3",
+    "canvas": [64, 64]
+  },
+  "merfolk-tide-sovereign": {
+    "name": "Tide sovereign",
+    "level": 3,
+    "study": "merfolk-tier-designs/commander-l3",
+    "canvas": [64, 64]
+  },
+  "tridentguard": {
+    "name": "Trident guard",
+    "level": 2,
+    "study": "merfolk-tier-designs/reefguard-l2",
+    "canvas": [48, 48]
+  },
+  "merfolk-tidecrusher-l2": {
+    "name": "Tide crusher",
+    "level": 2,
+    "study": "merfolk-tier-designs/crushing-l2",
+    "canvas": [64, 64]
+  },
+  "merfolk-tidecrusher-l3": {
+    "name": "Tide breaker",
+    "level": 3,
+    "study": "merfolk-tier-designs/crushing-l3",
+    "canvas": [64, 64]
+  },
+  "tidesage": {
+    "name": "Tide sage",
+    "level": 2,
+    "study": "merfolk-tier-designs/support-l2",
+    "canvas": [64, 64]
+  },
+  "tidehunter": {
+    "name": "Tide hunter",
+    "level": 2,
+    "study": "merfolk-tier-designs/hunter-l2",
+    "canvas": [64, 64]
+  },
+  "tidekeeper": {
+    "name": "Tidekeeper",
+    "level": 1,
+    "study": "merfolk-tier-designs/commander-l1",
+    "canvas": [64, 64]
+  },
+  "tideseer": {
+    "name": "Tide seer",
+    "level": 2,
+    "study": "merfolk-tier-designs/commander-l2",
     "canvas": [64, 64]
   }
 }

@@ -1,0 +1,1489 @@
+{
+  "units": {
+    "merfolk-harpoonthrower": {
+      "matrixChanges": [
+        {
+          "x": 18,
+          "y": 10,
+          "from": "V",
+          "to": "H",
+          "reason": "Scale-colored throwing hand; remove isolated gray cloth speck."
+        },
+        {
+          "x": 44,
+          "y": 17,
+          "from": "V",
+          "to": "I",
+          "reason": "Ivory harpoon tip; remove isolated blue-gray cloth speck."
+        },
+        {
+          "x": 44,
+          "y": 30,
+          "from": "V",
+          "to": "H",
+          "reason": "Skin at the gripping palm, preserving shaft and finger outlines."
+        },
+        {
+          "x": 46,
+          "y": 31,
+          "from": "V",
+          "to": "h",
+          "reason": "Coherent scale shadow on gripping hand."
+        },
+        {
+          "x": 46,
+          "y": 33,
+          "from": "a",
+          "to": "h",
+          "reason": "Coherent scale shadow on gripping hand."
+        },
+        {
+          "x": 44,
+          "y": 35,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 35,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 37,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 42,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 42,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 43,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 43,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 44,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 44,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 45,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 45,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 46,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 46,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 47,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 47,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 48,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 48,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 49,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 49,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        }
+      ],
+      "enemyMatrixChanges": [
+        {
+          "x": 18,
+          "y": 10,
+          "from": "V",
+          "to": "H",
+          "reason": "Scale-colored throwing hand; remove isolated gray cloth speck."
+        },
+        {
+          "x": 44,
+          "y": 17,
+          "from": "V",
+          "to": "I",
+          "reason": "Ivory harpoon tip; remove isolated blue-gray cloth speck."
+        },
+        {
+          "x": 44,
+          "y": 30,
+          "from": "V",
+          "to": "H",
+          "reason": "Skin at the gripping palm, preserving shaft and finger outlines."
+        },
+        {
+          "x": 46,
+          "y": 31,
+          "from": "V",
+          "to": "h",
+          "reason": "Coherent scale shadow on gripping hand."
+        },
+        {
+          "x": 46,
+          "y": 33,
+          "from": "a",
+          "to": "h",
+          "reason": "Coherent scale shadow on gripping hand."
+        },
+        {
+          "x": 44,
+          "y": 35,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 35,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 37,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 42,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 42,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 43,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 43,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 44,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 44,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 45,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 45,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 46,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 46,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 47,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 47,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 48,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 48,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 49,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 49,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        }
+      ],
+      "paletteChanges": {
+        "H": {
+          "from": [92, 167, 138, 255],
+          "to": [89, 154, 144, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        },
+        "h": {
+          "from": [46, 103, 88, 255],
+          "to": [48, 102, 103, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        }
+      },
+      "canvas": [64, 64]
+    },
+    "merfolk-harpoonthrower-l2": {
+      "matrixChanges": [
+        {
+          "x": 18,
+          "y": 10,
+          "from": "V",
+          "to": "H",
+          "reason": "Scale-colored throwing hand; remove isolated gray cloth speck."
+        },
+        {
+          "x": 44,
+          "y": 17,
+          "from": "V",
+          "to": "I",
+          "reason": "Ivory harpoon tip; remove isolated blue-gray cloth speck."
+        },
+        {
+          "x": 44,
+          "y": 30,
+          "from": "V",
+          "to": "H",
+          "reason": "Skin at the gripping palm, preserving shaft and finger outlines."
+        },
+        {
+          "x": 46,
+          "y": 31,
+          "from": "V",
+          "to": "h",
+          "reason": "Coherent scale shadow on gripping hand."
+        },
+        {
+          "x": 46,
+          "y": 33,
+          "from": "a",
+          "to": "h",
+          "reason": "Coherent scale shadow on gripping hand."
+        },
+        {
+          "x": 44,
+          "y": 35,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 35,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 37,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 42,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 42,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 43,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 43,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 44,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 44,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 45,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 45,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 46,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 46,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 47,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 47,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 48,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 48,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 49,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 49,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        }
+      ],
+      "enemyMatrixChanges": [
+        {
+          "x": 18,
+          "y": 10,
+          "from": "V",
+          "to": "H",
+          "reason": "Scale-colored throwing hand; remove isolated gray cloth speck."
+        },
+        {
+          "x": 44,
+          "y": 17,
+          "from": "V",
+          "to": "I",
+          "reason": "Ivory harpoon tip; remove isolated blue-gray cloth speck."
+        },
+        {
+          "x": 44,
+          "y": 30,
+          "from": "V",
+          "to": "H",
+          "reason": "Skin at the gripping palm, preserving shaft and finger outlines."
+        },
+        {
+          "x": 46,
+          "y": 31,
+          "from": "V",
+          "to": "h",
+          "reason": "Coherent scale shadow on gripping hand."
+        },
+        {
+          "x": 46,
+          "y": 33,
+          "from": "a",
+          "to": "h",
+          "reason": "Coherent scale shadow on gripping hand."
+        },
+        {
+          "x": 44,
+          "y": 35,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 35,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 37,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 42,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 42,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 43,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 43,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 44,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 44,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 45,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 45,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 46,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 46,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 47,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 47,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 48,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 48,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 49,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 49,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        }
+      ],
+      "paletteChanges": {
+        "H": {
+          "from": [136, 116, 178, 255],
+          "to": [89, 154, 144, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        },
+        "h": {
+          "from": [78, 61, 117, 255],
+          "to": [48, 102, 103, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        }
+      },
+      "canvas": [64, 64]
+    },
+    "merfolk-harpoonthrower-l3": {
+      "matrixChanges": [
+        {
+          "x": 18,
+          "y": 10,
+          "from": "V",
+          "to": "H",
+          "reason": "Scale-colored throwing hand; remove isolated gray cloth speck."
+        },
+        {
+          "x": 44,
+          "y": 17,
+          "from": "V",
+          "to": "I",
+          "reason": "Ivory harpoon tip; remove isolated blue-gray cloth speck."
+        },
+        {
+          "x": 44,
+          "y": 30,
+          "from": "V",
+          "to": "H",
+          "reason": "Skin at the gripping palm, preserving shaft and finger outlines."
+        },
+        {
+          "x": 46,
+          "y": 31,
+          "from": "V",
+          "to": "h",
+          "reason": "Coherent scale shadow on gripping hand."
+        },
+        {
+          "x": 46,
+          "y": 33,
+          "from": "a",
+          "to": "h",
+          "reason": "Coherent scale shadow on gripping hand."
+        },
+        {
+          "x": 44,
+          "y": 35,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 35,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 37,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 42,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 42,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 43,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 43,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 44,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 44,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 45,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 45,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 46,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 46,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 47,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 47,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 48,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 48,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 49,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 49,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        }
+      ],
+      "enemyMatrixChanges": [
+        {
+          "x": 18,
+          "y": 10,
+          "from": "V",
+          "to": "H",
+          "reason": "Scale-colored throwing hand; remove isolated gray cloth speck."
+        },
+        {
+          "x": 44,
+          "y": 17,
+          "from": "V",
+          "to": "I",
+          "reason": "Ivory harpoon tip; remove isolated blue-gray cloth speck."
+        },
+        {
+          "x": 44,
+          "y": 30,
+          "from": "V",
+          "to": "H",
+          "reason": "Skin at the gripping palm, preserving shaft and finger outlines."
+        },
+        {
+          "x": 46,
+          "y": 31,
+          "from": "V",
+          "to": "h",
+          "reason": "Coherent scale shadow on gripping hand."
+        },
+        {
+          "x": 46,
+          "y": 33,
+          "from": "a",
+          "to": "h",
+          "reason": "Coherent scale shadow on gripping hand."
+        },
+        {
+          "x": 44,
+          "y": 35,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 35,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 36,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 37,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 38,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 39,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 40,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 41,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 42,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 42,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 43,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 43,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 44,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 44,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 45,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 45,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 46,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 46,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 47,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 47,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 48,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 48,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 44,
+          "y": 49,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        },
+        {
+          "x": 48,
+          "y": 49,
+          "from": "B",
+          "to": "W",
+          "reason": "Consistent wooden spare-harpoon shafts rather than mixed leather and wood colors."
+        }
+      ],
+      "paletteChanges": {
+        "H": {
+          "from": [164, 143, 201, 255],
+          "to": [89, 154, 144, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        },
+        "h": {
+          "from": [95, 73, 141, 255],
+          "to": [48, 102, 103, 255],
+          "reason": "Use the same sea-green tissue ramp throughout the race; equipment, eyes, outlines, and faction cloth retain their material colors."
+        }
+      },
+      "canvas": [64, 64]
+    }
+  }
+}

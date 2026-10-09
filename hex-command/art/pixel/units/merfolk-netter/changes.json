@@ -1,9 +1,6 @@
 {
   "base": "merfolk-netter",
   "level": 1,
-  "changes": [],
-  "paletteChanges": {
-    "R": [185, 24, 37, 255],
-    "r": [112, 14, 24, 255]
-  }
+  "recipe": "merfolk-renewed.cjs",
+  "changes": []
 }

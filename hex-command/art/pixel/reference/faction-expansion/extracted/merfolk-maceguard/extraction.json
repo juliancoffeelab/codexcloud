@@ -1,9 +1,9 @@
 {
   "source": [1254, 1254],
   "crop": [627, 627, 627, 627],
-  "native": [64, 64],
-  "origin": [0, 0],
-  "bounds": [9, 9, 57, 57],
-  "retainedFullFrame": true,
-  "foregroundComponents": [1291]
+  "native": [48, 48],
+  "origin": [8, 8],
+  "bounds": [13, 8, 50, 54],
+  "retainedFullFrame": false,
+  "foregroundComponents": [975]
 }

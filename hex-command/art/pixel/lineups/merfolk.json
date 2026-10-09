@@ -1,0 +1,165 @@
+{
+  "trees": [
+    {
+      "base": {
+        "id": "harpooner",
+        "name": "Harpooner",
+        "level": 1
+      },
+      "branches": [
+        {
+          "role": "Harpooner",
+          "units": [
+            {
+              "id": "tidehunter",
+              "name": "Tide hunter",
+              "level": 2
+            },
+            {
+              "id": "merfolk-harpoon-master",
+              "name": "Harpoon master",
+              "level": 3
+            }
+          ]
+        },
+        {
+          "role": "Netter",
+          "units": [
+            {
+              "id": "merfolk-netter-l2",
+              "name": "Netter",
+              "level": 2
+            },
+            {
+              "id": "merfolk-netter-l3",
+              "name": "Netter veteran",
+              "level": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "reefguard",
+        "name": "Reef guard",
+        "level": 1
+      },
+      "branches": [
+        {
+          "role": "Reef guard",
+          "units": [
+            {
+              "id": "tridentguard",
+              "name": "Trident guard",
+              "level": 2
+            },
+            {
+              "id": "merfolk-reef-champion",
+              "name": "Reef champion",
+              "level": 3
+            }
+          ]
+        },
+        {
+          "role": "Two handed trident",
+          "units": [
+            {
+              "id": "merfolk-trident-l2",
+              "name": "Two handed trident",
+              "level": 2
+            },
+            {
+              "id": "merfolk-trident-l3",
+              "name": "Trident veteran",
+              "level": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "wavemender",
+        "name": "Wavemender",
+        "level": 1
+      },
+      "branches": [
+        {
+          "role": "Support mage",
+          "units": [
+            {
+              "id": "tidesage",
+              "name": "Tide sage",
+              "level": 2
+            },
+            {
+              "id": "merfolk-tide-oracle",
+              "name": "Tide oracle",
+              "level": 3
+            }
+          ]
+        },
+        {
+          "role": "Crushing mage",
+          "units": [
+            {
+              "id": "merfolk-tidecrusher-l2",
+              "name": "Tide crusher",
+              "level": 2
+            },
+            {
+              "id": "merfolk-tidecrusher-l3",
+              "name": "Tide breaker",
+              "level": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "merfolk-maceguard",
+        "name": "Macer",
+        "level": 1
+      },
+      "branches": [
+        {
+          "role": "Macer",
+          "units": [
+            {
+              "id": "merfolk-maceguard-l2",
+              "name": "Macer",
+              "level": 2
+            },
+            {
+              "id": "merfolk-maceguard-l3",
+              "name": "Macer veteran",
+              "level": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "commander": {
+    "role": "commander",
+    "units": [
+      {
+        "id": "tidekeeper",
+        "name": "Tidekeeper",
+        "level": 1
+      },
+      {
+        "id": "tideseer",
+        "name": "Tide seer",
+        "level": 2
+      },
+      {
+        "id": "merfolk-tide-sovereign",
+        "name": "Tide sovereign",
+        "level": 3
+      }
+    ]
+  }
+}
