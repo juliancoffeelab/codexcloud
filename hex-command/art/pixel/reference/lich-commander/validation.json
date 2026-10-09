@@ -1,0 +1,29 @@
+[
+  {
+    "level": 1,
+    "canvas": [64, 64],
+    "factionPixels": 411,
+    "fixedMaterialPixels": 737,
+    "corrections": 8,
+    "silhouettePreserved": true,
+    "factionIsolation": true
+  },
+  {
+    "level": 2,
+    "canvas": [64, 64],
+    "factionPixels": 358,
+    "fixedMaterialPixels": 913,
+    "corrections": 18,
+    "silhouettePreserved": true,
+    "factionIsolation": true
+  },
+  {
+    "level": 3,
+    "canvas": [64, 64],
+    "factionPixels": 404,
+    "fixedMaterialPixels": 1110,
+    "corrections": 5,
+    "silhouettePreserved": true,
+    "factionIsolation": true
+  }
+]

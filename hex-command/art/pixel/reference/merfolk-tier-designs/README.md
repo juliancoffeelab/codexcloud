@@ -1,5 +1,12 @@
 # Aquatic L2–L3 armour and mage branches
 
+Generated pink-box PNGs have been removed after matrix approval. References
+below to `templates/` describe the historical generation process. For new work,
+use `python3 scripts/pink-box.py tmp/new-design.png <anchor1> <anchor2> <anchor3>`
+from the project root. Approved `units/*/sprite.txt` matrices are authoritative;
+saved raw sources and rebuild recipes remain available for historical inspection.
+Do not replay construction recipes as routine artwork verification.
+
 The top row of each saved pink template contains the previous L2/L3 sprites.
 Imagegen fills the lower-left L2 and lower-right L3 with aquatic material designs.
 Original returned images are retained in `sources/`; extraction preserves their

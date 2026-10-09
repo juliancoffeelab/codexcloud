@@ -6,6 +6,8 @@ const { execFileSync } = require("node:child_process");
 const root = __dirname,
   art = path.resolve(root, "../..");
 module.exports = function (jobs, races) {
+  const templateRoot = path.resolve(root, "../../../../tmp/faction-expansion/templates");
+  fs.mkdirSync(templateRoot, { recursive: true });
   for (const job of jobs) {
     const def = races[job.race],
       out = new PNG({ width: 1024, height: 1024 });
@@ -27,8 +29,8 @@ module.exports = function (jobs, races) {
         for (let y = 0; y < 15; y++)
           for (let x = 0; x < 20; x++) out.data.set(c, ((487 + y) * 1024 + 8 + n * 26 + x) * 4);
       });
-    const base = path.join(root, "templates", job.id + ".base.png"),
-      target = path.join(root, "templates", job.id + ".png");
+    const base = path.join(templateRoot, job.id + ".base.png"),
+      target = path.join(templateRoot, job.id + ".png");
     fs.writeFileSync(base, PNG.sync.write(out));
     execFileSync("magick", [
       base,

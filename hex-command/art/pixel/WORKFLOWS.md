@@ -47,14 +47,26 @@ Read the [Slinger pipeline](reference/slinger/PIPELINE.md) first. The image mode
 designs a complete pose; scripts extract that pose into native pixels. These
 scripts do not call imagegen themselves.
 
-1. Run `node art/pixel/reference/human-anatomies/create-templates.cjs` to build
-   prefilled four-slot PNGs with three existing style anchors and one empty slot.
-   Inputs are saved under `reference/human-anatomies/templates/`.
+1. Build a disposable pink-box reference directly from three approved matrices:
+
+   ```sh
+   python3 scripts/pink-box.py tmp/lich-template.png skeleton revenant lich
+   ```
+
+   Choose suitable anchors for the new design. The tool renders current player
+   colours from `sprite.txt`, writes palette swatches and a companion JSON, and
+   leaves the fourth slot empty. Outputs belong in ignored `tmp/`; approved
+   designs do not need committed generation templates. Historical template
+   scripts are retained for recipe archaeology, not the new-design workflow.
+
 2. Give a template to the imagegen tool, specifying the complete pose and actual
    hand grips. Request flat supplied palette colors, a magenta background, no
    antialiasing, and consistent proportions. Keep the character inside the
    central 48×48 logical footprint; use the larger 64×64 frame for cavalry.
    Output resolution may differ from the input. Save the unchanged returned PNG.
+   For new templates, refresh faction swatches and the extraction palette from
+   the player shades in `factions.json`. Keep magenta exclusively as background;
+   the debug faction palette is for review after extraction, never generation.
 3. Extract a new result into a scratch directory:
 
    ```sh
@@ -73,6 +85,9 @@ scripts do not call imagegen themselves.
 5. Store the finished shared matrix and material palette under `units/`.
    Render from matrices; never patch only the PNG. Rebuild atlases with
    `npm run art:build` after source changes.
+   Assign `^`/`*` by cloth ownership, including sleeves and cloak folds, while
+   preserving exposed hands, feet and outer outlines as fixed materials.
+   Review both factions and a separate debug preview before accepting the design.
 
 The four existing raw results are saved in
 [human-anatomies/sources/](reference/human-anatomies/sources/). For those exact
@@ -93,7 +108,10 @@ pose-specific coordinates; do not apply those corrections to a different pose.
 | [render-pixel.py](../../scripts/render-pixel.py)                                 | Renders matrices and packs native frames into the public atlases.                                                                         |
 | [pixel-source-path.cjs](../../scripts/pixel-source-path.cjs)                     | Resolves construction-study IDs to canonical unit directories using the catalog.                                                          |
 
-Construction scripts replace the outputs they own, including canonical matrices.
+The normal artwork build reads approved matrices directly. Historical
+construction scripts replace the outputs they own, including canonical matrices.
+Run them only when deliberately reconstructing a saved generation; never as a
+routine refresh or to prepare a new pink-box reference.
 They are recipes for the saved designs. For later manual edits, edit the matrix
 and render it; update its construction recipe before using that recipe again.
 

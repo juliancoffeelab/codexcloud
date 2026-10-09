@@ -156,31 +156,31 @@
     "canvas": [64, 64]
   },
   "skeleton-flanker-l2": {
-    "name": "Skeleton dagger flanker L2",
+    "name": "Knife servant",
     "level": 2,
     "study": "faction-expansion/skeleton-flanker-l2",
     "canvas": [64, 64]
   },
   "skeleton-flanker-l3": {
-    "name": "Skeleton dagger flanker L3",
+    "name": "Knife shade",
     "level": 3,
     "study": "faction-expansion/skeleton-flanker-l3",
     "canvas": [64, 64]
   },
   "skeleton-impact-caster": {
-    "name": "Skeleton impact caster",
+    "name": "Caster",
     "level": 1,
     "study": "faction-expansion/skeleton-impact-caster",
     "canvas": [64, 64]
   },
   "skeleton-impact-caster-l2": {
-    "name": "Skeleton impact caster L2",
+    "name": "Staff servant",
     "level": 2,
     "study": "faction-expansion/skeleton-impact-caster-l2",
     "canvas": [64, 64]
   },
   "skeleton-impact-caster-l3": {
-    "name": "Skeleton impact caster L3",
+    "name": "Staff shade",
     "level": 3,
     "study": "faction-expansion/skeleton-impact-caster-l3",
     "canvas": [64, 64]
@@ -192,49 +192,49 @@
     "canvas": [64, 64]
   },
   "skeleton-scythe-caster-l2": {
-    "name": "Skeleton scythe caster L2",
+    "name": "Scythe servant",
     "level": 2,
     "study": "faction-expansion/skeleton-scythe-caster-l2",
     "canvas": [64, 64]
   },
   "skeleton-scythe-caster-l3": {
-    "name": "Skeleton scythe caster L3",
+    "name": "Scythe shade",
     "level": 3,
     "study": "faction-expansion/skeleton-scythe-caster-l3",
     "canvas": [64, 64]
   },
   "skeleton-axeman": {
-    "name": "Skeleton two-handed axeman",
+    "name": "Grave axeman",
     "level": 1,
     "study": "faction-expansion/skeleton-axeman",
     "canvas": [64, 64]
   },
   "skeleton-axeman-l2": {
-    "name": "Skeleton two-handed axeman L2",
+    "name": "Death axeman",
     "level": 2,
     "study": "faction-expansion/skeleton-axeman-l2",
     "canvas": [64, 64]
   },
   "skeleton-axeman-l3": {
-    "name": "Skeleton two-handed axeman L3",
+    "name": "Hollow axeman",
     "level": 3,
     "study": "faction-expansion/skeleton-axeman-l3",
     "canvas": [64, 64]
   },
   "skeleton-rider": {
-    "name": "Skeleton mounted spearman",
+    "name": "Grave rider",
     "level": 1,
     "study": "faction-expansion/skeleton-rider",
     "canvas": [64, 64]
   },
   "skeleton-rider-l2": {
-    "name": "Skeleton mounted spearman L2",
+    "name": "Death rider",
     "level": 2,
     "study": "faction-expansion/skeleton-rider-l2",
     "canvas": [64, 64]
   },
   "skeleton-rider-l3": {
-    "name": "Skeleton mounted spearman L3",
+    "name": "Hollow rider",
     "level": 3,
     "study": "faction-expansion/skeleton-rider-l3",
     "canvas": [64, 64]
@@ -1027,7 +1027,7 @@
     "canvas": [48, 48]
   },
   "skeleton-bow-master": {
-    "name": "Bone bow master",
+    "name": "Hollow archer",
     "level": 3,
     "study": "faction-expansion/skeleton-bow-master",
     "canvas": [48, 48]
@@ -1169,5 +1169,39 @@
     "level": 2,
     "study": "merfolk-tier-designs/commander-l2",
     "canvas": [64, 64]
+  },
+  "lich-commander-l1": {
+    "name": "Grave Adept",
+    "level": 1,
+    "study": "lich-commander/l1",
+    "canvas": [64, 64]
+  },
+  "lich-commander-l2": {
+    "name": "Lich",
+    "level": 2,
+    "study": "lich-commander/l2",
+    "canvas": [64, 64]
+  },
+  "lich-commander-l3": {
+    "name": "Lich Sovereign",
+    "level": 3,
+    "study": "lich-commander/l3",
+    "canvas": [64, 64]
+  },
+  "skeleton": {
+    "name": "Skeleton",
+    "level": 1
+  },
+  "revenant": {
+    "name": "Revenant",
+    "level": 2
+  },
+  "bonearcher": {
+    "name": "Bone archer",
+    "level": 1
+  },
+  "deatharcher": {
+    "name": "Death archer",
+    "level": 2
   }
 }

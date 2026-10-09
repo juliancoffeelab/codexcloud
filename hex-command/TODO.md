@@ -7,6 +7,9 @@
       immortality/service exchange and the undecided future conversation.
 - [ ] Clarify why lighting the Lantern Road lanterns forces the necromancer away.
 - [ ] Review remaining optional quest rewards with the user.
+- [ ] Expand the zombie Corruption Mage into a complete commander lineup.
+- [ ] Add advancement branching for the woodland Thorncaller.
+- [ ] Differentiate the fox warrior designs across advancement tiers.
 
 ## Balance and simulations
 

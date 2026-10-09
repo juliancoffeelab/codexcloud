@@ -3,7 +3,7 @@ const {PNG}=require('pngjs');
 const {execFileSync}=require('node:child_process');
 const dir='art/pixel/reference/human-anatomies';
 fs.mkdirSync('tmp/human-anatomies',{recursive:true});
-fs.mkdirSync(`${dir}/templates`,{recursive:true});
+fs.mkdirSync(`tmp/human-anatomies/templates`,{recursive:true});
 const source=JSON.parse(fs.readFileSync('art/pixel/units/soldier/palette.json'));
 const palette=Object.fromEntries(['.','O','B','b','T','t','C','S','A','a','k','G','g'].map(s=>[s,source[s]]));
 palette.c=[179,166,139,255];palette.s=[211,154,103,255];palette.H=[145,91,49,255];palette.h=[87,55,31,255];
@@ -31,5 +31,5 @@ for(const [id,paths] of Object.entries(anchors)){
  });
  fs.writeFileSync(`tmp/human-anatomies/${id}-base.png`,PNG.sync.write(out));
  const name=id.toUpperCase().replaceAll('-',' ');
- execFileSync('magick',[`tmp/human-anatomies/${id}-base.png`,'-draw',"fill '#ffffff'\nfont 'DejaVu-Sans-Bold'\nfont-size 21\ntext 16,34 'EXISTING STYLE ANCHOR'\ntext 528,34 'EXISTING STYLE ANCHOR'\ntext 16,546 'EXISTING STYLE ANCHOR'\n"+`text 528,546 '${name} — FILL HERE'\n`+"fill '#111111'\nstroke '#111111'\nstroke-width 2\nline 512,0 512,1023\nline 0,512 1023,512",`${dir}/templates/${id}.png`]);
+ execFileSync('magick',[`tmp/human-anatomies/${id}-base.png`,'-draw',"fill '#ffffff'\nfont 'DejaVu-Sans-Bold'\nfont-size 21\ntext 16,34 'EXISTING STYLE ANCHOR'\ntext 528,34 'EXISTING STYLE ANCHOR'\ntext 16,546 'EXISTING STYLE ANCHOR'\n"+`text 528,546 '${name} — FILL HERE'\n`+"fill '#111111'\nstroke '#111111'\nstroke-width 2\nline 512,0 512,1023\nline 0,512 1023,512",`tmp/human-anatomies/templates/${id}.png`]);
 }

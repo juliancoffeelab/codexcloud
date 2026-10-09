@@ -474,8 +474,10 @@ function boards() {
                   image: path.relative(project, path.join(sourceDirectory(id), `${side}.png`)),
                 })),
               );
-      if (race === "merfolk") {
-        const lineup = require("../../lineups/merfolk.json");
+      if (race === "merfolk" || race === "skeleton") {
+        const lineup = require(
+          `../../lineups/${race === "skeleton" ? "skeletons" : "merfolk"}.json`,
+        );
         entries = [
           ...lineup.trees.flatMap((tree) =>
             tree.branches.flatMap((branch) => [
@@ -499,7 +501,7 @@ function boards() {
           q,
           path.join(root, `${race}-${side}.png`),
           "3",
-          race === "merfolk" ? "3" : "6",
+          race === "merfolk" || race === "skeleton" ? "3" : "6",
         ],
         { cwd: project },
       );
@@ -510,4 +512,4 @@ if (mode === "extract") for (const job of selected) extract(job);
 else if (mode === "tiers") for (const job of selected) tiers(job);
 else if (mode === "boards") boards();
 else throw new Error("Expected extract, tiers or boards");
-writeJSON(path.join(root, "manifest.json"), manifest);
+if (mode !== "boards") writeJSON(path.join(root, "manifest.json"), manifest);

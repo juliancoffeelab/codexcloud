@@ -20,12 +20,9 @@ class MaterialReplayTest(unittest.TestCase):
         self.unit = self.units / "example"
         self.unit.mkdir(parents=True)
         self.recipes.mkdir()
-        (self.unit / "player.txt").write_text("AB\n")
-        (self.unit / "enemy.txt").write_text("AC\n")
+        (self.unit / "sprite.txt").write_text("A^\n")
         (self.unit / "palette.json").write_text(json.dumps({
             "A": [120, 120, 120, 255],
-            "B": [0, 100, 110, 255],
-            "C": [185, 24, 37, 255],
         }))
         edit = {"x": 0, "y": 0, "from": "A", "to": "S"}
         recipe = {"units": {"example": {
@@ -35,15 +32,14 @@ class MaterialReplayTest(unittest.TestCase):
             "paletteChanges": {"S": {"from": None, "to": [160, 180, 190, 255]}},
         }}}
         (self.recipes / "race.json").write_text(json.dumps(recipe))
-        self.matrices = [self.unit / "player.txt", self.unit / "enemy.txt"]
+        self.matrices = [self.unit / "sprite.txt"]
 
     def apply(self, check=False):
         apply_cleanup(self.matrices, check=check, units_root=self.units, recipe_root=self.recipes)
 
-    def test_both_factions_keep_identity_and_replay_is_idempotent(self):
+    def test_shared_faction_channel_survives_and_replay_is_idempotent(self):
         self.apply()
-        self.assertEqual(self.matrices[0].read_text(), "SB\n")
-        self.assertEqual(self.matrices[1].read_text(), "SC\n")
+        self.assertEqual(self.matrices[0].read_text(), "S^\n")
         self.assertEqual(json.loads((self.unit / "palette.json").read_text())["S"], [160, 180, 190, 255])
         before = [path.read_bytes() for path in self.unit.iterdir()]
         self.apply()
@@ -51,15 +47,15 @@ class MaterialReplayTest(unittest.TestCase):
         self.assertEqual(before, [path.read_bytes() for path in self.unit.iterdir()])
 
     def test_stale_pose_is_rejected(self):
-        self.matrices[0].write_text(".B\n")
+        self.matrices[0].write_text(".^\n")
         with self.assertRaisesRegex(ValueError, "stale cleanup source"):
             self.apply()
-        self.assertEqual(self.matrices[0].read_text(), ".B\n")
+        self.assertEqual(self.matrices[0].read_text(), ".^\n")
 
     def test_check_reports_missing_cleanup_without_writing(self):
         with self.assertRaisesRegex(ValueError, "stale cleanup source"):
             self.apply(check=True)
-        self.assertEqual(self.matrices[0].read_text(), "AB\n")
+        self.assertEqual(self.matrices[0].read_text(), "A^\n")
 
     def test_recipe_cannot_change_transparency_or_outline(self):
         file = self.recipes / "race.json"
@@ -70,7 +66,7 @@ class MaterialReplayTest(unittest.TestCase):
                 file.write_text(json.dumps(recipe))
                 with self.assertRaisesRegex(ValueError, "must preserve"):
                     self.apply()
-                self.assertEqual(self.matrices[0].read_text(), "AB\n")
+                self.assertEqual(self.matrices[0].read_text(), "A^\n")
 
     def test_reviewed_interior_outline_removal_preserves_outer_contour(self):
         file = self.recipes / "race.json"
@@ -85,7 +81,6 @@ class MaterialReplayTest(unittest.TestCase):
         file.write_text(json.dumps(recipe))
         self.apply()
         self.assertEqual(self.matrices[0].read_text(), "AAA\nAAA\nAAA\n")
-        self.assertEqual(self.matrices[1].read_text(), "AAA\nAAA\nAAA\n")
         edit["x"] = 0
         file.write_text(json.dumps(recipe))
         self.matrices[0].write_text("AAA\nOAA\nAAA\n")
@@ -106,7 +101,6 @@ class MaterialReplayTest(unittest.TestCase):
             matrix.write_text("AA.\nAO.\nAAA\n")
         self.apply()
         self.assertEqual(self.matrices[0].read_text(), "AA.\nAA.\nAAA\n")
-        self.assertEqual(self.matrices[1].read_text(), "AA.\nAA.\nAAA\n")
         self.apply(check=True)
         self.matrices[0].write_text("AA.\nAO.\nA..\n")
         with self.assertRaisesRegex(ValueError, "must preserve outlines"):

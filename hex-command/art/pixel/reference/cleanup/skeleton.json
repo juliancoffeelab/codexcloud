@@ -5,17 +5,17 @@
       "paletteChanges": {
         "b": {
           "from": [205, 187, 152, 255],
-          "to": [192, 174, 139, 255],
+          "to": [148, 133, 104, 255],
           "reason": "Use a consistent muted warm bone shadow, separate from leather."
         },
         "S": {
           "from": [200, 204, 203, 255],
-          "to": [203, 215, 218, 255],
+          "to": [144, 127, 105, 255],
           "reason": "Keep blade highlights on a cool steel ramp rather than neutral grey or green ivory."
         },
         "s": {
           "from": [119, 123, 122, 255],
-          "to": [109, 130, 138, 255],
+          "to": [87, 75, 60, 255],
           "reason": "Maintain cool steel shadow hue and clear contrast."
         }
       },
@@ -27,17 +27,17 @@
       "paletteChanges": {
         "b": {
           "from": [205, 187, 152, 255],
-          "to": [192, 174, 139, 255],
+          "to": [132, 140, 128, 255],
           "reason": "Use a consistent muted warm bone shadow, separate from leather."
         },
         "S": {
           "from": [200, 204, 203, 255],
-          "to": [203, 215, 218, 255],
+          "to": [107, 121, 121, 255],
           "reason": "Keep blade highlights on a cool steel ramp rather than neutral grey or green ivory."
         },
         "s": {
           "from": [119, 123, 122, 255],
-          "to": [109, 130, 138, 255],
+          "to": [57, 67, 70, 255],
           "reason": "Maintain cool steel shadow hue and clear contrast."
         }
       },
@@ -135,17 +135,17 @@
       "paletteChanges": {
         "b": {
           "from": [205, 187, 152, 255],
-          "to": [192, 174, 139, 255],
+          "to": [132, 140, 128, 255],
           "reason": "Use a consistent muted warm bone shadow, separate from leather."
         },
         "S": {
           "from": [200, 204, 203, 255],
-          "to": [203, 215, 218, 255],
+          "to": [107, 121, 121, 255],
           "reason": "Keep blade highlights on a cool steel ramp rather than neutral grey or green ivory."
         },
         "s": {
           "from": [119, 123, 122, 255],
-          "to": [109, 130, 138, 255],
+          "to": [57, 67, 70, 255],
           "reason": "Maintain cool steel shadow hue and clear contrast."
         }
       },
@@ -157,17 +157,17 @@
       "paletteChanges": {
         "b": {
           "from": [205, 187, 152, 255],
-          "to": [192, 174, 139, 255],
+          "to": [148, 133, 104, 255],
           "reason": "Use a consistent muted warm bone shadow, separate from leather."
         },
         "S": {
           "from": [200, 204, 203, 255],
-          "to": [203, 215, 218, 255],
+          "to": [144, 127, 105, 255],
           "reason": "Keep blade highlights on a cool steel ramp rather than neutral grey or green ivory."
         },
         "s": {
           "from": [119, 123, 122, 255],
-          "to": [109, 130, 138, 255],
+          "to": [87, 75, 60, 255],
           "reason": "Maintain cool steel shadow hue and clear contrast."
         }
       },
@@ -257,12 +257,12 @@
       "paletteChanges": {
         "I": {
           "from": [240, 229, 198, 255],
-          "to": [242, 230, 202, 255],
+          "to": [213, 201, 169, 255],
           "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
         },
         "i": {
           "from": [180, 163, 127, 255],
-          "to": [192, 174, 139, 255],
+          "to": [148, 133, 104, 255],
           "reason": "Unify bone shadows with the classic skeleton palette."
         }
       },
@@ -430,12 +430,12 @@
       "paletteChanges": {
         "I": {
           "from": [240, 229, 198, 255],
-          "to": [242, 230, 202, 255],
+          "to": [204, 207, 190, 255],
           "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
         },
         "i": {
           "from": [180, 163, 127, 255],
-          "to": [192, 174, 139, 255],
+          "to": [132, 140, 128, 255],
           "reason": "Unify bone shadows with the classic skeleton palette."
         }
       },
@@ -603,22 +603,22 @@
       "paletteChanges": {
         "I": {
           "from": [240, 229, 198, 255],
-          "to": [242, 230, 202, 255],
+          "to": [215, 224, 209, 255],
           "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
         },
         "i": {
           "from": [180, 163, 127, 255],
-          "to": [192, 174, 139, 255],
+          "to": [126, 145, 135, 255],
           "reason": "Unify bone shadows with the classic skeleton palette."
         },
         "A": {
           "from": [244, 248, 241, 255],
-          "to": [236, 244, 246, 255],
+          "to": [78, 97, 101, 255],
           "reason": "Keep high-tier metal cool silver rather than yellow-green bone."
         },
         "a": {
           "from": [155, 184, 191, 255],
-          "to": [143, 169, 181, 255],
+          "to": [37, 47, 54, 255],
           "reason": "Use a cool subdued steel shadow for high-tier equipment."
         }
       },
@@ -708,12 +708,12 @@
       "paletteChanges": {
         "b": {
           "from": [205, 187, 152, 255],
-          "to": [192, 174, 139, 255],
+          "to": [126, 145, 135, 255],
           "reason": "Use a consistent muted warm bone shadow, separate from leather."
         },
         "S": {
           "from": [233, 239, 229, 255],
-          "to": [222, 232, 235, 255],
+          "to": [78, 97, 101, 255],
           "reason": "Keep blade highlights on a cool steel ramp rather than neutral grey or green ivory."
         }
       },
@@ -725,12 +725,12 @@
       "paletteChanges": {
         "b": {
           "from": [205, 187, 152, 255],
-          "to": [192, 174, 139, 255],
+          "to": [126, 145, 135, 255],
           "reason": "Use a consistent muted warm bone shadow, separate from leather."
         },
         "S": {
           "from": [233, 239, 229, 255],
-          "to": [222, 232, 235, 255],
+          "to": [78, 97, 101, 255],
           "reason": "Keep blade highlights on a cool steel ramp rather than neutral grey or green ivory."
         }
       },
@@ -930,12 +930,12 @@
       "paletteChanges": {
         "I": {
           "from": [240, 229, 198, 255],
-          "to": [242, 230, 202, 255],
+          "to": [204, 207, 190, 255],
           "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
         },
         "i": {
           "from": [180, 163, 127, 255],
-          "to": [192, 174, 139, 255],
+          "to": [132, 140, 128, 255],
           "reason": "Unify bone shadows with the classic skeleton palette."
         }
       },
@@ -1061,22 +1061,22 @@
       "paletteChanges": {
         "I": {
           "from": [240, 229, 198, 255],
-          "to": [242, 230, 202, 255],
+          "to": [215, 224, 209, 255],
           "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
         },
         "i": {
           "from": [180, 163, 127, 255],
-          "to": [192, 174, 139, 255],
+          "to": [126, 145, 135, 255],
           "reason": "Unify bone shadows with the classic skeleton palette."
         },
         "A": {
           "from": [244, 248, 241, 255],
-          "to": [236, 244, 246, 255],
+          "to": [78, 97, 101, 255],
           "reason": "Keep high-tier metal cool silver rather than yellow-green bone."
         },
         "a": {
           "from": [155, 184, 191, 255],
-          "to": [143, 169, 181, 255],
+          "to": [37, 47, 54, 255],
           "reason": "Use a cool subdued steel shadow for high-tier equipment."
         }
       },
@@ -1142,13 +1142,6 @@
     },
     "skeleton-impact-caster": {
       "matrixChanges": [
-        {
-          "x": 17,
-          "y": 17,
-          "from": "v",
-          "to": "w",
-          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
-        },
         {
           "x": 50,
           "y": 20,
@@ -1685,33 +1678,26 @@
       "paletteChanges": {
         "I": {
           "from": [240, 229, 198, 255],
-          "to": [242, 230, 202, 255],
+          "to": [213, 201, 169, 255],
           "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
         },
         "i": {
           "from": [180, 163, 127, 255],
-          "to": [192, 174, 139, 255],
+          "to": [148, 133, 104, 255],
           "reason": "Unify bone shadows with the classic skeleton palette."
         },
         "E": {
           "from": [99, 207, 170, 255],
-          "to": [154, 234, 200, 255],
+          "to": [135, 178, 157, 255],
           "reason": "Bright mint spell color remains distinct from the teal faction cloak and steel."
         },
         "e": {
           "from": null,
-          "to": [77, 166, 136, 255],
+          "to": [67, 110, 93, 255],
           "reason": "A darker magic edge smooths the spell without adding blur or transparency."
         }
       },
       "enemyMatrixChanges": [
-        {
-          "x": 17,
-          "y": 17,
-          "from": "v",
-          "to": "w",
-          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
-        },
         {
           "x": 50,
           "y": 20,
@@ -2250,13 +2236,6 @@
     "skeleton-impact-caster-l2": {
       "matrixChanges": [
         {
-          "x": 17,
-          "y": 17,
-          "from": "v",
-          "to": "w",
-          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
-        },
-        {
           "x": 50,
           "y": 20,
           "from": "A",
@@ -2771,33 +2750,26 @@
       "paletteChanges": {
         "I": {
           "from": [240, 229, 198, 255],
-          "to": [242, 230, 202, 255],
+          "to": [204, 207, 190, 255],
           "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
         },
         "i": {
           "from": [180, 163, 127, 255],
-          "to": [192, 174, 139, 255],
+          "to": [132, 140, 128, 255],
           "reason": "Unify bone shadows with the classic skeleton palette."
         },
         "E": {
           "from": [99, 207, 170, 255],
-          "to": [154, 234, 200, 255],
+          "to": [135, 178, 157, 255],
           "reason": "Bright mint spell color remains distinct from the teal faction cloak and steel."
         },
         "e": {
           "from": null,
-          "to": [77, 166, 136, 255],
+          "to": [67, 110, 93, 255],
           "reason": "A darker magic edge smooths the spell without adding blur or transparency."
         }
       },
       "enemyMatrixChanges": [
-        {
-          "x": 17,
-          "y": 17,
-          "from": "v",
-          "to": "w",
-          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
-        },
         {
           "x": 50,
           "y": 20,
@@ -3315,13 +3287,6 @@
     "skeleton-impact-caster-l3": {
       "matrixChanges": [
         {
-          "x": 17,
-          "y": 17,
-          "from": "v",
-          "to": "w",
-          "reason": "Keep staff, cape, bone and belt shading within their own material regions."
-        },
-        {
           "x": 50,
           "y": 20,
           "from": "A",
@@ -3836,43 +3801,36 @@
       "paletteChanges": {
         "I": {
           "from": [240, 229, 198, 255],
-          "to": [242, 230, 202, 255],
+          "to": [215, 224, 209, 255],
           "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
         },
         "i": {
           "from": [180, 163, 127, 255],
-          "to": [192, 174, 139, 255],
+          "to": [126, 145, 135, 255],
           "reason": "Unify bone shadows with the classic skeleton palette."
         },
         "A": {
           "from": [244, 248, 241, 255],
-          "to": [236, 244, 246, 255],
+          "to": [78, 97, 101, 255],
           "reason": "Keep high-tier metal cool silver rather than yellow-green bone."
         },
         "a": {
           "from": [155, 184, 191, 255],
-          "to": [143, 169, 181, 255],
+          "to": [37, 47, 54, 255],
           "reason": "Use a cool subdued steel shadow for high-tier equipment."
         },
         "E": {
           "from": [151, 232, 174, 255],
-          "to": [154, 234, 200, 255],
+          "to": [135, 178, 157, 255],
           "reason": "Bright mint spell color remains distinct from the teal faction cloak and steel."
         },
         "e": {
           "from": null,
-          "to": [77, 166, 136, 255],
+          "to": [67, 110, 93, 255],
           "reason": "A darker magic edge smooths the spell without adding blur or transparency."
         }
       },
       "enemyMatrixChanges": [
-        {
-          "x": 17,
-          "y": 17,
-          "from": "v",
-          "to": "w",
-          "reason": "Apply the same material correction while retaining this design\u2019s canonical red faction mapping."
-        },
         {
           "x": 50,
           "y": 20,
@@ -4484,12 +4442,12 @@
       "paletteChanges": {
         "I": {
           "from": [240, 229, 198, 255],
-          "to": [242, 230, 202, 255],
+          "to": [213, 201, 169, 255],
           "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
         },
         "i": {
           "from": [180, 163, 127, 255],
-          "to": [192, 174, 139, 255],
+          "to": [148, 133, 104, 255],
           "reason": "Unify bone shadows with the classic skeleton palette."
         }
       },
@@ -4671,12 +4629,12 @@
       "paletteChanges": {
         "I": {
           "from": [240, 229, 198, 255],
-          "to": [242, 230, 202, 255],
+          "to": [204, 207, 190, 255],
           "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
         },
         "i": {
           "from": [180, 163, 127, 255],
-          "to": [192, 174, 139, 255],
+          "to": [132, 140, 128, 255],
           "reason": "Unify bone shadows with the classic skeleton palette."
         }
       },
@@ -4844,22 +4802,22 @@
       "paletteChanges": {
         "I": {
           "from": [240, 229, 198, 255],
-          "to": [242, 230, 202, 255],
+          "to": [215, 224, 209, 255],
           "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
         },
         "i": {
           "from": [180, 163, 127, 255],
-          "to": [192, 174, 139, 255],
+          "to": [126, 145, 135, 255],
           "reason": "Unify bone shadows with the classic skeleton palette."
         },
         "A": {
           "from": [244, 248, 241, 255],
-          "to": [236, 244, 246, 255],
+          "to": [78, 97, 101, 255],
           "reason": "Keep high-tier metal cool silver rather than yellow-green bone."
         },
         "a": {
           "from": [155, 184, 191, 255],
-          "to": [143, 169, 181, 255],
+          "to": [37, 47, 54, 255],
           "reason": "Use a cool subdued steel shadow for high-tier equipment."
         }
       },
@@ -5357,22 +5315,22 @@
       "paletteChanges": {
         "I": {
           "from": [240, 229, 198, 255],
-          "to": [242, 230, 202, 255],
+          "to": [204, 207, 190, 255],
           "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
         },
         "i": {
           "from": [180, 163, 127, 255],
-          "to": [192, 174, 139, 255],
+          "to": [132, 140, 128, 255],
           "reason": "Unify bone shadows with the classic skeleton palette."
         },
         "E": {
           "from": [99, 207, 170, 255],
-          "to": [154, 234, 200, 255],
+          "to": [135, 178, 157, 255],
           "reason": "Bright mint spell color remains distinct from the teal faction cloak and steel."
         },
         "e": {
           "from": null,
-          "to": [77, 166, 136, 255],
+          "to": [67, 110, 93, 255],
           "reason": "A darker magic edge smooths the spell without adding blur or transparency."
         }
       },
@@ -5638,32 +5596,32 @@
       "paletteChanges": {
         "I": {
           "from": [240, 229, 198, 255],
-          "to": [242, 230, 202, 255],
+          "to": [215, 224, 209, 255],
           "reason": "Use consistent warm ivory for exposed bones while preserving added steel tier armor."
         },
         "i": {
           "from": [180, 163, 127, 255],
-          "to": [192, 174, 139, 255],
+          "to": [126, 145, 135, 255],
           "reason": "Unify bone shadows with the classic skeleton palette."
         },
         "A": {
           "from": [244, 248, 241, 255],
-          "to": [236, 244, 246, 255],
+          "to": [78, 97, 101, 255],
           "reason": "Keep high-tier metal cool silver rather than yellow-green bone."
         },
         "a": {
           "from": [155, 184, 191, 255],
-          "to": [143, 169, 181, 255],
+          "to": [37, 47, 54, 255],
           "reason": "Use a cool subdued steel shadow for high-tier equipment."
         },
         "E": {
           "from": [151, 232, 174, 255],
-          "to": [154, 234, 200, 255],
+          "to": [135, 178, 157, 255],
           "reason": "Bright mint spell color remains distinct from the teal faction cloak and steel."
         },
         "e": {
           "from": null,
-          "to": [77, 166, 136, 255],
+          "to": [67, 110, 93, 255],
           "reason": "A darker magic edge smooths the spell without adding blur or transparency."
         }
       },

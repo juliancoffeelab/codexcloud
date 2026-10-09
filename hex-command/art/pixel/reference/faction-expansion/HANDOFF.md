@@ -1,5 +1,12 @@
 # Artwork handoff for the next session
 
+Generated pink-box PNGs have been removed after matrix approval. References
+below to `templates/` describe the historical generation process. For new work,
+use `python3 scripts/pink-box.py tmp/new-design.png <anchor1> <anchor2> <anchor3>`
+from the project root. Approved `units/*/sprite.txt` matrices are authoritative;
+saved raw sources and rebuild recipes remain available for historical inspection.
+Do not replay construction recipes as routine artwork verification.
+
 Branch: `art/human-unit-trees`. Pull request: [#10](https://github.com/juliancoffeelab/codexcloud/pull/10).
 
 ## Subsequent zombie lineup selection

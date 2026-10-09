@@ -1,0 +1,20 @@
+{
+  "role": "Skeleton commander",
+  "units": [
+    {
+      "id": "lich-commander-l1",
+      "name": "Grave Adept",
+      "level": 1
+    },
+    {
+      "id": "lich-commander-l2",
+      "name": "Lich",
+      "level": 2
+    },
+    {
+      "id": "lich-commander-l3",
+      "name": "Lich Sovereign",
+      "level": 3
+    }
+  ]
+}

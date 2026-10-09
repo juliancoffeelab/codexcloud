@@ -1,62 +1,98 @@
 [
   {
-    "label": "Skeleton dagger flanker L1",
-    "image": "art/pixel/units/skeleton-flanker/enemy.png"
+    "label": "Skeleton → Shield servant L1",
+    "image": "art/pixel/units/skeleton/enemy.png"
   },
   {
-    "label": "Skeleton dagger flanker L2",
+    "label": "Revenant L2",
+    "image": "art/pixel/units/revenant/enemy.png"
+  },
+  {
+    "label": "Dreadguard L3",
+    "image": "art/pixel/units/skeleton-dreadguard/enemy.png"
+  },
+  {
+    "label": "Skeleton → Twin knives L1",
+    "image": "art/pixel/units/skeleton/enemy.png"
+  },
+  {
+    "label": "Knife servant L2",
     "image": "art/pixel/units/skeleton-flanker-l2/enemy.png"
   },
   {
-    "label": "Skeleton dagger flanker L3",
+    "label": "Knife shade L3",
     "image": "art/pixel/units/skeleton-flanker-l3/enemy.png"
   },
   {
-    "label": "Skeleton impact caster L1",
+    "label": "Caster → Staff caster L1",
     "image": "art/pixel/units/skeleton-impact-caster/enemy.png"
   },
   {
-    "label": "Skeleton impact caster L2",
+    "label": "Staff servant L2",
     "image": "art/pixel/units/skeleton-impact-caster-l2/enemy.png"
   },
   {
-    "label": "Skeleton impact caster L3",
+    "label": "Staff shade L3",
     "image": "art/pixel/units/skeleton-impact-caster-l3/enemy.png"
   },
   {
-    "label": "Skeleton scythe caster L1",
-    "image": "art/pixel/units/skeleton-scythe-caster/enemy.png"
+    "label": "Caster → Scythe caster L1",
+    "image": "art/pixel/units/skeleton-impact-caster/enemy.png"
   },
   {
-    "label": "Skeleton scythe caster L2",
+    "label": "Scythe servant L2",
     "image": "art/pixel/units/skeleton-scythe-caster-l2/enemy.png"
   },
   {
-    "label": "Skeleton scythe caster L3",
+    "label": "Scythe shade L3",
     "image": "art/pixel/units/skeleton-scythe-caster-l3/enemy.png"
   },
   {
-    "label": "Skeleton two-handed axeman L1",
-    "image": "art/pixel/units/skeleton-axeman/enemy.png"
-  },
-  {
-    "label": "Skeleton two-handed axeman L2",
-    "image": "art/pixel/units/skeleton-axeman-l2/enemy.png"
-  },
-  {
-    "label": "Skeleton two-handed axeman L3",
-    "image": "art/pixel/units/skeleton-axeman-l3/enemy.png"
-  },
-  {
-    "label": "Skeleton mounted spearman L1",
+    "label": "Grave rider → Mounted spear L1",
     "image": "art/pixel/units/skeleton-rider/enemy.png"
   },
   {
-    "label": "Skeleton mounted spearman L2",
+    "label": "Death rider L2",
     "image": "art/pixel/units/skeleton-rider-l2/enemy.png"
   },
   {
-    "label": "Skeleton mounted spearman L3",
+    "label": "Hollow rider L3",
     "image": "art/pixel/units/skeleton-rider-l3/enemy.png"
+  },
+  {
+    "label": "Bone archer → Archer L1",
+    "image": "art/pixel/units/bonearcher/enemy.png"
+  },
+  {
+    "label": "Death archer L2",
+    "image": "art/pixel/units/deatharcher/enemy.png"
+  },
+  {
+    "label": "Hollow archer L3",
+    "image": "art/pixel/units/skeleton-bow-master/enemy.png"
+  },
+  {
+    "label": "Grave axeman → Axe servant L1",
+    "image": "art/pixel/units/skeleton-axeman/enemy.png"
+  },
+  {
+    "label": "Death axeman L2",
+    "image": "art/pixel/units/skeleton-axeman-l2/enemy.png"
+  },
+  {
+    "label": "Hollow axeman L3",
+    "image": "art/pixel/units/skeleton-axeman-l3/enemy.png"
+  },
+  {
+    "label": "Grave Adept (commander) L1",
+    "image": "art/pixel/units/lich-commander-l1/enemy.png"
+  },
+  {
+    "label": "Lich (commander) L2",
+    "image": "art/pixel/units/lich-commander-l2/enemy.png"
+  },
+  {
+    "label": "Lich Sovereign (commander) L3",
+    "image": "art/pixel/units/lich-commander-l3/enemy.png"
   }
 ]

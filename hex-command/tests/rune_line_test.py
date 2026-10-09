@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 import unittest
 
+from faction_sprite_helpers import assert_faction_materials
+
 file = Path(__file__).resolve().parents[1] / "art/pixel/reference/rune-line/build.py"
 spec = importlib.util.spec_from_file_location("rune_line", file)
 rune = importlib.util.module_from_spec(spec)
@@ -68,10 +70,7 @@ class RuneLineTest(unittest.TestCase):
                     self.assertFalse(any(c in "UuF" for row in rows for c in row))
                 self.assertEqual(bool(gold), level == 3)
                 directory = rune.UNITS / f"dwarf-{branch}-l{level}"
-                player = (directory / "player.txt").read_text()
-                enemy = (directory / "enemy.txt").read_text()
-                self.assertEqual(enemy, player.translate(str.maketrans("Tt", "Rr")))
-                self.assertGreater(enemy.count("R") + enemy.count("r"), 0)
+                assert_faction_materials(self, directory)
                 self.assertEqual(palette["E"], (rune.GOLD_CRYSTAL if branch == "thundersmith" else rune.CRYSTAL)["E"])
                 if branch == "thundersmith":
                     self.assertEqual(palette["z"], rune.GOLD_CRYSTAL["z"])

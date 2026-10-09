@@ -1,0 +1,135 @@
+[
+  {
+    "id": "skeleton",
+    "level": 1,
+    "anatomyPreserved": true,
+    "factionPixels": 292,
+    "staffHeadSimplified": false
+  },
+  {
+    "id": "revenant",
+    "level": 2,
+    "anatomyPreserved": true,
+    "factionPixels": 289,
+    "staffHeadSimplified": false
+  },
+  {
+    "id": "skeleton-dreadguard",
+    "level": 3,
+    "anatomyPreserved": true,
+    "factionPixels": 289,
+    "staffHeadSimplified": false
+  },
+  {
+    "id": "skeleton-flanker-l2",
+    "level": 2,
+    "anatomyPreserved": true,
+    "factionPixels": 201,
+    "staffHeadSimplified": false
+  },
+  {
+    "id": "skeleton-flanker-l3",
+    "level": 3,
+    "anatomyPreserved": true,
+    "factionPixels": 201,
+    "staffHeadSimplified": false
+  },
+  {
+    "id": "skeleton-impact-caster",
+    "level": 1,
+    "anatomyPreserved": true,
+    "factionPixels": 341,
+    "staffHeadSimplified": true
+  },
+  {
+    "id": "skeleton-impact-caster-l2",
+    "level": 2,
+    "anatomyPreserved": true,
+    "factionPixels": 338,
+    "staffHeadSimplified": true
+  },
+  {
+    "id": "skeleton-impact-caster-l3",
+    "level": 3,
+    "anatomyPreserved": true,
+    "factionPixels": 338,
+    "staffHeadSimplified": true
+  },
+  {
+    "id": "skeleton-scythe-caster-l2",
+    "level": 2,
+    "anatomyPreserved": true,
+    "factionPixels": 240,
+    "staffHeadSimplified": false
+  },
+  {
+    "id": "skeleton-scythe-caster-l3",
+    "level": 3,
+    "anatomyPreserved": true,
+    "factionPixels": 240,
+    "staffHeadSimplified": false
+  },
+  {
+    "id": "skeleton-rider",
+    "level": 1,
+    "anatomyPreserved": true,
+    "factionPixels": 225,
+    "staffHeadSimplified": false
+  },
+  {
+    "id": "skeleton-rider-l2",
+    "level": 2,
+    "anatomyPreserved": true,
+    "factionPixels": 225,
+    "staffHeadSimplified": false
+  },
+  {
+    "id": "skeleton-rider-l3",
+    "level": 3,
+    "anatomyPreserved": true,
+    "factionPixels": 225,
+    "staffHeadSimplified": false
+  },
+  {
+    "id": "bonearcher",
+    "level": 1,
+    "anatomyPreserved": true,
+    "factionPixels": 185,
+    "staffHeadSimplified": false
+  },
+  {
+    "id": "deatharcher",
+    "level": 2,
+    "anatomyPreserved": true,
+    "factionPixels": 174,
+    "staffHeadSimplified": false
+  },
+  {
+    "id": "skeleton-bow-master",
+    "level": 3,
+    "anatomyPreserved": true,
+    "factionPixels": 174,
+    "staffHeadSimplified": false
+  },
+  {
+    "id": "skeleton-axeman",
+    "level": 1,
+    "anatomyPreserved": true,
+    "factionPixels": 231,
+    "staffHeadSimplified": false
+  },
+  {
+    "id": "skeleton-axeman-l2",
+    "level": 2,
+    "anatomyPreserved": true,
+    "factionPixels": 231,
+    "staffHeadSimplified": false
+  },
+  {
+    "id": "skeleton-axeman-l3",
+    "level": 3,
+    "anatomyPreserved": true,
+    "factionPixels": 231,
+    "staffHeadSimplified": false
+  }
+]
