@@ -3,6 +3,7 @@
 import argparse
 import json
 from pathlib import Path
+from pixel_sources import faction_palette
 
 
 def isolated(rows, palette, ignore_exterior_black=True):
@@ -36,6 +37,8 @@ if __name__ == "__main__":
         if not palette_path.exists():
             palette_path = Path(__file__).resolve().parents[1] / "art/pixel/palette.json"
         palette = json.loads(palette_path.read_text())
+        if path.stem == "sprite":
+            palette.update(faction_palette("debug"))
         flags = isolated(path.read_text().splitlines(), palette, not args.include_exterior_black)
         report[str(path)] = flags
         print(f"{path.parent.name}/{path.name}: {len(flags)} suspicious isolated pixels")

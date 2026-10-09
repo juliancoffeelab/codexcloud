@@ -8,6 +8,7 @@ import subprocess
 from PIL import Image, ImageDraw, ImageFont
 
 from build import HERE, PROJECT, source_directory, surfaces, verify_anchors
+from pixel_sources import legacy_text
 
 spec = importlib.util.spec_from_file_location("isolated_pixels", PROJECT / "scripts/check_isolated_pixels.py")
 checker = importlib.util.module_from_spec(spec)
@@ -23,8 +24,8 @@ report = {}
 for i, pose in enumerate(meta["poses"]):
     unit = "dwarf-" + pose
     directory = source_directory(unit)
-    rows = (directory / "player.txt").read_text().splitlines()
-    palette = json.loads((directory / "palette.json").read_text())
+    rows = legacy_text((directory / "player.txt")).splitlines()
+    palette = json.loads(legacy_text((directory / "palette.json")))
     verify_anchors(rows, json.loads((HERE / "bases" / unit / "anchors.json").read_text()))
     filled = Image.new("RGBA", (64, 64))
     filled.putdata([tuple(palette[c]) for row in rows for c in row])
@@ -33,6 +34,8 @@ for i, pose in enumerate(meta["poses"]):
         rgb = tuple(round(c * 255) for c in colorsys.hsv_to_rgb((number * 0.381966) % 1, 0.57, 0.96))
         for x, y in pixels:
             filled.putpixel((x, y), (*rgb, 255))
+    subprocess.run(["python3", str(PROJECT / "scripts/render-pixel.py"),
+                    str(directory / "sprite.txt"), "--previews"], cwd=PROJECT, check=True, stdout=subprocess.DEVNULL)
     actual = Image.open(directory / "player.png").convert("RGBA")
     bx, by = 16 + i % 3 * step, 44 + i // 3 * row_height
     flags = checker.isolated(rows, palette)

@@ -1,4 +1,4 @@
-const fs = require('node:fs');
+const fs = require('../../../../scripts/pixel-fs.cjs');
 const path = require('node:path');
 const {execFileSync} = require('node:child_process');
 const sourceDirectory = require('../../../../scripts/pixel-source-path.cjs');

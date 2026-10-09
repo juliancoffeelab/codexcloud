@@ -8,6 +8,7 @@ import struct
 import zlib
 
 from pixel_cleanup import apply_cleanup
+from pixel_sources import faction_palette, normalize_pair
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "art" / "pixel"
@@ -40,13 +41,17 @@ def read_palette(matrix):
             or rgba[3] not in (0, 255)
         ):
             raise ValueError(f"Invalid flat RGBA palette entry: {symbol!r}")
+    if matrix.stem == "sprite" and ("^" in palette or "*" in palette):
+        raise ValueError(f"{matrix}: faction shades belong in factions.json")
     if palette.get(".") != [0, 0, 0, 0]:
         raise ValueError("Palette '.' must be transparent black")
     return palette
 
 
-def rgba_pixels(matrix):
+def rgba_pixels(matrix, side="player"):
     rows, palette = read_matrix(matrix), read_palette(matrix)
+    if matrix.stem == "sprite":
+        palette.update(faction_palette(side))
     pixels = bytearray()
     for y, row in enumerate(rows):
         for x, symbol in enumerate(row):
@@ -98,10 +103,10 @@ def pixel_atlases():
             continue
         alpha = None
         for side in ("player", "enemy"):
-            matrix = directory / f"{side}.txt"
+            matrix = directory / "sprite.txt"
             if not matrix.exists():
-                raise ValueError(f"{matrix}: both faction matrices are required")
-            width, height, pixels = rgba_pixels(matrix)
+                raise ValueError(f"{matrix}: a shared sprite matrix is required")
+            width, height, pixels = rgba_pixels(matrix, side)
             if not any(pixels[3::4]):
                 raise ValueError(f"{matrix}: expected a nonempty unit sprite")
             if alpha is not None and alpha != pixels[3::4]:
@@ -176,19 +181,43 @@ def main():
     parser.add_argument("matrices", nargs="*", type=Path)
     parser.add_argument("--check", action="store_true")
     parser.add_argument("--atlas", action="store_true", help="Build the public unit and terrain atlases")
+    parser.add_argument("--previews", action="store_true", help="Render player/enemy review PNGs from shared sources")
+    parser.add_argument("--debug-faction", type=Path, help="Render toxic-colour faction previews into this directory")
     args = parser.parse_args()
+    if not args.check:
+        for player in list(ART.rglob("player.txt")):
+            normalize_pair(player.parent)
+    elif any(p.with_name("enemy.txt").exists() for p in ART.rglob("player.txt")):
+        raise ValueError("Paired faction sources must be consolidated into sprite.txt")
     matrices = [matrix.resolve() for matrix in args.matrices] or sorted(ART.rglob("*.txt"))
+    matrices = sorted(set(matrix.with_name("sprite.txt") if not matrix.exists() and matrix.name in ("player.txt", "enemy.txt") else matrix for matrix in matrices))
     apply_cleanup(matrices, check=args.check)
     for matrix in matrices:
+        if matrix.stem == "sprite":
+            # Atlas baking reads the matrix directly; previews are optional products.
+            for side in ("player", "enemy"):
+                data = png_bytes(*rgba_pixels(matrix, side))
+                png = matrix.with_name(f"{side}.png")
+                if args.check:
+                    continue
+                if args.previews or not args.atlas:
+                    png.write_bytes(data)
+            if args.debug_faction:
+                output = args.debug_faction.resolve() / matrix.parent.relative_to(ART) / "debug.png"
+                output.parent.mkdir(parents=True, exist_ok=True)
+                output.write_bytes(png_bytes(*rgba_pixels(matrix, "debug")))
+            continue
         png = matrix.with_suffix(".png")
         data = png_bytes(*rgba_pixels(matrix))
         if args.check:
+            if matrix.stem in ("player", "enemy") and not png.exists():
+                continue  # Single-sided extraction previews are optional too.
             if not png.exists() or png.read_bytes() != data:
                 raise ValueError(f"{png}: regenerate from {matrix}")
-            print(f"Verified {png.relative_to(ROOT)}")
         else:
             png.write_bytes(data)
-            print(f"Rendered {png.relative_to(ROOT)}")
+    if args.debug_faction:
+        print(f"Faction debug previews: {args.debug_faction.resolve()}")
     if args.atlas:
         outputs, metadata = pixel_atlases()
         for filename, data in outputs.items():

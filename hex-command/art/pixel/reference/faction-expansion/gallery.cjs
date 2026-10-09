@@ -1,5 +1,5 @@
 // Regenerate review sheets and paired numbered source/result overlays.
-const fs = require("node:fs"),
+const fs = require("../../../../scripts/pixel-fs.cjs"),
   path = require("node:path"),
   { PNG } = require("pngjs"),
   { execFileSync } = require("node:child_process");

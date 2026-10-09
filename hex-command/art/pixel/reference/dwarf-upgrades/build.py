@@ -10,6 +10,8 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 PROJECT = HERE.parents[3]
+sys.path.insert(0, str(PROJECT / "scripts"))
+from pixel_sources import legacy_text, recipe_matches
 UNITS = PROJECT / "art/pixel/units"
 BASES = HERE.parent / "dwarf-base-cleanup"
 spec = importlib.util.spec_from_file_location("dwarf_bases", BASES / "build.py")
@@ -32,10 +34,10 @@ def branches():
 def load(unit):
     directory = BASES / "bases" / unit
     rows = (directory / "player.mask").read_text().splitlines()
-    palette = json.loads((directory / "palette.json").read_text())
+    palette = json.loads(legacy_text((directory / "palette.json")))
     starter = BASES / "bases" / branches()[unit]
     starter_rows = (starter / "player.mask").read_text().splitlines()
-    starter_palette = json.loads((starter / "palette.json").read_text())
+    starter_palette = json.loads(legacy_text((starter / "palette.json")))
     if (len(rows), len(rows[0])) != (len(starter_rows), len(starter_rows[0])):
         raise ValueError("Branch reference changes its starter's native scale")
     if any(palette[c] != starter_palette[c] for c in palette):
@@ -202,8 +204,7 @@ def run(ids, check=False):
             for filename, value in files.items():
                 path = out / filename
                 if check:
-                    current = path.read_text()
-                    if not (json.loads(current) == json.loads(value) if filename.endswith(".json") else current == value):
+                    if not recipe_matches(path, value):
                         raise ValueError(f"Rebuild {name}/{filename}")
                 else:
                     out.mkdir(parents=True, exist_ok=True)

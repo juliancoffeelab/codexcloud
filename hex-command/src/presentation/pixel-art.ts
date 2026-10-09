@@ -4,7 +4,7 @@ export const pixelSources = {
     filename: "units-pixel.png",
     width: 393,
     height: 4698,
-    revision: "72ce2a63e961",
+    revision: "ba53efdf52c6",
   },
   terrain: {
     filename: "terrain-pixel.png",

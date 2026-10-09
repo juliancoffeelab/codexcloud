@@ -1,5 +1,5 @@
 // Reviewed isolated non-skin pixels in the regenerated heads. Cloth is untouched.
-const fs=require('node:fs');
+const fs=require('../../../../scripts/pixel-fs.cjs');
 const path=require('node:path');
 const corrections={
  'merfolk-reef-champion':[[18,6,'s']],

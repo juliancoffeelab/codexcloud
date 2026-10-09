@@ -9,6 +9,8 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 PROJECT = HERE.parents[3]
+sys.path.insert(0, str(PROJECT / "scripts"))
+from pixel_sources import legacy_text, recipe_matches
 UNITS = PROJECT / "art/pixel/units"
 REFERENCES = HERE.parent / "dwarf-branch-references/units"
 # A shade is part of its main colour, never a separate edge/fill region.
@@ -137,12 +139,12 @@ def run(ids, destination, check=False):
         unit = "dwarf-" + pose
         source, out = HERE / "bases" / unit, source_directory(unit, destination)
         rows = (source / "player.mask").read_text().splitlines()
-        original = (HERE.parent / "dwarf-progression/bases" / unit / "player.txt").read_text().splitlines()
+        original = legacy_text((HERE.parent / "dwarf-progression/bases" / unit / "player.txt")).splitlines()
         if len(rows) != 64 or any(len(row) != 64 for row in rows):
             raise ValueError("Base must retain its 64×64 native canvas")
         if any((a == ".") != (b == ".") for ra, rb in zip(rows, original) for a, b in zip(ra, rb)):
             raise ValueError("Cleanup changes the approved pose silhouette")
-        palette = json.loads((source / "palette.json").read_text())
+        palette = json.loads(legacy_text((source / "palette.json")))
         parts = json.loads((source / "parts.json").read_text())
         verify_parts(rows, parts, (source / "parts.mask").read_text())
         verify_anchors(rows, json.loads((source / "anchors.json").read_text()))
@@ -173,8 +175,7 @@ def run(ids, destination, check=False):
         for name, contents in files.items():
             path = out / name
             if check:
-                current = path.read_text()
-                equal = json.loads(current) == json.loads(contents) if name.endswith(".json") else current == contents
+                equal = recipe_matches(path, contents)
                 if not equal:
                     raise ValueError(f"{unit}/{name}: rebuild the base")
             else:

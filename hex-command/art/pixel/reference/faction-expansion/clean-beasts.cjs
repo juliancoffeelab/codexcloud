@@ -1,6 +1,6 @@
 // Material ownership for the saved animal poses, in their original 64px slots.
 // Does not change alpha, limb connections, eyes, mouth holes, or wing contours.
-const fs = require("node:fs");
+const fs = require("../../../../scripts/pixel-fs.cjs");
 const path = require("node:path");
 const { execFileSync } = require("node:child_process");
 const root = __dirname,

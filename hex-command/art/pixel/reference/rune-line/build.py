@@ -9,6 +9,8 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 PROJECT = HERE.parents[3]
+sys.path.insert(0, str(PROJECT / "scripts"))
+from pixel_sources import legacy_text, recipe_matches
 UNITS = PROJECT / "art/pixel/units"
 SOURCE = HERE / "bases"
 spec = importlib.util.spec_from_file_location("rune_parts", HERE.parent / "dwarf-base-cleanup/build.py")
@@ -32,7 +34,7 @@ def stonespell(level):
     # Approved imagegen design, quantized to native editable pixels. These
     # independent hood/stone shapes cannot be derived by recolouring a helmet.
     rows = (HERE / "designs" / f"stonespell-l{level}.mask").read_text().splitlines()
-    palette = json.loads((HERE / "designs/palette.json").read_text())
+    palette = json.loads(legacy_text((HERE / "designs/palette.json")))
     if len(rows) != 64 or any(len(row) != 64 for row in rows):
         raise ValueError("Stonespell must retain its native 64x64 frame")
     used = set("".join(rows) + "Rr")
@@ -43,7 +45,7 @@ def stonespell(level):
 def load():
     rows = (SOURCE / "player.mask").read_text().splitlines()
     original = (SOURCE / "original.mask").read_text().splitlines()
-    palette = json.loads((SOURCE / "palette.json").read_text())
+    palette = json.loads(legacy_text((SOURCE / "palette.json")))
     parts = json.loads((SOURCE / "parts.json").read_text())
     parts_module.verify_parts(rows, parts, (SOURCE / "parts.mask").read_text())
     parts_module.verify_anchors(rows, json.loads((SOURCE / "anchors.json").read_text()))
@@ -151,8 +153,7 @@ def write_unit(unit, source, rows, palette, check, branch=None, level=1):
     for name, contents in files.items():
         path = output / name
         if check:
-            current = path.read_text()
-            if not (json.loads(current) == json.loads(contents) if name.endswith(".json") else current == contents):
+            if not (recipe_matches(path, contents)):
                 raise ValueError(f"Rebuild {unit}/{name}")
         else:
             output.mkdir(parents=True, exist_ok=True)

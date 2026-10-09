@@ -12,6 +12,35 @@ sprites with new branch and tier assignments. Unused variants live in
 keeps rebuild outputs in their active or archived locations and preserves the
 chosen catalog metadata. Historical study boards are not advancement trees.
 
+## Shared faction sources
+
+Every finished unit and paired archived study has one `sprite.txt` matrix and a
+flat material `palette.json`. `^` is faction base and `*` is faction shadow;
+[factions.json](factions.json) defines those two RGBA colours for each side.
+Older three-to-five-shade faction ramps are clamped to these two shades.
+Skin, coral, metal, leather and other fixed material pixels retain their colours.
+Do not add per-unit `^`/`*` palette entries or maintain separate faction matrices.
+
+`npm run art:build` reads the shared matrix directly and bakes both sides into the
+existing atlas frames. Individual faction PNGs are optional ignored previews:
+
+```sh
+python3 scripts/render-pixel.py --previews
+python3 scripts/render-pixel.py --atlas --debug-faction tmp/faction-debug
+python3 scripts/render-pixel.py art/pixel/units/reefguard/sprite.txt
+```
+
+The debug command renders the faction base in neon magenta and shadow in neon
+lime; fixed materials stay normal. Inspect these for colour leaking into skin,
+weapons or armour. Debug images never enter the gameplay atlas.
+
+Saved construction recipes use [pixel-fs.cjs](../../scripts/pixel-fs.cjs) and
+[pixel_sources.py](../../scripts/pixel_sources.py) to read their older paired
+inputs virtually. When a recipe writes a temporary pair, the matrix renderer
+consolidates it into `sprite.txt` before rendering. Check mode rejects unconverted
+pairs. New recipes should write a shared matrix directly. Raw, single-sided
+extractions keep their original matrices and palettes as generation evidence.
+
 ## New anatomy through imagegen
 
 Read the [Slinger pipeline](reference/slinger/PIPELINE.md) first. The image model
@@ -41,7 +70,7 @@ scripts do not call imagegen themselves.
 4. Inspect enlarged pixels and material regions. Fix noisy shading and incorrect
    material ownership while preserving anatomy and grips. Inspect against both
    the raw generation and existing units. Extraction is not an anatomy repair.
-5. Store the finished matrices, palette and both faction PNGs under `units/`.
+5. Store the finished shared matrix and material palette under `units/`.
    Render from matrices; never patch only the PNG. Rebuild atlases with
    `npm run art:build` after source changes.
 

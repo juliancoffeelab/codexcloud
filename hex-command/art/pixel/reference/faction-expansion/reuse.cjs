@@ -1,5 +1,5 @@
 // Extend approved L2 anatomies to L3 without changing their pose or overwriting L1/L2.
-const fs = require("node:fs"),
+const fs = require("../../../../scripts/pixel-fs.cjs"),
   path = require("node:path"),
   { execFileSync } = require("node:child_process");
 const project = path.resolve(__dirname, "../../../.."),

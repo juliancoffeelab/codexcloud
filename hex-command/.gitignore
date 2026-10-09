@@ -42,3 +42,7 @@ Thumbs.db
 /artifacts/
 /rust/target/
 /rust/pkg/
+
+# Unit faction previews are generated from shared matrices.
+/art/pixel/**/player.png
+/art/pixel/**/enemy.png

@@ -1,6 +1,6 @@
 // Native extraction and material cleanup for the saved four-slot generations.
 // Usage: node process.cjs extract <id...> | tiers <id...> | boards
-const fs = require("node:fs");
+const fs = require("../../../../scripts/pixel-fs.cjs");
 const path = require("node:path");
 const { PNG } = require("pngjs");
 const { execFileSync } = require("node:child_process");

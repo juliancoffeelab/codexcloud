@@ -1,5 +1,5 @@
 // All animal anatomy slots use the same three-anchor mask and native extraction.
-const fs = require("node:fs"),
+const fs = require("../../../../scripts/pixel-fs.cjs"),
   path = require("node:path");
 const root = __dirname,
   file = path.join(root, "manifest.json"),

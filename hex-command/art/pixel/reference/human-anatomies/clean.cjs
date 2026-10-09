@@ -1,4 +1,4 @@
-const fs=require('node:fs');
+const fs=require('../../../../scripts/pixel-fs.cjs');
 const path=require('node:path');
 const root=__dirname;
 const names=['crossbow','staff-infantry','mounted-lance','mounted-bow'];

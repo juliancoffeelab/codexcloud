@@ -1,6 +1,6 @@
 // The Trident guard L2 head is the common merfolk trident design. Shafts,
 // hands and the rest of each sprite are outside this native head region.
-const fs = require("node:fs");
+const fs = require("../../../../scripts/pixel-fs.cjs");
 const path = require("node:path");
 const project = path.resolve(__dirname, "../../../..");
 const source = path.join(project, "art/pixel/units/tridentguard");

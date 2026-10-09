@@ -2,6 +2,7 @@
 
 import json
 from pathlib import Path
+from pixel_sources import legacy_text
 
 ROOT = Path(__file__).resolve().parents[1]
 UNITS = ROOT / "art" / "pixel" / "units"
@@ -18,7 +19,7 @@ def apply_cleanup(matrices, check=False, units_root=UNITS, recipe_root=RECIPES):
 
     palettes = set()
     for matrix in matrices:
-        if matrix.parent.parent != units_root or matrix.stem not in ("player", "enemy"):
+        if matrix.parent.parent != units_root or matrix.stem not in ("player", "enemy", "sprite"):
             continue
         unit = matrix.parent.name
         recipe = recipes.get(unit)
@@ -27,10 +28,13 @@ def apply_cleanup(matrices, check=False, units_root=UNITS, recipe_root=RECIPES):
         rows = [list(row) for row in matrix.read_text().splitlines()]
         if "canvas" in recipe and recipe["canvas"] != [len(rows[0]), len(rows)]:
             raise ValueError(f"{unit}: cleanup requires the reviewed native canvas")
-        changes = recipe["matrixChanges" if matrix.stem == "player" else "enemyMatrixChanges"]
+        changes = recipe["matrixChanges" if matrix.stem in ("player", "sprite") else "enemyMatrixChanges"]
         for change in changes:
             x, y = change["x"], change["y"]
             before, after = change["from"], change["to"]
+            if matrix.stem == "sprite":
+                symbols = {"T": "^", "R": "^", "t": "*", "r": "*"}
+                before, after = symbols.get(before, before), symbols.get(after, after)
             if (before == ".") != (after == "."):
                 raise ValueError(f"{unit}: material cleanup must preserve transparency")
             if (before == "O") != (after == "O"):
@@ -77,10 +81,11 @@ def apply_cleanup(matrices, check=False, units_root=UNITS, recipe_root=RECIPES):
         palettes.add(unit)
         file = matrix.parent / "palette.json"
         palette = json.loads(file.read_text())
+        legacy_palette = json.loads(legacy_text(file))
         altered = False
         for symbol, change in recipe.get("paletteChanges", {}).items():
             before, after = change["from"], change["to"]
-            current = palette.get(symbol)
+            current = legacy_palette.get(symbol)
             if current == after:
                 continue
             if current != before or check:

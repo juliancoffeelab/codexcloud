@@ -116,6 +116,12 @@ test("Every unit, terrain and portrait pixel matches its editable matrix", async
     null,
   );
   const matrixFrames: string[] = [];
+  const factions: Record<string, Record<string, number[]>> = JSON.parse(
+    readFileSync(new URL("../art/pixel/factions.json", import.meta.url), "utf8"),
+  );
+  for (const palette of Object.values(factions)) {
+    assert.deepEqual(Object.keys(palette).sort(), ["*", "^"]);
+  }
   for (const kind of ["units", "terrain", "portraits"] as const) {
     const source = pixelSources[kind === "portraits" ? "units" : kind];
     const atlas = readFileSync(new URL(`../public/assets/${source.filename}`, import.meta.url));
@@ -147,57 +153,60 @@ test("Every unit, terrain and portrait pixel matches its editable matrix", async
         ),
       );
       for (const filename of readdirSync(directory).filter((name) => name.endsWith(".txt"))) {
-        const side = filename.slice(0, -4);
+        const matrixKind = filename.slice(0, -4);
         assert(
           (kind === "terrain"
             ? ["tile"]
             : kind === "portraits"
               ? ["portrait"]
-              : ["player", "enemy"]
-          ).includes(side),
+              : ["sprite"]
+          ).includes(matrixKind),
           `Unmapped matrix: ${entry.name}/${filename}`,
         );
-        const frameName =
-          entry.name === "bonearcher"
-            ? "bone_archer"
-            : entry.name === "grove"
-              ? "sacred_grove"
-              : entry.name;
-        const key = `${kind === "terrain" ? "terrain" : side}_${frameName}`;
-        matrixFrames.push(key);
-        assert(Object.hasOwn(frameSources, key), `Matrix missing from public assets: ${key}`);
-        const [cropX, cropY, width, height] =
-          campaignSheets.pixel.frames[key as keyof typeof campaignSheets.pixel.frames];
-        const rows = readFileSync(new URL(filename, directory), "utf8").trimEnd().split("\n");
-        assert.equal(width, rows[0]!.length);
-        assert.equal(rows.length, height);
-        if (kind === "terrain") {
-          // Check against the editable source palette, independently of the
-          // generated metadata used by the renderer.
-          const groundSymbol = ["water", "bridge", "ford"].includes(entry.name) ? "W" : "G";
-          const ground = palette[groundSymbol]!;
-          assert.equal(ground[3], 255);
-          const expected = `#${ground
-            .slice(0, 3)
-            .map((channel) => channel.toString(16).padStart(2, "0"))
-            .join("")}`;
-          const sample = terrainSamples.find((tile) => tile.terrain === entry.name);
-          assert(sample, `Missing terrain sample: ${entry.name}`);
-          assert.equal(
-            sample.fill,
-            expected,
-            `${entry.name} must not expose a mismatched edge colour`,
-          );
-        }
-        for (let y = 0; y < height; y++) {
-          assert.equal(rows[y]!.length, width);
-          for (let x = 0; x < width; x++) {
-            const offset = (cropY + y) * stride + 1 + (cropX + x) * 4;
-            assert.deepEqual(
-              [...pixels.subarray(offset, offset + 4)],
-              palette[rows[y]![x]!],
-              `${key} pixel (${x}, ${y}) must match its matrix material`,
+        for (const side of kind === "units" ? ["player", "enemy"] : [matrixKind]) {
+          const colours = kind === "units" ? { ...palette, ...factions[side] } : palette;
+          const frameName =
+            entry.name === "bonearcher"
+              ? "bone_archer"
+              : entry.name === "grove"
+                ? "sacred_grove"
+                : entry.name;
+          const key = `${kind === "terrain" ? "terrain" : side}_${frameName}`;
+          matrixFrames.push(key);
+          assert(Object.hasOwn(frameSources, key), `Matrix missing from public assets: ${key}`);
+          const [cropX, cropY, width, height] =
+            campaignSheets.pixel.frames[key as keyof typeof campaignSheets.pixel.frames];
+          const rows = readFileSync(new URL(filename, directory), "utf8").trimEnd().split("\n");
+          assert.equal(width, rows[0]!.length);
+          assert.equal(rows.length, height);
+          if (kind === "terrain") {
+            // Check against the editable source palette, independently of the
+            // generated metadata used by the renderer.
+            const groundSymbol = ["water", "bridge", "ford"].includes(entry.name) ? "W" : "G";
+            const ground = palette[groundSymbol]!;
+            assert.equal(ground[3], 255);
+            const expected = `#${ground
+              .slice(0, 3)
+              .map((channel) => channel.toString(16).padStart(2, "0"))
+              .join("")}`;
+            const sample = terrainSamples.find((tile) => tile.terrain === entry.name);
+            assert(sample, `Missing terrain sample: ${entry.name}`);
+            assert.equal(
+              sample.fill,
+              expected,
+              `${entry.name} must not expose a mismatched edge colour`,
             );
+          }
+          for (let y = 0; y < height; y++) {
+            assert.equal(rows[y]!.length, width);
+            for (let x = 0; x < width; x++) {
+              const offset = (cropY + y) * stride + 1 + (cropX + x) * 4;
+              assert.deepEqual(
+                [...pixels.subarray(offset, offset + 4)],
+                colours[rows[y]![x]!],
+                `${key} pixel (${x}, ${y}) must match its matrix material`,
+              );
+            }
           }
         }
       }

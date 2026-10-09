@@ -1,4 +1,4 @@
-const fs=require('node:fs');
+const fs=require('../../../../scripts/pixel-fs.cjs');
 const {PNG}=require('pngjs');
 const {execFileSync}=require('node:child_process');
 const dir='art/pixel/reference/human-anatomies';

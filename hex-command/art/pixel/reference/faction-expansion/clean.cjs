@@ -1,6 +1,6 @@
 // Pose-specific material cleanup. Coordinates use the original 64×64 slot.
 // Rebuild with process.cjs extract, this script, then process.cjs tiers.
-const fs = require("node:fs");
+const fs = require("../../../../scripts/pixel-fs.cjs");
 const path = require("node:path");
 const { execFileSync } = require("node:child_process");
 const root = __dirname,

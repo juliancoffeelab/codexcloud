@@ -1,5 +1,5 @@
 // Transfer approved generated material regions; preserve original bodies and Macer armour.
-const fs = require('node:fs');
+const fs = require('../../../../scripts/pixel-fs.cjs');
 const path = require('node:path');
 const root = __dirname;
 const units = path.resolve(root, '../../units');

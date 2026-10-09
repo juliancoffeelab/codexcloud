@@ -1,4 +1,4 @@
-const fs=require('node:fs');
+const fs=require('../../../../scripts/pixel-fs.cjs');
 const path=require('node:path');
 const project=path.resolve(__dirname,'../../../..');
 const directories=new Set([

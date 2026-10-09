@@ -1,7 +1,7 @@
 // Extract the approved imagegen board into native 64x64 editable matrices.
 // The original board has three 256px columns and two 234px rows. Each sprite
 // occupies a 64x64 logical frame, rendered at 4x, seven pixels below its row.
-const fs = require("node:fs");
+const fs = require('../../../../../scripts/pixel-fs.cjs');
 const path = require("node:path");
 const { PNG } = require("pngjs");
 const here = __dirname;
