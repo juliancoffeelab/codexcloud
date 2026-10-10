@@ -505,9 +505,9 @@
     "canvas": [64, 64]
   },
   "fox-spearguard": {
-    "name": "Fox spear and shield",
+    "name": "Thornshield",
     "level": 1,
-    "study": "faction-expansion/fox-spearguard",
+    "study": "fox-thornshield/l1",
     "canvas": [64, 64]
   },
   "fox-spearguard-l2": {
@@ -1060,7 +1060,8 @@
     "name": "Grove oracle",
     "level": 3,
     "study": "faction-expansion/woodland-grove-oracle",
-    "canvas": [48, 48]
+    "canvas": [48, 48],
+    "role": "commander"
   },
   "merfolk-reef-champion": {
     "name": "Reef champion",
@@ -1295,6 +1296,20 @@
     "level": 3,
     "study": "corruption-commander",
     "canvas": [64, 64],
+    "role": "commander"
+  },
+  "wildkeeper": {
+    "study": "woodland-commanders/wildkeeper",
+    "canvas": [48, 48],
+    "name": "Wildkeeper",
+    "level": 1,
+    "role": "commander"
+  },
+  "grovewarden": {
+    "study": "woodland-commanders/grovewarden",
+    "canvas": [48, 48],
+    "name": "Grovewarden",
+    "level": 2,
     "role": "commander"
   }
 }

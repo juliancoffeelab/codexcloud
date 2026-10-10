@@ -1,0 +1,14 @@
+[
+  {
+    "label": "Wildkeeper L1",
+    "image": "art/pixel/units/wildkeeper/enemy.png"
+  },
+  {
+    "label": "Grovewarden L2",
+    "image": "art/pixel/units/grovewarden/enemy.png"
+  },
+  {
+    "label": "Grove oracle L3",
+    "image": "art/pixel/units/woodland-grove-oracle/enemy.png"
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "commander": {
+    "role": "commander",
+    "units": [
+      {
+        "id": "wildkeeper",
+        "name": "Wildkeeper",
+        "level": 1
+      },
+      {
+        "id": "grovewarden",
+        "name": "Grovewarden",
+        "level": 2
+      },
+      {
+        "id": "woodland-grove-oracle",
+        "name": "Grove oracle",
+        "level": 3
+      }
+    ]
+  }
+}

@@ -12,6 +12,15 @@ sprites and the [Corruption Mage commander progression](reference/corruption-com
 keeps rebuild outputs in their active or archived locations and preserves the
 chosen catalog metadata. Historical study boards are not advancement trees.
 
+The approved [woodland commander line](reference/woodland-commanders/README.md)
+is Wildkeeper L1 → Grovewarden L2 → Grove oracle L3. Its lineup and commander
+roles are recorded in [woodland.json](lineups/woodland.json), preserving all three
+existing matrices and palettes. Thorncaller branching is a separate design TODO.
+
+The [Thornshield L1](reference/fox-thornshield/README.md) replaces the fox shield
+base. Its canonical matrix and guarded generation records supersede the old fox
+expansion masks; L2/L3 await enhancement.
+
 ## Shared faction sources
 
 Every finished unit and paired archived study has one `sprite.txt` matrix and a

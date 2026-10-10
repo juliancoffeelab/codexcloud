@@ -9,6 +9,8 @@
 - [ ] Review remaining optional quest rewards with the user.
 - [ ] Add advancement branching for the woodland Thorncaller.
 - [ ] Differentiate the fox warrior designs across advancement tiers.
+- [ ] Review the new Thornshield L1 artwork: shield/thorn silhouette, material
+      clarity, stray pixels and outlines before enhancing L2/L3.
 - [x] Restore visible two-shade faction contrast in skeleton archer cloaks,
       especially Death archer and Hollow archer; excessive shadow makes them
       read as one colour.
@@ -17,7 +19,7 @@
 
 - [x] Complete the Corruption Mage L1–L3 commander progression around the existing
       L2 sprite (zombies).
-- [ ] Review existing Grove oracle L3 art and formalize the
+- [x] Review existing Grove oracle L3 art and formalize the
       Wildkeeper → Grovewarden → Grove oracle commander artwork line (woodland).
 - [x] Complete the dwarf Forge lord commander L1–L3 artwork line.
 - [x] Complete the elf spear-and-banner commander L1–L3 artwork line.

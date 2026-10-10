@@ -1,0 +1,205 @@
+{
+  "matrix_sha256": "c0a54e24b3c28d2d36f25dc25898db4171affdf7d64c0c8ceb7db367ff6b801a",
+  "palette_sha256": "08c89aadc5bef6cf9da8b6726f142f7257507f33e8b0012c98c9bf8b04f2f321",
+  "reference": "tmp/fox-thornshield-l1/pass-2/generated.png",
+  "edits": [
+    {
+      "x": 25,
+      "y": 48,
+      "from": "f",
+      "to": "I",
+      "material": "cream garment hem",
+      "reason": "Remaining gold trim belongs to basic cream cloth",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 49,
+      "from": "f",
+      "to": "I",
+      "material": "cream garment hem",
+      "reason": "Remaining gold trim belongs to basic cream cloth",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 49,
+      "from": "f",
+      "to": "I",
+      "material": "cream garment hem",
+      "reason": "Remaining gold trim belongs to basic cream cloth",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 49,
+      "from": "f",
+      "to": "I",
+      "material": "cream garment hem",
+      "reason": "Remaining gold trim belongs to basic cream cloth",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 50,
+      "from": ".",
+      "to": "O",
+      "material": "cloak contour",
+      "reason": "Finish the exposed outer cloth step with a single outline pixel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 52,
+      "from": ".",
+      "to": "O",
+      "material": "cloak contour",
+      "reason": "Finish the exposed outer cloth step with a single outline pixel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 26,
+      "from": "B",
+      "to": "w",
+      "material": "wood shield rim",
+      "reason": "Leather-colored fleck in continuous wood rim becomes dark wood",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 26,
+      "from": "B",
+      "to": "w",
+      "material": "wood shield rim",
+      "reason": "Leather-colored fleck in continuous wood rim becomes dark wood",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 27,
+      "from": "B",
+      "to": "w",
+      "material": "wood shield rim",
+      "reason": "Leather-colored fleck in continuous wood rim becomes dark wood",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 28,
+      "from": "b",
+      "to": "w",
+      "material": "wood shield rim",
+      "reason": "Leather-colored fleck in continuous wood rim becomes dark wood",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 28,
+      "from": "B",
+      "to": "w",
+      "material": "wood shield rim",
+      "reason": "Leather-colored fleck in continuous wood rim becomes dark wood",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 32,
+      "from": "B",
+      "to": "w",
+      "material": "wood shield rim",
+      "reason": "Leather-colored fleck in continuous wood rim becomes dark wood",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 32,
+      "from": "B",
+      "to": "w",
+      "material": "wood shield rim",
+      "reason": "Leather-colored fleck in continuous wood rim becomes dark wood",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 32,
+      "from": "b",
+      "to": "w",
+      "material": "wood shield rim",
+      "reason": "Leather-colored fleck in continuous wood rim becomes dark wood",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 35,
+      "from": "b",
+      "to": "w",
+      "material": "wood shield rim",
+      "reason": "Leather-colored fleck in continuous wood rim becomes dark wood",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 35,
+      "from": "B",
+      "to": "w",
+      "material": "wood shield rim",
+      "reason": "Leather-colored fleck in continuous wood rim becomes dark wood",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 12,
+      "y": 30,
+      "from": "b",
+      "to": "W",
+      "material": "wood shield face",
+      "reason": "Resolve mismatched material within the plain wood face/boss",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 30,
+      "from": "b",
+      "to": "W",
+      "material": "wood shield face",
+      "reason": "Resolve mismatched material within the plain wood face/boss",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 12,
+      "y": 31,
+      "from": "w",
+      "to": "W",
+      "material": "wood shield face",
+      "reason": "Resolve mismatched material within the plain wood face/boss",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 13,
+      "y": 31,
+      "from": "B",
+      "to": "W",
+      "material": "wood shield face",
+      "reason": "Resolve mismatched material within the plain wood face/boss",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 31,
+      "from": "w",
+      "to": "W",
+      "material": "wood thorn",
+      "reason": "Keep upper-right wooden spike one clear material",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 31,
+      "from": "b",
+      "to": "W",
+      "material": "wood thorn",
+      "reason": "Keep upper-right wooden spike one clear material",
+      "boundary_reviewed": true
+    }
+  ]
+}

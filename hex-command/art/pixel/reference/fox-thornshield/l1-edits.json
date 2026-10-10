@@ -1,0 +1,1231 @@
+{
+  "matrix_sha256": "5a27589518f05267fba51d89fb34cbbd4e6799f773bdf35b9fb9db2c5e5a3c29",
+  "palette_sha256": "08c89aadc5bef6cf9da8b6726f142f7257507f33e8b0012c98c9bf8b04f2f321",
+  "reference": "tmp/fox-thornshield-l1/pass-2/generated.png",
+  "edits": [
+    {
+      "x": 49,
+      "y": 7,
+      "from": "e",
+      "to": "A",
+      "material": "silver spear",
+      "reason": "White alias inside spear blade becomes fixed silver",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 8,
+      "from": "e",
+      "to": "A",
+      "material": "silver spear",
+      "reason": "White alias inside spear blade becomes fixed silver",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 8,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 9,
+      "from": "e",
+      "to": "A",
+      "material": "silver spear",
+      "reason": "White alias inside spear blade becomes fixed silver",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 9,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 9,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 10,
+      "from": "e",
+      "to": "A",
+      "material": "silver spear",
+      "reason": "White alias inside spear blade becomes fixed silver",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 10,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 10,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 11,
+      "from": "e",
+      "to": "A",
+      "material": "silver spear",
+      "reason": "White alias inside spear blade becomes fixed silver",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 11,
+      "from": "e",
+      "to": "A",
+      "material": "silver spear",
+      "reason": "White alias inside spear blade becomes fixed silver",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 11,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 11,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 51,
+      "y": 11,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 12,
+      "from": "e",
+      "to": "A",
+      "material": "silver spear",
+      "reason": "White alias inside spear blade becomes fixed silver",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 12,
+      "from": "e",
+      "to": "A",
+      "material": "silver spear",
+      "reason": "White alias inside spear blade becomes fixed silver",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 12,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 12,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 51,
+      "y": 12,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 13,
+      "from": "e",
+      "to": "A",
+      "material": "silver spear",
+      "reason": "White alias inside spear blade becomes fixed silver",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 13,
+      "from": "e",
+      "to": "A",
+      "material": "silver spear",
+      "reason": "White alias inside spear blade becomes fixed silver",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 13,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 13,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 51,
+      "y": 13,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 14,
+      "from": "e",
+      "to": "A",
+      "material": "silver spear",
+      "reason": "White alias inside spear blade becomes fixed silver",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 14,
+      "from": "e",
+      "to": "A",
+      "material": "silver spear",
+      "reason": "White alias inside spear blade becomes fixed silver",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 14,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 14,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 51,
+      "y": 14,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 15,
+      "from": "e",
+      "to": "A",
+      "material": "silver spear",
+      "reason": "White alias inside spear blade becomes fixed silver",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 15,
+      "from": "e",
+      "to": "A",
+      "material": "silver spear",
+      "reason": "White alias inside spear blade becomes fixed silver",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 15,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 15,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 51,
+      "y": 15,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 16,
+      "from": "e",
+      "to": "A",
+      "material": "silver spear",
+      "reason": "White alias inside spear blade becomes fixed silver",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 16,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 16,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 17,
+      "from": "e",
+      "to": "A",
+      "material": "silver spear",
+      "reason": "White alias inside spear blade becomes fixed silver",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 17,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 18,
+      "from": "e",
+      "to": "A",
+      "material": "silver spear",
+      "reason": "White alias inside spear blade becomes fixed silver",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 18,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 18,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 19,
+      "from": "e",
+      "to": "A",
+      "material": "silver spear",
+      "reason": "White alias inside spear blade becomes fixed silver",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 19,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 19,
+      "from": "g",
+      "to": "a",
+      "material": "silver spear shade",
+      "reason": "Blue-gray tier alias becomes the spear shade",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 34,
+      "from": "f",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 34,
+      "from": "f",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 35,
+      "from": "f",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 35,
+      "from": "f",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 35,
+      "from": "f",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 36,
+      "from": "f",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 36,
+      "from": "f",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 36,
+      "from": "f",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 37,
+      "from": "f",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 37,
+      "from": "f",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 37,
+      "from": "f",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 39,
+      "from": "f",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 39,
+      "from": "f",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 39,
+      "from": "f",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 41,
+      "from": "e",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 42,
+      "from": "e",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 42,
+      "from": "e",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 43,
+      "from": "e",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 43,
+      "from": "e",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 43,
+      "from": "e",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 44,
+      "from": "e",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 44,
+      "from": "e",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 44,
+      "from": "e",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 45,
+      "from": "e",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 45,
+      "from": "e",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 37,
+      "y": 45,
+      "from": "g",
+      "to": "i",
+      "material": "cream tunic shade",
+      "reason": "Metal alias leaked into the cream garment fold",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 46,
+      "from": "e",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 37,
+      "y": 46,
+      "from": "g",
+      "to": "i",
+      "material": "cream tunic shade",
+      "reason": "Metal alias leaked into the cream garment fold",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 34,
+      "y": 48,
+      "from": "f",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 35,
+      "y": 48,
+      "from": "f",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 48,
+      "from": "f",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 37,
+      "y": 48,
+      "from": "G",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 49,
+      "from": "f",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 49,
+      "from": "f",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 34,
+      "y": 49,
+      "from": "f",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 35,
+      "y": 49,
+      "from": "f",
+      "to": "I",
+      "material": "cream tunic",
+      "reason": "Remove generated gold/white tier trim from this L1 garment panel",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 36,
+      "from": "a",
+      "to": "W",
+      "material": "wooden shield boss",
+      "reason": "Fixed wood boss instead of metal and leather speckles",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 36,
+      "from": "a",
+      "to": "W",
+      "material": "wooden shield boss",
+      "reason": "Fixed wood boss instead of metal and leather speckles",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 36,
+      "from": "a",
+      "to": "W",
+      "material": "wooden shield boss",
+      "reason": "Fixed wood boss instead of metal and leather speckles",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 37,
+      "from": "a",
+      "to": "W",
+      "material": "wooden shield boss",
+      "reason": "Fixed wood boss instead of metal and leather speckles",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 37,
+      "from": "B",
+      "to": "W",
+      "material": "wooden shield boss",
+      "reason": "Fixed wood boss instead of metal and leather speckles",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 39,
+      "from": "b",
+      "to": "W",
+      "material": "wooden shield boss",
+      "reason": "Fixed wood boss instead of metal and leather speckles",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 39,
+      "from": "w",
+      "to": "W",
+      "material": "wooden shield boss",
+      "reason": "Fixed wood boss instead of metal and leather speckles",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 15,
+      "y": 30,
+      "from": "*",
+      "to": "v",
+      "material": "shield leaf",
+      "reason": "Resolve the leaf to fixed green; faction cloth is confined to cape and scarf",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 30,
+      "from": "*",
+      "to": "V",
+      "material": "shield leaf",
+      "reason": "Resolve the leaf to fixed green; faction cloth is confined to cape and scarf",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 14,
+      "y": 31,
+      "from": "B",
+      "to": "V",
+      "material": "shield leaf",
+      "reason": "Resolve the leaf to fixed green; faction cloth is confined to cape and scarf",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 15,
+      "y": 31,
+      "from": "a",
+      "to": "V",
+      "material": "shield leaf",
+      "reason": "Resolve the leaf to fixed green; faction cloth is confined to cape and scarf",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 14,
+      "y": 32,
+      "from": "i",
+      "to": "V",
+      "material": "shield leaf",
+      "reason": "Resolve the leaf to fixed green; faction cloth is confined to cape and scarf",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 13,
+      "y": 32,
+      "from": "a",
+      "to": "v",
+      "material": "shield leaf",
+      "reason": "Resolve the leaf to fixed green; faction cloth is confined to cape and scarf",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 13,
+      "y": 33,
+      "from": "a",
+      "to": "v",
+      "material": "shield leaf",
+      "reason": "Resolve the leaf to fixed green; faction cloth is confined to cape and scarf",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 13,
+      "y": 34,
+      "from": "*",
+      "to": "W",
+      "material": "wood shield face",
+      "reason": "Detached faction fleck below leaf belongs to shield wood",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 10,
+      "y": 26,
+      "from": "i",
+      "to": "W",
+      "material": "upper wooden thorn",
+      "reason": "Cream extraction fleck is inside wooden thorn",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 11,
+      "y": 27,
+      "from": "i",
+      "to": "W",
+      "material": "upper wooden thorn",
+      "reason": "Cream extraction fleck is inside wooden thorn",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 11,
+      "y": 28,
+      "from": "i",
+      "to": "W",
+      "material": "upper wooden thorn",
+      "reason": "Cream extraction fleck is inside wooden thorn",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 12,
+      "y": 28,
+      "from": "i",
+      "to": "W",
+      "material": "upper wooden thorn",
+      "reason": "Cream extraction fleck is inside wooden thorn",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 13,
+      "y": 28,
+      "from": "i",
+      "to": "W",
+      "material": "upper wooden thorn",
+      "reason": "Cream extraction fleck is inside wooden thorn",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 12,
+      "y": 29,
+      "from": "i",
+      "to": "W",
+      "material": "upper wooden thorn",
+      "reason": "Cream extraction fleck is inside wooden thorn",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 29,
+      "from": "i",
+      "to": "W",
+      "material": "upper right wooden thorn",
+      "reason": "Cream extraction fleck is inside wooden thorn",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 29,
+      "from": "i",
+      "to": "W",
+      "material": "upper right wooden thorn",
+      "reason": "Cream extraction fleck is inside wooden thorn",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 30,
+      "from": "i",
+      "to": "W",
+      "material": "upper right wooden thorn",
+      "reason": "Cream extraction fleck is inside wooden thorn",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 30,
+      "from": "i",
+      "to": "W",
+      "material": "upper right wooden thorn",
+      "reason": "Cream extraction fleck is inside wooden thorn",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 10,
+      "y": 44,
+      "from": "i",
+      "to": "W",
+      "material": "lower wooden thorn",
+      "reason": "Thorn face is wood, preserving adjacent orange tail",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 44,
+      "from": "i",
+      "to": "W",
+      "material": "lower wooden thorn",
+      "reason": "Thorn face is wood, preserving adjacent orange tail",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 9,
+      "y": 45,
+      "from": "i",
+      "to": "W",
+      "material": "lower wooden thorn",
+      "reason": "Thorn face is wood, preserving adjacent orange tail",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 10,
+      "y": 45,
+      "from": "i",
+      "to": "W",
+      "material": "lower wooden thorn",
+      "reason": "Thorn face is wood, preserving adjacent orange tail",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 11,
+      "y": 45,
+      "from": "H",
+      "to": "W",
+      "material": "lower wooden thorn",
+      "reason": "Thorn face is wood, preserving adjacent orange tail",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 45,
+      "from": "i",
+      "to": "W",
+      "material": "lower wooden thorn",
+      "reason": "Thorn face is wood, preserving adjacent orange tail",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 45,
+      "from": "i",
+      "to": "W",
+      "material": "lower wooden thorn",
+      "reason": "Thorn face is wood, preserving adjacent orange tail",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 8,
+      "y": 46,
+      "from": "i",
+      "to": "W",
+      "material": "lower wooden thorn",
+      "reason": "Thorn face is wood, preserving adjacent orange tail",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 9,
+      "y": 46,
+      "from": "i",
+      "to": "W",
+      "material": "lower wooden thorn",
+      "reason": "Thorn face is wood, preserving adjacent orange tail",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 46,
+      "from": "i",
+      "to": "W",
+      "material": "lower wooden thorn",
+      "reason": "Thorn face is wood, preserving adjacent orange tail",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 8,
+      "y": 47,
+      "from": "i",
+      "to": "W",
+      "material": "lower wooden thorn",
+      "reason": "Thorn face is wood, preserving adjacent orange tail",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 47,
+      "from": "i",
+      "to": "W",
+      "material": "lower wooden thorn",
+      "reason": "Thorn face is wood, preserving adjacent orange tail",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 27,
+      "from": "^",
+      "to": "w",
+      "material": "shield rim",
+      "reason": "Detached teal at shield upper rim belongs to wood",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 9,
+      "y": 28,
+      "from": "b",
+      "to": "O",
+      "material": "thorn edge",
+      "reason": "Missing outer outline on wooden upper thorn",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 38,
+      "y": 28,
+      "from": ".",
+      "to": "O",
+      "material": "cape border",
+      "reason": "Restore one-pixel outer contour around faction cloth without altering diagonal interior",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 39,
+      "y": 29,
+      "from": ".",
+      "to": "O",
+      "material": "cape border",
+      "reason": "Restore one-pixel outer contour around faction cloth without altering diagonal interior",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 30,
+      "from": ".",
+      "to": "O",
+      "material": "cape border",
+      "reason": "Restore one-pixel outer contour around faction cloth without altering diagonal interior",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 39,
+      "from": ".",
+      "to": "O",
+      "material": "cape border",
+      "reason": "Restore one-pixel outer contour around faction cloth without altering diagonal interior",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 40,
+      "from": ".",
+      "to": "O",
+      "material": "cape border",
+      "reason": "Restore one-pixel outer contour around faction cloth without altering diagonal interior",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 41,
+      "from": ".",
+      "to": "O",
+      "material": "cape border",
+      "reason": "Restore one-pixel outer contour around faction cloth without altering diagonal interior",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 42,
+      "from": ".",
+      "to": "O",
+      "material": "cape border",
+      "reason": "Restore one-pixel outer contour around faction cloth without altering diagonal interior",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 43,
+      "from": ".",
+      "to": "O",
+      "material": "cape border",
+      "reason": "Restore one-pixel outer contour around faction cloth without altering diagonal interior",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 51,
+      "from": ".",
+      "to": "O",
+      "material": "cape border",
+      "reason": "Restore one-pixel outer contour around faction cloth without altering diagonal interior",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 52,
+      "from": ".",
+      "to": "O",
+      "material": "cape border",
+      "reason": "Restore one-pixel outer contour around faction cloth without altering diagonal interior",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 52,
+      "from": ".",
+      "to": "O",
+      "material": "cape border",
+      "reason": "Restore one-pixel outer contour around faction cloth without altering diagonal interior",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 53,
+      "from": ".",
+      "to": "O",
+      "material": "cape border",
+      "reason": "Restore one-pixel outer contour around faction cloth without altering diagonal interior",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 53,
+      "from": ".",
+      "to": "O",
+      "material": "cape border",
+      "reason": "Restore one-pixel outer contour around faction cloth without altering diagonal interior",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 53,
+      "from": ".",
+      "to": "O",
+      "material": "cape border",
+      "reason": "Restore one-pixel outer contour around faction cloth without altering diagonal interior",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 56,
+      "from": ".",
+      "to": "O",
+      "material": "spear foot",
+      "reason": "Cap the exposed wooden shaft end",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 56,
+      "from": ".",
+      "to": "O",
+      "material": "spear foot",
+      "reason": "Cap the exposed wooden shaft end",
+      "boundary_reviewed": true
+    }
+  ]
+}

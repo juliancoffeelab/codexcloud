@@ -1,0 +1,8 @@
+{
+  "reason": "Add fixed woodland leaf colors from original fox material palette; extracted leaf mistakenly quantized to teal faction and metal because template omitted leaf greens.",
+  "source": "art/pixel/units/fox-spearguard/palette.json",
+  "added": {
+    "V": [130, 147, 60, 255],
+    "v": [72, 89, 36, 255]
+  }
+}

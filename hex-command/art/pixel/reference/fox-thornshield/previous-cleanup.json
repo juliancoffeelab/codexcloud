@@ -1,0 +1,3183 @@
+{
+  "matrixChanges": [
+    {
+      "x": 47,
+      "y": 11,
+      "from": "a",
+      "to": "A",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 49,
+      "y": 11,
+      "from": "A",
+      "to": "a",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 48,
+      "y": 12,
+      "from": "a",
+      "to": "A",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 47,
+      "y": 14,
+      "from": "a",
+      "to": "A",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 48,
+      "y": 14,
+      "from": "a",
+      "to": "A",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 49,
+      "y": 14,
+      "from": "A",
+      "to": "a",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 47,
+      "y": 15,
+      "from": "a",
+      "to": "A",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 48,
+      "y": 15,
+      "from": "a",
+      "to": "A",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 48,
+      "y": 16,
+      "from": "a",
+      "to": "A",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 48,
+      "y": 17,
+      "from": "a",
+      "to": "A",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 47,
+      "y": 18,
+      "from": "a",
+      "to": "A",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 48,
+      "y": 18,
+      "from": "A",
+      "to": "a",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 47,
+      "y": 19,
+      "from": "a",
+      "to": "A",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 47,
+      "y": 21,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 48,
+      "y": 21,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 49,
+      "y": 21,
+      "from": "B",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 22,
+      "from": "b",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 48,
+      "y": 22,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 49,
+      "y": 22,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 23,
+      "from": "b",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 48,
+      "y": 23,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 24,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 48,
+      "y": 24,
+      "from": "B",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 25,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 48,
+      "y": 25,
+      "from": "B",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 26,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 18,
+      "y": 27,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 27,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 27,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 46,
+      "y": 27,
+      "from": "b",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 27,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 23,
+      "y": 28,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 46,
+      "y": 28,
+      "from": "b",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 28,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 17,
+      "y": 29,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 29,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 20,
+      "y": 29,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 24,
+      "y": 29,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 46,
+      "y": 29,
+      "from": "w",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 29,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 48,
+      "y": 29,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 16,
+      "y": 30,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 17,
+      "y": 30,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 30,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 19,
+      "y": 30,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 20,
+      "y": 30,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 30,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 46,
+      "y": 30,
+      "from": "w",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 30,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 48,
+      "y": 30,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 14,
+      "y": 31,
+      "from": "b",
+      "to": "w",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 15,
+      "y": 31,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 31,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 17,
+      "y": 31,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 31,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 19,
+      "y": 31,
+      "from": "b",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 20,
+      "y": 31,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 31,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 31,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 31,
+      "from": "b",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 46,
+      "y": 31,
+      "from": "w",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 15,
+      "y": 32,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 32,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 17,
+      "y": 32,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 32,
+      "from": "w",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 19,
+      "y": 32,
+      "from": "w",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 20,
+      "y": 32,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 32,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 32,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 32,
+      "from": "b",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 13,
+      "y": 33,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 15,
+      "y": 33,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 33,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 17,
+      "y": 33,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 33,
+      "from": "w",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 19,
+      "y": 33,
+      "from": "w",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 20,
+      "y": 33,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 33,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 33,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 24,
+      "y": 33,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 13,
+      "y": 34,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 15,
+      "y": 34,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 34,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 17,
+      "y": 34,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 34,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 19,
+      "y": 34,
+      "from": "b",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 20,
+      "y": 34,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 34,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 34,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 34,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 24,
+      "y": 34,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 12,
+      "y": 35,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 13,
+      "y": 35,
+      "from": "W",
+      "to": "w",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 15,
+      "y": 35,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 35,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 35,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 35,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 35,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 24,
+      "y": 35,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 12,
+      "y": 36,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 13,
+      "y": 36,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 15,
+      "y": 36,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 36,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 36,
+      "from": "w",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 22,
+      "y": 36,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 36,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 24,
+      "y": 36,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 12,
+      "y": 37,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 13,
+      "y": 37,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 14,
+      "y": 37,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 15,
+      "y": 37,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 37,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 37,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 24,
+      "y": 37,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 12,
+      "y": 38,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 13,
+      "y": 38,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 14,
+      "y": 38,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 15,
+      "y": 38,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 38,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 38,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 24,
+      "y": 38,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 46,
+      "y": 38,
+      "from": "w",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 38,
+      "from": "B",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 12,
+      "y": 39,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 13,
+      "y": 39,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 14,
+      "y": 39,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 15,
+      "y": 39,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 39,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 39,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 24,
+      "y": 39,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 46,
+      "y": 39,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 39,
+      "from": "B",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 12,
+      "y": 40,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 13,
+      "y": 40,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 14,
+      "y": 40,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 15,
+      "y": 40,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 40,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 40,
+      "from": "b",
+      "to": "w",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 19,
+      "y": 40,
+      "from": "b",
+      "to": "w",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 40,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 40,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 40,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 24,
+      "y": 40,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 46,
+      "y": 40,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 40,
+      "from": "B",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 13,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 14,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 15,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 17,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 20,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 24,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 46,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 41,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 13,
+      "y": 42,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 15,
+      "y": 42,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 42,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 17,
+      "y": 42,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 42,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 19,
+      "y": 42,
+      "from": "w",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 20,
+      "y": 42,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 42,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 42,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 42,
+      "from": "w",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 24,
+      "y": 42,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 46,
+      "y": 42,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 42,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 15,
+      "y": 43,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 43,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 17,
+      "y": 43,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 43,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 19,
+      "y": 43,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 20,
+      "y": 43,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 43,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 43,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 43,
+      "from": "w",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 46,
+      "y": 43,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 43,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 15,
+      "y": 44,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 44,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 17,
+      "y": 44,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 44,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 19,
+      "y": 44,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 20,
+      "y": 44,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 44,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 44,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 44,
+      "from": "b",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 45,
+      "y": 44,
+      "from": "b",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 44,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 44,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 16,
+      "y": 45,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 17,
+      "y": 45,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 45,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 19,
+      "y": 45,
+      "from": "w",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 20,
+      "y": 45,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 45,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 45,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 45,
+      "y": 45,
+      "from": "b",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 45,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 45,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 15,
+      "y": 46,
+      "from": "b",
+      "to": "w",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 20,
+      "y": 46,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 45,
+      "y": 46,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 46,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 46,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 45,
+      "y": 47,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 47,
+      "from": "B",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 45,
+      "y": 48,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 48,
+      "from": "B",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 45,
+      "y": 49,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 45,
+      "y": 50,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 50,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 15,
+      "y": 51,
+      "from": "w",
+      "to": "h",
+      "reason": "Replace the brown color fleck in the orange tail with the fox fur shadow."
+    },
+    {
+      "x": 45,
+      "y": 51,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 51,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 45,
+      "y": 52,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 52,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 45,
+      "y": 53,
+      "from": "b",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 53,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 45,
+      "y": 54,
+      "from": "b",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 54,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 45,
+      "y": 55,
+      "from": "b",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 55,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    }
+  ],
+  "enemyMatrixChanges": [
+    {
+      "x": 47,
+      "y": 11,
+      "from": "a",
+      "to": "A",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 49,
+      "y": 11,
+      "from": "A",
+      "to": "a",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 48,
+      "y": 12,
+      "from": "a",
+      "to": "A",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 47,
+      "y": 14,
+      "from": "a",
+      "to": "A",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 48,
+      "y": 14,
+      "from": "a",
+      "to": "A",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 49,
+      "y": 14,
+      "from": "A",
+      "to": "a",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 47,
+      "y": 15,
+      "from": "a",
+      "to": "A",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 48,
+      "y": 15,
+      "from": "a",
+      "to": "A",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 48,
+      "y": 16,
+      "from": "a",
+      "to": "A",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 48,
+      "y": 17,
+      "from": "a",
+      "to": "A",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 47,
+      "y": 18,
+      "from": "a",
+      "to": "A",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 48,
+      "y": 18,
+      "from": "A",
+      "to": "a",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 47,
+      "y": 19,
+      "from": "a",
+      "to": "A",
+      "reason": "Join the spearhead highlight into one lit edge; remove scattered bright steel flecks."
+    },
+    {
+      "x": 47,
+      "y": 21,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 48,
+      "y": 21,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 49,
+      "y": 21,
+      "from": "B",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 22,
+      "from": "b",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 48,
+      "y": 22,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 49,
+      "y": 22,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 23,
+      "from": "b",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 48,
+      "y": 23,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 24,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 48,
+      "y": 24,
+      "from": "B",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 25,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 48,
+      "y": 25,
+      "from": "B",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 26,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 18,
+      "y": 27,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 27,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 27,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 46,
+      "y": 27,
+      "from": "b",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 27,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 23,
+      "y": 28,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 46,
+      "y": 28,
+      "from": "b",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 28,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 17,
+      "y": 29,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 29,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 20,
+      "y": 29,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 24,
+      "y": 29,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 46,
+      "y": 29,
+      "from": "w",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 29,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 48,
+      "y": 29,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 16,
+      "y": 30,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 17,
+      "y": 30,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 30,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 19,
+      "y": 30,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 20,
+      "y": 30,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 30,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 46,
+      "y": 30,
+      "from": "w",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 30,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 48,
+      "y": 30,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 14,
+      "y": 31,
+      "from": "b",
+      "to": "w",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 15,
+      "y": 31,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 31,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 17,
+      "y": 31,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 31,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 19,
+      "y": 31,
+      "from": "b",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 20,
+      "y": 31,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 31,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 31,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 31,
+      "from": "b",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 46,
+      "y": 31,
+      "from": "w",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 15,
+      "y": 32,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 32,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 17,
+      "y": 32,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 32,
+      "from": "w",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 19,
+      "y": 32,
+      "from": "w",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 20,
+      "y": 32,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 32,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 32,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 32,
+      "from": "b",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 13,
+      "y": 33,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 15,
+      "y": 33,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 33,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 17,
+      "y": 33,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 33,
+      "from": "w",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 19,
+      "y": 33,
+      "from": "w",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 20,
+      "y": 33,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 33,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 33,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 24,
+      "y": 33,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 13,
+      "y": 34,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 15,
+      "y": 34,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 34,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 17,
+      "y": 34,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 34,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 19,
+      "y": 34,
+      "from": "b",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 20,
+      "y": 34,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 34,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 34,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 34,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 24,
+      "y": 34,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 12,
+      "y": 35,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 13,
+      "y": 35,
+      "from": "W",
+      "to": "w",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 15,
+      "y": 35,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 35,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 35,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 35,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 35,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 24,
+      "y": 35,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 12,
+      "y": 36,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 13,
+      "y": 36,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 15,
+      "y": 36,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 36,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 36,
+      "from": "w",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 22,
+      "y": 36,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 36,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 24,
+      "y": 36,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 12,
+      "y": 37,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 13,
+      "y": 37,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 14,
+      "y": 37,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 15,
+      "y": 37,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 37,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 37,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 24,
+      "y": 37,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 12,
+      "y": 38,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 13,
+      "y": 38,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 14,
+      "y": 38,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 15,
+      "y": 38,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 38,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 38,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 24,
+      "y": 38,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 46,
+      "y": 38,
+      "from": "w",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 38,
+      "from": "B",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 12,
+      "y": 39,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 13,
+      "y": 39,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 14,
+      "y": 39,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 15,
+      "y": 39,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 39,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 39,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 24,
+      "y": 39,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 46,
+      "y": 39,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 39,
+      "from": "B",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 12,
+      "y": 40,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 13,
+      "y": 40,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 14,
+      "y": 40,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 15,
+      "y": 40,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 40,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 40,
+      "from": "b",
+      "to": "w",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 19,
+      "y": 40,
+      "from": "b",
+      "to": "w",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 40,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 40,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 40,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 24,
+      "y": 40,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 46,
+      "y": 40,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 40,
+      "from": "B",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 13,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 14,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 15,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 17,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 20,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 24,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 46,
+      "y": 41,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 41,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 13,
+      "y": 42,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 15,
+      "y": 42,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 42,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 17,
+      "y": 42,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 42,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 19,
+      "y": 42,
+      "from": "w",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 20,
+      "y": 42,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 42,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 42,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 42,
+      "from": "w",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 24,
+      "y": 42,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 46,
+      "y": 42,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 42,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 15,
+      "y": 43,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 43,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 17,
+      "y": 43,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 43,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 19,
+      "y": 43,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 20,
+      "y": 43,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 43,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 43,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 43,
+      "from": "w",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 46,
+      "y": 43,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 43,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 15,
+      "y": 44,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 16,
+      "y": 44,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 17,
+      "y": 44,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 44,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 19,
+      "y": 44,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 20,
+      "y": 44,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 44,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 44,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 23,
+      "y": 44,
+      "from": "b",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 45,
+      "y": 44,
+      "from": "b",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 44,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 44,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 16,
+      "y": 45,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 17,
+      "y": 45,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 18,
+      "y": 45,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 19,
+      "y": 45,
+      "from": "w",
+      "to": "W",
+      "reason": "Replace isolated shield speckle with a continuous wood face and connected rim shadow."
+    },
+    {
+      "x": 20,
+      "y": 45,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 21,
+      "y": 45,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 22,
+      "y": 45,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 45,
+      "y": 45,
+      "from": "b",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 45,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 45,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 15,
+      "y": 46,
+      "from": "b",
+      "to": "w",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 20,
+      "y": 46,
+      "from": "B",
+      "to": "W",
+      "reason": "Use the wood ramp on the wooden shield instead of the leather ramp."
+    },
+    {
+      "x": 45,
+      "y": 46,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 46,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 47,
+      "y": 46,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 45,
+      "y": 47,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 47,
+      "from": "B",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 45,
+      "y": 48,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 48,
+      "from": "B",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 45,
+      "y": 49,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 45,
+      "y": 50,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 50,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 15,
+      "y": 51,
+      "from": "w",
+      "to": "h",
+      "reason": "Replace the brown color fleck in the orange tail with the fox fur shadow."
+    },
+    {
+      "x": 45,
+      "y": 51,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 51,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 45,
+      "y": 52,
+      "from": "B",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 52,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 45,
+      "y": 53,
+      "from": "b",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 53,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 45,
+      "y": 54,
+      "from": "b",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 54,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 45,
+      "y": 55,
+      "from": "b",
+      "to": "W",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    },
+    {
+      "x": 46,
+      "y": 55,
+      "from": "b",
+      "to": "w",
+      "reason": "Use coherent wooden shaft highlights outside the protected hand/grip rows."
+    }
+  ],
+  "paletteChanges": {
+    "H": {
+      "from": [241, 112, 26, 255],
+      "to": [235, 111, 36, 255],
+      "reason": "Match woodland fox fur to a warm orange ramp without changing facial pixel placement."
+    },
+    "h": {
+      "from": [158, 64, 22, 255],
+      "to": [169, 70, 28, 255],
+      "reason": "Keep the fox fur shadow warm and related to the main coat."
+    }
+  },
+  "canvas": [64, 64]
+}

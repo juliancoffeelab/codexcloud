@@ -84,6 +84,8 @@ function render(dir) {
   );
 }
 function extract(job) {
+  // Approved Thornshield has its own generation and guarded cleanup record.
+  if (job.id === "fox-spearguard") return;
   const dir = path.join(root, "extracted", job.id);
   fs.mkdirSync(dir, { recursive: true });
   const source = PNG.sync.read(fs.readFileSync(path.join(root, "sources", job.id + ".png"))),
@@ -235,7 +237,7 @@ function extract(job) {
 }
 function tiers(job) {
   // The reviewed commander line owns these matrices; do not replay the old tier recipe.
-  if (job.id === "zombie-corruption-mage") return;
+  if (["zombie-corruption-mage", "fox-spearguard"].includes(job.id)) return;
   if (job.level === 3) {
     const dir = path.join(root, "extracted", job.id);
     const out = sourceDirectory(job.id);

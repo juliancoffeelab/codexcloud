@@ -38,6 +38,7 @@ const helmets = {
   "dwarf-goat-rider": [21, 9, 34, 14],
 };
 for (const job of manifest.jobs.filter((j) => !ids.length || ids.includes(j.id))) {
+  if (job.id === "fox-spearguard") continue; // Approved Thornshield owns its cleanup.
   if (job.race.startsWith("beast-")) continue; // Separate animal material ownership, see clean-beasts.cjs.
   if (job.level === 3) continue; // Independent generated tier, not an L1 anatomy mask.
   if (job.recipe === "merfolk-renewed") {

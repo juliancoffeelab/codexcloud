@@ -1,0 +1,14 @@
+{
+  "wildkeeper": {
+    "sprite.txt": "dd184661727edde90236325c1cdd742f6e94c23496af750a6e95f9e03480c98a",
+    "palette.json": "fe35b7c64f2852ed503d9296a58e9cd6a8043e273edaeb54e6eeca82829ffb08"
+  },
+  "grovewarden": {
+    "sprite.txt": "1ca675cad0452e89beeeb2703afc5e743de47a15b5660ae3166100e155d19293",
+    "palette.json": "fe35b7c64f2852ed503d9296a58e9cd6a8043e273edaeb54e6eeca82829ffb08"
+  },
+  "woodland-grove-oracle": {
+    "sprite.txt": "04cf22b8d286b77bce9cc17efb167c692a7c39a9b0fecaa052a3780c14ba812a",
+    "palette.json": "caaa12841ee60731b5675c1c2fd38d7f6aa8eb84d422b688c1a3e5e814ce06d0"
+  }
+}

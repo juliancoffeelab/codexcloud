@@ -7,6 +7,7 @@ const dwarves = require("../../lineups/dwarves.json");
 const merfolkArchive = require("../merfolk-archive/catalog.json");
 const merfolk = require("../../lineups/merfolk.json");
 const elves = require("../../lineups/elves.json");
+const woodland = require("../../lineups/woodland.json");
 const selected = new Map(
   [
     ...elves.trees.flatMap((tree) => [
@@ -18,6 +19,7 @@ const selected = new Map(
       ...tree.branches.flatMap((branch) => branch.units),
     ]),
     ...merfolk.commander.units,
+    ...woodland.commander.units.map((unit) => ({ ...unit, role: "commander" })),
     ...(elves.commander?.units ?? []),
     ...(dwarves.commander?.units ?? []),
     lineup.base,

@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "template": "tmp/fox-thornshield-l1/pass-2/template.png",
+  "canvas": [1024, 1168],
+  "anchors": [
+    {
+      "matrix": "art/pixel/units/fox-spearguard/sprite.txt",
+      "sha256": "e1d2cd38f57f3ab2e71fa29f53455633fa6c9c8a676bfccf4a067a386cdc1f34"
+    },
+    {
+      "matrix": "art/pixel/units/fox-spearguard-l2/sprite.txt",
+      "sha256": "60f8a47590b693581b06ae6a195365f8483b91a62808d8c4c999a0625bf298b7"
+    },
+    {
+      "matrix": "art/pixel/units/fox-spearguard-l3/sprite.txt",
+      "sha256": "5fa62de7c73659e695f1371548fc6ffd8356a6789c13591e76d4d39e6bc81489"
+    }
+  ],
+  "palette": {
+    ".": [0, 0, 0, 0],
+    "^": [1, 93, 100, 255],
+    "*": [1, 55, 59, 255],
+    "A": [203, 215, 218, 255],
+    "B": [111, 72, 43, 255],
+    "G": [238, 184, 52, 255],
+    "H": [235, 111, 36, 255],
+    "I": [240, 229, 198, 255],
+    "O": [25, 22, 20, 255],
+    "W": [132, 88, 51, 255],
+    "a": [101, 119, 127, 255],
+    "b": [64, 40, 28, 255],
+    "h": [169, 70, 28, 255],
+    "i": [180, 163, 127, 255],
+    "w": [76, 49, 31, 255],
+    "c": [222, 232, 235, 255],
+    "d": [129, 151, 160, 255],
+    "e": [244, 248, 241, 255],
+    "f": [255, 204, 65, 255],
+    "g": [155, 184, 191, 255]
+  },
+  "slots": [
+    {
+      "label": "Thornshield L1",
+      "rect": [512, 576, 512, 512],
+      "native": 64,
+      "origin": [0, 0]
+    }
+  ],
+  "background": [255, 0, 255, 255],
+  "logicalSlot": 64
+}

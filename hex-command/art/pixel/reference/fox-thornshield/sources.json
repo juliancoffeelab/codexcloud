@@ -1,0 +1,10 @@
+{
+  "units": [
+    {
+      "id": "fox-spearguard",
+      "level": 1,
+      "matrix_sha256": "e7589007ae203cf1f05311330baedbfef1696f1b43953414a68aaf79169eb9e2",
+      "palette_sha256": "18587161d9f872cede1c171719b48783ca93b55126bf7e51d3f272e89514cbde"
+    }
+  ]
+}

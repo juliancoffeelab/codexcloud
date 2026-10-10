@@ -1,4 +1,5 @@
 // Extend approved L2 anatomies to L3 without changing their pose or overwriting L1/L2.
+const { catalogEntry } = require("./source-directory.cjs");
 const fs = require("../../../../scripts/pixel-fs.cjs"),
   path = require("node:path"),
   { execFileSync } = require("node:child_process");
@@ -220,7 +221,12 @@ for (const [base, id, name, race, note] of recipes) {
     ["scripts/render-pixel.py", path.join(out, "player.txt"), path.join(out, "enemy.txt")],
     { cwd: project, stdio: "pipe" },
   );
-  catalog[id] = { name, level: 3, study: "faction-expansion/" + id, canvas: [48, 48] };
+  catalog[id] = catalogEntry(id, {
+    name,
+    level: 3,
+    study: "faction-expansion/" + id,
+    canvas: [48, 48],
+  });
 }
 fs.writeFileSync(catalogFile, JSON.stringify(catalog, null, 2) + "\n");
 fs.writeFileSync(
