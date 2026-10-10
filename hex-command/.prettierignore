@@ -2,3 +2,5 @@ dist/
 node_modules/
 public/
 package-lock.json
+# Raw extraction palette bytes are inputs to guarded pixel-edit hashes.
+art/pixel/reference/elf-caster-branches/*/extracted/palette.json

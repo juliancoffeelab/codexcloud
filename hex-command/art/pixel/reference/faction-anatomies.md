@@ -160,6 +160,7 @@ Sword-and-shield, hammer, poleaxe, crossbow, trident and scythe each deserve the
 own reference. Tier recolors reuse those poses; changing the weapon family should
 not depend on reconstructing it pixel by pixel again.
 
-Use the saved [artwork workflows](../WORKFLOWS.md) for preparation, extraction,
+Use [pinkbox generation](../../../.agents/skills/pinkbox-generation/SKILL.md) and
+[pixel cleaning](../../../.agents/skills/pixel-cleaning/SKILL.md) for preparation, extraction,
 cleanup and canonical source storage. Preserve faction colors and consistent
 anatomical proportions and detail across the full unit sheet.

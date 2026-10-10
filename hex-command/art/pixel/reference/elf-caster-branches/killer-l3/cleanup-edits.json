@@ -1,0 +1,207 @@
+{
+  "matrix_sha256": "bd8397f9e56b0d1b5aebef13e20676a87de30659e1ed90150c6f5a7303dc4219",
+  "palette_sha256": "2213471413632f5807dd7b7ffa7013b178a45e4f03793a95b5b271d69a8772e3",
+  "reference": "killer-l3-generated.png",
+  "edits": [
+    {
+      "x": 17,
+      "y": 31,
+      "from": "h",
+      "to": "w",
+      "material": "dark staff wood",
+      "reason": "Visually reviewed dark staff wood against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 17,
+      "y": 32,
+      "from": "h",
+      "to": "w",
+      "material": "dark staff wood",
+      "reason": "Visually reviewed dark staff wood against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 34,
+      "y": 31,
+      "from": "h",
+      "to": "B",
+      "material": "leather belt",
+      "reason": "Visually reviewed leather belt against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 33,
+      "y": 36,
+      "from": "h",
+      "to": "B",
+      "material": "leather sash",
+      "reason": "Visually reviewed leather sash against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 30,
+      "y": 39,
+      "from": "h",
+      "to": "B",
+      "material": "leather sash",
+      "reason": "Visually reviewed leather sash against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 33,
+      "y": 39,
+      "from": "H",
+      "to": "B",
+      "material": "leather sash",
+      "reason": "Visually reviewed leather sash against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 45,
+      "y": 49,
+      "from": "h",
+      "to": "B",
+      "material": "boot leather",
+      "reason": "Visually reviewed boot leather against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 46,
+      "y": 49,
+      "from": "h",
+      "to": "B",
+      "material": "boot leather",
+      "reason": "Visually reviewed boot leather against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 22,
+      "y": 50,
+      "from": "h",
+      "to": "B",
+      "material": "boot leather",
+      "reason": "Visually reviewed boot leather against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 45,
+      "y": 50,
+      "from": "h",
+      "to": "B",
+      "material": "boot leather",
+      "reason": "Visually reviewed boot leather against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 22,
+      "y": 51,
+      "from": "h",
+      "to": "B",
+      "material": "boot leather",
+      "reason": "Visually reviewed boot leather against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 46,
+      "y": 52,
+      "from": "h",
+      "to": "B",
+      "material": "boot leather",
+      "reason": "Visually reviewed boot leather against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 20,
+      "y": 53,
+      "from": "h",
+      "to": "B",
+      "material": "boot leather",
+      "reason": "Visually reviewed boot leather against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 21,
+      "y": 53,
+      "from": "h",
+      "to": "B",
+      "material": "boot leather",
+      "reason": "Visually reviewed boot leather against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 19,
+      "y": 23,
+      "from": "W",
+      "to": "O",
+      "material": "staff grip boundary",
+      "reason": "Visually reviewed staff grip boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 6,
+      "y": 44,
+      "from": "C",
+      "to": "O",
+      "material": "cloak boundary, not ivory",
+      "reason": "Visually reviewed cloak boundary, not ivory against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 10,
+      "y": 47,
+      "from": "d",
+      "to": "O",
+      "material": "cloak boundary",
+      "reason": "Visually reviewed cloak boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 52,
+      "from": "C",
+      "to": "O",
+      "material": "lining hem",
+      "reason": "Visually reviewed lining hem against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 52,
+      "from": "C",
+      "to": "O",
+      "material": "lining hem",
+      "reason": "Visually reviewed lining hem against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 52,
+      "from": "C",
+      "to": "O",
+      "material": "lining hem",
+      "reason": "Visually reviewed lining hem against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 1,
+      "y": 47,
+      "from": "O",
+      "to": ".",
+      "material": "unsupported exterior cloak spur",
+      "reason": "Visually reviewed unsupported exterior cloak spur against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 12,
+      "y": 52,
+      "from": "O",
+      "to": ".",
+      "material": "unsupported exterior cloak spur",
+      "reason": "Visually reviewed unsupported exterior cloak spur against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 50,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 41,
+      "y": 51,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    }
+  ]
+}

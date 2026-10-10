@@ -1,5 +1,8 @@
 # Skeleton servant progression
 
+For new edits, use [pinkbox enhancement](../../../../.agents/skills/pinkbox-enhancement/SKILL.md) and
+[pixel cleaning](../../../../.agents/skills/pixel-cleaning/SKILL.md). This folder records the saved design.
+
 The selected trees live in `../../lineups/skeletons.json`:
 
 - Skeleton branches into Revenant/Dreadguard or Knife servant/Knife shade.

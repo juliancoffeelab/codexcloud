@@ -1,0 +1,94 @@
+{
+  "baseline": "killer-l2-final",
+  "edits": [
+    {
+      "x": 57,
+      "y": 21,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 55,
+      "y": 22,
+      "from": "W",
+      "to": "H",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 53,
+      "y": 23,
+      "from": "O",
+      "to": "H",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 24,
+      "from": "O",
+      "to": "H",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 24,
+      "from": "O",
+      "to": "H",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 54,
+      "y": 24,
+      "from": "O",
+      "to": "H",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 55,
+      "y": 25,
+      "from": "H",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 56,
+      "y": 25,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 26,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 55,
+      "y": 26,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 56,
+      "y": 26,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    }
+  ],
+  "paletteChanges": {}
+}

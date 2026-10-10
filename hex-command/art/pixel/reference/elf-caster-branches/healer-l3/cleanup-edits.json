@@ -1,0 +1,330 @@
+{
+  "matrix_sha256": "0a4859729d3cc4ee08335b23a039c9242cb4de7226697012beffe466e759ecc1",
+  "palette_sha256": "afbd7072fa773f65394a8c97c30683c771c4a59e3d282338070f4aa532f56456",
+  "reference": "healer-l3-generated.png",
+  "edits": [
+    {
+      "x": 27,
+      "y": 41,
+      "from": "H",
+      "to": "I",
+      "material": "covered trousers",
+      "reason": "Visually reviewed covered trousers against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 26,
+      "y": 42,
+      "from": "H",
+      "to": "I",
+      "material": "covered trousers",
+      "reason": "Visually reviewed covered trousers against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 27,
+      "y": 42,
+      "from": "a",
+      "to": "i",
+      "material": "covered trouser shadow",
+      "reason": "Visually reviewed covered trouser shadow against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 26,
+      "y": 43,
+      "from": "H",
+      "to": "I",
+      "material": "covered trousers",
+      "reason": "Visually reviewed covered trousers against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 27,
+      "y": 43,
+      "from": "H",
+      "to": "I",
+      "material": "covered trousers",
+      "reason": "Visually reviewed covered trousers against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 26,
+      "y": 44,
+      "from": "H",
+      "to": "I",
+      "material": "covered trousers",
+      "reason": "Visually reviewed covered trousers against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 25,
+      "y": 45,
+      "from": "H",
+      "to": "I",
+      "material": "covered trousers",
+      "reason": "Visually reviewed covered trousers against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 25,
+      "y": 46,
+      "from": "H",
+      "to": "I",
+      "material": "covered trousers",
+      "reason": "Visually reviewed covered trousers against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 24,
+      "y": 47,
+      "from": "H",
+      "to": "I",
+      "material": "covered trousers",
+      "reason": "Visually reviewed covered trousers against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 36,
+      "y": 34,
+      "from": "*",
+      "to": "I",
+      "material": "ivory cuff, not skin",
+      "reason": "Visually reviewed ivory cuff, not skin against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 26,
+      "y": 21,
+      "from": "*",
+      "to": "c",
+      "material": "silver shoulder clasp, not faction",
+      "reason": "Visually reviewed silver shoulder clasp, not faction against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 24,
+      "y": 30,
+      "from": "*",
+      "to": "I",
+      "material": "ivory sleeve, not leaf",
+      "reason": "Visually reviewed ivory sleeve, not leaf against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 36,
+      "y": 33,
+      "from": "O",
+      "to": "I",
+      "material": "ivory sleeve, not leaf",
+      "reason": "Visually reviewed ivory sleeve, not leaf against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 17,
+      "from": "b",
+      "to": "O",
+      "material": "hair contour",
+      "reason": "Visually reviewed hair contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 23,
+      "from": "w",
+      "to": "O",
+      "material": "hair contour",
+      "reason": "Visually reviewed hair contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 35,
+      "from": "*",
+      "to": "O",
+      "material": "cape border",
+      "reason": "Visually reviewed cape border against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 35,
+      "from": "b",
+      "to": "O",
+      "material": "staff contour",
+      "reason": "Visually reviewed staff contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 35,
+      "from": "b",
+      "to": "w",
+      "material": "staff wood",
+      "reason": "Visually reviewed staff wood against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 45,
+      "y": 35,
+      "from": "b",
+      "to": "O",
+      "material": "staff contour",
+      "reason": "Visually reviewed staff contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 38,
+      "from": "b",
+      "to": "O",
+      "material": "staff contour",
+      "reason": "Visually reviewed staff contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 41,
+      "from": "b",
+      "to": "O",
+      "material": "staff contour",
+      "reason": "Visually reviewed staff contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 8,
+      "y": 50,
+      "from": "*",
+      "to": "O",
+      "material": "cape hem contour",
+      "reason": "Visually reviewed cape hem contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 3,
+      "from": "E",
+      "to": "O",
+      "material": "top leaf contour",
+      "reason": "Visually reviewed top leaf contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 9,
+      "from": "V",
+      "to": "O",
+      "material": "leaf contour",
+      "reason": "Visually reviewed leaf contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 9,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 46,
+      "y": 11,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 27,
+      "y": 13,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 25,
+      "y": 14,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 47,
+      "y": 14,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 24,
+      "y": 15,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 28,
+      "y": 22,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 30,
+      "y": 22,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 30,
+      "y": 23,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 34,
+      "y": 25,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 36,
+      "y": 27,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 17,
+      "y": 34,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 18,
+      "y": 34,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 29,
+      "y": 35,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 34,
+      "y": 42,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    }
+  ]
+}

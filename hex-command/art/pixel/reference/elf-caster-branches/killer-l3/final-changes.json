@@ -1,0 +1,78 @@
+{
+  "matrix_sha256": "d7069f6d87840f5afb5ba66c21c9af7c79d94c93b19870d21f2c355078b84bc5",
+  "palette_sha256": "ee524f24612ecc4d415603feed887ab894bdd893eb1c69ff7bf30a2ff0800819",
+  "edits": [
+    {
+      "x": 20,
+      "y": 6,
+      "from": "P",
+      "to": "O",
+      "material": "flower petal contour",
+      "reason": "Reviewed local flower petal contour using the current unmarked render and detector context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 23,
+      "from": "H",
+      "to": "O",
+      "material": "palm upper boundary",
+      "reason": "Reviewed local palm upper boundary using the current unmarked render and detector context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 23,
+      "from": "H",
+      "to": "O",
+      "material": "palm upper boundary",
+      "reason": "Reviewed local palm upper boundary using the current unmarked render and detector context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 25,
+      "from": ".",
+      "to": "O",
+      "material": "wrist lower boundary",
+      "reason": "Reviewed local wrist lower boundary using the current unmarked render and detector context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 26,
+      "from": ".",
+      "to": "O",
+      "material": "bracer outer boundary",
+      "reason": "Reviewed local bracer outer boundary using the current unmarked render and detector context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 26,
+      "from": ".",
+      "to": "O",
+      "material": "bracer outer boundary",
+      "reason": "Reviewed local bracer outer boundary using the current unmarked render and detector context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 27,
+      "from": "V",
+      "to": "O",
+      "material": "bracer lower boundary",
+      "reason": "Reviewed local bracer lower boundary using the current unmarked render and detector context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 27,
+      "from": "i",
+      "to": "O",
+      "material": "bracer lower boundary",
+      "reason": "Reviewed local bracer lower boundary using the current unmarked render and detector context",
+      "boundary_reviewed": true
+    }
+  ]
+}

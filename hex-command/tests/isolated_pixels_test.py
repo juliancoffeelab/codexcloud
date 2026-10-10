@@ -4,7 +4,7 @@ import importlib.util
 from pathlib import Path
 import unittest
 
-file = Path(__file__).resolve().parents[1] / "scripts/check_isolated_pixels.py"
+file = Path(__file__).resolve().parents[1] / ".agents/skills/pixel-cleaning/scripts/check_isolated_pixels.py"
 spec = importlib.util.spec_from_file_location("isolated_pixels", file)
 check = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(check)
@@ -14,6 +14,16 @@ class IsolatedPixelsTest(unittest.TestCase):
     def setUp(self):
         self.palette = {".": [0, 0, 0, 0], "B": [111, 72, 43, 255],
                         "b": [64, 40, 28, 255], "X": [111, 72, 43, 255], "O": [25, 22, 20, 255]}
+
+    def test_approved_material_shades_connect_only_within_their_material(self):
+        self.assertEqual(check.isolated(["Bb"], self.palette, allowed_shades={"leather": "Bb"}), [])
+        self.assertEqual(len(check.isolated(["bO"], self.palette, allowed_shades={"leather": "Bb"})), 2)
+
+    def test_unapproved_shade_is_flagged_even_in_a_solid_patch(self):
+        flags = check.isolated(["bbb"], self.palette, allowed_shades={"leather": "Bb"},
+                               unapproved_shades={"b"})
+        self.assertEqual(len(flags), 3)
+        self.assertTrue(all(f["kind"] == "unapproved-shade" for f in flags))
 
     def test_diagonal_match_does_not_count(self):
         self.assertEqual([(p["x"], p["y"]) for p in check.isolated(["B..", ".B.", "..."], self.palette)],

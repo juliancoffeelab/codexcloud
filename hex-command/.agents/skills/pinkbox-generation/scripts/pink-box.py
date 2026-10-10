@@ -1,21 +1,26 @@
 """Build a disposable generation reference from three approved unit matrices.
 
-Usage: python3 scripts/pink-box.py tmp/lich-template.png skeleton revenant lich
+Historical four-slot helper. For new work, use ../SKILL.md and template.py.
+Usage: python3 .agents/skills/pinkbox-generation/scripts/pink-box.py tmp/lich-template.png skeleton revenant lich
 """
 import argparse
 import importlib.util
 import json
 from pathlib import Path
 import subprocess
+import sys
 
-spec = importlib.util.spec_from_file_location('render_pixel', Path(__file__).with_name('render-pixel.py'))
+ROOT = Path(__file__).resolve().parents[4]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+spec = importlib.util.spec_from_file_location('render_pixel', ROOT / 'scripts/render-pixel.py')
 renderer = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(renderer)
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('output', type=Path)
 parser.add_argument('anchors', nargs=3)
 args = parser.parse_args()
-project = Path(__file__).resolve().parents[1]
+project = ROOT
 output = args.output.resolve()
 if not output.is_relative_to(project / 'tmp'):
     parser.error('Generation references belong under this project’s ignored tmp/ directory')

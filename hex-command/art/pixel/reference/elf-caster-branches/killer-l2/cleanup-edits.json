@@ -1,0 +1,578 @@
+{
+  "matrix_sha256": "93f7fbd97961cb3bb8ce4d78c0c6e70fd486a69f9cc19d771d2524841cb7633f",
+  "palette_sha256": "6d9c63e806ae37f5a765f7357f8c1c475d3aa9d74cfb0b671b2e111b5ef492e8",
+  "reference": "killer-l2-generated.png",
+  "edits": [
+    {
+      "x": 53,
+      "y": 24,
+      "from": "h",
+      "to": "H",
+      "material": "casting hand skin",
+      "reason": "Visually reviewed casting hand skin against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 45,
+      "y": 29,
+      "from": "h",
+      "to": "I",
+      "material": "ivory sleeve",
+      "reason": "Visually reviewed ivory sleeve against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 24,
+      "y": 30,
+      "from": "h",
+      "to": "I",
+      "material": "ivory sleeve",
+      "reason": "Visually reviewed ivory sleeve against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 18,
+      "y": 30,
+      "from": "h",
+      "to": "w",
+      "material": "dark staff wood",
+      "reason": "Visually reviewed dark staff wood against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 18,
+      "y": 31,
+      "from": "h",
+      "to": "w",
+      "material": "dark staff wood",
+      "reason": "Visually reviewed dark staff wood against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 46,
+      "y": 49,
+      "from": "h",
+      "to": "B",
+      "material": "boot leather",
+      "reason": "Visually reviewed boot leather against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 46,
+      "y": 51,
+      "from": "h",
+      "to": "B",
+      "material": "boot leather",
+      "reason": "Visually reviewed boot leather against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 46,
+      "y": 30,
+      "from": "D",
+      "to": "O",
+      "material": "cuff edge",
+      "reason": "Visually reviewed cuff edge against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 31,
+      "from": "i",
+      "to": "O",
+      "material": "cuff edge",
+      "reason": "Visually reviewed cuff edge against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 24,
+      "from": "H",
+      "to": "O",
+      "material": "casting hand edge",
+      "reason": "Visually reviewed casting hand edge against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 42,
+      "from": "*",
+      "to": "O",
+      "material": "cloak contour",
+      "reason": "Visually reviewed cloak contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 49,
+      "from": "D",
+      "to": "O",
+      "material": "robe hem contour",
+      "reason": "Visually reviewed robe hem contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 37,
+      "y": 51,
+      "from": "b",
+      "to": "O",
+      "material": "robe hem contour",
+      "reason": "Visually reviewed robe hem contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 14,
+      "y": 12,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 22,
+      "y": 12,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 34,
+      "y": 15,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 18,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 57,
+      "y": 21,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 25,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 26,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 27,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 27,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 28,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 29,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 29,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 15,
+      "y": 35,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 13,
+      "y": 36,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 11,
+      "y": 37,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 9,
+      "y": 38,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 9,
+      "y": 39,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 9,
+      "y": 43,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 43,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 10,
+      "y": 45,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 13,
+      "y": 45,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 45,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 46,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 49,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 50,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 54,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 56,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 56,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 52,
+      "y": 56,
+      "from": "d",
+      "to": "O",
+      "material": "misquantized dark boundary",
+      "reason": "Visually reviewed misquantized dark boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 25,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 45,
+      "y": 25,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 47,
+      "y": 25,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 48,
+      "y": 25,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 27,
+      "y": 27,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 43,
+      "y": 27,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 44,
+      "y": 27,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 22,
+      "y": 31,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 33,
+      "y": 36,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 31,
+      "y": 39,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 30,
+      "y": 41,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 29,
+      "y": 42,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 43,
+      "y": 42,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 42,
+      "y": 43,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 30,
+      "y": 44,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 40,
+      "y": 44,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 42,
+      "y": 44,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 43,
+      "y": 44,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 44,
+      "y": 44,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 41,
+      "y": 45,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 42,
+      "y": 45,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 43,
+      "y": 45,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 44,
+      "y": 45,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 42,
+      "y": 46,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 29,
+      "y": 47,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    }
+  ]
+}

@@ -6,7 +6,10 @@ original Scout: cloth shirt and trousers, leather belt, bracers and boots,
 skin-colored hands, silver knife, and windblown hair and cloak.
 
 Reusable imagegen preparation, extraction, tier recipes and preview commands are
-documented in [the artwork workflow index](WORKFLOWS.md).
+documented in the project [pinkbox-generation](../../.agents/skills/pinkbox-generation/SKILL.md),
+[pinkbox-enhancement](../../.agents/skills/pinkbox-enhancement/SKILL.md) and
+[pixel-cleaning](../../.agents/skills/pixel-cleaning/SKILL.md) skills.
+[The artwork workflow index](WORKFLOWS.md) lists canonical recipes and build commands.
 
 Future faction bodies, poses and equipment are listed in the
 [anatomy and weapon references](reference/faction-anatomies.md).

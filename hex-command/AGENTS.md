@@ -1,8 +1,10 @@
 # Hex Command development rules
 
 - Keep changes quick to make and review. Tests must be small, fast, and lightweight.
-- For pixel artwork generation or tier edits, read `art/pixel/WORKFLOWS.md` for
-  the saved imagegen inputs, extraction pipeline and canonical source recipes.
+- For pixel artwork, use the project skills: [pinkbox generation](.agents/skills/pinkbox-generation/SKILL.md),
+  [pinkbox enhancement](.agents/skills/pinkbox-enhancement/SKILL.md), and
+  [pixel cleaning](.agents/skills/pixel-cleaning/SKILL.md).
+  Read `art/pixel/WORKFLOWS.md` for canonical source recipes and build commands.
 - Run `npm run style` for Prettier and staged/unstaged whitespace checks together.
   Use `npm run format` to apply formatting; do not repeat individual style checks.
 - The entire `npm test` command must finish within 20 seconds. Use controlled

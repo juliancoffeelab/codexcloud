@@ -1,0 +1,15 @@
+{
+  "matrix_sha256": "3c981060a7446a681d8e310d0573bef4e13177161b5315749898f5ce61789c54",
+  "palette_sha256": "ee524f24612ecc4d415603feed887ab894bdd893eb1c69ff7bf30a2ff0800819",
+  "edits": [
+    {
+      "x": 50,
+      "y": 26,
+      "from": ".",
+      "to": "O",
+      "material": "lower wrist boundary",
+      "reason": "Single transparent interruption enclosed within the restored wrist outline",
+      "boundary_reviewed": true
+    }
+  ]
+}

@@ -41,61 +41,36 @@ consolidates it into `sprite.txt` before rendering. Check mode rejects unconvert
 pairs. New recipes should write a shared matrix directly. Raw, single-sided
 extractions keep their original matrices and palettes as generation evidence.
 
-## New anatomy through imagegen
+## Generation, enhancement and cleaning
 
-Read the [Slinger pipeline](reference/slinger/PIPELINE.md) first. The image model
-designs a complete pose; scripts extract that pose into native pixels. These
-scripts do not call imagegen themselves.
+The project skills own the current workflows and bundled scripts:
 
-1. Build a disposable pink-box reference directly from three approved matrices:
+- [Pinkbox generation](../../.agents/skills/pinkbox-generation/SKILL.md): one
+  2×2 template with three matrix references and one fill box, current faction
+  palette and manifest-based extraction.
+- [Pinkbox enhancement](../../.agents/skills/pinkbox-enhancement/SKILL.md): use
+  an approved unit as the anatomy reference for tiers, equipment or restyling.
+- [Pixel cleaning](../../.agents/skills/pixel-cleaning/SKILL.md): detector images,
+  eight-neighbor context, material decisions, guarded edits and visual verification.
 
-   ```sh
-   python3 scripts/pink-box.py tmp/lich-template.png skeleton revenant lich
-   ```
+Generated templates and candidates belong in ignored `tmp/`. Approved matrices
+are the template source; do not keep redundant approved generation templates.
+Show a clean render of the extracted matrix in one faction colour, following the
+project skills. Inspect both factions and debug previews internally; show
+diagnostics or comparisons only when requested.
 
-   Choose suitable anchors for the new design. The tool renders current player
-   colours from `sprite.txt`, writes palette swatches and a companion JSON, and
-   leaves the fourth slot empty. Outputs belong in ignored `tmp/`; approved
-   designs do not need committed generation templates. Historical template
-   scripts are retained for recipe archaeology, not the new-design workflow.
-
-2. Give a template to the imagegen tool, specifying the complete pose and actual
-   hand grips. Request flat supplied palette colors, a magenta background, no
-   antialiasing, and consistent proportions. Keep the character inside the
-   central 48×48 logical footprint; use the larger 64×64 frame for cavalry.
-   Output resolution may differ from the input. Save the unchanged returned PNG.
-   For new templates, refresh faction swatches and the extraction palette from
-   the player shades in `factions.json`. Keep magenta exclusively as background;
-   the debug faction palette is for review after extraction, never generation.
-3. Extract a new result into a scratch directory:
-
-   ```sh
-   node art/pixel/reference/human-anatomies/extract.cjs generated.png tmp/new-pose 48 8 8
-   python3 scripts/render-pixel.py tmp/new-pose/player.txt
-   ```
-
-   Use `64 0 0` for cavalry. Extraction reads the bottom-right quarter, removes
-   magenta, quantizes to the supplied palette and rejects foreground outside the
-   requested crop. This geometry belongs to the four-slot template; it is not a
-   general sprite-sheet detector.
-
-4. Inspect enlarged pixels and material regions. Fix noisy shading and incorrect
-   material ownership while preserving anatomy and grips. Inspect against both
-   the raw generation and existing units. Extraction is not an anatomy repair.
-5. Store the finished shared matrix and material palette under `units/`.
-   Render from matrices; never patch only the PNG. Rebuild atlases with
-   `npm run art:build` after source changes.
-   Assign `^`/`*` by cloth ownership, including sleeves and cloak folds, while
-   preserving exposed hands, feet and outer outlines as fixed materials.
-   Review both factions and a separate debug preview before accepting the design.
-
-The four existing raw results are saved in
-[human-anatomies/sources/](reference/human-anatomies/sources/). For those exact
-results, `rebuild.cjs` runs extraction, their recorded cleanup, tier edits,
-faction variants, rendering and previews. `clean.cjs` and `variants.cjs` contain
-pose-specific coordinates; do not apply those corrections to a different pose.
+The [Slinger pipeline](reference/slinger/PIPELINE.md) records a historical
+four-slot extraction. Its saved inputs and pose-specific construction recipes
+remain evidence, not the default pipeline for new designs. The four raw anatomy
+results are saved in [human-anatomies/sources/](reference/human-anatomies/sources/).
+For those exact results, `rebuild.cjs` replays their extraction, recorded cleanup,
+tier edits and previews; do not apply its coordinates to another pose.
 
 ## Tier variants and previews
+
+The [reviewed elf sources](reference/elf-reviewed/README.md) live in canonical
+unit matrices and are protected from the superseded expansion tier masks.
+This includes the separate jumper row, reviewed blade upgrades and shadow riders.
 
 | Script                                                                           | Purpose                                                                                                                                   |
 | -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
@@ -158,3 +133,12 @@ Create a custom board:
 ```sh
 node art/pixel/reference/human-anatomies/preview.cjs entries.json tmp/board.png 3 8
 ```
+
+## Outline and stray review
+
+Use the [pixel-cleaning skill](../../.agents/skills/pixel-cleaning/SKILL.md).
+Its bundled scripts include both detectors, marked images for each rule,
+21×21 native-pixel neighborhoods and guarded per-pixel edits. Findings are
+review candidates; only material and contour inspection establishes a defect.
+See the skill's [failure examples](../../.agents/skills/pixel-cleaning/references/failure-examples.md)
+for the elf cloak leaks, leg separator, hair ring and diagonal-outline mistakes.

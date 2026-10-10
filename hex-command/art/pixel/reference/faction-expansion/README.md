@@ -2,7 +2,7 @@
 
 Generated pink-box PNGs have been removed after matrix approval. References
 below to `templates/` describe the historical generation process. For new work,
-use `python3 scripts/pink-box.py tmp/new-design.png <anchor1> <anchor2> <anchor3>`
+use [the project pinkbox-generation skill](../../../../.agents/skills/pinkbox-generation/SKILL.md)
 from the project root. Approved `units/*/sprite.txt` matrices are authoritative;
 saved raw sources and rebuild recipes remain available for historical inspection.
 Do not replay construction recipes as routine artwork verification.

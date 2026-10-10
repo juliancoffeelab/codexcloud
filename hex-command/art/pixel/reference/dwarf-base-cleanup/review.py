@@ -10,7 +10,7 @@ from PIL import Image, ImageDraw, ImageFont
 from build import HERE, PROJECT, source_directory, surfaces, verify_anchors
 from pixel_sources import legacy_text
 
-spec = importlib.util.spec_from_file_location("isolated_pixels", PROJECT / "scripts/check_isolated_pixels.py")
+spec = importlib.util.spec_from_file_location("isolated_pixels", PROJECT / ".agents/skills/pixel-cleaning/scripts/check_isolated_pixels.py")
 checker = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(checker)
 

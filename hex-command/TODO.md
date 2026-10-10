@@ -10,6 +10,9 @@
 - [ ] Expand the zombie Corruption Mage into a complete commander lineup.
 - [ ] Add advancement branching for the woodland Thorncaller.
 - [ ] Differentiate the fox warrior designs across advancement tiers.
+- [ ] Restore visible two-shade faction contrast in skeleton archer cloaks,
+      especially Death archer and Hollow archer; excessive shadow makes them
+      read as one colour.
 
 ## Balance and simulations
 

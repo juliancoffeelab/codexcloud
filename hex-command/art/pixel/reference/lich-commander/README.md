@@ -1,5 +1,8 @@
 # Lich commander lineup
 
+For new edits, use [pinkbox enhancement](../../../../.agents/skills/pinkbox-enhancement/SKILL.md) and
+[pixel cleaning](../../../../.agents/skills/pixel-cleaning/SKILL.md). This folder records the saved design.
+
 Grave Adept → Lich → Lich Sovereign. These are artwork designs; gameplay registrations remain separate. Each tier was generated independently in the empty bottom-right box of a four-slot reference. The other three boxes supplied current Skeleton, Revenant and Corruption Mage anchors. The earlier three-character concept is inspiration only, not an extraction input.
 
 Approved sources live in `../../units/lich-commander-l{1,2,3}/sprite.txt`. Each uses a 64×64 native canvas because the generated staff/feet extended beyond the requested central 48×48 area. No anatomy was cropped or scaled to force the smaller frame.

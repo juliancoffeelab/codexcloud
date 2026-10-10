@@ -58,6 +58,10 @@ For future matrix edits, update the owning cleanup recipe alongside the source
 so rebuilding retains the change. Recipe coordinates refer to the canonical
 native matrix, not the larger imagegen source or its original extraction slot.
 
+The [reviewed elf sources](../elf-reviewed/README.md) supersede the old cleanup
+records for their listed unit IDs. Their canonical matrices are authoritative;
+the old expansion tier masks skip them rather than replaying obsolete edits.
+
 Rebuild and verify from the project root:
 
 ```sh

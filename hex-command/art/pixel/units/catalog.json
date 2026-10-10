@@ -289,39 +289,39 @@
     "role": "commander"
   },
   "elf-spearman": {
-    "name": "Elf spear and shield",
+    "name": "Warden",
     "level": 1,
-    "study": "faction-expansion/elf-spearman",
+    "study": "elf-reviewed",
     "canvas": [64, 64]
   },
   "elf-spearman-l2": {
-    "name": "Elf spear and shield L2",
+    "name": "Warden",
     "level": 2,
-    "study": "faction-expansion/elf-spearman-l2",
+    "study": "elf-reviewed",
     "canvas": [64, 64]
   },
   "elf-spearman-l3": {
-    "name": "Elf spear and shield L3",
+    "name": "Warden",
     "level": 3,
-    "study": "faction-expansion/elf-spearman-l3",
+    "study": "elf-reviewed",
     "canvas": [64, 64]
   },
   "elf-bladedancer": {
     "name": "Elf two-handed sword",
     "level": 1,
-    "study": "faction-expansion/elf-bladedancer",
+    "study": "elf-reviewed",
     "canvas": [48, 48]
   },
   "elf-bladedancer-l2": {
-    "name": "Elf two-handed sword L2",
+    "name": "Elf two-handed sword",
     "level": 2,
-    "study": "faction-expansion/elf-bladedancer-l2",
+    "study": "elf-reviewed",
     "canvas": [48, 48]
   },
   "elf-bladedancer-l3": {
-    "name": "Elf two-handed sword L3",
+    "name": "Elf two-handed sword",
     "level": 3,
-    "study": "faction-expansion/elf-bladedancer-l3",
+    "study": "elf-reviewed",
     "canvas": [48, 48]
   },
   "elf-archer": {
@@ -331,69 +331,69 @@
     "canvas": [64, 64]
   },
   "elf-archer-l2": {
-    "name": "Elf archer L2",
+    "name": "Shadow stalker",
     "level": 2,
-    "study": "faction-expansion/elf-archer-l2",
+    "study": "elf-reviewed",
     "canvas": [64, 64]
   },
   "elf-archer-l3": {
-    "name": "Elf archer L3",
+    "name": "Shadow stalker",
     "level": 3,
-    "study": "faction-expansion/elf-archer-l3",
+    "study": "elf-reviewed",
     "canvas": [64, 64]
   },
   "elf-flanker": {
     "name": "Elf dual knife flanker",
     "level": 1,
-    "study": "faction-expansion/elf-flanker",
+    "study": "elf-reviewed",
     "canvas": [64, 64]
   },
   "elf-flanker-l2": {
-    "name": "Elf dual knife flanker L2",
+    "name": "Elf dual knife flanker",
     "level": 2,
-    "study": "faction-expansion/elf-flanker-l2",
+    "study": "elf-reviewed",
     "canvas": [64, 64]
   },
   "elf-flanker-l3": {
-    "name": "Elf dual knife flanker L3",
+    "name": "Elf dual knife flanker",
     "level": 3,
-    "study": "faction-expansion/elf-flanker-l3",
+    "study": "elf-reviewed",
     "canvas": [64, 64]
   },
   "elf-caster": {
     "name": "Elf branch staff caster",
     "level": 1,
-    "study": "faction-expansion/elf-caster",
+    "study": "elf-reviewed",
     "canvas": [64, 64]
   },
   "elf-caster-l2": {
-    "name": "Elf branch staff caster L2",
+    "name": "Grove healer",
     "level": 2,
-    "study": "faction-expansion/elf-caster-l2",
+    "study": "elf-caster-branches",
     "canvas": [64, 64]
   },
   "elf-caster-l3": {
-    "name": "Elf branch staff caster L3",
+    "name": "Grove healer",
     "level": 3,
-    "study": "faction-expansion/elf-caster-l3",
+    "study": "elf-caster-branches",
     "canvas": [64, 64]
   },
   "elf-deer-archer": {
     "name": "Elf deer-mounted archer",
     "level": 1,
-    "study": "faction-expansion/elf-deer-archer",
+    "study": "elf-reviewed",
     "canvas": [64, 64]
   },
   "elf-deer-archer-l2": {
-    "name": "Elf deer-mounted archer L2",
+    "name": "Shadow rider",
     "level": 2,
-    "study": "faction-expansion/elf-deer-archer-l2",
+    "study": "elf-reviewed",
     "canvas": [64, 64]
   },
   "elf-deer-archer-l3": {
-    "name": "Elf deer-mounted archer L3",
+    "name": "Shadow rider",
     "level": 3,
-    "study": "faction-expansion/elf-deer-archer-l3",
+    "study": "elf-reviewed",
     "canvas": [64, 64]
   },
   "dwarf-axeguard": {
@@ -1203,5 +1203,35 @@
   "deatharcher": {
     "name": "Death archer",
     "level": 2
+  },
+  "elf-jumper": {
+    "name": "Jumper",
+    "level": 1,
+    "study": "elf-reviewed",
+    "canvas": [64, 64]
+  },
+  "elf-jumper-l2": {
+    "name": "Jumper",
+    "level": 2,
+    "study": "elf-reviewed",
+    "canvas": [64, 64]
+  },
+  "elf-jumper-l3": {
+    "name": "Jumper",
+    "level": 3,
+    "study": "elf-reviewed",
+    "canvas": [64, 64]
+  },
+  "elf-killing-caster-l2": {
+    "name": "Thorn caster",
+    "level": 2,
+    "study": "elf-caster-branches",
+    "canvas": [64, 64]
+  },
+  "elf-killing-caster-l3": {
+    "name": "Thorn caster",
+    "level": 3,
+    "study": "elf-caster-branches",
+    "canvas": [64, 64]
   }
 }

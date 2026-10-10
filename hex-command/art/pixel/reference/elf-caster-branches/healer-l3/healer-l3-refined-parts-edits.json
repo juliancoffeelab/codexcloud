@@ -1,0 +1,1150 @@
+{
+  "baseline": "healer-l3-clean",
+  "edits": [
+    {
+      "x": 42,
+      "y": 2,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 2,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 3,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 3,
+      "from": "V",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 3,
+      "from": ".",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 4,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 4,
+      "from": "E",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 4,
+      "from": "V",
+      "to": "I",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 4,
+      "from": "O",
+      "to": "I",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 4,
+      "from": ".",
+      "to": "I",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 4,
+      "from": ".",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 4,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 4,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 5,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 5,
+      "from": "V",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 5,
+      "from": "V",
+      "to": "I",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 5,
+      "from": "v",
+      "to": "i",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 5,
+      "from": "O",
+      "to": "I",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 5,
+      "from": ".",
+      "to": "i",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 5,
+      "from": ".",
+      "to": "I",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 5,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 5,
+      "from": "V",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 5,
+      "from": "v",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 6,
+      "from": "V",
+      "to": "I",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 6,
+      "from": "v",
+      "to": "i",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 6,
+      "from": "v",
+      "to": "I",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 6,
+      "from": "I",
+      "to": "i",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 6,
+      "from": "O",
+      "to": "I",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 6,
+      "from": "O",
+      "to": "i",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 6,
+      "from": "V",
+      "to": "I",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 6,
+      "from": "V",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 6,
+      "from": "V",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 6,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 7,
+      "from": ".",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 7,
+      "from": "O",
+      "to": "I",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 7,
+      "from": "v",
+      "to": "i",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 7,
+      "from": "O",
+      "to": "I",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 7,
+      "from": "I",
+      "to": "i",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 7,
+      "from": "O",
+      "to": "I",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 7,
+      "from": "O",
+      "to": "i",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 7,
+      "from": "v",
+      "to": "I",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 7,
+      "from": "V",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 7,
+      "from": "v",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 7,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 8,
+      "from": "H",
+      "to": "i",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 8,
+      "from": "v",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 8,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 39,
+      "y": 9,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 9,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 9,
+      "from": "V",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 9,
+      "from": "I",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 9,
+      "from": "I",
+      "to": "w",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 9,
+      "from": "i",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 9,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 9,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 38,
+      "y": 10,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 39,
+      "y": 10,
+      "from": "V",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 10,
+      "from": "V",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 10,
+      "from": "V",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 10,
+      "from": "v",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 10,
+      "from": "I",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 10,
+      "from": "I",
+      "to": "w",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 10,
+      "from": "i",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 10,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 39,
+      "y": 11,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 11,
+      "from": "V",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 11,
+      "from": "V",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 11,
+      "from": "v",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 11,
+      "from": "I",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 11,
+      "from": ".",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 11,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 12,
+      "from": "O",
+      "to": "V",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 12,
+      "from": "b",
+      "to": "w",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 12,
+      "from": "w",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 12,
+      "from": "I",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 12,
+      "from": "i",
+      "to": "V",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 12,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 12,
+      "from": "V",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 13,
+      "from": ".",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 13,
+      "from": ".",
+      "to": "V",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 13,
+      "from": "O",
+      "to": "V",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 13,
+      "from": "O",
+      "to": "w",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 13,
+      "from": "I",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 13,
+      "from": "B",
+      "to": "V",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 13,
+      "from": "I",
+      "to": "V",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 13,
+      "from": "I",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 13,
+      "from": "v",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 13,
+      "from": "V",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 14,
+      "from": "O",
+      "to": "V",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 14,
+      "from": "v",
+      "to": "w",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 14,
+      "from": "O",
+      "to": "v",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 14,
+      "from": "I",
+      "to": "V",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 14,
+      "from": "I",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 14,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 14,
+      "from": "V",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 14,
+      "from": "v",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 15,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 15,
+      "from": "V",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 15,
+      "from": "V",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 15,
+      "from": "V",
+      "to": "w",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 15,
+      "from": "I",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 15,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 15,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 15,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 15,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 16,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 16,
+      "from": "b",
+      "to": "w",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 16,
+      "from": "b",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 16,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 16,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 17,
+      "from": "B",
+      "to": "w",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 17,
+      "from": "B",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 17,
+      "from": "b",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 17,
+      "from": "v",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 17,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 18,
+      "from": "B",
+      "to": "w",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 18,
+      "from": "b",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 18,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 18,
+      "from": "V",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 18,
+      "from": "V",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 18,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 19,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 19,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 19,
+      "from": "w",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 19,
+      "from": "B",
+      "to": "w",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 19,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 19,
+      "from": "V",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 19,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 20,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 20,
+      "from": "B",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 20,
+      "from": "B",
+      "to": "w",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 20,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 21,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 21,
+      "from": "B",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 21,
+      "from": "B",
+      "to": "w",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 21,
+      "from": "w",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 21,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 22,
+      "from": "b",
+      "to": "w",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 22,
+      "from": "B",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 22,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 23,
+      "from": "b",
+      "to": "w",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 23,
+      "from": "B",
+      "to": "O",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 23,
+      "from": "O",
+      "to": ".",
+      "reason": "Reviewed coherent casting palm or connected L3 flowering staff redraw",
+      "boundary_reviewed": true
+    }
+  ],
+  "paletteChanges": {}
+}

@@ -1,15 +1,27 @@
 [
   {
-    "label": "Elf spear and shield L1",
+    "label": "Warden L1",
     "image": "art/pixel/units/elf-spearman/player.png"
   },
   {
-    "label": "Elf spear and shield L2",
+    "label": "Warden L2",
     "image": "art/pixel/units/elf-spearman-l2/player.png"
   },
   {
-    "label": "Elf spear and shield L3",
+    "label": "Warden L3",
     "image": "art/pixel/units/elf-spearman-l3/player.png"
+  },
+  {
+    "label": "Jumper L1",
+    "image": "art/pixel/units/elf-jumper/player.png"
+  },
+  {
+    "label": "Jumper L2",
+    "image": "art/pixel/units/elf-jumper-l2/player.png"
+  },
+  {
+    "label": "Jumper L3",
+    "image": "art/pixel/units/elf-jumper-l3/player.png"
   },
   {
     "label": "Elf two-handed sword L1",
@@ -28,11 +40,11 @@
     "image": "art/pixel/units/elf-archer/player.png"
   },
   {
-    "label": "Elf archer L2",
+    "label": "Shadow stalker L2",
     "image": "art/pixel/units/elf-archer-l2/player.png"
   },
   {
-    "label": "Elf archer L3",
+    "label": "Shadow stalker L3",
     "image": "art/pixel/units/elf-archer-l3/player.png"
   },
   {
@@ -52,23 +64,31 @@
     "image": "art/pixel/units/elf-caster/player.png"
   },
   {
-    "label": "Elf branch staff caster L2",
+    "label": "Grove healer L2",
     "image": "art/pixel/units/elf-caster-l2/player.png"
   },
   {
-    "label": "Elf branch staff caster L3",
+    "label": "Grove healer L3",
     "image": "art/pixel/units/elf-caster-l3/player.png"
+  },
+  {
+    "label": "Thorn caster L2",
+    "image": "art/pixel/units/elf-killing-caster-l2/player.png"
+  },
+  {
+    "label": "Thorn caster L3",
+    "image": "art/pixel/units/elf-killing-caster-l3/player.png"
   },
   {
     "label": "Elf deer-mounted archer L1",
     "image": "art/pixel/units/elf-deer-archer/player.png"
   },
   {
-    "label": "Elf deer-mounted archer L2",
+    "label": "Shadow rider L2",
     "image": "art/pixel/units/elf-deer-archer-l2/player.png"
   },
   {
-    "label": "Elf deer-mounted archer L3",
+    "label": "Shadow rider L3",
     "image": "art/pixel/units/elf-deer-archer-l3/player.png"
   }
 ]

@@ -1,0 +1,51 @@
+{
+  "matrix_sha256": "bafb953e75472f191b2a4982845fea288ddee5b0a1ef9e7f76f45abdd3a702ee",
+  "palette_sha256": "ef89371667079739d69bb5e11563b9bbb52c24742a8f76f2bf8faf604e509757",
+  "edits": [
+    {
+      "x": 16,
+      "y": 10,
+      "from": "v",
+      "to": "O",
+      "material": "reviewed outline",
+      "reason": "Leaf tip needs its dark outer contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 10,
+      "from": "v",
+      "to": "O",
+      "material": "reviewed outline",
+      "reason": "Leaf tip needs its dark outer contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 43,
+      "from": "D",
+      "to": "O",
+      "material": "reviewed outline",
+      "reason": "Dark green quantization replaced the ivory cuff outline",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 44,
+      "from": ".",
+      "to": "O",
+      "material": "reviewed outline",
+      "reason": "One missed pixel on the right edge of the wooden staff",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 49,
+      "from": ".",
+      "to": "O",
+      "material": "reviewed outline",
+      "reason": "One-pixel interruption in the boot/staff separator",
+      "boundary_reviewed": true
+    }
+  ]
+}

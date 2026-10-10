@@ -63,7 +63,7 @@ establish visual quality, so inspect the grid after any source edit.
 
 ## Orthogonal speck check
 
-`../../../../scripts/check_isolated_pixels.py` flags an opaque pixel when none of
+[The pixel-cleaning skill’s bundled stray detector](../../../../.agents/skills/pixel-cleaning/SKILL.md) flags an opaque pixel when none of
 its left/right/up/down neighbours has the exact same RGBA colour. Diagonals do
 not count. Black pixels beside transparent X/Y neighbours are excluded by default;
 `--include-exterior-black` restores the unfiltered report. Other shades of the

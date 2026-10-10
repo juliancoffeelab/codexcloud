@@ -1,0 +1,351 @@
+{
+  "matrix_sha256": "c0104aa9182b0c7731253c475f846876eb72253d7c9eddfd40785a8e6ecb14b9",
+  "palette_sha256": "191f66f8bd5e0c3cbee7405baa2fc89f154574e24600f1e364d4da21fd40cb7d",
+  "reference": "healer-l2-generated.png",
+  "edits": [
+    {
+      "x": 25,
+      "y": 41,
+      "from": "H",
+      "to": "I",
+      "material": "covered trousers",
+      "reason": "Visually reviewed covered trousers against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 25,
+      "y": 42,
+      "from": "H",
+      "to": "I",
+      "material": "covered trousers",
+      "reason": "Visually reviewed covered trousers against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 24,
+      "y": 43,
+      "from": "H",
+      "to": "I",
+      "material": "covered trousers",
+      "reason": "Visually reviewed covered trousers against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 25,
+      "y": 43,
+      "from": "H",
+      "to": "I",
+      "material": "covered trousers",
+      "reason": "Visually reviewed covered trousers against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 24,
+      "y": 44,
+      "from": "H",
+      "to": "I",
+      "material": "covered trousers",
+      "reason": "Visually reviewed covered trousers against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 23,
+      "y": 45,
+      "from": "a",
+      "to": "i",
+      "material": "covered trouser shadow",
+      "reason": "Visually reviewed covered trouser shadow against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 24,
+      "y": 45,
+      "from": "H",
+      "to": "I",
+      "material": "covered trousers",
+      "reason": "Visually reviewed covered trousers against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 26,
+      "y": 42,
+      "from": "O",
+      "to": "i",
+      "material": "trouser shadow, not silver",
+      "reason": "Visually reviewed trouser shadow, not silver against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 13,
+      "from": "w",
+      "to": "B",
+      "material": "brown hair",
+      "reason": "Visually reviewed brown hair against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 30,
+      "y": 20,
+      "from": "w",
+      "to": "b",
+      "material": "hair shadow",
+      "reason": "Visually reviewed hair shadow against the generated reference and eight-neighbor context"
+    },
+    {
+      "x": 34,
+      "y": 25,
+      "from": "b",
+      "to": "O",
+      "material": "shoulder boundary",
+      "reason": "Visually reviewed shoulder boundary against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 14,
+      "y": 29,
+      "from": "b",
+      "to": "O",
+      "material": "sleeve edge",
+      "reason": "Visually reviewed sleeve edge against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 14,
+      "y": 30,
+      "from": "b",
+      "to": "O",
+      "material": "sleeve edge",
+      "reason": "Visually reviewed sleeve edge against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 32,
+      "from": "i",
+      "to": "O",
+      "material": "sleeve edge",
+      "reason": "Visually reviewed sleeve edge against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 49,
+      "from": "b",
+      "to": "O",
+      "material": "robe hem edge",
+      "reason": "Visually reviewed robe hem edge against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 5,
+      "from": "b",
+      "to": "O",
+      "material": "flower tip contour",
+      "reason": "Visually reviewed flower tip contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 6,
+      "from": "b",
+      "to": "O",
+      "material": "flower tip contour",
+      "reason": "Visually reviewed flower tip contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 7,
+      "from": "b",
+      "to": "O",
+      "material": "flower outer contour",
+      "reason": "Visually reviewed flower outer contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 9,
+      "from": "I",
+      "to": "O",
+      "material": "flower petal contour",
+      "reason": "Visually reviewed flower petal contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 11,
+      "from": "w",
+      "to": "O",
+      "material": "flower stem contour",
+      "reason": "Visually reviewed flower stem contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 15,
+      "from": "v",
+      "to": "O",
+      "material": "leaf contour",
+      "reason": "Visually reviewed leaf contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 20,
+      "from": "b",
+      "to": "O",
+      "material": "staff contour",
+      "reason": "Visually reviewed staff contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 21,
+      "from": "w",
+      "to": "O",
+      "material": "staff contour",
+      "reason": "Visually reviewed staff contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 22,
+      "from": "b",
+      "to": "O",
+      "material": "staff contour",
+      "reason": "Visually reviewed staff contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 36,
+      "from": "b",
+      "to": "O",
+      "material": "staff contour",
+      "reason": "Visually reviewed staff contour against the generated reference and eight-neighbor context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 8,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 28,
+      "y": 22,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 29,
+      "y": 22,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 17,
+      "y": 30,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 18,
+      "y": 30,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 17,
+      "y": 31,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 18,
+      "y": 31,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 28,
+      "y": 32,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 25,
+      "y": 39,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 24,
+      "y": 40,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 23,
+      "y": 41,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 22,
+      "y": 44,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 20,
+      "y": 45,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 31,
+      "y": 45,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 31,
+      "y": 46,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    },
+    {
+      "x": 18,
+      "y": 48,
+      "from": "C",
+      "to": "I",
+      "material": "ivory cloth or flower",
+      "reason": "Unify the near-ivory quantization shade with its surrounding ivory surface"
+    }
+  ]
+}

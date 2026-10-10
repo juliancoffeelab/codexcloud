@@ -1,0 +1,909 @@
+{
+  "baseline": "tmp/elf-caster-branches/healer-l3-refined",
+  "edits": [
+    {
+      "x": 40,
+      "y": 11,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 11,
+      "from": ".",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 11,
+      "from": ".",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 11,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 12,
+      "from": "O",
+      "to": "V",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 12,
+      "from": "O",
+      "to": "w",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 12,
+      "from": "O",
+      "to": "w",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 12,
+      "from": "O",
+      "to": "V",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 13,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 13,
+      "from": "V",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 13,
+      "from": "V",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 13,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 14,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 14,
+      "from": "V",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 14,
+      "from": "v",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 14,
+      "from": "v",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 14,
+      "from": "V",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 14,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 24,
+      "from": "B",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 25,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 25,
+      "from": "B",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 25,
+      "from": "w",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 26,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 26,
+      "from": "b",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 26,
+      "from": "O",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 26,
+      "from": ".",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 30,
+      "from": "w",
+      "to": "H",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 30,
+      "from": "b",
+      "to": "H",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 30,
+      "from": "b",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 30,
+      "from": "O",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 31,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 31,
+      "from": "w",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 31,
+      "from": "B",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 31,
+      "from": "O",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 31,
+      "from": ".",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 32,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 32,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 32,
+      "from": "B",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 32,
+      "from": "O",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 32,
+      "from": ".",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 33,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 33,
+      "from": "B",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 33,
+      "from": "O",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 33,
+      "from": ".",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 34,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 34,
+      "from": "B",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 34,
+      "from": "O",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 34,
+      "from": ".",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 35,
+      "from": "w",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 36,
+      "from": "B",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 37,
+      "from": "B",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 38,
+      "from": "O",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 38,
+      "from": ".",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 39,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 39,
+      "from": "B",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 39,
+      "from": "O",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 39,
+      "from": ".",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 40,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 40,
+      "from": "B",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 40,
+      "from": "O",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 40,
+      "from": ".",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 41,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 41,
+      "from": "B",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 41,
+      "from": "O",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 41,
+      "from": ".",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 42,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 42,
+      "from": "B",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 42,
+      "from": "b",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 42,
+      "from": "O",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 42,
+      "from": ".",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 43,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 43,
+      "from": "B",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 43,
+      "from": "b",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 43,
+      "from": "O",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 43,
+      "from": ".",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 44,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 44,
+      "from": "b",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 44,
+      "from": "B",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 44,
+      "from": "O",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 44,
+      "from": ".",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 45,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 45,
+      "from": "B",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 45,
+      "from": "O",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 45,
+      "from": ".",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 46,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 46,
+      "from": "B",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 46,
+      "from": "O",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 46,
+      "from": ".",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 47,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 47,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 47,
+      "from": "w",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 47,
+      "from": "O",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 47,
+      "from": ".",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 48,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 48,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 48,
+      "from": "B",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 48,
+      "from": "O",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 48,
+      "from": ".",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 49,
+      "from": "b",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 49,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 49,
+      "from": "B",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 49,
+      "from": "w",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 50,
+      "from": "O",
+      "to": ".",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 50,
+      "from": "B",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 51,
+      "from": "w",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 52,
+      "from": "B",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 53,
+      "from": "B",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 54,
+      "from": "b",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 55,
+      "from": "B",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 56,
+      "from": "O",
+      "to": "W",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 57,
+      "from": ".",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 57,
+      "from": ".",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 57,
+      "from": ".",
+      "to": "O",
+      "reason": "Align the staff axis through its real grip and join the flower leaves to visible branches",
+      "boundary_reviewed": true
+    }
+  ]
+}

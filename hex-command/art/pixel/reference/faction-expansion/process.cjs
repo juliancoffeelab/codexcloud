@@ -8,6 +8,7 @@ const { sourceDirectory, catalogEntry, isArchived, tierIds } = require("./source
 const root = __dirname,
   project = path.resolve(root, "../../../..");
 const manifest = JSON.parse(fs.readFileSync(path.join(root, "manifest.json")));
+const reviewedElves = require("../elf-reviewed/sources.json").units;
 const dwarfBases = new Set(
   require("../dwarf-base-cleanup/sources.json").poses.map((pose) => `dwarf-${pose}`),
 );
@@ -302,6 +303,8 @@ function tiers(job) {
   for (let level = 1; level <= 3; level++) {
     const id = level === 1 ? job.id : `${job.id}-l${level}`,
       out = sourceDirectory(id);
+    // Reviewed matrices are authoritative; old extraction/tier masks describe superseded poses.
+    if (Object.hasOwn(reviewedElves, id)) continue;
     fs.mkdirSync(out, { recursive: true });
     const chains = {
       "zombie-wretch": ["zombie-wretch", "zombie-walker", "zombie-shambler"],
@@ -474,6 +477,22 @@ function boards() {
                   image: path.relative(project, path.join(sourceDirectory(id), `${side}.png`)),
                 })),
               );
+      if (race === "elf") {
+        const catalog = require("../../units/catalog.json");
+        entries = jobs
+          .filter((job) => job.status === "tiers")
+          .flatMap((job) => {
+            const unitIds = tierIds(job);
+            if (job.id === "elf-spearman")
+              unitIds.push("elf-jumper", "elf-jumper-l2", "elf-jumper-l3");
+            if (job.id === "elf-caster")
+              unitIds.push("elf-killing-caster-l2", "elf-killing-caster-l3");
+            return unitIds.map((id) => ({
+              label: `${catalog[id].name} L${catalog[id].level}`,
+              image: path.relative(project, path.join(sourceDirectory(id), `${side}.png`)),
+            }));
+          });
+      }
       if (race === "merfolk" || race === "skeleton") {
         const lineup = require(
           `../../lineups/${race === "skeleton" ? "skeletons" : "merfolk"}.json`,

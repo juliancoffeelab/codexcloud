@@ -1,0 +1,33 @@
+{
+  "matrix_sha256": "d54d06f2ad45a84029cfca9925b19611c2b649f7ff7ea1fcb4291058d73b3ad8",
+  "palette_sha256": "ef89371667079739d69bb5e11563b9bbb52c24742a8f76f2bf8faf604e509757",
+  "edits": [
+    {
+      "x": 49,
+      "y": 24,
+      "from": "H",
+      "to": "O",
+      "material": "palm upper boundary",
+      "reason": "Reviewed local palm upper boundary using the current unmarked render and detector context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 24,
+      "from": "H",
+      "to": "O",
+      "material": "palm upper boundary",
+      "reason": "Reviewed local palm upper boundary using the current unmarked render and detector context",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 26,
+      "from": ".",
+      "to": "O",
+      "material": "wrist lower boundary",
+      "reason": "Reviewed local wrist lower boundary using the current unmarked render and detector context",
+      "boundary_reviewed": true
+    }
+  ]
+}

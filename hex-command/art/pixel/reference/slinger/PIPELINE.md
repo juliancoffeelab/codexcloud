@@ -1,13 +1,17 @@
 # Enlarged reference → native matrix
 
+For current work, use [pinkbox generation](../../../../.agents/skills/pinkbox-generation/SKILL.md),
+[pinkbox enhancement](../../../../.agents/skills/pinkbox-enhancement/SKILL.md) and
+[pixel cleaning](../../../../.agents/skills/pixel-cleaning/SKILL.md). The steps below describe the saved Slinger evidence, not the current multi-box helper.
+
 This is the process used for the Slinger, including its limitations. The image
 model designs a complete unit; the extraction preserves that design instead of
 reconstructing the body from polygons.
 
 ## 1. Prefill the input
 
-Use `python3 scripts/pink-box.py tmp/new-design.png scout ranger archer`
-from the project root, substituting the three approved anchor IDs. The tool
+Use [the project pinkbox-generation skill](../../../../.agents/skills/pinkbox-generation/SKILL.md)
+for new references, substituting suitable approved matrix anchors. The tool
 reads current matrices and faction colours; generated templates are disposable
 and stay in ignored `tmp/`. Saved raw imagegen outputs and extraction recipes
 remain historical evidence, not the source of truth for approved units.

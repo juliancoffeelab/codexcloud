@@ -1,9 +1,5 @@
 {
-  "base": "elf-deer-archer",
-  "level": 1,
-  "changes": [],
-  "paletteChanges": {
-    "R": [185, 24, 37, 255],
-    "r": [112, 14, 24, 255]
-  }
+  "source": "elf-reviewed",
+  "authority": "sprite.txt and palette.json",
+  "supersedes": "faction-expansion tier masks"
 }

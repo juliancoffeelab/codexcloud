@@ -1,0 +1,982 @@
+{
+  "matrix_sha256": "0828d39ef9e5dd14b558977fabf36dfe1702f8fd280394ff595168597f400c4f",
+  "palette_sha256": "6d9c63e806ae37f5a765f7357f8c1c475d3aa9d74cfb0b671b2e111b5ef492e8",
+  "palette_additions": {
+    "P": [79, 48, 87, 255],
+    "p": [43, 29, 49, 255]
+  },
+  "edits": [
+    {
+      "x": 17,
+      "y": 3,
+      "from": ".",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 3,
+      "from": ".",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 3,
+      "from": ".",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 4,
+      "from": ".",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 4,
+      "from": ".",
+      "to": "P",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 4,
+      "from": ".",
+      "to": "P",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 4,
+      "from": "O",
+      "to": "P",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 4,
+      "from": ".",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 15,
+      "y": 5,
+      "from": ".",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 5,
+      "from": ".",
+      "to": "P",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 5,
+      "from": ".",
+      "to": "P",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 5,
+      "from": "O",
+      "to": "p",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 5,
+      "from": "O",
+      "to": "P",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 5,
+      "from": ".",
+      "to": "P",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 5,
+      "from": ".",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 15,
+      "y": 6,
+      "from": ".",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 6,
+      "from": ".",
+      "to": "P",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 6,
+      "from": "O",
+      "to": "p",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 6,
+      "from": "A",
+      "to": "I",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 6,
+      "from": "O",
+      "to": "p",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 6,
+      "from": ".",
+      "to": "P",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 6,
+      "from": ".",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 7,
+      "from": ".",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 7,
+      "from": "O",
+      "to": "P",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 7,
+      "from": "A",
+      "to": "p",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 7,
+      "from": "c",
+      "to": "P",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 8,
+      "from": "O",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 8,
+      "from": "A",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 8,
+      "from": "A",
+      "to": "p",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 8,
+      "from": "A",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 8,
+      "from": "O",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 9,
+      "from": "O",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 9,
+      "from": "A",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 9,
+      "from": "A",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 9,
+      "from": "A",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 9,
+      "from": "O",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 15,
+      "y": 10,
+      "from": ".",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 10,
+      "from": "O",
+      "to": "v",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 10,
+      "from": "A",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 10,
+      "from": "A",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 10,
+      "from": "c",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 10,
+      "from": "O",
+      "to": "v",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 10,
+      "from": ".",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 15,
+      "y": 11,
+      "from": ".",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 11,
+      "from": "O",
+      "to": "v",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 11,
+      "from": "A",
+      "to": "v",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 11,
+      "from": "A",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 11,
+      "from": "c",
+      "to": "v",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 11,
+      "from": ".",
+      "to": "v",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 11,
+      "from": ".",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 14,
+      "y": 12,
+      "from": "O",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 15,
+      "y": 12,
+      "from": "O",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 12,
+      "from": ".",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 12,
+      "from": "O",
+      "to": "v",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 12,
+      "from": "A",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 12,
+      "from": "c",
+      "to": "v",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 12,
+      "from": ".",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 12,
+      "from": "O",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 22,
+      "y": 12,
+      "from": "O",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 14,
+      "y": 13,
+      "from": "E",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 15,
+      "y": 13,
+      "from": "E",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 13,
+      "from": "O",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 13,
+      "from": "D",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 13,
+      "from": "O",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 13,
+      "from": "E",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 22,
+      "y": 13,
+      "from": "O",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 14,
+      "y": 14,
+      "from": "V",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 15,
+      "y": 14,
+      "from": "V",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 14,
+      "from": "E",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 14,
+      "from": "B",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 14,
+      "from": "V",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 14,
+      "from": "V",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 22,
+      "y": 14,
+      "from": "O",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 14,
+      "y": 15,
+      "from": "O",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 15,
+      "y": 15,
+      "from": "V",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 15,
+      "from": "v",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 15,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 15,
+      "from": "d",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 15,
+      "from": "v",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 15,
+      "from": "V",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 15,
+      "y": 16,
+      "from": "O",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 16,
+      "from": "v",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 16,
+      "from": "w",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 16,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 16,
+      "from": "w",
+      "to": "O",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 16,
+      "from": "v",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 16,
+      "from": "O",
+      "to": ".",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 17,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 18,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 19,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 20,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 21,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 29,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 33,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 34,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 35,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 36,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 37,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 38,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 39,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 41,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 42,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 45,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 46,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 47,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 48,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 50,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 51,
+      "from": "W",
+      "to": "w",
+      "material": "dark thorn-flower staff",
+      "reason": "Replace silver spear terminal with connected violet petals, fixed green leaves and dark wood; preserve grip",
+      "boundary_reviewed": true
+    }
+  ]
+}

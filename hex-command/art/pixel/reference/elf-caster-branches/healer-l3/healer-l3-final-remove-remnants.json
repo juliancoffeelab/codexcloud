@@ -1,0 +1,66 @@
+[
+  {
+    "x": 51,
+    "y": 4,
+    "from": "O",
+    "to": ".",
+    "reason": "Detached remnants of the superseded staff head",
+    "boundary_reviewed": true
+  },
+  {
+    "x": 51,
+    "y": 5,
+    "from": "O",
+    "to": ".",
+    "reason": "Detached remnants of the superseded staff head",
+    "boundary_reviewed": true
+  },
+  {
+    "x": 51,
+    "y": 11,
+    "from": "O",
+    "to": ".",
+    "reason": "Detached remnants of the superseded staff head",
+    "boundary_reviewed": true
+  },
+  {
+    "x": 51,
+    "y": 12,
+    "from": "V",
+    "to": ".",
+    "reason": "Detached remnants of the superseded staff head",
+    "boundary_reviewed": true
+  },
+  {
+    "x": 52,
+    "y": 12,
+    "from": "O",
+    "to": ".",
+    "reason": "Detached remnants of the superseded staff head",
+    "boundary_reviewed": true
+  },
+  {
+    "x": 51,
+    "y": 13,
+    "from": "v",
+    "to": ".",
+    "reason": "Detached remnants of the superseded staff head",
+    "boundary_reviewed": true
+  },
+  {
+    "x": 52,
+    "y": 13,
+    "from": "O",
+    "to": ".",
+    "reason": "Detached remnants of the superseded staff head",
+    "boundary_reviewed": true
+  },
+  {
+    "x": 51,
+    "y": 14,
+    "from": "O",
+    "to": ".",
+    "reason": "Detached remnants of the superseded staff head",
+    "boundary_reviewed": true
+  }
+]

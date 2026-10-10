@@ -1,0 +1,14 @@
+{
+  "allowed_shades": {
+    "leather": ["B", "b"],
+    "wood": ["W", "w"],
+    "green_cloth": ["V", "v"],
+    "ivory_cloth": ["I", "i"],
+    "faction_cloth": ["^", "*"]
+  },
+  "unshaded_materials": {
+    "skin": { "base": "H", "extra_shades": ["h"] },
+    "metal": { "base": "A", "extra_shades": ["a"] },
+    "outline": { "base": "O", "extra_shades": [] }
+  }
+}

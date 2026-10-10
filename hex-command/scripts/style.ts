@@ -16,6 +16,7 @@ const files = [
   "*.json",
   "README.md",
   "AGENTS.md",
+  ".agents/skills/**/*.{md,json}",
   "TODO.md",
   "art/pixel/**/*.{json,md}",
   "art/pixel/reference/faction-expansion/*.cjs",

@@ -1,0 +1,114 @@
+{
+  "units": {
+    "elf-spearman": {
+      "canvas": [64, 64],
+      "matrix_sha256": "695d981dae4f6cbc2fae0930fb66d0ff0d035078686c60bcf7cf3c7805faee2b",
+      "palette_sha256": "fb2811be19d45e59e2437f66279649165ae21889aba9bc4a08cc019ed7e4b365"
+    },
+    "elf-spearman-l2": {
+      "canvas": [64, 64],
+      "matrix_sha256": "d0ae43bb05a9c16290e0f024c2491528f4760e626c637bea9a80639195e24453",
+      "palette_sha256": "d0a7f5ca92738dd74deab7c8e298f42c135fde44a446e61a00233da8747f6955"
+    },
+    "elf-spearman-l3": {
+      "canvas": [64, 64],
+      "matrix_sha256": "fedfce1d717c1c2e6a67f91b6c06a6db7fbfd30e1c398cf3d8bc72ff8f3006dc",
+      "palette_sha256": "d0a7f5ca92738dd74deab7c8e298f42c135fde44a446e61a00233da8747f6955"
+    },
+    "elf-jumper": {
+      "canvas": [64, 64],
+      "matrix_sha256": "e287a3c8197561bbbfa507eff1ffae4633fca1228f25fc3d43f29280b8622960",
+      "palette_sha256": "fb2811be19d45e59e2437f66279649165ae21889aba9bc4a08cc019ed7e4b365"
+    },
+    "elf-jumper-l2": {
+      "canvas": [64, 64],
+      "matrix_sha256": "1adb7a05d049e6c48244a5376ed9c93fda2847df5531042ad080a043bb075586",
+      "palette_sha256": "e721c24841ec152d885b6cc42c974f1f73f464ded788d31ec169c15184e42fb0"
+    },
+    "elf-jumper-l3": {
+      "canvas": [64, 64],
+      "matrix_sha256": "1ab39a8e140607aaf5ce039706eab651f48c9158b18bbe76822398dc7ddb0532",
+      "palette_sha256": "e721c24841ec152d885b6cc42c974f1f73f464ded788d31ec169c15184e42fb0"
+    },
+    "elf-bladedancer": {
+      "canvas": [48, 48],
+      "matrix_sha256": "3e878a217ec524548d0fa534be1547311a1f2e6ca1fbf4a9687c556428a08ad1",
+      "palette_sha256": "6ccce021023f44935839142ec42d73b002c635476726d1c5660f523fa6d8217f"
+    },
+    "elf-bladedancer-l2": {
+      "canvas": [48, 48],
+      "matrix_sha256": "50b3f228c57f7a1caee8fa3a6377ffc4c8b800782bbc9c15d4d2bb2aa2eb8497",
+      "palette_sha256": "705c6a0daae7d55f6ed02a6394586c7274637f90d8d7ab21f1ea99fbb00760d9"
+    },
+    "elf-bladedancer-l3": {
+      "canvas": [48, 48],
+      "matrix_sha256": "3b0a62136988d3b3f1d2f4ef01b31e0c79a4a2b5f053523762e746bd6fd438f5",
+      "palette_sha256": "b737f82dd4e8a8a73533aa5fa5d98b9d8a49b08ef03915bb2d5a0b8fb6ca6bc3"
+    },
+    "elf-flanker": {
+      "canvas": [64, 64],
+      "matrix_sha256": "90cc1d6dea7f67293882061a2cbe2da7a87845da10d9a8d6c21719386840101f",
+      "palette_sha256": "b59f46f229a6ab5f4b10c8bfb375f77a1bcbfd27c8bb163bb941695bd1ef845c"
+    },
+    "elf-flanker-l2": {
+      "canvas": [64, 64],
+      "matrix_sha256": "4b10a5a89202116ba0ffefa579dfab92e5253c4f181888a107487014ca2d7a0e",
+      "palette_sha256": "b59f46f229a6ab5f4b10c8bfb375f77a1bcbfd27c8bb163bb941695bd1ef845c"
+    },
+    "elf-flanker-l3": {
+      "canvas": [64, 64],
+      "matrix_sha256": "bdf5e649df2876ac20bf6f4040ee9ed0741e1cedc53c5b3b15eff30af3593c96",
+      "palette_sha256": "0f2ba3fd700c2420d1c35a42174932b99acd763caf6416f4161517c4682a9b33"
+    },
+    "elf-caster": {
+      "canvas": [64, 64],
+      "matrix_sha256": "0c6c828f024347f84fd8fd4ad2e180b3db9d2f6b2c8389e9fef7c97e6d12e4e4",
+      "palette_sha256": "aa3b65ac412495465010f28dce934b640bf5d335dbb91ea4ca5931440c6ecd99"
+    },
+    "elf-deer-archer": {
+      "canvas": [64, 64],
+      "matrix_sha256": "f688ee67d83c137356707e38db87f33215bbee1c3a36aef1dd05b5b460416469",
+      "palette_sha256": "6bb8a23048c3b473b4ff77ff51fc989a7a34fd5d96b4584bb4816e5fcea7f58a"
+    },
+    "elf-deer-archer-l2": {
+      "canvas": [64, 64],
+      "matrix_sha256": "551767b73dddf0ce8cb09689f765bc4830552626a50b141c59a05261dd56a624",
+      "palette_sha256": "a3debcbd0baae30999c60deb013fbd3c72966f7d86a1fa8b2da908aeb9326be2"
+    },
+    "elf-deer-archer-l3": {
+      "canvas": [64, 64],
+      "matrix_sha256": "cb07edbc363ad2b7cb0d2222bdee2f22e10960aace81b64981bfff0983198f51",
+      "palette_sha256": "a3debcbd0baae30999c60deb013fbd3c72966f7d86a1fa8b2da908aeb9326be2"
+    },
+    "elf-archer-l2": {
+      "canvas": [64, 64],
+      "matrix_sha256": "3597c89d65bddc3941e5f3bd69f01d02762a1586c3e67be822f7a7d2f15ea1e6",
+      "palette_sha256": "e048e48b05944a3be4daa0618a716362da770913bb10fadb213cb6a402b3a172"
+    },
+    "elf-archer-l3": {
+      "canvas": [64, 64],
+      "matrix_sha256": "f963087e57721353bec14cbe25cb620e50de6745e980f7d41228bf90d9dd6821",
+      "palette_sha256": "e048e48b05944a3be4daa0618a716362da770913bb10fadb213cb6a402b3a172"
+    },
+    "elf-caster-l2": {
+      "canvas": [64, 64],
+      "matrix_sha256": "204a9552f29c1fb792a939c5847ad3ec4f69bc056e20bed994480addacfa1046",
+      "palette_sha256": "6a620140fcb6779e312bcef1f8d80f7d9c8f7e1810098a4e20d655223b21fdf3"
+    },
+    "elf-caster-l3": {
+      "canvas": [64, 64],
+      "matrix_sha256": "e65f689108ce7f07e191894451ed7b83ac12fdc8f578b8afab187bca001bb5c9",
+      "palette_sha256": "fbd1eb83c4d9948e220ffa9eaca6ec13e152b5dd89bcf5b0df0a5c581c3066ba"
+    },
+    "elf-killing-caster-l2": {
+      "canvas": [64, 64],
+      "matrix_sha256": "d9c06c3ea86f9a711ea224467a646a549700991927e44ec7d13add48018c3145",
+      "palette_sha256": "68c0433078a1d66c0279115ff2109b98ad3a35054125fbeb2c35dd230b67d2c3"
+    },
+    "elf-killing-caster-l3": {
+      "canvas": [64, 64],
+      "matrix_sha256": "3627c8c892a5815ce3e4abe6e248854ee223aa6bad254e3ca895314729ac8b52",
+      "palette_sha256": "66924ed469afaa5c4f57577705e8fec49d6b36dcbe2df4cc8f895ea2f4088132"
+    }
+  }
+}
