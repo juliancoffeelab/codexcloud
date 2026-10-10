@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "template": "tmp/corruption-commander/facing-left/l1-template.png",
+  "canvas": [1024, 1168],
+  "anchors": [
+    {
+      "matrix": "art/pixel/units/zombie-corruption-mage/sprite.txt",
+      "sha256": "8c878dfc16bd4cd5b0d4af7f109f03831a771d7fe839189cb381875ced5181ca"
+    },
+    {
+      "matrix": "tmp/corruption-commander/facing-left/zombie-decay-caster/sprite.txt",
+      "sha256": "bbc8d34c7ad5a9677071907a4cfdda9fa1f949c0e51ac3af6bf8cc6f59494381"
+    },
+    {
+      "matrix": "tmp/corruption-commander/facing-left/zombie-plague-carrier/sprite.txt",
+      "sha256": "8f3d87efadcbb23fb16bb0e412099175aacea7cad7cf862dd0465d04b4bb34b7"
+    }
+  ],
+  "palette": {
+    ".": [0, 0, 0, 0],
+    "^": [1, 93, 100, 255],
+    "*": [1, 55, 59, 255],
+    "B": [111, 72, 43, 255],
+    "E": [188, 217, 70, 255],
+    "H": [145, 156, 99, 255],
+    "O": [25, 22, 20, 255],
+    "V": [111, 81, 53, 255],
+    "W": [132, 88, 51, 255],
+    "b": [64, 40, 28, 255],
+    "h": [94, 109, 67, 255],
+    "i": [180, 163, 127, 255],
+    "v": [67, 48, 34, 255],
+    "w": [76, 49, 31, 255],
+    "G": [238, 184, 52, 255],
+    "I": [240, 229, 198, 255]
+  },
+  "slots": [
+    {
+      "label": "Corruption mage L1",
+      "rect": [512, 576, 512, 512],
+      "native": 64,
+      "origin": [0, 0]
+    }
+  ],
+  "background": [255, 0, 255, 255],
+  "logicalSlot": 64
+}

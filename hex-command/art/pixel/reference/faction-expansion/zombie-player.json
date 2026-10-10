@@ -1,146 +1,50 @@
 [
   {
-    "label": "Zombie shambler L1",
-    "image": "art/pixel/units/zombie-shambler/player.png"
-  },
-  {
-    "label": "Zombie shambler L2",
-    "image": "art/pixel/reference/zombies/units/zombie-shambler-l2/player.png"
-  },
-  {
-    "label": "Zombie shambler L3",
-    "image": "art/pixel/reference/zombies/units/zombie-shambler-l3/player.png"
-  },
-  {
-    "label": "Zombie weakling wretch L1",
-    "image": "art/pixel/reference/zombies/units/zombie-wretch/player.png"
-  },
-  {
-    "label": "Zombie weakling wretch L2",
-    "image": "art/pixel/reference/zombies/units/zombie-wretch-l2/player.png"
-  },
-  {
-    "label": "Zombie weakling wretch L3",
-    "image": "art/pixel/reference/zombies/units/zombie-wretch-l3/player.png"
-  },
-  {
-    "label": "Zombie weakling crawler L1",
-    "image": "art/pixel/reference/zombies/units/zombie-crawler/player.png"
-  },
-  {
-    "label": "Zombie weakling crawler L2",
-    "image": "art/pixel/reference/zombies/units/zombie-crawler-l2/player.png"
-  },
-  {
-    "label": "Zombie weakling crawler L3",
-    "image": "art/pixel/reference/zombies/units/zombie-crawler-l3/player.png"
-  },
-  {
-    "label": "Zombie weakling cleaver L1",
-    "image": "art/pixel/reference/zombies/units/zombie-light-cleaver/player.png"
-  },
-  {
-    "label": "Zombie weakling cleaver L2",
-    "image": "art/pixel/reference/zombies/units/zombie-light-cleaver-l2/player.png"
-  },
-  {
-    "label": "Zombie weakling cleaver L3",
-    "image": "art/pixel/reference/zombies/units/zombie-light-cleaver-l3/player.png"
-  },
-  {
-    "label": "Zombie weakling corruption caster L1",
-    "image": "art/pixel/reference/zombies/units/zombie-novice-caster/player.png"
-  },
-  {
-    "label": "Zombie weakling corruption caster L2",
-    "image": "art/pixel/reference/zombies/units/zombie-novice-caster-l2/player.png"
-  },
-  {
-    "label": "Zombie weakling corruption caster L3",
-    "image": "art/pixel/reference/zombies/units/zombie-novice-caster-l3/player.png"
-  },
-  {
-    "label": "Zombie skeleton-sized walker L1",
+    "label": "Thin walker → Armed melee L1",
     "image": "art/pixel/units/zombie-walker/player.png"
   },
   {
-    "label": "Zombie skeleton-sized walker L2",
-    "image": "art/pixel/reference/zombies/units/zombie-walker-l2/player.png"
-  },
-  {
-    "label": "Zombie skeleton-sized walker L3",
-    "image": "art/pixel/reference/zombies/units/zombie-walker-l3/player.png"
-  },
-  {
-    "label": "Zombie skeleton-sized fighter L1",
+    "label": "Thin fighter L2",
     "image": "art/pixel/units/zombie-fighter/player.png"
   },
   {
-    "label": "Zombie skeleton-sized fighter L2",
-    "image": "art/pixel/reference/zombies/units/zombie-fighter-l2/player.png"
-  },
-  {
-    "label": "Zombie skeleton-sized fighter L3",
-    "image": "art/pixel/reference/zombies/units/zombie-fighter-l3/player.png"
-  },
-  {
-    "label": "Zombie skeleton-sized caster L1",
-    "image": "art/pixel/units/zombie-decay-caster/player.png"
-  },
-  {
-    "label": "Zombie skeleton-sized caster L2",
-    "image": "art/pixel/reference/zombies/units/zombie-decay-caster-l2/player.png"
-  },
-  {
-    "label": "Zombie skeleton-sized caster L3",
-    "image": "art/pixel/reference/zombies/units/zombie-decay-caster-l3/player.png"
-  },
-  {
-    "label": "Zombie cleaver fighter L1",
+    "label": "Cleaver fighter L3",
     "image": "art/pixel/units/zombie-cleaver/player.png"
   },
   {
-    "label": "Zombie cleaver fighter L2",
-    "image": "art/pixel/reference/zombies/units/zombie-cleaver-l2/player.png"
+    "label": "Thin walker → Disease and debuffs L1",
+    "image": "art/pixel/units/zombie-walker/player.png"
   },
   {
-    "label": "Zombie cleaver fighter L3",
-    "image": "art/pixel/reference/zombies/units/zombie-cleaver-l3/player.png"
+    "label": "Thin caster L2",
+    "image": "art/pixel/units/zombie-decay-caster/player.png"
   },
   {
-    "label": "Zombie ghoul L1",
-    "image": "art/pixel/units/zombie-ghoul/player.png"
-  },
-  {
-    "label": "Zombie ghoul L2",
-    "image": "art/pixel/reference/zombies/units/zombie-ghoul-l2/player.png"
-  },
-  {
-    "label": "Zombie ghoul L3",
-    "image": "art/pixel/reference/zombies/units/zombie-ghoul-l3/player.png"
-  },
-  {
-    "label": "Zombie plague carrier L1",
+    "label": "Plague carrier L3",
     "image": "art/pixel/units/zombie-plague-carrier/player.png"
   },
   {
-    "label": "Zombie plague carrier L2",
-    "image": "art/pixel/reference/zombies/units/zombie-plague-carrier-l2/player.png"
+    "label": "Thin walker → Unarmed melee L1",
+    "image": "art/pixel/units/zombie-walker/player.png"
   },
   {
-    "label": "Zombie plague carrier L3",
-    "image": "art/pixel/reference/zombies/units/zombie-plague-carrier-l3/player.png"
+    "label": "Shambler L2",
+    "image": "art/pixel/units/zombie-shambler/player.png"
   },
   {
-    "label": "Zombie corruption mage L1",
+    "label": "Ghoul L3",
+    "image": "art/pixel/units/zombie-ghoul/player.png"
+  },
+  {
+    "label": "Corruption mage (commander) L1",
+    "image": "art/pixel/units/zombie-corruption-mage-l1/player.png"
+  },
+  {
+    "label": "Corruption mage (commander) L2",
     "image": "art/pixel/units/zombie-corruption-mage/player.png"
   },
   {
-    "label": "Zombie corruption mage L2",
-    "image": "art/pixel/reference/zombies/units/zombie-corruption-mage-l2/player.png"
-  },
-  {
-    "label": "Zombie corruption mage L3",
-    "image": "art/pixel/reference/zombies/units/zombie-corruption-mage-l3/player.png"
+    "label": "Corruption archmage (commander) L3",
+    "image": "art/pixel/units/zombie-corruption-archmage/player.png"
   }
 ]

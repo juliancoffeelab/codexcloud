@@ -283,7 +283,7 @@
   },
   "zombie-corruption-mage": {
     "name": "Corruption mage",
-    "level": 1,
+    "level": 2,
     "study": "faction-expansion/zombie-corruption-mage",
     "canvas": [64, 64],
     "role": "commander"
@@ -1280,6 +1280,20 @@
     "name": "Banner sovereign",
     "level": 3,
     "study": "commander-progression",
+    "canvas": [64, 64],
+    "role": "commander"
+  },
+  "zombie-corruption-mage-l1": {
+    "name": "Corruption mage",
+    "level": 1,
+    "study": "corruption-commander",
+    "canvas": [64, 64],
+    "role": "commander"
+  },
+  "zombie-corruption-archmage": {
+    "name": "Corruption archmage",
+    "level": 3,
+    "study": "corruption-commander",
     "canvas": [64, 64],
     "role": "commander"
   }

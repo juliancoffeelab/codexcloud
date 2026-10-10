@@ -15,8 +15,8 @@
 
 ## Commander artwork
 
-- [ ] Complete the Corruption Mage L1–L3 commander progression from the existing
-      L3 sprite (zombies).
+- [x] Complete the Corruption Mage L1–L3 commander progression around the existing
+      L2 sprite (zombies).
 - [ ] Review existing Grove oracle L3 art and formalize the
       Wildkeeper → Grovewarden → Grove oracle commander artwork line (woodland).
 - [x] Complete the dwarf Forge lord commander L1–L3 artwork line.

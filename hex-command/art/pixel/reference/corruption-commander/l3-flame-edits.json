@@ -1,0 +1,546 @@
+{
+  "matrix_sha256": "3da3caf931d1f9d91a1ea7117b25f0690c43a6dbde397348a241eae519a3ecd5",
+  "palette_sha256": "699878ceb06caa55dc01686704383eb11d74a616ddaf6e49a494eaf7214d0205",
+  "edits": [
+    {
+      "x": 10,
+      "y": 12,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 10,
+      "y": 13,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 7,
+      "y": 14,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 10,
+      "y": 14,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 11,
+      "y": 14,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 12,
+      "y": 14,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 13,
+      "y": 14,
+      "from": ".",
+      "to": "E",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 6,
+      "y": 15,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 7,
+      "y": 15,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 8,
+      "y": 15,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 11,
+      "y": 15,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 13,
+      "y": 15,
+      "from": ".",
+      "to": "E",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 5,
+      "y": 16,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 6,
+      "y": 16,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 7,
+      "y": 16,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 8,
+      "y": 16,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 10,
+      "y": 16,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 12,
+      "y": 16,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 5,
+      "y": 17,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 6,
+      "y": 17,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 7,
+      "y": 17,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 10,
+      "y": 17,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 11,
+      "y": 17,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 12,
+      "y": 17,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 14,
+      "y": 17,
+      "from": ".",
+      "to": "E",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 6,
+      "y": 18,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 7,
+      "y": 18,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 11,
+      "y": 18,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 12,
+      "y": 18,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 11,
+      "y": 19,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 12,
+      "y": 19,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 14,
+      "y": 19,
+      "from": ".",
+      "to": "E",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 5,
+      "y": 20,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 6,
+      "y": 20,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 11,
+      "y": 20,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 13,
+      "y": 20,
+      "from": ".",
+      "to": "E",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 14,
+      "y": 20,
+      "from": ".",
+      "to": "E",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 4,
+      "y": 21,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 5,
+      "y": 21,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 14,
+      "y": 21,
+      "from": ".",
+      "to": "E",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 4,
+      "y": 22,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 5,
+      "y": 22,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 4,
+      "y": 23,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 9,
+      "y": 23,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 10,
+      "y": 23,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 15,
+      "y": 23,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 3,
+      "y": 24,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 4,
+      "y": 24,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 9,
+      "y": 24,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 10,
+      "y": 24,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 15,
+      "y": 24,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 3,
+      "y": 25,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 4,
+      "y": 25,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 9,
+      "y": 25,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 10,
+      "y": 25,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 14,
+      "y": 25,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 15,
+      "y": 25,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 3,
+      "y": 26,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 4,
+      "y": 26,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 4,
+      "y": 27,
+      "from": "E",
+      "to": ".",
+      "material": "corruption flame silhouette",
+      "reason": "Narrow the flame mass and create distinct rising tongues; leave the entire palm and every finger unchanged",
+      "boundary_reviewed": true
+    }
+  ]
+}

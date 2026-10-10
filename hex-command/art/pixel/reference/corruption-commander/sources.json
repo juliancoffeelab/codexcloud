@@ -1,0 +1,22 @@
+{
+  "units": {
+    "zombie-corruption-mage-l1": {
+      "level": 1,
+      "canvas": [64, 64],
+      "matrix_sha256": "986d58091154f72026da98c12da1e63a779192cfa4c84c59a5c73661dc89fb84",
+      "palette_sha256": "699878ceb06caa55dc01686704383eb11d74a616ddaf6e49a494eaf7214d0205"
+    },
+    "zombie-corruption-mage": {
+      "level": 2,
+      "canvas": [64, 64],
+      "matrix_sha256": "8c878dfc16bd4cd5b0d4af7f109f03831a771d7fe839189cb381875ced5181ca",
+      "palette_sha256": "61859f114531f70ece7f9b391d5b85157e16aa0f4591a248d9789d6b6932f31d"
+    },
+    "zombie-corruption-archmage": {
+      "level": 3,
+      "canvas": [64, 64],
+      "matrix_sha256": "c3739e9c8b69b562cf4f60bf49c25fcf560c01a8f6ca6d267c756d8e2d4784b4",
+      "palette_sha256": "699878ceb06caa55dc01686704383eb11d74a616ddaf6e49a494eaf7214d0205"
+    }
+  }
+}

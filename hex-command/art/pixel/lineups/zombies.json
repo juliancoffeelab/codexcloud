@@ -52,8 +52,23 @@
     }
   ],
   "commander": {
-    "id": "zombie-corruption-mage",
-    "name": "Corruption mage",
-    "role": "commander"
+    "role": "commander",
+    "units": [
+      {
+        "id": "zombie-corruption-mage-l1",
+        "name": "Corruption mage",
+        "level": 1
+      },
+      {
+        "id": "zombie-corruption-mage",
+        "name": "Corruption mage",
+        "level": 2
+      },
+      {
+        "id": "zombie-corruption-archmage",
+        "name": "Corruption archmage",
+        "level": 3
+      }
+    ]
   }
 }

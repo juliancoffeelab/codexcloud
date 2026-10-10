@@ -234,6 +234,8 @@ function extract(job) {
   console.log(`${job.id}: ${size}x${size}, ${changes.length} recorded cleanup edits`);
 }
 function tiers(job) {
+  // The reviewed commander line owns these matrices; do not replay the old tier recipe.
+  if (job.id === "zombie-corruption-mage") return;
   if (job.level === 3) {
     const dir = path.join(root, "extracted", job.id);
     const out = sourceDirectory(job.id);
@@ -476,6 +478,19 @@ function boards() {
                   image: path.relative(project, path.join(sourceDirectory(id), `${side}.png`)),
                 })),
               );
+      if (race === "zombie") {
+        const lineup = require("../../lineups/zombies.json");
+        entries = [
+          ...lineup.branches.flatMap((branch) => [
+            { ...lineup.base, name: `${lineup.base.name} → ${branch.role}` },
+            ...branch.units,
+          ]),
+          ...lineup.commander.units.map((unit) => ({ ...unit, name: `${unit.name} (commander)` })),
+        ].map((unit) => ({
+          label: `${unit.name} L${unit.level}`,
+          image: path.relative(project, path.join(sourceDirectory(unit.id), `${side}.png`)),
+        }));
+      }
       if (race === "elf") {
         const catalog = require("../../units/catalog.json");
         const lineup = require("../../lineups/elves.json");

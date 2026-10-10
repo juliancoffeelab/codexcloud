@@ -1,0 +1,397 @@
+{
+  "matrix_sha256": "25e811de2b64df4f6615f171adbdb5bfd8c8c3d571d9be5a4a1daa2242dedb31",
+  "palette_sha256": "5410815600590180b64d147e227d05bebf999fb3f50de6634aff944850b36c94",
+  "edits": [
+    {
+      "x": 29,
+      "y": 18,
+      "from": "b",
+      "to": "h",
+      "material": "dead skin",
+      "reason": "Blend wood/leather quantization flecks into the continuous olive face, arm or leg without changing black features"
+    },
+    {
+      "x": 29,
+      "y": 19,
+      "from": "V",
+      "to": "h",
+      "material": "dead skin",
+      "reason": "Blend wood/leather quantization flecks into the continuous olive face, arm or leg without changing black features"
+    },
+    {
+      "x": 29,
+      "y": 21,
+      "from": "V",
+      "to": "h",
+      "material": "dead skin",
+      "reason": "Blend wood/leather quantization flecks into the continuous olive face, arm or leg without changing black features"
+    },
+    {
+      "x": 27,
+      "y": 22,
+      "from": "b",
+      "to": "h",
+      "material": "dead skin",
+      "reason": "Blend wood/leather quantization flecks into the continuous olive face, arm or leg without changing black features"
+    },
+    {
+      "x": 30,
+      "y": 22,
+      "from": "B",
+      "to": "h",
+      "material": "dead skin",
+      "reason": "Blend wood/leather quantization flecks into the continuous olive face, arm or leg without changing black features"
+    },
+    {
+      "x": 27,
+      "y": 23,
+      "from": "W",
+      "to": "h",
+      "material": "dead skin",
+      "reason": "Blend wood/leather quantization flecks into the continuous olive face, arm or leg without changing black features"
+    },
+    {
+      "x": 30,
+      "y": 23,
+      "from": "w",
+      "to": "h",
+      "material": "dead skin",
+      "reason": "Blend wood/leather quantization flecks into the continuous olive face, arm or leg without changing black features"
+    },
+    {
+      "x": 30,
+      "y": 24,
+      "from": "B",
+      "to": "h",
+      "material": "dead skin",
+      "reason": "Blend wood/leather quantization flecks into the continuous olive face, arm or leg without changing black features"
+    },
+    {
+      "x": 17,
+      "y": 28,
+      "from": "b",
+      "to": "h",
+      "material": "dead skin",
+      "reason": "Blend wood/leather quantization flecks into the continuous olive face, arm or leg without changing black features"
+    },
+    {
+      "x": 20,
+      "y": 30,
+      "from": "b",
+      "to": "h",
+      "material": "dead skin",
+      "reason": "Blend wood/leather quantization flecks into the continuous olive face, arm or leg without changing black features"
+    },
+    {
+      "x": 36,
+      "y": 23,
+      "from": "v",
+      "to": "h",
+      "material": "dead skin",
+      "reason": "Blend wood/leather quantization flecks into the continuous olive face, arm or leg without changing black features"
+    },
+    {
+      "x": 43,
+      "y": 29,
+      "from": "b",
+      "to": "h",
+      "material": "dead skin",
+      "reason": "Blend wood/leather quantization flecks into the continuous olive face, arm or leg without changing black features"
+    },
+    {
+      "x": 23,
+      "y": 41,
+      "from": "v",
+      "to": "h",
+      "material": "dead skin",
+      "reason": "Blend wood/leather quantization flecks into the continuous olive face, arm or leg without changing black features"
+    },
+    {
+      "x": 25,
+      "y": 42,
+      "from": "b",
+      "to": "h",
+      "material": "dead skin",
+      "reason": "Blend wood/leather quantization flecks into the continuous olive face, arm or leg without changing black features"
+    },
+    {
+      "x": 23,
+      "y": 48,
+      "from": "W",
+      "to": "h",
+      "material": "dead skin",
+      "reason": "Blend wood/leather quantization flecks into the continuous olive face, arm or leg without changing black features"
+    },
+    {
+      "x": 44,
+      "y": 12,
+      "from": "V",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 45,
+      "y": 13,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 46,
+      "y": 13,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 42,
+      "y": 15,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 43,
+      "y": 16,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 44,
+      "y": 16,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 44,
+      "y": 17,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 45,
+      "y": 17,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 44,
+      "y": 18,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 46,
+      "y": 18,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 42,
+      "y": 21,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 44,
+      "y": 23,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 44,
+      "y": 24,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 41,
+      "y": 26,
+      "from": "H",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 44,
+      "y": 33,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 45,
+      "y": 34,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 44,
+      "y": 35,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 45,
+      "y": 35,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 45,
+      "y": 37,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 46,
+      "y": 38,
+      "from": "V",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 45,
+      "y": 39,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 44,
+      "y": 40,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 44,
+      "y": 41,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 45,
+      "y": 42,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 45,
+      "y": 43,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 46,
+      "y": 43,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Restore wood on shaft/bud away from the wrapped hand"
+    },
+    {
+      "x": 42,
+      "y": 34,
+      "from": "*",
+      "to": ".",
+      "material": "exterior transparency",
+      "reason": "Trim dangling faction fragment below the grip while retaining staff silhouette",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 35,
+      "from": "^",
+      "to": ".",
+      "material": "exterior transparency",
+      "reason": "Trim dangling faction fragment below the grip while retaining staff silhouette",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 37,
+      "from": "*",
+      "to": ".",
+      "material": "exterior transparency",
+      "reason": "Trim dangling faction fragment below the grip while retaining staff silhouette",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 38,
+      "from": "*",
+      "to": ".",
+      "material": "exterior transparency",
+      "reason": "Trim dangling faction fragment below the grip while retaining staff silhouette",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 37,
+      "from": "O",
+      "to": ".",
+      "material": "exterior transparency",
+      "reason": "Trim dangling faction fragment below the grip while retaining staff silhouette",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 38,
+      "from": "O",
+      "to": ".",
+      "material": "exterior transparency",
+      "reason": "Trim dangling faction fragment below the grip while retaining staff silhouette",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 39,
+      "from": "O",
+      "to": ".",
+      "material": "exterior transparency",
+      "reason": "Trim dangling faction fragment below the grip while retaining staff silhouette",
+      "boundary_reviewed": true
+    }
+  ]
+}

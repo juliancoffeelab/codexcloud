@@ -1,0 +1,5 @@
+{
+  "source_matrix_sha256": "e3597238661379948bda0d75b4608406bda70fa809e20cfad3b88047ec853a7f",
+  "offset": [0, 7],
+  "reason": "Align feet at row56 with existing L2; body remains 36 pixels tall, six fewer than L2"
+}

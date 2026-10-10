@@ -6,8 +6,8 @@ construction scripts and comparison boards. Run commands from the project root
 after `npm install`. Image composition uses `pngjs` and ImageMagick's `magick`;
 matrix rendering uses Python's standard library.
 
-The chosen [zombie lineup](lineups/zombies.json) uses the eight reviewed base
-sprites with new branch and tier assignments. Unused variants live in
+The chosen [zombie lineup](lineups/zombies.json) uses the reviewed branch
+sprites and the [Corruption Mage commander progression](reference/corruption-commander/README.md). Unused variants live in
 [reference/zombies/](reference/zombies/README.md); the expansion source resolver
 keeps rebuild outputs in their active or archived locations and preserves the
 chosen catalog metadata. Historical study boards are not advancement trees.

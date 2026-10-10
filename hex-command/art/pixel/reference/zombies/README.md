@@ -9,8 +9,9 @@ in [the lineup](../../lineups/zombies.json), with a [review grid](lineup-player.
 | Thin walker | Thin caster  | Plague carrier  | Disease and debuffs |
 | Thin walker | Shambler     | Ghoul           | Unarmed melee       |
 
-The Corruption mage is the commander, separate from this advancement tree.
-Its gameplay level has not been decided.
+The [Corruption mage commander](../corruption-commander/README.md) has a separate
+L1–L3 artwork row. The original mage is preserved as L2; new L1 and L3 use caster
+and carrier build influences without copying those units. Gameplay integration remains future work.
 
 Refresh the chosen review grid from canonical sprites with
 `node art/pixel/reference/zombies/lineup.cjs` from the project root.

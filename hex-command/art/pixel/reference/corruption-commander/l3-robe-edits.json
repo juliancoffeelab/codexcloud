@@ -1,0 +1,46 @@
+{
+  "matrix_sha256": "afb9236064c2bc2e31523fa9fe8646ffa1b6ecba023f8927f3c798003b5a7da0",
+  "palette_sha256": "5410815600590180b64d147e227d05bebf999fb3f50de6634aff944850b36c94",
+  "edits": [
+    {
+      "x": 27,
+      "y": 49,
+      "from": "*",
+      "to": "v",
+      "material": "brown robe",
+      "reason": "Remove residual faction fleck inside the central brown body robe; nearby cape tails remain unchanged"
+    },
+    {
+      "x": 29,
+      "y": 49,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Remove residual faction fleck inside the central brown body robe; nearby cape tails remain unchanged"
+    },
+    {
+      "x": 30,
+      "y": 49,
+      "from": "*",
+      "to": "v",
+      "material": "brown robe",
+      "reason": "Remove residual faction fleck inside the central brown body robe; nearby cape tails remain unchanged"
+    },
+    {
+      "x": 32,
+      "y": 49,
+      "from": "*",
+      "to": "v",
+      "material": "brown robe",
+      "reason": "Remove residual faction fleck inside the central brown body robe; nearby cape tails remain unchanged"
+    },
+    {
+      "x": 29,
+      "y": 50,
+      "from": "*",
+      "to": "v",
+      "material": "brown robe",
+      "reason": "Remove residual faction fleck inside the central brown body robe; nearby cape tails remain unchanged"
+    }
+  ]
+}

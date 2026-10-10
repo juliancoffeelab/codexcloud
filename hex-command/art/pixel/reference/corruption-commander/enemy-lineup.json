@@ -1,0 +1,14 @@
+[
+  {
+    "label": "Corruption mage L1",
+    "image": "art/pixel/units/zombie-corruption-mage-l1/enemy.png"
+  },
+  {
+    "label": "Corruption mage L2",
+    "image": "art/pixel/units/zombie-corruption-mage/enemy.png"
+  },
+  {
+    "label": "Corruption archmage L3",
+    "image": "art/pixel/units/zombie-corruption-archmage/enemy.png"
+  }
+]

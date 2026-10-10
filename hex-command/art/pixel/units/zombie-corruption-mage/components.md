@@ -1,6 +1,6 @@
-# Corruption mage — commander
+# Corruption mage — L2 commander
 
-Chosen zombie lineup artwork. Source recipe tier: L1; lineup tiers are recorded in `../../lineups/zombies.json`.
+Chosen zombie lineup artwork. Artwork tier: L2 (user assignment); original source recipe tier: L1; lineup tiers are recorded in `../../lineups/zombies.json`.
 
 Hideous decayed fleshy zombie caster, sick greenish skin, ragged dirty robe, teal faction hood/cloak. One hand visibly grips a gnarled rotten staff with crooked dead branches and a sick lime-green gem, other hand casts a compact corruption flame. Not a clean skeleton, not cute.
 

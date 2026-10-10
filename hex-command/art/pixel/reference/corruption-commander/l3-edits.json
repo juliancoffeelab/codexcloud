@@ -1,0 +1,1430 @@
+{
+  "matrix_sha256": "5d65437de04c1298993d69a5d2b3c86cdbeb0c84e9e1f4a5f64aa3a6679ca081",
+  "palette_sha256": "5410815600590180b64d147e227d05bebf999fb3f50de6634aff944850b36c94",
+  "reference": "tmp/corruption-commander/facing-left/l3-generated.png",
+  "edits": [
+    {
+      "x": 25,
+      "y": 13,
+      "from": "v",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 21,
+      "y": 15,
+      "from": "b",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 24,
+      "y": 15,
+      "from": "b",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 21,
+      "y": 16,
+      "from": "W",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 25,
+      "y": 16,
+      "from": "V",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 25,
+      "y": 18,
+      "from": "B",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 23,
+      "y": 20,
+      "from": "w",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 25,
+      "y": 23,
+      "from": "V",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 18,
+      "y": 27,
+      "from": "v",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 20,
+      "y": 30,
+      "from": "B",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 8,
+      "y": 30,
+      "from": "V",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 36,
+      "y": 18,
+      "from": "w",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 37,
+      "y": 18,
+      "from": "b",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 36,
+      "y": 19,
+      "from": "w",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 35,
+      "y": 20,
+      "from": "I",
+      "to": "H",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 34,
+      "y": 21,
+      "from": "W",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 35,
+      "y": 21,
+      "from": "I",
+      "to": "H",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 34,
+      "y": 22,
+      "from": "i",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 35,
+      "y": 22,
+      "from": "I",
+      "to": "H",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 34,
+      "y": 23,
+      "from": "I",
+      "to": "H",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 35,
+      "y": 23,
+      "from": "i",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 32,
+      "y": 24,
+      "from": "b",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 34,
+      "y": 24,
+      "from": "I",
+      "to": "H",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 35,
+      "y": 24,
+      "from": "W",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 32,
+      "y": 25,
+      "from": "B",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 34,
+      "y": 25,
+      "from": "I",
+      "to": "H",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 36,
+      "y": 25,
+      "from": "v",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 40,
+      "y": 25,
+      "from": "v",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 40,
+      "y": 26,
+      "from": "b",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 42,
+      "y": 26,
+      "from": "v",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 41,
+      "y": 27,
+      "from": "v",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 37,
+      "y": 28,
+      "from": "b",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 39,
+      "y": 28,
+      "from": "v",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 41,
+      "y": 28,
+      "from": "b",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 39,
+      "y": 30,
+      "from": "v",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 48,
+      "y": 27,
+      "from": "w",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 49,
+      "y": 28,
+      "from": "b",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 46,
+      "y": 29,
+      "from": "b",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 49,
+      "y": 30,
+      "from": "w",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 45,
+      "y": 31,
+      "from": "b",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 47,
+      "y": 31,
+      "from": "w",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 18,
+      "y": 43,
+      "from": "v",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 22,
+      "y": 43,
+      "from": "v",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 23,
+      "y": 43,
+      "from": "V",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 22,
+      "y": 44,
+      "from": "b",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 23,
+      "y": 44,
+      "from": "V",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 19,
+      "y": 45,
+      "from": "V",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 21,
+      "y": 45,
+      "from": "V",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 22,
+      "y": 45,
+      "from": "B",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 23,
+      "y": 45,
+      "from": "b",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 18,
+      "y": 46,
+      "from": "W",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 20,
+      "y": 46,
+      "from": "B",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 21,
+      "y": 46,
+      "from": "b",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 22,
+      "y": 46,
+      "from": "v",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 20,
+      "y": 47,
+      "from": "V",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 21,
+      "y": 47,
+      "from": "v",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 22,
+      "y": 47,
+      "from": "b",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 19,
+      "y": 48,
+      "from": "B",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 21,
+      "y": 48,
+      "from": "V",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 22,
+      "y": 48,
+      "from": "w",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 20,
+      "y": 49,
+      "from": "V",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 19,
+      "y": 50,
+      "from": "W",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 20,
+      "y": 50,
+      "from": "W",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 21,
+      "y": 50,
+      "from": "w",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 17,
+      "y": 54,
+      "from": "V",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 19,
+      "y": 54,
+      "from": "V",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 17,
+      "y": 55,
+      "from": "V",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 18,
+      "y": 55,
+      "from": "V",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 18,
+      "y": 56,
+      "from": "w",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 19,
+      "y": 56,
+      "from": "V",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 41,
+      "y": 54,
+      "from": "B",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 43,
+      "y": 55,
+      "from": "V",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 45,
+      "y": 55,
+      "from": "W",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 48,
+      "y": 55,
+      "from": "b",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 43,
+      "y": 56,
+      "from": "b",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 45,
+      "y": 56,
+      "from": "b",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 47,
+      "y": 56,
+      "from": "b",
+      "to": "h",
+      "material": "dead flesh",
+      "reason": "Remove wood/leather/ivory quantization fleck inside the visually continuous olive corpse tissue; preserve dark facial features and contours"
+    },
+    {
+      "x": 29,
+      "y": 39,
+      "from": "B",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 31,
+      "y": 39,
+      "from": "w",
+      "to": "v",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 27,
+      "y": 40,
+      "from": "*",
+      "to": "v",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 30,
+      "y": 40,
+      "from": "w",
+      "to": "v",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 31,
+      "y": 40,
+      "from": "*",
+      "to": "v",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 27,
+      "y": 41,
+      "from": "*",
+      "to": "v",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 28,
+      "y": 41,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 30,
+      "y": 41,
+      "from": "*",
+      "to": "v",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 31,
+      "y": 41,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 27,
+      "y": 42,
+      "from": "*",
+      "to": "v",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 28,
+      "y": 42,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 29,
+      "y": 42,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 30,
+      "y": 42,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 31,
+      "y": 42,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 27,
+      "y": 43,
+      "from": "*",
+      "to": "v",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 28,
+      "y": 43,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 29,
+      "y": 43,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 30,
+      "y": 43,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 31,
+      "y": 43,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 27,
+      "y": 44,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 28,
+      "y": 44,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 29,
+      "y": 44,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 30,
+      "y": 44,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 31,
+      "y": 44,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 32,
+      "y": 44,
+      "from": "*",
+      "to": "v",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 27,
+      "y": 45,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 28,
+      "y": 45,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 29,
+      "y": 45,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 30,
+      "y": 45,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 31,
+      "y": 45,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 27,
+      "y": 46,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 28,
+      "y": 46,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 29,
+      "y": 46,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 30,
+      "y": 46,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 31,
+      "y": 46,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 27,
+      "y": 47,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 28,
+      "y": 47,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 29,
+      "y": 47,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 30,
+      "y": 47,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 31,
+      "y": 47,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 27,
+      "y": 48,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 29,
+      "y": 48,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 30,
+      "y": 48,
+      "from": "*",
+      "to": "v",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 31,
+      "y": 48,
+      "from": "^",
+      "to": "V",
+      "material": "brown robe",
+      "reason": "Keep the central body robe brown; remove unrelated wood/flesh/faction flecks while preserving the bone necklace and belt outside this panel"
+    },
+    {
+      "x": 46,
+      "y": 3,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 53,
+      "y": 4,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 45,
+      "y": 5,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 44,
+      "y": 6,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 45,
+      "y": 6,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 55,
+      "y": 6,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 50,
+      "y": 7,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 55,
+      "y": 8,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 43,
+      "y": 9,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 44,
+      "y": 9,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 47,
+      "y": 9,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 45,
+      "y": 10,
+      "from": "v",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 47,
+      "y": 12,
+      "from": "v",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 43,
+      "y": 14,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 45,
+      "y": 14,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 44,
+      "y": 15,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 54,
+      "y": 15,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 55,
+      "y": 16,
+      "from": "v",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 47,
+      "y": 19,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 49,
+      "y": 20,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 43,
+      "y": 21,
+      "from": "h",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 51,
+      "y": 21,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 53,
+      "y": 21,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 54,
+      "y": 21,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 55,
+      "y": 21,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 43,
+      "y": 22,
+      "from": "h",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 45,
+      "y": 22,
+      "from": "v",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 48,
+      "y": 23,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 44,
+      "y": 24,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 43,
+      "y": 25,
+      "from": "v",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 44,
+      "y": 25,
+      "from": "H",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 45,
+      "y": 25,
+      "from": "h",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 48,
+      "y": 25,
+      "from": "v",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 49,
+      "y": 25,
+      "from": "V",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 49,
+      "y": 35,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 49,
+      "y": 37,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 53,
+      "y": 41,
+      "from": "V",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 51,
+      "y": 45,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 50,
+      "y": 46,
+      "from": "v",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 50,
+      "y": 47,
+      "from": "V",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 53,
+      "y": 48,
+      "from": "b",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 50,
+      "y": 49,
+      "from": "v",
+      "to": "w",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 52,
+      "y": 51,
+      "from": "B",
+      "to": "W",
+      "material": "wood staff",
+      "reason": "Keep crown and shaft wooden away from the gripping fingers"
+    },
+    {
+      "x": 11,
+      "y": 14,
+      "from": "i",
+      "to": "E",
+      "material": "lime flame",
+      "reason": "Ivory quantization fringe within lime spell flame"
+    },
+    {
+      "x": 12,
+      "y": 14,
+      "from": "i",
+      "to": "E",
+      "material": "lime flame",
+      "reason": "Ivory quantization fringe within lime spell flame"
+    },
+    {
+      "x": 12,
+      "y": 15,
+      "from": "i",
+      "to": "E",
+      "material": "lime flame",
+      "reason": "Ivory quantization fringe within lime spell flame"
+    },
+    {
+      "x": 4,
+      "y": 21,
+      "from": "i",
+      "to": "E",
+      "material": "lime flame",
+      "reason": "Ivory quantization fringe within lime spell flame"
+    },
+    {
+      "x": 3,
+      "y": 26,
+      "from": "i",
+      "to": "E",
+      "material": "lime flame",
+      "reason": "Ivory quantization fringe within lime spell flame"
+    },
+    {
+      "x": 5,
+      "y": 29,
+      "from": "i",
+      "to": "E",
+      "material": "lime flame",
+      "reason": "Ivory quantization fringe within lime spell flame"
+    },
+    {
+      "x": 47,
+      "y": 38,
+      "from": "O",
+      "to": ".",
+      "material": "exterior transparency",
+      "reason": "Trim unrequested faction-colored dangling shaft fragment and its exterior dark pixels, preserving the actual wooden staff contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 38,
+      "from": "*",
+      "to": ".",
+      "material": "exterior transparency",
+      "reason": "Trim unrequested faction-colored dangling shaft fragment and its exterior dark pixels, preserving the actual wooden staff contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 39,
+      "from": "*",
+      "to": ".",
+      "material": "exterior transparency",
+      "reason": "Trim unrequested faction-colored dangling shaft fragment and its exterior dark pixels, preserving the actual wooden staff contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 48,
+      "y": 40,
+      "from": "O",
+      "to": ".",
+      "material": "exterior transparency",
+      "reason": "Trim unrequested faction-colored dangling shaft fragment and its exterior dark pixels, preserving the actual wooden staff contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 40,
+      "from": "*",
+      "to": ".",
+      "material": "exterior transparency",
+      "reason": "Trim unrequested faction-colored dangling shaft fragment and its exterior dark pixels, preserving the actual wooden staff contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 41,
+      "from": "*",
+      "to": ".",
+      "material": "exterior transparency",
+      "reason": "Trim unrequested faction-colored dangling shaft fragment and its exterior dark pixels, preserving the actual wooden staff contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 42,
+      "from": "O",
+      "to": ".",
+      "material": "exterior transparency",
+      "reason": "Trim unrequested faction-colored dangling shaft fragment and its exterior dark pixels, preserving the actual wooden staff contour",
+      "boundary_reviewed": true
+    }
+  ]
+}

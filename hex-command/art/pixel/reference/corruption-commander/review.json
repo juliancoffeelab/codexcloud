@@ -1,0 +1,46 @@
+{
+  "l1": {
+    "sha256": "986d58091154f72026da98c12da1e63a779192cfa4c84c59a5c73661dc89fb84",
+    "palette_sha256": "5410815600590180b64d147e227d05bebf999fb3f50de6634aff944850b36c94",
+    "counts": {
+      "stray": 119,
+      "isolated-outline": 30,
+      "missing-border": 54,
+      "outline-endpoint": 124,
+      "unsupported-outline": 7,
+      "thick-outline": 50,
+      "enclosed-hole": 49,
+      "outline-fragment": 129,
+      "diagonal-gap": 73
+    },
+    "factionValidation": {
+      "identicalAlpha": true,
+      "fixedMaterialsIdentical": true,
+      "factionPixels": 142,
+      "ownershipNeedsVisualReview": true
+    },
+    "warning": "Candidates only. Cardinal rules flag legitimate diagonals and miss connected wrong-material patches. Inspect the complete render too."
+  },
+  "l3": {
+    "sha256": "c3739e9c8b69b562cf4f60bf49c25fcf560c01a8f6ca6d267c756d8e2d4784b4",
+    "palette_sha256": "699878ceb06caa55dc01686704383eb11d74a616ddaf6e49a494eaf7214d0205",
+    "counts": {
+      "stray": 303,
+      "isolated-outline": 64,
+      "unsupported-outline": 53,
+      "outline-endpoint": 205,
+      "missing-border": 74,
+      "thick-outline": 136,
+      "enclosed-hole": 71,
+      "outline-fragment": 218,
+      "diagonal-gap": 157
+    },
+    "factionValidation": {
+      "identicalAlpha": true,
+      "fixedMaterialsIdentical": true,
+      "factionPixels": 216,
+      "ownershipNeedsVisualReview": true
+    },
+    "warning": "Candidates only. Cardinal rules flag legitimate diagonals and miss connected wrong-material patches. Inspect the complete render too."
+  }
+}

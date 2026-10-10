@@ -22,7 +22,7 @@ const selected = new Map(
     ...(dwarves.commander?.units ?? []),
     lineup.base,
     ...lineup.branches.flatMap((branch) => branch.units),
-    lineup.commander,
+    ...lineup.commander.units,
     ...dwarves.trees.flatMap((tree) => [
       tree.base,
       ...tree.branches.flatMap((branch) => branch.units),
