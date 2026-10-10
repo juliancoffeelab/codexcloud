@@ -289,10 +289,11 @@
     "role": "commander"
   },
   "elf-spearman": {
-    "name": "Warden",
+    "name": "Spearman",
     "level": 1,
     "study": "elf-reviewed",
-    "canvas": [64, 64]
+    "canvas": [64, 64],
+    "status": "starter"
   },
   "elf-spearman-l2": {
     "name": "Warden",
@@ -310,25 +311,27 @@
     "name": "Elf two-handed sword",
     "level": 1,
     "study": "elf-reviewed",
-    "canvas": [48, 48]
+    "canvas": [48, 48],
+    "status": "reference"
   },
   "elf-bladedancer-l2": {
-    "name": "Elf two-handed sword",
+    "name": "Swordsman",
     "level": 2,
     "study": "elf-reviewed",
     "canvas": [48, 48]
   },
   "elf-bladedancer-l3": {
-    "name": "Elf two-handed sword",
+    "name": "Swordsman",
     "level": 3,
     "study": "elf-reviewed",
     "canvas": [48, 48]
   },
   "elf-archer": {
-    "name": "Elf archer",
+    "name": "Archer",
     "level": 1,
     "study": "faction-expansion/elf-archer",
-    "canvas": [64, 64]
+    "canvas": [64, 64],
+    "status": "starter"
   },
   "elf-archer-l2": {
     "name": "Shadow stalker",
@@ -343,28 +346,30 @@
     "canvas": [64, 64]
   },
   "elf-flanker": {
-    "name": "Elf dual knife flanker",
+    "name": "Two knifer",
     "level": 1,
     "study": "elf-reviewed",
-    "canvas": [64, 64]
+    "canvas": [64, 64],
+    "status": "starter"
   },
   "elf-flanker-l2": {
-    "name": "Elf dual knife flanker",
+    "name": "Duelist",
     "level": 2,
     "study": "elf-reviewed",
     "canvas": [64, 64]
   },
   "elf-flanker-l3": {
-    "name": "Elf dual knife flanker",
+    "name": "Duelist",
     "level": 3,
     "study": "elf-reviewed",
     "canvas": [64, 64]
   },
   "elf-caster": {
-    "name": "Elf branch staff caster",
+    "name": "Grove caster",
     "level": 1,
     "study": "elf-reviewed",
-    "canvas": [64, 64]
+    "canvas": [64, 64],
+    "status": "starter"
   },
   "elf-caster-l2": {
     "name": "Grove healer",
@@ -379,10 +384,11 @@
     "canvas": [64, 64]
   },
   "elf-deer-archer": {
-    "name": "Elf deer-mounted archer",
+    "name": "Deer rider",
     "level": 1,
     "study": "elf-reviewed",
-    "canvas": [64, 64]
+    "canvas": [64, 64],
+    "status": "starter"
   },
   "elf-deer-archer-l2": {
     "name": "Shadow rider",
@@ -1208,7 +1214,8 @@
     "name": "Jumper",
     "level": 1,
     "study": "elf-reviewed",
-    "canvas": [64, 64]
+    "canvas": [64, 64],
+    "status": "reference"
   },
   "elf-jumper-l2": {
     "name": "Jumper",

@@ -1,6 +1,8 @@
-# Elf dual knife flanker — L1
+# Two knifer — L1
 
 Reviewed native matrix; `sprite.txt` and `palette.json` are the authoritative sources.
 Faction cloth uses `^`/`*`; fixed materials remain identical between factions.
 See [reviewed elf sources](../../reference/elf-reviewed/README.md).
 Render with `python3 scripts/render-pixel.py art/pixel/units/elf-flanker/sprite.txt --previews`.
+
+Starting blade-tree flanker; advances to Duelist or two-handed Swordsman.

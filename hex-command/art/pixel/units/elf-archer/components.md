@@ -1,4 +1,4 @@
-# Elf archer — L1
+# Archer — L1
 
 Tall slender elf with pointed ears, drawing a wooden longbow, one hand on bow grip and other drawing string beside cheek. Arrow properly seated along bow. Green simple tunic, brown boots, teal cloak, small quiver behind shoulder with arrows up.
 

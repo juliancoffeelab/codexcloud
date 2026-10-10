@@ -1,0 +1,198 @@
+{
+  "description": "Five starting roots. Each tree branches at L2, with an L3 continuation. This is the authored roster/artwork plan; elves are not yet wired into gameplay.",
+  "trees": [
+    {
+      "name": "Spear",
+      "base": {
+        "id": "elf-spearman",
+        "name": "Spearman",
+        "level": 1,
+        "status": "starter"
+      },
+      "branches": [
+        {
+          "role": "Warden",
+          "units": [
+            {
+              "id": "elf-spearman-l2",
+              "name": "Warden",
+              "level": 2
+            },
+            {
+              "id": "elf-spearman-l3",
+              "name": "Warden",
+              "level": 3
+            }
+          ],
+          "purpose": "Defensive frontline"
+        },
+        {
+          "role": "Jumper",
+          "units": [
+            {
+              "id": "elf-jumper-l2",
+              "name": "Jumper",
+              "level": 2
+            },
+            {
+              "id": "elf-jumper-l3",
+              "name": "Jumper",
+              "level": 3
+            }
+          ],
+          "purpose": "Mobile reach attacker; proposed Leap movement begins at L2"
+        }
+      ]
+    },
+    {
+      "name": "Blade",
+      "base": {
+        "id": "elf-flanker",
+        "name": "Two knifer",
+        "level": 1,
+        "status": "starter"
+      },
+      "branches": [
+        {
+          "role": "Duelist",
+          "units": [
+            {
+              "id": "elf-flanker-l2",
+              "name": "Duelist",
+              "level": 2
+            },
+            {
+              "id": "elf-flanker-l3",
+              "name": "Duelist",
+              "level": 3
+            }
+          ],
+          "purpose": "Retains two blades and the mobile flanking role"
+        },
+        {
+          "role": "Swordsman",
+          "units": [
+            {
+              "id": "elf-bladedancer-l2",
+              "name": "Swordsman",
+              "level": 2
+            },
+            {
+              "id": "elf-bladedancer-l3",
+              "name": "Swordsman",
+              "level": 3
+            }
+          ],
+          "purpose": "Trades knives for a two-handed sword and direct combat"
+        }
+      ]
+    },
+    {
+      "name": "Archer",
+      "base": {
+        "id": "elf-archer",
+        "name": "Archer",
+        "level": 1,
+        "status": "starter"
+      },
+      "branches": [
+        {
+          "role": "Shadow stalker",
+          "units": [
+            {
+              "id": "elf-archer-l2",
+              "name": "Shadow stalker",
+              "level": 2
+            },
+            {
+              "id": "elf-archer-l3",
+              "name": "Shadow stalker",
+              "level": 3
+            }
+          ],
+          "purpose": "Foot ranged attacker"
+        }
+      ]
+    },
+    {
+      "name": "Mounted archer",
+      "base": {
+        "id": "elf-deer-archer",
+        "name": "Deer rider",
+        "level": 1,
+        "status": "starter"
+      },
+      "branches": [
+        {
+          "role": "Shadow rider",
+          "units": [
+            {
+              "id": "elf-deer-archer-l2",
+              "name": "Shadow rider",
+              "level": 2
+            },
+            {
+              "id": "elf-deer-archer-l3",
+              "name": "Shadow rider",
+              "level": 3
+            }
+          ],
+          "purpose": "Mobile mounted ranged attacker"
+        }
+      ]
+    },
+    {
+      "name": "Caster",
+      "base": {
+        "id": "elf-caster",
+        "name": "Grove caster",
+        "level": 1,
+        "status": "starter"
+      },
+      "branches": [
+        {
+          "role": "Healer",
+          "units": [
+            {
+              "id": "elf-caster-l2",
+              "name": "Grove healer",
+              "level": 2
+            },
+            {
+              "id": "elf-caster-l3",
+              "name": "Grove healer",
+              "level": 3
+            }
+          ],
+          "purpose": "Healing support"
+        },
+        {
+          "role": "Thorn caster",
+          "units": [
+            {
+              "id": "elf-killing-caster-l2",
+              "name": "Thorn caster",
+              "level": 2
+            },
+            {
+              "id": "elf-killing-caster-l3",
+              "name": "Thorn caster",
+              "level": 3
+            }
+          ],
+          "purpose": "Offensive magic"
+        }
+      ]
+    }
+  ],
+  "references": [
+    {
+      "id": "elf-bladedancer",
+      "purpose": "Former swordsman L1 pose; reference only, not a roster root"
+    },
+    {
+      "id": "elf-jumper",
+      "purpose": "Former jumper L1 pose; reference only, not a roster root"
+    }
+  ]
+}

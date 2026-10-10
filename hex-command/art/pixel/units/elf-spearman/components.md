@@ -1,4 +1,4 @@
-# Warden — L1
+# Spearman — L1
 
 Reviewed native matrix; `sprite.txt` and `palette.json` are the authoritative sources.
 Faction cloth uses `^`/`*`; fixed materials remain identical between factions.

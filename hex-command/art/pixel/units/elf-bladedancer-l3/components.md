@@ -1,4 +1,4 @@
-# Elf two-handed sword — L3
+# Swordsman — L3
 
 Reviewed native matrix; `sprite.txt` and `palette.json` are the authoritative sources.
 Faction cloth uses `^`/`*`; fixed materials remain identical between factions.

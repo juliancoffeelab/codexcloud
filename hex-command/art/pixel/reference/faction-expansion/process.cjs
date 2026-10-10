@@ -479,19 +479,15 @@ function boards() {
               );
       if (race === "elf") {
         const catalog = require("../../units/catalog.json");
-        entries = jobs
-          .filter((job) => job.status === "tiers")
-          .flatMap((job) => {
-            const unitIds = tierIds(job);
-            if (job.id === "elf-spearman")
-              unitIds.push("elf-jumper", "elf-jumper-l2", "elf-jumper-l3");
-            if (job.id === "elf-caster")
-              unitIds.push("elf-killing-caster-l2", "elf-killing-caster-l3");
-            return unitIds.map((id) => ({
-              label: `${catalog[id].name} L${catalog[id].level}`,
-              image: path.relative(project, path.join(sourceDirectory(id), `${side}.png`)),
-            }));
-          });
+        const lineup = require("../../lineups/elves.json");
+        entries = lineup.trees.flatMap((tree) =>
+          tree.branches.flatMap((branch) =>
+            [tree.base, ...branch.units].map((unit) => ({
+              label: `${catalog[unit.id].name} L${unit.level}${unit.level === 1 ? ` → ${branch.role}` : ""}`,
+              image: path.relative(project, path.join(sourceDirectory(unit.id), `${side}.png`)),
+            })),
+          ),
+        );
       }
       if (race === "merfolk" || race === "skeleton") {
         const lineup = require(

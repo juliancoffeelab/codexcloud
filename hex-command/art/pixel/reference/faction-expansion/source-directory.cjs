@@ -6,8 +6,13 @@ const dwarfArchive = require("../dwarf-branch-references/catalog.json");
 const dwarves = require("../../lineups/dwarves.json");
 const merfolkArchive = require("../merfolk-archive/catalog.json");
 const merfolk = require("../../lineups/merfolk.json");
+const elves = require("../../lineups/elves.json");
 const selected = new Map(
   [
+    ...elves.trees.flatMap((tree) => [
+      tree.base,
+      ...tree.branches.flatMap((branch) => branch.units),
+    ]),
     ...merfolk.trees.flatMap((tree) => [
       tree.base,
       ...tree.branches.flatMap((branch) => branch.units),

@@ -1,5 +1,13 @@
 {
   "source": "elf-reviewed",
   "authority": "sprite.txt and palette.json",
-  "supersedes": "faction-expansion tier masks"
+  "supersedes": "faction-expansion tier masks",
+  "reviews": [
+    {
+      "date": "2026-10-10",
+      "changes": "Restore leather lower boots beneath retained silver upper greaves",
+      "changedPixels": 45,
+      "editLog": "art/pixel/reference/elf-reviewed/elf-flanker-l2-correction.json"
+    }
+  ]
 }

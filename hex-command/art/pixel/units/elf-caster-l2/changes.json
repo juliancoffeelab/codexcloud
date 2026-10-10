@@ -2,5 +2,13 @@
   "source": "elf-caster-branches",
   "authority": "sprite.txt and palette.json",
   "branch": "healer",
-  "level": 2
+  "level": 2,
+  "reviews": [
+    {
+      "date": "2026-10-10",
+      "changes": "Fix ivory left-leg artifacts and leg separator",
+      "changedPixels": 25,
+      "editLog": "art/pixel/reference/elf-reviewed/elf-caster-l2-correction.json"
+    }
+  ]
 }

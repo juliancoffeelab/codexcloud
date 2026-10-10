@@ -1,4 +1,4 @@
-# Elf dual knife flanker — L2
+# Duelist — L2
 
 Reviewed native matrix; `sprite.txt` and `palette.json` are the authoritative sources.
 Faction cloth uses `^`/`*`; fixed materials remain identical between factions.

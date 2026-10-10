@@ -1,4 +1,4 @@
-# Elf deer-mounted archer — L1
+# Deer rider — L1
 
 Reviewed native matrix; `sprite.txt` and `palette.json` are the authoritative sources.
 Faction cloth uses `^`/`*`; fixed materials remain identical between factions.

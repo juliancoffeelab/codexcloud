@@ -1,0 +1,208 @@
+{
+  "matrix_sha256": "204a9552f29c1fb792a939c5847ad3ec4f69bc056e20bed994480addacfa1046",
+  "palette_sha256": "6a620140fcb6779e312bcef1f8d80f7d9c8f7e1810098a4e20d655223b21fdf3",
+  "reference": "art/pixel/reference/elf-caster-branches/healer-l2/extracted/crop.png",
+  "edits": [
+    {
+      "x": 25,
+      "y": 37,
+      "from": "i",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 26,
+      "y": 38,
+      "from": "i",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 23,
+      "y": 40,
+      "from": "e",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 25,
+      "y": 40,
+      "from": "V",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 24,
+      "y": 41,
+      "from": "V",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 24,
+      "y": 42,
+      "from": "V",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 26,
+      "y": 42,
+      "from": "i",
+      "to": "O",
+      "material": "leg separator",
+      "reason": "Close the single gap in the existing leg separator",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 42,
+      "from": "c",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 21,
+      "y": 43,
+      "from": "i",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 23,
+      "y": 43,
+      "from": "V",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 27,
+      "y": 43,
+      "from": "V",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 23,
+      "y": 44,
+      "from": "V",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 25,
+      "y": 44,
+      "from": "b",
+      "to": "i",
+      "material": "ivory inner-fold shadow",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 22,
+      "y": 45,
+      "from": "i",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 23,
+      "y": 45,
+      "from": "i",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 25,
+      "y": 45,
+      "from": "v",
+      "to": "i",
+      "material": "ivory inner-fold shadow",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 22,
+      "y": 46,
+      "from": "b",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 23,
+      "y": 46,
+      "from": "B",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 21,
+      "y": 47,
+      "from": "i",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 22,
+      "y": 47,
+      "from": "B",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 21,
+      "y": 48,
+      "from": "V",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 22,
+      "y": 48,
+      "from": "B",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 21,
+      "y": 49,
+      "from": "B",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 20,
+      "y": 50,
+      "from": "i",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    },
+    {
+      "x": 21,
+      "y": 50,
+      "from": "B",
+      "to": "I",
+      "material": "ivory trousers",
+      "reason": "Continue the ivory cloth/fold surface through extraction flecks in the left leg"
+    }
+  ]
+}

@@ -26,3 +26,18 @@ npm run art:build
 npm run art:check
 npm run style
 ```
+
+## Roster roots and branches
+
+[elves.json](../../lineups/elves.json) records the five agreed L1 roots: Spearman,
+Two knifer, Archer, Deer rider and Grove caster. The blade root supplies starting
+flanking capability and advances to Duelist (two blades) or Swordsman (two-handed
+sword). Spearman branches to Warden or Jumper; the caster branches to Healer or
+Thorn caster. Branches begin at L2. Leap is a proposed jumper ability, not an
+implemented gameplay rule.
+
+The old swordsman and jumper L1 matrices remain canonical reference artwork,
+marked `reference` in the artwork catalog. They are omitted as roster roots.
+Lineup previews repeat each shared L1 root on its branch rows, keeping tiers
+aligned. Elves have no live gameplay roster yet; this manifest is their authored
+roster plan.

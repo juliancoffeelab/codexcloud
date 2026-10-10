@@ -37,7 +37,7 @@
     },
     "elf-bladedancer-l2": {
       "canvas": [48, 48],
-      "matrix_sha256": "50b3f228c57f7a1caee8fa3a6377ffc4c8b800782bbc9c15d4d2bb2aa2eb8497",
+      "matrix_sha256": "48cf2b4fe2c966fbcd792f01d844b07b20911c2ca249ad78e117a568cbc20708",
       "palette_sha256": "705c6a0daae7d55f6ed02a6394586c7274637f90d8d7ab21f1ea99fbb00760d9"
     },
     "elf-bladedancer-l3": {
@@ -52,7 +52,7 @@
     },
     "elf-flanker-l2": {
       "canvas": [64, 64],
-      "matrix_sha256": "4b10a5a89202116ba0ffefa579dfab92e5253c4f181888a107487014ca2d7a0e",
+      "matrix_sha256": "9a04a5543860050298dddc3fa4f5591022cfcfc8b8864bfe6c3892ec17f98dfc",
       "palette_sha256": "b59f46f229a6ab5f4b10c8bfb375f77a1bcbfd27c8bb163bb941695bd1ef845c"
     },
     "elf-flanker-l3": {
@@ -92,7 +92,7 @@
     },
     "elf-caster-l2": {
       "canvas": [64, 64],
-      "matrix_sha256": "204a9552f29c1fb792a939c5847ad3ec4f69bc056e20bed994480addacfa1046",
+      "matrix_sha256": "9e78863fc0ca908eb4650ca6547b0e957f3e7b5ad8a32ea4508886a534200c2e",
       "palette_sha256": "6a620140fcb6779e312bcef1f8d80f7d9c8f7e1810098a4e20d655223b21fdf3"
     },
     "elf-caster-l3": {

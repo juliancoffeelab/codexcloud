@@ -1,6 +1,6 @@
 [
   {
-    "label": "Warden L1",
+    "label": "Spearman L1 → Warden",
     "image": "art/pixel/units/elf-spearman/enemy.png"
   },
   {
@@ -12,8 +12,8 @@
     "image": "art/pixel/units/elf-spearman-l3/enemy.png"
   },
   {
-    "label": "Jumper L1",
-    "image": "art/pixel/units/elf-jumper/enemy.png"
+    "label": "Spearman L1 → Jumper",
+    "image": "art/pixel/units/elf-spearman/enemy.png"
   },
   {
     "label": "Jumper L2",
@@ -24,19 +24,31 @@
     "image": "art/pixel/units/elf-jumper-l3/enemy.png"
   },
   {
-    "label": "Elf two-handed sword L1",
-    "image": "art/pixel/units/elf-bladedancer/enemy.png"
+    "label": "Two knifer L1 → Duelist",
+    "image": "art/pixel/units/elf-flanker/enemy.png"
   },
   {
-    "label": "Elf two-handed sword L2",
+    "label": "Duelist L2",
+    "image": "art/pixel/units/elf-flanker-l2/enemy.png"
+  },
+  {
+    "label": "Duelist L3",
+    "image": "art/pixel/units/elf-flanker-l3/enemy.png"
+  },
+  {
+    "label": "Two knifer L1 → Swordsman",
+    "image": "art/pixel/units/elf-flanker/enemy.png"
+  },
+  {
+    "label": "Swordsman L2",
     "image": "art/pixel/units/elf-bladedancer-l2/enemy.png"
   },
   {
-    "label": "Elf two-handed sword L3",
+    "label": "Swordsman L3",
     "image": "art/pixel/units/elf-bladedancer-l3/enemy.png"
   },
   {
-    "label": "Elf archer L1",
+    "label": "Archer L1 → Shadow stalker",
     "image": "art/pixel/units/elf-archer/enemy.png"
   },
   {
@@ -48,19 +60,19 @@
     "image": "art/pixel/units/elf-archer-l3/enemy.png"
   },
   {
-    "label": "Elf dual knife flanker L1",
-    "image": "art/pixel/units/elf-flanker/enemy.png"
+    "label": "Deer rider L1 → Shadow rider",
+    "image": "art/pixel/units/elf-deer-archer/enemy.png"
   },
   {
-    "label": "Elf dual knife flanker L2",
-    "image": "art/pixel/units/elf-flanker-l2/enemy.png"
+    "label": "Shadow rider L2",
+    "image": "art/pixel/units/elf-deer-archer-l2/enemy.png"
   },
   {
-    "label": "Elf dual knife flanker L3",
-    "image": "art/pixel/units/elf-flanker-l3/enemy.png"
+    "label": "Shadow rider L3",
+    "image": "art/pixel/units/elf-deer-archer-l3/enemy.png"
   },
   {
-    "label": "Elf branch staff caster L1",
+    "label": "Grove caster L1 → Healer",
     "image": "art/pixel/units/elf-caster/enemy.png"
   },
   {
@@ -72,23 +84,15 @@
     "image": "art/pixel/units/elf-caster-l3/enemy.png"
   },
   {
+    "label": "Grove caster L1 → Thorn caster",
+    "image": "art/pixel/units/elf-caster/enemy.png"
+  },
+  {
     "label": "Thorn caster L2",
     "image": "art/pixel/units/elf-killing-caster-l2/enemy.png"
   },
   {
     "label": "Thorn caster L3",
     "image": "art/pixel/units/elf-killing-caster-l3/enemy.png"
-  },
-  {
-    "label": "Elf deer-mounted archer L1",
-    "image": "art/pixel/units/elf-deer-archer/enemy.png"
-  },
-  {
-    "label": "Shadow rider L2",
-    "image": "art/pixel/units/elf-deer-archer-l2/enemy.png"
-  },
-  {
-    "label": "Shadow rider L3",
-    "image": "art/pixel/units/elf-deer-archer-l3/enemy.png"
   }
 ]

@@ -1,0 +1,311 @@
+{
+  "matrix_sha256": "50b3f228c57f7a1caee8fa3a6377ffc4c8b800782bbc9c15d4d2bb2aa2eb8497",
+  "palette_sha256": "705c6a0daae7d55f6ed02a6394586c7274637f90d8d7ab21f1ea99fbb00760d9",
+  "reference": "art/pixel/reference/faction-expansion/extracted/elf-bladedancer/crop.png",
+  "edits": [
+    {
+      "x": 9,
+      "y": 41,
+      "from": "A",
+      "to": "B",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 10,
+      "y": 41,
+      "from": "A",
+      "to": "B",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 33,
+      "y": 41,
+      "from": "M",
+      "to": "b",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 34,
+      "y": 41,
+      "from": "M",
+      "to": "b",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 35,
+      "y": 41,
+      "from": "M",
+      "to": "b",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 8,
+      "y": 42,
+      "from": "A",
+      "to": "B",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 9,
+      "y": 42,
+      "from": "A",
+      "to": "B",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 10,
+      "y": 42,
+      "from": "A",
+      "to": "B",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 34,
+      "y": 42,
+      "from": "M",
+      "to": "b",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 35,
+      "y": 42,
+      "from": "M",
+      "to": "b",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 36,
+      "y": 42,
+      "from": "M",
+      "to": "b",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 8,
+      "y": 43,
+      "from": "A",
+      "to": "B",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 9,
+      "y": 43,
+      "from": "A",
+      "to": "B",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 35,
+      "y": 43,
+      "from": "M",
+      "to": "b",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 36,
+      "y": 43,
+      "from": "M",
+      "to": "b",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 37,
+      "y": 43,
+      "from": "M",
+      "to": "b",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 7,
+      "y": 44,
+      "from": "A",
+      "to": "B",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 8,
+      "y": 44,
+      "from": "A",
+      "to": "B",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 9,
+      "y": 44,
+      "from": "A",
+      "to": "B",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 35,
+      "y": 44,
+      "from": "M",
+      "to": "b",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 36,
+      "y": 44,
+      "from": "M",
+      "to": "b",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 37,
+      "y": 44,
+      "from": "M",
+      "to": "b",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 6,
+      "y": 45,
+      "from": "A",
+      "to": "B",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 7,
+      "y": 45,
+      "from": "A",
+      "to": "B",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 8,
+      "y": 45,
+      "from": "A",
+      "to": "B",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 9,
+      "y": 45,
+      "from": "A",
+      "to": "B",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 36,
+      "y": 45,
+      "from": "M",
+      "to": "b",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 37,
+      "y": 45,
+      "from": "M",
+      "to": "b",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 38,
+      "y": 45,
+      "from": "M",
+      "to": "b",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 5,
+      "y": 46,
+      "from": "A",
+      "to": "B",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 6,
+      "y": 46,
+      "from": "A",
+      "to": "B",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 7,
+      "y": 46,
+      "from": "A",
+      "to": "B",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 8,
+      "y": 46,
+      "from": "A",
+      "to": "B",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 9,
+      "y": 46,
+      "from": "A",
+      "to": "B",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 36,
+      "y": 46,
+      "from": "M",
+      "to": "b",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 37,
+      "y": 46,
+      "from": "M",
+      "to": "b",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 38,
+      "y": 46,
+      "from": "M",
+      "to": "b",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    },
+    {
+      "x": 39,
+      "y": 46,
+      "from": "M",
+      "to": "b",
+      "material": "leather ankle/foot below silver greave",
+      "reason": "Restore the reviewed L1 leather below the retained L2 greave; preserve every contour and cloth pixel"
+    }
+  ]
+}
