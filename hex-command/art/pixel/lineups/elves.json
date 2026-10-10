@@ -194,5 +194,25 @@
       "id": "elf-jumper",
       "purpose": "Former jumper L1 pose; reference only, not a roster root"
     }
-  ]
+  ],
+  "commander": {
+    "role": "commander",
+    "units": [
+      {
+        "id": "elf-banner-lord",
+        "name": "Banner captain",
+        "level": 1
+      },
+      {
+        "id": "elf-banner-lord-l2",
+        "name": "Banner lord",
+        "level": 2
+      },
+      {
+        "id": "elf-banner-lord-l3",
+        "name": "Banner sovereign",
+        "level": 3
+      }
+    ]
+  }
 }

@@ -18,6 +18,8 @@ const selected = new Map(
       ...tree.branches.flatMap((branch) => branch.units),
     ]),
     ...merfolk.commander.units,
+    ...(elves.commander?.units ?? []),
+    ...(dwarves.commander?.units ?? []),
     lineup.base,
     ...lineup.branches.flatMap((branch) => branch.units),
     lineup.commander,

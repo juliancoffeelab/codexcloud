@@ -1,0 +1,158 @@
+{
+  "matrix_sha256": "e95d34627b1056ea9f8483caa6bbb4ab08af2ed6804e4bf685a722c765141e05",
+  "palette_sha256": "8e5e14f26bf8090f431868fbd12f5e3354e2f2a85070fcd95d2c4cba057f944a",
+  "edits": [
+    {
+      "x": 25,
+      "y": 8,
+      "from": "K",
+      "to": "k",
+      "material": "gold crown side plane",
+      "reason": "Shade the right crown plane as a connected gold-shadow cluster"
+    },
+    {
+      "x": 24,
+      "y": 9,
+      "from": "K",
+      "to": "k",
+      "material": "gold crown side plane",
+      "reason": "Shade the right crown plane as a connected gold-shadow cluster"
+    },
+    {
+      "x": 25,
+      "y": 9,
+      "from": "K",
+      "to": "k",
+      "material": "gold crown side plane",
+      "reason": "Shade the right crown plane as a connected gold-shadow cluster"
+    },
+    {
+      "x": 24,
+      "y": 10,
+      "from": "K",
+      "to": "k",
+      "material": "gold crown side plane",
+      "reason": "Shade the right crown plane as a connected gold-shadow cluster"
+    },
+    {
+      "x": 25,
+      "y": 10,
+      "from": "K",
+      "to": "k",
+      "material": "gold crown side plane",
+      "reason": "Shade the right crown plane as a connected gold-shadow cluster"
+    },
+    {
+      "x": 24,
+      "y": 11,
+      "from": "K",
+      "to": "k",
+      "material": "gold crown side plane",
+      "reason": "Shade the right crown plane as a connected gold-shadow cluster"
+    },
+    {
+      "x": 25,
+      "y": 11,
+      "from": "K",
+      "to": "k",
+      "material": "gold crown side plane",
+      "reason": "Shade the right crown plane as a connected gold-shadow cluster"
+    },
+    {
+      "x": 24,
+      "y": 12,
+      "from": "K",
+      "to": "k",
+      "material": "gold crown side plane",
+      "reason": "Shade the right crown plane as a connected gold-shadow cluster"
+    },
+    {
+      "x": 25,
+      "y": 12,
+      "from": "K",
+      "to": "k",
+      "material": "gold crown side plane",
+      "reason": "Shade the right crown plane as a connected gold-shadow cluster"
+    },
+    {
+      "x": 20,
+      "y": 27,
+      "from": "M",
+      "to": "A",
+      "material": "forge harness light face",
+      "reason": "Retain the same coherent steel highlight as L2"
+    },
+    {
+      "x": 21,
+      "y": 27,
+      "from": "M",
+      "to": "A",
+      "material": "forge harness light face",
+      "reason": "Retain the same coherent steel highlight as L2"
+    },
+    {
+      "x": 22,
+      "y": 27,
+      "from": "M",
+      "to": "A",
+      "material": "forge harness light face",
+      "reason": "Retain the same coherent steel highlight as L2"
+    },
+    {
+      "x": 19,
+      "y": 28,
+      "from": "M",
+      "to": "A",
+      "material": "forge harness light face",
+      "reason": "Retain the same coherent steel highlight as L2"
+    },
+    {
+      "x": 21,
+      "y": 28,
+      "from": "M",
+      "to": "A",
+      "material": "forge harness light face",
+      "reason": "Retain the same coherent steel highlight as L2"
+    },
+    {
+      "x": 22,
+      "y": 28,
+      "from": "M",
+      "to": "A",
+      "material": "forge harness light face",
+      "reason": "Retain the same coherent steel highlight as L2"
+    },
+    {
+      "x": 19,
+      "y": 29,
+      "from": "M",
+      "to": "A",
+      "material": "forge harness light face",
+      "reason": "Retain the same coherent steel highlight as L2"
+    },
+    {
+      "x": 20,
+      "y": 29,
+      "from": "M",
+      "to": "A",
+      "material": "forge harness light face",
+      "reason": "Retain the same coherent steel highlight as L2"
+    },
+    {
+      "x": 21,
+      "y": 29,
+      "from": "M",
+      "to": "A",
+      "material": "forge harness light face",
+      "reason": "Retain the same coherent steel highlight as L2"
+    },
+    {
+      "x": 22,
+      "y": 29,
+      "from": "M",
+      "to": "A",
+      "material": "forge harness light face",
+      "reason": "Retain the same coherent steel highlight as L2"
+    }
+  ]
+}

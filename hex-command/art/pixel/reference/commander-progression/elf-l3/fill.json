@@ -1,0 +1,16 @@
+{
+  "matrix_sha256": "70fa9366b9c8c57018bbee5b1487be808855347a1a3fc4d4125d5fa67976973e",
+  "palette_sha256": "ccbc3b0f48a5457c45485b6f0385b0ac7392c780a019bcd39680b25a75b46046",
+  "regions": [
+    {
+      "seed": [32, 20],
+      "mapping": {
+        "A": "K",
+        "a": "k"
+      },
+      "expected_pixels": 55,
+      "material": "gold leaf breastplate",
+      "reason": "Upgrade the reviewed equipment surface while preserving cloth, skin, hair, alpha, outline and faction pieces"
+    }
+  ]
+}

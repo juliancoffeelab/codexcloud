@@ -1,0 +1,46 @@
+{
+  "matrix_sha256": "f7bd50bd735fa2c26e99467bcad85186c80a48ebc7862ebddde01a5213a93e4f",
+  "palette_sha256": "f8d0922d5b736b10cd5d862d6314a009ff2260242deb651d7f1e71e9699f9c26",
+  "regions": [
+    {
+      "seed": [15, 22],
+      "mapping": {
+        "B": "M",
+        "b": "a"
+      },
+      "expected_pixels": 60,
+      "material": "silver forge harness beneath beard",
+      "reason": "Upgrade the reviewed equipment surface while preserving cloth, skin, hair, alpha, outline and faction pieces"
+    },
+    {
+      "seed": [34, 20],
+      "mapping": {
+        "B": "M",
+        "b": "a"
+      },
+      "expected_pixels": 11,
+      "material": "silver hammer-arm bracer",
+      "reason": "Upgrade the reviewed equipment surface while preserving cloth, skin, hair, alpha, outline and faction pieces"
+    },
+    {
+      "seed": [31, 35],
+      "mapping": {
+        "B": "M",
+        "b": "a"
+      },
+      "expected_pixels": 22,
+      "material": "silver right upper greave",
+      "reason": "Upgrade the reviewed equipment surface while preserving cloth, skin, hair, alpha, outline and faction pieces"
+    },
+    {
+      "seed": [14, 37],
+      "mapping": {
+        "B": "M",
+        "b": "a"
+      },
+      "expected_pixels": 14,
+      "material": "silver left upper greave",
+      "reason": "Upgrade the reviewed equipment surface while preserving cloth, skin, hair, alpha, outline and faction pieces"
+    }
+  ]
+}

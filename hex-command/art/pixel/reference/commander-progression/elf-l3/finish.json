@@ -1,0 +1,332 @@
+{
+  "matrix_sha256": "7d26056393d4d2ebd096f2342651c899b16eac5b9496f4a8aca1d6132c8ff4fe",
+  "palette_sha256": "ccbc3b0f48a5457c45485b6f0385b0ac7392c780a019bcd39680b25a75b46046",
+  "edits": [
+    {
+      "x": 31,
+      "y": 22,
+      "from": "K",
+      "to": "k",
+      "material": "breastplate lower/right face",
+      "reason": "Follow the plate contour with one coherent shadow band; retain a broad lit face"
+    },
+    {
+      "x": 30,
+      "y": 23,
+      "from": "K",
+      "to": "k",
+      "material": "breastplate lower/right face",
+      "reason": "Follow the plate contour with one coherent shadow band; retain a broad lit face"
+    },
+    {
+      "x": 31,
+      "y": 23,
+      "from": "K",
+      "to": "k",
+      "material": "breastplate lower/right face",
+      "reason": "Follow the plate contour with one coherent shadow band; retain a broad lit face"
+    },
+    {
+      "x": 30,
+      "y": 24,
+      "from": "K",
+      "to": "k",
+      "material": "breastplate lower/right face",
+      "reason": "Follow the plate contour with one coherent shadow band; retain a broad lit face"
+    },
+    {
+      "x": 29,
+      "y": 25,
+      "from": "K",
+      "to": "k",
+      "material": "breastplate lower/right face",
+      "reason": "Follow the plate contour with one coherent shadow band; retain a broad lit face"
+    },
+    {
+      "x": 30,
+      "y": 25,
+      "from": "K",
+      "to": "k",
+      "material": "breastplate lower/right face",
+      "reason": "Follow the plate contour with one coherent shadow band; retain a broad lit face"
+    },
+    {
+      "x": 29,
+      "y": 26,
+      "from": "K",
+      "to": "k",
+      "material": "breastplate lower/right face",
+      "reason": "Follow the plate contour with one coherent shadow band; retain a broad lit face"
+    },
+    {
+      "x": 30,
+      "y": 26,
+      "from": "K",
+      "to": "k",
+      "material": "breastplate lower/right face",
+      "reason": "Follow the plate contour with one coherent shadow band; retain a broad lit face"
+    },
+    {
+      "x": 28,
+      "y": 27,
+      "from": "K",
+      "to": "k",
+      "material": "breastplate lower/right face",
+      "reason": "Follow the plate contour with one coherent shadow band; retain a broad lit face"
+    },
+    {
+      "x": 18,
+      "y": 21,
+      "from": "B",
+      "to": "K",
+      "material": "gold shoulder plate",
+      "reason": "Plate only the shoulder surface below the hair; keep hair and skin separate"
+    },
+    {
+      "x": 19,
+      "y": 21,
+      "from": "B",
+      "to": "K",
+      "material": "gold shoulder plate",
+      "reason": "Plate only the shoulder surface below the hair; keep hair and skin separate"
+    },
+    {
+      "x": 20,
+      "y": 21,
+      "from": "B",
+      "to": "K",
+      "material": "gold shoulder plate",
+      "reason": "Plate only the shoulder surface below the hair; keep hair and skin separate"
+    },
+    {
+      "x": 21,
+      "y": 21,
+      "from": "B",
+      "to": "K",
+      "material": "gold shoulder plate",
+      "reason": "Plate only the shoulder surface below the hair; keep hair and skin separate"
+    },
+    {
+      "x": 17,
+      "y": 22,
+      "from": "B",
+      "to": "k",
+      "material": "gold shoulder plate",
+      "reason": "Plate only the shoulder surface below the hair; keep hair and skin separate"
+    },
+    {
+      "x": 18,
+      "y": 22,
+      "from": "B",
+      "to": "k",
+      "material": "gold shoulder plate",
+      "reason": "Plate only the shoulder surface below the hair; keep hair and skin separate"
+    },
+    {
+      "x": 19,
+      "y": 22,
+      "from": "w",
+      "to": "k",
+      "material": "gold shoulder plate",
+      "reason": "Plate only the shoulder surface below the hair; keep hair and skin separate"
+    },
+    {
+      "x": 20,
+      "y": 22,
+      "from": "w",
+      "to": "k",
+      "material": "gold shoulder plate",
+      "reason": "Plate only the shoulder surface below the hair; keep hair and skin separate"
+    },
+    {
+      "x": 21,
+      "y": 22,
+      "from": "b",
+      "to": "k",
+      "material": "gold shoulder plate",
+      "reason": "Plate only the shoulder surface below the hair; keep hair and skin separate"
+    },
+    {
+      "x": 22,
+      "y": 22,
+      "from": "w",
+      "to": "k",
+      "material": "gold shoulder plate",
+      "reason": "Plate only the shoulder surface below the hair; keep hair and skin separate"
+    },
+    {
+      "x": 24,
+      "y": 7,
+      "from": ".",
+      "to": "K",
+      "material": "leaf crown tip",
+      "reason": "Raise the three small circlet leaves into a fuller L3 crown",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 6,
+      "from": ".",
+      "to": "O",
+      "material": "leaf crown outline",
+      "reason": "One-pixel top outline of the taller crown leaf",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 8,
+      "from": "O",
+      "to": "K",
+      "material": "leaf crown tip",
+      "reason": "Connect the raised leaf to the existing gold circlet",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 7,
+      "from": ".",
+      "to": "O",
+      "material": "leaf crown outline",
+      "reason": "Preserve the single-pixel outline on both sides of each raised leaf",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 7,
+      "from": ".",
+      "to": "O",
+      "material": "leaf crown outline",
+      "reason": "Preserve the single-pixel outline on both sides of each raised leaf",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 7,
+      "from": "O",
+      "to": "K",
+      "material": "leaf crown tip",
+      "reason": "Raise the three small circlet leaves into a fuller L3 crown",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 6,
+      "from": ".",
+      "to": "O",
+      "material": "leaf crown outline",
+      "reason": "One-pixel top outline of the taller crown leaf",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 7,
+      "from": ".",
+      "to": "O",
+      "material": "leaf crown outline",
+      "reason": "Preserve the single-pixel outline on both sides of each raised leaf",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 7,
+      "from": ".",
+      "to": "O",
+      "material": "leaf crown outline",
+      "reason": "Preserve the single-pixel outline on both sides of each raised leaf",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 7,
+      "from": ".",
+      "to": "K",
+      "material": "leaf crown tip",
+      "reason": "Raise the three small circlet leaves into a fuller L3 crown",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 6,
+      "from": ".",
+      "to": "O",
+      "material": "leaf crown outline",
+      "reason": "One-pixel top outline of the taller crown leaf",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 8,
+      "from": "O",
+      "to": "K",
+      "material": "leaf crown tip",
+      "reason": "Connect the raised leaf to the existing gold circlet",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 7,
+      "from": ".",
+      "to": "O",
+      "material": "leaf crown outline",
+      "reason": "Preserve the single-pixel outline on both sides of each raised leaf",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 7,
+      "from": ".",
+      "to": "O",
+      "material": "leaf crown outline",
+      "reason": "Preserve the single-pixel outline on both sides of each raised leaf",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 13,
+      "from": "*",
+      "to": "K",
+      "material": "gold pennant piping",
+      "reason": "A continuous narrow embroidered leading stripe, with faction cloth remaining the main pennant surface"
+    },
+    {
+      "x": 45,
+      "y": 14,
+      "from": "*",
+      "to": "K",
+      "material": "gold pennant piping",
+      "reason": "A continuous narrow embroidered leading stripe, with faction cloth remaining the main pennant surface"
+    },
+    {
+      "x": 45,
+      "y": 15,
+      "from": "*",
+      "to": "K",
+      "material": "gold pennant piping",
+      "reason": "A continuous narrow embroidered leading stripe, with faction cloth remaining the main pennant surface"
+    },
+    {
+      "x": 45,
+      "y": 16,
+      "from": "*",
+      "to": "K",
+      "material": "gold pennant piping",
+      "reason": "A continuous narrow embroidered leading stripe, with faction cloth remaining the main pennant surface"
+    },
+    {
+      "x": 45,
+      "y": 17,
+      "from": "*",
+      "to": "K",
+      "material": "gold pennant piping",
+      "reason": "A continuous narrow embroidered leading stripe, with faction cloth remaining the main pennant surface"
+    },
+    {
+      "x": 43,
+      "y": 11,
+      "from": "E",
+      "to": "W",
+      "material": "wooden spear mount",
+      "reason": "Remove the green material fleck inside the brown spear shaft"
+    }
+  ]
+}

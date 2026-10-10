@@ -7,12 +7,21 @@
       immortality/service exchange and the undecided future conversation.
 - [ ] Clarify why lighting the Lantern Road lanterns forces the necromancer away.
 - [ ] Review remaining optional quest rewards with the user.
-- [ ] Expand the zombie Corruption Mage into a complete commander lineup.
 - [ ] Add advancement branching for the woodland Thorncaller.
 - [ ] Differentiate the fox warrior designs across advancement tiers.
 - [ ] Restore visible two-shade faction contrast in skeleton archer cloaks,
       especially Death archer and Hollow archer; excessive shadow makes them
       read as one colour.
+
+## Commander artwork
+
+- [ ] Complete the Corruption Mage L1–L3 commander progression from the existing
+      L3 sprite (zombies).
+- [ ] Review existing Grove oracle L3 art and formalize the
+      Wildkeeper → Grovewarden → Grove oracle commander artwork line (woodland).
+- [x] Complete the dwarf Forge lord commander L1–L3 artwork line.
+- [x] Complete the elf spear-and-banner commander L1–L3 artwork line.
+- [ ] Decide whether animals need their own commander or follow the woodland leader.
 
 ## Balance and simulations
 

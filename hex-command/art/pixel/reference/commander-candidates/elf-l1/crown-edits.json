@@ -1,0 +1,598 @@
+{
+  "matrix_sha256": "3b71a7dc7ffa51f45c18724726bb85d0b7c5dc68695a66de2d5e8586c4a5fd58",
+  "palette_sha256": "ccbc3b0f48a5457c45485b6f0385b0ac7392c780a019bcd39680b25a75b46046",
+  "reference": "tmp/new-commanders/elf/generated.png",
+  "palette_additions": {
+    "K": [209, 169, 69, 255],
+    "k": [139, 98, 40, 255]
+  },
+  "edits": [
+    {
+      "x": 27,
+      "y": 7,
+      "from": ".",
+      "to": "O",
+      "material": "circlet outline",
+      "reason": "Outline a small central leaf tip above the hair",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 8,
+      "from": ".",
+      "to": "O",
+      "material": "leaf circlet",
+      "reason": "Central leaf of a narrow gold circlet",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 8,
+      "from": ".",
+      "to": "K",
+      "material": "leaf circlet",
+      "reason": "Central leaf of a narrow gold circlet",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 8,
+      "from": ".",
+      "to": "O",
+      "material": "leaf circlet",
+      "reason": "Central leaf of a narrow gold circlet",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 9,
+      "from": ".",
+      "to": "O",
+      "material": "leaf circlet",
+      "reason": "Three small leaf points tied to the circlet band",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 9,
+      "from": ".",
+      "to": "K",
+      "material": "leaf circlet",
+      "reason": "Three small leaf points tied to the circlet band",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 9,
+      "from": "O",
+      "to": "K",
+      "material": "leaf circlet",
+      "reason": "Three small leaf points tied to the circlet band",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 9,
+      "from": "O",
+      "to": "K",
+      "material": "leaf circlet",
+      "reason": "Three small leaf points tied to the circlet band",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 9,
+      "from": "O",
+      "to": "K",
+      "material": "leaf circlet",
+      "reason": "Three small leaf points tied to the circlet band",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 9,
+      "from": ".",
+      "to": "O",
+      "material": "leaf circlet",
+      "reason": "Three small leaf points tied to the circlet band",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 9,
+      "from": ".",
+      "to": "K",
+      "material": "leaf circlet",
+      "reason": "Three small leaf points tied to the circlet band",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 9,
+      "from": ".",
+      "to": "O",
+      "material": "leaf circlet",
+      "reason": "Three small leaf points tied to the circlet band",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 22,
+      "y": 10,
+      "from": ".",
+      "to": "O",
+      "material": "leaf circlet",
+      "reason": "Narrow gold circlet band; keep facial proportions unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 10,
+      "from": "O",
+      "to": "K",
+      "material": "leaf circlet",
+      "reason": "Narrow gold circlet band; keep facial proportions unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 10,
+      "from": "O",
+      "to": "K",
+      "material": "leaf circlet",
+      "reason": "Narrow gold circlet band; keep facial proportions unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 10,
+      "from": "B",
+      "to": "K",
+      "material": "leaf circlet",
+      "reason": "Narrow gold circlet band; keep facial proportions unchanged"
+    },
+    {
+      "x": 26,
+      "y": 10,
+      "from": "B",
+      "to": "K",
+      "material": "leaf circlet",
+      "reason": "Narrow gold circlet band; keep facial proportions unchanged"
+    },
+    {
+      "x": 27,
+      "y": 10,
+      "from": "B",
+      "to": "K",
+      "material": "leaf circlet",
+      "reason": "Narrow gold circlet band; keep facial proportions unchanged"
+    },
+    {
+      "x": 28,
+      "y": 10,
+      "from": "B",
+      "to": "K",
+      "material": "leaf circlet",
+      "reason": "Narrow gold circlet band; keep facial proportions unchanged"
+    },
+    {
+      "x": 29,
+      "y": 10,
+      "from": "O",
+      "to": "K",
+      "material": "leaf circlet",
+      "reason": "Narrow gold circlet band; keep facial proportions unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 10,
+      "from": "O",
+      "to": "K",
+      "material": "leaf circlet",
+      "reason": "Narrow gold circlet band; keep facial proportions unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 10,
+      "from": ".",
+      "to": "O",
+      "material": "leaf circlet",
+      "reason": "Narrow gold circlet band; keep facial proportions unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 10,
+      "from": ".",
+      "to": "O",
+      "material": "leaf circlet",
+      "reason": "Narrow gold circlet band; keep facial proportions unchanged",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 22,
+      "y": 12,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 23,
+      "y": 12,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 28,
+      "y": 12,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 23,
+      "y": 13,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 24,
+      "y": 13,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 27,
+      "y": 13,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 29,
+      "y": 13,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 24,
+      "y": 14,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 26,
+      "y": 14,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 27,
+      "y": 14,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 28,
+      "y": 14,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 29,
+      "y": 14,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 26,
+      "y": 15,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 27,
+      "y": 15,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 28,
+      "y": 15,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 29,
+      "y": 15,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 27,
+      "y": 16,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 28,
+      "y": 16,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 34,
+      "y": 24,
+      "from": "C",
+      "to": "I",
+      "material": "ivory sleeve/trousers",
+      "reason": "Blend an extraction shade into the actual ivory cloth surface"
+    },
+    {
+      "x": 35,
+      "y": 24,
+      "from": "C",
+      "to": "I",
+      "material": "ivory sleeve/trousers",
+      "reason": "Blend an extraction shade into the actual ivory cloth surface"
+    },
+    {
+      "x": 34,
+      "y": 25,
+      "from": "C",
+      "to": "I",
+      "material": "ivory sleeve/trousers",
+      "reason": "Blend an extraction shade into the actual ivory cloth surface"
+    },
+    {
+      "x": 41,
+      "y": 25,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 42,
+      "y": 25,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 43,
+      "y": 25,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 44,
+      "y": 25,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 15,
+      "y": 26,
+      "from": "C",
+      "to": "I",
+      "material": "ivory sleeve/trousers",
+      "reason": "Blend an extraction shade into the actual ivory cloth surface"
+    },
+    {
+      "x": 16,
+      "y": 26,
+      "from": "C",
+      "to": "I",
+      "material": "ivory sleeve/trousers",
+      "reason": "Blend an extraction shade into the actual ivory cloth surface"
+    },
+    {
+      "x": 41,
+      "y": 26,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 43,
+      "y": 26,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 44,
+      "y": 26,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 15,
+      "y": 27,
+      "from": "C",
+      "to": "I",
+      "material": "ivory sleeve/trousers",
+      "reason": "Blend an extraction shade into the actual ivory cloth surface"
+    },
+    {
+      "x": 35,
+      "y": 27,
+      "from": "C",
+      "to": "I",
+      "material": "ivory sleeve/trousers",
+      "reason": "Blend an extraction shade into the actual ivory cloth surface"
+    },
+    {
+      "x": 36,
+      "y": 27,
+      "from": "C",
+      "to": "I",
+      "material": "ivory sleeve/trousers",
+      "reason": "Blend an extraction shade into the actual ivory cloth surface"
+    },
+    {
+      "x": 41,
+      "y": 27,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 44,
+      "y": 27,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 21,
+      "y": 30,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 20,
+      "y": 31,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 21,
+      "y": 31,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 22,
+      "y": 31,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 23,
+      "y": 31,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 20,
+      "y": 32,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 21,
+      "y": 32,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 22,
+      "y": 32,
+      "from": "c",
+      "to": "H",
+      "material": "skin",
+      "reason": "Use one skin color inside the reviewed face or palm"
+    },
+    {
+      "x": 20,
+      "y": 42,
+      "from": "C",
+      "to": "I",
+      "material": "ivory sleeve/trousers",
+      "reason": "Blend an extraction shade into the actual ivory cloth surface"
+    },
+    {
+      "x": 32,
+      "y": 44,
+      "from": "C",
+      "to": "I",
+      "material": "ivory sleeve/trousers",
+      "reason": "Blend an extraction shade into the actual ivory cloth surface"
+    },
+    {
+      "x": 34,
+      "y": 44,
+      "from": "C",
+      "to": "I",
+      "material": "ivory sleeve/trousers",
+      "reason": "Blend an extraction shade into the actual ivory cloth surface"
+    },
+    {
+      "x": 20,
+      "y": 45,
+      "from": "C",
+      "to": "I",
+      "material": "ivory sleeve/trousers",
+      "reason": "Blend an extraction shade into the actual ivory cloth surface"
+    },
+    {
+      "x": 21,
+      "y": 45,
+      "from": "C",
+      "to": "I",
+      "material": "ivory sleeve/trousers",
+      "reason": "Blend an extraction shade into the actual ivory cloth surface"
+    }
+  ]
+}

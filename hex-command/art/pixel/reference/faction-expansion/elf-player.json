@@ -94,5 +94,17 @@
   {
     "label": "Thorn caster L3",
     "image": "art/pixel/units/elf-killing-caster-l3/player.png"
+  },
+  {
+    "label": "Banner captain L1 (commander)",
+    "image": "art/pixel/units/elf-banner-lord/player.png"
+  },
+  {
+    "label": "Banner lord L2 (commander)",
+    "image": "art/pixel/units/elf-banner-lord-l2/player.png"
+  },
+  {
+    "label": "Banner sovereign L3 (commander)",
+    "image": "art/pixel/units/elf-banner-lord-l3/player.png"
   }
 ]

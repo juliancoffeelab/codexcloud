@@ -461,10 +461,9 @@ function boards() {
       let entries =
         race === "dwarf"
           ? require("../../lineups/dwarves.json")
-              .trees.flatMap((tree) => [
-                tree.base,
-                ...tree.branches.flatMap((branch) => branch.units),
-              ])
+              .trees.flatMap((tree) =>
+                tree.branches.flatMap((branch) => [tree.base, ...branch.units]),
+              )
               .map((unit) => ({
                 label: `${unit.name} L${unit.level}`,
                 image: path.relative(project, path.join(sourceDirectory(unit.id), `${side}.png`)),
@@ -505,6 +504,15 @@ function boards() {
           label: `${unit.name} L${unit.level}`,
           image: path.relative(project, path.join(sourceDirectory(unit.id), `${side}.png`)),
         }));
+      }
+      if (race === "dwarf" || race === "elf") {
+        const lineup = require(`../../lineups/${race === "dwarf" ? "dwarves" : "elves"}.json`);
+        entries.push(
+          ...(lineup.commander?.units ?? []).map((unit) => ({
+            label: `${unit.name} L${unit.level} (commander)`,
+            image: path.relative(project, path.join(sourceDirectory(unit.id), `${side}.png`)),
+          })),
+        );
       }
       if (!entries.length) continue;
       const q = path.join(root, `${race}-${side}.json`);

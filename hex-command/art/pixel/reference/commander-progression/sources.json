@@ -1,0 +1,46 @@
+{
+  "units": {
+    "dwarf-forge-lord": {
+      "race": "dwarf",
+      "level": 1,
+      "canvas": [48, 48],
+      "matrix_sha256": "f7bd50bd735fa2c26e99467bcad85186c80a48ebc7862ebddde01a5213a93e4f",
+      "palette_sha256": "f8d0922d5b736b10cd5d862d6314a009ff2260242deb651d7f1e71e9699f9c26"
+    },
+    "dwarf-forge-lord-l2": {
+      "race": "dwarf",
+      "level": 2,
+      "canvas": [48, 48],
+      "matrix_sha256": "a12e149ea1632c2ce22f3e2e476fe4f2eef4c8f54216b6ccae0d8ce9279c4947",
+      "palette_sha256": "f8d0922d5b736b10cd5d862d6314a009ff2260242deb651d7f1e71e9699f9c26"
+    },
+    "dwarf-forge-lord-l3": {
+      "race": "dwarf",
+      "level": 3,
+      "canvas": [48, 48],
+      "matrix_sha256": "dbf96b31311160ecea7a23030bdd7a7bc078d736e73e4fd1a7eb9f6e4b87adc7",
+      "palette_sha256": "e606d24f634c75c0a337a8d7ed05406ec4954e688afb836db8e067bb50b2c758"
+    },
+    "elf-banner-lord": {
+      "race": "elf",
+      "level": 1,
+      "canvas": [64, 64],
+      "matrix_sha256": "dac1f75e9830edfb2c5c9ea1d4b5d96692e53e62dbc318efaba38b682def3007",
+      "palette_sha256": "1b1e28a9ece73f9d70c4a07dd70c3f59be15d8dbc5cf09444195dc5a248a21c5"
+    },
+    "elf-banner-lord-l2": {
+      "race": "elf",
+      "level": 2,
+      "canvas": [64, 64],
+      "matrix_sha256": "ac5abec7cc9c22a5cdedcbaed117df1b76071d833fdd42009d58316a8f3f2125",
+      "palette_sha256": "1b1e28a9ece73f9d70c4a07dd70c3f59be15d8dbc5cf09444195dc5a248a21c5"
+    },
+    "elf-banner-lord-l3": {
+      "race": "elf",
+      "level": 3,
+      "canvas": [64, 64],
+      "matrix_sha256": "d16e928914ff108a7ad82fd92c9ca0c0fab8cb78c8fd72facec451e611aedd7b",
+      "palette_sha256": "1b1e28a9ece73f9d70c4a07dd70c3f59be15d8dbc5cf09444195dc5a248a21c5"
+    }
+  }
+}

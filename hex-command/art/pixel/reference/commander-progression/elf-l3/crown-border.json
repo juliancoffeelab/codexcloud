@@ -1,0 +1,42 @@
+{
+  "matrix_sha256": "1b5d2d7baad6e0bdbf13264b58f88ba214e5b132aa7a3f4ce65682c7f67549d8",
+  "palette_sha256": "ccbc3b0f48a5457c45485b6f0385b0ac7392c780a019bcd39680b25a75b46046",
+  "edits": [
+    {
+      "x": 23,
+      "y": 8,
+      "from": ".",
+      "to": "O",
+      "material": "leaf crown outline",
+      "reason": "Complete the vertical sides of the raised crown leaves; keep each gold center one pixel wide",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 8,
+      "from": ".",
+      "to": "O",
+      "material": "leaf crown outline",
+      "reason": "Complete the vertical sides of the raised crown leaves; keep each gold center one pixel wide",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 8,
+      "from": ".",
+      "to": "O",
+      "material": "leaf crown outline",
+      "reason": "Complete the vertical sides of the raised crown leaves; keep each gold center one pixel wide",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 8,
+      "from": ".",
+      "to": "O",
+      "material": "leaf crown outline",
+      "reason": "Complete the vertical sides of the raised crown leaves; keep each gold center one pixel wide",
+      "boundary_reviewed": true
+    }
+  ]
+}

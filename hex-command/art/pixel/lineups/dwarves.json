@@ -217,5 +217,25 @@
     "dwarf-poleaxe": "dwarf-pickaxe",
     "dwarf-arquebus": "dwarf-crossbow",
     "dwarf-pistol-goat-rider": "dwarf-goat-rider"
+  },
+  "commander": {
+    "role": "commander",
+    "units": [
+      {
+        "id": "dwarf-forge-lord",
+        "name": "Forge lord",
+        "level": 1
+      },
+      {
+        "id": "dwarf-forge-lord-l2",
+        "name": "Forge lord",
+        "level": 2
+      },
+      {
+        "id": "dwarf-forge-lord-l3",
+        "name": "Forge king",
+        "level": 3
+      }
+    ]
   }
 }

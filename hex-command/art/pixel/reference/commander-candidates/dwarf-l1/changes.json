@@ -1,0 +1,430 @@
+{
+  "matrix_sha256": "695949dacb4c943e084d99ff0f99261b48b0d14e716dcaa66b22ffeb785a865d",
+  "palette_sha256": "4672e7f604c4eab35611bc718dbaa61220cf13587ec47c557830685f9a568cb2",
+  "reference": "tmp/new-commanders/dwarf/generated.png",
+  "palette_additions": {},
+  "edits": [
+    {
+      "x": 17,
+      "y": 7,
+      "from": ".",
+      "to": "O",
+      "material": "crown tip outline",
+      "reason": "Define three iron points with one-pixel outline",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 7,
+      "from": "b",
+      "to": ".",
+      "material": "iron crown",
+      "reason": "Replace the pointed helmet top with a compact three-point iron coronet; retain face and beard",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 7,
+      "from": "M",
+      "to": ".",
+      "material": "iron crown",
+      "reason": "Replace the pointed helmet top with a compact three-point iron coronet; retain face and beard",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 7,
+      "from": "A",
+      "to": "O",
+      "material": "crown tip outline",
+      "reason": "Define three iron points with one-pixel outline",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 22,
+      "y": 7,
+      "from": "O",
+      "to": ".",
+      "material": "iron crown",
+      "reason": "Replace the pointed helmet top with a compact three-point iron coronet; retain face and beard",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 7,
+      "from": ".",
+      "to": "O",
+      "material": "crown tip outline",
+      "reason": "Define three iron points with one-pixel outline",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 8,
+      "from": ".",
+      "to": "O",
+      "material": "iron crown",
+      "reason": "Outlined iron coronet point",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 8,
+      "from": "O",
+      "to": "M",
+      "material": "iron crown",
+      "reason": "Outlined iron coronet point",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 8,
+      "from": "O",
+      "to": ".",
+      "material": "iron crown",
+      "reason": "Replace the pointed helmet top with a compact three-point iron coronet; retain face and beard",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 8,
+      "from": "M",
+      "to": "O",
+      "material": "iron crown",
+      "reason": "Outlined iron coronet point",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 8,
+      "from": "A",
+      "to": "M",
+      "material": "iron crown",
+      "reason": "Outlined iron coronet point"
+    },
+    {
+      "x": 22,
+      "y": 8,
+      "from": "A",
+      "to": "O",
+      "material": "iron crown",
+      "reason": "Outlined iron coronet point",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 8,
+      "from": "O",
+      "to": ".",
+      "material": "iron crown",
+      "reason": "Replace the pointed helmet top with a compact three-point iron coronet; retain face and beard",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 8,
+      "from": ".",
+      "to": "M",
+      "material": "iron crown",
+      "reason": "Outlined iron coronet point",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 8,
+      "from": ".",
+      "to": "O",
+      "material": "iron crown",
+      "reason": "Outlined iron coronet point",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 15,
+      "y": 9,
+      "from": ".",
+      "to": "O",
+      "material": "iron crown",
+      "reason": "Connect crown points into an iron band",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 9,
+      "from": "O",
+      "to": "M",
+      "material": "iron crown",
+      "reason": "Connect crown points into an iron band",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 9,
+      "from": "a",
+      "to": "A",
+      "material": "iron crown",
+      "reason": "Connect crown points into an iron band"
+    },
+    {
+      "x": 18,
+      "y": 9,
+      "from": "a",
+      "to": "A",
+      "material": "iron crown",
+      "reason": "Connect crown points into an iron band"
+    },
+    {
+      "x": 19,
+      "y": 9,
+      "from": "a",
+      "to": "O",
+      "material": "iron crown",
+      "reason": "Connect crown points into an iron band",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 9,
+      "from": "A",
+      "to": "O",
+      "material": "iron crown",
+      "reason": "Connect crown points into an iron band",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 9,
+      "from": "O",
+      "to": "A",
+      "material": "iron crown",
+      "reason": "Connect crown points into an iron band",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 9,
+      "from": ".",
+      "to": "O",
+      "material": "iron crown",
+      "reason": "Connect crown points into an iron band",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 10,
+      "from": "a",
+      "to": "M",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 17,
+      "y": 10,
+      "from": "a",
+      "to": "A",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 18,
+      "y": 10,
+      "from": "a",
+      "to": "A",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 19,
+      "y": 10,
+      "from": "a",
+      "to": "A",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 20,
+      "y": 10,
+      "from": "M",
+      "to": "A",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 21,
+      "y": 10,
+      "from": "M",
+      "to": "A",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 22,
+      "y": 10,
+      "from": "M",
+      "to": "A",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 23,
+      "y": 10,
+      "from": "M",
+      "to": "A",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 24,
+      "y": 10,
+      "from": "M",
+      "to": "A",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 16,
+      "y": 11,
+      "from": "a",
+      "to": "M",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 17,
+      "y": 11,
+      "from": "a",
+      "to": "A",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 18,
+      "y": 11,
+      "from": "a",
+      "to": "A",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 19,
+      "y": 11,
+      "from": "a",
+      "to": "A",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 20,
+      "y": 11,
+      "from": "M",
+      "to": "A",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 21,
+      "y": 11,
+      "from": "M",
+      "to": "A",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 22,
+      "y": 11,
+      "from": "M",
+      "to": "A",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 23,
+      "y": 11,
+      "from": "M",
+      "to": "A",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 24,
+      "y": 11,
+      "from": "M",
+      "to": "A",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 14,
+      "y": 12,
+      "from": "O",
+      "to": ".",
+      "material": "iron crown",
+      "reason": "Replace the pointed helmet top with a compact three-point iron coronet; retain face and beard",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 12,
+      "from": "a",
+      "to": "M",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 17,
+      "y": 12,
+      "from": "a",
+      "to": "M",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 18,
+      "y": 12,
+      "from": "a",
+      "to": "M",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 19,
+      "y": 12,
+      "from": "a",
+      "to": "M",
+      "material": "iron crown",
+      "reason": "Continuous flat band with a coherent lower/right silver shadow"
+    },
+    {
+      "x": 27,
+      "y": 12,
+      "from": "O",
+      "to": ".",
+      "material": "iron crown",
+      "reason": "Replace the pointed helmet top with a compact three-point iron coronet; retain face and beard",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 14,
+      "from": "h",
+      "to": "H",
+      "material": "skin",
+      "reason": "Normalize the visible forehead/temple; no skin shade in the approved dwarf palette"
+    },
+    {
+      "x": 25,
+      "y": 15,
+      "from": "i",
+      "to": "H",
+      "material": "skin",
+      "reason": "Normalize the visible forehead/temple; no skin shade in the approved dwarf palette"
+    },
+    {
+      "x": 25,
+      "y": 16,
+      "from": "h",
+      "to": "H",
+      "material": "skin",
+      "reason": "Normalize the visible forehead/temple; no skin shade in the approved dwarf palette"
+    }
+  ]
+}

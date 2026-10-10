@@ -1,0 +1,16 @@
+{
+  "matrix_sha256": "dac1f75e9830edfb2c5c9ea1d4b5d96692e53e62dbc318efaba38b682def3007",
+  "palette_sha256": "1b1e28a9ece73f9d70c4a07dd70c3f59be15d8dbc5cf09444195dc5a248a21c5",
+  "regions": [
+    {
+      "seed": [32, 20],
+      "mapping": {
+        "V": "A",
+        "v": "a"
+      },
+      "expected_pixels": 55,
+      "material": "silver breastplate",
+      "reason": "Upgrade the reviewed equipment surface while preserving cloth, skin, hair, alpha, outline and faction pieces"
+    }
+  ]
+}

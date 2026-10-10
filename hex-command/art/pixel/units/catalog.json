@@ -1240,5 +1240,47 @@
     "level": 3,
     "study": "elf-caster-branches",
     "canvas": [64, 64]
+  },
+  "dwarf-forge-lord": {
+    "name": "Forge lord",
+    "level": 1,
+    "study": "commander-progression",
+    "canvas": [48, 48],
+    "role": "commander"
+  },
+  "dwarf-forge-lord-l2": {
+    "name": "Forge lord",
+    "level": 2,
+    "study": "commander-progression",
+    "canvas": [48, 48],
+    "role": "commander"
+  },
+  "dwarf-forge-lord-l3": {
+    "name": "Forge king",
+    "level": 3,
+    "study": "commander-progression",
+    "canvas": [48, 48],
+    "role": "commander"
+  },
+  "elf-banner-lord": {
+    "name": "Banner captain",
+    "level": 1,
+    "study": "commander-progression",
+    "canvas": [64, 64],
+    "role": "commander"
+  },
+  "elf-banner-lord-l2": {
+    "name": "Banner lord",
+    "level": 2,
+    "study": "commander-progression",
+    "canvas": [64, 64],
+    "role": "commander"
+  },
+  "elf-banner-lord-l3": {
+    "name": "Banner sovereign",
+    "level": 3,
+    "study": "commander-progression",
+    "canvas": [64, 64],
+    "role": "commander"
   }
 }

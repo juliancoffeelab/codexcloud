@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "template": "tmp/new-commanders/dwarf/template.png",
+  "canvas": [1024, 1168],
+  "anchors": [
+    {
+      "matrix": "art/pixel/units/dwarf-axeguard/sprite.txt",
+      "sha256": "8d3cb66e08b87c53ff5b2806b900449b5e7c2f4e87808393c697463017fe1dd4"
+    },
+    {
+      "matrix": "art/pixel/units/dwarf-pickaxe/sprite.txt",
+      "sha256": "99ca1961d4a425f87aeecd0ed93537059dd71be558196bd18e35378339c7fca0"
+    },
+    {
+      "matrix": "art/pixel/units/dwarf-runesmith/sprite.txt",
+      "sha256": "9333f02e7748037694d01855ea93a22b801b7d5c1a4a53bc6ae708b6a1286495"
+    }
+  ],
+  "palette": {
+    ".": [0, 0, 0, 0],
+    "^": [1, 93, 100, 255],
+    "*": [1, 55, 59, 255],
+    "A": [199, 214, 221, 255],
+    "B": [111, 72, 43, 255],
+    "H": [247, 190, 140, 255],
+    "I": [240, 229, 198, 255],
+    "M": [139, 160, 173, 255],
+    "O": [25, 22, 20, 255],
+    "a": [88, 108, 121, 255],
+    "b": [64, 40, 28, 255],
+    "h": [177, 118, 81, 255],
+    "i": [180, 163, 127, 255],
+    "E": [122, 198, 227, 255],
+    "z": [46, 112, 132, 255]
+  },
+  "slots": [
+    {
+      "label": "Forge lord base",
+      "rect": [512, 576, 512, 512],
+      "native": 48,
+      "origin": [8, 8]
+    }
+  ],
+  "background": [255, 0, 255, 255],
+  "logicalSlot": 64
+}

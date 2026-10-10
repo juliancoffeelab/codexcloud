@@ -12,6 +12,10 @@
     "image": "art/pixel/units/dwarf-axeguard-l3/player.png"
   },
   {
+    "label": "Axe and shield L1",
+    "image": "art/pixel/units/dwarf-axeguard/player.png"
+  },
+  {
     "label": "Axe and pick fighter L2",
     "image": "art/pixel/units/dwarf-axe-pick-l2/player.png"
   },
@@ -30,6 +34,10 @@
   {
     "label": "Hammerer veteran L3",
     "image": "art/pixel/units/dwarf-hammerer-l3/player.png"
+  },
+  {
+    "label": "Miner L1",
+    "image": "art/pixel/units/dwarf-pickaxe/player.png"
   },
   {
     "label": "Poleaxe fighter L2",
@@ -52,6 +60,10 @@
     "image": "art/pixel/units/dwarf-crossbow-l3/player.png"
   },
   {
+    "label": "Crossbowman L1",
+    "image": "art/pixel/units/dwarf-crossbow/player.png"
+  },
+  {
     "label": "Arquebusier L2",
     "image": "art/pixel/units/dwarf-arquebus-l2/player.png"
   },
@@ -70,6 +82,10 @@
   {
     "label": "Thundersmith veteran L3",
     "image": "art/pixel/units/dwarf-thundersmith-l3/player.png"
+  },
+  {
+    "label": "Rune apprentice L1",
+    "image": "art/pixel/units/dwarf-runesmith/player.png"
   },
   {
     "label": "Stonespell L2",
@@ -92,11 +108,27 @@
     "image": "art/pixel/units/dwarf-goat-rider-l3/player.png"
   },
   {
+    "label": "Goat rider L1",
+    "image": "art/pixel/units/dwarf-goat-rider/player.png"
+  },
+  {
     "label": "Pistol rider L2",
     "image": "art/pixel/units/dwarf-pistol-goat-rider-l2/player.png"
   },
   {
     "label": "Pistol rider veteran L3",
     "image": "art/pixel/units/dwarf-pistol-goat-rider-l3/player.png"
+  },
+  {
+    "label": "Forge lord L1 (commander)",
+    "image": "art/pixel/units/dwarf-forge-lord/player.png"
+  },
+  {
+    "label": "Forge lord L2 (commander)",
+    "image": "art/pixel/units/dwarf-forge-lord-l2/player.png"
+  },
+  {
+    "label": "Forge king L3 (commander)",
+    "image": "art/pixel/units/dwarf-forge-lord-l3/player.png"
   }
 ]

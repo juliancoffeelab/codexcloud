@@ -1,0 +1,24 @@
+{
+  "matrix_sha256": "0e0b6094707013c6d809a8cd2a5aff0cdccef75ba5674c38b0dd9fff7d006727",
+  "palette_sha256": "ccbc3b0f48a5457c45485b6f0385b0ac7392c780a019bcd39680b25a75b46046",
+  "edits": [
+    {
+      "x": 24,
+      "y": 8,
+      "from": ".",
+      "to": "O",
+      "material": "circlet leaf outline",
+      "reason": "Finish the exposed top border of the new side leaf; preserve its one-pixel gold center",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 8,
+      "from": ".",
+      "to": "O",
+      "material": "circlet leaf outline",
+      "reason": "Finish the exposed top border of the new side leaf; preserve its one-pixel gold center",
+      "boundary_reviewed": true
+    }
+  ]
+}

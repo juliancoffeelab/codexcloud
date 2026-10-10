@@ -1,0 +1,86 @@
+{
+  "matrix_sha256": "324bc1ff730043f4012ce6cd29c3b188735eeb325a4568a87f818c1034969f56",
+  "palette_sha256": "4672e7f604c4eab35611bc718dbaa61220cf13587ec47c557830685f9a568cb2",
+  "edits": [
+    {
+      "x": 20,
+      "y": 27,
+      "from": "M",
+      "to": "A",
+      "material": "forge harness light face",
+      "reason": "Add a coherent pale steel face to the lower-left plane of the silver harness"
+    },
+    {
+      "x": 21,
+      "y": 27,
+      "from": "M",
+      "to": "A",
+      "material": "forge harness light face",
+      "reason": "Add a coherent pale steel face to the lower-left plane of the silver harness"
+    },
+    {
+      "x": 22,
+      "y": 27,
+      "from": "M",
+      "to": "A",
+      "material": "forge harness light face",
+      "reason": "Add a coherent pale steel face to the lower-left plane of the silver harness"
+    },
+    {
+      "x": 19,
+      "y": 28,
+      "from": "M",
+      "to": "A",
+      "material": "forge harness light face",
+      "reason": "Add a coherent pale steel face to the lower-left plane of the silver harness"
+    },
+    {
+      "x": 21,
+      "y": 28,
+      "from": "M",
+      "to": "A",
+      "material": "forge harness light face",
+      "reason": "Add a coherent pale steel face to the lower-left plane of the silver harness"
+    },
+    {
+      "x": 22,
+      "y": 28,
+      "from": "M",
+      "to": "A",
+      "material": "forge harness light face",
+      "reason": "Add a coherent pale steel face to the lower-left plane of the silver harness"
+    },
+    {
+      "x": 19,
+      "y": 29,
+      "from": "M",
+      "to": "A",
+      "material": "forge harness light face",
+      "reason": "Add a coherent pale steel face to the lower-left plane of the silver harness"
+    },
+    {
+      "x": 20,
+      "y": 29,
+      "from": "M",
+      "to": "A",
+      "material": "forge harness light face",
+      "reason": "Add a coherent pale steel face to the lower-left plane of the silver harness"
+    },
+    {
+      "x": 21,
+      "y": 29,
+      "from": "M",
+      "to": "A",
+      "material": "forge harness light face",
+      "reason": "Add a coherent pale steel face to the lower-left plane of the silver harness"
+    },
+    {
+      "x": 22,
+      "y": 29,
+      "from": "M",
+      "to": "A",
+      "material": "forge harness light face",
+      "reason": "Add a coherent pale steel face to the lower-left plane of the silver harness"
+    }
+  ]
+}

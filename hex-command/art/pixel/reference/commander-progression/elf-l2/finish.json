@@ -1,0 +1,86 @@
+{
+  "matrix_sha256": "70fa9366b9c8c57018bbee5b1487be808855347a1a3fc4d4125d5fa67976973e",
+  "palette_sha256": "ccbc3b0f48a5457c45485b6f0385b0ac7392c780a019bcd39680b25a75b46046",
+  "edits": [
+    {
+      "x": 31,
+      "y": 22,
+      "from": "A",
+      "to": "a",
+      "material": "breastplate lower/right face",
+      "reason": "Follow the plate contour with one coherent shadow band; retain a broad lit face"
+    },
+    {
+      "x": 30,
+      "y": 23,
+      "from": "A",
+      "to": "a",
+      "material": "breastplate lower/right face",
+      "reason": "Follow the plate contour with one coherent shadow band; retain a broad lit face"
+    },
+    {
+      "x": 31,
+      "y": 23,
+      "from": "A",
+      "to": "a",
+      "material": "breastplate lower/right face",
+      "reason": "Follow the plate contour with one coherent shadow band; retain a broad lit face"
+    },
+    {
+      "x": 30,
+      "y": 24,
+      "from": "A",
+      "to": "a",
+      "material": "breastplate lower/right face",
+      "reason": "Follow the plate contour with one coherent shadow band; retain a broad lit face"
+    },
+    {
+      "x": 29,
+      "y": 25,
+      "from": "A",
+      "to": "a",
+      "material": "breastplate lower/right face",
+      "reason": "Follow the plate contour with one coherent shadow band; retain a broad lit face"
+    },
+    {
+      "x": 30,
+      "y": 25,
+      "from": "A",
+      "to": "a",
+      "material": "breastplate lower/right face",
+      "reason": "Follow the plate contour with one coherent shadow band; retain a broad lit face"
+    },
+    {
+      "x": 29,
+      "y": 26,
+      "from": "A",
+      "to": "a",
+      "material": "breastplate lower/right face",
+      "reason": "Follow the plate contour with one coherent shadow band; retain a broad lit face"
+    },
+    {
+      "x": 30,
+      "y": 26,
+      "from": "A",
+      "to": "a",
+      "material": "breastplate lower/right face",
+      "reason": "Follow the plate contour with one coherent shadow band; retain a broad lit face"
+    },
+    {
+      "x": 28,
+      "y": 27,
+      "from": "A",
+      "to": "a",
+      "material": "breastplate lower/right face",
+      "reason": "Follow the plate contour with one coherent shadow band; retain a broad lit face"
+    },
+    {
+      "x": 43,
+      "y": 11,
+      "from": "E",
+      "to": "W",
+      "material": "wooden spear mount",
+      "reason": "Remove the green material fleck inside the brown spear shaft"
+    }
+  ]
+}

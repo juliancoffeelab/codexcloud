@@ -1,0 +1,31 @@
+{
+  "matrix_sha256": "324bc1ff730043f4012ce6cd29c3b188735eeb325a4568a87f818c1034969f56",
+  "palette_sha256": "4672e7f604c4eab35611bc718dbaa61220cf13587ec47c557830685f9a568cb2",
+  "regions": [
+    {
+      "seed": [17, 8],
+      "mapping": {
+        "A": "K",
+        "M": "K",
+        "a": "k"
+      },
+      "expected_pixels": 53,
+      "material": "gilded forge crown",
+      "reason": "Upgrade the reviewed equipment surface while preserving cloth, skin, hair, alpha, outline and faction pieces"
+    },
+    {
+      "seed": [34, 20],
+      "mapping": {
+        "M": "K",
+        "a": "k"
+      },
+      "expected_pixels": 11,
+      "material": "gilded hammer-arm bracer",
+      "reason": "Upgrade the reviewed equipment surface while preserving cloth, skin, hair, alpha, outline and faction pieces"
+    }
+  ],
+  "palette_additions": {
+    "K": [209, 169, 69, 255],
+    "k": [139, 98, 40, 255]
+  }
+}
