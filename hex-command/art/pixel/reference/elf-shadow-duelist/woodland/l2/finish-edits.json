@@ -1,0 +1,69 @@
+{
+  "matrix_sha256": "1323a7eca1085afbad0c2f5ca20b472a1939bb3ecb5ace7faeb3acf143ac0a4c",
+  "palette_sha256": "1abe07ff7e2915ec392e5f64127aac1ddc1bf27496c5b415815c0a6a17ec4b2f",
+  "edits": [
+    {
+      "x": 51,
+      "y": 25,
+      "from": ".",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Restore the three-pixel cape top contour removed while positioning the hood",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 52,
+      "y": 25,
+      "from": ".",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Restore the three-pixel cape top contour removed while positioning the hood",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 53,
+      "y": 25,
+      "from": ".",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Restore the three-pixel cape top contour removed while positioning the hood",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 35,
+      "from": ".",
+      "to": "v",
+      "material": "green cloth",
+      "reason": "Continue green tunic through the enclosed extraction pinhole",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 35,
+      "y": 44,
+      "from": ".",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Restore outside lining boundary",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 48,
+      "from": ".",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Close the pointed cloth panel tip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 50,
+      "from": ".",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Restore the diagonal boot edge at its missing contour pixel",
+      "boundary_reviewed": true
+    }
+  ]
+}

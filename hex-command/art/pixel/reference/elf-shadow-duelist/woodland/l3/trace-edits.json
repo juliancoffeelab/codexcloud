@@ -1,0 +1,2068 @@
+{
+  "matrix_sha256": "13cda442de8271204b98c948f60ebd4f2a69aa1816736127f1d14437c716845f",
+  "palette_sha256": "4da71fa438a775b2df03a907c93cb76c45c12d42e97e1245912897ad5d8aae5a",
+  "reference": "tmp/shadow-duelist-armor/l3-generated.png",
+  "edits": [
+    {
+      "x": 27,
+      "y": 13,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 13,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 14,
+      "from": "D",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 14,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 15,
+      "from": "D",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 15,
+      "from": "v",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 15,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 16,
+      "from": "D",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 16,
+      "from": "v",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 17,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 17,
+      "from": "D",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 17,
+      "from": "D",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 18,
+      "from": "D",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 19,
+      "from": "D",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 19,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 19,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 20,
+      "from": "D",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 21,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 23,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 24,
+      "from": "v",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 25,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 25,
+      "from": "v",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 34,
+      "y": 25,
+      "from": "v",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 35,
+      "y": 25,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 25,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 51,
+      "y": 25,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 52,
+      "y": 25,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 53,
+      "y": 25,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 26,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 26,
+      "from": "D",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 26,
+      "from": "v",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 26,
+      "from": "D",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 26,
+      "from": "v",
+      "to": "V",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 37,
+      "y": 26,
+      "from": "O",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 38,
+      "y": 26,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 26,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 26,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 51,
+      "y": 26,
+      "from": "O",
+      "to": "^",
+      "material": "faction cloak",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 52,
+      "y": 26,
+      "from": "O",
+      "to": "^",
+      "material": "faction cloak",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 27,
+      "from": "W",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 27,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 27,
+      "from": "d",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 38,
+      "y": 27,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 27,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 54,
+      "y": 27,
+      "from": "O",
+      "to": "*",
+      "material": "faction cloak",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 28,
+      "from": "H",
+      "to": "I",
+      "material": "ivory lining",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 28,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 28,
+      "from": "w",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 28,
+      "from": "w",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 38,
+      "y": 28,
+      "from": "^",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 39,
+      "y": 28,
+      "from": "D",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 28,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 28,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 29,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 29,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 29,
+      "from": "i",
+      "to": "I",
+      "material": "ivory lining",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 29,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 29,
+      "from": "D",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 38,
+      "y": 29,
+      "from": "H",
+      "to": "I",
+      "material": "ivory lining",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 39,
+      "y": 29,
+      "from": "^",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 56,
+      "y": 29,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 57,
+      "y": 29,
+      "from": "O",
+      "to": "*",
+      "material": "faction cloak",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 58,
+      "y": 29,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 30,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 30,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 30,
+      "from": "O",
+      "to": "V",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 30,
+      "from": "V",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 30,
+      "from": "v",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 30,
+      "from": "O",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 30,
+      "from": "W",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 30,
+      "from": "b",
+      "to": "V",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 30,
+      "from": "V",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 30,
+      "from": "v",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 34,
+      "y": 30,
+      "from": "D",
+      "to": "I",
+      "material": "ivory lining",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 39,
+      "y": 30,
+      "from": "I",
+      "to": "*",
+      "material": "faction cloak",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 30,
+      "from": "^",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 30,
+      "from": "d",
+      "to": "^",
+      "material": "faction cloak",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 55,
+      "y": 30,
+      "from": "^",
+      "to": "*",
+      "material": "faction cloak",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 56,
+      "y": 30,
+      "from": "*",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 31,
+      "from": "d",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 35,
+      "y": 31,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 13,
+      "y": 32,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 32,
+      "from": "W",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 34,
+      "y": 32,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 32,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 52,
+      "y": 32,
+      "from": "^",
+      "to": "*",
+      "material": "faction cloak",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 53,
+      "y": 32,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 58,
+      "y": 32,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 13,
+      "y": 33,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 33,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 33,
+      "from": "W",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 33,
+      "from": "W",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 33,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 34,
+      "y": 33,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 33,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 38,
+      "y": 33,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 39,
+      "y": 33,
+      "from": "B",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 33,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 33,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 54,
+      "y": 33,
+      "from": "^",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 14,
+      "y": 34,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 15,
+      "y": 34,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 34,
+      "from": "d",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 34,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 34,
+      "from": "W",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 34,
+      "from": "W",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 34,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 34,
+      "y": 34,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 35,
+      "y": 34,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 39,
+      "y": 34,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 34,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 34,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 34,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 56,
+      "y": 34,
+      "from": "^",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 10,
+      "y": 35,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 34,
+      "y": 35,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 35,
+      "y": 35,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 35,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 35,
+      "from": "d",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 35,
+      "from": "w",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 35,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 58,
+      "y": 35,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 22,
+      "y": 36,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 36,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 36,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 37,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 37,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 38,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 38,
+      "from": "H",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 38,
+      "from": "d",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 38,
+      "from": "H",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 9,
+      "y": 39,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 39,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 39,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 35,
+      "y": 39,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 39,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 40,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 40,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 40,
+      "from": "V",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 40,
+      "from": "v",
+      "to": "V",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 40,
+      "from": "d",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 40,
+      "from": "I",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 40,
+      "from": "i",
+      "to": "I",
+      "material": "ivory lining",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 40,
+      "from": "v",
+      "to": "i",
+      "material": "ivory lining",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 37,
+      "y": 40,
+      "from": "d",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 38,
+      "y": 40,
+      "from": "b",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 39,
+      "y": 40,
+      "from": "O",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 40,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 41,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 41,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 41,
+      "from": "d",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 41,
+      "from": "v",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 41,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 34,
+      "y": 41,
+      "from": "i",
+      "to": "I",
+      "material": "ivory lining",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 35,
+      "y": 41,
+      "from": "H",
+      "to": "i",
+      "material": "ivory lining",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 42,
+      "from": "i",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 42,
+      "from": "i",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 42,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 42,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 34,
+      "y": 42,
+      "from": "i",
+      "to": "I",
+      "material": "ivory lining",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 35,
+      "y": 42,
+      "from": "d",
+      "to": "i",
+      "material": "ivory lining",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 42,
+      "from": "V",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 42,
+      "from": "d",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 42,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 43,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 43,
+      "from": "b",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 43,
+      "from": "b",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 43,
+      "from": "b",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 43,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 43,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 34,
+      "y": 43,
+      "from": "d",
+      "to": "i",
+      "material": "ivory lining",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 43,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 44,
+      "from": "W",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 44,
+      "from": "W",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 44,
+      "from": "W",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 44,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 22,
+      "y": 44,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 44,
+      "from": "d",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 50,
+      "y": 44,
+      "from": "b",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 45,
+      "from": "b",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 45,
+      "from": "b",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 45,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 45,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 45,
+      "from": "d",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 38,
+      "y": 45,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 45,
+      "from": "w",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 45,
+      "from": "d",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 45,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 46,
+      "from": "w",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 46,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 46,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 46,
+      "from": "d",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 46,
+      "from": "d",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 34,
+      "y": 46,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 46,
+      "from": "W",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 46,
+      "from": "W",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 47,
+      "from": "W",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 47,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 47,
+      "from": "d",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 47,
+      "from": "d",
+      "to": "v",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 47,
+      "from": "d",
+      "to": "D",
+      "material": "green woodland cloth",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 47,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 47,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 44,
+      "y": 47,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 47,
+      "from": "W",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 47,
+      "from": "w",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 48,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 48,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 48,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 48,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 43,
+      "y": 48,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 48,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 49,
+      "from": "W",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 17,
+      "y": 49,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 49,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 49,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 14,
+      "y": 50,
+      "from": "b",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 50,
+      "from": "W",
+      "to": "B",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 51,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 51,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 49,
+      "y": 52,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 53,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 46,
+      "y": 53,
+      "from": "b",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 47,
+      "y": 53,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 51,
+      "y": 53,
+      "from": "d",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 52,
+      "y": 53,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 16,
+      "y": 54,
+      "from": "w",
+      "to": "b",
+      "material": "leather gear",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 11,
+      "y": 55,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 15,
+      "y": 55,
+      "from": "d",
+      "to": "O",
+      "material": "outline",
+      "reason": "Native-pixel trace reviewed against generated woodland outfit: consolidate this local material and its intended contour",
+      "boundary_reviewed": true
+    }
+  ]
+}

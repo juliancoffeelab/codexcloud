@@ -1,0 +1,204 @@
+{
+  "matrix_sha256": "5b852ed47188c278b538d24b9b929c2650fa66e0bf81ed814d0f5a8f90fbb814",
+  "palette_sha256": "4da71fa438a775b2df03a907c93cb76c45c12d42e97e1245912897ad5d8aae5a",
+  "edits": [
+    {
+      "x": 51,
+      "y": 25,
+      "from": ".",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Restore the three-pixel cape top contour removed while positioning the hood",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 52,
+      "y": 25,
+      "from": ".",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Restore the three-pixel cape top contour removed while positioning the hood",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 53,
+      "y": 25,
+      "from": ".",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Restore the three-pixel cape top contour removed while positioning the hood",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 25,
+      "from": ".",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Complete cowl top outline",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 37,
+      "y": 25,
+      "from": ".",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Complete cowl top outline",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 39,
+      "y": 26,
+      "from": "O",
+      "to": ".",
+      "material": "boundary",
+      "reason": "Trim surplus black cowl protrusion outside clothing",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 26,
+      "from": "O",
+      "to": ".",
+      "material": "boundary",
+      "reason": "Trim surplus black cowl protrusion outside clothing",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 18,
+      "y": 28,
+      "from": ".",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Restore leather shoulder contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 31,
+      "from": ".",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Restore ivory cuff underside",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 31,
+      "from": ".",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Restore green jerkin side boundary",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 19,
+      "y": 32,
+      "from": ".",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Restore bracer underside",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 52,
+      "y": 32,
+      "from": "*",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Correct cape shade on the inner outline notch",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 34,
+      "from": "b",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Restore belt outer corner instead of a leather fleck exposed to background",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 44,
+      "from": ".",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Restore outer split tunic contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 45,
+      "y": 44,
+      "from": ".",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Restore right boot upper outline",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 47,
+      "from": ".",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Restore left boot outside edge",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 35,
+      "y": 46,
+      "from": ".",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Restore rear tunic panel contour",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 34,
+      "y": 47,
+      "from": ".",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Restore rear tunic panel tip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 49,
+      "from": ".",
+      "to": "O",
+      "material": "boundary",
+      "reason": "Restore ivory lining tip outline",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 41,
+      "from": "i",
+      "to": "D",
+      "material": "green cloth",
+      "reason": "Continue dark cloth border beside the ivory lining",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 41,
+      "from": "V",
+      "to": "I",
+      "material": "ivory lining",
+      "reason": "Reconnect the ivory lining interrupted by green extraction noise",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 43,
+      "from": "i",
+      "to": "I",
+      "material": "ivory lining",
+      "reason": "Continue the ivory lining face instead of isolated shade",
+      "boundary_reviewed": true
+    }
+  ]
+}

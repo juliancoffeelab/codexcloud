@@ -1,5 +1,28 @@
 {
   "source": "elf-reviewed",
   "authority": "sprite.txt and palette.json",
-  "supersedes": "faction-expansion tier masks"
+  "supersedes": "faction-expansion tier masks",
+  "reviews": [
+    {
+      "date": "2026-10-10",
+      "changes": "Shadow stalker woodland hood restyle; approved body, dual knives, grips and leg armor retained",
+      "changedPixels": 205,
+      "reference": "art/pixel/reference/elf-shadow-duelist/l3",
+      "editLogs": [
+        "art/pixel/reference/elf-shadow-duelist/l3/hood-edits.json",
+        "art/pixel/reference/elf-shadow-duelist/l3/finish-edits.json"
+      ]
+    },
+    {
+      "date": "2026-10-10",
+      "changes": "Whole outfit modeled after Shadow stalker archer: layered green clothing, leather harness, bracers and boots; remove plate armor and shiny fittings",
+      "changedPixels": 730,
+      "reference": "art/pixel/reference/elf-shadow-duelist/woodland/l3",
+      "editLogs": [
+        "art/pixel/reference/elf-shadow-duelist/woodland/l3/trace-edits.json",
+        "art/pixel/reference/elf-shadow-duelist/woodland/l3/finish-edits.json",
+        "art/pixel/reference/elf-shadow-duelist/woodland/l3/last-edits.json"
+      ]
+    }
+  ]
 }

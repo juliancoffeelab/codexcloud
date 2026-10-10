@@ -1,0 +1,21 @@
+{
+  "sha256": "f23a08ff581de36676a70d340d9eb32b397325feffdda06a419fd980b895452b",
+  "palette_sha256": "96263c3a2d7e0974cca433600b3ebb892256dd2ec6223be361ab0f5558e1cfbe",
+  "counts": {
+    "stray": 89,
+    "outline-endpoint": 125,
+    "isolated-outline": 88,
+    "thick-outline": 6,
+    "outline-fragment": 152,
+    "diagonal-gap": 144
+  },
+  "factionValidation": {
+    "identicalAlpha": true,
+    "fixedMaterialsIdentical": true,
+    "factionPixels": 130,
+    "ownershipNeedsVisualReview": true
+  },
+  "full_report_sha256": "cbe9381eb1ca1f99a1ced84569fc30f4234fcb96ff2cbcc0d10efa78ed5846a3",
+  "diagnostics": "Full neighborhood reports and marked images remain in ignored tmp/shadow-duelist or tmp/shadow-duelist-armor. Reproduce with the project pixel-cleaning review bundle using saved matrix/palette bytes.",
+  "visual_review": "Inspected normal player/enemy, faction debug, stray and edge previews; corrected actual material and contour defects individually. Diagonal and small-detail detector candidates remain."
+}

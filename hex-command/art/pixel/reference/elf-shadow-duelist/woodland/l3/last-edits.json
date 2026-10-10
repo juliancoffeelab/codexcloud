@@ -1,0 +1,33 @@
+{
+  "matrix_sha256": "7752d8ffbf252c618545b4a75de36d34c1a3fbb4ac194b822ef4be741172b9d6",
+  "palette_sha256": "4da71fa438a775b2df03a907c93cb76c45c12d42e97e1245912897ad5d8aae5a",
+  "edits": [
+    {
+      "x": 33,
+      "y": 48,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Close rear split-panel contour below the dark cloth tip",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 51,
+      "y": 52,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Restore upper diagonal boundary beside the lower boot",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 26,
+      "from": "V",
+      "to": "v",
+      "material": "woodland cloth",
+      "reason": "Blend isolated bright cowl fleck into dark woodland cloth",
+      "boundary_reviewed": true
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "matrix_sha256": "6c407616684c0aac97ff616540806cf3b57e902854bad4a56fbf5b9beffbf13b",
+  "palette_sha256": "b59f46f229a6ab5f4b10c8bfb375f77a1bcbfd27c8bb163bb941695bd1ef845c",
+  "edits": [
+    {
+      "x": 37,
+      "y": 25,
+      "from": "O",
+      "to": ".",
+      "material": "hood boundary",
+      "reason": "Remove detached remnant outside hood shoulder",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 25,
+      "from": ".",
+      "to": "O",
+      "material": "hood boundary",
+      "reason": "Restore collar top boundary",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 22,
+      "y": 25,
+      "from": ".",
+      "to": "O",
+      "material": "hood boundary",
+      "reason": "Restore collar top boundary",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 26,
+      "from": ".",
+      "to": "O",
+      "material": "hood boundary",
+      "reason": "Restore outer shoulder boundary",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 37,
+      "y": 26,
+      "from": ".",
+      "to": "O",
+      "material": "hood boundary",
+      "reason": "Close cape shoulder boundary where ponytail was removed",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 38,
+      "y": 26,
+      "from": ".",
+      "to": "O",
+      "material": "hood boundary",
+      "reason": "Close cape shoulder boundary where ponytail was removed",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 22,
+      "y": 23,
+      "from": "V",
+      "to": "v",
+      "material": "hood shadow",
+      "reason": "Consolidate hood underside into a continuous shadow instead of isolated light flecks",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 23,
+      "from": "V",
+      "to": "v",
+      "material": "hood shadow",
+      "reason": "Consolidate hood underside into a continuous shadow instead of isolated light flecks",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 24,
+      "from": "V",
+      "to": "v",
+      "material": "hood shadow",
+      "reason": "Consolidate hood underside into a continuous shadow instead of isolated light flecks",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 24,
+      "from": "V",
+      "to": "v",
+      "material": "hood shadow",
+      "reason": "Consolidate hood underside into a continuous shadow instead of isolated light flecks",
+      "boundary_reviewed": true
+    }
+  ]
+}

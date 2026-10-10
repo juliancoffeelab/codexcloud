@@ -1,6 +1,8 @@
 # Duelist — L3
 
-Reviewed native matrix; `sprite.txt` and `palette.json` are the authoritative sources.
-Faction cloth uses `^`/`*`; fixed materials remain identical between factions.
-See [reviewed elf sources](../../reference/elf-reviewed/README.md).
-Render with `python3 scripts/render-pixel.py art/pixel/units/elf-flanker-l3/sprite.txt --previews`.
+Dark forest hood/cowl, layered green jerkin, leather harness/bracers and leather boots.
+The full outfit follows the matching Shadow stalker archer. No bright plate armor
+or metal fittings; only the two knife blades use metal. Faction cloth uses
+`^`/`*` on the cape and collar. L1 remains unchanged.
+
+See [restyle evidence](../../reference/elf-shadow-duelist/README.md).

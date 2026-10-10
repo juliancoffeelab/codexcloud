@@ -1,0 +1,1889 @@
+{
+  "matrix_sha256": "9a04a5543860050298dddc3fa4f5591022cfcfc8b8864bfe6c3892ec17f98dfc",
+  "palette_sha256": "b59f46f229a6ab5f4b10c8bfb375f77a1bcbfd27c8bb163bb941695bd1ef845c",
+  "reference": "tmp/shadow-duelist/l2-generated.png",
+  "palette_additions": {},
+  "edits": [
+    {
+      "x": 25,
+      "y": 12,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 12,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 12,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 12,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 13,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 13,
+      "from": ".",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 13,
+      "from": ".",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 13,
+      "from": ".",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 13,
+      "from": ".",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 13,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 14,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 14,
+      "from": ".",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 14,
+      "from": "O",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 14,
+      "from": "O",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 14,
+      "from": "O",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 14,
+      "from": "O",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 14,
+      "from": ".",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 14,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 22,
+      "y": 15,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 15,
+      "from": "O",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 15,
+      "from": "O",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 15,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 15,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 15,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 15,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 15,
+      "from": "O",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 15,
+      "from": "O",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 15,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 16,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 16,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 16,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 16,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 16,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 16,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 16,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 16,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 16,
+      "from": "O",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 16,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 16,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 17,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 22,
+      "y": 17,
+      "from": "O",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 17,
+      "from": "B",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 17,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 17,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 17,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 17,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 17,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 17,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 17,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 17,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 17,
+      "from": "O",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 17,
+      "from": "H",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 34,
+      "y": 17,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 22,
+      "y": 18,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 18,
+      "from": "B",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 18,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 18,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 18,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 18,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 18,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 18,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 18,
+      "from": "B",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 18,
+      "from": "H",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 18,
+      "from": "H",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 22,
+      "y": 19,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 19,
+      "from": "B",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 19,
+      "from": "H",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 19,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 19,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 19,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 19,
+      "from": "B",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 19,
+      "from": "H",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 19,
+      "from": "H",
+      "to": "B",
+      "material": "face",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 19,
+      "from": "H",
+      "to": "B",
+      "material": "face",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 19,
+      "from": "B",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 20,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 20,
+      "from": "O",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 22,
+      "y": 20,
+      "from": "B",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 20,
+      "from": "B",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 20,
+      "from": "H",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 20,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 20,
+      "from": "B",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 20,
+      "from": "B",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 20,
+      "from": "B",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 20,
+      "from": "H",
+      "to": "B",
+      "material": "face",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 20,
+      "from": "B",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 20,
+      "from": "B",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 20,
+      "from": "B",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 34,
+      "y": 20,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 35,
+      "y": 20,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 38,
+      "y": 20,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 39,
+      "y": 20,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 20,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 21,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 21,
+      "from": ".",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 22,
+      "y": 21,
+      "from": "O",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 21,
+      "from": "O",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 21,
+      "from": "H",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 21,
+      "from": "H",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 21,
+      "from": "H",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 21,
+      "from": "B",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 21,
+      "from": "B",
+      "to": "H",
+      "material": "face",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 21,
+      "from": "B",
+      "to": "H",
+      "material": "face",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 21,
+      "from": "B",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 21,
+      "from": "B",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 21,
+      "from": "B",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 34,
+      "y": 21,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 35,
+      "y": 21,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 21,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 37,
+      "y": 21,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 38,
+      "y": 21,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 39,
+      "y": 21,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 21,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 22,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 22,
+      "from": ".",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 22,
+      "y": 22,
+      "from": ".",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 22,
+      "from": "O",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 22,
+      "from": "H",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 22,
+      "from": "H",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 22,
+      "from": "H",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 22,
+      "from": "B",
+      "to": "H",
+      "material": "face",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 22,
+      "from": "B",
+      "to": "H",
+      "material": "face",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 22,
+      "from": "O",
+      "to": "H",
+      "material": "face",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 22,
+      "from": "B",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 22,
+      "from": "B",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 22,
+      "from": "B",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 34,
+      "y": 22,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 35,
+      "y": 22,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 22,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 37,
+      "y": 22,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 38,
+      "y": 22,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 39,
+      "y": 22,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 23,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 22,
+      "y": 23,
+      "from": ".",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 23,
+      "from": "O",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 23,
+      "from": "H",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 23,
+      "from": "H",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 23,
+      "from": "H",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 23,
+      "from": "B",
+      "to": "H",
+      "material": "face",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 23,
+      "from": "B",
+      "to": "H",
+      "material": "face",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 23,
+      "from": "O",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 23,
+      "from": "O",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 23,
+      "from": "B",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 34,
+      "y": 23,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 35,
+      "y": 23,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 23,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 37,
+      "y": 23,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 38,
+      "y": 23,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 39,
+      "y": 23,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 23,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 23,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 23,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 22,
+      "y": 24,
+      "from": ".",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 24,
+      "from": "O",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 24,
+      "from": "*",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 24,
+      "from": "O",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 24,
+      "from": "O",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 24,
+      "from": "H",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 24,
+      "from": "B",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 24,
+      "from": "B",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 24,
+      "from": "^",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 24,
+      "from": "^",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 24,
+      "from": "^",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 24,
+      "from": "*",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 35,
+      "y": 24,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 24,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 37,
+      "y": 24,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 38,
+      "y": 24,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 39,
+      "y": 24,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 24,
+      "from": "b",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 24,
+      "from": "b",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 42,
+      "y": 24,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 21,
+      "y": 25,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 22,
+      "y": 25,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 23,
+      "y": 25,
+      "from": "^",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 24,
+      "y": 25,
+      "from": "^",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 25,
+      "from": "*",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 25,
+      "from": "O",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 25,
+      "from": "*",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 25,
+      "from": "B",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 25,
+      "from": "B",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 25,
+      "from": "^",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 25,
+      "from": "^",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 25,
+      "from": "^",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 25,
+      "from": "^",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 34,
+      "y": 25,
+      "from": "^",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 35,
+      "y": 25,
+      "from": "*",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 25,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 37,
+      "y": 25,
+      "from": "B",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 38,
+      "y": 25,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 39,
+      "y": 25,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 40,
+      "y": 25,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 41,
+      "y": 25,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 20,
+      "y": 26,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 25,
+      "y": 26,
+      "from": "^",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 26,
+      "y": 26,
+      "from": "^",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 27,
+      "y": 26,
+      "from": "*",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 28,
+      "y": 26,
+      "from": "b",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 29,
+      "y": 26,
+      "from": "^",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 30,
+      "y": 26,
+      "from": "^",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 31,
+      "y": 26,
+      "from": "^",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 32,
+      "y": 26,
+      "from": "^",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 33,
+      "y": 26,
+      "from": "^",
+      "to": "V",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 34,
+      "y": 26,
+      "from": "^",
+      "to": "v",
+      "material": "hood",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 35,
+      "y": 26,
+      "from": "^",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 36,
+      "y": 26,
+      "from": "*",
+      "to": "O",
+      "material": "outline",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 37,
+      "y": 26,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 38,
+      "y": 26,
+      "from": "B",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    },
+    {
+      "x": 39,
+      "y": 26,
+      "from": "O",
+      "to": ".",
+      "material": "background",
+      "reason": "Translate generated woodland hood into flat native-pixel surfaces; replace old hair silhouette while retaining approved body below the collar",
+      "boundary_reviewed": true
+    }
+  ]
+}

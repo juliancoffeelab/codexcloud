@@ -1,0 +1,15 @@
+{
+  "matrix_sha256": "f662fefe6d3b8662635e5f7b1e906c732b85667d909b9449e155f616f24fc7ff",
+  "palette_sha256": "1abe07ff7e2915ec392e5f64127aac1ddc1bf27496c5b415815c0a6a17ec4b2f",
+  "edits": [
+    {
+      "x": 34,
+      "y": 26,
+      "from": "V",
+      "to": "v",
+      "material": "woodland cloth",
+      "reason": "Blend isolated cowl highlight into its continuous cloth shade",
+      "boundary_reviewed": true
+    }
+  ]
+}

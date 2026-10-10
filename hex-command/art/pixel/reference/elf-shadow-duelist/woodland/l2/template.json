@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "template": "tmp/shadow-duelist-armor/l2-template.png",
+  "canvas": [1024, 1168],
+  "anchors": [
+    {
+      "matrix": "art/pixel/units/elf-flanker-l2/sprite.txt",
+      "sha256": "d0691c2d46b546fcc2674f79d39252aa128c89f57bc45fd5dfb933828fde4f83"
+    },
+    {
+      "matrix": "art/pixel/units/elf-archer-l2/sprite.txt",
+      "sha256": "3597c89d65bddc3941e5f3bd69f01d02762a1586c3e67be822f7a7d2f15ea1e6"
+    },
+    {
+      "matrix": "art/pixel/units/elf-flanker/sprite.txt",
+      "sha256": "90cc1d6dea7f67293882061a2cbe2da7a87845da10d9a8d6c21719386840101f"
+    }
+  ],
+  "palette": {
+    ".": [0, 0, 0, 0],
+    "^": [1, 93, 100, 255],
+    "*": [1, 55, 59, 255],
+    "A": [205, 219, 222, 255],
+    "B": [111, 72, 43, 255],
+    "H": [247, 190, 140, 255],
+    "I": [240, 229, 198, 255],
+    "O": [25, 22, 20, 255],
+    "V": [112, 145, 68, 255],
+    "a": [100, 125, 135, 255],
+    "b": [64, 40, 28, 255],
+    "i": [180, 163, 127, 255],
+    "v": [62, 88, 42, 255],
+    "D": [35, 53, 35, 255],
+    "G": [238, 184, 52, 255],
+    "W": [132, 88, 51, 255],
+    "d": [22, 34, 25, 255],
+    "h": [177, 118, 81, 255],
+    "w": [76, 49, 31, 255]
+  },
+  "slots": [
+    {
+      "label": "Woodland duelist L2",
+      "rect": [512, 576, 512, 512],
+      "native": 64,
+      "origin": [0, 0]
+    }
+  ],
+  "background": [255, 0, 255, 255],
+  "logicalSlot": 64
+}
