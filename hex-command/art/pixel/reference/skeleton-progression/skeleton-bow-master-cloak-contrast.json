@@ -1,0 +1,223 @@
+{
+  "matrix_sha256": "dd955ae9d5ba037f53202040889ea0b7de0be2cc9f5612c01d3c9858ff4fb8e6",
+  "palette_sha256": "bfe09e7e038772b8a5b93b13607a469552341b11a0b1d592366210a974d3ca43",
+  "reference": "art/pixel/reference/skeleton-progression/changes.json",
+  "edits": [
+    {
+      "x": 15,
+      "y": 25,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 13,
+      "y": 26,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 14,
+      "y": 26,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 11,
+      "y": 27,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 12,
+      "y": 27,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 13,
+      "y": 27,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 10,
+      "y": 28,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 11,
+      "y": 28,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 10,
+      "y": 29,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 9,
+      "y": 30,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 10,
+      "y": 30,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 7,
+      "y": 31,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 8,
+      "y": 31,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 9,
+      "y": 31,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 10,
+      "y": 31,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 21,
+      "y": 31,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 7,
+      "y": 32,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 8,
+      "y": 32,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 9,
+      "y": 32,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 20,
+      "y": 32,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 21,
+      "y": 32,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 6,
+      "y": 33,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 19,
+      "y": 33,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 20,
+      "y": 33,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 19,
+      "y": 34,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 20,
+      "y": 34,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    },
+    {
+      "x": 19,
+      "y": 35,
+      "from": "*",
+      "to": "^",
+      "material": "faction cloak lit fold",
+      "reason": "Restore the recorded pre-darkening fold highlight; preserve cloak contours and faction ownership"
+    }
+  ]
+}

@@ -22,3 +22,9 @@ node art/pixel/reference/faction-expansion/process.cjs boards skeleton
 ```
 
 The validator checks the chosen tree structure, protected anatomy hashes, faction isolation and wooden staff material. `validation.json` records its result. Both factions were inspected at nearest-neighbour scale.
+
+The archer cloak follow-up restores 24 Death archer and 27 Hollow archer
+base-faction pixels from the recorded pre-darkening folds. The explicit
+`deatharcher-cloak-contrast.json` and `skeleton-bow-master-cloak-contrast.json`
+logs preserve the exact reviewed baseline. This changes faction shading only;
+protected anatomy, outlines and the L3 dark skull remain unchanged.
