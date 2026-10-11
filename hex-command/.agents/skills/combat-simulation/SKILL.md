@@ -38,6 +38,11 @@ but executes no matches. Do not expand rosters or change balance to run a report
 Choose a new ignored artifact directory for each run, preserving previous results.
 The npm command builds the release runner using the project's toolchain wrapper.
 Node dependencies must be installed; use `npm ci` if needed. Reporting uses Python 3 and its standard library.
+Commit candidate gameplay data on the feature branch before a balance run: the
+reporter reads unit stats from the recorded commit. A reused native binary loads
+data from its compiled crate location, regardless of the working directory. When
+running it against another checkout, always pass that checkout's `--data-dir`.
+The `ai:combat` wrapper supplies the current project's data directory explicitly.
 
 ```sh
 simulation_run=artifacts/combat-$(date -u +%Y%m%dT%H%M%SZ)

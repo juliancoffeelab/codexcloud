@@ -14,6 +14,8 @@ def main():
     args, simulation_options = parser.parse_known_args()
     out = args.out.resolve()
     out.mkdir(parents=True, exist_ok=True)
+    if '--data-dir' not in simulation_options:
+        simulation_options += ['--data-dir', str(ROOT / 'rust/data')]
     subprocess.run(['npm', 'run', 'ai:simulate', '--', *simulation_options, '--out', str(out / 'report.json')], cwd=ROOT, check=True)
     report = [sys.executable, str(Path(__file__).with_name('report-combat.py')), str(out / 'report.json'), '--out', str(out / 'analytics')]
     for baseline in args.baseline:
