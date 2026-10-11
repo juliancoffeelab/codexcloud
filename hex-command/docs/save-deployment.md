@@ -1,10 +1,10 @@
 # Browser saves and migrations
 
-`src/save/schema.ts` defines the current version-3 envelope:
+`src/save/schema.ts` defines the current version-4 envelope:
 
 ```json
 {
-  "version": 3,
+  "version": 4,
   "pendingEnemy": false,
   "checkpoint": { "seed": 17, "state": {}, "planner": {} }
 }
@@ -53,3 +53,12 @@ and planner continuation, while their revision tag is changed to the current
 catalog entry with the same geometry. Normal Rust restoration validates the
 result. The catalog accepts only current authored documents; old layouts, marker
 indices and dialogue are stored under `src/save/migration/legacy/data/`.
+
+## Version-three migration
+
+The v3-to-v4 step grows the developer map's published 6×20 and 13×23 layouts to
+the current 32×32 revision. Existing tiles, ownership, units, battle progress,
+seed and planner continuation stay intact; only missing tiles are added from
+the current map. It never resets units or respawns defeated showcase troops.
+Malformed or incomplete historical boards still fail validation. Other maps
+receive only the envelope-version update.

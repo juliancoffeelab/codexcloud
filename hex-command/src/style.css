@@ -178,6 +178,8 @@ button[hidden] {
 }
 .map-scroll {
   overflow: auto;
+  max-height: min(720px, calc(100svh - 120px));
+  overscroll-behavior: contain;
   background: #19231c;
   border: 1px solid var(--line);
   border-radius: 4px;
@@ -213,7 +215,9 @@ button[hidden] {
   stroke-dasharray: 4 3;
 }
 .hex:hover .tile-ground,
-.hex:hover .terrain-art {
+.hex:hover .terrain-art,
+.terrain-hover .tile-ground,
+.terrain-hover .terrain-art {
   filter: brightness(1.12);
 }
 .hex:focus-visible .tile-outline,
@@ -455,17 +459,6 @@ dialog p {
   justify-content: space-between;
   margin-bottom: 20px;
 }
-.art-control {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  font: 14px system-ui;
-}
-.art-control select {
-  min-width: 160px;
-  background: var(--bg);
-}
 .economy {
   display: flex;
   justify-content: space-between;
@@ -506,6 +499,9 @@ summary {
   margin-top: 20px;
 }
 @media (max-width: 1000px) {
+  .map-scroll {
+    max-height: 55svh;
+  }
   .workspace {
     grid-template-columns: minmax(0, 1fr);
   }

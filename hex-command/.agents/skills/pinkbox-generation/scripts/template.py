@@ -8,7 +8,7 @@ import string
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[4]
-spec = importlib.util.spec_from_file_location('render_pixel', ROOT / 'scripts/build-pixel-atlas.py')
+spec = importlib.util.spec_from_file_location('render_pixel', ROOT / 'scripts/build-pixel-art.py')
 render = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(render)
 unit_directory = render.unit_directory

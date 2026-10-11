@@ -145,6 +145,159 @@ fn adjacency_matches_hex_distance_including_edges() {
     }
 }
 
+#[test]
+fn artwork_choices_survive_restore_and_forks_without_changing_movement() {
+    let original = Game::new(rules(), "mirror");
+    let mut state = original.state();
+    let tile = state
+        .tiles
+        .iter_mut()
+        .find(|tile| tile.terrain == "plains")
+        .unwrap();
+    let id = tile.id.clone();
+    tile.terrain = "road".into();
+    tile.connections = Some(vec![HexDirection::Se, HexDirection::Ne]);
+    tile.dead_ends = Some(vec![HexDirection::W]);
+    tile.floor = Some("green-forest".into());
+    let state = serde_json::from_str(&serde_json::to_string(&state).unwrap()).unwrap();
+    let decorated = Game::try_from_state(rules(), state).unwrap();
+    for unit in &original.units {
+        assert_eq!(original.reachable(unit), decorated.reachable(unit));
+    }
+    for game in [&decorated, &decorated.fork()] {
+        assert_eq!(
+            game.state()
+                .tiles
+                .iter()
+                .find(|tile| tile.id == id)
+                .unwrap()
+                .floor
+                .as_deref(),
+            Some("green-forest")
+        );
+        assert_eq!(
+            game.state()
+                .tiles
+                .iter()
+                .find(|tile| tile.id == id)
+                .unwrap()
+                .dead_ends,
+            Some(vec![HexDirection::W])
+        );
+        assert_eq!(
+            game.state()
+                .tiles
+                .iter()
+                .find(|tile| tile.id == id)
+                .unwrap()
+                .connections,
+            Some(vec![HexDirection::Se, HexDirection::Ne])
+        );
+    }
+    let mut invalid = decorated.state();
+    let tile = invalid.tiles.iter_mut().find(|tile| tile.id == id).unwrap();
+    tile.connections = Some(vec![HexDirection::E, HexDirection::E]);
+    assert!(Game::try_from_state(rules(), invalid).is_err());
+
+    for ends in [
+        vec![HexDirection::Se],
+        vec![HexDirection::W, HexDirection::W],
+        vec![HexDirection::Nw],
+    ] {
+        let mut state = decorated.state();
+        state
+            .tiles
+            .iter_mut()
+            .find(|tile| tile.id == id)
+            .unwrap()
+            .dead_ends = Some(ends);
+        assert!(Game::try_from_state(rules(), state).is_err());
+    }
+
+    for (terrain, exits, valid) in [
+        (
+            "village",
+            vec![HexDirection::E, HexDirection::W, HexDirection::Se],
+            true,
+        ),
+        (
+            "village",
+            vec![
+                HexDirection::E,
+                HexDirection::W,
+                HexDirection::Se,
+                HexDirection::Nw,
+            ],
+            false,
+        ),
+        ("keep", vec![HexDirection::W], false),
+        ("keep", vec![HexDirection::E, HexDirection::W], false),
+    ] {
+        let mut state = decorated.state();
+        let tile = state.tiles.iter_mut().find(|tile| tile.id == id).unwrap();
+        tile.terrain = terrain.into();
+        tile.connections = Some(exits.clone());
+        tile.dead_ends = None;
+        let restored = Game::try_from_state(rules(), state);
+        assert_eq!(restored.is_ok(), valid, "{terrain} {exits:?}");
+        if let Ok(game) = restored {
+            assert_eq!(
+                game.fork()
+                    .state()
+                    .tiles
+                    .iter()
+                    .find(|tile| tile.id == id)
+                    .unwrap()
+                    .connections,
+                Some(exits)
+            );
+        }
+    }
+}
+
+#[test]
+fn capped_road_validation_matches_registered_artwork_for_every_mask() {
+    let caps: Vec<(u8, u8)> = serde_json::from_str(include_str!(
+        "../../../pixel/art/terrain/road/dead-ends.json"
+    ))
+    .unwrap();
+    let directions = [
+        HexDirection::E,
+        HexDirection::Se,
+        HexDirection::Sw,
+        HexDirection::W,
+        HexDirection::Nw,
+        HexDirection::Ne,
+    ];
+    let mut tile = Game::new(rules(), "mirror").state().tiles[0].clone();
+    tile.terrain = "road".into();
+    for exits in 1u8..64 {
+        tile.connections = Some(
+            directions
+                .iter()
+                .copied()
+                .filter(|d| exits & d.bit() != 0)
+                .collect(),
+        );
+        tile.dead_ends = None;
+        assert!(tile.valid_connections());
+        for ends in 0u8..64 {
+            tile.dead_ends = Some(
+                directions
+                    .iter()
+                    .copied()
+                    .filter(|d| ends & d.bit() != 0)
+                    .collect(),
+            );
+            assert_eq!(
+                tile.valid_connections(),
+                caps.contains(&(exits, ends)),
+                "{exits}-end-{ends}"
+            );
+        }
+    }
+}
+
 fn connected(game: &Game<'_>, allowed: &HashSet<usize>, start: usize) -> HashSet<usize> {
     let mut reached = HashSet::from([start]);
     let mut pending = vec![start];

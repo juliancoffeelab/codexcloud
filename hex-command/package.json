@@ -8,8 +8,8 @@
     "format:check": "npm run style",
     "style": "node --import tsx scripts/style.ts",
     "content:check": "node --import tsx scripts/content.ts --check",
-    "art:build": "python3 scripts/build-pixel-atlas.py && node --import tsx scripts/pack-styled-art.ts",
-    "art:check": "python3 -m unittest discover -s scripts -p \"test_pixel_*.py\" && python3 -m unittest discover -s .agents/skills/pinkbox-generation/tests && python3 -m unittest discover -s .agents/skills/pixel-cleaning/tests && python3 scripts/build-pixel-atlas.py --check && node --import tsx scripts/pack-styled-art.ts --check",
+    "art:build": "python3 scripts/build-pixel-art.py",
+    "art:check": "python3 -m unittest discover -s scripts -p \"test_pixel_*.py\" && python3 -m unittest discover -s .agents/skills/pinkbox-generation/tests && python3 -m unittest discover -s .agents/skills/pixel-cleaning/tests && python3 scripts/build-pixel-art.py --check",
     "ai:simulate": "node --import tsx scripts/simulate-ai.ts",
     "ai:full": "node --import tsx scripts/simulate-ai.ts --mode full --seeds 10",
     "ai:benchmark": "node --import tsx scripts/benchmark-rust.ts",
@@ -53,6 +53,7 @@
     "svelte": "^5.0.0"
   },
   "devDependencies": {
+    "@napi-rs/canvas": "^1.0.11",
     "@sveltejs/vite-plugin-svelte": "^6.0.0",
     "@types/node": "^24.0.0",
     "@types/pngjs": "^6.0.5",

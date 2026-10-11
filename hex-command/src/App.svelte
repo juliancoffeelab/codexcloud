@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { preloadTerrainMap } from "./presentation/terrain-preload";
   import { onMount } from "svelte";
   import { BattleController } from "./controller/battle";
   import { registerBattleTools } from "./controller/tools";
@@ -24,15 +25,18 @@
   });
   let settingsDialog = $state<HTMLDialogElement>();
   let campaignDialog: HTMLDialogElement;
+  let campaignPickerOpen = $state(false);
   let campaignChoice = $state<CampaignId>("lantern-road");
   function openCampaignPicker() {
     settingsDialog?.close();
+    campaignPickerOpen = true;
     campaignDialog.showModal();
   }
   function startCampaign() {
     briefingExpanded = false;
     actions.startCampaign(campaignChoice);
     campaignDialog.close();
+    campaignPickerOpen = false;
   }
   let resetDialog: HTMLDialogElement;
   let mapChoice = $state("mirror");
@@ -49,6 +53,7 @@
     playSound("select");
   }
   function startNewBattle() {
+    preloadTerrainMap(mapChoice);
     briefingExpanded = false;
     resetDialog.close();
     actions.reset(mapChoice);
@@ -58,6 +63,14 @@
       actions.clearSelection(true);
   }
   onMount(() => {
+    const artworkFailed = (event: Event) => {
+      if (
+        event.target instanceof SVGImageElement &&
+        event.target.getAttribute("href")?.includes("assets/sprites/")
+      )
+        actions.error(new Error("Artwork could not load. Please reload to retry."));
+    };
+    document.addEventListener("error", artworkFailed, true);
     // Sound activation requires a real browser gesture; loading/replay stays silent.
     const passiveGestures = ["pointerdown", "pointerup", "touchend"] as const;
     const otherGestures = ["keydown", "click"] as const;
@@ -68,11 +81,13 @@
       document.addEventListener(event, activateSound, { capture: true, passive: true });
     for (const event of otherGestures)
       document.addEventListener(event, activateSound, { capture: true });
+    preloadTerrainMap($view.game.mapId);
     controller.initialize();
     const unregisterTools = registerBattleTools(controller);
     return () => {
       controller.dispose();
       unregisterTools();
+      document.removeEventListener("error", artworkFailed, true);
       for (const event of [...passiveGestures, ...otherGestures])
         document.removeEventListener(event, activateSound, { capture: true });
     };
@@ -111,10 +126,16 @@
   onNewCampaign={openCampaignPicker}
 />
 <Dialogue view={$view} {actions} />
-<dialog class="campaign-dialog" bind:this={campaignDialog}>
+<dialog
+  class="campaign-dialog"
+  bind:this={campaignDialog}
+  onclose={() => (campaignPickerOpen = false)}
+>
   <h2>New campaign</h2>
   <p>Choose a company and a story. Starting replaces your current battle.</p>
-  <CampaignPicker bind:selected={campaignChoice} artwork={$view.artwork} />
+  {#if campaignPickerOpen}
+    <CampaignPicker bind:selected={campaignChoice} artwork={$view.artwork} />
+  {/if}
   <div class="dialog-actions">
     <button class="quiet" onclick={() => campaignDialog.close()}>Keep playing</button>
     <button class="primary" onclick={startCampaign}>Start campaign</button>

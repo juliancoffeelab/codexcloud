@@ -5,15 +5,66 @@ from pathlib import Path
 import tempfile
 import shutil
 import unittest
+from unittest.mock import patch
 
 import importlib.util
-spec = importlib.util.spec_from_file_location('build_pixel_atlas', Path(__file__).parent / 'build-pixel-atlas.py')
+spec = importlib.util.spec_from_file_location('build_pixel_art', Path(__file__).parent / 'build-pixel-art.py')
 art = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(art)
 load_lineups = art.load_lineups
 
 
 class RaceTrees(unittest.TestCase):
+    def test_variant_coverage_rejects_missing_and_unregistered_connections(self):
+        caps = {(34, 1), (34, 8)}
+        roads = {'tile'} | {str(mask) for mask in range(1, 64) if mask != 9}
+        roads |= {f'{exits}-end-{ends}' for exits, ends in caps}
+        art.require_terrain_variants('road', roads, caps)
+        with self.assertRaisesRegex(ValueError, 'missing supported variants.*63'):
+            art.require_terrain_variants('road', roads - {'63'}, caps)
+        with self.assertRaisesRegex(ValueError, 'missing supported variants.*34-end-8'):
+            art.require_terrain_variants('road', roads - {'34-end-8'}, caps)
+        with self.assertRaisesRegex(ValueError, 'unsupported variants.*11-end-16'):
+            art.require_terrain_variants('road', roads | {'11-end-16'}, caps)
+        villages = {'tile', '0'} | {str(mask) for mask in range(1, 64)
+                                   if mask != 9 and mask.bit_count() <= 3}
+        art.require_terrain_variants('village', villages, caps)
+        with self.assertRaisesRegex(ValueError, 'unsupported variants.*63'):
+            art.require_terrain_variants('village', villages | {'63'}, caps)
+        for kind in ['bridge', 'ford']:
+            art.require_terrain_variants(kind, {'tile', 'ne-sw', 'nw-se'}, caps)
+            with self.assertRaisesRegex(ValueError, 'missing supported variants.*ne-sw'):
+                art.require_terrain_variants(kind, {'tile', 'nw-se'}, caps)
+
+    def test_road_exits_allow_different_interiors(self):
+        rows = ["R" * 64 if 28 <= y < 36 else "G" * 64 for y in range(64)]
+        art.require_road_exits(rows, 9)
+        rows[20] = "G" * 24 + "R" * 16 + "G" * 24
+        art.require_road_exits(rows, 9)
+
+    def test_road_exits_reject_offsets_and_width_changes(self):
+        for start, end in [(24, 32), (29, 35)]:
+            rows = [("R" if start <= y < end else "G") * 8 +
+                    ("R" if 28 <= y < 36 else "G") * 56 for y in range(64)]
+            with self.subTest(start=start, end=end), self.assertRaisesRegex(ValueError, "misaligned exit"):
+                art.require_road_exits(rows, 9)
+
+    def test_settlement_exits_distinguish_masonry_from_paths(self):
+        rows = ["C" * 32 + "H" * 32 if 28 <= y < 36 else "C" * 64 for y in range(64)]
+        surface = frozenset("RrH")
+        art.require_road_exits(rows, 1, surface, label="village")
+        rows[32] = "C" * 64
+        with self.assertRaisesRegex(ValueError, "village 1: misaligned exit"):
+            art.require_road_exits(rows, 1, surface, label="village")
+
+    def test_roadless_settlement_has_no_edge_paths(self):
+        rows = ["C" * 64 for _ in range(64)]
+        surface = frozenset("RrH")
+        art.require_road_exits(rows, 0, surface, label="village")
+        rows[32] = "R" * 8 + "C" * 56
+        with self.assertRaisesRegex(ValueError, "village 0: misaligned exit"):
+            art.require_road_exits(rows, 0, surface, label="village")
+
     def fixture(self):
         temp = tempfile.TemporaryDirectory()
         self.addCleanup(temp.cleanup)
@@ -89,6 +140,126 @@ class RaceTrees(unittest.TestCase):
         (trees / "race").mkdir()
         with self.assertRaisesRegex(ValueError, "Race trees must be flat"):
             load_lineups(trees)
+
+
+class TerrainFloors(unittest.TestCase):
+    def fixture(self):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        root = Path(temp.name)
+        self.enterContext(patch.object(art, 'ART', root))
+        floors = {'palettes': {'wood': {'G': [90, 110, 30, 255], 'g': [60, 80, 20, 255]},
+                               'shore': {'G': [20, 90, 140, 255], 'g': [90, 150, 170, 255]}},
+                  'defaults': {'wood': 'wood', 'shore': 'shore'}}
+        (root / 'terrain').mkdir()
+        path = root / 'terrain/floors.json'
+        path.write_text(json.dumps(floors))
+        for kind in ['wood', 'shore']:
+            directory = root / 'terrain' / kind
+            directory.mkdir()
+            (directory / 'palette.json').write_text(json.dumps({'.': [0, 0, 0, 0],
+                                                                'T': [7, 40, 15, 255]}))
+            rows = ['GgT' + '.' * 61] + ['.' * 64] * 63
+            for name in ['tile.txt', '18.txt']:
+                (directory / name).write_text('\n'.join(rows) + '\n')
+        return root, path, floors
+
+    def test_floor_tuning_changes_only_its_surface_across_variants(self):
+        root, path, floors = self.fixture()
+        shore = art.rgba_pixels(root / 'terrain/shore/tile.txt')[2]
+        matrix = root / 'terrain/wood/tile.txt'
+        before = art.rgba_pixels(matrix)[2]
+        source = matrix.read_bytes()
+        floors['palettes']['wood'] = {'G': [50, 70, 20, 255], 'g': [30, 50, 10, 255]}
+        path.write_text(json.dumps(floors))
+        after = art.rgba_pixels(matrix)[2]
+        self.assertEqual(list(after[:8]), floors['palettes']['wood']['G'] + floors['palettes']['wood']['g'])
+        self.assertEqual(after[8:], before[8:])  # Foliage and alpha stay unchanged.
+        self.assertEqual(matrix.read_bytes(), source)
+        self.assertEqual(art.rgba_pixels(root / 'terrain/wood/18.txt')[2], after)
+        self.assertEqual(art.rgba_pixels(root / 'terrain/shore/tile.txt')[2], shore)
+        self.assertEqual(art.rgba_pixels(root / 'terrain/shore/tile.txt', floor='wood')[2], after)
+        with self.assertRaisesRegex(ValueError, 'unknown floor'):
+            art.rgba_pixels(matrix, floor='missing')
+
+    def test_floor_rejects_missing_transparent_and_invalid_shades(self):
+        root, path, floors = self.fixture()
+        for invalid in [None, {'G': [1, 2, 3, 255]},
+                        {'G': [1, 2, 3, 0], 'g': [1, 2, 3, 255]},
+                        {'G': [1, 2, 300, 255], 'g': [1, 2, 3, 255]}]:
+            with self.subTest(invalid=invalid):
+                floors['palettes']['wood'] = invalid
+                path.write_text(json.dumps(floors))
+                with self.assertRaisesRegex(ValueError, 'wood floor: exactly two opaque'):
+                    art.read_palette(root / 'terrain/wood/tile.txt')
+
+    def test_local_material_palette_cannot_override_floor(self):
+        root, path, floors = self.fixture()
+        (root / 'terrain/wood/palette.json').write_text(json.dumps({'.': [0, 0, 0, 0],
+                                                                  'G': [1, 2, 3, 255]}))
+        with self.assertRaisesRegex(ValueError, 'floor shades belong in terrain/floors.json'):
+            art.read_palette(root / 'terrain/wood/tile.txt')
+
+    def test_prop_layouts_reject_unknown_pieces_and_painted_pixels_outside_hex(self):
+        root, path, floors = self.fixture()
+        piece = root / 'terrain/props/wood/seed'
+        piece.mkdir(parents=True)
+        (piece / 'tile.txt').write_text('T' + '.' * 63 + '\n' + ('.' * 64 + '\n') * 63)
+        (piece / 'palette.json').write_text(json.dumps({'.': [0, 0, 0, 0], 'T': [7, 40, 15, 255]}))
+        layout = root / 'terrain/wood/layouts.json'
+        layout.write_text(json.dumps([[{'prop': 'seed', 'x': 2, 'y': 0}]]))
+        self.assertEqual(art.load_terrain_layouts()['wood'][0],
+                         [{'name': 'prop_wood_seed', 'x': 2, 'y': 0}])
+        self.assertEqual(art.read_palette(piece / 'tile.txt')['G'], floors['palettes']['wood']['G'])
+        for placement, error in [({'prop': 'missing', 'x': 2, 'y': 0}, 'unknown prop'),
+                                 ({'prop': '../seed', 'x': 2, 'y': 0}, 'invalid prop placement'),
+                                 ({'prop': 'seed', 'x': 3, 'y': 0}, 'outside the hex')]:
+            layout.write_text(json.dumps([[placement]]))
+            with self.subTest(placement=placement), self.assertRaisesRegex(ValueError, error):
+                art.load_terrain_layouts()
+
+    def test_directional_props_use_the_named_frame_footprint(self):
+        root, path, floors = self.fixture()
+        piece = root / 'terrain/props/wood/seed'
+        piece.mkdir(parents=True)
+        (piece / 'tile.txt').write_text('T' + '.' * 63 + '\n' + ('.' * 64 + '\n') * 63)
+        direction = root / 'terrain/wood/ne-sw.txt'
+        direction.write_text('.G' + '.' * 62 + '\n' + ('.' * 64 + '\n') * 63)
+        variants = {'tile': [[{'prop': 'seed', 'x': 2, 'y': 0}]],
+                    'ne-sw': [[{'prop': 'seed', 'x': 1, 'y': 0}]]}
+        layout = root / 'terrain/wood/layouts.json'
+        layout.write_text(json.dumps(variants))
+        self.assertEqual(art.load_terrain_layouts()['wood_ne-sw'][0],
+                         [{'name': 'prop_wood_seed', 'x': 1, 'y': 0}])
+        variants['ne-sw'][0][0]['x'] = 2
+        layout.write_text(json.dumps(variants))
+        with self.assertRaisesRegex(ValueError, 'outside the hex'):
+            art.load_terrain_layouts()
+        layout.write_text(json.dumps({'../tile': variants['tile']}))
+        with self.assertRaisesRegex(ValueError, 'unknown terrain frame'):
+            art.load_terrain_layouts()
+
+
+class NativeComposition(unittest.TestCase):
+    def test_transparency_depth_order_and_clipped_integer_placement(self):
+        red = [255, 0, 0, 255]
+        green = [0, 255, 0, 255]
+        blank = [0, 0, 0, 0]
+        base = (2, 2, bytearray(red * 4))
+        layer = (2, 1, bytearray(blank + green))
+        width, height, pixels = art.composite(base, [(layer, -1, 1)])
+        self.assertEqual((width, height), (2, 2))
+        self.assertEqual(pixels, bytearray(red * 2 + green + red))
+        self.assertEqual(base[2], bytearray(red * 4))
+        top = (1, 1, bytearray(red))
+        self.assertEqual(art.composite(base, [(layer, -1, 1), (top, 0, 1)])[2], base[2])
+
+    def test_rejects_fractional_offsets_and_partial_alpha(self):
+        base = (1, 1, bytearray([0, 0, 0, 0]))
+        with self.assertRaisesRegex(ValueError, 'integer'):
+            art.composite(base, [(base, .5, 0)])
+        with self.assertRaisesRegex(ValueError, 'flat alpha'):
+            art.composite(base, [((1, 1, bytearray([1, 2, 3, 128])), 0, 0)])
 
 
 if __name__ == "__main__":

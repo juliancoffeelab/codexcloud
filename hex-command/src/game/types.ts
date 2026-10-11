@@ -27,7 +27,8 @@ export type UnitType =
   | "bonearcher"
   | "wolf"
   | "boar"
-  | "thorncaller";
+  | "thorncaller"
+  | "rider";
 export type AdvancedTroop =
   | "marksman"
   | "ranger"
@@ -39,7 +40,8 @@ export type AdvancedTroop =
   | "briarweaver"
   | "tridentguard"
   | "tidehunter"
-  | "tidesage";
+  | "tidesage"
+  | "lancer";
 export type RecruitType = Exclude<UnitType, LeaderType>;
 export const UNIT_TYPES = [
   "commander",
@@ -76,10 +78,13 @@ export const UNIT_TYPES = [
   "grovewarden",
   "lich",
   "tideseer",
+  "rider",
+  "lancer",
 ] as const satisfies readonly UnitType[];
 export type Race = "human" | "undead" | "beast" | "merfolk";
 export type TerrainType =
   | "plains"
+  | "road"
   | "forest"
   | "hill"
   | "water"
@@ -106,15 +111,22 @@ export type CampaignMapId =
   | "ashen-refuge"
   | "ashen-dawn";
 export type CoastalMapId = "tide-nets" | "tide-wreck" | "tide-sluice";
-export type MapId = "mirror" | "river" | "developer" | CampaignMapId | CoastalMapId;
+export type MapId =
+  "mirror" | "river" | "developer" | "river-valley" | CampaignMapId | CoastalMapId;
 export interface Coordinates {
   col: number;
   row: number;
 }
+export type HexDirection = "e" | "se" | "sw" | "w" | "nw" | "ne";
 export interface Tile extends Coordinates {
   id: string;
   terrain: TerrainType;
   owner: Side | null;
+  /** Artwork only: road/village exits or opposite bridge/ford edges. */
+  connections?: HexDirection[];
+  deadEnds?: HexDirection[];
+  /** Artwork only: reusable floor palette, independent of terrain rules. */
+  floor?: string;
 }
 export interface Unit {
   /** Missing on pre-progression saves, which load as zero. */
@@ -189,6 +201,9 @@ export interface TerrainDefinition {
 export interface TerrainOverride extends Coordinates {
   terrain: TerrainType;
   owner?: Side | null;
+  connections?: HexDirection[];
+  deadEnds?: HexDirection[];
+  floor?: string;
 }
 export interface StartingUnit extends Coordinates {
   type: UnitType;
@@ -198,6 +213,7 @@ export interface StartingUnit extends Coordinates {
 }
 export interface MapDefinition {
   id: MapId;
+  hidden?: boolean;
   revision?: number;
   name: string;
   description: string;

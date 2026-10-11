@@ -38,6 +38,12 @@ patches detectors miss. For a narrow fix, stay within that scope.
 - Keep shade clusters coherent and surfaces connected. Use the
   current `pixel/art/units/humans/scout/sprite.txt` as a finish benchmark for
   deliberate material planes, not a pose or palette to copy. Avoid shade noise.
+- For directional terrain, inspect assembled joins at native scale. Road exits
+  must share position, width and a normal tangent through the boundary; a curve
+  ending outside the hex can cross its edge off-center. Matching connection names
+  or nearby dirt pixels do not establish continuity. `art:build` checks road edge
+  sections independently of the interior artwork. Review forks and crossroads
+  in a connected network as well as curves in a loop.
 
 The edit JSON requires `matrix_sha256`, `palette_sha256`, and `edits`. Each edit
 has native `x`, `y`, `from`, `to`, `material` and `reason`; outline/transparency

@@ -7,19 +7,84 @@
   Do not nest sprites under lineup folders or restore family/tier directories.
   Keep generated candidates, prompts, extraction reports and edit logs in ignored
   `tmp/`; do not commit art archives, duplicate renders or reference-only poses.
+  Terrain sources live in `pixel/art/terrain/<terrain>/`: `tile.txt` is the
+  default tile; bridge/ford diagonals are `ne-sw.txt` and `nw-se.txt`. Decorative
+  roads are complete terrain tiles in `terrain/road/`, with their own grass and
+  winding paths, never overlays on plains. `tile.txt` is west–east; other variants
+  use `<mask>.txt`, where bits 1, 2, 4, 8, 16, 32 mean e, se, sw, w, nw, ne.
+  The artwork build only reads finished matrices; it must not synthesize roads or modify
+  sources. Map tiles optionally declare `connections` with those clockwise edge
+  names; bridges/fords need two opposite edges. Bridges stay straight; ford
+  connections guide a loose stone crossing, without strict edge alignment.
+  Connections affect artwork only and must survive publication and save/restore.
+  Villages use finished `<mask>.txt` variants for one to three exits, with
+  west–east in `tile.txt`; `0.txt` is roadless, selected when map connections
+  are omitted. Keep tiles contain no roads or connection variants.
+  Approaches stop in the adjacent road tile, with junctions outside the walls.
+  Road `deadEnds` name directions whose spurs stop inside that road tile; finished
+  sources use `<connections-mask>-end-<dead-ends-mask>.txt`. Register supported
+  capped-road pairs in `terrain/road/dead-ends.json`;
+  Rust restoration, content checks and artwork building reject unregistered pairs.
+  Every supported connection configuration must have a finished native matrix.
+  Villages have only their main streets, without thin house lanes. Extracted buildings and composition
+  experiments stay in `tmp/`; the build must only read finished tiles.
+  Terrain floor colors live separately in `pixel/art/terrain/floors.json`, with
+  named reusable `palettes` (`G`/`g` base/shade) and terrain `defaults`.
+  Map tiles optionally set `floor`, independently of `terrain` and connections:
+  a road can use `green-forest`, or a forest can use `snow-forest`, without new
+  matrices. Water surfaces also use `G`/`g`; localized pools remain materials.
+  Keep those symbols out of each terrain's material `palette.json`. Trees,
+  grass tufts, buildings, rocks and dirt paths keep their own material colors;
+  changing a floor must not recolor them. The read-only build applies palettes
+  to the same matrices, emitting floor choices for every orientation. Render the
+  selected isolated frame with its matching vector hex background. Floor choices
+  affect artwork only and must survive publication, saves and forks.
+  Forest/hill/plains base matrices hold the floor and ground decoration; fords
+  hold water and ripples, with crossing stones supplied as props. Reusable
+  pieces live in `terrain/props/<terrain>/<piece>/tile.txt` with material palettes,
+  on transparent 64×64 canvases. `<terrain>/layouts.json` supplies native integer
+  placements, drawn in depth order; each painted piece must fit inside the hex.
+  Directional terrain uses an object in `layouts.json`, keyed by source frame
+  stem (`tile`, `nw-se`, `ne-sw`); each value is its list of arrangements.
+  Select the arrangement for the same frame as the base artwork. Ford stones
+  suggest the crossing direction, with uneven steps, varied outer stones and
+  small stones scattered beside the route; no fixed endpoints are required.
+  Choose arrangements deterministically from map/tile identity. Keep pieces at
+  their native size and lighting; do not mirror, resize or randomly move them on
+  redraw. The artwork build emits complete native 64×64 PNGs from matrices,
+  faction/floor palettes and prepared arrangements into ignored public/assets/sprites/.
+  Publish immutable sprite URLs in BattleView.artwork. The browser fetches only
+  rendered images; never restore runtime atlases, cropping, canvas extraction or
+  PNG encoding. Cache static geometry and terrain identity across unit and
+  ownership changes. Preload the selected authored map PNG before creating the battle. Bake the static map terrain
+  from the published game/artwork snapshots directly into one canvas bitmap at the shared native
+  pixel scale. Keep units, ownership badges, hit targets and highlights live.
+  Reuse the bitmap during movement and scrolling; invalidate it for terrain,
+  floor, geometry or artwork changes. Retain only the latest map and discard
+  stale asynchronous completions. Production builds emit prebuilt PNG terrain for
+  every authored map into dist/assets using the same geometry/layout/drawing code.
+  Use an exact terrain-key match without runtime baking. For terrain edits, show
+  the same-map/geometry sprite with changed cells overlaid, then swap to the
+  completed canvas. Never use a different map/geometry as a preview. Missing/failed
+  sprites and changed/custom maps use
+  the canvas fallback, yielding between tile batches. Tile images remain available
+  while baking. Do not track duplicate map PNG sources.
 
 - **Permanent character canvas rule: every character/unit sprite and portrait is
   exactly 64×64 native pixels. This rule must never be changed; do not even try
   to reintroduce 48×48 outputs, alternate sizes, automatic cropping or resizing.**
   The one-time migration places each old 48×48 matrix at `(8,16)`: 8 transparent
   pixels left, 8 right, 16 above, none below. Preserve every painted pixel.
-  New generation, extraction, cleaning and atlas frames must use 64×64.
+  New generation, extraction, cleaning and generated frames must use 64×64.
   Most characters should be below 40 painted pixels tall; cavalry and giants may
   go slightly above this. Compare mounted artwork with the existing rider,
   horse-archer, elf deer rider and skeletal rider references before setting scale;
   distinguish body/mount height from a raised weapon or staff. Canvas size is not
-  permission to enlarge ordinary infantry. Terrain hex tiles use their separate
-  terrain grid. During generation, keep raw evidence unchanged in `tmp/`.
+  permission to enlarge ordinary infantry. Terrain tiles also use exactly 64×64
+  native pixels, with a pointy-top regular hex centered in the square frame.
+  Terrain, troops and commanders share one battlefield pixel scale; do not add
+  per-unit scaling to emphasize leaders. During generation, keep raw evidence
+  unchanged in `tmp/`.
   **The canvas bottom (native row 63) is the ground line. Grounded units must
   stand on it with no transparent rows beneath their feet or ground-contacting
   body.** Preserve every painted pixel when aligning existing units: translate
@@ -34,12 +99,14 @@
   tests. Keep captured images, whole-sprite fixtures and one-off visual checks
   in ignored `tmp/`. Generation sanity checks should enforce canvas-bottom
   ground contact, with the explicit `flying` palette exemption.
+- Pixel artwork is the only game art mode. Do not restore style switches,
+  stored style preferences or alternate-art fallback loaders.
 - For pixel artwork, use the project skills: [pinkbox generation](.agents/skills/pinkbox-generation/SKILL.md),
   [pinkbox enhancement](.agents/skills/pinkbox-enhancement/SKILL.md),
   [pixel cleaning](.agents/skills/pixel-cleaning/SKILL.md), and
   [lineup previews](.agents/skills/pixel-lineup/SKILL.md).
   Matrices and palettes in `pixel/art/` are authoritative. `npm run art:build`
-  packs them with `scripts/build-pixel-atlas.py`; builds must never replay
+  renders them with `scripts/build-pixel-art.py`; builds must never replay
   recipes, regenerate characters or write source artwork. Keep generation,
   cleaning and preview helpers inside their skills, with scratch output in `tmp/`.
 - Run `npm run style` for Prettier and staged/unstaged whitespace checks together.
@@ -55,6 +122,10 @@
 - Components derive display state exclusively from the immutable published
   `BattleView`. Pass `BattleCommands` for event handlers. Never query mutable
   controller state during rendering or pass a mutable `Game` into a component.
+- Mount the startup UI shell before loading the WASM-dependent battle chunk.
+  Keep startup imports free of the catalog and controller; show disabled controls
+  and placeholders until the validated engine publishes real battle data.
+  Loading failures must offer reload without changing the saved battle.
 - All game changes go through controller commands and publish a coherent view.
   Deferred work must check that its request/session/render revision is current
   before publishing results or applying feedback.
@@ -90,7 +161,7 @@
   error without blindly repeating save/deploy; retain any saved version or
   deployment IDs returned by the service for recovery.
 
-- Atlases are inputs to artwork loading only. Publish isolated frame images in
-  `BattleView.artwork`; renderers must consume that snapshot. Do not put a full
-  sheet in SVG, HTML or a CSS background and rely on overflow/viewports to crop it.
-  Extract pixel frames at native resolution with smoothing disabled.
+- Renderers consume complete native sprite URLs from the immutable BattleView
+  artwork snapshot. Do not crop sheets through SVG/HTML/CSS overflow or recreate
+  sprites in the browser. Generated sprite PNGs live in ignored public/assets/sprites/
+  and dist; pixel/art matrices and palettes remain the only artwork sources.

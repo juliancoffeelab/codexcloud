@@ -42,6 +42,9 @@ pub fn validate_state(rules: &Rules, state: &State) -> Result<(), StateError> {
     let mut tiles = HashSet::new();
     let mut positions = HashSet::new();
     for tile in &state.tiles {
+        if !tile.valid_connections() {
+            return Err(fail("invalid artwork connections"));
+        }
         if !tiles.insert(tile.id.as_str()) || !positions.insert((tile.col, tile.row)) {
             return Err(fail("duplicate tile identity or coordinate"));
         }

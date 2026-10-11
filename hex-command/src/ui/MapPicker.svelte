@@ -1,10 +1,21 @@
 <script lang="ts">
-  import { MAPS } from "../game/maps";
-  import { hexPoints, tileCenter, previewColors } from "./geometry";
+  import { preloadTerrainMap } from "../presentation/terrain-preload";
+  import { BATTLE_MAPS } from "../game/maps";
+  import {
+    hexPoints,
+    tileCenter,
+    previewColors,
+    hexColumnSpacing,
+    hexRowSpacing,
+  } from "./geometry";
   import type { MapDefinition, TerrainType } from "../game/types";
   import type { Immutable } from "../game/view";
 
   let { selected = $bindable("mirror") }: { selected?: string } = $props();
+
+  $effect(() => {
+    preloadTerrainMap(selected);
+  });
 
   function previewTiles(layout: Immutable<MapDefinition>) {
     const terrainByTile = new Map<string, TerrainType>(
@@ -19,15 +30,13 @@
     });
   }
 
-  const maps = (["mirror", "river", "developer"] as const)
-    .map((id) => MAPS[id])
-    .map((layout) => ({
-      id: layout.id,
-      name: layout.name,
-      description: layout.description,
-      viewBox: `0 0 ${85 + 61 * (layout.cols - 0.5)} ${84 + 53 * (layout.rows - 1)}`,
-      tiles: previewTiles(layout),
-    }));
+  const maps = BATTLE_MAPS.map((layout) => ({
+    id: layout.id,
+    name: layout.name,
+    description: layout.description,
+    viewBox: `0 0 ${85 + hexColumnSpacing * (layout.cols - 0.5)} ${84 + hexRowSpacing * (layout.rows - 1)}`,
+    tiles: previewTiles(layout),
+  }));
 </script>
 
 <fieldset id="map-picker">

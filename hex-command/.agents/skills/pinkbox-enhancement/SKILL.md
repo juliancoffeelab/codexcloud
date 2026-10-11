@@ -16,6 +16,15 @@ surfaces, preserving outlines, alpha, skin, cloth and grips. Recolor base and
 shadow together; shade coherent clusters following overlaps and surface curves.
 Do not mistake pale clothing for armor or fur based on its color.
 
+Terrain floors use named `palettes` in `pixel/art/terrain/floors.json`, each with
+a `G`/`g` base/shade pair; `defaults` selects a palette per terrain. A map tile's
+optional `floor` overrides that default, including on roads and villages.
+Keep `G`/`g` out of local material palettes. Tree foliage and grass tufts can
+share other green symbols; leave them alone when tuning the floor. Render through
+the artwork builder's `read_palette(matrix, floor=...)`/`rgba_pixels(matrix, floor=...)`
+so previews resolve the chosen floor colors too. Never create a new matrix for
+a different floor palette.
+
 ```sh
 python3 .agents/skills/pinkbox-enhancement/scripts/fill.py \
   pixel/art/units/humans/adept/sprite.txt tmp/upgrade/fill.json tmp/upgrade/candidate

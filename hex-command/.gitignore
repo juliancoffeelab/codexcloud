@@ -42,3 +42,6 @@ Thumbs.db
 /artifacts/
 /rust/target/
 /rust/pkg/
+
+# Native sprites are built from pixel/art and copied into dist by Vite.
+/public/assets/sprites/

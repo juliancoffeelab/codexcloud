@@ -2,7 +2,7 @@ import { LiveGame } from "../src/game/live-game";
 import { saveBattle as writeBattle } from "../src/save/write";
 import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
-import { artworkForStyle } from "../src/presentation/art";
+import { currentArtwork } from "../src/presentation/art";
 import type { BattleController as Controller, BattleView } from "../src/controller/battle";
 let BattleController: typeof Controller;
 import { createTestFactory } from "./native-fixture";
@@ -66,7 +66,7 @@ test("Developer map supports normal actions and persistence", async () => {
   if (panel.kind === "details") assert.equal(panel.details.actionStatus, "Ready");
   assert(controller.actions(player.id).moves.some((move) => move.tile === "0,2"));
   assert(
-    battlefieldTiles(observed.view.game, player.id, artworkForStyle("pixel"), null).some((tile) =>
+    battlefieldTiles(observed.view.game, player.id, currentArtwork(), null).some((tile) =>
       tile.classes.includes("reachable"),
     ),
   );
@@ -386,30 +386,6 @@ test("Unmounted sessions cannot overwrite replacements", async () => {
   replacement.dispose();
 });
 
-// Complete image requests explicitly; no network, browser, or timer is involved.
-class ControlledImage {
-  static requests: ControlledImage[] = [];
-  src = "";
-  onload: (() => void) | null = null;
-  onerror: (() => void) | null = null;
-  completed = false;
-  constructor() {
-    ControlledImage.requests.push(this);
-  }
-  static finish(style: string, success: boolean, terrainSuccess = success) {
-    const requests = this.requests.filter((image) => !image.completed && image.src.includes(style));
-    assert.equal(requests.length, 2, `${style} artwork loads one unit atlas and one terrain atlas`);
-    assert(requests.some((image) => image.src.includes(`/units-${style}.png`)));
-    assert(requests.some((image) => image.src.includes(`/terrain-${style}.png`)));
-    assert.equal(new Set(requests.map((image) => image.src)).size, requests.length);
-    for (const image of requests) {
-      image.completed = true;
-      if (image.src.includes(`/terrain-${style}.png`) ? terrainSuccess : success) image.onload?.();
-      else image.onerror?.();
-    }
-  }
-}
-
 async function settleCallbacks() {
   for (let turn = 0; turn < 6; turn++) await Promise.resolve();
 }
@@ -449,69 +425,16 @@ test("Replay is consumed once and replacement discards pending initialization", 
   replay.dispose();
 });
 
-// Manual preferences supersede fallback work and older manual requests.
-test("Manual art preferences supersede fallback and older requests", async () => {
-  storage.clear();
+test("Artwork URLs are published immediately and ignore retired style preferences", () => {
+  storage.setItem("hex-command-art-style", "low-poly");
   const controller = createController(immediatePause);
   const observed = observe(controller);
+  assert(Object.isFrozen(observed.view.artwork.frames));
+  assert(observed.view.artwork.frames.player_thorncaller?.url.includes("assets/sprites/"));
+  const opening = observed.view.artwork;
   controller.initialize();
-  const openingGame = observed.view.game;
-  const openingArtwork = observed.view.artwork;
-  ControlledImage.finish("normal", true, false);
-  await settleCallbacks(); // The initial request now waits on low-poly fallback.
-  const latest = controller.setArtStyle("pixel");
-  ControlledImage.finish("pixel", true);
-  await latest;
-  const chosen = observed.view;
-  assert.equal(
-    Object.keys(openingArtwork.frames).length,
-    0,
-    "Loading must not mutate an already-published artwork snapshot",
-  );
-  assert(Object.isFrozen(chosen.artwork));
-  assert(Object.isFrozen(chosen.artwork.frames));
-  assert(chosen.artwork.frames.player_thorncaller?.url.startsWith("data:image/png;base64,"));
-  ControlledImage.finish("low-poly", false);
-  await settleCallbacks();
-  assert.equal(observed.view, chosen, "stale fallback failure must not publish or report an error");
-  assert.equal(observed.view.artStyle, "pixel");
-  assert.equal(observed.view.game, openingGame, "artwork changes reuse the published game");
-  assert.equal(observed.view.artLoading, false);
-  assert.equal(storage.getItem("hex-command-art-style"), "pixel");
-
-  const older = controller.setArtStyle("low-poly");
-  const newer = controller.setArtStyle("pixel"); // Pixel is already loaded.
-  await newer;
-  const current = observed.view;
-  ControlledImage.finish("low-poly", true);
-  await older;
-  assert.equal(observed.view, current);
-  assert.equal(observed.view.artStyle, "pixel");
-  assert.equal(observed.view.artLoading, false);
-  assert.equal(storage.getItem("hex-command-art-style"), "pixel");
+  assert.equal(observed.view.artwork, opening);
   controller.dispose();
-  observed.unsubscribe();
-});
-
-// Initialization cannot cancel a manual preference, and unmount cancels its writes.
-test("Initialization preserves manual preference and unmount cancels writes", async () => {
-  storage.clear();
-  const controller = createController(immediatePause);
-  const observed = observe(controller);
-  const pending = controller.setArtStyle("normal");
-  controller.initialize();
-  ControlledImage.finish("normal", false);
-  await pending;
-  assert.equal(observed.view.artLoading, false);
-  assert.match(observed.view.status, /Could not load/);
-
-  const afterUnmount = controller.setArtStyle("normal");
-  const beforeUnmount = observed.view;
-  controller.dispose();
-  ControlledImage.finish("normal", true);
-  await afterUnmount;
-  assert.equal(observed.view, beforeUnmount);
-  assert.equal(storage.getItem("hex-command-art-style"), null);
   observed.unsubscribe();
 });
 
@@ -533,9 +456,7 @@ beforeEach(async () => {
   });
   ({ BattleController } = await import("../src/controller/battle"));
   storage.clear();
-  ControlledImage.requests = [];
   vi.stubGlobal("localStorage", storage);
-  vi.stubGlobal("Image", ControlledImage);
   restoreCanvas = mockSpriteCanvas();
 });
 afterEach(() => {

@@ -708,6 +708,12 @@ fn insert_map(
     let mut coordinates = HashSet::new();
     let tiles: HashSet<&str> = state.tiles.iter().map(|t| t.id.as_str()).collect();
     for tile in &state.tiles {
+        if !tile.valid_connections() {
+            return Err(ContentError::new(
+                path,
+                format!("invalid artwork connections {}", tile.id),
+            ));
+        }
         if !terrains.contains_key(&tile.terrain) {
             return Err(ContentError::new(
                 path,
@@ -1135,6 +1141,36 @@ mod tests {
             original_hp
         );
     }
+    #[test]
+    fn hidden_maps_remain_loadable_and_default_to_visible() {
+        let mut bundle = test_bundle();
+        let path = "game/scenario/mirror-v1/map.json";
+        let mut map: serde_json::Value = serde_json::from_str(&bundle[path]).unwrap();
+        for hidden in [None, Some(true), Some(false)] {
+            match hidden {
+                Some(value) => {
+                    map["hidden"] = serde_json::json!(value);
+                }
+                None => {
+                    map.as_object_mut().unwrap().remove("hidden");
+                }
+            }
+            bundle.insert(path.to_owned(), serde_json::to_string(&map).unwrap());
+            let rules = Rules::from_json_bundle(&bundle).unwrap();
+            let metadata = rules
+                .map_definitions
+                .iter()
+                .find(|map| map.id == "mirror")
+                .unwrap();
+            assert_eq!(metadata.hidden, hidden.unwrap_or(false));
+            assert!(
+                rules
+                    .maps
+                    .contains_key(&("mirror".to_owned(), metadata.revision))
+            );
+        }
+    }
+
     #[test]
     fn invalid_scenario_placement_returns_a_content_error() {
         let mut bundle = test_bundle();

@@ -7,7 +7,7 @@ compiled to WASM, runs battles and enemy planning. No account or server is neede
 ## Development
 
 Prerequisites: Node.js 22.12+, Rust stable with `rustfmt`, the
-`wasm32-unknown-unknown` target, and Python 3 for the pixel atlas build.
+`wasm32-unknown-unknown` target, and Python 3 for the pixel artwork build.
 `wasm-pack` is pinned in the npm development dependencies.
 
 ```sh
@@ -80,14 +80,18 @@ turn. Combat grants experience; eligible units can advance into a second rank.
 The selected campaign supplies its own required objectives, hints, dialogue and
 optional rewards. Surviving troops can be recalled between chapters.
 
-Settings switch between Normal, Low-poly and Pixel artwork while retaining the
-battle. Preferences and saves stay in the current browser. The developer map
-shows every terrain and both factions of every unit rank.
+The game uses pixel artwork throughout. Sound preferences and saves stay in the
+current browser. The developer map shows every terrain and both factions of
+every playable unit rank.
+
+The toolbar and battlefield frame mount while the engine
+loads. Real map data and statistics appear when WASM is ready; loading failures
+offer reload without replacing the saved battle.
 
 ## Artwork
 
 Pixel sources are character matrices and explicit palettes under `pixel/art/`.
-Normal and Low-poly source sprites live under `art/styled/`. Character sources are always 64×64, stored in
+Character sources are always 64×64, stored in
 `pixel/art/units/<race>/<unit-id>/`; race trees live in `pixel/art/units/lineups/`.
 Each unit folder contains only its matrix and material palette. Generation
 history and previews stay in ignored `tmp/`, outside the committed sources.
@@ -97,15 +101,20 @@ npm run art:build
 npm run art:check
 ```
 
-Each style has one unit atlas and one terrain atlas in `public/assets/`, with
-corresponding frame metadata. The loader extracts standalone frames before
-publishing them to renderers, so the UI never crops a whole atlas by overflow.
-The pixel build uses one read-only packer, `scripts/build-pixel-atlas.py`.
+The read-only build, `scripts/build-pixel-art.py`, emits content-hashed native
+PNG sprites into ignored `public/assets/sprites/` and URL/layout metadata into
+`src/presentation/pixel-art.ts`. It applies faction/floor palettes and flattens
+prepared prop layouts at build time. Vite copies the sprites into `dist/assets/`.
+The browser fetches individual images as they are rendered; it never downloads
+an atlas, crops sprites, or encodes PNGs. Source matrices/palettes remain authoritative.
+Production Vite builds also render every authored map into a native PNG using
+the same terrain layouts and drawing code. Unchanged maps use these sprites
+directly. Terrain edits overlay changed cells until a background canvas bake
+finishes; missing map sprites also use that fallback. Generated PNGs are not tracked.
 Art workflows live in short skills: [generation](.agents/skills/pinkbox-generation/SKILL.md),
 [enhancement](.agents/skills/pinkbox-enhancement/SKILL.md),
 [cleaning](.agents/skills/pixel-cleaning/SKILL.md), and
 [lineup previews](.agents/skills/pixel-lineup/SKILL.md).
-See the [styled source guide](art/styled/README.md) for other styles.
 
 ## Simulations and publication
 

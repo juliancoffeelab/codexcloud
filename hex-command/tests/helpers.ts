@@ -12,6 +12,11 @@ export function mockSpriteCanvas() {
       createElement: (name: string) => {
         assert.equal(name, "canvas");
         let extraction: unknown;
+        const draws: { source: string; coordinates: number[] }[] = [];
+        const paths: number[][][] = [];
+        const scales: number[][] = [];
+        let points: number[][] = [];
+        let clips = 0;
         const canvas = {
           width: 0,
           height: 0,
@@ -21,18 +26,40 @@ export function mockSpriteCanvas() {
         };
         const context = {
           imageSmoothingEnabled: true,
-          beginPath() {},
-          moveTo() {},
-          lineTo() {},
+          save() {},
+          restore() {},
+          scale(x: number, y: number) {
+            scales.push([x, y]);
+          },
+          fill() {},
+          beginPath() {
+            points = [];
+            paths.push(points);
+          },
+          moveTo(x: number, y: number) {
+            points.push([x, y]);
+          },
+          lineTo(x: number, y: number) {
+            points.push([x, y]);
+          },
           closePath() {},
-          clip() {},
+          clip() {
+            clips++;
+          },
           drawImage(image: { src: string }, ...coordinates: number[]) {
-            extraction = {
+            draws.push({ source: image.src, coordinates });
+            extraction ??= {
               source: image.src,
               coordinates,
               width: canvas.width,
               height: canvas.height,
               smoothing: context.imageSmoothingEnabled,
+              draws,
+              paths,
+              scales,
+              get clips() {
+                return clips;
+              },
             };
           },
         };

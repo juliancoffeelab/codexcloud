@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[4]
 from check_isolated_pixels import isolated
 from check_broken_outlines import inspect
 from pixel_review_image import write_review
-spec = importlib.util.spec_from_file_location('render_pixel', ROOT / 'scripts/build-pixel-atlas.py')
+spec = importlib.util.spec_from_file_location('render_pixel', ROOT / 'scripts/build-pixel-art.py')
 render = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(render)
 faction_palette = render.faction_palette

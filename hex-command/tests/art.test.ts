@@ -1,209 +1,150 @@
-import { test, beforeEach, afterEach, vi } from "vitest";
+import { test, vi } from "vitest";
 import assert from "node:assert/strict";
-import { TYPES } from "./game-fixture";
-let art: typeof import("../src/presentation/art");
-import { campaignSheets } from "../src/presentation/campaign-art";
-import { pixelFrames, pixelSources, pixelUnitModels } from "../src/presentation/pixel-art";
+import { currentArtwork, artFrame, artSprite, dialoguePortrait } from "../src/presentation/art";
 import {
-  styledSheets,
-  styledTerrainSheets,
-  styledTerrainColors,
-} from "../src/presentation/styled-art";
-import { Game } from "./game-fixture";
-import { createGameView } from "./fixture-view";
-import { battlefieldTiles } from "../src/ui/battlefield-view";
-import { mockSpriteCanvas } from "./helpers";
+  pixelSprites,
+  pixelUnitModels,
+  pixelFloorColors,
+  pixelTerrainLayouts,
+} from "../src/presentation/pixel-art";
+import { terrainTileView } from "../src/presentation/terrain-map";
+import { terrainArtNames, terrainProps } from "../src/ui/battlefield-view";
+import { terrainLayout } from "../src/presentation/terrain-layout";
+import { TYPES } from "./game-fixture";
+import { hexPoints, tileCenter, battlefieldSpriteSize } from "../src/ui/geometry";
 
-const requested: string[] = [];
-let failNative = true;
-class TestImage {
-  onload?: () => void;
-  onerror?: () => void;
-  set src(url: string) {
-    requested.push(url);
-    Object.defineProperty(this, "src", { value: url });
-    queueMicrotask(() => {
-      if (failNative && url.includes("units-pixel.png")) this.onerror?.();
-      else this.onload?.();
-    });
-  }
-}
-
-test("Unprepared frames stay blank; concurrent loads deduplicate and failures retry", async () => {
-  failNative = true;
-  assert.equal(
-    art.artSprite(art.artworkForStyle("pixel"), "units", "thorncaller", 0, 0, 90, 120),
-    "",
-    "An unprepared frame must never fall back to a full atlas",
-  );
-  const firstLoad = art.loadArtStyle("pixel");
-  assert.equal(art.loadArtStyle("pixel"), firstLoad);
-  assert.equal(await firstLoad, false);
-  assert.equal(requested.length, 2);
-  failNative = false;
-  assert.equal(await art.loadArtStyle("pixel"), true);
-  assert.equal(requested.length, 4);
-  assert.equal(await art.loadArtStyle("pixel"), true);
-  assert.equal(requested.length, 4);
-  assert.equal(await art.loadArtStyle("normal"), true);
-  assert.equal(await art.loadArtStyle("low-poly"), true);
-});
-
-function extraction(sprite: string): {
-  source: string;
-  coordinates: number[];
-  width: number;
-  height: number;
-  smoothing: boolean;
-} {
-  const encoded = /href="data:image\/png;base64,([^"]+)"/.exec(sprite)?.[1];
-  assert(encoded, "Renderer receives only a standalone frame image");
-  assert(!sprite.includes("foreignObject"));
-  assert(!sprite.includes('overflow="hidden"'));
-  assert(!sprite.includes('x="-'));
-  return imageData(encoded);
-}
-
-function imageData(encoded: string): ReturnType<typeof extraction> {
-  return JSON.parse(Buffer.from(encoded, "base64").toString());
-}
-
-const frameSources = Object.fromEntries(
-  Object.keys(campaignSheets.pixel.frames).map((key) => [
-    key,
-    key.startsWith("terrain_") ? pixelSources.terrain : pixelSources.units,
-  ]),
-);
-test("Every pixel frame is extracted into a standalone unsmoothed image", async () => {
-  await art.loadArtStyle("pixel");
-  for (const [frame, source] of Object.entries(frameSources)) {
-    const [x, y, width, height] =
-      campaignSheets.pixel.frames[frame as keyof typeof campaignSheets.pixel.frames];
-    assert([x, y, width, height].every(Number.isFinite));
-    assert.equal(width, frame.startsWith("terrain_") ? 48 : 64);
-    assert.equal(height, width);
-    assert(x >= 0 && y >= 0 && x + width <= source.width && y + height <= source.height);
-    const isolated = imageData(art.artworkForStyle("pixel").frames[frame]!.url.split(",")[1]!);
-    assert(isolated.source.includes(`${source.filename}?v=${source.revision}`));
-    assert.deepEqual(isolated.coordinates, [x, y, width, height, 0, 0, width, height]);
-    assert.equal(isolated.width, width);
-    assert.equal(isolated.height, height);
-    assert.equal(isolated.smoothing, false);
-  }
-});
-test("Artwork aliases route game units to their isolated frames", async () => {
-  await art.loadArtStyle("pixel");
-  for (const [type, model] of Object.entries(pixelUnitModels)) {
-    for (const side of ["player", "enemy"] as const) {
-      const result = extraction(
-        art.artSprite(art.artworkForStyle("pixel"), "units", type, 0, 0, 64, 64, "", side),
+test("Adjacent hexes share both edge vertices without gaps on either row parity", () => {
+  const vertices = (col: number, row: number) => {
+    const center = tileCenter({ col, row });
+    return hexPoints(center.x, center.y)
+      .split(" ")
+      .map((point) => point.split(",").map(Number));
+  };
+  for (const row of [4, 5]) {
+    const odd = row % 2;
+    const origin = vertices(4, row);
+    for (const [col, nextRow] of [
+      [5, row],
+      [4 + odd, row + 1],
+      [3 + odd, row + 1],
+      [3, row],
+      [3 + odd, row - 1],
+      [4 + odd, row - 1],
+    ]) {
+      const neighbor = vertices(col!, nextRow!);
+      assert.equal(
+        origin.filter(([x, y]) =>
+          neighbor.some(([nx, ny]) => Math.hypot(x! - nx!, y! - ny!) < 1e-8),
+        ).length,
+        2,
       );
-      const crop = pixelFrames[`${side}_${model}` as keyof typeof pixelFrames];
-      assert.deepEqual(result.coordinates, [...crop, 0, 0, crop[2], crop[3]]);
     }
   }
 });
-for (const style of ["normal", "low-poly"] as const) {
-  test("Complete styled roster uses its own atlas without pixel fallbacks — " + style, async () => {
-    await art.loadArtStyle(style);
-    const source = styledSheets[style].source;
-    const frameName = (name: string) => (name === "bonearcher" ? "bone_archer" : name);
-    const expected = Object.keys(TYPES).flatMap((type) =>
-      ["enemy", "player"].map((side) => `${side}_${frameName(type)}`),
-    );
-    for (const key of [...expected, "portrait_worker"]) {
-      const frame = art.artworkForStyle(style).frames[key];
-      assert(frame, `${style} is missing ${key}`);
-      assert.equal(frame.pixel, false, `${style}/${key} must not use pixel artwork`);
-      const unit = key.replace(/^(player|enemy)_/, "");
-      const rendered =
-        key === "portrait_worker"
-          ? art.dialoguePortrait(art.artworkForStyle(style), "worker", 0, 0, 56, 56)
-          : art.artSprite(
-              art.artworkForStyle(style),
-              "units",
-              unit,
-              0,
-              0,
-              56,
-              56,
-              "",
-              key.startsWith("enemy_") ? "enemy" : "player",
-            );
-      const isolated = extraction(rendered);
-      assert.equal(isolated.smoothing, true);
-      assert(isolated.source.includes(`/assets/${source.filename}?v=${source.revision}`));
-      const [x, y, width, height] =
-        styledSheets[style].frames[key as keyof typeof styledSheets.normal.frames];
-      assert(x >= 0 && y >= 0 && x + width <= source.width && y + height <= source.height);
-      assert.deepEqual(isolated.coordinates, [x, y, width, height, 0, 0, width, height]);
-    }
-    assert(
-      !requested.some((url) => url.includes("pixel.png")),
-      "A styled roster must not request the pixel atlas",
-    );
-  });
-}
-for (const style of ["normal", "low-poly"] as const) {
-  test(
-    "Static styled surfaces and bridge use complete isolated terrain frames — " + style,
-    async () => {
-      await art.loadArtStyle(style);
-      const sheet = styledTerrainSheets[style];
-      const samples = battlefieldTiles(
-        createGameView(new Game("developer")),
-        null,
-        art.artworkForStyle(style),
-        null,
-      );
-      for (const name of ["plains", "water", "ford", "bridge"] as const) {
-        const rendered = art.artSprite(art.artworkForStyle(style), "terrain", name, 0, 0, 70, 70);
-        assert.equal((rendered.match(/<image /g) ?? []).length, 1);
-        assert(!rendered.includes("<path"), "The bridge is a complete static sprite");
-        const isolated = extraction(rendered);
-        const [x, y, width, height] = sheet.frames[`terrain_${name}`];
-        assert.equal(width, height, "A full square texture covers the exact board hex");
-        assert.deepEqual(isolated.coordinates, [x, y, width, height, 0, 0, width, height]);
-        assert(
-          isolated.source.includes(`/assets/${sheet.source.filename}?v=${sheet.source.revision}`),
-        );
-        assert.equal(isolated.smoothing, true);
-        assert.equal(
-          samples.find((tile) => tile.terrain === name)?.fill,
-          styledTerrainColors[style][name],
-        );
+test("Published artwork is immutable URL metadata and does not fetch or extract images", () => {
+  vi.stubGlobal(
+    "Image",
+    class {
+      constructor() {
+        throw new Error("Unexpected eager fetch");
       }
     },
   );
-}
-test("Tall dialogue keeps a character frame at its native 64×64 size", async () => {
-  await art.loadArtStyle("pixel");
-  const lark = extraction(
-    art.dialoguePortrait(art.artworkForStyle("pixel"), "thorncaller", 0, 0, 90, 120),
-  );
-  const [lx, ly] = campaignSheets.pixel.frames.player_thorncaller;
-  assert.deepEqual(
-    lark.coordinates,
-    [lx, ly, 64, 64, 0, 0, 64, 64],
-    "Tall dialogue layout receives only the native character frame",
-  );
-  assert.equal(lark.width, 64);
-  assert.equal(lark.height, 64);
+  vi.stubGlobal("document", {
+    createElement() {
+      throw new Error("Unexpected canvas extraction");
+    },
+  });
+  try {
+    const artwork = currentArtwork();
+    assert.equal(currentArtwork(), artwork);
+    assert(Object.isFrozen(artwork.frames));
+    const frame = artFrame(artwork, "units", "swordsman")!;
+    assert(Object.isFrozen(frame));
+    assert.equal(frame.width, 64);
+    assert.equal(frame.height, 64);
+    assert(frame.url.includes("assets/sprites/"));
+    const svg = artSprite(artwork, "units", "swordsman", 0, 0, 70, 70);
+    assert(svg.includes(`href="${frame.url}"`));
+    assert(svg.includes('viewBox="0 0 64 64"'));
+    assert(!svg.includes("data:image"));
+    assert(!svg.includes("overflow"));
+  } finally {
+    vi.unstubAllGlobals();
+  }
 });
 
-let restoreCanvas: () => void;
-beforeEach(async () => {
-  vi.resetModules();
-  art = await import("../src/presentation/art");
-  requested.length = 0;
-  failNative = false;
-  vi.stubGlobal("Image", TestImage);
-  restoreCanvas = mockSpriteCanvas();
-});
-afterEach(() => {
-  restoreCanvas();
+test("Playable units and artwork aliases resolve to independent native sprites", () => {
+  for (const type of Object.keys(TYPES))
+    for (const side of ["player", "enemy"] as const) {
+      const model = pixelUnitModels[type] ?? (type === "bonearcher" ? "bone_archer" : type);
+      const frame = artFrame(currentArtwork(), "units", type, side)!;
+      assert.equal(frame, currentArtwork().frames[`${side}_${model}`]);
+      assert(frame.url.endsWith(pixelSprites[`${side}_${model}`]!));
+      assert.equal(frame.width, 64);
+      assert.equal(frame.height, 64);
+    }
+  assert(
+    dialoguePortrait(currentArtwork(), "worker", 0, 0, 90, 120).includes('viewBox="0 0 64 64"'),
+  );
+  assert.equal(battlefieldSpriteSize, 70);
 });
 
-afterEach(() => {
-  vi.unstubAllGlobals();
+test("Terrain floor, arrangement and orientation resolve directly to complete PNGs, including explicit defaults", () => {
+  for (const terrain of ["road", "forest", "ford", "village"] as const) {
+    for (const floor of Object.keys(pixelFloorColors)) {
+      const tile = {
+        id: "3,4",
+        col: 3,
+        row: 4,
+        terrain,
+        floor,
+        owner: null,
+        ...(terrain === "road" ? { connections: ["e", "w", "se"] as const } : {}),
+        ...(terrain === "ford" ? { connections: ["nw", "se"] as const } : {}),
+      };
+      const result = terrainTileView(tile, "sample", currentArtwork());
+      const frame = artFrame(
+        currentArtwork(),
+        "terrain",
+        terrainLayout(tile, "sample").name,
+        "player",
+        floor,
+      )!;
+      assert.equal(result.terrainFrame, frame);
+      assert.equal(result.fill, pixelFloorColors[floor]);
+      assert(frame.url.endsWith(pixelSprites[result.frameKey]!));
+      assert.equal(frame.width, 64);
+      assert.equal(frame.height, 64);
+    }
+  }
+  assert.equal(artFrame(currentArtwork(), "units", "missing"), undefined);
+});
+
+test("Prop arrangements stay stable per map tile and vary between locations", () => {
+  for (const terrain of ["forest", "hill", "plains", "ford"] as const) {
+    const choices = new Set<string>();
+    for (let col = 0; col < 16; col++) {
+      const tile = { terrain, id: `${col},3` };
+      const first = terrainProps(tile, "sample");
+      assert.equal(terrainProps(tile, "sample"), first);
+      choices.add(JSON.stringify(first));
+    }
+    assert(choices.size > 1);
+  }
+  assert.deepEqual(terrainProps({ terrain: "road", id: "1,1" }, "sample"), []);
+});
+
+test("Directional props select arrangements for the same orientation as the base frame", () => {
+  for (const connections of [
+    ["e", "w"],
+    ["nw", "se"],
+    ["ne", "sw"],
+  ] as const) {
+    const tile = { terrain: "ford" as const, id: "4,2", connections: [...connections] };
+    const frame = terrainArtNames(tile)[0]!;
+    const props = terrainProps(tile, "sample");
+    assert(pixelTerrainLayouts[frame]!.includes(props));
+    assert.equal(terrainProps(tile, "sample"), props);
+  }
 });

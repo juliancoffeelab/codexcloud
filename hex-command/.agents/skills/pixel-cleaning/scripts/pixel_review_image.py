@@ -3,7 +3,7 @@ import importlib.util
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
-spec = importlib.util.spec_from_file_location("build_pixel_atlas", ROOT / "scripts/build-pixel-atlas.py")
+spec = importlib.util.spec_from_file_location("build_pixel_art", ROOT / "scripts/build-pixel-art.py")
 renderer = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(renderer)
 faction_palette = renderer.faction_palette

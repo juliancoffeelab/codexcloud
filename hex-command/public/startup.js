@@ -31,10 +31,11 @@
   }
   window.addEventListener("error", failed, true);
   window.addEventListener("unhandledrejection", rejected);
-  window.addEventListener("hex-command-ready", function ready() {
+  // Once mounted, the UI owns deferred engine loading and its error/reload state.
+  window.addEventListener("hex-command-shell-ready", function ready() {
     panel.remove();
     window.removeEventListener("error", failed, true);
     window.removeEventListener("unhandledrejection", rejected);
-    window.removeEventListener("hex-command-ready", ready);
+    window.removeEventListener("hex-command-shell-ready", ready);
   });
 })();

@@ -6,10 +6,10 @@ import type {
   RecruitType as GameRecruitType,
 } from "../game/types";
 import { TYPES } from "../game/catalog";
-import type { ArtStyle, Artwork } from "../presentation/art";
+import type { Artwork } from "../presentation/art";
 
 export type RecruitType = GameRecruitType;
-export const recruitTypes = ["swordsman", "spearman", "archer", "scout"] as const;
+export const recruitTypes = ["swordsman", "spearman", "archer", "scout", "rider"] as const;
 
 export interface RecruitmentContext {
   readonly commander: UnitView | undefined;
@@ -25,9 +25,7 @@ export interface BattleView {
   readonly inspectedTile: string | null;
   readonly renderRevision: number;
   readonly status: string;
-  readonly artStyle: ArtStyle;
   readonly artwork: Artwork;
-  readonly artLoading: boolean;
   readonly sound: boolean;
   readonly canUndo: boolean;
   readonly recruitment: RecruitmentContext | null;
@@ -49,7 +47,6 @@ export interface BattleCommands {
   endTurn(): Promise<GameSnapshot | undefined>;
   undoMove(): GameSnapshot;
   reset(mapId?: string): GameSnapshot;
-  setArtStyle(style: ArtStyle): Promise<void>;
   setSound(enabled: boolean): Promise<void>;
   error(error: unknown): void;
 }
@@ -70,7 +67,6 @@ export function createBattleCommands(controller: BattleCommands): BattleCommands
     endTurn: controller.endTurn.bind(controller),
     undoMove: controller.undoMove.bind(controller),
     reset: controller.reset.bind(controller),
-    setArtStyle: controller.setArtStyle.bind(controller),
     setSound: controller.setSound.bind(controller),
     error: controller.error.bind(controller),
   });

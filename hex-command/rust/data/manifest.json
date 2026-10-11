@@ -41,12 +41,15 @@
     "game/units/marshal.json",
     "game/units/grovewarden.json",
     "game/units/lich.json",
-    "game/units/tideseer.json"
+    "game/units/tideseer.json",
+    "game/units/rider.json",
+    "game/units/lancer.json"
   ],
   "scenarios": [
-    "game/scenario/developer-v1/scenario.json",
     "game/scenario/mirror-v1/scenario.json",
-    "game/scenario/river-v2/scenario.json"
+    "game/scenario/river-v2/scenario.json",
+    "game/scenario/developer-v2/scenario.json",
+    "game/scenario/river-valley-v1/scenario.json"
   ],
   "campaigns": [
     "game/campaigns/lantern-road/campaign.json",

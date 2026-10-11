@@ -1,0 +1,440 @@
+{
+  "gold": {
+    "player": 12,
+    "enemy": 12
+  },
+  "units": [
+    {
+      "type": "commander",
+      "side": "player",
+      "col": 0,
+      "row": 3
+    },
+    {
+      "type": "commander",
+      "side": "enemy",
+      "col": 1,
+      "row": 3
+    },
+    {
+      "type": "soldier",
+      "side": "player",
+      "col": 3,
+      "row": 3
+    },
+    {
+      "type": "soldier",
+      "side": "enemy",
+      "col": 4,
+      "row": 3
+    },
+    {
+      "type": "archer",
+      "side": "player",
+      "col": 0,
+      "row": 4
+    },
+    {
+      "type": "archer",
+      "side": "enemy",
+      "col": 1,
+      "row": 4
+    },
+    {
+      "type": "scout",
+      "side": "player",
+      "col": 3,
+      "row": 4
+    },
+    {
+      "type": "scout",
+      "side": "enemy",
+      "col": 4,
+      "row": 4
+    },
+    {
+      "type": "warden",
+      "side": "player",
+      "col": 0,
+      "row": 5
+    },
+    {
+      "type": "warden",
+      "side": "enemy",
+      "col": 1,
+      "row": 5
+    },
+    {
+      "type": "adept",
+      "side": "player",
+      "col": 3,
+      "row": 5
+    },
+    {
+      "type": "adept",
+      "side": "enemy",
+      "col": 4,
+      "row": 5
+    },
+    {
+      "type": "skeleton",
+      "side": "player",
+      "col": 0,
+      "row": 6
+    },
+    {
+      "type": "skeleton",
+      "side": "enemy",
+      "col": 1,
+      "row": 6
+    },
+    {
+      "type": "bonearcher",
+      "side": "player",
+      "col": 3,
+      "row": 6
+    },
+    {
+      "type": "bonearcher",
+      "side": "enemy",
+      "col": 4,
+      "row": 6
+    },
+    {
+      "type": "wolf",
+      "side": "player",
+      "col": 0,
+      "row": 7
+    },
+    {
+      "type": "wolf",
+      "side": "enemy",
+      "col": 1,
+      "row": 7
+    },
+    {
+      "type": "boar",
+      "side": "player",
+      "col": 3,
+      "row": 7
+    },
+    {
+      "type": "boar",
+      "side": "enemy",
+      "col": 4,
+      "row": 7
+    },
+    {
+      "type": "wildkeeper",
+      "side": "player",
+      "col": 0,
+      "row": 8
+    },
+    {
+      "type": "wildkeeper",
+      "side": "enemy",
+      "col": 1,
+      "row": 8
+    },
+    {
+      "type": "necromancer",
+      "side": "player",
+      "col": 3,
+      "row": 8
+    },
+    {
+      "type": "necromancer",
+      "side": "enemy",
+      "col": 4,
+      "row": 8
+    },
+    {
+      "type": "thorncaller",
+      "side": "player",
+      "col": 0,
+      "row": 9
+    },
+    {
+      "type": "thorncaller",
+      "side": "enemy",
+      "col": 1,
+      "row": 9
+    },
+    {
+      "type": "swordsman",
+      "side": "player",
+      "col": 3,
+      "row": 9
+    },
+    {
+      "type": "swordsman",
+      "side": "enemy",
+      "col": 4,
+      "row": 9
+    },
+    {
+      "type": "spearman",
+      "side": "player",
+      "col": 0,
+      "row": 10
+    },
+    {
+      "type": "spearman",
+      "side": "enemy",
+      "col": 1,
+      "row": 10
+    },
+    {
+      "type": "tidekeeper",
+      "side": "player",
+      "col": 3,
+      "row": 10
+    },
+    {
+      "type": "tidekeeper",
+      "side": "enemy",
+      "col": 4,
+      "row": 10
+    },
+    {
+      "type": "reefguard",
+      "side": "player",
+      "col": 0,
+      "row": 11
+    },
+    {
+      "type": "reefguard",
+      "side": "enemy",
+      "col": 1,
+      "row": 11
+    },
+    {
+      "type": "harpooner",
+      "side": "player",
+      "col": 3,
+      "row": 11
+    },
+    {
+      "type": "harpooner",
+      "side": "enemy",
+      "col": 4,
+      "row": 11
+    },
+    {
+      "type": "wavemender",
+      "side": "player",
+      "col": 0,
+      "row": 12
+    },
+    {
+      "type": "wavemender",
+      "side": "enemy",
+      "col": 1,
+      "row": 12
+    },
+    {
+      "type": "marksman",
+      "side": "player",
+      "col": 3,
+      "row": 12
+    },
+    {
+      "type": "marksman",
+      "side": "enemy",
+      "col": 4,
+      "row": 12
+    },
+    {
+      "type": "ranger",
+      "side": "player",
+      "col": 0,
+      "row": 13
+    },
+    {
+      "type": "ranger",
+      "side": "enemy",
+      "col": 1,
+      "row": 13
+    },
+    {
+      "type": "mage",
+      "side": "player",
+      "col": 3,
+      "row": 13
+    },
+    {
+      "type": "mage",
+      "side": "enemy",
+      "col": 4,
+      "row": 13
+    },
+    {
+      "type": "revenant",
+      "side": "player",
+      "col": 0,
+      "row": 14
+    },
+    {
+      "type": "revenant",
+      "side": "enemy",
+      "col": 1,
+      "row": 14
+    },
+    {
+      "type": "deatharcher",
+      "side": "player",
+      "col": 3,
+      "row": 14
+    },
+    {
+      "type": "deatharcher",
+      "side": "enemy",
+      "col": 4,
+      "row": 14
+    },
+    {
+      "type": "direwolf",
+      "side": "player",
+      "col": 0,
+      "row": 15
+    },
+    {
+      "type": "direwolf",
+      "side": "enemy",
+      "col": 1,
+      "row": 15
+    },
+    {
+      "type": "greatboar",
+      "side": "player",
+      "col": 3,
+      "row": 15
+    },
+    {
+      "type": "greatboar",
+      "side": "enemy",
+      "col": 4,
+      "row": 15
+    },
+    {
+      "type": "briarweaver",
+      "side": "player",
+      "col": 0,
+      "row": 16
+    },
+    {
+      "type": "briarweaver",
+      "side": "enemy",
+      "col": 1,
+      "row": 16
+    },
+    {
+      "type": "tridentguard",
+      "side": "player",
+      "col": 3,
+      "row": 16
+    },
+    {
+      "type": "tridentguard",
+      "side": "enemy",
+      "col": 4,
+      "row": 16
+    },
+    {
+      "type": "tidehunter",
+      "side": "player",
+      "col": 0,
+      "row": 17
+    },
+    {
+      "type": "tidehunter",
+      "side": "enemy",
+      "col": 1,
+      "row": 17
+    },
+    {
+      "type": "tidesage",
+      "side": "player",
+      "col": 3,
+      "row": 17
+    },
+    {
+      "type": "tidesage",
+      "side": "enemy",
+      "col": 4,
+      "row": 17
+    },
+    {
+      "type": "marshal",
+      "side": "player",
+      "col": 0,
+      "row": 18
+    },
+    {
+      "type": "marshal",
+      "side": "enemy",
+      "col": 1,
+      "row": 18
+    },
+    {
+      "type": "grovewarden",
+      "side": "player",
+      "col": 3,
+      "row": 18
+    },
+    {
+      "type": "grovewarden",
+      "side": "enemy",
+      "col": 4,
+      "row": 18
+    },
+    {
+      "type": "lich",
+      "side": "player",
+      "col": 0,
+      "row": 19
+    },
+    {
+      "type": "lich",
+      "side": "enemy",
+      "col": 1,
+      "row": 19
+    },
+    {
+      "type": "tideseer",
+      "side": "player",
+      "col": 3,
+      "row": 19
+    },
+    {
+      "type": "tideseer",
+      "side": "enemy",
+      "col": 4,
+      "row": 19
+    },
+    {
+      "type": "rider",
+      "side": "player",
+      "col": 2,
+      "row": 5
+    },
+    {
+      "type": "rider",
+      "side": "enemy",
+      "col": 5,
+      "row": 5
+    },
+    {
+      "type": "lancer",
+      "side": "player",
+      "col": 2,
+      "row": 6
+    },
+    {
+      "type": "lancer",
+      "side": "enemy",
+      "col": 5,
+      "row": 6
+    }
+  ]
+}

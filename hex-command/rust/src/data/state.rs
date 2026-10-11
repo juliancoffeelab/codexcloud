@@ -2,6 +2,33 @@
 
 use super::*;
 use serde::{Deserialize, Serialize};
+use std::sync::LazyLock;
+
+static ROAD_DEAD_ENDS: LazyLock<Vec<(u8, u8)>> = LazyLock::new(|| {
+    serde_json::from_str(include_str!(
+        "../../../pixel/art/terrain/road/dead-ends.json"
+    ))
+    .expect("registered native road caps")
+});
+
+/// Clockwise edge names for a pointy-top hex. These describe artwork only.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum HexDirection {
+    E,
+    Se,
+    Sw,
+    W,
+    Nw,
+    Ne,
+}
+impl HexDirection {
+    pub fn bit(self) -> u8 {
+        1 << self as u8
+    }
+}
+
 /// A tile snapshot combining authored coordinates with current terrain and ownership.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
@@ -12,6 +39,46 @@ pub struct Tile {
     pub row: i32,
     pub terrain: String,
     pub owner: Option<Side>,
+    /// Road/village exits or opposite crossing edges; artwork only.
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub connections: Option<Vec<HexDirection>>,
+    /// Short road spurs capped inside this tile rather than meeting another tile.
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    #[serde(default, rename = "deadEnds", skip_serializing_if = "Option::is_none")]
+    pub dead_ends: Option<Vec<HexDirection>>,
+    /// Reusable ground palette; independent of terrain and its gameplay rules.
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub floor: Option<String>,
+}
+impl Tile {
+    pub fn valid_connections(&self) -> bool {
+        let Some(exits) = &self.connections else {
+            return self.dead_ends.is_none();
+        };
+        let mask = exits.iter().fold(0u8, |mask, exit| mask | exit.bit());
+        if mask == 0 || mask.count_ones() as usize != exits.len() {
+            return false;
+        }
+        if let Some(ends) = &self.dead_ends {
+            let capped = ends.iter().fold(0u8, |mask, end| mask | end.bit());
+            if self.terrain != "road"
+                || capped == 0
+                || capped.count_ones() as usize != ends.len()
+                || capped & mask != 0
+                || !ROAD_DEAD_ENDS.contains(&(mask, capped))
+            {
+                return false;
+            }
+        }
+        match self.terrain.as_str() {
+            "road" => true,
+            "village" => mask.count_ones() <= 3,
+            "bridge" | "ford" => matches!(mask, 9 | 18 | 36),
+            _ => false,
+        }
+    }
 }
 /// Treasury balances for the player and enemy.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]

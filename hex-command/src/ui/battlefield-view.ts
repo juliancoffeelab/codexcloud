@@ -1,16 +1,19 @@
 import { activeGoalTiles, campaignMission, goalProgress } from "../game/campaign-progress";
 import type { GameView, UnitView, TileView } from "../game/view";
 import type { Artwork } from "../presentation/art";
+import type { FrameImage } from "../presentation/art";
 import { TERRAIN, TYPES } from "../game/catalog";
-import { artSprite } from "../presentation/art";
-import { pixelTerrainColors } from "../presentation/pixel-art";
-import { styledTerrainColors } from "../presentation/styled-art";
-import { colors, hexPoints, tileCenter } from "./geometry";
+import { artFrame } from "../presentation/art";
+import { terrainTileView, type TerrainTileView } from "../presentation/terrain-map";
+import { battlefieldSpriteSize } from "./geometry";
+import { terrainLayout } from "../presentation/terrain-layout";
+export { terrainArtNames } from "../presentation/terrain-connections";
 
 export interface TileUnitView {
   unit: UnitView;
   teamColor: string;
-  artwork: string;
+  frame: Readonly<FrameImage> | undefined;
+  spriteSize: number;
   healthWidth: number;
 }
 
@@ -22,9 +25,17 @@ export interface BattlefieldTileView extends TileView {
   fill: string;
   classes: string;
   label: string;
-  terrainArtwork: string;
+  terrainFrame: Readonly<FrameImage> | undefined;
+  spriteSize: number;
   occupant: TileUnitView | null;
   ownerColor: string;
+}
+
+export function terrainProps(
+  tile: Pick<TileView, "terrain" | "id" | "connections" | "deadEnds">,
+  mapId: string,
+) {
+  return terrainLayout(tile, mapId).props;
 }
 
 function tileLabel(
@@ -56,6 +67,7 @@ export function battlefieldTiles(
   selected: string | null,
   artwork: Artwork,
   recruitTileId: string | null,
+  terrain?: ReadonlyMap<string, TerrainTileView>,
 ): BattlefieldTileView[] {
   const selectedUnit = game.unit(selected);
   const canAct = game.turn === "player" && !game.winner && selectedUnit?.side === "player";
@@ -73,9 +85,9 @@ export function battlefieldTiles(
       }
     }
   }
+  const occupants = new Map(game.units.map((unit) => [unit.tile, unit]));
   return game.tiles.map((tile) => {
-    const { x, y } = tileCenter(tile);
-    const unit = game.at(tile.id);
+    const unit = occupants.get(tile.id);
     const reachable = reachableTiles.has(tile.id);
     const target = targetTiles.has(tile.id);
     const classes = [
@@ -92,48 +104,20 @@ export function battlefieldTiles(
 
     let occupant: TileUnitView | null = null;
     if (unit) {
-      const spriteSize = TYPES[unit.type].leader ? 62 : 56;
-      const spriteClasses = `unit-art ${unit.side === "enemy" ? "enemy-unit" : ""} ${unit.attacked ? "spent-unit" : ""}`;
       occupant = {
         unit,
         teamColor: unit.side === "player" ? "#6fdec0" : "#ff9590",
-        artwork: artSprite(
-          artwork,
-          "units",
-          unit.type,
-          x - spriteSize / 2,
-          y + 20 - spriteSize,
-          spriteSize,
-          spriteSize,
-          spriteClasses,
-          unit.side,
-        ),
+        frame: artFrame(artwork, "units", unit.type, unit.side),
+        spriteSize: battlefieldSpriteSize,
         healthWidth: (38 * unit.hp) / TYPES[unit.type].hp,
       };
     }
 
     return {
       ...tile,
-      x,
-      y,
-      points: hexPoints(x, y),
-      clipId: `hex-clip-${tile.col}-${tile.row}`,
-      fill:
-        artwork.style === "pixel"
-          ? pixelTerrainColors[tile.terrain]
-          : (styledTerrainColors[artwork.style][tile.terrain] ?? colors[tile.terrain]),
+      ...(terrain?.get(tile.id) ?? terrainTileView(tile, game.mapId, artwork)),
       classes,
       label: tileLabel(tile, unit, reachable, target, objectiveTiles.get(tile.id) ?? []),
-      terrainArtwork: artSprite(
-        artwork,
-        "terrain",
-        tile.terrain,
-        x - 35,
-        y - 35,
-        70,
-        70,
-        "terrain-art",
-      ),
       occupant,
       ownerColor: tile.owner === "player" ? "#6fdec0" : "#ff9590",
     };

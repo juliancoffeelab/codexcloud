@@ -1,8 +1,13 @@
 /** Check authored document references; browser metadata is supplied by WASM. */
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { posix } from "node:path";
+import type { TerrainOverride } from "../src/game/types";
+import { terrainArtNames, validTerrainConnections } from "../src/presentation/terrain-connections";
 
 const root = new URL("../rust/data/", import.meta.url);
+const floors = JSON.parse(
+  readFileSync(new URL("../pixel/art/terrain/floors.json", import.meta.url), "utf8"),
+) as { palettes: Record<string, unknown> };
 const paths = new Set<string>();
 function read<T>(path: string): T {
   if (!path || path.startsWith("/") || path.split("/").includes(".."))
@@ -15,7 +20,26 @@ function components(path: string, fields: string[]): void {
   for (const field of fields) {
     const component = descriptor[field];
     if (!component) throw new Error(`${path}: missing ${field}`);
-    read(posix.join(posix.dirname(path), component));
+    const componentPath = posix.join(posix.dirname(path), component);
+    const document = read<{ tiles?: TerrainOverride[] }>(componentPath);
+    if (field === "map") {
+      for (const tile of document.tiles ?? []) {
+        if (!validTerrainConnections(tile))
+          throw new Error(
+            `${componentPath} at ${tile.col},${tile.row}: unsupported terrain connections`,
+          );
+        const frame = terrainArtNames(tile)[0]!;
+        const stem = frame === tile.terrain ? "tile" : frame.slice(tile.terrain.length + 1);
+        if (
+          !existsSync(new URL(`../pixel/art/terrain/${tile.terrain}/${stem}.txt`, import.meta.url))
+        )
+          throw new Error(
+            `${componentPath} at ${tile.col},${tile.row}: missing terrain source ${frame}`,
+          );
+        if (tile.floor !== undefined && !Object.hasOwn(floors.palettes, tile.floor))
+          throw new Error(`${componentPath}: unknown floor ${tile.floor}`);
+      }
+    }
   }
 }
 const manifest = read<{

@@ -8,13 +8,7 @@ import { loadBattle } from "../save/load";
 import { saveBattle } from "../save/write";
 import { LiveGame } from "../game/live-game";
 import type { GameEngineFactory } from "../game/native-engine";
-import {
-  savedArtStyle,
-  saveArtStyle,
-  loadArtStyle,
-  artworkForStyle,
-  type ArtStyle,
-} from "../presentation/art";
+import { currentArtwork } from "../presentation/art";
 import {
   soundEnabled,
   setSoundEnabled,
@@ -51,8 +45,6 @@ interface SessionState {
   inspectedTile: string | null;
   renderRevision: number;
   status: string;
-  artStyle: ArtStyle;
-  artLoading: boolean;
   sound: boolean;
 }
 
@@ -65,7 +57,6 @@ export class BattleController {
   #game: LiveGame;
   private pendingEnemyReplay: boolean;
   private initialized = false;
-  private artRequestVersion = 0;
   private soundRequestVersion = 0;
   private readonly history = createMoveUndo();
   private sessionVersion = 0;
@@ -94,8 +85,6 @@ export class BattleController {
       status:
         ("notice" in restored && restored.notice) ||
         (game.campaign ? "Follow the mission objectives. Keep your leader safe." : initialMessage),
-      artStyle: savedArtStyle(),
-      artLoading: false,
       sound: soundEnabled(),
     };
     this.gameView = createGameView(game);
@@ -109,7 +98,6 @@ export class BattleController {
   dispose(): void {
     this.disposed = true;
     this.sessionVersion++;
-    this.artRequestVersion++;
     cancelSound();
     this.soundRequestVersion++;
     this.#game.dispose();
@@ -141,7 +129,7 @@ export class BattleController {
     return Object.freeze({
       ...this.state,
       game: this.gameView,
-      artwork: artworkForStyle(this.state.artStyle),
+      artwork: currentArtwork(),
       canUndo: !dialoguePending(this.#game.campaign) && this.history.canUndo(this.#game),
       recruitment: recruitmentContext(this.gameView, this.state.selected, this.state.inspectedTile),
     });
@@ -623,42 +611,12 @@ export class BattleController {
     }
   }
 
-  async setArtStyle(next: ArtStyle) {
-    this.requireSession();
-    const requestVersion = ++this.artRequestVersion;
-    this.state.artLoading = true;
-    this.publish({ renderBattle: false });
-    const ready = await loadArtStyle(next);
-    if (!this.isCurrentArtRequest(requestVersion)) {
-      return;
-    }
-    if (ready) {
-      this.state.artStyle = next;
-      saveArtStyle(next);
-      if (typeof document !== "undefined") {
-        document.documentElement.dataset.artStyle = next;
-      }
-      this.publish({ gameChanged: false });
-    } else {
-      this.message("Could not load that artwork. Please try again.");
-    }
-    this.state.artLoading = false;
-    this.publish({ renderBattle: false });
-  }
-
-  private isCurrentArtRequest(version: number): boolean {
-    return !this.disposed && version === this.artRequestVersion;
-  }
-
   initialize() {
     this.requireSession();
     if (this.initialized) {
       return;
     }
     this.initialized = true;
-    if (typeof document !== "undefined") {
-      document.documentElement.dataset.artStyle = this.state.artStyle;
-    }
     if (this.#game.turn === "player") {
       saveBattle(this.#game);
     }
@@ -669,38 +627,5 @@ export class BattleController {
     } else if (this.#game.turn === "enemy" && !this.#game.winner) {
       void this.runEnemyTurn(this.sessionVersion).catch((error) => this.error(error));
     }
-    if (!this.state.artLoading) {
-      const requestVersion = ++this.artRequestVersion;
-      void this.loadInitialArtwork(this.state.artStyle, requestVersion);
-    }
-  }
-
-  private async loadInitialArtwork(initialStyle: ArtStyle, requestVersion: number) {
-    const ready = await loadArtStyle(initialStyle);
-    if (!this.isCurrentArtRequest(requestVersion) || this.state.artLoading) {
-      return;
-    }
-    if (ready) {
-      this.publish({ gameChanged: false });
-      return;
-    }
-
-    const fallbacks: ArtStyle[] = ["normal", "low-poly", "pixel"];
-    for (const fallback of fallbacks.filter((style) => style !== initialStyle)) {
-      const fallbackReady = await loadArtStyle(fallback);
-      if (!this.isCurrentArtRequest(requestVersion)) {
-        return;
-      }
-      if (fallbackReady) {
-        this.state.artStyle = fallback;
-        if (typeof document !== "undefined") {
-          document.documentElement.dataset.artStyle = fallback;
-        }
-        this.publish({ gameChanged: false });
-        this.message("Using alternate artwork. Retry your preferred style in Settings.");
-        return;
-      }
-    }
-    this.message("Artwork could not load. Please reload to retry.");
   }
 }

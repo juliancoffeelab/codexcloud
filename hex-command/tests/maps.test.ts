@@ -1,8 +1,43 @@
 import { test, beforeEach, afterEach, vi } from "vitest";
 import { required, TestStorage } from "./helpers.ts";
 import assert from "node:assert/strict";
+import { pixelSprites } from "../src/presentation/pixel-art";
 
 const { Game, TYPES } = await import("./game-fixture.ts");
+const { MAPS, BATTLE_MAPS } = await import("../src/game/maps.ts");
+
+test("Developer map shows every playable type and reserves space for the pixel collection", () => {
+  const game = new Game("developer");
+  for (const type of Object.keys(TYPES))
+    for (const side of ["player", "enemy"])
+      assert(
+        game.units.some((unit) => unit.type === type && unit.side === side),
+        `${side} ${type}`,
+      );
+  const artworkTypes = Object.keys(pixelSprites).filter((frame) =>
+    frame.startsWith("player_"),
+  ).length;
+  const occupied = new Set(game.units.map((unit) => unit.tile));
+  const freeGround = game.tiles.filter(
+    (tile) => tile.terrain === "plains" && !occupied.has(tile.id),
+  ).length;
+  assert(
+    freeGround >= artworkTypes * 2 - game.units.length,
+    "Room for both factions' complete artwork",
+  );
+});
+
+test("Hidden scenarios stay loadable and saved without appearing in the map picker", () => {
+  const hiddenMaps = Object.values(MAPS).filter((map) => map.hidden);
+  assert(hiddenMaps.length > 0);
+  for (const map of hiddenMaps) {
+    assert(!BATTLE_MAPS.some((choice) => choice.id === map.id));
+    const game = new Game(map.id);
+    saveBattle(game);
+    assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
+  }
+  assert(BATTLE_MAPS.every((map) => !map.hidden));
+});
 
 // These are ordinary units on an ordinary map: movement, combat and turns still work.
 test("Developer units use ordinary movement, combat and turns", async () => {

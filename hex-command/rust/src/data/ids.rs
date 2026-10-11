@@ -104,6 +104,7 @@ pub enum Family {
     Harpooner,
     Necromancer,
     Reefguard,
+    Rider,
     Scout,
     Skeleton,
     Spearman,
@@ -126,6 +127,7 @@ impl Family {
             Self::Harpooner => "harpooner",
             Self::Necromancer => "necromancer",
             Self::Reefguard => "reefguard",
+            Self::Rider => "rider",
             Self::Scout => "scout",
             Self::Skeleton => "skeleton",
             Self::Spearman => "spearman",
@@ -151,6 +153,7 @@ impl std::fmt::Display for Family {
 #[serde(rename_all = "lowercase")]
 pub enum Terrain {
     Plains,
+    Road,
     Forest,
     Hill,
     Water,
@@ -168,6 +171,7 @@ impl Terrain {
     pub fn as_str(self) -> &'static str {
         match self {
             Self::Plains => "plains",
+            Self::Road => "road",
             Self::Forest => "forest",
             Self::Hill => "hill",
             Self::Water => "water",

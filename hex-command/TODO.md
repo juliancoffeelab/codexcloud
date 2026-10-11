@@ -2,7 +2,6 @@
 
 ## Design
 
-- [ ] Review inconsistent low-poly artwork with the user before replacing designs.
 - [ ] Clarify Dain's allegiance in the skeleton campaign, preserving the
       immortality/service exchange and the undecided future conversation.
 - [ ] Clarify why lighting the Lantern Road lanterns forces the necromancer away.
