@@ -1,6 +1,35 @@
 # Hex Command development rules
 
+- Store each pixel unit in `pixel/art/units/<race>/<unit-id>/`, with its
+  only `sprite.txt` and `palette.json`. L2/L3 variants have
+  their own unit-ID folders. Store race trees separately in
+  `pixel/art/units/lineups/<race>.json`; each entry's `source` equals its unit ID.
+  Do not nest sprites under lineup folders or restore family/tier directories.
+  Keep generated candidates, prompts, extraction reports and edit logs in ignored
+  `tmp/`; do not commit art archives, duplicate renders or reference-only poses.
+
+- **Permanent character canvas rule: every character/unit sprite and portrait is
+  exactly 64×64 native pixels. This rule must never be changed; do not even try
+  to reintroduce 48×48 outputs, alternate sizes, automatic cropping or resizing.**
+  The one-time migration places each old 48×48 matrix at `(8,16)`: 8 transparent
+  pixels left, 8 right, 16 above, none below. Preserve every painted pixel.
+  New generation, extraction, cleaning and atlas frames must use 64×64.
+  Most characters should be below 40 painted pixels tall; cavalry and giants may
+  go slightly above this. Compare mounted artwork with the existing rider,
+  horse-archer, elf deer rider and skeletal rider references before setting scale;
+  distinguish body/mount height from a raised weapon or staff. Canvas size is not
+  permission to enlarge ordinary infantry. Terrain hex tiles use their separate
+  terrain grid. During generation, keep raw evidence unchanged in `tmp/`.
+
 - Keep changes quick to make and review. Tests must be small, fast, and lightweight.
+- For pixel artwork, use the project skills: [pinkbox generation](.agents/skills/pinkbox-generation/SKILL.md),
+  [pinkbox enhancement](.agents/skills/pinkbox-enhancement/SKILL.md),
+  [pixel cleaning](.agents/skills/pixel-cleaning/SKILL.md), and
+  [lineup previews](.agents/skills/pixel-lineup/SKILL.md).
+  Matrices and palettes in `pixel/art/` are authoritative. `npm run art:build`
+  packs them with `scripts/build-pixel-atlas.py`; builds must never replay
+  recipes, regenerate characters or write source artwork. Keep generation,
+  cleaning and preview helpers inside their skills, with scratch output in `tmp/`.
 - Run `npm run style` for Prettier and staged/unstaged whitespace checks together.
   Use `npm run format` to apply formatting; do not repeat individual style checks.
 - The entire `npm test` command must finish within 20 seconds. Use controlled

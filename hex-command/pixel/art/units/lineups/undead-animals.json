@@ -1,0 +1,140 @@
+{
+  "race": "undead-animals",
+  "trees": [
+    {
+      "base": {
+        "id": "skeletal-hound",
+        "name": "Skeletal hound",
+        "level": 1,
+        "source": "skeletal-hound"
+      },
+      "branches": [
+        {
+          "role": "Skeletal hound L2",
+          "units": [
+            {
+              "id": "skeletal-hound-l2",
+              "name": "Skeletal hound L2",
+              "level": 2,
+              "source": "skeletal-hound-l2"
+            },
+            {
+              "id": "skeletal-hound-l3",
+              "name": "Skeletal hound L3",
+              "level": 3,
+              "source": "skeletal-hound-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "corpse-vulture",
+        "name": "Corpse vulture",
+        "level": 1,
+        "source": "corpse-vulture"
+      },
+      "branches": [
+        {
+          "role": "Corpse vulture L2",
+          "units": [
+            {
+              "id": "corpse-vulture-l2",
+              "name": "Corpse vulture L2",
+              "level": 2,
+              "source": "corpse-vulture-l2"
+            },
+            {
+              "id": "corpse-vulture-l3",
+              "name": "Corpse vulture L3",
+              "level": 3,
+              "source": "corpse-vulture-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "skeletal-horse",
+        "name": "Skeletal horse",
+        "level": 1,
+        "source": "skeletal-horse"
+      },
+      "branches": [
+        {
+          "role": "Skeletal horse L2",
+          "units": [
+            {
+              "id": "skeletal-horse-l2",
+              "name": "Skeletal horse L2",
+              "level": 2,
+              "source": "skeletal-horse-l2"
+            },
+            {
+              "id": "skeletal-horse-l3",
+              "name": "Skeletal horse L3",
+              "level": 3,
+              "source": "skeletal-horse-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "zombie-bear",
+        "name": "Zombie bear",
+        "level": 1,
+        "source": "zombie-bear"
+      },
+      "branches": [
+        {
+          "role": "Zombie bear L2",
+          "units": [
+            {
+              "id": "zombie-bear-l2",
+              "name": "Zombie bear L2",
+              "level": 2,
+              "source": "zombie-bear-l2"
+            },
+            {
+              "id": "zombie-bear-l3",
+              "name": "Zombie bear L3",
+              "level": 3,
+              "source": "zombie-bear-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "bone-dragon",
+        "name": "Bone dragon",
+        "level": 1,
+        "source": "bone-dragon"
+      },
+      "branches": [
+        {
+          "role": "Bone dragon L2",
+          "units": [
+            {
+              "id": "bone-dragon-l2",
+              "name": "Bone dragon L2",
+              "level": 2,
+              "source": "bone-dragon-l2"
+            },
+            {
+              "id": "bone-dragon-l3",
+              "name": "Bone dragon L3",
+              "level": 3,
+              "source": "bone-dragon-l3"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

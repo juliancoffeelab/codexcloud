@@ -1,0 +1,89 @@
+{
+  "race": "zombies",
+  "trees": [
+    {
+      "base": {
+        "id": "zombie-walker",
+        "name": "Thin walker",
+        "level": 1,
+        "source": "zombie-walker"
+      },
+      "branches": [
+        {
+          "role": "Armed melee",
+          "units": [
+            {
+              "id": "zombie-fighter",
+              "name": "Thin fighter",
+              "level": 2,
+              "source": "zombie-fighter"
+            },
+            {
+              "id": "zombie-cleaver",
+              "name": "Cleaver fighter",
+              "level": 3,
+              "source": "zombie-cleaver"
+            }
+          ]
+        },
+        {
+          "role": "Disease and debuffs",
+          "units": [
+            {
+              "id": "zombie-decay-caster",
+              "name": "Thin caster",
+              "level": 2,
+              "source": "zombie-decay-caster"
+            },
+            {
+              "id": "zombie-plague-carrier",
+              "name": "Plague carrier",
+              "level": 3,
+              "source": "zombie-plague-carrier"
+            }
+          ]
+        },
+        {
+          "role": "Unarmed melee",
+          "units": [
+            {
+              "id": "zombie-shambler",
+              "name": "Shambler",
+              "level": 2,
+              "source": "zombie-shambler"
+            },
+            {
+              "id": "zombie-ghoul",
+              "name": "Ghoul",
+              "level": 3,
+              "source": "zombie-ghoul"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "commander": {
+    "role": "commander",
+    "units": [
+      {
+        "id": "zombie-corruption-mage-l1",
+        "name": "Corruption mage",
+        "level": 1,
+        "source": "zombie-corruption-mage-l1"
+      },
+      {
+        "id": "zombie-corruption-mage",
+        "name": "Corruption mage",
+        "level": 2,
+        "source": "zombie-corruption-mage"
+      },
+      {
+        "id": "zombie-corruption-archmage",
+        "name": "Corruption archmage",
+        "level": 3,
+        "source": "zombie-corruption-archmage"
+      }
+    ]
+  }
+}

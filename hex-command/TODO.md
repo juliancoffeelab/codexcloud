@@ -7,6 +7,7 @@
       immortality/service exchange and the undecided future conversation.
 - [ ] Clarify why lighting the Lantern Road lanterns forces the necromancer away.
 - [ ] Review remaining optional quest rewards with the user.
+- [ ] Add advancement branching for the woodland Thorncaller.
 
 ## Balance and simulations
 

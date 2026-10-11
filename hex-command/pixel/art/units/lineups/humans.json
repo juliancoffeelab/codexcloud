@@ -1,0 +1,314 @@
+{
+  "race": "humans",
+  "trees": [
+    {
+      "base": {
+        "id": "leather-swordsman",
+        "name": "Leather swordsman",
+        "level": 1,
+        "source": "leather-swordsman",
+        "gameplayId": "swordsman"
+      },
+      "section": "infantry",
+      "branches": [
+        {
+          "role": "Sword infantry",
+          "units": [
+            {
+              "id": "swordsman",
+              "name": "Swordsman",
+              "level": 2,
+              "source": "swordsman",
+              "gameplayId": "soldier"
+            },
+            {
+              "id": "champion",
+              "name": "Champion",
+              "level": 3,
+              "source": "champion"
+            }
+          ]
+        },
+        {
+          "role": "Hammer infantry",
+          "units": [
+            {
+              "id": "hammerman",
+              "name": "Hammerman",
+              "level": 2,
+              "source": "hammerman"
+            },
+            {
+              "id": "warhammer",
+              "name": "Warhammer",
+              "level": 3,
+              "source": "warhammer"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "leather-spearman",
+        "name": "Leather spearman",
+        "level": 1,
+        "source": "leather-spearman",
+        "gameplayId": "spearman"
+      },
+      "section": "infantry",
+      "branches": [
+        {
+          "role": "Spear infantry",
+          "units": [
+            {
+              "id": "spearman",
+              "name": "Spearman",
+              "level": 2,
+              "source": "spearman",
+              "gameplayId": "warden"
+            },
+            {
+              "id": "sentinel",
+              "name": "Sentinel",
+              "level": 3,
+              "source": "sentinel"
+            }
+          ]
+        },
+        {
+          "role": "Halberd infantry",
+          "units": [
+            {
+              "id": "halberdier",
+              "name": "Halberdier",
+              "level": 2,
+              "source": "halberdier"
+            },
+            {
+              "id": "halberd-master",
+              "name": "Halberd master",
+              "level": 3,
+              "source": "halberd-master"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "scout",
+        "name": "Scout",
+        "level": 1,
+        "source": "scout"
+      },
+      "section": "ranged",
+      "branches": [
+        {
+          "role": "Flanker",
+          "units": [
+            {
+              "id": "ranger",
+              "name": "Ranger",
+              "level": 2,
+              "source": "ranger"
+            },
+            {
+              "id": "shadowblade",
+              "name": "Shadowblade",
+              "level": 3,
+              "source": "shadowblade"
+            }
+          ]
+        },
+        {
+          "role": "Slinger",
+          "units": [
+            {
+              "id": "slinger",
+              "name": "Slinger",
+              "level": 2,
+              "source": "slinger"
+            },
+            {
+              "id": "fireslinger",
+              "name": "Fireslinger",
+              "level": 3,
+              "source": "fireslinger"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "archer",
+        "name": "Archer",
+        "level": 1,
+        "source": "archer"
+      },
+      "section": "ranged",
+      "branches": [
+        {
+          "role": "Bow",
+          "units": [
+            {
+              "id": "marksman",
+              "name": "Marksman",
+              "level": 2,
+              "source": "marksman"
+            },
+            {
+              "id": "sharpshooter",
+              "name": "Sharpshooter",
+              "level": 3,
+              "source": "sharpshooter"
+            }
+          ]
+        },
+        {
+          "role": "Crossbow",
+          "units": [
+            {
+              "id": "crossbowman",
+              "name": "Crossbowman",
+              "level": 2,
+              "source": "crossbowman"
+            },
+            {
+              "id": "arbalester",
+              "name": "Arbalester",
+              "level": 3,
+              "source": "arbalester"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "adept",
+        "name": "Adept",
+        "level": 1,
+        "source": "adept"
+      },
+      "section": "magic",
+      "branches": [
+        {
+          "role": "Storm mage",
+          "units": [
+            {
+              "id": "storm-mage",
+              "name": "Storm mage",
+              "level": 2,
+              "source": "storm-mage",
+              "gameplayId": "mage"
+            },
+            {
+              "id": "archmage",
+              "name": "Archmage",
+              "level": 3,
+              "source": "archmage"
+            }
+          ]
+        },
+        {
+          "role": "Healer",
+          "units": [
+            {
+              "id": "healer",
+              "name": "Healer",
+              "level": 2,
+              "source": "healer"
+            },
+            {
+              "id": "high-healer",
+              "name": "High healer",
+              "level": 3,
+              "source": "high-healer"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "rider",
+        "name": "Rider",
+        "level": 1,
+        "source": "rider"
+      },
+      "section": "cavalry",
+      "branches": [
+        {
+          "role": "Lancer",
+          "units": [
+            {
+              "id": "lancer",
+              "name": "Lancer",
+              "level": 2,
+              "source": "lancer"
+            },
+            {
+              "id": "knight",
+              "name": "Knight",
+              "level": 3,
+              "source": "knight"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "horse-archer",
+        "name": "Horse archer",
+        "level": 1,
+        "source": "horse-archer"
+      },
+      "section": "cavalry",
+      "branches": [
+        {
+          "role": "Mounted archer",
+          "units": [
+            {
+              "id": "horse-bowman",
+              "name": "Horse bowman",
+              "level": 2,
+              "source": "horse-bowman"
+            },
+            {
+              "id": "horse-marksman",
+              "name": "Horse marksman",
+              "level": 3,
+              "source": "horse-marksman"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "commander": {
+    "role": "commander",
+    "units": [
+      {
+        "id": "commander",
+        "name": "Commander",
+        "level": 1,
+        "source": "commander"
+      },
+      {
+        "id": "marshal",
+        "name": "Marshal",
+        "level": 2,
+        "source": "marshal"
+      },
+      {
+        "id": "grand-marshal",
+        "name": "Grand Marshal",
+        "level": 3,
+        "source": "grand-marshal"
+      }
+    ]
+  }
+}

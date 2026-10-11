@@ -1,5 +1,5 @@
 import { campaignSheets } from "./campaign-art";
-import { pixelFrames, pixelSources } from "./pixel-art";
+import { pixelFrames, pixelSources, pixelUnitModels } from "./pixel-art";
 import { styledSheets } from "./styled-art";
 import type { DialoguePortrait, Side } from "../game/types";
 import {
@@ -183,6 +183,7 @@ export function artSprite(
   extraClass = "",
   side: Side = "player",
 ): string {
+  if (kind === "units" && artwork.style === "pixel") name = pixelUnitModels[name] ?? name;
   const frameName =
     name === "bonearcher" ? "bone_archer" : name === "grove" ? "sacred_grove" : name;
   const key = `${kind === "terrain" ? "terrain" : side}_${frameName}`;
