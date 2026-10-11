@@ -94,6 +94,8 @@ races using the same policy. Use `race_map_equal_policy.csv` for terrain effects
 `matchups.csv` for every opponent and policy pairing. `race_all_policies.csv`
 mixes policies. Self-play cells count both seats. Label those
 denominators accurately. A roster can perform differently under different AI.
+For a specific policy, use `race_map_policy.csv`: it keeps each policy separate
+and excludes self-play. Show every race and map, then the full opponent matrices.
 
 Keep round-capped games in win-rate denominators and report them as unresolved.
 Separate leader and territory victories, and simulation timing from build time

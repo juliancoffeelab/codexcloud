@@ -217,6 +217,7 @@ def build_report(inputs, baseline_inputs, out):
     tables = {'matchups': rows, 'unit_events': units, 'matches': ledger, 'campaigns': campaigns,
               'race_equal_policy': combine(rows, ['race'], equal=True),
               'race_map_equal_policy': combine(rows, ['race', 'map'], equal=True),
+              'race_map_policy': combine(rows, ['race', 'map', 'policy'], equal=True),
               'race_all_policies': combine(rows, ['race']), 'baseline_matchups': before,
               'matchup_changes': comparison, 'match_changes': transitions, 'baseline_unit_events': before_units,
               'lineup_coverage': [r for c in catalogs for r in c['coverage']],
@@ -237,6 +238,9 @@ def build_report(inputs, baseline_inputs, out):
              'Artwork lineups are listed in full. Zero gameplay/arena coverage means these units were not simulated. Historical catalogs come from the recorded commit, never the current checkout.', '',
              markdown(tables['lineup_coverage'], ['lineup', 'artUnits', 'gameplayUnits', 'arenaUnits', 'arenaRosters', 'excludedUnits']), '',
              '## Factions with matching policies', '', markdown(tables['race_equal_policy'], ['race', 'games', 'wins', 'losses', 'caps', 'winRate']), '',
+             '## Factions by map with each policy kept separate', '',
+             'These totals compare each faction with the other factions using the same policy, excluding self-play.', '',
+             markdown(tables['race_map_policy'], ['race', 'map', 'policy', 'games', 'wins', 'losses', 'caps', 'winRate']), '',
              '## Every faction, map and policy pairing', '']
     for m in maps:
         for p in policies:

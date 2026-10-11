@@ -27,6 +27,14 @@ class CompleteDataTests(unittest.TestCase):
         self.assertAlmostEqual(cross['winRate'], 100/3)
         own = next(x for x in rows if x['race'] == x['opponentRace'])
         self.assertEqual((own['games'], own['wins'], own['losses']), (2, 1, 1))
+        totals = report.combine(rows, ['race', 'map', 'policy'], equal=True)
+        a = next(x for x in totals if x['race'] == 'a')
+        self.assertEqual((a['games'], a['wins'], a['losses'], a['caps']), (3, 1, 1, 1))
+        different_policy = match(5)
+        different_policy['config']['enemy'] = 'rush'
+        items.append(different_policy)
+        expanded, _, _, _ = report.tally({report.identity(x): x for x in items})
+        self.assertEqual(totals, report.combine(expanded, ['race', 'map', 'policy'], equal=True))
 
     def test_unit_events_follow_actual_side_when_factions_swap_seats(self):
         item = match(1, 'b', 'a')
