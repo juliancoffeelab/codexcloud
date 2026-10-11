@@ -13,7 +13,7 @@
   } from "../presentation/terrain-map";
   import terrainSprites from "virtual:terrain-prebuilt";
   import type { Artwork } from "../presentation/art";
-  import { TerrainTilePrefetcher } from "../presentation/terrain-prefetch";
+  import { TerrainTilePrefetcher, terrainInspectionUrls } from "../presentation/terrain-prefetch";
 
   interface Props {
     view: BattleView;
@@ -118,7 +118,12 @@
 
   $effect(() => {
     if (loadedTerrain !== terrainKey || !prebuilt || prebuilt.changed.size) return;
-    return terrainPrefetch.start(Object.values(terrainResources.frames).map((frame) => frame.url));
+    return terrainPrefetch.start(
+      terrainInspectionUrls(
+        artwork,
+        untrack(() => game.tiles),
+      ),
+    );
   });
 
   $effect(() => {

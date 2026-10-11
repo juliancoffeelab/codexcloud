@@ -106,8 +106,10 @@ PNG sprites into ignored `public/assets/sprites/` and URL/layout metadata into
 `src/presentation/pixel-art.ts`. It applies faction/floor palettes and flattens
 prepared prop layouts at build time. Vite copies the sprites into `dist/assets/`.
 The browser fetches individual images as they are rendered. Once an authored map
-is displayed, idle work warms its unique terrain images for inspection, two at a
-time with low network priority. It never downloads
+is displayed, idle work warms one canonical inspection sprite per terrain type,
+two at a time with low network priority. Details use the default floor and
+connections with the first prebuilt prop arrangement, regardless of the clicked
+tile's map variation. It never downloads
 an atlas, crops sprites, or encodes PNGs. Source matrices/palettes remain authoritative.
 Production Vite builds also render every authored map into a native PNG using
 the same terrain layouts and drawing code. Unchanged maps use these sprites
