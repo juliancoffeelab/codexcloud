@@ -24,7 +24,7 @@ def matrix_path(value):
     return path
 
 
-def prepare(output, anchors, labels, size=64, output_palette=None, body_guide=None, staff_guide=None):
+def prepare(output, anchors, labels, size=64, output_palette=None, body_guide=None, staff_guide=None, flying=None):
     if size != 64:
         raise ValueError('Character outputs must be exactly 64×64')
     output = Path(output).resolve()
@@ -36,11 +36,17 @@ def prepare(output, anchors, labels, size=64, output_palette=None, body_guide=No
         raise ValueError('Pinkbox requires exactly three references and one fill box')
     if output.exists() or output.with_suffix('.json').exists():
         raise ValueError('Use a new template filename; existing evidence is preserved')
+    flight_metadata = json.loads(Path(output_palette).read_text()).get('flying', False) if output_palette else False
+    flying = flight_metadata if flying is None else flying
+    if type(flying) is not bool or type(flight_metadata) is not bool:
+        raise ValueError("'flying' must be a boolean")
     for guide in (body_guide, staff_guide):
         if guide is not None:
             gx, gy, gw, gh = guide
             if min(gx, gy) < 0 or min(gw, gh) <= 0 or gx + gw > 64 or gy + gh > 64:
                 raise ValueError('Guides must lie inside the unchanged 64×64 character canvas')
+    if body_guide is not None and not flying and body_guide[1] + body_guide[3] != 64:
+        raise ValueError('Grounded body guides must end at the canvas bottom (row 63)')
     # Every grid cell is occupied: references first, one empty output last.
     columns, grid_rows = 2, 2
     cell, header, footer = 512, 32, 80
@@ -87,7 +93,7 @@ def prepare(output, anchors, labels, size=64, output_palette=None, body_guide=No
         x, y = cell_origin(len(anchors))
         draw.text((x + 8, y + 6), f'FILL: {label}', font=font, fill='white')
         outputs.append({'label': label, 'rect': [x, y + header, cell, cell],
-                        'native': 64, 'origin': [0, 0]})
+                        'native': 64, 'origin': [0, 0], 'flying': flying})
         guides = []
         for kind, guide, color in [('body', body_guide, (255, 144, 255, 255)),
                                    ('staff', staff_guide, (255, 96, 255, 255))]:
@@ -105,6 +111,7 @@ def prepare(output, anchors, labels, size=64, output_palette=None, body_guide=No
             outputs[-1]['guides'] = guides
     if output_palette is not None:
         materials = json.loads(Path(output_palette).read_text())
+        materials.pop('flying', None)
         if materials.get('.') != [0, 0, 0, 0] or set(materials) & {'^', '*'}:
             raise ValueError('Output materials require transparency and separate faction shades')
         reference_colors = [c for anchor in anchors for c in render.read_palette(matrix_path(anchor)).values()]
@@ -142,5 +149,6 @@ if __name__ == '__main__':
     parser.add_argument('--output-palette', type=Path, help='Restrict output swatches and extraction to these original material colors')
     parser.add_argument('--body-guide', type=int, nargs=4, metavar=('X', 'Y', 'W', 'H'), help='Visible native-pixel body box; does not crop extraction')
     parser.add_argument('--staff-guide', type=int, nargs=4, metavar=('X', 'Y', 'W', 'H'), help='Separate native-pixel allowance for a raised staff')
+    parser.add_argument('--flying', action=argparse.BooleanOptionalAction, default=None, help='Intentionally suspended pose; saved as flying metadata in the extracted palette')
     args = parser.parse_args()
-    prepare(args.output, args.anchors, args.labels, args.size, args.output_palette, args.body_guide, args.staff_guide)
+    prepare(args.output, args.anchors, args.labels, args.size, args.output_palette, args.body_guide, args.staff_guide, args.flying)

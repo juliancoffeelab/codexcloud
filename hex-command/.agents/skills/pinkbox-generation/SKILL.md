@@ -12,9 +12,12 @@ as references. Tell the user when applying this skill.
 1. Prepare exactly three occupied anchors and one empty bottom-right output in
    a 2×2 template. Each character is exactly 64×64; most bodies stay below 40
    painted pixels tall. For related tiers, use the same `--body-guide X Y W H`
-   and foot baseline; `--staff-guide X Y W H` gives raised equipment separate
+   and foot baseline at native row 63; grounded body guides must end at the
+   canvas bottom. `--staff-guide X Y W H` gives raised equipment separate
    space. Guides are removable magenta, never an extraction crop. Compare cavalry
-   with existing mounted units.
+   with existing mounted units. Use `--flying` only for an intentionally
+   suspended pose; extraction records `"flying": true` in its `palette.json`.
+   `--output-palette` inherits that flag unless overridden with `--no-flying`.
 2. Inspect the template, then give its local path to imagegen. Fill only the
    empty box with one complete unit; preserve anchors, layout and captions.
    Specify anatomy, facing, hands and actual weapon grips. Require chunky native
@@ -25,8 +28,12 @@ as references. Tell the user when applying this skill.
 3. Save the unchanged generated PNG and exact prompt. Inspect before extracting.
    Do not clip or resize anatomy to fit. Use `--output-palette` when preserving
    an existing unit's colors; other anchors must not widen that output palette.
-4. Extract, then use [pixel cleaning](../pixel-cleaning/SKILL.md). Review material
-   ownership visually: faction symbols `^`/`*` belong only to intended cloth,
+4. Extract, then use [pixel cleaning](../pixel-cleaning/SKILL.md).
+   Grounded extraction must touch row 63; failure retains evidence for inspection
+   and regeneration, without silently shifting the generated artwork. When
+   aligning an approved existing sprite, translate it without losing any painted
+   pixel. A staff touching the bottom does not excuse feet floating above it.
+   Review material ownership visually: faction symbols `^`/`*` belong only to intended cloth,
    never skin, hair, bone, outlines or weapons. They resolve through
    `pixel/art/factions.json`, outside each material palette.
 5. Show the rendered matrix in the requested faction (otherwise the last used

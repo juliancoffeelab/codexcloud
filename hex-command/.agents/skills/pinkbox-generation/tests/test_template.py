@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[4]
 spec = importlib.util.spec_from_file_location('pinkbox_template', ROOT / '.agents/skills/pinkbox-generation/scripts/template.py')
@@ -17,6 +18,43 @@ spec.loader.exec_module(extract)
 
 
 class OutputPalette(unittest.TestCase):
+    def test_extraction_requires_canvas_bottom_contact_unless_flying(self):
+        (ROOT / 'tmp').mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=ROOT / 'tmp') as directory:
+            directory = Path(directory)
+            source = directory / 'generated.png'
+            image = Image.new('RGBA', (128, 146), (255, 0, 255, 255))
+            image.putpixel((90, 130), (99, 63, 37, 255))
+            image.save(source)
+            manifest = {'version': 1, 'logicalSlot': 64, 'anchors': [{}, {}, {}],
+                        'canvas': [1024, 1168], 'palette': {'.': [0, 0, 0, 0],
+                        'B': [99, 63, 37, 255], **extract.faction_palette('player')},
+                        'slots': [{'label': 'Synthetic unit', 'rect': [512, 576, 512, 512],
+                                   'native': 64, 'origin': [0, 0]}]}
+            file = directory / 'manifest.json'
+            file.write_text(json.dumps(manifest))
+            rejected = directory / 'rejected'
+            with self.assertRaisesRegex(ValueError, 'canvas bottom'):
+                extract.extract(source, file, rejected)
+            self.assertTrue((rejected / 'raw.png').exists())
+            self.assertFalse((rejected / 'unit-1/sprite.txt').exists())
+            manifest['slots'][0]['flying'] = True
+            file.write_text(json.dumps(manifest))
+            extract.extract(source, file, directory / 'flying')
+            palette = json.loads((directory / 'flying/unit-1/palette.json').read_text())
+            self.assertIs(palette['flying'], True)
+            # Explicit metadata must work through the ordinary palette reader too.
+            self.assertNotIn('flying', template.render.read_palette(directory / 'flying/unit-1/sprite.txt'))
+            manifest['slots'][0]['flying'] = False
+            file.write_text(json.dumps(manifest))
+            image.putpixel((90, 135), (99, 63, 37, 255))
+            image.save(source)
+            extract.extract(source, file, directory / 'grounded')
+            rows = (directory / 'grounded/unit-1/sprite.txt').read_text().splitlines()
+            self.assertIn('B', rows[63])
+            with self.assertRaisesRegex(ValueError, 'boolean'):
+                template.render.require_grounded(rows, manifest['palette'], flying='yes')
+
     def test_generation_and_extraction_reject_old_size_before_writing(self):
         (ROOT / 'tmp').mkdir(exist_ok=True)
         with tempfile.TemporaryDirectory(dir=ROOT / 'tmp') as directory:
