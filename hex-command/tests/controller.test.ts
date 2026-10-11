@@ -87,6 +87,79 @@ test("Developer map supports normal actions and persistence", async () => {
   storage.clear();
 });
 
+test("Inspection switches tiles and closes when the inspected unit or terrain is tapped again", () => {
+  const controller = createController(immediatePause);
+  const observed = observe(controller);
+  const opening = controller.snapshot();
+  const player = required(opening.units.find((unit) => unit.side === "player"));
+  const enemy = required(opening.units.find((unit) => unit.side === "enemy"));
+  const empty = required(
+    observed.view.game.tiles.find((tile) => !opening.units.some((u) => u.tile === tile.id)),
+  );
+  const other = required(
+    observed.view.game.tiles.find(
+      (tile) => tile.id !== empty.id && !opening.units.some((u) => u.tile === tile.id),
+    ),
+  );
+  const saved = storage.getItem(SAVE_KEY);
+  const game = observed.view.game;
+  controller.commands.choose(enemy.tile);
+  assert.equal(observed.view.selected, enemy.id);
+  controller.commands.choose(enemy.tile);
+  assert.equal(observed.view.selected, null);
+  assert.equal(observed.view.inspectedTile, null);
+  controller.commands.choose(empty.id);
+  assert.equal(observed.view.inspectedTile, empty.id);
+  controller.commands.choose(other.id);
+  assert.equal(observed.view.inspectedTile, other.id);
+  controller.commands.choose(other.id);
+  assert.equal(observed.view.inspectedTile, null);
+  controller.commands.choose(player.tile);
+  controller.commands.choose(player.tile);
+  assert.equal(observed.view.selected, null);
+  assert.equal(observed.view.inspectedTile, null);
+  controller.commands.choose(enemy.tile);
+  controller.commands.choose(empty.id);
+  assert.equal(observed.view.selected, null);
+  assert.equal(observed.view.inspectedTile, empty.id);
+  controller.commands.choose(empty.id);
+  assert.equal(observed.view.inspectedTile, null);
+  assert.equal(observed.view.target, null);
+  assert.equal(observed.view.game, game);
+  assert.deepEqual(controller.snapshot(), opening);
+  assert.equal(storage.getItem(SAVE_KEY), saved);
+  observed.unsubscribe();
+});
+
+test("Click-away dismissal preserves movement, attack targeting and undo", () => {
+  const controller = createController(immediatePause);
+  const observed = observe(controller);
+  controller.commands.reset("developer");
+  const opening = controller.snapshot();
+  const player = required(opening.units.find((unit) => unit.side === "player"));
+  const move = required(controller.actions(player.id).moves[0]);
+  controller.commands.choose(player.tile);
+  controller.commands.choose(move.tile);
+  assert.equal(observed.view.game.unit(player.id)?.tile, move.tile);
+  assert.equal(observed.view.inspectedTile, move.tile);
+  assert(observed.view.canUndo);
+  controller.commands.clearSelection(true);
+  assert.equal(observed.view.inspectedTile, null);
+  assert(observed.view.canUndo, "dismissing the panel must not spend undo history");
+  controller.commands.undoMove();
+  assert.deepEqual(controller.snapshot(), opening);
+  const target = required(controller.actions(player.id).attacks[0]);
+  const targetTile = required(observed.view.game.unit(target.id)).tile;
+  controller.commands.choose(targetTile);
+  assert.equal(unitPanelView(observed.view).kind, "combat");
+  controller.commands.choose(targetTile);
+  assert.equal(observed.view.selected, null);
+  assert.equal(observed.view.target, null);
+  assert.equal(observed.view.inspectedTile, null);
+  assert.deepEqual(controller.snapshot(), opening, "targeting or dismissal must not attack");
+  observed.unsubscribe();
+});
+
 // Dialogue navigation persists its cursor without advancing gameplay or reopening finished lines.
 test("Dialogue navigation persists its cursor without advancing gameplay", async () => {
   storage.clear();

@@ -176,6 +176,12 @@ button[hidden] {
 .map-section {
   min-width: 0;
 }
+.workspace.map-only {
+  grid-template-columns: minmax(0, 1fr);
+}
+.workspace.map-only .map-scroll {
+  max-height: calc(100dvh - 120px);
+}
 .map-scroll {
   overflow: auto;
   max-height: min(720px, calc(100svh - 120px));

@@ -279,21 +279,30 @@ export class BattleController {
     if (!tile) {
       return;
     }
-    this.state.inspectedTile = tileId;
     this.state.focusedTile = tileId;
+    const occupant = this.#game.at(tileId);
+    const unit = this.#game.unit(this.state.selected);
+    const canMove =
+      this.active() &&
+      !occupant &&
+      unit?.side === "player" &&
+      this.#game.reachable(unit.id).has(tileId);
+    if (
+      this.state.inspectedTile &&
+      (tileId === this.state.inspectedTile ||
+        occupant?.id === this.state.selected ||
+        occupant?.id === this.state.target)
+    ) {
+      this.clearSelection(true);
+      return;
+    }
+    this.state.inspectedTile = tileId;
     if (!this.active()) {
       this.publish({ renderBattle: false });
       this.playSelectionFeedback(tileId);
       return;
     }
     try {
-      const occupant = this.#game.at(tileId);
-      const unit = this.#game.unit(this.state.selected);
-      if (occupant && (occupant.id === this.state.selected || occupant.id === this.state.target)) {
-        this.clearSelection();
-        this.playSelectionFeedback(tileId);
-        return;
-      }
       if (
         occupant?.side === "enemy" &&
         unit?.side === "player" &&
@@ -306,7 +315,7 @@ export class BattleController {
         this.selectUnit(occupant);
         return;
       }
-      if (unit?.side === "player" && this.#game.reachable(unit.id).has(tileId)) {
+      if (unit && canMove) {
         this.move(unit.id, tileId);
         this.message("Moved. You can attack an enemy in range or select another unit.");
         return;
