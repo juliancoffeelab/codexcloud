@@ -14,7 +14,8 @@
   use `<mask>.txt`, where bits 1, 2, 4, 8, 16, 32 mean e, se, sw, w, nw, ne.
   The atlas only packs finished matrices; it must not synthesize roads or modify
   sources. Map tiles optionally declare `connections` with those clockwise edge
-  names; bridges/fords remain straight and need two opposite edges. Connections
+  names; bridges/fords need two opposite edges. Bridges stay straight; ford
+  stones may stagger around the crossing axis. Connections
   affect artwork only and must survive publication and save/restore.
   Villages use finished `<mask>.txt` variants for one to three exits, with
   west–east in `tile.txt`. Keep tiles contain no roads or connection variants.
@@ -42,7 +43,7 @@
   Directional terrain uses an object in `layouts.json`, keyed by source frame
   stem (`tile`, `nw-se`, `ne-sw`); each value is its list of arrangements.
   Select the arrangement for the same frame as the base artwork. Ford endpoint
-  stones stay fixed; vary interior stones without bending the crossing.
+  stones stay fixed; vary interior stones without changing the crossing direction.
   Choose arrangements deterministically from map/tile identity. Keep pieces at
   their native size and lighting; do not mirror, resize or randomly move them on
   redraw. The atlas only packs source frames; the published renderer places them.
