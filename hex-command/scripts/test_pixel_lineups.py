@@ -14,6 +14,19 @@ load_lineups = art.load_lineups
 
 
 class RaceTrees(unittest.TestCase):
+    def test_road_exits_allow_different_interiors(self):
+        rows = ["R" * 64 if 28 <= y < 36 else "G" * 64 for y in range(64)]
+        art.require_road_exits(rows, 9)
+        rows[20] = "G" * 24 + "R" * 16 + "G" * 24
+        art.require_road_exits(rows, 9)
+
+    def test_road_exits_reject_offsets_and_width_changes(self):
+        for start, end in [(24, 32), (29, 35)]:
+            rows = [("R" if start <= y < end else "G") * 8 +
+                    ("R" if 28 <= y < 36 else "G") * 56 for y in range(64)]
+            with self.subTest(start=start, end=end), self.assertRaisesRegex(ValueError, "misaligned exit"):
+                art.require_road_exits(rows, 9)
+
     def fixture(self):
         temp = tempfile.TemporaryDirectory()
         self.addCleanup(temp.cleanup)

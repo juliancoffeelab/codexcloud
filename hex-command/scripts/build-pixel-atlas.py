@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 import struct
 import zlib
@@ -15,6 +16,26 @@ FRAME_NAMES = {"bonearcher": "bone_archer", "grove": "sacred_grove"}
 def require_canvas(rows, label="Artwork"):
     if len(rows) != 64 or any(len(row) != 64 for row in rows):
         raise ValueError(f"{label}: artwork matrices must be exactly 64×64")
+    return rows
+
+
+def require_road_exits(rows, mask, surface=frozenset("RrC"), width=8, depth=4):
+    """Check shared-edge position, width and tangent, independent of interior art."""
+    require_canvas(rows, "Road")
+    apothem = 16 * math.sqrt(3)
+    for direction in range(6):
+        angle = direction * math.pi / 3
+        ux, uy = math.cos(angle), math.sin(angle)
+        for y, row in enumerate(rows):
+            for x, symbol in enumerate(row):
+                nx, ny = x + .5 - 32, y + .5 - 32
+                normal = nx * ux + ny * uy
+                tangent = abs(-nx * uy + ny * ux)
+                if apothem - depth <= normal <= apothem and tangent < width / 2 + 3:
+                    expected = bool(mask & (1 << direction)) and tangent < width / 2
+                    if (symbol in surface) != expected:
+                        raise ValueError(f"Road {mask}: misaligned exit {direction} at ({x}, {y}); "
+                                         "road edges must share centered width and normal direction")
     return rows
 
 
@@ -258,6 +279,8 @@ def pixel_atlases():
             raise ValueError(f"{matrix}: expected a nonempty terrain sprite")
         key = f"terrain_{FRAME_NAMES.get(matrix.parent.name, matrix.parent.name)}"
         terrain[key] = (width, height, pixels)
+        if matrix.parent.name == "road":
+            require_road_exits(read_matrix(matrix), 9)
         for variant in sorted(matrix.parent.glob("*.txt")):
             if variant == matrix:
                 continue
@@ -265,6 +288,8 @@ def pixel_atlases():
             road = matrix.parent.name == "road" and variant.stem.isdigit() and 1 <= int(variant.stem) <= 63 and int(variant.stem) != 9
             if not (crossing or road):
                 raise ValueError(f"{variant}: unknown terrain orientation")
+            if road:
+                require_road_exits(read_matrix(variant), int(variant.stem))
             terrain[f"{key}_{variant.stem}"] = rgba_pixels(variant)
         # The vector hex fills the transparent staircase around the raster tile.
         # Ground palettes name their base G; river palettes name it W.
