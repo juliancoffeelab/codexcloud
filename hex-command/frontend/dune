@@ -1,0 +1,5 @@
+(melange.emit
+ (target output)
+ (module_systems esm)
+ (libraries reason-react)
+ (preprocess (pps melange.ppx reason-react-ppx)))

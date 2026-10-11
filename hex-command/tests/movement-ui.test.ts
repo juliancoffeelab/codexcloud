@@ -1,91 +1,60 @@
 import { test } from "vitest";
 import assert from "node:assert/strict";
-import { currentArtwork } from "../src/presentation/art";
-import { Game, TERRAIN } from "./game-fixture";
-import { createGameView } from "./fixture-view";
-import type { TerrainType } from "../src/game/types";
-import type { BattleView } from "../src/controller/view";
-import { unitPanelView } from "../src/ui/unit-panel-view";
-import { terrainPanelView } from "../src/ui/terrain-view";
+import { board, catalog, Catalog, Native, Presentation } from "./presentation-fixture";
 import { required } from "./helpers";
-
-function published(game: Game, selected: string): BattleView {
-  return {
-    game: createGameView(game),
-    selected,
-    target: null,
-    inspectedTile: required(game.unit(selected)).tile,
-    focusedTile: "0,0",
-    renderRevision: 0,
-    status: "",
-    artwork: currentArtwork(),
-    sound: false,
-    canUndo: false,
-    recruitment: null,
-  };
-}
-
-test("Terrain rows show native movement costs without mutating the view", () => {
-  const game = new Game();
-  game.units = [];
-  const unit = game.addUnit("soldier", "player", "0,0");
-  const view = published(game, unit.id);
-  const before = view.game.snapshot();
-  const panel = unitPanelView(view);
-  if (panel.kind !== "details") throw new Error("Missing unit details");
-  for (const row of panel.details.terrainEffects) {
-    const cost = view.game.cost(unit, { terrain: row.terrain });
-    assert.equal(
-      row.label,
-      Number.isFinite(cost) ? `${cost} ${cost === 1 ? "Step" : "Steps"}` : "-",
-    );
-    assert.equal(row.name, TERRAIN[row.terrain].name);
+test("Terrain rows use native movement and damage effects without mutating the publication", () => {
+  for (const type of ["soldier", "thorncaller", "reefguard"]) {
+    const game = board();
+    game.edit((state) => (state.units = []));
+    const unit = game.add(type, "player", "0,0");
+    const before = structuredClone(game.state);
+    const panel = Presentation.unit_panel(catalog, game.view, unit.id, undefined, 0);
+    if (panel === 0 || panel.TAG !== 1) throw new Error("Missing unit details");
+    assert.equal(panel._0.unit.id, unit.id);
+    for (const row of panel._0.terrain_effects) {
+      const cost = Native.movement_cost(game.view, type, row.terrain);
+      assert.equal(
+        row.label,
+        Number.isFinite(cost) ? `${cost} ${cost === 1 ? "Step" : "Steps"}` : "-",
+      );
+      assert.equal(row.name, Catalog.terrain_type(catalog, row.terrain).name);
+    }
+    const forest = required(panel._0.terrain_effects.find((row) => row.terrain === "forest"));
+    if (type === "reefguard") assert.deepEqual(forest.facts, [{ label: "", value: 1 }]);
+    if (type === "thorncaller")
+      assert.deepEqual(forest.facts, [
+        { label: "Melee", value: -1 },
+        { label: "Ranged", value: -2 },
+      ]);
+    assert.deepEqual(game.state, before);
   }
-  assert.deepEqual(view.game.snapshot(), before);
 });
-
-// Terrain keeps its protection and healing facts; movement costs belong to units.
-
-for (const terrain of Object.keys(TERRAIN) as TerrainType[]) {
-  test(
-    "Terrain panel shows protection and healing rather than generic movement — " +
-      JSON.stringify([terrain]),
-    async () => {
-      const game = new Game();
-      const unit = required(game.units[0]);
-      const view = published(game, unit.id);
-      required(game.tile(unit.tile)).terrain = terrain;
-      const terrainPanel = required(terrainPanelView({ ...view, game: createGameView(game) }));
-      assert(!terrainPanel.facts.some((fact) => fact.startsWith("Movement:")));
-      if (terrain === "hill") {
-        assert(
-          terrainPanel.facts.includes(
-            "Land troops: −1 damage received. Merfolk: +1 damage received.",
-          ),
-        );
-      }
-      if (terrain === "grove") {
-        assert(
-          terrainPanel.facts.includes(
-            "Heals its owner’s occupant by 4 HP at the start of its turn",
-          ),
-        );
-      }
-    },
-  );
+for (const definition of Catalog.terrain(catalog)) {
+  test(`Terrain details describe protection and healing rather than generic movement: ${definition.id}`, () => {
+    const game = board();
+    const unit = required(game.state.units[0]);
+    game.edit(
+      (state) =>
+        (required(state.tiles.find((tile) => tile.id === unit.tile)).terrain = definition.id),
+    );
+    const panel = required(Presentation.terrain_panel(catalog, game.view, unit.id, unit.tile));
+    assert(!panel.facts.some((fact: string) => fact.startsWith("Movement:")));
+    if (definition.id === "hill")
+      assert(panel.facts.includes("Land troops: −1 damage received. Merfolk: +1 damage received."));
+    if (definition.id === "grove")
+      assert(panel.facts.includes("Heals its owner’s occupant by 4 HP at the start of its turn"));
+  });
 }
-
-test("Terrain facts distinguish category-specific and damage-type-specific effects", async () => {
-  const { terrainDamageFacts } = await import("../src/ui/terrain-effects");
+test("Terrain facts distinguish attack category and damage type", () => {
   assert.deepEqual(
-    terrainDamageFacts([
+    Presentation.terrain_damage_facts([
       [0, 0, 0],
       [0, 0, 0],
     ]),
     [{ label: "", value: 0 }],
   );
   assert.deepEqual(
-    terrainDamageFacts([
+    Presentation.terrain_damage_facts([
       [0, -2, 1],
       [0, 0, 0],
     ]),

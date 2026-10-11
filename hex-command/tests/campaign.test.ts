@@ -1,14 +1,17 @@
+import type { Tile, Side, Dialogue } from "../rust/pkg/hex_command";
 import { createTestFactory } from "./native-fixture";
 import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
 import { Game } from "./game-fixture";
-import { CAMPAIGNS } from "../src/game/campaign-data";
-import { campaignMission, dialoguePending } from "../src/game/campaign-progress";
+import * as Catalog from "@frontend/Catalog";
+import * as Native from "@frontend/Native";
+import * as Story from "@frontend/Story";
+import * as Session from "@frontend/Session";
+import { catalog } from "./native-fixture";
+import history from "../src/save/migration/legacy/data/stages.json";
+import oldRefuge from "../src/save/migration/legacy/data/ashen-refuge-v1.json";
+import oldRefugeRoster from "../src/save/migration/legacy/data/ashen-refuge-v1-roster.json";
 import { loadBattle, saveBattle, SAVE_KEY } from "./legacy-save";
-import { CAMPAIGNS as MIGRATION_CAMPAIGNS } from "../src/save/migration/legacy/catalog";
-import { LEGACY_ASHEN_REFUGE } from "../src/save/migration/legacy/layouts";
-import { legacyBoard } from "../src/save/migration/legacy/board";
-import { BattleController, type BattleView } from "../src/controller/battle";
 import { required, TestStorage } from "./helpers";
 
 const storage = new TestStorage();
@@ -18,7 +21,7 @@ test("Gatherer reward moves without losing saved progress", async () => {
   const game = Game.startCampaign("lantern-road", 2);
   const adept = required(game.at("4,3"));
   const reward = required(
-    campaignMission(game.campaign!).events.find((event) => event.id === "reeds"),
+    Story.mission(catalog, game.campaign!).source.events.find((event) => event.id === "reeds"),
   );
   assert.equal(reward.trigger.kind, "visit");
   assert.equal("tile" in reward.trigger && reward.trigger.tile, "5,1");
@@ -53,21 +56,23 @@ test("Gatherer reward moves without losing saved progress", async () => {
 test("Legacy refuge retains company and ownership", async () => {
   const current = Game.startCampaign("ashen-oath", 1);
   const legacy = new Game("ashen-refuge");
-  const board = legacyBoard("ashen-refuge", 1);
-  legacy.tiles = board.tiles;
+  legacy.tiles = structuredClone(oldRefuge.tiles) as Tile[];
   legacy.units = [];
   legacy.nextId = 1;
-  for (const unit of LEGACY_ASHEN_REFUGE.units)
-    Object.assign(legacy.addUnit(unit.type, unit.side, `${unit.col},${unit.row}`), {
+  for (const unit of oldRefugeRoster.units)
+    Object.assign(legacy.addUnit(unit.type, unit.side as Side, `${unit.col},${unit.row}`), {
       ...(unit.name ? { name: unit.name } : {}),
       ...(unit.role ? { role: unit.role } : {}),
     });
   legacy.campaign = structuredClone(current.campaign!);
   delete legacy.campaign.refuge;
-  legacy.campaign.dialogue = MIGRATION_CAMPAIGNS["ashen-oath"].missions[1]!.legacyDialogue.slice(
-    0,
-    3,
-  ).map((line) => ({ ...line }));
+  legacy.campaign.dialogue = required(
+    (history as Record<string, { dialogue: Dialogue[] }>)[
+      Catalog.campaign(catalog, "ashen-oath").missions[1]!.map.id
+    ],
+  )
+    .dialogue.slice(0, 3)
+    .map((line) => ({ ...line }));
   legacy.round = 2;
   legacy.gold.player = 32;
   legacy.tile("5,4")!.owner = "player";
@@ -92,46 +97,48 @@ test("Legacy refuge retains company and ownership", async () => {
 test("Interrupted wave checkpoint replays once", async () => {
   const game = Game.startCampaign("lantern-road", 2);
   game.advanceDialogue(true);
-  game.round = campaignMission(game.campaign!).waves[0]!.round;
+  game.round = Story.mission(catalog, game.campaign!).source.waves[0]!.round;
   saveBattle(game, true);
   assert.equal(loadBattle().pendingEnemy, true);
-  const first = new BattleController(async () => {}, createTestFactory());
-  const replay = new BattleController(async () => {}, createTestFactory());
-  await first.endTurn();
-  await replay.endTurn();
-  assert.deepEqual(replay.snapshot(), first.snapshot());
+  const first = Session.create(async () => {}, createTestFactory());
+  const replay = Session.create(async () => {}, createTestFactory());
+  await Session.commands(first).end_turn();
+  await Session.commands(replay).end_turn();
+  assert.deepEqual(Native.state(Session.view(replay).game), Native.state(Session.view(first).game));
   assert.equal(
-    replay.snapshot().campaign?.marks.filter((mark) => mark.startsWith("wave:")).length,
+    Native.state(Session.view(replay).game).campaign?.marks.filter((mark) =>
+      mark.startsWith("wave:"),
+    ).length,
     3,
   );
-  first.dispose();
-  replay.dispose();
+  Session.close(first);
+  Session.close(replay);
 });
 
 // Replacing a session cancels its paused enemy turn; conversations gate player commands.
 test("Replacing a paused session cancels it and dialogue gates commands", async () => {
   storage.clear();
   let release: (() => void) | undefined;
-  const controller = new BattleController(
+  const controller = Session.create(
     () =>
       new Promise<void>((resolve) => {
         release = resolve;
       }),
     createTestFactory(),
   );
-  let latest: BattleView | undefined;
-  const unsubscribe = controller.view.subscribe((view) => (latest = view));
-  const oldTurn = controller.endTurn();
-  controller.commands.startCampaign("green-accord");
+  let latest: ReturnType<typeof Session.view> | undefined;
+  const unsubscribe = Session.subscribe(controller, (view) => (latest = view));
+  const oldTurn = Session.commands(controller).end_turn();
+  Session.commands(controller).start_campaign("green-accord");
   required(release)();
   await oldTurn;
-  assert.equal(latest?.game.mapId, "green-border");
-  assert.equal(latest?.game.round, 1);
-  await assert.rejects(controller.endTurn());
-  controller.commands.advanceDialogue(true);
-  assert(!dialoguePending(latest?.game.campaign));
-  assert(required(latest).game.recruitmentOptions("player").length > 0);
-  controller.dispose();
+  assert.equal(latest && Native.state(latest.game).mapId, "green-border");
+  assert.equal(latest && Native.state(latest.game).round, 1);
+  await assert.rejects(Session.commands(controller).end_turn());
+  Session.commands(controller).dialogue(true);
+  assert(!Story.dialogue_pending(latest && Native.state(latest.game).campaign));
+  assert.equal(Native.recruitment_options(required(latest).game, "player")[0], "wolf");
+  Session.close(controller);
   unsubscribe();
 });
 

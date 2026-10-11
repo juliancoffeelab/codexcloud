@@ -1,60 +1,56 @@
-import { loadBattle as loadLiveBattle } from "../src/save/load";
-import { saveBattle as writeBattle } from "../src/save/write";
 import assert from "node:assert/strict";
-import { test, beforeEach, afterEach, vi } from "vitest";
-import { NativeEngineFactory } from "../rust/pkg/hex_command";
-import { createNativeEngineFactory } from "../src/game/native-engine";
-import { LiveGame } from "../src/game/live-game";
-import { BattleController } from "../src/controller/battle";
-import { Game, developerFixture } from "./game-fixture";
+import { test, beforeEach, vi } from "vitest";
+import * as Session from "@frontend/Session";
+import * as Save from "@frontend/Save";
+import { Native, Catalog, factory, catalog, createBattle, restoreBattle } from "./native-fixture";
+import { Game } from "./game-fixture";
 import { saveBattle, SAVE_KEY } from "./legacy-save";
-import { SAVE_VERSION } from "../src/save/schema";
 import { TestStorage, required } from "./helpers";
-import type { BattleView } from "../src/controller/view";
+import type { State } from "../rust/pkg/hex_command";
 
-vi.mock("../src/presentation/sound", () => ({
-  soundEnabled: () => false,
-  cancelSound: () => {},
-  playSound: () => {},
-  playInteraction: () => {},
-  setSoundEnabled: () => {},
-  unlockSound: async () => {},
-}));
+beforeEach(() => vi.stubGlobal("localStorage", new TestStorage()));
+const state = (session: Session.t): Native.Immutable<State> =>
+  Native.state(Session.view(session).game);
+const capture = (session: Session.t) => structuredClone(state(session)) as State;
+function controller(clock = async (_milliseconds: number) => {}) {
+  return Session.create(clock, factory);
+}
+function load(restore = restoreBattle) {
+  return Save.load(
+    Catalog.raw(catalog),
+    restore,
+    () => createBattle({ kind: "scenario", map: "mirror" }),
+    Native.dispose,
+    Native.save,
+  );
+}
+function write(game: Native.battle, pending = false) {
+  Save.write(Save.create(), Native.save(game), pending);
+}
 
-let factory: ReturnType<typeof createNativeEngineFactory>;
-beforeEach(() => {
-  vi.stubGlobal("localStorage", new TestStorage());
-  factory = createNativeEngineFactory(new NativeEngineFactory());
-});
-afterEach(() => {
-  factory.dispose();
-});
-
+// Every scenario uses the same compiled OCaml owner and actual generated WASM.
 test("Live controller uses native movement/undo and keeps previous UI queries immutable", () => {
-  saveBattle(developerFixture());
-  const controller = new BattleController(async () => {}, factory);
-  let published: BattleView | undefined;
-  const unsubscribe = controller.view.subscribe((view) => {
-    published = view;
-  });
-  const opening = controller.snapshot();
-  const previous = required(published).game;
+  const session = controller(),
+    commands = Session.commands(session);
+  commands.reset("developer");
+  const opening = capture(session),
+    previous = Session.view(session).game;
   const actor = required(opening.units.find((unit) => unit.side === "player"));
-  const moves = previous.reachable(actor.id);
-  const tile = required([...moves.keys()][0]);
-  controller.move(actor.id, tile);
-  assert(required(published).canUndo);
-  assert.equal(previous.unit(actor.id)?.tile, actor.tile);
-  assert.deepEqual(previous.reachable(actor.id), moves);
-  assert(Object.isFrozen(previous.neighbors(actor.tile)));
-  assert.throws(() => Object.assign(previous.gold, { player: 99 }), TypeError);
-  controller.undoMove();
-  assert.deepEqual(controller.snapshot(), opening);
-  const restored = loadLiveBattle(factory);
-  assert.deepEqual(restored.game.snapshot(), opening);
-  restored.game.dispose();
-  controller.dispose();
-  unsubscribe();
+  const moves = Native.reachable(previous, actor.id),
+    tile = required(Object.keys(moves)[0]);
+  commands.choose(actor.tile);
+  commands.choose(tile);
+  assert(Session.view(session).can_undo);
+  assert.equal(Native.unit(previous, actor.id)?.tile, actor.tile);
+  assert.deepEqual(Native.reachable(previous, actor.id), moves);
+  assert(Object.isFrozen(Native.neighbors(previous, actor.tile)));
+  assert.throws(() => Object.assign(Native.state(previous).gold, { player: 99 }), TypeError);
+  commands.undo();
+  assert.deepEqual(capture(session), opening);
+  const restored = load();
+  assert.deepEqual(Native.state(Native.view(restored.game)), opening);
+  Native.dispose(restored.game);
+  Session.close(session);
 });
 
 test("A native enemy turn cancelled by map selection never acts on the new battle", async () => {
@@ -62,54 +58,63 @@ test("A native enemy turn cancelled by map selection never acts on the new battl
   const pause = new Promise<void>((resolve) => {
     resume = resolve;
   });
-  const controller = new BattleController(() => pause, factory);
-  const opening = controller.snapshot();
-  const pending = controller.endTurn();
-  const checkpoint = loadLiveBattle(factory);
-  assert(checkpoint.pendingEnemy);
-  assert.deepEqual(checkpoint.game.snapshot(), opening);
-  checkpoint.game.dispose();
-  controller.reset("river");
-  const replacement = controller.snapshot();
+  const session = controller(() => pause),
+    commands = Session.commands(session),
+    opening = capture(session);
+  const pending = commands.end_turn(),
+    checkpoint = load();
+  assert(checkpoint.pending_enemy);
+  assert.deepEqual(Native.state(Native.view(checkpoint.game)), opening);
+  Native.dispose(checkpoint.game);
+  commands.reset("river");
+  const replacement = capture(session);
   resume();
   await pending;
-  assert.deepEqual(controller.snapshot(), replacement);
-  controller.dispose();
+  assert.deepEqual(capture(session), replacement);
+  Session.close(session);
 });
 
 test("Native combat inspection feeds UI damage breakdowns and old saves migrate once", () => {
-  const old = developerFixture();
+  const old = new Game("developer");
   saveBattle(old);
-  const game = loadLiveBattle(factory).game;
-  assert.deepEqual(game.snapshot(), old.snapshot());
-  const actor = required(game.units.find((unit) => unit.side === "player"));
-  const target = required(game.targets(actor.id)[0]);
-  const forecast = game.previewDetails(actor, target);
-  const previous = game.publishedView();
-  game.attack(actor.id, target.id, forecast.attack.id);
-  assert.equal(previous.unit(target.id)?.hp, target.hp);
-  const after = game.unit(target.id);
-  assert.equal(after?.hp ?? 0, Math.max(0, target.hp - forecast.damage));
-  writeBattle(game);
-  assert.equal(JSON.parse(localStorage.getItem(SAVE_KEY)!).version, SAVE_VERSION);
-  const restored = loadLiveBattle(factory).game;
-  assert.deepEqual(restored.snapshot(), game.snapshot());
-  restored.dispose();
-  game.dispose();
+  const game = load().game;
+  assert.deepEqual(Native.state(Native.view(game)), old.captureState());
+  const previous = Native.view(game),
+    actor = required(Native.state(previous).units.find((unit) => unit.side === "player"));
+  const target = required(Native.targets(previous, actor.id)[0]),
+    forecast = required(Native.best_attack(previous, actor.id, target.id));
+  Native.dispatch(game, {
+    kind: "attack",
+    unit: Native.unit_id(actor.id),
+    target: Native.unit_id(target.id),
+    weapon: forecast.attack.id,
+  });
+  assert.equal(Native.unit(previous, target.id)?.hp, target.hp);
+  assert.equal(
+    Native.unit(Native.view(game), target.id)?.hp ?? 0,
+    Math.max(0, target.hp - forecast.damage),
+  );
+  write(game);
+  assert.equal(JSON.parse(localStorage.getItem(SAVE_KEY)!).version, 3);
+  const restored = load().game;
+  assert.deepEqual(Native.state(Native.view(restored)), Native.state(Native.view(game)));
+  Native.dispose(restored);
+  Native.dispose(game);
 });
 
 test("All campaign dialogue and retry controls dispatch through native hooks", () => {
   for (const id of ["lantern-road", "green-accord", "ashen-oath", "borrowed-tide"]) {
-    const game = LiveGame.create(factory, { kind: "campaign", id });
-    const opening = game.captureState();
-    game.advanceDialogue();
-    game.previousDialogue();
-    assert.equal(game.campaign?.dialogueIndex, 0);
-    game.advanceDialogue(true);
-    assert.equal(game.campaign?.dialogueIndex, game.campaign?.dialogue.length);
-    game.retryCampaignMission();
-    assert.deepEqual(game.captureState(), opening);
-    game.dispose();
+    const game = createBattle({ kind: "campaign", id }),
+      opening = structuredClone(Native.state(Native.view(game)));
+    Native.dispatch(game, { kind: "dismissDialogue" });
+    Native.dispatch(game, { kind: "previousDialogue" });
+    assert.equal(Native.state(Native.view(game)).campaign?.dialogueIndex, 0);
+    Native.dispatch(game, { kind: "skipDialogue" });
+    let current = Native.state(Native.view(game));
+    assert.equal(current.campaign?.dialogueIndex, current.campaign?.dialogue.length);
+    Native.dispatch(game, { kind: "retryMission" });
+    assert.deepEqual(Native.state(Native.view(game)), opening);
+    Native.dispose(game);
   }
 });
 
@@ -119,36 +124,36 @@ test("Supported legacy woodland revisions migrate without losing campaign progre
   old.round = 3;
   old.gold.player = 19;
   saveBattle(old);
-  const restored = loadLiveBattle(factory);
+  const restored = load(),
+    current = Native.state(Native.view(restored.game));
   assert.equal(restored.notice, undefined);
-  assert.equal(restored.game.mapRevision, 2);
-  assert.equal(restored.game.round, 3);
-  assert.equal(restored.game.gold.player, 19);
-  assert.deepEqual(restored.game.units, old.units);
-  writeBattle(restored.game);
-  const reloaded = loadLiveBattle(factory);
-  assert.deepEqual(reloaded.game.snapshot(), restored.game.snapshot());
-  reloaded.game.dispose();
-  restored.game.dispose();
+  assert.equal(current.mapRevision, 2);
+  assert.equal(current.round, 3);
+  assert.equal(current.gold.player, 19);
+  assert.deepEqual(current.units, old.units);
+  write(restored.game);
+  const reloaded = load();
+  assert.deepEqual(Native.state(Native.view(reloaded.game)), current);
+  Native.dispose(reloaded.game);
+  Native.dispose(restored.game);
 });
 
 test("A failed legacy import is backed up and cannot prevent startup", () => {
   saveBattle(new Game("mirror"));
   const rejected = JSON.parse(localStorage.getItem(SAVE_KEY)!);
-  const restored = loadLiveBattle({
-    ...factory,
-    restore: () => ({ ok: false, error: { code: "invalidRequest", message: "Rejected" } }),
+  const restored = load(() => {
+    throw new Error("Rejected");
   });
   assert(restored.notice);
-  assert.equal(restored.game.turn, "player");
+  assert.equal(Native.state(Native.view(restored.game)).turn, "player");
   assert.deepEqual(JSON.parse(localStorage.getItem(SAVE_KEY + "-unrestored")!), rejected);
-  restored.game.dispose();
+  Native.dispose(restored.game);
 });
 
 test("Rejected native campaign data leaves the WASM factory usable", () => {
-  const game = LiveGame.create(factory, { kind: "campaign", id: "lantern-road" });
-  writeBattle(game);
-  game.dispose();
+  const game = createBattle({ kind: "campaign", id: "lantern-road" });
+  write(game);
+  Native.dispose(game);
   const checkpoint = JSON.parse(localStorage.getItem(SAVE_KEY)!);
   const corruptions = [
     () => {
@@ -162,41 +167,43 @@ test("Rejected native campaign data leaves the WASM factory usable", () => {
   for (const corrupt of corruptions) {
     corrupt();
     localStorage.setItem(SAVE_KEY, JSON.stringify(checkpoint));
-    const restored = loadLiveBattle(factory);
+    const restored = load();
     assert(restored.notice);
-    restored.game.dispose();
+    Native.dispose(restored.game);
   }
-  const next = LiveGame.create(factory, { kind: "campaign", id: "lantern-road" });
-  next.retryCampaignMission();
-  assert.equal(next.units.find((unit) => unit.role === "leader")?.name, "Captain Nera");
-  next.dispose();
+  const next = createBattle({ kind: "campaign", id: "lantern-road" });
+  Native.dispatch(next, { kind: "retryMission" });
+  assert.equal(
+    Native.state(Native.view(next)).units.find((unit) => unit.role === "leader")?.name,
+    "Captain Nera",
+  );
+  Native.dispose(next);
 });
 
 test("Live enemy planning finishes a phase and saves the resulting player turn", async () => {
-  const controller = new BattleController(async () => {}, factory);
-  await controller.endTurn();
-  const after = controller.snapshot();
+  const session = controller();
+  await Session.commands(session).end_turn();
+  const after = capture(session);
   assert.equal(after.turn, "player");
   assert.equal(after.round, 2);
-  const restored = loadLiveBattle(factory);
-  assert.equal(restored.pendingEnemy, false);
-  assert.deepEqual(restored.game.snapshot(), after);
-  restored.game.dispose();
-  controller.dispose();
+  const restored = load();
+  assert.equal(restored.pending_enemy, false);
+  assert.deepEqual(Native.state(Native.view(restored.game)), after);
+  Native.dispose(restored.game);
+  Session.close(session);
 });
 
 test("An invalid native checkpoint preserves the old save and leaves a playable battle", () => {
   const rejected = { version: 999, checkpoint: {}, pendingEnemy: false };
   localStorage.setItem(SAVE_KEY, JSON.stringify(rejected));
-  const restored = loadLiveBattle(factory);
+  const restored = load();
   assert(restored.notice);
-  assert.equal(restored.game.turn, "player");
+  assert.equal(Native.state(Native.view(restored.game)).turn, "player");
   assert.deepEqual(JSON.parse(localStorage.getItem(SAVE_KEY + "-unrestored")!), rejected);
-  restored.game.dispose();
+  Native.dispose(restored.game);
 });
 
 test("Reloading an exact enemy-phase checkpoint resumes the saved planner once", async () => {
-  // Node has no image decoder; artwork failure must not affect turn recovery.
   vi.stubGlobal(
     "Image",
     class {
@@ -206,47 +213,48 @@ test("Reloading an exact enemy-phase checkpoint resumes the saved planner once",
       }
     },
   );
-  const game = LiveGame.create(factory, { kind: "scenario", map: "mirror" });
-  game.endTurn();
-  game.enemyStep();
-  writeBattle(game);
-  const checkpoint = game.captureState();
-  const phaseSnapshot = game.snapshot();
-  assert.equal(checkpoint.turn, "enemy");
-  for (let steps = 0; game.turn === "enemy"; steps++) {
-    assert(steps < 100, "planner must finish this small phase");
-    game.enemyStep();
+  const game = createBattle({ kind: "scenario", map: "mirror" }),
+    options = { policy: "classic", diplomacy: "restrained", recruitmentLimit: 2 } as const;
+  Native.dispatch(game, { kind: "endTurn" });
+  Native.enemy_step(game, options);
+  write(game);
+  const phase = structuredClone(Native.state(Native.view(game)));
+  assert.equal(phase.turn, "enemy");
+  for (let steps = 0; Native.state(Native.view(game)).turn === "enemy"; steps++) {
+    assert(steps < 100);
+    Native.enemy_step(game, options);
   }
-  const expected = game.snapshot();
-  game.dispose();
+  const expected = structuredClone(Native.state(Native.view(game)));
+  Native.dispose(game);
   let release!: () => void;
   const paused = new Promise<void>((resolve) => {
     release = resolve;
   });
-  const controller = new BattleController(() => paused, factory);
+  const session = controller(() => paused);
   let completed!: () => void;
   const completion = new Promise<void>((resolve) => {
     completed = resolve;
   });
-  const unsubscribe = controller.view.subscribe((view) => {
-    if (view.game.turn === "player" && view.game.round === 2) completed();
+  const unsubscribe = Session.subscribe(session, (view: any) => {
+    const current = Native.state(view.game);
+    if (current.turn === "player" && current.round === 2) completed();
   });
-  controller.initialize();
-  controller.initialize();
-  assert.deepEqual(controller.snapshot(), phaseSnapshot);
+  Session.initialize(session);
+  Session.initialize(session);
+  assert.deepEqual(capture(session), phase);
   release();
   await completion;
-  assert.equal(controller.snapshot().round, 2);
+  assert.equal(state(session).round, 2);
   assert.deepEqual(
-    controller.snapshot(),
+    capture(session),
     expected,
     "resume must preserve the saved planner continuation",
   );
   await Promise.resolve();
-  const restored = loadLiveBattle(factory);
-  assert.equal(restored.pendingEnemy, false);
-  assert.deepEqual(restored.game.snapshot(), controller.snapshot());
-  restored.game.dispose();
-  controller.dispose();
+  const restored = load();
+  assert.equal(restored.pending_enemy, false);
+  assert.deepEqual(Native.state(Native.view(restored.game)), capture(session));
+  Native.dispose(restored.game);
+  Session.close(session);
   unsubscribe();
 });

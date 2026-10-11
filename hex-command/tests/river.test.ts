@@ -1,10 +1,11 @@
+import type { Tile, Side, Dialogue } from "../rust/pkg/hex_command";
 import { test, afterEach, vi } from "vitest";
 import { required, storageWithValue } from "./helpers.ts";
 import assert from "node:assert/strict";
 import { Game } from "./game-fixture.ts";
 import { loadBattle, saveBattle } from "./legacy-save.ts";
-import { LEGACY_RIVER } from "../src/save/migration/legacy/layouts";
-import { legacyBoard } from "../src/save/migration/legacy/board";
+import oldLayout from "../src/save/migration/legacy/data/river-v1.json";
+import oldRoster from "../src/save/migration/legacy/data/river-v1-roster.json";
 
 test("River layout, checkpoint and missing map migration round-trip", async () => {
   let stored = "";
@@ -53,12 +54,11 @@ test("Revision-one river saves retain their crossings and progress", async () =>
     ),
   );
   const oldRiver = new Game("river");
-  const board = legacyBoard("river", 1);
-  oldRiver.tiles = board.tiles;
+  oldRiver.tiles = structuredClone(oldLayout.tiles) as Tile[];
   oldRiver.units = [];
   oldRiver.nextId = 1;
-  for (const unit of LEGACY_RIVER.units)
-    oldRiver.addUnit(unit.type, unit.side, `${unit.col},${unit.row}`);
+  for (const unit of oldRoster.units)
+    oldRiver.addUnit(unit.type, unit.side as Side, `${unit.col},${unit.row}`);
   oldRiver.move("u3", "4,4");
   required(oldRiver.unit("u2")).tile = "7,1";
   saveBattle(oldRiver);

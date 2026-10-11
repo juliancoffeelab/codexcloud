@@ -1,7 +1,9 @@
 import { defineConfig } from "vitest/config";
+import { frontendAliases } from "./scripts/frontend-paths";
 import { availableParallelism } from "node:os";
 
 export default defineConfig({
+  resolve: { alias: frontendAliases },
   test: {
     environment: "node",
     setupFiles: ["tests/setup-wasm.ts"],

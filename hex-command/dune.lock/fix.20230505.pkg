@@ -1,0 +1,28 @@
+(version 20230505)
+
+(install
+ (all_platforms
+  (progn
+   (run mkdir -p %{lib}/fix)
+   (run cp -RL fix/_build/install/default/lib/fix/. %{lib}/fix))))
+
+(build
+ (all_platforms
+  ((action
+    (progn
+     (run mv fix/vendored_fix.opam fix/fix.opam)
+     (run mv fix/src/Vendored_fix.ml fix/src/Fix.ml)
+     (run sed -i.bak s/vendored_fix/fix/g fix/src/dune fix/fix.opam)
+     (run rm fix/src/dune.bak fix/fix.opam.bak)
+     (run dune build --root fix @install -j %{jobs}))))))
+
+(depends
+ (all_platforms
+  (ocaml dune)))
+
+(source
+ (fetch
+  (url
+   https://deb.debian.org/debian/pool/main/m/menhir/menhir_20240715+ds.orig.tar.xz)
+  (checksum
+   sha256=6adc86fdd54309e3acc309b61266d43ea1206cdb772cfabd58d73c7116ad6cf3)))

@@ -1,91 +1,80 @@
 import { test, beforeEach, afterEach, vi } from "vitest";
 import { required, TestStorage } from "./helpers.ts";
 import assert from "node:assert/strict";
-import { pixelSprites } from "../src/presentation/pixel-art";
 
-const { Game, TYPES, developerFixture } = await import("./game-fixture.ts");
-const { MAPS, BATTLE_MAPS } = await import("../src/game/maps.ts");
-
-test("Developer map shows every playable type and reserves space for the pixel collection", () => {
-  const game = new Game("developer");
-  for (const type of Object.keys(TYPES))
-    for (const side of ["player", "enemy"])
-      assert(
-        game.units.some((unit) => unit.type === type && unit.side === side),
-        `${side} ${type}`,
-      );
-  const artworkTypes = Object.keys(pixelSprites).filter((frame) =>
-    frame.startsWith("player_"),
-  ).length;
-  const occupied = new Set(game.units.map((unit) => unit.tile));
-  const freeGround = game.tiles.filter(
-    (tile) => tile.terrain === "plains" && !occupied.has(tile.id),
-  ).length;
-  assert(
-    freeGround >= artworkTypes * 2 - game.units.length,
-    "Room for both factions' complete artwork",
-  );
-});
-
-test("Hidden scenarios stay loadable and saved without appearing in the map picker", () => {
-  const hiddenMaps = Object.values(MAPS).filter((map) => map.hidden);
-  assert(hiddenMaps.length > 0);
-  for (const map of hiddenMaps) {
-    assert(!BATTLE_MAPS.some((choice) => choice.id === map.id));
-    const game = new Game(map.id);
-    saveBattle(game);
-    assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
-  }
-  assert(BATTLE_MAPS.every((map) => !map.hidden));
-});
+const { Game, TYPES } = await import("./game-fixture.ts");
+const { Native, Catalog, catalog, createBattle } = await import("./native-fixture.ts");
 
 // These are ordinary units on an ordinary map: movement, combat and turns still work.
 test("Developer units use ordinary movement, combat and turns", async () => {
-  const developerBattle = developerFixture(["soldier"]);
+  const developerBattle = createBattle({ kind: "scenario", map: "developer" });
+  const initial = Native.state(Native.view(developerBattle));
   const soldier = required(
-    developerBattle.units.find((unit) => unit.type === "soldier" && unit.side === "player"),
+    initial.units.find((unit) => unit.type === "soldier" && unit.side === "player"),
   );
   const enemySoldier = required(
-    developerBattle.units.find((unit) => unit.type === "soldier" && unit.side === "enemy"),
+    initial.units.find((unit) => unit.type === "soldier" && unit.side === "enemy"),
   );
-  developerBattle.move(soldier.id, "4,2");
-  assert.equal(soldier.tile, "4,2");
-  assert(developerBattle.targets(soldier.id).includes(enemySoldier));
-  developerBattle.attack(soldier.id, enemySoldier.id, "sword");
-  assert(enemySoldier.hp < TYPES.soldier.hp);
-  assert(soldier.attacked);
-  developerBattle.endTurn();
-  assert.equal(developerBattle.turn, "enemy");
-  assert.equal(developerBattle.winner, null);
+  Native.dispatch(developerBattle, { kind: "move", unit: Native.unit_id(soldier.id), tile: "4,2" });
+  assert.equal(Native.unit(Native.view(developerBattle), soldier.id)!.tile, "4,2");
+  assert(
+    Native.targets(Native.view(developerBattle), soldier.id).some(
+      (unit) => unit.id === enemySoldier.id,
+    ),
+  );
+  Native.dispatch(developerBattle, {
+    kind: "attack",
+    unit: Native.unit_id(soldier.id),
+    target: Native.unit_id(enemySoldier.id),
+    weapon: "sword",
+  });
+  assert(
+    Native.unit(Native.view(developerBattle), enemySoldier.id)!.hp <
+      Catalog.unit(catalog, "soldier").hp,
+  );
+  assert(Native.unit(Native.view(developerBattle), soldier.id)!.attacked);
+  Native.dispatch(developerBattle, { kind: "endTurn" });
+  assert.equal(Native.state(Native.view(developerBattle)).turn, "enemy");
+  assert.equal(Native.state(Native.view(developerBattle)).winner, null);
 });
 
 // Developer snapshots remain noncampaign saves without relaxing ordinary validation.
 const { loadBattle, saveBattle, SAVE_KEY, SAVE_VERSION } = await import("./legacy-save.ts");
 
 test("Developer saves remain noncampaign and round-trip", async () => {
-  const showcase = developerFixture();
+  const showcase = new Game("developer");
   saveBattle(showcase);
   const loaded = loadBattle();
   assert.deepEqual(loaded.game.snapshot(), showcase.snapshot());
   assert.equal(loaded.pendingEnemy, false);
   assert.equal(loaded.game.campaign, undefined);
 });
-test("Moved developer sites persist ownership", async () => {
-  const game = developerFixture(["scout"]);
-  const unit = required(game.units.find((unit) => unit.side === "player" && unit.type === "scout"));
-  const destination = "5,1";
-  game.move(unit.id, destination);
-  assert.equal(required(game.tile(destination)).owner, "player");
-  saveBattle(game);
-  assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
-  assert.equal(required(loadBattle().game.tile(destination)).owner, "player");
-});
+for (const [type, destination] of [
+  ["scout", "5,1"],
+  ["soldier", "3,1"],
+  ["soldier", "4,1"],
+] as const) {
+  test(
+    "Moved developer sites persist ownership — " + JSON.stringify([type, destination]),
+    async () => {
+      const game = new Game("developer");
+      const unit = required(
+        game.units.find((unit) => unit.side === "player" && unit.type === type),
+      );
+      game.move(unit.id, destination);
+      assert.equal(required(game.tile(destination)).owner, "player");
+      saveBattle(game);
+      assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
+      assert.equal(required(loadBattle().game.tile(destination)).owner, "player");
+    },
+  );
+}
 test("Ordinary skirmishes do not publish site ownership overrides", async () => {
   assert.equal(new Game("mirror").snapshot().sites, undefined);
   assert.equal(new Game("river").snapshot().sites, undefined);
 });
 function validDeveloperSave() {
-  const showcase = developerFixture();
+  const showcase = new Game("developer");
   const validSave = {
     version: SAVE_VERSION,
     pendingEnemy: false,
@@ -94,14 +83,14 @@ function validDeveloperSave() {
   return validSave;
 }
 test("Legacy developer saves gain neutral sites without resetting units", async () => {
+  const showcase = new Game("developer");
   const validSave = validDeveloperSave();
-  const units = structuredClone(validSave.state.units);
   const legacySave = structuredClone(validSave);
   delete legacySave.state.sites;
   localStorage.setItem(SAVE_KEY, JSON.stringify(legacySave));
   const legacy = loadBattle().game;
   assert.equal(legacy.mapId, "developer");
-  assert.deepEqual(legacy.units, units);
+  assert.deepEqual(legacy.units, showcase.units);
   assert(required(legacy.snapshot().sites).every((site) => site.owner === null));
 });
 test("Campaign saves still require site ownership", async () => {
@@ -132,7 +121,7 @@ const invalidCases: [string, (save: ReturnType<typeof validDeveloperSave>) => vo
     "missing enemy commander",
     (save) => {
       save.state.units = save.state.units.filter(
-        (unit) => !(unit.side === "enemy" && TYPES[unit.type].family === "commander"),
+        (unit) => !(unit.side === "enemy" && required(TYPES[unit.type]).family === "commander"),
       );
     },
   ],

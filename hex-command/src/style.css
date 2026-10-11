@@ -1898,3 +1898,38 @@ select {
   color: var(--muted);
   font-size: 13px;
 }
+
+.story-navigation {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+  margin-top: 24px;
+}
+.story-navigation button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 8px;
+  color: var(--gold);
+  border-color: var(--gold);
+}
+.story-navigation svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.story-count {
+  text-align: center;
+  white-space: nowrap;
+}

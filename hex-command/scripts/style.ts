@@ -31,6 +31,11 @@ const files = [
 ];
 const checks = [
   {
+    name: "OCaml/Reason formatting",
+    command: process.execPath,
+    args: ["--import", "tsx", "scripts/frontend-format.ts", ...(write ? ["--write"] : [])],
+  },
+  {
     name: "Prettier",
     command: process.execPath,
     args: [

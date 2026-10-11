@@ -12,7 +12,11 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "skipLibCheck": true,
-    "types": ["vite/client", "svelte", "node"]
+    "types": ["vite/client", "node"],
+    "paths": {
+      "@frontend/*": ["./frontend/*.d.ts"],
+      "@frontend/*.js": ["./frontend/*.d.ts"]
+    }
   },
-  "include": ["src/**/*.ts", "src/**/*.svelte", "vite.config.ts", "svelte.config.ts"]
+  "include": ["scripts/**/*.ts", "vite.config.ts", "vitest.config.ts"]
 }

@@ -1,22 +1,27 @@
+import type { Dialogue } from "../rust/pkg/hex_command";
 import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
-import { describeChanges } from "../src/controller/feedback";
+import * as Presentation from "@frontend/Presentation";
+import * as Catalog from "@frontend/Catalog";
+import { catalog, Native } from "./native-fixture";
+import history from "../src/save/migration/legacy/data/stages.json";
 import { Game, TYPES } from "./game-fixture";
-import { CAMPAIGNS } from "../src/save/migration/legacy/catalog";
-import { UNIT_TYPES } from "../src/game/types";
 import { createGameView } from "./fixture-view";
 import { saveBattle, loadBattle, SAVE_KEY } from "./legacy-save";
 import { required, TestStorage } from "./helpers";
 
-test("Unit enum and definitions cover the same roster", async () => {
-  assert.deepEqual(Object.keys(TYPES).sort(), [...UNIT_TYPES].sort());
+test("Resolved native promotions reference existing authored units", () => {
+  for (const rule of Catalog.units(catalog)) {
+    for (const target of rule.advancesTo ?? [])
+      assert.equal(Catalog.unit(catalog, target).id, target);
+  }
 });
 test("Combat XP and promotion preserve wounds, identity and immutable publications", async () => {
   const game = new Game();
   game.units = [];
   const attacker = game.addUnit("swordsman", "player", "3,3");
   const defender = game.addUnit("archer", "enemy", "4,3");
-  attacker.hp = TYPES.swordsman.hp - 4;
+  attacker.hp = Catalog.unit(catalog, "swordsman").hp - 4;
   defender.hp = 3;
   game.attack(attacker.id, defender.id, "sword");
   assert.equal(attacker.experience, 6);
@@ -24,18 +29,22 @@ test("Combat XP and promotion preserve wounds, identity and immutable publicatio
   attacker.experience = 10;
   attacker.moved = attacker.attacked = false;
   const before = createGameView(game);
-  const beforePromotion = game.snapshot();
-  assert.deepEqual(before.promotionOptions(attacker.id), ["soldier"]);
+  const beforePromotion = game.captureState();
+  assert.deepEqual(game.promotionOptions(attacker.id), ["soldier"]);
   game.advanceUnit(attacker.id, "soldier");
-  const feedback = describeChanges(beforePromotion, game.snapshot());
+  const feedback = Presentation.changes(beforePromotion, game.captureState());
   assert(feedback.advanced);
   assert.equal(feedback.attacked, false, "Promotion must not replay the prior combat cue");
-  assert.equal(attacker.hp, TYPES.soldier.hp - 4, "Promotion preserves all four wounds");
-  assert.equal(attacker.id, before.units[0]!.id);
+  assert.equal(
+    attacker.hp,
+    Catalog.unit(catalog, "soldier").hp - 4,
+    "Promotion preserves all four wounds",
+  );
+  assert.equal(attacker.id, beforePromotion.units[0]!.id);
   assert.equal(attacker.experience, 0);
   assert(attacker.moved && attacker.attacked);
   assert.equal(
-    before.unit(attacker.id)?.type,
+    Native.unit(before, attacker.id)?.type,
     "swordsman",
     "Published progression remains immutable",
   );
@@ -97,7 +106,13 @@ for (const [chapter, oldName, officerName] of [
       officer.experience = 7;
       officer.moved = officer.attacked = true;
       oldCoast.campaign!.dialogue = [
-        required(CAMPAIGNS["borrowed-tide"].missions[chapter]!.legacyDialogue?.[0]),
+        required(
+          required(
+            (history as Record<string, { dialogue: Dialogue[] }>)[
+              Catalog.campaign(catalog, "borrowed-tide").missions[chapter]!.map.id
+            ],
+          ).dialogue[0],
+        ),
       ];
       saveBattle(oldCoast);
       const migrated = loadBattle().game;

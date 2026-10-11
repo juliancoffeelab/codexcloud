@@ -1,7 +1,7 @@
 import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
 import { required, TestStorage } from "./helpers.ts";
-import { createSound as makeSound } from "../src/presentation/sound.ts";
+import * as Audio from "@frontend/Audio";
 const stored = new Map<string, string>();
 
 let created = 0,
@@ -74,6 +74,8 @@ test("Audio only starts after an enabled trusted gesture", async () => {
   await sound.playSound("turn");
   assert.equal(created, 0);
   assert.equal(fetched.length, 0);
+  assert.equal(await sound.unlockSound({ isTrusted: false }), false);
+  assert.equal(created, 0, "Scripted gestures cannot create an audio context");
   sound.setSoundEnabled(false);
   await sound.unlockSound();
   assert.equal(created, 0);
@@ -127,7 +129,7 @@ test("Fords use water sounds and empty interactions use selection", async () => 
   assert.equal(sound.soundForInteraction({}), "select");
 });
 // A shuffle bag plays all three variations, without an immediate repeat at refill.
-test("Shuffle bags avoid repeats, reuse preload and stop voices when muted", async () => {
+test("Shuffle bags avoid repeats, reuse decoded samples and stop voices when muted", async () => {
   const sound = createSound();
   await sound.unlockSound();
   const variants: string[] = [];
@@ -139,7 +141,7 @@ test("Shuffle bags avoid repeats, reuse preload and stop voices when muted", asy
   }
   for (let i = 0; i < 9; i += 3) assert.equal(new Set(variants.slice(i, i + 3)).size, 3);
   assert.ok(variants.every((value, i) => i === 0 || value !== variants[i - 1]));
-  assert.equal(fetched.length, 51, "all variations warm after the first gesture and are reused");
+  assert.equal(fetched.length, 3, "Only this family's three variations load and are reused");
   assert.ok(
     required(audio)
       .sources.filter((source) => !source.buffer.silent)
@@ -161,32 +163,52 @@ test("Shuffle bags avoid repeats, reuse preload and stop voices when muted", asy
 });
 // Delayed preload responses cannot revive superseded or muted clicks.
 async function delayedSound() {
-  const pending: { name: string; resolve: () => void }[] = [];
+  const pending: { name: string; completed: boolean; resolve: () => void }[] = [];
+  const waiting: { family: string; resolve: () => void }[] = [];
+  const requested = (family: string) =>
+    pending.some((request) => !request.completed && request.name.includes(`/${family}-`))
+      ? Promise.resolve()
+      : new Promise<void>((resolve) => waiting.push({ family, resolve }));
   globalThis.fetch = (url) =>
-    new Promise<Response>((resolve) =>
-      pending.push({
+    new Promise<Response>((resolve) => {
+      const request: { name: string; completed: boolean; resolve: () => void } = {
         name: String(url),
-        resolve: () => resolve(new Response(String(url))),
-      }),
-    );
+        completed: false,
+        resolve: () => {
+          request.completed = true;
+          resolve(new Response(String(url)));
+        },
+      };
+      pending.push(request);
+      for (let index = waiting.length - 1; index >= 0; index--) {
+        const waiter = waiting[index]!;
+        if (request.name.includes(`/${waiter.family}-`)) {
+          waiting.splice(index, 1);
+          waiter.resolve();
+        }
+      }
+    });
   const cold = createSound();
   await cold.unlockSound();
-  return { pending, cold };
+  assert.equal(pending.length, 0, "Unlocking never starts background sample requests");
+  return { pending, cold, requested };
 }
 test("Delayed fetches cannot revive superseded, muted or suspended cues", async () => {
-  const { pending, cold } = await delayedSound();
-  assert.equal(pending.length, 51);
+  const { pending, cold, requested } = await delayedSound();
   const old = cold.playSound("terrain-forest");
   const latest = cold.playInteraction({
     attackType: "archer",
     unitType: "soldier",
     terrain: "forest",
   });
+  await requested("terrain-forest");
+  await requested("attack-bow");
   for (const sample of pending.filter((p) => p.name.includes("/terrain-forest-"))) sample.resolve();
   assert.equal(await old, false);
   for (const sample of pending.filter((p) => p.name.includes("/attack-bow-"))) sample.resolve();
   assert.equal(await latest, true);
   const muted = cold.playSound("terrain-water");
+  await requested("terrain-water");
   cold.setSoundEnabled(false);
   for (const sample of pending.filter((p) => p.name.includes("/terrain-water-"))) sample.resolve();
   assert.equal(await muted, false);
@@ -199,9 +221,11 @@ test("Delayed fetches cannot revive superseded, muted or suspended cues", async 
 });
 // Reset/unmount cancellation stops active feedback without muting future cues.
 test("Session cancellation stops active and still-decoding samples without muting future cues", async () => {
-  const { pending, cold } = await delayedSound();
+  const { pending, cold, requested } = await delayedSound();
+  const forest = cold.playSound("terrain-forest");
+  await requested("terrain-forest");
   for (const sample of pending.filter((p) => p.name.includes("/terrain-forest-"))) sample.resolve();
-  assert.equal(await cold.playSound("terrain-forest"), true);
+  assert.equal(await forest, true);
   const cancellationContext = required(audio);
   const activeSource = required(cancellationContext.sources.at(-1));
   const savedPreference = stored.get("hex-command-sound-enabled");
@@ -222,9 +246,10 @@ test("Session cancellation stops active and still-decoding samples without mutin
       finishDecoding.push(() => {
         void originalDecode(bytes).then(resolve);
       });
-      if (finishDecoding.length === 3) announceDecoding();
+      announceDecoding();
     });
   const cancelled = cold.playSound("terrain-hill");
+  await requested("terrain-hill");
   for (const sample of pending.filter((p) => p.name.includes("/terrain-hill-"))) sample.resolve();
   await decodingStarted;
   const sourcesBeforeCancel = cancellationContext.sources.length;
@@ -233,10 +258,23 @@ test("Session cancellation stops active and still-decoding samples without mutin
   assert.equal(await cancelled, false);
   assert.equal(cancellationContext.sources.length, sourcesBeforeCancel);
   cancellationContext.decodeAudioData = originalDecode;
+  // Complete the rest of the shuffle bag, then revisit decoded variations.
+  const subsequentRequests: string[] = [];
+  globalThis.fetch = async (url) => {
+    subsequentRequests.push(String(url));
+    return new Response(String(url));
+  };
+  for (let index = 0; index < 3; index++) {
+    assert.equal(
+      await cold.playSound("terrain-hill"),
+      true,
+      "Later sessions can play decoded cues",
+    );
+  }
   assert.equal(
-    await cold.playSound("terrain-hill"),
-    true,
-    "later sessions can reuse decoded samples",
+    subsequentRequests.length,
+    2,
+    "Only the two undecoded variations fetch; completed decoding remains cached",
   );
   cold.cancelSound();
 });
@@ -261,10 +299,22 @@ test("Completed mobile taps retry pending resume and recreate closed contexts", 
   void touch.unlockSound(gesture("pointerdown", true));
   assert.equal(attempts, 1);
   assert.equal(required(audio).sources.length, 1, "the gesture primes mobile output with silence");
-  await Promise.race([
-    touch.unlockSound(gesture("touchend", true)),
-    new Promise((_, reject) => setTimeout(() => reject(Error("touch resume remained stuck")), 100)),
-  ]);
+  vi.useFakeTimers();
+  try {
+    let timeout: ReturnType<typeof setTimeout> | undefined;
+    const deadline = new Promise<never>((_, reject) => {
+      timeout = setTimeout(() => reject(Error("touch resume remained stuck")), 100);
+    });
+    const retried = Promise.race([touch.unlockSound(gesture("touchend", true)), deadline]).finally(
+      () => {
+        if (timeout !== undefined) clearTimeout(timeout);
+      },
+    );
+    await vi.advanceTimersByTimeAsync(100);
+    await retried;
+  } finally {
+    vi.useRealTimers();
+  }
   assert.equal(attempts, 2);
   assert.equal(await touch.playSound("terrain-plains"), true);
   required(audio).state = "interrupted";
@@ -280,8 +330,8 @@ test("Completed mobile taps retry pending resume and recreate closed contexts", 
   assert.equal(attempts, attemptsBefore, "scripted events cannot unlock output");
   globalThis.AudioContext = NativeFake;
 });
-// Failed preload and playback remain harmless.
-test("Failed audio preload never throws", async () => {
+// Failed sample loading remains harmless.
+test("Failed audio samples never throw", async () => {
   globalThis.fetch = async () => new Response(null, { status: 500 });
   const failed = createSound();
   await failed.unlockSound();
@@ -294,11 +344,29 @@ test("Missing audio APIs degrade to silent playback", async () => {
   assert.equal(await unsupported.playSound("turn"), false);
 });
 
-const sessions: ReturnType<typeof makeSound>[] = [];
+const sessions: Audio.Audio[] = [];
 function createSound() {
-  const sound = makeSound();
-  sessions.push(sound);
-  return sound;
+  const audio = Audio.create();
+  sessions.push(audio);
+  // These test-only conveniences call the actual emitted OCaml owner.
+  return {
+    soundEnabled: () => Audio.enabled(audio),
+    setSoundEnabled: (enabled: boolean) => Audio.set_enabled(audio, enabled),
+    cancelSound: () => Audio.cancel(audio),
+    unlockSound: (event?: { isTrusted: boolean }) =>
+      Audio.unlock(audio, event?.isTrusted !== false),
+    playSound: (family: string) => Audio.play(audio, family),
+    soundForInteraction: (details: { attackType?: string; unitType?: string; terrain?: string }) =>
+      Audio.interaction_family(details.attackType, details.unitType, details.terrain, undefined),
+    playInteraction: (details: { attackType?: string; unitType?: string; terrain?: string }) =>
+      Audio.play_interaction(
+        audio,
+        details.attackType,
+        details.unitType,
+        details.terrain,
+        undefined,
+      ),
+  };
 }
 beforeEach(() => {
   stored.clear();
@@ -314,7 +382,7 @@ beforeEach(() => {
   });
 });
 afterEach(() => {
-  for (const sound of sessions.splice(0)) sound.cancelSound();
+  for (const audio of sessions.splice(0)) Audio.cancel(audio);
 });
 
 afterEach(() => {

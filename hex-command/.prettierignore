@@ -2,4 +2,6 @@ dist/
 node_modules/
 public/
 package-lock.json
-/README.md
+
+# Compiler interfaces have their own formatter; generated bindings are byte-checked.
+frontend/

@@ -1,6 +1,4 @@
 {
-  "plugins": ["prettier-plugin-svelte"],
   "printWidth": 100,
-  "htmlWhitespaceSensitivity": "ignore",
-  "svelteSortOrder": "options-scripts-markup-styles"
+  "htmlWhitespaceSensitivity": "ignore"
 }

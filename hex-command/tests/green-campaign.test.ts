@@ -1,7 +1,8 @@
 import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
 import { Game } from "./game-fixture";
-import { campaignMission } from "../src/game/campaign-progress";
+import * as Story from "@frontend/Story";
+import { catalog } from "./native-fixture";
 import { loadBattle, saveBattle } from "./legacy-save";
 import { required, TestStorage } from "./helpers";
 
@@ -27,7 +28,9 @@ for (const mission of [0, 1, 2]) {
       assert.deepEqual(restored.units, game.units);
       assert(restored.campaign?.marks.includes("dain-fell"));
       assert(
-        !campaignMission(restored.campaign!).victory.some((line) => line.speaker.includes("Dain")),
+        !Story.mission(catalog, restored.campaign!).victory.some((line) =>
+          line.speaker.includes("Dain"),
+        ),
       );
       assert(restored.retryCampaignMission().units.some((unit) => unit.name === "Captain Dain"));
       saveBattle(restored);

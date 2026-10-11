@@ -1,71 +1,51 @@
-import { LiveGame, nativeValue } from "../src/game/live-game";
-import { TYPES } from "../src/game/catalog";
-import type { GameState, Unit, Tile, CampaignId, UnitType, Side, MapId } from "../src/game/types";
-import type { SavedGame } from "../rust/pkg/hex_command";
-import { createTestFactory } from "./native-fixture";
-export { TYPES, TERRAIN, RACES, DAMAGE_TYPES, axial, distance } from "../src/game/catalog";
+import type {
+  State,
+  PublicUnit,
+  Tile,
+  SavedGame,
+  Weapon,
+  Side,
+  AttackDetails,
+  Command,
+} from "../rust/pkg/hex_command";
+import { Native, Catalog, catalog, createBattle, restoreBattle } from "./native-fixture";
+export { catalog } from "./native-fixture";
+export const TYPES = Object.fromEntries(Catalog.units(catalog).map((rule) => [rule.id, rule]));
+export const TERRAIN = Object.fromEntries(Catalog.terrain(catalog).map((rule) => [rule.id, rule]));
+export const RACES = Object.fromEntries(Catalog.races(catalog).map((rule) => [rule.id, rule]));
+export const DAMAGE_TYPES = { blade: "Blade", pierce: "Pierce", impact: "Impact" };
 
-/** Keep the real showcase geometry but bound actors for ordinary behavior checks. */
-export function developerFixture(types: readonly UnitType[] = []): Game {
-  const engine = nativeValue(
-    createTestFactory().create({ kind: "scenario", map: "developer" }, 17),
-  );
-  let checkpoint: SavedGame;
-  try {
-    checkpoint = structuredClone(nativeValue(engine.save())) as SavedGame;
-  } finally {
-    engine.dispose();
-  }
-  const leaders = new Set(
-    (["player", "enemy"] as const).map(
-      (side) =>
-        checkpoint.state.units.find(
-          (unit) => unit.side === side && TYPES[unit.type as UnitType].family === "commander",
-        )!.id,
-    ),
-  );
-  checkpoint.state.units = checkpoint.state.units.filter(
-    (unit) => leaders.has(unit.id) || types.includes(unit.type as UnitType),
-  );
-  return Game.fromCheckpoint(checkpoint);
-}
-
-/** Editable test data backed by the actual Rust engine for every query and command. */
-export class Game implements GameState {
-  declare mapId: MapId;
+/** Editable test DTOs. Every query and mutation goes through actual OCaml/Rust. */
+export class Game implements State {
+  declare mapId: string;
   declare mapRevision: number;
   declare cols: number;
   declare rows: number;
   declare round: number;
   declare turn: Side;
-  declare gold: GameState["gold"];
-  declare winner: GameState["winner"];
+  declare gold: State["gold"];
+  declare winner: State["winner"];
   declare nextId: number;
   declare log: string[];
   declare tiles: Tile[];
-  declare units: Unit[];
-  declare campaign?: GameState["campaign"];
-  declare lastCombat?: GameState["lastCombat"];
-  #native: LiveGame;
+  declare units: PublicUnit[];
+  declare campaign?: State["campaign"];
+  declare lastCombat?: State["lastCombat"];
+  #battle: Native.battle;
   #signature = "";
-  #cost!: LiveGame["cost"];
-  constructor(map: string | SavedGame = "mirror", revision?: number) {
-    this.#native =
-      typeof map === "string"
-        ? LiveGame.create(createTestFactory(), {
-            kind: "scenario",
-            map,
-            ...(revision === undefined ? {} : { revision }),
-          })
-        : LiveGame.restore(createTestFactory(), map);
-    this.#cost = this.#native.publishedView().cost;
-    this.restoreData(this.#native.captureState());
+  constructor(map = "mirror", revision?: number) {
+    this.#battle = createBattle({
+      kind: "scenario",
+      map,
+      ...(revision === undefined ? {} : { revision }),
+    });
+    this.restoreData(structuredClone(Native.state(Native.view(this.#battle))) as State);
   }
-  static startCampaign(id: CampaignId, mission = 0): Game {
+  static startCampaign(id: string, mission = 0): Game {
     const fixture = new Game();
-    fixture.#native.dispose();
-    fixture.#native = LiveGame.create(createTestFactory(), { kind: "campaign", id });
-    fixture.restoreData(fixture.#native.captureState());
+    Native.dispose(fixture.#battle);
+    fixture.#battle = createBattle({ kind: "campaign", id });
+    fixture.restoreData(structuredClone(Native.state(Native.view(fixture.#battle))) as State);
     for (let chapter = 0; chapter < mission; chapter++) {
       fixture.gold.player = 0;
       fixture.winner = "player";
@@ -73,17 +53,18 @@ export class Game implements GameState {
     }
     return fixture;
   }
-  /** Fixture editing changes only serialized state; synchronization runs native validation. */
-  private native(): LiveGame {
+  /** Revalidate fixture edits as a native checkpoint before publishing them. */
+  private native() {
     const state = this.captureState(),
       signature = JSON.stringify(state);
     if (signature !== this.#signature) {
-      this.#native.restoreState(state);
+      const checkpoint = structuredClone(Native.save(this.#battle)) as SavedGame;
+      Native.replace(this.#battle, { ...checkpoint, state, planner: undefined });
       this.#signature = signature;
     }
-    return this.#native;
+    return this.#battle;
   }
-  private restoreData(state: GameState, retainUnits = false): void {
+  private restoreData(state: State, retainUnits = false): void {
     if (retainUnits && state.mapId === this.mapId)
       state.units = state.units.map((unit) => {
         const previous = this.unit(unit.id);
@@ -96,34 +77,34 @@ export class Game implements GameState {
     Object.assign(this, state);
     this.#signature = JSON.stringify(state);
   }
-  private apply(action: (native: LiveGame) => void): void {
-    const native = this.native();
-    action(native);
-    this.restoreData(native.captureState(), true);
+  private apply(command: Command): void {
+    Native.dispatch(this.native(), command);
+    this.restoreData(structuredClone(Native.state(Native.view(this.#battle))) as State, true);
   }
-  captureState(): GameState {
+  captureState(): State {
     return structuredClone({ ...this });
   }
-  restoreState(state: GameState): void {
-    this.#native.restoreState(state);
+  restoreState(state: State): void {
+    const checkpoint = structuredClone(Native.save(this.#battle)) as SavedGame;
+    Native.replace(this.#battle, { ...checkpoint, state, planner: undefined });
     this.restoreData(structuredClone(state));
   }
-  tile(id: string | null | undefined) {
+  tile(id: string | null | undefined): Tile | undefined {
     return this.tiles.find((tile) => tile.id === id);
   }
-  unit(id: string | null | undefined) {
+  unit(id: string | null | undefined): PublicUnit | undefined {
     return this.units.find((unit) => unit.id === id);
   }
-  at(id: string | null | undefined) {
+  at(id: string | null | undefined): PublicUnit | undefined {
     return this.units.find((unit) => unit.tile === id);
   }
-  addUnit(type: UnitType, side: Side, tile: string): Unit {
+  addUnit(type: string, side: Side, tile: string): PublicUnit {
     const unit = {
       id: `u${this.nextId++}`,
       type,
       side,
       tile,
-      hp: TYPES[type].hp,
+      hp: Catalog.unit(catalog, type).hp,
       experience: 0,
       moved: false,
       attacked: false,
@@ -135,90 +116,162 @@ export class Game implements GameState {
     this.log = [message, ...this.log].slice(0, 8);
   }
   publishedView() {
-    return this.native().publishedView();
+    return Native.view(this.native());
+  }
+  nativeBattle() {
+    return this.native();
+  }
+  checkpoint(): Native.Immutable<SavedGame> {
+    return Native.save(this.native());
   }
   snapshot() {
-    return this.native().snapshot();
+    const { mapId, mapRevision, round, turn, gold, winner, units, campaign, tiles } =
+      this.captureState();
+    const sites = tiles
+      .filter((tile) => ["grove", "fort", "ruins"].includes(tile.terrain))
+      .map(({ id, owner }) => ({ id, owner }));
+    return {
+      mapId,
+      mapRevision,
+      round,
+      turn,
+      gold,
+      winner,
+      units,
+      ...(campaign ? { campaign } : {}),
+      villages: tiles
+        .filter((tile) => tile.terrain === "village")
+        .map(({ id, owner }) => ({ id, owner })),
+      ...(campaign || sites.length ? { sites } : {}),
+    };
   }
   neighbors(id: string): Tile[] {
-    return this.native()
-      .neighbors(id)
-      .map((tile) => this.tile(tile.id)!);
+    return Native.neighbors(this.publishedView(), id).map((tile: Tile) => this.tile(tile.id)!);
   }
-  cost(unit: Pick<Unit, "type">, tile: Pick<Tile, "terrain">) {
-    return this.#cost(unit, tile);
+  cost(unit: Pick<PublicUnit, "type">, tile: Pick<Tile, "terrain">): number {
+    return Native.movement_cost(Native.view(this.#battle), unit.type, tile.terrain);
   }
-  reachable(id: string | null | undefined) {
-    return this.native().reachable(id);
+  reachable(id: string | null | undefined): Map<string, number> {
+    return new Map(
+      Object.entries(Native.reachable(this.publishedView(), id ?? "")) as [string, number][],
+    );
   }
-  targets(id: string | null | undefined) {
-    return this.native()
-      .targets(id)
-      .map((unit) => this.unit(unit.id)!);
+  targets(id: string | null | undefined): PublicUnit[] {
+    return Native.targets(this.publishedView(), id ?? "").map((unit: PublicUnit) =>
+      this.unit(unit.id)!,
+    );
   }
-  recruitTiles(id: string, type: UnitType) {
-    return this.native()
-      .recruitTiles(id, type)
-      .map((tile) => this.tile(tile.id)!);
+  recruitTiles(id: string, type: string): Tile[] {
+    return Native.recruit_tiles(this.publishedView(), id, type).map((tile: Tile) =>
+      this.tile(tile.id)!,
+    );
   }
-  recruitmentOptions(side: Side) {
-    return this.native().recruitmentOptions(side);
+  recruitmentOptions(side: Side): readonly string[] {
+    return Native.recruitment_options(this.publishedView(), side);
   }
-  promotionOptions(id: string) {
-    return this.native().promotionOptions(id);
+  promotionOptions(id: string): readonly string[] {
+    return Native.promotion_options(this.publishedView(), id);
   }
-  previewDetails(...args: Parameters<LiveGame["previewDetails"]>) {
-    return this.native().previewDetails(...args);
+  attackOptions(unit: PublicUnit, target: PublicUnit, from = unit.tile): Weapon[] {
+    if (from !== unit.tile) return [];
+    return Native.attack_options(this.publishedView(), unit.id, target.id).map(
+      (attack: AttackDetails) => attack.attack,
+    );
   }
-  preview(...args: Parameters<LiveGame["preview"]>) {
-    return this.native().preview(...args);
+  bestAttack(unit: PublicUnit, target: PublicUnit, from = unit.tile): Weapon | null {
+    if (from !== unit.tile) return null;
+    return Native.best_attack(this.publishedView(), unit.id, target.id)?.attack ?? null;
   }
-  attackOptions(...args: Parameters<LiveGame["attackOptions"]>) {
-    return this.native().attackOptions(...args);
+  previewDetails(
+    unit: PublicUnit,
+    target: PublicUnit,
+    attackId?: string | null,
+    from = unit.tile,
+  ): AttackDetails {
+    const weapon = attackId ?? this.bestAttack(unit, target, from)?.id;
+    const details =
+      from === unit.tile &&
+      Native.attack_details(this.publishedView(), unit.id, target.id, weapon ?? "");
+    if (!details) throw new Error("That attack cannot reach this enemy.");
+    return details;
   }
-  bestAttack(...args: Parameters<LiveGame["bestAttack"]>) {
-    return this.native().bestAttack(...args);
+  preview(unit: PublicUnit, target: PublicUnit, attackId?: string | null, from = unit.tile) {
+    const { damage, retaliation } = this.previewDetails(unit, target, attackId, from);
+    return { damage, retaliation };
   }
-  canAttackFrom(...args: Parameters<LiveGame["canAttackFrom"]>) {
-    return this.native().canAttackFrom(...args);
+  canAttackFrom(
+    unit: PublicUnit | undefined,
+    from: string,
+    target: PublicUnit | undefined,
+    attackId: string | null = null,
+  ): boolean {
+    return (
+      !!unit &&
+      !!target &&
+      from === unit.tile &&
+      this.attackOptions(unit, target, from).some(
+        (attack) => attackId === null || attack.id === attackId,
+      )
+    );
   }
-  income(side: Side) {
-    return this.native().income(side);
+  income(side: Side): number {
+    return Native.income(this.publishedView(), side);
   }
-  move(id: string, tile: string) {
-    this.apply((native) => native.move(id, tile));
+  move(id: string, tile: string): PublicUnit {
+    this.apply({ kind: "move", unit: Native.unit_id(id), tile });
     return this.unit(id)!;
   }
-  attack(...args: Parameters<LiveGame["attack"]>) {
-    this.apply((native) => native.attack(...args));
+  attack(id: string, target: string, weapon?: string): void {
+    const selected = weapon ?? this.bestAttack(this.unit(id)!, this.unit(target)!)?.id;
+    if (!selected) throw new Error("That attack cannot reach this enemy.");
+    this.apply({
+      kind: "attack",
+      unit: Native.unit_id(id),
+      target: Native.unit_id(target),
+      weapon: selected,
+    });
   }
-  recruit(...args: Parameters<LiveGame["recruit"]>) {
-    const id = `u${this.nextId}`;
-    this.apply((native) => native.recruit(...args));
-    return this.unit(id)!;
+  recruit(id: string, type: string, tile: string): PublicUnit {
+    const unit = `u${this.nextId}`;
+    this.apply({ kind: "recruit", unit: Native.unit_id(id), type, tile });
+    return this.unit(unit)!;
   }
-  advanceUnit(...args: Parameters<LiveGame["advanceUnit"]>) {
-    this.apply((native) => native.advanceUnit(...args));
+  advanceUnit(id: string, type: string): void {
+    this.apply({ kind: "advance", unit: Native.unit_id(id), type });
   }
-  endTurn() {
-    this.apply((native) => native.endTurn());
+  endTurn(): void {
+    this.apply({ kind: "endTurn" });
   }
-  advanceDialogue(skip = false) {
-    this.apply((native) => native.advanceDialogue(skip));
+  enemyStep(): void {
+    Native.enemy_step(this.native(), {
+      policy: "classic",
+      diplomacy: "restrained",
+      recruitmentLimit: 2,
+    });
+    this.restoreData(structuredClone(Native.state(Native.view(this.#battle))) as State, true);
   }
-  previousDialogue() {
-    this.apply((native) => native.previousDialogue());
+  advanceDialogue(skip = false): void {
+    this.apply({ kind: skip ? "skipDialogue" : "dismissDialogue" });
   }
-  nextCampaignMission(ids: string[]) {
-    this.apply((native) => native.nextCampaignMission(ids));
+  previousDialogue(): void {
+    this.apply({ kind: "previousDialogue" });
+  }
+  nextCampaignMission(ids: string[]): this {
+    this.apply({ kind: "recallMission", units: ids.map(Native.unit_id) });
     return this;
   }
-  retryCampaignMission() {
-    this.apply((native) => native.retryCampaignMission());
+  retryCampaignMission(): this {
+    this.apply({ kind: "retryMission" });
     return this;
   }
-  /** Explicit fixture restoration still uses the real native acceptance path. */
+  dispose(): void {
+    Native.dispose(this.#battle);
+  }
   static fromCheckpoint(checkpoint: SavedGame): Game {
-    return new Game(checkpoint);
+    const fixture = new Game();
+    Native.dispose(fixture.#battle);
+    fixture.#battle = restoreBattle(checkpoint);
+    fixture.restoreData(structuredClone(Native.state(Native.view(fixture.#battle))) as State);
+    return fixture;
   }
 }

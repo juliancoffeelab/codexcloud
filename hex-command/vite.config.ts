@@ -1,9 +1,7 @@
 import { defineConfig } from "vite";
-import { terrainPrebuild } from "./scripts/terrain-prebuild";
-import { svelte } from "@sveltejs/vite-plugin-svelte";
-
+import { frontendAliases } from "./scripts/frontend-paths";
 export default defineConfig({
   base: "./",
-  plugins: [svelte(), terrainPrebuild()],
+  resolve: { alias: frontendAliases },
   build: { target: "es2022" },
 });

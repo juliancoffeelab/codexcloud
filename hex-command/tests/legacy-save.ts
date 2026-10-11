@@ -1,17 +1,13 @@
-/** Fixtures for published version-one saves; never used by the browser. */
+/** Historical serialized fixtures only; production migration runs in OCaml. */
 import { Game } from "./game-fixture";
-import type { LiveGame } from "../src/game/live-game";
-import { migrateSave } from "../src/save/migration";
-import { saveBattle as writeCurrent } from "../src/save/write";
-export { importWaveMarker } from "../src/save/migration/legacy/snapshot";
-export { SAVE_KEY } from "../src/save/storage";
-import { SAVE_KEY } from "../src/save/storage";
+import { Catalog, catalog } from "./native-fixture";
+import * as Save from "@frontend/Save";
+import * as Legacy from "@frontend/Save_legacy";
+import type { SavedGame } from "../rust/pkg/hex_command";
+export const SAVE_KEY = Save.key;
 export const SAVE_VERSION = 1;
-export function saveBattle(game: Game | LiveGame, pendingEnemy = false): void {
-  if (!(game instanceof Game)) {
-    writeCurrent(game, pendingEnemy);
-    return;
-  }
+export const importWaveMarker = Legacy.wave_marker;
+export function saveBattle(game: Game, pendingEnemy = false): void {
   const { tiles, cols: _cols, rows: _rows, lastCombat: _combat, ...state } = game.captureState();
   const villages = tiles
     .filter((tile) => tile.terrain === "village")
@@ -31,9 +27,12 @@ export function saveBattle(game: Game | LiveGame, pendingEnemy = false): void {
 }
 export function loadBattle() {
   try {
-    const { save } = migrateSave(JSON.parse(localStorage.getItem(SAVE_KEY) ?? "null"));
-    const game = Game.fromCheckpoint(save.checkpoint);
-    return { game, pendingEnemy: save.pendingEnemy };
+    const [save] = Save.migrate(
+      Catalog.raw(catalog),
+      JSON.parse(localStorage.getItem(SAVE_KEY) ?? "null"),
+    );
+    const game = Game.fromCheckpoint(save.checkpoint as SavedGame);
+    return { game, pendingEnemy: save.pending_enemy as boolean };
   } catch {
     return { game: new Game(), pendingEnemy: false };
   }
