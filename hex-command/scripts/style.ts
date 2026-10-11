@@ -1,5 +1,6 @@
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { toolchainEnvironment } from "../.agents/skills/rust-toolchain/scripts/toolchain-env";
 
 const args = process.argv.slice(2);
 if (args.some((arg) => arg !== "--write")) {
@@ -16,6 +17,7 @@ const files = [
   "*.json",
   "README.md",
   "AGENTS.md",
+  ".agents/skills/**/*.{md,json,ts}",
   "TODO.md",
   "art/pixel/**/*.{json,md}",
   "art/styled/**/*.{json,md}",
@@ -57,7 +59,11 @@ const checks = [
 ];
 let failed = false;
 for (const check of checks) {
-  const result = spawnSync(check.command, check.args, { cwd, stdio: "inherit" });
+  const result = spawnSync(check.command, check.args, {
+    cwd,
+    stdio: "inherit",
+    env: toolchainEnvironment(),
+  });
   if (result.status !== 0 || result.error) {
     failed = true;
     console.error(`FAIL: ${check.name}`);
