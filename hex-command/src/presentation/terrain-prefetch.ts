@@ -1,3 +1,18 @@
+import type { TileView } from "../game/view";
+import { artFrame, type Artwork } from "./art";
+import { canonicalTerrainName } from "./terrain-layout";
+
+/** One default-floor inspection image per terrain type present on the map. */
+export function terrainInspectionUrls(
+  artwork: Artwork,
+  tiles: readonly Pick<TileView, "terrain">[],
+): string[] {
+  return [...new Set(tiles.map((tile) => tile.terrain))].flatMap((terrain) => {
+    const frame = artFrame(artwork, "terrain", canonicalTerrainName(terrain));
+    return frame ? [frame.url] : [];
+  });
+}
+
 /** Defer background work until after a paint, then use idle time when available. */
 function afterPaint(task: () => void): () => void {
   let cancelIdle: (() => void) | undefined;
@@ -24,7 +39,7 @@ async function loadSprite(url: string): Promise<void> {
   await image.decode();
 }
 
-/** Warm only the current map's unique tiles; the browser owns the image cache. */
+/** Warm canonical inspection images; the browser owns the image cache. */
 export class TerrainTilePrefetcher {
   private queue: string[] = [];
   private loaded = new Set<string>();

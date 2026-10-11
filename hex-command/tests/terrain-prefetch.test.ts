@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import { test, vi } from "vitest";
-import { TerrainTilePrefetcher } from "../src/presentation/terrain-prefetch";
+import { TerrainTilePrefetcher, terrainInspectionUrls } from "../src/presentation/terrain-prefetch";
+import { currentArtwork, artFrame } from "../src/presentation/art";
+import { canonicalTerrainName } from "../src/presentation/terrain-layout";
+import type { TileView } from "../src/game/view";
 
 function idleQueue() {
   const tasks: { run: () => void; cancelled: boolean }[] = [];
@@ -30,6 +33,29 @@ function fixture() {
 }
 
 const settled = () => new Promise<void>((resolve) => setImmediate(resolve));
+
+test("Inspection prefetch is bounded by terrain types, independent of tile count and appearance", () => {
+  const tiles: TileView[] = Array.from({ length: 1024 }, (_, id) => ({
+    id: `${id},0`,
+    col: id,
+    row: 0,
+    owner: null,
+    terrain: id % 2 ? "forest" : "ford",
+    floor: id % 3 ? "snow-forest" : "autumn-forest",
+    ...(id % 2 ? {} : { connections: ["nw", "se"] as const }),
+  }));
+  const artwork = currentArtwork();
+  const urls = terrainInspectionUrls(artwork, tiles);
+  assert.deepEqual(
+    urls,
+    ["ford", "forest"].map(
+      (terrain) =>
+        artFrame(artwork, "terrain", canonicalTerrainName(terrain as "ford" | "forest"))!.url,
+    ),
+  );
+  assert.deepEqual(terrainInspectionUrls(artwork, tiles.slice(0, 2)), urls);
+  assert.deepEqual(terrainInspectionUrls({ frames: {} }, tiles), []);
+});
 
 test("Prefetch is deferred, deduplicated, bounded and reused across maps", async () => {
   const { idle, requests, prefetch, urls } = fixture();

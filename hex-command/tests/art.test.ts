@@ -9,8 +9,9 @@ import {
 } from "../src/presentation/pixel-art";
 import { terrainTileView } from "../src/presentation/terrain-map";
 import { terrainArtNames, terrainProps } from "../src/ui/battlefield-view";
-import { terrainLayout } from "../src/presentation/terrain-layout";
-import { TYPES } from "./game-fixture";
+import { terrainLayout, canonicalTerrainName } from "../src/presentation/terrain-layout";
+import { TYPES, TERRAIN } from "./game-fixture";
+import type { TerrainType } from "../src/game/types";
 import { hexPoints, tileCenter, battlefieldSpriteSize } from "../src/ui/geometry";
 
 test("Adjacent hexes share both edge vertices without gaps on either row parity", () => {
@@ -146,5 +147,18 @@ test("Directional props select arrangements for the same orientation as the base
     const props = terrainProps(tile, "sample");
     assert(pixelTerrainLayouts[frame]!.includes(props));
     assert.equal(terrainProps(tile, "sample"), props);
+  }
+});
+
+test("Every supported terrain has a complete prebuilt canonical inspection frame", () => {
+  for (const terrain of Object.keys(TERRAIN) as TerrainType[]) {
+    const name = canonicalTerrainName(terrain);
+    const frame = artFrame(currentArtwork(), "terrain", name);
+    assert(frame, `Missing canonical sprite for ${terrain}`);
+    assert.equal(frame.width, 64);
+    assert.equal(frame.height, 64);
+    const base = terrainArtNames({ terrain })[0]!;
+    if (pixelTerrainLayouts[base]?.length) assert.equal(name, `${base}_layout_0`);
+    else assert.equal(name, base);
   }
 });

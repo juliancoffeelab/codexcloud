@@ -53,8 +53,11 @@
   their native size and lighting; do not mirror, resize or randomly move them on
   redraw. The artwork build emits complete native 64×64 PNGs from matrices,
   faction/floor palettes and prepared arrangements into ignored public/assets/sprites/.
-  Publish immutable sprite URLs in BattleView.artwork. Load visible images first;
-  once an authored map is displayed, warm its unique terrain images for inspection
+  Publish immutable sprite URLs in BattleView.artwork. Load visible images first.
+  Terrain details use one prebuilt canonical sprite per terrain type: default
+  connections and floor, with the first prepared prop arrangement when present.
+  Never select inspection art from the clicked tile's floor, orientation or layout.
+  Once an authored map is displayed, warm only its canonical terrain inspection images
   after a paint, in idle time, with at most two low-priority requests. Cancel queued
   work on terrain changes; retain only successful URL identities, not decoded images.
   Never restore runtime atlases, cropping, canvas extraction or
