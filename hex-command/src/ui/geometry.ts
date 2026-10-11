@@ -3,6 +3,13 @@ export const battlefieldSpriteSize = 70;
 export const hexColumnSpacing = (battlefieldSpriteSize * Math.sqrt(3)) / 2;
 export const hexRowSpacing = (battlefieldSpriteSize * 3) / 4;
 
+export function mapDimensions(map: { cols: number; rows: number }) {
+  return {
+    width: 758 + hexColumnSpacing * (map.cols - 11),
+    height: 452 + hexRowSpacing * (map.rows - 7),
+  };
+}
+
 export function hexPoints(x: number, y: number) {
   return Array.from({ length: 6 }, (_, i) => {
     const angle = ((60 * i - 30) * Math.PI) / 180;

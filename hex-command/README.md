@@ -101,6 +101,11 @@ One unit atlas and one terrain atlas live in `public/assets/`, with correspondin
 frame metadata in `src/presentation/pixel-art.ts`. The loader extracts standalone frames before
 publishing them to renderers, so the UI never crops a whole atlas by overflow.
 The pixel build uses one read-only packer, `scripts/build-pixel-atlas.py`.
+Production Vite builds also render every authored map into a native PNG in
+`dist/assets/`, using the same terrain layouts and drawing code as the game.
+Unchanged maps use these sprites directly. Terrain edits overlay changed cells
+until a background canvas bake finishes; missing sprites also use that fallback.
+Generated map PNGs are not tracked as source artwork.
 Art workflows live in short skills: [generation](.agents/skills/pinkbox-generation/SKILL.md),
 [enhancement](.agents/skills/pinkbox-enhancement/SKILL.md),
 [cleaning](.agents/skills/pixel-cleaning/SKILL.md), and

@@ -4,8 +4,8 @@ import type { Artwork } from "../presentation/art";
 import type { FrameImage } from "../presentation/sprite-images";
 import { TERRAIN, TYPES } from "../game/catalog";
 import { artFrame } from "../presentation/art";
-import { pixelDefaultFloors, pixelFloorColors } from "../presentation/pixel-art";
-import { battlefieldSpriteSize, hexPoints, tileCenter } from "./geometry";
+import { terrainTileView } from "../presentation/terrain-map";
+import { battlefieldSpriteSize } from "./geometry";
 import { terrainLayout } from "../presentation/terrain-layout";
 export { terrainArtNames } from "../presentation/terrain-connections";
 
@@ -85,7 +85,6 @@ export function battlefieldTiles(
     }
   }
   return game.tiles.map((tile) => {
-    const { x, y } = tileCenter(tile);
     const unit = game.at(tile.id);
     const reachable = reachableTiles.has(tile.id);
     const target = targetTiles.has(tile.id);
@@ -114,23 +113,9 @@ export function battlefieldTiles(
 
     return {
       ...tile,
-      x,
-      y,
-      points: hexPoints(x, y),
-      clipId: `hex-clip-${tile.col}-${tile.row}`,
-      fill:
-        (tile.floor && pixelFloorColors[tile.floor]) ||
-        pixelFloorColors[pixelDefaultFloors[tile.terrain]]!,
+      ...terrainTileView(tile, game.mapId, artwork),
       classes,
       label: tileLabel(tile, unit, reachable, target, objectiveTiles.get(tile.id) ?? []),
-      spriteSize: battlefieldSpriteSize,
-      terrainFrame: artFrame(
-        artwork,
-        "terrain",
-        terrainLayout(tile, game.mapId).name,
-        "player",
-        tile.floor,
-      ),
       occupant,
       ownerColor: tile.owner === "player" ? "#6fdec0" : "#ff9590",
     };

@@ -1,8 +1,11 @@
-import type { Artwork } from "./art";
-import type { GameView } from "../game/view";
+import { artFrame, type Artwork } from "./art";
+import { pixelDefaultFloors, pixelFloorColors } from "./pixel-art";
+import { terrainLayout } from "./terrain-layout";
+import { battlefieldSpriteSize, hexPoints, tileCenter } from "../ui/geometry";
+import type { GameView, TileView } from "../game/view";
 import type { FrameImage } from "./sprite-images";
 
-interface TerrainMapTile {
+export interface TerrainMapTile {
   readonly points: string;
   readonly x: number;
   readonly y: number;
@@ -19,6 +22,44 @@ export interface TerrainMapPlan {
   readonly tiles: readonly TerrainMapTile[];
 }
 
+export interface TerrainMapSprite extends FrameImage {
+  readonly displayWidth: number;
+  readonly displayHeight: number;
+}
+
+/** This is also used by the build renderer, before any controller or browser exists. */
+export function terrainTileView(tile: TileView, mapId: string, artwork: Artwork) {
+  const { x, y } = tileCenter(tile);
+  return {
+    x,
+    y,
+    points: hexPoints(x, y),
+    clipId: `hex-clip-${tile.col}-${tile.row}`,
+    spriteSize: battlefieldSpriteSize,
+    fill:
+      (tile.floor && pixelFloorColors[tile.floor]) ||
+      pixelFloorColors[pixelDefaultFloors[tile.terrain]]!,
+    terrainFrame: artFrame(
+      artwork,
+      "terrain",
+      terrainLayout(tile, mapId).name,
+      "player",
+      tile.floor,
+    ),
+  };
+}
+
+export function terrainMapDimensions(plan: Omit<TerrainMapPlan, "tiles">) {
+  const width = Math.ceil(plan.width * plan.pixelScale);
+  const height = Math.ceil(plan.height * plan.pixelScale);
+  return {
+    width,
+    height,
+    displayWidth: width / plan.pixelScale,
+    displayHeight: height / plan.pixelScale,
+  };
+}
+
 export interface TerrainMapImage {
   readonly canvas: HTMLCanvasElement;
   readonly width: number;
@@ -33,46 +74,66 @@ export function terrainMapKey(game: Pick<GameView, "mapId" | "cols" | "rows" | "
     game.mapId,
     game.cols,
     game.rows,
-    game.tiles.map((tile) => [
-      tile.id,
-      tile.col,
-      tile.row,
-      tile.terrain,
-      tile.floor,
-      tile.connections,
-      tile.deadEnds,
-    ]),
+    [...game.tiles]
+      .sort((a, b) => a.row - b.row || a.col - b.col)
+      .map((tile) => [
+        tile.id,
+        tile.col,
+        tile.row,
+        tile.terrain,
+        tile.floor,
+        tile.connections,
+        tile.deadEnds,
+      ]),
   ]);
 }
 
-/** Bake only published, isolated tile images; no atlas or mutable game crosses this boundary. */
-async function bake(plan: TerrainMapPlan): Promise<Readonly<TerrainMapImage> | undefined> {
-  const canvas = document.createElement("canvas");
-  canvas.width = Math.ceil(plan.width * plan.pixelScale);
-  canvas.height = Math.ceil(plan.height * plan.pixelScale);
-  const displayWidth = canvas.width / plan.pixelScale;
-  const displayHeight = canvas.height / plan.pixelScale;
-  const context = canvas.getContext("2d");
-  if (!context) return undefined;
-  const sources = [
-    ...new Set(plan.tiles.flatMap((tile) => (tile.terrainFrame ? [tile.terrainFrame.url] : []))),
-  ];
-  const decoded = await Promise.all(
-    sources.map(
-      (source) =>
-        new Promise<HTMLImageElement | undefined>((resolve) => {
-          const image = new Image();
-          image.onload = () => resolve(image);
-          image.onerror = () => resolve(undefined);
-          image.src = source;
-        }),
-    ),
+/** For edits, keep the authored sprite underneath and repaint only changed cells until baking finishes. */
+export function terrainMapPreview(
+  key: string,
+  sprites: Readonly<Record<string, TerrainMapSprite>>,
+) {
+  const exact = sprites[key];
+  if (exact) return { sprite: exact, changed: new Set<string>() };
+  type Key = [string, number, number, [string, ...unknown[]][]];
+  const current = JSON.parse(key) as Key;
+  const prefix = JSON.stringify(current.slice(0, 3)).slice(0, -1) + ",";
+  const baseline = Object.entries(sprites).find(([candidate]) => candidate.startsWith(prefix));
+  if (!baseline) return undefined;
+  const original = new Map(
+    (JSON.parse(baseline[0]) as Key)[3].map((tile) => [tile[0], JSON.stringify(tile)]),
   );
-  if (decoded.some((image) => !image)) return undefined;
-  const images = new Map(sources.map((source, index) => [source, decoded[index]!]));
-  context.imageSmoothingEnabled = false;
-  context.scale(plan.pixelScale, plan.pixelScale);
-  for (const tile of plan.tiles) {
+  const changed = new Set(
+    current[3]
+      .filter((tile) => original.get(tile[0]) !== JSON.stringify(tile))
+      .map((tile) => tile[0]),
+  );
+  return { sprite: baseline[1], changed };
+}
+
+type TerrainContext<Image> = Pick<
+  CanvasRenderingContext2D,
+  | "save"
+  | "restore"
+  | "beginPath"
+  | "moveTo"
+  | "lineTo"
+  | "closePath"
+  | "fill"
+  | "clip"
+  | "fillStyle"
+  | "filter"
+> & {
+  drawImage(image: Image, x: number, y: number, width: number, height: number): void;
+};
+
+/** Identical pixel scale, floors and clipping in build assets and runtime fallback. */
+export function paintTerrainTiles<Image>(
+  context: TerrainContext<Image>,
+  tiles: readonly TerrainMapTile[],
+  images: ReadonlyMap<string, Image>,
+) {
+  for (const tile of tiles) {
     context.save();
     context.beginPath();
     tile.points.split(" ").forEach((point, index) => {
@@ -96,13 +157,44 @@ async function bake(plan: TerrainMapPlan): Promise<Readonly<TerrainMapImage> | u
     }
     context.restore();
   }
+}
+
+/** Bake only published, isolated tile images; no atlas or mutable game crosses this boundary. */
+async function bake(plan: TerrainMapPlan): Promise<Readonly<TerrainMapImage> | undefined> {
+  const canvas = document.createElement("canvas");
+  const dimensions = terrainMapDimensions(plan);
+  canvas.width = dimensions.width;
+  canvas.height = dimensions.height;
+  const context = canvas.getContext("2d");
+  if (!context) return undefined;
+  const sources = [
+    ...new Set(plan.tiles.flatMap((tile) => (tile.terrainFrame ? [tile.terrainFrame.url] : []))),
+  ];
+  const decoded = await Promise.all(
+    sources.map(
+      (source) =>
+        new Promise<HTMLImageElement | undefined>((resolve) => {
+          const image = new Image();
+          image.onload = () => resolve(image);
+          image.onerror = () => resolve(undefined);
+          image.src = source;
+        }),
+    ),
+  );
+  if (decoded.some((image) => !image)) return undefined;
+  const images = new Map(sources.map((source, index) => [source, decoded[index]!]));
+  context.imageSmoothingEnabled = false;
+  context.scale(plan.pixelScale, plan.pixelScale);
+  for (let offset = 0; offset < plan.tiles.length; offset += 64) {
+    paintTerrainTiles(context, plan.tiles.slice(offset, offset + 64), images);
+    // Yield between batches so changed/custom maps do not monopolize the UI thread.
+    if (offset + 64 < plan.tiles.length)
+      await new Promise<void>((resolve) => setTimeout(resolve, 0));
+  }
   // Publish the completed bitmap directly: no SVG parse, PNG encode or second decode.
   return Object.freeze({
     canvas,
-    width: canvas.width,
-    height: canvas.height,
-    displayWidth,
-    displayHeight,
+    ...dimensions,
   });
 }
 

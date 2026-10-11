@@ -4,12 +4,14 @@
   import type { BattleCommands, BattleView } from "../controller/view";
   import { MAPS } from "../game/maps";
   import { battlefieldTiles, type BattlefieldTileView } from "./battlefield-view";
-  import { battlefieldSpriteSize, hexColumnSpacing, hexRowSpacing } from "./geometry";
+  import { battlefieldSpriteSize, mapDimensions } from "./geometry";
   import {
     TerrainMapCache,
     terrainMapKey,
+    terrainMapPreview,
     type TerrainMapImage,
   } from "../presentation/terrain-map";
+  import terrainSprites from "virtual:terrain-prebuilt";
   import type { Artwork } from "../presentation/art";
 
   interface Props {
@@ -22,6 +24,7 @@
   let bakedTerrain = $state.raw<
     { key: string; artwork: Artwork; image: Readonly<TerrainMapImage> } | undefined
   >();
+  let failedSprite = $state<string | null>(null);
   let hoveredTile = $state<string | null>(null);
 
   const game = $derived(view.game);
@@ -33,8 +36,9 @@
   const recruitTileId = $derived(isPlayerTurn && recruitment ? view.inspectedTile : null);
   const tiles = $derived(battlefieldTiles(game, selected, artwork, recruitTileId));
   const occupiedTiles = $derived(tiles.filter((tile) => tile.occupant));
-  const mapWidth = $derived(758 + hexColumnSpacing * (game.cols - 11));
-  const mapHeight = $derived(452 + hexRowSpacing * (game.rows - 7));
+  const size = $derived(mapDimensions(game));
+  const mapWidth = $derived(size.width);
+  const mapHeight = $derived(size.height);
   const viewBox = $derived(`0 0 ${mapWidth} ${mapHeight}`);
   const terrainKey = $derived(terrainMapKey(game));
   const backdrop = $derived(
@@ -42,12 +46,19 @@
       ? bakedTerrain.image
       : undefined,
   );
+  const prebuilt = $derived(
+    failedSprite === terrainKey ? undefined : terrainMapPreview(terrainKey, terrainSprites),
+  );
+  const hasBackdrop = $derived(!!(backdrop || prebuilt));
+  const overlayTiles = $derived(
+    hasBackdrop ? tiles.filter((tile) => !backdrop && prebuilt?.changed.has(tile.id)) : tiles,
+  );
   const hovered = $derived(tiles.find((tile) => tile.id === hoveredTile));
 
   $effect(() => {
     const key = terrainKey;
     const resources = artwork;
-    if (!Object.keys(resources.frames).length) return;
+    if ((prebuilt && !prebuilt.changed.size) || !Object.keys(resources.frames).length) return;
     const plan = {
       width: mapWidth,
       height: mapHeight,
@@ -147,14 +158,10 @@
       aria-label={`${MAPS[game.mapId].name} battlefield`}
     >
       <defs>
-        {#if !backdrop}
-          {#each tiles as tile (tile.id)}
-            <clipPath id={tile.clipId}>
-              <polygon points={tile.points} />
-            </clipPath>
-          {/each}
-        {/if}
-        {#if backdrop && hovered}
+        {#each overlayTiles as tile (tile.id)}
+          <clipPath id={tile.clipId}><polygon points={tile.points} /></clipPath>
+        {/each}
+        {#if hasBackdrop && hovered}
           <clipPath id="terrain-hover-clip"><polygon points={hovered.points} /></clipPath>
         {/if}
       </defs>
@@ -171,7 +178,29 @@
               <div class="terrain-bitmap" use:mountTerrain={backdrop}></div>
             </foreignObject>
           </g>
-          {#if hovered}
+        {:else if prebuilt}
+          {#key terrainKey}
+            {@const spriteKey = terrainKey}
+            <g class="pixel-art" pointer-events="none" aria-hidden="true">
+              <image
+                class="map-terrain"
+                href={prebuilt.sprite.url}
+                x="0"
+                y="0"
+                width={prebuilt.sprite.displayWidth}
+                height={prebuilt.sprite.displayHeight}
+                preserveAspectRatio="none"
+                pointer-events="none"
+                aria-hidden="true"
+                onerror={() => {
+                  failedSprite = spriteKey;
+                }}
+              />
+            </g>
+          {/key}
+        {/if}
+        {#if hasBackdrop}
+          {#if hovered?.terrainFrame}
             <g
               class="terrain-hover"
               clip-path="url(#terrain-hover-clip)"
@@ -199,7 +228,7 @@
               if (hoveredTile === tile.id) hoveredTile = null;
             }}
           >
-            {#if backdrop}
+            {#if hasBackdrop && (backdrop || !prebuilt?.changed.has(tile.id))}
               <polygon points={tile.points} fill="transparent" pointer-events="all" />
             {:else}
               <polygon class="tile-ground" points={tile.points} fill={tile.fill} />

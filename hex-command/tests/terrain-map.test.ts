@@ -3,6 +3,7 @@ import { test, vi } from "vitest";
 import {
   TerrainMapCache,
   terrainMapKey,
+  terrainMapPreview,
   type TerrainMapPlan,
 } from "../src/presentation/terrain-map";
 import { mockSpriteCanvas } from "./helpers";
@@ -12,6 +13,11 @@ test("Terrain cache keys ignore ownership but include every terrain input", () =
   const tile = { id: "0,0", col: 0, row: 0, terrain: "road" as const, owner: null };
   const game = { mapId: "mirror" as const, cols: 1, rows: 1, tiles: [tile] };
   const key = terrainMapKey(game);
+  const other = { ...tile, id: "1,0", col: 1 };
+  assert.equal(
+    terrainMapKey({ ...game, tiles: [tile, other] }),
+    terrainMapKey({ ...game, tiles: [other, tile] }),
+  );
   assert.equal(terrainMapKey({ ...game, tiles: [{ ...tile, owner: "player" }] }), key);
   for (const changed of [
     { ...game, mapId: "river" as const },
@@ -118,4 +124,76 @@ test("Map baking reuses one native bitmap, retries failure and keeps overlapping
     restoreCanvas();
     vi.unstubAllGlobals();
   }
+});
+
+test("Large fallback bakes yield before publishing the completed bitmap", async () => {
+  vi.useFakeTimers();
+  class ReadyImage {
+    onload?: () => void;
+    set src(_value: string) {
+      this.onload?.();
+    }
+  }
+  vi.stubGlobal("Image", ReadyImage);
+  const restoreCanvas = mockSpriteCanvas();
+  try {
+    const tile = {
+      points: "0,0 64,0 32,64",
+      x: 35,
+      y: 35,
+      spriteSize: 70,
+      fill: "#123456",
+      terrain: "plains",
+      terrainFrame: { url: "tile", width: 64, height: 64 },
+    };
+    const plan = {
+      width: 140,
+      height: 70,
+      pixelScale: 64 / 70,
+      tiles: Array.from({ length: 65 }, () => tile),
+    };
+    let published = false;
+    const ready = new TerrainMapCache().prepare("large", { frames: {} }, plan).then((image) => {
+      published = true;
+      return image;
+    });
+    await Promise.resolve();
+    await Promise.resolve();
+    assert.equal(published, false);
+    assert.equal(vi.getTimerCount(), 1);
+    await vi.runAllTimersAsync();
+    assert((await ready)?.canvas);
+    assert.equal(published, true);
+  } finally {
+    restoreCanvas();
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+  }
+});
+
+test("Prebuilt maps match static terrain or preview matching geometry with edited cells overlaid", () => {
+  const tile = { id: "0,0", col: 0, row: 0, terrain: "plains" as const, owner: null };
+  const game = { mapId: "mirror" as const, cols: 1, rows: 1, tiles: [tile] };
+  const sprite = { url: "map.png", width: 64, height: 64, displayWidth: 70, displayHeight: 70 };
+  const sprites = { [terrainMapKey(game)]: sprite };
+  const exact = terrainMapPreview(
+    terrainMapKey({ ...game, tiles: [{ ...tile, owner: "player" }] }),
+    sprites,
+  )!;
+  assert.equal(exact.sprite, sprite);
+  assert.equal(exact.changed.size, 0);
+  for (const change of [
+    { terrain: "forest" as const },
+    { floor: "snow-forest" },
+    { connections: ["e" as const] },
+  ]) {
+    const preview = terrainMapPreview(
+      terrainMapKey({ ...game, tiles: [{ ...tile, ...change }] }),
+      sprites,
+    )!;
+    assert.equal(preview.sprite, sprite);
+    assert.deepEqual([...preview.changed], ["0,0"]);
+  }
+  for (const change of [{ mapId: "river" as const }, { cols: 2 }, { rows: 2 }])
+    assert.equal(terrainMapPreview(terrainMapKey({ ...game, ...change }), sprites), undefined);
 });

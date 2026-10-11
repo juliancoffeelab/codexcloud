@@ -58,7 +58,14 @@
   pixel scale. Keep units, ownership badges, hit targets and highlights live.
   Reuse the bitmap during movement and scrolling; invalidate it for terrain,
   floor, geometry or artwork changes. Retain only the latest map and discard
-  stale asynchronous completions. Tile images remain available while baking.
+  stale asynchronous completions. Production builds emit prebuilt PNG terrain for
+  every authored map into dist/assets using the same geometry/layout/drawing code.
+  Use an exact terrain-key match without runtime baking. For terrain edits, show
+  the same-map/geometry sprite with changed cells overlaid, then swap to the
+  completed canvas. Never use a different map/geometry as a preview. Missing/failed
+  sprites and changed/custom maps use
+  the canvas fallback, yielding between tile batches. Tile images remain available
+  while baking. Do not track duplicate map PNG sources.
 
 - **Permanent character canvas rule: every character/unit sprite and portrait is
   exactly 64×64 native pixels. This rule must never be changed; do not even try

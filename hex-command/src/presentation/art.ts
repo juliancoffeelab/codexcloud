@@ -46,7 +46,7 @@ export function loadArtwork(): Promise<boolean> {
 }
 
 /** Atlas references stop at this loading boundary. */
-function artworkFrames(): Record<string, SpriteFrame> {
+export function artworkFrames(): Record<string, SpriteFrame> {
   const frames: Record<string, SpriteFrame> = Object.fromEntries(
     Object.entries(pixelFrames).map(([key, crop]) => {
       const source = key.startsWith("terrain_") ? pixelSources.terrain : pixelSources.units;
