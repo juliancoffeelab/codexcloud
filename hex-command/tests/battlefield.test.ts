@@ -47,7 +47,7 @@ test("Moving units preserves stable terrain and SVG layers", async () => {
     assert.equal(after.id, before.id);
     assert.equal(after.clipId, before.clipId);
     assert.equal(after.points, before.points);
-    assert.equal(after.terrainArtwork, before.terrainArtwork);
+    assert.equal(after.terrainFrame, before.terrainFrame);
   }
 });
 

@@ -4,10 +4,12 @@ import type { FrameImage } from "./sprite-images";
 
 interface TerrainMapTile {
   readonly points: string;
-  readonly clipId: string;
+  readonly x: number;
+  readonly y: number;
+  readonly spriteSize: number;
   readonly fill: string;
   readonly terrain: string;
-  readonly terrainArtwork: string;
+  readonly terrainFrame: Readonly<FrameImage> | undefined;
 }
 
 export interface TerrainMapPlan {
@@ -17,7 +19,10 @@ export interface TerrainMapPlan {
   readonly tiles: readonly TerrainMapTile[];
 }
 
-export interface TerrainMapImage extends FrameImage {
+export interface TerrainMapImage {
+  readonly canvas: HTMLCanvasElement;
+  readonly width: number;
+  readonly height: number;
   readonly displayWidth: number;
   readonly displayHeight: number;
 }
@@ -47,29 +52,53 @@ async function bake(plan: TerrainMapPlan): Promise<Readonly<TerrainMapImage> | u
   canvas.height = Math.ceil(plan.height * plan.pixelScale);
   const displayWidth = canvas.width / plan.pixelScale;
   const displayHeight = canvas.height / plan.pixelScale;
-  const definitions = plan.tiles
-    .map((tile) => `<clipPath id="${tile.clipId}"><polygon points="${tile.points}"/></clipPath>`)
-    .join("");
-  const ground = plan.tiles
-    .map(
-      (tile) =>
-        `<g class="terrain-${tile.terrain}"><polygon points="${tile.points}" fill="${tile.fill}"/><g clip-path="url(#${tile.clipId})">${tile.terrainArtwork}</g></g>`,
-    )
-    .join("");
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${canvas.width}" height="${canvas.height}" viewBox="0 0 ${displayWidth} ${displayHeight}"><style>image{image-rendering:pixelated}.terrain-forest .terrain-art{filter:brightness(0.93)}</style><defs>${definitions}</defs>${ground}</svg>`;
-  const image = new Image();
-  const ready = await new Promise<boolean>((resolve) => {
-    image.onload = () => resolve(true);
-    image.onerror = () => resolve(false);
-    image.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
-  });
-  if (!ready) return undefined;
   const context = canvas.getContext("2d");
   if (!context) return undefined;
+  const sources = [
+    ...new Set(plan.tiles.flatMap((tile) => (tile.terrainFrame ? [tile.terrainFrame.url] : []))),
+  ];
+  const decoded = await Promise.all(
+    sources.map(
+      (source) =>
+        new Promise<HTMLImageElement | undefined>((resolve) => {
+          const image = new Image();
+          image.onload = () => resolve(image);
+          image.onerror = () => resolve(undefined);
+          image.src = source;
+        }),
+    ),
+  );
+  if (decoded.some((image) => !image)) return undefined;
+  const images = new Map(sources.map((source, index) => [source, decoded[index]!]));
   context.imageSmoothingEnabled = false;
-  context.drawImage(image, 0, 0);
+  context.scale(plan.pixelScale, plan.pixelScale);
+  for (const tile of plan.tiles) {
+    context.save();
+    context.beginPath();
+    tile.points.split(" ").forEach((point, index) => {
+      const [x, y] = point.split(",").map(Number);
+      if (index === 0) context.moveTo(x!, y!);
+      else context.lineTo(x!, y!);
+    });
+    context.closePath();
+    context.fillStyle = tile.fill;
+    context.fill();
+    context.clip();
+    if (tile.terrainFrame) {
+      context.filter = tile.terrain === "forest" ? "brightness(0.93)" : "none";
+      context.drawImage(
+        images.get(tile.terrainFrame.url)!,
+        tile.x - tile.spriteSize / 2,
+        tile.y - tile.spriteSize / 2,
+        tile.spriteSize,
+        tile.spriteSize,
+      );
+    }
+    context.restore();
+  }
+  // Publish the completed bitmap directly: no SVG parse, PNG encode or second decode.
   return Object.freeze({
-    url: canvas.toDataURL("image/png"),
+    canvas,
     width: canvas.width,
     height: canvas.height,
     displayWidth,

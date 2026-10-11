@@ -3,7 +3,7 @@ import type { GameView, UnitView, TileView } from "../game/view";
 import type { Artwork } from "../presentation/art";
 import type { FrameImage } from "../presentation/sprite-images";
 import { TERRAIN, TYPES } from "../game/catalog";
-import { artFrame, artSprite } from "../presentation/art";
+import { artFrame } from "../presentation/art";
 import { pixelDefaultFloors, pixelFloorColors } from "../presentation/pixel-art";
 import { battlefieldSpriteSize, hexPoints, tileCenter } from "./geometry";
 import { terrainLayout } from "../presentation/terrain-layout";
@@ -25,7 +25,8 @@ export interface BattlefieldTileView extends TileView {
   fill: string;
   classes: string;
   label: string;
-  terrainArtwork: string;
+  terrainFrame: Readonly<FrameImage> | undefined;
+  spriteSize: number;
   occupant: TileUnitView | null;
   ownerColor: string;
 }
@@ -122,15 +123,11 @@ export function battlefieldTiles(
         pixelFloorColors[pixelDefaultFloors[tile.terrain]]!,
       classes,
       label: tileLabel(tile, unit, reachable, target, objectiveTiles.get(tile.id) ?? []),
-      terrainArtwork: artSprite(
+      spriteSize: battlefieldSpriteSize,
+      terrainFrame: artFrame(
         artwork,
         "terrain",
         terrainLayout(tile, game.mapId).name,
-        x - battlefieldSpriteSize / 2,
-        y - battlefieldSpriteSize / 2,
-        battlefieldSpriteSize,
-        battlefieldSpriteSize,
-        "terrain-art",
         "player",
         tile.floor,
       ),

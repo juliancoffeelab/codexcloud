@@ -3,7 +3,7 @@
   import type { TileView } from "../game/view";
   import type { BattleCommands, BattleView } from "../controller/view";
   import { MAPS } from "../game/maps";
-  import { battlefieldTiles } from "./battlefield-view";
+  import { battlefieldTiles, type BattlefieldTileView } from "./battlefield-view";
   import { battlefieldSpriteSize, hexColumnSpacing, hexRowSpacing } from "./geometry";
   import {
     TerrainMapCache,
@@ -63,6 +63,20 @@
     };
   });
 
+  function mountTerrain(node: HTMLElement, image: Readonly<TerrainMapImage>) {
+    image.canvas.className = "map-terrain";
+    node.replaceChildren(image.canvas);
+    return {
+      update(next: Readonly<TerrainMapImage>) {
+        next.canvas.className = "map-terrain";
+        node.replaceChildren(next.canvas);
+      },
+      destroy() {
+        node.replaceChildren();
+      },
+    };
+  }
+
   function handleTileKey(event: KeyboardEvent, tile: TileView): void {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
@@ -98,6 +112,30 @@
   }
 </script>
 
+{#snippet terrainSprite(tile: BattlefieldTileView)}
+  {#if tile.terrainFrame}
+    <svg
+      class="art-sprite pixel-art terrain-art"
+      x={tile.x - tile.spriteSize / 2}
+      y={tile.y - tile.spriteSize / 2}
+      width={tile.spriteSize}
+      height={tile.spriteSize}
+      viewBox={`0 0 ${tile.terrainFrame.width} ${tile.terrainFrame.height}`}
+      aria-hidden="true"
+      focusable="false"
+    >
+      <image
+        href={tile.terrainFrame.url}
+        x="0"
+        y="0"
+        width={tile.terrainFrame.width}
+        height={tile.terrainFrame.height}
+        preserveAspectRatio="none"
+      />
+    </svg>
+  {/if}
+{/snippet}
+
 <section class="map-section" aria-label="Battlefield">
   <div class="map-scroll">
     <svg
@@ -124,15 +162,14 @@
       <g class="terrain-layer">
         {#if backdrop}
           <g class="pixel-art" pointer-events="none" aria-hidden="true">
-            <image
-              class="map-terrain"
-              href={backdrop.url}
+            <foreignObject
               x="0"
               y="0"
               width={backdrop.displayWidth}
               height={backdrop.displayHeight}
-              preserveAspectRatio="none"
-            />
+            >
+              <div class="terrain-bitmap" use:mountTerrain={backdrop}></div>
+            </foreignObject>
           </g>
           {#if hovered}
             <g
@@ -142,7 +179,7 @@
               aria-hidden="true"
             >
               <polygon class="tile-ground" points={hovered.points} fill={hovered.fill} />
-              {@html hovered.terrainArtwork}
+              {@render terrainSprite(hovered)}
             </g>
           {/if}
         {/if}
@@ -167,7 +204,7 @@
             {:else}
               <polygon class="tile-ground" points={tile.points} fill={tile.fill} />
               <g clip-path={`url(#${tile.clipId})`}>
-                {@html tile.terrainArtwork}
+                {@render terrainSprite(tile)}
               </g>
             {/if}
             {#if tile.classes.includes("objective") || tile.classes.includes("recruitable")}
@@ -256,3 +293,16 @@
     </svg>
   </div>
 </section>
+
+<style>
+  .terrain-bitmap {
+    width: 100%;
+    height: 100%;
+  }
+  .terrain-bitmap :global(canvas) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+  }
+</style>

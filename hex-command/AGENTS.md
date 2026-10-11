@@ -54,7 +54,7 @@
   redraw. The atlas only packs source frames. At artwork loading, flatten each
   prepared arrangement with its selected floor into a cached native 64×64 image;
   publish those isolated images for the renderer. Bake the static map terrain
-  from the published game/artwork snapshots into one PNG at the shared native
+  from the published game/artwork snapshots directly into one canvas bitmap at the shared native
   pixel scale. Keep units, ownership badges, hit targets and highlights live.
   Reuse the bitmap during movement and scrolling; invalidate it for terrain,
   floor, geometry or artwork changes. Retain only the latest map and discard

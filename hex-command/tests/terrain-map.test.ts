@@ -49,18 +49,21 @@ test("Map baking reuses one native bitmap, retries failure and keeps overlapping
       tiles: [
         {
           points: "0,0 64,0 32,64",
-          clipId: "sample",
+          x: 35,
+          y: 35,
+          spriteSize: 70,
           fill: "#123456",
           terrain: "forest",
-          terrainArtwork: '<svg><image href="data:image/png;base64,AA=="/></svg>',
+          terrainFrame: { url: "data:image/png;base64,AA==", width: 64, height: 64 },
         },
       ],
     };
+    const sharedPlan = { ...plan, tiles: [...plan.tiles, { ...plan.tiles[0]!, x: 105 }] };
     const cache = new TerrainMapCache();
-    const first = cache.prepare("first", artwork, plan);
-    assert.equal(cache.prepare("first", artwork, plan), first);
+    const first = cache.prepare("first", artwork, sharedPlan);
+    assert.equal(cache.prepare("first", artwork, sharedPlan), first);
     assert.equal(ControlledImage.requests.length, 1);
-    const second = cache.prepare("second", artwork, plan);
+    const second = cache.prepare("second", artwork, sharedPlan);
     ControlledImage.requests[0]!.onload?.();
     const baked = (await first)!;
     assert(Object.isFrozen(baked));
@@ -68,25 +71,46 @@ test("Map baking reuses one native bitmap, retries failure and keeps overlapping
     assert.equal(baked.height, 64);
     assert.equal(baked.displayWidth, 140);
     assert.equal(baked.displayHeight, 70);
-    const painted = JSON.parse(Buffer.from(baked.url.split(",")[1]!, "base64").toString());
+    const painted = JSON.parse(
+      Buffer.from(baked.canvas.toDataURL().split(",")[1]!, "base64").toString(),
+    );
     assert.equal(painted.smoothing, false);
-    const svg = decodeURIComponent(painted.source.split(",").slice(1).join(","));
-    assert(svg.includes('clip-path="url(#sample)"'));
-    assert(svg.includes(plan.tiles[0]!.terrainArtwork));
-    assert(svg.includes('viewBox="0 0 140 70"'));
+    assert.equal(painted.source, plan.tiles[0]!.terrainFrame!.url);
+    assert.deepEqual(painted.coordinates, [0, 0, 70, 70]);
+    assert.deepEqual(
+      painted.draws.map((draw: { coordinates: number[] }) => draw.coordinates),
+      [
+        [0, 0, 70, 70],
+        [70, 0, 70, 70],
+      ],
+    );
+    assert.deepEqual(painted.scales, [[64 / 70, 64 / 70]]);
+    assert.deepEqual(painted.paths, [
+      [
+        [0, 0],
+        [64, 0],
+        [32, 64],
+      ],
+      [
+        [0, 0],
+        [64, 0],
+        [32, 64],
+      ],
+    ]);
+    assert.equal(painted.clips, 2);
     assert.equal(
-      cache.prepare("second", artwork, plan),
+      cache.prepare("second", artwork, sharedPlan),
       second,
       "An older completion cannot replace the newer entry",
     );
     ControlledImage.requests[1]!.onerror?.();
     assert.equal(await second, undefined);
-    const retry = cache.prepare("second", artwork, plan);
+    const retry = cache.prepare("second", artwork, sharedPlan);
     assert.notEqual(retry, second);
     ControlledImage.requests[2]!.onload?.();
     await retry;
-    assert.equal(cache.prepare("second", artwork, plan), retry);
-    const newArtwork = cache.prepare("second", { frames: {} }, plan);
+    assert.equal(cache.prepare("second", artwork, sharedPlan), retry);
+    const newArtwork = cache.prepare("second", { frames: {} }, sharedPlan);
     assert.notEqual(newArtwork, retry);
     ControlledImage.requests[3]!.onload?.();
     await newArtwork;

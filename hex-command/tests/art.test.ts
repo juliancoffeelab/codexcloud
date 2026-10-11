@@ -213,15 +213,17 @@ test("Map floors choose independent palettes for directional terrain and matchin
     const result = rendered.find((candidate) => candidate.id === tile.id)!;
     assert.equal(result.fill, pixelFloorColors[tile.floor!]);
     const crop = pixelFrames[frame];
-    assert.deepEqual(extraction(result.terrainArtwork).coordinates, [...crop, 0, 0, 64, 64]);
+    assert.deepEqual(imageData(result.terrainFrame!.url.split(",")[1]!).coordinates, [
+      ...crop,
+      0,
+      0,
+      64,
+      64,
+    ]);
     assert.equal(result.floor, tile.floor);
     if (tile.terrain === "forest") {
       const props = terrainProps(tile, game.mapId);
-      const images = [
-        ...result.terrainArtwork.matchAll(/href="data:image\/png;base64,([^"]+)"/g),
-      ].map((match) => imageData(match[1]!));
-      assert.equal(images.length, 1);
-      const image = images[0]!;
+      const image = imageData(result.terrainFrame!.url.split(",")[1]!);
       assert.equal(image.draws.length, props.length + 1);
       props.forEach((prop, index) => {
         const crop = pixelFrames[`terrain_${prop.name}__${tile.floor}` as keyof typeof pixelFrames];
@@ -307,18 +309,11 @@ test("Terrain, troops and commanders share one battlefield pixel scale", async (
   assert(tiles.some((tile) => tile.occupant));
   for (const tile of tiles) {
     if (!tile.occupant) continue;
-    const dimensions = (sprite: string) =>
-      ["width", "height"].map((attribute) => {
-        const match = new RegExp(`${attribute}="([^"]+)"`).exec(sprite);
-        assert(match);
-        return match[1];
-      });
     assert.equal(tile.occupant.frame?.width, 64);
     assert.equal(tile.occupant.frame?.height, 64);
-    assert.deepEqual(
-      [String(tile.occupant.spriteSize), String(tile.occupant.spriteSize)],
-      dimensions(tile.terrainArtwork),
-    );
+    assert.equal(tile.terrainFrame?.width, 64);
+    assert.equal(tile.terrainFrame?.height, 64);
+    assert.equal(tile.occupant.spriteSize, tile.spriteSize);
   }
 });
 
