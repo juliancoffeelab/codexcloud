@@ -142,6 +142,9 @@
   `python3 scripts/package-site.py /tmp/hex-command.tar.gz`. Publish the returned
   archive and source commit. Do not use `git archive` for generated output: it
   omits ignored bundles. The packager checks client references and archive bytes.
+- Run publication from a feature branch and open or update its pull request.
+  Never use publication as a reason to push directly to `main` or skip the
+  repository's PR workflow.
 - For an authorized publication, use `scripts/publish-sites-call.js` in one
   `functions.exec` call instead of manually repeating the publication steps.
   Read the adapter with `tools.exec_command`, evaluate its exported function,
