@@ -122,6 +122,10 @@
 - Components derive display state exclusively from the immutable published
   `BattleView`. Pass `BattleCommands` for event handlers. Never query mutable
   controller state during rendering or pass a mutable `Game` into a component.
+- Mount the startup UI shell before loading the WASM-dependent battle chunk.
+  Keep startup imports free of the catalog and controller; show disabled controls
+  and placeholders until the validated engine publishes real battle data.
+  Loading failures must offer reload without changing the saved battle.
 - All game changes go through controller commands and publish a coherent view.
   Deferred work must check that its request/session/render revision is current
   before publishing results or applying feedback.

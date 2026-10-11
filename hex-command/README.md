@@ -84,6 +84,10 @@ The game uses pixel artwork throughout. Sound preferences and saves stay in the
 current browser. The developer map shows every terrain and both factions of
 every playable unit rank.
 
+The toolbar and battlefield frame mount while the engine
+loads. Real map data and statistics appear when WASM is ready; loading failures
+offer reload without replacing the saved battle.
+
 ## Artwork
 
 Pixel sources are character matrices and explicit palettes under `pixel/art/`.
