@@ -2,6 +2,11 @@
   "tile": [
     [
       {
+        "prop": "stone-ne-sw-1",
+        "x": 23,
+        "y": 16
+      },
+      {
         "prop": "stone-tile-2",
         "x": 15,
         "y": 22
@@ -12,36 +17,56 @@
         "y": 23
       },
       {
-        "prop": "stone-tile-1",
-        "x": 6,
-        "y": 27
-      },
-      {
-        "prop": "stone-tile-5",
-        "x": 52,
-        "y": 27
-      },
-      {
         "prop": "stone-tile-3",
         "x": 26,
         "y": 30
+      },
+      {
+        "prop": "stone-tile-5",
+        "x": 48,
+        "y": 33
+      },
+      {
+        "prop": "stone-tile-1",
+        "x": 9,
+        "y": 34
+      },
+      {
+        "prop": "stone-ne-sw-5",
+        "x": 40,
+        "y": 38
       }
     ],
     [
       {
-        "prop": "stone-tile-2",
-        "x": 28,
-        "y": 23
-      },
-      {
-        "prop": "stone-tile-1",
-        "x": 6,
-        "y": 27
+        "prop": "stone-nw-se-5",
+        "x": 24,
+        "y": 14
       },
       {
         "prop": "stone-tile-5",
-        "x": 52,
-        "y": 27
+        "x": 31,
+        "y": 12
+      },
+      {
+        "prop": "stone-tile-1",
+        "x": 16,
+        "y": 16
+      },
+      {
+        "prop": "stone-tile-5",
+        "x": 49,
+        "y": 20
+      },
+      {
+        "prop": "stone-tile-1",
+        "x": 7,
+        "y": 21
+      },
+      {
+        "prop": "stone-tile-2",
+        "x": 28,
+        "y": 23
       },
       {
         "prop": "stone-tile-4",
@@ -56,19 +81,14 @@
     ],
     [
       {
+        "prop": "stone-ne-sw-1",
+        "x": 16,
+        "y": 18
+      },
+      {
         "prop": "stone-tile-2",
         "x": 39,
         "y": 22
-      },
-      {
-        "prop": "stone-tile-1",
-        "x": 6,
-        "y": 27
-      },
-      {
-        "prop": "stone-tile-5",
-        "x": 52,
-        "y": 27
       },
       {
         "prop": "stone-tile-4",
@@ -79,23 +99,38 @@
         "prop": "stone-tile-3",
         "x": 26,
         "y": 30
+      },
+      {
+        "prop": "stone-tile-1",
+        "x": 8,
+        "y": 33
+      },
+      {
+        "prop": "stone-tile-5",
+        "x": 51,
+        "y": 34
+      },
+      {
+        "prop": "stone-ne-sw-5",
+        "x": 26,
+        "y": 44
       }
     ],
     [
       {
-        "prop": "stone-tile-2",
-        "x": 15,
-        "y": 22
-      },
-      {
-        "prop": "stone-tile-1",
-        "x": 6,
-        "y": 27
+        "prop": "stone-tile-5",
+        "x": 24,
+        "y": 17
       },
       {
         "prop": "stone-tile-5",
-        "x": 52,
-        "y": 27
+        "x": 48,
+        "y": 21
+      },
+      {
+        "prop": "stone-tile-2",
+        "x": 15,
+        "y": 22
       },
       {
         "prop": "stone-tile-4",
@@ -104,25 +139,40 @@
       },
       {
         "prop": "stone-tile-3",
-        "x": 38,
+        "x": 39,
         "y": 30
+      },
+      {
+        "prop": "stone-tile-1",
+        "x": 9,
+        "y": 32
+      },
+      {
+        "prop": "stone-nw-se-5",
+        "x": 32,
+        "y": 42
+      },
+      {
+        "prop": "stone-tile-1",
+        "x": 23,
+        "y": 43
       }
     ],
     [
       {
-        "prop": "stone-tile-4",
-        "x": 28,
-        "y": 22
+        "prop": "stone-ne-sw-1",
+        "x": 25,
+        "y": 12
       },
       {
         "prop": "stone-tile-1",
-        "x": 6,
-        "y": 27
+        "x": 10,
+        "y": 21
       },
       {
-        "prop": "stone-tile-5",
-        "x": 52,
-        "y": 27
+        "prop": "stone-tile-4",
+        "x": 28,
+        "y": 22
       },
       {
         "prop": "stone-tile-2",
@@ -133,9 +183,29 @@
         "prop": "stone-tile-3",
         "x": 14,
         "y": 30
+      },
+      {
+        "prop": "stone-tile-5",
+        "x": 49,
+        "y": 33
+      },
+      {
+        "prop": "stone-ne-sw-5",
+        "x": 41,
+        "y": 44
       }
     ],
     [
+      {
+        "prop": "stone-tile-1",
+        "x": 42,
+        "y": 11
+      },
+      {
+        "prop": "stone-tile-5",
+        "x": 48,
+        "y": 22
+      },
       {
         "prop": "stone-tile-3",
         "x": 26,
@@ -147,22 +217,32 @@
         "y": 24
       },
       {
-        "prop": "stone-tile-1",
-        "x": 6,
-        "y": 27
-      },
-      {
-        "prop": "stone-tile-5",
-        "x": 52,
-        "y": 27
-      },
-      {
         "prop": "stone-tile-4",
         "x": 39,
         "y": 30
+      },
+      {
+        "prop": "stone-tile-1",
+        "x": 7,
+        "y": 32
+      },
+      {
+        "prop": "stone-nw-se-5",
+        "x": 18,
+        "y": 43
+      },
+      {
+        "prop": "stone-tile-5",
+        "x": 42,
+        "y": 42
       }
     ],
     [
+      {
+        "prop": "stone-ne-sw-5",
+        "x": 26,
+        "y": 18
+      },
       {
         "prop": "stone-tile-3",
         "x": 38,
@@ -170,13 +250,8 @@
       },
       {
         "prop": "stone-tile-1",
-        "x": 6,
-        "y": 27
-      },
-      {
-        "prop": "stone-tile-5",
-        "x": 52,
-        "y": 27
+        "x": 9,
+        "y": 24
       },
       {
         "prop": "stone-tile-4",
@@ -187,23 +262,28 @@
         "prop": "stone-tile-2",
         "x": 15,
         "y": 30
+      },
+      {
+        "prop": "stone-tile-5",
+        "x": 49,
+        "y": 32
+      },
+      {
+        "prop": "stone-ne-sw-1",
+        "x": 18,
+        "y": 40
       }
     ],
     [
       {
+        "prop": "stone-tile-5",
+        "x": 22,
+        "y": 11
+      },
+      {
         "prop": "stone-tile-3",
         "x": 14,
         "y": 22
-      },
-      {
-        "prop": "stone-tile-1",
-        "x": 6,
-        "y": 27
-      },
-      {
-        "prop": "stone-tile-5",
-        "x": 52,
-        "y": 27
       },
       {
         "prop": "stone-tile-4",
@@ -214,6 +294,26 @@
         "prop": "stone-tile-2",
         "x": 28,
         "y": 30
+      },
+      {
+        "prop": "stone-tile-1",
+        "x": 10,
+        "y": 32
+      },
+      {
+        "prop": "stone-tile-5",
+        "x": 49,
+        "y": 33
+      },
+      {
+        "prop": "stone-nw-se-5",
+        "x": 30,
+        "y": 41
+      },
+      {
+        "prop": "stone-tile-1",
+        "x": 16,
+        "y": 41
       }
     ]
   ],
@@ -221,8 +321,13 @@
     [
       {
         "prop": "stone-nw-se-1",
-        "x": 17,
-        "y": 10
+        "x": 21,
+        "y": 9
+      },
+      {
+        "prop": "stone-nw-se-1",
+        "x": 35,
+        "y": 12
       },
       {
         "prop": "stone-nw-se-2",
@@ -241,15 +346,20 @@
       },
       {
         "prop": "stone-nw-se-5",
-        "x": 42,
-        "y": 50
+        "x": 18,
+        "y": 40
+      },
+      {
+        "prop": "stone-nw-se-5",
+        "x": 36,
+        "y": 52
       }
     ],
     [
       {
         "prop": "stone-nw-se-1",
-        "x": 17,
-        "y": 10
+        "x": 23,
+        "y": 7
       },
       {
         "prop": "stone-nw-se-3",
@@ -257,9 +367,24 @@
         "y": 15
       },
       {
+        "prop": "stone-ne-sw-1",
+        "x": 41,
+        "y": 23
+      },
+      {
+        "prop": "stone-ne-sw-5",
+        "x": 12,
+        "y": 27
+      },
+      {
         "prop": "stone-nw-se-2",
         "x": 27,
         "y": 29
+      },
+      {
+        "prop": "stone-tile-5",
+        "x": 21,
+        "y": 41
       },
       {
         "prop": "stone-nw-se-4",
@@ -268,15 +393,25 @@
       },
       {
         "prop": "stone-nw-se-5",
-        "x": 42,
-        "y": 50
+        "x": 44,
+        "y": 45
       }
     ],
     [
       {
         "prop": "stone-nw-se-1",
-        "x": 17,
-        "y": 10
+        "x": 21,
+        "y": 9
+      },
+      {
+        "prop": "stone-nw-se-1",
+        "x": 36,
+        "y": 12
+      },
+      {
+        "prop": "stone-nw-se-5",
+        "x": 34,
+        "y": 18
       },
       {
         "prop": "stone-nw-se-4",
@@ -295,15 +430,15 @@
       },
       {
         "prop": "stone-nw-se-5",
-        "x": 42,
-        "y": 50
+        "x": 47,
+        "y": 45
       }
     ],
     [
       {
         "prop": "stone-nw-se-1",
-        "x": 17,
-        "y": 10
+        "x": 13,
+        "y": 17
       },
       {
         "prop": "stone-nw-se-3",
@@ -316,26 +451,51 @@
         "y": 27
       },
       {
+        "prop": "stone-tile-5",
+        "x": 10,
+        "y": 29
+      },
+      {
+        "prop": "stone-ne-sw-1",
+        "x": 18,
+        "y": 37
+      },
+      {
+        "prop": "stone-ne-sw-5",
+        "x": 23,
+        "y": 41
+      },
+      {
         "prop": "stone-nw-se-2",
         "x": 31,
         "y": 40
       },
       {
         "prop": "stone-nw-se-5",
-        "x": 42,
-        "y": 50
+        "x": 44,
+        "y": 46
       }
     ],
     [
       {
         "prop": "stone-nw-se-1",
-        "x": 17,
-        "y": 10
+        "x": 15,
+        "y": 12
+      },
+      {
+        "prop": "stone-nw-se-5",
+        "x": 34,
+        "y": 17
       },
       {
         "prop": "stone-nw-se-4",
         "x": 17,
         "y": 20
+      },
+      {
+        "prop": "stone-nw-se-1",
+        "x": 10,
+        "y": 27
       },
       {
         "prop": "stone-nw-se-3",
@@ -350,14 +510,14 @@
       {
         "prop": "stone-nw-se-5",
         "x": 42,
-        "y": 50
+        "y": 45
       }
     ],
     [
       {
         "prop": "stone-nw-se-1",
-        "x": 17,
-        "y": 10
+        "x": 14,
+        "y": 16
       },
       {
         "prop": "stone-nw-se-2",
@@ -365,9 +525,24 @@
         "y": 15
       },
       {
+        "prop": "stone-ne-sw-5",
+        "x": 35,
+        "y": 20
+      },
+      {
+        "prop": "stone-ne-sw-1",
+        "x": 10,
+        "y": 28
+      },
+      {
         "prop": "stone-nw-se-4",
         "x": 24,
         "y": 31
+      },
+      {
+        "prop": "stone-tile-5",
+        "x": 14,
+        "y": 35
       },
       {
         "prop": "stone-nw-se-3",
@@ -376,20 +551,30 @@
       },
       {
         "prop": "stone-nw-se-5",
-        "x": 42,
-        "y": 50
+        "x": 37,
+        "y": 51
       }
     ],
     [
       {
         "prop": "stone-nw-se-1",
-        "x": 17,
-        "y": 10
+        "x": 12,
+        "y": 15
       },
       {
         "prop": "stone-nw-se-4",
         "x": 24,
         "y": 16
+      },
+      {
+        "prop": "stone-nw-se-5",
+        "x": 12,
+        "y": 27
+      },
+      {
+        "prop": "stone-nw-se-1",
+        "x": 43,
+        "y": 27
       },
       {
         "prop": "stone-nw-se-3",
@@ -403,20 +588,35 @@
       },
       {
         "prop": "stone-nw-se-5",
-        "x": 42,
-        "y": 50
+        "x": 43,
+        "y": 47
       }
     ],
     [
       {
+        "prop": "stone-ne-sw-5",
+        "x": 35,
+        "y": 9
+      },
+      {
         "prop": "stone-nw-se-1",
-        "x": 17,
-        "y": 10
+        "x": 12,
+        "y": 15
+      },
+      {
+        "prop": "stone-tile-5",
+        "x": 33,
+        "y": 15
       },
       {
         "prop": "stone-nw-se-3",
         "x": 17,
         "y": 20
+      },
+      {
+        "prop": "stone-ne-sw-1",
+        "x": 42,
+        "y": 25
       },
       {
         "prop": "stone-nw-se-4",
@@ -430,8 +630,8 @@
       },
       {
         "prop": "stone-nw-se-5",
-        "x": 42,
-        "y": 50
+        "x": 47,
+        "y": 45
       }
     ]
   ],
@@ -439,13 +639,23 @@
     [
       {
         "prop": "stone-ne-sw-1",
-        "x": 41,
-        "y": 10
+        "x": 44,
+        "y": 13
       },
       {
         "prop": "stone-ne-sw-2",
         "x": 30,
         "y": 15
+      },
+      {
+        "prop": "stone-tile-5",
+        "x": 14,
+        "y": 22
+      },
+      {
+        "prop": "stone-tile-1",
+        "x": 46,
+        "y": 27
       },
       {
         "prop": "stone-ne-sw-3",
@@ -459,15 +669,20 @@
       },
       {
         "prop": "stone-ne-sw-5",
-        "x": 15,
-        "y": 49
+        "x": 11,
+        "y": 45
       }
     ],
     [
       {
+        "prop": "stone-nw-se-5",
+        "x": 24,
+        "y": 13
+      },
+      {
         "prop": "stone-ne-sw-1",
-        "x": 41,
-        "y": 10
+        "x": 46,
+        "y": 15
       },
       {
         "prop": "stone-ne-sw-3",
@@ -475,9 +690,19 @@
         "y": 19
       },
       {
+        "prop": "stone-ne-sw-5",
+        "x": 14,
+        "y": 27
+      },
+      {
         "prop": "stone-ne-sw-2",
         "x": 30,
         "y": 30
+      },
+      {
+        "prop": "stone-nw-se-1",
+        "x": 40,
+        "y": 38
       },
       {
         "prop": "stone-ne-sw-4",
@@ -486,15 +711,15 @@
       },
       {
         "prop": "stone-ne-sw-5",
-        "x": 15,
+        "x": 20,
         "y": 49
       }
     ],
     [
       {
         "prop": "stone-ne-sw-1",
-        "x": 41,
-        "y": 10
+        "x": 44,
+        "y": 13
       },
       {
         "prop": "stone-ne-sw-4",
@@ -502,9 +727,19 @@
         "y": 15
       },
       {
+        "prop": "stone-tile-1",
+        "x": 47,
+        "y": 28
+      },
+      {
         "prop": "stone-ne-sw-3",
         "x": 26,
         "y": 27
+      },
+      {
+        "prop": "stone-tile-5",
+        "x": 10,
+        "y": 31
       },
       {
         "prop": "stone-ne-sw-2",
@@ -513,15 +748,20 @@
       },
       {
         "prop": "stone-ne-sw-5",
-        "x": 15,
-        "y": 49
+        "x": 22,
+        "y": 51
       }
     ],
     [
       {
         "prop": "stone-ne-sw-1",
-        "x": 41,
-        "y": 10
+        "x": 42,
+        "y": 14
+      },
+      {
+        "prop": "stone-nw-se-5",
+        "x": 18,
+        "y": 18
       },
       {
         "prop": "stone-ne-sw-3",
@@ -529,9 +769,19 @@
         "y": 20
       },
       {
+        "prop": "stone-nw-se-1",
+        "x": 17,
+        "y": 24
+      },
+      {
         "prop": "stone-ne-sw-4",
         "x": 24,
         "y": 26
+      },
+      {
+        "prop": "stone-ne-sw-5",
+        "x": 8,
+        "y": 32
       },
       {
         "prop": "stone-ne-sw-2",
@@ -540,15 +790,20 @@
       },
       {
         "prop": "stone-ne-sw-5",
-        "x": 15,
-        "y": 49
+        "x": 20,
+        "y": 50
       }
     ],
     [
       {
         "prop": "stone-ne-sw-1",
-        "x": 41,
-        "y": 10
+        "x": 36,
+        "y": 12
+      },
+      {
+        "prop": "stone-tile-5",
+        "x": 23,
+        "y": 13
       },
       {
         "prop": "stone-ne-sw-4",
@@ -561,26 +816,46 @@
         "y": 26
       },
       {
+        "prop": "stone-tile-1",
+        "x": 44,
+        "y": 32
+      },
+      {
         "prop": "stone-ne-sw-2",
         "x": 22,
         "y": 39
       },
       {
         "prop": "stone-ne-sw-5",
-        "x": 15,
-        "y": 49
+        "x": 19,
+        "y": 48
       }
     ],
     [
       {
+        "prop": "stone-nw-se-5",
+        "x": 22,
+        "y": 13
+      },
+      {
         "prop": "stone-ne-sw-1",
-        "x": 41,
-        "y": 10
+        "x": 44,
+        "y": 17
       },
       {
         "prop": "stone-ne-sw-2",
         "x": 30,
         "y": 15
+      },
+      {
+        "prop": "stone-nw-se-1",
+        "x": 17,
+        "y": 18
+      },
+      {
+        "prop": "stone-ne-sw-5",
+        "x": 19,
+        "y": 26
       },
       {
         "prop": "stone-ne-sw-4",
@@ -594,15 +869,15 @@
       },
       {
         "prop": "stone-ne-sw-5",
-        "x": 15,
-        "y": 49
+        "x": 14,
+        "y": 45
       }
     ],
     [
       {
         "prop": "stone-ne-sw-1",
-        "x": 41,
-        "y": 10
+        "x": 37,
+        "y": 9
       },
       {
         "prop": "stone-ne-sw-4",
@@ -610,9 +885,19 @@
         "y": 16
       },
       {
+        "prop": "stone-tile-1",
+        "x": 16,
+        "y": 23
+      },
+      {
         "prop": "stone-ne-sw-3",
         "x": 23,
         "y": 26
+      },
+      {
+        "prop": "stone-tile-5",
+        "x": 39,
+        "y": 30
       },
       {
         "prop": "stone-ne-sw-2",
@@ -621,20 +906,30 @@
       },
       {
         "prop": "stone-ne-sw-5",
-        "x": 15,
-        "y": 49
+        "x": 13,
+        "y": 43
       }
     ],
     [
       {
         "prop": "stone-ne-sw-1",
-        "x": 41,
-        "y": 10
+        "x": 34,
+        "y": 8
+      },
+      {
+        "prop": "stone-nw-se-1",
+        "x": 24,
+        "y": 12
       },
       {
         "prop": "stone-ne-sw-3",
         "x": 37,
         "y": 20
+      },
+      {
+        "prop": "stone-nw-se-5",
+        "x": 50,
+        "y": 27
       },
       {
         "prop": "stone-ne-sw-4",
@@ -648,7 +943,12 @@
       },
       {
         "prop": "stone-ne-sw-5",
-        "x": 15,
+        "x": 36,
+        "y": 41
+      },
+      {
+        "prop": "stone-ne-sw-5",
+        "x": 19,
         "y": 49
       }
     ]
