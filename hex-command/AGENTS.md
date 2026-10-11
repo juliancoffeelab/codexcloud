@@ -34,10 +34,15 @@
   to the same matrices, packing floor choices for every orientation. Render the
   selected isolated frame with its matching vector hex background. Floor choices
   affect artwork only and must survive publication, saves and forks.
-  Forest/hill `tile.txt` files hold the floor and ground decoration. Reusable
+  Forest/hill/plains base matrices hold the floor and ground decoration; fords
+  hold water and ripples, with crossing stones supplied as props. Reusable
   pieces live in `terrain/props/<terrain>/<piece>/tile.txt` with material palettes,
   on transparent 64×64 canvases. `<terrain>/layouts.json` supplies native integer
   placements, drawn in depth order; each painted piece must fit inside the hex.
+  Directional terrain uses an object in `layouts.json`, keyed by source frame
+  stem (`tile`, `nw-se`, `ne-sw`); each value is its list of arrangements.
+  Select the arrangement for the same frame as the base artwork. Ford endpoint
+  stones stay fixed; vary interior stones without bending the crossing.
   Choose arrangements deterministically from map/tile identity. Keep pieces at
   their native size and lighting; do not mirror, resize or randomly move them on
   redraw. The atlas only packs source frames; the published renderer places them.

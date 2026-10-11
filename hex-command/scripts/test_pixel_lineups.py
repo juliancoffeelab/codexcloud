@@ -189,6 +189,27 @@ class TerrainFloors(unittest.TestCase):
             with self.subTest(placement=placement), self.assertRaisesRegex(ValueError, error):
                 art.load_terrain_layouts()
 
+    def test_directional_props_use_the_named_frame_footprint(self):
+        root, path, floors = self.fixture()
+        piece = root / 'terrain/props/wood/seed'
+        piece.mkdir(parents=True)
+        (piece / 'tile.txt').write_text('T' + '.' * 63 + '\n' + ('.' * 64 + '\n') * 63)
+        direction = root / 'terrain/wood/ne-sw.txt'
+        direction.write_text('.G' + '.' * 62 + '\n' + ('.' * 64 + '\n') * 63)
+        variants = {'tile': [[{'prop': 'seed', 'x': 2, 'y': 0}]],
+                    'ne-sw': [[{'prop': 'seed', 'x': 1, 'y': 0}]]}
+        layout = root / 'terrain/wood/layouts.json'
+        layout.write_text(json.dumps(variants))
+        self.assertEqual(art.load_terrain_layouts()['wood_ne-sw'][0],
+                         [{'name': 'prop_wood_seed', 'x': 1, 'y': 0}])
+        variants['ne-sw'][0][0]['x'] = 2
+        layout.write_text(json.dumps(variants))
+        with self.assertRaisesRegex(ValueError, 'outside the hex'):
+            art.load_terrain_layouts()
+        layout.write_text(json.dumps({'../tile': variants['tile']}))
+        with self.assertRaisesRegex(ValueError, 'unknown terrain frame'):
+            art.load_terrain_layouts()
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -8,6 +8,7 @@ import {
   pixelUnitModels,
   pixelDefaultFloors,
   pixelFloorColors,
+  pixelTerrainLayouts,
 } from "../src/presentation/pixel-art";
 import { Game } from "./game-fixture";
 import { createGameView } from "./fixture-view";
@@ -196,15 +197,31 @@ test("Map floors choose independent palettes for directional terrain and matchin
 });
 
 test("Prop arrangements stay stable per map tile and vary between locations", () => {
-  const choices = new Set<string>();
-  for (let col = 0; col < 16; col++) {
-    const tile = { terrain: "forest" as const, id: `${col},3` };
-    const first = terrainProps(tile, "sample");
-    assert.equal(terrainProps(tile, "sample"), first);
-    choices.add(JSON.stringify(first));
+  for (const terrain of ["forest", "hill", "plains", "ford"] as const) {
+    const choices = new Set<string>();
+    for (let col = 0; col < 16; col++) {
+      const tile = { terrain, id: `${col},3` };
+      const first = terrainProps(tile, "sample");
+      assert.equal(terrainProps(tile, "sample"), first);
+      choices.add(JSON.stringify(first));
+    }
+    assert(choices.size > 1);
   }
-  assert(choices.size > 1);
   assert.deepEqual(terrainProps({ terrain: "road", id: "1,1" }, "sample"), []);
+});
+
+test("Directional props select arrangements for the same orientation as the base frame", () => {
+  for (const connections of [
+    ["e", "w"],
+    ["nw", "se"],
+    ["ne", "sw"],
+  ] as const) {
+    const tile = { terrain: "ford" as const, id: "4,2", connections: [...connections] };
+    const frame = terrainArtNames(tile)[0]!;
+    const props = terrainProps(tile, "sample");
+    assert(pixelTerrainLayouts[frame]!.includes(props));
+    assert.equal(terrainProps(tile, "sample"), props);
+  }
 });
 
 test("Route connections select one complete native terrain frame", async () => {

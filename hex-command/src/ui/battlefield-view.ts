@@ -57,8 +57,11 @@ export function terrainArtNames(
 }
 
 /** Stable per-map arrangements, independent of redraws, terrain rules and floor colors. */
-export function terrainProps(tile: Pick<TileView, "terrain" | "id">, mapId: string) {
-  const layouts = pixelTerrainLayouts[tile.terrain];
+export function terrainProps(
+  tile: Pick<TileView, "terrain" | "id" | "connections" | "deadEnds">,
+  mapId: string,
+) {
+  const layouts = pixelTerrainLayouts[terrainArtNames(tile)[0]!];
   if (!layouts?.length) return [];
   let hash = 2166136261;
   for (const character of `${mapId}:${tile.id}`) {

@@ -230,30 +230,39 @@ def load_terrain_layouts():
     layouts = {}
     for path in sorted((ART / 'terrain').glob('*/layouts.json')):
         kind = path.parent.name
-        variants = json.loads(path.read_text())
-        ground = read_matrix(path.parent / 'tile.txt')
-        if not isinstance(variants, list) or not variants:
+        frames = json.loads(path.read_text())
+        if isinstance(frames, list):
+            frames = {'tile': frames}
+        if not isinstance(frames, dict) or not frames:
             raise ValueError(f'{path}: expected nonempty terrain layouts')
-        layouts[kind] = []
-        for variant in variants:
-            if not isinstance(variant, list) or not variant:
-                raise ValueError(f'{path}: expected nonempty prop placements')
-            placements = []
-            for p in variant:
-                if (not isinstance(p, dict) or set(p) != {'prop', 'x', 'y'}
-                        or not isinstance(p['prop'], str) or not re.fullmatch(r'[a-z][a-z0-9-]*', p['prop'])
-                        or type(p['x']) is not int or type(p['y']) is not int):
-                    raise ValueError(f'{path}: invalid prop placement')
-                matrix = ART / 'terrain/props' / kind / p['prop'] / 'tile.txt'
-                if not matrix.is_file():
-                    raise ValueError(f'{path}: unknown prop {p["prop"]!r}')
-                for y, row in enumerate(read_matrix(matrix)):
-                    for x, s in enumerate(row):
-                        xx, yy = x + p['x'], y + p['y']
-                        if s != '.' and not (0 <= xx < 64 and 0 <= yy < 64 and ground[yy][xx] != '.'):
-                            raise ValueError(f'{path}: prop {p["prop"]!r} extends outside the hex')
-                placements.append({'name': f'prop_{kind}_{p["prop"]}', 'x': p['x'], 'y': p['y']})
-            layouts[kind].append(placements)
+        for frame, variants in frames.items():
+            if (not isinstance(frame, str) or not re.fullmatch(r'[a-z0-9][a-z0-9-]*', frame)
+                    or not (path.parent / f'{frame}.txt').is_file()):
+                raise ValueError(f'{path}: unknown terrain frame {frame!r}')
+            ground = read_matrix(path.parent / f'{frame}.txt')
+            if not isinstance(variants, list) or not variants:
+                raise ValueError(f'{path}: expected nonempty terrain layouts')
+            key = kind if frame == 'tile' else f'{kind}_{frame}'
+            layouts[key] = []
+            for variant in variants:
+                if not isinstance(variant, list) or not variant:
+                    raise ValueError(f'{path}: expected nonempty prop placements')
+                placements = []
+                for p in variant:
+                    if (not isinstance(p, dict) or set(p) != {'prop', 'x', 'y'}
+                            or not isinstance(p['prop'], str) or not re.fullmatch(r'[a-z][a-z0-9-]*', p['prop'])
+                            or type(p['x']) is not int or type(p['y']) is not int):
+                        raise ValueError(f'{path}: invalid prop placement')
+                    matrix = ART / 'terrain/props' / kind / p['prop'] / 'tile.txt'
+                    if not matrix.is_file():
+                        raise ValueError(f'{path}: unknown prop {p["prop"]!r}')
+                    for y, row in enumerate(read_matrix(matrix)):
+                        for x, s in enumerate(row):
+                            xx, yy = x + p['x'], y + p['y']
+                            if s != '.' and not (0 <= xx < 64 and 0 <= yy < 64 and ground[yy][xx] != '.'):
+                                raise ValueError(f'{path}: prop {p["prop"]!r} extends outside the hex')
+                    placements.append({'name': f'prop_{kind}_{p["prop"]}', 'x': p['x'], 'y': p['y']})
+                layouts[key].append(placements)
     return layouts
 
 
