@@ -106,7 +106,7 @@
 </script>
 
 <svelte:document onkeydown={globalKeydown} onclick={clickAway} />
-<main>
+<main class="battle-layout" class:briefing-open={briefingExpanded}>
   <TurnBar
     view={$view}
     {actions}
@@ -124,7 +124,7 @@
   <div class="workspace" class:map-only={!inspectionOpen}>
     <Battlefield view={$view} {actions} />
     {#if inspectionOpen}
-      <aside>
+      <aside aria-label="Unit and terrain details">
         <UnitPanel view={$view} {actions} onNewBattle={openMapPicker} />
         <TerrainPanel view={$view} {actions} />
       </aside>

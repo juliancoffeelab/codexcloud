@@ -332,11 +332,6 @@ export class BattleController {
     this.animateTileAfterRender(target.tile, "select");
     playSound("select");
     this.message("Tap a weapon to attack. Use the magnifying glass for damage details.");
-    if (matchMedia("(max-width:900px)").matches) {
-      this.afterRender(() => {
-        document.getElementById("unit-panel")?.scrollIntoView({ block: "nearest" });
-      });
-    }
   }
 
   private selectUnit(unit: Unit) {

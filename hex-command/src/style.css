@@ -505,6 +505,35 @@ summary {
   margin-top: 20px;
 }
 @media (max-width: 1000px) {
+  main.battle-layout:not(.briefing-open) {
+    height: calc(100dvh - 2 * var(--page-padding));
+    display: flex;
+    flex-direction: column;
+  }
+  main.battle-layout:not(.briefing-open) > .battle-bar {
+    flex-shrink: 0;
+  }
+  main.battle-layout:not(.briefing-open) .workspace {
+    flex: 1;
+    min-height: 0;
+    grid-template-rows: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+  main.battle-layout:not(.briefing-open) .workspace.map-only {
+    grid-template-rows: minmax(0, 1fr);
+  }
+  main.battle-layout:not(.briefing-open) .map-section {
+    min-height: 0;
+  }
+  main.battle-layout:not(.briefing-open) .map-scroll {
+    height: 100%;
+    max-height: none;
+  }
+  main.battle-layout:not(.briefing-open) aside {
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
   .map-scroll {
     max-height: 55svh;
   }
