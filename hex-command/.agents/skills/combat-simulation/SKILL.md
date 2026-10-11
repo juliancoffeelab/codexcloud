@@ -37,8 +37,7 @@ but executes no matches. Do not expand rosters or change balance to run a report
 
 Choose a new ignored artifact directory for each run, preserving previous results.
 The npm command builds the release runner using the project's toolchain wrapper.
-Node dependencies must be installed; use `npm ci` if needed. Analysis requires
-`uv`, which installs the Python script's pinned dependencies.
+Node dependencies must be installed; use `npm ci` if needed. Reporting uses Python 3 and its standard library.
 
 ```sh
 simulation_run=artifacts/combat-$(date -u +%Y%m%dT%H%M%SZ)
@@ -59,10 +58,14 @@ Recovery details are in [the recording guide](../../../rust/src/simulation/READM
 
 ## Analyze existing results and compare
 
-For a request about saved data, run only the analyzer. It reads the compact outcome
-journal, not gameplay details, and never builds or runs battles. The analyzer and
-shared journal schema are bundled in this skill's `scripts/` directory; the
-`ai:analyze` npm command invokes the bundled analyzer.
+For saved data, run `ai:analyze`: it reads the recorded reports and never runs battles.
+For an authorized new batch, `npm run ai:combat -- --seeds 10 --out artifacts/current`
+runs the native simulation and immediately generates the complete report.
+The reporter and runner live in this skill's `scripts/` directory.
+Always show all recorded factions. Never substitute one opponent or selected AI
+policies for a request for full data. Include every map/policy-pair matrix, unit
+recruitment, promotions, casualties, per-match results, baseline changes and recorded
+unit stats. Historical catalogs must come from the recorded source commit.
 
 ```sh
 npm run ai:analyze -- artifacts/current/report.json \
@@ -77,15 +80,19 @@ data. Do not infer its roster or rules from the current checkout.
 
 ## Report findings
 
-Link `analytics/summary.md` and retain its CSV breakdowns and `timings.json`.
+Link `analytics/index.html`, `analytics/summary.md` and `analytics/full-data.zip`.
+The full report includes every matchup; the HTML filters never change the CSV exports.
+The archive includes current and baseline compact outcome journals. Link original
+`.details.jsonl` journals too when the user asks for all raw gameplay.
+Retain every CSV and `timings.json`.
 State the recorded source commit, actual completed match count, seed range,
 selected scope and roster omissions relevant to the question. Mention caps and
 the limited evidence from small seed panels.
 
 For race balance, lead with `race_equal_policy.csv`, which compares different
-races using the same policy. Use `race_map.csv` for terrain effects and
-`race_matchups.csv` for particular opponents and policies. Overall `race.csv`
-mixes policies; policy tables include both seats of same-race matches. Label those
+races using the same policy. Use `race_map_equal_policy.csv` for terrain effects and
+`matchups.csv` for every opponent and policy pairing. `race_all_policies.csv`
+mixes policies. Self-play cells count both seats. Label those
 denominators accurately. A roster can perform differently under different AI.
 
 Keep round-capped games in win-rate denominators and report them as unresolved.
