@@ -326,7 +326,7 @@ test("An abandoned render leaves the committed bake running; activation cancels 
   const game = state();
   const nextGame = { ...game, mapId: "river" };
   const owner = Terrain.create({ [key(nextGame)]: sprite(nextGame) });
-  const art = uniformArtwork();
+  const art = Art.current();
   try {
     const current = Terrain.prepare(owner, game, art);
     Terrain.activate(owner, current);
@@ -358,6 +358,107 @@ test("An abandoned render leaves the committed bake running; activation cancels 
   } finally {
     Terrain.close(owner);
     restore();
+    vi.unstubAllGlobals();
+  }
+});
+
+test("Used artwork replacements bypass exact and overlay PNGs and paint the replacement, while canonical-only changes preserve the scene", async () => {
+  ControlledImage.requests = [];
+  vi.stubGlobal("Image", ControlledImage);
+  const restore = mockSpriteCanvas();
+  const game = state([{ ...tile(), terrain: "forest", floor: "snow-forest" }]);
+  const owner = Terrain.create({ [key(game)]: sprite(game) });
+  const base = Art.current();
+  try {
+    const original = Terrain.prepare(owner, game, base);
+    assert(Terrain.preview(owner, original));
+    const frames = { ...Art.frames(base) };
+    const canonicalKey = Art.frame_key("terrain", Plan.canonical_name("forest"));
+    const canonicalOnly = artwork({
+      ...frames,
+      [canonicalKey]: { url: "canonical-only.png", width: 64, height: 64 },
+      player_unused: { url: "unused.png", width: 64, height: 64 },
+    });
+    assert.equal(Terrain.prepare(owner, game, canonicalOnly), original);
+    assert(Terrain.preview(owner, original));
+    const used = required(Terrain.get_tile(original, "0,0"));
+    const usedKey = Art.frame_key("terrain", used.name, undefined, used.floor);
+    const changedArt = artwork({
+      ...frames,
+      [usedKey]: { url: "replacement-terrain.png", width: 64, height: 64 },
+    });
+    const changed = Terrain.prepare(owner, game, changedArt);
+    assert.equal(Terrain.preview(owner, changed), undefined);
+    Terrain.activate(owner, changed);
+    const painted = Terrain.bake(owner, changed);
+    const request = required(ControlledImage.requests[0]);
+    assert.equal(request.src, "replacement-terrain.png");
+    request.onload?.();
+    const bitmap = required(await painted);
+    assert.equal(recording(bitmap).draws[0]?.source, "replacement-terrain.png");
+    const edited = { ...game, tiles: [{ ...required(game.tiles[0]), floor: "autumn-forest" }] };
+    const normalEdited = Terrain.prepare(owner, edited, base);
+    assert(Terrain.preview(owner, normalEdited));
+    const editedCell = required(Terrain.get_tile(normalEdited, "0,0"));
+    const editedKey = Art.frame_key("terrain", editedCell.name, undefined, editedCell.floor);
+    const overridden = Terrain.prepare(
+      owner,
+      edited,
+      artwork({
+        ...frames,
+        [editedKey]: { url: "replacement-overlay.png", width: 64, height: 64 },
+      }),
+    );
+    assert.equal(
+      Terrain.preview(owner, overridden),
+      undefined,
+      "Changed-cell overlays cannot retain incompatible artwork pixels",
+    );
+  } finally {
+    Terrain.close(owner);
+    restore();
+    vi.unstubAllGlobals();
+  }
+});
+
+test("Successful map warming releases image handlers, reuses only its URL and ignores stale completion after a newer map", () => {
+  ControlledImage.requests = [];
+  vi.stubGlobal("Image", ControlledImage);
+  const first = state();
+  const second = { ...first, mapId: "river" };
+  const owner = Terrain.create({
+    [key(first)]: sprite(first),
+    [key(second)]: { ...sprite(second), url: "river.png" },
+  });
+  try {
+    Terrain.preload(owner, "mirror");
+    const old = required(ControlledImage.requests[0]);
+    const staleLoad = required(old.onload);
+    const staleError = required(old.onerror);
+    Terrain.preload(owner, "river");
+    const current = required(ControlledImage.requests[1]);
+    assert.equal(old.onload, null);
+    assert.equal(old.onerror, null);
+    staleLoad();
+    staleError();
+    Terrain.preload(owner, "river");
+    assert.equal(ControlledImage.requests.length, 2, "Stale completion must retain the newer warm");
+    const lateError = required(current.onerror);
+    required(current.onload)();
+    assert.equal(current.onload, null);
+    assert.equal(current.onerror, null);
+    lateError();
+    Terrain.preload(owner, "river");
+    assert.equal(
+      ControlledImage.requests.length,
+      2,
+      "Success and a late error must not reload the same URL",
+    );
+    Terrain.close(owner);
+    Terrain.preload(owner, "river");
+    assert.equal(ControlledImage.requests.length, 3);
+  } finally {
+    Terrain.close(owner);
     vi.unstubAllGlobals();
   }
 });

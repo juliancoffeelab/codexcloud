@@ -10,7 +10,7 @@ let make = (~failure: option(string)) => {
           <div className="map-scroll loading-map">
             <div className="loading-message" role="status" ariaLive="polite">
               {switch (failure) {
-               | None => <p> {text("Loading the game…")} </p>
+               | None => <p> {text({js|Loading the game…|js})} </p>
                | Some(reason) =>
                  <>
                    <p> {text("The game could not start. Reloading keeps your saved battle.")} </p>

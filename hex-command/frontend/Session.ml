@@ -2,7 +2,7 @@ type model = {
   game : Native.view; catalog : Catalog.t; artwork : Art.t;
   selected : string option; target : string option; inspected : string option;
   focused : string; revision : int; status : string; sound : bool;
-  can_undo : bool;
+  can_undo : bool; failure : string option;
 }
 type actions = {
   choose : string -> unit; focus : string -> unit; clear : bool -> unit;
@@ -34,7 +34,8 @@ external prebuilt : Terrain.sprite Js.Dict.t = "default" [@@mel.module "virtual:
 let preload map = Terrain.preload_manifest prebuilt map
 let initial_status = "Select a unit. Capture villages. Defeat the red commander."
 let state t = Native.state (Native.view t.battle)
-let alive t = if t.disposed then Js.Exn.raiseError "This battle session has closed."
+let ensure_open t = if t.disposed then Js.Exn.raiseError "This battle session has closed."
+let alive t = ensure_open t; if t.latest.failure <> None then Js.Exn.raiseError "The battle could not continue. Reload the game."
 let active t = let s = state t in s.turn = Domain.side_player && Js.Nullable.isNullable s.winner && not (Story.dialogue_pending s.campaign)
 let require_actor t id =
   alive t;
@@ -60,15 +61,24 @@ let emit t model =
     t.notifying <- false;
     if t.disposed then Queue.clear t.publications)
 let subscribe t receive =
-  alive t;
+  ensure_open t;
   let listener = {alive = true; receive} in
   t.listeners <- t.listeners @ [listener];
   let cleanup () = listener.alive <- false; t.listeners <- List.filter (fun other -> other != listener) t.listeners in
   (try receive t.latest with exception_ -> cleanup (); raise exception_);
   cleanup
+let terminal_failure t reason =
+  if not t.disposed && t.latest.failure = None then (
+    t.epoch <- t.epoch + 1; t.effects <- []; t.history <- []; t.pending_enemy <- false;
+    Audio.close t.audio;
+    let model = freeze {t.latest with failure=Some reason;status=reason;selected=None;target=None;
+                                      inspected=None;can_undo=false;revision=t.latest.revision+1} in
+    t.latest <- model; emit t model)
+let bind_failure t battle =
+  Native.on_failure battle (fun reason -> if battle == t.battle then terminal_failure t reason)
 let publish ?(render=true) ?(winner=true) ?(effects=(fun () -> ())) ?(next=(fun () -> ())) t =
   if not t.disposed then (
-    let current = Native.view t.battle in
+    let current = if t.latest.failure = None then Native.view t.battle else t.latest.game in
     let s = Native.state current in
     let status = if winner then match Js.Nullable.toOption s.winner with
         | None -> t.latest.status
@@ -78,7 +88,7 @@ let publish ?(render=true) ?(winner=true) ?(effects=(fun () -> ())) ?(next=(fun 
                          (Option.bind s.campaign (fun campaign -> Js.Nullable.toOption campaign.outcome))
       else t.latest.status in
     let model = freeze {t.latest with game = current; status; sound = Audio.enabled t.audio;
-                                      can_undo = can_undo t; revision = t.latest.revision + (if render then 1 else 0)} in
+                                      can_undo = (t.latest.failure = None && can_undo t); revision = t.latest.revision + (if render then 1 else 0)} in
     t.latest <- model;
     if render then t.effects <- [];
     effects ();
@@ -254,8 +264,10 @@ let initial_focus game =
   | Some unit -> unit.tile | None -> if Array.length s.tiles=0 then "" else s.tiles.(0).id
 let replace t replacement =
   Audio.cancel t.audio; t.epoch <- t.epoch+1; t.history <- []; t.effects <- [];
-  if replacement != t.battle then Native.dispose t.battle;
-  t.battle <- replacement; t.pending_enemy <- false; Save.resume t.saves;
+  let previous = t.battle in
+  t.battle <- replacement; bind_failure t replacement;
+  if previous != replacement then (try Native.dispose previous with error -> console_error error);
+  t.pending_enemy <- false; Save.resume t.saves;
   t.latest <- {t.latest with selected=None;target=None;inspected=None;focused=initial_focus (Native.view replacement);
                              status=(if (state t).campaign=None then initial_status else "Follow the mission objectives. Keep your leader safe.")};
   save t false; publish t
@@ -312,16 +324,17 @@ let create ?(clock=pause) factory =
   try
     let audio = Audio.create () and game=Native.view loaded.game in
     let model = freeze {game;catalog;artwork=Art.current ();selected=None;target=None;inspected=None;
-                        focused=initial_focus game;revision=0;status=Option.value ~default:initial_status loaded.notice;
-                        sound=Audio.enabled audio;can_undo=false} in
+                        focused=initial_focus game;revision=0;status=Option.value ~default:(if Option.is_some (Native.state game).campaign then "Follow the mission objectives. Keep your leader safe." else initial_status) loaded.notice;
+                        sound=Audio.enabled audio;can_undo=false;failure=None} in
     let t={factory;catalog;audio;saves=loaded.saves;clock;battle=loaded.game;latest=model;
            actions=None;listeners=[];publications=Queue.create ();notifying=false;disposed=false;initialized=false;epoch=0;
            pending_enemy=loaded.pending_enemy;history=[];effects=[]} in
     t.actions <- Some (freeze {choose=choose t;focus=focus t;clear=clear t;attack=attack t;recruit=recruit t;advance=advance t;
                                end_turn=end_turn t;undo=undo t;reset=reset t;start_campaign=start_campaign t;next_mission=next_mission t;
                                retry=retry t;dialogue=dialogue t;previous_dialogue=previous_dialogue t;set_sound=set_sound t});
+    bind_failure t loaded.game;
     t
-  with exception_ -> Native.dispose loaded.game; raise exception_
+  with exception_ -> (try Native.dispose loaded.game with _ -> ()); raise exception_
 let initialize t =
   alive t;
   if not t.initialized then (
@@ -339,4 +352,4 @@ let close t =
   if not t.disposed then (
     t.disposed <- true; t.epoch <- t.epoch+1; t.effects <- []; t.history <- [];
     List.iter (fun listener -> listener.alive <- false) t.listeners; t.listeners <- [];
-    Queue.clear t.publications; Audio.cancel t.audio; Native.dispose t.battle)
+    Queue.clear t.publications; Audio.close t.audio; Native.dispose t.battle)

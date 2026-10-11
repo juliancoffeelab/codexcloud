@@ -11,10 +11,11 @@ type canvas
 type bitmap = { scene : scene; canvas : canvas; dimensions : Terrain_plan.dimensions }
 type request = { mutable cancelled : bool; mutable cancel : (unit -> unit) list }
 type entry = { scene : scene; request : request; promise : bitmap option Js.Promise.t }
+type warm = {url : string; mutable image : Terrain_plan.image option}
 type t = { exact : authored Js.Dict.t; maps : authored array;
            mutable prepared : scene option; mutable active : scene option;
            mutable entry : entry option;
-           mutable warm : (string * Terrain_plan.image) option }
+           mutable warm : warm option }
 external finite : float -> bool = "isFinite" [@@mel.scope "Number"]
 external integer : float -> bool = "isSafeInteger" [@@mel.scope "Number"]
 external freeze : 'a -> 'a = "freeze" [@@mel.scope "Object"]
@@ -33,8 +34,9 @@ external empty_children : Dom.element -> unit = "replaceChildren" [@@mel.send]
 type timer
 external timeout : (unit -> unit) -> int -> timer = "setTimeout"
 external clear_timeout : timer -> unit = "clearTimeout"
+let detach_image image = set_load image Js.Nullable.null; set_error image Js.Nullable.null
 let stop_image image =
-  set_load image Js.Nullable.null; set_error image Js.Nullable.null;
+  detach_image image;
   (try remove_source image "src" with _ -> ())
 let cancel request =
   if not request.cancelled then (
@@ -46,12 +48,12 @@ let close owner =
   owner.entry <- None;
   (* Effect replay may reuse the memoized scene. Release its heavy bitmap and
      asynchronous work; the component's unreachable owner releases geometry. *)
-  Option.iter (fun (_, image) -> stop_image image) owner.warm; owner.warm <- None
+  Option.iter (fun warm -> Option.iter stop_image warm.image; warm.image <- None) owner.warm; owner.warm <- None
 let json_string value = match Js.Json.decodeString value with Some value -> value | None -> invalid_arg "Terrain key string"
 let json_number value = match Js.Json.decodeNumber value with Some value when finite value -> value | _ -> invalid_arg "Terrain key number"
 let json_array value = match Js.Json.decodeArray value with Some value -> value | None -> invalid_arg "Terrain key array"
 let require value = if not value then invalid_arg "Invalid prebuilt terrain"
-let validate key sprite =
+let validate key (sprite : sprite) =
   let header = json_array (Js.Json.parseExn key) in require (Array.length header = 4);
   let map_id = json_string header.(0) and cols = json_number header.(1) and rows = json_number header.(2) in
   require (map_id <> "" && integer cols && integer rows && cols > 0. && rows > 0.);
@@ -124,12 +126,18 @@ let preview owner scene =
   let authored = match Js.Dict.get owner.exact scene.plan.key with
     | Some exact -> Some exact
     | None -> Array.find_opt (fun authored -> authored.map_id = scene.plan.map_id && authored.cols = scene.plan.cols && authored.rows = scene.plan.rows) owner.maps in
-  Option.map (fun (authored : authored) ->
-      let changed_index = Js.Dict.empty () in
-      let changed = Array.to_list scene.source |> List.filter_map (fun (tile : Domain.tile) ->
-          if Js.Dict.get authored.shapes tile.id = Js.Dict.get scene.shapes tile.id then None else (
-            Js.Dict.set changed_index tile.id true; Some tile.id)) |> Array.of_list in
-      {sprite = authored.sprite; changed; changed_index}) authored
+  Option.bind authored (fun (authored : authored) ->
+      let baseline = Art.current () in
+      let same_frame (a : Art.frame) (b : Art.frame) =
+        a == b || (a.url = b.url && a.width = b.width && a.height = b.height) in
+      if not (Array.for_all (fun (tile : Terrain_plan.tile) ->
+          Option.equal same_frame tile.frame (Art.terrain_frame baseline ?floor:tile.floor tile.name)) scene.plan.tiles) then None
+      else (
+        let changed_index = Js.Dict.empty () in
+        let changed = Array.to_list scene.source |> List.filter_map (fun (tile : Domain.tile) ->
+            if Js.Dict.get authored.shapes tile.id = Js.Dict.get scene.shapes tile.id then None else (
+              Js.Dict.set changed_index tile.id true; Some tile.id)) |> Array.of_list in
+        Some {sprite = authored.sprite; changed; changed_index}))
 let sprite (preview : preview) = preview.sprite
 let changed (preview : preview) = preview.changed
 let changed_contains preview id = Js.Dict.get preview.changed_index id = Some true
@@ -198,16 +206,21 @@ let bake owner (scene : scene) =
 let preload owner map_id =
   match Array.find_opt (fun authored -> authored.map_id = map_id) owner.maps with
   | None -> ()
-  | Some authored when Option.fold ~none:false ~some:(fun (url, _) -> url = authored.sprite.url) owner.warm -> ()
+  | Some authored when Option.fold ~none:false ~some:(fun warm -> warm.url = authored.sprite.url) owner.warm -> ()
   | Some authored ->
-    Option.iter (fun (_, image) -> stop_image image) owner.warm;
+    Option.iter (fun warm -> Option.iter stop_image warm.image; warm.image <- None) owner.warm;
     (try
-       let image = new_image () in owner.warm <- Some (authored.sprite.url, image);
-       set_error image (Js.Nullable.return (fun () ->
-           if Option.fold ~none:false ~some:(fun (_, current) -> current == image) owner.warm then owner.warm <- None;
-           stop_image image));
-       set_source image authored.sprite.url
-     with _ -> owner.warm <- None)
+       let image = new_image () in
+       let warm = {url = authored.sprite.url; image = Some image} in owner.warm <- Some warm;
+       let finish success = if warm.image <> None then (
+           warm.image <- None; detach_image image;
+           if not success then (
+             stop_image image;
+             if Option.fold ~none:false ~some:(fun current -> current == warm) owner.warm then owner.warm <- None)) in
+       set_load image (Js.Nullable.return (fun () -> finish true));
+       set_error image (Js.Nullable.return (fun () -> finish false));
+       set_source image warm.url
+     with _ -> Option.iter (fun warm -> Option.iter stop_image warm.image; warm.image <- None) owner.warm; owner.warm <- None)
 let preloading = ref None
 let preload_manifest manifest map_id =
   let owner = match !preloading with

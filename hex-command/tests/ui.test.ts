@@ -12,7 +12,7 @@ import * as Plan from "@frontend/Terrain_plan";
 import * as Viewport from "@frontend/Viewport";
 import * as Art from "@frontend/Art";
 import * as Save from "@frontend/Save";
-import type { SavedGame } from "../rust/pkg/hex_command";
+import { NativeEngineFactory, type SavedGame } from "../rust/pkg/hex_command";
 import { factory, Native, Catalog, createBattle } from "./native-fixture";
 import { required } from "./helpers";
 
@@ -315,4 +315,77 @@ test("Terrain details use one complete canonical image while battlefield directi
       assert.equal(required(images[index]).getAttribute("href"), urls[index]);
     }
   }
+});
+
+test("An accepted native command with failed inspection replaces battle controls with reload and preserves saved bytes", async () => {
+  session = Session.create(async () => {}, factory);
+  const mounted = session;
+  await act(async () => {
+    required(root).render(
+      React.createElement(App.make, {
+        session: mounted,
+        onMount: () => {
+          Session.initialize(mounted);
+          return () => {};
+        },
+      }),
+    );
+  });
+  const game = Session.view(mounted).game,
+    opening = Native.state(game);
+  const unit = required(
+    opening.units.find(
+      (unit) =>
+        unit.side === "player" &&
+        Object.keys(Native.reachable(game, unit.id)).some(
+          (id) => id !== unit.tile && !Native.at(game, id),
+        ),
+    ),
+  );
+  const destination = required(
+    Object.keys(Native.reachable(game, unit.id)).find(
+      (id) => id !== unit.tile && !Native.at(game, id),
+    ),
+  );
+  await click(`[data-tile="${unit.tile}"]`);
+  const saved = required(localStorage.getItem(Save.key));
+  vi.spyOn(NativeEngineFactory.prototype, "inspect").mockImplementation(() => {
+    throw new Error("Inspection unavailable");
+  });
+  await assert.doesNotReject(() => click(`[data-tile="${destination}"]`));
+  assert.match(element(".loading-message").textContent ?? "", /Reloading keeps your saved battle/);
+  assert.equal(element(".loading-message button").textContent?.trim(), "Reload game");
+  assert.match(element(".loading-message pre").textContent ?? "", /Inspection unavailable/);
+  assert.equal(element<HTMLButtonElement>("#end-turn").disabled, true);
+  assert.equal(element<HTMLButtonElement>("#settings-button").disabled, true);
+  assert.equal(host.querySelector("#map"), null);
+  assert.equal(localStorage.getItem(Save.key), saved);
+  assert.equal(
+    Session.view(mounted).game,
+    game,
+    "The last detached coherent view remains available",
+  );
+  assert.equal(required(Native.unit(Session.view(mounted).game, unit.id)).tile, unit.tile);
+  await act(async () => {
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    element(".loading-message p").dispatchEvent(new MouseEvent("click", { bubbles: true }));
+  });
+  assert.equal(localStorage.getItem(Save.key), saved);
+});
+
+test("Embedding cleanup frees its factory even when battle disposal fails", async () => {
+  await act(async () => {
+    applicationCleanup = await Application.mount(required(root), host, () => true);
+  });
+  const dispose = vi
+    .spyOn(NativeEngineFactory.prototype, "disposeBattle")
+    .mockImplementationOnce(() => {
+      throw new Error("Battle cleanup failed");
+    });
+  const free = vi.spyOn(NativeEngineFactory.prototype, "free");
+  assert.throws(required(applicationCleanup), /Battle cleanup failed/);
+  assert.equal(dispose.mock.calls.length, 1);
+  assert.equal(free.mock.calls.length, 1);
+  assert.doesNotThrow(required(applicationCleanup));
+  assert.equal(free.mock.calls.length, 1);
 });

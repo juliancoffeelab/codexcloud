@@ -7,9 +7,13 @@ type destination
 type response
 type array_buffer
 type voice = { source : source; gain : gain }
+type waiter = { finish : bool -> unit }
 type t = {
+  mutable closed : bool;
+  mutable waiters : waiter list;
   mutable enabled : bool; mutable context : context option; mutable master : gain option;
   mutable unlocking : unit Js.Promise.t option; mutable primed : bool;
+  mutable prime_source : source option;
   mutable request : int; mutable voices : voice list;
   mutable buffers : buffer Js.Promise.t Js.Dict.t;
   bags : int list Js.Dict.t; previous : int Js.Dict.t;
@@ -42,6 +46,7 @@ external on_ended : source -> (unit -> unit) -> unit = "onended" [@@mel.set]
 external start : source -> unit = "start" [@@mel.send]
 external stop : source -> float -> unit = "stop" [@@mel.send]
 external resume : context -> unit Js.Promise.t = "resume" [@@mel.send]
+external close_context : context -> unit Js.Promise.t = "close" [@@mel.send]
 external fetch : string -> response Js.Promise.t = "fetch"
 external response_ok : response -> bool = "ok" [@@mel.get]
 external array_buffer : response -> array_buffer Js.Promise.t = "arrayBuffer" [@@mel.send]
@@ -54,8 +59,9 @@ let families = ["attack-bow"; "attack-melee"; "unit-soldier"; "unit-archer";
                 "terrain-forest"; "terrain-hill"; "terrain-plains"; "terrain-keep";
                 "select"; "recruit"; "turn"; "victory"; "defeat"]
 let create () =
-  { enabled = (try Js.Nullable.toOption (storage_get "hex-command-sound-enabled") <> Some "false" with _ -> true);
-    context = None; master = None; unlocking = None; primed = false; request = 0;
+  { closed = false; waiters = [];
+    enabled = (try Js.Nullable.toOption (storage_get "hex-command-sound-enabled") <> Some "false" with _ -> true);
+    context = None; master = None; unlocking = None; primed = false; prime_source = None; request = 0;
     voices = []; buffers = Js.Dict.empty (); bags = Js.Dict.empty (); previous = Js.Dict.empty () }
 let enabled t = t.enabled
 let stop_voices t =
@@ -72,11 +78,36 @@ let stop_voices t =
                                   stop voice.source (time +. 0.009)
                                 with _ -> ()) voices
 let cancel t = t.request <- t.request + 1; stop_voices t
+let close t =
+  if not t.closed then (
+    t.closed <- true;
+    let voices = t.voices and context = t.context and master = t.master and prime_source = t.prime_source in
+    cancel t;
+    t.context <- None;
+    t.master <- None;
+    t.unlocking <- None;
+    t.prime_source <- None;
+    Array.iter (delete t.buffers) (Js.Dict.keys t.buffers);
+    t.buffers <- Js.Dict.empty ();
+    Array.iter (delete t.bags) (Js.Dict.keys t.bags);
+    Array.iter (delete t.previous) (Js.Dict.keys t.previous);
+    let waiters = t.waiters in
+    t.waiters <- [];
+    List.iter (fun waiter -> waiter.finish false) waiters;
+    List.iter (fun voice ->
+        (try disconnect_source voice.source with _ -> ());
+        (try disconnect_gain voice.gain with _ -> ())) voices;
+    Option.iter (fun source -> try disconnect_source source with _ -> ()) prime_source;
+    Option.iter (fun master -> try disconnect_gain master with _ -> ()) master;
+    Option.iter (fun context -> try
+                    ignore (Js.Promise.catch (fun _ -> Js.Promise.resolve ()) (close_context context))
+                  with _ -> ()) context)
 let set_enabled t value =
-  t.enabled <- value;
-  t.request <- t.request + 1;
-  (try storage_set "hex-command-sound-enabled" (string_of_bool value) with _ -> ());
-  if not value then stop_voices t
+  if not t.closed then (
+    t.enabled <- value;
+    t.request <- t.request + 1;
+    (try storage_set "hex-command-sound-enabled" (string_of_bool value) with _ -> ());
+    if not value then stop_voices t)
 let interaction_family ?attack ?unit_type ?terrain () =
   match attack, unit_type with
   | Some "archer", _ -> "attack-bow"
@@ -113,15 +144,26 @@ let sample t context family variant =
   | None ->
     let cache = t.buffers in
     let loading = Js.Promise.then_ (fun response ->
-        if not (response_ok response) then reject "Sound unavailable"
-        else Js.Promise.then_ (decode context) (array_buffer response))
+        if t.closed || not (response_ok response) then reject "Sound unavailable"
+        else Js.Promise.then_ (fun bytes ->
+            if t.closed then reject "Sound unavailable" else decode context bytes)
+            (array_buffer response))
         (fetch (base_url ^ "assets/audio/" ^ name ^ ".wav?v=6ad634f16189")) in
     let guarded = Js.Promise.catch (fun error -> delete cache name; reject error) loading in
     Js.Dict.set cache name guarded;
     guarded
 let ignore_failure promise = Js.Promise.catch (fun _ -> Js.Promise.resolve ()) promise
+let pending t promise =
+  if t.closed then Js.Promise.resolve false else
+    Js.Promise.make (fun ~resolve ~reject:_ ->
+        let waiter = { finish = (fun result -> (resolve result [@u])) } in
+        t.waiters <- waiter :: t.waiters;
+        ignore (Js.Promise.then_ (fun result ->
+            t.waiters <- List.filter (fun current -> current != waiter) t.waiters;
+            waiter.finish result;
+            Js.Promise.resolve ()) promise))
 let unlock t ~trusted =
-  if not t.enabled || not trusted then Js.Promise.resolve false else
+  if t.closed || not t.enabled || not trusted then Js.Promise.resolve false else
     try
       let context = match t.context with
         | Some context when state context <> "closed" -> Some context
@@ -135,9 +177,12 @@ let unlock t ~trusted =
       | Some context ->
         let existing = match t.context with Some existing -> existing == context | None -> false in
         if not existing then (
+          Option.iter (fun master -> try disconnect_gain master with _ -> ()) t.master;
+          Option.iter (fun source -> try disconnect_source source with _ -> ()) t.prime_source;
           t.request <- t.request + 1;
           t.context <- Some context;
           t.primed <- false;
+          t.prime_source <- None;
           t.buffers <- Js.Dict.empty ();
           let master = create_gain context in
           set_value (gain_parameter master) 0.29;
@@ -158,37 +203,42 @@ let unlock t ~trusted =
               let source = create_source context in
               source_buffer source (create_buffer context 1 1 (rate context));
               connect_source source master;
-              on_ended source (fun () -> try disconnect_source source with _ -> ());
+              t.prime_source <- Some source;
+              on_ended source (fun () ->
+                  (match t.prime_source with Some current when current == source -> t.prime_source <- None | _ -> ());
+                  try disconnect_source source with _ -> ());
               start source;
               t.primed <- true);
-        Js.Promise.catch (fun _ -> Js.Promise.resolve false)
-          (Js.Promise.then_ (fun () -> Js.Promise.resolve (state context = "running")) attempt)
+        pending t (Js.Promise.catch (fun _ -> Js.Promise.resolve false)
+                     (Js.Promise.then_ (fun () ->
+                          let current = match t.context with Some current -> current == context | None -> false in
+                          Js.Promise.resolve (not t.closed && t.enabled && current && state context = "running")) attempt))
     with _ -> Js.Promise.resolve false
 let play t family =
   match t.context, t.master with
-  | Some context, Some master when t.enabled && List.mem family families ->
+  | Some context, Some master when not t.closed && t.enabled && List.mem family families ->
     t.request <- t.request + 1;
     let request = t.request in
     stop_voices t;
     let ready = match t.unlocking with Some pending -> pending | None -> Js.Promise.resolve () in
-    Js.Promise.catch (fun _ -> Js.Promise.resolve false)
-      (Js.Promise.then_ (fun () ->
-           if state context <> "running" then Js.Promise.resolve false else
-             Js.Promise.then_ (fun buffer ->
-                 if not t.enabled || request <> t.request || state context <> "running" then Js.Promise.resolve false else (
-                   let source = create_source context and gain = create_gain context in
-                   source_buffer source buffer;
-                   set_value (gain_parameter gain) (if family = "select" then 0.25 else 1.);
-                   connect_source source gain;
-                   connect_gain gain master;
-                   let voice = { source; gain } in
-                   t.voices <- voice :: t.voices;
-                   on_ended source (fun () ->
-                       t.voices <- List.filter (fun current -> current != voice) t.voices;
-                       (try disconnect_source source with _ -> ());
-                       (try disconnect_gain gain with _ -> ()));
-                   start source;
-                   Js.Promise.resolve true)) (sample t context family (variation t family))) ready)
+    pending t (Js.Promise.catch (fun _ -> Js.Promise.resolve false)
+                 (Js.Promise.then_ (fun () ->
+                      if t.closed || state context <> "running" then Js.Promise.resolve false else
+                        Js.Promise.then_ (fun buffer ->
+                            if t.closed || not t.enabled || request <> t.request || state context <> "running" then Js.Promise.resolve false else (
+                              let source = create_source context and gain = create_gain context in
+                              source_buffer source buffer;
+                              set_value (gain_parameter gain) (if family = "select" then 0.25 else 1.);
+                              connect_source source gain;
+                              connect_gain gain master;
+                              let voice = { source; gain } in
+                              t.voices <- voice :: t.voices;
+                              on_ended source (fun () ->
+                                  t.voices <- List.filter (fun current -> current != voice) t.voices;
+                                  (try disconnect_source source with _ -> ());
+                                  (try disconnect_gain gain with _ -> ()));
+                              start source;
+                              Js.Promise.resolve true)) (sample t context family (variation t family))) ready))
   | _ -> Js.Promise.resolve false
 let play_interaction t ?attack ?unit_type ?terrain () =
   play t (interaction_family ?attack ?unit_type ?terrain ())

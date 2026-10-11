@@ -7,6 +7,7 @@ import * as Legacy from "@frontend/Save_legacy";
 import type { SavedGame, State, Start, PublicUnit } from "../rust/pkg/hex_command";
 import { NativeEngineFactory } from "../rust/pkg/hex_command";
 import river from "../src/save/migration/legacy/data/river-v1.json";
+import developer from "../src/save/migration/legacy/data/developer-v1.json";
 import stages from "../src/save/migration/legacy/data/stages.json";
 import { required, TestStorage } from "./helpers";
 
@@ -76,6 +77,74 @@ function oldSnapshot(input = checkpoint().state) {
 function latest() {
   return JSON.parse(localStorage.getItem(Save.key)!);
 }
+
+function oldDeveloperSnapshot() {
+  const state = structuredClone(
+    Native.save(create({ kind: "scenario", map: "developer" })).state,
+  ) as State;
+  Object.assign(state, { mapRevision: 1, cols: developer.cols, rows: developer.rows, round: 5 });
+  state.tiles = Array.from({ length: developer.cols * developer.rows }, (_, index) => ({
+    id: `${index % developer.cols},${Math.floor(index / developer.cols)}`,
+    col: index % developer.cols,
+    row: Math.floor(index / developer.cols),
+    terrain: "plains",
+    owner: null,
+  }));
+  for (const terrain of developer.terrain)
+    Object.assign(
+      required(state.tiles.find((tile) => tile.col === terrain.col && tile.row === terrain.row)),
+      terrain,
+    );
+  required(state.tiles.find((tile) => tile.terrain === "village")).owner = "player";
+  required(state.tiles.find((tile) => tile.terrain === "grove")).owner = "enemy";
+  required(state.units[0]).hp -= 1;
+  required(state.units[1]).moved = true;
+  state.gold.player = 23;
+  state.log = ["Stored gallery progress"];
+  const old = oldSnapshot(state);
+  old.pendingEnemy = true;
+  return old;
+}
+
+test("Original browser developer gallery restores historical ownership before expansion", () => {
+  const old = oldDeveloperSnapshot();
+  const before = structuredClone(old);
+  const { save, migrated } = migrate(old);
+  assert(migrated);
+  assert.deepEqual(old, before);
+  const map = Catalog.map(Native.catalog(factory), "developer");
+  assert.equal(save.checkpoint.state.cols, map.cols);
+  assert.equal(save.checkpoint.state.rows, map.rows);
+  assert.equal(save.checkpoint.state.mapRevision, map.revision);
+  assert.deepEqual(save.checkpoint.state.units, old.state.units);
+  assert.deepEqual(save.checkpoint.state.gold, old.state.gold);
+  assert.deepEqual(save.checkpoint.state.log, old.state.log);
+  assert.equal(save.checkpoint.state.round, old.state.round);
+  assert.equal(save.pending_enemy, true);
+  const indexed = new Map(save.checkpoint.state.tiles.map((tile) => [tile.id, tile]));
+  for (const site of [...old.state.villages, ...old.state.sites])
+    assert.equal(required(indexed.get(site.id)).owner, site.owner);
+  localStorage.setItem(Save.key, JSON.stringify(old));
+  const loaded = load();
+  assert.equal(loaded.notice, undefined);
+  assert.deepEqual(Native.save(loaded.game), save.checkpoint);
+  assert.equal(latest().version, Save.version);
+  assert.equal(localStorage.getItem(Save.rejected_key), null);
+  assert.equal(migrate(latest()).migrated, false);
+});
+
+test("Unknown historical gallery ownership rejects without replacing the original bytes", () => {
+  const old = oldDeveloperSnapshot();
+  required(old.state.villages[0]).id = "31,31";
+  const raw = JSON.stringify(old, null, 2);
+  localStorage.setItem(Save.key, raw);
+  assert.throws(() => migrate(old));
+  const loaded = load();
+  assert(loaded.notice);
+  assert.equal(Native.state(Native.view(loaded.game)).mapId, "mirror");
+  assert.equal(localStorage.getItem(Save.key), raw);
+  assert.equal(localStorage.getItem(Save.rejected_key), raw);
+});
 
 for (const [cols, rows] of [
   [6, 20],

@@ -39,11 +39,21 @@ class FakeSource {
     this.stopped = true;
   }
 }
+class FakeGain {
+  gain = new Param();
+  disconnected = false;
+  connect(): void {}
+  disconnect(): void {
+    this.disconnected = true;
+  }
+}
 class FakeContext {
   state = "suspended";
   currentTime = 10;
   destination = {};
   sources: FakeSource[] = [];
+  gains: FakeGain[] = [];
+  closes = 0;
   constructor() {
     created++;
     audio = this;
@@ -52,11 +62,17 @@ class FakeContext {
     resumed++;
     this.state = "running";
   }
+  async close() {
+    this.closes++;
+    this.state = "closed";
+  }
   createBuffer() {
     return { silent: true };
   }
   createGain() {
-    return { gain: new Param(), connect() {}, disconnect() {} };
+    const gain = new FakeGain();
+    this.gains.push(gain);
+    return gain;
   }
   async decodeAudioData(bytes: ArrayBuffer): Promise<FakeBuffer> {
     return { name: new TextDecoder().decode(bytes) };
@@ -344,6 +360,93 @@ test("Missing audio APIs degrade to silent playback", async () => {
   assert.equal(await unsupported.playSound("turn"), false);
 });
 
+test("Terminal disposal releases voices and context once and prevents new work", async () => {
+  const sound = createSound();
+  await sound.unlockSound();
+  assert.equal(await sound.playSound("turn"), true);
+  const context = required(audio);
+  const savedPreference = stored.get("hex-command-sound-enabled");
+  sound.dispose();
+  sound.dispose();
+  assert.equal(context.closes, 1);
+  assert(context.sources.every((source) => source.disconnected));
+  assert(context.gains.every((gain) => gain.disconnected));
+  assert(
+    context.sources.filter((source) => !source.buffer.silent).every((source) => source.stopped),
+  );
+  const requests = fetched.length;
+  sound.setSoundEnabled(false);
+  assert.equal(await sound.unlockSound(), false);
+  assert.equal(await sound.playSound("victory"), false);
+  assert.equal(fetched.length, requests);
+  assert.equal(created, 1);
+  assert.equal(stored.get("hex-command-sound-enabled"), savedPreference);
+  const replacement = createSound();
+  assert.equal(await replacement.unlockSound(), true);
+  assert.equal(created, 2, "A new owner is independent of the disposed session");
+});
+
+test("Disposal settles a pending resume and prevents queued foreground fetches", async () => {
+  let finishResume = () => {};
+  const PendingContext = class extends FakeContext {
+    resume() {
+      resumed++;
+      return new Promise<void>((resolve) => {
+        finishResume = () => {
+          this.state = "running";
+          resolve();
+        };
+      });
+    }
+  };
+  vi.stubGlobal("AudioContext", PendingContext);
+  const sound = createSound();
+  const unlocking = sound.unlockSound();
+  const playing = sound.playSound("turn");
+  const context = required(audio);
+  sound.dispose();
+  assert.equal(await unlocking, false, "Close does not wait for the browser resume promise");
+  assert.equal(await playing, false);
+  assert.equal(context.closes, 1);
+  finishResume();
+  await Promise.resolve();
+  await Promise.resolve();
+  assert.equal(fetched.length, 0, "Late resume completion cannot fetch for a closed owner");
+  assert.equal(context.sources.length, 1, "Only the gesture's silent prime was created");
+  assert.equal(context.sources[0]!.disconnected, true);
+});
+
+test("Disposal settles pending decoding without reviving playback or surfacing close errors", async () => {
+  const sound = createSound();
+  await sound.unlockSound();
+  const context = required(audio);
+  let finishDecode = () => {};
+  let announceDecode = () => {};
+  const decoding = new Promise<void>((resolve) => {
+    announceDecode = resolve;
+  });
+  context.decodeAudioData = (bytes) =>
+    new Promise<FakeBuffer>((resolve) => {
+      finishDecode = () => resolve({ name: new TextDecoder().decode(bytes) });
+      announceDecode();
+    });
+  context.close = () => {
+    context.closes++;
+    return Promise.reject(Error("Already closing"));
+  };
+  const playing = sound.playSound("turn");
+  await decoding;
+  const beforeClose = context.sources.length;
+  sound.dispose();
+  assert.equal(await playing, false, "Close does not wait for browser decoding");
+  finishDecode();
+  await Promise.resolve();
+  await Promise.resolve();
+  assert.equal(context.sources.length, beforeClose);
+  assert.equal(context.closes, 1);
+  assert.equal(await sound.playSound("turn"), false);
+});
+
 const sessions: Audio.Audio[] = [];
 function createSound() {
   const audio = Audio.create();
@@ -353,6 +456,7 @@ function createSound() {
     soundEnabled: () => Audio.enabled(audio),
     setSoundEnabled: (enabled: boolean) => Audio.set_enabled(audio, enabled),
     cancelSound: () => Audio.cancel(audio),
+    dispose: () => Audio.close(audio),
     unlockSound: (event?: { isTrusted: boolean }) =>
       Audio.unlock(audio, event?.isTrusted !== false),
     playSound: (family: string) => Audio.play(audio, family),
@@ -382,7 +486,7 @@ beforeEach(() => {
   });
 });
 afterEach(() => {
-  for (const audio of sessions.splice(0)) Audio.cancel(audio);
+  for (const audio of sessions.splice(0)) Audio.close(audio);
 });
 
 afterEach(() => {

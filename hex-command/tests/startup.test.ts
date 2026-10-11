@@ -225,3 +225,54 @@ test("Cancelling a queued frame may reenter close without cancelling twice", () 
   assert.equal(cancellations, 1);
   assert.equal(acquisitions, 0);
 });
+
+test("Late render failures release the application once and cannot be overwritten by ready work", async () => {
+  const queue = queued(),
+    phases: Startup.phase[] = [];
+  let releases = 0,
+    current!: () => boolean;
+  const owner = Startup.create(
+    (phase) => phases.push(phase),
+    queue.schedule,
+    async (isCurrent) => {
+      current = isCurrent;
+      return () => {
+        releases++;
+      };
+    },
+  );
+  queue.fire();
+  await settle();
+  assert.deepEqual(phases, [0, 1]);
+  Startup.fail(owner, "Render failed");
+  assert.equal(failed(phases.at(-1)), "Render failed");
+  assert.equal(current(), false);
+  assert.equal(releases, 1);
+  Startup.fail(owner, "Stale failure");
+  Startup.close(owner);
+  assert.equal(phases.length, 3);
+  assert.equal(releases, 1);
+});
+
+test("A render failure while loading releases late resources without publishing ready", async () => {
+  const queue = queued(),
+    pending = deferred<Startup.cleanup>(),
+    phases: Startup.phase[] = [];
+  let releases = 0;
+  const owner = Startup.create(
+    (phase) => phases.push(phase),
+    queue.schedule,
+    () => pending.promise,
+  );
+  queue.fire();
+  Startup.fail(owner, "Shell failed");
+  pending.resolve(() => {
+    releases++;
+  });
+  await settle();
+  assert.equal(failed(phases.at(-1)), "Shell failed");
+  assert.equal(phases.length, 2);
+  assert.equal(releases, 1);
+  Startup.close(owner);
+  assert.equal(releases, 1);
+});

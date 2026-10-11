@@ -9,6 +9,11 @@ external notify : Dom.event -> unit = "dispatchEvent" [@@mel.scope "window"]
 external target : Dom.event -> Dom.element = "target" [@@mel.get]
 external tag_name : Dom.element -> string = "tagName" [@@mel.get]
 external closest : Dom.element -> string -> Dom.element Js.Nullable.t = "closest" [@@mel.send]
+let release_both first second =
+  let failure = ref None in
+  (try first () with error -> failure := Some error);
+  (try second () with error -> if !failure = None then failure := Some error);
+  Option.iter (fun error -> Fault.raise_original error) !failure
 let mount root host current =
   Js.Promise.then_ (fun factory ->
       if not (current ()) then (Native.dispose_factory factory; Js.Promise.resolve (fun () -> ()))
@@ -27,12 +32,12 @@ let mount root host current =
               disposed := true;
               remove host "pointerdown" gesture true; remove host "keydown" gesture true;
               remove host "error" failed true;
-              Session.close session; Native.dispose_factory factory) in
+              release_both (fun () -> Session.close session) (fun () -> Native.dispose_factory factory)) in
           try
             listen host "pointerdown" gesture true; listen host "keydown" gesture true;
             listen host "error" failed true;
             render root (React.createElement App.make ([%mel.obj {session; onMount=(fun () ->
                 if current () then (Session.initialize session; notify (event "hex-command-ready")); close)}]));
             Js.Promise.resolve close
-          with error -> close (); raise error
-        with error -> Native.dispose_factory factory; raise error) (Native.create_factory ())
+          with error -> (try close () with _ -> ()); Fault.raise_original error
+        with error -> (try Native.dispose_factory factory with _ -> ()); Fault.raise_original error) (Native.create_factory ())

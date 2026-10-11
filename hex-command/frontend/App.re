@@ -82,45 +82,51 @@ let make = (~session: Session.t, ~onMount: (unit, unit) => unit) => {
     [|view|],
   );
   React.useEffect1(() => Some(onMount()), [|session|]);
-  React.useEffect1(
-    () => {
-      let key = event =>
-        if (eventKey(event) == "Escape" && Js.Nullable.toOption(query("dialog[open]")) == None) {
-          actions.clear(true);
+  React.useEffect2(
+    () =>
+      if (view.failure != None) {
+        None;
+      } else {
+        let key = event =>
+          if (Session.view(session).failure == None
+              && eventKey(event) == "Escape"
+              && Js.Nullable.toOption(query("dialog[open]")) == None) {
+            actions.clear(true);
+          };
+        let away = event => {
+          let node = target(event);
+          if (Session.view(session).failure == None
+              && nodeType(node) == 1
+              && Js.Nullable.toOption(query("dialog[open]")) == None
+              && Js.Nullable.toOption(
+                   closest(node, ".hex, aside, button, select, input, summary, a, dialog"),
+                 )
+              == None) {
+            actions.clear(true);
+          };
         };
-      let away = event => {
-        let node = target(event);
-        if (nodeType(node) == 1
-            && Js.Nullable.toOption(query("dialog[open]")) == None
-            && Js.Nullable.toOption(
-                 closest(node, ".hex, aside, button, select, input, summary, a, dialog"),
-               )
-            == None) {
-          actions.clear(true);
-        };
-      };
-      addListener(document, "keydown", key);
-      addListener(document, "click", away);
-      Some(
-        () => {
-          removeListener(document, "keydown", key);
-          removeListener(document, "click", away);
-        },
-      );
-    },
-    [|actions|],
+        addListener(document, "keydown", key);
+        addListener(document, "click", away);
+        Some(
+          () => {
+            removeListener(document, "keydown", key);
+            removeListener(document, "click", away);
+          },
+        );
+      },
+    (actions, view.failure),
   );
-  React.useEffect1(
+  React.useEffect2(
     () => {
-      switch (Js.Nullable.toOption(campaign.current)) {
-      | None => None
-      | Some(element) =>
+      switch (Js.Nullable.toOption(campaign.current), view.failure) {
+      | (Some(element), None) =>
         let closed = _ => setCampaignOpen(_ => false);
         addListener(element, "close", closed);
         Some(() => removeListener(element, "close", closed));
+      | _ => None
       }
     },
-    [|campaign|],
+    (campaign, view.failure),
   );
   let openCampaign = () => {
     close(settings);
@@ -138,97 +144,101 @@ let make = (~session: Session.t, ~onMount: (unit, unit) => unit) => {
     );
     show(reset);
   };
-  <>
-    <main className="battle-layout">
-      <TurnBar
-        view
-        actions
-        onSettings={() => show(settings)}
-        briefing
-        onBriefing={() => setBriefing(value => !value)}
-      />
-      <p id="status" className="status" role="status" ariaLive="polite"> {text(view.status)} </p>
-      <div className="battle-content">
-        <Panels.Campaign
+  view.failure != None
+    ? <Shell failure={view.failure} />
+    : <>
+        <main className="battle-layout">
+          <TurnBar
+            view
+            actions
+            onSettings={() => show(settings)}
+            briefing
+            onBriefing={() => setBriefing(value => !value)}
+          />
+          <p id="status" className="status" role="status" ariaLive="polite">
+            {text(view.status)}
+          </p>
+          <div className="battle-content">
+            <Panels.Campaign
+              view
+              actions
+              expanded=briefing
+              onCollapse={() => setBriefing(_ => false)}
+              onNewCampaign=openCampaign
+            />
+            <div className={"workspace" ++ (inspectionOpen ? "" : " map-only")}>
+              <Battlefield view actions />
+              {inspectionOpen
+                 ? <aside ariaLabel="Unit and terrain details">
+                     <Panels.Unit view actions onNewBattle=openMap />
+                     <Panels.Terrain view actions />
+                   </aside>
+                 : React.null}
+            </div>
+          </div>
+        </main>
+        <Dialogs.Settings
           view
           actions
-          expanded=briefing
-          onCollapse={() => setBriefing(_ => false)}
+          dialog=settings
+          onNewBattle=openMap
           onNewCampaign=openCampaign
         />
-        <div className={"workspace" ++ (inspectionOpen ? "" : " map-only")}>
-          <Battlefield view actions />
-          {inspectionOpen
-             ? <aside ariaLabel="Unit and terrain details">
-                 <Panels.Unit view actions onNewBattle=openMap />
-                 <Panels.Terrain view actions />
-               </aside>
+        <Dialogs.Dialogue view actions />
+        <dialog className="campaign-dialog" ref={ReactDOM.Ref.domRef(campaign)}>
+          <h2> {text("New campaign")} </h2>
+          <p> {text("Choose a company and a story. Starting replaces your current battle.")} </p>
+          {campaignOpen
+             ? <Dialogs.CampaignPicker
+                 view
+                 selected=campaignChoice
+                 onSelect={id => setCampaign(_ => id)}
+               />
              : React.null}
-        </div>
-      </div>
-    </main>
-    <Dialogs.Settings
-      view
-      actions
-      dialog=settings
-      onNewBattle=openMap
-      onNewCampaign=openCampaign
-    />
-    <Dialogs.Dialogue view actions />
-    <dialog className="campaign-dialog" ref={ReactDOM.Ref.domRef(campaign)}>
-      <h2> {text("New campaign")} </h2>
-      <p> {text("Choose a company and a story. Starting replaces your current battle.")} </p>
-      {campaignOpen
-         ? <Dialogs.CampaignPicker
-             view
-             selected=campaignChoice
-             onSelect={id => setCampaign(_ => id)}
-           />
-         : React.null}
-      <div className="dialog-actions">
-        <button
-          className="quiet"
-          onClick={_ => {
-            setCampaignOpen(_ => false);
-            close(campaign);
-          }}>
-          {text("Keep playing")}
-        </button>
-        <button
-          className="primary"
-          onClick={_ => {
-            setBriefing(_ => false);
-            actions.start_campaign(campaignChoice);
-            setCampaignOpen(_ => false);
-            close(campaign);
-          }}>
-          {text("Start campaign")}
-        </button>
-      </div>
-    </dialog>
-    <dialog id="reset-dialog" ref={ReactDOM.Ref.domRef(reset)}>
-      <h2> {text("Start a new battle?")} </h2>
-      <p> {text("Choose your battlefield. Your current battle will be replaced.")} </p>
-      <Dialogs.MapPicker
-        catalog={view.catalog}
-        selected=mapChoice
-        onSelect={id => setMap(_ => id)}
-      />
-      <div className="dialog-actions">
-        <button id="keep-playing" className="quiet" onClick={_ => close(reset)}>
-          {text("Keep playing")}
-        </button>
-        <button
-          id="confirm-reset"
-          className="primary"
-          onClick={_ => {
-            setBriefing(_ => false);
-            close(reset);
-            actions.reset(mapChoice);
-          }}>
-          {text("New battle")}
-        </button>
-      </div>
-    </dialog>
-  </>;
+          <div className="dialog-actions">
+            <button
+              className="quiet"
+              onClick={_ => {
+                setCampaignOpen(_ => false);
+                close(campaign);
+              }}>
+              {text("Keep playing")}
+            </button>
+            <button
+              className="primary"
+              onClick={_ => {
+                setBriefing(_ => false);
+                actions.start_campaign(campaignChoice);
+                setCampaignOpen(_ => false);
+                close(campaign);
+              }}>
+              {text("Start campaign")}
+            </button>
+          </div>
+        </dialog>
+        <dialog id="reset-dialog" ref={ReactDOM.Ref.domRef(reset)}>
+          <h2> {text("Start a new battle?")} </h2>
+          <p> {text("Choose your battlefield. Your current battle will be replaced.")} </p>
+          <Dialogs.MapPicker
+            catalog={view.catalog}
+            selected=mapChoice
+            onSelect={id => setMap(_ => id)}
+          />
+          <div className="dialog-actions">
+            <button id="keep-playing" className="quiet" onClick={_ => close(reset)}>
+              {text("Keep playing")}
+            </button>
+            <button
+              id="confirm-reset"
+              className="primary"
+              onClick={_ => {
+                setBriefing(_ => false);
+                close(reset);
+                actions.reset(mapChoice);
+              }}>
+              {text("New battle")}
+            </button>
+          </div>
+        </dialog>
+      </>;
 };

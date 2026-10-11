@@ -20,6 +20,7 @@ let index key values =
   result
 
 let of_view (source : Domain.catalog_view) =
+  let source = Frozen.own source in
   let campaign_maps = Js.Dict.empty () in
   Array.iter (fun (campaign : Domain.campaign) ->
       Array.iter (fun (mission : Domain.mission) -> Js.Dict.set campaign_maps (mission.Domain.map.id) true)

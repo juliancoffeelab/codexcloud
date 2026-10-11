@@ -1,6 +1,6 @@
 # Browser saves and migrations
 
-`src/save/schema.ts` defines the current version-4 envelope:
+`frontend/Save.ml` defines the current version-4 envelope:
 
 ```json
 {
@@ -16,22 +16,30 @@ The checkpoint itself has no format version. `pendingEnemy` instead records an
 interrupted enemy phase that must replay from a player-turn checkpoint.
 
 Loading parses JSON, runs consecutive migrations, validates and restores through
-Rust, then writes the current envelope. Migration steps are pure data conversions;
-new versions require another one-step module under `src/save/migration/`. Normal
-writes and the controller accept only the current format and native engine.
+Rust, then persists the current envelope if migration was needed. Migration steps
+are pure data conversions in `frontend/Save.ml`; historical snapshot conversion
+is isolated in `frontend/Save_legacy.ml`. New versions extend that consecutive
+migration chain. Normal writes and the session accept only the current format
+and native engine.
 
-Rejected saves retain their original bytes in `hex-command-battle-unrestored` and
-leave a playable fresh battle. If the backup cannot be stored, that recovery
+Rejected saves are backed up with their exact original bytes in
+`hex-command-battle-unrestored` when storage permits and leave a playable fresh battle. If the backup cannot be stored, that recovery
 battle cannot overwrite the original; starting a new battle enables saving again.
 Disabled or full browser storage does not stop play.
+
+An accepted native command whose publication fails is terminal for that live
+battle handle. The session retains its last coherent view, cancels deferred work
+and presents reload; further commands reject, preserving the last saved bytes
+for recovery. Ordinary native command rejection leaves the live battle usable.
 
 ## Version-one compatibility
 
 Both previous formats were version one. TS snapshots have a top-level `version`
 and store ownership without terrain. Native envelopes have `engine: "rust-wasm"`
 and a version inside `saved`. The v1-to-v2 step distinguishes these formats and
-removes their format markers. Historical layouts, defaults and campaign
-conversions live exclusively under `src/save/migration/legacy/`.
+removes their format markers. `Save_legacy.ml` owns historical defaults and
+campaign conversion; historical layout, roster and stage JSON lives under
+`src/save/migration/legacy/data/`.
 
 TS saves tagged `campaignDeploymentFormat: "named-waves-v1"` already use authored
 wave IDs. Untagged published saves from `3956f5c` and `7a30040` translate numeric

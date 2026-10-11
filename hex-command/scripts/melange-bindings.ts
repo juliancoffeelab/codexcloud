@@ -1,24 +1,14 @@
 /** Generate typed bindings to the Rust-generated declaration boundary. Unsupported
- * shapes fail the build; getters and methods are called directly, without shims.
+ * shapes and runtime exports fail the build. Only DTO types cross this boundary.
  * Discriminated unions retain their JavaScript tags and exhaustive OCaml cases.
  */
 import ts from "typescript";
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
-/** Selection policy for this project's restricted foreign boundary. Types and
- * fields are always resolved through the checker, including parameter refinements.
- */
+/** Only deliberately opaque Rust DTOs need a selection override. */
 export interface BindingSelection {
   opaque?: readonly string[];
-  selected?: Record<string, string[]>;
-  aliases?: Record<string, string>;
-  equivalentTypes?: readonly string[];
-  members?: Record<string, Record<string, string>>;
-  refinements?: Record<string, Record<string, string>>;
-  dictionaries?: Record<string, string>;
-  factories?: readonly string[];
-  staticFactory?: { owner: string; member: string; binding: string };
 }
 const frontendSelection: BindingSelection = {
   opaque: ["CommandError", "SavedPlanner", "PlanningSnapshot"],
@@ -33,19 +23,16 @@ export function generateBindings(
   selection: BindingSelection = frontendSelection,
 ): { implementation: string; intf: string } {
   const opaque = new Set(selection.opaque ?? []);
-  const selected = selection.selected ?? {};
-  const members = selection.members ?? {};
   const checker = program.getTypeChecker();
   const source = program.getSourceFile(file)!;
   const actual = (symbol: ts.Symbol) =>
     symbol.flags & ts.SymbolFlags.Alias ? checker.getAliasedSymbol(symbol) : symbol;
-  const exports = checker
-    .getExportsOfModule(checker.getSymbolAtLocation(source)!)
-    .map((symbol) => ({
-      symbol,
-      actual: actual(symbol),
-      type: checker.getDeclaredTypeOfSymbol(actual(symbol)),
-    }));
+  const exports = checker.getExportsOfModule(checker.getSymbolAtLocation(source)!).map((symbol) => {
+    const target = actual(symbol);
+    if (!(target.flags & ts.SymbolFlags.Type) || target.flags & ts.SymbolFlags.Value)
+      throw new Error(`Only Rust DTO type exports are supported: ${symbol.name}`);
+    return { symbol, type: checker.getDeclaredTypeOfSymbol(target) };
+  });
   const snake = (name: string) => name.replace(/([a-z0-9])([A-Z])/g, "$1_$2").toLowerCase();
   const reserved = new Set([
     "type",
@@ -110,7 +97,6 @@ export function generateBindings(
   const names = new Map<ts.Type, string>();
   const definitions = new Map<string, string>();
   const enums = new Map<string, { name: string; values: string[] }>();
-  const externals: string[] = [];
   const enumKey = (type: ts.Type) => {
     const parts = type.isUnion() ? type.types : [type];
     return parts.every((t) => t.isStringLiteral())
@@ -130,28 +116,6 @@ export function generateBindings(
       if (key && type.isUnion()) enums.set(key, { name, values: key.split("\0") });
     }
   }
-  // Engine commands expose mutable Unit/Tile; published views expose their deeply
-  // readonly counterparts. Both have the same field representation and are only
-  // readable through private OCaml records.
-  for (const [a, b] of Object.entries(selection.aliases ?? {})) {
-    names.set(exports.find((e) => e.symbol.name === a)!.type, snake(b!));
-  }
-  function canonical(type: ts.Type): string | undefined {
-    const chosen = Object.keys(selected).find((name) => snake(name) === names.get(type));
-    if (chosen) return chosen;
-    const root = type.aliasSymbol?.name === "Immutable" ? type.aliasTypeArguments?.[0] : type;
-    return root?.symbol?.name;
-  }
-  function properties(type: ts.Type): ts.Symbol[] {
-    const fields = selected[canonical(type) ?? ""];
-    return fields
-      ? fields.map((name) => {
-          const property = checker.getPropertyOfType(type, name);
-          if (!property) throw new Error(`Missing selected field ${canonical(type)}.${name}`);
-          return property;
-        })
-      : checker.getPropertiesOfType(type);
-  }
   function fieldType(prop: ts.Symbol): ts.Type {
     return checker.getTypeOfSymbolAtLocation(
       prop,
@@ -159,7 +123,7 @@ export function generateBindings(
     );
   }
   function fields(type: ts.Type, hint: string, omit?: string): string {
-    const props = properties(type).filter((p) => p.name !== omit);
+    const props = checker.getPropertiesOfType(type).filter((p) => p.name !== omit);
     // A tag-only JS object still needs an inline-record constructor. The ignored
     // optional property is never read; no wrapper or synthetic property is added.
     if (!props.length) return "ignored : unit option;";
@@ -173,15 +137,6 @@ export function generateBindings(
   function typeOf(type: ts.Type, hint: string): string {
     if (type.flags & ts.TypeFlags.Null) return "unit Js.Nullable.t";
     if (type.flags & ts.TypeFlags.Undefined) return "unit option";
-    if (type.flags & (ts.TypeFlags.Object | ts.TypeFlags.Union) && !checker.isArrayType(type)) {
-      const equivalent = exports.find(
-        (e) =>
-          (selection.equivalentTypes ?? []).includes(e.symbol.name) &&
-          checker.isTypeAssignableTo(type, e.type) &&
-          checker.isTypeAssignableTo(e.type, type),
-      );
-      if (equivalent) type = equivalent.type;
-    }
     if (names.has(type) && definitions.has(names.get(type)!)) return names.get(type)!;
     const key = enumKey(type),
       enumeration = key ? enums.get(key) : undefined;
@@ -247,23 +202,15 @@ export function generateBindings(
       const parts = checker.getTypeArguments(type as ts.TypeReference);
       return `(${parts.map((part, i) => typeOf(part, `${hint}_${i}`)).join(" * ")})`;
     }
-    const reference = type as ts.TypeReference;
-    if (reference.target?.symbol?.name === "Promise")
-      return `${typeOf(checker.getTypeArguments(reference)[0]!, `${hint}_value`)} Js.Promise.t`;
-    if (["Map", "ReadonlyMap"].includes(reference.target?.symbol?.name ?? "")) {
-      const [key, value] = checker.getTypeArguments(reference);
-      return `(${typeOf(key!, `${hint}_key`)}, ${typeOf(value!, `${hint}_value`)}) Js.Map.t`;
-    }
     if (checker.getSignaturesOfType(type, ts.SignatureKind.Call).length)
-      throw new Error(`Bind callbacks explicitly: ${hint}`);
+      throw new Error(`Callbacks are not Rust DTOs: ${hint}`);
     const indices = checker.getIndexInfosOfType(type);
     if (indices.length === 1) return `${typeOf(indices[0]!.type, `${hint}_item`)} Js.Dict.t`;
-    const root = canonical(type);
-    const name = root && selected[root] ? snake(root) : (names.get(type) ?? snake(hint));
+    const name = names.get(type) ?? snake(hint);
     names.set(type, name);
     if (definitions.has(name)) return name;
     definitions.set(name, "");
-    const props = properties(type);
+    const props = checker.getPropertiesOfType(type);
     if (!props.length) throw new Error(`Unsupported object ${hint}: ${checker.typeToString(type)}`);
     // Homogeneous finite Record<K,V> maps are dictionaries, not a field per key.
     if (
@@ -282,111 +229,8 @@ export function generateBindings(
     definitions.set(name, `type ${name} = {\n  ${fields(type, name)}\n}`);
     return name;
   }
-  function modulePath(symbol: ts.Symbol): string {
-    const path = symbol.valueDeclaration?.getSourceFile().fileName.replaceAll("\\", "/");
-    if (!path?.includes("rust/pkg/"))
-      throw new Error(`Foreign runtime must come from raw Rust WASM: ${symbol.name}`);
-    return "@wasm/hex_command";
-  }
-  const signatureTypes = (
-    sig: ts.Signature,
-    hint: string,
-    overrides: Record<string, string> = {},
-  ) => {
-    const args = sig.parameters.flatMap((p) => {
-      const value = fieldType(p),
-        name = overrides[p.name];
-      if (!name) {
-        if (
-          checker.isTupleType(value) &&
-          (p.valueDeclaration as ts.ParameterDeclaration)?.dotDotDotToken
-        )
-          return checker
-            .getTypeArguments(value as ts.TypeReference)
-            .map((t, i) => typeOf(t, `${hint}_${i}`));
-        return typeOf(value, `${hint}_${snake(p.name)}`);
-      }
-      const replacement = exports.find((e) => e.symbol.name === name)!.type;
-      if (!checker.isTypeAssignableTo(replacement, value))
-        throw new Error(`Unsafe parameter refinement ${hint}.${p.name}: ${name}`);
-      return typeOf(replacement, snake(name));
-    });
-    return [
-      ...(args.length ? args : ["unit"]),
-      typeOf(checker.getReturnTypeOfSignature(sig), `${hint}_result`),
-    ];
-  };
-  for (const { symbol, actual: target, type } of exports) {
-    if (target.flags & ts.SymbolFlags.Type || symbol.name === "LiveGame") {
-      if (!opaque.has(symbol.name)) typeOf(type, snake(symbol.name));
-      continue;
-    }
-    const value = checker.getTypeOfSymbolAtLocation(target, target.valueDeclaration!);
-    const signatures = checker.getSignaturesOfType(value, ts.SignatureKind.Call);
-    if (signatures.length > 1) throw new Error(`Overloaded export ${symbol.name}`);
-    const name = snake(symbol.name);
-    const dictionary = selection.dictionaries?.[symbol.name];
-    let dictionaryType: string | undefined;
-    if (dictionary) {
-      const item = exports.find((e) => e.symbol.name === dictionary)!.type;
-      for (const p of checker.getPropertiesOfType(value)) {
-        // Check the selected read-only shape, including immutable collections.
-        for (const field of properties(item)) {
-          const actualField = checker.getPropertyOfType(fieldType(p), field.name);
-          if (!actualField || !checker.isTypeAssignableTo(fieldType(actualField), fieldType(field)))
-            throw new Error(`Unsafe dictionary ${symbol.name}.${p.name}.${field.name}`);
-        }
-      }
-      dictionaryType = `${typeOf(item, snake(dictionary))} Js.Dict.t`;
-    }
-    const signature =
-      dictionaryType ??
-      (signatures.length
-        ? signatureTypes(signatures[0]!, name, selection.refinements?.[name]).join(" -> ")
-        : typeOf(value, name));
-    externals.push(
-      `external ${name} : ${signature} = ${JSON.stringify(target.name)} [@@mel.module ${JSON.stringify(modulePath(target))}]`,
-    );
-  }
-  // Public names remain compact; member existence and full signatures are checked.
-  for (const [owner, bindings] of Object.entries(members)) {
-    const type = exports.find((e) => e.symbol.name === owner)!.type;
-    for (const [name, member] of Object.entries(bindings)) {
-      const property = checker.getPropertyOfType(type, member);
-      if (!property) throw new Error(`Missing ${owner}.${member}`);
-      const value = fieldType(property),
-        signatures = checker.getSignaturesOfType(value, ts.SignatureKind.Call);
-      if (signatures.length > 1) throw new Error(`Overloaded member ${owner}.${member}`);
-      const args = signatures.length
-        ? signatureTypes(signatures[0]!, name, selection.refinements?.[name])
-        : [typeOf(value, `${name}_result`)];
-      // Zero-argument instance methods need no dummy argument with mel.send.
-      if (signatures.length && !signatures[0]!.parameters.length) args.shift();
-      externals.push(
-        `external ${name} : ${[snake(owner), ...args].join(" -> ")} = ${JSON.stringify(member)} [@@mel.${signatures.length ? "send" : "get"}]`,
-      );
-    }
-  }
-  if (selection.staticFactory) {
-    const { owner, member, binding } = selection.staticFactory;
-    const target = exports.find((e) => e.symbol.name === owner)!.actual;
-    const staticType = checker.getTypeOfSymbolAtLocation(target, target.valueDeclaration!);
-    const method = checker.getPropertyOfType(staticType, member);
-    if (!method) throw new Error(`Missing ${owner}.${member}`);
-    const signatures = checker.getSignaturesOfType(fieldType(method), ts.SignatureKind.Call);
-    if (signatures.length !== 1) throw new Error(`Unsupported static factory ${owner}.${member}`);
-    externals.push(
-      `external ${binding} : ${signatureTypes(signatures[0]!, binding).join(" -> ")} = ${JSON.stringify(member)} [@@mel.module ${JSON.stringify(modulePath(target))}] [@@mel.scope ${JSON.stringify(owner)}]`,
-    );
-  }
-  for (const name of selection.factories ?? []) {
-    const type = exports.find((e) => e.symbol.name === name)!.type;
-    const args = properties(type).map(
-      (p) => `${label(p.name)}:${typeOf(fieldType(p), `${snake(name)}_${snake(p.name)}`)}`,
-    );
-    externals.push(
-      `external make_${snake(name)} : ${[...args, "unit", snake(name)].join(" -> ")} = "" [@@mel.obj]`,
-    );
+  for (const { symbol, type } of exports) {
+    if (!opaque.has(symbol.name)) typeOf(type, snake(symbol.name));
   }
   const declarations = [...definitions.values()]
     .filter(Boolean)
@@ -399,8 +243,7 @@ export function generateBindings(
   );
   const banner =
     '(* Generated by scripts/melange-bindings.ts. Do not edit. *)\n[@@@warning "-30-37"]\n';
-  const implementation =
-    banner + declarations + "\n\n" + constants.join("\n") + "\n\n" + externals.join("\n") + "\n";
+  const implementation = banner + declarations + "\n\n" + constants.join("\n") + "\n\n\n";
   const privateTypes = declarations.replace(
     /(type|and)(\[@mel.tag [^\]]+\])? (\w+) =(\s*)(\{|string|\|)/g,
     (all, kw, attr, name, space, body) =>
@@ -419,9 +262,7 @@ export function generateBindings(
         e.values.map((v) => `val ${e.name}_${snake(v.replaceAll("-", "_"))} : ${e.name}`),
       )
       .join("\n") +
-    "\n\n" +
-    externals.map((e) => e.replace(/^external /, "val ").split(" = ")[0]).join("\n") +
-    "\n";
+    "\n\n\n";
   return { implementation, intf };
 }
 

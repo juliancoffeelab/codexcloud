@@ -17,12 +17,19 @@ val create : factory -> Domain.start -> float -> battle
 val restore : factory -> Domain.saved_game -> battle
 val dispose : battle -> unit
 val view : battle -> view
+(** Register the owner's terminal failure handler. An accepted mutation whose
+    publication fails releases the handle, then reports the original reason
+    before rethrowing. Retained detached views remain readable; live operations
+    on released handles raise. The handler is released on disposal. *)
+val on_failure : battle -> (string -> unit) -> unit
 val state : view -> Domain.state
 val inspection : view -> Domain.battle_inspection
 val revision : view -> float
 
 (** Dispatch at the current revision, replacing the publication only when state
-    and inspection agree. Rejected commands preserve the current publication. *)
+    and inspection agree. Rejected commands preserve the current publication.
+    Native failures raise; accepted commands with failed inspection release the
+    handle and notify its owner. *)
 val dispatch : battle -> Domain.command -> Domain.effects
 val enemy_step : battle -> Domain.ai_options -> Domain.effects
 val save : battle -> Domain.saved_game
@@ -31,7 +38,9 @@ val save : battle -> Domain.saved_game
 val replace : battle -> Domain.saved_game -> unit
 
 (** Constant-time entity lookups and display-only inspection queries. Returned
-    data belongs to this immutable publication, including after later commands. *)
+    data belongs to this immutable publication, including after later commands.
+    Arrays/dictionaries use ordinary foreign collection types, so collection
+    writes still type-check in OCaml; runtime freezing rejects those writes. *)
 val tile : view -> string -> Domain.tile option
 val unit : view -> string -> Domain.public_unit option
 val at : view -> string -> Domain.public_unit option

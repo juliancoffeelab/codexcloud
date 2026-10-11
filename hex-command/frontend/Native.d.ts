@@ -15,6 +15,8 @@ export function dispose_factory(factory:factory):void;
 export function create(factory:factory,start:Start,seed:number):battle;
 export function restore(factory:factory,saved:SavedGame|Immutable<SavedGame>):battle;
 export function dispose(battle:battle):void;
+/** Notify the owner after an accepted mutation fails to publish and releases its handle. */
+export function on_failure(battle:battle,receive:(reason:string)=>void):void;
 export function view(battle:battle):view;
 export function state(view:view):Immutable<State>;
 export function inspection(view:view):Immutable<BattleInspection>;

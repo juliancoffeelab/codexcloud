@@ -1,5 +1,6 @@
 type phase = Loading | Failed of string | Ready
 type t = {
+  show : phase -> unit;
   mutable closed : bool;
   mutable cancel : (unit -> unit) option;
   mutable release : (unit -> unit) option;
@@ -21,14 +22,14 @@ let close t =
     let cancel = t.cancel and release = t.release in
     t.cancel <- None; t.release <- None;
     Option.iter cleanup cancel; Option.iter cleanup release)
+let fail t message =
+  if not t.closed then (
+    close t;
+    t.show (Failed message))
 let create ~show ~schedule ~load =
-  let t = {closed=false; cancel=None; release=None} in
+  let t = {show;closed=false; cancel=None; release=None} in
   let current () = not t.closed in
-  let failed message =
-    if current () then (
-      let release = t.release in t.release <- None;
-      Option.iter cleanup release;
-      if current () then show (Failed message)) in
+  let failed message = fail t message in
   show Loading;
   let start () =
     if current () then (

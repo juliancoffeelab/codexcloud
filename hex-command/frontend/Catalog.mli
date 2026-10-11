@@ -2,7 +2,9 @@
     reconstructed in the browser; unknown authored identifiers fail explicitly. *)
 type t
 
-(** Build indexes once for one factory's resolved catalog. *)
+(** Build indexes once from validated, detached metadata. Takes ownership by
+    freezing the input graph in place; caller mutations are prohibited. OCaml
+    collection types remain mutable, but publication writes fail at runtime. *)
 val of_view : Domain.catalog_view -> t
 val units : t -> Domain.unit_rule array
 val terrain : t -> Domain.terrain_definition array

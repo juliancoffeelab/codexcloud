@@ -17,18 +17,12 @@ external response_error : 'a response -> Js.Json.t = "error" [@@mel.get]
 external error_message : Js.Json.t -> string Js.undefined = "message" [@@mel.get]
 external rule_error : Js.Json.t -> Js.Json.t Js.undefined = "error" [@@mel.get]
 external error_code : Js.Json.t -> string = "code" [@@mel.get]
-external object_values : 'a -> Js.Json.t array = "values" [@@mel.scope "Object"]
 external freeze : 'a -> 'a = "freeze" [@@mel.scope "Object"]
-external is_frozen : 'a -> bool = "isFrozen" [@@mel.scope "Object"]
-let is_object : 'a -> bool = [%mel.raw {|value => value !== null && typeof value === "object"|}]
-
-(* Rust returns detached JSON values. Freeze them in place, avoiding a second
-   complete copy of large state and inspection publications. *)
-let rec own : 'a. 'a -> 'a = fun value ->
-  if is_object value && not (is_frozen value) then (
-    Array.iter (fun field -> ignore (own field)) (object_values value);
-    ignore (freeze value));
-  value
+let own = Frozen.own
+external console_error : exn -> unit = "error" [@@mel.scope "console"]
+let failure_reason error = match Js.Exn.asJsExn error with
+  | Some error -> Option.value ~default:"Native publication failed." (Js.Exn.message error)
+  | None -> match error with Failure reason | Invalid_argument reason -> reason | _ -> "Native publication failed."
 
 let value response =
   if succeeded response then response_value response else
@@ -64,6 +58,7 @@ and battle = {
   mutable id : float;
   mutable current : view;
   mutable released : bool;
+  mutable failed : (string -> unit) option;
 }
 
 let publication bridge id (source : Domain.engine_view) =
@@ -86,22 +81,22 @@ let create_factory () =
   Js.Promise.then_ (fun () ->
       let bridge = construct () in
       try
-        let catalog = Catalog.of_view (own (value (raw_catalog bridge))) in
+        let catalog = Catalog.of_view (value (raw_catalog bridge)) in
         Js.Promise.resolve {bridge; catalog; disposed = false; battles = []}
       with error ->
         (try raw_free bridge with _ -> ());
-        raise error) (initialize ())
+        Fault.raise_original error) (initialize ())
 
 let accept factory (handle : Domain.battle_handle) =
   let id = (handle.Domain.id) in
   try
     let current = publication factory.bridge id ((handle.Domain.view)) in
-    let battle = {factory; id; current; released = false} in
+    let battle = {factory; id; current; released = false; failed = None} in
     factory.battles <- battle :: factory.battles;
     battle
   with error ->
     (try ignore (raw_dispose factory.bridge id) with _ -> ());
-    raise error
+    Fault.raise_original error
 
 external is_integer : float -> bool = "isInteger" [@@mel.scope "Number"]
 let valid_seed seed = is_integer seed && seed >= 0. && seed <= 4294967295.
@@ -117,6 +112,7 @@ let restore factory (saved : Domain.saved_game) =
 let dispose battle =
   if not battle.released then (
     battle.released <- true;
+    battle.failed <- None;
     battle.factory.battles <- List.filter (fun current -> current != battle) battle.factory.battles;
     if not battle.factory.disposed then ignore (value (raw_dispose battle.factory.bridge battle.id)))
 
@@ -127,9 +123,10 @@ let dispose_factory factory =
         if !error = None then error := Some failure) factory.battles;
     factory.disposed <- true;
     (try raw_free factory.bridge with failure -> if !error = None then error := Some failure);
-    match !error with None -> () | Some failure -> raise failure)
+    match !error with None -> () | Some failure -> Fault.raise_original failure)
 
 let view battle = ensure battle; battle.current
+let on_failure battle receive = ensure battle; battle.failed <- Some receive
 let state view = view.state
 let inspection view = view.inspection
 let revision view = view.revision
@@ -140,7 +137,11 @@ let apply battle expected command =
   (* An accepted mutation must never leave a live handle with an old revision
      if its inspection cannot be published. The old detached view stays valid. *)
   (try battle.current <- publication battle.factory.bridge battle.id ((result.Domain.view))
-   with error -> (try dispose battle with _ -> ()); raise error);
+   with error ->
+     let receive = battle.failed in
+     (try dispose battle with _ -> ());
+     Option.iter (fun receive -> try receive (failure_reason error) with failure -> console_error failure) receive;
+     Fault.raise_original error);
   own ((result.Domain.effects))
 let dispatch battle command = apply battle battle.current.revision command
 let enemy_step battle options =

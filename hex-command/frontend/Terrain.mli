@@ -23,6 +23,8 @@ val tiles : scene -> Terrain_plan.tile array
 val inspection_urls : scene -> Art.t -> string array
 val get_tile : scene -> string -> Terrain_plan.tile option
 val size : scene -> Geometry.dimensions
+(** Authored PNGs are valid only for the compiled artwork used to build them.
+    Changing a used terrain image bypasses both exact and overlay previews. *)
 val preview : t -> scene -> preview option
 val sprite : preview -> sprite
 val changed : preview -> string array
@@ -39,7 +41,9 @@ val close : t -> unit
 (** Attach the completed native canvas directly, without encoding or decoding it. *)
 val mount : Dom.element -> bitmap -> unit
 val clear : Dom.element -> unit
-(** Warm only the latest authored PNG before a battle transition. *)
+(** Warm only the latest authored PNG before a battle transition. A completed
+    warm retains its URL, releases the native image/handlers, and can be retried
+    after failure. Late callbacks cannot replace a newer selected map. *)
 val preload : t -> string -> unit
 
 (** Shared bounded warm owner for map selection and pre-transition callers. *)

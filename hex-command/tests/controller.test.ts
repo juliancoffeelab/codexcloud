@@ -10,6 +10,7 @@ import { SAVE_KEY, saveBattle, loadBattle } from "./legacy-save";
 import * as Save from "@frontend/Save";
 import { required, TestStorage } from "./helpers";
 import type { State, AttackDetails } from "../rust/pkg/hex_command";
+import { NativeEngineFactory } from "../rust/pkg/hex_command";
 const motion = vi.hoisted(() => ({ tile: vi.fn(), turn: vi.fn() }));
 vi.mock("@frontend/Motion", () => ({ animate_tile: motion.tile, animate_turn: motion.turn }));
 let Session: typeof SessionModule,
@@ -478,6 +479,51 @@ test("Browser commands are player-only and previews cannot mutate rules", async 
   await pending;
   assert.equal(state(session).turn, "player");
   Session.close(session);
+});
+
+test("An accepted command with failed inspection retains the coherent view and saved recovery checkpoint", async () => {
+  const session = createController(),
+    commands = Session.commands(session),
+    observed = observe(session);
+  commands.reset("mirror");
+  const opening = observed.view.game,
+    before = snapshot(session),
+    saved = storage.getItem(SAVE_KEY);
+  assert(saved);
+  const actor = required(Native.unit(opening, "u3"));
+  assert(Object.hasOwn(Native.reachable(opening, actor.id), "3,1"));
+  commands.choose(actor.tile);
+  const dispatch = vi.spyOn(NativeEngineFactory.prototype, "dispatch");
+  const release = vi.spyOn(NativeEngineFactory.prototype, "disposeBattle");
+  const inspection = vi
+    .spyOn(NativeEngineFactory.prototype, "inspect")
+    .mockImplementationOnce(() => {
+      throw new Error("Native inspection unavailable after command acceptance");
+    });
+  commands.choose("3,1");
+  const failed = observed.view;
+  assert.match(required(failed.failure), /Native inspection unavailable after command acceptance/);
+  assert.equal(dispatch.mock.calls.length, 1);
+  assert.equal(dispatch.mock.calls[0]?.[2].kind, "move");
+  assert.equal(inspection.mock.calls.length, 1);
+  assert.equal(release.mock.calls.length, 1);
+  assert.equal(failed.game, opening);
+  assert(Object.isFrozen(failed));
+  assert.deepEqual(Native.state(failed.game), before);
+  assert.equal(Native.unit(opening, actor.id)?.tile, actor.tile);
+  assert.equal(storage.getItem(SAVE_KEY), saved);
+  assert.equal(failed.can_undo, false);
+  commands.choose("3,1");
+  assert.throws(() => commands.reset("river"));
+  await assert.rejects(commands.end_turn());
+  assert.equal(Session.view(session).game, opening);
+  assert.equal(Session.view(session).failure, failed.failure);
+  assert.equal(storage.getItem(SAVE_KEY), saved);
+  assert.equal(dispatch.mock.calls.length, 1);
+  Session.close(session);
+  Session.close(session);
+  assert.equal(release.mock.calls.length, 1);
+  observed.unsubscribe();
 });
 
 test("Unmounted sessions cannot overwrite replacements", async () => {

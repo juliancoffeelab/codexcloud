@@ -11,3 +11,6 @@ export type load = (current: () => boolean) => Promise<cleanup>;
 export function create(show: (phase: phase) => void, schedule: schedule, load: load): t;
 /** Idempotently cancel queued acquisition and release acquired resources. */
 export function close(startup: t): void;
+
+/** Release owned work and show a late render failure once. */
+export function fail(startup: t, message: string): void;

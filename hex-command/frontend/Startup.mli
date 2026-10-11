@@ -8,3 +8,8 @@ val create : show:(phase -> unit) ->
   load:((unit -> bool) -> (unit -> unit) Js.Promise.t) -> t
 (** Idempotent, including reentrant cleanup. *)
 val close : t -> unit
+
+(** Report a late rendering or initialization failure. Cancels acquisition,
+    releases resources, and shows reload UI once. Late completions are released;
+    failures after close are ignored. *)
+val fail : t -> string -> unit

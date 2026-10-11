@@ -75,7 +75,7 @@ module Settings = {
           </p>
           <p>
             {text(
-               "In skirmishes, defeat the enemy commander to win. In campaigns, follow the mission objectives and protect your leader. Groves heal their owner’s occupants; forts protect against all attacks; ruins shelter against ranged attacks. Marsh slows heavy units. Bones resist arrows but are weak against impact; wolves are fast but vulnerable to pierce damage. Keyboard: Tab to the map, use arrow keys to browse hexes, Enter to select. Escape clears selection.",
+               {js|In skirmishes, defeat the enemy commander to win. In campaigns, follow the mission objectives and protect your leader. Groves heal their owner’s occupants; forts protect against all attacks; ruins shelter against ranged attacks. Marsh slows heavy units. Bones resist arrows but are weak against impact; wolves are fast but vulnerable to pierce damage. Keyboard: Tab to the map, use arrow keys to browse hexes, Enter to select. Escape clears selection.|js},
              )}
           </p>
         </div>

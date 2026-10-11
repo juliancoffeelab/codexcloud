@@ -1,0 +1,63 @@
+{
+  "mapId": "developer",
+  "mapRevision": 1,
+  "cols": 6,
+  "rows": 20,
+  "terrain": [
+    {
+      "col": 1,
+      "row": 0,
+      "terrain": "forest"
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "terrain": "hill"
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "terrain": "water"
+    },
+    {
+      "col": 4,
+      "row": 0,
+      "terrain": "bridge"
+    },
+    {
+      "col": 5,
+      "row": 0,
+      "terrain": "ford"
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "terrain": "village"
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "terrain": "keep"
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "terrain": "marsh"
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "terrain": "ruins"
+    },
+    {
+      "col": 4,
+      "row": 1,
+      "terrain": "fort"
+    },
+    {
+      "col": 5,
+      "row": 1,
+      "terrain": "grove"
+    }
+  ]
+}

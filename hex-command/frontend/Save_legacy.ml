@@ -6,6 +6,8 @@ external river : Js.Json.t = "default"
 [@@mel.module "@save-history/river-v1.json"]
 external refuge : Js.Json.t = "default"
 [@@mel.module "@save-history/ashen-refuge-v1.json"]
+external developer : Js.Json.t = "default"
+[@@mel.module "@save-history/developer-v1.json"]
 external catalog_json : Domain.catalog_view -> Js.Json.t = "%identity"
 external safe_integer : float -> bool = "isSafeInteger" [@@mel.scope "Number"]
 external has_own : 'a -> string -> bool = "hasOwn" [@@mel.scope "Object"]
@@ -92,7 +94,8 @@ let import catalog saved =
   let revision = if null revision_value then 1. else number revision_value in
   require (revision = 1. || revision = current_revision);
   let layout = if revision = 1. && map_id = "river" then river
-    else if revision = 1. && map_id = "ashen-refuge" then refuge else map in
+    else if revision = 1. && map_id = "ashen-refuge" then refuge
+    else if revision = 1. && map_id = "developer" then developer else map in
   let cols = num layout "cols" and rows = num layout "rows" in
   let tiles = Array.init (int_of_float (cols *. rows)) (fun index ->
       let col = float_of_int (index mod int_of_float cols) and row = float_of_int (index / int_of_float cols) in

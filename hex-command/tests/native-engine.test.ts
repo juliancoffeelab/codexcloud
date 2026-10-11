@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test, vi } from "vitest";
-import type { State, EngineView, SavedGame } from "../rust/pkg/hex_command";
+import type { State, EngineView, SavedGame, CatalogView } from "../rust/pkg/hex_command";
 const controlled = vi.hoisted(() => ({ bridge: undefined as any, load: () => Promise.resolve() }));
 vi.mock("@wasm/hex_command", async (importOriginal) => ({
   ...(await importOriginal<object>()),
@@ -12,6 +12,7 @@ vi.mock("@wasm/hex_command", async (importOriginal) => ({
   },
 }));
 import * as Native from "@frontend/Native";
+import * as Catalog from "@frontend/Catalog";
 
 async function fixture() {
   const state: State = {
@@ -190,7 +191,13 @@ test("Native rejects invalid seeds and propagates asynchronous module failure", 
 
 test("Incoherent accepted publications release their handle without corrupting detached views", async () => {
   const { factory, battle, releases, incoherent } = await fixture();
-  const old = Native.view(battle);
+  const old = Native.view(battle),
+    failures: string[] = [];
+  Native.on_failure(battle, (reason) => {
+    failures.push(reason);
+    assert.deepEqual(releases, [1], "Failure notification follows native handle release");
+    assert.throws(() => Native.view(battle), /disposed/);
+  });
   incoherent();
   assert.throws(
     () => Native.dispatch(battle, { kind: "endTurn" }),
@@ -199,5 +206,56 @@ test("Incoherent accepted publications release their handle without corrupting d
   assert.deepEqual(releases, [1]);
   assert.equal(Native.state(old).round, 1);
   assert.throws(() => Native.view(battle), /disposed/);
+  assert.equal(failures.length, 1);
+  assert.match(failures[0]!, /Incoherent native publication/);
   Native.dispose_factory(factory);
+  assert.equal(failures.length, 1, "Further cleanup cannot notify the released owner again");
+});
+
+test("Catalog construction deeply owns public metadata supplied through its exported constructor", () => {
+  const source: CatalogView = {
+    units: [],
+    terrain: [],
+    races: [],
+    campaigns: [],
+    maps: [
+      {
+        id: "small",
+        revision: 1,
+        name: "Small map",
+        description: "One owned tile",
+        cols: 1,
+        rows: 1,
+        units: [],
+        terrain: [
+          { id: "0,0", col: 0, row: 0, terrain: "road", owner: null, connections: ["e", "w"] },
+        ],
+      },
+    ],
+  };
+  const input = Object.freeze(structuredClone(source));
+  assert.equal(Object.isFrozen(input.maps[0]!.terrain[0]!.connections), false);
+  const metadata = Catalog.of_view(input);
+  const map = Catalog.map(metadata, "small"),
+    tile = map.terrain[0];
+  assert(tile);
+  assert.equal(
+    Catalog.raw(metadata),
+    input,
+    "Ownership freezes the detached source without another copy",
+  );
+  assert.equal(Catalog.maps(metadata)[0], map);
+  assert(Object.isFrozen(input));
+  assert(Object.isFrozen(map));
+  assert(Object.isFrozen(map.terrain));
+  assert(Object.isFrozen(tile.connections));
+  assert.throws(() => Object.assign(map, { name: "Rewritten" }), TypeError);
+  assert.throws(() => input.maps[0]!.terrain[0]!.connections!.push("ne"), TypeError);
+  assert.equal(Catalog.map(metadata, "small").name, "Small map");
+  assert.deepEqual(tile.connections, ["e", "w"]);
+  assert.equal(
+    Object.isFrozen(source),
+    false,
+    "The caller's separately cloned source remains unrelated",
+  );
 });

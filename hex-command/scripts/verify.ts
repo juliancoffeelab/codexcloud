@@ -1,55 +1,100 @@
-import { spawnSync } from "node:child_process";
-import { fileURLToPath } from "node:url";
+import {
+  allTestTasks,
+  cpuSlots,
+  nodeTask,
+  prepared,
+  pythonTasks,
+  runTasks,
+  rustTasks,
+  type Task,
+} from "./test-budget";
 
-const checks = {
-  format: "format",
-  content: "content:check",
-  wasm: "check:wasm",
-  ui: "check:ui",
-  types: "check:types",
-  rust: "check:rust",
-  art: "art:check",
-  tests: "test",
-  build: "build",
-} as const;
-type Check = keyof typeof checks;
-// Keep the former group name working for existing callers.
-const requested = process.argv
+const groups = [
+  "style",
+  "content",
+  "wasm",
+  "ui",
+  "types",
+  "rust",
+  "python",
+  "art",
+  "tests",
+  "build",
+] as const;
+type Group = (typeof groups)[number];
+const args = process.argv
   .slice(2)
-  .map((name) => (name === "style" ? "format" : name === "bindings" ? "wasm" : name));
-if (requested.some((name) => !Object.hasOwn(checks, name))) {
-  console.error(`Choose checks from: ${Object.keys(checks).join(", ")}`);
-  process.exit(1);
-}
-const defaults = Object.keys(checks).filter((name) => name !== "rust");
-const unique = [...new Set(requested.length ? requested : defaults)] as Check[];
-// The shared test runner already includes Rust; retain the focused legacy group.
-const selected = unique.filter((name) => name !== "rust" || !unique.includes("tests"));
-const failed: Check[] = [];
-const started = performance.now();
-for (const check of selected) {
-  const stepStarted = performance.now();
-  console.log(`RUN: ${check} (npm run ${checks[check]})`);
-  // Independent checks continue after failures. Run tests without competing build/type jobs.
-  const result = spawnSync("npm", ["run", "--silent", checks[check]], {
-    cwd: fileURLToPath(new URL("../", import.meta.url)),
-    encoding: "utf8",
-    maxBuffer: 16 * 1024 * 1024,
-  });
-  const seconds = ((performance.now() - stepStarted) / 1000).toFixed(2);
-  if (result.status === 0 && !result.error) console.log(`PASS: ${check} (${seconds}s)`);
-  else {
-    failed.push(check);
-    console.error(`FAIL: ${check} (${seconds}s)`);
-    if (result.stdout) process.stdout.write(result.stdout);
-    if (result.stderr) process.stderr.write(result.stderr);
-    if (result.error) console.error(result.error.message);
+  .map((name) => (name === "format" ? "style" : name === "bindings" ? "wasm" : name));
+if (args.some((name) => !groups.includes(name as Group))) {
+  console.error(`Choose checks from: ${groups.join(", ")}`);
+  process.exitCode = 1;
+} else {
+  try {
+    const selected = new Set<Group>((args.length ? args : groups) as Group[]);
+    const tasks: Task[] = [];
+    if (
+      ["wasm", "ui", "types", "rust", "tests", "build"].some((name) => selected.has(name as Group))
+    )
+      prepared();
+    // Start the longest task first. Every suite runs once even when both its own
+    // group and the aggregate tests group are requested.
+    if (selected.has("tests")) tasks.push(...allTestTasks());
+    else {
+      if (selected.has("rust")) tasks.push(...rustTasks());
+      if (selected.has("python")) tasks.push(...pythonTasks());
+    }
+    if (selected.has("style")) tasks.push(nodeTask("style", "scripts/style.ts"));
+    if (selected.has("content")) tasks.push(nodeTask("content", "scripts/content.ts", ["--check"]));
+    if (selected.has("wasm"))
+      tasks.push(
+        nodeTask(
+          "wasm-types",
+          "node_modules/typescript/bin/tsc",
+          [
+            "--noEmit",
+            "--strict",
+            "--target",
+            "ES2022",
+            "--module",
+            "ESNext",
+            "--moduleResolution",
+            "Bundler",
+            "rust/pkg/hex_command.d.ts",
+          ],
+          Math.min(2, cpuSlots),
+        ),
+      );
+    if (selected.has("ui"))
+      tasks.push(
+        nodeTask(
+          "frontend-bindings",
+          "scripts/melange-bindings.ts",
+          ["--check"],
+          Math.min(2, cpuSlots),
+        ),
+      );
+    if (selected.has("types"))
+      tasks.push(
+        nodeTask(
+          "types",
+          "node_modules/typescript/bin/tsc",
+          ["-p", "tsconfig.tests.json"],
+          Math.min(2, cpuSlots),
+        ),
+      );
+    if (selected.has("art"))
+      tasks.push({
+        name: "art",
+        command: "python3",
+        args: ["scripts/build-pixel-art.py", "--check"],
+      });
+    if (selected.has("build"))
+      tasks.push(
+        nodeTask("build", "node_modules/vite/bin/vite.js", ["build"], Math.min(2, cpuSlots)),
+      );
+    process.exitCode = await runTasks(tasks);
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : error);
+    process.exitCode = 1;
   }
 }
-const seconds = ((performance.now() - started) / 1000).toFixed(2);
-if (failed.length) {
-  console.error(`FAIL: ${failed.join(", ")} — ${selected.length} checks in ${seconds}s`);
-  console.error(`Rerun failed groups: npm run verify -- ${failed.join(" ")}`);
-  process.exit(1);
-}
-console.log(`PASS: all ${selected.length} checks in ${seconds}s`);

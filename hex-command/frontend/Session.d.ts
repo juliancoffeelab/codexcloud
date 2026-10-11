@@ -16,6 +16,8 @@ export interface model {
   readonly status:string;
   readonly sound:boolean;
   readonly can_undo:boolean;
+  /** A fatal native publication failure keeps the last coherent view for recovery. */
+  readonly failure:string|undefined;
 }
 export interface actions {
   readonly choose:(tile:string)=>void;

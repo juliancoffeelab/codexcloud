@@ -107,7 +107,10 @@ let migrate catalog input =
       | None ->
         let state = Save_legacy.import catalog value in
         let map = find_map catalog state in
-        set state "mapRevision" (field map "revision");
+        (* Keep the genuine browser gallery revision until the sequential
+           developer expansion has validated and extended its owned cells. *)
+        if get state "mapId" <> Some (Js.Json.string "developer") then
+          set state "mapRevision" (field map "revision");
         obj ["version", Js.Json.number 2.; "checkpoint", obj ["seed", Js.Json.number 17.; "state", state]; "pendingEnemy", field value "pendingEnemy"] in
   let value = if number (field value "version") <> 2. then value else (
       let checkpoint = field value "checkpoint" in

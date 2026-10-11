@@ -23,10 +23,11 @@ const rows = git(
   "--",
   "hex-command/src",
   "hex-command/frontend",
+  "hex-command/public",
 );
 for (const row of rows.trim().split("\n").filter(Boolean)) {
   const [adds, deletes, path] = row.split("\t") as [string, string, string];
-  if (!/\.(ts|ml|mli|re|rei|svelte|css)$/.test(path) || adds === "-") {
+  if (!/\.(ts|js|ml|mli|re|rei|svelte|css)$/.test(path) || adds === "-") {
     excluded.push(path);
     continue;
   }
