@@ -8,11 +8,15 @@ compare, filter, or decode records into Python objects.
 """
 import argparse
 from pathlib import Path
+import sys
 from time import perf_counter
 
 import pyarrow as pa
 import pyarrow.json as arrow_json
 
+# The combat simulation skill owns the shared journal schema.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]
+                       / ".agents/skills/combat-simulation/scripts"))
 from simulation_dump_schema import SIMULATION_DUMP_SCHEMA
 
 

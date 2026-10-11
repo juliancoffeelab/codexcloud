@@ -21,7 +21,7 @@
     {
       "id": "knife",
       "name": "Knife",
-      "damage": 6,
+      "damage": 7,
       "damageType": "blade",
       "category": "melee",
       "range": 1,

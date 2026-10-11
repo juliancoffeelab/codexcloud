@@ -7,6 +7,10 @@ The ordinary enemy still uses classic AI. There is no new enemy selector.
 
 Run campaign or tournament simulations only when the user explicitly requests it.
 
+For the agent workflow, see the
+[combat simulation skill](../.agents/skills/combat-simulation/SKILL.md), which covers
+roster checks, execution, saved-result analysis and reporting.
+
 ## Running a comparison
 
 ```sh
@@ -74,29 +78,31 @@ npm run ai:analyze -- artifacts/current/report.json --out artifacts/current/anal
 npm run ai:analyze -- artifacts/current/report.json --baseline artifacts/previous/report.json --out artifacts/current/analytics
 ```
 
-[`scripts/analyze-simulations.py`](../scripts/analyze-simulations.py) uses PyArrow
-to read the adjacent `.outcomes.jsonl` journal with an explicit projected schema,
-then Polars for every match calculation, grouping and baseline join. It does not
-decode gameplay records into Python objects or load the large detail journals.
-Pass multiple report/journal paths for shards; repeat `--baseline` for baseline
-shards. Duplicate match identities and unmatched baseline configurations fail.
-Inputs may be partial runs; the report states how many saved matches it analyzed.
-`uv` installs the script's declared, pinned Python dependencies in its cache.
+The skill's [complete reporter](../.agents/skills/combat-simulation/scripts/report-combat.py)
+uses Python's standard library. It reports every recorded faction, map and policy
+pairing, including self-play, with full win/loss/cap counts and victory reasons.
+It exports every physical match, recruitment, promotion and casualty; baseline
+comparisons validate identical configurations and include individual result changes.
+Unit stats and all nine artwork-lineup coverage lists come from the recorded source
+commit rather than the current checkout. Units outside a recorded arena pool or
+its reachable promotions are explicitly excluded.
 
-Output includes a Markdown summary and CSV tables for race/map/policy win rates,
-equal-policy race comparisons, race matchups, seats/initiative, victory conditions,
-arena turn statistics and distributions, campaigns, policy/diplomacy matchups and
-stage completion. Each table gets a comparison CSV when a baseline is supplied.
-Race tables exclude self-play; policy tables count both seats, including self-play.
-Round caps remain in win-rate denominators. Stage denominators include only
-attempts that reached that stage; campaigns retain their authored rosters.
-Rates are percentages and rate deltas are percentage points. P90 uses the nearest
-quantile. Row sorting is for presentation, after aggregation.
+Open `analytics/index.html` for searchable tables and filters, or `summary.md` for
+every faction matrix, every policy pairing and full unit counts. All rows remain in
+CSV, and `full-data.zip` includes the exports and original compact outcome journals.
+Complete gameplay stays in the adjacent input `.details.jsonl` journals, referenced
+by each physical match. Caps remain in win-rate denominators. Self-play tables count
+both participants; the physical-match ledger counts each match once. `timings.json`
+records report generation time.
 
-`timings.json` records Arrow JSON reading, Arrow-to-Polars transfer, validation,
-configuration matching, analytics, comparison and output wall/CPU times, with
-process peak RSS. Imports are timed separately. These timings cover analysis,
-not match execution; no simulations are started by the analytics command.
+Run and report an authorized batch with one command:
+
+```sh
+npm run ai:combat -- --seeds 10 --out artifacts/current --baseline artifacts/previous/report.json
+```
+
+The runner forwards simulation options to the existing native harness and reports
+only after successful completion. Reporting saved data alone never starts battles.
 
 The engine shares immutable indexed hex geometry between forecast copies, uses
 integer movement queues, and precomputes fixed movement and defense rules. Routing
@@ -155,11 +161,9 @@ damage (Briarweaver: 10). Rookie boars have 6-damage Impact Trample and 4-damage
 tusks; Great boar attacks deal 10. Boars have 28 HP (Great boar: 34) and 1
 individual Blade protection, while their racial Pierce weakness remains.
 Skeleton warriors cost 6 gold; bone archers remain at 7. The experimental ranged
-damage reductions have been reverted. All 34 units now have twice their previous HP
-and weapon base damage, followed by the boar HP adjustment above. All healing
-also doubled: Wavemender 2, Tide sage 4, Briarweaver 2, and villages/groves 4 HP
-per turn. Damage/terrain modifiers, movement, costs and progression thresholds
-retain their previous values.
+damage reductions have been reverted. An earlier pass doubled unit HP, weapon
+damage and healing, followed by the adjustments described here. Wavemender heals
+2, Tide sage 4, Briarweaver 2, and villages/groves restore 4 HP per turn.
 Undead have 2 racial Pierce protection and 1 Impact vulnerability; skeletons and
 revenants do not stack another individual Pierce modifier. Wardens retain their
 spear and use a 6-damage Impact Shield bash. Wavemender costs 10 gold.
@@ -171,6 +175,12 @@ Reef guards use a 4-damage Impact Tail strike. Coastal recruitment includes mace
 with 20 HP, 4 movement, an 8-gold cost and a 7-damage Impact mace. Unlike reef guards,
 macers have no individual Blade protection. At 10 XP they advance to veteran
 macers with 26 HP and a 9-damage mace. Both inherit merfolk terrain modifiers.
+Human adepts have 17 HP and a 7-damage Impact Spark; stone mages have 23 HP and
+a 9-damage Spark. Their movement, costs, melee attacks and promotion thresholds
+are unchanged. Scouts use a 5-damage Blade knife, and rangers use a 7-damage knife.
+Wolves and dire wolves have 4 movement, retaining their racial forest movement
+and protection bonuses. These changes target Mixed-policy army balance; full
+race/map/opponent results are recorded in [the balance report](combat-balance.md).
 Historical reports describe their recorded rules snapshot, not these updated values.
 
 Merfolk pay 2 movement on plains, villages, keeps and ruins, and 3 in

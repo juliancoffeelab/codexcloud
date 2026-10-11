@@ -139,6 +139,8 @@
   strict TypeScript and Prettier checks passing. Keep this project self-contained.
 - Campaign and tournament simulations require the user's explicit instruction to
   run them. Verification must not start those batches as an extra finishing step.
+  Use the [combat simulation skill](.agents/skills/combat-simulation/SKILL.md)
+  for requested runs and analysis of saved results, including roster coverage.
 - `dist/` contains generated output and is intentionally Git-ignored. Commit the
   source and public assets. For Sites publication, build the selected Site checkout
   with `npm run build`, commit and push its exact source, then package it with
