@@ -11,7 +11,7 @@ import {
 } from "../src/presentation/pixel-art";
 import { Game } from "./game-fixture";
 import { createGameView } from "./fixture-view";
-import { battlefieldTiles, terrainArtNames } from "../src/ui/battlefield-view";
+import { battlefieldTiles, terrainArtNames, terrainProps } from "../src/ui/battlefield-view";
 import { hexPoints, tileCenter } from "../src/ui/geometry";
 import { mockSpriteCanvas } from "./helpers";
 
@@ -181,7 +181,30 @@ test("Map floors choose independent palettes for directional terrain and matchin
     const crop = pixelFrames[frame];
     assert.deepEqual(extraction(result.terrainArtwork).coordinates, [...crop, 0, 0, 64, 64]);
     assert.equal(result.floor, tile.floor);
+    if (tile.terrain === "forest") {
+      const props = terrainProps(tile, game.mapId);
+      const images = [
+        ...result.terrainArtwork.matchAll(/href="data:image\/png;base64,([^"]+)"/g),
+      ].map((match) => imageData(match[1]!));
+      assert.equal(images.length, props.length + 1);
+      props.forEach((prop, index) => {
+        const crop = pixelFrames[`terrain_${prop.name}__${tile.floor}` as keyof typeof pixelFrames];
+        assert.deepEqual(images[index + 1]!.coordinates, [...crop, 0, 0, 64, 64]);
+      });
+    }
   }
+});
+
+test("Prop arrangements stay stable per map tile and vary between locations", () => {
+  const choices = new Set<string>();
+  for (let col = 0; col < 16; col++) {
+    const tile = { terrain: "forest" as const, id: `${col},3` };
+    const first = terrainProps(tile, "sample");
+    assert.equal(terrainProps(tile, "sample"), first);
+    choices.add(JSON.stringify(first));
+  }
+  assert(choices.size > 1);
+  assert.deepEqual(terrainProps({ terrain: "road", id: "1,1" }, "sample"), []);
 });
 
 test("Route connections select one complete native terrain frame", async () => {

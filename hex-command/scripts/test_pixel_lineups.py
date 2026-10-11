@@ -171,6 +171,24 @@ class TerrainFloors(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'floor shades belong in terrain/floors.json'):
             art.read_palette(root / 'terrain/wood/tile.txt')
 
+    def test_prop_layouts_reject_unknown_pieces_and_painted_pixels_outside_hex(self):
+        root, path, floors = self.fixture()
+        piece = root / 'terrain/props/wood/seed'
+        piece.mkdir(parents=True)
+        (piece / 'tile.txt').write_text('T' + '.' * 63 + '\n' + ('.' * 64 + '\n') * 63)
+        (piece / 'palette.json').write_text(json.dumps({'.': [0, 0, 0, 0], 'T': [7, 40, 15, 255]}))
+        layout = root / 'terrain/wood/layouts.json'
+        layout.write_text(json.dumps([[{'prop': 'seed', 'x': 2, 'y': 0}]]))
+        self.assertEqual(art.load_terrain_layouts()['wood'][0],
+                         [{'name': 'prop_wood_seed', 'x': 2, 'y': 0}])
+        self.assertEqual(art.read_palette(piece / 'tile.txt')['G'], floors['palettes']['wood']['G'])
+        for placement, error in [({'prop': 'missing', 'x': 2, 'y': 0}, 'unknown prop'),
+                                 ({'prop': '../seed', 'x': 2, 'y': 0}, 'invalid prop placement'),
+                                 ({'prop': 'seed', 'x': 3, 'y': 0}, 'outside the hex')]:
+            layout.write_text(json.dumps([[placement]]))
+            with self.subTest(placement=placement), self.assertRaisesRegex(ValueError, error):
+                art.load_terrain_layouts()
+
 
 if __name__ == "__main__":
     unittest.main()

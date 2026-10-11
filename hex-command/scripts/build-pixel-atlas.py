@@ -187,6 +187,16 @@ def read_matrix(matrix):
     return rows
 
 
+def terrain_material_kind(matrix):
+    matrix = matrix.resolve()
+    root = (ART / 'terrain').resolve()
+    if matrix.parent.parent == root:
+        return matrix.parent.name
+    if matrix.parent.parent.parent == root / 'props':
+        return matrix.parent.parent.name
+    return None
+
+
 def read_palette(matrix, floor=None):
     matrix = matrix.resolve()
     path = matrix.parent / "palette.json"
@@ -194,8 +204,9 @@ def read_palette(matrix, floor=None):
     flying = palette.pop("flying", False)
     if type(flying) is not bool:
         raise ValueError(f"{path}: 'flying' must be a boolean")
-    if matrix.parent.parent == (ART / "terrain").resolve():
-        ground = terrain_floor_palette(matrix.parent.name, floor)
+    kind = terrain_material_kind(matrix)
+    if kind is not None:
+        ground = terrain_floor_palette(kind, floor)
         if palette.keys() & ground.keys():
             raise ValueError(f"{path}: floor shades belong in terrain/floors.json")
         palette.update(ground)
@@ -213,6 +224,37 @@ def read_palette(matrix, floor=None):
     if palette.get(".") != [0, 0, 0, 0]:
         raise ValueError("Palette '.' must be transparent black")
     return palette
+
+
+def load_terrain_layouts():
+    layouts = {}
+    for path in sorted((ART / 'terrain').glob('*/layouts.json')):
+        kind = path.parent.name
+        variants = json.loads(path.read_text())
+        ground = read_matrix(path.parent / 'tile.txt')
+        if not isinstance(variants, list) or not variants:
+            raise ValueError(f'{path}: expected nonempty terrain layouts')
+        layouts[kind] = []
+        for variant in variants:
+            if not isinstance(variant, list) or not variant:
+                raise ValueError(f'{path}: expected nonempty prop placements')
+            placements = []
+            for p in variant:
+                if (not isinstance(p, dict) or set(p) != {'prop', 'x', 'y'}
+                        or not isinstance(p['prop'], str) or not re.fullmatch(r'[a-z][a-z0-9-]*', p['prop'])
+                        or type(p['x']) is not int or type(p['y']) is not int):
+                    raise ValueError(f'{path}: invalid prop placement')
+                matrix = ART / 'terrain/props' / kind / p['prop'] / 'tile.txt'
+                if not matrix.is_file():
+                    raise ValueError(f'{path}: unknown prop {p["prop"]!r}')
+                for y, row in enumerate(read_matrix(matrix)):
+                    for x, s in enumerate(row):
+                        xx, yy = x + p['x'], y + p['y']
+                        if s != '.' and not (0 <= xx < 64 and 0 <= yy < 64 and ground[yy][xx] != '.'):
+                            raise ValueError(f'{path}: prop {p["prop"]!r} extends outside the hex')
+                placements.append({'name': f'prop_{kind}_{p["prop"]}', 'x': p['x'], 'y': p['y']})
+            layouts[kind].append(placements)
+    return layouts
 
 
 def require_grounded(rows, palette, flying=False, label="Character"):
@@ -308,14 +350,13 @@ def pixel_atlases():
 
     def add_terrain(key, matrix):
         terrain[key] = rgba_pixels(matrix)
+        if not any(terrain[key][2][3::4]):
+            raise ValueError(f'{matrix}: expected nonempty terrain artwork')
         for floor in floors['palettes']:
-            if floor != floors['defaults'][matrix.parent.name]:
+            if floor != floors['defaults'][terrain_material_kind(matrix)]:
                 terrain[f'{key}__{floor}'] = rgba_pixels(matrix, floor=floor)
 
     for matrix in sorted((ART / "terrain").glob("*/tile.txt")):
-        width, height, pixels = rgba_pixels(matrix)
-        if not any(pixels[3::4]):
-            raise ValueError(f"{matrix}: expected a nonempty terrain sprite")
         key = f"terrain_{FRAME_NAMES.get(matrix.parent.name, matrix.parent.name)}"
         add_terrain(key, matrix)
         kind = matrix.parent.name
@@ -341,6 +382,9 @@ def pixel_atlases():
             if capped:
                 require_road_exits(read_matrix(variant), exits, surface, label=kind)
             add_terrain(f"{key}_{variant.stem}", variant)
+    layouts = load_terrain_layouts()
+    for matrix in sorted((ART / 'terrain/props').glob('*/*/tile.txt')):
+        add_terrain(f'terrain_prop_{matrix.parent.parent.name}_{matrix.parent.name}', matrix)
     if not terrain:
         raise ValueError("No native terrain matrices found")
     outputs, sources, frames = {}, {}, {}
@@ -375,6 +419,15 @@ def pixel_atlases():
         f'  {property_name(kind)}: {json.dumps(name)},\n'
         for kind, name in sorted(floors['defaults'].items())
     )
+    layout_fields = ''
+    for kind, variants in layouts.items():
+        layout_fields += f'  {property_name(kind)}: [\n'
+        for placements in variants:
+            layout_fields += '    [\n'
+            for p in placements:
+                layout_fields += f'      {{ name: {json.dumps(p["name"])}, x: {p["x"]}, y: {p["y"]} }},\n'
+            layout_fields += '    ],\n'
+        layout_fields += '  ],\n'
     model_fields = "".join(
         f"  {property_name(key)}: {json.dumps(model)},\n"
         for key, model in sorted(gameplay_models(lineups).items())
@@ -385,6 +438,9 @@ def pixel_atlases():
         + "export const pixelFrames = {\n" + frame_fields + "} as const;\n"
         + "\nexport const pixelFloorColors: Readonly<Record<string, string>> = {\n" + floor_fields + "};\n"
         + "\nexport const pixelDefaultFloors = {\n" + default_fields + "} as const;\n"
+        + "\nexport const pixelTerrainLayouts: Readonly<\n"
+        + "  Record<string, readonly (readonly { name: string; x: number; y: number }[])[]>\n"
+        + "> = {\n" + layout_fields + "};\n"
         + "\nexport const pixelUnitModels: Readonly<Record<string, string>> = {\n"
         + model_fields + "};\n"
     )

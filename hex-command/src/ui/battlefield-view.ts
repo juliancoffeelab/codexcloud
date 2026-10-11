@@ -3,7 +3,11 @@ import type { GameView, UnitView, TileView } from "../game/view";
 import type { Artwork } from "../presentation/art";
 import { TERRAIN, TYPES } from "../game/catalog";
 import { artSprite } from "../presentation/art";
-import { pixelDefaultFloors, pixelFloorColors } from "../presentation/pixel-art";
+import {
+  pixelDefaultFloors,
+  pixelFloorColors,
+  pixelTerrainLayouts,
+} from "../presentation/pixel-art";
 import { battlefieldSpriteSize, hexPoints, tileCenter } from "./geometry";
 
 export interface TileUnitView {
@@ -50,6 +54,19 @@ export function terrainArtNames(
     if (mask === 36) return [`${tile.terrain}_ne-sw`];
   }
   return [tile.terrain];
+}
+
+/** Stable per-map arrangements, independent of redraws, terrain rules and floor colors. */
+export function terrainProps(tile: Pick<TileView, "terrain" | "id">, mapId: string) {
+  const layouts = pixelTerrainLayouts[tile.terrain];
+  if (!layouts?.length) return [];
+  let hash = 2166136261;
+  for (const character of `${mapId}:${tile.id}`) {
+    hash = Math.imul(hash ^ character.charCodeAt(0), 16777619);
+  }
+  hash = Math.imul(hash ^ (hash >>> 16), 0x85ebca6b);
+  hash ^= hash >>> 13;
+  return layouts[(hash >>> 0) % layouts.length]!;
 }
 
 function tileLabel(
@@ -148,14 +165,17 @@ export function battlefieldTiles(
         pixelFloorColors[pixelDefaultFloors[tile.terrain]]!,
       classes,
       label: tileLabel(tile, unit, reachable, target, objectiveTiles.get(tile.id) ?? []),
-      terrainArtwork: terrainArtNames(tile)
-        .map((name) =>
+      terrainArtwork: [
+        ...terrainArtNames(tile).map((name) => ({ name, x: 0, y: 0 })),
+        ...terrainProps(tile, game.mapId),
+      ]
+        .map((piece) =>
           artSprite(
             artwork,
             "terrain",
-            name,
-            x - battlefieldSpriteSize / 2,
-            y - battlefieldSpriteSize / 2,
+            piece.name,
+            x - battlefieldSpriteSize / 2 + (piece.x * battlefieldSpriteSize) / 64,
+            y - battlefieldSpriteSize / 2 + (piece.y * battlefieldSpriteSize) / 64,
             battlefieldSpriteSize,
             battlefieldSpriteSize,
             "terrain-art",

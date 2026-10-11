@@ -34,6 +34,13 @@
   to the same matrices, packing floor choices for every orientation. Render the
   selected isolated frame with its matching vector hex background. Floor choices
   affect artwork only and must survive publication, saves and forks.
+  Forest/hill `tile.txt` files hold the floor and ground decoration. Reusable
+  pieces live in `terrain/props/<terrain>/<piece>/tile.txt` with material palettes,
+  on transparent 64×64 canvases. `<terrain>/layouts.json` supplies native integer
+  placements, drawn in depth order; each painted piece must fit inside the hex.
+  Choose arrangements deterministically from map/tile identity. Keep pieces at
+  their native size and lighting; do not mirror, resize or randomly move them on
+  redraw. The atlas only packs source frames; the published renderer places them.
 
 - **Permanent character canvas rule: every character/unit sprite and portrait is
   exactly 64×64 native pixels. This rule must never be changed; do not even try
