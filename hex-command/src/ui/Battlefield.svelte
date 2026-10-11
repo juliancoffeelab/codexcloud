@@ -67,13 +67,6 @@
   const hovered = $derived(tiles.find((tile) => tile.id === hoveredTile));
 
   $effect(() => {
-    const needed = backdrop || (prebuilt && !prebuilt.changed.size) ? [] : tiles;
-    const missing = needed.filter((tile) => !tile.terrainFrame).map((tile) => tile.id);
-    if (hovered && !hovered.terrainFrame) missing.push(hovered.id);
-    if (missing.length) void actions.prepareTerrain(missing);
-  });
-
-  $effect(() => {
     const key = terrainKey;
     const resources = terrainResources;
     if ((prebuilt && !prebuilt.changed.size) || tiles.some((tile) => !tile.terrainFrame)) return;

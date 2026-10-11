@@ -8,7 +8,7 @@ import unittest
 from unittest.mock import patch
 
 import importlib.util
-spec = importlib.util.spec_from_file_location('build_pixel_atlas', Path(__file__).parent / 'build-pixel-atlas.py')
+spec = importlib.util.spec_from_file_location('build_pixel_art', Path(__file__).parent / 'build-pixel-art.py')
 art = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(art)
 load_lineups = art.load_lineups
@@ -238,6 +238,28 @@ class TerrainFloors(unittest.TestCase):
         layout.write_text(json.dumps({'../tile': variants['tile']}))
         with self.assertRaisesRegex(ValueError, 'unknown terrain frame'):
             art.load_terrain_layouts()
+
+
+class NativeComposition(unittest.TestCase):
+    def test_transparency_depth_order_and_clipped_integer_placement(self):
+        red = [255, 0, 0, 255]
+        green = [0, 255, 0, 255]
+        blank = [0, 0, 0, 0]
+        base = (2, 2, bytearray(red * 4))
+        layer = (2, 1, bytearray(blank + green))
+        width, height, pixels = art.composite(base, [(layer, -1, 1)])
+        self.assertEqual((width, height), (2, 2))
+        self.assertEqual(pixels, bytearray(red * 2 + green + red))
+        self.assertEqual(base[2], bytearray(red * 4))
+        top = (1, 1, bytearray(red))
+        self.assertEqual(art.composite(base, [(layer, -1, 1), (top, 0, 1)])[2], base[2])
+
+    def test_rejects_fractional_offsets_and_partial_alpha(self):
+        base = (1, 1, bytearray([0, 0, 0, 0]))
+        with self.assertRaisesRegex(ValueError, 'integer'):
+            art.composite(base, [(base, .5, 0)])
+        with self.assertRaisesRegex(ValueError, 'flat alpha'):
+            art.composite(base, [((1, 1, bytearray([1, 2, 3, 128])), 0, 0)])
 
 
 if __name__ == "__main__":

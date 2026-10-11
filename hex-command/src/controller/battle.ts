@@ -8,7 +8,7 @@ import { loadBattle } from "../save/load";
 import { saveBattle } from "../save/write";
 import { LiveGame } from "../game/live-game";
 import type { GameEngineFactory } from "../game/native-engine";
-import { loadArtwork, loadTerrainArtwork, currentArtwork } from "../presentation/art";
+import { currentArtwork } from "../presentation/art";
 import {
   soundEnabled,
   setSoundEnabled,
@@ -65,7 +65,6 @@ export class BattleController {
   private state: SessionState;
   private store: Writable<BattleView>;
   private gameView: GameView;
-  private publishedArtwork = currentArtwork();
   readonly view: Readable<BattleView>;
   readonly commands: BattleCommands;
 
@@ -127,11 +126,10 @@ export class BattleController {
   }
 
   private currentView(): BattleView {
-    this.publishedArtwork = currentArtwork();
     return Object.freeze({
       ...this.state,
       game: this.gameView,
-      artwork: this.publishedArtwork,
+      artwork: currentArtwork(),
       canUndo: !dialoguePending(this.#game.campaign) && this.history.canUndo(this.#game),
       recruitment: recruitmentContext(this.gameView, this.state.selected, this.state.inspectedTile),
     });
@@ -482,18 +480,6 @@ export class BattleController {
     return this.snapshot();
   }
 
-  async prepareTerrain(tileIds: readonly string[]): Promise<void> {
-    const session = this.sessionVersion;
-    const game = this.gameView;
-    const ids = new Set(tileIds);
-    const tiles = game.tiles.filter((tile) => ids.has(tile.id));
-    const ready = await loadTerrainArtwork(tiles, game.mapId);
-    if (this.disposed || session !== this.sessionVersion || game !== this.gameView) return;
-    if (!ready) this.error(new Error("Terrain artwork could not load. Please reload."));
-    else if (currentArtwork() !== this.publishedArtwork)
-      this.publish({ renderBattle: false, gameChanged: false });
-  }
-
   reset(mapId = "mirror") {
     this.requireSession();
     // Validate before changing the current battle, its undo history, or its turn.
@@ -640,17 +626,6 @@ export class BattleController {
       void this.endTurn().catch((error) => this.error(error));
     } else if (this.#game.turn === "enemy" && !this.#game.winner) {
       void this.runEnemyTurn(this.sessionVersion).catch((error) => this.error(error));
-    }
-    void this.loadInitialArtwork();
-  }
-
-  private async loadInitialArtwork() {
-    const ready = await loadArtwork();
-    if (this.disposed) return;
-    if (ready) {
-      this.publish({ gameChanged: false });
-    } else {
-      this.message("Artwork could not load. Please reload to retry.");
     }
   }
 }

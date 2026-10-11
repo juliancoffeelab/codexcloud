@@ -1,7 +1,7 @@
 import { activeGoalTiles, campaignMission, goalProgress } from "../game/campaign-progress";
 import type { GameView, UnitView, TileView } from "../game/view";
 import type { Artwork } from "../presentation/art";
-import type { FrameImage } from "../presentation/sprite-images";
+import type { FrameImage } from "../presentation/art";
 import { TERRAIN, TYPES } from "../game/catalog";
 import { artFrame } from "../presentation/art";
 import { terrainTileView, type TerrainTileView } from "../presentation/terrain-map";

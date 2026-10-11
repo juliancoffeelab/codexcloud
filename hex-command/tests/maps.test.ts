@@ -1,7 +1,7 @@
 import { test, beforeEach, afterEach, vi } from "vitest";
 import { required, TestStorage } from "./helpers.ts";
 import assert from "node:assert/strict";
-import { pixelFrames } from "../src/presentation/pixel-art";
+import { pixelSprites } from "../src/presentation/pixel-art";
 
 const { Game, TYPES } = await import("./game-fixture.ts");
 const { MAPS, BATTLE_MAPS } = await import("../src/game/maps.ts");
@@ -14,7 +14,7 @@ test("Developer map shows every playable type and reserves space for the pixel c
         game.units.some((unit) => unit.type === type && unit.side === side),
         `${side} ${type}`,
       );
-  const artworkTypes = Object.keys(pixelFrames).filter((frame) =>
+  const artworkTypes = Object.keys(pixelSprites).filter((frame) =>
     frame.startsWith("player_"),
   ).length;
   const occupied = new Set(game.units.map((unit) => unit.tile));

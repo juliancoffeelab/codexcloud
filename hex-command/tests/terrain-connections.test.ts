@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "vitest";
 import { MAPS } from "../src/game/maps";
-import { pixelFrames, pixelFloorColors, pixelDefaultFloors } from "../src/presentation/pixel-art";
+import { pixelSprites, pixelFloorColors, pixelDefaultFloors } from "../src/presentation/pixel-art";
 import {
   TERRAIN_DIRECTIONS,
   terrainArtNames,
@@ -16,11 +16,11 @@ const directions = (mask: number) => TERRAIN_DIRECTIONS.filter((_, bit) => mask 
 function requireFrames(tile: Parameters<typeof terrainArtNames>[0] & { floor?: string }) {
   const name = terrainArtNames(tile)[0]!;
   const frame = `terrain_${name === "grove" ? "sacred_grove" : name}`;
-  assert(Object.hasOwn(pixelFrames, frame), `Missing ${frame}`);
+  assert(Object.hasOwn(pixelSprites, frame), `Missing ${frame}`);
   for (const floor of Object.keys(pixelFloorColors)) {
     // The default palette owns the unsuffixed frame; all other floors have variants.
     const key = floor === pixelDefaultFloors[tile.terrain] ? frame : `${frame}__${floor}`;
-    assert(Object.hasOwn(pixelFrames, key), `Missing ${key}`);
+    assert(Object.hasOwn(pixelSprites, key), `Missing ${key}`);
   }
 }
 

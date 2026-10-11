@@ -3,7 +3,7 @@ import { pixelDefaultFloors, pixelFloorColors } from "./pixel-art";
 import { terrainLayout } from "./terrain-layout";
 import { battlefieldSpriteSize, hexPoints, tileCenter } from "../ui/geometry";
 import type { GameView, TileView } from "../game/view";
-import type { FrameImage } from "./sprite-images";
+import type { FrameImage } from "./art";
 
 export interface TerrainMapTile {
   readonly points: string;

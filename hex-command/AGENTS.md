@@ -12,7 +12,7 @@
   roads are complete terrain tiles in `terrain/road/`, with their own grass and
   winding paths, never overlays on plains. `tile.txt` is west–east; other variants
   use `<mask>.txt`, where bits 1, 2, 4, 8, 16, 32 mean e, se, sw, w, nw, ne.
-  The atlas only packs finished matrices; it must not synthesize roads or modify
+  The artwork build only reads finished matrices; it must not synthesize roads or modify
   sources. Map tiles optionally declare `connections` with those clockwise edge
   names; bridges/fords need two opposite edges. Bridges stay straight; ford
   connections guide a loose stone crossing, without strict edge alignment.
@@ -24,10 +24,10 @@
   Road `deadEnds` name directions whose spurs stop inside that road tile; finished
   sources use `<connections-mask>-end-<dead-ends-mask>.txt`. Register supported
   capped-road pairs in `terrain/road/dead-ends.json`;
-  Rust restoration, content checks and atlas packing reject unregistered pairs.
+  Rust restoration, content checks and artwork building reject unregistered pairs.
   Every supported connection configuration must have a finished native matrix.
   Villages have only their main streets, without thin house lanes. Extracted buildings and composition
-  experiments stay in `tmp/`; the atlas must only pack the finished tiles.
+  experiments stay in `tmp/`; the build must only read finished tiles.
   Terrain floor colors live separately in `pixel/art/terrain/floors.json`, with
   named reusable `palettes` (`G`/`g` base/shade) and terrain `defaults`.
   Map tiles optionally set `floor`, independently of `terrain` and connections:
@@ -35,8 +35,8 @@
   matrices. Water surfaces also use `G`/`g`; localized pools remain materials.
   Keep those symbols out of each terrain's material `palette.json`. Trees,
   grass tufts, buildings, rocks and dirt paths keep their own material colors;
-  changing a floor must not recolor them. The read-only packer applies palettes
-  to the same matrices, packing floor choices for every orientation. Render the
+  changing a floor must not recolor them. The read-only build applies palettes
+  to the same matrices, emitting floor choices for every orientation. Render the
   selected isolated frame with its matching vector hex background. Floor choices
   affect artwork only and must survive publication, saves and forks.
   Forest/hill/plains base matrices hold the floor and ground decoration; fords
@@ -51,12 +51,12 @@
   small stones scattered beside the route; no fixed endpoints are required.
   Choose arrangements deterministically from map/tile identity. Keep pieces at
   their native size and lighting; do not mirror, resize or randomly move them on
-  redraw. The atlas only packs source frames. Load units and portraits without preparing terrain combinations. Request only
-  the terrain frames needed for hover, inspection or fallback rendering; flatten
-  those arrangements and floors into cached native 64×64 images and publish
-  them through the controller. Reuse static geometry and terrain identity across
-  unit and ownership changes. Preload the selected authored map PNG before
-  creating the battle. Bake the static map terrain
+  redraw. The artwork build emits complete native 64×64 PNGs from matrices,
+  faction/floor palettes and prepared arrangements into ignored public/assets/sprites/.
+  Publish immutable sprite URLs in BattleView.artwork. The browser fetches only
+  rendered images; never restore runtime atlases, cropping, canvas extraction or
+  PNG encoding. Cache static geometry and terrain identity across unit and
+  ownership changes. Preload the selected authored map PNG before creating the battle. Bake the static map terrain
   from the published game/artwork snapshots directly into one canvas bitmap at the shared native
   pixel scale. Keep units, ownership badges, hit targets and highlights live.
   Reuse the bitmap during movement and scrolling; invalidate it for terrain,
@@ -75,7 +75,7 @@
   to reintroduce 48×48 outputs, alternate sizes, automatic cropping or resizing.**
   The one-time migration places each old 48×48 matrix at `(8,16)`: 8 transparent
   pixels left, 8 right, 16 above, none below. Preserve every painted pixel.
-  New generation, extraction, cleaning and atlas frames must use 64×64.
+  New generation, extraction, cleaning and generated frames must use 64×64.
   Most characters should be below 40 painted pixels tall; cavalry and giants may
   go slightly above this. Compare mounted artwork with the existing rider,
   horse-archer, elf deer rider and skeletal rider references before setting scale;
@@ -106,7 +106,7 @@
   [pixel cleaning](.agents/skills/pixel-cleaning/SKILL.md), and
   [lineup previews](.agents/skills/pixel-lineup/SKILL.md).
   Matrices and palettes in `pixel/art/` are authoritative. `npm run art:build`
-  packs them with `scripts/build-pixel-atlas.py`; builds must never replay
+  renders them with `scripts/build-pixel-art.py`; builds must never replay
   recipes, regenerate characters or write source artwork. Keep generation,
   cleaning and preview helpers inside their skills, with scratch output in `tmp/`.
 - Run `npm run style` for Prettier and staged/unstaged whitespace checks together.
@@ -157,7 +157,7 @@
   error without blindly repeating save/deploy; retain any saved version or
   deployment IDs returned by the service for recovery.
 
-- Atlases are inputs to artwork loading only. Publish isolated frame images in
-  `BattleView.artwork`; renderers must consume that snapshot. Do not put a full
-  sheet in SVG, HTML or a CSS background and rely on overflow/viewports to crop it.
-  Extract pixel frames at native resolution with smoothing disabled.
+- Renderers consume complete native sprite URLs from the immutable BattleView
+  artwork snapshot. Do not crop sheets through SVG/HTML/CSS overflow or recreate
+  sprites in the browser. Generated sprite PNGs live in ignored public/assets/sprites/
+  and dist; pixel/art matrices and palettes remain the only artwork sources.

@@ -386,29 +386,6 @@ test("Unmounted sessions cannot overwrite replacements", async () => {
   replacement.dispose();
 });
 
-// Complete image requests explicitly; no network, browser, or timer is involved.
-class ControlledImage {
-  static requests: ControlledImage[] = [];
-  src = "";
-  onload: (() => void) | null = null;
-  onerror: (() => void) | null = null;
-  completed = false;
-  constructor() {
-    ControlledImage.requests.push(this);
-  }
-  static finish(success: boolean) {
-    const requests = this.requests.filter((image) => !image.completed);
-    assert.equal(requests.length, 1, "Startup requests only the unit atlas");
-    assert(requests.some((image) => image.src.includes("/units-pixel.png")));
-    assert.equal(new Set(requests.map((image) => image.src)).size, requests.length);
-    for (const image of requests) {
-      image.completed = true;
-      if (success) image.onload?.();
-      else image.onerror?.();
-    }
-  }
-}
-
 async function settleCallbacks() {
   for (let turn = 0; turn < 6; turn++) await Promise.resolve();
 }
@@ -448,58 +425,17 @@ test("Replay is consumed once and replacement discards pending initialization", 
   replay.dispose();
 });
 
-// Retired preferences cannot change the only artwork path.
-test("Pixel artwork loads once and publishes immutable frames despite an old preference", async () => {
+test("Artwork URLs are published immediately and ignore retired style preferences", () => {
   storage.setItem("hex-command-art-style", "low-poly");
   const controller = createController(immediatePause);
   const observed = observe(controller);
+  assert(Object.isFrozen(observed.view.artwork.frames));
+  assert(observed.view.artwork.frames.player_thorncaller?.url.includes("assets/sprites/"));
+  const opening = observed.view.artwork;
   controller.initialize();
-  controller.initialize();
-  const openingGame = observed.view.game;
-  const openingArtwork = observed.view.artwork;
-  ControlledImage.finish(true);
-  await (await import("../src/presentation/art")).loadArtwork();
-  await settleCallbacks();
-  const chosen = observed.view;
-  assert.equal(
-    Object.keys(openingArtwork.frames).length,
-    0,
-    "Loading must not mutate an already-published artwork snapshot",
-  );
-  assert(Object.isFrozen(chosen.artwork));
-  assert(Object.isFrozen(chosen.artwork.frames));
-  assert(chosen.artwork.frames.player_thorncaller?.url.startsWith("data:image/png;base64,"));
-  assert.equal(chosen.game, openingGame, "Artwork loading reuses the published game");
-  assert.equal(ControlledImage.requests.length, 1);
+  assert.equal(observed.view.artwork, opening);
   controller.dispose();
   observed.unsubscribe();
-});
-
-// A failed load can retry in the next session; a disposed session cannot publish.
-test("Artwork failure reports a reload and unmount cancels later publication", async () => {
-  const controller = createController(immediatePause);
-  const observed = observe(controller);
-  controller.initialize();
-  const failedArtwork = (await import("../src/presentation/art")).loadArtwork();
-  ControlledImage.finish(false);
-  await failedArtwork;
-  await settleCallbacks();
-  assert.match(observed.view.status, /Artwork could not load.*reload/);
-  assert.equal(Object.keys(observed.view.artwork.frames).length, 0);
-  controller.dispose();
-  observed.unsubscribe();
-
-  const next = createController(immediatePause);
-  const afterRetry = observe(next);
-  next.initialize();
-  const pending = (await import("../src/presentation/art")).loadArtwork();
-  const beforeUnmount = afterRetry.view;
-  next.dispose();
-  ControlledImage.finish(true);
-  await pending;
-  await settleCallbacks();
-  assert.equal(afterRetry.view, beforeUnmount);
-  afterRetry.unsubscribe();
 });
 
 const controllers: Controller[] = [];
@@ -520,43 +456,11 @@ beforeEach(async () => {
   });
   ({ BattleController } = await import("../src/controller/battle"));
   storage.clear();
-  ControlledImage.requests = [];
   vi.stubGlobal("localStorage", storage);
-  vi.stubGlobal("Image", ControlledImage);
   restoreCanvas = mockSpriteCanvas();
 });
 afterEach(() => {
   for (const controller of controllers.splice(0)) controller.dispose();
   restoreCanvas();
   vi.unstubAllGlobals();
-});
-
-test("Lazy terrain completion cannot publish into a replaced battle, and the next session can reuse its frames", async () => {
-  const controller = createController(immediatePause);
-  const observed = observe(controller);
-  controller.initialize();
-  ControlledImage.finish(true);
-  await (await import("../src/presentation/art")).loadArtwork();
-  await settleCallbacks();
-  const tile = observed.view.game.tiles.find((tile) => tile.terrain === "plains")!;
-  const pending = controller.commands.prepareTerrain([tile.id]);
-  const atlas = ControlledImage.requests.find((image) => image.src.includes("terrain-pixel.png"))!;
-  assert(atlas);
-  controller.reset("river");
-  const replaced = observed.view;
-  atlas.completed = true;
-  atlas.onload?.();
-  await pending;
-  assert.equal(observed.view, replaced);
-  const nextTile = observed.view.game.tiles.find((tile) => tile.terrain === "plains")!;
-  const retry = controller.commands.prepareTerrain([nextTile.id]);
-  await retry;
-  assert.notEqual(observed.view.artwork, replaced.artwork);
-  assert.equal(observed.view.game, replaced.game);
-  assert.equal(
-    ControlledImage.requests.filter((image) => image.src.includes("terrain-pixel.png")).length,
-    1,
-  );
-  controller.dispose();
-  observed.unsubscribe();
 });

@@ -1,4 +1,4 @@
-"""Pack authoritative pixel/art sources; never replay recipes or modify source art."""
+"""Build standalone native sprites from pixel/art; never modify source artwork."""
 
 import argparse
 import hashlib
@@ -332,27 +332,28 @@ def png_bytes(width, height, rgba):
     )
 
 
-def pack_atlas(tiles, max_width=393):
-    placements, frames = [], {}
-    x, y, row_height, width = 1, 1, 0, 0
-    for key, (tile_width, tile_height, pixels) in sorted(tiles.items()):
-        if x + tile_width + 1 > max_width and x > 1:
-            x, y, row_height = 1, y + row_height + 1, 0
-        placements.append((x, y, tile_width, tile_height, pixels))
-        frames[key] = [x, y, tile_width, tile_height]
-        width = max(width, x + tile_width + 1)
-        row_height = max(row_height, tile_height)
-        x += tile_width + 1
-    height = y + row_height + 1
-    atlas = bytearray(width * height * 4)
-    for x, y, tile_width, tile_height, pixels in placements:
-        for row in range(tile_height):
-            target = ((y + row) * width + x) * 4
-            atlas[target : target + tile_width * 4] = pixels[row * tile_width * 4 : (row + 1) * tile_width * 4]
-    return png_bytes(width, height, atlas), frames
+def composite(base, layers):
+    """Flatten opaque pixel-art layers at native integer offsets, in depth order."""
+    width, height, pixels = base
+    result = bytearray(pixels)
+    for (layer_width, layer_height, layer), dx, dy in layers:
+        if type(dx) is not int or type(dy) is not int:
+            raise ValueError('Native placements must be integer offsets')
+        for y in range(layer_height):
+            for x in range(layer_width):
+                if not (0 <= x + dx < width and 0 <= y + dy < height):
+                    continue
+                source = (y * layer_width + x) * 4
+                alpha = layer[source + 3]
+                if alpha not in (0, 255):
+                    raise ValueError('Pixel-art layers must have flat alpha')
+                if alpha:
+                    target = ((y + dy) * width + x + dx) * 4
+                    result[target:target + 4] = layer[source:source + 4]
+    return width, height, result
 
 
-def pixel_atlases():
+def pixel_sprites():
     lineups = load_lineups()
     native = {}
     for id, directory in sorted(unit_directories(lineups).items()):
@@ -392,8 +393,7 @@ def pixel_atlases():
         if not any(terrain[key][2][3::4]):
             raise ValueError(f'{matrix}: expected nonempty terrain artwork')
         for floor in floors['palettes']:
-            if floor != floors['defaults'][terrain_material_kind(matrix)]:
-                terrain[f'{key}__{floor}'] = rgba_pixels(matrix, floor=floor)
+            terrain[f'{key}__{floor}'] = rgba_pixels(matrix, floor=floor)
 
     for matrix in sorted((ART / "terrain").glob("*/tile.txt")):
         key = f"terrain_{FRAME_NAMES.get(matrix.parent.name, matrix.parent.name)}"
@@ -427,30 +427,28 @@ def pixel_atlases():
         add_terrain(f'terrain_prop_{matrix.parent.parent.name}_{matrix.parent.name}', matrix)
     if not terrain:
         raise ValueError("No native terrain matrices found")
-    outputs, sources, frames = {}, {}, {}
-    for kind, tiles in (("units", native), ("terrain", terrain)):
-        data, packed = pack_atlas(tiles)
-        outputs[f"{kind}-pixel.png"] = data
-        width, height = struct.unpack(">II", data[16:24])
-        sources[kind] = {
-            "filename": f"{kind}-pixel.png",
-            "width": width,
-            "height": height,
-            "revision": hashlib.sha256(data).hexdigest()[:12],
-        }
-        frames.update(packed)
+    for name, variants in layouts.items():
+        for index, placements in enumerate(variants):
+            for floor in [None, *floors['palettes']]:
+                suffix = f'__{floor}' if floor else ''
+                base = terrain[f'terrain_{name}{suffix}']
+                layers = [(terrain[f'terrain_{piece["name"]}{suffix}'], piece['x'], piece['y'])
+                          for piece in placements]
+                terrain[f'terrain_{name}_layout_{index}{suffix}'] = composite(base, layers)
+    outputs, sprites = {}, {}
+    for key, (width, height, pixels) in sorted({**native, **terrain}.items()):
+        data = png_bytes(width, height, pixels)
+        name = hashlib.sha256(data).hexdigest()[:24] + '.png'
+        if name in outputs and outputs[name] != data:
+            raise ValueError(f'Sprite hash collision: {key}')
+        outputs[name] = data
+        sprites[key] = f'assets/sprites/{name}'
 
     def property_name(key):
         return key if key.isidentifier() else json.dumps(key)
 
-    source_fields = ""
-    for kind, source in sources.items():
-        fields = "".join(f"    {key}: {json.dumps(value)},\n" for key, value in source.items())
-        source_fields += f"  {kind}: {{\n{fields}  }},\n"
-    frame_fields = "".join(
-        f"  {property_name(key)}: {json.dumps(crop)},\n"
-        for key, crop in sorted(frames.items())
-    )
+    sprite_fields = ''.join(f'  {property_name(key)}: {json.dumps(url)},\n'
+                            for key, url in sorted(sprites.items()))
     floor_fields = ''.join(
         f'  {property_name(name)}: {json.dumps("#" + "".join(f"{c:02x}" for c in palette["G"][:3]))},\n'
         for name, palette in sorted(floors['palettes'].items())
@@ -473,9 +471,8 @@ def pixel_atlases():
         for key, model in sorted(gameplay_models(lineups).items())
     )
     metadata = (
-        "// Generated by scripts/build-pixel-atlas.py; edit pixel/art matrices and palettes.\n"
-        + "export const pixelSources = {\n" + source_fields + "} as const;\n\n"
-        + "export const pixelFrames = {\n" + frame_fields + "} as const;\n"
+        "// Generated by scripts/build-pixel-art.py; edit pixel/art matrices and palettes.\n"
+        + "export const pixelSprites: Readonly<Record<string, string>> = {\n" + sprite_fields + "};\n"
         + "\nexport const pixelFloorColors: Readonly<Record<string, string>> = {\n" + floor_fields + "};\n"
         + "\nexport const pixelDefaultFloors = {\n" + default_fields + "} as const;\n"
         + "\nexport const pixelTerrainLayouts: Readonly<\n"
@@ -491,16 +488,25 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="Verify generated assets without writing files")
     args = parser.parse_args()
-    outputs, metadata = pixel_atlases()
-    products = {ROOT / "public/assets" / name: data for name, data in outputs.items()}
+    outputs, metadata = pixel_sprites()
+    products = {ROOT / "public/assets/sprites" / name: data for name, data in outputs.items()}
     products[ROOT / "src/presentation/pixel-art.ts"] = metadata.encode()
+    directory = ROOT / 'public/assets/sprites'
+    expected = {directory / name for name in outputs}
+    obsolete = set(directory.glob('*.png')) - expected
+    if args.check and obsolete:
+        raise ValueError('Obsolete generated sprites; regenerate with npm run art:build')
+    if not args.check:
+        directory.mkdir(parents=True, exist_ok=True)
+        for path in obsolete:
+            path.unlink()
     for path, data in products.items():
         if args.check:
             if not path.exists() or path.read_bytes() != data:
                 raise ValueError(f"{path}: regenerate with npm run art:build")
         elif not path.exists() or path.read_bytes() != data:
             path.write_bytes(data)
-    print(f"{'Verified' if args.check else 'Packed'} pixel unit/terrain atlases and metadata; sources are read-only")
+    print(f"{'Verified' if args.check else 'Built'} standalone pixel sprites and metadata; sources are read-only")
 
 
 if __name__ == "__main__":

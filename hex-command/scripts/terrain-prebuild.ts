@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import type { Canvas } from "@napi-rs/canvas";
 import type { Plugin } from "vite";
-import { artworkFrames, type Artwork } from "../src/presentation/art";
+import { currentArtwork } from "../src/presentation/art";
 import {
   terrainMapKey,
   terrainMapDimensions,
@@ -11,7 +11,7 @@ import {
   paintTerrainTiles,
 } from "../src/presentation/terrain-map";
 import { battlefieldSpriteSize, mapDimensions } from "../src/ui/geometry";
-import { pixelSources } from "../src/presentation/pixel-art";
+import { pixelSprites } from "../src/presentation/pixel-art";
 import type { GameView } from "../src/game/view";
 
 const virtualId = "virtual:terrain-prebuilt";
@@ -47,17 +47,8 @@ export function terrainPrebuild(): Plugin {
         const { stages } = await read<{ stages: string[] }>(path);
         descriptors.push(...stages.map((stage) => resolve(dirname(path), stage)));
       }
-      const atlasPath = resolve(root, "public/assets", pixelSources.terrain.filename);
-      this.addWatchFile(atlasPath);
       this.addWatchFile(resolve(root, "src/presentation/pixel-art.ts"));
-      const atlas = await loadImage(atlasPath);
-      const definitions = artworkFrames();
-      // Logical names resolve through exactly the same floor/orientation/layout rules as runtime.
-      const artwork: Artwork = {
-        frames: Object.fromEntries(
-          Object.keys(definitions).map((key) => [key, { url: key, width: 64, height: 64 }]),
-        ),
-      };
+      const artwork = currentArtwork();
       const frames = new Map<string, Canvas>();
       const entries: string[] = [];
       const keys = new Set<string>();
@@ -81,13 +72,11 @@ export function terrainPrebuild(): Plugin {
           const name = tile.terrainFrame?.url;
           if (!name) throw new Error(`${map.mapId}/${tile.id}: missing terrain artwork`);
           if (frames.has(name)) continue;
-          const definition = definitions[name]!;
+          const path = resolve(root, "public", pixelSprites[tile.frameKey]!);
+          this.addWatchFile(path);
+          // Keep build-time raster clipping identical to the canvas fallback.
           const frame = createCanvas(64, 64);
-          const context = frame.getContext("2d");
-          context.imageSmoothingEnabled = false;
-          context.drawImage(atlas, ...definition.crop, 0, 0, 64, 64);
-          for (const layer of definition.layers ?? [])
-            context.drawImage(atlas, ...layer.crop, layer.x, layer.y, layer.crop[2], layer.crop[3]);
+          frame.getContext("2d").drawImage(await loadImage(path), 0, 0);
           frames.set(name, frame);
         }
         const dimensions = terrainMapDimensions(plan);

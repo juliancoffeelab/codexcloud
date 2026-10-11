@@ -21,7 +21,7 @@ a `G`/`g` base/shade pair; `defaults` selects a palette per terrain. A map tile'
 optional `floor` overrides that default, including on roads and villages.
 Keep `G`/`g` out of local material palettes. Tree foliage and grass tufts can
 share other green symbols; leave them alone when tuning the floor. Render through
-the atlas packer's `read_palette(matrix, floor=...)`/`rgba_pixels(matrix, floor=...)`
+the artwork builder's `read_palette(matrix, floor=...)`/`rgba_pixels(matrix, floor=...)`
 so previews resolve the chosen floor colors too. Never create a new matrix for
 a different floor palette.
 
