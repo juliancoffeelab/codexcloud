@@ -374,6 +374,8 @@ pub struct MapDefinition {
     pub revision: u32,
     pub name: String,
     pub description: String,
+    #[serde(default)]
+    pub hidden: bool,
     pub cols: i32,
     pub rows: i32,
     pub terrain: Vec<Tile>,

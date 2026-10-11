@@ -25,6 +25,8 @@ struct MapDocument {
     cols: i32,
     rows: i32,
     tiles: Vec<Tile>,
+    #[serde(default)]
+    hidden: bool,
     #[serde(rename = "name")]
     name: Option<String>,
     #[serde(rename = "description")]
@@ -265,6 +267,7 @@ pub(super) fn map_metadata(
         revision: state.map_revision,
         name: metadata.name.unwrap_or_else(|| state.map_id.clone()),
         description: metadata.description.unwrap_or_default(),
+        hidden: metadata.hidden,
         cols: state.cols,
         rows: state.rows,
         terrain: state.tiles.clone(),

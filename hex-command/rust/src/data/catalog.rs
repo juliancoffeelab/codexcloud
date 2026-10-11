@@ -1142,6 +1142,36 @@ mod tests {
         );
     }
     #[test]
+    fn hidden_maps_remain_loadable_and_default_to_visible() {
+        let mut bundle = test_bundle();
+        let path = "game/scenario/mirror-v1/map.json";
+        let mut map: serde_json::Value = serde_json::from_str(&bundle[path]).unwrap();
+        for hidden in [None, Some(true), Some(false)] {
+            match hidden {
+                Some(value) => {
+                    map["hidden"] = serde_json::json!(value);
+                }
+                None => {
+                    map.as_object_mut().unwrap().remove("hidden");
+                }
+            }
+            bundle.insert(path.to_owned(), serde_json::to_string(&map).unwrap());
+            let rules = Rules::from_json_bundle(&bundle).unwrap();
+            let metadata = rules
+                .map_definitions
+                .iter()
+                .find(|map| map.id == "mirror")
+                .unwrap();
+            assert_eq!(metadata.hidden, hidden.unwrap_or(false));
+            assert!(
+                rules
+                    .maps
+                    .contains_key(&("mirror".to_owned(), metadata.revision))
+            );
+        }
+    }
+
+    #[test]
     fn invalid_scenario_placement_returns_a_content_error() {
         let mut bundle = test_bundle();
         let path = "game/scenario/mirror-v1/roster.json";

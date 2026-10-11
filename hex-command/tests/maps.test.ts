@@ -3,6 +3,19 @@ import { required, TestStorage } from "./helpers.ts";
 import assert from "node:assert/strict";
 
 const { Game, TYPES } = await import("./game-fixture.ts");
+const { MAPS, BATTLE_MAPS } = await import("../src/game/maps.ts");
+
+test("Hidden scenarios stay loadable and saved without appearing in the map picker", () => {
+  const hiddenMaps = Object.values(MAPS).filter((map) => map.hidden);
+  assert(hiddenMaps.length > 0);
+  for (const map of hiddenMaps) {
+    assert(!BATTLE_MAPS.some((choice) => choice.id === map.id));
+    const game = new Game(map.id);
+    saveBattle(game);
+    assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
+  }
+  assert(BATTLE_MAPS.every((map) => !map.hidden));
+});
 
 // These are ordinary units on an ordinary map: movement, combat and turns still work.
 test("Developer units use ordinary movement, combat and turns", async () => {

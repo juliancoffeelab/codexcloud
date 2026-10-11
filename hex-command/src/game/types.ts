@@ -111,7 +111,8 @@ export type CampaignMapId =
   | "ashen-refuge"
   | "ashen-dawn";
 export type CoastalMapId = "tide-nets" | "tide-wreck" | "tide-sluice";
-export type MapId = "mirror" | "river" | "developer" | CampaignMapId | CoastalMapId;
+export type MapId =
+  "mirror" | "river" | "developer" | "river-valley" | CampaignMapId | CoastalMapId;
 export interface Coordinates {
   col: number;
   row: number;
@@ -207,6 +208,7 @@ export interface StartingUnit extends Coordinates {
 }
 export interface MapDefinition {
   id: MapId;
+  hidden?: boolean;
   revision?: number;
   name: string;
   description: string;
