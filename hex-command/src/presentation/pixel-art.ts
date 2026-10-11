@@ -10,7 +10,7 @@ export const pixelSources = {
     filename: "terrain-pixel.png",
     width: 391,
     height: 1366,
-    revision: "70c2b53e387d",
+    revision: "5bf950ac370e",
   },
 } as const;
 
