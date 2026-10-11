@@ -11,9 +11,39 @@ import {
 import { Game } from "./game-fixture";
 import { createGameView } from "./fixture-view";
 import { battlefieldTiles, terrainArtNames } from "../src/ui/battlefield-view";
+import { hexPoints, tileCenter } from "../src/ui/geometry";
 import { mockSpriteCanvas } from "./helpers";
 
 const requested: string[] = [];
+
+test("Adjacent hexes share both edge vertices without gaps on either row parity", () => {
+  const vertices = (col: number, row: number) => {
+    const center = tileCenter({ col, row });
+    return hexPoints(center.x, center.y)
+      .split(" ")
+      .map((point) => point.split(",").map(Number));
+  };
+  for (const row of [4, 5]) {
+    const odd = row % 2;
+    const origin = vertices(4, row);
+    for (const [col, nextRow] of [
+      [5, row],
+      [4 + odd, row + 1],
+      [3 + odd, row + 1],
+      [3, row],
+      [3 + odd, row - 1],
+      [4 + odd, row - 1],
+    ]) {
+      const neighbor = vertices(col!, nextRow!);
+      assert.equal(
+        origin.filter(([x, y]) =>
+          neighbor.some(([nx, ny]) => Math.hypot(x! - nx!, y! - ny!) < 1e-8),
+        ).length,
+        2,
+      );
+    }
+  }
+});
 let failNative = true;
 class TestImage {
   onload?: () => void;
@@ -128,17 +158,18 @@ test("Tall dialogue keeps a character frame at its native 64×64 size", async ()
   assert.equal(lark.height, 64);
 });
 
-test("Route connections select native crossings and transparent road overlays", async () => {
+test("Route connections select one complete native terrain frame", async () => {
   await art.loadArtwork();
   assert.deepEqual(terrainArtNames({ terrain: "bridge" }), ["bridge"]);
   assert.deepEqual(terrainArtNames({ terrain: "ford", connections: ["se", "nw"] }), ["ford_nw-se"]);
   assert.deepEqual(terrainArtNames({ terrain: "bridge", connections: ["sw", "ne"] }), [
     "bridge_ne-sw",
   ]);
-  assert.deepEqual(terrainArtNames({ terrain: "plains", connections: ["w", "e", "se"] }), [
-    "plains",
+  assert.deepEqual(terrainArtNames({ terrain: "road", connections: ["w", "e", "se"] }), [
     "road_11",
   ]);
+  assert.deepEqual(terrainArtNames({ terrain: "road", connections: ["w", "e"] }), ["road"]);
+  assert.deepEqual(terrainArtNames({ terrain: "plains" }), ["plains"]);
   for (const name of ["bridge_ne-sw", "ford_nw-se", "road_11"]) {
     const frame = extraction(art.artSprite(art.currentArtwork(), "terrain", name, 0, 0, 70, 70));
     assert.equal(frame.width, 64);

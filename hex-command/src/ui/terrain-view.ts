@@ -10,6 +10,7 @@ const descriptions: Record<TerrainType, string> = {
   fort: "Earthworks protect against every damage kind. Capture them to hold a crossing.",
   grove: "A sacred woodland refuge. Its owner’s occupants heal 4 HP each turn.",
   plains: "Open grassland with easy footing.",
+  road: "A winding dirt road through grassland. Normal movement and no protection.",
   forest: "Trees shelter land troops and obstruct ranged shots. Merfolk are exposed here.",
   hill: "High ground shelters land troops and obstructs ranged shots. Merfolk are exposed here.",
   water: "Deep water is impassable to land units. Merfolk can swim through it.",

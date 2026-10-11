@@ -14,19 +14,6 @@ load_lineups = art.load_lineups
 
 
 class RaceTrees(unittest.TestCase):
-    def test_road_composition_keeps_transparency_and_joins_materials(self):
-        parts = [["." * 64 for _ in range(64)] for _ in range(6)]
-        parts[0][30] = "r" + "." * 63
-        parts[1][30] = "Rr" + "." * 62
-        palette = {'.': [0, 0, 0, 0], 'R': [200, 160, 90, 255],
-                   'r': [130, 100, 60, 255], 'C': [230, 210, 170, 255]}
-        frames = art.road_frames(parts, palette)
-        _, _, pixels = frames['terrain_road_3']
-        offset = 30 * 64 * 4
-        self.assertEqual(pixels[offset:offset + 8], bytes(palette['R'] + palette['r']))
-        self.assertEqual(pixels[offset + 8:offset + 12], bytes(palette['.']))
-        self.assertEqual(frames['terrain_road_1'][2][offset:offset + 4], bytes(palette['r']))
-
     def fixture(self):
         temp = tempfile.TemporaryDirectory()
         self.addCleanup(temp.cleanup)

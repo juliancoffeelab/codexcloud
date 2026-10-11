@@ -31,7 +31,7 @@ pub struct Tile {
     pub row: i32,
     pub terrain: String,
     pub owner: Option<Side>,
-    /// Decorative road exits on plains, or the two opposite crossing edges.
+    /// Road exits, or the two opposite crossing edges. Connections affect artwork only.
     #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub connections: Option<Vec<HexDirection>>,
@@ -46,7 +46,7 @@ impl Tile {
             return false;
         }
         match self.terrain.as_str() {
-            "plains" => true,
+            "road" => true,
             "bridge" | "ford" => matches!(mask, 9 | 18 | 36),
             _ => false,
         }

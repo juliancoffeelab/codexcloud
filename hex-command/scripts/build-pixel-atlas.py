@@ -10,29 +10,6 @@ import zlib
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "pixel" / "art"
 FRAME_NAMES = {"bonearcher": "bone_archer", "grove": "sacred_grove"}
-HEX_DIRECTIONS = ("e", "se", "sw", "w", "nw", "ne")
-
-
-def road_frames(parts, palette):
-    """Compile static road overlays from six native matrix spokes, never resize."""
-    if len(parts) != 6:
-        raise ValueError("Roads need all six hex-edge spokes")
-    for part in parts:
-        require_canvas(part, "Road spoke")
-        if set(''.join(part)) - set('.RrC'):
-            raise ValueError("Road spokes use only transparency, dirt, shoulder and highlight")
-    frames = {}
-    for mask in range(1, 64):
-        selected = [part for index, part in enumerate(parts) if mask & (1 << index)]
-        pixels = bytearray()
-        for y in range(64):
-            for x in range(64):
-                symbols = {part[y][x] for part in selected}
-                # Main dirt covers overlapping shoulders so junctions have no seams.
-                symbol = next((s for s in 'RCr' if s in symbols), '.')
-                pixels.extend(palette[symbol])
-        frames[f"terrain_road_{mask}"] = (64, 64, pixels)
-    return frames
 
 
 def require_canvas(rows, label="Artwork"):
@@ -284,7 +261,9 @@ def pixel_atlases():
         for variant in sorted(matrix.parent.glob("*.txt")):
             if variant == matrix:
                 continue
-            if matrix.parent.name not in ("bridge", "ford") or variant.stem not in ("ne-sw", "nw-se"):
+            crossing = matrix.parent.name in ("bridge", "ford") and variant.stem in ("ne-sw", "nw-se")
+            road = matrix.parent.name == "road" and variant.stem.isdigit() and 1 <= int(variant.stem) <= 63 and int(variant.stem) != 9
+            if not (crossing or road):
                 raise ValueError(f"{variant}: unknown terrain orientation")
             terrain[f"{key}_{variant.stem}"] = rgba_pixels(variant)
         # The vector hex fills the transparent staircase around the raster tile.
@@ -296,13 +275,6 @@ def pixel_atlases():
         terrain_colors[matrix.parent.name] = "#" + "".join(f"{channel:02x}" for channel in background[:3])
     if not terrain:
         raise ValueError("No native terrain matrices found")
-    roads = ART / "terrain/road"
-    if roads.exists():
-        palette = read_palette(roads / "e.txt")
-        if set(palette) != set('.RrC') or any(palette[s][3] != 255 for s in 'RrC'):
-            raise ValueError("Road materials require opaque dirt, shoulder and highlight")
-        parts = [read_matrix(roads / f"{direction}.txt") for direction in HEX_DIRECTIONS]
-        terrain.update(road_frames(parts, palette))
     outputs, sources, frames = {}, {}, {}
     for kind, tiles in (("units", native), ("terrain", terrain)):
         data, packed = pack_atlas(tiles)

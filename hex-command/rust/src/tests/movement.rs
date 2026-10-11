@@ -155,6 +155,7 @@ fn artwork_connections_survive_restore_and_forks_without_changing_movement() {
         .find(|tile| tile.terrain == "plains")
         .unwrap();
     let id = tile.id.clone();
+    tile.terrain = "road".into();
     tile.connections = Some(vec![HexDirection::E, HexDirection::W, HexDirection::Se]);
     let decorated = Game::try_from_state(rules(), state).unwrap();
     for unit in &original.units {

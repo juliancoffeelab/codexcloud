@@ -1,5 +1,12 @@
 [
   {
+    "id": "road",
+    "name": "Road",
+    "cost": 1,
+    "passable": true,
+    "description": "Normal movement. No protection."
+  },
+  {
     "id": "plains",
     "name": "Plains",
     "cost": 1,

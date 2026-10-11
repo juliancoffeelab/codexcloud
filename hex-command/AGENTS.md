@@ -9,10 +9,12 @@
   `tmp/`; do not commit art archives, duplicate renders or reference-only poses.
   Terrain sources live in `pixel/art/terrain/<terrain>/`: `tile.txt` is the
   default tile; bridge/ford diagonals are `ne-sw.txt` and `nw-se.txt`. Decorative
-  roads use six transparent spokes in `terrain/road/{e,se,sw,w,nw,ne}.txt` with
-  one material palette. The atlas packs their static combinations without
-  modifying source matrices. Map tiles optionally declare `connections` with
-  those clockwise edge names; crossings need two opposite edges. These fields
+  roads are complete terrain tiles in `terrain/road/`, with their own grass and
+  winding paths, never overlays on plains. `tile.txt` is west–east; other variants
+  use `<mask>.txt`, where bits 1, 2, 4, 8, 16, 32 mean e, se, sw, w, nw, ne.
+  The atlas only packs finished matrices; it must not synthesize roads or modify
+  sources. Map tiles optionally declare `connections` with those clockwise edge
+  names; bridges/fords remain straight and need two opposite edges. Connections
   affect artwork only and must survive publication and save/restore.
 
 - **Permanent character canvas rule: every character/unit sprite and portrait is

@@ -153,6 +153,7 @@ impl std::fmt::Display for Family {
 #[serde(rename_all = "lowercase")]
 pub enum Terrain {
     Plains,
+    Road,
     Forest,
     Hill,
     Water,
@@ -170,6 +171,7 @@ impl Terrain {
     pub fn as_str(self) -> &'static str {
         match self {
             Self::Plains => "plains",
+            Self::Road => "road",
             Self::Forest => "forest",
             Self::Hill => "hill",
             Self::Water => "water",

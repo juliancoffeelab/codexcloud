@@ -3,6 +3,7 @@
   import type { BattleCommands, BattleView } from "../controller/view";
   import { MAPS } from "../game/maps";
   import { battlefieldTiles } from "./battlefield-view";
+  import { hexColumnSpacing, hexRowSpacing } from "./geometry";
 
   interface Props {
     view: BattleView;
@@ -19,7 +20,9 @@
   const isPlayerTurn = $derived(game.turn === "player" && !game.winner);
   const recruitTileId = $derived(isPlayerTurn && recruitment ? view.inspectedTile : null);
   const tiles = $derived(battlefieldTiles(game, selected, artwork, recruitTileId));
-  const viewBox = $derived(`0 0 ${758 + 61 * (game.cols - 11)} ${452 + 53 * (game.rows - 7)}`);
+  const viewBox = $derived(
+    `0 0 ${758 + hexColumnSpacing * (game.cols - 11)} ${452 + hexRowSpacing * (game.rows - 7)}`,
+  );
 
   function handleTileKey(event: KeyboardEvent, tile: TileView): void {
     if (event.key === "Enter" || event.key === " ") {

@@ -1,6 +1,12 @@
 <script lang="ts">
   import { MAPS } from "../game/maps";
-  import { hexPoints, tileCenter, previewColors } from "./geometry";
+  import {
+    hexPoints,
+    tileCenter,
+    previewColors,
+    hexColumnSpacing,
+    hexRowSpacing,
+  } from "./geometry";
   import type { MapDefinition, TerrainType } from "../game/types";
   import type { Immutable } from "../game/view";
 
@@ -25,7 +31,7 @@
       id: layout.id,
       name: layout.name,
       description: layout.description,
-      viewBox: `0 0 ${85 + 61 * (layout.cols - 0.5)} ${84 + 53 * (layout.rows - 1)}`,
+      viewBox: `0 0 ${85 + hexColumnSpacing * (layout.cols - 0.5)} ${84 + hexRowSpacing * (layout.rows - 1)}`,
       tiles: previewTiles(layout),
     }));
 </script>

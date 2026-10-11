@@ -84,6 +84,7 @@ export const UNIT_TYPES = [
 export type Race = "human" | "undead" | "beast" | "merfolk";
 export type TerrainType =
   | "plains"
+  | "road"
   | "forest"
   | "hill"
   | "water"
