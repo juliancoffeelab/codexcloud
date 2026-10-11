@@ -134,7 +134,8 @@ match records without rerunning matches. See the [AI guide](docs/ai-simulation.m
 for filters, replay and comparison commands.
 
 For the configured Sites deployment, `npm run publish` builds the release,
-commits and pushes its source, then prepares the deployment archive and manifest.
+commits its source locally, then prepares the deployment archive and manifest.
 The tool adapter in `scripts/publish-sites-call.js` submits that prepared archive
-and waits for deployment. Publication is separate from verification and requires
+and waits for deployment before pushing the deployed commit to GitHub.
+Publication is separate from verification and requires
 an explicit request.

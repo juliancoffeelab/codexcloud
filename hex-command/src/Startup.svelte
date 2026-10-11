@@ -34,7 +34,7 @@
 {#if application}
   <application.component controller={application.controller} />
 {:else}
-  <main class="loading-shell battle-layout" aria-busy={!failure}>
+  <main class="loading-shell" aria-busy={!failure}>
     <BattleBar />
     <div class="workspace map-only">
       <section class="map-section" aria-label="Battlefield loading">

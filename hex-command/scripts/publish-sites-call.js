@@ -83,7 +83,7 @@ export default async function publishSite(tools, options, progress = () => {}) {
   if (prepared.project_id !== project_id)
     throw new Error("Publication package Site identity changed");
   const input = { project_id, commit_sha: prepared.commit_sha, archive: prepared.archive };
-  progress("Source pushed; Sites is publishing the packaged build.");
+  progress("Sites is publishing the packaged build; GitHub will be pushed after it succeeds.");
   let deployment;
   if (ownerPrivate) {
     deployment = decode(await tools.mcp__codex_apps__sites_save_version_and_deploy_private(input));
@@ -117,6 +117,28 @@ export default async function publishSite(tools, options, progress = () => {}) {
     );
   }
   if (!deployment.url) throw new Error("Deployment succeeded but Sites returned no URL");
+  progress("Site published; pushing the deployed commit to GitHub.");
+  cell = await tools.exec_command({
+    cmd:
+      "git push origin " + quoted(prepared.source_commit + ":refs/heads/" + prepared.source_branch),
+    workdir: cwd,
+    yield_time_ms: 1000,
+    max_output_tokens: 1000,
+  });
+  let pushOutput = cell.output;
+  while (cell.session_id) {
+    cell = await tools.write_stdin({
+      session_id: cell.session_id,
+      chars: "",
+      yield_time_ms: 1000,
+      max_output_tokens: 1000,
+    });
+    pushOutput += cell.output;
+  }
+  if (cell.exit_code !== 0)
+    throw new Error(
+      `Site deployed at ${deployment.url} (${deployment.id}), but GitHub push failed: ${pushOutput}`,
+    );
   return {
     url: deployment.url,
     source_commit: prepared.source_commit,

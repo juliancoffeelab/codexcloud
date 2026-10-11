@@ -106,7 +106,7 @@
 </script>
 
 <svelte:document onkeydown={globalKeydown} onclick={clickAway} />
-<main class="battle-layout" class:briefing-open={briefingExpanded}>
+<main>
   <TurnBar
     view={$view}
     {actions}

@@ -185,7 +185,7 @@ button[hidden] {
 .map-scroll {
   overflow: auto;
   max-height: min(720px, calc(100svh - 120px));
-  overscroll-behavior: contain;
+  overscroll-behavior: contain auto;
   background: #19231c;
   border: 1px solid var(--line);
   border-radius: 4px;
@@ -323,7 +323,7 @@ aside {
   display: block;
   margin: 6px auto;
   width: 72px;
-  height: 90px;
+  height: 72px;
 }
 .combatant h2 {
   margin: 4px 0 8px;
@@ -505,35 +505,6 @@ summary {
   margin-top: 20px;
 }
 @media (max-width: 1000px) {
-  main.battle-layout:not(.briefing-open) {
-    height: calc(100dvh - 2 * var(--page-padding));
-    display: flex;
-    flex-direction: column;
-  }
-  main.battle-layout:not(.briefing-open) > .battle-bar {
-    flex-shrink: 0;
-  }
-  main.battle-layout:not(.briefing-open) .workspace {
-    flex: 1;
-    min-height: 0;
-    grid-template-rows: minmax(0, 1.2fr) minmax(0, 1fr);
-    align-items: stretch;
-  }
-  main.battle-layout:not(.briefing-open) .workspace.map-only {
-    grid-template-rows: minmax(0, 1fr);
-  }
-  main.battle-layout:not(.briefing-open) .map-section {
-    min-height: 0;
-  }
-  main.battle-layout:not(.briefing-open) .map-scroll {
-    height: 100%;
-    max-height: none;
-  }
-  main.battle-layout:not(.briefing-open) aside {
-    min-height: 0;
-    overflow: auto;
-    overscroll-behavior: contain;
-  }
   .map-scroll {
     max-height: 55svh;
   }
@@ -555,8 +526,8 @@ summary {
     margin: auto;
   }
   .combatant .portrait {
-    width: 80px;
-    height: 100px;
+    width: 72px;
+    height: 72px;
   }
   .attack-button {
     display: block;
@@ -630,8 +601,8 @@ summary {
     gap: 10px;
   }
   .combatant .portrait {
-    width: 80px;
-    height: 100px;
+    width: 72px;
+    height: 72px;
   }
 }
 @media (max-width: 350px) {
@@ -1139,12 +1110,6 @@ select {
     14px/1.4 system-ui,
     sans-serif;
 }
-.attack-actions h3 {
-  color: var(--gold);
-  font-size: 14px;
-  font-weight: 400;
-  margin-bottom: 4px;
-}
 .attack-action-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 44px;
@@ -1227,7 +1192,7 @@ select {
   grid-column: 1;
   grid-row: 1 / span 4;
   width: 72px;
-  height: 90px;
+  height: 72px;
   margin: 0;
 }
 .unit-detail > .combatant > :not(.portrait) {
@@ -1236,6 +1201,26 @@ select {
 .unit-detail > .combatant h2 {
   margin: 0;
   font-size: 21px;
+}
+.unit-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+}
+.unit-detail .unit-heading {
+  justify-content: flex-start;
+}
+.unit-progress {
+  color: var(--muted);
+  font:
+    12px system-ui,
+    sans-serif;
+  white-space: nowrap;
+}
+.attack-actions {
+  scroll-margin-top: 90px;
 }
 .unit-detail > .combatant .health-track {
   margin: 3px 0 0;

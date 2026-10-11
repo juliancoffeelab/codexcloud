@@ -23,21 +23,9 @@
     if (!node) return;
     let current = true;
     void tick().then(() => {
-      const pane = node.closest("aside");
-      if (!current || !pane || !["auto", "scroll"].includes(getComputedStyle(pane).overflowY))
-        return;
+      if (!current || !matchMedia("(max-width:1000px)").matches) return;
       const attack = node.querySelector<HTMLElement>(".attack-actions");
-      const firstButton = attack?.querySelector<HTMLElement>(".attack-action:not(:disabled)");
-      const anchor =
-        attack &&
-        firstButton &&
-        firstButton.getBoundingClientRect().bottom - attack.getBoundingClientRect().top + 16 >
-          pane.clientHeight
-          ? firstButton
-          : attack;
-      pane.scrollTop = anchor
-        ? pane.scrollTop + anchor.getBoundingClientRect().top - pane.getBoundingClientRect().top - 8
-        : 0;
+      attack?.scrollIntoView({ block: "nearest" });
     });
     return () => {
       current = false;
