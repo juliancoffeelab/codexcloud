@@ -187,6 +187,7 @@
       "col": 11,
       "row": 1,
       "terrain": "village",
+      "connections": ["sw"],
       "owner": null
     },
     {
@@ -222,6 +223,7 @@
       "col": 2,
       "row": 2,
       "terrain": "village",
+      "connections": ["se"],
       "owner": null
     },
     {
@@ -529,6 +531,7 @@
       "col": 3,
       "row": 5,
       "terrain": "village",
+      "connections": ["e", "sw", "w"],
       "owner": null
     },
     {
@@ -584,6 +587,7 @@
       "col": 10,
       "row": 5,
       "terrain": "village",
+      "connections": ["e", "se", "w"],
       "owner": null
     },
     {
@@ -791,7 +795,7 @@
       "col": 11,
       "row": 7,
       "terrain": "road",
-      "connections": ["se", "nw"],
+      "connections": ["sw", "nw"],
       "owner": null
     },
     {
@@ -820,14 +824,15 @@
       "col": 1,
       "row": 8,
       "terrain": "keep",
-      "owner": "player"
+      "owner": "player",
+      "connections": ["e"]
     },
     {
       "id": "2,8",
       "col": 2,
       "row": 8,
       "terrain": "road",
-      "connections": ["w", "ne"],
+      "connections": ["se", "w", "ne"],
       "owner": null
     },
     {
@@ -890,7 +895,8 @@
       "id": "11,8",
       "col": 11,
       "row": 8,
-      "terrain": "plains",
+      "terrain": "road",
+      "connections": ["e", "se", "ne"],
       "owner": null
     },
     {
@@ -898,7 +904,8 @@
       "col": 12,
       "row": 8,
       "terrain": "keep",
-      "owner": "enemy"
+      "owner": "enemy",
+      "connections": ["w"]
     },
     {
       "id": "13,8",
@@ -918,8 +925,7 @@
       "id": "1,9",
       "col": 1,
       "row": 9,
-      "terrain": "road",
-      "connections": ["e", "nw"],
+      "terrain": "plains",
       "owner": null
     },
     {
@@ -927,7 +933,7 @@
       "col": 2,
       "row": 9,
       "terrain": "road",
-      "connections": ["sw", "w"],
+      "connections": ["sw", "nw"],
       "owner": null
     },
     {
@@ -991,7 +997,7 @@
       "col": 11,
       "row": 9,
       "terrain": "road",
-      "connections": ["sw", "ne"],
+      "connections": ["sw", "nw"],
       "owner": null
     },
     {
@@ -1184,6 +1190,7 @@
       "col": 9,
       "row": 11,
       "terrain": "village",
+      "connections": ["e", "sw", "nw"],
       "owner": null
     },
     {
@@ -1385,6 +1392,7 @@
       "col": 9,
       "row": 13,
       "terrain": "village",
+      "connections": ["sw", "nw"],
       "owner": null
     },
     {
@@ -1448,6 +1456,7 @@
       "col": 4,
       "row": 14,
       "terrain": "village",
+      "connections": ["e", "nw"],
       "owner": null
     },
     {

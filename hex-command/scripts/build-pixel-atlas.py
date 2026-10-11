@@ -19,9 +19,9 @@ def require_canvas(rows, label="Artwork"):
     return rows
 
 
-def require_road_exits(rows, mask, surface=frozenset("RrC"), width=8, depth=4):
+def require_road_exits(rows, mask, surface=frozenset("RrC"), width=8, depth=4, label="Road"):
     """Check shared-edge position, width and tangent, independent of interior art."""
-    require_canvas(rows, "Road")
+    require_canvas(rows, label)
     apothem = 16 * math.sqrt(3)
     for direction in range(6):
         angle = direction * math.pi / 3
@@ -34,7 +34,7 @@ def require_road_exits(rows, mask, surface=frozenset("RrC"), width=8, depth=4):
                 if apothem - depth <= normal <= apothem and tangent < width / 2 + 3:
                     expected = bool(mask & (1 << direction)) and tangent < width / 2
                     if (symbol in surface) != expected:
-                        raise ValueError(f"Road {mask}: misaligned exit {direction} at ({x}, {y}); "
+                        raise ValueError(f"{label} {mask}: misaligned exit {direction} at ({x}, {y}); "
                                          "road edges must share centered width and normal direction")
     return rows
 
@@ -279,17 +279,23 @@ def pixel_atlases():
             raise ValueError(f"{matrix}: expected a nonempty terrain sprite")
         key = f"terrain_{FRAME_NAMES.get(matrix.parent.name, matrix.parent.name)}"
         terrain[key] = (width, height, pixels)
-        if matrix.parent.name == "road":
-            require_road_exits(read_matrix(matrix), 9)
+        kind = matrix.parent.name
+        default_mask = {"road": 9, "village": 9, "keep": 2}.get(kind)
+        surface = frozenset("RrC" if kind == "road" else "RrH")
+        if default_mask is not None:
+            require_road_exits(read_matrix(matrix), default_mask, surface, label=kind)
         for variant in sorted(matrix.parent.glob("*.txt")):
             if variant == matrix:
                 continue
             crossing = matrix.parent.name in ("bridge", "ford") and variant.stem in ("ne-sw", "nw-se")
-            road = matrix.parent.name == "road" and variant.stem.isdigit() and 1 <= int(variant.stem) <= 63 and int(variant.stem) != 9
-            if not (crossing or road):
+            path = (default_mask is not None and variant.stem.isdigit() and
+                    1 <= int(variant.stem) <= 63 and int(variant.stem) != default_mask and
+                    (kind == "road" or (kind == "village" and int(variant.stem).bit_count() <= 3) or
+                     (kind == "keep" and int(variant.stem).bit_count() == 1)))
+            if not (crossing or path):
                 raise ValueError(f"{variant}: unknown terrain orientation")
-            if road:
-                require_road_exits(read_matrix(variant), int(variant.stem))
+            if path:
+                require_road_exits(read_matrix(variant), int(variant.stem), surface, label=kind)
             terrain[f"{key}_{variant.stem}"] = rgba_pixels(variant)
         # The vector hex fills the transparent staircase around the raster tile.
         # Ground palettes name their base G; river palettes name it W.

@@ -16,6 +16,11 @@
   sources. Map tiles optionally declare `connections` with those clockwise edge
   names; bridges/fords remain straight and need two opposite edges. Connections
   affect artwork only and must survive publication and save/restore.
+  Villages use finished `<mask>.txt` variants for one to three exits, with
+  west–east in `tile.txt`. Keeps have one approach ending at a gate; `tile.txt`
+  faces se and other directions use their single-bit `<mask>.txt`. Place keep
+  junctions outside the walls. Extracted buildings, layouts and composition
+  experiments stay in `tmp/`; the atlas must only pack the finished tiles.
 
 - **Permanent character canvas rule: every character/unit sprite and portrait is
   exactly 64×64 native pixels. This rule must never be changed; do not even try

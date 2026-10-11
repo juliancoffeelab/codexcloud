@@ -176,6 +176,45 @@ fn artwork_connections_survive_restore_and_forks_without_changing_movement() {
     let tile = invalid.tiles.iter_mut().find(|tile| tile.id == id).unwrap();
     tile.connections = Some(vec![HexDirection::E, HexDirection::E]);
     assert!(Game::try_from_state(rules(), invalid).is_err());
+
+    for (terrain, exits, valid) in [
+        (
+            "village",
+            vec![HexDirection::E, HexDirection::W, HexDirection::Se],
+            true,
+        ),
+        (
+            "village",
+            vec![
+                HexDirection::E,
+                HexDirection::W,
+                HexDirection::Se,
+                HexDirection::Nw,
+            ],
+            false,
+        ),
+        ("keep", vec![HexDirection::W], true),
+        ("keep", vec![HexDirection::E, HexDirection::W], false),
+    ] {
+        let mut state = decorated.state();
+        let tile = state.tiles.iter_mut().find(|tile| tile.id == id).unwrap();
+        tile.terrain = terrain.into();
+        tile.connections = Some(exits.clone());
+        let restored = Game::try_from_state(rules(), state);
+        assert_eq!(restored.is_ok(), valid, "{terrain} {exits:?}");
+        if let Ok(game) = restored {
+            assert_eq!(
+                game.fork()
+                    .state()
+                    .tiles
+                    .iter()
+                    .find(|tile| tile.id == id)
+                    .unwrap()
+                    .connections,
+                Some(exits)
+            );
+        }
+    }
 }
 
 fn connected(game: &Game<'_>, allowed: &HashSet<usize>, start: usize) -> HashSet<usize> {

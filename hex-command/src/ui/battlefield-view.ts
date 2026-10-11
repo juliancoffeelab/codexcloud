@@ -33,7 +33,10 @@ export function terrainArtNames(tile: Pick<TileView, "terrain" | "connections">)
     (mask, direction) => mask | (1 << directions.indexOf(direction)),
     0,
   );
-  if (tile.terrain === "road" && mask && mask !== 9) return [`road_${mask}`];
+  if (["road", "village", "keep"].includes(tile.terrain)) {
+    const defaultMask = tile.terrain === "keep" ? 2 : 9;
+    if (mask && mask !== defaultMask) return [`${tile.terrain}_${mask}`];
+  }
   if (tile.terrain === "bridge" || tile.terrain === "ford") {
     if (mask === 18) return [`${tile.terrain}_nw-se`];
     if (mask === 36) return [`${tile.terrain}_ne-sw`];
