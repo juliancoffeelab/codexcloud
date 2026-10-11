@@ -116,12 +116,63 @@ test("The real embedding mounts a React component and reports foreground artwork
     applicationCleanup = await Application.mount(required(root), host, () => true);
   });
   assert.equal(element("#map").getAttribute("role"), "group");
+  assert.equal(
+    host.querySelector("#map-picker"),
+    null,
+    "Closed map choices do not construct hidden previews",
+  );
   const foreground = element<SVGImageElement>(".unit-art image");
   await act(async () => {
     foreground.dispatchEvent(new Event("error"));
   });
   assert.match(element("#status").textContent ?? "", /artwork|image|sprite/i);
   assert.match(element("#status").textContent ?? "", /failed|could not|unavailable/i);
+  for (const selector of ["#settings-dialog", "#reset-dialog", ".campaign-dialog"]) {
+    const dialog = element<HTMLDialogElement>(selector);
+    Object.defineProperties(dialog, {
+      showModal: {
+        value: () => {
+          if (selector === "#reset-dialog")
+            assert.ok(
+              host.querySelector("#map-picker"),
+              "Map choices commit before native dialog focusing",
+            );
+          dialog.setAttribute("open", "");
+        },
+      },
+      close: {
+        value: () => {
+          dialog.removeAttribute("open");
+          dialog.dispatchEvent(new Event("close"));
+        },
+      },
+    });
+  }
+  await click("#settings-button");
+  await click("#new-game");
+  assert.ok(element("#map-picker .map-preview polygon"));
+  assert.equal(element<HTMLInputElement>('input[name="battle-map"]:checked').value, "mirror");
+  await click("#keep-playing");
+  assert.equal(host.querySelector("#map-picker"), null, "Closing releases map preview nodes");
+  await click("#settings-button");
+  await click("#new-game");
+  assert.equal(element<HTMLInputElement>('input[name="battle-map"]:checked').value, "mirror");
+  await act(async () => element("#reset-dialog").dispatchEvent(new Event("close")));
+  assert.ok(
+    host.querySelector("#map-picker"),
+    "An older close event cannot clear a reopened dialog",
+  );
+  await act(async () => element<HTMLDialogElement>("#reset-dialog").close());
+  assert.equal(
+    host.querySelector("#map-picker"),
+    null,
+    "Native dialog close also releases previews",
+  );
+  await click("#settings-button");
+  await click("#new-campaign");
+  assert.ok(host.querySelector(".campaign-picker"));
+  await act(async () => element<HTMLDialogElement>(".campaign-dialog").close());
+  assert.equal(host.querySelector(".campaign-picker"), null);
   const cleanup = required(applicationCleanup);
   assert.doesNotThrow(cleanup);
   assert.doesNotThrow(cleanup);

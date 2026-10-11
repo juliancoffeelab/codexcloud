@@ -62,6 +62,7 @@ let make = (~session: Session.t, ~onMount: (unit, unit) => unit) => {
     && state.campaign == None;
   let (briefing, setBriefing) = React.useState(() => false);
   let (campaignOpen, setCampaignOpen) = React.useState(() => false);
+  let (mapOpen, setMapOpen) = React.useState(() => false);
   let (campaignChoice, setCampaign) = React.useState(() => "lantern-road");
   let (mapChoice, setMap) = React.useState(() => "mirror");
   let settings = React.useRef(Js.Nullable.null);
@@ -120,7 +121,10 @@ let make = (~session: Session.t, ~onMount: (unit, unit) => unit) => {
     () => {
       switch (Js.Nullable.toOption(campaign.current), view.failure) {
       | (Some(element), None) =>
-        let closed = _ => setCampaignOpen(_ => false);
+        let closed = _ =>
+          if (!isOpen(element)) {
+            setCampaignOpen(_ => false);
+          };
         addListener(element, "close", closed);
         Some(() => removeListener(element, "close", closed));
       | _ => None
@@ -128,11 +132,43 @@ let make = (~session: Session.t, ~onMount: (unit, unit) => unit) => {
     },
     (campaign, view.failure),
   );
+  React.useEffect2(
+    () => {
+      switch (Js.Nullable.toOption(reset.current), view.failure) {
+      | (Some(element), None) =>
+        let closed = _ =>
+          if (!isOpen(element)) {
+            setMapOpen(_ => false);
+          };
+        addListener(element, "close", closed);
+        Some(() => removeListener(element, "close", closed));
+      | _ => None
+      }
+    },
+    (reset, view.failure),
+  );
+  React.useLayoutEffect1(
+    () => {
+      if (campaignOpen) {
+        show(campaign);
+      };
+      None;
+    },
+    [|campaignOpen|],
+  );
   let openCampaign = () => {
     close(settings);
     setCampaignOpen(_ => true);
-    show(campaign);
   };
+  React.useLayoutEffect1(
+    () => {
+      if (mapOpen) {
+        show(reset);
+      };
+      None;
+    },
+    [|mapOpen|],
+  );
   let openMap = () => {
     close(settings);
     setMap(_ =>
@@ -142,7 +178,7 @@ let make = (~session: Session.t, ~onMount: (unit, unit) => unit) => {
       )
         ? state.mapId : "mirror"
     );
-    show(reset);
+    setMapOpen(_ => true);
   };
   view.failure != None
     ? <Shell failure={view.failure} />
@@ -219,11 +255,13 @@ let make = (~session: Session.t, ~onMount: (unit, unit) => unit) => {
         <dialog id="reset-dialog" ref={ReactDOM.Ref.domRef(reset)}>
           <h2> {text("Start a new battle?")} </h2>
           <p> {text("Choose your battlefield. Your current battle will be replaced.")} </p>
-          <Dialogs.MapPicker
-            catalog={view.catalog}
-            selected=mapChoice
-            onSelect={id => setMap(_ => id)}
-          />
+          {mapOpen
+             ? <Dialogs.MapPicker
+                 catalog={view.catalog}
+                 selected=mapChoice
+                 onSelect={id => setMap(_ => id)}
+               />
+             : React.null}
           <div className="dialog-actions">
             <button id="keep-playing" className="quiet" onClick={_ => close(reset)}>
               {text("Keep playing")}

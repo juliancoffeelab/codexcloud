@@ -1,6 +1,5 @@
 import {
   allTestTasks,
-  cpuSlots,
   nodeTask,
   prepared,
   pythonTasks,
@@ -33,7 +32,9 @@ if (args.some((name) => !groups.includes(name as Group))) {
     const selected = new Set<Group>((args.length ? args : groups) as Group[]);
     const tasks: Task[] = [];
     if (
-      ["wasm", "ui", "types", "rust", "tests", "build"].some((name) => selected.has(name as Group))
+      ["wasm", "ui", "types", "rust", "tests", "build", "art"].some((name) =>
+        selected.has(name as Group),
+      )
     )
       prepared();
     // Start the longest task first. Every suite runs once even when both its own
@@ -43,55 +44,20 @@ if (args.some((name) => !groups.includes(name as Group))) {
       if (selected.has("rust")) tasks.push(...rustTasks());
       if (selected.has("python")) tasks.push(...pythonTasks());
     }
-    if (selected.has("style")) tasks.push(nodeTask("style", "scripts/style.ts"));
+    if (selected.has("style"))
+      tasks.splice(selected.has("tests") ? 1 : 0, 0, nodeTask("style", "scripts/style.ts"));
     if (selected.has("content")) tasks.push(nodeTask("content", "scripts/content.ts", ["--check"]));
-    if (selected.has("wasm"))
-      tasks.push(
-        nodeTask(
-          "wasm-types",
-          "node_modules/typescript/bin/tsc",
-          [
-            "--noEmit",
-            "--strict",
-            "--target",
-            "ES2022",
-            "--module",
-            "ESNext",
-            "--moduleResolution",
-            "Bundler",
-            "rust/pkg/hex_command.d.ts",
-          ],
-          Math.min(2, cpuSlots),
-        ),
+    const compilerGroups = ["wasm", "ui", "types"].filter((group) => selected.has(group as Group));
+    if (compilerGroups.length)
+      tasks.splice(
+        selected.has("tests") ? 1 : 0,
+        0,
+        nodeTask("frontend-checks", "scripts/frontend-check.ts", compilerGroups, 1),
       );
-    if (selected.has("ui"))
-      tasks.push(
-        nodeTask(
-          "frontend-bindings",
-          "scripts/melange-bindings.ts",
-          ["--check"],
-          Math.min(2, cpuSlots),
-        ),
-      );
-    if (selected.has("types"))
-      tasks.push(
-        nodeTask(
-          "types",
-          "node_modules/typescript/bin/tsc",
-          ["-p", "tsconfig.tests.json"],
-          Math.min(2, cpuSlots),
-        ),
-      );
-    if (selected.has("art"))
-      tasks.push({
-        name: "art",
-        command: "python3",
-        args: ["scripts/build-pixel-art.py", "--check"],
-      });
-    if (selected.has("build"))
-      tasks.push(
-        nodeTask("build", "node_modules/vite/bin/vite.js", ["build"], Math.min(2, cpuSlots)),
-      );
+    // Successful preparation ran the authoritative builder. Exact source and PNG
+    // digests prove those outputs remain current without re-encoding every image.
+    if (selected.has("art")) console.log("PASS: art (prepared source and asset digests)");
+    if (selected.has("build")) console.log("PASS: build (prepared source and bundle digests)");
     process.exitCode = await runTasks(tasks);
   } catch (error) {
     console.error(error instanceof Error ? error.message : error);

@@ -1,6 +1,6 @@
 import { spawn, spawnSync, type ChildProcess } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { availableParallelism } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -14,7 +14,7 @@ const preparedPath = join(root, "tmp/verification-prepared.json");
 // One budget for the invocation, including module loading. Reserve time for npm startup.
 const deadline = 18_000;
 export const cpuSlots = Math.min(6, availableParallelism());
-const frontendWorkers = Math.min(4, cpuSlots);
+const frontendWorkers = Math.min(3, cpuSlots);
 export type Task = {
   name: string;
   command: string;
@@ -41,6 +41,13 @@ function sourceFingerprint(): string {
     "src/presentation/pixel-art.ts",
     "scripts/melange-bindings.ts",
     "scripts/frontend-boundary.ts",
+    "scripts/terrain-prebuild.ts",
+    "scripts/frontend-paths.ts",
+    "package.json",
+    "package-lock.json",
+    "index.html",
+    "src/style.css",
+    "vite.config.ts",
   ];
   function walk(directory: string): void {
     for (const entry of readdirSync(join(root, directory), { withFileTypes: true })) {
@@ -57,6 +64,7 @@ function sourceFingerprint(): string {
     "src/save/migration/legacy/data",
     "dune.lock",
     "build-support",
+    "public",
   ]) {
     if (existsSync(join(root, directory))) walk(directory);
   }
@@ -82,6 +90,13 @@ function artifactFingerprint(binaries: string[]): string {
   }
   walk(join(root, "_build/default/frontend/output"), (path) => path.endsWith(".js"));
   walk(join(root, "rust/pkg"), (path) => /\.(?:js|wasm|d\.ts)$/.test(path));
+  const sprites = join(root, "public/assets/sprites");
+  if (!existsSync(sprites) || !readdirSync(sprites).some((name) => name.endsWith(".png")))
+    throw new Error("Prepared artwork is missing. Run npm run verify:prepare.");
+  walk(sprites, (path) => path.endsWith(".png"));
+  if (!existsSync(join(root, "dist/index.html")))
+    throw new Error("Prepared production bundle is missing. Run npm run verify:prepare.");
+  walk(join(root, "dist"), () => true);
   const hash = createHash("sha256");
   for (const path of [...new Set(files)].sort()) {
     hash.update(path).update("\0").update(readFileSync(path)).update("\0");
@@ -261,6 +276,7 @@ export async function runTasks(tasks: Task[]): Promise<number> {
 
 /** Cold toolchain/build work is explicit, never hidden in a timed check. */
 function prepare(): void {
+  rmSync(preparedPath, { force: true });
   const env = toolchainEnvironment();
   const tasks: Task[] = [
     nodeTask("content", "scripts/content.ts", ["--check"]),
@@ -287,6 +303,7 @@ function prepare(): void {
     { name: "artwork", command: "python3", args: ["scripts/build-pixel-art.py"] },
     nodeTask("frontend bindings", "scripts/melange-bindings.ts"),
     { name: "frontend", command: "dune", args: ["build", "@melange"] },
+    nodeTask("production bundle", "node_modules/vite/bin/vite.js", ["build"]),
     { name: "formatters", command: "dune", args: ["exec", "--", "which", "refmt", "ocp-indent"] },
   ];
   for (const task of tasks) {
@@ -337,7 +354,7 @@ function prepare(): void {
       "\n",
   );
   console.log(
-    "Prepared current WASM/frontend/artwork/native tests. Run npm test or npm run verify.",
+    "Prepared current WASM/frontend/artwork/production bundle/native tests. Run npm test or npm run verify.",
   );
 }
 

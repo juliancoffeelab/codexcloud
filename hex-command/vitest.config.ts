@@ -13,6 +13,7 @@ export default defineConfig({
     bail: 0,
     include: ["tests/**/*.test.ts"],
     fileParallelism: true,
+    fsModuleCache: true,
     maxWorkers: Math.min(4, availableParallelism()),
     testTimeout: 5_000,
     hookTimeout: 5_000,
