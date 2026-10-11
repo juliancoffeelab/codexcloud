@@ -197,3 +197,34 @@ test("Prebuilt maps match static terrain or preview matching geometry with edite
   for (const change of [{ mapId: "river" as const }, { cols: 2 }, { rows: 2 }])
     assert.equal(terrainMapPreview(terrainMapKey({ ...game, ...change }), sprites), undefined);
 });
+
+test("Static scenes reuse geometry through ownership and unit changes, but invalidate terrain and artwork", async () => {
+  const { TerrainViewCache } = await import("../src/presentation/terrain-map");
+  const tile = { id: "0,0", col: 0, row: 0, terrain: "plains" as const, owner: null };
+  const game = { mapId: "mirror" as const, cols: 1, rows: 1, tiles: [tile] };
+  const artwork: Artwork = { frames: {} };
+  const cache = new TerrainViewCache();
+  const first = cache.prepare(game, artwork);
+  assert.equal(cache.prepare({ ...game, tiles: [{ ...tile, owner: "player" }] }, artwork), first);
+  assert.equal(
+    cache.prepare(game, { frames: { player_sample: { url: "unit.png", width: 64, height: 64 } } }),
+    first,
+    "Unit artwork must not invalidate static terrain",
+  );
+  const geometry = first.tiles.get(tile.id)!;
+  const frame = { url: "native.png", width: 64, height: 64 };
+  const prepared = cache.prepare(game, { frames: { [geometry.frameKey]: frame } });
+  assert.equal(prepared.key, first.key);
+  assert.equal(prepared.tiles.get(tile.id)?.points, geometry.points);
+  assert.equal(prepared.tiles.get(tile.id)?.terrainFrame, frame);
+  for (const change of [
+    { terrain: "forest" as const },
+    { floor: "snow-forest" },
+    { connections: ["e" as const] },
+    { col: 1 },
+  ]) {
+    const changed = cache.prepare({ ...game, tiles: [{ ...tile, ...change }] }, artwork);
+    assert.notEqual(changed.key, first.key);
+  }
+  assert.notEqual(cache.prepare({ ...game, mapId: "river" }, artwork).key, first.key);
+});

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { preloadTerrainMap } from "./presentation/terrain-preload";
   import { onMount } from "svelte";
   import { BattleController } from "./controller/battle";
   import { registerBattleTools } from "./controller/tools";
@@ -49,6 +50,7 @@
     playSound("select");
   }
   function startNewBattle() {
+    preloadTerrainMap(mapChoice);
     briefingExpanded = false;
     resetDialog.close();
     actions.reset(mapChoice);
@@ -68,6 +70,7 @@
       document.addEventListener(event, activateSound, { capture: true, passive: true });
     for (const event of otherGestures)
       document.addEventListener(event, activateSound, { capture: true });
+    preloadTerrainMap($view.game.mapId);
     controller.initialize();
     const unregisterTools = registerBattleTools(controller);
     return () => {

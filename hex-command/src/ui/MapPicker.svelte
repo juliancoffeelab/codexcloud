@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { preloadTerrainMap } from "../presentation/terrain-preload";
   import { BATTLE_MAPS } from "../game/maps";
   import {
     hexPoints,
@@ -11,6 +12,10 @@
   import type { Immutable } from "../game/view";
 
   let { selected = $bindable("mirror") }: { selected?: string } = $props();
+
+  $effect(() => {
+    preloadTerrainMap(selected);
+  });
 
   function previewTiles(layout: Immutable<MapDefinition>) {
     const terrainByTile = new Map<string, TerrainType>(

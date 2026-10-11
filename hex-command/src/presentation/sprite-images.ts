@@ -32,7 +32,9 @@ function decode(source: string): Promise<HTMLImageElement | null> {
     image.src = source;
   });
   decoding.set(source, loading);
-  void loading.then(() => decoding.delete(source));
+  void loading.then((image) => {
+    if (!image) decoding.delete(source);
+  });
   return loading;
 }
 
@@ -46,7 +48,11 @@ export function spriteImage(frame: SpriteFrame): FrameImage | undefined {
 
 /** Extract at source resolution before publication; never expose an atlas to the DOM. */
 export async function prepareSpriteImages(frames: readonly SpriteFrame[]): Promise<boolean> {
-  const pending = frames.filter((frame) => !images.has(key(frame)));
+  const pending = [
+    ...new Map(
+      frames.filter((frame) => !images.has(key(frame))).map((frame) => [key(frame), frame]),
+    ).values(),
+  ];
   const sources = [
     ...new Set(
       pending.flatMap((frame) => [

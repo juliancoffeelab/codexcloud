@@ -8,7 +8,7 @@ import { loadBattle } from "../save/load";
 import { saveBattle } from "../save/write";
 import { LiveGame } from "../game/live-game";
 import type { GameEngineFactory } from "../game/native-engine";
-import { loadArtwork, currentArtwork } from "../presentation/art";
+import { loadArtwork, loadTerrainArtwork, currentArtwork } from "../presentation/art";
 import {
   soundEnabled,
   setSoundEnabled,
@@ -65,6 +65,7 @@ export class BattleController {
   private state: SessionState;
   private store: Writable<BattleView>;
   private gameView: GameView;
+  private publishedArtwork = currentArtwork();
   readonly view: Readable<BattleView>;
   readonly commands: BattleCommands;
 
@@ -126,10 +127,11 @@ export class BattleController {
   }
 
   private currentView(): BattleView {
+    this.publishedArtwork = currentArtwork();
     return Object.freeze({
       ...this.state,
       game: this.gameView,
-      artwork: currentArtwork(),
+      artwork: this.publishedArtwork,
       canUndo: !dialoguePending(this.#game.campaign) && this.history.canUndo(this.#game),
       recruitment: recruitmentContext(this.gameView, this.state.selected, this.state.inspectedTile),
     });
@@ -478,6 +480,18 @@ export class BattleController {
       this.message("Your turn. Capture villages, recruit reinforcements, or attack.");
     saveBattle(this.#game);
     return this.snapshot();
+  }
+
+  async prepareTerrain(tileIds: readonly string[]): Promise<void> {
+    const session = this.sessionVersion;
+    const game = this.gameView;
+    const ids = new Set(tileIds);
+    const tiles = game.tiles.filter((tile) => ids.has(tile.id));
+    const ready = await loadTerrainArtwork(tiles, game.mapId);
+    if (this.disposed || session !== this.sessionVersion || game !== this.gameView) return;
+    if (!ready) this.error(new Error("Terrain artwork could not load. Please reload."));
+    else if (currentArtwork() !== this.publishedArtwork)
+      this.publish({ renderBattle: false, gameChanged: false });
   }
 
   reset(mapId = "mirror") {

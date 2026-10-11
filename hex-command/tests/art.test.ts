@@ -13,6 +13,7 @@ import {
 import { Game } from "./game-fixture";
 import { createGameView } from "./fixture-view";
 import { battlefieldTiles, terrainArtNames, terrainProps } from "../src/ui/battlefield-view";
+import { terrainLayout } from "../src/presentation/terrain-layout";
 import { hexPoints, tileCenter } from "../src/ui/geometry";
 import { mockSpriteCanvas } from "./helpers";
 
@@ -70,12 +71,12 @@ test("Unprepared frames stay blank; concurrent loads deduplicate and failures re
   const firstLoad = art.loadArtwork();
   assert.equal(art.loadArtwork(), firstLoad);
   assert.equal(await firstLoad, false);
-  assert.equal(requested.length, 2);
+  assert.equal(requested.length, 1);
   failNative = false;
   assert.equal(await art.loadArtwork(), true);
-  assert.equal(requested.length, 4);
+  assert.equal(requested.length, 2);
   assert.equal(await art.loadArtwork(), true);
-  assert.equal(requested.length, 4);
+  assert.equal(requested.length, 2);
 });
 
 function extraction(sprite: string): {
@@ -106,13 +107,17 @@ const frameSources = Object.fromEntries(
 );
 test("Every pixel frame is extracted into a standalone unsmoothed image", async () => {
   await art.loadArtwork();
+  const { prepareSpriteImages } = await import("../src/presentation/sprite-images");
+  const definitions = art.artworkFrames();
+  await prepareSpriteImages(Object.values(definitions));
   for (const [frame, source] of Object.entries(frameSources)) {
     const [x, y, width, height] = pixelFrames[frame as keyof typeof pixelFrames];
     assert([x, y, width, height].every(Number.isFinite));
     assert.equal(width, 64);
     assert.equal(height, width);
     assert(x >= 0 && y >= 0 && x + width <= source.width && y + height <= source.height);
-    const isolated = imageData(art.currentArtwork().frames[frame]!.url.split(",")[1]!);
+    const { spriteImage } = await import("../src/presentation/sprite-images");
+    const isolated = imageData(spriteImage(definitions[frame]!)!.url.split(",")[1]!);
     assert(isolated.source.includes(`${source.filename}?v=${source.revision}`));
     assert.deepEqual(isolated.coordinates, [x, y, width, height, 0, 0, width, height]);
     assert.equal(isolated.width, width);
@@ -167,10 +172,22 @@ test("Compositions draw native layers in order, publish atomically and reuse cac
 
 test("Static terrain frames supply matching edge fills without procedural overlays", async () => {
   await art.loadArtwork();
+  const game = new Game("developer");
+  await art.loadTerrainArtwork(game.tiles, game.mapId);
+
   const artwork = art.currentArtwork();
-  const tiles = battlefieldTiles(createGameView(new Game("developer")), null, artwork, null);
+  const tiles = battlefieldTiles(createGameView(game), null, artwork, null);
   for (const name of ["plains", "water", "ford", "bridge"] as const) {
-    const rendered = art.artSprite(artwork, "terrain", name, 0, 0, 70, 70);
+    const tile = game.tiles.find((tile) => tile.terrain === name)!;
+    const rendered = art.artSprite(
+      artwork,
+      "terrain",
+      terrainLayout(tile, game.mapId).name,
+      0,
+      0,
+      70,
+      70,
+    );
     assert.equal((rendered.match(/<image /g) ?? []).length, 1);
     assert(!rendered.includes("<path"), "The bridge is a complete static sprite");
     const isolated = extraction(rendered);
@@ -205,6 +222,7 @@ test("Map floors choose independent palettes for directional terrain and matchin
   road.floor = "green-forest";
   const forest = game.tiles.find((tile) => tile.terrain === "forest")!;
   forest.floor = "snow-forest";
+  await art.loadTerrainArtwork(game.tiles, game.mapId);
   const rendered = battlefieldTiles(createGameView(game), null, art.currentArtwork(), null);
   for (const [tile, frame] of [
     [road, "terrain_road_11__green-forest"],
@@ -283,15 +301,27 @@ test("Route connections select one complete native terrain frame", async () => {
     terrainArtNames({ terrain: "road", connections: ["se", "ne"], deadEnds: ["w"] }),
     ["road_34-end-8"],
   );
-  for (const name of [
-    "bridge_ne-sw",
-    "ford_nw-se",
-    "road_11",
-    "village_0",
-    "village_11",
-    "road_34-end-8",
-  ]) {
-    const frame = extraction(art.artSprite(art.currentArtwork(), "terrain", name, 0, 0, 70, 70));
+  const tiles = [
+    { terrain: "bridge" as const, connections: ["ne", "sw"] as const },
+    { terrain: "ford" as const, connections: ["nw", "se"] as const },
+    { terrain: "road" as const, connections: ["e", "w", "se"] as const },
+    { terrain: "village" as const },
+    { terrain: "village" as const, connections: ["e", "w", "se"] as const },
+    { terrain: "road" as const, connections: ["se", "ne"] as const, deadEnds: ["w"] as const },
+  ].map((tile) => ({ id: "1,1", col: 1, row: 1, owner: null, ...tile }));
+  await art.loadTerrainArtwork(tiles, "preview");
+  for (const tile of tiles) {
+    const frame = extraction(
+      art.artSprite(
+        art.currentArtwork(),
+        "terrain",
+        terrainLayout(tile, "preview").name,
+        0,
+        0,
+        70,
+        70,
+      ),
+    );
     assert.equal(frame.width, 64);
     assert.equal(frame.height, 64);
     assert.equal(frame.smoothing, false);
@@ -300,12 +330,9 @@ test("Route connections select one complete native terrain frame", async () => {
 
 test("Terrain, troops and commanders share one battlefield pixel scale", async () => {
   assert.equal(await art.loadArtwork(), true);
-  const tiles = battlefieldTiles(
-    createGameView(new Game("developer")),
-    null,
-    art.currentArtwork(),
-    null,
-  );
+  const game = new Game("developer");
+  await art.loadTerrainArtwork(game.tiles, game.mapId);
+  const tiles = battlefieldTiles(createGameView(game), null, art.currentArtwork(), null);
   assert(tiles.some((tile) => tile.occupant));
   for (const tile of tiles) {
     if (!tile.occupant) continue;
@@ -332,4 +359,31 @@ afterEach(() => {
 
 afterEach(() => {
   vi.unstubAllGlobals();
+});
+
+test("Startup skips terrain; overlapping tile requests prepare only their frames without mutating old snapshots", async () => {
+  await art.loadArtwork();
+  const units = art.currentArtwork();
+  assert(!Object.keys(units.frames).some((name) => name.startsWith("terrain_")));
+  assert(requested.every((url) => url.includes("units-pixel.png")));
+  const tile = {
+    id: "2,3",
+    col: 2,
+    row: 3,
+    terrain: "forest" as const,
+    floor: "snow-forest",
+    owner: null,
+  };
+  const first = art.loadTerrainArtwork([tile], "test");
+  const second = art.loadTerrainArtwork([tile, tile], "test");
+  assert.equal(await first, true);
+  assert.equal(await second, true);
+  const ready = art.currentArtwork();
+  assert.equal(Object.keys(ready.frames).length, Object.keys(units.frames).length + 1);
+  assert.equal(Object.keys(units.frames).length, Object.keys(ready.frames).length - 1);
+  assert(Object.isFrozen(ready.frames));
+  assert(art.artFrame(ready, "terrain", terrainLayout(tile, "test").name, "player", tile.floor));
+  assert.equal(requested.filter((url) => url.includes("terrain-pixel.png")).length, 1);
+  assert.equal(await art.loadTerrainArtwork([tile], "test"), true);
+  assert.equal(art.currentArtwork(), ready);
 });

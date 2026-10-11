@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { BattleCommands, BattleView } from "../controller/view";
-  import { artSprite } from "../presentation/art";
+  import { artSprite, artFrame } from "../presentation/art";
+  import { terrainLayout } from "../presentation/terrain-layout";
   import { terrainPanelView } from "./terrain-view";
 
   interface Props {
@@ -10,6 +11,11 @@
   let { view, actions }: Props = $props();
 
   const panel = $derived(terrainPanelView(view));
+  const frameName = $derived(panel ? terrainLayout(panel.tile, view.game.mapId).name : "");
+  $effect(() => {
+    if (panel && !artFrame(view.artwork, "terrain", frameName, "player", panel.tile.floor))
+      void actions.prepareTerrain([panel.tile.id]);
+  });
 </script>
 
 <section id="terrain-panel" class="panel" aria-label="Selected terrain" hidden={!panel}>
@@ -43,12 +49,14 @@
         {@html artSprite(
           view.artwork,
           "terrain",
-          panel.tile.terrain,
+          frameName,
           0,
           0,
           80,
           80,
           "terrain-card-art",
+          "player",
+          panel.tile.floor,
         )}
         <span class="unit-side">Terrain</span>
       </div>

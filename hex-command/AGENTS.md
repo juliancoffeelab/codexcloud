@@ -51,9 +51,12 @@
   small stones scattered beside the route; no fixed endpoints are required.
   Choose arrangements deterministically from map/tile identity. Keep pieces at
   their native size and lighting; do not mirror, resize or randomly move them on
-  redraw. The atlas only packs source frames. At artwork loading, flatten each
-  prepared arrangement with its selected floor into a cached native 64×64 image;
-  publish those isolated images for the renderer. Bake the static map terrain
+  redraw. The atlas only packs source frames. Load units and portraits without preparing terrain combinations. Request only
+  the terrain frames needed for hover, inspection or fallback rendering; flatten
+  those arrangements and floors into cached native 64×64 images and publish
+  them through the controller. Reuse static geometry and terrain identity across
+  unit and ownership changes. Preload the selected authored map PNG before
+  creating the battle. Bake the static map terrain
   from the published game/artwork snapshots directly into one canvas bitmap at the shared native
   pixel scale. Keep units, ownership badges, hit targets and highlights live.
   Reuse the bitmap during movement and scrolling; invalidate it for terrain,

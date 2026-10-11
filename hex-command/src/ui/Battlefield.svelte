@@ -7,7 +7,7 @@
   import { battlefieldSpriteSize, mapDimensions } from "./geometry";
   import {
     TerrainMapCache,
-    terrainMapKey,
+    TerrainViewCache,
     terrainMapPreview,
     type TerrainMapImage,
   } from "../presentation/terrain-map";
@@ -21,6 +21,7 @@
   let { view, actions }: Props = $props();
   let map: SVGSVGElement | undefined;
   const terrainCache = new TerrainMapCache();
+  const terrainViewCache = new TerrainViewCache();
   let bakedTerrain = $state.raw<
     { key: string; artwork: Artwork; image: Readonly<TerrainMapImage> } | undefined
   >();
@@ -34,15 +35,25 @@
   // Track the published turn even when the enemy turn hides the destination.
   const isPlayerTurn = $derived(game.turn === "player" && !game.winner);
   const recruitTileId = $derived(isPlayerTurn && recruitment ? view.inspectedTile : null);
-  const tiles = $derived(battlefieldTiles(game, selected, artwork, recruitTileId));
+  const terrainScene = $derived(terrainViewCache.prepare(game, artwork));
+  const terrainResources: Artwork = $derived({
+    frames: Object.fromEntries(
+      [...terrainScene.tiles.values()].flatMap((tile) =>
+        tile.terrainFrame ? [[tile.frameKey, tile.terrainFrame]] : [],
+      ),
+    ),
+  });
+  const tiles = $derived(
+    battlefieldTiles(game, selected, artwork, recruitTileId, terrainScene.tiles),
+  );
   const occupiedTiles = $derived(tiles.filter((tile) => tile.occupant));
   const size = $derived(mapDimensions(game));
   const mapWidth = $derived(size.width);
   const mapHeight = $derived(size.height);
   const viewBox = $derived(`0 0 ${mapWidth} ${mapHeight}`);
-  const terrainKey = $derived(terrainMapKey(game));
+  const terrainKey = $derived(terrainScene.key);
   const backdrop = $derived(
-    bakedTerrain?.key === terrainKey && bakedTerrain.artwork === artwork
+    bakedTerrain?.key === terrainKey && bakedTerrain.artwork === terrainResources
       ? bakedTerrain.image
       : undefined,
   );
@@ -56,9 +67,16 @@
   const hovered = $derived(tiles.find((tile) => tile.id === hoveredTile));
 
   $effect(() => {
+    const needed = backdrop || (prebuilt && !prebuilt.changed.size) ? [] : tiles;
+    const missing = needed.filter((tile) => !tile.terrainFrame).map((tile) => tile.id);
+    if (hovered && !hovered.terrainFrame) missing.push(hovered.id);
+    if (missing.length) void actions.prepareTerrain(missing);
+  });
+
+  $effect(() => {
     const key = terrainKey;
-    const resources = artwork;
-    if ((prebuilt && !prebuilt.changed.size) || !Object.keys(resources.frames).length) return;
+    const resources = terrainResources;
+    if ((prebuilt && !prebuilt.changed.size) || tiles.some((tile) => !tile.terrainFrame)) return;
     const plan = {
       width: mapWidth,
       height: mapHeight,

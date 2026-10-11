@@ -5,6 +5,8 @@ import {
   pixelTerrainLayouts,
   pixelFloorColors,
 } from "./pixel-art";
+import type { TileView } from "../game/view";
+import { terrainLayout } from "./terrain-layout";
 import type { DialoguePortrait, Side } from "../game/types";
 import {
   prepareSpriteImages,
@@ -24,25 +26,77 @@ export function currentArtwork(): Artwork {
 }
 
 let loadingArtwork: Promise<boolean> | undefined;
+let terrainDefinitions: Record<string, SpriteFrame> | undefined;
+const pendingFrames = new Map<string, Promise<boolean>>();
+
+/** Unit/portrait loading never extracts unused terrain or layout combinations. */
 export function loadArtwork(): Promise<boolean> {
   if (!loadingArtwork) {
-    const definitions = artworkFrames();
-    loadingArtwork = prepareSpriteImages(Object.values(definitions)).then((ready) => {
-      if (ready) {
-        const frames = Object.fromEntries(
-          Object.entries(definitions).map(([key, frame]) => [
-            key,
-            Object.freeze(spriteImage(frame)!),
-          ]),
-        );
-        artwork = Object.freeze({ frames: Object.freeze(frames) });
-      } else {
-        loadingArtwork = undefined;
-      }
+    const definitions = Object.fromEntries(
+      Object.entries(pixelFrames)
+        .filter(([name]) => !name.startsWith("terrain_"))
+        .map(([name, crop]) => [
+          name,
+          {
+            source: `${import.meta.env?.BASE_URL ?? "/"}assets/${pixelSources.units.filename}?v=${pixelSources.units.revision}`,
+            crop,
+          },
+        ]),
+    );
+    loadingArtwork = loadFrames(definitions).then((ready) => {
+      if (!ready) loadingArtwork = undefined;
       return ready;
     });
   }
   return loadingArtwork;
+}
+
+async function loadFrames(definitions: Record<string, SpriteFrame>): Promise<boolean> {
+  const missing = Object.entries(definitions).filter(
+    ([name]) => !artwork.frames[name] && !pendingFrames.has(name),
+  );
+  if (missing.length) {
+    const loading = prepareSpriteImages(missing.map(([, definition]) => definition))
+      .then((ready) => {
+        if (ready)
+          artwork = Object.freeze({
+            frames: Object.freeze({
+              ...artwork.frames,
+              ...Object.fromEntries(
+                missing.map(([name, definition]) => [
+                  name,
+                  Object.freeze(spriteImage(definition)!),
+                ]),
+              ),
+            }),
+          });
+        return ready;
+      })
+      .finally(() => {
+        for (const [name] of missing) pendingFrames.delete(name);
+      });
+    for (const [name] of missing) pendingFrames.set(name, loading);
+  }
+  return (
+    await Promise.all(
+      Object.keys(definitions).map((name) =>
+        artwork.frames[name] ? true : pendingFrames.get(name)!,
+      ),
+    )
+  ).every(Boolean);
+}
+
+/** Request only the native terrain frames required by a fallback or hovered tile. */
+export function loadTerrainArtwork(tiles: readonly TileView[], mapId: string): Promise<boolean> {
+  terrainDefinitions ??= artworkFrames();
+  const definitions: Record<string, SpriteFrame> = {};
+  for (const tile of tiles) {
+    const name = artFrameKey("terrain", terrainLayout(tile, mapId).name, "player", tile.floor);
+    const definition = terrainDefinitions[name];
+    if (!definition) return Promise.resolve(false);
+    definitions[name] = definition;
+  }
+  return loadFrames(definitions);
 }
 
 /** Atlas references stop at this loading boundary. */
@@ -135,12 +189,21 @@ export function artFrame(
   side: Side = "player",
   floor?: string,
 ): Readonly<FrameImage> | undefined {
+  return artwork.frames[artFrameKey(kind, name, side, floor)];
+}
+
+export function artFrameKey(
+  kind: SpriteKind,
+  name: string,
+  side: Side = "player",
+  floor?: string,
+): string {
   if (kind === "units") name = pixelUnitModels[name] ?? name;
   const frameName =
     name === "bonearcher" ? "bone_archer" : name === "grove" ? "sacred_grove" : name;
   let key = `${kind === "terrain" ? "terrain" : side}_${frameName}`;
-  if (kind === "terrain" && floor && artwork.frames[`${key}__${floor}`]) {
+  if (kind === "terrain" && floor && pixelFloorColors[floor]) {
     key += `__${floor}`;
   }
-  return artwork.frames[key];
+  return key;
 }

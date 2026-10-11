@@ -4,7 +4,7 @@ import type { Artwork } from "../presentation/art";
 import type { FrameImage } from "../presentation/sprite-images";
 import { TERRAIN, TYPES } from "../game/catalog";
 import { artFrame } from "../presentation/art";
-import { terrainTileView } from "../presentation/terrain-map";
+import { terrainTileView, type TerrainTileView } from "../presentation/terrain-map";
 import { battlefieldSpriteSize } from "./geometry";
 import { terrainLayout } from "../presentation/terrain-layout";
 export { terrainArtNames } from "../presentation/terrain-connections";
@@ -67,6 +67,7 @@ export function battlefieldTiles(
   selected: string | null,
   artwork: Artwork,
   recruitTileId: string | null,
+  terrain?: ReadonlyMap<string, TerrainTileView>,
 ): BattlefieldTileView[] {
   const selectedUnit = game.unit(selected);
   const canAct = game.turn === "player" && !game.winner && selectedUnit?.side === "player";
@@ -84,8 +85,9 @@ export function battlefieldTiles(
       }
     }
   }
+  const occupants = new Map(game.units.map((unit) => [unit.tile, unit]));
   return game.tiles.map((tile) => {
-    const unit = game.at(tile.id);
+    const unit = occupants.get(tile.id);
     const reachable = reachableTiles.has(tile.id);
     const target = targetTiles.has(tile.id);
     const classes = [
@@ -113,7 +115,7 @@ export function battlefieldTiles(
 
     return {
       ...tile,
-      ...terrainTileView(tile, game.mapId, artwork),
+      ...(terrain?.get(tile.id) ?? terrainTileView(tile, game.mapId, artwork)),
       classes,
       label: tileLabel(tile, unit, reachable, target, objectiveTiles.get(tile.id) ?? []),
       occupant,

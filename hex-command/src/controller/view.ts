@@ -47,6 +47,7 @@ export interface BattleCommands {
   endTurn(): Promise<GameSnapshot | undefined>;
   undoMove(): GameSnapshot;
   reset(mapId?: string): GameSnapshot;
+  prepareTerrain(tileIds: readonly string[]): Promise<void>;
   setSound(enabled: boolean): Promise<void>;
   error(error: unknown): void;
 }
@@ -67,6 +68,7 @@ export function createBattleCommands(controller: BattleCommands): BattleCommands
     endTurn: controller.endTurn.bind(controller),
     undoMove: controller.undoMove.bind(controller),
     reset: controller.reset.bind(controller),
+    prepareTerrain: controller.prepareTerrain.bind(controller),
     setSound: controller.setSound.bind(controller),
     error: controller.error.bind(controller),
   });

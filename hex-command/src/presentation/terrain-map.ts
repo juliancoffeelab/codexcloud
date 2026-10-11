@@ -1,4 +1,4 @@
-import { artFrame, type Artwork } from "./art";
+import { artFrame, artFrameKey, type Artwork } from "./art";
 import { pixelDefaultFloors, pixelFloorColors } from "./pixel-art";
 import { terrainLayout } from "./terrain-layout";
 import { battlefieldSpriteSize, hexPoints, tileCenter } from "../ui/geometry";
@@ -30,7 +30,9 @@ export interface TerrainMapSprite extends FrameImage {
 /** This is also used by the build renderer, before any controller or browser exists. */
 export function terrainTileView(tile: TileView, mapId: string, artwork: Artwork) {
   const { x, y } = tileCenter(tile);
+  const frameName = terrainLayout(tile, mapId).name;
   return {
+    frameKey: artFrameKey("terrain", frameName, "player", tile.floor),
     x,
     y,
     points: hexPoints(x, y),
@@ -39,13 +41,7 @@ export function terrainTileView(tile: TileView, mapId: string, artwork: Artwork)
     fill:
       (tile.floor && pixelFloorColors[tile.floor]) ||
       pixelFloorColors[pixelDefaultFloors[tile.terrain]]!,
-    terrainFrame: artFrame(
-      artwork,
-      "terrain",
-      terrainLayout(tile, mapId).name,
-      "player",
-      tile.floor,
-    ),
+    terrainFrame: artFrame(artwork, "terrain", frameName, "player", tile.floor),
   };
 }
 
@@ -109,6 +105,67 @@ export function terrainMapPreview(
       .map((tile) => tile[0]),
   );
   return { sprite: baseline[1], changed };
+}
+
+export type TerrainTileView = ReturnType<typeof terrainTileView>;
+type TerrainGame = Pick<GameView, "mapId" | "cols" | "rows" | "tiles">;
+
+function sameTile(a: TileView, b: TileView) {
+  const edges = (x: readonly string[] | undefined, y: readonly string[] | undefined) =>
+    x === y || (!!x && !!y && x.length === y.length && x.every((edge, index) => edge === y[index]));
+  return (
+    a.id === b.id &&
+    a.col === b.col &&
+    a.row === b.row &&
+    a.terrain === b.terrain &&
+    a.floor === b.floor &&
+    edges(a.connections, b.connections) &&
+    edges(a.deadEnds, b.deadEnds)
+  );
+}
+
+/** One static scene, reused through moves, ownership changes and selection. */
+export class TerrainViewCache {
+  private game: TerrainGame | undefined;
+  private artwork: Artwork | undefined;
+  private scene: { key: string; tiles: ReadonlyMap<string, TerrainTileView> } | undefined;
+
+  prepare(game: TerrainGame, artwork: Artwork) {
+    const previous = this.game;
+    const unchanged =
+      previous &&
+      previous.mapId === game.mapId &&
+      previous.cols === game.cols &&
+      previous.rows === game.rows &&
+      previous.tiles.length === game.tiles.length &&
+      previous.tiles.every((tile, index) => sameTile(tile, game.tiles[index]!));
+    if (!unchanged) {
+      this.scene = {
+        key: terrainMapKey(game),
+        tiles: new Map(
+          game.tiles.map((tile) => [tile.id, terrainTileView(tile, game.mapId, artwork)]),
+        ),
+      };
+    } else if (
+      this.artwork !== artwork &&
+      [...this.scene!.tiles.values()].some(
+        (tile) => tile.terrainFrame !== artwork.frames[tile.frameKey],
+      )
+    ) {
+      this.scene = {
+        key: this.scene!.key,
+        tiles: new Map(
+          [...this.scene!.tiles].map(([id, tile]) => [
+            id,
+            { ...tile, terrainFrame: artwork.frames[tile.frameKey] },
+          ]),
+        ),
+      };
+    }
+    this.game = game;
+    this.artwork = artwork;
+    return this.scene!;
+  }
 }
 
 type TerrainContext<Image> = Pick<
