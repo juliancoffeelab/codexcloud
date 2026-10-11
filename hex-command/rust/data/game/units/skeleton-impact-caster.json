@@ -3,7 +3,7 @@
   "role": "ranger",
   "name": "Skeletal mage",
   "race": "undead",
-  "hp": 16,
+  "hp": 14,
   "move": 3,
   "cost": 8,
   "attacks": [

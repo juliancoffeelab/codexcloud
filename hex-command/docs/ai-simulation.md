@@ -164,9 +164,9 @@ Undead have 2 racial Pierce protection and 1 Impact vulnerability; skeletons and
 revenants do not stack another individual Pierce modifier. Wardens retain their
 spear and use a 6-damage Impact Shield bash. Wavemender costs 10 gold.
 Skeletal mages add recruitable ranged Impact damage to undead pools. They cost
-8 gold, have 16 HP and 3 movement, and use a 10-damage range-two Bone burst plus
-a 2-damage melee staff. At 10 XP they advance to skeletal sorcerers with 22 HP,
-12-damage Bone burst and a 4-damage staff. Both ranks retain undead racial modifiers.
+8 gold, have 14 HP and 3 movement, and use a 10-damage range-two Bone burst plus
+a 2-damage melee staff. At 10 XP they advance to skeletal sorcerers with 18 HP,
+11-damage Bone burst and a 4-damage staff. Both ranks retain undead racial modifiers.
 Reef guards use a 4-damage Impact Tail strike. Coastal recruitment includes macers,
 with 20 HP, 4 movement, an 8-gold cost and a 7-damage Impact mace. Unlike reef guards,
 macers have no individual Blade protection. At 10 XP they advance to veteran

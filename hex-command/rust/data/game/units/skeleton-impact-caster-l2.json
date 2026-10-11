@@ -3,14 +3,14 @@
   "role": "ranger",
   "name": "Skeletal sorcerer",
   "race": "undead",
-  "hp": 22,
+  "hp": 18,
   "move": 3,
   "cost": 12,
   "attacks": [
     {
       "id": "boneburst",
       "name": "Bone burst",
-      "damage": 12,
+      "damage": 11,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
