@@ -107,6 +107,8 @@ pub enum Family {
     Rider,
     Scout,
     Skeleton,
+    #[serde(rename = "skeleton-impact-caster")]
+    SkeletonMage,
     Spearman,
     Swordsman,
     Thorncaller,
@@ -130,6 +132,7 @@ impl Family {
             Self::Rider => "rider",
             Self::Scout => "scout",
             Self::Skeleton => "skeleton",
+            Self::SkeletonMage => "skeleton-impact-caster",
             Self::Spearman => "spearman",
             Self::Swordsman => "swordsman",
             Self::Thorncaller => "thorncaller",

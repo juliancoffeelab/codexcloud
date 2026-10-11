@@ -3,6 +3,82 @@ use super::*;
 use std::collections::HashSet;
 
 #[test]
+fn skeletal_mages_recruit_cast_advance_and_restore() {
+    let mut game = flat();
+    let mage = game.kind("skeleton-impact-caster");
+    let roster = game
+        .rules
+        .rosters
+        .iter()
+        .find(|r| r.id == "undead")
+        .unwrap();
+    let pool: Vec<_> = roster.pool.iter().map(|id| game.kind(id)).collect();
+    game.pools = Some([pool.clone(), pool]);
+    let leader = add(&mut game, "necromancer", Side::Player, "2,3");
+    let target = add(&mut game, "soldier", Side::Enemy, "4,3");
+    let keep = game.site("2,3");
+    game.set_terrain(keep, game.rules.terrains["keep"]);
+    game.owners[keep] = Some(Side::Player);
+    game.gold[Side::Player.index()] = game.rules.units[mage].cost;
+    let id = game
+        .execute(Command::Recruit {
+            unit: UnitId(leader),
+            kind: "skeleton-impact-caster".into(),
+            tile: "3,3".into(),
+        })
+        .unwrap()
+        .added_unit
+        .unwrap()
+        .0;
+    assert_eq!(game.gold[Side::Player.index()], 0);
+    assert!(game.unit(id).unwrap().attacked);
+    game.end_turn();
+    game.end_turn();
+    let before_hp = game.unit(target).unwrap().hp;
+    let effects = hit(&mut game, id, target, "boneburst");
+    assert_eq!(effects.damage, Some(7));
+    assert_eq!(effects.retaliation, Some(0));
+    assert_eq!(game.unit(target).unwrap().hp, before_hp - 7);
+    let index = game.index(id).unwrap();
+    game.units[index].experience = game.rules.units[mage].experience_needed;
+    game.units[index].hp -= 4;
+    game.units[index].moved = false;
+    game.units[index].attacked = false;
+    game.execute(Command::Advance {
+        unit: UnitId(id),
+        kind: "skeleton-impact-caster-l2".into(),
+    })
+    .unwrap();
+    let unit = game.unit(id).unwrap();
+    assert_eq!(unit.hp, game.rules.units[unit.kind].hp - 4);
+    let state = game.state();
+    let restored = Game::try_from_state(rules(), state.clone()).unwrap();
+    assert_eq!(
+        serde_json::to_value(restored.state()).unwrap(),
+        serde_json::to_value(state).unwrap()
+    );
+    for mission in 0..rules().campaigns["ashen-oath"].missions.len() {
+        let campaign = chapter("ashen-oath", mission);
+        assert!(campaign.recruitment_options(Side::Player).contains(&mage));
+    }
+    let patch = rules().campaigns["ashen-oath"]
+        .missions
+        .last()
+        .unwrap()
+        .without_dain
+        .as_ref()
+        .unwrap();
+    assert!(
+        patch
+            .recruits
+            .as_ref()
+            .unwrap()
+            .iter()
+            .any(|id| id == "skeleton-impact-caster")
+    );
+}
+
+#[test]
 fn authored_progression_ladders_are_acyclic_and_preserve_race_and_increase_level() {
     fn visit(rules: &Rules, kind: usize, path: &mut HashSet<usize>) {
         assert!(path.insert(kind), "cyclic advancement");

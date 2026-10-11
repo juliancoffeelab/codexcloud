@@ -117,6 +117,20 @@ fn preview_and_resolution_agree_across_weapons_and_terrain() {
         ("thorncaller", "spearman", "thorns", "grove", "3,3"),
         ("boar", "skeleton", "trample", "plains", "3,3"),
         ("harpooner", "swordsman", "harpoon", "ford", "3,3"),
+        (
+            "skeleton-impact-caster",
+            "soldier",
+            "boneburst",
+            "plains",
+            "4,3",
+        ),
+        (
+            "skeleton-impact-caster-l2",
+            "soldier",
+            "staff",
+            "hill",
+            "3,3",
+        ),
     ] {
         let mut game = flat();
         let attacker = add(&mut game, a, Side::Player, "2,3");

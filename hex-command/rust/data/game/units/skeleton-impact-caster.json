@@ -1,0 +1,36 @@
+{
+  "id": "skeleton-impact-caster",
+  "role": "ranger",
+  "name": "Skeletal mage",
+  "race": "undead",
+  "hp": 16,
+  "move": 3,
+  "cost": 8,
+  "attacks": [
+    {
+      "id": "boneburst",
+      "name": "Bone burst",
+      "damage": 6,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "staff",
+      "name": "Bone staff",
+      "damage": 2,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": { "blade": 0, "pierce": 0, "impact": 0 },
+  "ability": "Bone magic",
+  "description": "A fragile skeletal caster whose blunt magic threatens armored infantry; keep it behind a melee screen.",
+  "level": 1,
+  "family": "skeleton-impact-caster",
+  "experienceNeeded": 10,
+  "advancesTo": ["skeleton-impact-caster-l2"]
+}

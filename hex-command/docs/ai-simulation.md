@@ -163,6 +163,10 @@ retain their previous values.
 Undead have 2 racial Pierce protection and 1 Impact vulnerability; skeletons and
 revenants do not stack another individual Pierce modifier. Wardens retain their
 spear and use a 6-damage Impact Shield bash. Wavemender costs 10 gold.
+Skeletal mages add recruitable ranged Impact damage to undead pools. They cost
+8 gold, have 16 HP and 3 movement, and use a 6-damage range-two Bone burst plus
+a 2-damage melee staff. At 10 XP they advance to skeletal sorcerers with 22 HP,
+8-damage Bone burst and a 4-damage staff. Both ranks retain undead racial modifiers.
 Historical reports describe their recorded rules snapshot, not these updated values.
 
 Merfolk pay 2 movement on plains, villages, keeps and ruins, and 3 in
@@ -247,8 +251,8 @@ Seeds vary paired terrain, equal total budgets and small policy tie breakers. Wa
 retain the river identity for classic's routing. Each side gets its selected race's leader,
 two melee starters and its own recruitment pool. Human, woodland, undead and coastal
 rosters can face each other; same-race baselines remain included. Undead arena
-recruitment includes skeletons and bone archers; campaign pools remain authored
-independently, including their existing adepts. Each side receives the same total
+recruitment includes skeletons, bone archers and skeletal mages; campaign pools
+remain authored independently, including their existing adepts. Each side receives the same total
 starting budget: the authored `startingBudget` of 36 gold plus a paired seed-dependent
 0, 3 or 6 gold. Its leader and two starters are charged at their unit prices, and
 the remainder is spendable cash. Positions and per-phase recruit limits are paired,

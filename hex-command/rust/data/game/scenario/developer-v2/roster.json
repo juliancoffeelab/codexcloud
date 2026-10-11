@@ -435,6 +435,30 @@
       "side": "enemy",
       "col": 5,
       "row": 6
+    },
+    {
+      "type": "skeleton-impact-caster",
+      "side": "player",
+      "col": 0,
+      "row": 20
+    },
+    {
+      "type": "skeleton-impact-caster",
+      "side": "enemy",
+      "col": 1,
+      "row": 20
+    },
+    {
+      "type": "skeleton-impact-caster-l2",
+      "side": "player",
+      "col": 3,
+      "row": 20
+    },
+    {
+      "type": "skeleton-impact-caster-l2",
+      "side": "enemy",
+      "col": 4,
+      "row": 20
     }
   ]
 }

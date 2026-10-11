@@ -146,7 +146,7 @@
     }
   ],
   "recruits": ["wolf", "boar", "thorncaller", "spearman", "adept"],
-  "enemyRecruits": ["skeleton", "bonearcher", "wolf"],
+  "enemyRecruits": ["skeleton", "bonearcher", "wolf", "skeleton-impact-caster"],
   "gold": 18,
   "enemyGold": 0
 }

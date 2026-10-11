@@ -66,6 +66,8 @@ export function createSound() {
       unitType === "wildkeeper" ||
       unitType === "necromancer" ||
       unitType === "skeleton" ||
+      unitType === "skeleton-impact-caster" ||
+      unitType === "skeleton-impact-caster-l2" ||
       unitType === "bonearcher"
     )
       return "unit-commander";

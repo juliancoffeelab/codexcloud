@@ -54,6 +54,20 @@ test("Covered retaliation can deal zero damage", async () => {
   assert(choice.retaliationCalculation.description.includes("shard"));
   assert.equal(choice.retaliationCalculation.equation, "2 − 1 (armor) − 1 (cover) = 0");
 });
+test("Skeletal mage impact spell publishes armor weakness and resolves at range", () => {
+  const { game, attacker, target } = fixture("skeleton-impact-caster", "soldier", "4,3");
+  const view = createGameView(game);
+  const choice = required(
+    attackChoiceViews(view, attacker, target).find((c) => c.id === "boneburst"),
+  );
+  assert(choice.available);
+  assert.equal(choice.attackCalculation.equation, "6 + 1 (weakness) = 7");
+  const hp = target.hp;
+  game.attack(attacker.id, target.id, "boneburst");
+  assert.equal(target.hp, hp - 7);
+  assert.equal(attacker.hp, TYPES[attacker.type].hp);
+  assert.equal(view.unit(target.id)?.hp, hp, "The earlier publication remains immutable");
+});
 test("Blocked attacks still produce combat feedback", async () => {
   const { game, attacker, target } = fixture("bonearcher", "commander");
   required(game.tile(target.tile)).terrain = "hill";

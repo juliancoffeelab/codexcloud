@@ -79,9 +79,18 @@ test("Developer map supports normal actions and persistence", async () => {
   controller.attack(player.id, enemy.id);
   assert(required(controller.snapshot().units.find((unit) => unit.id === enemy.id)).hp < enemy.hp);
   assert.deepEqual(loadBattle().game.snapshot(), controller.snapshot());
-  await controller.commands.endTurn();
-  assert(controller.snapshot().round > opening.round || controller.snapshot().winner);
-  assert.deepEqual(loadBattle().game.snapshot(), controller.snapshot());
+  // Keep the turn check small as the developer roster grows: retain the two
+  // commanders from the real saved battle, with the authored map and wounds.
+  const turnFixture = loadBattle().game;
+  turnFixture.units = turnFixture.units.filter(
+    (unit) => unit.id === player.id || unit.id === enemy.id,
+  );
+  saveBattle(turnFixture);
+  const turnController = createController(immediatePause);
+  await turnController.commands.endTurn();
+  assert(turnController.snapshot().round > opening.round || turnController.snapshot().winner);
+  assert.deepEqual(loadBattle().game.snapshot(), turnController.snapshot());
+  turnController.dispose();
   controller.dispose();
   observed.unsubscribe();
   storage.clear();

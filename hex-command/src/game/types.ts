@@ -24,6 +24,7 @@ export type UnitType =
   | "warden"
   | "adept"
   | "skeleton"
+  | "skeleton-impact-caster"
   | "bonearcher"
   | "wolf"
   | "boar"
@@ -34,6 +35,7 @@ export type AdvancedTroop =
   | "ranger"
   | "mage"
   | "revenant"
+  | "skeleton-impact-caster-l2"
   | "deatharcher"
   | "direwolf"
   | "greatboar"
@@ -51,6 +53,7 @@ export const UNIT_TYPES = [
   "warden",
   "adept",
   "skeleton",
+  "skeleton-impact-caster",
   "bonearcher",
   "wolf",
   "boar",
@@ -67,6 +70,7 @@ export const UNIT_TYPES = [
   "ranger",
   "mage",
   "revenant",
+  "skeleton-impact-caster-l2",
   "deatharcher",
   "direwolf",
   "greatboar",

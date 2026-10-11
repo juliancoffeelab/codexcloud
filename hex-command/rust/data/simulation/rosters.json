@@ -15,7 +15,7 @@
     "id": "undead",
     "leader": "necromancer",
     "screen": "skeleton",
-    "pool": ["skeleton", "bonearcher"]
+    "pool": ["skeleton", "bonearcher", "skeleton-impact-caster"]
   },
   {
     "id": "coastal",
