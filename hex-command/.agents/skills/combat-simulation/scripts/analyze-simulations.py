@@ -4,7 +4,7 @@
 # ///
 """Analyze saved simulation outcomes; never run matches or read gameplay traces.
 
-uv run scripts/analyze-simulations.py artifacts/current/report.json \
+npm run ai:analyze -- artifacts/current/report.json \
     --baseline artifacts/previous/report.json --out artifacts/analytics
 
 A report path selects its adjacent .outcomes.jsonl journal. Explicit-schema

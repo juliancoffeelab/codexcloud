@@ -7,6 +7,10 @@ The ordinary enemy still uses classic AI. There is no new enemy selector.
 
 Run campaign or tournament simulations only when the user explicitly requests it.
 
+For the agent workflow, see the
+[combat simulation skill](../.agents/skills/combat-simulation/SKILL.md), which covers
+roster checks, execution, saved-result analysis and reporting.
+
 ## Running a comparison
 
 ```sh
@@ -74,7 +78,7 @@ npm run ai:analyze -- artifacts/current/report.json --out artifacts/current/anal
 npm run ai:analyze -- artifacts/current/report.json --baseline artifacts/previous/report.json --out artifacts/current/analytics
 ```
 
-[`scripts/analyze-simulations.py`](../scripts/analyze-simulations.py) uses PyArrow
+The skill's [bundled analyzer](../.agents/skills/combat-simulation/scripts/analyze-simulations.py) uses PyArrow
 to read the adjacent `.outcomes.jsonl` journal with an explicit projected schema,
 then Polars for every match calculation, grouping and baseline join. It does not
 decode gameplay records into Python objects or load the large detail journals.
