@@ -15,6 +15,9 @@ val shape : Domain.tile -> string
 val same_tile : Domain.tile -> Domain.tile -> bool
 (** Deterministic authored prop layout chosen from the map and cell identifiers. *)
 val layout_name : Domain.tile -> string -> string
+(** Complete first-layout/default-connection inspection artwork. No tile floor,
+    orientation or map identifier affects this choice. *)
+val canonical_name : string -> string
 val prepare : map_id:string -> cols:float -> rows:float -> Domain.tile array -> Art.t -> t
 (** Round native bitmap bounds upward and return their exact logical display size. *)
 val dimensions : t -> dimensions

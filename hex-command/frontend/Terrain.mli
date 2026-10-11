@@ -18,6 +18,9 @@ val prepare : t -> Domain.state -> Art.t -> scene
 val activate : t -> scene -> unit
 val key : scene -> string
 val tiles : scene -> Terrain_plan.tile array
+(** One default-floor canonical image per terrain type, using the current full
+    artwork snapshot even when the battlefield geometry has been reused. *)
+val inspection_urls : scene -> Art.t -> string array
 val get_tile : scene -> string -> Terrain_plan.tile option
 val size : scene -> Geometry.dimensions
 val preview : t -> scene -> preview option

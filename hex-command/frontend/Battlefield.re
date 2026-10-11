@@ -159,14 +159,14 @@ let make = (~view: Session.model, ~actions: Session.actions) => {
   );
   React.useEffect1(() => Some(() => Terrain.close(owner)), [|owner|]);
   React.useEffect1(() => Some(() => Terrain_prefetch.close(prefetch)), [|prefetch|]);
-  React.useEffect2(
+  React.useEffect3(
     () =>
       switch (ready) {
       | Some(displayed) when displayed === scene =>
-        Some(Terrain_prefetch.start(prefetch, scene))
+        Some(Terrain_prefetch.start(prefetch, scene, view.artwork))
       | _ => None
       },
-    (scene, ready),
+    (scene, ready, view.artwork),
   );
   React.useEffect2(
     () => {

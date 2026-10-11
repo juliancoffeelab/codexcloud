@@ -72,14 +72,12 @@ let rec schedule owner =
       if owner.epoch <> ticket.generation && not ticket.fired then cancel ()
     with _ ->
       if Option.fold ~none:false ~some:(fun current -> current == ticket) owner.scheduled then owner.scheduled <- None)
-let start owner scene =
+let start owner scene artwork =
   close owner;
   let unique = Js.Dict.empty () in
-  owner.queue <- Terrain.tiles scene |> Array.to_list |> List.filter_map (fun (tile : Terrain_plan.tile) ->
-      match tile.frame with
-      | Some frame when Js.Dict.get unique frame.url = None ->
-        Js.Dict.set unique frame.url true;
-        if Js.Dict.get owner.loaded frame.url = None && Js.Dict.get owner.loading frame.url = None then Some frame.url else None
-      | _ -> None) |> Array.of_list;
+  owner.queue <- Terrain.inspection_urls scene artwork |> Array.to_list |> List.filter (fun url ->
+      if Js.Dict.get unique url <> None then false else (
+        Js.Dict.set unique url true;
+        Js.Dict.get owner.loaded url = None && Js.Dict.get owner.loading url = None)) |> Array.of_list;
   let epoch = owner.epoch in schedule owner;
   fun () -> if owner.epoch = epoch then close owner

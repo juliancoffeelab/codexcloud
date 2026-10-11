@@ -2,8 +2,15 @@ import { test, vi } from "vitest";
 import assert from "node:assert/strict";
 import * as Art from "@frontend/Art";
 import * as Geometry from "@frontend/Geometry";
-import { pixelSprites, pixelUnitModels, pixelFloorColors } from "../src/presentation/pixel-art";
-import { TYPES } from "./game-fixture";
+import * as Plan from "@frontend/Terrain_plan";
+import {
+  pixelSprites,
+  pixelUnitModels,
+  pixelFloorColors,
+  pixelTerrainLayouts,
+} from "../src/presentation/pixel-art";
+import { TYPES, TERRAIN } from "./game-fixture";
+import { required } from "./helpers";
 
 test("Adjacent hexes share both edge vertices without gaps on either row parity", () => {
   const vertices = (col: number, row: number) => {
@@ -120,4 +127,21 @@ test("Map, preview and native bake dimensions share exact hex spacing", () => {
     width: 85 + Geometry.column_spacing * 11.5,
     height: 84 + Geometry.row_spacing * 7,
   });
+});
+
+test("Every supported terrain has a complete native canonical inspection frame", () => {
+  for (const terrain of Object.keys(TERRAIN)) {
+    const name = Plan.canonical_name(terrain);
+    const frame = required(Art.terrain_frame(Art.current(), undefined, name));
+    assert.equal(frame.width, 64);
+    assert.equal(frame.height, 64);
+    const key = Art.frame_key("terrain", name);
+    assert(frame.url.endsWith(required(pixelSprites[key])));
+    const base = name.replace(/_layout_\d+$/, "");
+    if (pixelTerrainLayouts[base]?.length) assert.equal(name, `${base}_layout_0`);
+    else assert.equal(name, base);
+  }
+  assert.equal(Plan.canonical_name("village").replace(/_layout_\d+$/, ""), "village_0");
+  for (const terrain of ["road", "bridge", "ford"])
+    assert.equal(Plan.canonical_name(terrain).replace(/_layout_\d+$/, ""), terrain);
 });

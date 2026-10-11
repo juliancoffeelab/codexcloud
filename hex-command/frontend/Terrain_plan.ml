@@ -31,15 +31,20 @@ let key ~map_id ~cols ~rows tiles =
 let mask edges = Option.fold ~none:0 ~some:(fun edges -> Array.fold_left (fun mask edge ->
     let bit = match direction edge with "e" -> 0 | "se" -> 1 | "sw" -> 2 | "w" -> 3 | "nw" -> 4 | "ne" -> 5 | _ -> 6 in
     mask lor (1 lsl bit)) 0 edges) edges
-let connected_name (tile : Domain.tile) =
-  let connections = mask tile.connections and dead_ends = mask tile.deadEnds in
-  match tile.terrain with
+let connection_name terrain connections dead_ends =
+  match terrain with
   | "road" when dead_ends <> 0 -> "road_" ^ string_of_int connections ^ "-end-" ^ string_of_int dead_ends
   | "village" when connections = 0 -> "village_0"
   | ("road" | "village") as name when connections <> 0 && connections <> 9 -> name ^ "_" ^ string_of_int connections
   | ("bridge" | "ford") as name when connections = 18 -> name ^ "_nw-se"
   | ("bridge" | "ford") as name when connections = 36 -> name ^ "_ne-sw"
   | name -> name
+let connected_name (tile : Domain.tile) = connection_name tile.terrain (mask tile.connections) (mask tile.deadEnds)
+let canonical_name terrain =
+  let name = connection_name terrain 0 0 in
+  match Js.Dict.get layouts name with
+  | Some layouts when Array.length layouts > 0 -> name ^ "_layout_0"
+  | _ -> name
 (* Match JavaScript's for-of hashing: surrogate pairs contribute the leading
    UTF-16 code unit once, while isolated code units remain independent. *)
 let layout_hash source =

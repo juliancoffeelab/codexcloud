@@ -8,6 +8,7 @@ export interface Plan { readonly key:string; readonly map_id:string; readonly co
 export function key(mapId:string,cols:number,rows:number,tiles:Immutable<Tile[]>):string;
 export function shape(tile:Immutable<Tile>):string;
 export function same_tile(a:Immutable<Tile>,b:Immutable<Tile>):boolean;
+export function canonical_name(terrain:string):string;
 export function layout_name(tile:Immutable<Tile>,mapId:string):string;
 export function prepare(mapId:string,cols:number,rows:number,tiles:Immutable<Tile[]>,artwork:Artwork):Plan;
 export function dimensions(plan:Plan):Dimensions;

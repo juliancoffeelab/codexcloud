@@ -10,6 +10,9 @@ import * as Session from "@frontend/Session";
 import * as Prefetch from "@frontend/Terrain_prefetch";
 import * as Plan from "@frontend/Terrain_plan";
 import * as Viewport from "@frontend/Viewport";
+import * as Art from "@frontend/Art";
+import * as Save from "@frontend/Save";
+import type { SavedGame } from "../rust/pkg/hex_command";
 import { factory, Native, Catalog, createBattle } from "./native-fixture";
 import { required } from "./helpers";
 
@@ -252,4 +255,64 @@ test("Startup and live controls share their structure, and inspection panels ope
     document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
   });
   assert.equal(host.querySelector("aside"), null);
+});
+
+test("Terrain details use one complete canonical image while battlefield directions and floors retain their authored images", async () => {
+  const battle = createBattle({ kind: "scenario", map: "mirror" });
+  const checkpoint = structuredClone(Native.save(battle)) as SavedGame;
+  const tiles = checkpoint.state.tiles
+    .filter(
+      (tile) =>
+        tile.terrain === "plains" && !checkpoint.state.units.some((unit) => unit.tile === tile.id),
+    )
+    .slice(0, 2);
+  const first = required(tiles[0]),
+    second = required(tiles[1]);
+  delete first.floor;
+  delete first.deadEnds;
+  delete second.deadEnds;
+  Object.assign(first, { terrain: "road", connections: ["e", "w"] });
+  Object.assign(second, { terrain: "road", connections: ["ne", "sw"], floor: "snow-forest" });
+  localStorage.setItem(
+    Save.key,
+    JSON.stringify({ version: Save.version, checkpoint, pendingEnemy: false }),
+  );
+  session = Session.create(async () => {}, factory);
+  const mounted = session,
+    published = Session.view(mounted);
+  assert.equal(required(Native.tile(published.game, second.id)).floor, "snow-forest");
+  await act(async () => {
+    required(root).render(
+      React.createElement(App.make, {
+        session: mounted,
+        onMount: () => () => {},
+      }),
+    );
+  });
+  const images = tiles.map((tile) =>
+    element<SVGImageElement>(`[data-tile="${tile.id}"] .terrain-art image`),
+  );
+  const urls = images.map((image) => image.getAttribute("href"));
+  assert.notEqual(
+    urls[0],
+    urls[1],
+    "Authored battlefield road orientations and floors remain distinct",
+  );
+  const canonical = required(
+    Art.terrain_frame(published.artwork, undefined, Plan.canonical_name("road")),
+  );
+  for (const tile of tiles) {
+    await click(`[data-tile="${tile.id}"]`);
+    const image = element<SVGImageElement>(".terrain-card-art image");
+    assert.equal(image.getAttribute("href"), canonical.url);
+    assert.equal(image.getAttribute("width"), String(canonical.width));
+    assert.equal(image.getAttribute("height"), String(canonical.height));
+    for (let index = 0; index < tiles.length; index++) {
+      assert.equal(
+        element(`[data-tile="${required(tiles[index]).id}"] .terrain-art image`),
+        images[index],
+      );
+      assert.equal(required(images[index]).getAttribute("href"), urls[index]);
+    }
+  }
 });

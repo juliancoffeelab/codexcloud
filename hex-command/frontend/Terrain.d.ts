@@ -13,6 +13,7 @@ export function prepare(owner:Owner,state:Immutable<State>,artwork:Artwork):Scen
 export function activate(owner:Owner,scene:Scene):void;
 export function key(scene:Scene):string;
 export function tiles(scene:Scene):readonly TerrainTile[];
+export function inspection_urls(scene:Scene,artwork:Artwork):readonly string[];
 export function get_tile(scene:Scene,id:string):TerrainTile|undefined;
 export function size(scene:Scene):{readonly width:number;readonly height:number};
 export function preview(owner:Owner,scene:Scene):Preview|undefined;

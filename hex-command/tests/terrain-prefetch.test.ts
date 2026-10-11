@@ -3,6 +3,7 @@ import { test, vi } from "vitest";
 import * as Prefetch from "@frontend/Terrain_prefetch";
 import * as Terrain from "@frontend/Terrain";
 import * as Art from "@frontend/Art";
+import * as Plan from "@frontend/Terrain_plan";
 import type { State } from "../rust/pkg/hex_command";
 import { required } from "./helpers";
 
@@ -25,7 +26,7 @@ function idleQueue() {
   };
 }
 /** Synthetic native frame metadata drives the actual OCaml scene projection. */
-function scene(urls: string[]): Terrain.Scene {
+function scene(urls: string[]): readonly [Terrain.Scene, Art.Artwork] {
   const state: State = {
     mapId: "synthetic",
     mapRevision: 1,
@@ -52,7 +53,8 @@ function scene(urls: string[]): Terrain.Scene {
       { url, width: 64, height: 64 },
     ]),
   );
-  return Terrain.prepare(Terrain.create({}), state, { frames } as unknown as Art.Artwork);
+  const artwork = { frames } as unknown as Art.Artwork;
+  return [Terrain.prepare(Terrain.create({}), state, artwork), artwork];
 }
 function fixture() {
   const idle = idleQueue();
@@ -70,7 +72,7 @@ const settled = () => new Promise<void>((resolve) => setImmediate(resolve));
 
 test("Prefetch is deferred, deduplicated, bounded and reused across displayed maps", async () => {
   const { idle, requests, owner, urls } = fixture();
-  Prefetch.start(owner, scene(["a", "b", "a", "c"]));
+  Prefetch.start(owner, ...scene(["a", "b", "a", "c"]));
   assert.deepEqual(urls(), []);
   idle.flush();
   assert.deepEqual(urls(), ["a", "b"]);
@@ -81,7 +83,7 @@ test("Prefetch is deferred, deduplicated, bounded and reused across displayed ma
   required(requests[1]).resolve();
   required(requests[2]).resolve();
   await settled();
-  Prefetch.start(owner, scene(["a", "c", "d", "d"]));
+  Prefetch.start(owner, ...scene(["a", "c", "d", "d"]));
   idle.flush();
   assert.deepEqual(urls(), ["a", "b", "c", "d"]);
   required(requests[3]).resolve();
@@ -91,10 +93,10 @@ test("Prefetch is deferred, deduplicated, bounded and reused across displayed ma
 
 test("Map changes drop queued tiles, preserve both occupied slots and ignore stale cleanup", async () => {
   const { idle, requests, owner, urls } = fixture();
-  const stopOld = Prefetch.start(owner, scene(["old-a", "old-b", "old-queued"]));
+  const stopOld = Prefetch.start(owner, ...scene(["old-a", "old-b", "old-queued"]));
   idle.flush();
   stopOld();
-  const stopNew = Prefetch.start(owner, scene(["new-a", "new-b", "new-queued"]));
+  const stopNew = Prefetch.start(owner, ...scene(["new-a", "new-b", "new-queued"]));
   stopOld();
   idle.flush();
   assert.deepEqual(urls(), ["old-a", "old-b"]);
@@ -112,7 +114,7 @@ test("Map changes drop queued tiles, preserve both occupied slots and ignore sta
   await settled();
   idle.flush();
   assert.equal(requests.length, 4);
-  const stopPending = Prefetch.start(owner, scene(["never-requested"]));
+  const stopPending = Prefetch.start(owner, ...scene(["never-requested"]));
   stopPending();
   idle.flushStale();
   assert.equal(requests.length, 4);
@@ -121,8 +123,8 @@ test("Map changes drop queued tiles, preserve both occupied slots and ignore sta
 
 test("Stale scheduled callbacks cannot consume the current map's queue", () => {
   const { idle, owner, urls } = fixture();
-  Prefetch.start(owner, scene(["old"]));
-  Prefetch.start(owner, scene(["new"]));
+  Prefetch.start(owner, ...scene(["old"]));
+  Prefetch.start(owner, ...scene(["new"]));
   idle.flushStale();
   assert.deepEqual(urls(), ["new"]);
   Prefetch.close(owner);
@@ -130,13 +132,13 @@ test("Stale scheduled callbacks cannot consume the current map's queue", () => {
 
 test("Failed prefetches do not loop or poison success reuse, and later starts retry", async () => {
   const { idle, requests, owner } = fixture();
-  Prefetch.start(owner, scene(["missing"]));
+  Prefetch.start(owner, ...scene(["missing"]));
   idle.flush();
   required(requests[0]).reject();
   await settled();
   idle.flush();
   assert.equal(requests.length, 1);
-  Prefetch.start(owner, scene(["missing"]));
+  Prefetch.start(owner, ...scene(["missing"]));
   idle.flush();
   assert.equal(requests.length, 2);
   required(requests[1]).resolve();
@@ -152,7 +154,7 @@ test("Synchronous decoder failures stay silent and release request capacity", as
     if (url === "broken") throw new Error("Bad decoder");
     return Promise.resolve();
   });
-  Prefetch.start(owner, scene(["broken", "valid", "next"]));
+  Prefetch.start(owner, ...scene(["broken", "valid", "next"]));
   idle.flush();
   assert.deepEqual(urls, ["broken", "valid"]);
   await settled();
@@ -178,7 +180,7 @@ test("Background images use low network priority and asynchronous decoding", asy
   const idle = idleQueue();
   const owner = Prefetch.create(idle.defer);
   try {
-    Prefetch.start(owner, scene(["tile.png"]));
+    Prefetch.start(owner, ...scene(["tile.png"]));
     idle.flush();
     await settled();
     const image = required(images[0]);
@@ -211,19 +213,19 @@ test("Default scheduling waits for a frame and then idle time, and cancels eithe
     return Promise.resolve();
   });
   try {
-    const stopBeforeFrame = Prefetch.start(owner, scene(["not-started"]));
+    const stopBeforeFrame = Prefetch.start(owner, ...scene(["not-started"]));
     stopBeforeFrame();
     required(frame)(0);
     assert.equal(Boolean(idle), false);
     assert.deepEqual(requests, []);
-    const stopBeforeIdle = Prefetch.start(owner, scene(["also-not-started"]));
+    const stopBeforeIdle = Prefetch.start(owner, ...scene(["also-not-started"]));
     required(frame)(0);
     assert.deepEqual(requests, []);
     stopBeforeIdle();
     required(idle)();
     assert.deepEqual(requests, []);
     assert(cancelled.includes(2));
-    Prefetch.start(owner, scene(["visible"]));
+    Prefetch.start(owner, ...scene(["visible"]));
     required(frame)(0);
     assert.deepEqual(requests, []);
     required(idle)();
@@ -250,13 +252,13 @@ test("Timer fallback remains cancellable after the frame when idle callbacks are
     return Promise.resolve();
   });
   try {
-    const stop = Prefetch.start(owner, scene(["cancelled"]));
+    const stop = Prefetch.start(owner, ...scene(["cancelled"]));
     required(frame)(0);
     assert.deepEqual(requests, []);
     assert.equal(vi.getTimerCount(), 1);
     stop();
     assert.equal(vi.getTimerCount(), 0);
-    Prefetch.start(owner, scene(["visible"]));
+    Prefetch.start(owner, ...scene(["visible"]));
     required(frame)(0);
     await vi.runAllTimersAsync();
     assert.deepEqual(requests, ["visible"]);
@@ -267,7 +269,7 @@ test("Timer fallback remains cancellable after the frame when idle callbacks are
   }
 });
 
-test("Prefetch follows each displayed floor, road cap, connection and deterministic layout variant", async () => {
+test("Prefetch warms canonical inspection images while battlefield floor, road cap, connection and layout variants remain intact", async () => {
   const state: State = {
     mapId: "river",
     mapRevision: 1,
@@ -313,8 +315,17 @@ test("Prefetch follows each displayed floor, road cap, connection and determinis
     ],
   };
   const displayed = Terrain.prepare(Terrain.create({}), state, Art.current());
-  const expected = [...new Set(Terrain.tiles(displayed).map((tile) => required(tile.frame).url))];
-  assert.equal(expected.length, 5, "Distinct variants must retain their actual native images");
+  const battlefieldUrls = Terrain.tiles(displayed).map((tile) => required(tile.frame).url);
+  assert.equal(
+    new Set(battlefieldUrls).size,
+    state.tiles.length,
+    "Distinct battlefield variants keep their actual images",
+  );
+  const expected = ["road", "bridge", "forest"].map(
+    (terrain) =>
+      required(Art.terrain_frame(Art.current(), undefined, Plan.canonical_name(terrain))).url,
+  );
+  assert.deepEqual(Terrain.inspection_urls(displayed, Art.current()), expected);
   const idle = idleQueue();
   const urls: string[] = [];
   const owner = Prefetch.create(idle.defer, (url) => {
@@ -322,7 +333,7 @@ test("Prefetch follows each displayed floor, road cap, connection and determinis
     return Promise.resolve();
   });
   try {
-    Prefetch.start(owner, displayed);
+    Prefetch.start(owner, displayed, Art.current());
     for (let batch = 0; batch < 3; batch++) {
       idle.flush();
       await settled();
@@ -330,5 +341,113 @@ test("Prefetch follows each displayed floor, road cap, connection and determinis
     assert.deepEqual(urls, expected);
   } finally {
     Prefetch.close(owner);
+  }
+});
+
+test("Inspection warming is bounded by terrain types independently of cell count, floors and orientation", () => {
+  const tiles: State["tiles"] = Array.from({ length: 1024 }, (_, col) => ({
+    id: `${col},0`,
+    col,
+    row: 0,
+    owner: null,
+    terrain: col % 2 ? "forest" : "ford",
+    floor: col % 3 ? "snow-forest" : "autumn-forest",
+    ...(col % 2 ? {} : { connections: ["nw" as const, "se" as const] }),
+  }));
+  const state: State = {
+    mapId: "synthetic",
+    mapRevision: 1,
+    cols: tiles.length,
+    rows: 1,
+    round: 1,
+    turn: "player",
+    gold: { player: 0, enemy: 0 },
+    winner: null,
+    nextId: 1,
+    log: [],
+    units: [],
+    tiles,
+  };
+  const owner = Terrain.create({});
+  const art = Art.current();
+  const displayed = Terrain.prepare(owner, state, art);
+  const urls = Terrain.inspection_urls(displayed, art);
+  const expected = ["ford", "forest"].map(
+    (terrain) => required(Art.terrain_frame(art, undefined, Plan.canonical_name(terrain))).url,
+  );
+  assert.deepEqual(urls, expected);
+  assert(Object.isFrozen(urls));
+  const small = Terrain.prepare(owner, { ...state, cols: 2, tiles: tiles.slice(0, 2) }, art);
+  assert.deepEqual(Terrain.inspection_urls(small, art), urls);
+  assert.deepEqual(
+    Terrain.inspection_urls(displayed, { frames: {} } as unknown as Art.Artwork),
+    [],
+  );
+  Terrain.close(owner);
+});
+
+test("A canonical-only artwork refresh retains battlefield geometry and warms the current snapshot under the same request bound", async () => {
+  const state: State = {
+    mapId: "river",
+    mapRevision: 1,
+    cols: 1,
+    rows: 1,
+    round: 1,
+    turn: "player",
+    gold: { player: 0, enemy: 0 },
+    winner: null,
+    nextId: 1,
+    log: [],
+    units: [],
+    tiles: [{ id: "0,0", col: 0, row: 0, terrain: "forest", floor: "snow-forest", owner: null }],
+  };
+  const owner = Terrain.create({});
+  const firstArt = Art.current();
+  const displayed = Terrain.prepare(owner, state, firstArt);
+  const frameKey = Art.frame_key("terrain", Plan.canonical_name("forest"));
+  const refreshed = {
+    frames: {
+      ...Art.frames(firstArt),
+      [frameKey]: { url: "refreshed-canonical.png", width: 64, height: 64 },
+    },
+  } as unknown as Art.Artwork;
+  assert.equal(Terrain.prepare(owner, state, refreshed), displayed);
+  assert.deepEqual(Terrain.inspection_urls(displayed, refreshed), ["refreshed-canonical.png"]);
+  const { idle, requests, owner: prefetch, urls } = fixture();
+  try {
+    Prefetch.start(prefetch, displayed, firstArt);
+    idle.flush();
+    assert.equal(requests.length, 1);
+    Prefetch.start(prefetch, displayed, refreshed);
+    idle.flush();
+    assert.equal(requests.length, 2);
+    assert.equal(urls()[1], "refreshed-canonical.png");
+    const latest = {
+      frames: {
+        ...Art.frames(refreshed),
+        [frameKey]: { url: "latest-canonical.png", width: 64, height: 64 },
+      },
+    } as unknown as Art.Artwork;
+    Prefetch.start(prefetch, displayed, latest);
+    idle.flush();
+    assert.equal(
+      requests.length,
+      2,
+      "Two older decoders retain their slots across canonical refreshes",
+    );
+    required(requests[0]).resolve();
+    await settled();
+    idle.flush();
+    assert.equal(requests.length, 3);
+    assert.equal(urls()[2], "latest-canonical.png");
+    required(requests[1]).resolve();
+    required(requests[2]).resolve();
+    await settled();
+    Prefetch.start(prefetch, displayed, latest);
+    idle.flush();
+    assert.equal(requests.length, 3, "Actual URL success cache survives refresh");
+  } finally {
+    Prefetch.close(prefetch);
+    Terrain.close(owner);
   }
 });

@@ -87,6 +87,14 @@ let create manifest =
   {exact; maps; prepared = None; active = None; entry = None; warm = None}
 let key (scene : scene) = scene.plan.key
 let tiles (scene : scene) = scene.plan.tiles
+let inspection_urls (scene : scene) artwork =
+  let seen = Js.Dict.empty () and urls = ref [] in
+  Array.iter (fun (tile : Terrain_plan.tile) ->
+      if Js.Dict.get seen tile.terrain = None then (
+        Js.Dict.set seen tile.terrain true;
+        Option.iter (fun (frame : Art.frame) -> urls := frame.url :: !urls)
+          (Art.terrain_frame artwork (Terrain_plan.canonical_name tile.terrain)))) scene.plan.tiles;
+  freeze (Array.of_list (List.rev !urls))
 let get_tile (scene : scene) id = Js.Dict.get scene.index id
 let size (scene : scene) : Geometry.dimensions = {width = scene.plan.width; height = scene.plan.height}
 let prepare owner (state : Domain.state) artwork =
