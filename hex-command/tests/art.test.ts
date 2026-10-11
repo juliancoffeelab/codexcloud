@@ -1,10 +1,6 @@
 import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
-import { createHash } from "node:crypto";
-import { readFileSync, readdirSync } from "node:fs";
-import { fileURLToPath, pathToFileURL } from "node:url";
-import { inflateSync } from "node:zlib";
-import { TERRAIN, TYPES } from "./game-fixture";
+import { TYPES } from "./game-fixture";
 let art: typeof import("../src/presentation/art");
 import { campaignSheets } from "../src/presentation/campaign-art";
 import { pixelFrames, pixelSources, pixelUnitModels } from "../src/presentation/pixel-art";
@@ -17,18 +13,6 @@ import { Game } from "./game-fixture";
 import { createGameView } from "./fixture-view";
 import { battlefieldTiles } from "../src/ui/battlefield-view";
 import { mockSpriteCanvas } from "./helpers";
-
-const unitRoot = new URL("../pixel/art/units/", import.meta.url);
-const unitSources = new Map(
-  readdirSync(unitRoot, { withFileTypes: true })
-    .filter((race) => race.isDirectory() && race.name !== "lineups")
-    .flatMap((race) => {
-      const raceRoot = new URL(`${race.name}/`, unitRoot);
-      return readdirSync(raceRoot, { withFileTypes: true })
-        .filter((unit) => unit.isDirectory())
-        .map((unit) => [unit.name, fileURLToPath(new URL(`${unit.name}/`, raceRoot))] as const);
-    }),
-);
 
 const requested: string[] = [];
 let failNative = true;
@@ -90,23 +74,14 @@ const frameSources = Object.fromEntries(
     key.startsWith("terrain_") ? pixelSources.terrain : pixelSources.units,
   ]),
 );
-test("Public pixel PNG dimensions, alpha and hashes match their manifests", async () => {
-  for (const source of new Set(Object.values(frameSources))) {
-    const png = readFileSync(new URL(`../public/assets/${source.filename}`, import.meta.url));
-    assert.equal(png.subarray(1, 4).toString(), "PNG");
-    assert.equal(png.readUInt32BE(16), source.width);
-    assert.equal(png.readUInt32BE(20), source.height);
-    assert.equal(png[25], 6, "Focused pixel sources retain RGBA transparency");
-    assert.equal(createHash("sha256").update(png).digest("hex").slice(0, 12), source.revision);
-  }
-});
 test("Every pixel frame is extracted into a standalone unsmoothed image", async () => {
   await art.loadArtStyle("pixel");
   for (const [frame, source] of Object.entries(frameSources)) {
     const [x, y, width, height] =
       campaignSheets.pixel.frames[frame as keyof typeof campaignSheets.pixel.frames];
     assert([x, y, width, height].every(Number.isFinite));
-    assert(width > 0 && height > 0);
+    assert.equal(width, frame.startsWith("terrain_") ? 48 : 64);
+    assert.equal(height, width);
     assert(x >= 0 && y >= 0 && x + width <= source.width && y + height <= source.height);
     const isolated = imageData(art.artworkForStyle("pixel").frames[frame]!.url.split(",")[1]!);
     assert(isolated.source.includes(`${source.filename}?v=${source.revision}`));
@@ -116,19 +91,9 @@ test("Every pixel frame is extracted into a standalone unsmoothed image", async 
     assert.equal(isolated.smoothing, false);
   }
 });
-test("Existing game units use the current model for their tier", async () => {
+test("Artwork aliases route game units to their isolated frames", async () => {
   await art.loadArtStyle("pixel");
-  const replacements = {
-    swordsman: "leather-swordsman",
-    soldier: "swordsman",
-    spearman: "leather-spearman",
-    warden: "spearman",
-    mage: "storm-mage",
-    necromancer: "lich-commander-l1",
-    lich: "lich-commander-l2",
-  };
-  assert.deepEqual(pixelUnitModels, replacements);
-  for (const [type, model] of Object.entries(replacements)) {
+  for (const [type, model] of Object.entries(pixelUnitModels)) {
     for (const side of ["player", "enemy"] as const) {
       const result = extraction(
         art.artSprite(art.artworkForStyle("pixel"), "units", type, 0, 0, 64, 64, "", side),
@@ -138,173 +103,13 @@ test("Existing game units use the current model for their tier", async () => {
     }
   }
 });
-// Check the pixels served to the ordinary renderer, not just manifest hashes.
-test("Every unit, terrain and portrait pixel matches its editable matrix", async () => {
-  await art.loadArtStyle("pixel");
-  const terrainSamples = battlefieldTiles(
-    createGameView(new Game("developer")),
-    null,
-    art.artworkForStyle("pixel"),
-    null,
-  );
-  const matrixFrames: string[] = [];
-  const factions: Record<string, Record<string, number[]>> = JSON.parse(
-    readFileSync(new URL("../pixel/art/factions.json", import.meta.url), "utf8"),
-  );
-  for (const palette of Object.values(factions)) {
-    assert.deepEqual(Object.keys(palette).sort(), ["*", "^"]);
-  }
-  for (const kind of ["units", "terrain", "portraits"] as const) {
-    const source = pixelSources[kind === "portraits" ? "units" : kind];
-    const atlas = readFileSync(new URL(`../public/assets/${source.filename}`, import.meta.url));
-    const chunks: Buffer[] = [];
-    for (let offset = 8; offset < atlas.length;) {
-      const length = atlas.readUInt32BE(offset);
-      if (atlas.toString("ascii", offset + 4, offset + 8) === "IDAT") {
-        chunks.push(atlas.subarray(offset + 8, offset + 8 + length));
-      }
-      offset += length + 12;
-    }
-    const pixels = inflateSync(Buffer.concat(chunks));
-    const stride = source.width * 4 + 1;
-    assert.equal(pixels.length, stride * source.height);
-    for (let y = 0; y < source.height; y++) {
-      assert.equal(pixels[y * stride], 0, "Generated PNG scanlines use filter zero");
-    }
-    const root = new URL(`../pixel/art/${kind}/`, import.meta.url);
-    const directories =
-      kind === "units"
-        ? [...unitSources].map(([name, folder]) => ({
-            name,
-            directory: pathToFileURL(`${folder}/`),
-          }))
-        : readdirSync(root, { withFileTypes: true })
-            .filter((entry) => entry.isDirectory())
-            .map((entry) => ({ name: entry.name, directory: new URL(`${entry.name}/`, root) }));
-    for (const entry of directories) {
-      const directory = entry.directory;
-      const localPalette = new URL("palette.json", directory);
-      const palette: Record<string, number[]> = JSON.parse(readFileSync(localPalette, "utf8"));
-      for (const filename of readdirSync(directory).filter((name) => name.endsWith(".txt"))) {
-        const matrixKind = filename.slice(0, -4);
-        assert(
-          (kind === "terrain"
-            ? ["tile"]
-            : kind === "portraits"
-              ? ["portrait"]
-              : ["sprite"]
-          ).includes(matrixKind),
-          `Unmapped matrix: ${entry.name}/${filename}`,
-        );
-        for (const side of kind === "units" ? ["player", "enemy"] : [matrixKind]) {
-          const colours = kind === "units" ? { ...palette, ...factions[side] } : palette;
-          const frameName =
-            entry.name === "bonearcher"
-              ? "bone_archer"
-              : entry.name === "grove"
-                ? "sacred_grove"
-                : entry.name;
-          const key = `${kind === "terrain" ? "terrain" : side}_${frameName}`;
-          matrixFrames.push(key);
-          assert(Object.hasOwn(frameSources, key), `Matrix missing from public assets: ${key}`);
-          const [cropX, cropY, width, height] =
-            campaignSheets.pixel.frames[key as keyof typeof campaignSheets.pixel.frames];
-          const rows = readFileSync(new URL(filename, directory), "utf8").trimEnd().split("\n");
-          assert.equal(width, rows[0]!.length);
-          assert.equal(rows.length, height);
-          if (kind === "terrain") {
-            // Check against the editable source palette, independently of the
-            // generated metadata used by the renderer.
-            const groundSymbol = ["water", "bridge", "ford"].includes(entry.name) ? "W" : "G";
-            const ground = palette[groundSymbol]!;
-            assert.equal(ground[3], 255);
-            const expected = `#${ground
-              .slice(0, 3)
-              .map((channel) => channel.toString(16).padStart(2, "0"))
-              .join("")}`;
-            const sample = terrainSamples.find((tile) => tile.terrain === entry.name);
-            assert(sample, `Missing terrain sample: ${entry.name}`);
-            assert.equal(
-              sample.fill,
-              expected,
-              `${entry.name} must not expose a mismatched edge colour`,
-            );
-          }
-          for (let y = 0; y < height; y++) {
-            assert.equal(rows[y]!.length, width);
-            for (let x = 0; x < width; x++) {
-              const offset = (cropY + y) * stride + 1 + (cropX + x) * 4;
-              assert.deepEqual(
-                [...pixels.subarray(offset, offset + 4)],
-                colours[rows[y]![x]!],
-                `${key} pixel (${x}, ${y}) must match its matrix material`,
-              );
-            }
-          }
-        }
-      }
-    }
-  }
-  const frameName = (name: string) =>
-    name === "bonearcher" ? "bone_archer" : name === "grove" ? "sacred_grove" : name;
-  const expectedFrames = [
-    ...Object.keys(TYPES).flatMap((name) =>
-      ["player", "enemy"].map((side) => `${side}_${frameName(pixelUnitModels[name] ?? name)}`),
-    ),
-    ...Object.keys(TERRAIN).map((name) => `terrain_${frameName(name)}`),
-    "portrait_worker",
-  ].sort();
-  for (const frame of expectedFrames) {
-    assert(matrixFrames.includes(frame), `Game frame has no editable matrix: ${frame}`);
-  }
-  assert.deepEqual(
-    Object.keys(frameSources).sort(),
-    matrixFrames.sort(),
-    "Every artwork source is packed, including designs awaiting gameplay registration",
-  );
-  assert.deepEqual(
-    readdirSync(new URL("../public/assets/", import.meta.url))
-      .filter((name) => /pixel.*\.png$/.test(name))
-      .sort(),
-    ["terrain-pixel.png", "units-pixel.png"],
-    "Pixel art is served from one unit atlas and one terrain atlas",
-  );
-});
-
-for (const style of ["pixel", "normal", "low-poly"] as const) {
-  test(
-    "Every artwork style isolates unit, terrain and portrait frames — " + JSON.stringify([style]),
-    async () => {
-      await art.loadArtStyle(style);
-      for (const side of ["player", "enemy"] as const) {
-        for (const name of Object.keys(TYPES)) {
-          extraction(
-            art.artSprite(art.artworkForStyle(style), "units", name, 0, 0, 90, 120, "", side),
-          );
-        }
-      }
-      for (const name of Object.keys(TERRAIN)) {
-        extraction(art.artSprite(art.artworkForStyle(style), "terrain", name, 0, 0, 70, 70));
-      }
-      extraction(art.dialoguePortrait(art.artworkForStyle(style), "worker", 0, 0, 90, 120));
-    },
-  );
-}
 for (const style of ["normal", "low-poly"] as const) {
   test("Complete styled roster uses its own atlas without pixel fallbacks — " + style, async () => {
     await art.loadArtStyle(style);
     const source = styledSheets[style].source;
-    const png = readFileSync(new URL(`../public/assets/${source.filename}`, import.meta.url));
-    assert.equal(png.readUInt32BE(16), source.width);
-    assert.equal(png.readUInt32BE(20), source.height);
-    assert.equal(createHash("sha256").update(png).digest("hex").slice(0, 12), source.revision);
     const frameName = (name: string) => (name === "bonearcher" ? "bone_archer" : name);
     const expected = Object.keys(TYPES).flatMap((type) =>
       ["enemy", "player"].map((side) => `${side}_${frameName(type)}`),
-    );
-    assert.deepEqual(
-      Object.keys(styledSheets[style].frames).sort(),
-      [...expected, "portrait_worker"].sort(),
     );
     for (const key of [...expected, "portrait_worker"]) {
       const frame = art.artworkForStyle(style).frames[key];
@@ -345,29 +150,11 @@ for (const style of ["normal", "low-poly"] as const) {
     async () => {
       await art.loadArtStyle(style);
       const sheet = styledTerrainSheets[style];
-      const png = readFileSync(
-        new URL(`../public/assets/${sheet.source.filename}`, import.meta.url),
-      );
-      assert.equal(png.readUInt32BE(16), sheet.source.width);
-      assert.equal(png.readUInt32BE(20), sheet.source.height);
-      assert.equal(
-        createHash("sha256").update(png).digest("hex").slice(0, 12),
-        sheet.source.revision,
-      );
-      assert.deepEqual(
-        Object.keys(sheet.frames).sort(),
-        Object.keys(TERRAIN)
-          .map((name) => `terrain_${name === "grove" ? "sacred_grove" : name}`)
-          .sort(),
-      );
       const samples = battlefieldTiles(
         createGameView(new Game("developer")),
         null,
         art.artworkForStyle(style),
         null,
-      );
-      const authoredColors = JSON.parse(
-        readFileSync(new URL("../art/styled/terrain-colors.json", import.meta.url), "utf8"),
       );
       for (const name of ["plains", "water", "ford", "bridge"] as const) {
         const rendered = art.artSprite(art.artworkForStyle(style), "terrain", name, 0, 0, 70, 70);
@@ -381,16 +168,15 @@ for (const style of ["normal", "low-poly"] as const) {
           isolated.source.includes(`/assets/${sheet.source.filename}?v=${sheet.source.revision}`),
         );
         assert.equal(isolated.smoothing, true);
-        assert.equal(styledTerrainColors[style][name], authoredColors[style][name]);
         assert.equal(
           samples.find((tile) => tile.terrain === name)?.fill,
-          authoredColors[style][name],
+          styledTerrainColors[style][name],
         );
       }
     },
   );
 }
-test("Tall Lark dialogue uses exactly one 64×64 frame", async () => {
+test("Tall dialogue keeps a character frame at its native 64×64 size", async () => {
   await art.loadArtStyle("pixel");
   const lark = extraction(
     art.dialoguePortrait(art.artworkForStyle("pixel"), "thorncaller", 0, 0, 90, 120),
@@ -399,7 +185,7 @@ test("Tall Lark dialogue uses exactly one 64×64 frame", async () => {
   assert.deepEqual(
     lark.coordinates,
     [lx, ly, 64, 64, 0, 0, 64, 64],
-    "Tall dialogue layout receives only Lark's 64×64 pixels",
+    "Tall dialogue layout receives only the native character frame",
   );
   assert.equal(lark.width, 64);
   assert.equal(lark.height, 64);

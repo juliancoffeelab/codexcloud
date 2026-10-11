@@ -32,6 +32,9 @@ patches detectors miss. For a narrow fix, stay within that scope.
 - Infer ownership from the source image and local anatomy, not palette names.
   A brown leak in cloth needs the local cloth color, not a black seam. Preserve
   cream clothing on foxes and dark exposed paws; distinguish skin from sleeves.
+- Grounded feet/body rest on native row 63. A staff reaching that row is not
+  enough if the feet hover. Preserve all painted pixels during alignment; only
+  palettes with `"flying": true` allow intentionally suspended poses.
 - Keep shade clusters coherent and surfaces connected. Use the
   current `pixel/art/units/humans/scout/sprite.txt` as a finish benchmark for
   deliberate material planes, not a pose or palette to copy. Avoid shade noise.

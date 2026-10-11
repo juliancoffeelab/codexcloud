@@ -28,6 +28,8 @@ def extract(source, manifest_path, output):
         raise ValueError('Pinkbox requires a 2x2 layout with the fill box at bottom right')
     if manifest['slots'][0].get('native') != 64 or manifest['slots'][0].get('origin') != [0, 0]:
         raise ValueError('Character outputs must be exactly 64×64 at origin (0,0)')
+    if type(manifest['slots'][0].get('flying', False)) is not bool:
+        raise ValueError("Slot 'flying' must be a boolean")
     if any(manifest['palette'].get(s) != c for s, c in faction_palette('player').items()):
         raise ValueError('Faction colors changed since this template; refresh generation inputs')
     image = Image.open(source)
@@ -88,13 +90,21 @@ def extract(source, manifest_path, output):
             'source_sha256': hashlib.sha256(source.read_bytes()).hexdigest(), 'bounds': bounds,
             'native': size, 'origin': [ox, oy], 'outside': outside,
             'factionOwnership': 'Provisional color quantization: inspect sleeves, hands, hems and outlines'}, indent=2) + '\n')
-        (directory / 'palette.json').write_text(json.dumps({s: c for s, c in palette.items() if s not in '^*'}, indent=2) + '\n')
+        materials = {s: c for s, c in palette.items() if s not in '^*'}
+        if slot.get('flying', False):
+            materials['flying'] = True
+        (directory / 'palette.json').write_text(json.dumps(materials, indent=2) + '\n')
         if outside:
             failures.append(f'{slot["label"]}: {len(outside)} foreground pixels outside requested crop')
             continue
         native = [r[ox:ox + size] for r in rows[oy:oy + size]]
         if not any(s != '.' for r in native for s in r):
             failures.append(f'{slot["label"]}: empty output box')
+            continue
+        try:
+            renderer.require_grounded(native, palette, slot.get('flying', False), slot['label'])
+        except ValueError as error:
+            failures.append(str(error))
             continue
         (directory / 'sprite.txt').write_text('\n'.join(native) + '\n')
         print(directory / 'sprite.txt')

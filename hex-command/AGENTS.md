@@ -20,8 +20,20 @@
   distinguish body/mount height from a raised weapon or staff. Canvas size is not
   permission to enlarge ordinary infantry. Terrain hex tiles use their separate
   terrain grid. During generation, keep raw evidence unchanged in `tmp/`.
+  **The canvas bottom (native row 63) is the ground line. Grounded units must
+  stand on it with no transparent rows beneath their feet or ground-contacting
+  body.** Preserve every painted pixel when aligning existing units: translate
+  within the 64×64 frame, never resize or crop. Intentionally suspended animal
+  poses must declare `"flying": true` in their `palette.json`; this artwork-only
+  flag covers hovering flight and swimming poses. Missing/false means grounded.
 
 - Keep changes quick to make and review. Tests must be small, fast, and lightweight.
+- Artwork tests should check reusable behavior with small synthetic inputs:
+  canvas size, palette rules, invalid ownership, extraction and rendering.
+  Do not freeze current rosters, sprite pixels, colors or generated hashes in
+  tests. Keep captured images, whole-sprite fixtures and one-off visual checks
+  in ignored `tmp/`. Generation sanity checks should enforce canvas-bottom
+  ground contact, with the explicit `flying` palette exemption.
 - For pixel artwork, use the project skills: [pinkbox generation](.agents/skills/pinkbox-generation/SKILL.md),
   [pinkbox enhancement](.agents/skills/pinkbox-enhancement/SKILL.md),
   [pixel cleaning](.agents/skills/pixel-cleaning/SKILL.md), and

@@ -147,6 +147,9 @@ def read_matrix(matrix):
 def read_palette(matrix):
     path = matrix.parent / "palette.json"
     palette = json.loads(path.read_text())
+    flying = palette.pop("flying", False)
+    if type(flying) is not bool:
+        raise ValueError(f"{path}: 'flying' must be a boolean")
     for symbol, rgba in palette.items():
         if (
             len(symbol) != 1
@@ -161,6 +164,15 @@ def read_palette(matrix):
     if palette.get(".") != [0, 0, 0, 0]:
         raise ValueError("Palette '.' must be transparent black")
     return palette
+
+
+def require_grounded(rows, palette, flying=False, label="Character"):
+    require_canvas(rows, label)
+    if type(flying) is not bool:
+        raise ValueError(f"{label}: 'flying' must be a boolean")
+    if not flying and not any(palette[symbol][3] for symbol in rows[-1]):
+        raise ValueError(f"{label}: grounded sprites must touch canvas bottom (row 63); "
+                         "declare flying: true in palette.json only for suspended poses")
 
 
 def rgba_pixels(matrix, side="player"):
@@ -215,6 +227,10 @@ def pixel_atlases():
     lineups = load_lineups()
     native = {}
     for id, directory in sorted(unit_directories(lineups).items()):
+        matrix = directory / "sprite.txt"
+        materials = read_palette(matrix)
+        require_grounded(read_matrix(matrix), {**materials, **faction_palette("player")},
+                         json.loads((directory / "palette.json").read_text()).get("flying", False), id)
         alpha = None
         for side in ("player", "enemy"):
             matrix = directory / "sprite.txt"
