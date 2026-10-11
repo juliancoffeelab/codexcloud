@@ -178,6 +178,8 @@ button[hidden] {
 }
 .map-scroll {
   overflow: auto;
+  max-height: min(720px, calc(100svh - 120px));
+  overscroll-behavior: contain;
   background: #19231c;
   border: 1px solid var(--line);
   border-radius: 4px;
@@ -495,6 +497,9 @@ summary {
   margin-top: 20px;
 }
 @media (max-width: 1000px) {
+  .map-scroll {
+    max-height: 55svh;
+  }
   .workspace {
     grid-template-columns: minmax(0, 1fr);
   }

@@ -1,8 +1,9 @@
 import { activeGoalTiles, campaignMission, goalProgress } from "../game/campaign-progress";
 import type { GameView, UnitView, TileView } from "../game/view";
 import type { Artwork } from "../presentation/art";
+import type { FrameImage } from "../presentation/sprite-images";
 import { TERRAIN, TYPES } from "../game/catalog";
-import { artSprite } from "../presentation/art";
+import { artFrame, artSprite } from "../presentation/art";
 import {
   pixelDefaultFloors,
   pixelFloorColors,
@@ -15,7 +16,8 @@ export { terrainArtNames } from "../presentation/terrain-connections";
 export interface TileUnitView {
   unit: UnitView;
   teamColor: string;
-  artwork: string;
+  frame: Readonly<FrameImage> | undefined;
+  spriteSize: number;
   healthWidth: number;
 }
 
@@ -113,22 +115,11 @@ export function battlefieldTiles(
 
     let occupant: TileUnitView | null = null;
     if (unit) {
-      const spriteSize = battlefieldSpriteSize;
-      const spriteClasses = `unit-art ${unit.side === "enemy" ? "enemy-unit" : ""} ${unit.attacked ? "spent-unit" : ""}`;
       occupant = {
         unit,
         teamColor: unit.side === "player" ? "#6fdec0" : "#ff9590",
-        artwork: artSprite(
-          artwork,
-          "units",
-          unit.type,
-          x - spriteSize / 2,
-          y + 20 - spriteSize,
-          spriteSize,
-          spriteSize,
-          spriteClasses,
-          unit.side,
-        ),
+        frame: artFrame(artwork, "units", unit.type, unit.side),
+        spriteSize: battlefieldSpriteSize,
         healthWidth: (38 * unit.hp) / TYPES[unit.type].hp,
       };
     }

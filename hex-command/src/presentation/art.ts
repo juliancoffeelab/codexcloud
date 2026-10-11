@@ -93,15 +93,8 @@ export function artSprite(
   side: Side = "player",
   floor?: string,
 ): string {
-  if (kind === "units") name = pixelUnitModels[name] ?? name;
-  const frameName =
-    name === "bonearcher" ? "bone_archer" : name === "grove" ? "sacred_grove" : name;
-  let key = `${kind === "terrain" ? "terrain" : side}_${frameName}`;
-  if (kind === "terrain" && floor && artwork.frames[`${key}__${floor}`]) {
-    key += `__${floor}`;
-  }
   return renderSprite(
-    artwork.frames[key],
+    artFrame(artwork, kind, name, side, floor),
     x,
     y,
     width,
@@ -109,4 +102,22 @@ export function artSprite(
     extraClass,
     kind === "units" ? side : undefined,
   );
+}
+
+/** Resolve an isolated image from the published resource snapshot. */
+export function artFrame(
+  artwork: Artwork,
+  kind: SpriteKind,
+  name: string,
+  side: Side = "player",
+  floor?: string,
+): Readonly<FrameImage> | undefined {
+  if (kind === "units") name = pixelUnitModels[name] ?? name;
+  const frameName =
+    name === "bonearcher" ? "bone_archer" : name === "grove" ? "sacred_grove" : name;
+  let key = `${kind === "terrain" ? "terrain" : side}_${frameName}`;
+  if (kind === "terrain" && floor && artwork.frames[`${key}__${floor}`]) {
+    key += `__${floor}`;
+  }
+  return artwork.frames[key];
 }

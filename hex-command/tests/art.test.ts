@@ -278,7 +278,12 @@ test("Terrain, troops and commanders share one battlefield pixel scale", async (
         assert(match);
         return match[1];
       });
-    assert.deepEqual(dimensions(tile.occupant.artwork), dimensions(tile.terrainArtwork));
+    assert.equal(tile.occupant.frame?.width, 64);
+    assert.equal(tile.occupant.frame?.height, 64);
+    assert.deepEqual(
+      [String(tile.occupant.spriteSize), String(tile.occupant.spriteSize)],
+      dimensions(tile.terrainArtwork),
+    );
   }
 });
 

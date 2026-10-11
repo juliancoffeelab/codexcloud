@@ -20,6 +20,7 @@
   const isPlayerTurn = $derived(game.turn === "player" && !game.winner);
   const recruitTileId = $derived(isPlayerTurn && recruitment ? view.inspectedTile : null);
   const tiles = $derived(battlefieldTiles(game, selected, artwork, recruitTileId));
+  const occupiedTiles = $derived(tiles.filter((tile) => tile.occupant));
   const viewBox = $derived(
     `0 0 ${758 + hexColumnSpacing * (game.cols - 11)} ${452 + hexRowSpacing * (game.rows - 7)}`,
   );
@@ -102,20 +103,45 @@
 
       <!-- Paint every terrain first; adjacent hexes must not hide units or bars. -->
       <g class="unit-layer" pointer-events="none" aria-hidden="true">
-        {#each tiles as tile (tile.id)}
-          <g data-unit-tile={tile.id}>
-            {#if tile.occupant}
-              {@const occupant = tile.occupant}
-              <ellipse
-                class="team-base"
-                cx={tile.x}
-                cy={tile.y + 19}
-                rx="19"
-                ry="7"
-                fill={occupant.teamColor}
-                stroke={occupant.teamColor}
-              />
-              {@html occupant.artwork}
+        {#each occupiedTiles as tile (tile.occupant!.unit.id)}
+          {@const occupant = tile.occupant!}
+          <g
+            data-unit-tile={tile.id}
+            data-unit={occupant.unit.id}
+            transform={`translate(${tile.x} ${tile.y})`}
+          >
+            <ellipse
+              class="team-base"
+              cx="0"
+              cy="19"
+              rx="19"
+              ry="7"
+              fill={occupant.teamColor}
+              stroke={occupant.teamColor}
+            />
+            {#if occupant.frame}
+              <svg
+                class="art-sprite pixel-art unit-art"
+                class:enemy-unit={occupant.unit.side === "enemy"}
+                class:spent-unit={occupant.unit.attacked}
+                data-faction={occupant.unit.side}
+                x={-occupant.spriteSize / 2}
+                y={20 - occupant.spriteSize}
+                width={occupant.spriteSize}
+                height={occupant.spriteSize}
+                viewBox={`0 0 ${occupant.frame.width} ${occupant.frame.height}`}
+                aria-hidden="true"
+                focusable="false"
+              >
+                <image
+                  href={occupant.frame.url}
+                  x="0"
+                  y="0"
+                  width={occupant.frame.width}
+                  height={occupant.frame.height}
+                  preserveAspectRatio="none"
+                />
+              </svg>
             {/if}
           </g>
         {/each}
@@ -123,26 +149,21 @@
 
       <!-- Health and state indicators remain above every terrain and sprite. -->
       <g class="indicator-layer" pointer-events="none" aria-hidden="true">
+        {#each occupiedTiles as tile (tile.occupant!.unit.id)}
+          {@const occupant = tile.occupant!}
+          <g data-health-unit={occupant.unit.id} transform={`translate(${tile.x} ${tile.y})`}>
+            <rect class="hp-bg" x="-19" y="27" width="38" height="4" rx="2" />
+            <rect class="hp" x="-19" y="27" width={occupant.healthWidth} height="4" rx="2" />
+            {#if occupant.unit.attacked}
+              <text class="acted" x="21" y="-17">✓</text>
+            {/if}
+            {#if occupant.unit.retreating}
+              <text class="retreat-marker" x="-28" y="-14">↶</text>
+            {/if}
+          </g>
+        {/each}
         {#each tiles as tile (tile.id)}
           <g data-indicator-tile={tile.id}>
-            {#if tile.occupant}
-              {@const occupant = tile.occupant}
-              <rect class="hp-bg" x={tile.x - 19} y={tile.y + 27} width="38" height="4" rx="2" />
-              <rect
-                class="hp"
-                x={tile.x - 19}
-                y={tile.y + 27}
-                width={occupant.healthWidth}
-                height="4"
-                rx="2"
-              />
-              {#if occupant.unit.attacked}
-                <text class="acted" x={tile.x + 21} y={tile.y - 17}>✓</text>
-              {/if}
-              {#if occupant.unit.retreating}
-                <text class="retreat-marker" x={tile.x - 28} y={tile.y - 14}>↶</text>
-              {/if}
-            {/if}
             {#if tile.owner}
               <circle
                 class="territory-badge"
