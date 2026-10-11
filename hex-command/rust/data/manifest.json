@@ -41,7 +41,9 @@
     "game/units/marshal.json",
     "game/units/grovewarden.json",
     "game/units/lich.json",
-    "game/units/tideseer.json"
+    "game/units/tideseer.json",
+    "game/units/rider.json",
+    "game/units/lancer.json"
   ],
   "scenarios": [
     "game/scenario/developer-v1/scenario.json",

@@ -234,14 +234,14 @@
     {
       "base": {
         "id": "rider",
-        "name": "Rider",
+        "name": "Mounted spearman",
         "level": 1,
         "source": "rider"
       },
       "section": "cavalry",
       "branches": [
         {
-          "role": "Lancer",
+          "role": "Mounted spearman",
           "units": [
             {
               "id": "lancer",

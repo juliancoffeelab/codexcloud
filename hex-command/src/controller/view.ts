@@ -9,7 +9,7 @@ import { TYPES } from "../game/catalog";
 import type { Artwork } from "../presentation/art";
 
 export type RecruitType = GameRecruitType;
-export const recruitTypes = ["swordsman", "spearman", "archer", "scout"] as const;
+export const recruitTypes = ["swordsman", "spearman", "archer", "scout", "rider"] as const;
 
 export interface RecruitmentContext {
   readonly commander: UnitView | undefined;

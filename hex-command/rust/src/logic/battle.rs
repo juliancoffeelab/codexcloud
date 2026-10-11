@@ -448,7 +448,7 @@ impl<'catalog> Game<'catalog> {
             .map(|name| self.kind(name))
             .collect();
         }
-        ["swordsman", "spearman", "archer", "scout"]
+        ["swordsman", "spearman", "archer", "scout", "rider"]
             .iter()
             .map(|name| self.kind(name))
             .collect()

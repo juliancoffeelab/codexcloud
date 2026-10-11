@@ -3,7 +3,7 @@ use super::*;
 
 #[test]
 fn recruitment_requires_gold_legal_destination_and_owned_keep() {
-    for kind in ["scout", "archer", "swordsman", "spearman"] {
+    for kind in ["scout", "archer", "swordsman", "spearman", "rider"] {
         let mut game = Game::new(rules(), "mirror");
         let leader = game
             .units

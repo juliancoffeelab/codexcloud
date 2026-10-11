@@ -1,0 +1,32 @@
+{
+  "id": "lancer",
+  "role": "warrior",
+  "name": "Lancer",
+  "terrainModifiers": {},
+  "race": "human",
+  "hp": 30,
+  "move": 5,
+  "cost": 14,
+  "attacks": [
+    {
+      "id": "lance",
+      "name": "Lance",
+      "damage": 8,
+      "damageType": "pierce",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Mounted spear",
+  "description": "A veteran mounted spearman with a stronger lance strike.",
+  "level": 2,
+  "family": "rider",
+  "experienceNeeded": 0,
+  "advancesTo": []
+}

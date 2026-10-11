@@ -27,7 +27,8 @@ export type UnitType =
   | "bonearcher"
   | "wolf"
   | "boar"
-  | "thorncaller";
+  | "thorncaller"
+  | "rider";
 export type AdvancedTroop =
   | "marksman"
   | "ranger"
@@ -39,7 +40,8 @@ export type AdvancedTroop =
   | "briarweaver"
   | "tridentguard"
   | "tidehunter"
-  | "tidesage";
+  | "tidesage"
+  | "lancer";
 export type RecruitType = Exclude<UnitType, LeaderType>;
 export const UNIT_TYPES = [
   "commander",
@@ -76,6 +78,8 @@ export const UNIT_TYPES = [
   "grovewarden",
   "lich",
   "tideseer",
+  "rider",
+  "lancer",
 ] as const satisfies readonly UnitType[];
 export type Race = "human" | "undead" | "beast" | "merfolk";
 export type TerrainType =
