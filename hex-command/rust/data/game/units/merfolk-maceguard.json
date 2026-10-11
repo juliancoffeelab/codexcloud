@@ -1,0 +1,27 @@
+{
+  "id": "merfolk-maceguard",
+  "role": "warrior",
+  "name": "Macer",
+  "race": "merfolk",
+  "hp": 20,
+  "move": 4,
+  "cost": 8,
+  "attacks": [
+    {
+      "id": "mace",
+      "name": "Shell mace",
+      "damage": 7,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": { "blade": 0, "pierce": 0, "impact": 0 },
+  "ability": "Shell breaker",
+  "description": "A merfolk impact fighter who crushes bones and heavy armor, trading the reef guard's protection for a stronger mace.",
+  "level": 1,
+  "family": "merfolk-maceguard",
+  "experienceNeeded": 10,
+  "advancesTo": ["merfolk-maceguard-l2"]
+}

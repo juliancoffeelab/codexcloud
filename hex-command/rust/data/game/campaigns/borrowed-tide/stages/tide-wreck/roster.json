@@ -143,7 +143,7 @@
       "row": 2
     }
   ],
-  "recruits": ["reefguard", "harpooner", "wavemender", "spearman", "adept"],
+  "recruits": ["reefguard", "harpooner", "wavemender", "spearman", "adept", "merfolk-maceguard"],
   "enemyRecruits": ["swordsman", "spearman", "archer"],
   "gold": 14,
   "enemyGold": 10

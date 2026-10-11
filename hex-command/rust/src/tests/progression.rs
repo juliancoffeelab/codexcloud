@@ -36,9 +36,9 @@ fn skeletal_mages_recruit_cast_advance_and_restore() {
     game.end_turn();
     let before_hp = game.unit(target).unwrap().hp;
     let effects = hit(&mut game, id, target, "boneburst");
-    assert_eq!(effects.damage, Some(7));
+    assert_eq!(effects.damage, Some(11));
     assert_eq!(effects.retaliation, Some(0));
-    assert_eq!(game.unit(target).unwrap().hp, before_hp - 7);
+    assert_eq!(game.unit(target).unwrap().hp, before_hp - 11);
     let index = game.index(id).unwrap();
     game.units[index].experience = game.rules.units[mage].experience_needed;
     game.units[index].hp -= 4;
@@ -76,6 +76,58 @@ fn skeletal_mages_recruit_cast_advance_and_restore() {
             .iter()
             .any(|id| id == "skeleton-impact-caster")
     );
+}
+
+#[test]
+fn macers_recruit_from_coastal_pools_and_advance_with_wounds() {
+    let mut game = flat();
+    let kind = game.kind("merfolk-maceguard");
+    let roster = game
+        .rules
+        .rosters
+        .iter()
+        .find(|r| r.id == "coastal")
+        .unwrap();
+    let pool: Vec<_> = roster.pool.iter().map(|id| game.kind(id)).collect();
+    game.pools = Some([pool.clone(), pool]);
+    let leader = add(&mut game, "tidekeeper", Side::Player, "2,3");
+    let keep = game.site("2,3");
+    game.set_terrain(keep, game.rules.terrains["keep"]);
+    game.owners[keep] = Some(Side::Player);
+    game.gold[Side::Player.index()] = game.rules.units[kind].cost;
+    let id = game
+        .execute(Command::Recruit {
+            unit: UnitId(leader),
+            kind: "merfolk-maceguard".into(),
+            tile: "3,3".into(),
+        })
+        .unwrap()
+        .added_unit
+        .unwrap()
+        .0;
+    assert_eq!(game.gold[Side::Player.index()], 0);
+    let index = game.index(id).unwrap();
+    game.units[index].experience = game.rules.units[kind].experience_needed;
+    game.units[index].hp -= 4;
+    game.units[index].moved = false;
+    game.units[index].attacked = false;
+    game.execute(Command::Advance {
+        unit: UnitId(id),
+        kind: "merfolk-maceguard-l2".into(),
+    })
+    .unwrap();
+    let unit = game.unit(id).unwrap();
+    assert_eq!(unit.hp, game.rules.units[unit.kind].hp - 4);
+    let state = game.state();
+    let restored = Game::try_from_state(rules(), state.clone()).unwrap();
+    assert_eq!(
+        serde_json::to_value(restored.state()).unwrap(),
+        serde_json::to_value(state).unwrap()
+    );
+    for mission in 0..rules().campaigns["borrowed-tide"].missions.len() {
+        let campaign = chapter("borrowed-tide", mission);
+        assert!(campaign.recruitment_options(Side::Player).contains(&kind));
+    }
 }
 
 #[test]

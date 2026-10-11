@@ -21,6 +21,6 @@
     "id": "coastal",
     "leader": "tidekeeper",
     "screen": "reefguard",
-    "pool": ["reefguard", "harpooner", "wavemender"]
+    "pool": ["reefguard", "harpooner", "wavemender", "merfolk-maceguard"]
   }
 ]

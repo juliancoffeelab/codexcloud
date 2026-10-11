@@ -45,7 +45,9 @@
     "game/units/rider.json",
     "game/units/lancer.json",
     "game/units/skeleton-impact-caster.json",
-    "game/units/skeleton-impact-caster-l2.json"
+    "game/units/skeleton-impact-caster-l2.json",
+    "game/units/merfolk-maceguard.json",
+    "game/units/merfolk-maceguard-l2.json"
   ],
   "scenarios": [
     "game/scenario/mirror-v1/scenario.json",

@@ -102,6 +102,8 @@ pub enum Family {
     Bonearcher,
     Commander,
     Harpooner,
+    #[serde(rename = "merfolk-maceguard")]
+    MerfolkMacer,
     Necromancer,
     Reefguard,
     Rider,
@@ -127,6 +129,7 @@ impl Family {
             Self::Bonearcher => "bonearcher",
             Self::Commander => "commander",
             Self::Harpooner => "harpooner",
+            Self::MerfolkMacer => "merfolk-maceguard",
             Self::Necromancer => "necromancer",
             Self::Reefguard => "reefguard",
             Self::Rider => "rider",

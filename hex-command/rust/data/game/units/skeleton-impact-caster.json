@@ -10,7 +10,7 @@
     {
       "id": "boneburst",
       "name": "Bone burst",
-      "damage": 6,
+      "damage": 10,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,

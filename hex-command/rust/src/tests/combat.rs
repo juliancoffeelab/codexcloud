@@ -117,6 +117,9 @@ fn preview_and_resolution_agree_across_weapons_and_terrain() {
         ("thorncaller", "spearman", "thorns", "grove", "3,3"),
         ("boar", "skeleton", "trample", "plains", "3,3"),
         ("harpooner", "swordsman", "harpoon", "ford", "3,3"),
+        ("reefguard", "skeleton", "tail", "plains", "3,3"),
+        ("merfolk-maceguard", "skeleton", "mace", "water", "3,3"),
+        ("merfolk-maceguard-l2", "revenant", "mace", "ford", "3,3"),
         (
             "skeleton-impact-caster",
             "soldier",

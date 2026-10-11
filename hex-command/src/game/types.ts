@@ -16,6 +16,7 @@ export type UnitType =
   | "swordsman"
   | "spearman"
   | "reefguard"
+  | "merfolk-maceguard"
   | "harpooner"
   | "wavemender"
   | "soldier"
@@ -41,6 +42,7 @@ export type AdvancedTroop =
   | "greatboar"
   | "briarweaver"
   | "tridentguard"
+  | "merfolk-maceguard-l2"
   | "tidehunter"
   | "tidesage"
   | "lancer";
@@ -64,6 +66,7 @@ export const UNIT_TYPES = [
   "spearman",
   "tidekeeper",
   "reefguard",
+  "merfolk-maceguard",
   "harpooner",
   "wavemender",
   "marksman",
@@ -76,6 +79,7 @@ export const UNIT_TYPES = [
   "greatboar",
   "briarweaver",
   "tridentguard",
+  "merfolk-maceguard-l2",
   "tidehunter",
   "tidesage",
   "marshal",

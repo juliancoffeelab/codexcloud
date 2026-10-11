@@ -459,6 +459,30 @@
       "side": "enemy",
       "col": 4,
       "row": 20
+    },
+    {
+      "type": "merfolk-maceguard",
+      "side": "player",
+      "col": 0,
+      "row": 21
+    },
+    {
+      "type": "merfolk-maceguard",
+      "side": "enemy",
+      "col": 1,
+      "row": 21
+    },
+    {
+      "type": "merfolk-maceguard-l2",
+      "side": "player",
+      "col": 3,
+      "row": 21
+    },
+    {
+      "type": "merfolk-maceguard-l2",
+      "side": "enemy",
+      "col": 4,
+      "row": 21
     }
   ]
 }
