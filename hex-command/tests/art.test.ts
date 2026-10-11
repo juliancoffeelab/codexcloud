@@ -84,6 +84,7 @@ function extraction(sprite: string): {
   width: number;
   height: number;
   smoothing: boolean;
+  draws: { source: string; coordinates: number[] }[];
 } {
   const encoded = /href="data:image\/png;base64,([^"]+)"/.exec(sprite)?.[1];
   assert(encoded, "Renderer receives only a standalone frame image");
@@ -132,6 +133,38 @@ test("Game units and artwork aliases route to their isolated frames", async () =
     }
   }
 });
+
+test("Compositions draw native layers in order, publish atomically and reuse cached images", async () => {
+  const { prepareSpriteImages, spriteImage } = await import("../src/presentation/sprite-images");
+  const frame = {
+    source: "base.png",
+    crop: [0, 0, 64, 64] as const,
+    layers: [
+      { source: "units-pixel.png", crop: [64, 0, 64, 64] as const, x: 3, y: 7 },
+      { source: "base.png", crop: [0, 64, 64, 64] as const, x: -2, y: 11 },
+    ],
+  };
+  failNative = true;
+  assert.equal(await prepareSpriteImages([frame]), false);
+  assert.equal(spriteImage(frame), undefined);
+  failNative = false;
+  assert.equal(await prepareSpriteImages([frame]), true);
+  const ready = spriteImage(frame)!;
+  const image = imageData(ready.url.split(",")[1]!);
+  assert.equal(image.width, 64);
+  assert.equal(image.height, 64);
+  assert.equal(image.smoothing, false);
+  assert.deepEqual(image.draws, [
+    { source: "base.png", coordinates: [0, 0, 64, 64, 0, 0, 64, 64] },
+    { source: "units-pixel.png", coordinates: [64, 0, 64, 64, 3, 7, 64, 64] },
+    { source: "base.png", coordinates: [0, 64, 64, 64, -2, 11, 64, 64] },
+  ]);
+  const requests = requested.length;
+  assert.equal(await prepareSpriteImages([frame]), true);
+  assert.equal(spriteImage(frame), ready);
+  assert.equal(requested.length, requests);
+});
+
 test("Static terrain frames supply matching edge fills without procedural overlays", async () => {
   await art.loadArtwork();
   const artwork = art.currentArtwork();
@@ -187,10 +220,12 @@ test("Map floors choose independent palettes for directional terrain and matchin
       const images = [
         ...result.terrainArtwork.matchAll(/href="data:image\/png;base64,([^"]+)"/g),
       ].map((match) => imageData(match[1]!));
-      assert.equal(images.length, props.length + 1);
+      assert.equal(images.length, 1);
+      const image = images[0]!;
+      assert.equal(image.draws.length, props.length + 1);
       props.forEach((prop, index) => {
         const crop = pixelFrames[`terrain_${prop.name}__${tile.floor}` as keyof typeof pixelFrames];
-        assert.deepEqual(images[index + 1]!.coordinates, [...crop, 0, 0, 64, 64]);
+        assert.deepEqual(image.draws[index + 1]!.coordinates, [...crop, prop.x, prop.y, 64, 64]);
       });
     }
   }

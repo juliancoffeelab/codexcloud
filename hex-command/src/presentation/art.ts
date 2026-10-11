@@ -1,4 +1,10 @@
-import { pixelFrames, pixelSources, pixelUnitModels } from "./pixel-art";
+import {
+  pixelFrames,
+  pixelSources,
+  pixelUnitModels,
+  pixelTerrainLayouts,
+  pixelFloorColors,
+} from "./pixel-art";
 import type { DialoguePortrait, Side } from "../game/types";
 import {
   prepareSpriteImages,
@@ -41,7 +47,7 @@ export function loadArtwork(): Promise<boolean> {
 
 /** Atlas references stop at this loading boundary. */
 function artworkFrames(): Record<string, SpriteFrame> {
-  return Object.fromEntries(
+  const frames: Record<string, SpriteFrame> = Object.fromEntries(
     Object.entries(pixelFrames).map(([key, crop]) => {
       const source = key.startsWith("terrain_") ? pixelSources.terrain : pixelSources.units;
       return [
@@ -53,6 +59,23 @@ function artworkFrames(): Record<string, SpriteFrame> {
       ];
     }),
   );
+  for (const [name, layouts] of Object.entries(pixelTerrainLayouts)) {
+    layouts.forEach((pieces, index) => {
+      for (const floor of [undefined, ...Object.keys(pixelFloorColors)]) {
+        const suffix = floor ? `__${floor}` : "";
+        const base = frames[`terrain_${name}${suffix}`] ?? frames[`terrain_${name}`]!;
+        frames[`terrain_${name}_layout_${index}${suffix}`] = {
+          ...base,
+          layers: pieces.map((piece) => ({
+            ...(frames[`terrain_${piece.name}${suffix}`] ?? frames[`terrain_${piece.name}`]!),
+            x: piece.x,
+            y: piece.y,
+          })),
+        };
+      }
+    });
+  }
+  return frames;
 }
 
 /** Only complete images reach SVG. No offsets, sheet sizes, masks or crop viewports. */

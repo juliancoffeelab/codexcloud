@@ -51,7 +51,10 @@
   small stones scattered beside the route; no fixed endpoints are required.
   Choose arrangements deterministically from map/tile identity. Keep pieces at
   their native size and lighting; do not mirror, resize or randomly move them on
-  redraw. The atlas only packs source frames; the published renderer places them.
+  redraw. The atlas only packs source frames. At artwork loading, flatten each
+  prepared arrangement with its selected floor into a cached native 64×64 image;
+  publish those isolated images for the renderer. Draw one image per terrain
+  tile, without separate SVG images for every prop or recomposition on scrolling.
 
 - **Permanent character canvas rule: every character/unit sprite and portrait is
   exactly 64×64 native pixels. This rule must never be changed; do not even try

@@ -4,13 +4,9 @@ import type { Artwork } from "../presentation/art";
 import type { FrameImage } from "../presentation/sprite-images";
 import { TERRAIN, TYPES } from "../game/catalog";
 import { artFrame, artSprite } from "../presentation/art";
-import {
-  pixelDefaultFloors,
-  pixelFloorColors,
-  pixelTerrainLayouts,
-} from "../presentation/pixel-art";
+import { pixelDefaultFloors, pixelFloorColors } from "../presentation/pixel-art";
 import { battlefieldSpriteSize, hexPoints, tileCenter } from "./geometry";
-import { terrainArtNames } from "../presentation/terrain-connections";
+import { terrainLayout } from "../presentation/terrain-layout";
 export { terrainArtNames } from "../presentation/terrain-connections";
 
 export interface TileUnitView {
@@ -34,20 +30,11 @@ export interface BattlefieldTileView extends TileView {
   ownerColor: string;
 }
 
-/** Stable per-map arrangements, independent of redraws, terrain rules and floor colors. */
 export function terrainProps(
   tile: Pick<TileView, "terrain" | "id" | "connections" | "deadEnds">,
   mapId: string,
 ) {
-  const layouts = pixelTerrainLayouts[terrainArtNames(tile)[0]!];
-  if (!layouts?.length) return [];
-  let hash = 2166136261;
-  for (const character of `${mapId}:${tile.id}`) {
-    hash = Math.imul(hash ^ character.charCodeAt(0), 16777619);
-  }
-  hash = Math.imul(hash ^ (hash >>> 16), 0x85ebca6b);
-  hash ^= hash >>> 13;
-  return layouts[(hash >>> 0) % layouts.length]!;
+  return terrainLayout(tile, mapId).props;
 }
 
 function tileLabel(
@@ -135,25 +122,18 @@ export function battlefieldTiles(
         pixelFloorColors[pixelDefaultFloors[tile.terrain]]!,
       classes,
       label: tileLabel(tile, unit, reachable, target, objectiveTiles.get(tile.id) ?? []),
-      terrainArtwork: [
-        ...terrainArtNames(tile).map((name) => ({ name, x: 0, y: 0 })),
-        ...terrainProps(tile, game.mapId),
-      ]
-        .map((piece) =>
-          artSprite(
-            artwork,
-            "terrain",
-            piece.name,
-            x - battlefieldSpriteSize / 2 + (piece.x * battlefieldSpriteSize) / 64,
-            y - battlefieldSpriteSize / 2 + (piece.y * battlefieldSpriteSize) / 64,
-            battlefieldSpriteSize,
-            battlefieldSpriteSize,
-            "terrain-art",
-            "player",
-            tile.floor,
-          ),
-        )
-        .join(""),
+      terrainArtwork: artSprite(
+        artwork,
+        "terrain",
+        terrainLayout(tile, game.mapId).name,
+        x - battlefieldSpriteSize / 2,
+        y - battlefieldSpriteSize / 2,
+        battlefieldSpriteSize,
+        battlefieldSpriteSize,
+        "terrain-art",
+        "player",
+        tile.floor,
+      ),
       occupant,
       ownerColor: tile.owner === "player" ? "#6fdec0" : "#ff9590",
     };

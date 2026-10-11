@@ -2,6 +2,15 @@
 export interface SpriteFrame {
   source: string;
   crop: readonly [number, number, number, number];
+  /** Native placements are flattened once, before publishing the artwork snapshot. */
+  layers?: readonly SpriteLayer[];
+}
+
+export interface SpriteLayer {
+  source: string;
+  crop: readonly [number, number, number, number];
+  x: number;
+  y: number;
 }
 
 export interface FrameImage {
@@ -38,7 +47,14 @@ export function spriteImage(frame: SpriteFrame): FrameImage | undefined {
 /** Extract at source resolution before publication; never expose an atlas to the DOM. */
 export async function prepareSpriteImages(frames: readonly SpriteFrame[]): Promise<boolean> {
   const pending = frames.filter((frame) => !images.has(key(frame)));
-  const sources = [...new Set(pending.map((frame) => frame.source))];
+  const sources = [
+    ...new Set(
+      pending.flatMap((frame) => [
+        frame.source,
+        ...(frame.layers ?? []).map((layer) => layer.source),
+      ]),
+    ),
+  ];
   const decoded = await Promise.all(sources.map(decode));
   if (decoded.some((image) => image === null)) return false;
   const staged = new Map<string, FrameImage>();
@@ -53,6 +69,20 @@ export async function prepareSpriteImages(frames: readonly SpriteFrame[]): Promi
       if (!context) return false;
       context.imageSmoothingEnabled = false;
       context.drawImage(image!, x, y, width, height, 0, 0, canvas.width, canvas.height);
+      for (const layer of frame.layers ?? []) {
+        const [lx, ly, lw, lh] = layer.crop;
+        context.drawImage(
+          decoded[sources.indexOf(layer.source)]!,
+          lx,
+          ly,
+          lw,
+          lh,
+          layer.x,
+          layer.y,
+          lw,
+          lh,
+        );
+      }
       staged.set(key(frame), {
         url: canvas.toDataURL("image/png"),
         width: canvas.width,
