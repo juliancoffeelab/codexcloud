@@ -150,7 +150,6 @@ test("Command facade forwards calls without exposing reads", async () => {
     retryMission: () => live.snapshot(),
     advanceDialogue: () => {},
     previousDialogue: () => {},
-    setArtStyle: async () => {},
     setSound: async () => {},
     error: () => {},
   };

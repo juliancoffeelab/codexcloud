@@ -2,15 +2,12 @@
 export interface SpriteFrame {
   source: string;
   crop: readonly [number, number, number, number];
-  pixel: boolean;
-  mask?: readonly (readonly [number, number])[];
 }
 
 export interface FrameImage {
   url: string;
   width: number;
   height: number;
-  pixel: boolean;
 }
 
 const images = new Map<string, FrameImage>();
@@ -54,21 +51,12 @@ export async function prepareSpriteImages(frames: readonly SpriteFrame[]): Promi
       canvas.height = Math.ceil(height);
       const context = canvas.getContext("2d");
       if (!context) return false;
-      context.imageSmoothingEnabled = !frame.pixel;
-      if (frame.mask) {
-        context.beginPath();
-        frame.mask.forEach(([mx, my], index) =>
-          index === 0 ? context.moveTo(mx, my) : context.lineTo(mx, my),
-        );
-        context.closePath();
-        context.clip();
-      }
+      context.imageSmoothingEnabled = false;
       context.drawImage(image!, x, y, width, height, 0, 0, canvas.width, canvas.height);
       staged.set(key(frame), {
         url: canvas.toDataURL("image/png"),
         width: canvas.width,
         height: canvas.height,
-        pixel: frame.pixel,
       });
     }
   } catch {

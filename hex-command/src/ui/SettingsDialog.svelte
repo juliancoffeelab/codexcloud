@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { BattleView, BattleCommands } from "../controller/view";
-  import type { ArtStyle } from "../presentation/art";
   interface Props {
     view: BattleView;
     actions: BattleCommands;
@@ -9,10 +8,6 @@
     onNewCampaign: () => void;
   }
   let { view, actions, dialog = $bindable(), onNewBattle, onNewCampaign }: Props = $props();
-  let selectedArt = $state<ArtStyle>("normal");
-  $effect(() => {
-    if (!view.artLoading) selectedArt = view.artStyle;
-  });
   function closeOnBackdropClick(event: MouseEvent) {
     if (!dialog || event.target !== dialog) return;
     const bounds = dialog.getBoundingClientRect();
@@ -22,11 +17,6 @@
       event.clientY < bounds.top ||
       event.clientY > bounds.bottom;
     if (clickedOutside) dialog.close();
-  }
-  function changeArt(event: Event) {
-    const value = (event.currentTarget as HTMLSelectElement).value;
-    if (value === "normal" || value === "low-poly" || value === "pixel")
-      void actions.setArtStyle(value);
   }
 </script>
 
@@ -42,14 +32,6 @@
       ×
     </button>
   </div>
-  <label class="art-control" for="art-style">
-    <span>Art style</span>
-    <select id="art-style" bind:value={selectedArt} disabled={view.artLoading} onchange={changeArt}>
-      <option value="normal">Normal</option>
-      <option value="low-poly">Low-poly</option>
-      <option value="pixel">Pixel</option>
-    </select>
-  </label>
   <label class="sound-control" for="sound-effects">
     <span>Sound effects</span>
     <input

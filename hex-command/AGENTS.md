@@ -34,6 +34,8 @@
   tests. Keep captured images, whole-sprite fixtures and one-off visual checks
   in ignored `tmp/`. Generation sanity checks should enforce canvas-bottom
   ground contact, with the explicit `flying` palette exemption.
+- Pixel artwork is the only game art mode. Do not restore style switches,
+  stored style preferences or alternate-art fallback loaders.
 - For pixel artwork, use the project skills: [pinkbox generation](.agents/skills/pinkbox-generation/SKILL.md),
   [pinkbox enhancement](.agents/skills/pinkbox-enhancement/SKILL.md),
   [pixel cleaning](.agents/skills/pixel-cleaning/SKILL.md), and

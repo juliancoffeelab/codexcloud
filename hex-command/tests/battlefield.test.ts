@@ -1,6 +1,6 @@
 import { test } from "vitest";
 import assert from "node:assert/strict";
-import { artworkForStyle } from "../src/presentation/art";
+import { currentArtwork } from "../src/presentation/art";
 import { Game } from "./game-fixture";
 import { campaignMission, goalProgress } from "../src/game/campaign-progress";
 import { createGameView } from "./fixture-view";
@@ -11,7 +11,7 @@ test("Selection and attack targets have accessible labels and health", async () 
   const game = new Game();
   const enemy = game.addUnit("archer", "enemy", "2,3");
   const opening = createGameView(game);
-  const selected = battlefieldTiles(opening, "u2", artworkForStyle("pixel"), null);
+  const selected = battlefieldTiles(opening, "u2", currentArtwork(), null);
   assert.equal(selected.length, opening.tiles.length);
   const soldier = required(selected.find((tile) => tile.id === "1,3"));
   assert(soldier.classes.includes("selected"));
@@ -26,8 +26,8 @@ test("Recruitment highlights only legal destinations", async () => {
   const game = new Game();
   const enemy = game.addUnit("archer", "enemy", "2,3");
   const opening = createGameView(game);
-  const selected = battlefieldTiles(opening, "u2", artworkForStyle("pixel"), null);
-  const recruited = battlefieldTiles(opening, null, artworkForStyle("pixel"), "0,2");
+  const selected = battlefieldTiles(opening, "u2", currentArtwork(), null);
+  const recruited = battlefieldTiles(opening, null, currentArtwork(), "0,2");
   assert(required(recruited.find((tile) => tile.id === "0,2")).classes.includes("recruitable"));
   assert(!recruited.some((tile) => /selected|reachable|target/.test(tile.classes)));
 });
@@ -36,9 +36,9 @@ test("Moving units preserves stable terrain and SVG layers", async () => {
   const game = new Game();
   const enemy = game.addUnit("archer", "enemy", "2,3");
   const opening = createGameView(game);
-  const selected = battlefieldTiles(opening, "u2", artworkForStyle("pixel"), null);
+  const selected = battlefieldTiles(opening, "u2", currentArtwork(), null);
   game.move("u2", "2,2");
-  const moved = battlefieldTiles(createGameView(game), "u2", artworkForStyle("pixel"), null);
+  const moved = battlefieldTiles(createGameView(game), "u2", currentArtwork(), null);
   assert.equal(required(moved.find((tile) => tile.id === "1,3")).occupant, null);
   assert.equal(required(moved.find((tile) => tile.id === "2,2")).occupant?.unit.id, "u2");
   for (let index = 0; index < selected.length; index++) {
@@ -49,9 +49,6 @@ test("Moving units preserves stable terrain and SVG layers", async () => {
     assert.equal(after.points, before.points);
     assert.equal(after.terrainArtwork, before.terrainArtwork);
   }
-  const alternate = battlefieldTiles(opening, "u2", artworkForStyle("normal"), null);
-  assert.notEqual(required(alternate[0]).fill, required(selected[0]).fill);
-  assert.equal(required(alternate[0]).points, required(selected[0]).points);
 });
 
 // Objective destinations and named companions convey the same information without color.
@@ -61,12 +58,7 @@ for (const id of ["lantern-road", "green-accord", "ashen-oath"] as const) {
       JSON.stringify([id]),
     async () => {
       const campaign = Game.startCampaign(id);
-      const tiles = battlefieldTiles(
-        createGameView(campaign),
-        null,
-        artworkForStyle("pixel"),
-        null,
-      );
+      const tiles = battlefieldTiles(createGameView(campaign), null, currentArtwork(), null);
       for (const goal of campaignMission(campaign.campaign!).goals) {
         const progress = goalProgress(campaign, goal);
         for (const id of progress.tiles) {
@@ -85,7 +77,7 @@ test("Ordinary skirmish labels have no objective", async () => {
   const game = new Game();
   const enemy = game.addUnit("archer", "enemy", "2,3");
   const opening = createGameView(game);
-  const selected = battlefieldTiles(opening, "u2", artworkForStyle("pixel"), null);
+  const selected = battlefieldTiles(opening, "u2", currentArtwork(), null);
   const target = required(selected.find((tile) => tile.id === enemy.tile));
   assert(!target.label.includes("Objective:"), "Ordinary skirmish tiles have no goal label");
 });
@@ -94,21 +86,21 @@ test("Ordinary skirmish labels have no objective", async () => {
 test("Completed seal markers disappear while territory remains visible", async () => {
   const game = Game.startCampaign("lantern-road", 2);
   game.campaign!.marks.push("sealed:9,1");
-  const tiles = battlefieldTiles(createGameView(game), null, artworkForStyle("pixel"), null);
+  const tiles = battlefieldTiles(createGameView(game), null, currentArtwork(), null);
   assert(!required(tiles.find((tile) => tile.id === "9,1")).classes.includes("objective"));
   assert(required(tiles.find((tile) => tile.id === "11,4")).classes.includes("objective"));
   const escort = Game.startCampaign("green-accord", 2);
   required(escort.tile("7,4")).owner = "player";
   assert(
     required(
-      battlefieldTiles(createGameView(escort), null, artworkForStyle("pixel"), null).find(
+      battlefieldTiles(createGameView(escort), null, currentArtwork(), null).find(
         (tile) => tile.id === "7,4",
       ),
     ).classes.includes("objective"),
   );
   escort.winner = "player";
   assert(
-    !battlefieldTiles(createGameView(escort), null, artworkForStyle("pixel"), null).some((tile) =>
+    !battlefieldTiles(createGameView(escort), null, currentArtwork(), null).some((tile) =>
       tile.classes.includes("objective"),
     ),
   );

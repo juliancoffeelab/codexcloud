@@ -1,6 +1,6 @@
 import { test } from "vitest";
 import assert from "node:assert/strict";
-import { artworkForStyle } from "../src/presentation/art";
+import { currentArtwork } from "../src/presentation/art";
 import { Game, TERRAIN } from "./game-fixture";
 import { createGameView } from "./fixture-view";
 import type { TerrainType } from "../src/game/types";
@@ -18,9 +18,7 @@ function published(game: Game, selected: string): BattleView {
     focusedTile: "0,0",
     renderRevision: 0,
     status: "",
-    artStyle: "normal",
-    artwork: artworkForStyle("normal"),
-    artLoading: false,
+    artwork: currentArtwork(),
     sound: false,
     canUndo: false,
     recruitment: null,

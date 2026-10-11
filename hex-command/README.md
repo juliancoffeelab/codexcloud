@@ -80,14 +80,14 @@ turn. Combat grants experience; eligible units can advance into a second rank.
 The selected campaign supplies its own required objectives, hints, dialogue and
 optional rewards. Surviving troops can be recalled between chapters.
 
-Settings switch between Normal, Low-poly and Pixel artwork while retaining the
-battle. Preferences and saves stay in the current browser. The developer map
-shows every terrain and both factions of every unit rank.
+The game uses pixel artwork throughout. Sound preferences and saves stay in the
+current browser. The developer map shows every terrain and both factions of
+every playable unit rank.
 
 ## Artwork
 
 Pixel sources are character matrices and explicit palettes under `pixel/art/`.
-Normal and Low-poly source sprites live under `art/styled/`. Character sources are always 64×64, stored in
+Character sources are always 64×64, stored in
 `pixel/art/units/<race>/<unit-id>/`; race trees live in `pixel/art/units/lineups/`.
 Each unit folder contains only its matrix and material palette. Generation
 history and previews stay in ignored `tmp/`, outside the committed sources.
@@ -97,15 +97,14 @@ npm run art:build
 npm run art:check
 ```
 
-Each style has one unit atlas and one terrain atlas in `public/assets/`, with
-corresponding frame metadata. The loader extracts standalone frames before
+One unit atlas and one terrain atlas live in `public/assets/`, with corresponding
+frame metadata in `src/presentation/pixel-art.ts`. The loader extracts standalone frames before
 publishing them to renderers, so the UI never crops a whole atlas by overflow.
 The pixel build uses one read-only packer, `scripts/build-pixel-atlas.py`.
 Art workflows live in short skills: [generation](.agents/skills/pinkbox-generation/SKILL.md),
 [enhancement](.agents/skills/pinkbox-enhancement/SKILL.md),
 [cleaning](.agents/skills/pixel-cleaning/SKILL.md), and
 [lineup previews](.agents/skills/pixel-lineup/SKILL.md).
-See the [styled source guide](art/styled/README.md) for other styles.
 
 ## Simulations and publication
 
