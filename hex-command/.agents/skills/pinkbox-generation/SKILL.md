@@ -11,7 +11,10 @@ as references. Tell the user when applying this skill.
 
 1. Prepare exactly three occupied anchors and one empty bottom-right output in
    a 2×2 template. Each character is exactly 64×64; most bodies stay below 40
-   painted pixels tall. Compare cavalry with existing mounted units.
+   painted pixels tall. For related tiers, use the same `--body-guide X Y W H`
+   and foot baseline; `--staff-guide X Y W H` gives raised equipment separate
+   space. Guides are removable magenta, never an extraction crop. Compare cavalry
+   with existing mounted units.
 2. Inspect the template, then give its local path to imagegen. Fill only the
    empty box with one complete unit; preserve anchors, layout and captions.
    Specify anatomy, facing, hands and actual weapon grips. Require chunky native
