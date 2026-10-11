@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { tick } from "svelte";
   import type { BattleCommands, BattleView } from "../controller/view";
   import { unitPanelView } from "./unit-panel-view";
   import UnitCard from "./UnitCard.svelte";
@@ -13,13 +14,48 @@
 
   let { view, actions, onNewBattle }: Props = $props();
   const panel = $derived(unitPanelView(view));
+  let panelElement: HTMLElement | undefined;
+  const inspection = $derived([view.selected, view.target, view.inspectedTile].join("|"));
+
+  $effect(() => {
+    inspection;
+    const node = panelElement;
+    if (!node) return;
+    let current = true;
+    void tick().then(() => {
+      const pane = node.closest("aside");
+      if (!current || !pane || !["auto", "scroll"].includes(getComputedStyle(pane).overflowY))
+        return;
+      const attack = node.querySelector<HTMLElement>(".attack-actions");
+      const firstButton = attack?.querySelector<HTMLElement>(".attack-action:not(:disabled)");
+      const anchor =
+        attack &&
+        firstButton &&
+        firstButton.getBoundingClientRect().bottom - attack.getBoundingClientRect().top + 16 >
+          pane.clientHeight
+          ? firstButton
+          : attack;
+      pane.scrollTop = anchor
+        ? pane.scrollTop + anchor.getBoundingClientRect().top - pane.getBoundingClientRect().top - 8
+        : 0;
+    });
+    return () => {
+      current = false;
+    };
+  });
 
   function attackWithWeapon(weaponId: string): void {
     actions.attackSelected(weaponId);
   }
 </script>
 
-<section id="unit-panel" class="panel" aria-label="Selected unit" hidden={panel.kind === "hidden"}>
+<section
+  bind:this={panelElement}
+  id="unit-panel"
+  class="panel"
+  aria-label="Selected unit"
+  hidden={panel.kind === "hidden"}
+>
   {#if panel.kind === "outcome"}
     <div class="unit-title">
       <h2>{panel.title}</h2>
