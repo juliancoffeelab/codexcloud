@@ -22,10 +22,14 @@
   terrain grid. During generation, keep raw evidence unchanged in `tmp/`.
 
 - Keep changes quick to make and review. Tests must be small, fast, and lightweight.
-- Matrices and palettes in `pixel/art/` are authoritative. `npm run art:build`
+- For pixel artwork, use the project skills: [pinkbox generation](.agents/skills/pinkbox-generation/SKILL.md),
+  [pinkbox enhancement](.agents/skills/pinkbox-enhancement/SKILL.md),
+  [pixel cleaning](.agents/skills/pixel-cleaning/SKILL.md), and
+  [lineup previews](.agents/skills/pixel-lineup/SKILL.md).
+  Matrices and palettes in `pixel/art/` are authoritative. `npm run art:build`
   packs them with `scripts/build-pixel-atlas.py`; builds must never replay
   recipes, regenerate characters or write source artwork. Keep generation,
-  cleaning and preview scratch output in `tmp/`.
+  cleaning and preview helpers inside their skills, with scratch output in `tmp/`.
 - Run `npm run style` for Prettier and staged/unstaged whitespace checks together.
   Use `npm run format` to apply formatting; do not repeat individual style checks.
 - The entire `npm test` command must finish within 20 seconds. Use controlled

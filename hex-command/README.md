@@ -101,6 +101,10 @@ Each style has one unit atlas and one terrain atlas in `public/assets/`, with
 corresponding frame metadata. The loader extracts standalone frames before
 publishing them to renderers, so the UI never crops a whole atlas by overflow.
 The pixel build uses one read-only packer, `scripts/build-pixel-atlas.py`.
+Art workflows live in short skills: [generation](.agents/skills/pinkbox-generation/SKILL.md),
+[enhancement](.agents/skills/pinkbox-enhancement/SKILL.md),
+[cleaning](.agents/skills/pixel-cleaning/SKILL.md), and
+[lineup previews](.agents/skills/pixel-lineup/SKILL.md).
 See the [styled source guide](art/styled/README.md) for other styles.
 
 ## Simulations and publication
