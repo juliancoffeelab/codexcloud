@@ -115,10 +115,13 @@ export interface Coordinates {
   col: number;
   row: number;
 }
+export type HexDirection = "e" | "se" | "sw" | "w" | "nw" | "ne";
 export interface Tile extends Coordinates {
   id: string;
   terrain: TerrainType;
   owner: Side | null;
+  /** Artwork only: road exits on plains, or opposite bridge/ford edges. */
+  connections?: HexDirection[];
 }
 export interface Unit {
   /** Missing on pre-progression saves, which load as zero. */
@@ -193,6 +196,7 @@ export interface TerrainDefinition {
 export interface TerrainOverride extends Coordinates {
   terrain: TerrainType;
   owner?: Side | null;
+  connections?: HexDirection[];
 }
 export interface StartingUnit extends Coordinates {
   type: UnitType;

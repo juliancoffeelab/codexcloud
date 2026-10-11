@@ -2,6 +2,25 @@
 
 use super::*;
 use serde::{Deserialize, Serialize};
+
+/// Clockwise edge names for a pointy-top hex. These describe artwork only.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum HexDirection {
+    E,
+    Se,
+    Sw,
+    W,
+    Nw,
+    Ne,
+}
+impl HexDirection {
+    pub fn bit(self) -> u8 {
+        1 << self as u8
+    }
+}
+
 /// A tile snapshot combining authored coordinates with current terrain and ownership.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
@@ -12,6 +31,26 @@ pub struct Tile {
     pub row: i32,
     pub terrain: String,
     pub owner: Option<Side>,
+    /// Decorative road exits on plains, or the two opposite crossing edges.
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub connections: Option<Vec<HexDirection>>,
+}
+impl Tile {
+    pub fn valid_connections(&self) -> bool {
+        let Some(exits) = &self.connections else {
+            return true;
+        };
+        let mask = exits.iter().fold(0u8, |mask, exit| mask | exit.bit());
+        if mask == 0 || mask.count_ones() as usize != exits.len() {
+            return false;
+        }
+        match self.terrain.as_str() {
+            "plains" => true,
+            "bridge" | "ford" => matches!(mask, 9 | 18 | 36),
+            _ => false,
+        }
+    }
 }
 /// Treasury balances for the player and enemy.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]

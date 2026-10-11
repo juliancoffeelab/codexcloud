@@ -24,8 +24,9 @@ test("Version-two river migration preserves old tiles, units and checkpoint stat
     nativeValue(game.checkpoint()),
   ) as import("../rust/pkg/hex_command").SavedGame;
   checkpoint.state.mapRevision = 1;
-  checkpoint.state.tiles = LEGACY_RIVER.terrain.map((tile) => ({
+  checkpoint.state.tiles = LEGACY_RIVER.terrain.map(({ connections, ...tile }) => ({
     ...tile,
+    ...(connections ? { connections: [...connections] } : {}),
     id: `${tile.col},${tile.row}`,
     owner: tile.owner ?? null,
   }));

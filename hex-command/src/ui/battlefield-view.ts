@@ -26,6 +26,21 @@ export interface BattlefieldTileView extends TileView {
   ownerColor: string;
 }
 
+/** Connections select native frames; they do not change movement or protection. */
+export function terrainArtNames(tile: Pick<TileView, "terrain" | "connections">): string[] {
+  const directions = ["e", "se", "sw", "w", "nw", "ne"];
+  const mask = (tile.connections ?? []).reduce(
+    (mask, direction) => mask | (1 << directions.indexOf(direction)),
+    0,
+  );
+  if (tile.terrain === "plains" && mask) return ["plains", `road_${mask}`];
+  if (tile.terrain === "bridge" || tile.terrain === "ford") {
+    if (mask === 18) return [`${tile.terrain}_nw-se`];
+    if (mask === 36) return [`${tile.terrain}_ne-sw`];
+  }
+  return [tile.terrain];
+}
+
 function tileLabel(
   tile: TileView,
   occupant: UnitView | undefined,
@@ -120,16 +135,20 @@ export function battlefieldTiles(
       fill: pixelTerrainColors[tile.terrain],
       classes,
       label: tileLabel(tile, unit, reachable, target, objectiveTiles.get(tile.id) ?? []),
-      terrainArtwork: artSprite(
-        artwork,
-        "terrain",
-        tile.terrain,
-        x - battlefieldSpriteSize / 2,
-        y - battlefieldSpriteSize / 2,
-        battlefieldSpriteSize,
-        battlefieldSpriteSize,
-        "terrain-art",
-      ),
+      terrainArtwork: terrainArtNames(tile)
+        .map((name) =>
+          artSprite(
+            artwork,
+            "terrain",
+            name,
+            x - battlefieldSpriteSize / 2,
+            y - battlefieldSpriteSize / 2,
+            battlefieldSpriteSize,
+            battlefieldSpriteSize,
+            "terrain-art",
+          ),
+        )
+        .join(""),
       occupant,
       ownerColor: tile.owner === "player" ? "#6fdec0" : "#ff9590",
     };

@@ -47,6 +47,7 @@ pub(crate) fn create_arena<'catalog>(
                 row: r + 4,
                 terrain: "plains".into(),
                 owner: None,
+                connections: None,
             });
         }
     }

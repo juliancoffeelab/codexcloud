@@ -8,7 +8,7 @@ export interface CampaignBoard {
   round: number;
   turn: Side;
   winner?: Side | null;
-  tile(id: string): Readonly<Tile> | undefined;
+  tile(id: string): Immutable<Tile> | undefined;
 }
 
 export function campaignMission(state: Immutable<CampaignState>): Immutable<MissionDefinition> {

@@ -7,6 +7,13 @@
   Do not nest sprites under lineup folders or restore family/tier directories.
   Keep generated candidates, prompts, extraction reports and edit logs in ignored
   `tmp/`; do not commit art archives, duplicate renders or reference-only poses.
+  Terrain sources live in `pixel/art/terrain/<terrain>/`: `tile.txt` is the
+  default tile; bridge/ford diagonals are `ne-sw.txt` and `nw-se.txt`. Decorative
+  roads use six transparent spokes in `terrain/road/{e,se,sw,w,nw,ne}.txt` with
+  one material palette. The atlas packs their static combinations without
+  modifying source matrices. Map tiles optionally declare `connections` with
+  those clockwise edge names; crossings need two opposite edges. These fields
+  affect artwork only and must survive publication and save/restore.
 
 - **Permanent character canvas rule: every character/unit sprite and portrait is
   exactly 64×64 native pixels. This rule must never be changed; do not even try

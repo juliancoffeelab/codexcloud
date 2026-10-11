@@ -145,6 +145,38 @@ fn adjacency_matches_hex_distance_including_edges() {
     }
 }
 
+#[test]
+fn artwork_connections_survive_restore_and_forks_without_changing_movement() {
+    let original = Game::new(rules(), "mirror");
+    let mut state = original.state();
+    let tile = state
+        .tiles
+        .iter_mut()
+        .find(|tile| tile.terrain == "plains")
+        .unwrap();
+    let id = tile.id.clone();
+    tile.connections = Some(vec![HexDirection::E, HexDirection::W, HexDirection::Se]);
+    let decorated = Game::try_from_state(rules(), state).unwrap();
+    for unit in &original.units {
+        assert_eq!(original.reachable(unit), decorated.reachable(unit));
+    }
+    for game in [&decorated, &decorated.fork()] {
+        assert_eq!(
+            game.state()
+                .tiles
+                .iter()
+                .find(|tile| tile.id == id)
+                .unwrap()
+                .connections,
+            Some(vec![HexDirection::E, HexDirection::W, HexDirection::Se])
+        );
+    }
+    let mut invalid = decorated.state();
+    let tile = invalid.tiles.iter_mut().find(|tile| tile.id == id).unwrap();
+    tile.connections = Some(vec![HexDirection::E, HexDirection::E]);
+    assert!(Game::try_from_state(rules(), invalid).is_err());
+}
+
 fn connected(game: &Game<'_>, allowed: &HashSet<usize>, start: usize) -> HashSet<usize> {
     let mut reached = HashSet::from([start]);
     let mut pending = vec![start];

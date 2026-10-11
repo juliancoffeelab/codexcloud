@@ -59,6 +59,7 @@ pub(crate) struct Game<'catalog> {
     pub(crate) board: Rc<Board>,
     pub(crate) terrain: Vec<usize>,
     pub(crate) owners: Vec<Option<Side>>,
+    pub(crate) connections: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) units: Vec<Unit>,
     pub(crate) map_id: String,
     pub(crate) map_revision: u32,
@@ -118,6 +119,13 @@ impl<'catalog> Game<'catalog> {
             .map(|tile| rules.terrains[&tile.terrain])
             .collect();
         let owners = state.tiles.iter().map(|tile| tile.owner).collect();
+        let connections = Rc::new(
+            state
+                .tiles
+                .iter()
+                .map(|tile| tile.connections.clone())
+                .collect(),
+        );
         let combat_present = state.last_combat.is_some();
         let last_combat = state.last_combat.flatten();
         let mut game = Self {
@@ -125,6 +133,7 @@ impl<'catalog> Game<'catalog> {
             board,
             terrain,
             owners,
+            connections,
             units,
             map_id: state.map_id,
             map_revision: state.map_revision,
@@ -198,6 +207,7 @@ impl<'catalog> Game<'catalog> {
                 row: self.board.positions[index].1,
                 terrain: self.rules.terrain_names[self.terrain[index]].clone(),
                 owner: self.owners[index],
+                connections: self.connections[index].clone(),
             })
             .collect()
     }
@@ -288,6 +298,7 @@ impl<'catalog> Game<'catalog> {
     pub(crate) fn set_terrain(&mut self, tile: usize, terrain: usize) {
         if self.terrain[tile] != terrain {
             self.terrain[tile] = terrain;
+            Rc::make_mut(&mut self.connections)[tile] = None;
             self.attack_geometry = Rc::new(RefCell::new(HashMap::new()));
             self.terrain_revision = self.terrain_revision.wrapping_add(1);
             self.route_cache.get_mut().clear();
@@ -357,6 +368,7 @@ impl<'catalog> Game<'catalog> {
             board: self.board.clone(),
             terrain: self.terrain.clone(),
             owners: self.owners.clone(),
+            connections: self.connections.clone(),
             units: self.units.clone(),
             map_id: self.map_id.clone(),
             map_revision: self.map_revision,

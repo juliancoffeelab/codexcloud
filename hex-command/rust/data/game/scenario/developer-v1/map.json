@@ -93,42 +93,48 @@
       "col": 0,
       "row": 2,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["e"]
     },
     {
       "id": "1,2",
       "col": 1,
       "row": 2,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["e", "w"]
     },
     {
       "id": "2,2",
       "col": 2,
       "row": 2,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["e", "se", "w"]
     },
     {
       "id": "3,2",
       "col": 3,
       "row": 2,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["e", "w"]
     },
     {
       "id": "4,2",
       "col": 4,
       "row": 2,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["e", "w"]
     },
     {
       "id": "5,2",
       "col": 5,
       "row": 2,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["w"]
     },
     {
       "id": "0,3",
@@ -149,7 +155,8 @@
       "col": 2,
       "row": 3,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["sw", "nw"]
     },
     {
       "id": "3,3",
@@ -191,7 +198,8 @@
       "col": 2,
       "row": 4,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["se", "ne"]
     },
     {
       "id": "3,4",
@@ -233,7 +241,8 @@
       "col": 2,
       "row": 5,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["se", "nw"]
     },
     {
       "id": "3,5",
@@ -282,7 +291,8 @@
       "col": 3,
       "row": 6,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["nw"]
     },
     {
       "id": "4,6",
@@ -352,35 +362,40 @@
       "col": 1,
       "row": 8,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["e"]
     },
     {
       "id": "2,8",
       "col": 2,
       "row": 8,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "bridge",
+      "owner": null,
+      "connections": ["e", "w"]
     },
     {
       "id": "3,8",
       "col": 3,
       "row": 8,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["sw", "w"]
     },
     {
       "id": "4,8",
       "col": 4,
       "row": 8,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["e"]
     },
     {
       "id": "5,8",
       "col": 5,
       "row": 8,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "ford",
+      "owner": null,
+      "connections": ["e", "w"]
     },
     {
       "id": "0,9",
@@ -394,21 +409,24 @@
       "col": 1,
       "row": 9,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["e"]
     },
     {
       "id": "2,9",
       "col": 2,
       "row": 9,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["e", "sw", "w", "ne"]
     },
     {
       "id": "3,9",
       "col": 3,
       "row": 9,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["w"]
     },
     {
       "id": "4,9",
@@ -422,7 +440,8 @@
       "col": 5,
       "row": 9,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["sw"]
     },
     {
       "id": "0,10",
@@ -442,8 +461,9 @@
       "id": "2,10",
       "col": 2,
       "row": 10,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "bridge",
+      "owner": null,
+      "connections": ["sw", "ne"]
     },
     {
       "id": "3,10",
@@ -463,8 +483,9 @@
       "id": "5,10",
       "col": 5,
       "row": 10,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "ford",
+      "owner": null,
+      "connections": ["sw", "ne"]
     },
     {
       "id": "0,11",
@@ -478,7 +499,8 @@
       "col": 1,
       "row": 11,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["se", "ne"]
     },
     {
       "id": "2,11",
@@ -499,7 +521,8 @@
       "col": 4,
       "row": 11,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["se", "ne"]
     },
     {
       "id": "5,11",
@@ -526,8 +549,9 @@
       "id": "2,12",
       "col": 2,
       "row": 12,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "bridge",
+      "owner": null,
+      "connections": ["se", "nw"]
     },
     {
       "id": "3,12",
@@ -547,8 +571,9 @@
       "id": "5,12",
       "col": 5,
       "row": 12,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "ford",
+      "owner": null,
+      "connections": ["se", "nw"]
     },
     {
       "id": "0,13",
@@ -569,7 +594,8 @@
       "col": 2,
       "row": 13,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["nw"]
     },
     {
       "id": "3,13",
@@ -590,7 +616,8 @@
       "col": 5,
       "row": 13,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["nw"]
     },
     {
       "id": "0,14",
@@ -611,14 +638,16 @@
       "col": 2,
       "row": 14,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["se"]
     },
     {
       "id": "3,14",
       "col": 3,
       "row": 14,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["sw"]
     },
     {
       "id": "4,14",
@@ -646,21 +675,24 @@
       "col": 1,
       "row": 15,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["e"]
     },
     {
       "id": "2,15",
       "col": 2,
       "row": 15,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["e", "se", "sw", "w", "nw", "ne"]
     },
     {
       "id": "3,15",
       "col": 3,
       "row": 15,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["w"]
     },
     {
       "id": "4,15",
@@ -695,14 +727,16 @@
       "col": 2,
       "row": 16,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["ne"]
     },
     {
       "id": "3,16",
       "col": 3,
       "row": 16,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "connections": ["nw"]
     },
     {
       "id": "4,16",

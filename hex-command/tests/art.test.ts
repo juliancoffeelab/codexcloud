@@ -10,7 +10,7 @@ import {
 } from "../src/presentation/pixel-art";
 import { Game } from "./game-fixture";
 import { createGameView } from "./fixture-view";
-import { battlefieldTiles } from "../src/ui/battlefield-view";
+import { battlefieldTiles, terrainArtNames } from "../src/ui/battlefield-view";
 import { mockSpriteCanvas } from "./helpers";
 
 const requested: string[] = [];
@@ -126,6 +126,25 @@ test("Tall dialogue keeps a character frame at its native 64×64 size", async ()
   );
   assert.equal(lark.width, 64);
   assert.equal(lark.height, 64);
+});
+
+test("Route connections select native crossings and transparent road overlays", async () => {
+  await art.loadArtwork();
+  assert.deepEqual(terrainArtNames({ terrain: "bridge" }), ["bridge"]);
+  assert.deepEqual(terrainArtNames({ terrain: "ford", connections: ["se", "nw"] }), ["ford_nw-se"]);
+  assert.deepEqual(terrainArtNames({ terrain: "bridge", connections: ["sw", "ne"] }), [
+    "bridge_ne-sw",
+  ]);
+  assert.deepEqual(terrainArtNames({ terrain: "plains", connections: ["w", "e", "se"] }), [
+    "plains",
+    "road_11",
+  ]);
+  for (const name of ["bridge_ne-sw", "ford_nw-se", "road_11"]) {
+    const frame = extraction(art.artSprite(art.currentArtwork(), "terrain", name, 0, 0, 70, 70));
+    assert.equal(frame.width, 64);
+    assert.equal(frame.height, 64);
+    assert.equal(frame.smoothing, false);
+  }
 });
 
 test("Terrain, troops and commanders share one battlefield pixel scale", async () => {

@@ -708,6 +708,12 @@ fn insert_map(
     let mut coordinates = HashSet::new();
     let tiles: HashSet<&str> = state.tiles.iter().map(|t| t.id.as_str()).collect();
     for tile in &state.tiles {
+        if !tile.valid_connections() {
+            return Err(ContentError::new(
+                path,
+                format!("invalid artwork connections {}", tile.id),
+            ));
+        }
         if !terrains.contains_key(&tile.terrain) {
             return Err(ContentError::new(
                 path,
