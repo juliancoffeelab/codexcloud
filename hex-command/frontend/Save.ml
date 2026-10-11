@@ -2,7 +2,7 @@ type t = { mutable suspended : bool }
 type envelope = { checkpoint : Domain.saved_game; pending_enemy : bool }
 type 'game loaded = { game : 'game; pending_enemy : bool; notice : string option; saves : t }
 
-let version = 3
+let version = 4
 let key = "hex-command-battle"
 let rejected_key = key ^ "-unrestored"
 let create () = { suspended = false }
@@ -27,10 +27,57 @@ let field value name = match get value name with Some v -> v | None -> invalid (
 let number value = match Js.Json.decodeNumber value with Some v -> v | None -> invalid ()
 let string value = match Js.Json.decodeString value with Some v -> v | None -> invalid ()
 let boolean value = match Js.Json.decodeBoolean value with Some v -> v | None -> invalid ()
+let array value = match Js.Json.decodeArray value with Some v -> v | None -> invalid ()
 let null value = Js.Json.classify value = Js.Json.JSONNull
 let obj fields = Js.Json.object_ (Js.Dict.fromArray (Array.of_list fields))
 let copy value = from_entries (Js.Dict.entries (object_ value))
 let set value name entry = Js.Dict.set (object_ value) name entry
+
+let find_map catalog state =
+  let maps = array (field (catalog_json catalog) "maps") in
+  match Array.find_opt (fun map -> field map "id" = field state "mapId") maps with
+  | Some map -> map | None -> invalid ()
+
+(* Both published revision-one developer layouts grow without replacing owned
+   cells. Validate geometry before indexing so malformed tiles cannot disappear
+   during expansion and become an apparently valid native checkpoint. *)
+let expand_developer catalog value =
+  let checkpoint = field value "checkpoint" in
+  let state = field checkpoint "state" in ignore (object_ state);
+  let value = copy value in set value "version" (Js.Json.number 4.);
+  if get state "mapId" = Some (Js.Json.string "developer") &&
+     get state "mapRevision" = Some (Js.Json.number 1.) then (
+    let cols = number (field state "cols") and rows = number (field state "rows") in
+    require ((cols = 6. && rows = 20.) || (cols = 13. && rows = 23.));
+    let tiles = array (field state "tiles") in
+    require (Array.length tiles = int_of_float (cols *. rows));
+    let old = Js.Dict.empty () in
+    let id col row = string_of_int (int_of_float col) ^ "," ^ string_of_int (int_of_float row) in
+    Array.iter (fun tile ->
+        let col = number (field tile "col") and row = number (field tile "row") in
+        require (safe_integer col && safe_integer row && col >= 0. && col < cols && row >= 0. && row < rows);
+        let tile_id = id col row in
+        require (get tile "id" = Some (Js.Json.string tile_id) && Js.Dict.get old tile_id = None);
+        Js.Dict.set old tile_id tile) tiles;
+    let map = find_map catalog state in
+    let terrain = Js.Dict.empty () in Array.iter (fun tile ->
+        Js.Dict.set terrain (id (number (field tile "col")) (number (field tile "row"))) tile) (array (field map "terrain"));
+    let width = int_of_float (number (field map "cols")) and height = int_of_float (number (field map "rows")) in
+    let tiles = Array.init (width * height) (fun index ->
+        let col = float_of_int (index mod width) and row = float_of_int (index / width) in
+        let tile_id = id col row in
+        match Js.Dict.get old tile_id with
+        | Some tile -> tile
+        | None -> match Js.Dict.get terrain tile_id with
+          | Some tile -> copy tile
+          | None -> obj ["id", Js.Json.string tile_id; "col", Js.Json.number col;
+                         "row", Js.Json.number row; "terrain", Js.Json.string "plains"; "owner", Js.Json.null]) in
+    let state = copy state in set state "mapRevision" (field map "revision");
+    set state "cols" (field map "cols"); set state "rows" (field map "rows");
+    set state "tiles" (Js.Json.array tiles);
+    let checkpoint = copy checkpoint in set checkpoint "state" state;
+    set value "checkpoint" checkpoint);
+  value
 
 let current value =
   require (number (field value "version") = float_of_int version);
@@ -59,9 +106,7 @@ let migrate catalog input =
       | Some _ -> invalid_arg "Unknown historical engine"
       | None ->
         let state = Save_legacy.import catalog value in
-        let catalog = catalog_json catalog in
-        let maps = match Js.Json.decodeArray (field catalog "maps") with Some maps -> maps | None -> invalid () in
-        let map = match Array.find_opt (fun map -> field map "id" = field state "mapId") maps with Some map -> map | None -> invalid () in
+        let map = find_map catalog state in
         set state "mapRevision" (field map "revision");
         obj ["version", Js.Json.number 2.; "checkpoint", obj ["seed", Js.Json.number 17.; "state", state]; "pendingEnemy", field value "pendingEnemy"] in
   let value = if number (field value "version") <> 2. then value else (
@@ -71,12 +116,11 @@ let migrate catalog input =
       let retired = get state "mapRevision" = Some (Js.Json.number 1.) &&
                     (get state "mapId" = Some (Js.Json.string "river") || get state "mapId" = Some (Js.Json.string "ashen-refuge")) in
       if retired then (
-        let catalog = catalog_json catalog in
-        let maps = match Js.Json.decodeArray (field catalog "maps") with Some maps -> maps | None -> invalid () in
-        let map = match Array.find_opt (fun map -> field map "id" = field state "mapId") maps with Some map -> map | None -> invalid () in
+        let map = find_map catalog state in
         set state "mapRevision" (field map "revision"));
       let checkpoint = copy checkpoint in set checkpoint "state" state;
       let value = copy value in set value "version" (Js.Json.number 3.); set value "checkpoint" checkpoint; value) in
+  let value = if number (field value "version") = 3. then expand_developer catalog value else value in
   current value, original <> float_of_int version
 
 let write owner checkpoint ~pending_enemy =

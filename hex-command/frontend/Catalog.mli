@@ -15,9 +15,11 @@ val race : t -> string -> Domain.race_definition
 val map : t -> string -> Domain.map_definition
 val campaign : t -> string -> Domain.campaign
 
-(** Scenario choices, excluding campaign-only layouts. Every listed scenario
-    remains valid for commands. *)
+(** Visible scenario choices, excluding campaign-only layouts. Hidden developer
+    scenarios remain valid for commands but do not appear in this menu. *)
 val battle_maps : t -> Domain.map_definition array
+(** All command-addressable scenarios, including hidden developer layouts.
+    Campaign-only maps remain outside this collection. *)
 val scenario_maps : t -> Domain.map_definition array
 
 (** Resolve a chapter's map metadata. Its roster remains the mission layout's

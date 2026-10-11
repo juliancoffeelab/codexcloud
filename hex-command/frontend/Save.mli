@@ -23,7 +23,9 @@ val create : unit -> t
 val resume : t -> unit
 
 (** Pure migration of untrusted persistence data. It preserves native planner
-    continuations and owns every historical object that it changes. *)
+    continuations and owns every historical object that it changes. Revision-one
+    developer maps expand only from the two published, complete geometries;
+    existing cells, units, ownership and progress remain intact. *)
 val migrate : Domain.catalog_view -> Js.Json.t -> envelope * bool
 
 (** Optional browser storage never prevents play. Rejected saves retain their

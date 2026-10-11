@@ -391,7 +391,8 @@ module Terrain = {
                <Sprite
                  artwork={view.artwork}
                  kind="terrain"
-                 name={panel.tile.terrain}
+                 name={Terrain_plan.layout_name(panel.tile, state.mapId)}
+                 floor={panel.tile.floor}
                  width=80.
                  height=80.
                  className="terrain-card-art"

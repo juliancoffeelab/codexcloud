@@ -1,81 +1,117 @@
 import assert from "node:assert/strict";
 import { test } from "vitest";
-import { MAPS } from "../src/game/maps";
-import { pixelSprites, pixelFloorColors, pixelDefaultFloors } from "../src/presentation/pixel-art";
-import {
-  TERRAIN_DIRECTIONS,
-  terrainArtNames,
-  validTerrainConnections,
-} from "../src/presentation/terrain-connections";
+import * as Plan from "@frontend/Terrain_plan";
+import * as Art from "@frontend/Art";
+import { pixelFloorColors } from "../src/presentation/pixel-art";
 import roadDeadEnds from "../pixel/art/terrain/road/dead-ends.json";
-import { createTestFactory } from "./native-fixture";
-import { nativeValue } from "../src/game/live-game";
-import type { TerrainOverride } from "../src/game/types";
+import { Native, Catalog, factory, catalog, createBattle } from "./native-fixture";
+import { required } from "./helpers";
+import type { SavedGame, Tile, HexDirection } from "../rust/pkg/hex_command";
 
-const directions = (mask: number) => TERRAIN_DIRECTIONS.filter((_, bit) => mask & (1 << bit));
-function requireFrames(tile: Parameters<typeof terrainArtNames>[0] & { floor?: string }) {
-  const name = terrainArtNames(tile)[0]!;
-  const frame = `terrain_${name === "grove" ? "sacred_grove" : name}`;
-  assert(Object.hasOwn(pixelSprites, frame), `Missing ${frame}`);
-  for (const floor of Object.keys(pixelFloorColors)) {
-    // The default palette owns the unsuffixed frame; all other floors have variants.
-    const key = floor === pixelDefaultFloors[tile.terrain] ? frame : `${frame}__${floor}`;
-    assert(Object.hasOwn(pixelSprites, key), `Missing ${key}`);
+const order: HexDirection[] = ["e", "se", "sw", "w", "nw", "ne"];
+const directions = (mask: number) => order.filter((_, bit) => mask & (1 << bit));
+function requireFrames(tile: Native.Immutable<Tile>, mapId: string) {
+  const name = Plan.layout_name(tile, mapId);
+  assert(Art.terrain_frame(Art.current(), undefined, name), `Missing ${name}`);
+  for (const floor of Object.keys(pixelFloorColors))
+    assert(Art.terrain_frame(Art.current(), floor, name), `Missing ${name}/${floor}`);
+}
+function restore(saved: SavedGame): boolean {
+  try {
+    const battle = Native.restore(factory, saved);
+    Native.dispose(battle);
+    return true;
+  } catch {
+    return false;
   }
 }
 
-test("Every supported terrain connection and floor has a native frame", () => {
-  for (const terrain of ["road", "village", "bridge", "ford"] as const) {
-    requireFrames({ terrain });
+test("Every native-accepted terrain connection and floor has a corresponding native image", () => {
+  const game = createBattle({ kind: "scenario", map: "mirror" });
+  const original = structuredClone(Native.save(game)) as SavedGame;
+  // Connection legality is independent of armies; keep the native validator
+  // fixture focused and avoid computing hundreds of unrelated unit forecasts.
+  original.state.units = [];
+  const candidate = required(
+    original.state.tiles.find(
+      (tile) =>
+        tile.terrain === "plains" && !original.state.units.some((unit) => unit.tile === tile.id),
+    ),
+  );
+  for (const terrain of ["road", "village", "bridge", "ford"]) {
+    requireFrames({ ...candidate, terrain }, original.state.mapId);
+    let accepted = 0;
     for (let mask = 1; mask < 64; mask++) {
-      const tile = { terrain, connections: directions(mask) };
-      if (validTerrainConnections(tile)) requireFrames(tile);
+      const saved = structuredClone(original) as SavedGame;
+      const tile = required(saved.state.tiles.find((tile) => tile.id === candidate.id));
+      Object.assign(tile, { terrain, connections: directions(mask) });
+      if (restore(saved)) {
+        accepted++;
+        requireFrames(tile, saved.state.mapId);
+      }
     }
-  }
-  for (const [exits, ends] of roadDeadEnds) {
-    const tile = {
-      terrain: "road" as const,
-      connections: directions(exits!),
-      deadEnds: directions(ends!),
-    };
-    assert(validTerrainConnections(tile));
-    requireFrames(tile);
+    assert(accepted > 0, `${terrain} must retain its authored connected configurations`);
   }
 });
 
-test("Every authored map calls supported terrain configurations with available artwork", () => {
-  for (const map of Object.values(MAPS)) {
-    for (const tile of map.terrain) {
-      assert(validTerrainConnections(tile), `${map.id} at ${tile.col},${tile.row}`);
+test("Every authored native map selects available art, including independent floors and deterministic layouts", () => {
+  for (const map of Catalog.maps(catalog)) {
+    for (const authored of map.terrain) {
+      const tile: Native.Immutable<Tile> = {
+        ...authored,
+        id: `${authored.col},${authored.row}`,
+        owner: null,
+      };
       if (tile.floor !== undefined) assert(Object.hasOwn(pixelFloorColors, tile.floor));
-      requireFrames(tile);
+      requireFrames(tile, map.id);
     }
   }
 });
 
-test("Native saves reject unregistered road caps and preserve registered ones", () => {
-  const factory = createTestFactory();
-  const game = nativeValue(factory.create({ kind: "scenario", map: "mirror" }, 17));
-  const checkpoint = nativeValue(game.save());
-  for (const [exits, ends] of [...roadDeadEnds, [11, 16], [34, 16], [34, 0], [34, 2]]) {
-    const saved = structuredClone(checkpoint);
-    const tile = saved.state.tiles.find((tile) => tile.terrain === "plains")!;
+test("Rust saves preserve registered road caps and reject invalid connections", () => {
+  const game = createBattle({ kind: "scenario", map: "mirror" });
+  const original = Native.save(game);
+  const selected = required(
+    original.state.tiles.find(
+      (tile) =>
+        tile.terrain === "plains" && !original.state.units.some((unit) => unit.tile === tile.id),
+    ),
+  );
+  for (const [exits, ends] of roadDeadEnds) {
+    const saved = structuredClone(original) as SavedGame;
+    const tile = required(saved.state.tiles.find((tile) => tile.id === selected.id));
     Object.assign(tile, {
       terrain: "road",
-      connections: directions(exits!),
-      deadEnds: directions(ends!),
+      connections: directions(required(exits)),
+      deadEnds: directions(required(ends)),
     });
-    const accepted = validTerrainConnections(tile as TerrainOverride);
-    const restored = factory.restore(saved);
-    assert.equal(restored.ok, accepted, `${exits}-end-${ends}`);
-    if (restored.ok) {
-      assert.deepEqual(nativeValue(restored.value.save()).state.tiles, saved.state.tiles);
-      restored.value.dispose();
+    const restored = Native.restore(factory, saved);
+    try {
+      assert.deepEqual(Native.save(restored).state.tiles, saved.state.tiles);
+      requireFrames(tile, saved.state.mapId);
+    } finally {
+      Native.dispose(restored);
     }
   }
-  assert(!validTerrainConnections({ terrain: "road", connections: ["e", "e"] }));
-  assert(!validTerrainConnections({ terrain: "village", connections: directions(63) }));
-  assert(!validTerrainConnections({ terrain: "ford", connections: ["e", "se"] }));
-  assert(!validTerrainConnections({ terrain: "keep", connections: ["e"] }));
-  game.dispose();
+  const invalid: Partial<Tile>[] = [
+    ...[
+      [11, 16],
+      [34, 16],
+      [34, 0],
+      [34, 2],
+    ].map(([exits, ends]) => ({
+      terrain: "road",
+      connections: directions(required(exits)),
+      deadEnds: directions(required(ends)),
+    })),
+    { terrain: "road", connections: ["e", "e"] },
+    { terrain: "village", connections: directions(63) },
+    { terrain: "ford", connections: ["e", "se"] },
+    { terrain: "keep", connections: ["e"] },
+  ];
+  for (const override of invalid) {
+    const saved = structuredClone(original) as SavedGame;
+    Object.assign(required(saved.state.tiles.find((tile) => tile.id === selected.id)), override);
+    assert.equal(restore(saved), false, JSON.stringify(override));
+  }
 });

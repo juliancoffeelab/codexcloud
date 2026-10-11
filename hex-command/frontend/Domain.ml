@@ -198,7 +198,11 @@ and tile = {
   row : float;
   terrain : string;
   owner : side Js.Nullable.t;
+  connections : hex_direction array option;
+  deadEnds : hex_direction array option;
+  floor : string option;
 }
+and hex_direction = string
 and campaign_state = {
   id : string;
   mission : float;
@@ -470,6 +474,7 @@ and map_definition = {
   revision : float;
   name : string;
   description : string;
+  hidden : bool option;
   cols : float;
   rows : float;
   terrain : tile array;
@@ -643,9 +648,16 @@ let terrain_hill : terrain = "hill"
 let terrain_keep : terrain = "keep"
 let terrain_marsh : terrain = "marsh"
 let terrain_plains : terrain = "plains"
+let terrain_road : terrain = "road"
 let terrain_ruins : terrain = "ruins"
 let terrain_village : terrain = "village"
 let terrain_water : terrain = "water"
+let hex_direction_e : hex_direction = "e"
+let hex_direction_ne : hex_direction = "ne"
+let hex_direction_nw : hex_direction = "nw"
+let hex_direction_se : hex_direction = "se"
+let hex_direction_sw : hex_direction = "sw"
+let hex_direction_w : hex_direction = "w"
 let race_beast : race = "beast"
 let race_human : race = "human"
 let race_merfolk : race = "merfolk"
@@ -658,6 +670,7 @@ let family_commander : family = "commander"
 let family_harpooner : family = "harpooner"
 let family_necromancer : family = "necromancer"
 let family_reefguard : family = "reefguard"
+let family_rider : family = "rider"
 let family_scout : family = "scout"
 let family_skeleton : family = "skeleton"
 let family_spearman : family = "spearman"

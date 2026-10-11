@@ -77,6 +77,83 @@ function latest() {
   return JSON.parse(localStorage.getItem(Save.key)!);
 }
 
+for (const [cols, rows] of [
+  [6, 20],
+  [13, 23],
+] as const) {
+  test(`Version-three ${cols}x${rows} developer saves expand owned cells without resetting progress`, () => {
+    const checkpoint = structuredClone(
+      Native.save(create({ kind: "scenario", map: "developer" })),
+    ) as SavedGame;
+    const state = checkpoint.state;
+    Object.assign(state, { mapRevision: 1, cols, rows, round: 5 });
+    state.tiles = state.tiles.filter((tile) => tile.col < cols && tile.row < rows);
+    state.gold.player = 23;
+    required(state.units[0]).hp -= 1;
+    required(state.units[1]).moved = true;
+    Object.assign(required(state.tiles[0]), {
+      terrain: "road",
+      connections: ["se", "ne"],
+      deadEnds: ["w"],
+      floor: "green-forest",
+    });
+    required(state.tiles.find((tile) => tile.terrain === "village")).owner = "player";
+    checkpoint.seed = 42;
+    const old = { version: 3, checkpoint, pendingEnemy: true };
+    const before = structuredClone(old);
+    const { save, migrated } = migrate(old);
+    assert(migrated);
+    assert.deepEqual(old, before, "Migration must leave its input unchanged");
+    const expanded = save.checkpoint.state;
+    const map = Catalog.map(Native.catalog(factory), "developer");
+    assert.equal(expanded.cols, map.cols);
+    assert.equal(expanded.rows, map.rows);
+    assert.equal(expanded.mapRevision, map.revision);
+    assert.equal(expanded.tiles.length, expanded.cols * expanded.rows);
+    const indexed = new Map(expanded.tiles.map((tile) => [tile.id, tile]));
+    for (const tile of state.tiles)
+      assert.equal(indexed.get(tile.id), tile, "Owned historical cells retain their identities");
+    assert.equal(expanded.units, state.units);
+    assert.equal(expanded.gold, state.gold);
+    assert.equal(expanded.round, 5);
+    assert.equal(save.checkpoint.seed, 42);
+    assert.equal(save.pending_enemy, true);
+    assert.equal(
+      migrate({ version: Save.version, checkpoint: save.checkpoint, pendingEnemy: true }).migrated,
+      false,
+    );
+    localStorage.setItem(Save.key, JSON.stringify(old));
+    const loaded = load();
+    assert.equal(loaded.notice, undefined);
+    assert.deepEqual(Native.save(loaded.game), save.checkpoint);
+    assert.equal(latest().version, Save.version);
+    assert.equal(localStorage.getItem(Save.rejected_key), null);
+    const incomplete = structuredClone(old);
+    incomplete.checkpoint.state.tiles.pop();
+    assert.throws(() => migrate(incomplete));
+    const duplicate = structuredClone(old);
+    duplicate.checkpoint.state.tiles[1] = required(duplicate.checkpoint.state.tiles[0]);
+    assert.throws(() => migrate(duplicate));
+    const mismatched = structuredClone(old);
+    required(mismatched.checkpoint.state.tiles[0]).id = "1,0";
+    assert.throws(() => migrate(mismatched));
+    const outside = structuredClone(old);
+    required(outside.checkpoint.state.tiles[0]).col = cols;
+    assert.throws(() => migrate(outside));
+    const unsupported = structuredClone(old);
+    unsupported.checkpoint.state.cols = 7;
+    assert.throws(() => migrate(unsupported));
+  });
+}
+
+test("Version-three ordinary saves update only their envelope", () => {
+  const saved = checkpoint();
+  const { save, migrated } = migrate({ version: 3, checkpoint: saved, pendingEnemy: false });
+  assert(migrated);
+  assert.equal(save.checkpoint, saved);
+  assert.equal(save.pending_enemy, false);
+});
+
 test("Version-two river migration preserves owned tiles and state without changing input", () => {
   const game = create({ kind: "scenario", map: "river" });
   Native.dispatch(game, { kind: "move", unit: 3, tile: "5,3" });
@@ -234,6 +311,9 @@ test("Native migration preserves selected AI command and exact continuation", ()
     const decision = value(rawFactory.chooseAiCommand(game.id, enemy.view.revision, options));
     const saved = value(rawFactory.save(game.id, enemy.view.revision));
     assert(saved.planner?.pending);
+    const versionThree = migrate({ version: 3, checkpoint: saved, pendingEnemy: false });
+    assert.equal(versionThree.save.checkpoint, saved);
+    assert.equal(versionThree.save.checkpoint.planner, saved.planner);
     localStorage.setItem(
       Save.key,
       JSON.stringify({ engine: "rust-wasm", pendingEnemy: false, saved: { version: 1, ...saved } }),

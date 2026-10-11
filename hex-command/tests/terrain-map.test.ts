@@ -1,230 +1,363 @@
 import assert from "node:assert/strict";
 import { test, vi } from "vitest";
-import {
-  TerrainMapCache,
-  terrainMapKey,
-  terrainMapPreview,
-  type TerrainMapPlan,
-} from "../src/presentation/terrain-map";
-import { mockSpriteCanvas } from "./helpers";
-import type { Artwork } from "../src/presentation/art";
+import * as Terrain from "@frontend/Terrain";
+import * as Plan from "@frontend/Terrain_plan";
+import * as Art from "@frontend/Art";
+import type { State, Tile } from "../rust/pkg/hex_command";
+import { mockSpriteCanvas, required } from "./helpers";
 
-test("Terrain cache keys ignore ownership but include every terrain input", () => {
-  const tile = { id: "0,0", col: 0, row: 0, terrain: "road" as const, owner: null };
-  const game = { mapId: "mirror" as const, cols: 1, rows: 1, tiles: [tile] };
-  const key = terrainMapKey(game);
-  const other = { ...tile, id: "1,0", col: 1 };
-  assert.equal(
-    terrainMapKey({ ...game, tiles: [tile, other] }),
-    terrainMapKey({ ...game, tiles: [other, tile] }),
+const tile = (col = 0, row = 0): Tile => ({
+  id: `${col},${row}`,
+  col,
+  row,
+  terrain: "plains",
+  owner: null,
+});
+const state = (tiles = [tile()], cols = 1, rows = 1): State => ({
+  mapId: "mirror",
+  mapRevision: 1,
+  cols,
+  rows,
+  round: 1,
+  turn: "player",
+  gold: { player: 0, enemy: 0 },
+  winner: null,
+  nextId: 1,
+  log: [],
+  tiles,
+  units: [],
+});
+const key = (game: State) => Plan.key(game.mapId, game.cols, game.rows, game.tiles);
+function sprite(game: State): Terrain.Sprite {
+  const dimensions = Plan.dimensions(
+    Plan.prepare(game.mapId, game.cols, game.rows, game.tiles, Art.current()),
   );
-  assert.equal(terrainMapKey({ ...game, tiles: [{ ...tile, owner: "player" }] }), key);
+  return {
+    url: "map.png",
+    width: dimensions.width,
+    height: dimensions.height,
+    displayWidth: dimensions.display_width,
+    displayHeight: dimensions.display_height,
+  };
+}
+function artwork(frames: Record<string, Art.Frame>): Art.Artwork {
+  return { frames } as unknown as Art.Artwork;
+}
+/** Different authored layouts deliberately share one decoder URL in this fixture. */
+function uniformArtwork(): Art.Artwork {
+  const frame: Art.Frame = { url: "shared.png", width: 64, height: 64 };
+  return artwork(
+    Object.fromEntries(Object.keys(Art.frames(Art.current())).map((key) => [key, frame])),
+  );
+}
+class ControlledImage {
+  static requests: ControlledImage[] = [];
+  onload: (() => void) | null = null;
+  onerror: (() => void) | null = null;
+  src = "";
+  constructor() {
+    ControlledImage.requests.push(this);
+  }
+  removeAttribute(name: string) {
+    assert.equal(name, "src");
+  }
+}
+interface Recorded {
+  draws: { source: string; coordinates: number[] }[];
+  scales: number[][];
+  paths: number[][][];
+  clips: number;
+  smoothing: boolean;
+}
+function recording(bitmap: Terrain.Bitmap): Recorded {
+  let canvas: HTMLCanvasElement | undefined;
+  const host = {
+    replaceChildren(value: HTMLCanvasElement) {
+      canvas = value;
+    },
+  };
+  Terrain.mount(host as unknown as Element, bitmap);
+  return JSON.parse(
+    Buffer.from(required(canvas).toDataURL().split(",")[1]!, "base64").toString(),
+  ) as Recorded;
+}
+
+test("Static keys ignore ownership and order, and include every authored terrain input", () => {
+  const game = state();
+  const original = key(game);
+  assert.equal(key({ ...game, tiles: [{ ...tile(), owner: "player" }] }), original);
+  const other = tile(1);
+  assert.equal(key({ ...game, tiles: [tile(), other] }), key({ ...game, tiles: [other, tile()] }));
   for (const changed of [
-    { ...game, mapId: "river" as const },
+    { ...game, mapId: "river" },
     { ...game, cols: 2 },
     { ...game, rows: 2 },
-    { ...game, tiles: [{ ...tile, col: 1 }] },
-    { ...game, tiles: [{ ...tile, row: 1 }] },
-    { ...game, tiles: [{ ...tile, id: "1,0" }] },
-    { ...game, tiles: [{ ...tile, terrain: "forest" as const }] },
-    { ...game, tiles: [{ ...tile, floor: "snow-forest" }] },
-    { ...game, tiles: [{ ...tile, connections: ["e" as const, "w" as const] }] },
-    { ...game, tiles: [{ ...tile, deadEnds: ["e" as const] }] },
+    ...[
+      { col: 1 },
+      { row: 1 },
+      { id: "1,0" },
+      { terrain: "forest" },
+      { floor: "snow-forest" },
+      { connections: ["e", "w"] },
+      { deadEnds: ["e"] },
+    ].map((change) => ({ ...game, tiles: [{ ...tile(), ...change } as Tile] })),
   ])
-    assert.notEqual(terrainMapKey(changed), key);
+    assert.notEqual(key(changed), original);
 });
 
-test("Map baking reuses one native bitmap, retries failure and keeps overlapping requests separate", async () => {
-  class ControlledImage {
-    static requests: ControlledImage[] = [];
-    onload?: () => void;
-    onerror?: () => void;
-    src = "";
-    constructor() {
-      ControlledImage.requests.push(this);
-    }
-  }
-  vi.stubGlobal("Image", ControlledImage);
-  const restoreCanvas = mockSpriteCanvas();
-  try {
-    const artwork: Artwork = { frames: {} };
-    const plan: TerrainMapPlan = {
-      width: 140,
-      height: 70,
-      pixelScale: 64 / 70,
-      tiles: [
-        {
-          points: "0,0 64,0 32,64",
-          x: 35,
-          y: 35,
-          spriteSize: 70,
-          fill: "#123456",
-          terrain: "forest",
-          terrainFrame: { url: "data:image/png;base64,AA==", width: 64, height: 64 },
-        },
-      ],
-    };
-    const sharedPlan = { ...plan, tiles: [...plan.tiles, { ...plan.tiles[0]!, x: 105 }] };
-    const cache = new TerrainMapCache();
-    const first = cache.prepare("first", artwork, sharedPlan);
-    assert.equal(cache.prepare("first", artwork, sharedPlan), first);
-    assert.equal(ControlledImage.requests.length, 1);
-    const second = cache.prepare("second", artwork, sharedPlan);
-    ControlledImage.requests[0]!.onload?.();
-    const baked = (await first)!;
-    assert(Object.isFrozen(baked));
-    assert.equal(baked.width, 128);
-    assert.equal(baked.height, 64);
-    assert.equal(baked.displayWidth, 140);
-    assert.equal(baked.displayHeight, 70);
-    const painted = JSON.parse(
-      Buffer.from(baked.canvas.toDataURL().split(",")[1]!, "base64").toString(),
-    );
-    assert.equal(painted.smoothing, false);
-    assert.equal(painted.source, plan.tiles[0]!.terrainFrame!.url);
-    assert.deepEqual(painted.coordinates, [0, 0, 70, 70]);
-    assert.deepEqual(
-      painted.draws.map((draw: { coordinates: number[] }) => draw.coordinates),
-      [
-        [0, 0, 70, 70],
-        [70, 0, 70, 70],
-      ],
-    );
-    assert.deepEqual(painted.scales, [[64 / 70, 64 / 70]]);
-    assert.deepEqual(painted.paths, [
-      [
-        [0, 0],
-        [64, 0],
-        [32, 64],
-      ],
-      [
-        [0, 0],
-        [64, 0],
-        [32, 64],
-      ],
-    ]);
-    assert.equal(painted.clips, 2);
+test("Authored PNG previews validate metadata and overlay only changed cells", () => {
+  const game = state([tile(), tile(1)], 2);
+  const image = sprite(game);
+  const owner = Terrain.create({ [key(game)]: image, broken: image });
+  const first = Terrain.prepare(owner, game, Art.current());
+  const exact = required(Terrain.preview(owner, first));
+  assert.equal(Terrain.sprite(exact), image);
+  assert.deepEqual(Terrain.changed(exact), []);
+  const edited = { ...game, tiles: [tile(), { ...tile(1), terrain: "forest" }] };
+  const preview = required(Terrain.preview(owner, Terrain.prepare(owner, edited, Art.current())));
+  assert.equal(Terrain.sprite(preview), image);
+  assert.deepEqual(Terrain.changed(preview), ["1,0"]);
+  assert.equal(Terrain.changed_contains(preview, "1,0"), true);
+  assert.equal(Terrain.changed_contains(preview, "0,0"), false);
+  for (const change of [{ mapId: "river" }, { cols: 3 }, { rows: 2 }])
     assert.equal(
-      cache.prepare("second", artwork, sharedPlan),
-      second,
-      "An older completion cannot replace the newer entry",
+      Terrain.preview(owner, Terrain.prepare(owner, { ...game, ...change }, Art.current())),
+      undefined,
     );
-    ControlledImage.requests[1]!.onerror?.();
-    assert.equal(await second, undefined);
-    const retry = cache.prepare("second", artwork, sharedPlan);
-    assert.notEqual(retry, second);
-    ControlledImage.requests[2]!.onload?.();
-    await retry;
-    assert.equal(cache.prepare("second", artwork, sharedPlan), retry);
-    const newArtwork = cache.prepare("second", { frames: {} }, sharedPlan);
-    assert.notEqual(newArtwork, retry);
-    ControlledImage.requests[3]!.onload?.();
-    await newArtwork;
+  for (const malformed of [
+    { ...image, width: 0 },
+    { ...image, height: NaN },
+    { ...image, displayWidth: 70 },
+    { ...image, url: "" },
+  ]) {
+    const invalid = Terrain.create({ [key(game)]: malformed });
+    assert.equal(
+      Terrain.preview(invalid, Terrain.prepare(invalid, game, Art.current())),
+      undefined,
+    );
+  }
+  Terrain.close(owner);
+});
+
+test("Immutable static scenes retain identity across unit, ownership, ordering and unused-art changes", () => {
+  const game = state([tile(), tile(1)], 2);
+  const owner = Terrain.create({});
+  const frames = { ...Art.frames(Art.current()) };
+  const art = artwork(frames);
+  const first = Terrain.prepare(owner, game, art);
+  const changed = { ...game, tiles: [{ ...tile(1), owner: "player" as const }, tile()], round: 7 };
+  assert.equal(Terrain.prepare(owner, changed, art), first);
+  assert.equal(
+    Terrain.prepare(
+      owner,
+      game,
+      artwork({ ...frames, player_unused: { url: "unused.png", width: 64, height: 64 } }),
+    ),
+    first,
+  );
+  const cell = required(Terrain.get_tile(first, "0,0"));
+  const replacement = { url: "replacement.png", width: 64, height: 64 };
+  const artKey = Art.frame_key("terrain", cell.name, undefined, cell.floor);
+  const updated = Terrain.prepare(owner, game, artwork({ ...frames, [artKey]: replacement }));
+  assert.notEqual(updated, first);
+  assert.equal(Terrain.key(updated), Terrain.key(first));
+  assert.equal(required(Terrain.get_tile(updated, "0,0")).points, cell.points);
+  assert.equal(required(Terrain.get_tile(updated, "0,0")).frame, replacement);
+  Terrain.close(owner);
+});
+
+test("Fallback shares one bitmap promise, paints native clipping, retries failures and cancels stale decoders", async () => {
+  ControlledImage.requests = [];
+  vi.stubGlobal("Image", ControlledImage);
+  const restore = mockSpriteCanvas();
+  const owner = Terrain.create({});
+  const art = uniformArtwork();
+  try {
+    const game = state([tile(), tile(1)], 2);
+    const scene = Terrain.prepare(owner, game, art);
+    Terrain.activate(owner, scene);
+    const first = Terrain.bake(owner, scene);
+    assert.equal(Terrain.bake(owner, scene), first);
+    assert.equal(ControlledImage.requests.length, 1);
+    required(ControlledImage.requests[0]).onerror?.();
+    assert.equal(await first, undefined);
+    const retry = Terrain.bake(owner, scene);
+    assert.notEqual(retry, first);
+    required(ControlledImage.requests[1]).onload?.();
+    const bitmap = required(await retry);
+    assert(Object.isFrozen(bitmap));
+    assert(Terrain.valid_bitmap(scene, bitmap));
+    const dimensions = Terrain.bitmap_size(bitmap);
+    assert.equal(dimensions.width, sprite(game).width);
+    const painted = recording(bitmap);
+    assert.equal(painted.smoothing, false);
+    assert.equal(painted.clips, 2);
+    assert.deepEqual(painted.scales, [[64 / 70, 64 / 70]]);
+    assert.equal(painted.paths[0]?.length, 6);
+    assert.deepEqual(painted.draws[0]?.coordinates, [8, 7, 70, 70]);
+    assert.equal(Terrain.bake(owner, scene), retry);
+    const next = Terrain.prepare(owner, { ...game, mapId: "river" }, art);
+    Terrain.activate(owner, next);
+    const obsolete = Terrain.bake(owner, next);
+    const pending = required(ControlledImage.requests[2]);
+    Terrain.activate(owner, Terrain.prepare(owner, game, art));
+    assert.equal(pending.onload, null);
+    assert.equal(pending.onerror, null);
+    assert.equal(await obsolete, undefined);
+    assert(!Terrain.valid_bitmap(next, bitmap));
+    const replayScene = Terrain.prepare(owner, game, art);
+    Terrain.close(owner);
+    Terrain.activate(owner, replayScene);
+    const replay = Terrain.bake(owner, replayScene);
+    required(ControlledImage.requests[3]).onload?.();
+    assert(
+      Terrain.valid_bitmap(replayScene, required(await replay)),
+      "Effect cleanup/setup can reuse its memoized scene",
+    );
   } finally {
-    restoreCanvas();
+    Terrain.close(owner);
+    restore();
     vi.unstubAllGlobals();
   }
 });
 
-test("Large fallback bakes yield before publishing the completed bitmap", async () => {
+test("Fallback image decoding stays bounded and unmount settles pending work", async () => {
+  ControlledImage.requests = [];
+  vi.stubGlobal("Image", ControlledImage);
+  const restore = mockSpriteCanvas();
+  const owner = Terrain.create({});
+  try {
+    const terrains = ["plains", "road", "water", "forest", "hill", "village"];
+    const game = state(
+      terrains.map((terrain, col) => ({ ...tile(col), terrain })),
+      6,
+    );
+    const scene = Terrain.prepare(owner, game, Art.current());
+    Terrain.activate(owner, scene);
+    const pending = Terrain.bake(owner, scene);
+    assert.equal(ControlledImage.requests.length, 4);
+    for (const image of ControlledImage.requests.slice()) image.onload?.();
+    await Promise.resolve();
+    await Promise.resolve();
+    assert(ControlledImage.requests.length <= 8);
+    assert(ControlledImage.requests.length > 4);
+    Terrain.close(owner);
+    assert.equal(await pending, undefined);
+    Terrain.close(owner);
+  } finally {
+    Terrain.close(owner);
+    restore();
+    vi.unstubAllGlobals();
+  }
+});
+
+test("Large fallback yields between drawing batches and cancelled yields settle without publishing", async () => {
   vi.useFakeTimers();
   class ReadyImage {
     onload?: () => void;
+    onerror?: () => void;
     set src(_value: string) {
       this.onload?.();
     }
+    removeAttribute() {}
   }
   vi.stubGlobal("Image", ReadyImage);
-  const restoreCanvas = mockSpriteCanvas();
+  const restore = mockSpriteCanvas();
+  const owner = Terrain.create({});
+  const art = uniformArtwork();
   try {
-    const tile = {
-      points: "0,0 64,0 32,64",
-      x: 35,
-      y: 35,
-      spriteSize: 70,
-      fill: "#123456",
-      terrain: "plains",
-      terrainFrame: { url: "tile", width: 64, height: 64 },
-    };
-    const plan = {
-      width: 140,
-      height: 70,
-      pixelScale: 64 / 70,
-      tiles: Array.from({ length: 65 }, () => tile),
-    };
+    const game = state(
+      Array.from({ length: 65 }, (_, row) => tile(0, row)),
+      1,
+      65,
+    );
+    const scene = Terrain.prepare(owner, game, art);
     let published = false;
-    const ready = new TerrainMapCache().prepare("large", { frames: {} }, plan).then((image) => {
+    Terrain.activate(owner, scene);
+    const ready = Terrain.bake(owner, scene).then((bitmap) => {
       published = true;
-      return image;
+      return bitmap;
     });
-    await Promise.resolve();
-    await Promise.resolve();
+    for (let index = 0; index < 8; index++) await Promise.resolve();
     assert.equal(published, false);
     assert.equal(vi.getTimerCount(), 1);
     await vi.runAllTimersAsync();
-    assert((await ready)?.canvas);
-    assert.equal(published, true);
+    assert(await ready);
+    const next = Terrain.prepare(owner, { ...game, mapId: "river" }, art);
+    Terrain.activate(owner, next);
+    const cancelled = Terrain.bake(owner, next);
+    for (let index = 0; index < 8; index++) await Promise.resolve();
+    assert.equal(vi.getTimerCount(), 1);
+    Terrain.close(owner);
+    assert.equal(await cancelled, undefined);
+    assert.equal(vi.getTimerCount(), 0);
   } finally {
-    restoreCanvas();
+    Terrain.close(owner);
+    restore();
     vi.useRealTimers();
     vi.unstubAllGlobals();
   }
 });
 
-test("Prebuilt maps match static terrain or preview matching geometry with edited cells overlaid", () => {
-  const tile = { id: "0,0", col: 0, row: 0, terrain: "plains" as const, owner: null };
-  const game = { mapId: "mirror" as const, cols: 1, rows: 1, tiles: [tile] };
-  const sprite = { url: "map.png", width: 64, height: 64, displayWidth: 70, displayHeight: 70 };
-  const sprites = { [terrainMapKey(game)]: sprite };
-  const exact = terrainMapPreview(
-    terrainMapKey({ ...game, tiles: [{ ...tile, owner: "player" }] }),
-    sprites,
-  )!;
-  assert.equal(exact.sprite, sprite);
-  assert.equal(exact.changed.size, 0);
-  for (const change of [
-    { terrain: "forest" as const },
-    { floor: "snow-forest" },
-    { connections: ["e" as const] },
-  ]) {
-    const preview = terrainMapPreview(
-      terrainMapKey({ ...game, tiles: [{ ...tile, ...change }] }),
-      sprites,
-    )!;
-    assert.equal(preview.sprite, sprite);
-    assert.deepEqual([...preview.changed], ["0,0"]);
+test("Selected-map warming retains the latest image, retries failures and ignores invalid manifests", () => {
+  ControlledImage.requests = [];
+  vi.stubGlobal("Image", ControlledImage);
+  try {
+    const game = state();
+    const image = sprite(game);
+    const manifest = { [key(game)]: image };
+    Terrain.preload_manifest(manifest, "mirror");
+    Terrain.preload_manifest(manifest, "mirror");
+    assert.equal(ControlledImage.requests.length, 1);
+    required(ControlledImage.requests[0]).onerror?.();
+    Terrain.preload_manifest(manifest, "mirror");
+    assert.equal(ControlledImage.requests.length, 2);
+    Terrain.preload_manifest({}, "mirror");
+    assert.equal(required(ControlledImage.requests[1]).onerror, null);
+  } finally {
+    vi.unstubAllGlobals();
   }
-  for (const change of [{ mapId: "river" as const }, { cols: 2 }, { rows: 2 }])
-    assert.equal(terrainMapPreview(terrainMapKey({ ...game, ...change }), sprites), undefined);
 });
 
-test("Static scenes reuse geometry through ownership and unit changes, but invalidate terrain and artwork", async () => {
-  const { TerrainViewCache } = await import("../src/presentation/terrain-map");
-  const tile = { id: "0,0", col: 0, row: 0, terrain: "plains" as const, owner: null };
-  const game = { mapId: "mirror" as const, cols: 1, rows: 1, tiles: [tile] };
-  const artwork: Artwork = { frames: {} };
-  const cache = new TerrainViewCache();
-  const first = cache.prepare(game, artwork);
-  assert.equal(cache.prepare({ ...game, tiles: [{ ...tile, owner: "player" }] }, artwork), first);
-  assert.equal(
-    cache.prepare(game, { frames: { player_sample: { url: "unit.png", width: 64, height: 64 } } }),
-    first,
-    "Unit artwork must not invalidate static terrain",
-  );
-  const geometry = first.tiles.get(tile.id)!;
-  const frame = { url: "native.png", width: 64, height: 64 };
-  const prepared = cache.prepare(game, { frames: { [geometry.frameKey]: frame } });
-  assert.equal(prepared.key, first.key);
-  assert.equal(prepared.tiles.get(tile.id)?.points, geometry.points);
-  assert.equal(prepared.tiles.get(tile.id)?.terrainFrame, frame);
-  for (const change of [
-    { terrain: "forest" as const },
-    { floor: "snow-forest" },
-    { connections: ["e" as const] },
-    { col: 1 },
-  ]) {
-    const changed = cache.prepare({ ...game, tiles: [{ ...tile, ...change }] }, artwork);
-    assert.notEqual(changed.key, first.key);
+test("An abandoned render leaves the committed bake running; activation cancels it even for an exact PNG", async () => {
+  ControlledImage.requests = [];
+  vi.stubGlobal("Image", ControlledImage);
+  const restore = mockSpriteCanvas();
+  const game = state();
+  const nextGame = { ...game, mapId: "river" };
+  const owner = Terrain.create({ [key(nextGame)]: sprite(nextGame) });
+  const art = uniformArtwork();
+  try {
+    const current = Terrain.prepare(owner, game, art);
+    Terrain.activate(owner, current);
+    const committed = Terrain.bake(owner, current);
+    const image = required(ControlledImage.requests[0]);
+    const abandoned = Terrain.prepare(owner, nextGame, art);
+    assert(image.onload, "Speculative preparation cannot detach active image handlers");
+    assert.equal(Terrain.bake(owner, current), committed);
+    assert.equal(
+      await Terrain.bake(owner, abandoned),
+      undefined,
+      "An uncommitted scene cannot replace active work",
+    );
+    assert.equal(
+      Terrain.prepare(owner, game, art),
+      current,
+      "Returning to the committed view preserves scene identity",
+    );
+    const next = Terrain.prepare(owner, nextGame, art);
+    assert(Terrain.preview(owner, next));
+    Terrain.activate(owner, next);
+    assert.equal(image.onload, null);
+    assert.equal(await committed, undefined);
+    assert.equal(
+      await Terrain.bake(owner, current),
+      undefined,
+      "A stale effect cannot reactivate the previous scene",
+    );
+  } finally {
+    Terrain.close(owner);
+    restore();
+    vi.unstubAllGlobals();
   }
-  assert.notEqual(cache.prepare({ ...game, mapId: "river" }, artwork).key, first.key);
 });

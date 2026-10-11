@@ -1,8 +1,10 @@
 import { defineConfig } from "vitest/config";
+import { terrainPrebuild } from "./scripts/terrain-prebuild";
 import { frontendAliases } from "./scripts/frontend-paths";
 import { availableParallelism } from "node:os";
 
 export default defineConfig({
+  plugins: [terrainPrebuild()],
   resolve: { alias: frontendAliases },
   test: {
     environment: "node",

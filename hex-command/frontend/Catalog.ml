@@ -26,7 +26,8 @@ let of_view (source : Domain.catalog_view) =
         ((campaign.Domain.missions))) ((source.Domain.campaigns));
   let scenarios = Array.of_list (Array.to_list ((source.Domain.maps))
                                  |> List.filter (fun (map : Domain.map_definition) -> Js.Dict.get campaign_maps ((map.Domain.id)) = None)) in
-  let visible = scenarios in
+  let visible = Array.of_list (Array.to_list scenarios
+                               |> List.filter (fun (map : Domain.map_definition) -> map.hidden <> Some true)) in
   { source;
     unit_index = index (fun (unit : Domain.unit_rule) -> unit.id) ((source.Domain.units));
     terrain_index = index (fun (terrain : Domain.terrain_definition) -> (terrain.id :> string)) ((source.Domain.terrain));

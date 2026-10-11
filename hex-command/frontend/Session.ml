@@ -2,7 +2,7 @@ type model = {
   game : Native.view; catalog : Catalog.t; artwork : Art.t;
   selected : string option; target : string option; inspected : string option;
   focused : string; revision : int; status : string; sound : bool;
-  can_undo : bool; art_loading : bool;
+  can_undo : bool;
 }
 type actions = {
   choose : string -> unit; focus : string -> unit; clear : bool -> unit;
@@ -11,7 +11,7 @@ type actions = {
   undo : unit -> unit; reset : string -> unit; start_campaign : string -> unit;
   next_mission : string array -> unit; retry : unit -> unit;
   dialogue : bool -> unit; previous_dialogue : unit -> unit;
-  set_sound : bool -> unit Js.Promise.t; set_style : Art.style -> unit Js.Promise.t;
+  set_sound : bool -> unit Js.Promise.t;
 }
 type clock = float -> unit Js.Promise.t
 type listener = { mutable alive : bool; receive : model -> unit }
@@ -24,13 +24,14 @@ type t = {
   mutable disposed : bool; mutable initialized : bool; mutable epoch : int;
   mutable pending_enemy : bool; mutable history : undo list;
   mutable effects : (int * int * (unit -> unit)) list;
-  mutable sound_request : int; mutable art_request : int;
 }
 external timeout : (unit -> unit) -> float -> unit = "setTimeout"
 external console_error : exn -> unit = "error" [@@mel.scope "console"]
 external freeze : 'a -> 'a = "freeze" [@@mel.scope "Object"]
 external reject : 'a -> 'b Js.Promise.t = "reject" [@@mel.scope "Promise"]
 let pause milliseconds = Js.Promise.make (fun ~resolve ~reject:_ -> timeout (fun () -> let completed = () in (resolve completed [@u])) milliseconds)
+external prebuilt : Terrain.sprite Js.Dict.t = "default" [@@mel.module "virtual:terrain-prebuilt"]
+let preload map = Terrain.preload_manifest prebuilt map
 let initial_status = "Select a unit. Capture villages. Defeat the red commander."
 let state t = Native.state (Native.view t.battle)
 let alive t = if t.disposed then Js.Exn.raiseError "This battle session has closed."
@@ -250,8 +251,12 @@ let reset t map =
   alive t;
   if not (Array.exists (fun (candidate : Domain.map_definition) -> candidate.id=map) (Catalog.scenario_maps t.catalog)) then
     Js.Exn.raiseError "Unknown battlefield. Choose a skirmish or start a campaign.";
+  preload map;
   replace t (Native.create t.factory (Domain.Start_scenario {map;revision=None}) 17.)
-let start_campaign t id = alive t; ignore (Catalog.campaign t.catalog id); replace t (Native.create t.factory (Domain.Start_campaign {id}) 17.)
+let start_campaign t id =
+  alive t; let campaign = Catalog.campaign t.catalog id in
+  if Array.length campaign.missions > 0 then preload campaign.missions.(0).map.id;
+  replace t (Native.create t.factory (Domain.Start_campaign {id}) 17.)
 let next_mission t ids =
   alive t;
   ignore (Native.dispatch t.battle (Domain.Command_recallMission {units=Array.map Native.unit_id ids}));
@@ -281,44 +286,28 @@ let previous_dialogue t () = alive t; match (state t).campaign with
     publish ~render:false t
   | _ -> ()
 let set_sound t enabled =
-  alive t; t.sound_request <- t.sound_request+1;
+  alive t;
   Audio.set_enabled t.audio enabled; publish ~render:false t;
   Js.Promise.resolve ()
 let gesture t trusted = if not t.disposed then ignore (Audio.unlock t.audio ~trusted)
-let request_style t style ~persist ~fallback =
-  alive t; t.art_request <- t.art_request+1;
-  let request=t.art_request and epoch=t.epoch in
-  let current () = not t.disposed && request=t.art_request && epoch=t.epoch in
-  t.latest <- {t.latest with art_loading=true}; publish ~render:false t;
-  let rec complete style allow_fallback ready =
-    if not (current ()) then Js.Promise.resolve ()
-    else if not ready && allow_fallback && style=Art.Normal then
-      Js.Promise.then_ (complete Art.Low_poly false) (Art.load Art.Low_poly)
-    else (
-      if ready then (if persist then Art.save_style style; t.latest <- {t.latest with artwork=Art.artwork style})
-      else message t "Could not load that artwork. Please try again.";
-      if current () then (t.latest <- {t.latest with art_loading=false}; publish ~render:false t);
-      Js.Promise.resolve ()) in
-  Js.Promise.then_ (complete style fallback) (Art.load style)
-let set_style t style = request_style t style ~persist:true ~fallback:false
 let commands t = Option.get t.actions
 let create ?(clock=pause) factory =
   let catalog = Native.catalog factory in
   let loaded = Save.load ~catalog:(Catalog.raw catalog)
-      ~restore:(Native.restore factory) ~fresh:(fun () -> Native.create factory (Domain.Start_scenario {map="mirror";revision=None}) 17.)
+      ~restore:(fun checkpoint -> preload checkpoint.Domain.state.mapId; Native.restore factory checkpoint)
+      ~fresh:(fun () -> preload "mirror"; Native.create factory (Domain.Start_scenario {map="mirror";revision=None}) 17.)
       ~dispose:Native.dispose ~checkpoint:Native.save in
   try
     let audio = Audio.create () and game=Native.view loaded.game in
-    let style=Art.saved_style () in
-    let model = freeze {game;catalog;artwork=Art.artwork style;selected=None;target=None;inspected=None;
+    let model = freeze {game;catalog;artwork=Art.current ();selected=None;target=None;inspected=None;
                         focused=initial_focus game;revision=0;status=Option.value ~default:initial_status loaded.notice;
-                        sound=Audio.enabled audio;can_undo=false;art_loading=false} in
+                        sound=Audio.enabled audio;can_undo=false} in
     let t={factory;catalog;audio;saves=loaded.saves;clock;battle=loaded.game;latest=model;
            actions=None;listeners=[];publications=Queue.create ();notifying=false;disposed=false;initialized=false;epoch=0;
-           pending_enemy=loaded.pending_enemy;history=[];effects=[];sound_request=0;art_request=0} in
+           pending_enemy=loaded.pending_enemy;history=[];effects=[]} in
     t.actions <- Some (freeze {choose=choose t;focus=focus t;clear=clear t;attack=attack t;recruit=recruit t;advance=advance t;
                                end_turn=end_turn t;undo=undo t;reset=reset t;start_campaign=start_campaign t;next_mission=next_mission t;
-                               retry=retry t;dialogue=dialogue t;previous_dialogue=previous_dialogue t;set_sound=set_sound t;set_style=set_style t});
+                               retry=retry t;dialogue=dialogue t;previous_dialogue=previous_dialogue t;set_sound=set_sound t});
     t
   with exception_ -> Native.dispose loaded.game; raise exception_
 let initialize t =
@@ -333,8 +322,7 @@ let initialize t =
           message t (rejection_reason error);
         Js.Promise.resolve ()) pending) in
     if t.pending_enemy then (t.pending_enemy <- false; observe (end_turn t ()))
-    else if (state t).turn=Domain.side_enemy && Js.Nullable.isNullable (state t).winner then observe (run_enemy t epoch);
-    if t.art_request=0 then ignore (request_style t (Art.style t.latest.artwork) ~persist:false ~fallback:true))
+    else if (state t).turn=Domain.side_enemy && Js.Nullable.isNullable (state t).winner then observe (run_enemy t epoch))
 let close t =
   if not t.disposed then (
     t.disposed <- true; t.epoch <- t.epoch+1; t.effects <- []; t.history <- [];

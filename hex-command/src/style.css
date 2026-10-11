@@ -1933,3 +1933,44 @@ select {
   text-align: center;
   white-space: nowrap;
 }
+
+.loading-shell .workspace {
+  display: block;
+}
+.loading-map {
+  height: min(720px, calc(100svh - 120px));
+  display: grid;
+  place-items: center;
+}
+.loading-message {
+  max-width: 32rem;
+  padding: 24px;
+  color: var(--muted);
+  font:
+    14px/1.6 system-ui,
+    sans-serif;
+}
+.loading-message button,
+.loading-message details {
+  margin-top: 14px;
+}
+.loading-message pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 1000px) {
+  .loading-map {
+    height: 55svh;
+  }
+}
+
+.terrain-bitmap {
+  width: 100%;
+  height: 100%;
+}
+.terrain-bitmap canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}

@@ -4,11 +4,11 @@ import type * as SessionModule from "@frontend/Session";
 import type * as ArtModule from "@frontend/Art";
 import type * as PresentationModule from "@frontend/Presentation";
 import type * as StoryModule from "@frontend/Story";
-import { Native, factory, catalog, restoreBattle } from "./native-fixture";
+import { Native, Catalog, factory, catalog, restoreBattle } from "./native-fixture";
 import { Game, TYPES } from "./game-fixture";
 import { SAVE_KEY, saveBattle, loadBattle } from "./legacy-save";
 import * as Save from "@frontend/Save";
-import { required, TestStorage, mockSpriteCanvas } from "./helpers";
+import { required, TestStorage } from "./helpers";
 import type { State, AttackDetails } from "../rust/pkg/hex_command";
 const motion = vi.hoisted(() => ({ tile: vi.fn(), turn: vi.fn() }));
 vi.mock("@frontend/Motion", () => ({ animate_tile: motion.tile, animate_turn: motion.turn }));
@@ -412,28 +412,6 @@ test("Unmounted sessions cannot overwrite replacements", async () => {
   Session.close(replacement);
 });
 
-class ControlledImage {
-  static requests: ControlledImage[] = [];
-  src = "";
-  onload: (() => void) | null = null;
-  onerror: (() => void) | null = null;
-  completed = false;
-  constructor() {
-    ControlledImage.requests.push(this);
-  }
-  static finish(style: string, success: boolean, terrainSuccess = success) {
-    const requests = this.requests.filter((image) => !image.completed && image.src.includes(style));
-    assert.equal(requests.length, 2);
-    assert(requests.some((image) => image.src.includes(`/units-${style}.png`)));
-    assert(requests.some((image) => image.src.includes(`/terrain-${style}.png`)));
-    assert.equal(new Set(requests.map((image) => image.src)).size, requests.length);
-    for (const image of requests) {
-      image.completed = true;
-      if (image.src.includes(`/terrain-${style}.png`) ? terrainSuccess : success) image.onload?.();
-      else image.onerror?.();
-    }
-  }
-}
 async function settleCallbacks() {
   for (let turn = 0; turn < 24; turn++) await Promise.resolve();
 }
@@ -474,65 +452,59 @@ test("Replay is consumed once and replacement discards pending initialization", 
   Session.close(replay);
 });
 
-test("Manual art preferences supersede fallback and older requests", async () => {
+test("Initialization is idempotent and preserves immutable native-URL pixel artwork", async () => {
   const session = createController(),
-    commands = Session.commands(session),
     observed = observe(session);
-  Session.initialize(session);
-  const openingGame = observed.view.game,
-    openingArtwork = observed.view.artwork;
-  ControlledImage.finish("normal", true, false);
-  await settleCallbacks();
-  const latest = commands.set_style(required(Art.style_of_string("pixel")));
-  ControlledImage.finish("pixel", true);
-  await latest;
-  const chosen = observed.view;
-  assert.equal(Art.unit_frame(openingArtwork, "player", "thorncaller"), undefined);
-  assert(Object.isFrozen(chosen.artwork));
-  assert(
-    Art.unit_frame(chosen.artwork, "player", "thorncaller")?.url.startsWith(
-      "data:image/png;base64,",
-    ),
+  const opening = observed.view,
+    artwork = opening.artwork;
+  const frame = required(Art.unit_frame(artwork, "player", "commander"));
+  assert(Object.isFrozen(artwork));
+  assert(Object.isFrozen(frame));
+  assert.equal(frame.width, 64);
+  assert.equal(frame.height, 64);
+  assert(!frame.url.startsWith("data:"));
+  const images = vi.fn();
+  vi.stubGlobal(
+    "Image",
+    class {
+      constructor() {
+        images();
+      }
+    },
   );
-  ControlledImage.finish("low-poly", false);
+  Session.initialize(session);
+  const initialized = observed.view,
+    saved = storage.getItem(SAVE_KEY);
+  Session.initialize(session);
   await settleCallbacks();
-  assert.equal(observed.view, chosen);
-  assert.equal(Art.style_name(Art.style(observed.view.artwork)), "pixel");
-  assert.equal(observed.view.game, openingGame);
-  assert.equal(observed.view.art_loading, false);
-  assert.equal(storage.getItem("hex-command-art-style"), "pixel");
-  const older = commands.set_style(required(Art.style_of_string("low-poly"))),
-    newer = commands.set_style(required(Art.style_of_string("pixel")));
-  await newer;
-  const current = observed.view;
-  ControlledImage.finish("low-poly", true);
-  await older;
-  assert.equal(observed.view, current);
-  assert.equal(Art.style_name(Art.style(observed.view.artwork)), "pixel");
-  assert.equal(observed.view.art_loading, false);
-  assert.equal(storage.getItem("hex-command-art-style"), "pixel");
+  assert.equal(observed.view, initialized);
+  assert.equal(observed.view.artwork, artwork);
+  assert.equal(observed.view.game, opening.game);
+  assert.equal(Art.unit_frame(artwork, "player", "commander"), frame);
+  assert.equal(storage.getItem(SAVE_KEY), saved);
+  assert.equal(images.mock.calls.length, 0);
+  assert.equal(Reflect.get(Session.commands(session), "set_style"), undefined);
   Session.close(session);
   observed.unsubscribe();
 });
 
-test("Initialization preserves manual preference and unmount cancels writes", async () => {
+test("Hidden scenarios remain command-addressable while visible menus exclude them and campaigns", () => {
+  const scenarios = Catalog.scenario_maps(catalog),
+    choices = Catalog.battle_maps(catalog);
+  const hidden = scenarios.filter((map) => map.hidden === true);
+  assert(hidden.length > 0);
+  for (const map of hidden) assert(!choices.some((choice) => choice.id === map.id));
+  assert(choices.every((map) => map.hidden !== true));
   const session = createController(),
-    commands = Session.commands(session),
-    observed = observe(session),
-    pending = commands.set_style(required(Art.style_of_string("normal")));
-  Session.initialize(session);
-  ControlledImage.finish("normal", false);
-  await pending;
-  assert.equal(observed.view.art_loading, false);
-  assert.match(observed.view.status, /Could not load/);
-  const afterUnmount = commands.set_style(required(Art.style_of_string("normal"))),
-    beforeUnmount = observed.view;
-  Session.close(session);
-  ControlledImage.finish("normal", true);
-  await afterUnmount;
-  assert.equal(observed.view, beforeUnmount);
-  assert.equal(storage.getItem("hex-command-art-style"), null);
-  observed.unsubscribe();
+    commands = Session.commands(session);
+  commands.reset("developer");
+  assert.equal(state(session).mapId, "developer");
+  commands.reset("river-valley");
+  assert.equal(state(session).mapId, "river-valley");
+  const campaign = required(Catalog.campaigns(catalog)[0]),
+    chapter = required(campaign.missions[0]);
+  assert(!scenarios.some((map) => map.id === chapter.map.id));
+  assert.throws(() => commands.reset(chapter.map.id), /Unknown battlefield/);
 });
 
 test("Reentrant reset during a command cannot publish obsolete feedback or spend replacement undo", () => {
@@ -585,7 +557,6 @@ test("Immediate render acknowledgement observes effects once and stale acknowled
   listener();
 });
 
-let restoreCanvas: () => void;
 beforeEach(async () => {
   vi.resetModules();
   [Session, Art, Presentation, Story] = await Promise.all([
@@ -597,13 +568,9 @@ beforeEach(async () => {
   storage.clear();
   motion.tile.mockClear();
   motion.turn.mockClear();
-  ControlledImage.requests = [];
   vi.stubGlobal("localStorage", storage);
-  vi.stubGlobal("Image", ControlledImage);
-  restoreCanvas = mockSpriteCanvas();
 });
 afterEach(() => {
   for (const session of controllers.splice(0)) Session.close(session);
-  restoreCanvas();
   vi.unstubAllGlobals();
 });

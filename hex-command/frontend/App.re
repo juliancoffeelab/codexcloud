@@ -99,6 +99,7 @@ let make = (~session: Session.t, ~onMount: (unit, unit) => unit) => {
   let actions = Session.commands(session);
   let state = Native.state(view.game);
   let (briefing, setBriefing) = React.useState(() => false);
+  let (campaignOpen, setCampaignOpen) = React.useState(() => false);
   let (campaignChoice, setCampaign) = React.useState(() => "lantern-road");
   let (mapChoice, setMap) = React.useState(() => "mirror");
   let settings = React.useRef(Js.Nullable.null);
@@ -113,11 +114,6 @@ let make = (~session: Session.t, ~onMount: (unit, unit) => unit) => {
   );
   React.useLayoutEffect1(
     () => {
-      setAttribute(
-        documentElement(document),
-        "data-art-style",
-        Art.style_name(Art.style(view.artwork)),
-      );
       Session.rendered(session, view.revision);
       None;
     },
@@ -135,8 +131,21 @@ let make = (~session: Session.t, ~onMount: (unit, unit) => unit) => {
     },
     [|actions|],
   );
+  React.useEffect1(
+    () => {
+      switch (Js.Nullable.toOption(campaign.current)) {
+      | None => None
+      | Some(element) =>
+        let closed = _ => setCampaignOpen(_ => false);
+        addListener(element, "close", closed);
+        Some(() => removeListener(element, "close", closed));
+      }
+    },
+    [|campaign|],
+  );
   let openCampaign = () => {
     close(settings);
+    setCampaignOpen(_ => true);
     show(campaign);
   };
   let openMap = () => {
@@ -144,7 +153,7 @@ let make = (~session: Session.t, ~onMount: (unit, unit) => unit) => {
     setMap(_ =>
       Array.exists(
         (layout: Domain.map_definition) => layout.id == state.mapId,
-        Catalog.scenario_maps(view.catalog),
+        Catalog.battle_maps(view.catalog),
       )
         ? state.mapId : "mirror"
     );
@@ -186,9 +195,20 @@ let make = (~session: Session.t, ~onMount: (unit, unit) => unit) => {
     <dialog className="campaign-dialog" ref={ReactDOM.Ref.domRef(campaign)}>
       <h2> {text("New campaign")} </h2>
       <p> {text("Choose a company and a story. Starting replaces your current battle.")} </p>
-      <Dialogs.CampaignPicker view selected=campaignChoice onSelect={id => setCampaign(_ => id)} />
+      {campaignOpen
+         ? <Dialogs.CampaignPicker
+             view
+             selected=campaignChoice
+             onSelect={id => setCampaign(_ => id)}
+           />
+         : React.null}
       <div className="dialog-actions">
-        <button className="quiet" onClick={_ => close(campaign)}>
+        <button
+          className="quiet"
+          onClick={_ => {
+            setCampaignOpen(_ => false);
+            close(campaign);
+          }}>
           {text("Keep playing")}
         </button>
         <button
@@ -196,6 +216,7 @@ let make = (~session: Session.t, ~onMount: (unit, unit) => unit) => {
           onClick={_ => {
             setBriefing(_ => false);
             actions.start_campaign(campaignChoice);
+            setCampaignOpen(_ => false);
             close(campaign);
           }}>
           {text("Start campaign")}

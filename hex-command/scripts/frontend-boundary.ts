@@ -47,6 +47,7 @@ export type {
   PlanningSnapshot,
   Side,
   Terrain,
+  HexDirection,
   Race,
   Family,
   Role,

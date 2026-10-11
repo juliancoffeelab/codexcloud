@@ -1,20 +1,12 @@
 open Ui;
+[@mel.module "virtual:terrain-prebuilt"]
+external terrainSprites: Js.Dict.t(Terrain.sprite) = "default";
 
 module Settings = {
   [@react.component]
   let make =
       (~view: Session.model, ~actions: Session.actions, ~dialog, ~onNewBattle, ~onNewCampaign) => {
     let state = Native.state(view.game);
-    let (selectedArt, setSelectedArt) = React.useState(() => Art.style(view.artwork));
-    React.useEffect2(
-      () => {
-        if (!view.art_loading) {
-          setSelectedArt(_ => Art.style(view.artwork));
-        };
-        None;
-      },
-      (view.art_loading, view.artwork),
-    );
     <dialog id="settings-dialog" ref={ReactDOM.Ref.domRef(dialog)} onClick=backdrop>
       <div className="settings-heading">
         <h2> {text("Settings")} </h2>
@@ -26,28 +18,6 @@ module Settings = {
           {text({js|×|js})}
         </button>
       </div>
-      <label className="art-control" htmlFor="art-style">
-        <span> {text("Art style")} </span>
-        <select
-          id="art-style"
-          value={Art.style_name(selectedArt)}
-          disabled={view.art_loading}
-          onChange={event =>
-            Option.iter(
-              style => {
-                setSelectedArt(_ => style);
-                ignorePromise(actions.set_style(style));
-              },
-              Art.style_of_string(bindValue(event)),
-            )
-          }>
-          {each(Art.styles, ((style, label)) =>
-             <option key={Art.style_name(style)} value={Art.style_name(style)}>
-               {text(label)}
-             </option>
-           )}
-        </select>
-      </label>
       <label className="sound-control" htmlFor="sound-effects">
         <span> {text("Sound effects")} </span>
         <input
@@ -135,14 +105,24 @@ module Settings = {
 module MapPicker = {
   [@react.component]
   let make = (~catalog, ~selected, ~onSelect) => {
-    let maps = Catalog.scenario_maps(catalog);
+    let maps = Catalog.battle_maps(catalog);
+    React.useEffect1(
+      () => {
+        Terrain.preload_manifest(terrainSprites, selected);
+        None;
+      },
+      [|selected|],
+    );
     <fieldset id="map-picker">
       <legend> {text("Battlefield")} </legend>
       {each(
          maps,
          layout => {
-           let width = 85. +. 61. *. (layout.Domain.cols -. 0.5);
-           let height = 84. +. 53. *. (layout.rows -. 1.);
+           let size =
+             Geometry.preview_dimensions(
+               ~cols=int_of_float(layout.Domain.cols),
+               ~rows=int_of_float(layout.rows),
+             );
            let terrain = Js.Dict.empty();
            Array.iter(
              (tile: Domain.tile) => Js.Dict.set(terrain, tile.id, tile.terrain),
@@ -159,7 +139,7 @@ module MapPicker = {
              <span>
                <svg
                  className="map-preview"
-                 viewBox={"0 0 " ++ number(width) ++ " " ++ number(height)}
+                 viewBox={"0 0 " ++ number(size.width) ++ " " ++ number(size.height)}
                  ariaHidden=true>
                  {each(
                     Array.init(

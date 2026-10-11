@@ -1,7 +1,7 @@
 /** Stable embedding contract for the OCaml battle owner. */
 import type {factory,view as NativeView} from "./Native";
 import type {t as Catalog} from "./Catalog";
-import type {Artwork,Style} from "./Art";
+import type {Artwork} from "./Art";
 declare const sessionBrand:unique symbol;
 export interface t {readonly [sessionBrand]:true}
 export interface model {
@@ -16,7 +16,6 @@ export interface model {
   readonly status:string;
   readonly sound:boolean;
   readonly can_undo:boolean;
-  readonly art_loading:boolean;
 }
 export interface actions {
   readonly choose:(tile:string)=>void;
@@ -34,7 +33,6 @@ export interface actions {
   readonly dialogue:(skip:boolean)=>void;
   readonly previous_dialogue:()=>void;
   readonly set_sound:(enabled:boolean)=>Promise<void>;
-  readonly set_style:(style:Style)=>Promise<void>;
 }
 export type clock=(milliseconds:number)=>Promise<void>;
 /** The embedding retains factory ownership; close releases this session only. */

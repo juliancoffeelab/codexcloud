@@ -10,7 +10,8 @@ export const key:string;
 export const rejected_key:string;
 export function create():t;
 export function resume(owner:t):void;
-/** Pure historical conversion; callers must restore natively before committing. */
+/** Pure historical conversion, including validated developer-map expansion;
+ * callers must restore natively before committing. */
 export function migrate(catalog:Immutable<CatalogView>,input:unknown):[envelope,boolean];
 export function load<Game>(catalog:Immutable<CatalogView>,restore:(saved:Immutable<SavedGame>)=>Game,fresh:()=>Game,dispose:(game:Game)=>void,checkpoint:(game:Game)=>Immutable<SavedGame>):loaded<Game>;
 export function write(owner:t,checkpoint:Immutable<SavedGame>,pending_enemy:boolean):void;

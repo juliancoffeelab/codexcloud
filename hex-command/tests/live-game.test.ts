@@ -6,7 +6,7 @@ import { Native, Catalog, factory, catalog, createBattle, restoreBattle } from "
 import { Game } from "./game-fixture";
 import { saveBattle, SAVE_KEY } from "./legacy-save";
 import { TestStorage, required } from "./helpers";
-import type { State } from "../rust/pkg/hex_command";
+import type { SavedGame, State } from "../rust/pkg/hex_command";
 
 beforeEach(() => vi.stubGlobal("localStorage", new TestStorage()));
 const state = (session: Session.t): Native.Immutable<State> =>
@@ -75,10 +75,48 @@ test("A native enemy turn cancelled by map selection never acts on the new battl
 });
 
 test("Native combat inspection feeds UI damage breakdowns and old saves migrate once", () => {
-  const old = new Game("developer");
-  saveBattle(old);
-  const game = load().game;
-  assert.deepEqual(Native.state(Native.view(game)), old.captureState());
+  const opening = createBattle({ kind: "scenario", map: "developer" });
+  const current = Native.state(Native.view(opening));
+  const checkpoint = structuredClone(Native.save(opening)) as SavedGame;
+  // Version three supported this historical geometry; its cells are owned save data.
+  Object.assign(checkpoint.state, { mapRevision: 1, cols: 6, rows: 20 });
+  checkpoint.state.tiles = checkpoint.state.tiles.filter((tile) => tile.col < 6 && tile.row < 20);
+  Object.assign(required(checkpoint.state.tiles[0]), {
+    terrain: "road",
+    connections: ["se", "ne"],
+    deadEnds: ["w"],
+    floor: "green-forest",
+  });
+  required(checkpoint.state.tiles.find((tile) => tile.terrain === "village")).owner = "player";
+  checkpoint.state.round = 4;
+  checkpoint.state.gold.player = 23;
+  required(checkpoint.state.units[0]).hp -= 1;
+  checkpoint.seed = 42;
+  const historical = { version: 3, checkpoint, pendingEnemy: false };
+  const retained = new Map(checkpoint.state.tiles.map((tile) => [tile.id, tile]));
+  const expected: State = {
+    ...checkpoint.state,
+    mapRevision: current.mapRevision,
+    cols: current.cols,
+    rows: current.rows,
+    tiles: current.tiles.map(
+      (tile) => retained.get(tile.id) ?? structuredClone(tile),
+    ) as State["tiles"],
+  };
+  localStorage.setItem(SAVE_KEY, JSON.stringify(historical));
+  const loaded = load(),
+    game = loaded.game;
+  assert.equal(loaded.notice, undefined);
+  assert.deepEqual(Native.state(Native.view(game)), expected);
+  assert.equal(Native.save(game).seed, 42);
+  assert.equal(JSON.parse(localStorage.getItem(SAVE_KEY)!).version, Save.version);
+  assert.deepEqual(Native.tile(Native.view(game), "0,0"), checkpoint.state.tiles[0]);
+  assert.deepEqual(
+    Native.tile(Native.view(game), "8,2"),
+    Native.tile(Native.view(opening), "8,2"),
+    "New cells acquire the current authored directional artwork fields",
+  );
+  Native.dispose(opening);
   const previous = Native.view(game),
     actor = required(Native.state(previous).units.find((unit) => unit.side === "player"));
   const target = required(Native.targets(previous, actor.id)[0]),
@@ -95,7 +133,7 @@ test("Native combat inspection feeds UI damage breakdowns and old saves migrate 
     Math.max(0, target.hp - forecast.damage),
   );
   write(game);
-  assert.equal(JSON.parse(localStorage.getItem(SAVE_KEY)!).version, 3);
+  assert.equal(JSON.parse(localStorage.getItem(SAVE_KEY)!).version, Save.version);
   const restored = load().game;
   assert.deepEqual(Native.state(Native.view(restored)), Native.state(Native.view(game)));
   Native.dispose(restored);
@@ -204,15 +242,6 @@ test("An invalid native checkpoint preserves the old save and leaves a playable 
 });
 
 test("Reloading an exact enemy-phase checkpoint resumes the saved planner once", async () => {
-  vi.stubGlobal(
-    "Image",
-    class {
-      onerror: (() => void) | null = null;
-      set src(_source: string) {
-        queueMicrotask(() => this.onerror?.());
-      }
-    },
-  );
   const game = createBattle({ kind: "scenario", map: "mirror" }),
     options = { policy: "classic", diplomacy: "restrained", recruitmentLimit: 2 } as const;
   Native.dispatch(game, { kind: "endTurn" });

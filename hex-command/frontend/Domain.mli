@@ -199,7 +199,11 @@ and tile = private {
   row : float;
   terrain : string;
   owner : side Js.Nullable.t;
+  connections : hex_direction array option;
+  deadEnds : hex_direction array option;
+  floor : string option;
 }
+and hex_direction = private string
 and campaign_state = private {
   id : string;
   mission : float;
@@ -471,6 +475,7 @@ and map_definition = private {
   revision : float;
   name : string;
   description : string;
+  hidden : bool option;
   cols : float;
   rows : float;
   terrain : tile array;
@@ -644,9 +649,16 @@ val terrain_hill : terrain
 val terrain_keep : terrain
 val terrain_marsh : terrain
 val terrain_plains : terrain
+val terrain_road : terrain
 val terrain_ruins : terrain
 val terrain_village : terrain
 val terrain_water : terrain
+val hex_direction_e : hex_direction
+val hex_direction_ne : hex_direction
+val hex_direction_nw : hex_direction
+val hex_direction_se : hex_direction
+val hex_direction_sw : hex_direction
+val hex_direction_w : hex_direction
 val race_beast : race
 val race_human : race
 val race_merfolk : race
@@ -659,6 +671,7 @@ val family_commander : family
 val family_harpooner : family
 val family_necromancer : family
 val family_reefguard : family
+val family_rider : family
 val family_scout : family
 val family_skeleton : family
 val family_spearman : family

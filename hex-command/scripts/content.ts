@@ -1,8 +1,8 @@
 /** Check authored document references; browser metadata is supplied by WASM. */
 import { existsSync, readFileSync } from "node:fs";
 import { posix } from "node:path";
-import type { TerrainOverride } from "../src/game/types";
-import { terrainArtNames, validTerrainConnections } from "../src/presentation/terrain-connections";
+import type { Tile } from "../rust/pkg/hex_command";
+type TerrainOverride = Pick<Tile, "col" | "row" | "terrain" | "floor" | "connections" | "deadEnds">;
 
 const root = new URL("../rust/data/", import.meta.url);
 const floors = JSON.parse(
@@ -24,18 +24,12 @@ function components(path: string, fields: string[]): void {
     const document = read<{ tiles?: TerrainOverride[] }>(componentPath);
     if (field === "map") {
       for (const tile of document.tiles ?? []) {
-        if (!validTerrainConnections(tile))
-          throw new Error(
-            `${componentPath} at ${tile.col},${tile.row}: unsupported terrain connections`,
-          );
-        const frame = terrainArtNames(tile)[0]!;
-        const stem = frame === tile.terrain ? "tile" : frame.slice(tile.terrain.length + 1);
+        // Rust validates directional topology when loading the catalog. This
+        // document checker owns file references, not a second rules implementation.
         if (
-          !existsSync(new URL(`../pixel/art/terrain/${tile.terrain}/${stem}.txt`, import.meta.url))
+          !existsSync(new URL(`../pixel/art/terrain/${tile.terrain}/palette.json`, import.meta.url))
         )
-          throw new Error(
-            `${componentPath} at ${tile.col},${tile.row}: missing terrain source ${frame}`,
-          );
+          throw new Error(`${componentPath}: missing terrain source ${tile.terrain}`);
         if (tile.floor !== undefined && !Object.hasOwn(floors.palettes, tile.floor))
           throw new Error(`${componentPath}: unknown floor ${tile.floor}`);
       }

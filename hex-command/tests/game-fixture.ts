@@ -146,7 +146,9 @@ export class Game implements State {
     };
   }
   neighbors(id: string): Tile[] {
-    return Native.neighbors(this.publishedView(), id).map((tile: Tile) => this.tile(tile.id)!);
+    return Native.neighbors(this.publishedView(), id).map((tile: Native.Immutable<Tile>) =>
+      this.tile(tile.id)!,
+    );
   }
   cost(unit: Pick<PublicUnit, "type">, tile: Pick<Tile, "terrain">): number {
     return Native.movement_cost(Native.view(this.#battle), unit.type, tile.terrain);
@@ -162,8 +164,8 @@ export class Game implements State {
     );
   }
   recruitTiles(id: string, type: string): Tile[] {
-    return Native.recruit_tiles(this.publishedView(), id, type).map((tile: Tile) =>
-      this.tile(tile.id)!,
+    return Native.recruit_tiles(this.publishedView(), id, type).map(
+      (tile: Native.Immutable<Tile>) => this.tile(tile.id)!,
     );
   }
   recruitmentOptions(side: Side): readonly string[] {

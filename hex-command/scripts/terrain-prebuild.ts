@@ -1,20 +1,16 @@
-/** Production-only assets; map JSON and pixel matrices remain the tracked sources. */
+/** Asset I/O adapter. All static terrain policy comes from emitted OCaml. */
 import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
+import { build } from "esbuild";
 import type { Canvas } from "@napi-rs/canvas";
 import type { Plugin } from "vite";
-import { currentArtwork } from "../src/presentation/art";
-import {
-  terrainMapKey,
-  terrainMapDimensions,
-  terrainTileView,
-  paintTerrainTiles,
-} from "../src/presentation/terrain-map";
-import { battlefieldSpriteSize, mapDimensions } from "../src/ui/geometry";
-import { pixelSprites } from "../src/presentation/pixel-art";
-import type { GameView } from "../src/game/view";
+import type * as PlanAPI from "../frontend/Terrain_plan";
+import type * as ArtAPI from "../frontend/Art";
+import type { Tile } from "../rust/pkg/hex_command";
+import { frontendAliases } from "./frontend-paths";
 
 const virtualId = "virtual:terrain-prebuilt";
+type Renderer = { Terrain_plan: typeof PlanAPI; Art: typeof ArtAPI };
 
 export function terrainPrebuild(): Plugin {
   let root: string;
@@ -30,8 +26,31 @@ export function terrainPrebuild(): Plugin {
     },
     async load(id) {
       if (id !== "\0" + virtualId) return;
-      // Development keeps the ordinary renderer; production emits complete map PNGs.
       if (!production) return "export default {};";
+      const frontend = resolve(root, "_build/default/frontend/output/frontend");
+      // Bundle compiler output once so Node resolves precisely the same metadata
+      // aliases as Vite. This wrapper contains no rendering or key policy.
+      const compiled = await build({
+        stdin: {
+          contents: `export * as Terrain_plan from ${JSON.stringify(resolve(frontend, "Terrain_plan.js"))}; export * as Art from ${JSON.stringify(resolve(frontend, "Art.js"))};`,
+          resolveDir: root,
+        },
+        bundle: true,
+        write: false,
+        metafile: true,
+        platform: "node",
+        format: "esm",
+        target: "es2022",
+        alias: frontendAliases,
+      });
+      for (const path of Object.keys(compiled.metafile!.inputs)) {
+        if (path !== "<stdin>") this.addWatchFile(resolve(root, path));
+      }
+      const source = compiled.outputFiles[0];
+      if (!source) throw new Error("Missing compiled OCaml terrain renderer");
+      const { Terrain_plan, Art } = (await import(
+        `data:text/javascript;base64,${Buffer.from(source.contents).toString("base64")}`
+      )) as Renderer;
       const { createCanvas, loadImage } = await import("@napi-rs/canvas");
       const read = async <T>(path: string): Promise<T> => {
         this.addWatchFile(path);
@@ -47,51 +66,46 @@ export function terrainPrebuild(): Plugin {
         const { stages } = await read<{ stages: string[] }>(path);
         descriptors.push(...stages.map((stage) => resolve(dirname(path), stage)));
       }
-      this.addWatchFile(resolve(root, "src/presentation/pixel-art.ts"));
-      const artwork = currentArtwork();
-      const frames = new Map<string, Canvas>();
+      const artwork = Art.current();
+      const frames: Record<string, Canvas> = Object.create(null);
       const entries: string[] = [];
       const keys = new Set<string>();
       for (const descriptor of descriptors) {
         const { map: mapPath } = await read<{ map: string }>(descriptor);
-        const map = await read<Pick<GameView, "cols" | "rows" | "mapId" | "tiles">>(
+        const map = await read<{ cols: number; rows: number; mapId: string; tiles: Tile[] }>(
           resolve(dirname(descriptor), mapPath),
         );
-        const key = terrainMapKey(map);
-        if (keys.has(key)) continue;
-        keys.add(key);
-        const plan = {
-          ...mapDimensions(map),
-          pixelScale: 64 / battlefieldSpriteSize,
-          tiles: map.tiles.map((tile) => ({
-            ...tile,
-            ...terrainTileView(tile, map.mapId, artwork),
-          })),
-        };
+        const plan = Terrain_plan.prepare(map.mapId, map.cols, map.rows, map.tiles, artwork);
+        if (keys.has(plan.key)) continue;
+        keys.add(plan.key);
         for (const tile of plan.tiles) {
-          const name = tile.terrainFrame?.url;
-          if (!name) throw new Error(`${map.mapId}/${tile.id}: missing terrain artwork`);
-          if (frames.has(name)) continue;
-          const path = resolve(root, "public", pixelSprites[tile.frameKey]!);
+          const frame = tile.frame;
+          if (!frame) throw new Error(`${map.mapId}/${tile.id}: missing terrain artwork`);
+          if (frames[frame.url]) continue;
+          const path = resolve(root, "public", frame.url.replace(/^(?:\.\/|\/)+/, ""));
           this.addWatchFile(path);
-          // Keep build-time raster clipping identical to the canvas fallback.
-          const frame = createCanvas(64, 64);
-          frame.getContext("2d").drawImage(await loadImage(path), 0, 0);
-          frames.set(name, frame);
+          const image = createCanvas(frame.width, frame.height);
+          image.getContext("2d").drawImage(await loadImage(path), 0, 0);
+          frames[frame.url] = image;
         }
-        const dimensions = terrainMapDimensions(plan);
+        const dimensions = Terrain_plan.dimensions(plan);
         const canvas = createCanvas(dimensions.width, dimensions.height);
         const context = canvas.getContext("2d");
-        context.imageSmoothingEnabled = false;
-        context.scale(plan.pixelScale, plan.pixelScale);
-        paintTerrainTiles(context, plan.tiles, frames);
+        Terrain_plan.configure(context, plan.pixel_scale);
+        Terrain_plan.paint(context, plan.tiles, frames);
         const reference = this.emitFile({
           type: "asset",
           name: `terrain-${map.mapId}.png`,
           source: canvas.toBuffer("image/png"),
         });
+        const sprite = {
+          width: dimensions.width,
+          height: dimensions.height,
+          displayWidth: dimensions.display_width,
+          displayHeight: dimensions.display_height,
+        };
         entries.push(
-          `${JSON.stringify(key)}: { ...${JSON.stringify(dimensions)}, url: import.meta.ROLLUP_FILE_URL_${reference} }`,
+          `${JSON.stringify(plan.key)}: { ...${JSON.stringify(sprite)}, url: import.meta.ROLLUP_FILE_URL_${reference} }`,
         );
       }
       console.log(`Prebuilt terrain for ${entries.length} authored maps`);

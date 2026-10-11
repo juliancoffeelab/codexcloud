@@ -5,7 +5,7 @@ type model = private {
   game : Native.view; catalog : Catalog.t; artwork : Art.t;
   selected : string option; target : string option; inspected : string option;
   focused : string; revision : int; status : string; sound : bool;
-  can_undo : bool; art_loading : bool;
+  can_undo : bool;
 }
 type actions = {
   choose : string -> unit; focus : string -> unit; clear : bool -> unit;
@@ -14,7 +14,7 @@ type actions = {
   undo : unit -> unit; reset : string -> unit; start_campaign : string -> unit;
   next_mission : string array -> unit; retry : unit -> unit;
   dialogue : bool -> unit; previous_dialogue : unit -> unit;
-  set_sound : bool -> unit Js.Promise.t; set_style : Art.style -> unit Js.Promise.t;
+  set_sound : bool -> unit Js.Promise.t;
 }
 type clock = float -> unit Js.Promise.t
 (** Factory ownership stays with the embedding; failed session construction

@@ -34,8 +34,6 @@ external queryWithin: (Dom.element, string) => Js.Nullable.t(Dom.element) = "que
 [@mel.send]
 external removeListener: (Dom.element, string, 'a => unit) => unit = "removeEventListener";
 external document: Dom.element = "document";
-[@mel.get] external documentElement: Dom.element => Dom.element = "documentElement";
-[@mel.send] external setAttribute: (Dom.element, string, string) => unit = "setAttribute";
 [@mel.send] external scroll: (Dom.element, {. "block": string }) => unit = "scrollIntoView";
 let show = reference =>
   Js.Nullable.toOption(reference.React.current)
@@ -74,6 +72,9 @@ let backdrop = event => {
 [@mel.set] external dataKey: (ReactDOM.domProps, string) => unit = "key";
 [@mel.set] external dataTile: (ReactDOM.domProps, string) => unit = "data-tile";
 [@mel.set] external dataUnit: (ReactDOM.domProps, string) => unit = "data-unit-tile";
+[@mel.set] external dataUnitId: (ReactDOM.domProps, string) => unit = "data-unit";
+[@mel.set] external dataHealthUnit: (ReactDOM.domProps, string) => unit = "data-health-unit";
+[@mel.set] external dataFaction: (ReactDOM.domProps, string) => unit = "data-faction";
 [@mel.set] external dataIndicator: (ReactDOM.domProps, string) => unit = "data-indicator-tile";
 [@mel.set] external dataAttack: (ReactDOM.domProps, string) => unit = "data-attack";
 [@mel.set] external dataInspect: (ReactDOM.domProps, string) => unit = "data-inspect";
@@ -115,16 +116,30 @@ module Icon = {
 
 module Sprite = {
   [@react.component]
-  let make = (~artwork, ~kind="units", ~name, ~side="player", ~width, ~height, ~className="") => {
+  let make =
+      (
+        ~artwork,
+        ~kind="units",
+        ~name,
+        ~side="player",
+        ~floor=None,
+        ~width,
+        ~height,
+        ~className="",
+      ) => {
     let frame =
       switch (kind) {
-      | "terrain" => Art.terrain_frame(artwork, name)
+      | "terrain" =>
+        switch (floor) {
+        | None => Art.terrain_frame(artwork, name)
+        | Some(floor) => Art.terrain_frame(artwork, ~floor, name)
+        }
       | "portraits" => Art.portrait_frame(artwork, name)
       | _ => Art.unit_frame(artwork, ~side, name)
       };
     option(frame, frame =>
       <svg
-        className={"art-sprite " ++ (frame.pixel ? "pixel-art " : "") ++ className}
+        className={"art-sprite pixel-art " ++ className}
         width={number(width)}
         height={number(height)}
         viewBox={"0 0 " ++ number(frame.width) ++ " " ++ number(frame.height)}
