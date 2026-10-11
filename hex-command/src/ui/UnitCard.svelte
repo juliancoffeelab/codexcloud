@@ -7,11 +7,11 @@
     unit: UnitView;
     artwork: Artwork;
     showName?: boolean;
+    showProgress?: boolean;
   }
-  let { unit, artwork, showName = false }: Props = $props();
+  let { unit, artwork, showName = false, showProgress = false }: Props = $props();
 
   const definition = $derived(TYPES[unit.type]);
-  const teamLabel = $derived(unit.side === "player" ? "Your unit" : "Enemy unit");
   const healthPercent = $derived((unit.hp / definition.hp) * 100);
   const portrait = $derived(
     artSprite(
@@ -28,10 +28,22 @@
   );
 </script>
 
-<div class={`combatant ${unit.side}`}>
-  <span class="unit-side">{teamLabel}</span>
+<div
+  class={`combatant ${unit.side}`}
+  role="group"
+  aria-label={unit.side === "player" ? "Your unit" : "Enemy unit"}
+>
   {@html portrait}
-  <h2>{showName && unit.name ? unit.name : definition.name}</h2>
+  <div class="unit-heading">
+    <h2>{showName && unit.name ? unit.name : definition.name}</h2>
+    {#if showProgress}
+      <span class="unit-progress" title={`Level ${definition.level ?? 1}`}>
+        L{definition.level ?? 1} · {definition.experienceNeeded
+          ? `${unit.experience ?? 0}/${definition.experienceNeeded} XP`
+          : "Max"}
+      </span>
+    {/if}
+  </div>
   {#if unit.retreating}<span class="retreat-label">Retreating</span>{/if}
   {#if showName && unit.name}<span class="named-unit-type">{definition.name}</span>{/if}
   <div class="health-numbers">

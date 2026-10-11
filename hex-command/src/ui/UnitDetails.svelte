@@ -17,7 +17,7 @@
 </script>
 
 <div class="unit-detail">
-  <UnitCard unit={details.unit} {artwork} showName />
+  <UnitCard unit={details.unit} {artwork} showName showProgress />
   <div class="unit-info">
     <div class="unit-stats">
       <span class="unit-stat">
@@ -36,17 +36,6 @@
       <p class="ability-fact">{fact}</p>
     {/each}
     <p>{details.ability.description}</p>
-    <p>
-      Level {details.definition.level ?? 1} · {details.definition.experienceNeeded
-        ? `${details.unit.experience ?? 0} / ${details.definition.experienceNeeded} XP`
-        : "Fully advanced"}
-    </p>
-    {#if details.definition.experienceNeeded}
-      <p>
-        Earn experience by dealing damage and defeating enemies. Advance while ready; wounds carry
-        over and advancement uses this turn.
-      </p>
-    {/if}
     {#each details.promotions as promotion (promotion.type)}
       <button class="primary" onclick={() => onAdvance(promotion.type)}>
         Advance to {promotion.name} · {promotion.hp} HP

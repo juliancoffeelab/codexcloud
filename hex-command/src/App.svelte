@@ -17,6 +17,9 @@
   let { controller }: { controller: BattleController } = $props();
   const view = $derived(controller.view);
   const actions = $derived(controller.commands);
+  const inspectionOpen = $derived(
+    !!($view.selected || $view.inspectedTile || ($view.game.winner && !$view.game.campaign)),
+  );
   let briefingExpanded = $state(false);
   const missionMapId = $derived($view.game.mapId);
   $effect(() => {
@@ -62,6 +65,14 @@
     if (event.key === "Escape" && !document.querySelector("dialog[open]"))
       actions.clearSelection(true);
   }
+  function clickAway(event: MouseEvent) {
+    if (
+      event.target instanceof Element &&
+      !document.querySelector("dialog[open]") &&
+      !event.target.closest(".hex, aside, button, select, input, summary, a, dialog")
+    )
+      actions.clearSelection(true);
+  }
   onMount(() => {
     const artworkFailed = (event: Event) => {
       if (
@@ -94,8 +105,8 @@
   });
 </script>
 
-<svelte:document onkeydown={globalKeydown} />
-<main>
+<svelte:document onkeydown={globalKeydown} onclick={clickAway} />
+<main class="battle-layout">
   <TurnBar
     view={$view}
     {actions}
@@ -104,18 +115,22 @@
     onBriefing={() => (briefingExpanded = !briefingExpanded)}
   />
   <p id="status" class="status" role="status" aria-live="polite">{$view.status}</p>
-  <CampaignPanel
-    view={$view}
-    {actions}
-    bind:expanded={briefingExpanded}
-    onNewCampaign={openCampaignPicker}
-  />
-  <div class="workspace">
-    <Battlefield view={$view} {actions} />
-    <aside>
-      <UnitPanel view={$view} {actions} onNewBattle={openMapPicker} />
-      <TerrainPanel view={$view} {actions} />
-    </aside>
+  <div class="battle-content">
+    <CampaignPanel
+      view={$view}
+      {actions}
+      bind:expanded={briefingExpanded}
+      onNewCampaign={openCampaignPicker}
+    />
+    <div class="workspace" class:map-only={!inspectionOpen}>
+      <Battlefield view={$view} {actions} />
+      {#if inspectionOpen}
+        <aside aria-label="Unit and terrain details">
+          <UnitPanel view={$view} {actions} onNewBattle={openMapPicker} />
+          <TerrainPanel view={$view} {actions} />
+        </aside>
+      {/if}
+    </div>
   </div>
 </main>
 <SettingsDialog

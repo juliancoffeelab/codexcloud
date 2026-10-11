@@ -150,7 +150,12 @@
   Read the adapter with `tools.exec_command`, evaluate its exported function,
   and invoke it with the native `tools`, project `cwd`, a commit message and
   `notify` for progress. The adapter runs `npm run publish`, requests credentials,
-  saves/deploys and polls to completion. Example body (set `cwd` to this project):
+  saves/deploys and polls to completion.
+
+  Publish successfully before pushing to GitHub. The Sites source repository must
+  receive its commit for deployment; the separate GitHub push happens only after
+  Sites reports success, and must push exactly the deployed source commit.
+  Example body (set `cwd` to this project):
 
   ```js
   const source = await tools.exec_command({

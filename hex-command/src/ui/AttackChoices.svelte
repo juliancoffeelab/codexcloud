@@ -15,7 +15,6 @@
 </script>
 
 <div class="attack-actions" aria-label="Attack actions">
-  <h3>Attack</h3>
   {#each choices as choice (choice.id)}
     <AttackChoice {choice} {onAttack} />
   {/each}

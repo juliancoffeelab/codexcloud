@@ -1,4 +1,4 @@
-"""Build, commit, push and package the game for the native Sites publisher."""
+"""Commit and package the game; GitHub receives the commit after deployment."""
 
 import argparse
 import json
@@ -47,7 +47,7 @@ def prepare(credential, message):
     command(["npm", "run", "art:build"])
     step("Style checks")
     command(["npm", "run", "style"])
-    step("Commit and push project source")
+    step("Commit project source")
     command(["git", "add", "-A", "--", "."])
     changed = subprocess.run(["git", "diff", "--cached", "--quiet", "--", "."], cwd=ROOT)
     if changed.returncode not in (0, 1):
@@ -55,7 +55,6 @@ def prepare(credential, message):
     if changed.returncode:
         command(["git", "commit", "--only", "-m", message, "--", "."])
     source_commit = command(["git", "rev-parse", "HEAD"])
-    command(["git", "push", "origin", f"HEAD:refs/heads/{branch}"])
     command(["git", "diff", "--quiet", "HEAD", "--", "."])
 
     # The credential never enters an argument, file or log.
@@ -120,7 +119,8 @@ def prepare(credential, message):
     step("Package complete build")
     archive_path = str(Path(tempfile.gettempdir()) / f"{hosting['project_id']}-publish.tar.gz")
     result = json.loads(command(["python3", "scripts/package-site.py", archive_path], cwd=checkout))
-    result.update({"source_commit": source_commit, "checkout_path": str(checkout)})
+    result.update({"source_commit": source_commit, "source_branch": branch,
+                   "checkout_path": str(checkout)})
     return result
 
 

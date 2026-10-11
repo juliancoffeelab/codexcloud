@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { untrack } from "svelte";
+  import { tick, untrack } from "svelte";
   import type { TileView } from "../game/view";
   import type { BattleCommands, BattleView } from "../controller/view";
   import { MAPS } from "../game/maps";
@@ -21,6 +21,7 @@
   }
   let { view, actions }: Props = $props();
   let map: SVGSVGElement | undefined;
+  let viewport: HTMLDivElement | undefined;
   const terrainCache = new TerrainMapCache();
   const terrainViewCache = new TerrainViewCache();
   const terrainPrefetch = new TerrainTilePrefetcher();
@@ -68,6 +69,52 @@
     hasBackdrop ? tiles.filter((tile) => !backdrop && prebuilt?.changed.has(tile.id)) : tiles,
   );
   const hovered = $derived(tiles.find((tile) => tile.id === hoveredTile));
+  const inspectionTiles = $derived(
+    [game.unit(selected)?.tile, game.unit(view.target)?.tile, view.inspectedTile]
+      .filter(Boolean)
+      .join("|"),
+  );
+
+  $effect(() => {
+    const scroller = viewport;
+    const board = map;
+    const ids = [...new Set(inspectionTiles.split("|").filter(Boolean))];
+    if (!scroller || !board || !ids.length) return;
+    let current = true;
+    const reveal = () => {
+      if (!current) return;
+      const bounds = ids.flatMap((id) => {
+        const nodes = board.querySelectorAll<SVGGElement>(
+          `[data-tile="${id}"], [data-unit-tile="${id}"]`,
+        );
+        return [...nodes].map((node) => node.getBoundingClientRect());
+      });
+      if (!bounds.length) return;
+      const area = scroller.getBoundingClientRect();
+      const left = Math.min(...bounds.map((rect) => rect.left));
+      const right = Math.max(...bounds.map((rect) => rect.right));
+      const top = Math.min(...bounds.map((rect) => rect.top));
+      const bottom = Math.max(...bounds.map((rect) => rect.bottom));
+      // Keep both combatants visible when they fit; otherwise prioritize the inspected tile.
+      const last = bounds[bounds.length - 1]!;
+      const x1 = right - left + 24 <= scroller.clientWidth ? left : last.left;
+      const x2 = right - left + 24 <= scroller.clientWidth ? right : last.right;
+      const y1 = bottom - top + 24 <= scroller.clientHeight ? top : last.top;
+      const y2 = bottom - top + 24 <= scroller.clientHeight ? bottom : last.bottom;
+      scroller.scrollLeft +=
+        Math.min(0, x1 - area.left - 12) || Math.max(0, x2 - area.left - scroller.clientWidth + 12);
+      scroller.scrollTop +=
+        Math.min(0, y1 - area.top - 12) || Math.max(0, y2 - area.top - scroller.clientHeight + 12);
+    };
+    // Panel changes settle first. Later viewport resizes must preserve the same inspection.
+    void tick().then(reveal);
+    const resize = new ResizeObserver(reveal);
+    resize.observe(scroller);
+    return () => {
+      current = false;
+      resize.disconnect();
+    };
+  });
 
   $effect(() => {
     if (loadedTerrain !== terrainKey || !prebuilt || prebuilt.changed.size) return;
@@ -167,7 +214,7 @@
 {/snippet}
 
 <section class="map-section" aria-label="Battlefield">
-  <div class="map-scroll">
+  <div class="map-scroll" bind:this={viewport}>
     <svg
       bind:this={map}
       id="map"
