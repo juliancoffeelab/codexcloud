@@ -24,11 +24,16 @@
   their main streets, without thin house lanes. Extracted buildings and composition
   experiments stay in `tmp/`; the atlas must only pack the finished tiles.
   Terrain floor colors live separately in `pixel/art/terrain/floors.json`, with
-  one base/shade pair per terrain type: `G`/`g` for land and `W`/`w` for water.
+  named reusable `palettes` (`G`/`g` base/shade) and terrain `defaults`.
+  Map tiles optionally set `floor`, independently of `terrain` and connections:
+  a road can use `green-forest`, or a forest can use `snow-forest`, without new
+  matrices. Water surfaces also use `G`/`g`; localized pools remain materials.
   Keep those symbols out of each terrain's material `palette.json`. Trees,
   grass tufts, buildings, rocks and dirt paths keep their own material colors;
-  changing a floor must not recolor them. The packer resolves floor colors for
-  every orientation and the matching vector hex background.
+  changing a floor must not recolor them. The read-only packer applies palettes
+  to the same matrices, packing floor choices for every orientation. Render the
+  selected isolated frame with its matching vector hex background. Floor choices
+  affect artwork only and must survive publication, saves and forks.
 
 - **Permanent character canvas rule: every character/unit sprite and portrait is
   exactly 64×64 native pixels. This rule must never be changed; do not even try

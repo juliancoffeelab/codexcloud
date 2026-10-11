@@ -39,6 +39,10 @@ pub struct Tile {
     #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, rename = "deadEnds", skip_serializing_if = "Option::is_none")]
     pub dead_ends: Option<Vec<HexDirection>>,
+    /// Reusable ground palette; independent of terrain and its gameplay rules.
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub floor: Option<String>,
 }
 impl Tile {
     pub fn valid_connections(&self) -> bool {

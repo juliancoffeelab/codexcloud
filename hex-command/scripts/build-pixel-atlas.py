@@ -153,10 +153,24 @@ def faction_palette(side):
                                   ('^', '*'), f'{side} faction')
 
 
-def terrain_floor_palette(kind):
-    palette = json.loads((ART / "terrain/floors.json").read_text()).get(kind)
-    symbols = ('G', 'g') if isinstance(palette, dict) and 'G' in palette else ('W', 'w')
-    return require_shared_palette(palette, symbols, f'{kind} floor')
+def load_terrain_floors():
+    floors = json.loads((ART / "terrain/floors.json").read_text())
+    for name, palette in floors['palettes'].items():
+        if not re.fullmatch(r'[a-z][a-z0-9-]*', name):
+            raise ValueError(f'Invalid floor name: {name!r}')
+        require_shared_palette(palette, ('G', 'g'), f'{name} floor')
+    for kind, name in floors['defaults'].items():
+        if name not in floors['palettes']:
+            raise ValueError(f'{kind}: unknown default floor {name!r}')
+    return floors
+
+
+def terrain_floor_palette(kind, floor=None):
+    floors = load_terrain_floors()
+    name = floor if floor is not None else floors['defaults'].get(kind)
+    if name not in floors['palettes']:
+        raise ValueError(f'{kind}: unknown floor {name!r}')
+    return floors['palettes'][name]
 
 
 def chunk(kind, data):
@@ -173,7 +187,7 @@ def read_matrix(matrix):
     return rows
 
 
-def read_palette(matrix):
+def read_palette(matrix, floor=None):
     matrix = matrix.resolve()
     path = matrix.parent / "palette.json"
     palette = json.loads(path.read_text())
@@ -181,10 +195,10 @@ def read_palette(matrix):
     if type(flying) is not bool:
         raise ValueError(f"{path}: 'flying' must be a boolean")
     if matrix.parent.parent == (ART / "terrain").resolve():
-        floor = terrain_floor_palette(matrix.parent.name)
-        if palette.keys() & floor.keys():
+        ground = terrain_floor_palette(matrix.parent.name, floor)
+        if palette.keys() & ground.keys():
             raise ValueError(f"{path}: floor shades belong in terrain/floors.json")
-        palette.update(floor)
+        palette.update(ground)
     for symbol, rgba in palette.items():
         if (
             len(symbol) != 1
@@ -210,8 +224,8 @@ def require_grounded(rows, palette, flying=False, label="Character"):
                          "declare flying: true in palette.json only for suspended poses")
 
 
-def rgba_pixels(matrix, side="player"):
-    rows, palette = read_matrix(matrix), read_palette(matrix)
+def rgba_pixels(matrix, side="player", floor=None):
+    rows, palette = read_matrix(matrix), read_palette(matrix, floor)
     if matrix.stem == "sprite":
         palette.update(faction_palette(side))
     pixels = bytearray()
@@ -289,13 +303,21 @@ def pixel_atlases():
         if not any(pixels[3::4]):
             raise ValueError(f"{matrix}: expected a nonempty portrait")
         native[f"portrait_{matrix.parent.name}"] = (width, height, pixels)
-    terrain, terrain_colors = {}, {}
+    terrain = {}
+    floors = load_terrain_floors()
+
+    def add_terrain(key, matrix):
+        terrain[key] = rgba_pixels(matrix)
+        for floor in floors['palettes']:
+            if floor != floors['defaults'][matrix.parent.name]:
+                terrain[f'{key}__{floor}'] = rgba_pixels(matrix, floor=floor)
+
     for matrix in sorted((ART / "terrain").glob("*/tile.txt")):
         width, height, pixels = rgba_pixels(matrix)
         if not any(pixels[3::4]):
             raise ValueError(f"{matrix}: expected a nonempty terrain sprite")
         key = f"terrain_{FRAME_NAMES.get(matrix.parent.name, matrix.parent.name)}"
-        terrain[key] = (width, height, pixels)
+        add_terrain(key, matrix)
         kind = matrix.parent.name
         default_mask = {"road": 9, "village": 9}.get(kind)
         surface = frozenset("RrC" if kind == "road" else "RrH")
@@ -318,14 +340,7 @@ def pixel_atlases():
                 require_road_exits(read_matrix(variant), int(variant.stem), surface, label=kind)
             if capped:
                 require_road_exits(read_matrix(variant), exits, surface, label=kind)
-            terrain[f"{key}_{variant.stem}"] = rgba_pixels(variant)
-        # The vector hex fills the transparent staircase around the raster tile.
-        # Ground palettes name their base G; river palettes name it W.
-        palette = read_palette(matrix)
-        background = palette["G" if "G" in palette else "W"]
-        if background[3] != 255:
-            raise ValueError(f"{matrix}: terrain ground must be opaque")
-        terrain_colors[matrix.parent.name] = "#" + "".join(f"{channel:02x}" for channel in background[:3])
+            add_terrain(f"{key}_{variant.stem}", variant)
     if not terrain:
         raise ValueError("No native terrain matrices found")
     outputs, sources, frames = {}, {}, {}
@@ -352,9 +367,13 @@ def pixel_atlases():
         f"  {property_name(key)}: {json.dumps(crop)},\n"
         for key, crop in sorted(frames.items())
     )
-    color_fields = "".join(
-        f"  {property_name(key)}: {json.dumps(color)},\n"
-        for key, color in sorted(terrain_colors.items())
+    floor_fields = ''.join(
+        f'  {property_name(name)}: {json.dumps("#" + "".join(f"{c:02x}" for c in palette["G"][:3]))},\n'
+        for name, palette in sorted(floors['palettes'].items())
+    )
+    default_fields = ''.join(
+        f'  {property_name(kind)}: {json.dumps(name)},\n'
+        for kind, name in sorted(floors['defaults'].items())
     )
     model_fields = "".join(
         f"  {property_name(key)}: {json.dumps(model)},\n"
@@ -364,7 +383,8 @@ def pixel_atlases():
         "// Generated by scripts/build-pixel-atlas.py; edit pixel/art matrices and palettes.\n"
         + "export const pixelSources = {\n" + source_fields + "} as const;\n\n"
         + "export const pixelFrames = {\n" + frame_fields + "} as const;\n"
-        + "\nexport const pixelTerrainColors = {\n" + color_fields + "} as const;\n"
+        + "\nexport const pixelFloorColors: Readonly<Record<string, string>> = {\n" + floor_fields + "};\n"
+        + "\nexport const pixelDefaultFloors = {\n" + default_fields + "} as const;\n"
         + "\nexport const pixelUnitModels: Readonly<Record<string, string>> = {\n"
         + model_fields + "};\n"
     )

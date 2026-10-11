@@ -3,6 +3,9 @@ import { readFileSync } from "node:fs";
 import { posix } from "node:path";
 
 const root = new URL("../rust/data/", import.meta.url);
+const floors = JSON.parse(
+  readFileSync(new URL("../pixel/art/terrain/floors.json", import.meta.url), "utf8"),
+) as { palettes: Record<string, unknown> };
 const paths = new Set<string>();
 function read<T>(path: string): T {
   if (!path || path.startsWith("/") || path.split("/").includes(".."))
@@ -15,7 +18,14 @@ function components(path: string, fields: string[]): void {
   for (const field of fields) {
     const component = descriptor[field];
     if (!component) throw new Error(`${path}: missing ${field}`);
-    read(posix.join(posix.dirname(path), component));
+    const componentPath = posix.join(posix.dirname(path), component);
+    const document = read<{ tiles?: { floor?: string }[] }>(componentPath);
+    if (field === "map") {
+      for (const tile of document.tiles ?? []) {
+        if (tile.floor !== undefined && !Object.hasOwn(floors.palettes, tile.floor))
+          throw new Error(`${componentPath}: unknown floor ${tile.floor}`);
+      }
+    }
   }
 }
 const manifest = read<{

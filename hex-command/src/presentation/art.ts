@@ -91,11 +91,15 @@ export function artSprite(
   height: number,
   extraClass = "",
   side: Side = "player",
+  floor?: string,
 ): string {
   if (kind === "units") name = pixelUnitModels[name] ?? name;
   const frameName =
     name === "bonearcher" ? "bone_archer" : name === "grove" ? "sacred_grove" : name;
-  const key = `${kind === "terrain" ? "terrain" : side}_${frameName}`;
+  let key = `${kind === "terrain" ? "terrain" : side}_${frameName}`;
+  if (kind === "terrain" && floor && artwork.frames[`${key}__${floor}`]) {
+    key += `__${floor}`;
+  }
   return renderSprite(
     artwork.frames[key],
     x,

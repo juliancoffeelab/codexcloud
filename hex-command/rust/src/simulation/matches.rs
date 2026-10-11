@@ -49,6 +49,7 @@ pub(crate) fn create_arena<'catalog>(
                 owner: None,
                 connections: None,
                 dead_ends: None,
+                floor: None,
             });
         }
     }

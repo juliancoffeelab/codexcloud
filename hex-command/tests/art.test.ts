@@ -6,7 +6,8 @@ import {
   pixelFrames,
   pixelSources,
   pixelUnitModels,
-  pixelTerrainColors,
+  pixelDefaultFloors,
+  pixelFloorColors,
 } from "../src/presentation/pixel-art";
 import { Game } from "./game-fixture";
 import { createGameView } from "./fixture-view";
@@ -142,7 +143,10 @@ test("Static terrain frames supply matching edge fills without procedural overla
     const [x, y, width, height] = pixelFrames[`terrain_${name}`];
     assert.deepEqual(isolated.coordinates, [x, y, width, height, 0, 0, width, height]);
     assert.equal(isolated.smoothing, false);
-    assert.equal(tiles.find((tile) => tile.terrain === name)?.fill, pixelTerrainColors[name]);
+    assert.equal(
+      tiles.find((tile) => tile.terrain === name)?.fill,
+      pixelFloorColors[pixelDefaultFloors[name]],
+    );
   }
 });
 test("Tall dialogue keeps a character frame at its native 64×64 size", async () => {
@@ -156,6 +160,28 @@ test("Tall dialogue keeps a character frame at its native 64×64 size", async ()
   );
   assert.equal(lark.width, 64);
   assert.equal(lark.height, 64);
+});
+
+test("Map floors choose independent palettes for directional terrain and matching hex fills", async () => {
+  await art.loadArtwork();
+  const game = new Game("developer");
+  const road = game.tiles.find((tile) => tile.terrain === "plains")!;
+  road.terrain = "road";
+  road.connections = ["e", "w", "se"];
+  road.floor = "green-forest";
+  const forest = game.tiles.find((tile) => tile.terrain === "forest")!;
+  forest.floor = "snow-forest";
+  const rendered = battlefieldTiles(createGameView(game), null, art.currentArtwork(), null);
+  for (const [tile, frame] of [
+    [road, "terrain_road_11__green-forest"],
+    [forest, "terrain_forest__snow-forest"],
+  ] as const) {
+    const result = rendered.find((candidate) => candidate.id === tile.id)!;
+    assert.equal(result.fill, pixelFloorColors[tile.floor!]);
+    const crop = pixelFrames[frame];
+    assert.deepEqual(extraction(result.terrainArtwork).coordinates, [...crop, 0, 0, 64, 64]);
+    assert.equal(result.floor, tile.floor);
+  }
 });
 
 test("Route connections select one complete native terrain frame", async () => {

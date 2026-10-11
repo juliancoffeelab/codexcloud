@@ -146,7 +146,7 @@ fn adjacency_matches_hex_distance_including_edges() {
 }
 
 #[test]
-fn artwork_connections_survive_restore_and_forks_without_changing_movement() {
+fn artwork_choices_survive_restore_and_forks_without_changing_movement() {
     let original = Game::new(rules(), "mirror");
     let mut state = original.state();
     let tile = state
@@ -158,11 +158,23 @@ fn artwork_connections_survive_restore_and_forks_without_changing_movement() {
     tile.terrain = "road".into();
     tile.connections = Some(vec![HexDirection::E, HexDirection::W, HexDirection::Se]);
     tile.dead_ends = Some(vec![HexDirection::Nw]);
+    tile.floor = Some("green-forest".into());
+    let state = serde_json::from_str(&serde_json::to_string(&state).unwrap()).unwrap();
     let decorated = Game::try_from_state(rules(), state).unwrap();
     for unit in &original.units {
         assert_eq!(original.reachable(unit), decorated.reachable(unit));
     }
     for game in [&decorated, &decorated.fork()] {
+        assert_eq!(
+            game.state()
+                .tiles
+                .iter()
+                .find(|tile| tile.id == id)
+                .unwrap()
+                .floor
+                .as_deref(),
+            Some("green-forest")
+        );
         assert_eq!(
             game.state()
                 .tiles

@@ -61,6 +61,7 @@ pub(crate) struct Game<'catalog> {
     pub(crate) owners: Vec<Option<Side>>,
     pub(crate) connections: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) dead_ends: Rc<Vec<Option<Vec<HexDirection>>>>,
+    pub(crate) floors: Rc<Vec<Option<String>>>,
     pub(crate) units: Vec<Unit>,
     pub(crate) map_id: String,
     pub(crate) map_revision: u32,
@@ -136,6 +137,7 @@ impl<'catalog> Game<'catalog> {
                 .collect(),
         );
         let last_combat = state.last_combat.flatten();
+        let floors = Rc::new(state.tiles.iter().map(|tile| tile.floor.clone()).collect());
         let mut game = Self {
             rules,
             board,
@@ -143,6 +145,7 @@ impl<'catalog> Game<'catalog> {
             owners,
             connections,
             dead_ends,
+            floors,
             units,
             map_id: state.map_id,
             map_revision: state.map_revision,
@@ -218,6 +221,7 @@ impl<'catalog> Game<'catalog> {
                 owner: self.owners[index],
                 connections: self.connections[index].clone(),
                 dead_ends: self.dead_ends[index].clone(),
+                floor: self.floors[index].clone(),
             })
             .collect()
     }
@@ -381,6 +385,7 @@ impl<'catalog> Game<'catalog> {
             owners: self.owners.clone(),
             connections: self.connections.clone(),
             dead_ends: self.dead_ends.clone(),
+            floors: self.floors.clone(),
             units: self.units.clone(),
             map_id: self.map_id.clone(),
             map_revision: self.map_revision,
