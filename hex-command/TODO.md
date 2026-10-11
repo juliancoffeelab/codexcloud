@@ -7,7 +7,12 @@
       immortality/service exchange and the undecided future conversation.
 - [ ] Clarify why lighting the Lantern Road lanterns forces the necromancer away.
 - [ ] Review remaining optional quest rewards with the user.
-- [ ] Add advancement branching for the woodland Thorncaller.
+- [ ] Add the woodland Thorncaller gameplay branch for the Thorner after designing
+      its abilities. Approved caster artwork is integrated in `pixel/art/units/woodland/`
+      and `pixel/art/units/lineups/woodland.json`: shared Thorncaller L1; healer
+      Herbkeeper L2 / Bloomweaver L3; Thorner Bramble warden L2 / Thornbinder L3.
+      Their matched 45px bodies and the L2 Thorner eye/muzzle fix are preserved.
+      Gameplay abilities remain separate from this artwork pass.
 
 ## Balance and simulations
 

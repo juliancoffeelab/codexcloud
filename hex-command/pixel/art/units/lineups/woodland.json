@@ -64,19 +64,36 @@
       },
       "branches": [
         {
-          "role": "thorncaller",
+          "role": "healer",
           "units": [
             {
               "id": "briarweaver",
-              "name": "Briarweaver",
+              "name": "Herbkeeper",
               "level": 2,
               "source": "briarweaver"
             },
             {
               "id": "woodland-thorn-oracle",
-              "name": "Thorn oracle",
+              "name": "Bloomweaver",
               "level": 3,
               "source": "woodland-thorn-oracle"
+            }
+          ]
+        },
+        {
+          "role": "thorner",
+          "units": [
+            {
+              "id": "woodland-bramble-warden",
+              "name": "Bramble warden",
+              "level": 2,
+              "source": "woodland-bramble-warden"
+            },
+            {
+              "id": "woodland-thornbinder",
+              "name": "Thornbinder",
+              "level": 3,
+              "source": "woodland-thornbinder"
             }
           ]
         }
