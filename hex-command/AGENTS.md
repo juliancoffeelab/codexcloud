@@ -53,8 +53,12 @@
   their native size and lighting; do not mirror, resize or randomly move them on
   redraw. The atlas only packs source frames. At artwork loading, flatten each
   prepared arrangement with its selected floor into a cached native 64×64 image;
-  publish those isolated images for the renderer. Draw one image per terrain
-  tile, without separate SVG images for every prop or recomposition on scrolling.
+  publish those isolated images for the renderer. Bake the static map terrain
+  from the published game/artwork snapshots into one PNG at the shared native
+  pixel scale. Keep units, ownership badges, hit targets and highlights live.
+  Reuse the bitmap during movement and scrolling; invalidate it for terrain,
+  floor, geometry or artwork changes. Retain only the latest map and discard
+  stale asynchronous completions. Tile images remain available while baking.
 
 - **Permanent character canvas rule: every character/unit sprite and portrait is
   exactly 64×64 native pixels. This rule must never be changed; do not even try

@@ -215,7 +215,9 @@ button[hidden] {
   stroke-dasharray: 4 3;
 }
 .hex:hover .tile-ground,
-.hex:hover .terrain-art {
+.hex:hover .terrain-art,
+.terrain-hover .tile-ground,
+.terrain-hover .terrain-art {
   filter: brightness(1.12);
 }
 .hex:focus-visible .tile-outline,

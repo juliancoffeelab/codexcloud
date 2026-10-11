@@ -1,9 +1,16 @@
 <script lang="ts">
+  import { untrack } from "svelte";
   import type { TileView } from "../game/view";
   import type { BattleCommands, BattleView } from "../controller/view";
   import { MAPS } from "../game/maps";
   import { battlefieldTiles } from "./battlefield-view";
-  import { hexColumnSpacing, hexRowSpacing } from "./geometry";
+  import { battlefieldSpriteSize, hexColumnSpacing, hexRowSpacing } from "./geometry";
+  import {
+    TerrainMapCache,
+    terrainMapKey,
+    type TerrainMapImage,
+  } from "../presentation/terrain-map";
+  import type { Artwork } from "../presentation/art";
 
   interface Props {
     view: BattleView;
@@ -11,6 +18,11 @@
   }
   let { view, actions }: Props = $props();
   let map: SVGSVGElement | undefined;
+  const terrainCache = new TerrainMapCache();
+  let bakedTerrain = $state.raw<
+    { key: string; artwork: Artwork; image: Readonly<TerrainMapImage> } | undefined
+  >();
+  let hoveredTile = $state<string | null>(null);
 
   const game = $derived(view.game);
   const selected = $derived(view.selected);
@@ -21,9 +33,35 @@
   const recruitTileId = $derived(isPlayerTurn && recruitment ? view.inspectedTile : null);
   const tiles = $derived(battlefieldTiles(game, selected, artwork, recruitTileId));
   const occupiedTiles = $derived(tiles.filter((tile) => tile.occupant));
-  const viewBox = $derived(
-    `0 0 ${758 + hexColumnSpacing * (game.cols - 11)} ${452 + hexRowSpacing * (game.rows - 7)}`,
+  const mapWidth = $derived(758 + hexColumnSpacing * (game.cols - 11));
+  const mapHeight = $derived(452 + hexRowSpacing * (game.rows - 7));
+  const viewBox = $derived(`0 0 ${mapWidth} ${mapHeight}`);
+  const terrainKey = $derived(terrainMapKey(game));
+  const backdrop = $derived(
+    bakedTerrain?.key === terrainKey && bakedTerrain.artwork === artwork
+      ? bakedTerrain.image
+      : undefined,
   );
+  const hovered = $derived(tiles.find((tile) => tile.id === hoveredTile));
+
+  $effect(() => {
+    const key = terrainKey;
+    const resources = artwork;
+    if (!Object.keys(resources.frames).length) return;
+    const plan = {
+      width: mapWidth,
+      height: mapHeight,
+      pixelScale: 64 / battlefieldSpriteSize,
+      tiles: untrack(() => tiles),
+    };
+    let current = true;
+    void terrainCache.prepare(key, resources, plan).then((image) => {
+      if (current && image) bakedTerrain = { key, artwork: resources, image };
+    });
+    return () => {
+      current = false;
+    };
+  });
 
   function handleTileKey(event: KeyboardEvent, tile: TileView): void {
     if (event.key === "Enter" || event.key === " ") {
@@ -71,14 +109,43 @@
       aria-label={`${MAPS[game.mapId].name} battlefield`}
     >
       <defs>
-        {#each tiles as tile (tile.id)}
-          <clipPath id={tile.clipId}>
-            <polygon points={tile.points} />
-          </clipPath>
-        {/each}
+        {#if !backdrop}
+          {#each tiles as tile (tile.id)}
+            <clipPath id={tile.clipId}>
+              <polygon points={tile.points} />
+            </clipPath>
+          {/each}
+        {/if}
+        {#if backdrop && hovered}
+          <clipPath id="terrain-hover-clip"><polygon points={hovered.points} /></clipPath>
+        {/if}
       </defs>
 
       <g class="terrain-layer">
+        {#if backdrop}
+          <g class="pixel-art" pointer-events="none" aria-hidden="true">
+            <image
+              class="map-terrain"
+              href={backdrop.url}
+              x="0"
+              y="0"
+              width={backdrop.displayWidth}
+              height={backdrop.displayHeight}
+              preserveAspectRatio="none"
+            />
+          </g>
+          {#if hovered}
+            <g
+              class="terrain-hover"
+              clip-path="url(#terrain-hover-clip)"
+              pointer-events="none"
+              aria-hidden="true"
+            >
+              <polygon class="tile-ground" points={hovered.points} fill={hovered.fill} />
+              {@html hovered.terrainArtwork}
+            </g>
+          {/if}
+        {/if}
         {#each tiles as tile (tile.id)}
           <g
             class={tile.classes}
@@ -88,11 +155,21 @@
             data-tile={tile.id}
             onclick={() => actions.choose(tile.id)}
             onkeydown={(event) => handleTileKey(event, tile)}
+            onpointerenter={(event) => {
+              if (event.pointerType === "mouse") hoveredTile = tile.id;
+            }}
+            onpointerleave={() => {
+              if (hoveredTile === tile.id) hoveredTile = null;
+            }}
           >
-            <polygon class="tile-ground" points={tile.points} fill={tile.fill} />
-            <g clip-path={`url(#${tile.clipId})`}>
-              {@html tile.terrainArtwork}
-            </g>
+            {#if backdrop}
+              <polygon points={tile.points} fill="transparent" pointer-events="all" />
+            {:else}
+              <polygon class="tile-ground" points={tile.points} fill={tile.fill} />
+              <g clip-path={`url(#${tile.clipId})`}>
+                {@html tile.terrainArtwork}
+              </g>
+            {/if}
             {#if tile.classes.includes("objective") || tile.classes.includes("recruitable")}
               <polygon class="tile-highlight-outline" points={tile.points} fill="none" />
             {/if}
