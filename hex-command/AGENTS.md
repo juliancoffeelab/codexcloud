@@ -53,8 +53,11 @@
   their native size and lighting; do not mirror, resize or randomly move them on
   redraw. The artwork build emits complete native 64×64 PNGs from matrices,
   faction/floor palettes and prepared arrangements into ignored public/assets/sprites/.
-  Publish immutable sprite URLs in BattleView.artwork. The browser fetches only
-  rendered images; never restore runtime atlases, cropping, canvas extraction or
+  Publish immutable sprite URLs in BattleView.artwork. Load visible images first;
+  once an authored map is displayed, warm its unique terrain images for inspection
+  after a paint, in idle time, with at most two low-priority requests. Cancel queued
+  work on terrain changes; retain only successful URL identities, not decoded images.
+  Never restore runtime atlases, cropping, canvas extraction or
   PNG encoding. Cache static geometry and terrain identity across unit and
   ownership changes. Preload the selected authored map PNG before creating the battle. Bake the static map terrain
   from the published game/artwork snapshots directly into one canvas bitmap at the shared native

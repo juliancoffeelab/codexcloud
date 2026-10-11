@@ -13,6 +13,7 @@
   } from "../presentation/terrain-map";
   import terrainSprites from "virtual:terrain-prebuilt";
   import type { Artwork } from "../presentation/art";
+  import { TerrainTilePrefetcher } from "../presentation/terrain-prefetch";
 
   interface Props {
     view: BattleView;
@@ -22,6 +23,8 @@
   let map: SVGSVGElement | undefined;
   const terrainCache = new TerrainMapCache();
   const terrainViewCache = new TerrainViewCache();
+  const terrainPrefetch = new TerrainTilePrefetcher();
+  let loadedTerrain = $state<string>();
   let bakedTerrain = $state.raw<
     { key: string; artwork: Artwork; image: Readonly<TerrainMapImage> } | undefined
   >();
@@ -65,6 +68,11 @@
     hasBackdrop ? tiles.filter((tile) => !backdrop && prebuilt?.changed.has(tile.id)) : tiles,
   );
   const hovered = $derived(tiles.find((tile) => tile.id === hoveredTile));
+
+  $effect(() => {
+    if (loadedTerrain !== terrainKey || !prebuilt || prebuilt.changed.size) return;
+    return terrainPrefetch.start(Object.values(terrainResources.frames).map((frame) => frame.url));
+  });
 
   $effect(() => {
     const key = terrainKey;
@@ -203,6 +211,9 @@
                 preserveAspectRatio="none"
                 pointer-events="none"
                 aria-hidden="true"
+                onload={() => {
+                  if (terrainKey === spriteKey) loadedTerrain = spriteKey;
+                }}
                 onerror={() => {
                   failedSprite = spriteKey;
                 }}
