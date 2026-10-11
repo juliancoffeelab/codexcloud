@@ -105,7 +105,9 @@ The read-only build, `scripts/build-pixel-art.py`, emits content-hashed native
 PNG sprites into ignored `public/assets/sprites/` and URL/layout metadata into
 `src/presentation/pixel-art.ts`. It applies faction/floor palettes and flattens
 prepared prop layouts at build time. Vite copies the sprites into `dist/assets/`.
-The browser fetches individual images as they are rendered; it never downloads
+The browser fetches individual images as they are rendered. Once an authored map
+is displayed, idle work warms its unique terrain images for inspection, two at a
+time with low network priority. It never downloads
 an atlas, crops sprites, or encodes PNGs. Source matrices/palettes remain authoritative.
 Production Vite builds also render every authored map into a native PNG using
 the same terrain layouts and drawing code. Unchanged maps use these sprites
