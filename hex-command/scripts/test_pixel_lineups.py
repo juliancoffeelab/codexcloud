@@ -5,6 +5,7 @@ from pathlib import Path
 import tempfile
 import shutil
 import unittest
+from unittest.mock import patch
 
 import importlib.util
 spec = importlib.util.spec_from_file_location('build_pixel_atlas', Path(__file__).parent / 'build-pixel-atlas.py')
@@ -110,6 +111,61 @@ class RaceTrees(unittest.TestCase):
         (trees / "race").mkdir()
         with self.assertRaisesRegex(ValueError, "Race trees must be flat"):
             load_lineups(trees)
+
+
+class TerrainFloors(unittest.TestCase):
+    def fixture(self):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        root = Path(temp.name)
+        self.enterContext(patch.object(art, 'ART', root))
+        floors = {'wood': {'G': [90, 110, 30, 255], 'g': [60, 80, 20, 255]},
+                  'shore': {'W': [20, 90, 140, 255], 'w': [90, 150, 170, 255]}}
+        (root / 'terrain').mkdir()
+        path = root / 'terrain/floors.json'
+        path.write_text(json.dumps(floors))
+        for kind, pair in [('wood', 'Gg'), ('shore', 'Ww')]:
+            directory = root / 'terrain' / kind
+            directory.mkdir()
+            (directory / 'palette.json').write_text(json.dumps({'.': [0, 0, 0, 0],
+                                                                'T': [7, 40, 15, 255]}))
+            rows = [pair + 'T' + '.' * 61] + ['.' * 64] * 63
+            for name in ['tile.txt', '18.txt']:
+                (directory / name).write_text('\n'.join(rows) + '\n')
+        return root, path, floors
+
+    def test_floor_tuning_changes_only_its_surface_across_variants(self):
+        root, path, floors = self.fixture()
+        shore = art.rgba_pixels(root / 'terrain/shore/tile.txt')[2]
+        matrix = root / 'terrain/wood/tile.txt'
+        before = art.rgba_pixels(matrix)[2]
+        source = matrix.read_bytes()
+        floors['wood'] = {'G': [50, 70, 20, 255], 'g': [30, 50, 10, 255]}
+        path.write_text(json.dumps(floors))
+        after = art.rgba_pixels(matrix)[2]
+        self.assertEqual(list(after[:8]), floors['wood']['G'] + floors['wood']['g'])
+        self.assertEqual(after[8:], before[8:])  # Foliage and alpha stay unchanged.
+        self.assertEqual(matrix.read_bytes(), source)
+        self.assertEqual(art.rgba_pixels(root / 'terrain/wood/18.txt')[2], after)
+        self.assertEqual(art.rgba_pixels(root / 'terrain/shore/tile.txt')[2], shore)
+
+    def test_floor_rejects_missing_transparent_and_invalid_shades(self):
+        root, path, floors = self.fixture()
+        for invalid in [None, {'G': [1, 2, 3, 255]},
+                        {'G': [1, 2, 3, 0], 'g': [1, 2, 3, 255]},
+                        {'G': [1, 2, 300, 255], 'g': [1, 2, 3, 255]}]:
+            with self.subTest(invalid=invalid):
+                floors['wood'] = invalid
+                path.write_text(json.dumps(floors))
+                with self.assertRaisesRegex(ValueError, 'wood floor: exactly two opaque'):
+                    art.read_palette(root / 'terrain/wood/tile.txt')
+
+    def test_local_material_palette_cannot_override_floor(self):
+        root, path, floors = self.fixture()
+        (root / 'terrain/wood/palette.json').write_text(json.dumps({'.': [0, 0, 0, 0],
+                                                                  'G': [1, 2, 3, 255]}))
+        with self.assertRaisesRegex(ValueError, 'floor shades belong in terrain/floors.json'):
+            art.read_palette(root / 'terrain/wood/tile.txt')
 
 
 if __name__ == "__main__":

@@ -23,6 +23,12 @@
   sources use `<connections-mask>-end-<dead-ends-mask>.txt`. Villages have only
   their main streets, without thin house lanes. Extracted buildings and composition
   experiments stay in `tmp/`; the atlas must only pack the finished tiles.
+  Terrain floor colors live separately in `pixel/art/terrain/floors.json`, with
+  one base/shade pair per terrain type: `G`/`g` for land and `W`/`w` for water.
+  Keep those symbols out of each terrain's material `palette.json`. Trees,
+  grass tufts, buildings, rocks and dirt paths keep their own material colors;
+  changing a floor must not recolor them. The packer resolves floor colors for
+  every orientation and the matching vector hex background.
 
 - **Permanent character canvas rule: every character/unit sprite and portrait is
   exactly 64×64 native pixels. This rule must never be changed; do not even try

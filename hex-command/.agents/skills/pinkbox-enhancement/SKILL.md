@@ -16,6 +16,12 @@ surfaces, preserving outlines, alpha, skin, cloth and grips. Recolor base and
 shadow together; shade coherent clusters following overlaps and surface curves.
 Do not mistake pale clothing for armor or fur based on its color.
 
+Terrain floors use `pixel/art/terrain/floors.json`: tune each terrain's `G`/`g`
+land or `W`/`w` water pair there, keeping those symbols out of local material
+palettes. Tree foliage and grass tufts can share other green symbols; leave
+them alone when tuning the floor. Render through the atlas packer's
+`read_palette`/`rgba_pixels` so previews resolve the shared floor colors too.
+
 ```sh
 python3 .agents/skills/pinkbox-enhancement/scripts/fill.py \
   pixel/art/units/humans/adept/sprite.txt tmp/upgrade/fill.json tmp/upgrade/candidate

@@ -138,15 +138,25 @@ def load_lineups(directory=None):
     return lineups
 
 
-def faction_palette(side):
-    palette = json.loads((ART / "factions.json").read_text())[side]
-    if set(palette) != {'^', '*'} or any(
+def require_shared_palette(palette, symbols, label):
+    if not isinstance(palette, dict) or set(palette) != set(symbols) or any(
         not isinstance(rgba, list) or len(rgba) != 4 or rgba[3] != 255
         or any(type(channel) is not int or not 0 <= channel <= 255 for channel in rgba)
         for rgba in palette.values()
     ):
-        raise ValueError(f'{side}: exactly two opaque faction shades are required')
+        raise ValueError(f'{label}: exactly two opaque shades {symbols} are required')
     return palette
+
+
+def faction_palette(side):
+    return require_shared_palette(json.loads((ART / "factions.json").read_text())[side],
+                                  ('^', '*'), f'{side} faction')
+
+
+def terrain_floor_palette(kind):
+    palette = json.loads((ART / "terrain/floors.json").read_text()).get(kind)
+    symbols = ('G', 'g') if isinstance(palette, dict) and 'G' in palette else ('W', 'w')
+    return require_shared_palette(palette, symbols, f'{kind} floor')
 
 
 def chunk(kind, data):
@@ -164,11 +174,17 @@ def read_matrix(matrix):
 
 
 def read_palette(matrix):
+    matrix = matrix.resolve()
     path = matrix.parent / "palette.json"
     palette = json.loads(path.read_text())
     flying = palette.pop("flying", False)
     if type(flying) is not bool:
         raise ValueError(f"{path}: 'flying' must be a boolean")
+    if matrix.parent.parent == (ART / "terrain").resolve():
+        floor = terrain_floor_palette(matrix.parent.name)
+        if palette.keys() & floor.keys():
+            raise ValueError(f"{path}: floor shades belong in terrain/floors.json")
+        palette.update(floor)
     for symbol, rgba in palette.items():
         if (
             len(symbol) != 1

@@ -10,7 +10,7 @@ export const pixelSources = {
     filename: "terrain-pixel.png",
     width: 391,
     height: 1366,
-    revision: "5bf950ac370e",
+    revision: "c0cc0df1cda5",
   },
 } as const;
 
@@ -604,7 +604,7 @@ export const pixelFrames = {
 export const pixelTerrainColors = {
   bridge: "#2a70be",
   ford: "#44ada8",
-  forest: "#8fb337",
+  forest: "#638531",
   fort: "#8fb337",
   grove: "#8fb337",
   hill: "#8fb337",
