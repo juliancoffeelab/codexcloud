@@ -378,7 +378,7 @@ def pixel_atlases():
                 continue
             crossing = matrix.parent.name in ("bridge", "ford") and variant.stem in ("ne-sw", "nw-se")
             path = (default_mask is not None and variant.stem.isdigit() and
-                    1 <= int(variant.stem) <= 63 and int(variant.stem) != default_mask and
+                    (0 if kind == "village" else 1) <= int(variant.stem) <= 63 and int(variant.stem) != default_mask and
                     (kind == "road" or (kind == "village" and int(variant.stem).bit_count() <= 3)))
             capped = re.fullmatch(r"(\d+)-end-(\d+)", variant.stem) if kind == "road" else None
             if capped:

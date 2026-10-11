@@ -47,6 +47,7 @@ export function terrainArtNames(
     return [`road_${mask}-end-${capped}`];
   }
   if (["road", "village"].includes(tile.terrain)) {
+    if (tile.terrain === "village" && !mask) return ["village_0"];
     if (mask && mask !== 9) return [`${tile.terrain}_${mask}`];
   }
   if (tile.terrain === "bridge" || tile.terrain === "ford") {

@@ -36,6 +36,14 @@ class RaceTrees(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "village 1: misaligned exit"):
             art.require_road_exits(rows, 1, surface, label="village")
 
+    def test_roadless_settlement_has_no_edge_paths(self):
+        rows = ["C" * 64 for _ in range(64)]
+        surface = frozenset("RrH")
+        art.require_road_exits(rows, 0, surface, label="village")
+        rows[32] = "R" * 8 + "C" * 56
+        with self.assertRaisesRegex(ValueError, "village 0: misaligned exit"):
+            art.require_road_exits(rows, 0, surface, label="village")
+
     def fixture(self):
         temp = tempfile.TemporaryDirectory()
         self.addCleanup(temp.cleanup)

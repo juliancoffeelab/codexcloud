@@ -236,6 +236,7 @@ test("Route connections select one complete native terrain frame", async () => {
   ]);
   assert.deepEqual(terrainArtNames({ terrain: "road", connections: ["w", "e"] }), ["road"]);
   assert.deepEqual(terrainArtNames({ terrain: "plains" }), ["plains"]);
+  assert.deepEqual(terrainArtNames({ terrain: "village" }), ["village_0"]);
   assert.deepEqual(terrainArtNames({ terrain: "village", connections: ["w", "e"] }), ["village"]);
   assert.deepEqual(terrainArtNames({ terrain: "village", connections: ["w", "e", "se"] }), [
     "village_11",
@@ -245,7 +246,14 @@ test("Route connections select one complete native terrain frame", async () => {
     terrainArtNames({ terrain: "road", connections: ["se", "ne"], deadEnds: ["w"] }),
     ["road_34-end-8"],
   );
-  for (const name of ["bridge_ne-sw", "ford_nw-se", "road_11", "village_11", "road_34-end-8"]) {
+  for (const name of [
+    "bridge_ne-sw",
+    "ford_nw-se",
+    "road_11",
+    "village_0",
+    "village_11",
+    "road_34-end-8",
+  ]) {
     const frame = extraction(art.artSprite(art.currentArtwork(), "terrain", name, 0, 0, 70, 70));
     assert.equal(frame.width, 64);
     assert.equal(frame.height, 64);

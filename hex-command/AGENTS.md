@@ -18,7 +18,8 @@
   connections guide a loose stone crossing, without strict edge alignment.
   Connections affect artwork only and must survive publication and save/restore.
   Villages use finished `<mask>.txt` variants for one to three exits, with
-  west–east in `tile.txt`. Keep tiles contain no roads or connection variants.
+  west–east in `tile.txt`; `0.txt` is roadless, selected when map connections
+  are omitted. Keep tiles contain no roads or connection variants.
   Approaches stop in the adjacent road tile, with junctions outside the walls.
   Road `deadEnds` name directions whose spurs stop inside that road tile; finished
   sources use `<connections-mask>-end-<dead-ends-mask>.txt`. Villages have only
