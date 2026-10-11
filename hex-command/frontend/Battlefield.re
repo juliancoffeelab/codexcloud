@@ -42,12 +42,14 @@ module Frame = {
 let make = (~view: Session.model, ~actions: Session.actions) => {
   let state = Native.state(view.game);
   let owner = React.useMemo0(() => Terrain.create(sprites));
+  let prefetch = React.useMemo0(() => Terrain_prefetch.create());
   let scene =
     React.useMemo2(() => Terrain.prepare(owner, state, view.artwork), (state, view.artwork));
   let currentScene = React.useRef(scene);
   let (baked, setBaked) = React.useState(() => None);
   let (failed, setFailed) = React.useState(() => None);
   let (hovered, setHovered) = React.useState(() => None);
+  let (ready, setReady) = React.useState(() => None);
   let map = React.useRef(Js.Nullable.null);
   let image = React.useRef(Js.Nullable.null);
   let canvasHost = React.useRef(Js.Nullable.null);
@@ -128,6 +130,16 @@ let make = (~view: Session.model, ~actions: Session.actions) => {
     [|scene|],
   );
   React.useEffect1(() => Some(() => Terrain.close(owner)), [|owner|]);
+  React.useEffect1(() => Some(() => Terrain_prefetch.close(prefetch)), [|prefetch|]);
+  React.useEffect2(
+    () =>
+      switch (ready) {
+      | Some(displayed) when displayed === scene =>
+        Some(Terrain_prefetch.start(prefetch, scene))
+      | _ => None
+      },
+    (scene, ready),
+  );
   React.useEffect2(
     () => {
       let exact =
@@ -160,24 +172,40 @@ let make = (~view: Session.model, ~actions: Session.actions) => {
       switch (Js.Nullable.toOption(canvasHost.current), backdrop) {
       | (Some(element), Some(bitmap)) =>
         Terrain.mount(element, bitmap);
+        setReady(_ => Some(scene));
         Some(() => Terrain.clear(element));
       | _ => None
       }
     },
     (scene, backdrop),
   );
-  /* Native SVG image errors do not bubble. Own the listener on the actual node,
-     and invalidate its captured scene before accepting delayed feedback. */
+  /* Native SVG image events do not bubble. Prefetch starts only after the exact
+     current PNG loads; stale loads and failures cannot warm a replaced scene. */
   React.useLayoutEffect3(
     () => {
       switch (Js.Nullable.toOption(image.current), prebuilt, backdrop) {
-      | (Some(element), Some(_), None) =>
+      | (Some(element), Some(preview), None) =>
+        let active = ref(true);
+        let loaded = _ =>
+          if (active.contents
+              && currentScene.current === scene
+              && Array.length(Terrain.changed(preview)) == 0) {
+            setReady(_ => Some(scene));
+          };
         let error = _ =>
-          if (currentScene.current === scene) {
+          if (active.contents && currentScene.current === scene) {
+            setReady(_ => None);
             setFailed(_ => Some(Terrain.key(scene)));
           };
+        addListener(element, "load", loaded);
         addListener(element, "error", error);
-        Some(() => removeListener(element, "error", error));
+        Some(
+          () => {
+            active.contents = false;
+            removeListener(element, "load", loaded);
+            removeListener(element, "error", error);
+          },
+        );
       | _ => None
       }
     },

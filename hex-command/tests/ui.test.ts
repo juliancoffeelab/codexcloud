@@ -6,17 +6,24 @@ import { createRoot, type Root } from "react-dom/client";
 import * as App from "@frontend/App";
 import * as Application from "@frontend/Application";
 import * as Session from "@frontend/Session";
-import { factory, Native } from "./native-fixture";
+import * as Prefetch from "@frontend/Terrain_prefetch";
+import * as Plan from "@frontend/Terrain_plan";
+import { factory, Native, Catalog, createBattle } from "./native-fixture";
 import { required } from "./helpers";
 
 // Rendering tests use an unavailable canvas; the native terrain owner therefore
 // keeps its individual image fallback. No network, decoding or timer is needed.
 vi.mock("@frontend/Motion", () => ({ animate_tile: () => {}, animate_turn: () => {} }));
+const { terrainManifest } = vi.hoisted(() => ({
+  terrainManifest: {} as Record<string, import("@frontend/Terrain").Sprite>,
+}));
+vi.mock("virtual:terrain-prebuilt", () => ({ default: terrainManifest }));
 let root: Root | undefined, host: HTMLDivElement, session: Session.t | undefined;
 let applicationCleanup: (() => void) | undefined;
 
 beforeEach(() => {
   localStorage.clear();
+  for (const key of Object.keys(terrainManifest)) delete terrainManifest[key];
   vi.stubGlobal("IS_REACT_ACT_ENVIRONMENT", true);
   vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(null);
   host = document.createElement("div");
@@ -113,4 +120,59 @@ test("The real embedding mounts a React component and reports foreground artwork
   const cleanup = required(applicationCleanup);
   assert.doesNotThrow(cleanup);
   assert.doesNotThrow(cleanup);
+});
+
+test("Terrain inspection warming waits for the current map image and cancels when its scene changes", async () => {
+  const stopped = vi.fn(),
+    start = vi.spyOn(Prefetch, "start").mockReturnValue(stopped);
+  session = Session.create(async () => {}, factory);
+  const mounted = session,
+    view = Session.view(mounted),
+    opening = Native.state(view.game);
+  const next = required(Catalog.battle_maps(view.catalog).find((map) => map.id !== opening.mapId));
+  for (const game of [
+    opening,
+    Native.state(Native.view(createBattle({ kind: "scenario", map: next.id }))),
+  ]) {
+    const plan = Plan.prepare(game.mapId, game.cols, game.rows, game.tiles, view.artwork);
+    const size = Plan.dimensions(plan);
+    terrainManifest[plan.key] = {
+      url: `${game.mapId}.png`,
+      width: size.width,
+      height: size.height,
+      displayWidth: size.display_width,
+      displayHeight: size.display_height,
+    };
+  }
+  await act(async () => {
+    required(root).render(
+      React.createElement(App.make, {
+        session: mounted,
+        onMount: () => () => {},
+      }),
+    );
+  });
+  const original = element<SVGImageElement>(".map-terrain");
+  assert.equal(start.mock.calls.length, 0);
+  await act(async () => {
+    original.dispatchEvent(new Event("load"));
+  });
+  assert.equal(start.mock.calls.length, 1);
+  await act(async () => {
+    Session.commands(mounted).reset(next.id);
+  });
+  assert.equal(stopped.mock.calls.length, 1);
+  await act(async () => {
+    original.dispatchEvent(new Event("load"));
+  });
+  assert.equal(start.mock.calls.length, 1, "Detached stale map loads cannot warm a new scene");
+  await act(async () => {
+    element(".map-terrain").dispatchEvent(new Event("load"));
+  });
+  assert.equal(start.mock.calls.length, 2);
+  await act(async () => {
+    required(root).unmount();
+  });
+  root = undefined;
+  assert.equal(stopped.mock.calls.length, 2);
 });
