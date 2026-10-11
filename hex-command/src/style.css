@@ -43,11 +43,6 @@ main {
   overscroll-behavior: contain;
   scroll-padding-block: 10px;
 }
-.battle-content .panel,
-.battle-content #map,
-.battle-content .attack-actions {
-  scroll-margin-top: 0;
-}
 #startup {
   max-width: 32rem;
   margin: 15vh auto;
@@ -538,20 +533,12 @@ summary {
   .panel {
     margin-top: 0;
   }
-  .unit-detail {
-    grid-template-columns: 140px minmax(0, 1fr);
-    align-items: center;
-  }
   .unit-stats {
     justify-content: flex-start;
   }
   .duel {
     max-width: 460px;
     margin: auto;
-  }
-  .combatant .portrait {
-    width: 72px;
-    height: 72px;
   }
   .attack-button {
     display: block;
@@ -607,10 +594,6 @@ summary {
   .panel {
     padding: 14px 0;
   }
-  .unit-detail {
-    grid-template-columns: 110px minmax(0, 1fr);
-    gap: 14px;
-  }
   .unit-stats {
     gap: 8px;
     flex-wrap: wrap;
@@ -623,10 +606,6 @@ summary {
   }
   .duel {
     gap: 10px;
-  }
-  .combatant .portrait {
-    width: 72px;
-    height: 72px;
   }
 }
 @media (max-width: 350px) {
@@ -791,8 +770,7 @@ summary {
 .panel[hidden] {
   display: none;
 }
-.panel,
-#map {
+dialog .panel {
   scroll-margin-top: 90px;
 }
 .terrain-detail {
@@ -1215,8 +1193,6 @@ select {
 .unit-detail > .combatant > .portrait {
   grid-column: 1;
   grid-row: 1 / span 4;
-  width: 72px;
-  height: 72px;
   margin: 0;
 }
 .unit-detail > .combatant > :not(.portrait) {
@@ -1242,9 +1218,6 @@ select {
     12px system-ui,
     sans-serif;
   white-space: nowrap;
-}
-.attack-actions {
-  scroll-margin-top: 90px;
 }
 .unit-detail > .combatant .health-track {
   margin: 3px 0 0;
