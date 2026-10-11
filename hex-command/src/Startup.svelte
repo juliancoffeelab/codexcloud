@@ -34,25 +34,27 @@
 {#if application}
   <application.component controller={application.controller} />
 {:else}
-  <main class="loading-shell" aria-busy={!failure}>
+  <main class="battle-layout loading-shell" aria-busy={!failure}>
     <BattleBar />
-    <div class="workspace map-only">
-      <section class="map-section" aria-label="Battlefield loading">
-        <div class="map-scroll loading-map">
-          <div class="loading-message" role="status" aria-live="polite">
-            {#if failure}
-              <p>The game could not start. Reloading keeps your saved battle.</p>
-              <button class="quiet" onclick={() => window.location.reload()}>Reload game</button>
-              <details>
-                <summary>Error details</summary>
-                <pre>{failure}</pre>
-              </details>
-            {:else}
-              <p>Loading the game…</p>
-            {/if}
+    <div class="battle-content">
+      <div class="workspace map-only">
+        <section class="map-section" aria-label="Battlefield loading">
+          <div class="map-scroll loading-map">
+            <div class="loading-message" role="status" aria-live="polite">
+              {#if failure}
+                <p>The game could not start. Reloading keeps your saved battle.</p>
+                <button class="quiet" onclick={() => window.location.reload()}>Reload game</button>
+                <details>
+                  <summary>Error details</summary>
+                  <pre>{failure}</pre>
+                </details>
+              {:else}
+                <p>Loading the game…</p>
+              {/if}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   </main>
 {/if}

@@ -106,7 +106,7 @@
 </script>
 
 <svelte:document onkeydown={globalKeydown} onclick={clickAway} />
-<main>
+<main class="battle-layout">
   <TurnBar
     view={$view}
     {actions}
@@ -115,20 +115,22 @@
     onBriefing={() => (briefingExpanded = !briefingExpanded)}
   />
   <p id="status" class="status" role="status" aria-live="polite">{$view.status}</p>
-  <CampaignPanel
-    view={$view}
-    {actions}
-    bind:expanded={briefingExpanded}
-    onNewCampaign={openCampaignPicker}
-  />
-  <div class="workspace" class:map-only={!inspectionOpen}>
-    <Battlefield view={$view} {actions} />
-    {#if inspectionOpen}
-      <aside aria-label="Unit and terrain details">
-        <UnitPanel view={$view} {actions} onNewBattle={openMapPicker} />
-        <TerrainPanel view={$view} {actions} />
-      </aside>
-    {/if}
+  <div class="battle-content">
+    <CampaignPanel
+      view={$view}
+      {actions}
+      bind:expanded={briefingExpanded}
+      onNewCampaign={openCampaignPicker}
+    />
+    <div class="workspace" class:map-only={!inspectionOpen}>
+      <Battlefield view={$view} {actions} />
+      {#if inspectionOpen}
+        <aside aria-label="Unit and terrain details">
+          <UnitPanel view={$view} {actions} onNewBattle={openMapPicker} />
+          <TerrainPanel view={$view} {actions} />
+        </aside>
+      {/if}
+    </div>
   </div>
 </main>
 <SettingsDialog

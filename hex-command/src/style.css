@@ -18,11 +18,35 @@
 body {
   --page-padding: 18px;
   margin: 0;
-  padding: var(--page-padding);
+  padding: 0 var(--page-padding);
 }
 main {
   max-width: 1400px;
   margin: auto;
+}
+.battle-layout {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+.battle-layout > .battle-bar {
+  flex-shrink: 0;
+  margin-top: 0;
+}
+.battle-content {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  margin-inline: calc(-1 * var(--page-padding));
+  padding: 0 var(--page-padding) var(--page-padding);
+  /* Stop content gestures at the viewport; the header keeps native refresh. */
+  overscroll-behavior: contain;
+  scroll-padding-block: 10px;
+}
+.battle-content .panel,
+.battle-content #map,
+.battle-content .attack-actions {
+  scroll-margin-top: 0;
 }
 #startup {
   max-width: 32rem;
