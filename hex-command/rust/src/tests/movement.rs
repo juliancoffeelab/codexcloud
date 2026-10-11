@@ -157,11 +157,21 @@ fn artwork_connections_survive_restore_and_forks_without_changing_movement() {
     let id = tile.id.clone();
     tile.terrain = "road".into();
     tile.connections = Some(vec![HexDirection::E, HexDirection::W, HexDirection::Se]);
+    tile.dead_ends = Some(vec![HexDirection::Nw]);
     let decorated = Game::try_from_state(rules(), state).unwrap();
     for unit in &original.units {
         assert_eq!(original.reachable(unit), decorated.reachable(unit));
     }
     for game in [&decorated, &decorated.fork()] {
+        assert_eq!(
+            game.state()
+                .tiles
+                .iter()
+                .find(|tile| tile.id == id)
+                .unwrap()
+                .dead_ends,
+            Some(vec![HexDirection::Nw])
+        );
         assert_eq!(
             game.state()
                 .tiles
@@ -176,6 +186,20 @@ fn artwork_connections_survive_restore_and_forks_without_changing_movement() {
     let tile = invalid.tiles.iter_mut().find(|tile| tile.id == id).unwrap();
     tile.connections = Some(vec![HexDirection::E, HexDirection::E]);
     assert!(Game::try_from_state(rules(), invalid).is_err());
+
+    for ends in [
+        vec![HexDirection::E],
+        vec![HexDirection::Nw, HexDirection::Nw],
+    ] {
+        let mut state = decorated.state();
+        state
+            .tiles
+            .iter_mut()
+            .find(|tile| tile.id == id)
+            .unwrap()
+            .dead_ends = Some(ends);
+        assert!(Game::try_from_state(rules(), state).is_err());
+    }
 
     for (terrain, exits, valid) in [
         (
@@ -193,13 +217,14 @@ fn artwork_connections_survive_restore_and_forks_without_changing_movement() {
             ],
             false,
         ),
-        ("keep", vec![HexDirection::W], true),
+        ("keep", vec![HexDirection::W], false),
         ("keep", vec![HexDirection::E, HexDirection::W], false),
     ] {
         let mut state = decorated.state();
         let tile = state.tiles.iter_mut().find(|tile| tile.id == id).unwrap();
         tile.terrain = terrain.into();
         tile.connections = Some(exits.clone());
+        tile.dead_ends = None;
         let restored = Game::try_from_state(rules(), state);
         assert_eq!(restored.is_ok(), valid, "{terrain} {exits:?}");
         if let Ok(game) = restored {

@@ -17,9 +17,11 @@
   names; bridges/fords remain straight and need two opposite edges. Connections
   affect artwork only and must survive publication and save/restore.
   Villages use finished `<mask>.txt` variants for one to three exits, with
-  west–east in `tile.txt`. Keeps have one approach ending at a gate; `tile.txt`
-  faces se and other directions use their single-bit `<mask>.txt`. Place keep
-  junctions outside the walls. Extracted buildings, layouts and composition
+  west–east in `tile.txt`. Keep tiles contain no roads or connection variants.
+  Approaches stop in the adjacent road tile, with junctions outside the walls.
+  Road `deadEnds` name directions whose spurs stop inside that road tile; finished
+  sources use `<connections-mask>-end-<dead-ends-mask>.txt`. Villages have only
+  their main streets, without thin house lanes. Extracted buildings and composition
   experiments stay in `tmp/`; the atlas must only pack the finished tiles.
 
 - **Permanent character canvas rule: every character/unit sprite and portrait is

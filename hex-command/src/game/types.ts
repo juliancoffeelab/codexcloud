@@ -122,8 +122,9 @@ export interface Tile extends Coordinates {
   id: string;
   terrain: TerrainType;
   owner: Side | null;
-  /** Artwork only: road exits on plains, or opposite bridge/ford edges. */
+  /** Artwork only: road/village exits or opposite bridge/ford edges. */
   connections?: HexDirection[];
+  deadEnds?: HexDirection[];
 }
 export interface Unit {
   /** Missing on pre-progression saves, which load as zero. */
@@ -199,6 +200,7 @@ export interface TerrainOverride extends Coordinates {
   terrain: TerrainType;
   owner?: Side | null;
   connections?: HexDirection[];
+  deadEnds?: HexDirection[];
 }
 export interface StartingUnit extends Coordinates {
   type: UnitType;

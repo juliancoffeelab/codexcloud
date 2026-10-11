@@ -60,6 +60,7 @@ pub(crate) struct Game<'catalog> {
     pub(crate) terrain: Vec<usize>,
     pub(crate) owners: Vec<Option<Side>>,
     pub(crate) connections: Rc<Vec<Option<Vec<HexDirection>>>>,
+    pub(crate) dead_ends: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) units: Vec<Unit>,
     pub(crate) map_id: String,
     pub(crate) map_revision: u32,
@@ -127,6 +128,13 @@ impl<'catalog> Game<'catalog> {
                 .collect(),
         );
         let combat_present = state.last_combat.is_some();
+        let dead_ends = Rc::new(
+            state
+                .tiles
+                .iter()
+                .map(|tile| tile.dead_ends.clone())
+                .collect(),
+        );
         let last_combat = state.last_combat.flatten();
         let mut game = Self {
             rules,
@@ -134,6 +142,7 @@ impl<'catalog> Game<'catalog> {
             terrain,
             owners,
             connections,
+            dead_ends,
             units,
             map_id: state.map_id,
             map_revision: state.map_revision,
@@ -208,6 +217,7 @@ impl<'catalog> Game<'catalog> {
                 terrain: self.rules.terrain_names[self.terrain[index]].clone(),
                 owner: self.owners[index],
                 connections: self.connections[index].clone(),
+                dead_ends: self.dead_ends[index].clone(),
             })
             .collect()
     }
@@ -299,6 +309,7 @@ impl<'catalog> Game<'catalog> {
         if self.terrain[tile] != terrain {
             self.terrain[tile] = terrain;
             Rc::make_mut(&mut self.connections)[tile] = None;
+            Rc::make_mut(&mut self.dead_ends)[tile] = None;
             self.attack_geometry = Rc::new(RefCell::new(HashMap::new()));
             self.terrain_revision = self.terrain_revision.wrapping_add(1);
             self.route_cache.get_mut().clear();
@@ -369,6 +380,7 @@ impl<'catalog> Game<'catalog> {
             terrain: self.terrain.clone(),
             owners: self.owners.clone(),
             connections: self.connections.clone(),
+            dead_ends: self.dead_ends.clone(),
             units: self.units.clone(),
             map_id: self.map_id.clone(),
             map_revision: self.map_revision,

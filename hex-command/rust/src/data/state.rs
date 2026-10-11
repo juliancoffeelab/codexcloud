@@ -31,24 +31,37 @@ pub struct Tile {
     pub row: i32,
     pub terrain: String,
     pub owner: Option<Side>,
-    /// Road/village exits, a keep approach, or opposite crossing edges; artwork only.
+    /// Road/village exits or opposite crossing edges; artwork only.
     #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub connections: Option<Vec<HexDirection>>,
+    /// Short road spurs capped inside this tile rather than meeting another tile.
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    #[serde(default, rename = "deadEnds", skip_serializing_if = "Option::is_none")]
+    pub dead_ends: Option<Vec<HexDirection>>,
 }
 impl Tile {
     pub fn valid_connections(&self) -> bool {
         let Some(exits) = &self.connections else {
-            return true;
+            return self.dead_ends.is_none();
         };
         let mask = exits.iter().fold(0u8, |mask, exit| mask | exit.bit());
         if mask == 0 || mask.count_ones() as usize != exits.len() {
             return false;
         }
+        if let Some(ends) = &self.dead_ends {
+            let capped = ends.iter().fold(0u8, |mask, end| mask | end.bit());
+            if self.terrain != "road"
+                || capped == 0
+                || capped.count_ones() as usize != ends.len()
+                || capped & mask != 0
+            {
+                return false;
+            }
+        }
         match self.terrain.as_str() {
             "road" => true,
             "village" => mask.count_ones() <= 3,
-            "keep" => mask.count_ones() == 1,
             "bridge" | "ford" => matches!(mask, 9 | 18 | 36),
             _ => false,
         }

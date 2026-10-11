@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import math
+import re
 from pathlib import Path
 import struct
 import zlib
@@ -280,7 +281,7 @@ def pixel_atlases():
         key = f"terrain_{FRAME_NAMES.get(matrix.parent.name, matrix.parent.name)}"
         terrain[key] = (width, height, pixels)
         kind = matrix.parent.name
-        default_mask = {"road": 9, "village": 9, "keep": 2}.get(kind)
+        default_mask = {"road": 9, "village": 9}.get(kind)
         surface = frozenset("RrC" if kind == "road" else "RrH")
         if default_mask is not None:
             require_road_exits(read_matrix(matrix), default_mask, surface, label=kind)
@@ -290,12 +291,17 @@ def pixel_atlases():
             crossing = matrix.parent.name in ("bridge", "ford") and variant.stem in ("ne-sw", "nw-se")
             path = (default_mask is not None and variant.stem.isdigit() and
                     1 <= int(variant.stem) <= 63 and int(variant.stem) != default_mask and
-                    (kind == "road" or (kind == "village" and int(variant.stem).bit_count() <= 3) or
-                     (kind == "keep" and int(variant.stem).bit_count() == 1)))
-            if not (crossing or path):
+                    (kind == "road" or (kind == "village" and int(variant.stem).bit_count() <= 3)))
+            capped = re.fullmatch(r"(\d+)-end-(\d+)", variant.stem) if kind == "road" else None
+            if capped:
+                exits, ends = map(int, capped.groups())
+                capped = 1 <= exits <= 63 and 1 <= ends <= 63 and not (exits & ends)
+            if not (crossing or path or capped):
                 raise ValueError(f"{variant}: unknown terrain orientation")
             if path:
                 require_road_exits(read_matrix(variant), int(variant.stem), surface, label=kind)
+            if capped:
+                require_road_exits(read_matrix(variant), exits, surface, label=kind)
             terrain[f"{key}_{variant.stem}"] = rgba_pixels(variant)
         # The vector hex fills the transparent staircase around the raster tile.
         # Ground palettes name their base G; river palettes name it W.

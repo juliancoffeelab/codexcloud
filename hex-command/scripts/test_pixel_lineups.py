@@ -30,10 +30,10 @@ class RaceTrees(unittest.TestCase):
     def test_settlement_exits_distinguish_masonry_from_paths(self):
         rows = ["C" * 32 + "H" * 32 if 28 <= y < 36 else "C" * 64 for y in range(64)]
         surface = frozenset("RrH")
-        art.require_road_exits(rows, 1, surface, label="keep")
+        art.require_road_exits(rows, 1, surface, label="village")
         rows[32] = "C" * 64
-        with self.assertRaisesRegex(ValueError, "keep 1: misaligned exit"):
-            art.require_road_exits(rows, 1, surface, label="keep")
+        with self.assertRaisesRegex(ValueError, "village 1: misaligned exit"):
+            art.require_road_exits(rows, 1, surface, label="village")
 
     def fixture(self):
         temp = tempfile.TemporaryDirectory()

@@ -824,15 +824,15 @@
       "col": 1,
       "row": 8,
       "terrain": "keep",
-      "owner": "player",
-      "connections": ["e"]
+      "owner": "player"
     },
     {
       "id": "2,8",
       "col": 2,
       "row": 8,
       "terrain": "road",
-      "connections": ["se", "w", "ne"],
+      "connections": ["se", "ne"],
+      "deadEnds": ["w"],
       "owner": null
     },
     {
@@ -896,7 +896,8 @@
       "col": 11,
       "row": 8,
       "terrain": "road",
-      "connections": ["e", "se", "ne"],
+      "connections": ["se", "ne"],
+      "deadEnds": ["e"],
       "owner": null
     },
     {
@@ -904,8 +905,7 @@
       "col": 12,
       "row": 8,
       "terrain": "keep",
-      "owner": "enemy",
-      "connections": ["w"]
+      "owner": "enemy"
     },
     {
       "id": "13,8",

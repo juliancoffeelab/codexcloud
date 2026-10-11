@@ -27,15 +27,23 @@ export interface BattlefieldTileView extends TileView {
 }
 
 /** Connections select native frames; they do not change movement or protection. */
-export function terrainArtNames(tile: Pick<TileView, "terrain" | "connections">): string[] {
+export function terrainArtNames(
+  tile: Pick<TileView, "terrain" | "connections" | "deadEnds">,
+): string[] {
   const directions = ["e", "se", "sw", "w", "nw", "ne"];
   const mask = (tile.connections ?? []).reduce(
     (mask, direction) => mask | (1 << directions.indexOf(direction)),
     0,
   );
-  if (["road", "village", "keep"].includes(tile.terrain)) {
-    const defaultMask = tile.terrain === "keep" ? 2 : 9;
-    if (mask && mask !== defaultMask) return [`${tile.terrain}_${mask}`];
+  if (tile.terrain === "road" && tile.deadEnds?.length) {
+    const capped = tile.deadEnds.reduce(
+      (mask, direction) => mask | (1 << directions.indexOf(direction)),
+      0,
+    );
+    return [`road_${mask}-end-${capped}`];
+  }
+  if (["road", "village"].includes(tile.terrain)) {
+    if (mask && mask !== 9) return [`${tile.terrain}_${mask}`];
   }
   if (tile.terrain === "bridge" || tile.terrain === "ford") {
     if (mask === 18) return [`${tile.terrain}_nw-se`];
