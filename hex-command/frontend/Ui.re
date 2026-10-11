@@ -25,6 +25,8 @@ let ignorePromise = work => work |> Js.Promise.catch(_ => Js.Promise.resolve()) 
 external queryWithin: (Dom.element, string) => Js.Nullable.t(Dom.element) = "querySelector";
 [@mel.get] external currentTarget: 'a => Dom.element = "currentTarget";
 [@mel.get] external target: 'a => Dom.element = "target";
+[@mel.get] external nodeType: Dom.element => int = "nodeType";
+[@mel.send] external closest: (Dom.element, string) => Js.Nullable.t(Dom.element) = "closest";
 [@mel.get] external inputValue: Dom.element => string = "value";
 [@mel.get] external inputChecked: Dom.element => bool = "checked";
 [@mel.get] external eventKey: 'a => string = "key";
@@ -100,13 +102,9 @@ module Icon = {
         <path
           d={
             switch (name) {
-            | "undo" => "M9 4 4 9l5 5M4 9h9a7 7 0 0 1 7 7v4"
-            | "search" => "M21 21l-6-6M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0"
-            | "village" => "m3 11 9-8 9 8M5 10v11h14V10M10 21v-7h4v7"
             | "left" => "m15 5-7 7 7 7"
             | "right" => "m9 5 7 7-7 7"
-            | "move" => "M4 12h16m-6-6 6 6-6 6"
-            | _ => "m9 3 1-1h4l1 3 3 1 3-1 2 4-2 2v3l2 2-2 4-3-1-3 1-1 3h-4l-1-3-3-1-3 1-2-4 2-2v-3L1 9l2-4 3 1 3-1z"
+            | _ => ""
             }
           }
         />

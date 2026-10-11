@@ -70,7 +70,7 @@ module Settings = {
           </p>
           <p>
             {text(
-               "All unit families have a finite advancement ladder. Dealing damage earns experience; defeating an enemy earns more, including during retaliation. Select a ready unit with enough XP to advance. Advancement preserves wounds and consumes its turn. Returning companions and recalled survivors keep their XP and rank between campaign missions. Retrying restores the company that entered that mission.",
+               "Unit cards show level and experience, with next rank names in the progress description. All unit families have a finite advancement ladder. Dealing damage earns experience; defeating an enemy earns more, including during retaliation. Select a ready unit with enough XP to advance. Advancement preserves wounds and consumes its turn. Returning companions and recalled survivors keep their XP and rank between campaign missions. Retrying restores the company that entered that mission.",
              )}
           </p>
           <p>

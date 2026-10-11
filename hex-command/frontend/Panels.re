@@ -2,23 +2,51 @@ open Ui;
 
 module UnitCard = {
   [@react.component]
-  let make = (~view: Session.model, ~unit: Domain.public_unit, ~showName=false) => {
+  let make =
+      (~view: Session.model, ~unit: Domain.public_unit, ~showName=false, ~showProgress=false) => {
     let definition = Catalog.unit(view.catalog, unit.type_);
-    <div className={"combatant " ++ side(unit.side)}>
-      <span className="unit-side">
-        {text(unit.side == Domain.side_player ? "Your unit" : "Enemy unit")}
-      </span>
+    let level = number(Option.value(~default=1., definition.level));
+    let progress =
+      "L"
+      ++ level
+      ++ {js| · |js}
+      ++ (
+        switch (Js.Nullable.toOption(definition.experienceNeeded)) {
+        | Some(needed) when needed > 0. =>
+          number(Option.value(~default=0., unit.experience)) ++ "/" ++ number(needed) ++ " XP"
+        | _ => "Max"
+        }
+      );
+    let next =
+      Option.value(~default=[||], definition.advancesTo)
+      |> Array.map(id => Catalog.unit(view.catalog, id).name)
+      |> Array.to_list
+      |> String.concat(" / ");
+    <div
+      className={"combatant " ++ side(unit.side)}
+      role="group"
+      ariaLabel={unit.side == Domain.side_player ? "Your unit" : "Enemy unit"}>
       <Sprite
         artwork={view.artwork}
         name={unit.type_}
         side={side(unit.side)}
         width=72.
-        height=90.
+        height=72.
         className={"portrait " ++ (unit.side == Domain.side_enemy ? "enemy-unit" : "")}
       />
-      <h2>
-        {text(showName ? Option.value(~default=definition.name, unit.name) : definition.name)}
-      </h2>
+      <div className="unit-heading">
+        <h2>
+          {text(showName ? Option.value(~default=definition.name, unit.name) : definition.name)}
+        </h2>
+        {showProgress
+           ? <span
+               className="unit-progress"
+               title={"Level " ++ level ++ (next == "" ? "" : {js| · Next: |js} ++ next)}
+               ariaLabel={progress ++ (next == "" ? "" : ". Next ranks: " ++ next)}>
+               {text(progress)}
+             </span>
+           : React.null}
+      </div>
       {Option.value(~default=false, unit.retreating)
          ? <span className="retreat-label"> {text("Retreating")} </span> : React.null}
       {showName && unit.name != None
@@ -93,7 +121,7 @@ module Details = {
   let make =
       (~view: Session.model, ~actions: Session.actions, ~details: Presentation.unit_details) =>
     <div className="unit-detail">
-      <UnitCard view unit={details.unit} showName=true />
+      <UnitCard view unit={details.unit} showName=true showProgress=true />
       <div className="unit-info">
         <div className="unit-stats">
           <span className="unit-stat">
@@ -110,30 +138,6 @@ module Details = {
            <p key=fact className="ability-fact"> {text(fact)} </p>
          )}
         <p> {text(details.ability.description)} </p>
-        <p>
-          {text(
-             "Level "
-             ++ number(Option.value(~default=1., details.definition.level))
-             ++ {js| · |js}
-             ++ (
-               switch (Js.Nullable.toOption(details.definition.experienceNeeded)) {
-               | None => "Fully advanced"
-               | Some(needed) =>
-                 number(Option.value(~default=0., details.unit.experience))
-                 ++ " / "
-                 ++ number(needed)
-                 ++ " XP"
-               }
-             ),
-           )}
-        </p>
-        {Js.Nullable.toOption(details.definition.experienceNeeded) != None
-           ? <p>
-               {text(
-                  "Earn experience by dealing damage and defeating enemies. Advance while ready; wounds carry over and advancement uses this turn.",
-                )}
-             </p>
-           : React.null}
         {each(details.promotions, promotion =>
            <React.Fragment key={promotion.Domain.id}>
              <button className="primary" onClick={_ => actions.advance(promotion.id)}>
@@ -294,7 +298,15 @@ module Unit = {
         ~target=view.target,
         ~revision=float_of_int(view.revision),
       );
+    let element = React.useRef(Js.Nullable.null);
+    React.useLayoutEffect3(
+      () =>
+        Js.Nullable.toOption(element.current)
+        |> Option.map(panel => Viewport.reveal_attack(~panel)),
+      (view.selected, view.target, view.inspected),
+    );
     <section
+      ref={ReactDOM.Ref.domRef(element)}
       id="unit-panel"
       className="panel"
       ariaLabel="Selected unit"
@@ -313,12 +325,11 @@ module Unit = {
        | Combat(attacker, defender, reset) =>
          <>
            <div className="duel">
-             <UnitCard view unit=attacker />
+             <UnitCard view unit=attacker showProgress=true />
              <span className="duel-divider" ariaHidden=true> {text({js|⚔|js})} </span>
-             <UnitCard view unit=defender />
+             <UnitCard view unit=defender showProgress=true />
            </div>
            <div key=reset className="attack-actions">
-             <h3> {text("Attack")} </h3>
              {each(Presentation.attacks(view.catalog, view.game, attacker, defender), choice =>
                 <Attack key={choice.Presentation.weapon.id} choice actions />
               )}

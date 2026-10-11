@@ -44,9 +44,14 @@ function observe(session: SessionModule.t) {
 }
 /** Exercise UI gestures directly rather than duplicate controller command policy. */
 function move(session: SessionModule.t, id: string, tile: string) {
-  const commands = Session.commands(session);
-  if (Session.view(session).selected !== id)
-    commands.choose(required(Native.unit(Session.view(session).game, id)).tile);
+  const commands = Session.commands(session),
+    view = Session.view(session);
+  if (view.selected !== id) {
+    const actor = required(Native.unit(view.game, id));
+    // Dismiss retained terrain/target inspection before selecting this actor.
+    if (view.inspected === actor.tile || view.target === id) commands.clear(true);
+    commands.choose(actor.tile);
+  }
   commands.choose(tile);
 }
 function panel(view: SessionModule.model) {
@@ -127,6 +132,81 @@ test("Developer map supports normal actions and persistence", async () => {
   assert(state(session).round > opening.round || state(session).winner);
   assert.deepEqual(loadBattle().game.captureState(), snapshot(session));
   Session.close(session);
+  observed.unsubscribe();
+});
+
+test("Inspection switches tiles and closes when the inspected unit or terrain is tapped again", () => {
+  const session = createController(),
+    observed = observe(session),
+    commands = Session.commands(session);
+  const opening = snapshot(session);
+  const player = required(opening.units.find((unit) => unit.side === "player"));
+  const enemy = required(opening.units.find((unit) => unit.side === "enemy"));
+  const empty = required(
+    opening.tiles.find((tile) => !opening.units.some((unit) => unit.tile === tile.id)),
+  );
+  const other = required(
+    opening.tiles.find(
+      (tile) => tile.id !== empty.id && !opening.units.some((unit) => unit.tile === tile.id),
+    ),
+  );
+  const saved = storage.getItem(SAVE_KEY),
+    game = observed.view.game;
+  commands.choose(enemy.tile);
+  assert.equal(observed.view.selected, enemy.id);
+  commands.choose(enemy.tile);
+  assert.equal(observed.view.selected, undefined);
+  assert.equal(observed.view.inspected, undefined);
+  commands.choose(empty.id);
+  assert.equal(observed.view.inspected, empty.id);
+  commands.choose(other.id);
+  assert.equal(observed.view.inspected, other.id);
+  commands.choose(other.id);
+  assert.equal(observed.view.inspected, undefined);
+  commands.choose(player.tile);
+  commands.choose(player.tile);
+  assert.equal(observed.view.selected, undefined);
+  assert.equal(observed.view.inspected, undefined);
+  commands.choose(enemy.tile);
+  commands.choose(empty.id);
+  assert.equal(observed.view.selected, undefined);
+  assert.equal(observed.view.inspected, empty.id);
+  commands.choose(empty.id);
+  assert.equal(observed.view.inspected, undefined);
+  assert.equal(observed.view.target, undefined);
+  assert.equal(observed.view.game, game);
+  assert.deepEqual(snapshot(session), opening);
+  assert.equal(storage.getItem(SAVE_KEY), saved);
+  observed.unsubscribe();
+});
+
+test("Click-away dismissal preserves movement, attack targeting and undo", () => {
+  const session = createController(),
+    observed = observe(session),
+    commands = Session.commands(session);
+  commands.reset("developer");
+  const opening = snapshot(session),
+    player = required(opening.units.find((unit) => unit.side === "player"));
+  const destination = required(Object.keys(Native.reachable(observed.view.game, player.id))[0]);
+  commands.choose(player.tile);
+  commands.choose(destination);
+  assert.equal(Native.unit(observed.view.game, player.id)?.tile, destination);
+  assert.equal(observed.view.inspected, destination);
+  assert(observed.view.can_undo);
+  commands.clear(true);
+  assert.equal(observed.view.inspected, undefined);
+  assert(observed.view.can_undo, "dismissing the panel must not spend undo history");
+  commands.undo();
+  assert.deepEqual(snapshot(session), opening);
+  const target = required(Native.targets(observed.view.game, player.id)[0]);
+  commands.choose(target.tile);
+  const combat = panel(observed.view);
+  assert(combat !== 0 && combat.TAG === 2);
+  commands.choose(target.tile);
+  assert.equal(observed.view.selected, undefined);
+  assert.equal(observed.view.target, undefined);
+  assert.equal(observed.view.inspected, undefined);
+  assert.deepEqual(snapshot(session), opening, "targeting or dismissal must not attack");
   observed.unsubscribe();
 });
 
@@ -378,12 +458,19 @@ test("Browser commands are player-only and previews cannot mutate rules", async 
   const before = snapshot(session);
   move(session, enemy.id, "2,2");
   assert.deepEqual(snapshot(session), before);
-  assert.match(Session.view(session).status, /cannot act/);
+  assert.equal(Session.view(session).selected, undefined);
+  assert.equal(Session.view(session).inspected, "2,2");
   const pending = commands.end_turn(),
     enemyTurn = snapshot(session);
   assert.equal(state(session).turn, "enemy");
   assert.equal(Session.view(session).can_undo, false);
   move(session, enemy.id, "2,2");
+  const recovery = storage.getItem(SAVE_KEY);
+  commands.choose("2,2");
+  assert.equal(Session.view(session).inspected, undefined);
+  assert.equal(Session.view(session).selected, undefined);
+  assert.equal(storage.getItem(SAVE_KEY), recovery);
+  assert.deepEqual(snapshot(session), enemyTurn);
   commands.recruit("soldier", "10,2");
   assert.match(Session.view(session).status, /Wait for your turn/);
   assert.deepEqual(snapshot(session), enemyTurn);

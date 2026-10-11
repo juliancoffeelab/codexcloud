@@ -17,74 +17,31 @@ module TurnBar = {
       state.turn == Domain.side_player
       && winner == None
       && !Story.dialogue_pending(state.campaign);
-    <header
-      className={"battle-bar " ++ (state.campaign != None ? "campaign-controls" : "")}
-      ariaLabel="Battle controls">
-      <div className="header-economy">
-        <span className="treasury" ariaLabel="Gold">
-          <i className="coin" ariaHidden=true />
-          <b id="gold"> {num(state.gold.player)} </b>
-        </span>
-        <span className="income" title="Coins earned each turn">
-          <b id="income"> {text("+" ++ number(income))} </b>
-          <span> {text("/turn")} </span>
-        </span>
-        <span className="villages" title="Owned villages">
-          <Icon name="village" />
-          <span>
-            <b id="villages"> {text(number(income /. 2.))} </b>
-            {text("/")}
-            <span id="village-total"> {text(string_of_int(villages))} </span>
-          </span>
-        </span>
-      </div>
-      <button
-        id="end-turn"
-        className="primary"
-        disabled={!canAct}
-        onClick={_ => ignorePromise(actions.end_turn())}>
-        <span id="turn-label">
-          {text(
-             winner == Some(Domain.side_player)
-               ? "Victory"
-               : winner == Some(Domain.side_enemy)
-                   ? "Defeat" : state.turn == Domain.side_player ? "End turn" : "Enemy turn",
-           )}
-        </span>
-        <span id="round" className="round" title={"Round " ++ number(state.round)}>
-          {text("Turn " ++ number(state.round))}
-        </span>
-      </button>
-      <button
-        id="undo-move"
-        className="icon-button"
-        ariaLabel="Undo move"
-        title="Undo move"
-        disabled={!view.can_undo}
-        onClick={_ => actions.undo()}>
-        <Icon name="undo" />
-      </button>
-      {state.campaign != None
-         ? <button
-             id="mission-briefing-button"
-             className="icon-button"
-             ariaLabel="Mission briefing"
-             title="Mission briefing"
-             ariaExpanded=briefing
-             ariaControls="mission-overview"
-             onClick={_ => onBriefing()}>
-             <Icon name="search" />
-           </button>
-         : React.null}
-      <button
-        id="settings-button"
-        className="icon-button"
-        ariaLabel="Settings"
-        title="Settings"
-        onClick={_ => onSettings()}>
-        <Icon name="settings" />
-      </button>
-    </header>;
+    <Header
+      stats={
+        Some({
+          Header.gold: state.gold.player,
+          income,
+          owned_villages: income /. 2.,
+          total_villages: float_of_int(villages),
+          round: state.round,
+        })
+      }
+      turnLabel={
+        winner == Some(Domain.side_player)
+          ? "Victory"
+          : winner == Some(Domain.side_enemy)
+              ? "Defeat" : state.turn == Domain.side_player ? "End turn" : "Enemy turn"
+      }
+      canEndTurn=canAct
+      canUndo={view.can_undo}
+      campaign={state.campaign != None}
+      briefing
+      onEndTurn={() => ignorePromise(actions.end_turn())}
+      onUndo={actions.undo}
+      onSettings={Some(onSettings)}
+      onBriefing={Some(onBriefing)}
+    />;
   };
 };
 
@@ -98,6 +55,11 @@ let make = (~session: Session.t, ~onMount: (unit, unit) => unit) => {
   let view = React.useSyncExternalStore(~subscribe, ~getSnapshot);
   let actions = Session.commands(session);
   let state = Native.state(view.game);
+  let inspectionOpen =
+    view.selected != None
+    || view.inspected != None
+    || Js.Nullable.toOption(state.winner) != None
+    && state.campaign == None;
   let (briefing, setBriefing) = React.useState(() => false);
   let (campaignOpen, setCampaignOpen) = React.useState(() => false);
   let (campaignChoice, setCampaign) = React.useState(() => "lantern-road");
@@ -126,8 +88,25 @@ let make = (~session: Session.t, ~onMount: (unit, unit) => unit) => {
         if (eventKey(event) == "Escape" && Js.Nullable.toOption(query("dialog[open]")) == None) {
           actions.clear(true);
         };
+      let away = event => {
+        let node = target(event);
+        if (nodeType(node) == 1
+            && Js.Nullable.toOption(query("dialog[open]")) == None
+            && Js.Nullable.toOption(
+                 closest(node, ".hex, aside, button, select, input, summary, a, dialog"),
+               )
+            == None) {
+          actions.clear(true);
+        };
+      };
       addListener(document, "keydown", key);
-      Some(() => removeListener(document, "keydown", key));
+      addListener(document, "click", away);
+      Some(
+        () => {
+          removeListener(document, "keydown", key);
+          removeListener(document, "click", away);
+        },
+      );
     },
     [|actions|],
   );
@@ -160,7 +139,7 @@ let make = (~session: Session.t, ~onMount: (unit, unit) => unit) => {
     show(reset);
   };
   <>
-    <main>
+    <main className="battle-layout">
       <TurnBar
         view
         actions
@@ -169,19 +148,23 @@ let make = (~session: Session.t, ~onMount: (unit, unit) => unit) => {
         onBriefing={() => setBriefing(value => !value)}
       />
       <p id="status" className="status" role="status" ariaLive="polite"> {text(view.status)} </p>
-      <Panels.Campaign
-        view
-        actions
-        expanded=briefing
-        onCollapse={() => setBriefing(_ => false)}
-        onNewCampaign=openCampaign
-      />
-      <div className="workspace">
-        <Battlefield view actions />
-        <aside>
-          <Panels.Unit view actions onNewBattle=openMap />
-          <Panels.Terrain view actions />
-        </aside>
+      <div className="battle-content">
+        <Panels.Campaign
+          view
+          actions
+          expanded=briefing
+          onCollapse={() => setBriefing(_ => false)}
+          onNewCampaign=openCampaign
+        />
+        <div className={"workspace" ++ (inspectionOpen ? "" : " map-only")}>
+          <Battlefield view actions />
+          {inspectionOpen
+             ? <aside ariaLabel="Unit and terrain details">
+                 <Panels.Unit view actions onNewBattle=openMap />
+                 <Panels.Terrain view actions />
+               </aside>
+             : React.null}
+        </div>
       </div>
     </main>
     <Dialogs.Settings

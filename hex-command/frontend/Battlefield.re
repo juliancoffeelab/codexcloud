@@ -51,6 +51,7 @@ let make = (~view: Session.model, ~actions: Session.actions) => {
   let (hovered, setHovered) = React.useState(() => None);
   let (ready, setReady) = React.useState(() => None);
   let map = React.useRef(Js.Nullable.null);
+  let viewport = React.useRef(Js.Nullable.null);
   let image = React.useRef(Js.Nullable.null);
   let canvasHost = React.useRef(Js.Nullable.null);
   let size = Terrain.size(scene);
@@ -119,6 +120,33 @@ let make = (~view: Session.model, ~actions: Session.actions) => {
     );
   let hasBackdrop = backdrop != None || prebuilt != None;
   let hover = Option.bind(hovered, id => Terrain.get_tile(scene, id));
+  let inspectionTiles =
+    [
+      Option.bind(view.selected, id =>
+        Option.map((unit: Domain.public_unit) => unit.tile, Native.unit(view.game, id))
+      ),
+      Option.bind(view.target, id =>
+        Option.map((unit: Domain.public_unit) => unit.tile, Native.unit(view.game, id))
+      ),
+      view.inspected,
+    ]
+    |> List.filter_map(id => id)
+    |> String.concat("|");
+  React.useLayoutEffect2(
+    () =>
+      switch (Js.Nullable.toOption(viewport.current), Js.Nullable.toOption(map.current)) {
+      | (Some(scroller), Some(board)) when inspectionTiles != "" =>
+        Some(
+          Viewport.reveal_map(
+            ~scroller,
+            ~board,
+            ~ids=String.split_on_char('|', inspectionTiles) |> Array.of_list,
+          ),
+        )
+      | _ => None
+      },
+    (scene, inspectionTiles),
+  );
   /* Rendering only prepares geometry. Commit owns cancellation, so an abandoned
      concurrent render cannot cancel the displayed map's fallback work. */
   React.useLayoutEffect1(
@@ -439,7 +467,7 @@ let make = (~view: Session.model, ~actions: Session.actions) => {
   let style = ReactDOM.Style.make();
   mapScale(style, number(state.cols /. 11.));
   <section className="map-section" ariaLabel="Battlefield">
-    <div className="map-scroll">
+    <div className="map-scroll" ref={ReactDOM.Ref.domRef(viewport)}>
       <svg
         id="map"
         style

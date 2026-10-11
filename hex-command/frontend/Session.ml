@@ -155,34 +155,46 @@ let choose t tile_id = safely t (fun () ->
     match Native.tile t.latest.game tile_id with
     | None -> ()
     | Some tile ->
-      t.latest <- {t.latest with inspected=Some tile_id; focused=tile_id};
-      if not (active t) then publish ~render:false ~effects:(fun () -> selection_feedback t tile_id) t
-      else match Native.at t.latest.game tile_id with
-        | Some unit when Some unit.id = t.latest.selected || Some unit.id = t.latest.target ->
-          clear t false; selection_feedback t tile_id
-        | Some occupant ->
-          let is_target = match t.latest.selected with
-            | Some id -> Array.exists (fun (unit : Domain.public_unit) -> unit.id = occupant.id) (Native.targets t.latest.game id)
-            | None -> false in
-          if is_target then (
-            t.latest <- {t.latest with target=Some occupant.id};
-            publish ~effects:(fun () -> deferred t (fun () -> ignore (Audio.play t.audio "select")))
-              ~next:(fun () -> message t "Tap a weapon to attack. Use the magnifying glass for damage details.") t)
-          else (
-            t.latest <- {t.latest with selected=Some occupant.id; target=None};
-            publish ~effects:(fun () -> selection_feedback t tile_id)
-              ~next:(fun () -> message t (if occupant.side = Domain.side_enemy then "Enemy unit selected. Select one of your units to act."
-                                          else if occupant.attacked then "This unit has finished its turn."
-                                          else "Choose a blue hex to move or a red enemy to attack.")) t)
-        | None ->
-          match t.latest.selected with
-          | Some id when Js.Dict.get (Native.reachable t.latest.game id) tile_id <> None ->
-            move ~next:(fun () -> message t "Moved. You can attack an enemy in range or select another unit.") t id tile_id
-          | _ ->
-            t.latest <- {t.latest with selected=None;target=None};
-            publish ~effects:(fun () -> selection_feedback t tile_id)
-              ~next:(fun () -> let terrain = Catalog.terrain_type t.catalog tile.terrain in
-                      message t (terrain.name ^ ": " ^ terrain.description)) t)
+      let occupant = Native.at t.latest.game tile_id in
+      let repeated = t.latest.inspected <> None &&
+                     (t.latest.inspected = Some tile_id ||
+                      Option.fold ~none:false ~some:(fun (unit : Domain.public_unit) ->
+                          Some unit.id = t.latest.selected || Some unit.id = t.latest.target) occupant) in
+      t.latest <- {t.latest with focused=tile_id};
+      if repeated then clear t true
+      else (
+        t.latest <- {t.latest with inspected=Some tile_id};
+        if not (active t) then publish ~render:false ~effects:(fun () -> selection_feedback t tile_id) t
+        else match occupant with
+          | Some occupant ->
+            let is_target = match t.latest.selected with
+              | Some id ->
+                Option.fold ~none:false ~some:(fun (unit : Domain.public_unit) -> unit.side = Domain.side_player)
+                  (Native.unit t.latest.game id) &&
+                Array.exists (fun (unit : Domain.public_unit) -> unit.id = occupant.id) (Native.targets t.latest.game id)
+              | None -> false in
+            if is_target then (
+              t.latest <- {t.latest with target=Some occupant.id};
+              publish ~effects:(fun () -> deferred t (fun () -> ignore (Audio.play t.audio "select")))
+                ~next:(fun () -> message t "Tap a weapon to attack. Use the magnifying glass for damage details.") t)
+            else (
+              t.latest <- {t.latest with selected=Some occupant.id; target=None};
+              publish ~effects:(fun () -> selection_feedback t tile_id)
+                ~next:(fun () -> message t (if occupant.side = Domain.side_enemy then "Enemy unit selected. Select one of your units to act."
+                                            else if occupant.attacked then "This unit has finished its turn."
+                                            else "Choose a blue hex to move or a red enemy to attack.")) t)
+          | None ->
+            match t.latest.selected with
+            | Some id when
+                Option.fold ~none:false ~some:(fun (unit : Domain.public_unit) -> unit.side = Domain.side_player)
+                  (Native.unit t.latest.game id) &&
+                Js.Dict.get (Native.reachable t.latest.game id) tile_id <> None ->
+              move ~next:(fun () -> message t "Moved. You can attack an enemy in range or select another unit.") t id tile_id
+            | _ ->
+              t.latest <- {t.latest with selected=None;target=None};
+              publish ~effects:(fun () -> selection_feedback t tile_id)
+                ~next:(fun () -> let terrain = Catalog.terrain_type t.catalog tile.terrain in
+                        message t (terrain.name ^ ": " ^ terrain.description)) t))
 let attack t weapon = safely t (fun () -> match t.latest.selected,t.latest.target with
     | Some unit,Some target ->
       require_actor t unit;

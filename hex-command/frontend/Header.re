@@ -1,0 +1,116 @@
+/** Shared controls for startup and live battle; this module has no game imports. */
+type stats = {
+  gold: float,
+  income: float,
+  owned_villages: float,
+  total_villages: float,
+  round: float,
+};
+
+module Icon = {
+  [@react.component]
+  let make = (~name) =>
+    <svg viewBox="0 0 24 24" ariaHidden=true>
+      <path
+        d={
+          switch (name) {
+          | "village" => "m3 11 9-8 9 8M5 10v11h14V10M10 21v-7h4v7"
+          | "undo" => "M9 4 4 9l5 5M4 9h9a7 7 0 0 1 7 7v4"
+          | "search" => "M21 21l-6-6M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0"
+          | _ => "m9 3 1-1h4l1 3 3 1 3-1 2 4-2 2v3l2 2-2 4-3-1-3 1-1 3h-4l-1-3-3-1-3 1-2-4 2-2v-3L1 9l2-4 3 1 3-1z"
+          }
+        }
+      />
+      {name == "settings" ? <circle cx="12" cy="12" r="3" /> : React.null}
+    </svg>;
+};
+
+[@react.component]
+let make =
+    (
+      ~stats=None,
+      ~turnLabel="End turn",
+      ~canEndTurn=false,
+      ~canUndo=false,
+      ~campaign=false,
+      ~briefing=false,
+      ~onEndTurn=() => (),
+      ~onUndo=() => (),
+      ~onSettings=None,
+      ~onBriefing=None,
+    ) => {
+  let text = React.string;
+  let number = Js.Float.toString;
+  let value = project =>
+    Option.fold(~none={js|—|js}, ~some=stats => number(project(stats)), stats);
+  let invoke = callback => Option.iter(callback => callback(), callback);
+  <header
+    className={"battle-bar" ++ (campaign ? " campaign-controls" : "")} ariaLabel="Battle controls">
+    <div className="header-economy">
+      <span className="treasury" ariaLabel="Gold">
+        <i className="coin" ariaHidden=true />
+        <b id="gold"> {text(value(stats => stats.gold))} </b>
+      </span>
+      <span className="income" title="Coins earned each turn">
+        <b id="income">
+          {text(
+             Option.fold(~none={js|—|js}, ~some=stats => "+" ++ number(stats.income), stats),
+           )}
+        </b>
+        <span> {text("/turn")} </span>
+      </span>
+      <span className="villages" title="Owned villages">
+        <Icon name="village" />
+        <span>
+          <b id="villages"> {text(value(stats => stats.owned_villages))} </b>
+          {text("/")}
+          <span id="village-total"> {text(value(stats => stats.total_villages))} </span>
+        </span>
+      </span>
+    </div>
+    <button id="end-turn" className="primary" disabled={!canEndTurn} onClick={_ => onEndTurn()}>
+      <span id="turn-label"> {text(turnLabel)} </span>
+      <span
+        id="round"
+        className="round"
+        title={Option.fold(
+          ~none="Round loading",
+          ~some=stats => "Round " ++ number(stats.round),
+          stats,
+        )}>
+        {text("Turn " ++ value(stats => stats.round))}
+      </span>
+    </button>
+    <button
+      id="undo-move"
+      className="icon-button"
+      ariaLabel="Undo move"
+      title="Undo move"
+      disabled={!canUndo}
+      onClick={_ => onUndo()}>
+      <Icon name="undo" />
+    </button>
+    {campaign
+       ? <button
+           id="mission-briefing-button"
+           className="icon-button"
+           ariaLabel="Mission briefing"
+           title="Mission briefing"
+           ariaExpanded=briefing
+           ariaControls="mission-overview"
+           disabled={onBriefing == None}
+           onClick={_ => invoke(onBriefing)}>
+           <Icon name="search" />
+         </button>
+       : React.null}
+    <button
+      id="settings-button"
+      className="icon-button"
+      ariaLabel="Settings"
+      title="Settings"
+      disabled={onSettings == None}
+      onClick={_ => invoke(onSettings)}>
+      <Icon name="settings" />
+    </button>
+  </header>;
+};

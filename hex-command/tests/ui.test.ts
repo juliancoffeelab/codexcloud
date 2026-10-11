@@ -4,10 +4,12 @@ import { afterEach, beforeEach, test, vi } from "vitest";
 import React, { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import * as App from "@frontend/App";
+import * as Shell from "@frontend/Shell";
 import * as Application from "@frontend/Application";
 import * as Session from "@frontend/Session";
 import * as Prefetch from "@frontend/Terrain_prefetch";
 import * as Plan from "@frontend/Terrain_plan";
+import * as Viewport from "@frontend/Viewport";
 import { factory, Native, Catalog, createBattle } from "./native-fixture";
 import { required } from "./helpers";
 
@@ -175,4 +177,79 @@ test("Terrain inspection warming waits for the current map image and cancels whe
   });
   root = undefined;
   assert.equal(stopped.mock.calls.length, 2);
+});
+
+test("Startup and live controls share their structure, and inspection panels open and dismiss coherently", async () => {
+  const stopMap = vi.fn(),
+    stopAttack = vi.fn();
+  const revealMap = vi.spyOn(Viewport, "reveal_map").mockReturnValue(stopMap);
+  const revealAttack = vi.spyOn(Viewport, "reveal_attack").mockReturnValue(stopAttack);
+  await act(async () => {
+    required(root).render(React.createElement(Shell.make, { failure: undefined }));
+  });
+  const structure = () =>
+    Array.from(element("header").querySelectorAll("*"), (node) => [
+      node.tagName,
+      node.id,
+      node.getAttribute("class"),
+      node.getAttribute("aria-label"),
+      node.getAttribute("d"),
+    ]);
+  const loading = structure();
+  assert.equal(element("#gold").textContent?.trim(), "—");
+  assert.equal(element<HTMLButtonElement>("#settings-button").disabled, true);
+  assert.equal(host.querySelector("aside"), null);
+  assert.equal(revealMap.mock.calls.length, 0);
+  session = Session.create(async () => {}, factory);
+  const mounted = session;
+  await act(async () => {
+    required(root).render(
+      React.createElement(App.make, {
+        session: mounted,
+        onMount: () => () => {},
+      }),
+    );
+  });
+  assert.deepEqual(structure(), loading);
+  assert.equal(element<HTMLButtonElement>("#end-turn").disabled, false);
+  assert.equal(element<HTMLButtonElement>("#settings-button").disabled, false);
+  assert(element(".workspace").classList.contains("map-only"));
+  assert.equal(host.querySelector("aside"), null);
+  const unit = required(
+    Native.state(Session.view(mounted).game).units.find((unit) => unit.side === "player"),
+  );
+  await click(`[data-tile="${unit.tile}"]`);
+  assert.equal(element("aside").getAttribute("aria-label"), "Unit and terrain details");
+  const [scroller, board, ids] = required(revealMap.mock.calls.at(-1));
+  assert.equal(scroller, element(".map-scroll"));
+  assert.equal(board, element("#map"));
+  assert.deepEqual(ids, [unit.tile, unit.tile]);
+  assert.equal(required(revealAttack.mock.calls.at(-1))[0], element("#unit-panel"));
+  assert.match(element(".unit-progress").textContent ?? "", /^L\d/);
+  await click(".unit-progress");
+  assert(host.querySelector("aside"), "Clicks within inspection do not dismiss it");
+  await click(`[data-tile="${unit.tile}"]`);
+  assert.equal(host.querySelector("aside"), null, "Repeating the inspected unit dismisses details");
+  assert.equal(
+    stopMap.mock.calls.length,
+    1,
+    "Closing inspection invalidates its viewport callback",
+  );
+  assert.equal(
+    stopAttack.mock.calls.length,
+    1,
+    "Unmounting details invalidates deferred attack scrolling",
+  );
+  await click(`[data-tile="${unit.tile}"]`);
+  await click("#status");
+  assert.equal(
+    host.querySelector("aside"),
+    null,
+    "Click-away clears selection and inspection together",
+  );
+  await click(`[data-tile="${unit.tile}"]`);
+  await act(async () => {
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+  });
+  assert.equal(host.querySelector("aside"), null);
 });
