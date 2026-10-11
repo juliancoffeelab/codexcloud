@@ -9,6 +9,8 @@ import {
   pixelTerrainLayouts,
 } from "../presentation/pixel-art";
 import { battlefieldSpriteSize, hexPoints, tileCenter } from "./geometry";
+import { terrainArtNames } from "../presentation/terrain-connections";
+export { terrainArtNames } from "../presentation/terrain-connections";
 
 export interface TileUnitView {
   unit: UnitView;
@@ -28,33 +30,6 @@ export interface BattlefieldTileView extends TileView {
   terrainArtwork: string;
   occupant: TileUnitView | null;
   ownerColor: string;
-}
-
-/** Connections select native frames; they do not change movement or protection. */
-export function terrainArtNames(
-  tile: Pick<TileView, "terrain" | "connections" | "deadEnds">,
-): string[] {
-  const directions = ["e", "se", "sw", "w", "nw", "ne"];
-  const mask = (tile.connections ?? []).reduce(
-    (mask, direction) => mask | (1 << directions.indexOf(direction)),
-    0,
-  );
-  if (tile.terrain === "road" && tile.deadEnds?.length) {
-    const capped = tile.deadEnds.reduce(
-      (mask, direction) => mask | (1 << directions.indexOf(direction)),
-      0,
-    );
-    return [`road_${mask}-end-${capped}`];
-  }
-  if (["road", "village"].includes(tile.terrain)) {
-    if (tile.terrain === "village" && !mask) return ["village_0"];
-    if (mask && mask !== 9) return [`${tile.terrain}_${mask}`];
-  }
-  if (tile.terrain === "bridge" || tile.terrain === "ford") {
-    if (mask === 18) return [`${tile.terrain}_nw-se`];
-    if (mask === 36) return [`${tile.terrain}_ne-sw`];
-  }
-  return [tile.terrain];
 }
 
 /** Stable per-map arrangements, independent of redraws, terrain rules and floor colors. */

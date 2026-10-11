@@ -9,6 +9,7 @@ import { LiveGame } from "../src/game/live-game";
 import { BattleController } from "../src/controller/battle";
 import { Game } from "./game-fixture";
 import { saveBattle, SAVE_KEY } from "./legacy-save";
+import { SAVE_VERSION } from "../src/save/schema";
 import { TestStorage, required } from "./helpers";
 import type { BattleView } from "../src/controller/view";
 
@@ -95,7 +96,7 @@ test("Native combat inspection feeds UI damage breakdowns and old saves migrate 
   const after = game.unit(target.id);
   assert.equal(after?.hp ?? 0, Math.max(0, target.hp - forecast.damage));
   writeBattle(game);
-  assert.equal(JSON.parse(localStorage.getItem(SAVE_KEY)!).version, 3);
+  assert.equal(JSON.parse(localStorage.getItem(SAVE_KEY)!).version, SAVE_VERSION);
   const restored = loadLiveBattle(factory).game;
   assert.deepEqual(restored.snapshot(), game.snapshot());
   restored.dispose();

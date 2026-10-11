@@ -40,6 +40,35 @@ def require_road_exits(rows, mask, surface=frozenset("RrC"), width=8, depth=4, l
     return rows
 
 
+def load_road_dead_ends():
+    pairs = json.loads((ART / 'terrain/road/dead-ends.json').read_text())
+    if not isinstance(pairs, list) or any(
+        not isinstance(pair, list) or len(pair) != 2 or
+        any(type(mask) is not int or not 1 <= mask <= 63 for mask in pair) or
+        pair[0] & pair[1] for pair in pairs
+    ) or len({tuple(pair) for pair in pairs}) != len(pairs):
+        raise ValueError('Invalid registered road caps')
+    return {tuple(pair) for pair in pairs}
+
+
+def require_terrain_variants(kind, stems, road_caps):
+    """Every supported connection must have finished artwork, without frozen pixels."""
+    if kind == 'road':
+        expected = {'tile'} | {str(mask) for mask in range(1, 64) if mask != 9}
+        expected |= {f'{exits}-end-{ends}' for exits, ends in road_caps}
+    elif kind == 'village':
+        expected = {'tile', '0'} | {str(mask) for mask in range(1, 64)
+                                    if mask != 9 and mask.bit_count() <= 3}
+    elif kind in ('bridge', 'ford'):
+        expected = {'tile', 'ne-sw', 'nw-se'}
+    else:
+        return
+    missing, unsupported = expected - set(stems), set(stems) - expected
+    if missing or unsupported:
+        raise ValueError(f'{kind}: missing supported variants {sorted(missing)}; '
+                         f'unsupported variants {sorted(unsupported)}')
+
+
 def unit_directories(lineups=None):
     return {unit["id"]: ART / "units" / race / unit["source"]
             for race, lineup in (lineups or load_lineups()).items()
@@ -356,6 +385,7 @@ def pixel_atlases():
         native[f"portrait_{matrix.parent.name}"] = (width, height, pixels)
     terrain = {}
     floors = load_terrain_floors()
+    road_caps = load_road_dead_ends()
 
     def add_terrain(key, matrix):
         terrain[key] = rgba_pixels(matrix)
@@ -369,6 +399,7 @@ def pixel_atlases():
         key = f"terrain_{FRAME_NAMES.get(matrix.parent.name, matrix.parent.name)}"
         add_terrain(key, matrix)
         kind = matrix.parent.name
+        require_terrain_variants(kind, [path.stem for path in matrix.parent.glob('*.txt')], road_caps)
         default_mask = {"road": 9, "village": 9}.get(kind)
         surface = frozenset("RrC" if kind == "road" else "RrH")
         if default_mask is not None:
@@ -383,7 +414,7 @@ def pixel_atlases():
             capped = re.fullmatch(r"(\d+)-end-(\d+)", variant.stem) if kind == "road" else None
             if capped:
                 exits, ends = map(int, capped.groups())
-                capped = 1 <= exits <= 63 and 1 <= ends <= 63 and not (exits & ends)
+                capped = (exits, ends) in road_caps
             if not (crossing or path or capped):
                 raise ValueError(f"{variant}: unknown terrain orientation")
             if path:

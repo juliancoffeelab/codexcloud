@@ -1,6 +1,7 @@
 import { currentSave, isRecord, SAVE_VERSION, type BattleSave } from "../schema";
 import { migrateV1ToV2 } from "./v1-to-v2";
 import { migrateV2ToV3 } from "./v2-to-v3";
+import { migrateV3ToV4 } from "./v3-to-v4";
 
 export interface MigrationResult {
   save: BattleSave;
@@ -26,6 +27,9 @@ export function migrateSave(input: unknown): MigrationResult {
         break;
       case 2:
         value = migrateV2ToV3(value) as unknown as Record<string, unknown>;
+        break;
+      case 3:
+        value = migrateV3ToV4(value) as unknown as Record<string, unknown>;
         break;
       default:
         throw new Error(`No migration from save version ${String(value.version)}`);

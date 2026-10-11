@@ -26,6 +26,7 @@ fn main() {
         PathBuf::from("Cargo.toml"),
         PathBuf::from("Cargo.lock"),
         PathBuf::from("build.rs"),
+        PathBuf::from("../pixel/art/terrain/road/dead-ends.json"),
     ];
     sources(&root, &root.join("src"), &mut files);
     files.sort();

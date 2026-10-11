@@ -48,7 +48,7 @@
   "scenarios": [
     "game/scenario/mirror-v1/scenario.json",
     "game/scenario/river-v2/scenario.json",
-    "game/scenario/developer-v1/scenario.json",
+    "game/scenario/developer-v2/scenario.json",
     "game/scenario/river-valley-v1/scenario.json"
   ],
   "campaigns": [

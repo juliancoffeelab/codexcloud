@@ -4,7 +4,9 @@ import { isRecord, type BattleSave } from "../schema";
 
 /** Old native saves retained historical layouts in the live catalog. Their owned
  * tiles already preserve that geometry; upgrade only the retired revision tag. */
-export function migrateV2ToV3(value: Record<string, unknown>): BattleSave {
+export function migrateV2ToV3(
+  value: Record<string, unknown>,
+): Omit<BattleSave, "version"> & { version: 3 } {
   const checkpoint = value.checkpoint;
   if (!isRecord(checkpoint) || !isRecord(checkpoint.state))
     throw new Error("Invalid version-two native save");
@@ -20,5 +22,5 @@ export function migrateV2ToV3(value: Record<string, unknown>): BattleSave {
       ...checkpoint,
       state: { ...state, ...(retired ? { mapRevision: map!.revision } : {}) },
     },
-  } as unknown as BattleSave;
+  } as unknown as Omit<BattleSave, "version"> & { version: 3 };
 }

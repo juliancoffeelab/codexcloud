@@ -2,6 +2,14 @@
 
 use super::*;
 use serde::{Deserialize, Serialize};
+use std::sync::LazyLock;
+
+static ROAD_DEAD_ENDS: LazyLock<Vec<(u8, u8)>> = LazyLock::new(|| {
+    serde_json::from_str(include_str!(
+        "../../../pixel/art/terrain/road/dead-ends.json"
+    ))
+    .expect("registered native road caps")
+});
 
 /// Clockwise edge names for a pointy-top hex. These describe artwork only.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -59,6 +67,7 @@ impl Tile {
                 || capped == 0
                 || capped.count_ones() as usize != ends.len()
                 || capped & mask != 0
+                || !ROAD_DEAD_ENDS.contains(&(mask, capped))
             {
                 return false;
             }

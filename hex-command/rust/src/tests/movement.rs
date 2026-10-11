@@ -156,8 +156,8 @@ fn artwork_choices_survive_restore_and_forks_without_changing_movement() {
         .unwrap();
     let id = tile.id.clone();
     tile.terrain = "road".into();
-    tile.connections = Some(vec![HexDirection::E, HexDirection::W, HexDirection::Se]);
-    tile.dead_ends = Some(vec![HexDirection::Nw]);
+    tile.connections = Some(vec![HexDirection::Se, HexDirection::Ne]);
+    tile.dead_ends = Some(vec![HexDirection::W]);
     tile.floor = Some("green-forest".into());
     let state = serde_json::from_str(&serde_json::to_string(&state).unwrap()).unwrap();
     let decorated = Game::try_from_state(rules(), state).unwrap();
@@ -182,7 +182,7 @@ fn artwork_choices_survive_restore_and_forks_without_changing_movement() {
                 .find(|tile| tile.id == id)
                 .unwrap()
                 .dead_ends,
-            Some(vec![HexDirection::Nw])
+            Some(vec![HexDirection::W])
         );
         assert_eq!(
             game.state()
@@ -191,7 +191,7 @@ fn artwork_choices_survive_restore_and_forks_without_changing_movement() {
                 .find(|tile| tile.id == id)
                 .unwrap()
                 .connections,
-            Some(vec![HexDirection::E, HexDirection::W, HexDirection::Se])
+            Some(vec![HexDirection::Se, HexDirection::Ne])
         );
     }
     let mut invalid = decorated.state();
@@ -200,8 +200,9 @@ fn artwork_choices_survive_restore_and_forks_without_changing_movement() {
     assert!(Game::try_from_state(rules(), invalid).is_err());
 
     for ends in [
-        vec![HexDirection::E],
-        vec![HexDirection::Nw, HexDirection::Nw],
+        vec![HexDirection::Se],
+        vec![HexDirection::W, HexDirection::W],
+        vec![HexDirection::Nw],
     ] {
         let mut state = decorated.state();
         state
@@ -249,6 +250,49 @@ fn artwork_choices_survive_restore_and_forks_without_changing_movement() {
                     .unwrap()
                     .connections,
                 Some(exits)
+            );
+        }
+    }
+}
+
+#[test]
+fn capped_road_validation_matches_registered_artwork_for_every_mask() {
+    let caps: Vec<(u8, u8)> = serde_json::from_str(include_str!(
+        "../../../pixel/art/terrain/road/dead-ends.json"
+    ))
+    .unwrap();
+    let directions = [
+        HexDirection::E,
+        HexDirection::Se,
+        HexDirection::Sw,
+        HexDirection::W,
+        HexDirection::Nw,
+        HexDirection::Ne,
+    ];
+    let mut tile = Game::new(rules(), "mirror").state().tiles[0].clone();
+    tile.terrain = "road".into();
+    for exits in 1u8..64 {
+        tile.connections = Some(
+            directions
+                .iter()
+                .copied()
+                .filter(|d| exits & d.bit() != 0)
+                .collect(),
+        );
+        tile.dead_ends = None;
+        assert!(tile.valid_connections());
+        for ends in 0u8..64 {
+            tile.dead_ends = Some(
+                directions
+                    .iter()
+                    .copied()
+                    .filter(|d| ends & d.bit() != 0)
+                    .collect(),
+            );
+            assert_eq!(
+                tile.valid_connections(),
+                caps.contains(&(exits, ends)),
+                "{exits}-end-{ends}"
             );
         }
     }

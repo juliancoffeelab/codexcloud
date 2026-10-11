@@ -3,11 +3,12 @@
 use crate::{
     ai::{self, PlanningWorkspace},
     data::*,
-    logic::Game,
+    logic::{Game, battle::Board},
     protocol::*,
 };
 use serde::{Serialize, de::DeserializeOwned};
 use std::collections::HashMap;
+use std::rc::Rc;
 use tsify::{Ts, Tsify};
 use wasm_bindgen::prelude::*;
 
@@ -29,6 +30,7 @@ where
 }
 struct Battle {
     state: State,
+    board: Rc<Board>,
     seed: u32,
     revision: u32,
     workspace: Option<PlanningWorkspace>,
@@ -36,6 +38,9 @@ struct Battle {
     pending: Option<Command>,
 }
 impl Battle {
+    fn game<'catalog>(&self, rules: &'catalog Rules) -> Game<'catalog> {
+        Game::from_state_with_board(rules, self.state.clone(), self.board.clone())
+    }
     fn view(&self) -> EngineView {
         EngineView {
             revision: self.revision,
@@ -111,7 +116,10 @@ impl NativeEngineFactory {
     pub fn create(&mut self, start: Ts<Start>, seed: u32) -> Result<Ts<BattleResponse>, JsError> {
         let result = decode::<Start>(start)
             .and_then(|start| self.start(start))
-            .map(|state| self.insert(state, seed));
+            .map(|state| {
+                let board = Board::new(&state.tiles);
+                self.insert(state, seed, board)
+            });
         encode(result)
     }
     /// Validate [`SavedGame`] and restore state and AI continuation under a new handle.
@@ -126,9 +134,8 @@ impl NativeEngineFactory {
     /// Publish legal actions and display forecasts without exposing mutable state.
     pub fn inspect(&self, id: u32, revision: u32) -> Result<Ts<InspectionResponse>, JsError> {
         encode(
-            self.battle(id, revision).map(|battle| {
-                Game::from_state(&self.rules, battle.state.clone()).inspect(revision)
-            }),
+            self.battle(id, revision)
+                .map(|battle| battle.game(&self.rules).inspect(revision)),
         )
     }
     /// Return [`ReachableTile`] destinations and costs for a stable unit identity.
@@ -140,7 +147,7 @@ impl NativeEngineFactory {
         unit: u32,
     ) -> Result<Ts<ReachableResponse>, JsError> {
         encode(self.battle(id, revision).and_then(|battle| {
-            let game = Game::from_state(&self.rules, battle.state.clone());
+            let game = battle.game(&self.rules);
             let actor = game
                 .unit(unit)
                 .ok_or(CommandError::UnknownUnit(UnitId(unit)))?;
@@ -165,7 +172,7 @@ impl NativeEngineFactory {
     ) -> Result<Ts<AttackResponse>, JsError> {
         encode(decode::<AttackQuery>(query).and_then(|query| {
             let battle = self.battle(id, revision)?;
-            let game = Game::from_state(&self.rules, battle.state.clone());
+            let game = battle.game(&self.rules);
             let actor = game
                 .unit(query.unit.0)
                 .ok_or(CommandError::UnknownUnit(query.unit))?;
@@ -249,13 +256,14 @@ impl NativeEngineFactory {
             .get_mut(&id)
             .ok_or(EngineError::UnknownBattle)?;
         battle.check(revision)?;
-        let mut game = Game::from_state(&self.rules, battle.state.clone());
+        let mut game = battle.game(&self.rules);
         let ends_turn = matches!(command, Command::EndTurn);
         let planned = battle.pending.as_ref() == Some(&command);
         let mut effects = game.execute(command.clone())?;
         let state = game.state();
         crate::logic::complete_effects(&battle.state, &state, &command, &mut effects);
         battle.state = state;
+        battle.board = game.board.clone();
         battle.revision = battle
             .revision
             .checked_add(1)
@@ -302,7 +310,7 @@ impl NativeEngineFactory {
                 command: command.clone(),
             });
         }
-        let game = Game::from_state(&self.rules, battle.state.clone());
+        let game = battle.game(&self.rules);
         let command = ai::choose_game_command(
             &self.rules,
             &game,
@@ -360,14 +368,15 @@ impl NativeEngineFactory {
                     message: error.to_string(),
                 })?;
             if let Some(pending) = &planner.pending {
-                Game::from_state(&self.rules, state.clone())
+                game.fork()
                     .execute(pending.clone())
                     .map_err(|error| EngineError::InvalidSave {
                         message: error.to_string(),
                     })?;
             }
         }
-        let handle = self.insert(state, saved.seed);
+        let board = game.board.clone();
+        let handle = self.insert(state, saved.seed, board);
         if let Some(planner) = saved.planner {
             let battle = self.battles.get_mut(&handle.id).expect("inserted battle");
             battle.workspace = Some(PlanningWorkspace::from_snapshot(planner.workspace));
@@ -381,7 +390,7 @@ impl NativeEngineFactory {
         battle.check(revision)?;
         Ok(battle)
     }
-    fn insert(&mut self, state: State, seed: u32) -> BattleHandle {
+    fn insert(&mut self, state: State, seed: u32, board: Rc<Board>) -> BattleHandle {
         let id = self.next_id;
         self.next_id = self
             .next_id
@@ -389,6 +398,7 @@ impl NativeEngineFactory {
             .expect("battle handle exhausted");
         let battle = Battle {
             state,
+            board,
             seed,
             revision: 0,
             workspace: None,
@@ -441,7 +451,8 @@ mod tests {
                     revision: None,
                 })
                 .unwrap();
-            let original = factory.insert(state, 17);
+            let board = Board::new(&state.tiles);
+            let original = factory.insert(state, 17, board);
             let options = AiOptions {
                 policy,
                 diplomacy: AiDiplomacy::Restrained,

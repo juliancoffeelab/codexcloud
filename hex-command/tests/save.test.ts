@@ -13,8 +13,76 @@ import { saveBattle } from "../src/save/write";
 import { LEGACY_RIVER } from "../src/save/migration/legacy/layouts";
 import { createTestFactory } from "./native-fixture";
 import { TestStorage } from "./helpers";
+import { MAPS } from "../src/game/maps";
 
 beforeEach(() => vi.stubGlobal("localStorage", new TestStorage()));
+
+for (const [cols, rows] of [
+  [6, 20],
+  [13, 23],
+] as const) {
+  test(`Developer ${cols}×${rows} saves grow without resetting the battle`, () => {
+    const factory = createTestFactory();
+    const game = LiveGame.create(factory, { kind: "scenario", map: "developer" });
+    const checkpoint = structuredClone(
+      nativeValue(game.checkpoint()),
+    ) as import("../rust/pkg/hex_command").SavedGame;
+    const state = checkpoint.state;
+    Object.assign(state, { mapRevision: 1, cols, rows, round: 5 });
+    state.tiles = state.tiles.filter((tile) => tile.col < cols && tile.row < rows);
+    state.gold.player = 23;
+    state.units[0]!.hp -= 1;
+    state.units[1]!.moved = true;
+    Object.assign(state.tiles[0]!, {
+      terrain: "road",
+      connections: ["e", "w"],
+      floor: "green-forest",
+    });
+    state.tiles.find((tile) => tile.terrain === "village")!.owner = "player";
+    checkpoint.seed = 42;
+    const old = { version: 3, checkpoint, pendingEnemy: true };
+    const before = structuredClone(old);
+    const migrated = migrateSave(old);
+    assert(migrated.migrated);
+    assert.deepEqual(old, before, "Migration stays pure");
+    const expanded = migrated.save.checkpoint.state;
+    assert.equal(expanded.cols, MAPS.developer.cols);
+    assert.equal(expanded.rows, MAPS.developer.rows);
+    assert.equal(expanded.mapRevision, MAPS.developer.revision);
+    assert.equal(expanded.tiles.length, expanded.cols * expanded.rows);
+    for (const tile of state.tiles)
+      assert.deepEqual(
+        expanded.tiles.find((candidate) => candidate.id === tile.id),
+        tile,
+      );
+    assert.deepEqual(expanded.units, state.units);
+    assert.deepEqual(expanded.gold, state.gold);
+    assert.equal(expanded.round, 5);
+    assert.equal(migrated.save.checkpoint.seed, 42);
+    assert.equal(migrated.save.pendingEnemy, true);
+    assert.equal(migrateSave(migrated.save).migrated, false);
+    localStorage.setItem(SAVE_KEY, JSON.stringify(old));
+    const restored = loadBattle(factory);
+    assert.equal(restored.notice, undefined);
+    assert.equal(restored.game.mapId, "developer");
+    assert.deepEqual(nativeValue(restored.game.checkpoint()), migrated.save.checkpoint);
+    assert.equal(JSON.parse(localStorage.getItem(SAVE_KEY)!).version, SAVE_VERSION);
+    assert.equal(localStorage.getItem(REJECTED_SAVE_KEY), null);
+    const incomplete = structuredClone(old);
+    incomplete.checkpoint.state.tiles.pop();
+    assert.throws(() => migrateSave(incomplete), /Incomplete historical developer map/);
+    const duplicate = structuredClone(old);
+    duplicate.checkpoint.state.tiles[1] = duplicate.checkpoint.state.tiles[0]!;
+    assert.throws(() => migrateSave(duplicate), /Invalid historical developer tile/);
+    restored.game.dispose();
+    game.dispose();
+  });
+}
+
+test("Version-three ordinary battles receive only an envelope update", () => {
+  const old = { version: 3, checkpoint: checkpoint(), pendingEnemy: false };
+  assert.deepEqual(migrateSave(old).save, { ...old, version: SAVE_VERSION });
+});
 
 test("Version-two river migration preserves old tiles, units and checkpoint state", () => {
   const factory = createTestFactory();

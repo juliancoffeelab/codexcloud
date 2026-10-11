@@ -22,8 +22,11 @@
   are omitted. Keep tiles contain no roads or connection variants.
   Approaches stop in the adjacent road tile, with junctions outside the walls.
   Road `deadEnds` name directions whose spurs stop inside that road tile; finished
-  sources use `<connections-mask>-end-<dead-ends-mask>.txt`. Villages have only
-  their main streets, without thin house lanes. Extracted buildings and composition
+  sources use `<connections-mask>-end-<dead-ends-mask>.txt`. Register supported
+  capped-road pairs in `terrain/road/dead-ends.json`;
+  Rust restoration, content checks and atlas packing reject unregistered pairs.
+  Every supported connection configuration must have a finished native matrix.
+  Villages have only their main streets, without thin house lanes. Extracted buildings and composition
   experiments stay in `tmp/`; the atlas must only pack the finished tiles.
   Terrain floor colors live separately in `pixel/art/terrain/floors.json`, with
   named reusable `palettes` (`G`/`g` base/shade) and terrain `defaults`.
