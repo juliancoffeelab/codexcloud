@@ -4,7 +4,7 @@ import type { Artwork } from "../presentation/art";
 import { TERRAIN, TYPES } from "../game/catalog";
 import { artSprite } from "../presentation/art";
 import { pixelTerrainColors } from "../presentation/pixel-art";
-import { hexPoints, tileCenter } from "./geometry";
+import { battlefieldSpriteSize, hexPoints, tileCenter } from "./geometry";
 
 export interface TileUnitView {
   unit: UnitView;
@@ -91,7 +91,7 @@ export function battlefieldTiles(
 
     let occupant: TileUnitView | null = null;
     if (unit) {
-      const spriteSize = TYPES[unit.type].leader ? 62 : 56;
+      const spriteSize = battlefieldSpriteSize;
       const spriteClasses = `unit-art ${unit.side === "enemy" ? "enemy-unit" : ""} ${unit.attacked ? "spent-unit" : ""}`;
       occupant = {
         unit,
@@ -124,10 +124,10 @@ export function battlefieldTiles(
         artwork,
         "terrain",
         tile.terrain,
-        x - 35,
-        y - 35,
-        70,
-        70,
+        x - battlefieldSpriteSize / 2,
+        y - battlefieldSpriteSize / 2,
+        battlefieldSpriteSize,
+        battlefieldSpriteSize,
         "terrain-art",
       ),
       occupant,

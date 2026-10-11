@@ -12,9 +12,9 @@ ART = ROOT / "pixel" / "art"
 FRAME_NAMES = {"bonearcher": "bone_archer", "grove": "sacred_grove"}
 
 
-def require_canvas(rows, label="Character"):
+def require_canvas(rows, label="Artwork"):
     if len(rows) != 64 or any(len(row) != 64 for row in rows):
-        raise ValueError(f"{label}: character matrices must be exactly 64×64")
+        raise ValueError(f"{label}: artwork matrices must be exactly 64×64")
     return rows
 
 
@@ -137,10 +137,7 @@ def read_matrix(matrix):
     rows = matrix.read_text().splitlines()
     if not rows or not rows[0] or any(len(row) != len(rows[0]) for row in rows):
         raise ValueError(f"{matrix}: matrix must be a nonempty rectangle")
-    if matrix.parent.parent == ART / "terrain" and (len(rows[0]), len(rows)) != (48, 48):
-        raise ValueError(f"{matrix}: terrain matrices must be 48×48")
-    if matrix.parent.parent != ART / "terrain":
-        require_canvas(rows, matrix)
+    require_canvas(rows, matrix)
     return rows
 
 

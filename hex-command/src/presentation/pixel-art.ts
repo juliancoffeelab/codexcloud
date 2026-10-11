@@ -8,9 +8,9 @@ export const pixelSources = {
   },
   terrain: {
     filename: "terrain-pixel.png",
-    width: 393,
-    height: 99,
-    revision: "ad49fcea55a3",
+    width: 391,
+    height: 131,
+    revision: "5cc0de4b09e5",
   },
 } as const;
 
@@ -478,18 +478,18 @@ export const pixelFrames = {
   "player_zombie-shambler": [261, 4941, 64, 64],
   "player_zombie-walker": [326, 4941, 64, 64],
   portrait_worker: [1, 5006, 64, 64],
-  terrain_bridge: [1, 1, 48, 48],
-  terrain_ford: [50, 1, 48, 48],
-  terrain_forest: [99, 1, 48, 48],
-  terrain_fort: [148, 1, 48, 48],
-  terrain_hill: [197, 1, 48, 48],
-  terrain_keep: [246, 1, 48, 48],
-  terrain_marsh: [295, 1, 48, 48],
-  terrain_plains: [344, 1, 48, 48],
-  terrain_ruins: [1, 50, 48, 48],
-  terrain_sacred_grove: [50, 50, 48, 48],
-  terrain_village: [99, 50, 48, 48],
-  terrain_water: [148, 50, 48, 48],
+  terrain_bridge: [1, 1, 64, 64],
+  terrain_ford: [66, 1, 64, 64],
+  terrain_forest: [131, 1, 64, 64],
+  terrain_fort: [196, 1, 64, 64],
+  terrain_hill: [261, 1, 64, 64],
+  terrain_keep: [326, 1, 64, 64],
+  terrain_marsh: [1, 66, 64, 64],
+  terrain_plains: [66, 66, 64, 64],
+  terrain_ruins: [131, 66, 64, 64],
+  terrain_sacred_grove: [196, 66, 64, 64],
+  terrain_village: [261, 66, 64, 64],
+  terrain_water: [326, 66, 64, 64],
 } as const;
 
 export const pixelTerrainColors = {

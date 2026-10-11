@@ -76,7 +76,7 @@ test("Every pixel frame is extracted into a standalone unsmoothed image", async 
   for (const [frame, source] of Object.entries(frameSources)) {
     const [x, y, width, height] = pixelFrames[frame as keyof typeof pixelFrames];
     assert([x, y, width, height].every(Number.isFinite));
-    assert.equal(width, frame.startsWith("terrain_") ? 48 : 64);
+    assert.equal(width, 64);
     assert.equal(height, width);
     assert(x >= 0 && y >= 0 && x + width <= source.width && y + height <= source.height);
     const isolated = imageData(art.currentArtwork().frames[frame]!.url.split(",")[1]!);
@@ -126,6 +126,27 @@ test("Tall dialogue keeps a character frame at its native 64×64 size", async ()
   );
   assert.equal(lark.width, 64);
   assert.equal(lark.height, 64);
+});
+
+test("Terrain, troops and commanders share one battlefield pixel scale", async () => {
+  assert.equal(await art.loadArtwork(), true);
+  const tiles = battlefieldTiles(
+    createGameView(new Game("developer")),
+    null,
+    art.currentArtwork(),
+    null,
+  );
+  assert(tiles.some((tile) => tile.occupant));
+  for (const tile of tiles) {
+    if (!tile.occupant) continue;
+    const dimensions = (sprite: string) =>
+      ["width", "height"].map((attribute) => {
+        const match = new RegExp(`${attribute}="([^"]+)"`).exec(sprite);
+        assert(match);
+        return match[1];
+      });
+    assert.deepEqual(dimensions(tile.occupant.artwork), dimensions(tile.terrainArtwork));
+  }
 });
 
 let restoreCanvas: () => void;

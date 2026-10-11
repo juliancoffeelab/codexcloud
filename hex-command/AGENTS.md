@@ -18,8 +18,11 @@
   go slightly above this. Compare mounted artwork with the existing rider,
   horse-archer, elf deer rider and skeletal rider references before setting scale;
   distinguish body/mount height from a raised weapon or staff. Canvas size is not
-  permission to enlarge ordinary infantry. Terrain hex tiles use their separate
-  terrain grid. During generation, keep raw evidence unchanged in `tmp/`.
+  permission to enlarge ordinary infantry. Terrain tiles also use exactly 64×64
+  native pixels, with a pointy-top regular hex centered in the square frame.
+  Terrain, troops and commanders share one battlefield pixel scale; do not add
+  per-unit scaling to emphasize leaders. During generation, keep raw evidence
+  unchanged in `tmp/`.
   **The canvas bottom (native row 63) is the ground line. Grounded units must
   stand on it with no transparent rows beneath their feet or ground-contacting
   body.** Preserve every painted pixel when aligning existing units: translate
