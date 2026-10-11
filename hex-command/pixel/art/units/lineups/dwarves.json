@@ -1,0 +1,270 @@
+{
+  "race": "dwarves",
+  "trees": [
+    {
+      "base": {
+        "id": "dwarf-axeguard",
+        "name": "Axe and shield",
+        "level": 1,
+        "status": "starter",
+        "source": "dwarf-axeguard"
+      },
+      "branches": [
+        {
+          "role": "Shieldguard",
+          "units": [
+            {
+              "id": "dwarf-axeguard-l2",
+              "name": "Shieldguard",
+              "level": 2,
+              "source": "dwarf-axeguard-l2"
+            },
+            {
+              "id": "dwarf-axeguard-l3",
+              "name": "Shieldguard veteran",
+              "level": 3,
+              "source": "dwarf-axeguard-l3"
+            }
+          ],
+          "purpose": "Durable defender"
+        },
+        {
+          "role": "Axe and pick fighter",
+          "units": [
+            {
+              "id": "dwarf-axe-pick-l2",
+              "name": "Axe and pick fighter",
+              "level": 2,
+              "source": "dwarf-axe-pick-l2"
+            },
+            {
+              "id": "dwarf-axe-pick-l3",
+              "name": "Axe and pick fighter veteran",
+              "level": 3,
+              "source": "dwarf-axe-pick-l3"
+            }
+          ],
+          "purpose": "Aggressive infantry"
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "dwarf-pickaxe",
+        "name": "Miner",
+        "level": 1,
+        "status": "starter",
+        "source": "dwarf-pickaxe"
+      },
+      "branches": [
+        {
+          "role": "Hammerer",
+          "units": [
+            {
+              "id": "dwarf-hammerer-l2",
+              "name": "Hammerer",
+              "level": 2,
+              "source": "dwarf-hammerer-l2"
+            },
+            {
+              "id": "dwarf-hammerer-l3",
+              "name": "Hammerer veteran",
+              "level": 3,
+              "source": "dwarf-hammerer-l3"
+            }
+          ],
+          "purpose": "Heavy impact"
+        },
+        {
+          "role": "Poleaxe fighter",
+          "units": [
+            {
+              "id": "dwarf-poleaxe-l2",
+              "name": "Poleaxe fighter",
+              "level": 2,
+              "source": "dwarf-poleaxe-l2"
+            },
+            {
+              "id": "dwarf-poleaxe-l3",
+              "name": "Poleaxe fighter veteran",
+              "level": 3,
+              "source": "dwarf-poleaxe-l3"
+            }
+          ],
+          "purpose": "Reach"
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "dwarf-crossbow",
+        "name": "Crossbowman",
+        "level": 1,
+        "status": "starter",
+        "source": "dwarf-crossbow"
+      },
+      "branches": [
+        {
+          "role": "Crossbow specialist",
+          "units": [
+            {
+              "id": "dwarf-crossbow-l2",
+              "name": "Crossbow specialist",
+              "level": 2,
+              "source": "dwarf-crossbow-l2"
+            },
+            {
+              "id": "dwarf-crossbow-l3",
+              "name": "Crossbow specialist veteran",
+              "level": 3,
+              "source": "dwarf-crossbow-l3"
+            }
+          ],
+          "purpose": "Reliable ranged damage"
+        },
+        {
+          "role": "Arquebusier",
+          "units": [
+            {
+              "id": "dwarf-arquebus-l2",
+              "name": "Arquebusier",
+              "level": 2,
+              "source": "dwarf-arquebus-l2"
+            },
+            {
+              "id": "dwarf-arquebus-l3",
+              "name": "Arquebusier veteran",
+              "level": 3,
+              "source": "dwarf-arquebus-l3"
+            }
+          ],
+          "purpose": "Armour piercing"
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "dwarf-runesmith",
+        "name": "Rune apprentice",
+        "level": 1,
+        "status": "starter",
+        "source": "dwarf-runesmith"
+      },
+      "branches": [
+        {
+          "role": "Thundersmith",
+          "purpose": "Crystal hammer and infantry armour",
+          "units": [
+            {
+              "id": "dwarf-thundersmith-l2",
+              "name": "Thundersmith",
+              "level": 2,
+              "source": "dwarf-thundersmith-l2"
+            },
+            {
+              "id": "dwarf-thundersmith-l3",
+              "name": "Thundersmith veteran",
+              "level": 3,
+              "source": "dwarf-thundersmith-l3"
+            }
+          ]
+        },
+        {
+          "role": "Stonespell",
+          "purpose": "Green-robed support mage",
+          "units": [
+            {
+              "id": "dwarf-stonespell-l2",
+              "name": "Stonespell",
+              "level": 2,
+              "source": "dwarf-stonespell-l2"
+            },
+            {
+              "id": "dwarf-stonespell-l3",
+              "name": "Stonespell veteran",
+              "level": 3,
+              "source": "dwarf-stonespell-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "dwarf-goat-rider",
+        "name": "Goat rider",
+        "level": 1,
+        "status": "starter",
+        "source": "dwarf-goat-rider"
+      },
+      "branches": [
+        {
+          "role": "Mounted hammerer",
+          "units": [
+            {
+              "id": "dwarf-goat-rider-l2",
+              "name": "Mounted hammerer",
+              "level": 2,
+              "source": "dwarf-goat-rider-l2"
+            },
+            {
+              "id": "dwarf-goat-rider-l3",
+              "name": "Mounted hammerer veteran",
+              "level": 3,
+              "source": "dwarf-goat-rider-l3"
+            }
+          ],
+          "purpose": "Melee cavalry"
+        },
+        {
+          "role": "Pistol rider",
+          "units": [
+            {
+              "id": "dwarf-pistol-goat-rider-l2",
+              "name": "Pistol rider",
+              "level": 2,
+              "source": "dwarf-pistol-goat-rider-l2"
+            },
+            {
+              "id": "dwarf-pistol-goat-rider-l3",
+              "name": "Pistol rider veteran",
+              "level": 3,
+              "source": "dwarf-pistol-goat-rider-l3"
+            }
+          ],
+          "purpose": "Mobile shooting"
+        }
+      ]
+    }
+  ],
+  "poseReferences": {
+    "dwarf-axe-pick": "dwarf-axeguard",
+    "dwarf-hammerer": "dwarf-pickaxe",
+    "dwarf-poleaxe": "dwarf-pickaxe",
+    "dwarf-arquebus": "dwarf-crossbow",
+    "dwarf-pistol-goat-rider": "dwarf-goat-rider"
+  },
+  "commander": {
+    "role": "commander",
+    "units": [
+      {
+        "id": "dwarf-forge-lord",
+        "name": "Forge lord",
+        "level": 1,
+        "source": "dwarf-forge-lord"
+      },
+      {
+        "id": "dwarf-forge-lord-l2",
+        "name": "Forge lord",
+        "level": 2,
+        "source": "dwarf-forge-lord-l2"
+      },
+      {
+        "id": "dwarf-forge-lord-l3",
+        "name": "Forge king",
+        "level": 3,
+        "source": "dwarf-forge-lord-l3"
+      }
+    ]
+  }
+}

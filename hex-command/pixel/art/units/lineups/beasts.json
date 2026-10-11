@@ -1,0 +1,518 @@
+{
+  "race": "beasts",
+  "trees": [
+    {
+      "base": {
+        "id": "basilisk",
+        "name": "Basilisk",
+        "level": 1,
+        "source": "basilisk"
+      },
+      "branches": [
+        {
+          "role": "Basilisk L2",
+          "units": [
+            {
+              "id": "basilisk-l2",
+              "name": "Basilisk L2",
+              "level": 2,
+              "source": "basilisk-l2"
+            },
+            {
+              "id": "basilisk-l3",
+              "name": "Basilisk L3",
+              "level": 3,
+              "source": "basilisk-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "bear",
+        "name": "Bear",
+        "level": 1,
+        "source": "bear"
+      },
+      "branches": [
+        {
+          "role": "Bear L2",
+          "units": [
+            {
+              "id": "bear-l2",
+              "name": "Bear L2",
+              "level": 2,
+              "source": "bear-l2"
+            },
+            {
+              "id": "bear-l3",
+              "name": "Bear L3",
+              "level": 3,
+              "source": "bear-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "crocodile",
+        "name": "Crocodile",
+        "level": 1,
+        "source": "crocodile"
+      },
+      "branches": [
+        {
+          "role": "Crocodile L2",
+          "units": [
+            {
+              "id": "crocodile-l2",
+              "name": "Crocodile L2",
+              "level": 2,
+              "source": "crocodile-l2"
+            },
+            {
+              "id": "crocodile-l3",
+              "name": "Crocodile L3",
+              "level": 3,
+              "source": "crocodile-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "dragon",
+        "name": "Dragon",
+        "level": 1,
+        "source": "dragon"
+      },
+      "branches": [
+        {
+          "role": "Dragon L2",
+          "units": [
+            {
+              "id": "dragon-l2",
+              "name": "Dragon L2",
+              "level": 2,
+              "source": "dragon-l2"
+            },
+            {
+              "id": "dragon-l3",
+              "name": "Dragon L3",
+              "level": 3,
+              "source": "dragon-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "giant-bat",
+        "name": "Giant bat",
+        "level": 1,
+        "source": "giant-bat"
+      },
+      "branches": [
+        {
+          "role": "Giant bat L2",
+          "units": [
+            {
+              "id": "giant-bat-l2",
+              "name": "Giant bat L2",
+              "level": 2,
+              "source": "giant-bat-l2"
+            },
+            {
+              "id": "giant-bat-l3",
+              "name": "Giant bat L3",
+              "level": 3,
+              "source": "giant-bat-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "giant-crab",
+        "name": "Giant crab",
+        "level": 1,
+        "source": "giant-crab"
+      },
+      "branches": [
+        {
+          "role": "Giant crab L2",
+          "units": [
+            {
+              "id": "giant-crab-l2",
+              "name": "Giant crab L2",
+              "level": 2,
+              "source": "giant-crab-l2"
+            },
+            {
+              "id": "giant-crab-l3",
+              "name": "Giant crab L3",
+              "level": 3,
+              "source": "giant-crab-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "giant-owl",
+        "name": "Giant owl",
+        "level": 1,
+        "source": "giant-owl"
+      },
+      "branches": [
+        {
+          "role": "Giant owl L2",
+          "units": [
+            {
+              "id": "giant-owl-l2",
+              "name": "Giant owl L2",
+              "level": 2,
+              "source": "giant-owl-l2"
+            },
+            {
+              "id": "giant-owl-l3",
+              "name": "Giant owl L3",
+              "level": 3,
+              "source": "giant-owl-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "giant-raven",
+        "name": "Giant raven",
+        "level": 1,
+        "source": "giant-raven"
+      },
+      "branches": [
+        {
+          "role": "Giant raven L2",
+          "units": [
+            {
+              "id": "giant-raven-l2",
+              "name": "Giant raven L2",
+              "level": 2,
+              "source": "giant-raven-l2"
+            },
+            {
+              "id": "giant-raven-l3",
+              "name": "Giant raven L3",
+              "level": 3,
+              "source": "giant-raven-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "giant-snake",
+        "name": "Giant snake",
+        "level": 1,
+        "source": "giant-snake"
+      },
+      "branches": [
+        {
+          "role": "Giant snake L2",
+          "units": [
+            {
+              "id": "giant-snake-l2",
+              "name": "Giant snake L2",
+              "level": 2,
+              "source": "giant-snake-l2"
+            },
+            {
+              "id": "giant-snake-l3",
+              "name": "Giant snake L3",
+              "level": 3,
+              "source": "giant-snake-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "giant-spider",
+        "name": "Giant spider",
+        "level": 1,
+        "source": "giant-spider"
+      },
+      "branches": [
+        {
+          "role": "Giant spider L2",
+          "units": [
+            {
+              "id": "giant-spider-l2",
+              "name": "Giant spider L2",
+              "level": 2,
+              "source": "giant-spider-l2"
+            },
+            {
+              "id": "giant-spider-l3",
+              "name": "Giant spider L3",
+              "level": 3,
+              "source": "giant-spider-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "giant-tortoise",
+        "name": "Giant tortoise",
+        "level": 1,
+        "source": "giant-tortoise"
+      },
+      "branches": [
+        {
+          "role": "Giant tortoise L2",
+          "units": [
+            {
+              "id": "giant-tortoise-l2",
+              "name": "Giant tortoise L2",
+              "level": 2,
+              "source": "giant-tortoise-l2"
+            },
+            {
+              "id": "giant-tortoise-l3",
+              "name": "Giant tortoise L3",
+              "level": 3,
+              "source": "giant-tortoise-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "giant-wasp",
+        "name": "Giant wasp",
+        "level": 1,
+        "source": "giant-wasp"
+      },
+      "branches": [
+        {
+          "role": "Giant wasp L2",
+          "units": [
+            {
+              "id": "giant-wasp-l2",
+              "name": "Giant wasp L2",
+              "level": 2,
+              "source": "giant-wasp-l2"
+            },
+            {
+              "id": "giant-wasp-l3",
+              "name": "Giant wasp L3",
+              "level": 3,
+              "source": "giant-wasp-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "gryphon",
+        "name": "Gryphon",
+        "level": 1,
+        "source": "gryphon"
+      },
+      "branches": [
+        {
+          "role": "Gryphon L2",
+          "units": [
+            {
+              "id": "gryphon-l2",
+              "name": "Gryphon L2",
+              "level": 2,
+              "source": "gryphon-l2"
+            },
+            {
+              "id": "gryphon-l3",
+              "name": "Gryphon L3",
+              "level": 3,
+              "source": "gryphon-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "lynx",
+        "name": "Lynx",
+        "level": 1,
+        "source": "lynx"
+      },
+      "branches": [
+        {
+          "role": "Lynx L2",
+          "units": [
+            {
+              "id": "lynx-l2",
+              "name": "Lynx L2",
+              "level": 2,
+              "source": "lynx-l2"
+            },
+            {
+              "id": "lynx-l3",
+              "name": "Lynx L3",
+              "level": 3,
+              "source": "lynx-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "octopus",
+        "name": "Octopus",
+        "level": 1,
+        "source": "octopus"
+      },
+      "branches": [
+        {
+          "role": "Octopus L2",
+          "units": [
+            {
+              "id": "octopus-l2",
+              "name": "Octopus L2",
+              "level": 2,
+              "source": "octopus-l2"
+            },
+            {
+              "id": "octopus-l3",
+              "name": "Octopus L3",
+              "level": 3,
+              "source": "octopus-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "ray",
+        "name": "Ray",
+        "level": 1,
+        "source": "ray"
+      },
+      "branches": [
+        {
+          "role": "Ray L2",
+          "units": [
+            {
+              "id": "ray-l2",
+              "name": "Ray L2",
+              "level": 2,
+              "source": "ray-l2"
+            },
+            {
+              "id": "ray-l3",
+              "name": "Ray L3",
+              "level": 3,
+              "source": "ray-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "sea-serpent",
+        "name": "Sea serpent",
+        "level": 1,
+        "source": "sea-serpent"
+      },
+      "branches": [
+        {
+          "role": "Sea serpent L2",
+          "units": [
+            {
+              "id": "sea-serpent-l2",
+              "name": "Sea serpent L2",
+              "level": 2,
+              "source": "sea-serpent-l2"
+            },
+            {
+              "id": "sea-serpent-l3",
+              "name": "Sea serpent L3",
+              "level": 3,
+              "source": "sea-serpent-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "shark",
+        "name": "Shark",
+        "level": 1,
+        "source": "shark"
+      },
+      "branches": [
+        {
+          "role": "Shark L2",
+          "units": [
+            {
+              "id": "shark-l2",
+              "name": "Shark L2",
+              "level": 2,
+              "source": "shark-l2"
+            },
+            {
+              "id": "shark-l3",
+              "name": "Shark L3",
+              "level": 3,
+              "source": "shark-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "stag",
+        "name": "Stag",
+        "level": 1,
+        "source": "stag"
+      },
+      "branches": [
+        {
+          "role": "Stag L2",
+          "units": [
+            {
+              "id": "stag-l2",
+              "name": "Stag L2",
+              "level": 2,
+              "source": "stag-l2"
+            },
+            {
+              "id": "stag-l3",
+              "name": "Stag L3",
+              "level": 3,
+              "source": "stag-l3"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

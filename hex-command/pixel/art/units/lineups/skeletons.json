@@ -1,0 +1,200 @@
+{
+  "race": "skeletons",
+  "trees": [
+    {
+      "base": {
+        "id": "skeleton",
+        "name": "Skeleton",
+        "level": 1,
+        "source": "skeleton"
+      },
+      "branches": [
+        {
+          "role": "Shield servant",
+          "units": [
+            {
+              "id": "revenant",
+              "name": "Revenant",
+              "level": 2,
+              "source": "revenant"
+            },
+            {
+              "id": "skeleton-dreadguard",
+              "name": "Dreadguard",
+              "level": 3,
+              "source": "skeleton-dreadguard"
+            }
+          ]
+        },
+        {
+          "role": "Twin knives",
+          "units": [
+            {
+              "id": "skeleton-flanker-l2",
+              "name": "Knife servant",
+              "level": 2,
+              "source": "skeleton-flanker-l2"
+            },
+            {
+              "id": "skeleton-flanker-l3",
+              "name": "Knife shade",
+              "level": 3,
+              "source": "skeleton-flanker-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "skeleton-impact-caster",
+        "name": "Caster",
+        "level": 1,
+        "source": "skeleton-impact-caster"
+      },
+      "branches": [
+        {
+          "role": "Staff caster",
+          "units": [
+            {
+              "id": "skeleton-impact-caster-l2",
+              "name": "Staff servant",
+              "level": 2,
+              "source": "skeleton-impact-caster-l2"
+            },
+            {
+              "id": "skeleton-impact-caster-l3",
+              "name": "Staff shade",
+              "level": 3,
+              "source": "skeleton-impact-caster-l3"
+            }
+          ]
+        },
+        {
+          "role": "Scythe caster",
+          "units": [
+            {
+              "id": "skeleton-scythe-caster-l2",
+              "name": "Scythe servant",
+              "level": 2,
+              "source": "skeleton-scythe-caster-l2"
+            },
+            {
+              "id": "skeleton-scythe-caster-l3",
+              "name": "Scythe shade",
+              "level": 3,
+              "source": "skeleton-scythe-caster-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "skeleton-rider",
+        "name": "Grave rider",
+        "level": 1,
+        "source": "skeleton-rider"
+      },
+      "branches": [
+        {
+          "role": "Mounted spear",
+          "units": [
+            {
+              "id": "skeleton-rider-l2",
+              "name": "Death rider",
+              "level": 2,
+              "source": "skeleton-rider-l2"
+            },
+            {
+              "id": "skeleton-rider-l3",
+              "name": "Hollow rider",
+              "level": 3,
+              "source": "skeleton-rider-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "bonearcher",
+        "name": "Bone archer",
+        "level": 1,
+        "source": "bonearcher"
+      },
+      "branches": [
+        {
+          "role": "Archer",
+          "units": [
+            {
+              "id": "deatharcher",
+              "name": "Death archer",
+              "level": 2,
+              "source": "deatharcher"
+            },
+            {
+              "id": "skeleton-bow-master",
+              "name": "Hollow archer",
+              "level": 3,
+              "source": "skeleton-bow-master"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "skeleton-axeman",
+        "name": "Grave axeman",
+        "level": 1,
+        "source": "skeleton-axeman"
+      },
+      "branches": [
+        {
+          "role": "Axe servant",
+          "units": [
+            {
+              "id": "skeleton-axeman-l2",
+              "name": "Death axeman",
+              "level": 2,
+              "source": "skeleton-axeman-l2"
+            },
+            {
+              "id": "skeleton-axeman-l3",
+              "name": "Hollow axeman",
+              "level": 3,
+              "source": "skeleton-axeman-l3"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "commander": {
+    "role": "Skeleton commander",
+    "units": [
+      {
+        "id": "lich-commander-l1",
+        "name": "Grave Adept",
+        "level": 1,
+        "source": "lich-commander-l1",
+        "gameplayId": "necromancer"
+      },
+      {
+        "id": "lich-commander-l2",
+        "name": "Lich",
+        "level": 2,
+        "source": "lich-commander-l2",
+        "gameplayId": "lich"
+      },
+      {
+        "id": "lich-commander-l3",
+        "name": "Lich Sovereign",
+        "level": 3,
+        "source": "lich-commander-l3"
+      }
+    ]
+  },
+  "progression": "Grave \u2192 cold iron \u2192 darkness; restrained servants, preserved anatomy."
+}

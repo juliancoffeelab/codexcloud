@@ -1,0 +1,163 @@
+{
+  "race": "woodland",
+  "trees": [
+    {
+      "base": {
+        "id": "wolf",
+        "name": "Wolf",
+        "level": 1,
+        "source": "wolf"
+      },
+      "branches": [
+        {
+          "role": "wolf",
+          "units": [
+            {
+              "id": "direwolf",
+              "name": "Dire wolf",
+              "level": 2,
+              "source": "direwolf"
+            },
+            {
+              "id": "woodland-alpha-wolf",
+              "name": "Alpha wolf",
+              "level": 3,
+              "source": "woodland-alpha-wolf"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "boar",
+        "name": "Boar",
+        "level": 1,
+        "source": "boar"
+      },
+      "branches": [
+        {
+          "role": "boar",
+          "units": [
+            {
+              "id": "greatboar",
+              "name": "Great boar",
+              "level": 2,
+              "source": "greatboar"
+            },
+            {
+              "id": "woodland-ancient-boar",
+              "name": "Ancient boar",
+              "level": 3,
+              "source": "woodland-ancient-boar"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "thorncaller",
+        "name": "Thorncaller",
+        "level": 1,
+        "source": "thorncaller"
+      },
+      "branches": [
+        {
+          "role": "thorncaller",
+          "units": [
+            {
+              "id": "briarweaver",
+              "name": "Briarweaver",
+              "level": 2,
+              "source": "briarweaver"
+            },
+            {
+              "id": "woodland-thorn-oracle",
+              "name": "Thorn oracle",
+              "level": 3,
+              "source": "woodland-thorn-oracle"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "fox-spearguard",
+        "name": "Thornshield",
+        "level": 1,
+        "source": "fox-spearguard"
+      },
+      "branches": [
+        {
+          "role": "Thornshield L2",
+          "units": [
+            {
+              "id": "fox-spearguard-l2",
+              "name": "Thornshield L2",
+              "level": 2,
+              "source": "fox-spearguard-l2"
+            },
+            {
+              "id": "fox-spearguard-l3",
+              "name": "Thornshield L3",
+              "level": 3,
+              "source": "fox-spearguard-l3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "base": {
+        "id": "treant",
+        "name": "Treant",
+        "level": 1,
+        "source": "treant"
+      },
+      "branches": [
+        {
+          "role": "Treant L2",
+          "units": [
+            {
+              "id": "treant-l2",
+              "name": "Treant L2",
+              "level": 2,
+              "source": "treant-l2"
+            },
+            {
+              "id": "treant-l3",
+              "name": "Treant L3",
+              "level": 3,
+              "source": "treant-l3"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "commander": {
+    "role": "commander",
+    "units": [
+      {
+        "id": "wildkeeper",
+        "name": "Wildkeeper",
+        "level": 1,
+        "source": "wildkeeper"
+      },
+      {
+        "id": "grovewarden",
+        "name": "Grovewarden",
+        "level": 2,
+        "source": "grovewarden"
+      },
+      {
+        "id": "woodland-grove-oracle",
+        "name": "Grove oracle",
+        "level": 3,
+        "source": "woodland-grove-oracle"
+      }
+    ]
+  }
+}
