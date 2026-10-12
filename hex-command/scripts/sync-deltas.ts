@@ -20,7 +20,7 @@ const files: { path: string; added: number; removed: number; publicInterface: bo
 const rows = git("diff", "--no-renames", "--numstat", before, after);
 for (const row of rows.trim().split("\n").filter(Boolean)) {
   const [adds, deletes, path] = row.split("\t") as [string, string, string];
-  if (!/\.(ts|js|ml|mli|re|rei|rs|py|svelte|css|html)$/.test(path) || adds === "-") {
+  if (!/\.(ts|js|ml|mli|re|rei|rs|py|sh|svelte|css|html)$/.test(path) || adds === "-") {
     if (/^hex-command\/(src|frontend|public)\//.test(path)) excluded.push(path);
     continue;
   }
