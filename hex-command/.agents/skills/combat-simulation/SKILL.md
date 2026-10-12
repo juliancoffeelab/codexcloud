@@ -1,6 +1,6 @@
 ---
 name: combat-simulation
-description: Run requested Hex Command combat simulations and analyze saved results, including roster coverage, matched balance comparisons, and readable reports.
+description: Run requested Hex Command combat simulations and analyze saved results, including matched balance comparisons and readable reports.
 ---
 
 # Combat simulation
@@ -38,15 +38,11 @@ but executes no matches. Do not expand rosters or change balance to run a report
 Choose a new ignored artifact directory for each run, preserving previous results.
 The npm command builds the release runner using the project's toolchain wrapper.
 Node dependencies must be installed; use `npm ci` if needed. Reporting uses Python 3 and its standard library.
-Commit candidate gameplay data on the feature branch before a balance run: the
-reporter reads unit stats from the recorded commit. A reused native binary loads
+Record which gameplay data and engine the batch uses. A reused native binary loads
 data from its compiled crate location, regardless of the working directory. When
 running it against another checkout, always pass that checkout's `--data-dir`.
 The `ai:combat` wrapper supplies the current project's data directory explicitly
-and checks that its files match the current commit before starting a batch.
-Custom `--data-dir` paths must contain the same committed data. For different
-historical data, run `ai:combat` from that checkout; the wrapper rejects a data
-and source-commit mismatch rather than reporting incorrect unit stats.
+unless given a custom `--data-dir`.
 
 ```sh
 simulation_run=artifacts/combat-$(date -u +%Y%m%dT%H%M%SZ)
@@ -67,14 +63,16 @@ Recovery details are in [the recording guide](../../../rust/src/simulation/READM
 
 ## Analyze existing results and compare
 
-For saved data, run `ai:analyze`: it reads the recorded reports and never runs battles.
+For saved data, run `ai:analyze`: all analysis comes from the recorded reports.
+It does not read gameplay catalogs, artwork or Git history, and never runs battles.
+Source commits and fingerprints are displayed as recorded metadata only; analysis
+works without those commits or a repository checkout.
 For an authorized new batch, `npm run ai:combat -- --seeds 10 --out artifacts/current`
 runs the native simulation and immediately generates the complete report.
 The reporter and runner live in this skill's `scripts/` directory.
 Always show all recorded factions. Never substitute one opponent or selected AI
 policies for a request for full data. Include every map/policy-pair matrix, unit
-recruitment, promotions, casualties, per-match results, baseline changes and recorded
-unit stats. Historical catalogs must come from the recorded source commit.
+recruitment, promotions, casualties, per-match results and baseline changes.
 
 ```sh
 npm run ai:analyze -- artifacts/current/report.json \
@@ -84,10 +82,9 @@ npm run ai:analyze -- artifacts/current/report.json \
 Baseline comparisons require identical match configurations; mismatches fail.
 Campaign comparisons include completion, reached chapters, chapter winners,
 rounds and final-state hashes, with both sets of mission records exported.
-Check roster and rules differences as well: a change in recruitment coverage is
-part of the experiment, not evidence of a particular weapon or stat's effect.
 Use the report's recorded source commit and fingerprint when describing historical
-data. Do not infer its roster or rules from the current checkout.
+data. Report only the factions, units and configurations recorded in the inputs;
+the analyzer does not reconstruct roster coverage or unit stats.
 
 ## Report findings
 
@@ -97,7 +94,7 @@ The archive includes current and baseline compact outcome journals. Link origina
 `.details.jsonl` journals too when the user asks for all raw gameplay.
 Retain every CSV and `timings.json`.
 State the recorded source commit, actual completed match count, seed range,
-selected scope and roster omissions relevant to the question. Mention caps and
+selected scope and any coverage limitations established before the run. Mention caps and
 the limited evidence from small seed panels.
 
 For race balance, lead with `race_equal_policy.csv`, which compares different

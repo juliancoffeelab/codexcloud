@@ -1,21 +1,16 @@
 import importlib.util
 import csv
-import io
 import json
 from pathlib import Path
 import subprocess
 import sys
-import tarfile
 import tempfile
 import unittest
-from unittest.mock import patch
+import zipfile
 
 spec = importlib.util.spec_from_file_location('report_combat', Path(__file__).parents[1] / 'scripts/report-combat.py')
 report = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(report)
-spec = importlib.util.spec_from_file_location('run_combat', Path(__file__).parents[1] / 'scripts/run-combat.py')
-runner = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(runner)
 
 
 def match(seed, player='a', enemy='b', winner='player', reason='leader'):
@@ -26,7 +21,7 @@ def match(seed, player='a', enemy='b', winner='player', reason='leader'):
 
 
 class CompleteDataTests(unittest.TestCase):
-    def test_campaign_baseline_exports_completion_and_mission_changes(self):
+    def test_standalone_report_compares_campaigns_without_git_or_catalogs(self):
         def campaign(seed, completed, missions):
             return {'kind': 'campaign', 'config': {'seed': seed, 'campaign': 'example'},
                     'completed': completed, 'missions': missions}
@@ -44,49 +39,31 @@ class CompleteDataTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             for name, outcomes in [('before', before), ('after', after)]:
-                (root / (name + '.json')).write_text(json.dumps({'sourceCommit': 'example', 'outcomes': outcomes}))
-            with patch.object(report, 'catalog', return_value={'coverage': [], 'units': []}):
-                tables = report.build_report([root/'after.json'], [root/'before.json'], root/'out')
-            changes = tables['match_changes']
-            self.assertEqual([(r['resultChanged'], r['gameplayChanged']) for r in changes],
-                             [(True, True), (False, True), (False, False), (True, True), (True, True)])
-            self.assertEqual((changes[0]['beforeCompleted'], changes[0]['completed']), (False, True))
-            self.assertEqual(changes[0]['beforeMissions'], before[0]['missions'])
-            self.assertEqual(changes[0]['missions'], after[0]['missions'])
+                saved = {'outcomes': outcomes}
+                if name == 'after':
+                    saved['sourceCommit'] = 'unavailable-commit'
+                (root / (name + '.json')).write_text(json.dumps(saved))
+            (root/'out').mkdir()
+            (root/'out/unit_stats.csv').write_text('stale catalog export')
+            (root/'analyze.py').write_text(Path(report.__file__).read_text())
+            result = subprocess.run([sys.executable, 'analyze.py', 'after.json',
+                                     '--baseline', 'before.json', '--out', 'out'],
+                                    cwd=root, env={'PATH': ''}, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             with (root/'out/match_changes.csv').open() as f:
-                exported = list(csv.DictReader(f))
-            self.assertEqual(json.loads(exported[0]['missions']), after[0]['missions'])
-            self.assertEqual(exported[0]['resultChanged'], 'True')
-
-    def test_runner_rejects_mismatched_data_before_starting_simulations(self):
-        contents = {'manifest.json': b'{"units":["units/test.json"]}',
-                    'units/test.json': b'{"hp":6}'}
-        archive = io.BytesIO()
-        with tarfile.open(fileobj=archive, mode='w') as files:
-            for name, content in contents.items():
-                entry = tarfile.TarInfo(runner.ROOT.name + '/rust/data/' + name)
-                entry.size = len(content)
-                files.addfile(entry, io.BytesIO(content))
-        completed = subprocess.CompletedProcess([], 0, stdout=archive.getvalue())
-        with tempfile.TemporaryDirectory() as tmp, patch.object(runner.subprocess, 'run', return_value=completed) as run:
-            data = Path(tmp)/'custom-data'
-            for name, content in contents.items():
-                path = data/name
-                path.parent.mkdir(parents=True, exist_ok=True)
-                path.write_bytes(content)
-            runner.validate_data(data)
-            (data/'units/test.json').write_bytes(b'{"hp":9}')
-            for option in [['--data-dir', str(data)], ['--data-dir=' + str(data)]]:
-                run.reset_mock()
-                with patch.object(sys, 'argv', ['run-combat.py', '--out', str(Path(tmp)/'out'), *option]):
-                    with self.assertRaisesRegex(ValueError, 'differs from HEAD'):
-                        runner.main()
-                self.assertEqual(run.call_count, 1)
-                self.assertEqual(run.call_args.args[0][:2], ['git', 'archive'])
-                self.assertFalse((Path(tmp)/'out').exists())
-            (data/'units/test.json').unlink()
-            with self.assertRaisesRegex(ValueError, 'differs from HEAD'):
-                runner.validate_data(data)
+                changes = list(csv.DictReader(f))
+            self.assertEqual([(r['resultChanged'] == 'True', r['gameplayChanged'] == 'True') for r in changes],
+                             [(True, True), (False, True), (False, False), (True, True), (True, True)])
+            self.assertEqual((changes[0]['beforeCompleted'], changes[0]['completed']), ('False', 'True'))
+            self.assertEqual(json.loads(changes[0]['beforeMissions']), before[0]['missions'])
+            self.assertEqual(json.loads(changes[0]['missions']), after[0]['missions'])
+            metadata = json.loads((root/'out/metadata.json').read_text())
+            self.assertEqual(metadata['sources'][0]['sourceCommit'], 'unavailable-commit')
+            self.assertIsNone(metadata['baselineSources'][0]['sourceCommit'])
+            self.assertNotIn('catalogs', metadata)
+            with zipfile.ZipFile(root/'out/full-data.zip') as bundle:
+                self.assertIn('match_changes.csv', bundle.namelist())
+                self.assertNotIn('unit_stats.csv', bundle.namelist())
 
     def test_swapped_seats_caps_and_selfplay_do_not_inflate_physical_matches(self):
         items = [match(1), match(2, 'b', 'a'), match(3, winner=None, reason='cap'), match(4, 'a', 'a')]
