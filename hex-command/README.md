@@ -43,7 +43,7 @@ every terrain and both sides of every playable unit rank.
 - [Rust API and build guide](rust/README.md)
 - [Authored content](rust/data/README.md)
 - [Save formats and migrations](docs/save-formats.md)
-- [Combat simulations and analysis](docs/ai-simulation.md)
+- [Combat simulations and analysis](.agents/skills/combat-simulation/implementation.md)
 - [AI policy implementation](rust/src/ai/README.md)
 - [Artwork rendering](src/presentation/README.md) and [terrain sources](docs/terrain-artwork.md)
 - Artwork skills: [generation](.agents/skills/pinkbox-generation/SKILL.md),

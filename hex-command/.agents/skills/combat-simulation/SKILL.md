@@ -6,9 +6,9 @@ description: Run Hex Command combat simulations for balance work and analyze sav
 # Combat simulation
 
 Tell the user when applying this skill. Work from the `hex-command/` project root.
-Use the existing runner and analyzer. See the [AI guide](../../../docs/ai-simulation.md)
-for CLI options, [implementation.md](implementation.md) for report contracts and
-recording details, and the [Rust toolchain skill](../rust-toolchain/SKILL.md) for builds.
+Use the existing runner and analyzer. See [implementation.md](implementation.md)
+for CLI options, report contracts and recording details, and the
+[Rust toolchain skill](../rust-toolchain/SKILL.md) for builds.
 
 ## Scope
 

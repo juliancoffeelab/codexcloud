@@ -23,7 +23,6 @@ const files = [
   "pixel/art/units/*/*/palette.json",
   "pixel/art/terrain/*/palette.json",
   "pixel/art/portraits/*/palette.json",
-  "docs/ai-simulation.md",
   "docs/save-formats.md",
   "docs/development.md",
   "docs/terrain-artwork.md",
