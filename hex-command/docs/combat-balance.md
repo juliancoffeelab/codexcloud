@@ -1,5 +1,8 @@
 # Combat balance
 
+This records the initial pass. See [the coastal follow-up](coastal-balance.md) for
+current macer/healer stats and the subsequent complete Mixed-policy comparison.
+
 This pass targets Mixed versus Mixed army battles across all four implemented
 factions and all four arena maps. Woodland should retain its forest advantage,
 merfolk its island advantage, and humans versus undead should be roughly even

@@ -70,7 +70,7 @@ test("Skeletal mage impact spell publishes armor weakness and resolves at range"
 });
 for (const [type, weapon, equation, damage] of [
   ["reefguard", "tail", "4 + 1 (weakness) = 5", 5],
-  ["merfolk-maceguard", "mace", "7 + 1 (weakness) = 8", 8],
+  ["merfolk-maceguard", "mace", "6 + 1 (weakness) = 7", 7],
 ] as const) {
   test(`${type} impact attack publishes and resolves skeletal weakness`, () => {
     const { game, attacker, target } = fixture(type, "skeleton");
