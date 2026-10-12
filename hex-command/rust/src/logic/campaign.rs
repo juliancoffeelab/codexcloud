@@ -3,6 +3,79 @@
 use crate::{data::*, logic::battle::Game};
 use std::collections::BTreeMap;
 impl<'catalog> Game<'catalog> {
+    /// Internal completion queries do not need labels or serialized tile lists.
+    pub(crate) fn goal_done(&self, goal: &Goal) -> bool {
+        let state = self.campaign.as_ref().unwrap();
+        match goal {
+            Goal::Defeat { .. } => !self
+                .units
+                .iter()
+                .any(|u| u.side == Side::Enemy && u.role == Some(Role::Leader)),
+            Goal::Escort { tile, .. } | Goal::Escape { tile, .. } => self.units.iter().any(|u| {
+                u.side == Side::Player
+                    && u.role
+                        == Some(if matches!(goal, Goal::Escort { .. }) {
+                            Role::Courier
+                        } else {
+                            Role::Leader
+                        })
+                    && &self.board.ids[u.tile] == tile
+            }),
+            Goal::Control { .. } => goal
+                .tiles()
+                .iter()
+                .all(|tile| self.owners[self.site(tile)] == Some(Side::Player)),
+            Goal::Seal { .. } => goal
+                .tiles()
+                .iter()
+                .all(|tile| state.marked_prefixed("sealed:", tile)),
+            Goal::Event { event, .. } => state.marked_prefixed("event:", event),
+            Goal::Hold {
+                tile,
+                turns,
+                earliest_round,
+                start_event,
+                ..
+            } => {
+                let started = start_event
+                    .as_ref()
+                    .is_none_or(|event| state.marked_prefixed("event:", event));
+                let held = if started {
+                    state
+                        .holds
+                        .as_ref()
+                        .and_then(|holds| holds.get(tile))
+                        .map_or(0, |counter| counter.held_turns)
+                } else {
+                    0
+                };
+                held >= *turns
+                    && self.turn == Side::Player
+                    && self.round >= *earliest_round
+                    && self.owners[self.site(tile)] == Some(Side::Player)
+            }
+            Goal::Vigil { turns, .. } => {
+                state.vigil.as_ref().map_or(0, |counter| counter.held_turns) >= *turns
+            }
+            Goal::Refuge { turns, .. } => {
+                if state.escalated() {
+                    return !self.units.iter().any(|u| u.side == Side::Enemy);
+                }
+                let refuge = self.mission.as_ref().unwrap().refuge.as_ref().unwrap();
+                let total = if state.marked_prefixed("event:", &refuge.medicine_event) {
+                    refuge.medicine_turns
+                } else {
+                    *turns
+                };
+                state
+                    .refuge
+                    .as_ref()
+                    .map_or(0, |counter| counter.held_turns)
+                    >= total
+            }
+        }
+    }
+    #[cfg(any(not(target_arch = "wasm32"), test))]
     pub(crate) fn goal_progress(&self, goal: &Goal) -> Progress {
         let mut current = 0;
         let mut total = 1;
@@ -130,7 +203,7 @@ impl<'catalog> Game<'catalog> {
                 .cloned()
                 .collect();
         }
-        if goal.kind() == GoalKind::Event && self.goal_progress(goal).done {
+        if goal.kind() == GoalKind::Event && self.goal_done(goal) {
             return vec![];
         }
         if goal.kind() == GoalKind::Defeat {
@@ -385,7 +458,7 @@ impl<'catalog> Game<'catalog> {
                 );
             }
         }
-        if mission.goals.iter().all(|g| self.goal_progress(g).done) {
+        if mission.goals.iter().all(|g| self.goal_done(g)) {
             self.winner = Some(Side::Player);
             let dain_survived = self
                 .units

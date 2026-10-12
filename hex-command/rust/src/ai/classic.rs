@@ -1,11 +1,12 @@
 use super::Recorder;
+use super::objectives::actor_matches;
 use crate::{
     ai::objectives::{TileOrder, individual},
     ai::threats::Threats,
     data::*,
     logic::Game,
 };
-use std::collections::HashSet;
+use rustc_hash::FxHashSet as HashSet;
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Retreat {
     Idle,
@@ -40,7 +41,7 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
             if current == 0 {
                 0
             } else {
-                current.min(t.minimum(u, g.reachable(u).into_iter().map(|(tile, _)| tile)))
+                current.min(t.minimum(u, g.reachable(u).iter().copied().map(|(tile, _)| tile)))
             }
         } else {
             0
@@ -54,10 +55,9 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
             important,
             threats,
             minimum,
-            holding: goals.iter().any(|o| {
-                o.actor.as_ref() == Some(&format!("u{}", u.id))
-                    && o.tiles.contains(&g.board.ids[u.tile])
-            }),
+            holding: goals
+                .iter()
+                .any(|o| actor_matches(&o.actor, u.id) && o.tiles.contains(&g.board.ids[u.tile])),
             restrained,
         }
     }
@@ -126,9 +126,9 @@ impl Game<'_> {
             .map(|u| u.id)
             .collect();
         for id in leaders {
-            let required = goals.iter().any(|g| {
-                g.kind == ObjectiveKind::Escape && g.actor.as_ref() == Some(&format!("u{id}"))
-            });
+            let required = goals
+                .iter()
+                .any(|g| g.kind == ObjectiveKind::Escape && actor_matches(&g.actor, id));
             let (keeps, _) = self.leader_rebuild_plan(id, required);
             if !keeps.is_empty() {
                 let mut o = crate::ai::objectives::objective(
@@ -271,7 +271,7 @@ impl Game<'_> {
             return Retreat::Retreated;
         }
         let mut destinations: Vec<_> = std::iter::once(u.tile)
-            .chain(self.reachable(&u).into_iter().map(|(t, _)| t))
+            .chain(self.reachable(&u).iter().copied().map(|(t, _)| t))
             .filter(|&t| rules.movement(self, t))
             .collect();
         let mut scores = vec![f64::NEG_INFINITY; self.terrain.len()];
@@ -399,7 +399,7 @@ impl Game<'_> {
             return;
         }
         let assigned = rules.goals.iter().any(|g| {
-            g.actor.as_ref() == Some(&format!("u{}", id))
+            actor_matches(&g.actor, id)
                 && matches!(g.kind, ObjectiveKind::Escort | ObjectiveKind::Escape)
         });
         let routes = if assigned {
@@ -413,7 +413,7 @@ impl Game<'_> {
             .iter()
             .any(|&k| !self.placement_tiles(&u, k, true).is_empty());
         let mut dest: Vec<_> = std::iter::once(u.tile)
-            .chain(self.reachable(&u).into_iter().map(|(t, _)| t))
+            .chain(self.reachable(&u).iter().copied().map(|(t, _)| t))
             .filter(|&t| rules.movement(self, t))
             .filter(|&t| {
                 !self.rules.units[u.kind].leader
@@ -617,7 +617,8 @@ impl Game<'_> {
         let movement = if let Some(lane) = clearing {
             Some(
                 self.reachable(&u)
-                    .into_iter()
+                    .iter()
+                    .copied()
                     .map(|(tile, _)| tile)
                     .filter(|tile| !lane.contains(tile) && !reserved.contains(tile))
                     .collect(),

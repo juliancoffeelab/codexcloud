@@ -77,6 +77,12 @@ preserving actual states, array order and missing-versus-null distinctions.
 
 ## Full gameplay comparison
 
+`scripts/compare-simulation-reports.py` streams one pair of checksummed journal
+records at a time and compares every gameplay field, retaining endpoint hashes,
+ordered arrays, unknown fields, missing/null distinctions and numeric representations.
+It ignores JSON object key order and only the explicit commit/fingerprint/timing
+and journal-location metadata. Use it to validate exact policy optimizations.
+
 `scripts/convert-simulation-dump.py` reads detail journals with an explicit Arrow
 schema. `scripts/compare-simulation-dumps.py` uses a one-to-one Polars join on
 `(kind, config)` and preserves array order. Missing or duplicate identities fail.

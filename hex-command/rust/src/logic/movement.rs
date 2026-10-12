@@ -1,73 +1,206 @@
 //! Stable movement discovery and cached reverse route distance fields.
 
 use super::battle::Game;
+use super::geometry::TileSet;
 use crate::data::*;
+use rustc_hash::FxHashMap;
 use std::rc::Rc;
-use std::{cmp::Reverse, collections::BinaryHeap};
+use std::{cell::RefCell, cmp::Reverse, collections::BinaryHeap};
+
+#[derive(Default)]
+struct ReachScratch {
+    costs: Vec<u16>,
+    order: Vec<usize>,
+    buckets: Vec<Vec<usize>>,
+}
+thread_local! {
+    // Each worker reuses its own storage; discovery order is unchanged.
+    static REACH_SCRATCH: RefCell<ReachScratch> = RefCell::new(ReachScratch::default());
+}
+pub(super) type ReachCache = Rc<RefCell<FxHashMap<(usize, usize, TileSet), Rc<Vec<(usize, u16)>>>>>;
+pub(super) type ThreatReachCache = Rc<RefCell<FxHashMap<(usize, usize, u128), u128>>>;
+pub(super) type MovementMasks = Rc<RefCell<FxHashMap<usize, Rc<Vec<u128>>>>>;
 impl<'catalog> Game<'catalog> {
+    /// Threat forecasts need membership, not movement discovery order. Advance
+    /// all origins at each movement cost together on maps fitting one mask.
+    pub(crate) fn threat_reach(&self, unit: &Unit, occupancy: Option<&[Option<Side>]>) -> TileSet {
+        let mut occupied = TileSet::new(self.terrain.len());
+        if let Some(occupancy) = occupancy {
+            for (tile, side) in occupancy.iter().enumerate() {
+                if side.is_some() {
+                    occupied.insert(tile);
+                }
+            }
+        } else {
+            for unit in &self.units {
+                occupied.insert(unit.tile);
+            }
+        }
+        let mut positions = TileSet::new(self.terrain.len());
+        positions.insert(unit.tile);
+        if unit.moved || unit.attacked || self.winner.is_some() {
+            return positions;
+        }
+        let limit = self.rules.units[unit.kind].r#move;
+        let TileSet::Small(blocked) = occupied else {
+            for &(tile, _) in self.reach_filtered(unit.kind, unit.tile, occupied).iter() {
+                positions.insert(tile);
+            }
+            return positions;
+        };
+        if limit >= 64
+            || self.rules.units[unit.kind]
+                .costs
+                .iter()
+                .any(|cost| *cost == Some(0))
+        {
+            for &(tile, _) in self
+                .reach_filtered(unit.kind, unit.tile, TileSet::Small(blocked))
+                .iter()
+            {
+                positions.insert(tile);
+            }
+            return positions;
+        }
+        let key = (unit.kind, unit.tile, blocked);
+        if let Some(&bits) = self.threat_reach_cache.borrow().get(&key) {
+            return TileSet::Small(bits);
+        }
+        let cached = self.movement_masks.borrow().get(&unit.kind).cloned();
+        let costs = cached.unwrap_or_else(|| {
+            let mut masks = vec![0u128; limit + 1];
+            for tile in 0..self.terrain.len() {
+                let cost = self.cost(unit.kind, tile) as usize;
+                if cost <= limit {
+                    masks[cost] |= 1u128 << tile;
+                }
+            }
+            let masks = Rc::new(masks);
+            self.movement_masks
+                .borrow_mut()
+                .insert(unit.kind, masks.clone());
+            masks
+        });
+        let mut pending = [0u128; 64];
+        pending[0] = 1u128 << unit.tile;
+        let mut reached = 0;
+        for spent in 0..=limit {
+            let mut frontier = pending[spent] & !reached;
+            reached |= frontier;
+            let mut neighbors = 0;
+            while frontier != 0 {
+                let tile = frontier.trailing_zeros() as usize;
+                neighbors |= self.board.adjacent_bits[tile];
+                frontier &= frontier - 1;
+            }
+            neighbors &= !blocked & !reached;
+            for cost in 1..=limit - spent {
+                pending[spent + cost] |= neighbors & costs[cost];
+            }
+        }
+        let mut cache = self.threat_reach_cache.borrow_mut();
+        if cache.len() >= 256 {
+            cache.clear();
+        }
+        cache.insert(key, reached);
+        TileSet::Small(reached)
+    }
     pub(crate) fn cost(&self, kind: usize, tile: usize) -> u16 {
         self.rules.units[kind].costs[self.terrain[tile]].unwrap_or(u16::MAX)
     }
+    #[cfg(test)]
     pub(crate) fn reachable_with_occupancy(
         &self,
         unit: &Unit,
         occupancy: &[Option<Side>],
-    ) -> Vec<(usize, u16)> {
+    ) -> Rc<Vec<(usize, u16)>> {
         if unit.moved || unit.attacked || self.winner.is_some() {
-            return vec![];
+            return Rc::new(vec![]);
         }
-        self.reach_filtered(unit.kind, unit.tile, |tile| occupancy[tile].is_some())
+        let mut occupied = TileSet::new(self.terrain.len());
+        for (tile, side) in occupancy.iter().enumerate() {
+            if side.is_some() {
+                occupied.insert(tile);
+            }
+        }
+        self.reach_filtered(unit.kind, unit.tile, occupied)
     }
-    pub(crate) fn reachable(&self, unit: &Unit) -> Vec<(usize, u16)> {
+    pub(crate) fn reachable(&self, unit: &Unit) -> Rc<Vec<(usize, u16)>> {
         if unit.moved || unit.attacked || self.winner.is_some() {
-            return vec![];
+            return Rc::new(vec![]);
         }
-        self.reach_filtered(unit.kind, unit.tile, |tile| self.occupancy[tile].is_some())
+        let mut occupied = TileSet::new(self.terrain.len());
+        for unit in &self.units {
+            occupied.insert(unit.tile);
+        }
+        self.reach_filtered(unit.kind, unit.tile, occupied)
     }
     fn reach_filtered(
         &self,
         kind: usize,
         start: usize,
-        occupied: impl Fn(usize) -> bool,
-    ) -> Vec<(usize, u16)> {
-        let limit = self.rules.units[kind].r#move;
-        let mut costs = vec![u16::MAX; self.terrain.len()];
-        let mut order = Vec::new();
-        let mut buckets = vec![Vec::new(); limit + 1];
-        costs[start] = 0;
-        buckets[0].push(start);
-        for spent in 0..=limit {
-            for cursor in 0..buckets[spent].len() {
-                let current = buckets[spent][cursor];
-                if costs[current] as usize != spent {
-                    continue;
-                }
-                for &next in &self.board.adjacent[current] {
-                    if occupied(next) {
+        occupied: TileSet,
+    ) -> Rc<Vec<(usize, u16)>> {
+        let key = (kind, start, occupied);
+        if let Some(reachable) = self.reach_cache.borrow().get(&key) {
+            return reachable.clone();
+        }
+        let reachable = Rc::new(REACH_SCRATCH.with_borrow_mut(|scratch| {
+            let limit = self.rules.units[kind].r#move;
+            scratch.costs.resize(self.terrain.len(), u16::MAX);
+            scratch.costs.fill(u16::MAX);
+            scratch.order.clear();
+            if scratch.buckets.len() <= limit {
+                scratch.buckets.resize_with(limit + 1, Vec::new);
+            }
+            for bucket in &mut scratch.buckets {
+                bucket.clear();
+            }
+            scratch.costs[start] = 0;
+            scratch.buckets[0].push(start);
+            for spent in 0..=limit {
+                for cursor in 0..scratch.buckets[spent].len() {
+                    let current = scratch.buckets[spent][cursor];
+                    if scratch.costs[current] as usize != spent {
                         continue;
                     }
-                    let entry = self.cost(kind, next);
-                    if entry == u16::MAX {
-                        continue;
+                    for &next in &self.board.adjacent[current] {
+                        if key.2.contains(next) {
+                            continue;
+                        }
+                        let entry = self.cost(kind, next);
+                        if entry == u16::MAX {
+                            continue;
+                        }
+                        let cost = spent as u16 + entry;
+                        if cost as usize > limit || cost >= scratch.costs[next] {
+                            continue;
+                        }
+                        if scratch.costs[next] == u16::MAX {
+                            scratch.order.push(next);
+                        }
+                        scratch.costs[next] = cost;
+                        scratch.buckets[cost as usize].push(next);
                     }
-                    let cost = spent as u16 + entry;
-                    if cost as usize > limit || cost >= costs[next] {
-                        continue;
-                    }
-                    if costs[next] == u16::MAX {
-                        order.push(next);
-                    }
-                    costs[next] = cost;
-                    buckets[cost as usize].push(next);
                 }
             }
+            scratch
+                .order
+                .iter()
+                .map(|&tile| (tile, scratch.costs[tile]))
+                .collect::<Vec<_>>()
+        }));
+        let mut cache = self.reach_cache.borrow_mut();
+        if cache.len() >= 256 {
+            cache.clear();
         }
-        order.into_iter().map(|tile| (tile, costs[tile])).collect()
+        cache.insert(key, reachable.clone());
+        reachable
     }
     pub(crate) fn routes(&self, kind: usize, goals: &[usize]) -> Rc<Vec<u16>> {
         let key = (kind, goals.to_vec(), self.terrain_revision);
-        if self.route_cache.borrow().contains_key(&key) {
-            return self.route_cache.borrow()[&key].clone();
+        if let Some(route) = self.route_cache.borrow().get(&key) {
+            return route.clone();
         }
         let mut costs = vec![u16::MAX; self.terrain.len()];
         // Reverse movement costs run from each goal. Tile index breaks ties

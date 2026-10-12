@@ -97,3 +97,45 @@ or the story's escalation triggers. Once the real campaign escalates to war,
 mediation protection ends. The current engine has two sides; the refuge's captain
 and withdrawing soldiers are protected by story conditions, not by an invented
 third faction. Campaigns without those conditions retain ordinary combat behavior.
+
+## Exact performance changes
+
+Changes to existing policies preserve complete commands, tie breaks, movement
+discovery order, safety forecasts and campaign progression. Threat forecasts may
+use membership-only movement masks while decisions retain ordered destinations.
+Static reverse routes and bounded blocker-keyed movement caches are shared across
+forecasts; terrain changes detach them. Mission content is reused only while
+its story-patch inputs match. Required-actor safety and conservative forecasts
+remain part of the existing policies.
+
+## Next policy target: Priority
+
+Priority is a proposed policy, not an alias for Mixed or a change to existing
+policy behavior. Its target is at least four times less decision CPU time than
+Mixed on an identical workload. Measure arena and campaign results separately.
+
+Retain Mixed's intent: pursue required objectives, protect couriers and named
+companions, field a balanced army, screen ranged units and healers, take useful
+attacks, heal, retreat and rebuild leaders. Use a queue of unit duties and promising
+actions rather than finding a global best action by repeatedly scoring every
+unit/destination/weapon combination. Cheap ranking selects a small candidate set;
+detailed combat and safety checks decide the action. Recompute affected duties
+after a move, attack, death, recruit, promotion, ownership change or scripted event.
+Use stable ties and a bounded amount of planning work per command.
+
+Required actors keep the conservative next-phase safety forecast, including
+scripted waves and opponents yielding one another's routes. Clear their corridors
+and reserved endpoints. Respect authored enemy posts, diplomacy, hold/vigil
+counters, seals, mediation, income, recall and chapter transitions. Execute all
+actions through the same production battle commands. Campaigns begin in chapter
+one with earned carryover and no retries, just as the current simulation policies
+do. Arena-only shortcuts must be an explicitly separate variant.
+
+Accept Priority only after matched-seed comparisons against Mixed show no observed
+campaign completion regression in each campaign, diplomacy setting and enemy-policy
+stratum, with defeats, caps, chapter reach and named deaths reported as well.
+Use enough paired seeds to assess uncertainty; an equal aggregate completion rate
+can conceal a broken campaign. Arena acceptance also reports faction/map/policy
+rates and unresolved caps. Measure speed and behavior independently. Approximate
+intent does not require identical commands, and good arena performance does not
+establish campaign support.
