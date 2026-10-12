@@ -6,20 +6,20 @@
       "cost": -1,
       "damageModifiers": {
         "melee": -1,
-        "ranged": -2
+        "ranged": 0
       }
     },
     "grove": {
       "cost": -1,
       "damageModifiers": {
         "melee": -1,
-        "ranged": -2
+        "ranged": 0
       }
     }
   },
   "damageModifiers": {
     "blade": 0,
-    "pierce": 1,
+    "pierce": 0,
     "impact": 0
   }
 }
