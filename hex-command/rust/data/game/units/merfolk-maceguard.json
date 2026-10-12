@@ -3,7 +3,7 @@
   "role": "warrior",
   "name": "Macer",
   "race": "merfolk",
-  "hp": 24,
+  "hp": 22,
   "move": 4,
   "cost": 8,
   "attacks": [
