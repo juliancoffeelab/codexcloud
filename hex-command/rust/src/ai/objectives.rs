@@ -1,8 +1,32 @@
 use crate::{data::*, logic::Game};
-use std::{
-    cmp::Ordering,
-    collections::{HashMap, HashSet},
-};
+use rustc_hash::{FxHashMap as HashMap, FxHashSet as HashSet};
+use std::cmp::Ordering;
+/// Compare canonical actor identities without formatting in candidate loops.
+pub(super) fn actor_matches(actor: &Option<String>, id: u32) -> bool {
+    actor.as_deref().is_some_and(|actor| {
+        actor.strip_prefix('u').is_some_and(|number| {
+            !number.is_empty()
+                && (number.len() == 1 || !number.starts_with('0'))
+                && number.bytes().all(|byte| byte.is_ascii_digit())
+                && number.parse::<u32>() == Ok(id)
+        })
+    })
+}
+#[cfg(test)]
+mod actor_tests {
+    use super::actor_matches;
+    #[test]
+    fn only_canonical_unit_keys_match() {
+        for id in [0, 12, u32::MAX] {
+            assert!(actor_matches(&Some(format!("u{id}")), id));
+            assert!(!actor_matches(&Some(format!("u0{id}")), id));
+        }
+        for key in ["", "u", "u+12", "u１２", "u4294967296", "12"] {
+            assert!(!actor_matches(&Some(key.into()), 12));
+        }
+        assert!(!actor_matches(&None, 0));
+    }
+}
 pub fn objective(id: &str, kind: ObjectiveKind, tiles: Vec<String>, weight: f64) -> Objective {
     Objective {
         id: id.into(),
@@ -30,7 +54,7 @@ impl Game<'_> {
             g.kind,
             ObjectiveKind::Escort | ObjectiveKind::Escape | ObjectiveKind::Vigil
         ) || g.actor.is_some())
-            && g.actor.as_ref().is_none_or(|a| *a == format!("u{}", u.id))
+            && (g.actor.is_none() || actor_matches(&g.actor, u.id))
             && g.family
                 .as_ref()
                 .is_none_or(|f| self.rules.units[u.kind].family == *f)
@@ -56,7 +80,7 @@ impl Game<'_> {
             let state = self.campaign.as_ref().unwrap();
             if side == Side::Player {
                 for (index, g) in mission.goals.iter().enumerate() {
-                    if self.goal_progress(g).done
+                    if self.goal_done(g)
                         && matches!(
                             g,
                             Goal::Seal { .. } | Goal::Event { .. } | Goal::Defeat { .. }
@@ -213,7 +237,7 @@ impl Game<'_> {
             return result;
         }
         let reserved = self.reserved(u, std::slice::from_ref(g));
-        let mut seen = HashSet::new();
+        let mut seen = HashSet::default();
         result.tiles = g
             .tiles
             .iter()
@@ -229,16 +253,12 @@ impl Game<'_> {
     /// Identify friendly blockers on a required actor's next movement corridor.
     /// Escorts clear the path rather than camping beside its destination forever.
     pub(super) fn escort_lanes(&self, goals: &[Objective]) -> HashMap<u32, HashSet<usize>> {
-        let mut lanes: HashMap<u32, HashSet<usize>> = HashMap::new();
+        let mut lanes: HashMap<u32, HashSet<usize>> = HashMap::default();
         for goal in goals
             .iter()
             .filter(|g| matches!(g.kind, ObjectiveKind::Escort | ObjectiveKind::Escape))
         {
-            let Some(actor) = self
-                .units
-                .iter()
-                .find(|u| goal.actor.as_ref() == Some(&format!("u{}", u.id)))
-            else {
+            let Some(actor) = self.units.iter().find(|u| actor_matches(&goal.actor, u.id)) else {
                 continue;
             };
             let targets: Vec<_> = goal.tiles.iter().map(|t| self.site(t)).collect();
@@ -293,12 +313,12 @@ impl Game<'_> {
         self.campaign.is_some()
             && u.side == Side::Player
             && goals.iter().any(|g| {
-                g.actor.as_ref() == Some(&format!("u{}", u.id))
+                actor_matches(&g.actor, u.id)
                     && matches!(g.kind, ObjectiveKind::Escort | ObjectiveKind::Escape)
                     && g.tiles.contains(&self.board.ids[tile])
             })
             && self.mission.as_ref().unwrap().goals.iter().all(|g| {
-                self.goal_progress(g).done
+                self.goal_done(g)
                     || ((matches!(g, Goal::Escort { .. }) && u.role == Some(Role::Courier)
                         || matches!(g, Goal::Escape { .. }) && u.role == Some(Role::Leader))
                         && g.tile() == Some(&self.board.ids[tile]))
@@ -373,7 +393,7 @@ impl Game<'_> {
                     || self.preview(u, target, weapon, from).0 < target.hp))
     }
     pub fn withdrawal_lanes(&self, side: Side, restrained: bool) -> HashSet<usize> {
-        let mut lanes = HashSet::new();
+        let mut lanes = HashSet::default();
         if !self.protects_withdrawal(side, restrained) {
             return lanes;
         }

@@ -1,5 +1,94 @@
 //! Native advancement, XP and campaign carryover regressions.
 use super::*;
+
+#[test]
+fn internal_completion_queries_match_published_progress_at_goal_transitions() {
+    for (campaign, index) in [
+        ("lantern-road", 0),
+        ("green-accord", 1),
+        ("ashen-oath", 1),
+        ("borrowed-tide", 1),
+    ] {
+        let mut game =
+            Game::start_campaign(rules(), campaign, index, vec![], 0, vec![], vec![], vec![]);
+        let goals = game.mission.as_ref().unwrap().goals.clone();
+        for goal in &goals {
+            assert_eq!(game.goal_done(goal), game.goal_progress(goal).done);
+        }
+        game.units.retain(|unit| unit.side == Side::Player);
+        game.roster_changed();
+        game.owners.fill(Some(Side::Player));
+        game.round = 100;
+        for side in [Side::Enemy, Side::Player] {
+            game.turn = side;
+            for held in [0, 1, 100] {
+                let state = game.campaign.as_mut().unwrap();
+                for goal in &goals {
+                    for tile in goal.tiles() {
+                        state.marks.push(format!("sealed:{tile}"));
+                    }
+                    if let Goal::Event { event, .. } = goal {
+                        state.marks.push(format!("event:{event}"));
+                    }
+                    if let Goal::Hold {
+                        start_event: Some(event),
+                        ..
+                    } = goal
+                    {
+                        state.marks.push(format!("event:{event}"));
+                    }
+                }
+                if let Some(holds) = &mut state.holds {
+                    for counter in holds.values_mut() {
+                        counter.held_turns = held;
+                    }
+                }
+                if let Some(vigil) = &mut state.vigil {
+                    vigil.held_turns = held;
+                }
+                if let Some(refuge) = &mut state.refuge {
+                    refuge.held_turns = held;
+                }
+                for goal in &goals {
+                    assert_eq!(game.goal_done(goal), game.goal_progress(goal).done);
+                }
+            }
+        }
+    }
+}
+
+#[test]
+fn mission_cache_reuses_unmodified_content_and_refreshes_story_patches() {
+    let mut game =
+        Game::start_campaign(rules(), "ashen-oath", 1, vec![], 0, vec![], vec![], vec![]);
+    let original = game.mission.clone().unwrap();
+    game.campaign
+        .as_mut()
+        .unwrap()
+        .marks
+        .push("unrelated".into());
+    game.refresh_mission();
+    assert!(std::rc::Rc::ptr_eq(
+        &original,
+        game.mission.as_ref().unwrap()
+    ));
+    game.campaign
+        .as_mut()
+        .unwrap()
+        .marks
+        .push("dain-fell".into());
+    game.refresh_mission();
+    assert!(!std::rc::Rc::ptr_eq(
+        &original,
+        game.mission.as_ref().unwrap()
+    ));
+    let cached = serde_json::to_value(game.mission.as_deref()).unwrap();
+    let restored = Game::from_state(rules(), game.state());
+    assert_eq!(
+        cached,
+        serde_json::to_value(restored.mission.as_deref()).unwrap()
+    );
+}
 use std::collections::HashSet;
 
 #[test]

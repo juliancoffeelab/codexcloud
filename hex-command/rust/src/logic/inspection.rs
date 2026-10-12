@@ -51,7 +51,8 @@ impl Game<'_> {
                     unit: format!("u{}", unit.id),
                     reachable: self
                         .reachable(unit)
-                        .into_iter()
+                        .iter()
+                        .copied()
                         .map(|(tile, cost)| ReachableTile {
                             tile: TileId(self.board.ids[tile].clone()),
                             cost,

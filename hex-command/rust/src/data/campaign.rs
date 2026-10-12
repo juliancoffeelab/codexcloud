@@ -73,6 +73,11 @@ impl CampaignState {
     pub fn marked(&self, mark: &str) -> bool {
         self.marks.iter().any(|m| m == mark)
     }
+    pub(crate) fn marked_prefixed(&self, prefix: &str, value: &str) -> bool {
+        self.marks
+            .iter()
+            .any(|mark| mark.strip_prefix(prefix) == Some(value))
+    }
     /// Check whether the persistent story choices contain this identifier.
     pub fn chosen(&self, choice: &str) -> bool {
         self.choices

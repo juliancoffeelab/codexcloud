@@ -1,5 +1,6 @@
 //! Policies choose typed commands from a read-only battle. A workspace retains
 //! turn-local commitments and the continuation of a classic unit's action.
+use self::objectives::actor_matches;
 mod classic;
 pub mod objectives;
 mod recruitment;
@@ -11,9 +12,10 @@ use crate::{
     data::*,
     logic::{Battle, Command, CommandError, Game},
 };
+use rustc_hash::FxHashMap as HashMap;
 use serde::{Deserialize, Serialize};
 use std::{
-    collections::{HashMap, HashSet, VecDeque},
+    collections::{HashSet, VecDeque},
     rc::Rc,
 };
 pub use tactics::Random;
@@ -127,8 +129,8 @@ impl PlanningWorkspace {
             tactical_remaining: None,
             commands: VecDeque::new(),
             attack_continuation: None,
-            routes: HashMap::new(),
-            commitments: HashMap::new(),
+            routes: HashMap::default(),
+            commitments: HashMap::default(),
         }
     }
     /// Whether the policy has exhausted its actions and queued continuation.
@@ -174,7 +176,7 @@ impl PlanningWorkspace {
             tactical_remaining: saved.tactical_remaining,
             commands: saved.commands.into(),
             attack_continuation: saved.attack_continuation,
-            routes: HashMap::new(),
+            routes: HashMap::default(),
             commitments: saved
                 .commitments
                 .into_iter()
@@ -284,8 +286,7 @@ pub(crate) fn choose_game_command(
                     .filter(|u| u.side == game.turn && rules.units[u.kind].leader)
                 {
                     let required = workspace.classic_objectives.iter().any(|g| {
-                        g.kind == ObjectiveKind::Escape
-                            && g.actor.as_ref() == Some(&format!("u{}", unit.id))
+                        g.kind == ObjectiveKind::Escape && actor_matches(&g.actor, unit.id)
                     });
                     let (_, intent) = game.leader_rebuild_plan(unit.id, required);
                     if unit.rebuilding != intent {

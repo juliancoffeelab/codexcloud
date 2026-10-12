@@ -11,6 +11,7 @@ const pythonSuites: [name: string, path: string, pattern?: string][] = [
   ["Pixel generation", ".agents/skills/pinkbox-generation/tests"],
   ["Pixel cleaning", ".agents/skills/pixel-cleaning/tests"],
   ["Combat analysis", ".agents/skills/combat-simulation/tests"],
+  ["Exact gameplay comparison", "scripts", "test_simulation_reports.py"],
 ];
 const suites = [
   {

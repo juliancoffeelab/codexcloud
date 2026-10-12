@@ -1,3 +1,4 @@
+use super::objectives::actor_matches;
 use super::roles::role;
 use super::{Policy, TacticalRole};
 use crate::{
@@ -6,7 +7,8 @@ use crate::{
     data::*,
     logic::Game,
 };
-use std::collections::HashMap;
+use rustc_hash::FxHashMap as HashMap;
+use std::borrow::Cow;
 pub struct Random(pub u32);
 impl Random {
     pub fn next(&mut self) -> f64 {
@@ -22,6 +24,42 @@ pub(super) fn jitter(seed: u32, key: &str) -> f64 {
         h = (h ^ c as u32).wrapping_mul(16777619);
     }
     h as f64 / 4294967296.0 * 0.05
+}
+fn hash_number(mut hash: u32, mut number: u32) -> u32 {
+    let mut digits = [0; 10];
+    let mut start = digits.len();
+    loop {
+        start -= 1;
+        digits[start] = b'0' + (number % 10) as u8;
+        number /= 10;
+        if number == 0 {
+            break;
+        }
+    }
+    for &byte in &digits[start..] {
+        hash = (hash ^ byte as u32).wrapping_mul(16777619);
+    }
+    hash
+}
+/// Hash exactly the historical UTF-16 key without allocating formatted strings.
+fn action_jitter(seed: u32, round: u32, unit: u32, tile: &str, target: Option<u32>) -> f64 {
+    let byte = |hash: u32, byte: u8| (hash ^ byte as u32).wrapping_mul(16777619);
+    let mut hash = hash_number(seed, round);
+    hash = byte(byte(hash, b':'), b'u');
+    hash = hash_number(hash, unit);
+    hash = byte(hash, b':');
+    for character in tile.encode_utf16() {
+        hash = (hash ^ character as u32).wrapping_mul(16777619);
+    }
+    hash = byte(hash, b':');
+    if let Some(target) = target {
+        hash = hash_number(byte(hash, b'u'), target);
+    } else {
+        for character in b"move" {
+            hash = byte(hash, *character);
+        }
+    }
+    hash as f64 / 4294967296.0 * 0.05
 }
 #[derive(Clone)]
 pub(super) struct Plan {
@@ -54,10 +92,9 @@ impl Game<'_> {
             .map(|u| {
                 (
                     u.id,
-                    objectives.iter().any(|g| {
-                        g.kind == ObjectiveKind::Escape
-                            && g.actor.as_ref() == Some(&format!("u{}", u.id))
-                    }),
+                    objectives
+                        .iter()
+                        .any(|g| g.kind == ObjectiveKind::Escape && actor_matches(&g.actor, u.id)),
                 )
             })
             .map(|(id, required)| (id, self.leader_rebuild_plan(id, required)))
@@ -134,22 +171,23 @@ impl Game<'_> {
                 }
             }
             let mut destinations = vec![original_unit.tile];
-            destinations.extend(self.reachable(original_unit).into_iter().map(|(t, _)| t));
+            destinations.extend(
+                self.reachable(original_unit)
+                    .iter()
+                    .copied()
+                    .map(|(t, _)| t),
+            );
             destinations = self.authored_destinations(original_unit, destinations);
             let reserved = self.reserved(original_unit, &objectives);
             let required = objectives.iter().any(|g| {
-                g.kind == ObjectiveKind::Escape
-                    && g.actor.as_ref() == Some(&format!("u{}", original_unit.id))
+                g.kind == ObjectiveKind::Escape && actor_matches(&g.actor, original_unit.id)
             });
             let (rebuilding, intent) = &rebuilds[&original_unit.id];
             let mut planned_unit = (*original_unit).clone();
             planned_unit.rebuilding = *intent;
             let unit = &planned_unit;
-            let minimum_risk = if important {
-                threats.minimum(&unit, destinations.iter().copied())
-            } else {
-                0
-            };
+            // Only a lethal essential-actor candidate needs the full minimum.
+            let mut minimum_risk = None;
             let recruiting = self.rules.units[unit.kind].leader
                 && self
                     .recruitment_options(side)
@@ -174,8 +212,8 @@ impl Game<'_> {
             } else {
                 &rebuild_goals
             };
-            struct Duty {
-                goal: Objective,
+            struct Duty<'a> {
+                goal: Cow<'a, Objective>,
                 route: std::rc::Rc<Vec<u16>>,
                 before: u16,
                 assigned: bool,
@@ -196,9 +234,7 @@ impl Game<'_> {
                 {
                     continue;
                 }
-                if original.id.starts_with("rebuild:")
-                    && original.actor.as_ref() != Some(&format!("u{}", unit.id))
-                {
+                if original.id.starts_with("rebuild:") && !actor_matches(&original.actor, unit.id) {
                     continue;
                 }
                 let pursuing = self.can_pursue(&unit, original);
@@ -208,9 +244,9 @@ impl Game<'_> {
                     continue;
                 }
                 let goal = if assisting {
-                    self.support_objective(&unit, original)
+                    Cow::Owned(self.support_objective(&unit, original))
                 } else {
-                    original.clone()
+                    Cow::Borrowed(original)
                 };
                 let tiles: Vec<_> = goal.tiles.iter().map(|t| self.site(t)).collect();
                 let route = if pursuing
@@ -339,7 +375,7 @@ impl Game<'_> {
                 }
                 if tile != unit.tile
                     && objectives.iter().any(|g| {
-                        g.actor.as_ref() == Some(&format!("u{}", unit.id))
+                        actor_matches(&g.actor, unit.id)
                             && g.tiles.contains(&self.board.ids[unit.tile])
                     })
                 {
@@ -515,8 +551,6 @@ impl Game<'_> {
                     if ceiling <= best.as_ref().map_or(0.1, |b| b.score.max(0.1)) {
                         continue;
                     }
-                    let incoming = threats.at(&unit, tile, eliminated);
-                    let lethal = incoming >= unit.hp - retaliation;
                     if self.rules.units[unit.kind].leader
                         && !finishing
                         && !finishes_battle
@@ -525,15 +559,16 @@ impl Game<'_> {
                     {
                         continue;
                     }
-                    if important
-                        && lethal
-                        && incoming > 0
-                        && !finishing
-                        && !finishes_battle
-                        && (minimum_risk < unit.hp
+                    let incoming = threats.at(&unit, tile, eliminated);
+                    let lethal = incoming >= unit.hp - retaliation;
+                    if important && lethal && incoming > 0 && !finishing && !finishes_battle && {
+                        let minimum_risk = *minimum_risk.get_or_insert_with(|| {
+                            threats.minimum(&unit, destinations.iter().copied())
+                        });
+                        minimum_risk < unit.hp
                             || incoming + retaliation > minimum_risk
-                            || incoming >= before_risk)
-                    {
+                            || incoming >= before_risk
+                    } {
                         continue;
                     }
                     if important && !finishing && !finishes_battle {
@@ -568,15 +603,12 @@ impl Game<'_> {
                             } else {
                                 0.2
                             }
-                        + jitter(
+                        + action_jitter(
                             seed,
-                            &format!(
-                                "{}:u{}:{}:{}",
-                                self.round,
-                                unit.id,
-                                self.board.ids[tile],
-                                target.map_or("move".into(), |t| format!("u{}", t.id))
-                            ),
+                            self.round,
+                            unit.id,
+                            &self.board.ids[tile],
+                            target.map(|target| target.id),
                         );
                     let withdrawing = unit.side == Side::Enemy
                         && target.is_none()
@@ -607,7 +639,26 @@ impl Game<'_> {
 
 #[cfg(test)]
 mod tests {
-    use super::{Random, jitter};
+    use super::{Random, action_jitter, jitter};
+    #[test]
+    fn action_jitter_matches_formatted_utf16_keys() {
+        for seed in [0, 19, u32::MAX] {
+            for (round, unit) in [(0, 0), (30, 12), (u32::MAX, u32::MAX)] {
+                for tile in ["3,2", "😀", "-10,100"] {
+                    for target in [None, Some(0), Some(u32::MAX)] {
+                        let key = format!(
+                            "{round}:u{unit}:{tile}:{}",
+                            target.map_or("move".into(), |id| format!("u{id}"))
+                        );
+                        assert_eq!(
+                            action_jitter(seed, round, unit, tile, target),
+                            jitter(seed, &key)
+                        );
+                    }
+                }
+            }
+        }
+    }
     #[test]
     fn random_stream_and_utf16_jitter_remain_stable() {
         let mut random = Random(1);

@@ -1,38 +1,22 @@
 use crate::{data::*, logic::Game};
-use std::collections::HashMap;
+use rustc_hash::FxHashMap as HashMap;
 // Dense reachability sets intersect attack origins a machine word at a time.
 use crate::logic::geometry::TileSet;
 pub(super) struct Threats<'game, 'catalog> {
     source: &'game Game<'catalog>,
-    shadow: Game<'catalog>,
-    enemies: Vec<(Unit, Vec<TileSet>)>,
+    side: Side,
+    normal: Option<(Game<'catalog>, Vec<(Unit, Vec<TileSet>)>)>,
     cache: HashMap<(Option<u32>, usize, usize, Option<u32>), i32>,
     forecasts: HashMap<(u32, Option<u32>), (Game<'catalog>, Vec<(Unit, Vec<TileSet>)>)>,
 }
 impl<'game, 'catalog> Threats<'game, 'catalog> {
     pub fn new(g: &'game Game<'catalog>, side: Side) -> Self {
-        let mut shadow = g.fork();
-        shadow.arena_first = None;
-        shadow.end_turn();
-        let enemies = shadow
-            .units
-            .iter()
-            .filter(|u| u.side != side)
-            .map(|u| {
-                let mut positions = TileSet::new(shadow.terrain.len());
-                positions.insert(u.tile);
-                for (t, _) in shadow.reachable(u) {
-                    positions.insert(t);
-                }
-                (u.clone(), Self::coverage(&shadow, u, &positions))
-            })
-            .collect();
         Self {
             source: g,
-            shadow,
-            enemies,
-            cache: HashMap::new(),
-            forecasts: HashMap::new(),
+            side,
+            normal: None,
+            cache: HashMap::default(),
+            forecasts: HashMap::default(),
         }
     }
     // Essential actors forecast each opponent independently. Friendly blockers
@@ -58,11 +42,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             .map(|enemy| {
                 let previous = occupancy[enemy.tile];
                 occupancy[enemy.tile] = Some(enemy.side);
-                let mut positions = TileSet::new(board.terrain.len());
-                positions.insert(enemy.tile);
-                for (tile, _) in board.reachable_with_occupancy(enemy, &occupancy) {
-                    positions.insert(tile);
-                }
+                let positions = board.threat_reach(enemy, Some(&occupancy));
                 occupancy[enemy.tile] = previous;
                 (enemy.clone(), Self::coverage(board, enemy, &positions))
             })
@@ -75,11 +55,9 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             .map(|attack| {
                 let geometry = board.attack_origins(attack.category, attack.range);
                 let mut covered = TileSet::new(board.terrain.len());
-                for (tile, origins) in geometry.iter().enumerate() {
-                    if origins.intersects(positions) {
-                        covered.insert(tile);
-                    }
-                }
+                // Range and intervening-terrain legality are reciprocal. Union
+                // targets from reachable origins instead of testing every tile.
+                positions.for_each(|origin| covered.union_with(&geometry[origin]));
                 covered
             })
             .collect()
@@ -134,7 +112,22 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         let mut target = u.clone();
         target.tile = tile;
         let risk = if !important {
-            Self::pressure(&self.shadow, &target, &self.enemies, eliminated, false)
+            let (shadow, enemies) = self.normal.get_or_insert_with(|| {
+                let mut shadow = self.source.fork();
+                shadow.arena_first = None;
+                shadow.end_turn();
+                let enemies = shadow
+                    .units
+                    .iter()
+                    .filter(|u| u.side != self.side)
+                    .map(|u| {
+                        let positions = shadow.threat_reach(u, None);
+                        (u.clone(), Self::coverage(&shadow, u, &positions))
+                    })
+                    .collect();
+                (shadow, enemies)
+            });
+            Self::pressure(shadow, &target, enemies, eliminated, false)
         } else {
             let sensitive = self.source.mission.as_ref().is_some_and(|m| {
                 m.goals.iter().any(|g| {

@@ -153,7 +153,8 @@ impl NativeEngineFactory {
                 .ok_or(CommandError::UnknownUnit(UnitId(unit)))?;
             Ok(game
                 .reachable(actor)
-                .into_iter()
+                .iter()
+                .copied()
                 .map(|(tile, cost)| ReachableTile {
                     tile: TileId(game.board.ids[tile].clone()),
                     cost,

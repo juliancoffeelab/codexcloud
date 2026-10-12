@@ -148,7 +148,8 @@ impl Battle {
             let actor = game.unit(unit.0).ok_or(CommandError::UnknownUnit(unit))?;
             Ok::<_, CommandError>(
                 game.reachable(actor)
-                    .into_iter()
+                    .iter()
+                    .copied()
                     .map(|(tile, cost)| Reachable {
                         tile: TileId(game.board.ids[tile].clone()),
                         cost: MovementCost(cost),

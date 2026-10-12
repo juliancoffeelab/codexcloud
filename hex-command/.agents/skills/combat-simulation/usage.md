@@ -98,7 +98,20 @@ to check identical complete-result hashes after an optimization.
 
 ## Compare full saved gameplay
 
-Convert each detail dump once, then compare the resulting Arrow files. These
+For exact optimization checks, compare complete reports and their adjacent journals:
+
+```sh
+python3 scripts/compare-simulation-reports.py artifacts/baseline/report.json artifacts/current/report.json --out artifacts/current/equality.json
+```
+
+This validates journal checksums and every gameplay field, including endpoint
+hashes, unknown fields, missing/null distinctions and numeric representations.
+Only object key order and explicitly listed run metadata (source commit/fingerprint,
+elapsed times and journal locations) may differ. Arrays retain their order.
+Use identical workloads and CPU quotas; build separately and time the complete
+native command. A single-digit target is satisfied only when measured.
+
+For columnar analysis, convert each detail dump once and compare the Arrow files. These
 commands compare recorded gameplay without rerunning matches:
 
 ```sh

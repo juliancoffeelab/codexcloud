@@ -1,7 +1,8 @@
 //! Terrain-dependent attack geometry shared by forecasts of the same battle.
 use super::Game;
 use crate::data::{Category, Terrain};
-use std::{cell::RefCell, collections::HashMap, rc::Rc};
+use rustc_hash::FxHashMap as HashMap;
+use std::{cell::RefCell, rc::Rc};
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub(crate) enum TileSet {
     Small(u128),
@@ -27,6 +28,7 @@ impl TileSet {
             Self::Large(bits) => bits[tile / 64] & (1 << (tile % 64)) != 0,
         }
     }
+    #[cfg(test)]
     pub(crate) fn intersects(&self, other: &Self) -> bool {
         match (self, other) {
             (Self::Small(a), Self::Small(b)) => a & b != 0,
@@ -35,6 +37,37 @@ impl TileSet {
                 a.iter().zip(b).any(|(a, b)| a & b != 0)
             }
             _ => unreachable!("same-map threat masks"),
+        }
+    }
+    pub(crate) fn union_with(&mut self, other: &Self) {
+        match (self, other) {
+            (Self::Small(a), Self::Small(b)) => *a |= b,
+            (Self::Large(a), Self::Large(b)) => {
+                debug_assert_eq!(a.len(), b.len());
+                for (a, b) in a.iter_mut().zip(b) {
+                    *a |= b;
+                }
+            }
+            _ => unreachable!("same-map threat masks"),
+        }
+    }
+    pub(crate) fn for_each(&self, mut visit: impl FnMut(usize)) {
+        let mut word = |mut bits: u64, offset: usize| {
+            while bits != 0 {
+                visit(offset + bits.trailing_zeros() as usize);
+                bits &= bits - 1;
+            }
+        };
+        match self {
+            Self::Small(bits) => {
+                word(*bits as u64, 0);
+                word((bits >> 64) as u64, 64);
+            }
+            Self::Large(bits) => {
+                for (index, bits) in bits.iter().enumerate() {
+                    word(*bits, index * 64);
+                }
+            }
         }
     }
 }
@@ -128,5 +161,25 @@ mod tests {
         }
         assert!(!forecast.attack_origins(Category::Ranged, 2)[target].contains(from));
         assert!(game.attack_origins(Category::Ranged, 2)[target].contains(from));
+    }
+    #[test]
+    fn attack_geometry_is_reciprocal_including_blocked_ranged_paths() {
+        let rules = crate::data::Catalog::load().unwrap();
+        let mut game = Game::new(&rules, "mirror");
+        for terrain in ["plains", "forest", "hill", "grove"] {
+            for tile in (0..game.terrain.len()).step_by(3) {
+                game.set_terrain(tile, rules.terrains[terrain]);
+            }
+            for category in [Category::Melee, Category::Ranged] {
+                for range in 1..=3 {
+                    let geometry = game.attack_origins(category, range);
+                    for a in 0..game.terrain.len() {
+                        for b in 0..game.terrain.len() {
+                            assert_eq!(geometry[a].contains(b), geometry[b].contains(a));
+                        }
+                    }
+                }
+            }
+        }
     }
 }
