@@ -50,4 +50,3 @@ every terrain and both sides of every playable unit rank.
   [enhancement](.agents/skills/pinkbox-enhancement/SKILL.md),
   [cleaning](.agents/skills/pixel-cleaning/SKILL.md),
   [lineup previews](.agents/skills/pixel-lineup/SKILL.md)
-- Balance evidence: [initial pass](docs/combat-balance.md), [coastal follow-up](docs/coastal-balance.md)

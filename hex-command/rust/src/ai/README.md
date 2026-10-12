@@ -6,9 +6,7 @@ part of each policy. The live enemy uses classic; the simulation harness can
 select each policy for either side.
 
 Current unit and race values are authored in [game data](../../data/README.md).
-Measured balance and past tuning choices are recorded in the
-[initial balance report](../../../docs/combat-balance.md) and
-[coastal follow-up](../../../docs/coastal-balance.md). CLI usage is in the
+CLI usage is in the
 [simulation guide](../../../docs/ai-simulation.md).
 
 ## Complete policies

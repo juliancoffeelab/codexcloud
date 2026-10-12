@@ -87,6 +87,5 @@ See [simulation implementation](../.agents/skills/combat-simulation/implementati
 for analyzer contracts, arena/campaign definitions and statistics;
 [recording and recovery](../rust/src/simulation/README.md) for journal formats;
 and [AI policy implementation](../rust/src/ai/README.md) for planning behavior.
-Historical balance evidence is in [the initial pass](combat-balance.md) and
-[the coastal follow-up](coastal-balance.md). Current stats live in
+Current stats live in
 [authored game data](../rust/data/README.md).
