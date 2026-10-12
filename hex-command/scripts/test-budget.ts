@@ -36,6 +36,7 @@ function sourceFingerprint(): string {
     "rust/Cargo.lock",
     "rust/build.rs",
     "dune-project",
+    "dune",
     "dune-workspace",
     "scripts/build-pixel-art.py",
     "src/presentation/pixel-art.ts",

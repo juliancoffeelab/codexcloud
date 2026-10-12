@@ -14,8 +14,7 @@
     "ai:full": "node --import tsx scripts/simulate-ai.ts --mode full --seeds 10",
     "ai:benchmark": "node --import tsx scripts/benchmark-rust.ts",
     "ai:analyze": "uv run scripts/analyze-simulations.py",
-    "predev": "npm run wasm:build && npm run art:build && npm run frontend:build",
-    "dev": "vite --host 0.0.0.0",
+    "dev": "node --import tsx scripts/dev.ts",
     "check": "node --import tsx scripts/verify.ts ui types wasm",
     "check:ui": "node --import tsx scripts/verify.ts ui",
     "check:types": "node --import tsx scripts/verify.ts types",
@@ -47,7 +46,7 @@
     "toolchain:setup": "node --import tsx .agents/skills/rust-toolchain/scripts/setup-toolchain-shell.ts",
     "bindings:frontend": "node --import tsx scripts/melange-bindings.ts",
     "check:frontend-bindings": "node --import tsx scripts/verify.ts ui",
-    "frontend:build": "dune build @melange",
+    "frontend:build": "dune build @melange --display short",
     "verify:prepare": "node --import tsx scripts/test-budget.ts --prepare"
   },
   "devDependencies": {
