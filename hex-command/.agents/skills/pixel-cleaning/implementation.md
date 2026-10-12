@@ -1,24 +1,26 @@
 # Pixel cleaning implementation
 
-## Review output
+Read this when changing or debugging detectors, review rendering or the guarded
+editor. Unit and terrain workflows are in [SKILL.md](SKILL.md).
 
-The review bundle contains faction previews, detector findings and enlarged
-eight-neighbor contexts. The stray detector uses cardinal equal-color neighbors;
-intentional eyes, highlights and diagonal details can therefore be flagged.
-Optional material shade groups are input hints, not proof of material ownership.
-Detectors can miss connected wrong-material patches, so a full review also
-examines unflagged surfaces in the source image and matrix.
+`review.py` combines the isolated-pixel and outline detectors for unit sprites,
+validates faction alpha and fixed-material consistency, and creates enlarged
+contexts with eight-neighbor material-component information. Optional shade
+groups and ownership masks are review inputs, not automatic painting masks.
 
-## Edit contract
+`check_isolated_pixels.py` compares cardinal neighbors by equal RGBA color;
+optional shade groups also permit neighboring symbols from the same group.
+`check_broken_outlines.py` inspects outline topology, enclosed holes and supplied
+material ownership. `pixel_review_image.py` renders every selected finding beside
+the complete original matrix. These standalone detectors also accept terrain
+frames; the combined unit reviewer and editor require `sprite.txt`.
 
-The edit JSON requires `matrix_sha256`, `palette_sha256` and `edits`. Each edit
-has native `x`, `y`, `from`, `to`, `material` and `reason`. Outline or transparency
-changes also require `boundary_reviewed: true`. Hash guards reject stale inputs;
-the helper preserves the baseline and applies only the specified pixel edits.
+`apply_edits.py` validates matrix/palette hashes, native integer coordinates,
+original symbols, duplicate coordinates, material/reason fields and explicit
+review of outline/transparency changes before writing a candidate. It copies the
+original palette, matrix and optional ownership mask for before/after inspection.
 
-## Terrain joins
-
-Road exits meet at the same position and width with a normal tangent through the
-hex boundary. A curve can end off-center even when its connection name matches.
-The artwork build checks boundary sections independently of the interior.
-Inspect connected forks, crossroads and curves to assess actual continuity.
+The artwork builder resolves terrain floor colors from canonical terrain paths
+and validates road boundary sections independently of the interior through
+`require_road_exits`. That validation checks exits, not complete visual continuity
+between assembled tiles.

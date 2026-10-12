@@ -85,5 +85,5 @@ Its WASM feature also compares embedded content with the authored disk catalog.
 
 Use the [simulation guide](../.agents/skills/combat-simulation/usage.md) for commands and comparisons,
 [AI policy reference](src/ai/README.md) for planning behavior,
-[recording reference](../.agents/skills/combat-simulation/implementation.md#native-simulation-records-and-recovery) for journals and recovery, and
+[recording reference](../.agents/skills/combat-simulation/usage.md#progress-and-recovery) for journals and recovery, and
 [development guide](../docs/development.md) for full verification and publication.

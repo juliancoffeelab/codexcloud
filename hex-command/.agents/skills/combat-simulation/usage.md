@@ -1,7 +1,7 @@
 # Combat simulation usage
 
 Run commands from the `hex-command/` project root. The agent workflow is in
-[SKILL.md](SKILL.md); report contracts, counting rules and recording details are in
+[SKILL.md](SKILL.md). For analyzer/harness changes or debugging, read
 [implementation.md](implementation.md).
 
 ## Run a panel
@@ -21,20 +21,33 @@ npm run ai:simulate -- --mode arena --seeds 2 --out artifacts/arena.json
 npm run ai:simulate -- --mode campaign --seeds 5 --out artifacts/campaigns.json
 ```
 
-`ai:full` runs arenas and campaigns with ten seeds. Use `ai:schedule` to
-inspect counts for a selected scope.
+Use `npm run ai:simulate -- --help` for current options and defaults, and
+`ai:schedule` to inspect the selected configurations and counts. `ai:full` runs
+the combined arena/campaign batch configured in `package.json`.
 
-| Option                   | Meaning                                                           |
-| ------------------------ | ----------------------------------------------------------------- |
-| `--seed`, `--seeds`      | First seed and seed count; defaults 1 and 2                       |
-| `--policies`             | `classic`, `rush`, `mixed`                                        |
-| `--armies`               | `human`, `woodland`, `undead`, `coastal`                          |
-| `--landscapes`           | `open`, `wooded`, `crossings`, `islands`                          |
-| `--rounds`, `--recruits` | Round cap and recruit limit per phase; defaults 30 and 1          |
-| `--workers`              | Up to eight workers; default follows CPU quota                    |
-| `--diplomacy`            | Campaign settings `pragmatic`, `restrained`; defaults to both     |
-| `--data-dir`             | Authored data directory; use it when selecting another checkout   |
-| `--trace`                | Also save raw typed results; detailed gameplay is always recorded |
+A reused native binary loads data from its compiled crate by default. When using
+another checkout, pass its `--data-dir` explicitly. `ai:combat` selects this
+project's data by default and forwards a custom directory.
+
+## Interpret the panel
+
+Arena entrants pair a race with a policy. Opponents are scheduled in both seats
+and both initiatives; identical entrants run both initiatives once. Each round
+contains both phases. Maps and total starting budgets are paired; leaders and
+starters are charged at their unit prices before the remaining gold is available
+for recruitment.
+
+Arena victory comes from defeating the opposing leader or holding all central
+objectives for the landscape's configured duration. Losing an objective resets
+the hold. This territory rule belongs to the simulation arena. Campaign runs use
+authored rosters, maps, objectives and waves, earn carryover and recall survivors,
+and receive no retries. Their seeds vary AI tie breaks rather than authored maps.
+
+Count unresolved round caps in win-rate denominators. Mirrored faction rows
+describe the same physical matches; self-play contributes both seats. Native
+confidence intervals resample complete seed blocks, preserving map/seat/initiative
+correlations. They measure these scenarios and policies, rather than optimal or
+human play. More seeds reduce sampling uncertainty, rather than policy weakness.
 
 ## Analyze saved reports
 
@@ -49,6 +62,27 @@ CSV exports for every row. For race balance, use `race_equal_policy.csv` and
 `matchups.csv` retains every opponent and policy pairing, including self-play;
 `race_all_policies.csv` mixes policies.
 
+The analyzer uses only saved outcomes and metadata. It can run outside a Git
+checkout. Baseline reports must contain exactly the same match configurations;
+missing or duplicate configurations fail analysis. Full gameplay is in the
+adjacent `.details.jsonl` journals, while `full-data.zip` contains the exported
+tables and available compact outcome journals.
+
+## Progress and recovery
+
+Keep a batch's report, Markdown output, `.outcomes.jsonl`, `.details.jsonl`,
+`.partial.json` and optional `.trace.jsonl` together. Progress is in `.partial.json`;
+a complete run exits successfully with `completed == expected`. Preserve partial
+files after a failure and report the completed count; worker errors are not defeats.
+
+`.outcomes.jsonl` records completed results in worker completion order. To recover
+them, read complete newline-terminated records and place each `outcome` at its
+zero-based schedule `index`; ignore an interrupted trailing line. Reject duplicate
+or out-of-range indices and leave missing positions unresolved. The progress
+snapshot may lag completed journal records. Recovered outcomes retain checksummed
+references to their full details. Recovery exposes completed work; it does not
+automatically resume or rerun the batch.
+
 ## Replay and benchmarks
 
 Replay reruns the recorded matches and requires the original engine/content
@@ -58,8 +92,8 @@ fingerprint. It validates journal references before execution:
 npm run ai:simulate -- --replay artifacts/current/report.json
 ```
 
-`npm run ai:benchmark -- --out artifacts/baseline.json` runs 60 representative
-matches. Use `--limit 12` for a smaller sample, or `--compare artifacts/baseline.json`
+`npm run ai:benchmark -- --out artifacts/baseline.json` runs a representative
+sample. Use `--limit 12` for a smaller sample, or `--compare artifacts/baseline.json`
 to check identical complete-result hashes after an optimization.
 
 ## Compare full saved gameplay
@@ -73,6 +107,4 @@ uv run --with pyarrow scripts/convert-simulation-dump.py artifacts/current.arrow
 uv run --with pyarrow --with polars==2.0.0 scripts/compare-simulation-dumps.py artifacts/baseline.arrow artifacts/current.arrow
 ```
 
-See [recording and recovery](implementation.md#native-simulation-records-and-recovery) for journal
-formats and interrupted runs. AI behavior is described in the
-[policy reference](../../../rust/src/ai/README.md).
+AI behavior is described in the [policy reference](../../../rust/src/ai/README.md).

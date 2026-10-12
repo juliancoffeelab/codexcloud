@@ -1,155 +1,87 @@
 # Combat simulation implementation
 
-The native Rust harness owns scheduling, battle execution, campaign transitions
-and result recording. The Python runner invokes that harness and then analyzes
-the saved report. Reporting uses only the Python standard library.
+Read this when changing or debugging the native harness, Python runner or analyzer.
+Normal operation, result interpretation and recovery are in [usage.md](usage.md).
 
-See [usage.md](usage.md) for commands and [SKILL.md](SKILL.md) for the agent workflow.
+The Rust harness owns scheduling, battle execution, campaign transitions and
+recording. The Python runner invokes it and then analyzes the saved report.
+The runner supplies the current project's data directory unless overridden;
+it does not compare authored data to Git history. Reporting uses only Python's
+standard library.
 
 ## Analyzer boundary
 
 All analysis derives from input report outcomes and metadata. The analyzer does
 not fetch unit stats, reconstruct artwork or roster coverage, read gameplay
 catalogs, look up Git commits or run battles. Recorded source commits and
-fingerprints are displayed without resolving them. It works outside a repository
-checkout and accepts reports with missing or unavailable source commits.
+fingerprints are displayed without resolving them.
 
-Arena grouping uses recorded faction, opponent, map and both policies. Every
-physical match contributes one result per participant. Mirrored cells describe
-the same physical matches; self-play contributes both seats. Round caps remain
-in win-rate denominators. Recruitment, promotion and casualty events belong to
-their recorded side, including when factions swap seats.
+Arena grouping uses recorded faction, opponent, map and both policies. Each
+physical match contributes one result per participant, including both seats
+in self-play. Recruitment, promotion and casualty events belong to their recorded
+side. Caps remain in denominators.
 
-Duplicate match configurations and inconsistent winner/cap records fail analysis.
-Baseline comparisons require identical recorded configurations. Arena comparisons
-use winners, victory reasons and final-state hashes. Campaign comparisons use
+Duplicate configurations and inconsistent winner/cap records fail analysis.
+Baseline comparisons require identical configurations. Arena comparisons use
+winners, victory reasons and final-state hashes. Campaign comparisons use
 completion and ordered mission results, rounds and final-state hashes, exporting
 both mission histories. Timing and journal-file changes do not imply gameplay
 changes.
 
-The HTML, Markdown and CSV exports retain every recorded matchup, event and match.
-HTML filtering affects only its display. `full-data.zip` includes current exports
-and adjacent compact outcome journals when available; it excludes obsolete files
-left in an existing output directory. Full gameplay journals remain beside the
-input report. `timings.json` records analyzer execution time.
+HTML, Markdown and CSV exports retain all recorded matchups, events and matches.
+HTML filtering affects only display. `full-data.zip` uses an explicit export
+list and includes adjacent compact outcome journals when available, excluding
+obsolete files in an existing output directory. Full gameplay journals remain
+beside the input report. `timings.json` records analyzer execution time.
+Native aggregate rows own seed-block confidence intervals; the analyzer does
+not calculate new intervals.
 
-## Native data and recording
+## Scheduling and execution
 
-A reused native binary defaults to the data directory from its compiled crate,
-regardless of its working directory. Pass the intended `--data-dir` when using
-another checkout. `ai:combat` supplies the current project's directory by default
-and forwards a custom directory without comparing it to Git history.
+Arena scheduling pairs `(race, policy)` entrants across seats and initiatives;
+identical entrants avoid duplicate seat permutations. Schedule order is canonical
+and independent of worker timing. Campaign scheduling combines authored campaigns,
+player/enemy policies and diplomacy settings.
 
-Keep each run's JSON report, Markdown report, `.outcomes.jsonl`, `.details.jsonl`,
-`.partial.json` and optional `.trace.jsonl` together in a fresh ignored artifact
-directory. A completed run exits successfully and records `completed == expected`.
-On failure, retain partial output and report how many matches completed; worker
-errors are not defeats. See [records and recovery](#native-simulation-records-and-recovery) below.
+Arena maps use rotationally paired geometry, equal total budgets and paired
+recruitment limits. The leader and starter prices are deducted from the starting
+budget. Arena holding counters advance only after completed opposing turns;
+losing any required objective resets the counter. Campaign execution delegates
+objectives, waves and transitions to the ordinary battle rules.
 
-## Native simulation records and recovery
+Per-match records contain phase commands, combat damage/retaliation, casualties,
+recruitment, promotions and endpoint states. Phase snapshots retain unit identity,
+position, HP, XP, action flags and leader mode, plus gold, ownership, objective
+progress and campaign state. Casualties include troops recruited and killed
+within the same phase. Composition summaries are allocated separately; detailed
+summaries borrow full trace arrays from the typed result.
 
-The final `.json` report remains schema 3: compact outcomes appear in canonical
-schedule order and retain checksummed byte references into `.details.jsonl`.
-Complete phases, actions, combats, ownership, objectives and endpoint states
-remain in that detail journal. `--trace` also writes raw typed match results to
-`.trace.jsonl`.
+## Journals and checkpoints
 
-During execution, each completed compact outcome is appended once to
-`.outcomes.jsonl` as `{"index": <schedule position>, "outcome": <compact outcome>}`.
-Lines arrive in worker completion order. The zero-based `index` restores canonical
-schedule order independently of completion timing.
+The final report is schema 3. Compact outcomes appear in canonical schedule order
+and retain byte ranges and SHA-256 digests into `.details.jsonl`. `--trace` also
+serializes raw typed results to `.trace.jsonl`.
 
-`.partial.json` is a small atomic progress snapshot, marked with
-`"progressFormat": "indexed-outcomes-jsonl-v1"`. It contains status, completed and
-expected counts, elapsed time, fingerprint, and the filenames and complete byte
-lengths of the outcome index and detail journals. It does not copy accumulated
-outcomes. Progress is refreshed every ten completions and on completion or error;
-the append-only index may contain additional completed lines after the latest
-progress snapshot.
+Completed outcomes append once to `.outcomes.jsonl` as
+`{"index": <schedule position>, "outcome": <compact outcome>}` in worker completion
+order. `.partial.json` is an atomic progress snapshot marked
+`"progressFormat": "indexed-outcomes-jsonl-v1"`, containing status, completed and
+expected counts, elapsed time, fingerprint, journal filenames and complete byte
+lengths. Progress refreshes every ten completions and on completion or error;
+it does not copy accumulated outcomes.
 
-To recover completed results, parse complete newline-terminated index records and
-place each `outcome` at its recorded `index`. Ignore an interrupted trailing line.
-`checkpoint::recover_outcomes` performs this operation and rejects duplicate or
-out-of-range indices. Missing positions remain unresolved work. Every recovered
-outcome retains its full-detail byte range and SHA-256 digest; `records::read_detail`
-validates that range and digest before reading it. Recovery exposes completed work;
-it does not automatically resume or rerun a batch.
-
-Detailed summaries borrow full trace arrays directly from the typed match result.
-Only small composition summaries are allocated before detail serialization.
-Comparison summaries omit state hashes entirely, while preserving all actual
-states, records, array order, and missing-versus-null distinctions.
-
-## Arena coverage and victory
-
-Maps are rotationally paired radius-four hexagons: open, wooded, river crossings
-and islands. Islands has two home islands and three separate objective islands:
-the central fort and the northern/southern villages. Bridges link the home islands
-to the fort; shallow crossings reach the village islands and give alternative
-approaches to the fort, including the hex east of the northern village and its
-southern counterpart. Open channels give merfolk routes around those crossings.
-Seeds vary paired terrain, equal total budgets and small policy tie breakers. Water arenas
-retain the river identity for classic's routing. Each side gets its selected race's leader,
-two melee starters and its own recruitment pool. Human, woodland, undead and coastal
-rosters can face each other; same-race baselines remain included. Campaign pools
-are authored independently of arena pools. Each side receives the same total
-starting budget: the authored `startingBudget` of 36 gold plus a paired seed-dependent
-0, 3 or 6 gold. Its leader and two starters are charged at their unit prices, and
-the remainder is spendable cash. Positions and per-phase recruit limits are paired,
-while race-specific stats differ.
-
-An entrant is `(race, policy)`. Every unordered entrant pair is scheduled in both
-seats and both initiatives; identical entrants run both initiatives once. Four races
-and three policies give 12 entrants, 288 games per terrain, **1,152 games per seed**
-across the four terrains. Each round contains both phases regardless of initiative.
-
-Victory means defeating the opposing leader, or owning the central fort and both
-central villages through four opposing turns, or six on islands to allow ground
-troops time to reach the objectives. Only completed opposing turns count; losing
-any of the three objectives resets the hold. Optional ruins record visits without
-resources. Territory victory belongs to this testing scenario, not ordinary battles.
-
-Campaigns use the actual authored player and enemy rosters, maps, objectives and
-waves. They begin in chapter one, earn carryover and recall up to four eligible
-survivors using the same ranking. No retries. Four campaigns, three player policies,
-three enemy policies and two diplomacy settings give **72 attempts per seed**.
-Campaign seeds vary policy tie breaks, not authored maps; deterministic classic
-choices can repeat across seeds.
-
-## Recorded data and limits
-
-Reports retain every configuration, outcome, reason, unresolved cap,
-phase command, combat damage/retaliation, casualty, recruit, promotion and initial/
-final state. Phase records include beginning/end rosters with identities, positions,
-HP, XP, action flags and leader mode; gold, ownership, goal progress and full campaign
-state retain mediation escalation and named deaths. Casualties include troops
-recruited and killed during the same phase. Arena goal ownership/holding and optional
-visits are recorded. Endpoint hashes and a SHA-256 source fingerprint permit exact replay.
-
-Aggregates compare race/policy entrants, ordered race matchups and terrain; self-play
-reports seat and initiative diagnostics. Campaign aggregates retain campaign,
-player/enemy policies, diplomacy setting, completion, defeat, unresolved caps,
-escalation and chapter reach. Recruitment, losses and promotions are totaled by
-race/policy entrant. Loss totals include starting and promoted troops, so they are
-not purchase survival percentages.
-
-Bootstrap intervals resample complete seed blocks, preserving seat/initiative/map
-correlations. They describe these scenarios and policies, not optimal play or human
-difficulty. More seeds reduce sampling uncertainty, not policy weakness. Partial
-checkpoints retain completed configurations; worker failures are errors, not defeats.
-
-The seed-block intervals belong to the native report's aggregate rows. The
-Python analyzer exports outcome counts and win rates; it does not calculate new
-confidence intervals.
+`checkpoint::recover_outcomes` reads complete index records, rejecting duplicates
+and out-of-range indices. `records::read_detail` validates byte ranges and checksums
+before decoding full details. Comparison summaries omit state hashes while
+preserving actual states, array order and missing-versus-null distinctions.
 
 ## Full gameplay comparison
 
-`scripts/convert-simulation-dump.py` reads complete detail journals using an
-explicit Arrow schema. Supply every journal for a sharded report. The comparator
-uses a one-to-one Polars join on `(kind, config)` and preserves array order within
-matches. Missing or duplicate identities fail comparison. It excludes `stateHash`,
-`elapsedMs`, `elapsedSeconds` and `detail` at match and mission level, and records
-wall time, CPU time and peak memory. Convert each dump once and reuse its Arrow file.
+`scripts/convert-simulation-dump.py` reads detail journals with an explicit Arrow
+schema. `scripts/compare-simulation-dumps.py` uses a one-to-one Polars join on
+`(kind, config)` and preserves array order. Missing or duplicate identities fail.
+It excludes `stateHash`, `elapsedMs`, `elapsedSeconds` and `detail` at match and
+mission level, and records wall time, CPU time and peak memory.
 
-See [AI policy implementation](../../../rust/src/ai/README.md) for planning
-behavior and [authored game data](../../../rust/data/README.md) for current stats.
+Planning internals are in [AI policy implementation](../../../rust/src/ai/README.md);
+content loading is in [authored game data](../../../rust/data/README.md).

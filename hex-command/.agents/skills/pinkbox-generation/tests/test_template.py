@@ -16,8 +16,34 @@ spec = importlib.util.spec_from_file_location('extract', ROOT / '.agents/skills/
 extract = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(extract)
 
+spec = importlib.util.spec_from_file_location('enhancement', ROOT / '.agents/skills/pinkbox-enhancement/scripts/prepare.py')
+enhancement = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(enhancement)
+
 
 class OutputPalette(unittest.TestCase):
+    def test_enhancement_preserves_pose_metadata_independently_of_color_lock(self):
+        (ROOT / 'tmp').mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=ROOT / 'tmp') as directory:
+            directory = Path(directory)
+            source = directory / 'sprite.txt'
+            source.write_text(('B' + '.' * 63 + '\n') * 64)
+            materials = {'.': [0, 0, 0, 0], 'B': [99, 63, 37, 255]}
+            palette = directory / 'palette.json'
+            palette.write_text(json.dumps({**materials, 'flying': True}))
+            styles = [str(source), str(source)]
+            manifest = enhancement.prepare(str(source), directory / 'inherited.png', ['Revised'], styles)
+            self.assertIs(manifest['slots'][0]['flying'], True)
+            # A palette supplied just to lock colors must not replace pose metadata.
+            locked = directory / 'colors.json'
+            locked.write_text(json.dumps(materials))
+            manifest = enhancement.prepare(str(source), directory / 'locked.png', ['Revised'], styles,
+                                           output_palette=locked)
+            self.assertIs(manifest['slots'][0]['flying'], True)
+            manifest = enhancement.prepare(str(source), directory / 'grounded.png', ['Revised'], styles,
+                                           flying=False)
+            self.assertIs(manifest['slots'][0]['flying'], False)
+
     def test_extraction_requires_canvas_bottom_contact_unless_flying(self):
         (ROOT / 'tmp').mkdir(exist_ok=True)
         with tempfile.TemporaryDirectory(dir=ROOT / 'tmp') as directory:

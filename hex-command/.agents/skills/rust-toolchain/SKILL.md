@@ -18,5 +18,4 @@ node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts \
 Only when persistent direct-shell setup is requested, use
 `npm run toolchain:setup`. This installs environment hooks and managed wrappers
 in the user's home; it leaves existing unmanaged wrappers alone. Routine build
-and formatting need only the command wrapper. Use simulations as needed for
-balance work, following the [combat simulation skill](../combat-simulation/SKILL.md).
+and formatting need only the command wrapper.

@@ -5,17 +5,16 @@ description: Run Hex Command combat simulations for balance work and analyze sav
 
 # Combat simulation
 
-Tell the user when applying this skill. Work from the `hex-command/` project root.
-Use the existing runner and analyzer. See [usage.md](usage.md) for commands and
-CLI options, [implementation.md](implementation.md) for internal contracts and
-recording details, and the [Rust toolchain skill](../rust-toolchain/SKILL.md) for builds.
+Work from the `hex-command/` project root using the existing runner and analyzer.
+Read [usage.md](usage.md) for running, analyzing, comparing or recovering reports.
+For analyzer/harness changes or debugging, read [implementation.md](implementation.md).
+Use the [Rust toolchain skill](../rust-toolchain/SKILL.md) for build problems.
 
 ## Scope
 
-Run relevant simulations when exploring or validating balance; do not wait for
-separate permission. Follow the user's selected races, maps, policies, seeds and
-limits. For unspecified scope, start with the default two-seed arena batch;
-include campaigns when relevant. `ai:full` runs arenas and campaigns with ten seeds.
+Follow the user's selected races, maps, policies, seeds and limits.
+For unspecified scope, start with the default arena batch;
+include campaigns when relevant.
 Documentation or analyzer-only work does not need a new balance batch.
 
 Before running, inspect `rust/data/simulation/rosters.json` and `arena.json`.
@@ -31,7 +30,7 @@ commands to build and invoke the native harness. Record which data and engine
 were used; pass `--data-dir` when using data from another checkout.
 
 ```sh
-npm run ai:combat -- --seeds 10 --out artifacts/current
+npm run ai:combat -- --out artifacts/current
 npm run ai:analyze -- artifacts/current/report.json \
   --baseline artifacts/previous/report.json --out artifacts/current/analytics
 ```
