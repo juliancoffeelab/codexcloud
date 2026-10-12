@@ -33,6 +33,19 @@ class SavedReportComparison(unittest.TestCase):
             a = save("a", detail)
             b = save("b", detail, reverse=True)
             self.assertTrue(comparator.compare(a, b)["equal"])
+            for path in (a,b):
+                report = json.loads(path.read_text())
+                second = {**report["outcomes"][0],"config":{"seed":2}}
+                report["outcomes"].append(second)
+                path.write_text(json.dumps(report))
+            self.assertTrue(comparator.compare(a,b)["outcomeOrderEqual"])
+            report = json.loads(b.read_text())
+            report["outcomes"].reverse()
+            b.write_text(json.dumps(report))
+            with self.assertRaisesRegex(ValueError,"Outcome array order"):
+                comparator.compare(a,b)
+            a = save("a",detail)
+            b = save("b",detail)
             for changed in [
                 {"commands": ["attack", "move"], "state": detail["state"]},
                 {"commands": detail["commands"], "state": {"hp": 2}},
