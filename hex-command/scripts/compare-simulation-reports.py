@@ -61,6 +61,8 @@ def compare(baseline, current):
     left, right = outcomes(a), outcomes(b)
     if left.keys() != right.keys():
         raise ValueError("Match configurations differ")
+    if list(left) != list(right):
+        raise ValueError("Outcome array order differs")
     if canonical(without(a, (*RUN_METADATA, "outcomes"))) != canonical(without(b, (*RUN_METADATA, "outcomes"))):
         raise ValueError("Report aggregates or configuration differ")
     readers = {}
@@ -81,6 +83,7 @@ def compare(baseline, current):
             reader.close()
     return {
         "equal": True, "matches": len(left), "byteIdenticalDetails": byte_identical,
+        "outcomeOrderEqual": True,
         "comparison": "all gameplay fields and ordered arrays; JSON object key order ignored",
         "excludedRunMetadata": RUN_METADATA, "excludedOutcomeMetadata": OUTCOME_METADATA,
         "baselineWallSeconds": a["elapsedSeconds"], "currentWallSeconds": b["elapsedSeconds"],
