@@ -4174,7 +4174,7 @@
     ],
     "excluded": ["hex-command/src/save/migration/legacy/data/developer-v1.json"]
   },
-  "finalComparison": {
+  "migrationComparison": {
     "before": "e59d224",
     "after": "40dde21",
     "wholeAuthoredCode": {
@@ -6177,19 +6177,2077 @@
       "hex-command/src/save/migration/legacy/data/developer-v1.json"
     ]
   },
+  "developmentWorkflow": {
+    "before": "986bca08fcdae3d7a88bcda0d7b002abb46a12aa",
+    "after": "12f11906670586f2c014110e8bf04f6416d5ac8b",
+    "wholeAuthoredCode": {
+      "added": 330,
+      "removed": 0,
+      "net": 330
+    },
+    "wholeCodeFiles": [
+      {
+        "path": "hex-command/scripts/dev.ts",
+        "added": 137,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/scripts/test-budget.ts",
+        "added": 1,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/dev.test.ts",
+        "added": 192,
+        "removed": 0,
+        "publicInterface": false
+      }
+    ],
+    "handwrittenFrontend": {
+      "added": 0,
+      "removed": 0,
+      "net": 0
+    },
+    "frontendRuntime": {
+      "added": 0,
+      "removed": 0,
+      "net": 0
+    },
+    "files": [],
+    "excluded": []
+  },
+  "finalComparison": {
+    "before": "e59d224d829607f48f0ed62e14c2ed09a40e25ab",
+    "after": "12f11906670586f2c014110e8bf04f6416d5ac8b",
+    "wholeAuthoredCode": {
+      "added": 11657,
+      "removed": 9142,
+      "net": 2515
+    },
+    "wholeCodeFiles": [
+      {
+        "path": "hex-command/frontend/App.d.ts",
+        "added": 4,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/App.re",
+        "added": 282,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/App.rei",
+        "added": 4,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Application.d.ts",
+        "added": 3,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Application.ml",
+        "added": 43,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Application.mli",
+        "added": 5,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Art.d.ts",
+        "added": 12,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Art.ml",
+        "added": 43,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Art.mli",
+        "added": 15,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Audio.d.ts",
+        "added": 11,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Audio.ml",
+        "added": 244,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Audio.mli",
+        "added": 15,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Battlefield.re",
+        "added": 558,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Battlefield.rei",
+        "added": 3,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Boot.ml",
+        "added": 40,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Catalog.d.ts",
+        "added": 22,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Catalog.ml",
+        "added": 57,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Catalog.mli",
+        "added": 32,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Dialogs.re",
+        "added": 380,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Dialogs.rei",
+        "added": 26,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Fault.ml",
+        "added": 4,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Fault.mli",
+        "added": 3,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Frozen.ml",
+        "added": 8,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Frozen.mli",
+        "added": 5,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Geometry.d.ts",
+        "added": 12,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Geometry.ml",
+        "added": 27,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Geometry.mli",
+        "added": 13,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Header.re",
+        "added": 116,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Header.rei",
+        "added": 24,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Main.ml",
+        "added": 46,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Motion.d.ts",
+        "added": 3,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Motion.ml",
+        "added": 63,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Motion.mli",
+        "added": 5,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Native.d.ts",
+        "added": 43,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Native.ml",
+        "added": 228,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Native.mli",
+        "added": 62,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Panels.re",
+        "added": 707,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Panels.rei",
+        "added": 23,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Presentation.d.ts",
+        "added": 35,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Presentation.ml",
+        "added": 261,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Presentation.mli",
+        "added": 63,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Save.d.ts",
+        "added": 17,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Save.ml",
+        "added": 155,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Save.mli",
+        "added": 44,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Save_legacy.d.ts",
+        "added": 5,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Save_legacy.ml",
+        "added": 301,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Save_legacy.mli",
+        "added": 10,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Session.d.ts",
+        "added": 51,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Session.ml",
+        "added": 355,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Session.mli",
+        "added": 40,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Shell.d.ts",
+        "added": 3,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Shell.re",
+        "added": 32,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Shell.rei",
+        "added": 3,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Startup.d.ts",
+        "added": 16,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Startup.ml",
+        "added": 48,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Startup.mli",
+        "added": 15,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Story.d.ts",
+        "added": 15,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Story.ml",
+        "added": 124,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Story.mli",
+        "added": 15,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Terrain.d.ts",
+        "added": 30,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Terrain.ml",
+        "added": 230,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Terrain.mli",
+        "added": 50,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Terrain_plan.d.ts",
+        "added": 16,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Terrain_plan.ml",
+        "added": 117,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Terrain_plan.mli",
+        "added": 30,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Terrain_prefetch.d.ts",
+        "added": 10,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Terrain_prefetch.ml",
+        "added": 83,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Terrain_prefetch.mli",
+        "added": 18,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Ui.re",
+        "added": 155,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Viewport.d.ts",
+        "added": 7,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Viewport.ml",
+        "added": 82,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Viewport.mli",
+        "added": 17,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/index.html",
+        "added": 2,
+        "removed": 2,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/public/startup.js",
+        "added": 0,
+        "removed": 41,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/scripts/content.ts",
+        "added": 6,
+        "removed": 12,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/scripts/dev.ts",
+        "added": 137,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/scripts/frontend-boundary.ts",
+        "added": 70,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/scripts/frontend-check.ts",
+        "added": 60,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/scripts/frontend-format.ts",
+        "added": 55,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/scripts/frontend-paths.ts",
+        "added": 11,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/scripts/melange-bindings.ts",
+        "added": 306,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/scripts/style.ts",
+        "added": 30,
+        "removed": 17,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/scripts/sync-deltas.ts",
+        "added": 73,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/scripts/terrain-prebuild.ts",
+        "added": 54,
+        "removed": 40,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/scripts/test-budget.ts",
+        "added": 372,
+        "removed": 24,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/scripts/verify.ts",
+        "added": 61,
+        "removed": 47,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/App.svelte",
+        "added": 0,
+        "removed": 169,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/Startup.svelte",
+        "added": 0,
+        "removed": 84,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/battle-app.ts",
+        "added": 0,
+        "removed": 16,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/controller/battle.ts",
+        "added": 0,
+        "removed": 635,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/controller/feedback.ts",
+        "added": 0,
+        "removed": 77,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/controller/tools.ts",
+        "added": 0,
+        "removed": 211,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/controller/view.ts",
+        "added": 0,
+        "removed": 91,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/authored-content.ts",
+        "added": 0,
+        "removed": 54,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/campaign-data.ts",
+        "added": 0,
+        "removed": 10,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/campaign-progress.ts",
+        "added": 0,
+        "removed": 152,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/catalog.ts",
+        "added": 0,
+        "removed": 27,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/immutable.ts",
+        "added": 0,
+        "removed": 18,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/live-game.ts",
+        "added": 0,
+        "removed": 333,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/maps.ts",
+        "added": 0,
+        "removed": 14,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/native-engine.ts",
+        "added": 0,
+        "removed": 186,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/races.ts",
+        "added": 0,
+        "removed": 5,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/types.ts",
+        "added": 0,
+        "removed": 409,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/undo.ts",
+        "added": 0,
+        "removed": 68,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/view.ts",
+        "added": 0,
+        "removed": 46,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/main.ts",
+        "added": 0,
+        "removed": 7,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/art.ts",
+        "added": 0,
+        "removed": 108,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/combat.ts",
+        "added": 0,
+        "removed": 12,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/icons.ts",
+        "added": 0,
+        "removed": 22,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/motion.ts",
+        "added": 0,
+        "removed": 49,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/sound.ts",
+        "added": 0,
+        "removed": 234,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/terrain-connections.ts",
+        "added": 0,
+        "removed": 58,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/terrain-layout.ts",
+        "added": 0,
+        "removed": 28,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/terrain-map.ts",
+        "added": 0,
+        "removed": 273,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/terrain-prefetch.ts",
+        "added": 0,
+        "removed": 91,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/terrain-preload.ts",
+        "added": 0,
+        "removed": 17,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/unit-ability.ts",
+        "added": 0,
+        "removed": 19,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/load.ts",
+        "added": 0,
+        "removed": 40,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/migration/index.ts",
+        "added": 0,
+        "removed": 39,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/migration/legacy/board.ts",
+        "added": 0,
+        "removed": 76,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/migration/legacy/catalog.ts",
+        "added": 0,
+        "removed": 42,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/migration/legacy/layouts.ts",
+        "added": 0,
+        "removed": 21,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/migration/legacy/snapshot.ts",
+        "added": 0,
+        "removed": 589,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/migration/v1-to-v2.ts",
+        "added": 0,
+        "removed": 30,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/migration/v2-to-v3.ts",
+        "added": 0,
+        "removed": 26,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/migration/v3-to-v4.ts",
+        "added": 0,
+        "removed": 57,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/schema.ts",
+        "added": 0,
+        "removed": 28,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/storage.ts",
+        "added": 0,
+        "removed": 28,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/write.ts",
+        "added": 0,
+        "removed": 17,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/style.css",
+        "added": 76,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/terrain-prebuilt.d.ts",
+        "added": 0,
+        "removed": 4,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/src/ui/Arsenal.svelte",
+        "added": 0,
+        "removed": 50,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/AttackChoice.svelte",
+        "added": 0,
+        "removed": 66,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/AttackChoices.svelte",
+        "added": 0,
+        "removed": 21,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/BattleBar.svelte",
+        "added": 0,
+        "removed": 104,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/Battlefield.svelte",
+        "added": 0,
+        "removed": 411,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/CampaignPanel.svelte",
+        "added": 0,
+        "removed": 175,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/CampaignPicker.svelte",
+        "added": 0,
+        "removed": 40,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/Dialogue.svelte",
+        "added": 0,
+        "removed": 129,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/HealthForecast.svelte",
+        "added": 0,
+        "removed": 20,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/MapPicker.svelte",
+        "added": 0,
+        "removed": 58,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/SettingsDialog.svelte",
+        "added": 0,
+        "removed": 124,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/TerrainPanel.svelte",
+        "added": 0,
+        "removed": 62,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/TurnBar.svelte",
+        "added": 0,
+        "removed": 49,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/UnitCard.svelte",
+        "added": 0,
+        "removed": 56,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/UnitDetails.svelte",
+        "added": 0,
+        "removed": 88,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/UnitPanel.svelte",
+        "added": 0,
+        "removed": 74,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/arsenal-view.ts",
+        "added": 0,
+        "removed": 26,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/battlefield-view.ts",
+        "added": 0,
+        "removed": 125,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/combat-view.ts",
+        "added": 0,
+        "removed": 145,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/geometry.ts",
+        "added": 0,
+        "removed": 39,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/terrain-effects.ts",
+        "added": 0,
+        "removed": 25,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/terrain-view.ts",
+        "added": 0,
+        "removed": 126,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/unit-panel-view.ts",
+        "added": 0,
+        "removed": 110,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/svelte.config.ts",
+        "added": 0,
+        "removed": 6,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/art.test.ts",
+        "added": 70,
+        "removed": 87,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/battlefield.test.ts",
+        "added": 104,
+        "removed": 126,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/campaign.test.ts",
+        "added": 43,
+        "removed": 36,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/coastal-campaign.test.ts",
+        "added": 14,
+        "removed": 8,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/combat.test.ts",
+        "added": 138,
+        "removed": 161,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/controller.test.ts",
+        "added": 549,
+        "removed": 379,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/dev.test.ts",
+        "added": 192,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/fixture-view.ts",
+        "added": 2,
+        "removed": 5,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/game-fixture.ts",
+        "added": 189,
+        "removed": 110,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/green-campaign.test.ts",
+        "added": 5,
+        "removed": 2,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/legacy-save.ts",
+        "added": 14,
+        "removed": 15,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/live-game.test.ts",
+        "added": 195,
+        "removed": 163,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/maps.test.ts",
+        "added": 27,
+        "removed": 48,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/melange-bindings.test.ts",
+        "added": 106,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/movement-ui.test.ts",
+        "added": 33,
+        "removed": 73,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/native-engine.test.ts",
+        "added": 170,
+        "removed": 104,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/native-fixture.ts",
+        "added": 22,
+        "removed": 31,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/presentation-fixture.ts",
+        "added": 59,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/progression.test.ts",
+        "added": 28,
+        "removed": 13,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/river.test.ts",
+        "added": 6,
+        "removed": 6,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/save.test.ts",
+        "added": 412,
+        "removed": 283,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/setup-wasm.ts",
+        "added": 2,
+        "removed": 1,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/sound.test.ts",
+        "added": 202,
+        "removed": 30,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/startup.test.ts",
+        "added": 278,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/terrain-connections.test.ts",
+        "added": 94,
+        "removed": 58,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/terrain-map.test.ts",
+        "added": 416,
+        "removed": 182,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/terrain-prefetch.test.ts",
+        "added": 370,
+        "removed": 63,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/terrain.test.ts",
+        "added": 38,
+        "removed": 39,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/ui.test.ts",
+        "added": 442,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/undo.test.ts",
+        "added": 163,
+        "removed": 103,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/unit-ability.test.ts",
+        "added": 15,
+        "removed": 18,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/view.test.ts",
+        "added": 74,
+        "removed": 164,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/tests/viewport.test.ts",
+        "added": 220,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/vite.config.ts",
+        "added": 3,
+        "removed": 2,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/vitest.config.ts",
+        "added": 5,
+        "removed": 0,
+        "publicInterface": false
+      }
+    ],
+    "handwrittenFrontend": {
+      "added": 5720,
+      "removed": 6684,
+      "net": -964
+    },
+    "frontendRuntime": {
+      "added": 4865,
+      "removed": 6680,
+      "net": -1815
+    },
+    "files": [
+      {
+        "path": "hex-command/frontend/App.d.ts",
+        "added": 4,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/App.re",
+        "added": 282,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/App.rei",
+        "added": 4,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Application.d.ts",
+        "added": 3,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Application.ml",
+        "added": 43,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Application.mli",
+        "added": 5,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Art.d.ts",
+        "added": 12,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Art.ml",
+        "added": 43,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Art.mli",
+        "added": 15,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Audio.d.ts",
+        "added": 11,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Audio.ml",
+        "added": 244,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Audio.mli",
+        "added": 15,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Battlefield.re",
+        "added": 558,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Battlefield.rei",
+        "added": 3,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Boot.ml",
+        "added": 40,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Catalog.d.ts",
+        "added": 22,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Catalog.ml",
+        "added": 57,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Catalog.mli",
+        "added": 32,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Dialogs.re",
+        "added": 380,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Dialogs.rei",
+        "added": 26,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Fault.ml",
+        "added": 4,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Fault.mli",
+        "added": 3,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Frozen.ml",
+        "added": 8,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Frozen.mli",
+        "added": 5,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Geometry.d.ts",
+        "added": 12,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Geometry.ml",
+        "added": 27,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Geometry.mli",
+        "added": 13,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Header.re",
+        "added": 116,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Header.rei",
+        "added": 24,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Main.ml",
+        "added": 46,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Motion.d.ts",
+        "added": 3,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Motion.ml",
+        "added": 63,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Motion.mli",
+        "added": 5,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Native.d.ts",
+        "added": 43,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Native.ml",
+        "added": 228,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Native.mli",
+        "added": 62,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Panels.re",
+        "added": 707,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Panels.rei",
+        "added": 23,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Presentation.d.ts",
+        "added": 35,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Presentation.ml",
+        "added": 261,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Presentation.mli",
+        "added": 63,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Save.d.ts",
+        "added": 17,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Save.ml",
+        "added": 155,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Save.mli",
+        "added": 44,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Save_legacy.d.ts",
+        "added": 5,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Save_legacy.ml",
+        "added": 301,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Save_legacy.mli",
+        "added": 10,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Session.d.ts",
+        "added": 51,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Session.ml",
+        "added": 355,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Session.mli",
+        "added": 40,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Shell.d.ts",
+        "added": 3,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Shell.re",
+        "added": 32,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Shell.rei",
+        "added": 3,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Startup.d.ts",
+        "added": 16,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Startup.ml",
+        "added": 48,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Startup.mli",
+        "added": 15,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Story.d.ts",
+        "added": 15,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Story.ml",
+        "added": 124,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Story.mli",
+        "added": 15,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Terrain.d.ts",
+        "added": 30,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Terrain.ml",
+        "added": 230,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Terrain.mli",
+        "added": 50,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Terrain_plan.d.ts",
+        "added": 16,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Terrain_plan.ml",
+        "added": 117,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Terrain_plan.mli",
+        "added": 30,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Terrain_prefetch.d.ts",
+        "added": 10,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Terrain_prefetch.ml",
+        "added": 83,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Terrain_prefetch.mli",
+        "added": 18,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Ui.re",
+        "added": 155,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Viewport.d.ts",
+        "added": 7,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/frontend/Viewport.ml",
+        "added": 82,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/frontend/Viewport.mli",
+        "added": 17,
+        "removed": 0,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/public/startup.js",
+        "added": 0,
+        "removed": 41,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/App.svelte",
+        "added": 0,
+        "removed": 169,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/Startup.svelte",
+        "added": 0,
+        "removed": 84,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/battle-app.ts",
+        "added": 0,
+        "removed": 16,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/controller/battle.ts",
+        "added": 0,
+        "removed": 635,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/controller/feedback.ts",
+        "added": 0,
+        "removed": 77,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/controller/tools.ts",
+        "added": 0,
+        "removed": 211,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/controller/view.ts",
+        "added": 0,
+        "removed": 91,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/authored-content.ts",
+        "added": 0,
+        "removed": 54,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/campaign-data.ts",
+        "added": 0,
+        "removed": 10,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/campaign-progress.ts",
+        "added": 0,
+        "removed": 152,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/catalog.ts",
+        "added": 0,
+        "removed": 27,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/immutable.ts",
+        "added": 0,
+        "removed": 18,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/live-game.ts",
+        "added": 0,
+        "removed": 333,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/maps.ts",
+        "added": 0,
+        "removed": 14,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/native-engine.ts",
+        "added": 0,
+        "removed": 186,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/races.ts",
+        "added": 0,
+        "removed": 5,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/types.ts",
+        "added": 0,
+        "removed": 409,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/undo.ts",
+        "added": 0,
+        "removed": 68,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/game/view.ts",
+        "added": 0,
+        "removed": 46,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/main.ts",
+        "added": 0,
+        "removed": 7,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/art.ts",
+        "added": 0,
+        "removed": 108,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/combat.ts",
+        "added": 0,
+        "removed": 12,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/icons.ts",
+        "added": 0,
+        "removed": 22,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/motion.ts",
+        "added": 0,
+        "removed": 49,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/sound.ts",
+        "added": 0,
+        "removed": 234,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/terrain-connections.ts",
+        "added": 0,
+        "removed": 58,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/terrain-layout.ts",
+        "added": 0,
+        "removed": 28,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/terrain-map.ts",
+        "added": 0,
+        "removed": 273,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/terrain-prefetch.ts",
+        "added": 0,
+        "removed": 91,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/terrain-preload.ts",
+        "added": 0,
+        "removed": 17,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/presentation/unit-ability.ts",
+        "added": 0,
+        "removed": 19,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/load.ts",
+        "added": 0,
+        "removed": 40,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/migration/index.ts",
+        "added": 0,
+        "removed": 39,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/migration/legacy/board.ts",
+        "added": 0,
+        "removed": 76,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/migration/legacy/catalog.ts",
+        "added": 0,
+        "removed": 42,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/migration/legacy/layouts.ts",
+        "added": 0,
+        "removed": 21,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/migration/legacy/snapshot.ts",
+        "added": 0,
+        "removed": 589,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/migration/v1-to-v2.ts",
+        "added": 0,
+        "removed": 30,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/migration/v2-to-v3.ts",
+        "added": 0,
+        "removed": 26,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/migration/v3-to-v4.ts",
+        "added": 0,
+        "removed": 57,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/schema.ts",
+        "added": 0,
+        "removed": 28,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/storage.ts",
+        "added": 0,
+        "removed": 28,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/save/write.ts",
+        "added": 0,
+        "removed": 17,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/style.css",
+        "added": 76,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/terrain-prebuilt.d.ts",
+        "added": 0,
+        "removed": 4,
+        "publicInterface": true
+      },
+      {
+        "path": "hex-command/src/ui/Arsenal.svelte",
+        "added": 0,
+        "removed": 50,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/AttackChoice.svelte",
+        "added": 0,
+        "removed": 66,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/AttackChoices.svelte",
+        "added": 0,
+        "removed": 21,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/BattleBar.svelte",
+        "added": 0,
+        "removed": 104,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/Battlefield.svelte",
+        "added": 0,
+        "removed": 411,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/CampaignPanel.svelte",
+        "added": 0,
+        "removed": 175,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/CampaignPicker.svelte",
+        "added": 0,
+        "removed": 40,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/Dialogue.svelte",
+        "added": 0,
+        "removed": 129,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/HealthForecast.svelte",
+        "added": 0,
+        "removed": 20,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/MapPicker.svelte",
+        "added": 0,
+        "removed": 58,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/SettingsDialog.svelte",
+        "added": 0,
+        "removed": 124,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/TerrainPanel.svelte",
+        "added": 0,
+        "removed": 62,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/TurnBar.svelte",
+        "added": 0,
+        "removed": 49,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/UnitCard.svelte",
+        "added": 0,
+        "removed": 56,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/UnitDetails.svelte",
+        "added": 0,
+        "removed": 88,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/UnitPanel.svelte",
+        "added": 0,
+        "removed": 74,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/arsenal-view.ts",
+        "added": 0,
+        "removed": 26,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/battlefield-view.ts",
+        "added": 0,
+        "removed": 125,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/combat-view.ts",
+        "added": 0,
+        "removed": 145,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/geometry.ts",
+        "added": 0,
+        "removed": 39,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/terrain-effects.ts",
+        "added": 0,
+        "removed": 25,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/terrain-view.ts",
+        "added": 0,
+        "removed": 126,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/src/ui/unit-panel-view.ts",
+        "added": 0,
+        "removed": 110,
+        "publicInterface": false
+      }
+    ],
+    "excluded": [
+      "hex-command/frontend/Domain.ml",
+      "hex-command/frontend/Domain.mli",
+      "hex-command/frontend/dune",
+      "hex-command/src/save/migration/legacy/data/developer-v1.json"
+    ]
+  },
   "validation": {
-    "frontendTests": 237,
+    "frontendTests": 241,
     "nativeRustTests": 74,
     "pythonTests": 39,
     "nativeExecutables": 2,
     "rustdocIncluded": true,
-    "testCommandSeconds": 7.251,
-    "verificationCommandSeconds": 14.851,
+    "testCommandSeconds": 10.738,
+    "verificationCommandSeconds": 14.693,
     "budgetSeconds": 20,
     "internalDeadlineSeconds": 18,
     "productionMaps": 16,
     "browserAutomationRun": false,
     "campaignTournamentBatchesRun": false,
-    "compiledOutputVerification": "Authoritative prepare builds WASM, artwork, OCaml, Vite and native test executables; timed verification checks source/artifact digests and runs strict compiler checks, style, content and every test."
+    "compiledOutputVerification": "Authoritative prepare builds WASM, artwork, OCaml, Vite and native test executables; timed verification checks source/artifact digests and runs strict compiler checks, style, content and every test.",
+    "developmentHttpWebSocketProbe": true,
+    "developmentSupervisorTests": 4
   }
 }

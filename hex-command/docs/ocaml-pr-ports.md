@@ -12,7 +12,7 @@ Runtime means handwritten frontend implementation, including CSS and startup Jav
 | ------------------------------------------ | -----: | ------: | ----: |
 | Frontend runtime                           |  +4865 |   −6680 | -1815 |
 | Frontend including interfaces              |  +5720 |   −6684 |  -964 |
-| Whole authored code, including tests/tools | +11327 |   −9142 | +2185 |
+| Whole authored code, including tests/tools | +11657 |   −9142 | +2515 |
 
 **Only the frontend has a negative delta.** The whole-code count increases because it includes the test migration, additional regressions and build tooling. There are no handwritten TypeScript/JavaScript application helpers. Runtime TypeScript is generated data-only sprite metadata; Rust WASM glue and React are foreign dependencies. The terrain prebuild adapter is Node-only I/O around the same compiled OCaml renderer.
 
@@ -75,13 +75,29 @@ Foreign arrays/dictionaries retain ordinary mutable OCaml types; runtime freezin
 
 ## Validation and the 20-second requirement
 
-- Complete `npm test`: **7.251 seconds**; 237 frontend tests, 74 native Rust tests and 39 Python checks pass. Both native executables and Rustdoc discovery run, including targets with no current tests.
-- Complete `npm run verify`: **14.851 seconds**; every test plus strict TypeScript/WASM ABI, exact generated bindings, OCaml/Reason/JSON/Rust formatting, whitespace, content and prepared artifact freshness checks pass.
+- Complete `npm test`: **10.738 seconds**; 241 frontend tests, 74 native Rust tests and 39 Python checks pass. Both native executables and Rustdoc discovery run, including targets with no current tests.
+- Complete `npm run verify`: **14.693 seconds**; every test plus strict TypeScript/WASM ABI, exact generated bindings, OCaml/Reason/JSON/Rust formatting, whitespace, content and prepared artifact freshness checks pass.
 - Explicit `npm run verify:prepare` compiles the pinned OCaml toolchain, release WASM, authoritative artwork, native test executables and Vite output. Production compilation emitted all 16 authored terrain PNGs. Timed checks fingerprint source inputs and entire compiled/artwork/bundle file sets; missing, stale, added, removed or corrupted outputs reject. Preparation never runs tests.
 - Verification uses one unchanged 18-second internal deadline, reserving time for npm startup inside the user’s 20-second command limit. Subprocess groups are killed on timeout/interruption. Vitest keeps file isolation; transformed-module caching, three frontend workers, shared TypeScript compilation and parallel independent formatting remove repeated work.
 - No browser automation or campaign/tournament batches were run.
 
 There was no instruction permitting verification over 20 seconds. The old project rules already required the complete test command to stay under 20; the old verification implementation had no aggregate timeout and repeated lifecycle/build work. Failed full runs were terminated and rejected. The rules now explicitly cover every verification invocation; no budget was increased.
+
+## Development workflow follow-up
+
+Commit `12f1190` fixes the development workflow separately from incoming feature ports:
+
+- `npm run dev` owns preparation, ABI regeneration, the Dune watcher and Vite. It prints preparation progress, preserves compiler diagnostics, forwards Vite arguments and releases both process trees on interruption or unexpected service exit.
+- README bootstrap commands install the official standalone Dune 3.21.0 binary and explain prerequisites, first-build work, supported architectures and recovery. The documented installer was exercised, followed by a successful frontend build.
+- Actual HTTP/WebSocket checks confirmed that a Reason edit rebuilt and reached Vite, an intentional compiler error left the watcher alive, and fixing the source recovered without restarting. These were server/compilation checks, not browser automation.
+- Four small subprocess tests cover argument forwarding, interruption with descendants, watcher/server failure and initial preparation failure. Fixtures have independent lifetime and cleanup bounds. Independent code and documentation reviews completed with their findings repaired.
+
+This follow-up adds **330 authored tooling/test lines**: `scripts/dev.ts` +137,
+`scripts/test-budget.ts` +1 and `tests/dev.test.ts` +192. Frontend runtime and
+interface deltas remain unchanged. The machine ledger preserves the original
+migration comparison and records this follow-up separately from the five ports.
+The Dune directory configuration, package scripts and Markdown instructions are
+outside the source-extension counting scope described above.
 
 ## Per-file frontend changes
 
