@@ -1,12 +1,21 @@
 """Prepare one output box with the approved unit as the first anatomy anchor."""
 import argparse
 import importlib.util
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
 spec = importlib.util.spec_from_file_location('pinkbox_template', ROOT / '.agents/skills/pinkbox-generation/scripts/template.py')
 template = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(template)
+
+
+def prepare(base, output, labels, style_anchors, size=64, output_palette=None, flying=None):
+    source = template.matrix_path(base)
+    if flying is None:
+        flying = json.loads((source.parent / 'palette.json').read_text()).get('flying', False)
+    return template.prepare(output, [base, *style_anchors], labels, size, output_palette, flying=flying)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
@@ -16,8 +25,7 @@ if __name__ == '__main__':
     parser.add_argument('--style-anchors', nargs=2, required=True)
     parser.add_argument('--size', type=int, choices=[64], default=64)
     parser.add_argument('--output-palette', type=Path, help='Original material palette for the output, independently of style anchors')
+    parser.add_argument('--flying', action=argparse.BooleanOptionalAction, default=None,
+                        help='Override the approved unit\'s suspended-pose metadata; default preserves it')
     args = parser.parse_args()
-    base = template.matrix_path(args.base)
-    rows = template.render.read_matrix(base)
-    size = args.size
-    template.prepare(args.output, [args.base, *args.style_anchors], args.labels, size, args.output_palette)
+    prepare(args.base, args.output, args.labels, args.style_anchors, args.size, args.output_palette, args.flying)

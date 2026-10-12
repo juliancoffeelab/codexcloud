@@ -60,12 +60,20 @@ export function createSound() {
     if (attackType) return attackType === "archer" ? "attack-bow" : "attack-melee";
     if (unitType === "scout" || unitType === "archer") return "terrain-plains";
     // Give armored soldiers the heavier footstep formerly used by archers.
-    if (unitType === "soldier" || unitType === "warden" || unitType === "boar")
+    if (
+      unitType === "soldier" ||
+      unitType === "warden" ||
+      unitType === "boar" ||
+      unitType === "merfolk-maceguard" ||
+      unitType === "merfolk-maceguard-l2"
+    )
       return "unit-archer";
     if (
       unitType === "wildkeeper" ||
       unitType === "necromancer" ||
       unitType === "skeleton" ||
+      unitType === "skeleton-impact-caster" ||
+      unitType === "skeleton-impact-caster-l2" ||
       unitType === "bonearcher"
     )
       return "unit-commander";

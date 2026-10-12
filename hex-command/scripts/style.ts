@@ -4,10 +4,9 @@ import { toolchainEnvironment } from "../.agents/skills/rust-toolchain/scripts/t
 
 const args = process.argv.slice(2);
 if (args.some((arg) => arg !== "--write")) {
-  console.error("Usage: npm run style, or npm run format to apply formatting.");
+  console.error("Usage: npm run format");
   process.exit(1);
 }
-const write = args.includes("--write");
 const cwd = fileURLToPath(new URL("../", import.meta.url));
 const files = [
   "src",
@@ -15,7 +14,6 @@ const files = [
   "tests/*.ts",
   "*.config.ts",
   "*.json",
-  "README.md",
   "AGENTS.md",
   ".agents/skills/**/*.{md,json,ts}",
   "TODO.md",
@@ -24,9 +22,11 @@ const files = [
   "pixel/art/units/*/*/palette.json",
   "pixel/art/terrain/*/palette.json",
   "pixel/art/portraits/*/palette.json",
-  "docs/ai-simulation.md",
-  "docs/save-deployment.md",
+  "docs/save-migrations.md",
+  "docs/development.md",
+  "docs/terrain-artwork.md",
   "rust/README.md",
+  "rust/src/ai/README.md",
   "rust/data/**/*.{json,md}",
 ];
 const checks = [
@@ -35,7 +35,7 @@ const checks = [
     command: process.execPath,
     args: [
       fileURLToPath(new URL("../node_modules/prettier/bin/prettier.cjs", import.meta.url)),
-      write ? "--write" : "--check",
+      "--write",
       "--cache",
       "--cache-location",
       "node_modules/.cache/hex-command-prettier",
@@ -45,18 +45,14 @@ const checks = [
   {
     name: "Rust formatting",
     command: "cargo",
-    args: ["fmt", "--manifest-path", "rust/Cargo.toml", ...(write ? [] : ["--check"])],
+    args: ["fmt", "--manifest-path", "rust/Cargo.toml"],
   },
-  ...(!write
-    ? [
-        { name: "Unstaged whitespace", command: "git", args: ["diff", "--check", "--", "."] },
-        {
-          name: "Staged whitespace",
-          command: "git",
-          args: ["diff", "--cached", "--check", "--", "."],
-        },
-      ]
-    : []),
+  { name: "Unstaged whitespace", command: "git", args: ["diff", "--check", "--", "."] },
+  {
+    name: "Staged whitespace",
+    command: "git",
+    args: ["diff", "--cached", "--check", "--", "."],
+  },
 ];
 let failed = false;
 for (const check of checks) {

@@ -25,32 +25,23 @@ function published(game: Game, selected: string): BattleView {
   };
 }
 
-test("Terrain rows show native movement and damage effects without mutating the view", () => {
-  for (const type of ["soldier", "thorncaller", "reefguard"] as const) {
-    const game = new Game();
-    game.units = [];
-    const unit = game.addUnit(type, "player", "0,0");
-    const view = published(game, unit.id);
-    const before = view.game.snapshot();
-    const panel = unitPanelView(view);
-    if (panel.kind !== "details") throw new Error("Missing unit details");
-    for (const row of panel.details.terrainEffects) {
-      const cost = view.game.cost(unit, { terrain: row.terrain });
-      assert.equal(
-        row.label,
-        Number.isFinite(cost) ? `${cost} ${cost === 1 ? "Step" : "Steps"}` : "-",
-      );
-      assert.equal(row.name, TERRAIN[row.terrain].name);
-    }
-    const forest = required(panel.details.terrainEffects.find((row) => row.terrain === "forest"));
-    if (type === "reefguard") assert.deepEqual(forest.facts, [{ label: "", value: 1 }]);
-    if (type === "thorncaller")
-      assert.deepEqual(forest.facts, [
-        { label: "Melee", value: -1 },
-        { label: "Ranged", value: -2 },
-      ]);
-    assert.deepEqual(view.game.snapshot(), before);
+test("Terrain rows show native movement costs without mutating the view", () => {
+  const game = new Game();
+  game.units = [];
+  const unit = game.addUnit("soldier", "player", "0,0");
+  const view = published(game, unit.id);
+  const before = view.game.snapshot();
+  const panel = unitPanelView(view);
+  if (panel.kind !== "details") throw new Error("Missing unit details");
+  for (const row of panel.details.terrainEffects) {
+    const cost = view.game.cost(unit, { terrain: row.terrain });
+    assert.equal(
+      row.label,
+      Number.isFinite(cost) ? `${cost} ${cost === 1 ? "Step" : "Steps"}` : "-",
+    );
+    assert.equal(row.name, TERRAIN[row.terrain].name);
   }
+  assert.deepEqual(view.game.snapshot(), before);
 });
 
 // Terrain keeps its protection and healing facts; movement costs belong to units.

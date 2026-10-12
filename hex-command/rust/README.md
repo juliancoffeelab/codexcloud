@@ -1,72 +1,14 @@
-# Rust game core and simulation harness
+# Rust game core
 
-The JSON files in [`data/`](data/README.md) are the source of rules and scenario
-content. Rust reads them directly. There is no TypeScript export step.
+[Authored JSON](data/README.md) supplies rules and scenario content directly.
+`data` owns definitions and snapshots, `logic` owns battle commands and campaign
+execution, and `ai` owns classic/rush/mixed planning. `simulation` owns scheduling,
+workers and records; `protocol` defines the browser transfer contract.
 
-The core is divided into `data` (definitions and owned snapshots), `logic`
-(commands, movement, combat, turns and campaign execution), and `ai` (complete
-classic/rush/mixed policies). `simulation` owns scheduling, scoped workers,
-journals and reports. `protocol` defines the browser transfer contract.
-
-A host owns `Catalog` and passes `&Catalog` to operations. Native workers borrow
-one catalog through scoped threads; each match owns its state and planning
-workspace. The engine uses no `Arc` or mutex. Immutable geometry, effective
-missions and distance fields use local `Rc` within a single-threaded match.
-
-## Native commands
-
-Run from the project directory:
-
-```sh
-npm run ai:rust:build
-npm run ai:schedule -- --mode full --seeds 10
-npm run ai:simulate -- --mode arena --seeds 2 --out artifacts/arena.json
-npm run ai:simulate -- --mode campaign --seeds 2 --out artifacts/campaign.json
-npm run ai:full -- --out artifacts/full.json
-npm run ai:simulate -- --replay artifacts/full.json
-```
-
-Simulation batches require an explicit user request. `--schedule-only` enumerates
-configurations without running matches. The ten-seed default full schedule has
-11,520 arena matches and 720 campaign attempts.
-
-npm builds and invokes the binary; it does not schedule or aggregate simulations.
-Rust respects the CPU quota, limits workers to eight, and writes complete
-byte-indexed, SHA-256 checked JSONL journals plus compact JSON/Markdown reports.
-Records contain every action, combat, roster, objective and endpoint state. A
-bounded channel limits in-flight results; workers never share mutable battles.
-
-Progress uses an append-only `.outcomes.jsonl` index and a constant-size
-`.partial.json` snapshot. The final report retains its existing schema. See
-[recording and recovery](src/simulation/README.md) for journal formats and
-interrupted-run recovery.
-
-`--replay` requires the recorded engine/content fingerprint and reruns the recorded
-matches. Cross-engine comparison instead uses saved detailed journals through the
-Arrow workflow below; it does not execute matches.
-
-```sh
-uv run --with pyarrow scripts/convert-simulation-dump.py artifacts/baseline.arrow artifacts/baseline.details.jsonl
-uv run --with pyarrow scripts/convert-simulation-dump.py artifacts/current.arrow artifacts/current.details.jsonl
-uv run --with pyarrow --with polars==2.0.0 scripts/compare-simulation-dumps.py artifacts/baseline.arrow artifacts/current.arrow
-```
-
-The converter reads JSONL with an explicit schema and preserves record order.
-Supply all detail journals for a sharded report. The comparator matches identities
-with a one-to-one Polars join, gathers Arrow rows and compares gameplay values
-without sorting. Missing or duplicate identities fail comparison; arrays within
-matches retain their order. It excludes only `stateHash`, `elapsedMs`,
-`elapsedSeconds` and `detail` at the match and mission level, and records per-stage
-wall time, CPU time and peak memory. Convert each saved dump once and reuse its
-Arrow file for subsequent comparisons.
-
-`HEX_COMMAND_DATA_ROOT` selects another catalog directory. Otherwise native loading
-uses the crate's data directory, independent of the working directory. JSON edits
-are read at the next load without recompiling. `--fingerprint` reports the loaded
-content fingerprint separately from the compiled engine fingerprint.
-
-`--stdio` retains the one-request/one-result JSON-line interface for development
-samples. It is not the harness transport.
+A host owns `Catalog` and lends it to operations. Native workers share an immutable
+catalog through scoped threads, while each match owns state and planning workspace.
+Immutable geometry, effective missions and distance fields use local `Rc` inside
+one match; the core needs no shared mutable catalog or synchronization locks.
 
 ## Public core API
 
@@ -132,34 +74,16 @@ Browser persistence has one versioned envelope owned by `src/save/`. The generat
 `SavedGame` checkpoint contains seed, state and optional planner continuation;
 it has no separate format version. Historical conversion runs before native
 restore. Rust validates current battle invariants and never migrates browser saves.
-See [save formats and migration](../docs/save-deployment.md).
+See [save migrations](../docs/save-migrations.md).
 
-## Verification and bounded benchmarks
+## Tests and simulations
 
-`npm run verify` batches style, the WASM package build, UI/types, Rust tests,
-artwork, Vitest and the frontend build. `npm run format`/`style` include Rust and
-authored JSON. Focused Rust tests cover loading, rules, commands, saves, scheduling,
-recording and error paths, including the facade's saved AI continuation; they do
-not launch campaign/tournament batches.
+`npm test` includes native rules, commands, catalog validation, saves, scheduling
+and recording tests together with Python and browser-adapter tests under one
+shared 20-second budget. `npm run check:rust` is available for a focused native run.
+Its WASM feature also compares embedded content with the authored disk catalog.
 
-`npm run ai:benchmark -- --limit 12 --out artifacts/sample.json` runs a bounded
-native sample. `--compare artifacts/sample.json` checks complete result hashes for
-identical configurations; `--alternate` changes seed, initiative and campaign
-policy/diplomacy. The Rust scheduler supplies the sample configurations.
-
-## Tests and unit information
-
-`npm run check:rust` covers game rules, recruitment/economy/healing, movement,
-combat, progression, campaign objectives and native checkpoint validation. Small
-native scenarios live in `src/tests/`; each can exercise several configurations.
-Plain `cargo test` reads its authored catalog from disk, including document lists
-used by catalog mutation tests. `npm run check:rust` also enables the WASM feature
-and verifies actual embedded content against the native disk catalog.
-`npm test` retains controller, save migration/storage, publication, UI, artwork,
-audio and focused WASM integration tests. Browser spot checks stay outside the
-mandatory suite.
-
-The selected unit panel keeps its attacks and permanent damage modifiers. Its
-Terrain effects table shows movement and the resolved additional incoming-damage
-modifiers for each terrain. Numeric abilities such as healing are displayed from
-the catalog, while descriptions explain the unit's role without duplicated stats.
+Use the [simulation guide](../.agents/skills/combat-simulation/usage.md) for commands and comparisons,
+[AI policy reference](src/ai/README.md) for planning behavior,
+[recording reference](../.agents/skills/combat-simulation/usage.md#progress-and-recovery) for journals and recovery, and
+[development guide](../docs/development.md) for full verification and publication.

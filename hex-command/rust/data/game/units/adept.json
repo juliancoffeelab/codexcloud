@@ -3,14 +3,14 @@
   "role": "ranger",
   "name": "Adept",
   "race": "human",
-  "hp": 16,
+  "hp": 17,
   "move": 3,
   "cost": 8,
   "attacks": [
     {
       "id": "spark",
       "name": "Spark",
-      "damage": 6,
+      "damage": 7,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,

@@ -5,12 +5,12 @@
   "race": "merfolk",
   "hp": 16,
   "move": 4,
-  "cost": 10,
+  "cost": 9,
   "attacks": [
     {
       "id": "surge",
       "name": "Surge",
-      "damage": 6,
+      "damage": 5,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,

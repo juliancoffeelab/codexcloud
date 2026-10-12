@@ -1,0 +1,36 @@
+{
+  "id": "skeleton-impact-caster-l2",
+  "role": "ranger",
+  "name": "Skeletal sorcerer",
+  "race": "undead",
+  "hp": 18,
+  "move": 3,
+  "cost": 12,
+  "attacks": [
+    {
+      "id": "boneburst",
+      "name": "Bone burst",
+      "damage": 11,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "staff",
+      "name": "Bone staff",
+      "damage": 4,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": { "blade": 0, "pierce": 0, "impact": 0 },
+  "ability": "Bone mastery",
+  "description": "A veteran skeletal caster with stronger impact magic who still needs cover and a melee screen.",
+  "level": 2,
+  "family": "skeleton-impact-caster",
+  "experienceNeeded": 0,
+  "advancesTo": []
+}

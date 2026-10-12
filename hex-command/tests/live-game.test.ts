@@ -1,13 +1,12 @@
 import { loadBattle as loadLiveBattle } from "../src/save/load";
 import { saveBattle as writeBattle } from "../src/save/write";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import { test, beforeEach, afterEach, vi } from "vitest";
-import { initSync, NativeEngineFactory } from "../rust/pkg/hex_command";
+import { NativeEngineFactory } from "../rust/pkg/hex_command";
 import { createNativeEngineFactory } from "../src/game/native-engine";
 import { LiveGame } from "../src/game/live-game";
 import { BattleController } from "../src/controller/battle";
-import { Game } from "./game-fixture";
+import { Game, developerFixture } from "./game-fixture";
 import { saveBattle, SAVE_KEY } from "./legacy-save";
 import { SAVE_VERSION } from "../src/save/schema";
 import { TestStorage, required } from "./helpers";
@@ -22,10 +21,6 @@ vi.mock("../src/presentation/sound", () => ({
   unlockSound: async () => {},
 }));
 
-// Use the real generated WASM with no browser, server, or simulation batch.
-initSync({
-  module: new Uint8Array(readFileSync(new URL("../rust/pkg/hex_command_bg.wasm", import.meta.url))),
-});
 let factory: ReturnType<typeof createNativeEngineFactory>;
 beforeEach(() => {
   vi.stubGlobal("localStorage", new TestStorage());
@@ -36,12 +31,12 @@ afterEach(() => {
 });
 
 test("Live controller uses native movement/undo and keeps previous UI queries immutable", () => {
+  saveBattle(developerFixture());
   const controller = new BattleController(async () => {}, factory);
   let published: BattleView | undefined;
   const unsubscribe = controller.view.subscribe((view) => {
     published = view;
   });
-  controller.reset("developer");
   const opening = controller.snapshot();
   const previous = required(published).game;
   const actor = required(opening.units.find((unit) => unit.side === "player"));
@@ -83,7 +78,7 @@ test("A native enemy turn cancelled by map selection never acts on the new battl
 });
 
 test("Native combat inspection feeds UI damage breakdowns and old saves migrate once", () => {
-  const old = new Game("developer");
+  const old = developerFixture();
   saveBattle(old);
   const game = loadLiveBattle(factory).game;
   assert.deepEqual(game.snapshot(), old.snapshot());

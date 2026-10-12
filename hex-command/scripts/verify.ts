@@ -2,7 +2,7 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const checks = {
-  style: "style",
+  format: "format",
   content: "content:check",
   wasm: "check:wasm",
   ui: "check:ui",
@@ -16,12 +16,15 @@ type Check = keyof typeof checks;
 // Keep the former group name working for existing callers.
 const requested = process.argv
   .slice(2)
-  .map((name) => (name === "format" ? "style" : name === "bindings" ? "wasm" : name));
+  .map((name) => (name === "style" ? "format" : name === "bindings" ? "wasm" : name));
 if (requested.some((name) => !Object.hasOwn(checks, name))) {
   console.error(`Choose checks from: ${Object.keys(checks).join(", ")}`);
   process.exit(1);
 }
-const selected = [...new Set(requested.length ? requested : Object.keys(checks))] as Check[];
+const defaults = Object.keys(checks).filter((name) => name !== "rust");
+const unique = [...new Set(requested.length ? requested : defaults)] as Check[];
+// The shared test runner already includes Rust; retain the focused legacy group.
+const selected = unique.filter((name) => name !== "rust" || !unique.includes("tests"));
 const failed: Check[] = [];
 const started = performance.now();
 for (const check of selected) {

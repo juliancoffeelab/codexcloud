@@ -4,7 +4,7 @@
   "name": "Dire wolf",
   "race": "beast",
   "hp": 22,
-  "move": 5,
+  "move": 4,
   "cost": 8,
   "attacks": [
     {

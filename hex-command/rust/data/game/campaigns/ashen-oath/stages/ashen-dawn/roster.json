@@ -127,8 +127,8 @@
       "row": 4
     }
   ],
-  "recruits": ["skeleton", "bonearcher", "spearman", "adept"],
-  "enemyRecruits": ["skeleton", "bonearcher", "boar"],
+  "recruits": ["skeleton", "bonearcher", "spearman", "adept", "skeleton-impact-caster"],
+  "enemyRecruits": ["skeleton", "bonearcher", "boar", "skeleton-impact-caster"],
   "gold": 20,
   "enemyGold": 0
 }

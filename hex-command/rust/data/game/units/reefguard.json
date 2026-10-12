@@ -19,7 +19,7 @@
     {
       "id": "tail",
       "name": "Tail strike",
-      "damage": 2,
+      "damage": 4,
       "damageType": "impact",
       "category": "melee",
       "range": 1,

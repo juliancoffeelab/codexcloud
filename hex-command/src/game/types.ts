@@ -16,6 +16,7 @@ export type UnitType =
   | "swordsman"
   | "spearman"
   | "reefguard"
+  | "merfolk-maceguard"
   | "harpooner"
   | "wavemender"
   | "soldier"
@@ -24,6 +25,7 @@ export type UnitType =
   | "warden"
   | "adept"
   | "skeleton"
+  | "skeleton-impact-caster"
   | "bonearcher"
   | "wolf"
   | "boar"
@@ -34,11 +36,13 @@ export type AdvancedTroop =
   | "ranger"
   | "mage"
   | "revenant"
+  | "skeleton-impact-caster-l2"
   | "deatharcher"
   | "direwolf"
   | "greatboar"
   | "briarweaver"
   | "tridentguard"
+  | "merfolk-maceguard-l2"
   | "tidehunter"
   | "tidesage"
   | "lancer";
@@ -51,6 +55,7 @@ export const UNIT_TYPES = [
   "warden",
   "adept",
   "skeleton",
+  "skeleton-impact-caster",
   "bonearcher",
   "wolf",
   "boar",
@@ -61,17 +66,20 @@ export const UNIT_TYPES = [
   "spearman",
   "tidekeeper",
   "reefguard",
+  "merfolk-maceguard",
   "harpooner",
   "wavemender",
   "marksman",
   "ranger",
   "mage",
   "revenant",
+  "skeleton-impact-caster-l2",
   "deatharcher",
   "direwolf",
   "greatboar",
   "briarweaver",
   "tridentguard",
+  "merfolk-maceguard-l2",
   "tidehunter",
   "tidesage",
   "marshal",

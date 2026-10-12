@@ -1,57 +1,54 @@
 ---
 name: pinkbox-enhancement
-description: Revise an approved Hex Command unit or tier through guarded material recoloring, or pinkbox when its shapes need redesign.
+description: Revise approved Hex Command unit artwork through material recoloring or shape redesign; recolor terrain floors through their shared palettes.
 ---
 
 # Pinkbox enhancement
 
-Tell the user when applying this skill. Work from the game root with Python 3
-and Pillow. Keep the exact approved matrix/palette as the baseline in `tmp/`.
-Identify what may change from the request: anatomy, pose, grips, equipment,
-materials and faction cloth. Higher tiers need readable progression at the
-same pixel scale, not extra texture or arbitrary ornament.
+Work from the game root with Python 3 and Pillow. Save the approved matrix and
+palette as an exact baseline in `tmp/`.
+Identify the requested changes to anatomy, pose, grips, equipment, materials and
+faction cloth. Preserve the shared pixel scale; progression needs readable shapes.
 
-For palette-only changes, paint existing parts directly. Inspect the actual
-surfaces, preserving outlines, alpha, skin, cloth and grips. Recolor base and
-shadow together; shade coherent clusters following overlaps and surface curves.
-Do not mistake pale clothing for armor or fur based on its color.
+For palette changes, inspect actual surfaces before recoloring. Keep skin and
+cloth colors unless the user asks to change them. Preserve outlines, alpha and
+grips, and materials outside the requested change. Recolor base and shadow together
+in coherent clusters following overlaps and curves. Identify materials by their
+surfaces and anatomy, rather than color alone.
 
-Terrain floors use named `palettes` in `pixel/art/terrain/floors.json`, each with
-a `G`/`g` base/shade pair; `defaults` selects a palette per terrain. A map tile's
-optional `floor` overrides that default, including on roads and villages.
-Keep `G`/`g` out of local material palettes. Tree foliage and grass tufts can
-share other green symbols; leave them alone when tuning the floor. Render through
-the artwork builder's `read_palette(matrix, floor=...)`/`rgba_pixels(matrix, floor=...)`
-so previews resolve the chosen floor colors too. Never create a new matrix for
-a different floor palette.
+The fill JSON requires `matrix_sha256`, `palette_sha256` and `regions`. Each region
+has `seed: [x,y]`, `mapping: {old: new}`, `expected_pixels`, `material` and `reason`.
+Optional `palette_additions` maps new material symbols to RGBA colors. Use a fresh
+output directory under `tmp/`. The helper produces the candidate matrix/palette,
+an exact `before/` copy, a change record and comparison image. Outline, transparency
+and faction-cloth changes use individually reviewed [pixel edits](../pixel-cleaning/SKILL.md#unit-sprites).
 
 ```sh
 python3 .agents/skills/pinkbox-enhancement/scripts/fill.py \
   pixel/art/units/humans/adept/sprite.txt tmp/upgrade/fill.json tmp/upgrade/candidate
 ```
 
-The fill specification requires `matrix_sha256`, `palette_sha256`, and `regions`:
-each region has `seed: [x,y]`, `mapping: {old: new}`, `expected_pixels`, `material`
-and `reason`. Optional `palette_additions` maps new symbols to RGBA colors.
-Four-neighbor fills stop at unmapped materials; stale hashes, changed counts,
-overlapping regions and outline/faction/transparent fills are rejected. Follow
-with individually reviewed shading through the cleaning skill's edit helper.
-
 For new anatomy, silhouettes or equipment shapes, use
-[pinkbox generation](../pinkbox-generation/SKILL.md) and its pixel-style contract:
+[pinkbox generation](../pinkbox-generation/SKILL.md). Specify the changes in the
+prompt and save the unchanged output. Prepare a separate native 64×64 template
+for each tier, with the approved unit first and two style anchors:
 
 ```sh
 python3 .agents/skills/pinkbox-enhancement/scripts/prepare.py \
   scout tmp/scout-upgrade/template.png --label 'Scout L2' --style-anchors ranger archer
 ```
 
-The approved unit is anchor 1, plus exactly two style anchors and one empty
-output. Use a separate 64×64 template for each tier. `--output-palette` locks
-existing materials when required. Specify the intended changes explicitly in
-the prompt; save the unchanged output and prompt.
+The template preserves the approved unit's flying/swimming pose flag by default.
+Use `--flying` or `--no-flying` only when changing that pose. Pass `--output-palette`
+when its material colors must stay fixed.
+
+For terrain floor recoloring, change the selected shared palette or a tile's
+floor selection as described in [terrain artwork](../../../docs/terrain-artwork.md).
+The matrix stays unchanged; inspect the affected tiles after rebuilding artwork.
 
 Use [pixel cleaning](../pixel-cleaning/SKILL.md) before showing the result and
-[pixel lineup](../pixel-lineup/SKILL.md) for progression. Keep diagnostics internal;
-show clean matrix renders in one faction. For authorized integration, replace
-the canonical matrix/palette and run `npm run art:build` / `npm run art:check`.
-Do not add a confirmation loop when approval is already established.
+[lineup previews](../pixel-lineup/SKILL.md) for progression. Show clean matrix
+renders in the requested faction and keep diagnostics internal unless requested.
+When integration is part of the task, replace the canonical matrix and palette,
+then rebuild and check artwork. For helper changes or fill/template bugs, read
+[implementation.md](implementation.md).
