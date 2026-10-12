@@ -26,8 +26,8 @@ npm run ai:full -- --out artifacts/full.json
 npm run ai:simulate -- --replay artifacts/full.json
 ```
 
-Simulation batches require an explicit user request. `--schedule-only` enumerates
-configurations without running matches. The ten-seed default full schedule has
+Use simulation batches as needed to explore or validate balance. `--schedule-only`
+enumerates configurations without running matches. The ten-seed default full schedule has
 11,520 arena matches and 720 campaign attempts.
 
 npm builds and invokes the binary; it does not schedule or aggregate simulations.
@@ -136,8 +136,8 @@ See [save formats and migration](../docs/save-deployment.md).
 
 ## Verification and bounded benchmarks
 
-`npm run verify` batches style, the WASM package build, UI/types, Rust tests,
-artwork, Vitest and the frontend build. `npm run format`/`style` include Rust and
+`npm run verify` batches automatic formatting, the WASM package build, UI/types,
+artwork validation, the combined test suite and the frontend build. `npm run format` includes Rust and
 authored JSON. Focused Rust tests cover loading, rules, commands, saves, scheduling,
 recording and error paths, including the facade's saved AI continuation; they do
 not launch campaign/tournament batches.
@@ -155,9 +155,10 @@ native scenarios live in `src/tests/`; each can exercise several configurations.
 Plain `cargo test` reads its authored catalog from disk, including document lists
 used by catalog mutation tests. `npm run check:rust` also enables the WASM feature
 and verifies actual embedded content against the native disk catalog.
-`npm test` retains controller, save migration/storage, publication, UI, artwork,
-audio and focused WASM integration tests. Browser spot checks stay outside the
-mandatory suite.
+`npm test` runs these native tests, Python artwork/analyzer tests and Vitest under
+one shared 20-second budget. Vitest covers controller, save migration/storage,
+publication, UI, artwork, audio and focused WASM integration behavior. Browser
+spot checks stay outside the mandatory suite.
 
 The selected unit panel keeps its attacks and permanent damage modifiers. Its
 Terrain effects table shows movement and the resolved additional incoming-damage

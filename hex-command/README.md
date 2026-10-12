@@ -71,7 +71,7 @@ and screenshots belong in ignored `tmp/`, outside the default test suite.
 See the [Rust API and build guide](rust/README.md),
 [content layout](rust/data/README.md), and [AI comparison guide](docs/ai-simulation.md).
 Native checkpoints preserve enemy-planner continuation. Supported older browser
-saves migrate to version 3 only after a successful native restore; rejected checkpoints are backed
+saves migrate to version 4 only after a successful native restore; rejected checkpoints are backed
 up locally and leave a playable new battle.
 
 ## Playing
@@ -134,11 +134,10 @@ npm run ai:schedule -- --mode full --seeds 10 # Enumerate only
 npm run ai:full -- --out artifacts/full.json # Run arenas and campaigns
 ```
 
-Rust owns scheduling, workers and reporting. Complete gameplay records are saved
-in indexed JSONL journals alongside compact summaries. The comparison tools
-convert saved journals to Arrow with an explicit schema and compare unordered
-match records without rerunning matches. See the [AI guide](docs/ai-simulation.md)
-for filters, replay and comparison commands.
+Rust owns scheduling, workers and recording. `npm run ai:analyze` turns saved JSON
+reports into searchable HTML, Markdown and CSV comparisons. Separate dump tools
+compare complete gameplay journals through Arrow. See the
+[AI guide](docs/ai-simulation.md) for filters, replay and comparison commands.
 
 For the configured Sites deployment, `npm run publish` builds the release,
 commits its source locally, then prepares the deployment archive and manifest.

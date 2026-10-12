@@ -17,7 +17,7 @@
 
 - [ ] Finish the balance pass with matched campaign and arena trials, preserving
       failed attempts and recording actual commands.
-- [ ] Run updated comparisons when explicitly requested. Keep campaign and arena
+- [ ] Run updated comparisons as needed for balance work. Keep campaign and arena
       rosters, scenarios and results separate.
 - [ ] Review veteran boar attacks separately after the rookie balance changes.
 

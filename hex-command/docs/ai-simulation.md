@@ -97,7 +97,7 @@ by each physical match. Caps remain in win-rate denominators. Self-play tables c
 both participants; the physical-match ledger counts each match once. `timings.json`
 records report generation time.
 
-Run and report an authorized batch with one command:
+Run and report a balance batch with one command:
 
 ```sh
 npm run ai:combat -- --seeds 10 --out artifacts/current --baseline artifacts/previous/report.json
@@ -239,8 +239,8 @@ troops pursue remaining goals. A rebuilding leader's duty does not recall the ar
 Required-actor safety, retreat and legal movement restrictions still apply.
 
 The woodland regression reuses recorded starting states from the completed full
-run and checks one policy turn, not a campaign simulation. Tournament and campaign
-win rates must be measured again in a separately authorized run after this change.
+run and checks one policy turn. Measure tournament and campaign win rates with
+complete simulation batches when assessing the effect of policy changes.
 
 Campaign diplomacy is a matched comparison dimension:
 
