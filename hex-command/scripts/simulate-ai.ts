@@ -1,9 +1,15 @@
 /** npm entry point only: scheduling, execution and reports belong to the Rust CLI. */
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { resolve } from "node:path";
 
 const child = spawn(
-  fileURLToPath(new URL("../rust/target/release/hex-command-sim", import.meta.url)),
+  resolve(
+    fileURLToPath(new URL("../", import.meta.url)),
+    process.env.CARGO_TARGET_DIR ?? "rust/target",
+    "release",
+    "hex-command-sim" + (process.platform === "win32" ? ".exe" : ""),
+  ),
   process.argv.slice(2),
   { cwd: fileURLToPath(new URL("../", import.meta.url)), stdio: "inherit" },
 );

@@ -108,6 +108,21 @@ forecasts; terrain changes detach them. Mission content is reused only while
 its story-patch inputs match. Required-actor safety and conservative forecasts
 remain part of the existing policies.
 
+Static supplied objectives are expanded once per planning workspace; dynamic
+campaign objectives and rebuilding duties refresh against the current battle.
+Tactical units are evaluated by potential benefit, while original roster,
+destination and weapon ordinals decide equal scores. Compact target slices avoid
+one allocated list per tile. Arena safety forecasts reset action flags directly
+and subtract eliminated enemies from independent forecasts; campaign forecasts
+retain actual turn-start events, healing, waves and objective transitions.
+
+Native recording uses direct Arrow snapshot dictionaries with complete ordered
+phase references. Endpoint hashing streams the original sorted-key JSON bytes.
+The native CLI uses a CPU-specific LLVM profile-guided build, trained on full
+existing-policy arena and campaign schedules at seeds 17–18. Compiler profiles
+are cached by source, data, toolchain and CPU; simulation results are always
+computed afresh. Wasm builds use separate compiler flags.
+
 ## Next policy target: Priority
 
 Priority is a proposed policy, not an alias for Mixed or a change to existing

@@ -119,6 +119,11 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
 impl Game<'_> {
     pub(super) fn policy_objectives(&self, goals: Option<&[Objective]>) -> Vec<Objective> {
         let mut goals = goals.map_or_else(|| self.objectives(self.turn), |g| g.to_vec());
+        goals.extend(self.rebuild_objectives(&goals));
+        goals
+    }
+    pub(super) fn rebuild_objectives(&self, goals: &[Objective]) -> Vec<Objective> {
+        let mut rebuilding = vec![];
         let leaders: Vec<_> = self
             .units
             .iter()
@@ -138,10 +143,10 @@ impl Game<'_> {
                     80.0,
                 );
                 o.actor = Some(format!("u{id}"));
-                goals.push(o);
+                rebuilding.push(o);
             }
         }
-        goals
+        rebuilding
     }
     pub fn enemy_danger(&self, u: &Unit, tile: usize) -> i32 {
         let mut target = u.clone();

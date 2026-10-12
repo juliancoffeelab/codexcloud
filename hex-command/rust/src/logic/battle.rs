@@ -68,6 +68,22 @@ fn hex_distance(first: (i32, i32), second: (i32, i32)) -> u16 {
     let r = first.1 - second.1;
     ((q.abs() + r.abs() + (q + r).abs()) / 2) as u16
 }
+// A generated layout is reused by many policy/race pairings. These caches
+// depend on catalog rules, geometry and terrain, never on a game's mutable state.
+type TerrainKey = (String, Vec<(String, i32, i32, String)>);
+#[derive(Clone)]
+struct SharedTerrain {
+    board: Rc<Board>,
+    routes: Rc<RefCell<HashMap<(usize, Vec<usize>, u64), Rc<Vec<u16>>>>>,
+    route_order: Rc<RefCell<VecDeque<(usize, Vec<usize>, u64)>>>,
+    attacks: super::geometry::AttackGeometry,
+    reach: super::movement::ReachCache,
+    threat_reach: super::movement::ThreatReachCache,
+    movement: super::movement::MovementMasks,
+}
+thread_local! {
+    static TERRAIN_POOL: RefCell<(HashMap<TerrainKey, SharedTerrain>, VecDeque<TerrainKey>)> = RefCell::new((HashMap::default(), VecDeque::new()));
+}
 #[derive(Debug)]
 pub(crate) struct Game<'catalog> {
     pub(crate) rules: &'catalog Rules,
@@ -108,8 +124,49 @@ pub(crate) struct Game<'catalog> {
 }
 impl<'catalog> Game<'catalog> {
     pub(crate) fn from_state(rules: &'catalog Rules, state: State) -> Self {
-        let board = Board::new(&state.tiles);
-        Self::from_state_with_board(rules, state, board)
+        let key = (
+            rules.content_fingerprint.clone(),
+            state
+                .tiles
+                .iter()
+                .map(|t| (t.id.clone(), t.col, t.row, t.terrain.clone()))
+                .collect(),
+        );
+        let cached = TERRAIN_POOL.with_borrow(|(pool, _)| pool.get(&key).cloned());
+        let board = cached
+            .as_ref()
+            .map_or_else(|| Board::new(&state.tiles), |c| c.board.clone());
+        let mut game = Self::from_state_with_board(rules, state, board);
+        if let Some(cached) = cached {
+            game.route_cache = cached.routes;
+            game.route_order = cached.route_order;
+            game.attack_geometry = cached.attacks;
+            game.reach_cache = cached.reach;
+            game.threat_reach_cache = cached.threat_reach;
+            game.movement_masks = cached.movement;
+        } else {
+            TERRAIN_POOL.with_borrow_mut(|(pool, order)| {
+                if pool.len() >= 64 {
+                    if let Some(oldest) = order.pop_front() {
+                        pool.remove(&oldest);
+                    }
+                }
+                order.push_back(key.clone());
+                pool.insert(
+                    key,
+                    SharedTerrain {
+                        board: game.board.clone(),
+                        routes: game.route_cache.clone(),
+                        route_order: game.route_order.clone(),
+                        attacks: game.attack_geometry.clone(),
+                        reach: game.reach_cache.clone(),
+                        threat_reach: game.threat_reach_cache.clone(),
+                        movement: game.movement_masks.clone(),
+                    },
+                );
+            });
+        }
+        game
     }
     pub(crate) fn from_state_with_board(
         rules: &'catalog Rules,

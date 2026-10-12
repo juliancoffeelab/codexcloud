@@ -59,7 +59,16 @@ summaries borrow full trace arrays from the typed result.
 ## Journals and checkpoints
 
 The final report is schema 3. Compact outcomes appear in canonical schedule order
-and retain byte ranges and SHA-256 digests into `.details.jsonl`. `--trace` also
+and retain byte ranges and SHA-256 digests into `.details.arrow` by default, or
+`.details.jsonl` with `--details jsonl`. Each Arrow range is an independently
+readable IPC stream tagged `arrow-ipc-snapshot-dictionaries-v2`. Row zero holds
+the match header and snapshot dictionaries; subsequent rows hold chapter indices,
+phase headers, ordered before/after troop indices and ownership indices. Troop
+dictionary entries are typed structs; nullable optional fields restore omission,
+while null ownership codes restore explicit JSON null. Ownership columns use
+the corresponding chapter's initial ordered tile identities. Header JSON preserves
+all remaining data without schema projection. SHA-256 covers the exact IPC bytes.
+Completed ranges are readable before the batch finishes. `--trace` also
 serializes raw typed results to `.trace.jsonl`.
 
 Completed outcomes append once to `.outcomes.jsonl` as
@@ -80,8 +89,12 @@ preserving actual states, array order and missing-versus-null distinctions.
 `scripts/compare-simulation-reports.py` streams one pair of checksummed journal
 records at a time and compares every gameplay field, retaining endpoint hashes,
 ordered arrays, unknown fields, missing/null distinctions and numeric representations.
-It ignores JSON object key order and only the explicit commit/fingerprint/timing
-and journal-location metadata. Use it to validate exact policy optimizations.
+It ignores JSON object key order and only the explicit commit/fingerprint/timing,
+journal format and journal-location metadata. It decodes native Arrow dictionaries
+losslessly with PyArrow, loaded only for Arrow inputs. Use it to validate exact
+policy optimizations. `scripts/export-simulation-details.py` exports either format
+as complete JSONL records without running matches. The report analyzer consumes
+compact JSON outcomes and needs no Arrow dependency.
 
 `scripts/convert-simulation-dump.py` reads detail journals with an explicit Arrow
 schema. `scripts/compare-simulation-dumps.py` uses a one-to-one Polars join on

@@ -51,22 +51,33 @@ fn labels(outcomes: &[Value]) -> Vec<String> {
         .into_iter()
         .collect()
 }
-fn arena_rows(results: &[&Value], labels: &[String], first_seed: u32) -> Vec<ArenaRow> {
+type Resampling = BTreeMap<usize, Vec<Vec<usize>>>;
+fn arena_rows(
+    results: &[&Value],
+    labels: &[String],
+    first_seed: u32,
+    resampling: &mut Resampling,
+) -> Vec<ArenaRow> {
+    // Index each seat pair once. Repeatedly formatting both labels for every
+    // possible pair made aggregation scan the same games hundreds of times.
+    let mut pairs: BTreeMap<(String, String), Vec<&Value>> = BTreeMap::new();
+    for &game in results {
+        let player = bot_label(game, "player");
+        let enemy = bot_label(game, "enemy");
+        pairs
+            .entry((player.clone(), enemy.clone()))
+            .or_default()
+            .push(game);
+        if player != enemy {
+            pairs.entry((enemy, player)).or_default().push(game);
+        }
+    }
     let mut rows = vec![];
     for policy in labels {
         for opponent in labels {
-            let games: Vec<_> = results
-                .iter()
-                .copied()
-                .filter(|game| {
-                    (bot_label(game, "player") == *policy && bot_label(game, "enemy") == *opponent)
-                        || (bot_label(game, "enemy") == *policy
-                            && bot_label(game, "player") == *opponent)
-                })
-                .collect();
-            if games.is_empty() {
+            let Some(games) = pairs.get(&(policy.clone(), opponent.clone())) else {
                 continue;
-            }
+            };
             let win = |game: &Value| {
                 game["winner"].as_str().is_some_and(|winner| {
                     if policy == opponent {
@@ -80,7 +91,7 @@ fn arena_rows(results: &[&Value], labels: &[String], first_seed: u32) -> Vec<Are
             let unresolved = games.iter().filter(|game| game["winner"].is_null()).count();
             let losses = games.len() - wins - unresolved;
             let mut blocks: BTreeMap<u64, (usize, i32)> = BTreeMap::new();
-            for game in &games {
+            for game in games {
                 let block = blocks
                     .entry(game["config"]["seed"].as_u64().unwrap_or(0))
                     .or_default();
@@ -97,20 +108,50 @@ fn arena_rows(results: &[&Value], labels: &[String], first_seed: u32) -> Vec<Are
                 None
             } else {
                 let blocks: Vec<_> = blocks.values().copied().collect();
-                let mut random = Random(first_seed);
                 let mut samples = Vec::with_capacity(1000);
-                for _ in 0..1000 {
-                    let mut count = 0;
-                    let mut margin = 0;
-                    for _ in 0..blocks.len() {
-                        let (total, change) =
-                            blocks[(random.next() * blocks.len() as f64).floor() as usize];
-                        count += total;
-                        margin += change;
+                if blocks.len() <= 64 {
+                    // Every row starts the same RNG stream. Reuse its integer
+                    // seed-block multiplicities rather than generate it again.
+                    let weights = resampling.entry(blocks.len()).or_insert_with(|| {
+                        let mut random = Random(first_seed);
+                        (0..1000)
+                            .map(|_| {
+                                let mut weights = vec![0; blocks.len()];
+                                for _ in 0..blocks.len() {
+                                    weights
+                                        [(random.next() * blocks.len() as f64).floor() as usize] +=
+                                        1;
+                                }
+                                weights
+                            })
+                            .collect()
+                    });
+                    for weights in weights {
+                        let mut count = 0;
+                        let mut margin = 0;
+                        for (&repeats, &(total, change)) in weights.iter().zip(&blocks) {
+                            count += repeats * total;
+                            margin += repeats as i32 * change;
+                        }
+                        samples.push(margin as f64 / count as f64);
                     }
-                    samples.push(margin as f64 / count as f64);
+                } else {
+                    // Keep cache memory bounded for very large seed schedules.
+                    let mut random = Random(first_seed);
+                    for _ in 0..1000 {
+                        let mut count = 0;
+                        let mut margin = 0;
+                        for _ in 0..blocks.len() {
+                            let (total, change) =
+                                blocks[(random.next() * blocks.len() as f64).floor() as usize];
+                            count += total;
+                            margin += change;
+                        }
+                        samples.push(margin as f64 / count as f64);
+                    }
                 }
-                samples.sort_by(f64::total_cmp);
+                samples.select_nth_unstable_by(974, f64::total_cmp);
+                samples[..974].select_nth_unstable_by(24, f64::total_cmp);
                 Some([samples[24], samples[974]])
             };
             let total = games.len() as f64;
@@ -161,7 +202,8 @@ pub fn build_report(
     }
     let labels = labels(&outcomes);
     let arena: Vec<&Value> = outcomes.iter().filter(is_arena).collect();
-    let rows = arena_rows(&arena, &labels, options.first_seed);
+    let mut resampling = Resampling::new();
+    let rows = arena_rows(&arena, &labels, options.first_seed, &mut resampling);
     let mut strata = vec![];
     for player_army in &options.armies {
         for enemy_army in &options.armies {
@@ -175,7 +217,7 @@ pub fn build_report(
                             && game["config"]["landscape"] == *landscape
                     })
                     .collect();
-                let rows = arena_rows(&games, &labels, options.first_seed);
+                let rows = arena_rows(&games, &labels, options.first_seed, &mut resampling);
                 if !rows.is_empty() {
                     strata.push(json!({"playerArmy":player_army,"enemyArmy":enemy_army,"landscape":landscape,"rows":rows}));
                 }

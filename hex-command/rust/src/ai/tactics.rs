@@ -77,18 +77,34 @@ impl Game<'_> {
         policy: Policy,
         seed: u32,
         goals: Option<&[Objective]>,
+        prepared_goals: Option<&[Objective]>,
         restrained: bool,
         routes: &mut HashMap<(usize, Vec<usize>), std::rc::Rc<Vec<u16>>>,
         commitments: &mut HashMap<u32, String>,
         intents: &mut Vec<(u32, Option<bool>)>,
     ) -> Option<Plan> {
         let side = self.turn;
-        let objectives = individual(self.policy_objectives(goals));
+        let objectives: Cow<'_, [Objective]> = if let Some(prepared) = prepared_goals {
+            let rebuilding = self.rebuild_objectives(prepared);
+            if rebuilding.is_empty() {
+                Cow::Borrowed(prepared)
+            } else {
+                Cow::Owned(
+                    prepared
+                        .iter()
+                        .cloned()
+                        .chain(individual(rebuilding))
+                        .collect(),
+                )
+            }
+        } else {
+            Cow::Owned(individual(self.policy_objectives(goals)))
+        };
         let escort_lanes = self.escort_lanes(&objectives);
         let rebuilds: HashMap<_, _> = self
             .units
             .iter()
-            .filter(|u| u.side == side)
+            .filter(|u| u.side == side && self.rules.units[u.kind].leader)
             .map(|u| {
                 (
                     u.id,
@@ -139,26 +155,121 @@ impl Game<'_> {
             .map(|a| a.range as u16)
             .max()
             .unwrap_or(0);
-        let mut nearby_foes = vec![Vec::new(); board.ids.len()];
-        // Append in roster order to preserve strict tactical tie-breaking.
-        for &foe in &foes {
-            for (tile, targets) in nearby_foes.iter_mut().enumerate() {
+        let range = maximum_range as usize;
+        let capacity = (3 * range * (range + 1) * foes.len()).min(board.ids.len() * foes.len());
+        let mut nearby_foes = Vec::with_capacity(capacity);
+        let mut nearby_offsets = Vec::with_capacity(board.ids.len() + 1);
+        // One compact target array replaces a separately allocated list per tile.
+        // Each slice retains the original foe roster order.
+        for tile in 0..board.ids.len() {
+            nearby_offsets.push(nearby_foes.len());
+            for &foe in &foes {
                 let distance = board.distance(tile, foe.tile);
                 if distance > 0 && distance <= maximum_range {
-                    targets.push(foe);
+                    nearby_foes.push(foe);
                 }
             }
         }
+        nearby_offsets.push(nearby_foes.len());
+        let protected: Vec<_> = if policy == Policy::Mixed {
+            allies
+                .iter()
+                .filter(|u| self.essential(u) || role(self, u.kind) != TacticalRole::Frontline)
+                .collect()
+        } else {
+            Vec::new()
+        };
         let mut best: Option<Plan> = None;
-        for original_unit in &allies {
-            if original_unit.attacked {
-                continue;
-            }
+        let mut best_order = (usize::MAX, usize::MAX, usize::MAX);
+        // Score units with the strongest immediate opportunities first. This
+        // only changes evaluation order: roster/tile/weapon ordinals still
+        // decide all equal scores and bookkeeping remains unit-local.
+        let mut roster: Vec<_> = allies
+            .iter()
+            .enumerate()
+            .filter(|(_, u)| !u.attacked)
+            .map(|(index, &unit)| {
+                let before_risk = threats.at(unit, unit.tile, None);
+                let important = self.essential(unit);
+                let category = role(self, unit.kind);
+                let danger = if important {
+                    9.0
+                } else if category == TacticalRole::Frontline {
+                    if policy == Policy::Rush { 0.55 } else { 0.75 }
+                } else {
+                    1.1
+                };
+                let movement = if unit.moved {
+                    0
+                } else {
+                    self.rules.units[unit.kind].r#move
+                };
+                let offense = foes
+                    .iter()
+                    .flat_map(|&target| {
+                        self.rules.units[unit.kind]
+                            .attacks
+                            .iter()
+                            .enumerate()
+                            .filter_map(move |(weapon, attack)| {
+                                if board.distance(unit.tile, target.tile) as usize
+                                    > movement + attack.range as usize
+                                {
+                                    return None;
+                                }
+                                let damage = self.damage(unit, target, weapon);
+                                let killed = damage >= target.hp;
+                                let value = damage.min(target.hp) as f64 * 2.0
+                                    + if killed {
+                                        12.0 + self.rules.units[target.kind].cost as f64 * 0.3
+                                    } else {
+                                        0.0
+                                    }
+                                    + if self.essential(target) {
+                                        if killed { 18.0 } else { 4.0 }
+                                    } else {
+                                        0.0
+                                    };
+                                Some(
+                                    if killed
+                                        && self.campaign.is_none()
+                                        && self.rules.units[target.kind].leader
+                                    {
+                                        value + 100.0
+                                    } else if important {
+                                        value
+                                            * if unit.role == Some(Role::Courier) {
+                                                0.1
+                                            } else {
+                                                0.5
+                                            }
+                                    } else {
+                                        value
+                                    },
+                                )
+                            })
+                    })
+                    .fold(0.0f64, f64::max);
+                (
+                    index,
+                    unit,
+                    before_risk,
+                    offense + before_risk as f64 * danger,
+                )
+            })
+            .collect();
+        roster.sort_unstable_by(|a, b| b.3.total_cmp(&a.3).then(a.0.cmp(&b.0)));
+        for (unit_order, original_unit, before_risk, _) in roster {
             let category = role(self, original_unit.kind);
             let important = self.essential(original_unit);
-            let before_risk = threats.at(original_unit, original_unit.tile, None);
             if let Some(&promotion) = self.promotion_options(original_unit).first() {
-                if before_risk < original_unit.hp && best.as_ref().is_none_or(|b| b.score < 14.0) {
+                let order = (unit_order, 0, 0);
+                if before_risk < original_unit.hp
+                    && best
+                        .as_ref()
+                        .is_none_or(|b| b.score < 14.0 || b.score == 14.0 && order < best_order)
+                {
+                    best_order = order;
                     best = Some(Plan {
                         unit: original_unit.id,
                         tile: original_unit.tile,
@@ -170,19 +281,17 @@ impl Game<'_> {
                     });
                 }
             }
-            let mut destinations = vec![original_unit.tile];
-            destinations.extend(
-                self.reachable(original_unit)
-                    .iter()
-                    .copied()
-                    .map(|(t, _)| t),
-            );
+            let reachable = self.reachable(original_unit);
+            let mut destinations = Vec::with_capacity(reachable.len() + 1);
+            destinations.push(original_unit.tile);
+            destinations.extend(reachable.iter().copied().map(|(t, _)| t));
             destinations = self.authored_destinations(original_unit, destinations);
             let reserved = self.reserved(original_unit, &objectives);
             let required = objectives.iter().any(|g| {
                 g.kind == ObjectiveKind::Escape && actor_matches(&g.actor, original_unit.id)
             });
-            let (rebuilding, intent) = &rebuilds[&original_unit.id];
+            let unchanged = (Vec::new(), original_unit.rebuilding);
+            let (rebuilding, intent) = rebuilds.get(&original_unit.id).unwrap_or(&unchanged);
             let mut planned_unit = (*original_unit).clone();
             planned_unit.rebuilding = *intent;
             let unit = &planned_unit;
@@ -207,7 +316,7 @@ impl Game<'_> {
                 g.actor = Some(format!("u{}", unit.id));
                 rebuild_goals.push(g);
             }
-            let goals = if rebuilding.is_empty() {
+            let goals: &[Objective] = if rebuilding.is_empty() {
                 &objectives
             } else {
                 &rebuild_goals
@@ -219,7 +328,7 @@ impl Game<'_> {
                 assigned: bool,
                 priority: f64,
             }
-            let mut duties = vec![];
+            let mut duties = Vec::with_capacity(goals.len());
             for original in goals {
                 if original.kind == ObjectiveKind::Capture
                     && original.actor.is_none()
@@ -342,7 +451,7 @@ impl Game<'_> {
             let mut wait_score = f64::NEG_INFINITY;
             let mut tiles = vec![unit.tile];
             tiles.extend(destinations.iter().copied().filter(|&t| t != unit.tile));
-            for tile in tiles {
+            for (tile_order, tile) in tiles.into_iter().enumerate() {
                 let mut positioning = if reserved.contains(&unit.tile) {
                     80.0
                 } else {
@@ -435,9 +544,7 @@ impl Game<'_> {
                         };
                     }
                     if category == TacticalRole::Frontline {
-                        for protected in allies.iter().filter(|u| {
-                            self.essential(u) || role(self, u.kind) != TacticalRole::Frontline
-                        }) {
+                        for protected in &protected {
                             if protected.id != unit.id
                                 && self.board.distance(tile, protected.tile) == 1
                                 && range_to_foe(tile) <= range_to_foe(protected.tile)
@@ -461,12 +568,14 @@ impl Game<'_> {
                 }
                 let objective_finish = self.finishes_objective(&unit, tile, &objectives);
                 let choices = std::iter::once((None, None)).chain(
-                    nearby_foes[tile].iter().flat_map(|&target| {
-                        (0..self.rules.units[unit.kind].attacks.len())
-                            .filter_map(move |weapon| Some((Some(target), Some(weapon))))
-                    }),
+                    nearby_foes[nearby_offsets[tile]..nearby_offsets[tile + 1]]
+                        .iter()
+                        .flat_map(|&target| {
+                            (0..self.rules.units[unit.kind].attacks.len())
+                                .filter_map(move |weapon| Some((Some(target), Some(weapon))))
+                        }),
                 );
-                for (target, weapon) in choices {
+                for (choice_order, (target, weapon)) in choices.enumerate() {
                     if let (Some(target), Some(weapon)) = (target, weapon) {
                         if !self.can_attack(unit, tile, target, weapon)
                             || !self.diplomacy_allows(unit, target, weapon, tile, restrained)
@@ -627,7 +736,13 @@ impl Game<'_> {
                         withdrawing,
                     };
                     plan.score -= wait_score;
-                    if plan.score > 0.1 && best.as_ref().is_none_or(|b| plan.score > b.score) {
+                    let order = (unit_order, tile_order + 1, choice_order);
+                    if plan.score > 0.1
+                        && best.as_ref().is_none_or(|b| {
+                            plan.score > b.score || plan.score == b.score && order < best_order
+                        })
+                    {
+                        best_order = order;
                         best = Some(plan);
                     }
                 }

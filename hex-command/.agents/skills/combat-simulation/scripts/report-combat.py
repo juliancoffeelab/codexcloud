@@ -16,7 +16,7 @@ def load_run(paths):
     outcomes, sources = {}, []
     for path in paths:
         report = json.loads(path.read_text())
-        source = {k: report.get(k) for k in ('sourceCommit', 'fingerprint', 'status', 'mode', 'schedule', 'seeds', 'elapsedSeconds')}
+        source = {k: report.get(k) for k in ('sourceCommit', 'fingerprint', 'status', 'mode', 'schedule', 'seeds', 'elapsedSeconds', 'detailFormat')}
         source['file'] = str(path.resolve())
         source['matches'] = len(report['outcomes'])
         sources.append(source)

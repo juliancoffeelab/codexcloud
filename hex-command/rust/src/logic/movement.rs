@@ -16,6 +16,7 @@ struct ReachScratch {
 thread_local! {
     // Each worker reuses its own storage; discovery order is unchanged.
     static REACH_SCRATCH: RefCell<ReachScratch> = RefCell::new(ReachScratch::default());
+    static EMPTY_REACH: Rc<Vec<(usize, u16)>> = Rc::new(vec![]);
 }
 pub(super) type ReachCache = Rc<RefCell<FxHashMap<(usize, usize, TileSet), Rc<Vec<(usize, u16)>>>>>;
 pub(super) type ThreatReachCache = Rc<RefCell<FxHashMap<(usize, usize, u128), u128>>>;
@@ -62,11 +63,12 @@ impl<'catalog> Game<'catalog> {
             }
             return positions;
         }
-        let key = (unit.kind, unit.tile, blocked);
+        let movement_class = self.rules.movement_classes[unit.kind];
+        let key = (movement_class, unit.tile, blocked);
         if let Some(&bits) = self.threat_reach_cache.borrow().get(&key) {
             return TileSet::Small(bits);
         }
-        let cached = self.movement_masks.borrow().get(&unit.kind).cloned();
+        let cached = self.movement_masks.borrow().get(&movement_class).cloned();
         let costs = cached.unwrap_or_else(|| {
             let mut masks = vec![0u128; limit + 1];
             for tile in 0..self.terrain.len() {
@@ -78,7 +80,7 @@ impl<'catalog> Game<'catalog> {
             let masks = Rc::new(masks);
             self.movement_masks
                 .borrow_mut()
-                .insert(unit.kind, masks.clone());
+                .insert(movement_class, masks.clone());
             masks
         });
         let mut pending = [0u128; 64];
@@ -115,7 +117,7 @@ impl<'catalog> Game<'catalog> {
         occupancy: &[Option<Side>],
     ) -> Rc<Vec<(usize, u16)>> {
         if unit.moved || unit.attacked || self.winner.is_some() {
-            return Rc::new(vec![]);
+            return EMPTY_REACH.with(Clone::clone);
         }
         let mut occupied = TileSet::new(self.terrain.len());
         for (tile, side) in occupancy.iter().enumerate() {
@@ -127,7 +129,7 @@ impl<'catalog> Game<'catalog> {
     }
     pub(crate) fn reachable(&self, unit: &Unit) -> Rc<Vec<(usize, u16)>> {
         if unit.moved || unit.attacked || self.winner.is_some() {
-            return Rc::new(vec![]);
+            return EMPTY_REACH.with(Clone::clone);
         }
         let mut occupied = TileSet::new(self.terrain.len());
         for unit in &self.units {
@@ -141,7 +143,7 @@ impl<'catalog> Game<'catalog> {
         start: usize,
         occupied: TileSet,
     ) -> Rc<Vec<(usize, u16)>> {
-        let key = (kind, start, occupied);
+        let key = (self.rules.movement_classes[kind], start, occupied);
         if let Some(reachable) = self.reach_cache.borrow().get(&key) {
             return reachable.clone();
         }
@@ -198,6 +200,7 @@ impl<'catalog> Game<'catalog> {
         reachable
     }
     pub(crate) fn routes(&self, kind: usize, goals: &[usize]) -> Rc<Vec<u16>> {
+        let kind = self.rules.route_classes[kind];
         let key = (kind, goals.to_vec(), self.terrain_revision);
         if let Some(route) = self.route_cache.borrow().get(&key) {
             return route.clone();

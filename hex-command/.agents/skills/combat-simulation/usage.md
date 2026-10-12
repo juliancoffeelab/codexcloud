@@ -29,6 +29,21 @@ A reused native binary loads data from its compiled crate by default. When using
 another checkout, pass its `--data-dir` explicitly. `ai:combat` selects this
 project's data by default and forwards a custom directory.
 
+`ai:rust:build` compiles for the current CPU using LLVM profile-guided
+optimization. Its training workload covers every existing policy, landscape and
+campaign at seeds 17–18, with 30-round caps. It caches the compiler profile by
+source, catalog, toolchain and CPU; unchanged builds reuse it. Training results
+are not used as simulation answers. Build time is separate from command timing.
+Wasm builds use their ordinary toolchain and are unaffected by native flags.
+
+Full gameplay is saved directly to `.details.arrow` by default. Each outcome's
+checksummed byte range contains one standard Arrow IPC stream. Troop snapshots
+use typed columns, ownership snapshots store owner codes against chapter tile
+identities, and ordered phase columns reference those dictionaries. JSON headers
+retain complete commands, combat records, objectives, campaign data and endpoints.
+No rounds or gameplay fields are omitted. Use `--details jsonl` for legacy output.
+The analyzer reads the compact `report.json` with either format.
+
 ## Interpret the panel
 
 Arena entrants pair a race with a policy. Opponents are scheduled in both seats
@@ -101,15 +116,21 @@ to check identical complete-result hashes after an optimization.
 For exact optimization checks, compare complete reports and their adjacent journals:
 
 ```sh
-python3 scripts/compare-simulation-reports.py artifacts/baseline/report.json artifacts/current/report.json --out artifacts/current/equality.json
+uv run --with pyarrow scripts/compare-simulation-reports.py artifacts/baseline/report.json artifacts/current/report.json --out artifacts/current/equality.json
 ```
 
 This validates journal checksums and every gameplay field, including endpoint
 hashes, unknown fields, missing/null distinctions and numeric representations.
 Only object key order and explicitly listed run metadata (source commit/fingerprint,
-elapsed times and journal locations) may differ. Arrays retain their order.
+elapsed times, journal format and journal locations) may differ. Arrays retain their order.
 Use identical workloads and CPU quotas; build separately and time the complete
 native command. A single-digit target is satisfied only when measured.
+
+Export complete Arrow gameplay back to JSONL, in canonical schedule order:
+
+```sh
+uv run --with pyarrow scripts/export-simulation-details.py artifacts/current/report.json artifacts/current/export.jsonl
+```
 
 For columnar analysis, convert each detail dump once and compare the Arrow files. These
 commands compare recorded gameplay without rerunning matches:

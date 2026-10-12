@@ -3,10 +3,10 @@ use super::{
     checkpoint::{IndexedOutcome, Progress},
     error::SimulationError,
     matches,
-    records::{DetailRecord, ResultJournal, read_detail, sha256},
+    records::{DetailRecord, EncodedRecord, ResultJournal, read_detail, sha256},
     report,
     schedule::{Mode, ScheduleOptions, schedule},
-    types::{MatchConfig, MatchResult},
+    types::MatchConfig,
 };
 use crate::data::Rules;
 use serde_json::{Value, json};
@@ -23,13 +23,14 @@ use std::{
     time::Instant,
 };
 
-const HELP: &str = "Usage: hex-command-sim [options]\n  --mode arena|campaign|full      default arena\n  --seeds N --seed N              count (default 2) and first seed (default 1)\n  --seed-start N                  alias for --seed\n  --policies classic,rush,mixed   complete policies to compare\n  --armies human,woodland,undead,coastal\n  --landscapes open,wooded,crossings,islands\n  --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide\n  --rounds N --recruits N         bounded rounds (default 30), recruits/phase (default 1)\n  --diplomacy pragmatic,restrained campaign behavior settings\n  --workers N                    scoped thread pool, CPU quota default, maximum 8\n  --out PATH                     JSON report and readable Markdown report\n  --trace                        also retain raw match results\n  --replay PATH                  verify saved report details and results (strict fingerprint)\n  --data-dir PATH                authored JSON catalog root (HEX_COMMAND_DATA_ROOT also works)\n  --schedule-only                emit configurations without running any matches\n  --stdio                        compatibility JSON request/result line protocol\n  --fingerprint                  compiled content and engine SHA256 fingerprints\nArena entrants have both seats and both initiatives; self-play has both initiatives.\nCampaigns begin at chapter one, earn carryover and receive no retries. Caps remain unresolved.";
+const HELP: &str = "Usage: hex-command-sim [options]\n  --mode arena|campaign|full      default arena\n  --seeds N --seed N              count (default 2) and first seed (default 1)\n  --seed-start N                  alias for --seed\n  --policies classic,rush,mixed   complete policies to compare\n  --armies human,woodland,undead,coastal\n  --landscapes open,wooded,crossings,islands\n  --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide\n  --rounds N --recruits N         bounded rounds (default 30), recruits/phase (default 1)\n  --diplomacy pragmatic,restrained campaign behavior settings\n  --workers N                    scoped thread pool, CPU quota default, maximum 8\n  --out PATH                     JSON report and readable Markdown report\n  --details arrow|jsonl         lossless gameplay journal (default arrow)\n  --trace                        also retain raw match results\n  --replay PATH                  verify saved report details and results (strict fingerprint)\n  --data-dir PATH                authored JSON catalog root (HEX_COMMAND_DATA_ROOT also works)\n  --schedule-only                emit configurations without running any matches\n  --stdio                        compatibility JSON request/result line protocol\n  --fingerprint                  compiled content and engine SHA256 fingerprints\nArena entrants have both seats and both initiatives; self-play has both initiatives.\nCampaigns begin at chapter one, earn carryover and receive no retries. Caps remain unresolved.";
 #[derive(Debug)]
 struct CliOptions {
     schedule: ScheduleOptions,
     workers: usize,
     out: PathBuf,
     trace: bool,
+    arrow: bool,
     replay: Option<PathBuf>,
     schedule_only: bool,
 }
@@ -94,6 +95,7 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
         "--out",
         "--replay",
         "--engine",
+        "--details",
     ];
     while index < args.len() {
         let flag = &args[index];
@@ -188,11 +190,21 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
     if out.extension().and_then(|ext| ext.to_str()) != Some("json") {
         return Err("--out must end in .json".into());
     }
+    let arrow = match values
+        .get("--details")
+        .map(String::as_str)
+        .unwrap_or("arrow")
+    {
+        "arrow" => true,
+        "jsonl" => false,
+        _ => return Err("--details must be arrow or jsonl".into()),
+    };
     Ok(CliOptions {
         schedule: options,
         workers,
         out,
         trace: switches.contains("--trace"),
+        arrow,
         replay: values.get("--replay").map(PathBuf::from),
         schedule_only: switches.contains("--schedule-only"),
     })
@@ -286,21 +298,59 @@ struct Completed<Output> {
     result: Output,
     elapsed_ms: f64,
 }
+struct PreparedMatch {
+    details: EncodedRecord,
+    compact: Value,
+    trace: Option<EncodedRecord>,
+}
 fn execute_schedule<F>(
     rules: &Rules,
     configs: &[MatchConfig],
     workers: usize,
+    trace: bool,
+    arrow: bool,
     append: F,
 ) -> Result<(), SimulationError>
 where
-    F: FnMut(usize, MatchResult, f64) -> Result<(), SimulationError>,
+    F: FnMut(usize, PreparedMatch, f64) -> Result<(), SimulationError>,
 {
     // Catalog/configuration are immutable shared borrows. Each game and planning workspace
     // stays entirely within its worker, with no locks or shared ownership on the turn path.
     execute_jobs(
         configs,
         workers,
-        &|config| matches::run(rules, config.clone()),
+        &|config| {
+            let start = Instant::now();
+            let result = matches::run(rules, config.clone())?;
+            let elapsed = start.elapsed().as_secs_f64() * 1000.0;
+            let summary = report::borrowed_summary(&result, true)?;
+            let details = if arrow {
+                EncodedRecord::from_bytes(super::arrow::encode(&result, &summary)?)
+            } else {
+                EncodedRecord::new(&summary)?
+            };
+            // The journal thread supplies the final file and byte offset.
+            let compact = report::compact_summary(
+                &summary,
+                DetailRecord {
+                    file: String::new(),
+                    offset: 0,
+                    bytes: 0,
+                    sha256: String::new(),
+                },
+                elapsed,
+            )?;
+            let trace = if trace {
+                Some(EncodedRecord::new(&result)?)
+            } else {
+                None
+            };
+            Ok(PreparedMatch {
+                details,
+                compact,
+                trace,
+            })
+        },
         append,
     )
 }
@@ -411,7 +461,12 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
     };
     fs::create_dir_all(output.parent().unwrap_or(Path::new(".")))?;
     let partial = sibling(&output, ".partial.json")?;
-    let mut journal = ResultJournal::create(&sibling(&output, ".details.jsonl")?)?;
+    let suffix = if options.arrow {
+        ".details.arrow"
+    } else {
+        ".details.jsonl"
+    };
+    let mut journal = ResultJournal::create(&sibling(&output, suffix)?)?;
     let mut index_journal = ResultJournal::create(&sibling(&output, ".outcomes.jsonl")?)?;
     let mut trace = if options.trace {
         Some(ResultJournal::create(&sibling(&output, ".trace.jsonl")?)?)
@@ -441,13 +496,15 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
         rules,
         &configs,
         options.workers,
-        |index, result, elapsed| {
-            let summary = report::borrowed_summary(&result, true)?;
-            let reference = journal.append(&summary)?;
-            if let Some(trace) = &mut trace {
-                trace.append(&result)?;
+        options.trace,
+        options.arrow,
+        |index, result, _elapsed| {
+            let reference = journal.append_encoded(&result.details)?;
+            if let (Some(trace), Some(encoded)) = (&mut trace, &result.trace) {
+                trace.append_encoded(encoded)?;
             }
-            let compact = report::compact_summary(&summary, reference, elapsed)?;
+            let mut compact = result.compact;
+            compact["detail"] = serde_json::to_value(reference)?;
             index_journal.append(&IndexedOutcome {
                 index,
                 outcome: &compact,
@@ -521,7 +578,7 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
             outcome.ok_or_else(|| SimulationError::Worker("Missing match result".into()))
         })
         .collect::<Result<_, _>>()?;
-    let report = report::build_report(
+    let mut report = report::build_report(
         &options.schedule,
         fingerprint,
         &source_commit,
@@ -529,6 +586,9 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
         outcomes,
         trace_files,
     )?;
+    if options.arrow {
+        report["detailFormat"] = Value::String(super::arrow::FORMAT.into());
+    }
     write_json(&output, &report, true)?;
     fs::write(sibling(&output, ".md")?, report::markdown(&report))?;
     write_json(

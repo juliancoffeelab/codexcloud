@@ -8,6 +8,7 @@ pub enum SimulationError {
     Planning(crate::data::CommandError),
     Io(io::Error),
     Json(serde_json::Error),
+    Arrow(arrow_schema::ArrowError),
     Replay(String),
     Worker(String),
 }
@@ -21,6 +22,7 @@ impl fmt::Display for SimulationError {
             Self::Planning(error) => write!(f, "Policy command failed: {error}"),
             Self::Io(error) => write!(f, "{error}"),
             Self::Json(error) => write!(f, "Invalid JSON: {error}"),
+            Self::Arrow(error) => write!(f, "Invalid Arrow record: {error}"),
         }
     }
 }
@@ -31,8 +33,14 @@ impl Error for SimulationError {
             Self::Planning(error) => Some(error),
             Self::Io(error) => Some(error),
             Self::Json(error) => Some(error),
+            Self::Arrow(error) => Some(error),
             _ => None,
         }
+    }
+}
+impl From<arrow_schema::ArrowError> for SimulationError {
+    fn from(error: arrow_schema::ArrowError) -> Self {
+        Self::Arrow(error)
     }
 }
 impl From<io::Error> for SimulationError {
