@@ -1,6 +1,33 @@
 # Development and publication
 
-The [project README](../README.md) covers setup and common commands.
+This is the setup and technical reference for agents. The project README is
+user-owned; change it only when the user asks.
+
+Hex Command uses Svelte and TypeScript for the interface and Rust/WASM for battles
+and enemy planning. It runs entirely in the browser.
+
+## Setup
+
+Use Node.js 22.12+, Rust stable with `rustfmt`, the `wasm32-unknown-unknown` target,
+and Python 3 with Pillow for artwork. `wasm-pack` is pinned in npm dependencies.
+
+```sh
+rustup target add wasm32-unknown-unknown
+npm ci
+npm run dev
+```
+
+Development prepares WASM bindings and artwork. Common commands:
+
+```sh
+npm run format                # Apply project formatting
+npm run wasm:build            # Prepare bindings before a fresh test run
+npm test                      # All test suites; shared 20-second budget
+npm run verify                # All checks and production build
+npm run verify -- types tests # Selected checks
+npm run build
+npm run preview
+```
 
 ## Verification
 
@@ -50,3 +77,25 @@ Credentials are passed to the publication command without being printed or saved
 On failure, retain version/deployment identifiers for recovery.
 
 Publication and push policy is defined in [AGENTS.md](../AGENTS.md).
+
+## Game overview
+
+Capture villages for income and recruit while your leader occupies a keep.
+Ordinary recruits act on the next turn. Use terrain and damage types to counter
+the enemy; combat grants experience and eligible units can advance. Campaigns
+provide their own objectives and let survivors be recalled between chapters.
+Saves and sound preferences stay in the browser. The developer map displays
+every terrain and both sides of every playable unit rank.
+
+## References
+
+- [Rust API and build guide](../rust/README.md)
+- [Authored content](../rust/data/README.md)
+- [Save formats and migrations](save-formats.md)
+- [Combat simulations and analysis](../.agents/skills/combat-simulation/usage.md)
+- [AI policy implementation](../rust/src/ai/README.md)
+- [Artwork rendering](../src/presentation/README.md) and [terrain sources](terrain-artwork.md)
+- Artwork skills: [generation](../.agents/skills/pinkbox-generation/SKILL.md),
+  [enhancement](../.agents/skills/pinkbox-enhancement/SKILL.md),
+  [cleaning](../.agents/skills/pixel-cleaning/SKILL.md),
+  [lineup previews](../.agents/skills/pixel-lineup/SKILL.md)

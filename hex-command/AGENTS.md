@@ -1,5 +1,8 @@
 # Hex Command development rules
 
+- Use [docs/development.md](docs/development.md) for setup and technical references.
+  The README is user-owned; modify it only when explicitly asked.
+
 - **Permanent character canvas rule: every character/unit sprite and portrait is
   exactly 64×64 native pixels. This rule must never be changed; do not reintroduce
   alternate sizes, automatic cropping or resizing.** New generation, extraction,
