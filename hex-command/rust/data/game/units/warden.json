@@ -11,14 +11,14 @@
     }
   },
   "race": "human",
-  "hp": 29,
+  "hp": 32,
   "move": 3,
-  "cost": 8,
+  "cost": 9,
   "attacks": [
     {
       "id": "spear",
       "name": "Spear",
-      "damage": 5,
+      "damage": 6,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,

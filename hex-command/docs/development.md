@@ -20,7 +20,7 @@ npm run dev
 ```sh
 npm run format                # Apply project formatting
 npm run wasm:build            # Prepare bindings before a fresh test run
-npm test                      # All test suites; shared 20-second budget
+npm test                      # All test suites; warns after 20 seconds
 npm run verify                # All checks and production build
 npm run verify -- types tests # Selected checks
 npm run build
@@ -36,8 +36,9 @@ Select groups as shown above. Legacy `style` selects formatting; focused `rust`
 selects native tests. The combined test group already includes Rust, so
 verification does not run it twice.
 
-`npm test` runs Rust, Python artwork/analyzer tests and Vitest under one shared
-20-second budget. Browser automation is separate. `art:check` validates generated
+`npm test` runs Rust, Python artwork/analyzer tests and Vitest with a shared
+20-second duration target. Slow runs warn and continue; only failed tests fail
+the command. Browser automation is separate. `art:check` validates generated
 artwork; its unit tests run in the combined test command.
 
 ## Project layout
