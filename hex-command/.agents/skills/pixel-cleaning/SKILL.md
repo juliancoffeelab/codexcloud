@@ -5,11 +5,12 @@ description: Review sprite artifacts with stray and outline detectors, then appl
 
 # Pixel cleaning
 
-Tell the user when applying this skill. Run from the game root with Python 3
-and Pillow. Character matrices are always 64×64. Save the exact baseline matrix,
-palette and source image; use a fresh `tmp/` directory for each candidate.
-Detect means inspect without editing; stop means stop mutations; revert means
-restore the exact named files, not reconstruct them.
+Tell the user when applying this skill. Work from the game root with Python 3
+and Pillow. Preserve the exact baseline matrix, palette and image in a fresh
+`tmp/` directory. Character matrices remain 64×64. Detect means inspect without
+editing; stop means stop mutations; revert means restore the named files exactly.
+Detector behavior, edit-file schemas and terrain joins are in
+[implementation.md](implementation.md).
 
 ```sh
 python3 .agents/skills/pixel-cleaning/scripts/review.py \
@@ -18,47 +19,28 @@ python3 .agents/skills/pixel-cleaning/scripts/apply_edits.py \
   pixel/art/units/humans/scout/sprite.txt tmp/scout-edits.json tmp/scout-candidate
 ```
 
-The review bundle produces faction previews, every detector finding and enlarged
-eight-neighbor contexts. Inspect these images and the unmarked sprite. For full
-cleanup, review every surface and candidate, including connected wrong-material
-patches detectors miss. For a narrow fix, stay within that scope.
+Inspect the review images and unmarked source. A full cleanup examines every
+surface, including connected defects detectors miss; a narrow fix stays within
+its requested scope. Findings are candidates, not instructions to paint them.
 
-- The stray detector uses cardinal equal-color neighbors; intentional eyes,
-  highlights and diagonal details can be flagged. Optional material shade groups
-  are review inputs, not proof that a shade belongs at a particular location.
-- Edge findings are candidates. Preserve intentional diagonal outlines, limb
-  separators, weapon width and negative spaces. A hair notch may need an exterior
-  black pixel removed rather than its hole filled. Do not bridge every diagonal.
-- Infer ownership from the source image and local anatomy, not palette names.
-  A brown leak in cloth needs the local cloth color, not a black seam. Preserve
-  cream clothing on foxes and dark exposed paws; distinguish skin from sleeves.
-- Grounded feet/body rest on native row 63. A staff reaching that row is not
-  enough if the feet hover. Preserve all painted pixels during alignment; only
-  palettes with `"flying": true` allow intentionally suspended poses.
-- Keep shade clusters coherent and surfaces connected. Use the
-  current `pixel/art/units/humans/scout/sprite.txt` as a finish benchmark for
-  deliberate material planes, not a pose or palette to copy. Avoid shade noise.
-- For directional terrain, inspect assembled joins at native scale. Road exits
-  must share position, width and a normal tangent through the boundary; a curve
-  ending outside the hex can cross its edge off-center. Matching connection names
-  or nearby dirt pixels do not establish continuity. `art:build` checks road edge
-  sections independently of the interior artwork. Review forks and crossroads
-  in a connected network as well as curves in a loop.
+- Preserve intentional eyes, highlights, diagonals, limb separators, weapon width
+  and negative spaces. Do not bridge every diagonal or fill every notch.
+- Infer material ownership from the source and anatomy. Distinguish skin from
+  sleeves and pale clothing from fur or armor. Match repairs to the actual material.
+- Keep grounded feet or bodies at native row 63; equipment touching it is not
+  sufficient. Preserve every painted pixel during alignment. Intentionally suspended
+  poses require the explicit flying flag.
+- Keep shade clusters coherent. Use the approved human scout as a finish benchmark
+  for material planes, without copying its pose or palette.
+- For directional terrain, inspect assembled joins at native scale in connected
+  networks. Nearby pixels or matching connection names do not establish continuity.
 
-The edit JSON requires `matrix_sha256`, `palette_sha256`, and `edits`. Each edit
-has native `x`, `y`, `from`, `to`, `material` and `reason`; outline/transparency
-changes also require `boundary_reviewed: true`. Apply only individually reviewed
-changes. Hash guards reject stale inputs and the helper preserves the baseline.
-Never batch-paint detector flags or edit only a PNG.
+Apply only individually justified matrix edits. Do not batch-paint detector flags
+or edit only a PNG. Rerun diagnostics and visually inspect the result. Track
+confirmed defects separately from changed pixels; zero flags does not establish
+that a sprite is clean. Restore mistaken edits exactly and state remaining uncertainty.
 
-Rerun and visually inspect current diagnostics after corrections. Track confirmed
-defects separately from changed pixels; zero flags is not the goal. Restore
-mistaken edits exactly. State unresolved uncertainty instead of claiming a
-sprite is clean based on counts alone. Show a clean nearest-neighbor matrix
-render in the requested faction, otherwise last used or enemy. Keep debug colors,
-coordinates and overlays internal unless asked. Use
-[pixel lineup](../pixel-lineup/SKILL.md) for tree previews.
-
-For authorized integration, copy the candidate matrix/palette to its canonical
-unit folder and rebuild/check art. Matrices are authoritative; no owning recipe
-or cleanup replay is required.
+Show a clean nearest-neighbor matrix render in the requested faction, otherwise
+last used or enemy. Keep debug colors and overlays internal unless asked. Use
+[lineup previews](../pixel-lineup/SKILL.md) for trees. When integration is part of
+the task, copy the chosen matrix/palette into its unit folder and rebuild/check art.

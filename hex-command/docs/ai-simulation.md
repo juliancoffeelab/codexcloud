@@ -1,318 +1,92 @@
-# Seeded AI comparisons
+# Combat simulation guide
 
-The simulation CLI defaults to the native Rust engine. Testing policies execute
-the same Rust battle commands and rules as the browser: movement, terrain and race effects,
-combat, healing, recruitment, XP, promotion, scripted arrivals and victory rules.
-The ordinary enemy still uses classic AI. There is no new enemy selector.
+Run simulations as needed to explore or validate balance. Follow the selected
+races, maps, policies, seeds and limits. The native harness runs the same battle
+rules and AI code as the browser. For the agent workflow, use the
+[combat simulation skill](../.agents/skills/combat-simulation/SKILL.md).
 
-Run simulations as needed to explore or validate balance, using the user's scope
-and constraints when supplied. No separate permission is required for balance work.
-
-For the agent workflow, see the
-[combat simulation skill](../.agents/skills/combat-simulation/SKILL.md), which covers
-roster checks, execution, saved-result analysis and reporting.
-
-## Running a comparison
+## Run a panel
 
 ```sh
-# Complete ten-seed workload: 11,520 arena matches and 720 campaign attempts.
-npm run ai:full -- --out artifacts/full.json
+# Enumerate the full schedule without running matches.
+npm run ai:schedule -- --mode full --seeds 10
 
-# Race × complete policy × map, with both seats and initiatives.
-npm run ai:simulate -- --seeds 10 --workers 4 --out artifacts/race-matchups.json
+# Simulate a complete Mixed-policy panel and analyze it.
+npm run ai:combat -- --policies mixed --seed 61 --seeds 50 --out artifacts/current
 
-# Authored campaigns, each player/enemy policy pair, both diplomacy settings.
-npm run ai:simulate -- --mode campaign --seeds 5 --workers 4 --out artifacts/campaigns.json
+# Restrict races, policies and maps.
+npm run ai:combat -- --armies human,coastal --policies classic,mixed --landscapes crossings --seeds 2 --out artifacts/coast-panel
 
-# Restrict the panel; each selected race can face every other selected race.
-npm run ai:simulate -- --armies human,coastal --policies classic,mixed --landscapes crossings --seeds 2 --out artifacts/coast-panel.json
+# Native arena or campaign output without the Python analysis step.
+npm run ai:simulate -- --mode arena --seeds 2 --out artifacts/arena.json
+npm run ai:simulate -- --mode campaign --seeds 5 --out artifacts/campaigns.json
+```
 
-# Replay requires the report's exact source fingerprint.
-npm run ai:simulate -- --replay artifacts/coast-panel.json
+`ai:full` runs arenas and campaigns with ten seeds. With the current four factions,
+four maps and three policies, that is 11,520 arena matches and 720 campaign attempts.
+The schedule command shows counts for a selected scope.
 
-# Compare saved gameplay dumps without running matches. Convert each dump once.
+| Option                   | Meaning                                                           |
+| ------------------------ | ----------------------------------------------------------------- |
+| `--seed`, `--seeds`      | First seed and seed count; defaults 1 and 2                       |
+| `--policies`             | `classic`, `rush`, `mixed`                                        |
+| `--armies`               | `human`, `woodland`, `undead`, `coastal`                          |
+| `--landscapes`           | `open`, `wooded`, `crossings`, `islands`                          |
+| `--rounds`, `--recruits` | Round cap and recruit limit per phase; defaults 30 and 1          |
+| `--workers`              | Up to eight workers; default follows CPU quota                    |
+| `--diplomacy`            | Campaign settings `pragmatic`, `restrained`; defaults to both     |
+| `--data-dir`             | Authored data directory; use it when selecting another checkout   |
+| `--trace`                | Also save raw typed results; detailed gameplay is always recorded |
+
+Use a fresh output directory per experiment. Keep each report and its adjacent
+journals together. Inspect `.partial.json` for status, completed and expected
+counts. Preserve partial results after a failure and state how much completed.
+
+## Analyze saved reports
+
+```sh
+npm run ai:analyze -- artifacts/current/report.json --out artifacts/current/analytics
+npm run ai:analyze -- artifacts/current/report.json --baseline artifacts/previous/report.json --out artifacts/current/analytics
+```
+
+Analysis reads saved reports and executes no matches. Baselines require identical
+configurations. Open `index.html` for searchable tables, `summary.md` for complete
+matrices, or the CSVs for every row. `full-data.zip` contains the exports and
+available compact outcome journals; complete gameplay remains in `.details.jsonl`.
+
+For race balance, use `race_equal_policy.csv` and `race_map_policy.csv` to compare
+other factions with matching policies. `matchups.csv` retains every opponent and
+policy pairing, including self-play. `race_all_policies.csv` mixes policies.
+Caps remain in denominators. Mirrored faction cells refer to the same physical
+matches; self-play counts both participants. Campaign comparisons include
+completion and reached mission results.
+
+## Replay and full gameplay comparison
+
+Replay reruns the recorded matches and requires the original engine/content
+fingerprint. It validates journal references before execution:
+
+```sh
+npm run ai:simulate -- --replay artifacts/current/report.json
+```
+
+To compare full saved gameplay without rerunning it, convert each detail dump
+once, then compare the resulting Arrow files:
+
+```sh
 uv run --with pyarrow scripts/convert-simulation-dump.py artifacts/baseline.arrow artifacts/baseline.details.jsonl
 uv run --with pyarrow scripts/convert-simulation-dump.py artifacts/current.arrow artifacts/current.details.jsonl
 uv run --with pyarrow --with polars==2.0.0 scripts/compare-simulation-dumps.py artifacts/baseline.arrow artifacts/current.arrow
 ```
 
-`--seed` sets the first seed and `--seeds` the count. `--rounds` defaults to 30;
-`--recruits` defaults to one recruitment per phase, or zero for starting-army-only
-comparisons. `--workers` runs matches through up to eight scoped Rust threads.
-Its default respects the available CPU quota; workers borrow one immutable catalog
-and take the next match as they finish. Workers do not change outcomes.
-`--diplomacy pragmatic,restrained` selects campaign settings; both are the
-default. `--trace` additionally retains raw runner results; detailed phases and
-initial/final states are recorded regardless of that flag.
+`npm run ai:benchmark -- --out artifacts/baseline.json` runs 60 representative
+matches. Use `--limit 12` for a smaller sample, or `--compare artifacts/baseline.json`
+to check identical complete-result hashes after an optimization.
 
-Schema 3 reports keep compact outcomes, composition statistics and timings in
-the main JSON. Each outcome's `detail` gives a file, byte offset, length and SHA-256
-for its complete record in an adjacent `.details.jsonl` journal. This includes
-all commands, combats, troop states, ownership, goals and initial/final states.
-Records are written once as each match finishes. Progress files contain the
-compact indexes, so the runner neither rewrites accumulated traces nor keeps
-the entire tournament in memory. Keep a report and its journals together.
-`--trace` adds `.trace.jsonl` files containing the raw runner return values.
-Exact replay reads and validates one journal record at a time.
-
-Dump conversion uses an explicit Arrow schema; pass every detail journal for a
-sharded report. Comparison validates unique `(kind, config)` identities with a
-Polars join, gathers corresponding rows and compares complete gameplay values in
-Arrow without sorting or rerunning simulations. It excludes `stateHash`,
-`elapsedMs`, `elapsedSeconds` and `detail` at match and mission level, preserving
-array order within each match. Stage traces include wall time, CPU time and peak
-memory; `--out PATH` saves the comparison result and wall-time spans.
-
-`npm run ai:benchmark -- --out artifacts/baseline.json` measures 60 representative
-runs spanning every race, terrain and policy plus all four campaigns. After an
-optimization, use `--compare artifacts/baseline.json --out artifacts/optimized.json`
-to require identical hashes for every complete result, including phase commands.
-This benchmark is separate from the lightweight test suite.
-
-## Analytics from saved results
-
-```sh
-# Existing output only; this command never builds or runs simulations.
-npm run ai:analyze -- artifacts/current/report.json --out artifacts/current/analytics
-
-# Require identical match configurations and calculate before/after deltas.
-npm run ai:analyze -- artifacts/current/report.json --baseline artifacts/previous/report.json --out artifacts/current/analytics
-```
-
-The skill's [complete reporter](../.agents/skills/combat-simulation/scripts/report-combat.py)
-uses Python's standard library. It reports every recorded faction, map and policy
-pairing, including self-play, with full win/loss/cap counts and victory reasons.
-It exports every physical match, recruitment, promotion and casualty; baseline
-comparisons validate identical configurations and include individual result changes.
-Campaign changes include completion and per-chapter winners, rounds and state hashes.
-Analysis uses only the saved report outcomes and metadata. It reads no gameplay
-catalogs, artwork or Git history and works outside a repository checkout.
-Recorded source commits and fingerprints are displayed without looking them up.
-
-Open `analytics/index.html` for searchable tables and filters, or `summary.md` for
-every faction matrix, every policy pairing and full unit counts. All rows remain in
-CSV, and `full-data.zip` includes the exports and original compact outcome journals.
-Complete gameplay stays in the adjacent input `.details.jsonl` journals, referenced
-by each physical match. Caps remain in win-rate denominators. Self-play tables count
-both participants; the physical-match ledger counts each match once. `timings.json`
-records report generation time.
-
-Run and report a balance batch with one command:
-
-```sh
-npm run ai:combat -- --seeds 10 --out artifacts/current --baseline artifacts/previous/report.json
-```
-
-The runner forwards simulation options, including a custom `--data-dir`, to the
-existing native harness and reports only after successful completion.
-Reporting saved data alone never starts battles.
-
-The engine shares immutable indexed hex geometry between forecast copies, uses
-integer movement queues, and precomputes fixed movement and defense rules. Routing
-fields ignore occupancy and can be reused across commands; terrain revisions
-invalidate them after edits, and planners share immutable distance arrays. Threat searches
-reuse movement and firing positions within an unchanged board. Objective endpoints
-and incoming waves retain exact forecasts. Rush and mixed retain the first best
-plan directly, preserving the stable tie order without sorting every candidate.
-These changes preserve the policies' scores and rules rather than reducing the
-simulation schedule or turn limits.
-
-## Native Rust engine
-
-`npm run ai:simulate` and `npm run ai:full` build and invoke the native harness.
-Rust reads the authored `rust/data` JSON directly and owns scheduling, battle/AI
-execution, campaign transitions, recording and reports. Content fingerprints are
-separate from the compiled engine fingerprint; JSON edits need no export or rebuild.
-
-`npm run ai:schedule -- --mode full --seeds 10` enumerates configurations without
-running matches. The browser uses the WASM engine and Rust-generated transfer
-types through its JavaScript controller. See [`rust/README.md`](../rust/README.md)
-for the public API and build details.
-
-## Complete policies
-
-**Classic** uses the shipped recruitment and combat/movement heuristics and stable
-unit ordering. Recruit placement points toward the opposing keep. Equal scores
-use home-relative ordering, with equal village choices favoring the home keep.
-The campaign/test adapter adds objective reservations, required-actor safety and
-selectable mediation behavior. Live enemy actions retain authored posts and patrols.
-
-**Rush** recruits ordinary melee screens and favors efficient damage and durability.
-**Mixed** uses relative weights of 0.3 warriors, 0.2 flanks, 0.2 rangers and 0.2
-healers. Every unit JSON declares its role explicitly. Missing roster roles are
-redistributed at runtime: all four roles normalize to 33.3%/22.2%/22.2%/22.2%; a
-warrior/ranger-only roster normalizes to 60%/40%. It chooses the most underrepresented
-role first, then an effective unit within that role. A missing warrior gets replacement priority. With village income, mixed saves
-for that replacement instead of continually buying cheaper flankers; other preferred
-roles save for at most two income ticks. Without income it buys an affordable option.
-Recruitment effectiveness uses actual target cover and the attack category the
-role delivers, rather than crediting a ranged unit for a risky melee sidearm.
-Mixed places screens ahead of supports, heals adjacent
-wounded allies, and recomputes plans after every command so followers can use newly
-opened routes. Both policies use actual weapon/terrain effectiveness and objectives.
-Their screens recruit toward contact and their supports behind it.
-
-Required couriers and escaping leaders plan with current occupancy, allowing
-detours that initially increase terrain-only distance. Allies clear their next
-movement corridor instead of permanently occupying the destination's approaches.
-Safety checks still apply to both the actor and units yielding the route.
-
-Beast-race units have 1 additional melee and ranged protection in forests and
-groves, on top of terrain cover. Thorncaller and Briarweaver have no extra individual
-woodland cover: their total protection is 1 melee and 2 ranged. Thorns deal 8 Pierce
-damage (Briarweaver: 10). Rookie boars have 6-damage Impact Trample and 4-damage Pierce
-tusks; Great boar attacks deal 10. Boars have 28 HP (Great boar: 34) and 1
-individual Blade protection, while their racial Pierce weakness remains.
-Skeleton warriors cost 6 gold; bone archers remain at 7. The experimental ranged
-damage reductions have been reverted. An earlier pass doubled unit HP, weapon
-damage and healing, followed by the adjustments described here. Wavemender heals
-2, Tide sage 4, Briarweaver 2, and villages/groves restore 4 HP per turn.
-Undead have 2 racial Pierce protection and 1 Impact vulnerability; skeletons and
-revenants do not stack another individual Pierce modifier. Wardens retain their
-spear and use a 6-damage Impact Shield bash. Wavemender costs 9 gold.
-Skeletal mages add recruitable ranged Impact damage to undead pools. They cost
-8 gold, have 14 HP and 3 movement, and use a 10-damage range-two Bone burst plus
-a 2-damage melee staff. At 10 XP they advance to skeletal sorcerers with 18 HP,
-11-damage Bone burst and a 4-damage staff. Both ranks retain undead racial modifiers.
-Reef guards use a 4-damage Impact Tail strike. Coastal recruitment includes macers,
-with 22 HP, 4 movement, an 8-gold cost and a 6-damage Impact mace. Unlike reef guards,
-macers have no individual Blade protection. At 10 XP they advance to veteran
-macers with 28 HP and an 8-damage mace. Both inherit merfolk terrain modifiers.
-Wavemender Surge deals 5 ranged Impact, and Tide sage Surge deals 7; healing remains
-2 and 4. See [the coastal balance follow-up](coastal-balance.md) for paired results.
-Human adepts have 17 HP and a 7-damage Impact Spark; stone mages have 23 HP and
-a 9-damage Spark. Their movement, costs, melee attacks and promotion thresholds
-are unchanged. Scouts use a 5-damage Blade knife, and rangers use a 7-damage knife.
-Wolves and dire wolves have 4 movement, retaining their racial forest movement
-and protection bonuses. These changes target Mixed-policy army balance; full
-race/map/opponent results are recorded in [the balance report](combat-balance.md).
-Historical reports describe their recorded rules snapshot, not these updated values.
-
-Merfolk pay 2 movement on plains, villages, keeps and ruins, and 3 in
-forests, groves, hills and forts. Water, shallows, marshes and bridges cost 1. This racial
-land slowdown applies to both ranks, leaders and supports; base movement and
-water protection remain intact.
-
-All policies share leader reinforcement hysteresis. Leaders initially rebuild when
-below five living ordinary combatants. They release at five, return to rebuilding
-at two or fewer, and retain their previous mode at three or four. Rebuilding leaders
-return to an owned keep and remain available there until replenished. Couriers,
-healers and other leaders do not count toward the thresholds. Mode is saved with
-the leader. Required leader escapes bypass rebuilding; no owned recruitment site
-or no recruitment pool means no rebuild assignment. A side with neither an
-affordable recruit nor village income seeks resources instead of waiting on a
-keep indefinitely, while retaining its rebuilding mode. Retreat remains available.
-Released leaders still need two nearby healthy escorts to advance toward contact.
-
-Couriers, leaders and required companions use a conservative next-phase pressure
-estimate. It includes scripted arrivals, sums potential attackers, and allows
-opposing movers to vacate one another's routes while retaining friendly obstacles.
-This catches attacks enabled by earlier enemy moves. It is a conservative heuristic,
-not an exact enemy-turn search: attackers can have mutually incompatible positions
-and it can overestimate danger. It does not model friendly screens dying and opening
-further routes. Ordinary troops retain the cheaper top-two estimate.
-Required actors strongly penalize exposure; couriers give combat much less weight
-than safety. When every destination is lethal, an actor can still withdraw to a
-less dangerous reachable position. A genuinely terminal escort/escape or arena
-leader kill need not fear a nonexistent next phase.
-
-## Objectives and diplomacy
-
-Required goals have weight 24, ordinary uncaptured villages 8, optional visits 4.
-Escort, escape and vigil endpoints belong to their specific actor; typed seals
-belong to eligible unit families. Other troops support the surrounding approaches
-and penalize occupying or remaining on the reserved endpoint. Classic clears
-blockers before moving the actor; rush/mixed recompute after each command.
-Rebuilding leaders also reserve their recruitment sites. An actor holds its endpoint
-until the engine completes the battle. Authored enemy posts and objective patrol
-limits apply to all policies; the scenario's duties do not disappear when changing AI.
-
-Rush and mixed assign each unit a reachable objective before scoring destinations,
-and retain that assignment throughout the turn until the objective is secured.
-Assigned couriers and seal-capable units prioritize their personal duties. Equal
-objective choices use home-relative ordering rather than coordinate labels.
-Progress earns points and retreat loses them against that same objective; gaining
-one movement-cost step is worth a quarter of its weight. Moves are compared with
-waiting, so existing formation, healing and safety do not count as new gains.
-Captured sites stop attracting troops. Hold duties retain a garrison, while other
-troops pursue remaining goals. A rebuilding leader's duty does not recall the army.
-Required-actor safety, retreat and legal movement restrictions still apply.
-
-The woodland regression reuses recorded starting states from the completed full
-run and checks one policy turn. Measure tournament and campaign win rates with
-complete simulation batches when assessing the effect of policy changes.
-
-Campaign diplomacy is a matched comparison dimension:
-
-- **Pragmatic:** ordinary combat scoring, including attacks that may end mediation.
-- **Restrained:** during the authored refuge mediation, do not pursue retreating
-  patrol units or kill the protected captain. Nonlethal defense against the captain
-  remains possible. Penalize occupying their next steps toward friendly villages,
-  keeps or the home edge, leaving a withdrawal route. Rush/mixed mark genuine
-  wounded withdrawals just as classic does, clearing that status on renewed
-  advance, attack or full recovery.
-
-The setting changes AI choices, not legal attacks, enemy allegiance, battle stats
-or the story's escalation triggers. Once the real campaign escalates to war,
-mediation protection ends. The current engine has two sides; the refuge's captain
-and withdrawing soldiers are protected by story conditions, not by an invented
-third faction. Campaigns without those conditions retain ordinary combat behavior.
-
-## Arena coverage and victory
-
-Maps are rotationally paired radius-four hexagons: open, wooded, river crossings
-and islands. Islands has two home islands and three separate objective islands:
-the central fort and the northern/southern villages. Bridges link the home islands
-to the fort; shallow crossings reach the village islands and give alternative
-approaches to the fort, including the hex east of the northern village and its
-southern counterpart. Open channels give merfolk routes around those crossings.
-Seeds vary paired terrain, equal total budgets and small policy tie breakers. Water arenas
-retain the river identity for classic's routing. Each side gets its selected race's leader,
-two melee starters and its own recruitment pool. Human, woodland, undead and coastal
-rosters can face each other; same-race baselines remain included. Undead arena
-recruitment includes skeletons, bone archers and skeletal mages; campaign pools
-remain authored independently, including their existing adepts. Each side receives the same total
-starting budget: the authored `startingBudget` of 36 gold plus a paired seed-dependent
-0, 3 or 6 gold. Its leader and two starters are charged at their unit prices, and
-the remainder is spendable cash. Positions and per-phase recruit limits are paired,
-while race-specific stats differ.
-
-An entrant is `(race, policy)`. Every unordered entrant pair is scheduled in both
-seats and both initiatives; identical entrants run both initiatives once. Four races
-and three policies give 12 entrants, 288 games per terrain, **1,152 games per seed**
-across the four terrains. Each round contains both phases regardless of initiative.
-
-Victory means defeating the opposing leader, or owning the central fort and both
-central villages through four opposing turns, or six on islands to allow ground
-troops time to reach the objectives. Only completed opposing turns count; losing
-any of the three objectives resets the hold. Optional ruins record visits without
-resources. Territory victory belongs to this testing scenario, not ordinary battles.
-
-Campaigns use the actual authored player and enemy rosters, maps, objectives and
-waves. They begin in chapter one, earn carryover and recall up to four eligible
-survivors using the same ranking. No retries. Four campaigns, three player policies,
-three enemy policies and two diplomacy settings give **72 attempts per seed**.
-Campaign seeds vary policy tie breaks, not authored maps; deterministic classic
-choices can repeat across seeds.
-
-## Recorded data and limits
-
-Reports retain every configuration, outcome, reason, unresolved cap,
-phase command, combat damage/retaliation, casualty, recruit, promotion and initial/
-final state. Phase records include beginning/end rosters with identities, positions,
-HP, XP, action flags and leader mode; gold, ownership, goal progress and full campaign
-state retain mediation escalation and named deaths. Casualties include troops
-recruited and killed during the same phase. Arena goal ownership/holding and optional
-visits are recorded. Endpoint hashes and a SHA-256 source fingerprint permit exact replay.
-
-Aggregates compare race/policy entrants, ordered race matchups and terrain; self-play
-reports seat and initiative diagnostics. Campaign aggregates retain campaign,
-player/enemy policies, diplomacy setting, completion, defeat, unresolved caps,
-escalation and chapter reach. Recruitment, losses and promotions are totaled by
-race/policy entrant. Loss totals include starting and promoted troops, so they are
-not purchase survival percentages.
-
-Bootstrap intervals resample complete seed blocks, preserving seat/initiative/map
-correlations. They describe these scenarios and policies, not optimal play or human
-difficulty. More seeds reduce sampling uncertainty, not policy weakness. Partial
-checkpoints retain completed configurations; worker failures are errors, not defeats.
+See [simulation implementation](../.agents/skills/combat-simulation/implementation.md)
+for analyzer contracts, arena/campaign definitions and statistics;
+[recording and recovery](../rust/src/simulation/README.md) for journal formats;
+and [AI policy implementation](../rust/src/ai/README.md) for planning behavior.
+Historical balance evidence is in [the initial pass](combat-balance.md) and
+[the coastal follow-up](coastal-balance.md). Current stats live in
+[authored game data](../rust/data/README.md).

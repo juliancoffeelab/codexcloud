@@ -24,9 +24,11 @@ const files = [
   "pixel/art/terrain/*/palette.json",
   "pixel/art/portraits/*/palette.json",
   "docs/ai-simulation.md",
-  "docs/save-deployment.md",
+  "docs/save-formats.md",
+  "docs/development.md",
   "docs/terrain-artwork.md",
   "rust/README.md",
+  "rust/src/ai/README.md",
   "rust/data/**/*.{json,md}",
 ];
 const checks = [

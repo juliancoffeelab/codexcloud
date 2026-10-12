@@ -9,6 +9,14 @@ bits 1, 2, 4, 8, 16 and 32 representing e, se, sw, w, nw and ne.
 The artwork build reads finished matrices. It does not synthesize roads or modify
 source artwork.
 
+## Floor palettes
+
+`pixel/art/terrain/floors.json` defines named `palettes` with `G`/`g` base/shade
+pairs and terrain `defaults`. A tile's optional `floor` overrides its default,
+including on roads and villages. Floor symbols do not belong in local material
+palettes. Tree foliage and grass tufts use other symbols and retain their colors
+when the floor changes. Different floor palettes reuse the same matrix.
+
 ## Props and layouts
 
 Forest, hill and plains base matrices contain the floor and ground decoration.
