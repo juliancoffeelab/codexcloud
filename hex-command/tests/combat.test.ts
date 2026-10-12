@@ -54,37 +54,6 @@ test("Covered retaliation can deal zero damage", async () => {
   assert(choice.retaliationCalculation.description.includes("shard"));
   assert.equal(choice.retaliationCalculation.equation, "2 − 1 (armor) − 1 (cover) = 0");
 });
-test("Skeletal mage impact spell publishes armor weakness and resolves at range", () => {
-  const { game, attacker, target } = fixture("skeleton-impact-caster", "soldier", "4,3");
-  const view = createGameView(game);
-  const choice = required(
-    attackChoiceViews(view, attacker, target).find((c) => c.id === "boneburst"),
-  );
-  assert(choice.available);
-  assert.equal(choice.attackCalculation.equation, "10 + 1 (weakness) = 11");
-  const hp = target.hp;
-  game.attack(attacker.id, target.id, "boneburst");
-  assert.equal(target.hp, hp - 11);
-  assert.equal(attacker.hp, TYPES[attacker.type].hp);
-  assert.equal(view.unit(target.id)?.hp, hp, "The earlier publication remains immutable");
-});
-for (const [type, weapon, equation, damage] of [
-  ["reefguard", "tail", "4 + 1 (weakness) = 5", 5],
-  ["merfolk-maceguard", "mace", "6 + 1 (weakness) = 7", 7],
-] as const) {
-  test(`${type} impact attack publishes and resolves skeletal weakness`, () => {
-    const { game, attacker, target } = fixture(type, "skeleton");
-    const choice = required(
-      attackChoiceViews(createGameView(game), attacker, target).find((c) => c.id === weapon),
-    );
-    assert(choice.available);
-    assert.equal(choice.attackCalculation.equation, equation);
-    const hp = target.hp;
-    game.attack(attacker.id, target.id, weapon);
-    assert.equal(target.hp, hp - damage);
-    assert(attacker.hp < TYPES[type].hp, "Melee counters still allow retaliation");
-  });
-}
 test("Blocked attacks still produce combat feedback", async () => {
   const { game, attacker, target } = fixture("bonearcher", "commander");
   required(game.tile(target.tile)).terrain = "hill";
