@@ -12,7 +12,7 @@ Runtime means handwritten frontend implementation, including CSS and startup Jav
 | ------------------------------------------ | -----: | ------: | ----: |
 | Frontend runtime                           |  +4865 |   −6696 | -1831 |
 | Frontend including interfaces              |  +5720 |   −6700 |  -980 |
-| Whole authored code, including tests/tools | +11755 |   −9236 | +2519 |
+| Whole authored code, including tests/tools | +11761 |   −9236 | +2525 |
 
 **Only the frontend has a negative delta.** The whole-code count increases because it includes the test migration, additional regressions and build tooling. There are no handwritten TypeScript/JavaScript application helpers. Runtime TypeScript is generated data-only sprite metadata; Rust WASM glue and React are foreign dependencies. The terrain prebuild adapter is Node-only I/O around the same compiled OCaml renderer.
 
@@ -77,11 +77,20 @@ Foreign arrays/dictionaries retain ordinary mutable OCaml types; runtime freezin
 
 ## Validation and the 20-second requirement
 
-**Current PR #20 port: verification blocked.** The normal Dune 3.24.2 managed-package build failed because this session receives HTTP 403 CONNECT denials for the locked Inria and Erratique archives. No complete tests or full verification were run. The temporary installed-package wrapper, copied libraries, environment file and its build artifacts have been removed; their compilation results are not accepted as validation. The upstream locks and standard Dune-managed build remain intact.
+**Current PR #20 port: verified on 2026-10-12 at `f5af966`.** Both previously blocked archive hosts are reachable. Standard `npm run verify:prepare` passed with Dune 3.24.2, unmodified upstream locks and the managed OCaml 5.3.0 compiler. No installed-package wrapper or copied-library workaround was used.
+
+- Complete `npm test`: **6.307 seconds**, including npm startup; 240 frontend tests, 70 native Rust tests and 44 Python checks pass. Both native executables and Rustdoc discovery run.
+- Complete `npm run verify`: **9.056 seconds**, including npm startup; all 11 checks pass, including tests, strict TypeScript/WASM ABI checks, generated bindings, formatting, content and prepared-artifact freshness. The 20-second command budget and 18-second internal deadline are unchanged.
+- Preparation built release WASM, standalone artwork, emitted OCaml, all 16 authored terrain PNGs, the production bundle and native test executables.
+- The first complete run exposed two test-fixture mistakes in the #20 port: a bounded saved roster was compared with the full gallery, and a historical 6×20 save contained new units outside that geometry. The fixtures now compare the actual saved roster and retain representative historical actors. Application migration code is unchanged.
+- No browser automation or campaign/tournament batches were run.
+
+The restored environment contains older compiler cache entries. The preceding Dune upgrade regenerated the compiler's locked build metadata, changing package fingerprints despite keeping OCaml at 5.3.0. This resumed build compiled the managed compiler and dependencies into the checkout's ignored `_build` directory; no dependencies or locks were updated during validation. Retain that directory for subsequent warm builds.
+
+### Historical validation
 
 These measurements precede the Dune 3.24.2 environment upgrade in `02f2cb6`.
-They are retained as historical results; checks have not been rerun for that
-upgrade in this session.
+They are retained as historical results; current validation is recorded above.
 
 - Complete `npm test`: **10.738 seconds**; 241 frontend tests, 74 native Rust tests and 39 Python checks pass. Both native executables and Rustdoc discovery run, including targets with no current tests.
 - Complete `npm run verify`: **14.693 seconds**; every test plus strict TypeScript/WASM ABI, exact generated bindings, OCaml/Reason/JSON/Rust formatting, whitespace, content and prepared artifact freshness checks pass.
@@ -139,8 +148,7 @@ in the new development documentation layout.
 
 Original authored code is **+874/−774 = +100**; port code is **+732/−663 = +69**.
 Original frontend is **+17/−1 = +16**; port frontend is **+2/−2 = 0**.
-These are source counts, not evidence of passing behavior: verification remains
-blocked as stated above.
+These are source counts; current behavioral validation is recorded above.
 
 Original frontend files:
 

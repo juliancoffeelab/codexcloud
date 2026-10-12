@@ -6603,11 +6603,11 @@
   },
   "finalComparison": {
     "before": "b1f553de69c0de8a340088c0a9ed42b2149fb27e",
-    "after": "ea13ecb916da4eeea8fd65ae97efc4fe405d7753",
+    "after": "f5af9665e5ab085ecacc74af59d67307ec5307af",
     "wholeAuthoredCode": {
-      "added": 11755,
+      "added": 11761,
       "removed": 9236,
-      "net": 2519
+      "net": 2525
     },
     "wholeCodeFiles": [
       {
@@ -7620,7 +7620,7 @@
       },
       {
         "path": "hex-command/tests/maps.test.ts",
-        "added": 52,
+        "added": 51,
         "removed": 50,
         "publicInterface": false
       },
@@ -7668,7 +7668,7 @@
       },
       {
         "path": "hex-command/tests/save.test.ts",
-        "added": 412,
+        "added": 419,
         "removed": 283,
         "publicInterface": false
       },
@@ -8623,15 +8623,24 @@
     ]
   },
   "validation": {
-    "status": "blocked",
-    "sourceRevision": "ea13ecb916da4eeea8fd65ae97efc4fe405d7753",
+    "status": "passed",
+    "sourceRevision": "f5af9665e5ab085ecacc74af59d67307ec5307af",
+    "date": "2026-10-12",
     "duneVersion": "3.24.2",
-    "managedPackageBuild": "failed: HTTP 403 CONNECT denials for locked upstream archives",
-    "blockedHosts": ["gitlab.inria.fr", "erratique.ch"],
-    "testsRun": false,
-    "fullVerificationRun": false,
+    "managedPackageBuild": "passed: standard Dune-managed build with unmodified upstream locks",
+    "blockedHosts": [],
+    "testsRun": true,
+    "fullVerificationRun": true,
+    "frontendTests": 240,
+    "nativeRustTests": 70,
+    "pythonTests": 44,
+    "nativeExecutables": 2,
+    "rustdocIncluded": true,
+    "testCommandSeconds": 6.307,
+    "verificationCommandSeconds": 9.056,
     "budgetSeconds": 20,
     "internalDeadlineSeconds": 18,
+    "productionMaps": 16,
     "temporaryPackageBypassRemoved": true,
     "bypassBuildArtifactsDiscarded": true,
     "browserAutomationRun": false,
