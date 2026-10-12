@@ -73,6 +73,6 @@ uv run --with pyarrow scripts/convert-simulation-dump.py artifacts/current.arrow
 uv run --with pyarrow --with polars==2.0.0 scripts/compare-simulation-dumps.py artifacts/baseline.arrow artifacts/current.arrow
 ```
 
-See [recording and recovery](../../../rust/src/simulation/README.md) for journal
+See [recording and recovery](implementation.md#native-simulation-records-and-recovery) for journal
 formats and interrupted runs. AI behavior is described in the
 [policy reference](../../../rust/src/ai/README.md).
