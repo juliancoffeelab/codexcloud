@@ -10,7 +10,7 @@
     {
       "id": "surge",
       "name": "Surge",
-      "damage": 6,
+      "damage": 5,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
