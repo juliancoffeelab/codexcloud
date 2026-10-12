@@ -101,6 +101,11 @@ effects show movement and resolved incoming-damage modifiers. Numeric abilities
 such as healing come from catalog metadata; descriptions explain roles without
 duplicating the values.
 
+Restoration caps saved HP at the current unit maximum while preserving turn
+progress. A queued AI move or recruitment invalidated by balance changes is
+replanned with the saved recruitment budget. This does not change the save format
+or add a migration.
+
 ## Sites publication
 
 `scripts/publish-sites-call.js` coordinates the configured Sites deployment.

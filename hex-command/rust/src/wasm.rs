@@ -341,14 +341,14 @@ impl NativeEngineFactory {
             planner,
         })
     }
-    fn restore_saved(&mut self, saved: SavedGame) -> Result<BattleHandle, EngineError> {
+    fn restore_saved(&mut self, mut saved: SavedGame) -> Result<BattleHandle, EngineError> {
         let game = Game::try_from_state(&self.rules, saved.state).map_err(|error| {
             EngineError::InvalidSave {
                 message: error.to_string(),
             }
         })?;
         let state = game.state();
-        if let Some(planner) = &saved.planner {
+        if let Some(planner) = &mut saved.planner {
             if planner.workspace.seed != saved.seed
                 || planner.workspace.diplomacy != planner.options.diplomacy
                 || planner
@@ -368,11 +368,26 @@ impl NativeEngineFactory {
                     message: error.to_string(),
                 })?;
             if let Some(pending) = &planner.pending {
-                game.fork()
-                    .execute(pending.clone())
-                    .map_err(|error| EngineError::InvalidSave {
-                        message: error.to_string(),
-                    })?;
+                match game.fork().execute(pending.clone()) {
+                    Ok(_) => {}
+                    Err(CommandError::IllegalMove | CommandError::IllegalRecruit) => {
+                        // Rebalanced movement or prices can invalidate a queued action.
+                        // Replan from the saved turn without replenishing recruits.
+                        planner.workspace = PlanningWorkspace::new(
+                            planner.workspace.seed,
+                            planner.workspace.recruitment_remaining,
+                            planner.workspace.goals.clone(),
+                            planner.workspace.diplomacy,
+                        )
+                        .snapshot();
+                        planner.pending = None;
+                    }
+                    Err(error) => {
+                        return Err(EngineError::InvalidSave {
+                            message: error.to_string(),
+                        });
+                    }
+                }
             }
         }
         let board = game.board.clone();
@@ -436,6 +451,91 @@ impl NativeEngineFactory {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn rebalanced_catalog_restores_health_and_replans_a_stale_move() {
+        let mut factory = NativeEngineFactory {
+            rules: Rules::embedded().unwrap(),
+            battles: HashMap::new(),
+            next_id: 1,
+        };
+        let state = Game::new(&factory.rules, "mirror").state();
+        let board = Board::new(&state.tiles);
+        let original = factory.insert(state, 17, board);
+        let options = AiOptions {
+            policy: AiPolicy::Mixed,
+            diplomacy: AiDiplomacy::Restrained,
+            recruitment_limit: 1,
+        };
+        factory.decision(original.id, 0, options.clone()).unwrap();
+        let mut saved = factory.checkpoint(original.id, 0).unwrap();
+        let (kind, actor_id, command) = {
+            let game = factory.battles[&original.id].game(&factory.rules);
+            let actor = game.units.iter().find(|u| u.side == game.turn).unwrap();
+            let (tile, cost) = game
+                .reachable(actor)
+                .into_iter()
+                .max_by_key(|(_, cost)| *cost)
+                .unwrap();
+            assert!(cost > 1);
+            let command = Command::Move {
+                unit: UnitId(actor.id),
+                tile: TileId(game.board.ids[tile].clone()),
+            };
+            assert!(game.fork().execute(command.clone()).is_ok());
+            (actor.kind, format!("u{}", actor.id), command)
+        };
+        let finished = saved
+            .state
+            .units
+            .iter_mut()
+            .find(|u| u.side == saved.state.turn && u.id != actor_id)
+            .unwrap();
+        finished.hp = 1;
+        finished.moved = true;
+        finished.attacked = true;
+        let finished_id = finished.id.clone();
+        let planner = saved.planner.as_mut().unwrap();
+        planner.pending = Some(command);
+        planner.workspace.recruitment_remaining = 0;
+        factory.rules.units[kind].hp -= 1;
+        factory.rules.units[kind].r#move = 1;
+        let restored = factory.restore_saved(saved).unwrap();
+        let actor = restored
+            .view
+            .state
+            .units
+            .iter()
+            .find(|u| u.id == actor_id)
+            .unwrap();
+        assert_eq!(actor.hp, factory.rules.units[kind].hp);
+        assert!(!actor.moved && !actor.attacked);
+        let finished = restored
+            .view
+            .state
+            .units
+            .iter()
+            .find(|u| u.id == finished_id)
+            .unwrap();
+        assert_eq!(finished.hp, 1);
+        assert!(finished.moved && finished.attacked);
+        assert_eq!(
+            factory.battles[&restored.id]
+                .workspace
+                .as_ref()
+                .unwrap()
+                .snapshot()
+                .recruitment_remaining,
+            0
+        );
+        let next = factory.decision(restored.id, 0, options).unwrap();
+        assert!(
+            factory.battles[&restored.id]
+                .game(&factory.rules)
+                .execute(next.command)
+                .is_ok()
+        );
+    }
 
     #[test]
     fn save_restores_pending_ai_decision_and_continuation() {
