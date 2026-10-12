@@ -6,7 +6,7 @@
   "race": "human",
   "hp": 23,
   "move": 3,
-  "cost": 6,
+  "cost": 5,
   "attacks": [
     {
       "id": "spear",

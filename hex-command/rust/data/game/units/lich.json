@@ -4,7 +4,7 @@
   "name": "Lich",
   "race": "undead",
   "leader": true,
-  "hp": 42,
+  "hp": 44,
   "move": 3,
   "cost": 0,
   "attacks": [
