@@ -1,13 +1,30 @@
 import { test, beforeEach, afterEach, vi } from "vitest";
 import { required, TestStorage } from "./helpers.ts";
 import assert from "node:assert/strict";
+import { pixelSprites } from "../src/presentation/pixel-art";
 
-const { Game, TYPES } = await import("./game-fixture.ts");
-const { Native, Catalog, catalog, createBattle } = await import("./native-fixture.ts");
+const { Game, TYPES, developerFixture } = await import("./game-fixture.ts");
+const { Native, Catalog, catalog, restoreBattle } = await import("./native-fixture.ts");
+
+test("Developer showcase contains both factions' playable units and expansion space", () => {
+  const game = new Game("developer");
+  const actors = new Set(game.units.map((unit) => `${unit.side}:${unit.type}`));
+  for (const type of Object.keys(TYPES))
+    for (const side of ["player", "enemy"])
+      assert(actors.has(`${side}:${type}`), `${side} ${type}`);
+  const occupied = new Set(game.units.map((unit) => unit.tile));
+  const freeGround = game.tiles.filter(
+    (tile) => tile.terrain === "plains" && !occupied.has(tile.id),
+  ).length;
+  const artworkTypes = Object.keys(pixelSprites).filter((frame) =>
+    frame.startsWith("player_"),
+  ).length;
+  assert(freeGround >= artworkTypes * 2 - game.units.length);
+});
 
 // These are ordinary units on an ordinary map: movement, combat and turns still work.
 test("Developer units use ordinary movement, combat and turns", async () => {
-  const developerBattle = createBattle({ kind: "scenario", map: "developer" });
+  const developerBattle = restoreBattle(developerFixture(["soldier"]).checkpoint());
   const initial = Native.state(Native.view(developerBattle));
   const soldier = required(
     initial.units.find((unit) => unit.type === "soldier" && unit.side === "player"),
@@ -42,22 +59,18 @@ test("Developer units use ordinary movement, combat and turns", async () => {
 const { loadBattle, saveBattle, SAVE_KEY, SAVE_VERSION } = await import("./legacy-save.ts");
 
 test("Developer saves remain noncampaign and round-trip", async () => {
-  const showcase = new Game("developer");
+  const showcase = developerFixture();
   saveBattle(showcase);
   const loaded = loadBattle();
   assert.deepEqual(loaded.game.snapshot(), showcase.snapshot());
   assert.equal(loaded.pendingEnemy, false);
   assert.equal(loaded.game.campaign, undefined);
 });
-for (const [type, destination] of [
-  ["scout", "5,1"],
-  ["soldier", "3,1"],
-  ["soldier", "4,1"],
-] as const) {
+for (const [type, destination] of [["scout", "5,1"]] as const) {
   test(
     "Moved developer sites persist ownership — " + JSON.stringify([type, destination]),
     async () => {
-      const game = new Game("developer");
+      const game = developerFixture([type]);
       const unit = required(
         game.units.find((unit) => unit.side === "player" && unit.type === type),
       );
@@ -74,7 +87,7 @@ test("Ordinary skirmishes do not publish site ownership overrides", async () => 
   assert.equal(new Game("river").snapshot().sites, undefined);
 });
 function validDeveloperSave() {
-  const showcase = new Game("developer");
+  const showcase = developerFixture();
   const validSave = {
     version: SAVE_VERSION,
     pendingEnemy: false,

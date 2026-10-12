@@ -33,14 +33,18 @@
 - Keep temporary data, experiments and diagnostics in ignored `tmp/`, outside
   tracked content.
 - Run `npm run format` to apply project formatting automatically.
-- All test suites together must finish within 20 seconds, including Rust, Python
-  and Vitest. Use the shared `npm test` runner; do not raise the budget. Use
+- The entire `npm test` and every `npm run verify` invocation must finish within
+  20 seconds, including startup, Rust, Python and Vitest. Use the shared `npm test` runner; do not raise the budget. Use
   controlled promises or an injected clock instead of real delays.
 - Keep browser automation out of the default test suite. Playwright is available
   for explicitly requested browser spot checks; keep scratch probes in ignored
   `tmp/`. Do not add mandatory browser installs, extra services, large migration
   suites, or Git-history fixtures. Use focused checks for meaningful rules,
   state transitions, publication, and cancellation behavior.
+- Run `npm run verify:prepare` explicitly after compiled-source or artifact-input
+  changes. Timed checks must reject stale preparation instead of rebuilding.
+- Components render `Session.model` with stable actions; borrowed native data is
+  frozen at runtime. Public `.mli`/`.rei` interfaces describe ownership.
 - Startup should be fast. Lazy-load what is possible. Loading failures must
   provide a way to diagnose the error and restart cleanly.
 - Run combat simulations when needed to explore or validate balance. Do not wait

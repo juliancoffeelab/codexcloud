@@ -3,7 +3,7 @@ import { test, beforeEach, vi } from "vitest";
 import * as Session from "@frontend/Session";
 import * as Save from "@frontend/Save";
 import { Native, Catalog, factory, catalog, createBattle, restoreBattle } from "./native-fixture";
-import { Game } from "./game-fixture";
+import { Game, developerFixture } from "./game-fixture";
 import { saveBattle, SAVE_KEY } from "./legacy-save";
 import { TestStorage, required } from "./helpers";
 import type { SavedGame, State } from "../rust/pkg/hex_command";
@@ -30,9 +30,9 @@ function write(game: Native.battle, pending = false) {
 
 // Every scenario uses the same compiled OCaml owner and actual generated WASM.
 test("Live controller uses native movement/undo and keeps previous UI queries immutable", () => {
+  saveBattle(developerFixture());
   const session = controller(),
     commands = Session.commands(session);
-  commands.reset("developer");
   const opening = capture(session),
     previous = Session.view(session).game;
   const actor = required(opening.units.find((unit) => unit.side === "player"));

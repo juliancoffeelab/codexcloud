@@ -3,11 +3,14 @@ import { fileURLToPath } from "node:url";
 import { toolchainEnvironment } from "../.agents/skills/rust-toolchain/scripts/toolchain-env";
 
 const args = process.argv.slice(2);
-if (args.some((arg) => arg !== "--write")) {
-  console.error("Usage: npm run style, or npm run format to apply formatting.");
+if (
+  args.some((arg) => arg !== "--write" && arg !== "--check") ||
+  (args.includes("--write") && args.includes("--check"))
+) {
+  console.error("Usage: npm run format to apply formatting, or npm run format:check.");
   process.exit(1);
 }
-const write = args.includes("--write");
+const write = !args.includes("--check");
 const cwd = fileURLToPath(new URL("../", import.meta.url));
 const files = [
   "src",
@@ -15,7 +18,6 @@ const files = [
   "tests/*.ts",
   "*.config.ts",
   "*.json",
-  "README.md",
   "AGENTS.md",
   ".agents/skills/**/*.{md,json,ts}",
   "TODO.md",
@@ -26,6 +28,7 @@ const files = [
   "pixel/art/portraits/*/palette.json",
   "docs/*.{md,json}",
   "rust/README.md",
+  "rust/src/ai/README.md",
   "rust/data/**/*.{json,md}",
 ];
 const checks = [

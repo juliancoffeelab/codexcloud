@@ -1,44 +1,86 @@
 # Development and publication
 
-Hex Command uses Svelte and TypeScript for the interface and Rust/WASM for battles
+Hex Command uses OCaml/Melange and ReasonReact for the interface and Rust/WASM for battles
 and enemy planning. It runs entirely in the browser. Development rules live in
 [AGENTS.md](../AGENTS.md).
 
 ## Setup
 
 Use Node.js 22.12+, Rust stable with `rustfmt`, the `wasm32-unknown-unknown` target,
-and Python 3 with Pillow for artwork. `wasm-pack` is pinned in npm dependencies.
+Python 3 and Dune 3.24.2 (pinned in `.dune-version`). React and ReactDOM install
+through npm. Dune uses upstream package metadata and locks application OCaml
+5.3.0, Melange and ReasonReact; no separate application Opam switch is needed.
+
+With an existing Opam setup, run `opam install dune.3.24.2`. Alternatively, put a
+bootstrap OCaml compiler 4.14+ on `PATH` and run:
 
 ```sh
+bash scripts/install-dune.sh "$HOME/.local"
+export PATH="$HOME/.local/bin:$PATH"
+dune --version                 # Expected: 3.24.2
 rustup target add wasm32-unknown-unknown
 npm ci
 npm run dev
 ```
 
-`npm run dev` prepares WASM bindings and artwork before starting Vite. Common commands:
+The source bootstrap needs `curl`, `tar`, Make and a C/C++ toolchain; use
+`build-essential` on Debian/Ubuntu, Xcode Command Line Tools on macOS, or WSL on
+Windows. Add the PATH line to your shell startup file and check `command -v dune`
+for an older executable that might shadow it. The installer verifies the upstream
+release checksum and TLS. Initial package builds need access to their upstream
+archive hosts, including Erratique and Inria.
+
+`npm run dev` prepares WASM, regenerates OCaml ABI bindings, builds artwork and
+compiles the frontend, then supervises Dune's watcher and Vite together. The first
+compiler/package build can take several minutes; preparation prints its stage
+and elapsed time every 15 seconds. Later builds reuse the toolchain. OCaml and
+Reason edits rebuild automatically and Vite reloads the emitted modules; CSS
+uses normal hot updates. After startup, compilation errors leave the watcher
+alive: fix the source to recover. The browser can retain previous compiled code
+until that rebuild succeeds. Initial preparation failures require restarting.
+Ctrl-C or an unexpected service exit releases both process trees.
+
+Vite options pass through, for example `npm run dev -- --port 5174 --strictPort`.
+Rust/catalog and artwork changes require restarting development preparation.
+Stop development before formatting, other Dune builds or verification preparation;
+the formatter uses Dune to resolve its pinned tools.
 
 ```sh
-npm run format                # Apply project formatting
-npm run wasm:build            # Prepare bindings before a fresh test run
+npm run format                # Apply project formatting; README is user-owned
+npm run format:check          # Read-only formatting and whitespace checks
+npm run verify:prepare        # Explicit cold toolchain/artifact preparation
 npm test                      # All test suites; shared 20-second budget
-npm run verify                # All checks and production build
-npm run verify -- types tests # Selected checks
-npm run build
+npm run verify                # All checks/tests and prepared bundle freshness
+npm run verify -- types tests # Selected checks, under the same deadline
+npm run build                 # Actual release build
 npm run preview
 ```
 
 ## Verification
 
-`npm run verify` runs automatic formatting, content validation, WASM bindings,
-UI and TypeScript checks, artwork validation, all tests and the production build.
-Independent checks continue after failures and report their statuses together.
-Select groups as shown above. Legacy `style` selects formatting; focused `rust`
-selects native tests. The combined test group already includes Rust, so
-verification does not run it twice.
+Run `npm run verify:prepare` after changes to compiled sources, content, artwork,
+compiler or bundle inputs. It builds release WASM, artwork, generated bindings,
+OCaml and the Vite bundle, resolves formatters, and compiles native test executables
+without running tests. Cold compilation is explicit preparation work.
 
-`npm test` runs Rust, Python artwork/analyzer tests and Vitest under one shared
-20-second budget. Browser automation is separate. `art:check` validates generated
-artwork; its unit tests run in the combined test command.
+The entire `npm test` and every verification invocation must finish within
+20 seconds, including npm startup. One unchanged 18-second internal deadline
+reserves startup time, bounds concurrency and kills process groups on timeout.
+Tests include Vitest, native Rust and Rustdoc, plus artwork, generation, cleaning
+and combat-analyzer Python suites. No simulation batch or browser automation is
+part of verification. Analyzer tests use small synthetic saved reports.
+
+`npm run verify` adds strict Rust declaration/TypeScript checks, generated binding
+freshness, content, read-only formatting and prepared-artifact validation.
+Formatting writes only through the explicit `npm run format` command (`style`
+is a compatibility alias). Verification never changes sources while checking
+compiled artifacts. Exact source and output digests reject stale, missing, added,
+deleted or corrupt WASM, emitted OCaml, sprites, native tests and bundle files.
+The build group validates the prepared production bundle without another Vite
+compilation; `npm run build` remains the real publication build.
+Groups are `style` (also `format`), `content`, `wasm`, `ui`, `types`, `rust`,
+`python`, `art`, `tests` and `build`. Overlapping groups run each suite once.
+Independent checks continue after failures while the shared deadline remains.
 
 ## Project layout
 
@@ -47,13 +89,27 @@ artwork; its unit tests run in the combined test command.
 - `rust/src/data/`, `logic/` and `ai/` own the catalog, battles and planning.
   `simulation/` owns scheduling and recording; `protocol.rs` and `wasm.rs` expose
   the browser contract. See the [Rust guide](../rust/README.md).
-- `src/game/` adapts the WASM factory, catalog and battle handles. Browser code
-  receives resolved metadata rather than importing live authored JSON.
-- `src/save/` owns versioned envelopes, storage and sequential compatibility
-  migrations. See [save migrations](save-migrations.md).
-- `src/controller/` owns actions, autosaves, undo, turn sequencing and cancellation.
-  `src/ui/` renders published views; `src/presentation/` owns artwork, motion,
-  sound and icons. See [artwork rendering](#artwork-rendering-implementation).
+- `frontend/Native.ml` owns opaque battle handles and detached publications;
+  `Catalog.ml` owns indexed native metadata. `Domain.ml/.mli` are generated from
+  Rust's declarations. Handwritten `.d.ts` files describe emitted APIs for tests.
+- `frontend/Session.ml` owns commands, saves, undo and deferred work. Components
+  receive its published model and stable actions, never a live battle handle.
+  `.mli`/`.rei` files document module contracts and resource ownership.
+- `Save.ml` and `Save_legacy.ml` validate browser envelopes and migrate historical
+  saves before native restoration. See [save migrations](save-migrations.md).
+- ReasonReact components render the shell, battlefield and panels. `Boot`, `Main`
+  and `Startup` mount a catalog-free shell before loading the battle application.
+  `Application` releases the session and factory, including on loading failure.
+- `Art`, `Audio`, `Terrain` and `Viewport` own presentation resources;
+  `Presentation` and `Story` project published data. TypeScript is limited to
+  tooling, test embedding and generated data-only artwork metadata.
+
+Native publications are acyclic foreign graphs, deep-frozen in place. Borrowed
+arrays/dictionaries preserve references but retain mutable OCaml syntax; runtime
+freezing enforces read-only access. Copy before editing. A failed accepted native
+publication releases its handle, retains the last coherent view and saved bytes,
+cancels deferred work and offers reload. Rejected-save backup failure suspends
+recovery writes until an explicit new battle.
 
 Generated bindings live in ignored `rust/pkg/`, sprites in ignored
 `public/assets/sprites/`, and production bundles in ignored `dist/`. Edit source

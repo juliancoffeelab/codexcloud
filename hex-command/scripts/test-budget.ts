@@ -140,6 +140,7 @@ export function pythonTasks(): Task[] {
     ["python-art", "scripts", "test_pixel_*.py"],
     ["python-generation", ".agents/skills/pinkbox-generation/tests", "test*.py"],
     ["python-cleaning", ".agents/skills/pixel-cleaning/tests", "test*.py"],
+    ["python-analysis", ".agents/skills/combat-simulation/tests", "test*.py"],
   ].map(([name, directory, pattern]) => ({
     name: name!,
     command: "python3",

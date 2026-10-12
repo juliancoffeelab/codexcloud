@@ -1,11 +1,12 @@
 import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
+import * as Session from "@frontend/Session";
+import * as Art from "@frontend/Art";
+import * as Presentation from "@frontend/Presentation";
+import * as Story from "@frontend/Story";
 import type * as SessionModule from "@frontend/Session";
-import type * as ArtModule from "@frontend/Art";
-import type * as PresentationModule from "@frontend/Presentation";
-import type * as StoryModule from "@frontend/Story";
 import { Native, Catalog, factory, catalog, restoreBattle } from "./native-fixture";
-import { Game, TYPES } from "./game-fixture";
+import { Game, TYPES, developerFixture } from "./game-fixture";
 import { SAVE_KEY, saveBattle, loadBattle } from "./legacy-save";
 import * as Save from "@frontend/Save";
 import { required, TestStorage } from "./helpers";
@@ -13,10 +14,6 @@ import type { State, AttackDetails } from "../rust/pkg/hex_command";
 import { NativeEngineFactory } from "../rust/pkg/hex_command";
 const motion = vi.hoisted(() => ({ tile: vi.fn(), turn: vi.fn() }));
 vi.mock("@frontend/Motion", () => ({ animate_tile: motion.tile, animate_turn: motion.turn }));
-let Session: typeof SessionModule,
-  Art: typeof ArtModule,
-  Presentation: typeof PresentationModule,
-  Story: typeof StoryModule;
 const storage = new TestStorage(),
   immediatePause = async (_milliseconds: number) => {};
 const controllers: SessionModule.t[] = [];
@@ -102,10 +99,10 @@ function completes(
 }
 
 test("Developer map supports normal actions and persistence", async () => {
+  saveBattle(developerFixture());
   const session = createController(),
     observed = observe(session),
     commands = Session.commands(session);
-  commands.reset("developer");
   const opening = snapshot(session),
     player = required(opening.units.find((unit) => unit.side === "player")),
     enemy = required(opening.units.find((unit) => unit.side === "enemy"));
@@ -182,10 +179,10 @@ test("Inspection switches tiles and closes when the inspected unit or terrain is
 });
 
 test("Click-away dismissal preserves movement, attack targeting and undo", () => {
+  saveBattle(developerFixture());
   const session = createController(),
     observed = observe(session),
     commands = Session.commands(session);
-  commands.reset("developer");
   const opening = snapshot(session),
     player = required(opening.units.find((unit) => unit.side === "player"));
   const destination = required(Object.keys(Native.reachable(observed.view.game, player.id))[0]);
@@ -690,14 +687,7 @@ test("Immediate render acknowledgement observes effects once and stale acknowled
   listener();
 });
 
-beforeEach(async () => {
-  vi.resetModules();
-  [Session, Art, Presentation, Story] = await Promise.all([
-    import("@frontend/Session"),
-    import("@frontend/Art"),
-    import("@frontend/Presentation"),
-    import("@frontend/Story"),
-  ]);
+beforeEach(() => {
   storage.clear();
   motion.tile.mockClear();
   motion.turn.mockClear();

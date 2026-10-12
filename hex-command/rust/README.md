@@ -35,27 +35,19 @@ restore; battle handles expose views, movement/combat previews, dispatch, AI
 commands, save and disposal. Revision checks reject stale decisions. Saved games
 retain pending AI commands and planner continuation, excluding disposable caches.
 
-The live TypeScript adapter is `src/game/native-engine.ts`. Engine handles use
-`wasm-bindgen`; commands, snapshots and responses derive `Tsify`. Typed `Ts<T>`
-arguments validate inside the facade, where conversion failures return ordinary
-engine errors. Concrete transparent response types retain the shared
-`EngineResult<T>` envelope without losing generic arguments at the WASM boundary.
-Serialization uses JavaScript objects through Tsify's `js` feature, with maps as
-objects and explicit nulls; omitted optional save fields remain omitted.
-
-The Svelte UI, map picker, artwork, sound, pacing and browser tools remain in
-JavaScript. `src/game/live-game.ts` adapts native state/actions to the existing
-controller. Its published views contain detached state and precomputed Rust
-inspection results; rendering never calls the mutable engine. Moves, combat,
-recruitment, promotion, enemy planning and campaign transitions dispatch through
-WASM. Browser checkpoints retain native state and seed; previous browser saves
-are imported once, including pending enemy-turn recovery. Undo restores a native
-checkpoint. JavaScript continues to own campaign and scenario selection.
+The OCaml adapter is `frontend/Native.ml`. It calls the raw generated
+`NativeEngineFactory` ABI and freezes detached native publications in place;
+components render published views rather than calling a mutable engine.
+`frontend/Session.ml` owns commands, undo, saves and cancellation, while
+ReasonReact renders the browser shell and panels. Moves, combat, recruitment,
+promotion, enemy planning and campaign transitions remain authoritative in Rust.
+Failed accepted publication closes its handle and retains the last coherent view
+and saved checkpoint. `.mli` interfaces document owner and borrowed-view contracts.
 
 `wasm-pack` generates the JavaScript, `.wasm` and `.d.ts` together in Git-ignored
-`rust/pkg/`. The adapter imports those generated types directly and derives its
-bridge signatures from the generated class. There is no separate type exporter
-or handwritten bridge contract.
+`rust/pkg/`. `scripts/melange-bindings.ts` generates only OCaml DTO types and constants from
+those declarations. Strict ABI checks verify the direct adapter signatures; no
+TypeScript application helper sits behind the OCaml bridge.
 
 ```sh
 npm run wasm:build
@@ -70,7 +62,7 @@ and `check:bindings` remain aliases for the standard WASM build. When npm runs
 behind an environment proxy, use `NODE_USE_ENV_PROXY=1 npm ci` with Node 24.5 or
 newer so its binary installer uses that proxy.
 
-Browser persistence has one versioned envelope owned by `src/save/`. The generated
+Browser persistence has one versioned envelope owned by `frontend/Save.ml`. The generated
 `SavedGame` checkpoint contains seed, state and optional planner continuation;
 it has no separate format version. Historical conversion runs before native
 restore. Rust validates current battle invariants and never migrates browser saves.

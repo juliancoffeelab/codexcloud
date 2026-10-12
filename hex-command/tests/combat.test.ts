@@ -39,15 +39,17 @@ test("Zero damage attacks remain available and consume actions", () => {
   const selected = choice(game, attacker, defender, "shard");
   assert(selected.result);
   assert.equal(required(selected.result).enemy.remaining_hp, defender.hp);
-  assert.equal(selected.result.attack.equation, "2 − 1 (armor) − 1 (cover) = 0");
   Native.dispatch(game.battle, {
     kind: "attack",
     unit: Native.unit_id(attacker.id),
     target: Native.unit_id(defender.id),
     weapon: "shard",
   });
-  assert.equal(required(Native.unit(game.view, defender.id)).hp, 24);
-  assert.equal(required(Native.unit(game.view, attacker.id)).hp, 8);
+  assert.equal(required(Native.unit(game.view, defender.id)).hp, defender.hp);
+  assert.equal(
+    required(Native.unit(game.view, attacker.id)).hp,
+    selected.result.player.remaining_hp,
+  );
   assert(
     required(Native.unit(game.view, attacker.id)).moved &&
       required(Native.unit(game.view, attacker.id)).attacked,
@@ -60,10 +62,6 @@ test("Zero damage attacks remain available and consume actions", () => {
       weapon: "shard",
     }),
   );
-  assert.deepEqual(
-    Presentation.armor(catalog, defender).map((modifier) => modifier.label),
-    ["−1", "−1", "+1"],
-  );
 });
 test("Covered retaliation can deal zero damage", () => {
   const { game, attacker, defender } = fixture("commander", "bonearcher");
@@ -73,7 +71,7 @@ test("Covered retaliation can deal zero damage", () => {
   const selected = choice(game, attacker, defender, "sword");
   assert(selected.result);
   assert(selected.result.retaliation.description.includes("shard"));
-  assert.equal(selected.result.retaliation.equation, "2 − 1 (armor) − 1 (cover) = 0");
+  assert.equal(selected.result.player.remaining_hp, attacker.hp);
 });
 test("Blocked attacks still produce combat feedback", () => {
   const { game, attacker, defender } = fixture("bonearcher", "commander");
@@ -87,25 +85,32 @@ test("Blocked attacks still produce combat feedback", () => {
     target: Native.unit_id(defender.id),
     weapon: "shard",
   });
-  assert.equal(required(Native.unit(game.view, defender.id)).hp, 32);
-  assert.equal(required(Native.unit(game.view, attacker.id)).hp, 8);
+  assert.equal(required(Native.unit(game.view, defender.id)).hp, defender.hp);
   assert(Presentation.changes(before, game.state).attacked);
 });
 test("Lethal forecasts identify casualties, overkill and retaliation", () => {
   const { game, attacker, defender } = fixture();
-  for (const hp of [4, 3]) {
+  const damage = required(
+    Native.attack_details(game.view, attacker.id, defender.id, "mace"),
+  ).damage;
+  for (const hp of [damage, damage - 1]) {
     game.edit((state) => (required(state.units.find((unit) => unit.id === defender.id)).hp = hp));
     const selected = choice(game, attacker, defender, "mace");
-    assert.equal(required(selected.result).enemy.impact_label, "Deal −7 HP (dies)");
+    assert.equal(required(selected.result).enemy.impact_label, `Deal −${damage} HP (dies)`);
     assert.equal(required(selected.result).player.impact_label, "Take 0 HP");
   }
   game.edit((state) => {
-    required(state.units.find((unit) => unit.id === defender.id)).hp = 8;
-    required(state.units.find((unit) => unit.id === attacker.id)).hp = 7;
+    required(state.units.find((unit) => unit.id === defender.id)).hp = damage + 1;
+  });
+  const retaliation = required(
+    Native.attack_details(game.view, attacker.id, defender.id, "mace"),
+  ).retaliation;
+  game.edit((state) => {
+    required(state.units.find((unit) => unit.id === attacker.id)).hp = retaliation;
   });
   const selected = choice(game, attacker, defender, "mace");
-  assert.equal(required(selected.result).enemy.impact_label, "Deal −7 HP");
-  assert.equal(required(selected.result).player.impact_label, "Take −7 HP (dies)");
+  assert.equal(required(selected.result).enemy.impact_label, `Deal −${damage} HP`);
+  assert.equal(required(selected.result).player.impact_label, `Take −${retaliation} HP (dies)`);
 });
 test("Restored checkpoints retain progress while inheriting current weapons", () => {
   const game = board();

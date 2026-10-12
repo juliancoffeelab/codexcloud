@@ -15,6 +15,28 @@ export const TERRAIN = Object.fromEntries(Catalog.terrain(catalog).map((rule) =>
 export const RACES = Object.fromEntries(Catalog.races(catalog).map((rule) => [rule.id, rule]));
 export const DAMAGE_TYPES = { blade: "Blade", pierce: "Pierce", impact: "Impact" };
 
+/** Retain authored showcase geometry with bounded actors for ordinary checks. */
+export function developerFixture(types: readonly string[] = []): Game {
+  const battle = createBattle({ kind: "scenario", map: "developer" });
+  try {
+    const checkpoint = structuredClone(Native.save(battle)) as SavedGame;
+    const leaders = new Set(
+      (["player", "enemy"] as const).map(
+        (side) =>
+          checkpoint.state.units.find(
+            (unit) => unit.side === side && TYPES[unit.type]?.family === "commander",
+          )!.id,
+      ),
+    );
+    checkpoint.state.units = checkpoint.state.units.filter(
+      (unit) => leaders.has(unit.id) || types.includes(unit.type),
+    );
+    return Game.fromCheckpoint(checkpoint);
+  } finally {
+    Native.dispose(battle);
+  }
+}
+
 /** Editable test DTOs. Every query and mutation goes through actual OCaml/Rust. */
 export class Game implements State {
   declare mapId: string;
@@ -33,12 +55,15 @@ export class Game implements State {
   declare lastCombat?: State["lastCombat"];
   #battle: Native.battle;
   #signature = "";
-  constructor(map = "mirror", revision?: number) {
-    this.#battle = createBattle({
-      kind: "scenario",
-      map,
-      ...(revision === undefined ? {} : { revision }),
-    });
+  constructor(map: string | SavedGame = "mirror", revision?: number) {
+    this.#battle =
+      typeof map === "string"
+        ? createBattle({
+            kind: "scenario",
+            map,
+            ...(revision === undefined ? {} : { revision }),
+          })
+        : restoreBattle(map);
     this.restoreData(structuredClone(Native.state(Native.view(this.#battle))) as State);
   }
   static startCampaign(id: string, mission = 0): Game {
@@ -270,10 +295,6 @@ export class Game implements State {
     Native.dispose(this.#battle);
   }
   static fromCheckpoint(checkpoint: SavedGame): Game {
-    const fixture = new Game();
-    Native.dispose(fixture.#battle);
-    fixture.#battle = restoreBattle(checkpoint);
-    fixture.restoreData(structuredClone(Native.state(Native.view(fixture.#battle))) as State);
-    return fixture;
+    return new Game(checkpoint);
   }
 }

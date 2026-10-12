@@ -113,8 +113,8 @@ let interaction_family ?attack ?unit_type ?terrain () =
   | Some "archer", _ -> "attack-bow"
   | Some _, _ -> "attack-melee"
   | None, Some ("scout" | "archer" | "wolf" | "thorncaller" | "adept") -> "terrain-plains"
-  | None, Some ("soldier" | "warden" | "boar") -> "unit-archer"
-  | None, Some ("wildkeeper" | "necromancer" | "skeleton" | "bonearcher") -> "unit-commander"
+  | None, Some ("soldier" | "warden" | "boar" | "merfolk-maceguard" | "merfolk-maceguard-l2") -> "unit-archer"
+  | None, Some ("wildkeeper" | "necromancer" | "skeleton" | "bonearcher" | "skeleton-impact-caster" | "skeleton-impact-caster-l2") -> "unit-commander"
   | None, Some kind when List.mem ("unit-" ^ kind) families -> "unit-" ^ kind
   | _ ->
     let terrain = match terrain with

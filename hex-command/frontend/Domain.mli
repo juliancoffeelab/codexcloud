@@ -669,11 +669,13 @@ val family_boar : family
 val family_bonearcher : family
 val family_commander : family
 val family_harpooner : family
+val family_merfolk_maceguard : family
 val family_necromancer : family
 val family_reefguard : family
 val family_rider : family
 val family_scout : family
 val family_skeleton : family
+val family_skeleton_impact_caster : family
 val family_spearman : family
 val family_swordsman : family
 val family_thorncaller : family

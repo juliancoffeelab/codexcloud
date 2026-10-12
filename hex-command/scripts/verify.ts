@@ -45,7 +45,11 @@ if (args.some((name) => !groups.includes(name as Group))) {
       if (selected.has("python")) tasks.push(...pythonTasks());
     }
     if (selected.has("style"))
-      tasks.splice(selected.has("tests") ? 1 : 0, 0, nodeTask("style", "scripts/style.ts"));
+      tasks.splice(
+        selected.has("tests") ? 1 : 0,
+        0,
+        nodeTask("style", "scripts/style.ts", ["--check"]),
+      );
     if (selected.has("content")) tasks.push(nodeTask("content", "scripts/content.ts", ["--check"]));
     const compilerGroups = ["wasm", "ui", "types"].filter((group) => selected.has(group as Group));
     if (compilerGroups.length)
