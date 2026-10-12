@@ -5,7 +5,8 @@ the same Rust battle commands and rules as the browser: movement, terrain and ra
 combat, healing, recruitment, XP, promotion, scripted arrivals and victory rules.
 The ordinary enemy still uses classic AI. There is no new enemy selector.
 
-Run campaign or tournament simulations only when the user explicitly requests it.
+Run simulations as needed to explore or validate balance, using the user's scope
+and constraints when supplied. No separate permission is required for balance work.
 
 For the agent workflow, see the
 [combat simulation skill](../.agents/skills/combat-simulation/SKILL.md), which covers

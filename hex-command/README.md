@@ -22,7 +22,6 @@ Generated bindings live in ignored `rust/pkg/`; production files live in ignored
 
 ```sh
 npm run format                 # Apply TypeScript/Svelte/JSON/Rust formatting
-npm run style                  # Formatting and staged/unstaged whitespace
 npm run verify                 # All checks, then a production release build
 npm run verify -- types tests  # Selected verification groups
 npm run build                  # Release WASM, artwork and Vite bundle
@@ -30,8 +29,10 @@ npm run preview                # Serve the production bundle locally
 ```
 
 `npm run verify` continues independent checks after a failure and reports the
-failed groups together. Its groups are `style`, `content`, `wasm`, `ui`, `types`,
-`rust`, `art`, `tests` and `build`. It never starts simulation batches.
+failed groups together. Its groups are `format`, `content`, `wasm`, `ui`, `types`,
+`art`, `tests` and `build`. Legacy `style` and focused `rust` selections remain
+available; Rust tests already run in the combined `tests` group. Verification
+does not automatically start simulation batches.
 
 For a focused test run after a fresh checkout, prepare the ignored bindings once:
 
@@ -40,10 +41,11 @@ npm run wasm:build
 npm test
 ```
 
-Vitest exercises browser adapters, controller transitions and compatibility rules
-without a browser or server. The entire command has a 20-second budget.
-`npm run check:rust` covers native rules, commands, catalog validation, saves and
-recording. Playwright is available for opt-in browser spot checks; scratch probes
+`npm test` runs native Rust tests, Python artwork and analyzer tests, and Vitest
+under one combined 20-second budget. Vitest exercises browser adapters, controller
+transitions and compatibility rules without a browser or server. `npm run check:rust`
+remains available for a focused native run. `art:check` validates built artwork;
+its unit tests are included in `npm test`. Playwright is available for browser spot checks; scratch probes
 and screenshots belong in ignored `tmp/`, outside the default test suite.
 
 ## Code and content
@@ -119,10 +121,13 @@ Art workflows live in short skills: [generation](.agents/skills/pinkbox-generati
 [enhancement](.agents/skills/pinkbox-enhancement/SKILL.md),
 [cleaning](.agents/skills/pixel-cleaning/SKILL.md), and
 [lineup previews](.agents/skills/pixel-lineup/SKILL.md).
+Terrain source formats and prop placement are described in
+[terrain artwork implementation](docs/terrain-artwork.md).
 
 ## Simulations and publication
 
-Simulations are opt-in and separate from game verification:
+Use simulations when exploring or validating balance. They are separate from
+the unit-test budget:
 
 ```sh
 npm run ai:schedule -- --mode full --seeds 10 # Enumerate only
@@ -139,5 +144,6 @@ For the configured Sites deployment, `npm run publish` builds the release,
 commits its source locally, then prepares the deployment archive and manifest.
 The tool adapter in `scripts/publish-sites-call.js` submits that prepared archive
 and waits for deployment before pushing the deployed commit to GitHub.
-Publication is separate from verification and requires
-an explicit request.
+Deploy visual changes before pushing to GitHub so they can be tried sooner.
+Work lasting more than ten minutes must be pushed before returning to the user,
+including when checks fail; report the actual status.
