@@ -25,6 +25,14 @@
 
 - [ ] Consider terrain-aware shoreline sprites.
 
+## Saves
+
+- [ ] Simplify saves to snapshots of the resolved game state after completed
+      actions. Do not save unexecuted AI commands, queued moves or planning
+      workspaces. Rebuild AI plans after loading. Keep turn progress and any
+      remaining recruitment quota in the game state so completed actions are
+      neither repeated nor undone.
+
 ## Mobile rendering
 
 - [ ] Investigate and fix mobile stray lines and portrait leakage that remain
