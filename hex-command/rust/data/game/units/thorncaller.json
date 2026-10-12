@@ -4,18 +4,18 @@
   "name": "Thorncaller",
   "race": "beast",
   "hp": 14,
-  "move": 4,
+  "move": 3,
   "cost": 7,
   "attacks": [
     {
       "id": "thorns",
       "name": "Thorns",
-      "damage": 4,
+      "damage": 7,
       "damageType": "pierce",
       "category": "ranged",
       "range": 2,
       "sound": "attack-bow",
-      "count": 2
+      "count": 1
     },
     {
       "id": "rootstaff",
@@ -30,11 +30,11 @@
   ],
   "damageModifiers": {
     "blade": 0,
-    "pierce": -1,
+    "pierce": 0,
     "impact": 0
   },
   "ability": "Understory",
-  "description": "A woodland ranged specialist who relies on cover and a melee screen.",
+  "description": "A woodland ranged specialist who fires heavy thorns through armor; fragile and reliant on cover and a melee screen.",
   "level": 1,
   "family": "thorncaller",
   "experienceNeeded": 10,

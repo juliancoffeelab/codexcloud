@@ -31,7 +31,7 @@
   ],
   "damageModifiers": {
     "blade": 0,
-    "pierce": -1,
+    "pierce": 0,
     "impact": -1
   },
   "ability": "Keeper of the grove",

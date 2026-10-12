@@ -5,7 +5,7 @@
   "race": "beast",
   "hp": 16,
   "move": 4,
-  "cost": 5,
+  "cost": 6,
   "attacks": [
     {
       "id": "fangs",
@@ -28,5 +28,13 @@
   "level": 1,
   "family": "wolf",
   "experienceNeeded": 10,
-  "advancesTo": ["direwolf"]
+  "advancesTo": ["direwolf"],
+  "terrainModifiers": {
+    "forest": {
+      "cost": -1
+    },
+    "grove": {
+      "cost": -1
+    }
+  }
 }
