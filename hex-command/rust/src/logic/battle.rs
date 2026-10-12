@@ -77,6 +77,7 @@ struct SharedTerrain {
     routes: Rc<RefCell<HashMap<(usize, Vec<usize>, u64), Rc<Vec<u16>>>>>,
     route_order: Rc<RefCell<VecDeque<(usize, Vec<usize>, u64)>>>,
     attacks: super::geometry::AttackGeometry,
+    masks: super::geometry::AttackMasks,
     reach: super::movement::ReachCache,
     threat_reach: super::movement::ThreatReachCache,
     movement: super::movement::MovementMasks,
@@ -115,11 +116,13 @@ pub(crate) struct Game<'catalog> {
     pub(super) route_cache: Rc<RefCell<HashMap<(usize, Vec<usize>, u64), Rc<Vec<u16>>>>>,
     pub(super) terrain_revision: u64,
     pub(super) attack_geometry: super::geometry::AttackGeometry,
+    pub(super) attack_masks: super::geometry::AttackMasks,
     pub(super) reach_cache: super::movement::ReachCache,
     pub(super) threat_reach_cache: super::movement::ThreatReachCache,
     pub(super) movement_masks: super::movement::MovementMasks,
     pub(super) route_order: Rc<RefCell<VecDeque<(usize, Vec<usize>, u64)>>>,
     pub(super) occupancy: Vec<Option<usize>>,
+    pub(crate) occupied_tiles: super::geometry::TileSet,
     pub(super) unit_indices: HashMap<u32, usize>,
 }
 impl<'catalog> Game<'catalog> {
@@ -141,6 +144,7 @@ impl<'catalog> Game<'catalog> {
             game.route_cache = cached.routes;
             game.route_order = cached.route_order;
             game.attack_geometry = cached.attacks;
+            game.attack_masks = cached.masks;
             game.reach_cache = cached.reach;
             game.threat_reach_cache = cached.threat_reach;
             game.movement_masks = cached.movement;
@@ -159,6 +163,7 @@ impl<'catalog> Game<'catalog> {
                         routes: game.route_cache.clone(),
                         route_order: game.route_order.clone(),
                         attacks: game.attack_geometry.clone(),
+                        masks: game.attack_masks.clone(),
                         reach: game.reach_cache.clone(),
                         threat_reach: game.threat_reach_cache.clone(),
                         movement: game.movement_masks.clone(),
@@ -244,11 +249,13 @@ impl<'catalog> Game<'catalog> {
             route_cache: Rc::new(RefCell::new(HashMap::default())),
             terrain_revision: 0,
             attack_geometry: Rc::new(RefCell::new(HashMap::default())),
+            attack_masks: super::geometry::AttackMasks::default(),
             reach_cache: super::movement::ReachCache::default(),
             threat_reach_cache: super::movement::ThreatReachCache::default(),
             movement_masks: super::movement::MovementMasks::default(),
             route_order: Rc::new(RefCell::new(VecDeque::new())),
             occupancy: vec![],
+            occupied_tiles: super::geometry::TileSet::new(0),
             unit_indices: HashMap::default(),
         };
         game.roster_changed();
@@ -376,14 +383,17 @@ impl<'catalog> Game<'catalog> {
         });
         self.unit_indices.insert(id, self.units.len() - 1);
         self.occupancy[tile] = Some(self.units.len() - 1);
+        self.occupied_tiles.insert(tile);
         id
     }
     /// Refresh dense lookup tables after an internal roster transformation.
     pub(crate) fn roster_changed(&mut self) {
         self.occupancy = vec![None; self.terrain.len()];
+        self.occupied_tiles = super::geometry::TileSet::new(self.terrain.len());
         self.unit_indices.clear();
         for (index, unit) in self.units.iter().enumerate() {
             self.occupancy[unit.tile] = Some(index);
+            self.occupied_tiles.insert(unit.tile);
             self.unit_indices.insert(unit.id, index);
         }
     }
@@ -395,6 +405,7 @@ impl<'catalog> Game<'catalog> {
             Rc::make_mut(&mut self.connections)[tile] = None;
             Rc::make_mut(&mut self.dead_ends)[tile] = None;
             self.attack_geometry = Rc::new(RefCell::new(HashMap::default()));
+            self.attack_masks = super::geometry::AttackMasks::default();
             self.reach_cache = super::movement::ReachCache::default();
             self.threat_reach_cache = super::movement::ThreatReachCache::default();
             self.movement_masks = super::movement::MovementMasks::default();
@@ -503,11 +514,13 @@ impl<'catalog> Game<'catalog> {
             route_cache: self.route_cache.clone(),
             terrain_revision: self.terrain_revision,
             attack_geometry: self.attack_geometry.clone(),
+            attack_masks: self.attack_masks.clone(),
             reach_cache: self.reach_cache.clone(),
             threat_reach_cache: self.threat_reach_cache.clone(),
             movement_masks: self.movement_masks.clone(),
             route_order: self.route_order.clone(),
             occupancy: self.occupancy.clone(),
+            occupied_tiles: self.occupied_tiles.clone(),
             unit_indices: self.unit_indices.clone(),
         }
     }

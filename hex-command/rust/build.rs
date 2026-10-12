@@ -21,6 +21,7 @@ fn sources(root: &Path, directory: &Path, files: &mut Vec<PathBuf>) {
 }
 
 fn main() {
+    println!("cargo:rerun-if-env-changed=HEX_SIM_PROFILE_KEY");
     let root = PathBuf::from(std::env::var_os("CARGO_MANIFEST_DIR").expect("crate directory"));
     let mut files = vec![
         PathBuf::from("Cargo.toml"),

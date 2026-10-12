@@ -2,13 +2,27 @@ use crate::{data::*, logic::Game};
 use rustc_hash::FxHashMap as HashMap;
 // Dense reachability sets intersect attack origins a machine word at a time.
 use crate::logic::geometry::TileSet;
+type RiskKey = (Option<u32>, usize, usize, Option<u32>);
+type ArenaEnemies = HashMap<Option<u32>, Vec<(Unit, Vec<TileSet>)>>;
+/// A nonlethal attack changes HP/action flags, but arena movement forecasts and
+/// incoming damage depend only on the roster's identities, kinds and positions.
+/// Retain those calculations for the next decision in the same planning phase.
+#[derive(Default)]
+pub(super) struct ArenaThreatWorkspace {
+    terrain: Vec<usize>,
+    roster: Vec<(u32, usize, usize, Side)>,
+    side: Option<Side>,
+    arena: ArenaEnemies,
+    risks: HashMap<RiskKey, i32>,
+}
 pub(super) struct Threats<'game, 'catalog> {
     source: &'game Game<'catalog>,
     side: Side,
     normal: Option<(Game<'catalog>, Vec<(Unit, Vec<TileSet>)>)>,
-    cache: HashMap<(Option<u32>, usize, usize, Option<u32>), i32>,
+    cache: HashMap<RiskKey, i32>,
     forecasts: HashMap<(u32, Option<u32>), (Game<'catalog>, Vec<(Unit, Vec<TileSet>)>)>,
-    arena: HashMap<Option<u32>, Vec<(Unit, Vec<TileSet>)>>,
+    arena: ArenaEnemies,
+    workspace: Option<&'game mut ArenaThreatWorkspace>,
 }
 impl<'game, 'catalog> Threats<'game, 'catalog> {
     pub fn new(g: &'game Game<'catalog>, side: Side) -> Self {
@@ -19,17 +33,55 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             cache: HashMap::default(),
             forecasts: HashMap::default(),
             arena: HashMap::default(),
+            workspace: None,
         }
     }
+    pub fn with_workspace(
+        g: &'game Game<'catalog>,
+        side: Side,
+        workspace: &'game mut ArenaThreatWorkspace,
+    ) -> Self {
+        let mut threats = Self::new(g, side);
+        if g.campaign.is_none() {
+            let same = workspace.side == Some(side)
+                && workspace.terrain == g.terrain
+                && workspace.roster.len() == g.units.len()
+                && workspace
+                    .roster
+                    .iter()
+                    .zip(&g.units)
+                    .all(|(&(id, kind, tile, side), u)| {
+                        (id, kind, tile, side) == (u.id, u.kind, u.tile, u.side)
+                    });
+            if !same {
+                workspace.side = Some(side);
+                workspace.terrain.clone_from(&g.terrain);
+                workspace.roster.clear();
+                workspace
+                    .roster
+                    .extend(g.units.iter().map(|u| (u.id, u.kind, u.tile, u.side)));
+                workspace.arena.clear();
+                workspace.risks.clear();
+            }
+            threats.arena = std::mem::take(&mut workspace.arena);
+            threats.cache = std::mem::take(&mut workspace.risks);
+            threats.workspace = Some(workspace);
+        }
+        threats
+    }
     fn arena_enemies(source: &Game, side: Side, actor: Option<u32>) -> Vec<(Unit, Vec<TileSet>)> {
-        let mut occupancy = vec![None; source.terrain.len()];
+        let mut occupied = if actor.is_some() {
+            TileSet::new(source.terrain.len())
+        } else {
+            source.occupied_tiles.clone()
+        };
         if let Some(actor) = actor {
             for ally in source
                 .units
                 .iter()
                 .filter(|u| u.side == side && u.id != actor)
             {
-                occupancy[ally.tile] = Some(side);
+                occupied.insert(ally.tile);
             }
         }
         source
@@ -40,14 +92,11 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                 let mut enemy = enemy.clone();
                 enemy.moved = false;
                 enemy.attacked = false;
-                let positions = if actor.is_some() {
-                    occupancy[enemy.tile] = Some(enemy.side);
-                    let positions = source.threat_reach(&enemy, Some(&occupancy));
-                    occupancy[enemy.tile] = None;
-                    positions
-                } else {
-                    source.threat_reach(&enemy, None)
-                };
+                let mut blockers = occupied.clone();
+                if actor.is_some() {
+                    blockers.insert(enemy.tile);
+                }
+                let positions = source.threat_reach_blocked(&enemy, blockers);
                 let covered = Self::coverage(source, &enemy, &positions);
                 (enemy, covered)
             })
@@ -61,23 +110,22 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         side: Side,
         excluded: Option<u32>,
     ) -> Vec<(Unit, Vec<TileSet>)> {
-        let mut occupancy = vec![None; board.terrain.len()];
+        let mut occupied = TileSet::new(board.terrain.len());
         for ally in board
             .units
             .iter()
             .filter(|u| u.side == side && Some(u.id) != excluded)
         {
-            occupancy[ally.tile] = Some(ally.side);
+            occupied.insert(ally.tile);
         }
         board
             .units
             .iter()
             .filter(|u| u.side != side)
             .map(|enemy| {
-                let previous = occupancy[enemy.tile];
-                occupancy[enemy.tile] = Some(enemy.side);
-                let positions = board.threat_reach(enemy, Some(&occupancy));
-                occupancy[enemy.tile] = previous;
+                let mut blockers = occupied.clone();
+                blockers.insert(enemy.tile);
+                let positions = board.threat_reach_blocked(enemy, blockers);
                 (enemy.clone(), Self::coverage(board, enemy, &positions))
             })
             .collect()
@@ -87,6 +135,16 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             .attacks
             .iter()
             .map(|attack| {
+                if let TileSet::Small(positions) = positions {
+                    let masks = board.attack_masks(attack.category, attack.range);
+                    let mut origins = *positions;
+                    let mut covered = 0;
+                    while origins != 0 {
+                        covered |= masks[origins.trailing_zeros() as usize];
+                        origins &= origins - 1;
+                    }
+                    return TileSet::Small(covered);
+                }
                 let geometry = board.attack_origins(attack.category, attack.range);
                 let mut covered = TileSet::new(board.terrain.len());
                 // Range and intervening-terrain legality are reciprocal. Union
@@ -240,11 +298,49 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         risk
     }
 }
+impl Drop for Threats<'_, '_> {
+    fn drop(&mut self) {
+        if let Some(workspace) = &mut self.workspace {
+            workspace.arena = std::mem::take(&mut self.arena);
+            workspace.risks = std::mem::take(&mut self.cache);
+        }
+    }
+}
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use std::cell::Cell;
+    #[test]
+    fn arena_workspace_reuses_hp_only_changes_and_invalidates_roster_changes() {
+        let rules = Catalog::load().unwrap();
+        let mut game = Game::new(&rules, "mirror");
+        let side = game.turn;
+        let mut workspace = ArenaThreatWorkspace::default();
+        let enemy = game.units.iter().find(|u| u.side != side).unwrap().id;
+        for change in 0..3 {
+            if change == 1 {
+                let target = game.units.iter_mut().find(|u| u.id == enemy).unwrap();
+                target.hp -= 1;
+                target.attacked = true;
+            } else if change == 2 {
+                game.units.retain(|u| u.id != enemy);
+                game.roster_changed();
+            }
+            let mut cached = Threats::with_workspace(&game, side, &mut workspace);
+            let mut fresh = Threats::new(&game, side);
+            for unit in game.units.iter().filter(|u| u.side == side) {
+                for eliminated in [None, Some(enemy)] {
+                    for tile in 0..game.terrain.len() {
+                        assert_eq!(
+                            cached.at(unit, tile, eliminated),
+                            fresh.at(unit, tile, eliminated)
+                        );
+                    }
+                }
+            }
+        }
+    }
     #[test]
     fn arena_shortcut_matches_full_turn_forecasts_with_eliminations() {
         let rules = Catalog::load().unwrap();
