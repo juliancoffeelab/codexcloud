@@ -1,6 +1,6 @@
 # Sequential OCaml ports
 
-PR #14 replaces the frontend with OCaml/Melange and ReasonReact. The rejected hybrid was discarded; the new baseline starts at the main commit immediately before PR #13. Each incoming PR description and implementation was read, then rebased and ported in order: #13, #15, #16, #17, #18. The published branch is based on main `e59d224`.
+PR #14 replaces the frontend with OCaml/Melange and ReasonReact. The rejected hybrid was discarded; the new baseline starts at the main commit immediately before PR #13. Each incoming PR description and implementation was read, then rebased and ported in order: #13, #15, #16, #17, #18, #20. The published branch is based on main `b1f553d`.
 
 The machine-readable [delta ledger](ocaml-pr-deltas.json) contains exact revisions and every counted file. [sync-deltas.ts](../scripts/sync-deltas.ts) reproduces the counts. Local chronological checkpoints preserve measurements made before each subsequent rebase; `publishedPort` names the corresponding reachable commit in PR #14. Rebased patches can differ from chronological snapshots because upstream changes move into the base.
 
@@ -10,9 +10,9 @@ Runtime means handwritten frontend implementation, including CSS and startup Jav
 
 | Compared with current main                 |  Added | Removed |   Net |
 | ------------------------------------------ | -----: | ------: | ----: |
-| Frontend runtime                           |  +4865 |   −6680 | -1815 |
-| Frontend including interfaces              |  +5720 |   −6684 |  -964 |
-| Whole authored code, including tests/tools | +11692 |   −9142 | +2550 |
+| Frontend runtime                           |  +4865 |   −6696 | -1831 |
+| Frontend including interfaces              |  +5720 |   −6700 |  -980 |
+| Whole authored code, including tests/tools | +11755 |   −9236 | +2519 |
 
 **Only the frontend has a negative delta.** The whole-code count increases because it includes the test migration, additional regressions and build tooling. There are no handwritten TypeScript/JavaScript application helpers. Runtime TypeScript is generated data-only sprite metadata; Rust WASM glue and React are foreign dependencies. The terrain prebuild adapter is Node-only I/O around the same compiled OCaml renderer.
 
@@ -27,6 +27,8 @@ Numbers are net lines; the per-file tables below show additions and removals.
 | [#16](https://github.com/juliancoffeelab/codexcloud/pull/16) |               +0 |            +0 |         +0 |                       +0 |                    +0 |                  +0 |              +0 |
 | [#17](https://github.com/juliancoffeelab/codexcloud/pull/17) |             +130 |          +223 |        +93 |                     +130 |                  +274 |                +317 |            +772 |
 | [#18](https://github.com/juliancoffeelab/codexcloud/pull/18) |              +16 |           +10 |         -6 |                      +16 |                   +19 |                 +56 |            +225 |
+
+| [#20](https://github.com/juliancoffeelab/codexcloud/pull/20) | +16 | +0 | -16 | +16 | +0 | +100 | +69 |
 
 Ports #13, #15 and #17 are larger than their TypeScript frontend changes; #18 uses fewer runtime lines. Interface declarations are included, not hidden. Whole-code port counts include unchanged upstream Rust, artwork-builder and publication-tool changes carried by the rebase; they do not mean those systems were rewritten in OCaml.
 
@@ -75,6 +77,8 @@ Foreign arrays/dictionaries retain ordinary mutable OCaml types; runtime freezin
 
 ## Validation and the 20-second requirement
 
+**Current PR #20 port: verification blocked.** The normal Dune 3.24.2 managed-package build failed because this session receives HTTP 403 CONNECT denials for the locked Inria and Erratique archives. No complete tests or full verification were run. The temporary installed-package wrapper, copied libraries, environment file and its build artifacts have been removed; their compilation results are not accepted as validation. The upstream locks and standard Dune-managed build remain intact.
+
 These measurements precede the Dune 3.24.2 environment upgrade in `02f2cb6`.
 They are retained as historical results; checks have not been rerun for that
 upgrade in this session.
@@ -118,6 +122,38 @@ in whole-code counting; frontend runtime/interface counts are unchanged. The
 machine ledger records the setup separately, and the original PR port counts
 remain unchanged. Lockfiles, package metadata and documentation stay outside
 these code counts.
+
+## PR #20 port
+
+Commit `ea13ecb` carries the native unit/balance data, restoration index and shared
+combat-analysis tooling from upstream. Generated DTO bindings include the new
+families; `Audio.ml` extends existing sound mappings. Components remain catalog-driven.
+No new UI helper or TypeScript application runtime was introduced.
+
+The port carries smaller actor fixtures and generic combat assertions, removes
+repeated controller module reloads, and adds the analyzer suite to the existing
+bounded runner. Automatic `npm run format` is retained; timed verification uses
+read-only format checks to avoid changing prepared inputs during validation.
+The user-owned README matches upstream, and OCaml setup/API guidance now lives
+in the new development documentation layout.
+
+Original authored code is **+874/−774 = +100**; port code is **+732/−663 = +69**.
+Original frontend is **+17/−1 = +16**; port frontend is **+2/−2 = 0**.
+These are source counts, not evidence of passing behavior: verification remains
+blocked as stated above.
+
+Original frontend files:
+
+| File                        | Added | Removed |
+| --------------------------- | ----: | ------: |
+| `src/game/types.ts`         |    +8 |      −0 |
+| `src/presentation/sound.ts` |    +9 |      −1 |
+
+OCaml frontend files:
+
+| File                | Added | Removed |
+| ------------------- | ----: | ------: |
+| `frontend/Audio.ml` |    +2 |      −2 |
 
 ## Per-file frontend changes
 

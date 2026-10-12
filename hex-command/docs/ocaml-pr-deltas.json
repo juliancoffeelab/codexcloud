@@ -1478,7 +1478,7 @@
     {
       "pr": 13,
       "upstream": "b6b225d33bd20935e06ed4a9b3f311fde920c629",
-      "publishedPort": "fbec25074447f38641d4c9931cce37abd2c86263",
+      "publishedPort": "20d1368d00c3ea4d5d75a9cb9edfb5b5e8b8475a",
       "original": {
         "before": "e7ae305c8a4773a52ef3b6ab9f146465622676c4",
         "after": "b6b225d33bd20935e06ed4a9b3f311fde920c629",
@@ -2847,7 +2847,7 @@
     {
       "pr": 15,
       "upstream": "76db3899d41d4b7efeec1a7686d40e33fef3c0cb",
-      "publishedPort": "bf66534e70c4871a24bd206dd178890bd4b9ebca",
+      "publishedPort": "66cc28164f15cb7433ed2cc8ceabcaa9ec4f9208",
       "original": {
         "before": "b6b225d33bd20935e06ed4a9b3f311fde920c629",
         "after": "76db3899d41d4b7efeec1a7686d40e33fef3c0cb",
@@ -2990,7 +2990,7 @@
     {
       "pr": 16,
       "upstream": "854ded5ad60813cd1d161ecef65b9f71a160ccc0",
-      "publishedPort": "8f08a37eac1f4656ae3cb23389a0f59169af25a3",
+      "publishedPort": "1ca8d92211242eda4c7b5860c2738ddae001a982",
       "original": {
         "before": "76db3899d41d4b7efeec1a7686d40e33fef3c0cb",
         "after": "854ded5ad60813cd1d161ecef65b9f71a160ccc0",
@@ -3039,7 +3039,7 @@
     {
       "pr": 17,
       "upstream": "83442c543a4ddb185afabfcdfc8f620975d6d941",
-      "publishedPort": "b88b96a78573e5f7543d35970bf9641c8d5b27d2",
+      "publishedPort": "274e377e2c2c057d90fb978c7f0d3eabb862baad",
       "original": {
         "before": "854ded5ad60813cd1d161ecef65b9f71a160ccc0",
         "after": "83442c543a4ddb185afabfcdfc8f620975d6d941",
@@ -3452,7 +3452,7 @@
     {
       "pr": 18,
       "upstream": "e59d224d829607f48f0ed62e14c2ed09a40e25ab",
-      "publishedPort": "2c90674c818cd0cc236af682bd9768b25343e871",
+      "publishedPort": "6b6929f85be3c19361255bba5e175922e72a0a15",
       "original": {
         "before": "83442c543a4ddb185afabfcdfc8f620975d6d941",
         "after": "e59d224d829607f48f0ed62e14c2ed09a40e25ab",
@@ -3710,6 +3710,389 @@
           }
         ],
         "excluded": []
+      }
+    },
+    {
+      "pr": 20,
+      "upstream": "b1f553de69c0de8a340088c0a9ed42b2149fb27e",
+      "publishedPort": "ea13ecb916da4eeea8fd65ae97efc4fe405d7753",
+      "original": {
+        "before": "e59d224d829607f48f0ed62e14c2ed09a40e25ab",
+        "after": "b1f553de69c0de8a340088c0a9ed42b2149fb27e",
+        "wholeAuthoredCode": {
+          "added": 874,
+          "removed": 774,
+          "net": 100
+        },
+        "wholeCodeFiles": [
+          {
+            "path": "hex-command/.agents/skills/combat-simulation/scripts/report-combat.py",
+            "added": 234,
+            "removed": 0,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/.agents/skills/combat-simulation/scripts/run-combat.py",
+            "added": 34,
+            "removed": 0,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/.agents/skills/combat-simulation/scripts/simulation_dump_schema.py",
+            "added": 115,
+            "removed": 0,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/.agents/skills/combat-simulation/tests/test_report.py",
+            "added": 112,
+            "removed": 0,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/.agents/skills/pinkbox-enhancement/scripts/prepare.py",
+            "added": 12,
+            "removed": 4,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/.agents/skills/pinkbox-generation/tests/test_template.py",
+            "added": 26,
+            "removed": 0,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/rust/src/data/ids.rs",
+            "added": 6,
+            "removed": 0,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/rust/src/logic/restore.rs",
+            "added": 6,
+            "removed": 5,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/rust/src/tests.rs",
+            "added": 0,
+            "removed": 9,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/rust/src/tests/combat.rs",
+            "added": 1,
+            "removed": 29,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/rust/src/tests/economy.rs",
+            "added": 44,
+            "removed": 45,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/rust/src/tests/movement.rs",
+            "added": 35,
+            "removed": 93,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/scripts/analyze-simulations.py",
+            "added": 0,
+            "removed": 297,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/scripts/convert-simulation-dump.py",
+            "added": 4,
+            "removed": 0,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/scripts/simulation_dump_schema.py",
+            "added": 0,
+            "removed": 115,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/scripts/style.ts",
+            "added": 13,
+            "removed": 17,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/scripts/test-budget.ts",
+            "added": 105,
+            "removed": 20,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/scripts/verify.ts",
+            "added": 6,
+            "removed": 3,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/src/game/types.ts",
+            "added": 8,
+            "removed": 0,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/src/presentation/sound.ts",
+            "added": 9,
+            "removed": 1,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/tests/campaign.test.ts",
+            "added": 1,
+            "removed": 1,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/tests/combat.test.ts",
+            "added": 22,
+            "removed": 48,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/tests/controller.test.ts",
+            "added": 9,
+            "removed": 15,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/tests/game-fixture.ts",
+            "added": 36,
+            "removed": 12,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/tests/live-game.test.ts",
+            "added": 4,
+            "removed": 9,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/tests/maps.test.ts",
+            "added": 16,
+            "removed": 26,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/tests/movement-ui.test.ts",
+            "added": 16,
+            "removed": 25,
+            "publicInterface": false
+          }
+        ],
+        "handwrittenFrontend": {
+          "added": 17,
+          "removed": 1,
+          "net": 16
+        },
+        "frontendRuntime": {
+          "added": 17,
+          "removed": 1,
+          "net": 16
+        },
+        "files": [
+          {
+            "path": "hex-command/src/game/types.ts",
+            "added": 8,
+            "removed": 0,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/src/presentation/sound.ts",
+            "added": 9,
+            "removed": 1,
+            "publicInterface": false
+          }
+        ],
+        "excluded": []
+      },
+      "port": {
+        "before": "86a62d467ccfcfd3894abc114698bcc089620f16",
+        "after": "ea13ecb916da4eeea8fd65ae97efc4fe405d7753",
+        "wholeAuthoredCode": {
+          "added": 732,
+          "removed": 663,
+          "net": 69
+        },
+        "wholeCodeFiles": [
+          {
+            "path": "hex-command/.agents/skills/combat-simulation/scripts/report-combat.py",
+            "added": 234,
+            "removed": 0,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/.agents/skills/combat-simulation/scripts/run-combat.py",
+            "added": 34,
+            "removed": 0,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/.agents/skills/combat-simulation/scripts/simulation_dump_schema.py",
+            "added": 115,
+            "removed": 0,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/.agents/skills/combat-simulation/tests/test_report.py",
+            "added": 112,
+            "removed": 0,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/.agents/skills/pinkbox-enhancement/scripts/prepare.py",
+            "added": 12,
+            "removed": 4,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/.agents/skills/pinkbox-generation/tests/test_template.py",
+            "added": 26,
+            "removed": 0,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/frontend/Audio.ml",
+            "added": 2,
+            "removed": 2,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/rust/src/data/ids.rs",
+            "added": 6,
+            "removed": 0,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/rust/src/logic/restore.rs",
+            "added": 6,
+            "removed": 5,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/rust/src/tests.rs",
+            "added": 0,
+            "removed": 9,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/rust/src/tests/combat.rs",
+            "added": 1,
+            "removed": 29,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/rust/src/tests/economy.rs",
+            "added": 44,
+            "removed": 45,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/rust/src/tests/movement.rs",
+            "added": 35,
+            "removed": 93,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/scripts/analyze-simulations.py",
+            "added": 0,
+            "removed": 297,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/scripts/convert-simulation-dump.py",
+            "added": 4,
+            "removed": 0,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/scripts/simulation_dump_schema.py",
+            "added": 0,
+            "removed": 115,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/scripts/style.ts",
+            "added": 7,
+            "removed": 4,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/scripts/test-budget.ts",
+            "added": 1,
+            "removed": 0,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/scripts/verify.ts",
+            "added": 5,
+            "removed": 1,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/tests/campaign.test.ts",
+            "added": 1,
+            "removed": 1,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/tests/combat.test.ts",
+            "added": 21,
+            "removed": 16,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/tests/controller.test.ts",
+            "added": 8,
+            "removed": 18,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/tests/game-fixture.ts",
+            "added": 32,
+            "removed": 11,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/tests/live-game.test.ts",
+            "added": 2,
+            "removed": 2,
+            "publicInterface": false
+          },
+          {
+            "path": "hex-command/tests/maps.test.ts",
+            "added": 24,
+            "removed": 11,
+            "publicInterface": false
+          }
+        ],
+        "handwrittenFrontend": {
+          "added": 2,
+          "removed": 2,
+          "net": 0
+        },
+        "frontendRuntime": {
+          "added": 2,
+          "removed": 2,
+          "net": 0
+        },
+        "files": [
+          {
+            "path": "hex-command/frontend/Audio.ml",
+            "added": 2,
+            "removed": 2,
+            "publicInterface": false
+          }
+        ],
+        "excluded": ["hex-command/frontend/Domain.ml", "hex-command/frontend/Domain.mli"]
       }
     }
   ],
@@ -6219,12 +6602,12 @@
     "excluded": []
   },
   "finalComparison": {
-    "before": "e59d224d829607f48f0ed62e14c2ed09a40e25ab",
-    "after": "782f49e851e17ef53e4df171b0721819ff3c511f",
+    "before": "b1f553de69c0de8a340088c0a9ed42b2149fb27e",
+    "after": "ea13ecb916da4eeea8fd65ae97efc4fe405d7753",
     "wholeAuthoredCode": {
-      "added": 11692,
-      "removed": 9142,
-      "net": 2550
+      "added": 11755,
+      "removed": 9236,
+      "net": 2519
     },
     "wholeCodeFiles": [
       {
@@ -6721,8 +7104,8 @@
       },
       {
         "path": "hex-command/scripts/style.ts",
-        "added": 30,
-        "removed": 17,
+        "added": 48,
+        "removed": 28,
         "publicInterface": false
       },
       {
@@ -6739,14 +7122,14 @@
       },
       {
         "path": "hex-command/scripts/test-budget.ts",
-        "added": 373,
-        "removed": 24,
+        "added": 360,
+        "removed": 95,
         "publicInterface": false
       },
       {
         "path": "hex-command/scripts/verify.ts",
-        "added": 61,
-        "removed": 47,
+        "added": 66,
+        "removed": 51,
         "publicInterface": false
       },
       {
@@ -6848,7 +7231,7 @@
       {
         "path": "hex-command/src/game/types.ts",
         "added": 0,
-        "removed": 409,
+        "removed": 417,
         "publicInterface": false
       },
       {
@@ -6896,7 +7279,7 @@
       {
         "path": "hex-command/src/presentation/sound.ts",
         "added": 0,
-        "removed": 234,
+        "removed": 242,
         "publicInterface": false
       },
       {
@@ -7189,14 +7572,14 @@
       },
       {
         "path": "hex-command/tests/combat.test.ts",
-        "added": 138,
-        "removed": 161,
+        "added": 144,
+        "removed": 136,
         "publicInterface": false
       },
       {
         "path": "hex-command/tests/controller.test.ts",
-        "added": 549,
-        "removed": 379,
+        "added": 538,
+        "removed": 372,
         "publicInterface": false
       },
       {
@@ -7213,8 +7596,8 @@
       },
       {
         "path": "hex-command/tests/game-fixture.ts",
-        "added": 189,
-        "removed": 110,
+        "added": 212,
+        "removed": 136,
         "publicInterface": false
       },
       {
@@ -7231,14 +7614,14 @@
       },
       {
         "path": "hex-command/tests/live-game.test.ts",
-        "added": 195,
-        "removed": 163,
+        "added": 194,
+        "removed": 157,
         "publicInterface": false
       },
       {
         "path": "hex-command/tests/maps.test.ts",
-        "added": 27,
-        "removed": 48,
+        "added": 52,
+        "removed": 50,
         "publicInterface": false
       },
       {
@@ -7249,8 +7632,8 @@
       },
       {
         "path": "hex-command/tests/movement-ui.test.ts",
-        "added": 33,
-        "removed": 73,
+        "added": 44,
+        "removed": 75,
         "publicInterface": false
       },
       {
@@ -7376,13 +7759,13 @@
     ],
     "handwrittenFrontend": {
       "added": 5720,
-      "removed": 6684,
-      "net": -964
+      "removed": 6700,
+      "net": -980
     },
     "frontendRuntime": {
       "added": 4865,
-      "removed": 6680,
-      "net": -1815
+      "removed": 6696,
+      "net": -1831
     },
     "files": [
       {
@@ -7922,7 +8305,7 @@
       {
         "path": "hex-command/src/game/types.ts",
         "added": 0,
-        "removed": 409,
+        "removed": 417,
         "publicInterface": false
       },
       {
@@ -7970,7 +8353,7 @@
       {
         "path": "hex-command/src/presentation/sound.ts",
         "added": 0,
-        "removed": 234,
+        "removed": 242,
         "publicInterface": false
       },
       {
@@ -8240,24 +8623,19 @@
     ]
   },
   "validation": {
-    "frontendTests": 241,
-    "nativeRustTests": 74,
-    "pythonTests": 39,
-    "nativeExecutables": 2,
-    "rustdocIncluded": true,
-    "testCommandSeconds": 10.738,
-    "verificationCommandSeconds": 14.693,
+    "status": "blocked",
+    "sourceRevision": "ea13ecb916da4eeea8fd65ae97efc4fe405d7753",
+    "duneVersion": "3.24.2",
+    "managedPackageBuild": "failed: HTTP 403 CONNECT denials for locked upstream archives",
+    "blockedHosts": ["gitlab.inria.fr", "erratique.ch"],
+    "testsRun": false,
+    "fullVerificationRun": false,
     "budgetSeconds": 20,
     "internalDeadlineSeconds": 18,
-    "productionMaps": 16,
+    "temporaryPackageBypassRemoved": true,
+    "bypassBuildArtifactsDiscarded": true,
     "browserAutomationRun": false,
-    "campaignTournamentBatchesRun": false,
-    "compiledOutputVerification": "Authoritative prepare builds WASM, artwork, OCaml, Vite and native test executables; timed verification checks source/artifact digests and runs strict compiler checks, style, content and every test.",
-    "developmentHttpWebSocketProbe": true,
-    "developmentSupervisorTests": 4,
-    "sourceRevision": "12f11906670586f2c014110e8bf04f6416d5ac8b",
-    "duneVersion": "3.21.0",
-    "postEnvironmentSetupChecksRun": false
+    "campaignTournamentBatchesRun": false
   },
   "environmentSetup": {
     "before": "24e5e8369983b0ec77fb5cc06b8d359e1a22252f",
@@ -8293,5 +8671,25 @@
     },
     "files": [],
     "excluded": []
+  },
+  "historicalValidation": {
+    "frontendTests": 241,
+    "nativeRustTests": 74,
+    "pythonTests": 39,
+    "nativeExecutables": 2,
+    "rustdocIncluded": true,
+    "testCommandSeconds": 10.738,
+    "verificationCommandSeconds": 14.693,
+    "budgetSeconds": 20,
+    "internalDeadlineSeconds": 18,
+    "productionMaps": 16,
+    "browserAutomationRun": false,
+    "campaignTournamentBatchesRun": false,
+    "compiledOutputVerification": "Authoritative prepare builds WASM, artwork, OCaml, Vite and native test executables; timed verification checks source/artifact digests and runs strict compiler checks, style, content and every test.",
+    "developmentHttpWebSocketProbe": true,
+    "developmentSupervisorTests": 4,
+    "sourceRevision": "12f11906670586f2c014110e8bf04f6416d5ac8b",
+    "duneVersion": "3.21.0",
+    "postEnvironmentSetupChecksRun": false
   }
 }
