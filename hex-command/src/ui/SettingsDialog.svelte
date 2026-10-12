@@ -53,7 +53,11 @@
   <details class="panel">
     <summary>Field manual</summary>
     <div class="manual">
-      <p>Each unit moves once and attacks once. Attacking ends its turn.</p>
+      <p>
+        Each unit moves once. Every attack type has its own uses per turn. Each strike spends one
+        use and ends movement; a surviving defender replies once for free. Armor and terrain apply
+        to every hit.
+      </p>
       <!-- Keep punctuation adjacent to the inline emphasis. -->
       <!-- prettier-ignore -->
       <p>

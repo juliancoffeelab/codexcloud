@@ -4,27 +4,29 @@
   "name": "Grove warden",
   "race": "beast",
   "leader": true,
-  "hp": 34,
+  "hp": 40,
   "move": 3,
   "cost": 0,
   "attacks": [
     {
       "id": "bough",
       "name": "Bough",
-      "damage": 8,
+      "damage": 10,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     },
     {
       "id": "stones",
       "name": "Stones",
-      "damage": 4,
+      "damage": 5,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
-      "sound": "attack-bow"
+      "sound": "attack-bow",
+      "count": 1
     }
   ],
   "damageModifiers": {

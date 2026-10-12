@@ -35,6 +35,11 @@ impl Game<'_> {
                     hp: self.rules.units[kind].hp,
                     moved: true,
                     attacked: true,
+                    remaining_attacks: self.rules.units[kind]
+                        .attacks
+                        .iter()
+                        .map(|a| a.count)
+                        .collect(),
                     experience: None,
                     name: None,
                     role: None,
@@ -117,14 +122,24 @@ impl Game<'_> {
                 hp: r.hp,
                 moved: true,
                 attacked: true,
+                remaining_attacks: r.attacks.iter().map(|a| a.count).collect(),
                 experience: None,
                 name: None,
                 role: None,
                 retreating: None,
                 rebuilding: None,
             };
+            let attack_category = if category.is_ranged() {
+                Category::Ranged
+            } else {
+                Category::Melee
+            };
             let effectiveness = if opponents.is_empty() {
-                r.damage as f64
+                r.attacks
+                    .iter()
+                    .filter(|a| a.category == attack_category)
+                    .map(|a| a.damage * i32::from(a.count))
+                    .sum::<i32>() as f64
             } else {
                 opponents
                     .iter()
@@ -132,17 +147,9 @@ impl Game<'_> {
                         r.attacks
                             .iter()
                             .enumerate()
-                            .filter(|(_, w)| {
-                                w.category
-                                    == if category.is_ranged() {
-                                        Category::Ranged
-                                    } else {
-                                        Category::Melee
-                                    }
-                            })
-                            .map(|(w, _)| self.damage(&recruit, target, w))
-                            .max()
-                            .unwrap_or(0) as f64
+                            .filter(|(_, w)| w.category == attack_category)
+                            .map(|(w, a)| self.damage(&recruit, target, w) * i32::from(a.count))
+                            .sum::<i32>() as f64
                     })
                     .sum::<f64>()
                     / opponents.len() as f64

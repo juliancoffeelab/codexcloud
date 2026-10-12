@@ -403,3 +403,25 @@ for (const dead of [false, true]) {
     restored.dispose();
   });
 }
+
+test("Version-four continuation keeps pending actions and recruitment while renewing its bound", () => {
+  const old = {
+    version: 4,
+    checkpoint: {
+      ...checkpoint(),
+      planner: {
+        pending: { kind: "attack", unit: "u1", target: "u2", weapon: "sword" },
+        options: { policy: "mixed", diplomacy: "restrained", recruitmentLimit: 1 },
+        workspace: { tacticalRemaining: 2, recruitmentRemaining: 0, seed: 71 },
+      },
+    },
+    pendingEnemy: false,
+  };
+  const original = structuredClone(old);
+  const migrated = migrateSave(old).save;
+  assert.deepEqual(old, original);
+  assert.deepEqual(migrated.checkpoint.planner?.pending, old.checkpoint.planner.pending);
+  assert.equal(migrated.checkpoint.planner?.workspace.recruitmentRemaining, 0);
+  assert.equal(migrated.checkpoint.planner?.workspace.tacticalRemaining, null);
+  assert.deepEqual(migrated.checkpoint.state, old.checkpoint.state);
+});

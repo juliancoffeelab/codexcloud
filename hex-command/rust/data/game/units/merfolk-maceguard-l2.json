@@ -3,18 +3,19 @@
   "role": "warrior",
   "name": "Veteran macer",
   "race": "merfolk",
-  "hp": 28,
+  "hp": 30,
   "move": 4,
   "cost": 12,
   "attacks": [
     {
       "id": "mace",
       "name": "Shell mace",
-      "damage": 8,
+      "damage": 5,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 2
     }
   ],
   "damageModifiers": {

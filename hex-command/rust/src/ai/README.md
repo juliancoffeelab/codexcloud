@@ -25,7 +25,12 @@ warrior/ranger-only roster normalizes to 60%/40%. It chooses the most underrepre
 role first, then an effective unit within that role. A missing warrior gets replacement priority. With village income, mixed saves
 for that replacement instead of continually buying cheaper flankers; other preferred
 roles save for at most two income ticks. Without income it buys an affordable option.
-Recruitment effectiveness uses actual target cover and the attack category the
+Recruitment effectiveness sums each relevant attack’s count after per-hit
+modifiers. Threat estimates likewise include all reachable uses, conservatively
+ignoring attackers dying during retaliation. Tactical forecasts score the next
+strike, and policies reconsider the live roster after spending it. Classic also
+replans unused attacks after its unit’s move; the tactical iteration allowance
+scales with remaining uses. Recruitment effectiveness uses actual target cover and the attack category the
 role delivers, rather than crediting a ranged unit for a risky melee sidearm.
 Mixed places screens ahead of supports, heals adjacent
 wounded allies, and recomputes plans after every command so followers can use newly

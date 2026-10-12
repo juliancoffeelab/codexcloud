@@ -201,6 +201,12 @@ pub(crate) fn create_arena<'catalog>(
                 hp: rule.hp,
                 moved: false,
                 attacked: false,
+                remaining_attacks: Some(
+                    rule.attacks
+                        .iter()
+                        .map(|a| (a.id.clone(), a.count))
+                        .collect(),
+                ),
                 experience: Some(0),
                 name: None,
                 role: rule.leader.then_some(Role::Leader),

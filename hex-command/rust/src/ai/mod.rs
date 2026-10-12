@@ -240,6 +240,28 @@ pub(crate) fn choose_game_command(
             continue;
         }
         let restrained = workspace.diplomacy == Diplomacy::Restrained;
+        // Classic's unit order consumes movement once, but every strike is planned
+        // against the latest roster, including after restoring a queued command.
+        if policy == Policy::Classic && workspace.initialized {
+            let choice = game
+                .units
+                .iter()
+                .filter(|u| u.side == game.turn && u.moved && !u.attacked)
+                .find_map(|actor| {
+                    game.units
+                        .iter()
+                        .filter(|t| {
+                            t.side != actor.side && (!restrained || !game.mediation_at_risk(t))
+                        })
+                        .find_map(|target| {
+                            game.best_attack(actor, target, actor.tile)
+                                .map(|w| (actor.id, target.id, w))
+                        })
+                });
+            if let Some((actor, target, weapon)) = choice {
+                return Ok(attack_command(game, actor, target, weapon));
+            }
+        }
         if !workspace.initialized {
             workspace.initialized = true;
             for unit in game.units.iter().filter(|u| {
@@ -321,7 +343,17 @@ pub(crate) fn choose_game_command(
             }
         } else {
             let remaining = workspace.tactical_remaining.get_or_insert_with(|| {
-                game.units.iter().filter(|u| u.side == game.turn).count() * 3
+                game.units
+                    .iter()
+                    .filter(|u| u.side == game.turn)
+                    .map(|u| {
+                        2 + u
+                            .remaining_attacks
+                            .iter()
+                            .map(|&n| usize::from(n))
+                            .sum::<usize>()
+                    })
+                    .sum()
             });
             if *remaining == 0 {
                 workspace.finished = true;
@@ -554,6 +586,7 @@ mod courier_tests {
             hp: rules.units[rules.types["reefguard"]].hp,
             moved: true,
             attacked: true,
+            remaining_attacks: vec![0; rules.units[rules.types["reefguard"]].attacks.len()],
             experience: None,
             name: None,
             role: None,

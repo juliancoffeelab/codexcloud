@@ -3,27 +3,29 @@
   "role": "warrior",
   "name": "Tide seer",
   "race": "merfolk",
-  "hp": 34,
+  "hp": 38,
   "move": 4,
   "cost": 0,
   "attacks": [
     {
       "id": "trident",
       "name": "Trident",
-      "damage": 8,
+      "damage": 5,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 2
     },
     {
       "id": "tidebolt",
       "name": "Tide bolt",
-      "damage": 4,
+      "damage": 5,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
-      "sound": "attack-bow"
+      "sound": "attack-bow",
+      "count": 1
     }
   ],
   "damageModifiers": {

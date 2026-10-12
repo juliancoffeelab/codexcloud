@@ -14,27 +14,29 @@
       "cost": -1
     }
   },
-  "hp": 22,
+  "hp": 25,
   "move": 6,
   "cost": 8,
   "attacks": [
     {
       "id": "knife",
       "name": "Knife",
-      "damage": 7,
+      "damage": 4,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 2
     },
     {
       "id": "sling",
       "name": "Sling",
-      "damage": 4,
+      "damage": 2,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
-      "sound": "attack-bow"
+      "sound": "attack-bow",
+      "count": 2
     }
   ],
   "damageModifiers": {

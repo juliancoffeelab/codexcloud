@@ -11,27 +11,29 @@
     }
   },
   "race": "human",
-  "hp": 24,
+  "hp": 29,
   "move": 3,
   "cost": 9,
   "attacks": [
     {
       "id": "spear",
       "name": "Spear",
-      "damage": 8,
+      "damage": 5,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 2
     },
     {
       "id": "shieldbash",
       "name": "Shield bash",
-      "damage": 6,
+      "damage": 3,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     }
   ],
   "damageModifiers": {

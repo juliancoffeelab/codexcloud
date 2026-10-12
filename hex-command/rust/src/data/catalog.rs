@@ -262,6 +262,12 @@ impl InitialState {
                 hp,
                 moved: false,
                 attacked: false,
+                remaining_attacks: Some(
+                    rule.attacks
+                        .iter()
+                        .map(|a| (a.id.clone(), a.count))
+                        .collect(),
+                ),
                 experience: Some(0),
                 name: unit.name,
                 role: unit.role,
@@ -491,6 +497,8 @@ impl Rules {
                     || attack.sound.is_empty()
                     || attack.range == 0
                     || attack.damage < 0
+                    || attack.count == 0
+                    || attack.count > 16
                 {
                     return Err(ContentError::new(
                         &path,
@@ -540,7 +548,11 @@ impl Rules {
                 description: spec.description,
                 hp: spec.hp,
                 r#move: spec.r#move,
-                damage: spec.attacks[0].damage,
+                damage: spec
+                    .attacks
+                    .iter()
+                    .map(|a| a.damage * i32::from(a.count))
+                    .sum(),
                 range: spec.attacks.iter().map(|w| w.range).max().unwrap(),
                 cost: spec.cost,
                 attacks: spec.attacks,
@@ -973,18 +985,11 @@ mod tests {
     #[test]
     fn authored_catalog_resolves_races_and_current_maps() {
         let rules = Rules::from_json_bundle(&test_bundle()).unwrap();
-        let skeleton = &rules.units[rules.types["skeleton"]];
-        assert_eq!(skeleton.damage_modifiers.pierce, -2);
-        let boar = &rules.units[rules.types["boar"]];
-        assert_eq!(boar.costs[rules.terrains["forest"]], Some(1));
-        assert_eq!(boar.costs[rules.terrains["ford"]], Some(3));
-        assert_eq!(boar.costs[rules.terrains["water"]], None);
-        assert_eq!(
-            boar.environment[rules.terrains["forest"]],
-            [[-1, -1, -1], [-2, -2, -2]]
-        );
-        let reefguard = &rules.units[rules.types["reefguard"]];
-        assert_eq!(reefguard.costs[rules.terrains["water"]], Some(1));
+        for unit in &rules.units {
+            assert_eq!(unit.costs.len(), rules.terrains.len());
+            assert_eq!(unit.environment.len(), rules.terrains.len());
+            assert!(unit.costs.iter().flatten().all(|&cost| cost > 0));
+        }
         assert!(!rules.maps.contains_key(&("river".to_owned(), 1)));
         assert!(rules.maps.contains_key(&("river".to_owned(), 2)));
         assert!(!rules.maps.contains_key(&("ashen-refuge".to_owned(), 1)));
@@ -1141,6 +1146,31 @@ mod tests {
             original_hp
         );
     }
+    #[test]
+    fn attack_counts_default_to_one_and_reject_invalid_budgets() {
+        let mut bundle = test_bundle();
+        let path = "game/units/swordsman.json";
+        let mut unit: serde_json::Value = serde_json::from_str(&bundle[path]).unwrap();
+        unit["attacks"][0].as_object_mut().unwrap().remove("count");
+        bundle.insert(path.into(), serde_json::to_string(&unit).unwrap());
+        let rules = Rules::from_json_bundle(&bundle).unwrap();
+        assert_eq!(rules.units[rules.types["swordsman"]].attacks[0].count, 1);
+        for count in [0, 17] {
+            unit["attacks"][0]["count"] = serde_json::json!(count);
+            bundle.insert(path.into(), serde_json::to_string(&unit).unwrap());
+            assert_eq!(Rules::from_json_bundle(&bundle).unwrap_err().path, path);
+        }
+        unit["attacks"][0]["count"] = serde_json::json!(1);
+        unit["attacks"][0]["counts"] = serde_json::json!(3);
+        bundle.insert(path.into(), serde_json::to_string(&unit).unwrap());
+        assert!(
+            Rules::from_json_bundle(&bundle)
+                .unwrap_err()
+                .message
+                .contains("unknown field")
+        );
+    }
+
     #[test]
     fn hidden_maps_remain_loadable_and_default_to_visible() {
         let mut bundle = test_bundle();

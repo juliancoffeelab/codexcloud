@@ -3,27 +3,29 @@
   "role": "warrior",
   "name": "Skeleton",
   "race": "undead",
-  "hp": 18,
+  "hp": 24,
   "move": 3,
   "cost": 6,
   "attacks": [
     {
       "id": "rustblade",
       "name": "Rust blade",
-      "damage": 6,
+      "damage": 4,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 2
     },
     {
       "id": "boneclub",
       "name": "Bone club",
-      "damage": 4,
+      "damage": 3,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     }
   ],
   "damageModifiers": {

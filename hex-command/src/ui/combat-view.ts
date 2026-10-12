@@ -38,6 +38,7 @@ export interface AvailableAttackChoice extends AttackChoiceBase {
 
 export interface UnavailableAttackChoice extends AttackChoiceBase {
   available: false;
+  reason: string;
 }
 
 export type AttackChoiceView = AvailableAttackChoice | UnavailableAttackChoice;
@@ -97,11 +98,16 @@ export function attackChoiceViews(
 ): AttackChoiceView[] {
   return TYPES[attacker.type].attacks.map((weapon) => {
     if (!game.canAttackFrom(attacker, attacker.tile, target, weapon.id)) {
+      const reason =
+        attacker.attacked || attacker.remainingAttacks?.[weapon.id] === 0
+          ? "No uses remaining"
+          : "Out of reach or blocked";
       return {
         available: false,
+        reason,
         id: weapon.id,
         name: weapon.name,
-        buttonLabel: `Attack with ${weapon.name} — out of reach or blocked`,
+        buttonLabel: `Attack with ${weapon.name} — ${reason.toLowerCase()}`,
       };
     }
 
@@ -129,7 +135,7 @@ export function attackChoiceViews(
     return {
       available: true,
       id: weapon.id,
-      name: weapon.name,
+      name: `${weapon.name} (${preview.remaining} left)`,
       buttonLabel: `Attack with ${weapon.name}: deal ${preview.damage} damage, take ${preview.retaliation} damage${warning}`,
       inspectLabel: `Inspect ${weapon.name.toLowerCase()} damage calculation`,
       detailsId: `attack-details-${weapon.id}`,

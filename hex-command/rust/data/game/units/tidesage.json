@@ -3,9 +3,9 @@
   "role": "healer",
   "name": "Tide sage",
   "race": "merfolk",
-  "hp": 22,
+  "hp": 24,
   "move": 4,
-  "cost": 15,
+  "cost": 14,
   "attacks": [
     {
       "id": "surge",
@@ -14,16 +14,18 @@
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
-      "sound": "attack-bow"
+      "sound": "attack-bow",
+      "count": 1
     },
     {
       "id": "staff",
       "name": "Staff",
-      "damage": 2,
+      "damage": 3,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     }
   ],
   "damageModifiers": {

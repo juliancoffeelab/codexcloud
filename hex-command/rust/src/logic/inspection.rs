@@ -27,7 +27,13 @@ impl Game<'_> {
             .map(|unit| {
                 let mut attacks = Vec::new();
                 for target in &self.units {
-                    for weapon in self.attack_options(unit, target, unit.tile) {
+                    let options = self.attack_options(unit, target, unit.tile);
+                    if options.is_empty() {
+                        continue;
+                    }
+                    let mut recommended = None;
+                    let mut best_value = f64::NEG_INFINITY;
+                    for weapon in options {
                         let attack = self.rules.units[unit.kind].attacks[weapon].clone();
                         let (damage, retaliation, response) =
                             self.preview(unit, target, weapon, unit.tile);
@@ -36,7 +42,14 @@ impl Game<'_> {
                         let retaliation_detail = response
                             .as_ref()
                             .map(|r| self.damage_detail(r, unit, unit.tile));
+                        let value = Self::attack_value(unit, target, damage, retaliation);
+                        if value > best_value {
+                            best_value = value;
+                            recommended = Some(attacks.len());
+                        }
                         attacks.push(AttackDetails {
+                            recommended: false,
+                            remaining: unit.remaining_attacks[weapon],
                             target: format!("u{}", target.id),
                             damage,
                             retaliation,
@@ -45,6 +58,9 @@ impl Game<'_> {
                             response,
                             retaliation_detail,
                         });
+                    }
+                    if let Some(index) = recommended {
+                        attacks[index].recommended = true;
                     }
                 }
                 UnitActions {

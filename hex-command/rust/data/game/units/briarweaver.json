@@ -3,18 +3,19 @@
   "role": "ranger",
   "name": "Briarweaver",
   "race": "beast",
-  "hp": 20,
+  "hp": 24,
   "move": 4,
   "cost": 11,
   "attacks": [
     {
       "id": "thorns",
       "name": "Thorns",
-      "damage": 10,
+      "damage": 6,
       "damageType": "pierce",
       "category": "ranged",
       "range": 2,
-      "sound": "attack-bow"
+      "sound": "attack-bow",
+      "count": 2
     },
     {
       "id": "rootstaff",
@@ -23,7 +24,8 @@
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     }
   ],
   "damageModifiers": {

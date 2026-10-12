@@ -146,6 +146,7 @@ export interface Unit {
   hp: number;
   moved: boolean;
   attacked: boolean;
+  remainingAttacks?: Record<string, number>;
   name?: string;
   role?: "leader" | "courier";
   /** Set by the enemy AI when withdrawing; visible before the player chooses to pursue. */
@@ -157,6 +158,7 @@ export interface Weapon {
   id: string;
   name: string;
   damage: number;
+  count: number;
   damageType: DamageType;
   category: AttackCategory;
   range: number;
@@ -245,6 +247,8 @@ export interface CombatPreview {
   retaliation: number;
 }
 export interface CombatPreviewDetails extends CombatPreview {
+  remaining: number;
+  recommended: boolean;
   attack: Weapon;
   response: Weapon | null;
   damageDetail: DamageBreakdown;

@@ -2,13 +2,15 @@ import { MAPS } from "../../game/maps";
 import { isRecord, type BattleSave } from "../schema";
 
 /** Grow the two published developer layouts, preserving owned tiles and battle progress. */
-export function migrateV3ToV4(value: Record<string, unknown>): BattleSave {
+export function migrateV3ToV4(
+  value: Record<string, unknown>,
+): Omit<BattleSave, "version"> & { version: 4 } {
   const checkpoint = value.checkpoint;
   if (!isRecord(checkpoint) || !isRecord(checkpoint.state))
     throw new Error("Invalid version-three native save");
   const state = checkpoint.state;
   if (state.mapId !== "developer" || state.mapRevision !== 1)
-    return { ...value, version: 4 } as unknown as BattleSave;
+    return { ...value, version: 4 } as unknown as Omit<BattleSave, "version"> & { version: 4 };
 
   const { cols, rows, tiles } = state;
   if (!((cols === 6 && rows === 20) || (cols === 13 && rows === 23)) || !Array.isArray(tiles))
@@ -53,5 +55,5 @@ export function migrateV3ToV4(value: Record<string, unknown>): BattleSave {
         tiles: expanded,
       },
     },
-  } as unknown as BattleSave;
+  } as unknown as Omit<BattleSave, "version"> & { version: 4 };
 }

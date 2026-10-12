@@ -3,18 +3,19 @@
   "role": "warrior",
   "name": "Trident guard",
   "race": "merfolk",
-  "hp": 28,
+  "hp": 30,
   "move": 4,
   "cost": 12,
   "attacks": [
     {
       "id": "spear",
       "name": "Trident",
-      "damage": 8,
+      "damage": 5,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 2
     },
     {
       "id": "shellclub",
@@ -23,7 +24,8 @@
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     }
   ],
   "damageModifiers": {

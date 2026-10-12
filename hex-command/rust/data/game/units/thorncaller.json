@@ -3,27 +3,29 @@
   "role": "ranger",
   "name": "Thorncaller",
   "race": "beast",
-  "hp": 14,
+  "hp": 17,
   "move": 4,
   "cost": 7,
   "attacks": [
     {
       "id": "thorns",
       "name": "Thorns",
-      "damage": 8,
+      "damage": 5,
       "damageType": "pierce",
       "category": "ranged",
       "range": 2,
-      "sound": "attack-bow"
+      "sound": "attack-bow",
+      "count": 2
     },
     {
       "id": "rootstaff",
       "name": "Root staff",
-      "damage": 4,
+      "damage": 3,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     }
   ],
   "damageModifiers": {

@@ -3,27 +3,29 @@
   "role": "ranger",
   "name": "Harpooner",
   "race": "merfolk",
-  "hp": 16,
+  "hp": 18,
   "move": 5,
   "cost": 7,
   "attacks": [
     {
       "id": "harpoon",
       "name": "Harpoon",
-      "damage": 6,
+      "damage": 5,
       "damageType": "pierce",
       "category": "ranged",
       "range": 2,
-      "sound": "attack-bow"
+      "sound": "attack-bow",
+      "count": 1
     },
     {
       "id": "knife",
       "name": "Knife",
-      "damage": 4,
+      "damage": 2,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 2
     }
   ],
   "damageModifiers": {

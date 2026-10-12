@@ -3,18 +3,19 @@
   "role": "warrior",
   "name": "Tidekeeper",
   "race": "merfolk",
-  "hp": 28,
+  "hp": 30,
   "move": 4,
   "cost": 0,
   "attacks": [
     {
       "id": "trident",
       "name": "Trident",
-      "damage": 6,
+      "damage": 4,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 2
     },
     {
       "id": "tidebolt",
@@ -23,7 +24,8 @@
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
-      "sound": "attack-bow"
+      "sound": "attack-bow",
+      "count": 1
     }
   ],
   "damageModifiers": {

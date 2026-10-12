@@ -24,6 +24,11 @@ impl<'catalog> Game<'catalog> {
             }
             unit.moved = false;
             unit.attacked = false;
+            unit.remaining_attacks = self.rules.units[unit.kind]
+                .attacks
+                .iter()
+                .map(|a| a.count)
+                .collect();
             let terrain = self.rules.terrain_types[self.terrain[unit.tile]];
             if matches!(terrain, Terrain::Village | Terrain::Grove)
                 && self.owners[unit.tile] == Some(side)

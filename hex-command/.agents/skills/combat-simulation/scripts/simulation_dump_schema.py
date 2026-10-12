@@ -14,6 +14,7 @@ STRINGS = pa.list_(STRING)
 
 UNIT = pa.struct([
     ("id", STRING), ("type", STRING), ("side", STRING), ("tile", STRING),
+    ("remainingAttacks", pa.map_(STRING, INTEGER)),
     ("hp", INTEGER), ("moved", BOOLEAN), ("attacked", BOOLEAN),
     ("experience", INTEGER), ("name", STRING), ("role", STRING),
     ("retreating", BOOLEAN), ("rebuilding", BOOLEAN),
@@ -69,7 +70,7 @@ ACTION = pa.struct([
 COMBAT = pa.struct([
     ("unit", STRING), ("target", STRING), ("weapon", STRING), ("from", STRING),
     ("targetTile", STRING), ("damage", INTEGER), ("retaliation", INTEGER),
-    ("mediationAtRisk", BOOLEAN),
+    ("mediationAtRisk", BOOLEAN), ("remainingAttacks", pa.map_(STRING, INTEGER)),
 ])
 OWNERSHIP = pa.struct([("tile", STRING), ("owner", STRING)])
 PHASE = pa.struct([

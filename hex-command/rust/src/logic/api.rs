@@ -31,6 +31,7 @@ pub struct Reachable {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CombatPreview {
+    pub remaining: u8,
     pub damage: i32,
     pub retaliation: i32,
     pub retaliation_weapon: Option<WeaponId>,
@@ -218,6 +219,7 @@ impl Battle {
             }
             let (damage, retaliation, response) = game.preview(actor, victim, weapon_index, tile);
             Ok(CombatPreview {
+                remaining: actor.remaining_attacks[weapon_index],
                 damage,
                 retaliation,
                 retaliation_weapon: response

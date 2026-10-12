@@ -173,6 +173,7 @@ pub struct AttackQuery {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 pub struct AttackPreview {
+    pub remaining: u8,
     pub damage: i32,
     pub retaliation: i32,
     pub response: Option<Weapon>,
@@ -279,6 +280,8 @@ pub struct DamageDetail {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[serde(rename_all = "camelCase")]
 pub struct AttackDetails {
+    pub recommended: bool,
+    pub remaining: u8,
     pub target: String,
     pub attack: Weapon,
     pub response: Option<Weapon>,

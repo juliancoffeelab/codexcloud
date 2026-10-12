@@ -23,6 +23,7 @@ test("Combat XP and promotion preserve wounds, identity and immutable publicatio
   assert.deepEqual(game.promotionOptions(attacker.id), []);
   attacker.experience = 10;
   attacker.moved = attacker.attacked = false;
+  delete attacker.remainingAttacks;
   const before = createGameView(game);
   const beforePromotion = game.snapshot();
   assert.deepEqual(before.promotionOptions(attacker.id), ["soldier"]);
@@ -96,13 +97,20 @@ for (const [chapter, oldName, officerName] of [
       officer.hp = 5;
       officer.experience = 7;
       officer.moved = officer.attacked = true;
+      delete officer.remainingAttacks;
       oldCoast.campaign!.dialogue = [
         required(CAMPAIGNS["borrowed-tide"].missions[chapter]!.legacyDialogue?.[0]),
       ];
       saveBattle(oldCoast);
       const migrated = loadBattle().game;
       assert.equal(migrated.campaign?.id, "borrowed-tide");
-      assert.deepEqual(migrated.unit(officer.id), { ...officer, name: officerName });
+      assert.deepEqual(migrated.unit(officer.id), {
+        ...officer,
+        name: officerName,
+        remainingAttacks: Object.fromEntries(
+          TYPES[officer.type].attacks.map((attack) => [attack.id, 0]),
+        ),
+      });
       assert.equal(migrated.campaign!.dialogue[0]?.speaker, officerName);
     },
   );

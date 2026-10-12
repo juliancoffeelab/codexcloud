@@ -53,7 +53,11 @@ test("Developer units use ordinary movement, combat and turns", async () => {
   assert(developerBattle.targets(soldier.id).includes(enemySoldier));
   developerBattle.attack(soldier.id, enemySoldier.id, "sword");
   assert(enemySoldier.hp < TYPES.soldier.hp);
-  assert(soldier.attacked);
+  assert(soldier.moved);
+  assert.equal(
+    soldier.remainingAttacks?.sword,
+    TYPES.soldier.attacks.find((a) => a.id === "sword")!.count - 1,
+  );
   developerBattle.endTurn();
   assert.equal(developerBattle.turn, "enemy");
   assert.equal(developerBattle.winner, null);

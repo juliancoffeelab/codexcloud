@@ -127,6 +127,9 @@ export class Game implements GameState {
       experience: 0,
       moved: false,
       attacked: false,
+      remainingAttacks: Object.fromEntries(
+        TYPES[type].attacks.map((attack) => [attack.id, attack.count]),
+      ),
     };
     this.units.push(unit);
     return unit;

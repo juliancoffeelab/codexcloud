@@ -32,3 +32,11 @@ sha2 = "0.10"
 lto = "thin"
 codegen-units = 8
 panic = "abort"
+
+# Keep native rule queries responsive in dev WASM, including the shared test suite.
+[profile.dev.package.hex-command-simulation]
+opt-level = 2
+
+# Native tests keep the original fast compilation profile.
+[profile.test.package.hex-command-simulation]
+opt-level = 0

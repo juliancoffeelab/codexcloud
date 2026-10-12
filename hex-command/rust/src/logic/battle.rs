@@ -108,6 +108,19 @@ impl<'catalog> Game<'catalog> {
                 hp: unit.hp,
                 moved: unit.moved,
                 attacked: unit.attacked,
+                remaining_attacks: rules.units[rules.types[&unit.r#type]]
+                    .attacks
+                    .iter()
+                    .map(|a| {
+                        if unit.attacked {
+                            0
+                        } else {
+                            unit.remaining_attacks
+                                .as_ref()
+                                .map_or(a.count, |counts| counts[&a.id])
+                        }
+                    })
+                    .collect(),
                 experience: unit.experience,
                 name: unit.name.clone(),
                 role: unit.role.clone(),
@@ -234,6 +247,23 @@ impl<'catalog> Game<'catalog> {
             hp: unit.hp,
             moved: unit.moved,
             attacked: unit.attacked,
+            remaining_attacks: Some(
+                self.rules.units[unit.kind]
+                    .attacks
+                    .iter()
+                    .enumerate()
+                    .map(|(i, a)| {
+                        (
+                            a.id.clone(),
+                            if unit.attacked {
+                                0
+                            } else {
+                                unit.remaining_attacks[i]
+                            },
+                        )
+                    })
+                    .collect(),
+            ),
             experience: unit.experience,
             name: unit.name.clone(),
             role: unit.role.clone(),
@@ -288,6 +318,11 @@ impl<'catalog> Game<'catalog> {
             hp: self.rules.units[kind].hp,
             moved: false,
             attacked: false,
+            remaining_attacks: self.rules.units[kind]
+                .attacks
+                .iter()
+                .map(|a| a.count)
+                .collect(),
             experience: Some(0),
             name: None,
             role: None,
@@ -449,6 +484,7 @@ impl<'catalog> Game<'catalog> {
             .saturating_sub(previous.experience_needed.unwrap_or(0));
         let unit = &mut self.units[index];
         unit.kind = kind;
+        unit.remaining_attacks = vec![0; self.rules.units[kind].attacks.len()];
         unit.experience = Some(experience);
         unit.hp = (self.rules.units[kind].hp - wounds).max(1);
         unit.moved = true;
@@ -508,6 +544,7 @@ impl<'catalog> Game<'catalog> {
         let unit = self.units.last_mut().unwrap();
         unit.moved = true;
         unit.attacked = true;
+        unit.remaining_attacks.fill(0);
         self.record(format!(
             "{} recruited a {}. It acts next turn.",
             if leader.side == Side::Player {

@@ -3,27 +3,29 @@
   "role": "ranger",
   "name": "Tide hunter",
   "race": "merfolk",
-  "hp": 22,
+  "hp": 24,
   "move": 5,
   "cost": 11,
   "attacks": [
     {
       "id": "harpoon",
       "name": "Harpoon",
-      "damage": 8,
+      "damage": 7,
       "damageType": "pierce",
       "category": "ranged",
       "range": 2,
-      "sound": "attack-bow"
+      "sound": "attack-bow",
+      "count": 1
     },
     {
       "id": "knife",
       "name": "Knife",
-      "damage": 6,
+      "damage": 3,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 2
     }
   ],
   "damageModifiers": {

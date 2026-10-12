@@ -399,7 +399,9 @@ export class BattleController {
       }
       this.resolveAttack(this.state.selected, this.state.target, attackId, { inspectActor: false });
       if (!this.#game.winner) {
-        this.message("Attack complete. Select another unit or end your turn.");
+        this.message(
+          "Strike complete. Use remaining attacks, select another unit, or end your turn.",
+        );
       }
     } catch (error) {
       this.error(error);

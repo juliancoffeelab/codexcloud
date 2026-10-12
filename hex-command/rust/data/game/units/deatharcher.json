@@ -3,27 +3,29 @@
   "role": "ranger",
   "name": "Death archer",
   "race": "undead",
-  "hp": 22,
+  "hp": 25,
   "move": 3,
   "cost": 11,
   "attacks": [
     {
       "id": "bonebow",
       "name": "Bone bow",
-      "damage": 10,
+      "damage": 5,
       "damageType": "pierce",
       "category": "ranged",
       "range": 2,
-      "sound": "attack-bow"
+      "sound": "attack-bow",
+      "count": 3
     },
     {
       "id": "shard",
       "name": "Shard",
-      "damage": 4,
+      "damage": 3,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     }
   ],
   "damageModifiers": {

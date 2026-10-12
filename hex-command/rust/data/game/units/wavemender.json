@@ -3,7 +3,7 @@
   "role": "healer",
   "name": "Wavemender",
   "race": "merfolk",
-  "hp": 16,
+  "hp": 17,
   "move": 4,
   "cost": 9,
   "attacks": [
@@ -14,7 +14,8 @@
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
-      "sound": "attack-bow"
+      "sound": "attack-bow",
+      "count": 1
     },
     {
       "id": "staff",
@@ -23,7 +24,8 @@
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     }
   ],
   "damageModifiers": {

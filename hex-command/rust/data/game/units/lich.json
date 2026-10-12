@@ -4,18 +4,19 @@
   "name": "Lich",
   "race": "undead",
   "leader": true,
-  "hp": 30,
+  "hp": 42,
   "move": 3,
   "cost": 0,
   "attacks": [
     {
       "id": "gravebolt",
       "name": "Grave bolt",
-      "damage": 8,
+      "damage": 11,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
-      "sound": "attack-bow"
+      "sound": "attack-bow",
+      "count": 1
     },
     {
       "id": "bonestaff",
@@ -24,7 +25,8 @@
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     }
   ],
   "damageModifiers": {

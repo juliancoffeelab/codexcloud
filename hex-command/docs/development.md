@@ -93,7 +93,15 @@ Terrain formats, floor palettes and prop layouts are described in
 [terrain artwork implementation](terrain-artwork.md). Character creation and
 editing workflows live in the artwork skills linked below.
 
-The selected unit panel displays attacks and permanent damage modifiers. Terrain
+The selected unit panel displays attack counts, damage per hit, remaining uses
+and permanent damage modifiers. One attack command spends one use of its selected
+attack type and consumes movement. Other uses remain available, including against
+another target. Damage modifiers apply per hit; a surviving defender makes one
+free compatible reply without spending its own-turn counts. Killing hits suppress
+that reply. Each surviving participant earns one XP for a positive nonlethal hit,
+or six times the victim’s level for a killing hit. Zero damage spends a use without
+XP. Recruitment, promotion and deliberate withdrawal spend all uses; the next own
+turn refills them. Rust resolves budgets, forecasts and attack recommendations. Terrain
 effects show movement and resolved incoming-damage modifiers. Numeric abilities
 such as healing come from catalog metadata; descriptions explain roles without
 duplicating the values.

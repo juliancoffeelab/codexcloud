@@ -32,7 +32,8 @@ test("Zero damage attacks remain available and consume actions", async () => {
   game.attack(attacker.id, target.id, "shard");
   assert.equal(target.hp, targetHp);
   assert.equal(attacker.hp, choice.playerForecast.remainingHp);
-  assert(attacker.moved && attacker.attacked);
+  assert(attacker.moved);
+  assert.equal(attacker.remainingAttacks?.shard, 0);
   assert.throws(() => game.attack(attacker.id, target.id, "shard"));
 });
 test("Covered retaliation can deal zero damage", async () => {
@@ -48,13 +49,20 @@ test("Covered retaliation can deal zero damage", async () => {
   assert(choice.retaliationCalculation.description.includes("shard"));
   assert.equal(choice.playerForecast.remainingHp, attacker.hp);
 });
-test("Blocked attacks still produce combat feedback", async () => {
-  const { game, attacker, target } = fixture("bonearcher", "commander");
-  required(game.tile(target.tile)).terrain = "hill";
+test("Blocked strikes with unused attacks still produce combat feedback", () => {
+  const { game, attacker } = fixture();
   const before = game.snapshot();
-  game.attack(attacker.id, target.id, "shard");
-  assert.equal(target.hp, required(before.units.find((unit) => unit.id === target.id)).hp);
-  assert(describeChanges(before, game.snapshot()).attacked, "blocked attacks still play their cue");
+  const prior = required(before.units.find((unit) => unit.id === attacker.id));
+  // Synthetic published budgets isolate feedback from current weapon statistics.
+  prior.remainingAttacks = { strike: 3 };
+  const after = structuredClone(before);
+  const actor = required(after.units.find((unit) => unit.id === attacker.id));
+  actor.remainingAttacks = { strike: 2 };
+  actor.moved = true;
+  assert(!actor.attacked);
+  const feedback = describeChanges(before, after);
+  assert(feedback.attacked, "zero-damage strikes still play their cue");
+  assert.equal(feedback.attacker?.id, attacker.id);
 });
 // Lethal forecasts identify the unit that dies, including overkill and retaliation.
 test("Lethal forecasts identify casualties including overkill", async () => {

@@ -4,18 +4,19 @@
   "name": "Wildkeeper",
   "race": "beast",
   "leader": true,
-  "hp": 28,
+  "hp": 32,
   "move": 3,
   "cost": 0,
   "attacks": [
     {
       "id": "bough",
       "name": "Bough",
-      "damage": 6,
+      "damage": 7,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     },
     {
       "id": "stones",
@@ -24,7 +25,8 @@
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
-      "sound": "attack-bow"
+      "sound": "attack-bow",
+      "count": 1
     }
   ],
   "damageModifiers": {

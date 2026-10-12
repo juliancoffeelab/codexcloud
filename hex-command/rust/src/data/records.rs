@@ -42,6 +42,8 @@ pub struct CombatRecord {
     pub target_tile: String,
     pub damage: i32,
     pub retaliation: i32,
+    #[serde(default)]
+    pub remaining_attacks: std::collections::BTreeMap<String, u8>,
     pub mediation_at_risk: bool,
 }
 /// Exclusively owned action, casualty and combat histories for one simulation session.

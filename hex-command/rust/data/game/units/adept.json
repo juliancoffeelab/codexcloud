@@ -3,18 +3,19 @@
   "role": "ranger",
   "name": "Adept",
   "race": "human",
-  "hp": 17,
+  "hp": 18,
   "move": 3,
   "cost": 8,
   "attacks": [
     {
       "id": "spark",
       "name": "Spark",
-      "damage": 7,
+      "damage": 8,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
-      "sound": "attack-bow"
+      "sound": "attack-bow",
+      "count": 1
     },
     {
       "id": "staff",
@@ -23,7 +24,8 @@
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     }
   ],
   "damageModifiers": {

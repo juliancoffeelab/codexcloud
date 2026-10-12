@@ -13,7 +13,9 @@ Paths are relative to this directory and cannot contain traversal components.
 - `game/races/<race-id>.json` defines one race's inherited resistance and terrain modifiers.
 - `game/units/<unit-id>.json` defines one unit's deviations from its race, weapons and
   progression. Every unit explicitly declares `role`: `warrior`, `flank`, `ranger`
-  or `healer`; AI does not infer it from speed, weapons or healing. Damage and range come from weapons. Movement costs and
+  or `healer`; AI does not infer it from speed, weapons or healing. Damage, range and per-turn `count` come from each attack definition. Omitted
+  counts default to one; authored counts must be 1–16. A count is uses of that
+  attack, independent of equipment or the number of attack definitions. Movement costs and
   environmental modifiers are resolved once when Rust loads the catalog. Never
   author `costs` or `environment` arrays here.
 - `game/scenario/<id>-v<revision>/scenario.json` references `map.json` (geometry)

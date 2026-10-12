@@ -197,6 +197,7 @@ impl NativeEngineFactory {
             }
             let (damage, retaliation, response) = game.preview(actor, target, weapon, from);
             Ok(AttackPreview {
+                remaining: actor.remaining_attacks[weapon],
                 damage,
                 retaliation,
                 response: response
@@ -445,21 +446,64 @@ mod tests {
                 battles: HashMap::new(),
                 next_id: 1,
             };
-            let state = factory
+            let attacker = factory.rules.types["soldier"];
+            let defender = factory.rules.types["swordsman"];
+            factory.rules.units[attacker].hp = 100;
+            factory.rules.units[attacker].attacks[0].count = 3;
+            factory.rules.units[attacker].attacks[0].damage = 2;
+            factory.rules.units[attacker].attacks[1].count = 1;
+            factory.rules.units[attacker].attacks[1].damage = 6;
+            factory.rules.units[defender].hp = 100;
+            factory.rules.units[defender].attacks[0].damage = 0;
+            let mut state = factory
                 .start(Start::Scenario {
                     map: "mirror".into(),
                     revision: None,
                 })
                 .unwrap();
+            state.units.truncate(2);
+            for (unit, (kind, tile, side)) in state.units.iter_mut().zip([
+                ("soldier", "2,3", Side::Player),
+                ("swordsman", "3,3", Side::Enemy),
+            ]) {
+                unit.r#type = kind.into();
+                unit.tile = tile.into();
+                unit.side = side;
+                unit.hp = 100;
+                unit.moved = true;
+                unit.role = None;
+                unit.remaining_attacks = None;
+            }
+            for tile in &mut state.tiles {
+                tile.terrain = "plains".into();
+                tile.owner = None;
+            }
             let board = Board::new(&state.tiles);
             let original = factory.insert(state, 17, board);
             let options = AiOptions {
                 policy,
                 diplomacy: AiDiplomacy::Restrained,
-                recruitment_limit: 2,
+                recruitment_limit: 0,
             };
             let first = factory.decision(original.id, 0, options.clone()).unwrap();
-            let saved = factory.checkpoint(original.id, 0).unwrap();
+            assert!(
+                matches!(first.command, Command::Attack { .. }),
+                "{:?}: {:?}",
+                policy,
+                first.command
+            );
+            factory.apply(original.id, 0, first.command).unwrap();
+            let first = factory.decision(original.id, 1, options.clone()).unwrap();
+            let saved = factory.checkpoint(original.id, 1).unwrap();
+            assert_eq!(
+                saved.state.units[0]
+                    .remaining_attacks
+                    .as_ref()
+                    .unwrap()
+                    .values()
+                    .sum::<u8>(),
+                3
+            );
             assert!(saved.planner.as_ref().unwrap().pending.is_some());
             let saved: SavedGame =
                 serde_json::from_str(&serde_json::to_string(&saved).unwrap()).unwrap();
@@ -468,17 +512,17 @@ mod tests {
             assert_eq!(first.command, repeated.command);
             // A few individual decisions exercise the cursor and staged follow-up,
             // without running a turn, campaign, or tournament simulation.
-            for revision in 0..3 {
+            for revision in 1..4 {
                 let first = factory
                     .decision(original.id, revision, options.clone())
                     .unwrap();
                 let second = factory
-                    .decision(restored.id, revision, options.clone())
+                    .decision(restored.id, revision - 1, options.clone())
                     .unwrap();
                 assert_eq!(first.command, second.command);
                 factory.apply(original.id, revision, first.command).unwrap();
                 factory
-                    .apply(restored.id, revision, second.command)
+                    .apply(restored.id, revision - 1, second.command)
                     .unwrap();
                 assert_eq!(
                     serde_json::to_value(&factory.battles[&original.id].state).unwrap(),

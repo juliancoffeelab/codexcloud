@@ -10,9 +10,11 @@ impl<'catalog> Game<'catalog> {
         target: &Unit,
         weapon: usize,
     ) -> bool {
-        self.can_attack_at(unit, from, target, target.tile, weapon)
+        !unit.attacked
+            && unit.remaining_attacks.get(weapon).is_some_and(|&n| n > 0)
+            && self.can_attack_at(unit, from, target, target.tile, weapon)
     }
-    fn can_attack_at(
+    pub(crate) fn can_attack_at(
         &self,
         unit: &Unit,
         from: usize,
@@ -72,14 +74,17 @@ impl<'catalog> Game<'catalog> {
         }
         (damage, response, best)
     }
+    pub(super) fn attack_value(unit: &Unit, target: &Unit, damage: i32, retaliation: i32) -> f64 {
+        damage as f64 + if damage >= target.hp { 18.0 } else { 0.0 }
+            - retaliation as f64 * 0.7
+            - if retaliation >= unit.hp { 40.0 } else { 0.0 }
+    }
     pub(crate) fn best_attack(&self, unit: &Unit, target: &Unit, from: usize) -> Option<usize> {
         let mut best = None;
         let mut score = f64::NEG_INFINITY;
         for attack in self.attack_options(unit, target, from) {
             let (damage, retaliation, _) = self.preview(unit, target, attack, from);
-            let value = damage as f64 + if damage >= target.hp { 18.0 } else { 0.0 }
-                - retaliation as f64 * 0.7
-                - if retaliation >= unit.hp { 40.0 } else { 0.0 };
+            let value = Self::attack_value(unit, target, damage, retaliation);
             if value > score {
                 score = value;
                 best = Some(attack);
@@ -120,7 +125,8 @@ impl<'catalog> Game<'catalog> {
         });
         self.combat_present = true;
         self.units[a].moved = true;
-        self.units[a].attacked = true;
+        self.units[a].remaining_attacks[weapon] -= 1;
+        self.units[a].attacked = self.units[a].remaining_attacks.iter().all(|&n| n == 0);
         self.units[b].hp -= damage;
         if self.units[b].hp > 0 {
             self.units[a].hp -= retaliation;
@@ -219,6 +225,10 @@ impl<'catalog> Game<'catalog> {
             target: format!("u{target_id}"),
             weapon: attack.id.clone(),
         });
+        let remaining_attacks = self
+            .unit(id)
+            .map(|u| self.public_unit(u).remaining_attacks.unwrap())
+            .unwrap_or_default();
         if let Some(records) = &mut self.recordings {
             records.losses.extend(before.into_iter().filter(|unit| {
                 !self
@@ -234,6 +244,7 @@ impl<'catalog> Game<'catalog> {
                 target_tile: self.board.ids[target.tile].clone(),
                 damage,
                 retaliation,
+                remaining_attacks,
                 mediation_at_risk: mediated,
             });
         }

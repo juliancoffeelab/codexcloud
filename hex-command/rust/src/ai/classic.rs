@@ -149,12 +149,13 @@ impl Game<'_> {
         let mut first = 0;
         let mut second = 0;
         for foe in self.units.iter().filter(|o| o.side != u.side) {
-            let damage = self
-                .attack_options(foe, &target, foe.tile)
+            let damage = self.rules.units[foe.kind]
+                .attacks
                 .iter()
-                .map(|&w| self.damage(foe, &target, w))
-                .max()
-                .unwrap_or(0);
+                .enumerate()
+                .filter(|&(w, _)| self.can_attack_at(foe, foe.tile, &target, target.tile, w))
+                .map(|(w, a)| self.damage(foe, &target, w) * i32::from(a.count))
+                .sum::<i32>();
             if damage > first {
                 second = first;
                 first = damage;

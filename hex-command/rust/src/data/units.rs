@@ -64,16 +64,23 @@ impl DamageType {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct Weapon {
     pub id: String,
     pub name: String,
     pub damage: i32,
+    /// Uses of this attack per own turn; old definitions default to one.
+    #[serde(default = "one_attack")]
+    pub count: u8,
     pub damage_type: DamageType,
     pub category: Category,
     pub range: u8,
     pub sound: String,
 }
+fn one_attack() -> u8 {
+    1
+}
+
 /// Per-damage-type adjustments contributed by a defending unit.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
@@ -175,6 +182,10 @@ pub struct PublicUnit {
     pub hp: i32,
     pub moved: bool,
     pub attacked: bool,
+    /// Missing in old saves; attacked units remain spent, others start with full counts.
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub remaining_attacks: Option<std::collections::BTreeMap<String, u8>>,
     #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub experience: Option<u32>,
@@ -200,6 +211,7 @@ pub(crate) struct Unit {
     pub hp: i32,
     pub moved: bool,
     pub attacked: bool,
+    pub remaining_attacks: Vec<u8>,
     pub experience: Option<u32>,
     pub name: Option<String>,
     pub role: Option<Role>,

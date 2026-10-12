@@ -1,10 +1,10 @@
 # Browser saves and migrations
 
-`src/save/schema.ts` defines the current version-4 envelope:
+`src/save/schema.ts` defines the current version-5 envelope:
 
 ```json
 {
-  "version": 4,
+  "version": 5,
   "pendingEnemy": false,
   "checkpoint": { "seed": 17, "state": {}, "planner": {} }
 }
@@ -62,3 +62,15 @@ seed and planner continuation stay intact; only missing tiles are added from
 the current map. It never resets units or respawns defeated showcase troops.
 Malformed or incomplete historical boards still fail validation. Other maps
 receive only the envelope-version update.
+
+## Version-four migration
+
+The v4-to-v5 step preserves the pending AI command, unit flags and recruitment
+allowance, and clears the old tactical iteration bound so Rust can compute it
+from the new attack budgets. Missing `remainingAttacks` loads in Rust as full
+counts for an unspent unit and zero counts for an already attacked unit. A moved
+but unspent unit can use its attacks without receiving another move. Current
+checkpoints retain counts by attack ID, and validation rejects missing keys,
+over-budget uses and inconsistent action flags. Retaliation never spends these
+own-turn counts. Turn start refills them; recruitment, promotion and withdrawal
+consume all uses. Rebalanced HP maxima do not decrease from version four.

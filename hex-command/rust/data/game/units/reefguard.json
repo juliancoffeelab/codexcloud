@@ -3,27 +3,29 @@
   "role": "warrior",
   "name": "Reef guard",
   "race": "merfolk",
-  "hp": 22,
+  "hp": 24,
   "move": 4,
   "cost": 8,
   "attacks": [
     {
       "id": "spear",
       "name": "Reef spear",
-      "damage": 6,
+      "damage": 4,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 2
     },
     {
       "id": "tail",
       "name": "Tail strike",
-      "damage": 4,
+      "damage": 3,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     }
   ],
   "damageModifiers": {

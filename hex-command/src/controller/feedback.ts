@@ -45,16 +45,19 @@ export function describeChanges(before: GameSnapshot, after: GameSnapshot) {
     })
     .map((village) => village.id);
 
-  // A surviving attacker has spent its attack; a fallen attacker is absent.
+  // A surviving attacker spent a use, even when other uses remain; a fallen
+  // attacker is absent. Native budgets also identify fully blocked strikes.
   const attacker =
     after.units.find((unit) => {
       const previous = before.units.find((old) => old.id === unit.id);
       return (
         unit.side === before.turn &&
-        unit.attacked &&
         previous &&
         previous.type === unit.type &&
-        !previous.attacked
+        ((unit.attacked && !previous.attacked) ||
+          Object.entries(previous.remainingAttacks ?? {}).some(
+            ([id, count]) => (unit.remainingAttacks?.[id] ?? count) < count,
+          ))
       );
     }) ??
     before.units.find((unit) => {

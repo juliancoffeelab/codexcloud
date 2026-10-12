@@ -28,7 +28,7 @@
       <span class="attack-heading">
         <strong>{choice.name}</strong>
         {#if !choice.available}
-          <span>Out of reach or blocked</span>
+          <span>{choice.reason}</span>
         {/if}
       </span>
       {#if choice.available}

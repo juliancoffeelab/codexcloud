@@ -2,7 +2,7 @@
   "id": "marshal",
   "role": "warrior",
   "name": "Marshal",
-  "hp": 38,
+  "hp": 44,
   "move": 3,
   "cost": 0,
   "leader": true,
@@ -19,20 +19,22 @@
     {
       "id": "sword",
       "name": "Sword",
-      "damage": 10,
+      "damage": 6,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 2
     },
     {
       "id": "mace",
       "name": "Mace",
-      "damage": 6,
+      "damage": 5,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     }
   ],
   "damageModifiers": {

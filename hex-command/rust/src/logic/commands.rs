@@ -177,6 +177,9 @@ impl Game<'_> {
                 self.units[index].retreating = retreating;
                 self.units[index].rebuilding = rebuilding;
                 self.units[index].attacked = attacked;
+                if attacked {
+                    self.units[index].remaining_attacks.fill(0);
+                }
                 if let Some(name) = name {
                     self.record(format!("{name} is retreating."));
                 }

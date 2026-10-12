@@ -4,18 +4,19 @@
   "name": "Spearman",
   "terrainModifiers": {},
   "race": "human",
-  "hp": 20,
+  "hp": 23,
   "move": 3,
   "cost": 6,
   "attacks": [
     {
       "id": "spear",
       "name": "Spear",
-      "damage": 6,
+      "damage": 4,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 2
     }
   ],
   "damageModifiers": {

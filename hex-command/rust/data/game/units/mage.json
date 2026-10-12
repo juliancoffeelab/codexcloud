@@ -3,27 +3,29 @@
   "role": "ranger",
   "name": "Stone mage",
   "race": "human",
-  "hp": 23,
+  "hp": 24,
   "move": 3,
   "cost": 12,
   "attacks": [
     {
       "id": "spark",
       "name": "Spark",
-      "damage": 9,
+      "damage": 11,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
-      "sound": "attack-bow"
+      "sound": "attack-bow",
+      "count": 1
     },
     {
       "id": "staff",
       "name": "Staff",
-      "damage": 4,
+      "damage": 3,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     }
   ],
   "damageModifiers": {

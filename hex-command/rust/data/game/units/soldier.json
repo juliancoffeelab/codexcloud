@@ -11,27 +11,29 @@
       "cost": 1
     }
   },
-  "hp": 24,
+  "hp": 30,
   "move": 3,
-  "cost": 8,
+  "cost": 9,
   "attacks": [
     {
       "id": "sword",
       "name": "Sword",
-      "damage": 8,
+      "damage": 5,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 2
     },
     {
       "id": "mace",
       "name": "Mace",
-      "damage": 6,
+      "damage": 4,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     }
   ],
   "damageModifiers": {

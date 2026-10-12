@@ -84,6 +84,21 @@ pub fn validate_state(rules: &Rules, state: &State) -> Result<(), StateError> {
             .types
             .get(&unit.r#type)
             .ok_or_else(|| fail("unknown unit type"))?;
+        if let Some(counts) = &unit.remaining_attacks {
+            let attacks = &rules.units[kind].attacks;
+            if counts.len() != attacks.len()
+                || attacks
+                    .iter()
+                    .any(|a| counts.get(&a.id).is_none_or(|&n| n > a.count))
+                || (unit.attacked && counts.values().any(|&n| n != 0))
+                || (!unit.attacked && counts.values().all(|&n| n == 0))
+                || (!unit.attacked
+                    && !unit.moved
+                    && attacks.iter().any(|a| counts[&a.id] != a.count))
+            {
+                return Err(fail("invalid remaining attack counts"));
+            }
+        }
         if unit.hp <= 0 || unit.hp > rules.units[kind].hp {
             return Err(fail("invalid unit hit points"));
         }
