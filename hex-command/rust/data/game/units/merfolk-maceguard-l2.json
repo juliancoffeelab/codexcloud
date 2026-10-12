@@ -3,7 +3,7 @@
   "role": "warrior",
   "name": "Veteran macer",
   "race": "merfolk",
-  "hp": 30,
+  "hp": 28,
   "move": 4,
   "cost": 12,
   "attacks": [
