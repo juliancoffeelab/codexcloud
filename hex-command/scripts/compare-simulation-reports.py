@@ -12,8 +12,9 @@ import hashlib
 import json
 from pathlib import Path
 from time import perf_counter
+from simulation_journal import decode_detail
 
-RUN_METADATA = ("fingerprint", "sourceCommit", "elapsedSeconds")
+RUN_METADATA = ("fingerprint", "sourceCommit", "elapsedSeconds", "detailFormat")
 OUTCOME_METADATA = ("elapsedMs", "detail")
 
 
@@ -73,7 +74,7 @@ def compare(baseline, current):
             new = read_detail(current.parent, other["detail"], readers)
             if old == new:
                 byte_identical += 1
-            elif canonical(json.loads(old)) != canonical(json.loads(new)):
+            elif canonical(decode_detail(old, outcome["detail"]["file"])) != canonical(decode_detail(new, other["detail"]["file"])):
                 raise ValueError(f"Detailed gameplay differs: {key}")
     finally:
         for reader in readers.values():

@@ -8,6 +8,7 @@ pub(super) struct Threats<'game, 'catalog> {
     normal: Option<(Game<'catalog>, Vec<(Unit, Vec<TileSet>)>)>,
     cache: HashMap<(Option<u32>, usize, usize, Option<u32>), i32>,
     forecasts: HashMap<(u32, Option<u32>), (Game<'catalog>, Vec<(Unit, Vec<TileSet>)>)>,
+    arena: HashMap<Option<u32>, Vec<(Unit, Vec<TileSet>)>>,
 }
 impl<'game, 'catalog> Threats<'game, 'catalog> {
     pub fn new(g: &'game Game<'catalog>, side: Side) -> Self {
@@ -17,7 +18,40 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             normal: None,
             cache: HashMap::default(),
             forecasts: HashMap::default(),
+            arena: HashMap::default(),
         }
+    }
+    fn arena_enemies(source: &Game, side: Side, actor: Option<u32>) -> Vec<(Unit, Vec<TileSet>)> {
+        let mut occupancy = vec![None; source.terrain.len()];
+        if let Some(actor) = actor {
+            for ally in source
+                .units
+                .iter()
+                .filter(|u| u.side == side && u.id != actor)
+            {
+                occupancy[ally.tile] = Some(side);
+            }
+        }
+        source
+            .units
+            .iter()
+            .filter(|u| u.side != side)
+            .map(|enemy| {
+                let mut enemy = enemy.clone();
+                enemy.moved = false;
+                enemy.attacked = false;
+                let positions = if actor.is_some() {
+                    occupancy[enemy.tile] = Some(enemy.side);
+                    let positions = source.threat_reach(&enemy, Some(&occupancy));
+                    occupancy[enemy.tile] = None;
+                    positions
+                } else {
+                    source.threat_reach(&enemy, None)
+                };
+                let covered = Self::coverage(source, &enemy, &positions);
+                (enemy, covered)
+            })
+            .collect()
     }
     // Essential actors forecast each opponent independently. Friendly blockers
     // remain, while competing opponents and the hypothetical moving actor can
@@ -111,7 +145,19 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         }
         let mut target = u.clone();
         target.tile = tile;
-        let risk = if !important {
+        let risk = if self.source.campaign.is_none() {
+            // Arena turn-start only resets enemy actions and heals HP. Neither
+            // healing nor income changes damage or movement coverage. Essential
+            // forecasts ignore competing enemies, so a killed enemy can be
+            // subtracted without rebuilding every survivor's forecast.
+            let enemies = self
+                .arena
+                .entry(important.then_some(u.id))
+                .or_insert_with(|| {
+                    Self::arena_enemies(self.source, self.side, important.then_some(u.id))
+                });
+            Self::pressure(self.source, &target, enemies, eliminated, important)
+        } else if !important {
             let (shadow, enemies) = self.normal.get_or_insert_with(|| {
                 let mut shadow = self.source.fork();
                 shadow.arena_first = None;
@@ -199,6 +245,63 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
 mod tests {
     use super::*;
     use std::cell::Cell;
+    #[test]
+    fn arena_shortcut_matches_full_turn_forecasts_with_eliminations() {
+        let rules = Catalog::load().unwrap();
+        for side in [Side::Player, Side::Enemy] {
+            let mut game = Game::new(&rules, "mirror");
+            game.begin_turn(side);
+            let enemy = game.units.iter().find(|u| u.side != side).unwrap().id;
+            let ordinary = game
+                .units
+                .iter()
+                .find(|u| u.side == side && !game.essential(u))
+                .unwrap();
+            let essential = game
+                .units
+                .iter()
+                .find(|u| u.side == side && game.essential(u))
+                .unwrap();
+            for unit in [ordinary, essential] {
+                let important = game.essential(unit);
+                let mut threats = Threats::new(&game, side);
+                for eliminated in [None, Some(enemy)] {
+                    let mut shadow = game.fork();
+                    shadow.arena_first = None;
+                    if important {
+                        shadow.units.retain(|u| Some(u.id) != eliminated);
+                        shadow.roster_changed();
+                    }
+                    shadow.end_turn();
+                    let enemies: Vec<_> = if important {
+                        Threats::independent_enemies(&shadow, side, Some(unit.id))
+                    } else {
+                        shadow
+                            .units
+                            .iter()
+                            .filter(|u| u.side != side)
+                            .map(|u| {
+                                let positions = shadow.threat_reach(u, None);
+                                (u.clone(), Threats::coverage(&shadow, u, &positions))
+                            })
+                            .collect()
+                    };
+                    for tile in 0..game.terrain.len() {
+                        let mut target = unit.clone();
+                        target.tile = tile;
+                        let expected = Threats::pressure(
+                            &shadow,
+                            &target,
+                            &enemies,
+                            if important { None } else { eliminated },
+                            important,
+                        );
+                        assert_eq!(threats.at(unit, tile, eliminated), expected);
+                    }
+                }
+            }
+        }
+    }
     #[test]
     fn zero_danger_stops_the_minimum_search_without_visiting_later_tiles() {
         let rules = Catalog::load().unwrap();

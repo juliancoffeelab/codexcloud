@@ -23,7 +23,12 @@ const option = (flag: string, fallback?: string) => {
   return index < 0 ? fallback : args[index + 1];
 };
 const cwd = fileURLToPath(new URL("../", import.meta.url));
-const binary = resolve(cwd, "rust/target/release/hex-command-sim");
+const binary = resolve(
+  cwd,
+  process.env.CARGO_TARGET_DIR ?? "rust/target",
+  "release",
+  "hex-command-sim" + (process.platform === "win32" ? ".exe" : ""),
+);
 const alternate = args.includes("--alternate");
 const schedule = JSON.parse(
   execFileSync(

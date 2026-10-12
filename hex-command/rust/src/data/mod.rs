@@ -49,6 +49,8 @@ pub struct Rules {
     pub map_definitions: Vec<MapDefinition>,
     /// Effective unit rules after terrain, race and unit inheritance.
     pub units: Vec<UnitRule>,
+    pub(crate) movement_classes: Vec<usize>,
+    pub(crate) route_classes: Vec<usize>,
     /// Authored unit identifiers mapped to dense runtime indices.
     pub types: HashMap<String, usize>,
     /// Authored terrain identifiers mapped to dense runtime indices.

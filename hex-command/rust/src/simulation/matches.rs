@@ -7,7 +7,48 @@ use crate::{
     data::*,
     logic::Game,
 };
+use rustc_hash::FxHashMap;
 use std::collections::HashSet;
+use std::sync::Arc;
+
+/// Reuse lossless encodings of unchanged boundary values within one chapter.
+/// Keys contain every unit field; ownership keys retain the entire ordered map.
+#[derive(Default)]
+struct RecordingCache {
+    units: FxHashMap<Unit, Arc<PublicUnit>>,
+    ownership: FxHashMap<Vec<Option<Side>>, Arc<OwnershipSnapshot>>,
+    tiles: Option<Arc<Vec<String>>>,
+}
+impl RecordingCache {
+    fn units(&mut self, game: &Game<'_>) -> Result<Vec<Arc<PublicUnit>>, SimulationError> {
+        game.units
+            .iter()
+            .map(|unit| {
+                if let Some(encoded) = self.units.get(unit) {
+                    return Ok(encoded.clone());
+                }
+                let encoded = Arc::new(game.public_unit(unit));
+                self.units.insert(unit.clone(), encoded.clone());
+                Ok(encoded)
+            })
+            .collect()
+    }
+    fn ownership(&mut self, game: &Game<'_>) -> Result<Arc<OwnershipSnapshot>, SimulationError> {
+        if let Some(encoded) = self.ownership.get(&game.owners) {
+            return Ok(encoded.clone());
+        }
+        let tiles = self
+            .tiles
+            .get_or_insert_with(|| Arc::new(game.board.ids.clone()))
+            .clone();
+        let encoded = Arc::new(OwnershipSnapshot {
+            tiles,
+            owners: game.owners.clone(),
+        });
+        self.ownership.insert(game.owners.clone(), encoded.clone());
+        Ok(encoded)
+    }
+}
 
 fn axial_id(q: i32, r: i32) -> String {
     format!("{},{}", q + r.div_euclid(2) + 4, r + 4)
@@ -276,13 +317,14 @@ pub fn validate_arena(rules: &Rules, config: &ArenaConfig) -> Result<(), Simulat
 }
 fn phase(
     game: &mut Game<'_>,
+    recording: &mut RecordingCache,
     policy: Policy,
     seed: u32,
     limit: usize,
     goals: Option<&[Objective]>,
     diplomacy: Diplomacy,
 ) -> Result<Phase, SimulationError> {
-    let before = game.public_units();
+    let before = recording.units(game)?;
     let side = game.turn;
     let round = game.round;
     game.recordings = Some(Records::default());
@@ -324,17 +366,8 @@ fn phase(
             enemy: game.gold[1],
         },
         before,
-        units: game.public_units(),
-        ownership: game
-            .board
-            .ids
-            .iter()
-            .enumerate()
-            .map(|(tile, id)| Ownership {
-                tile: id.clone(),
-                owner: game.owners[tile],
-            })
-            .collect(),
+        units: recording.units(game)?,
+        ownership: recording.ownership(game)?,
         goals: game.mission.as_ref().map_or_else(Vec::new, |mission| {
             mission
                 .goals
@@ -362,6 +395,7 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
     let mut held = [0u32; 2];
     let mut visits: [HashSet<String>; 2] = Default::default();
     let mut phases = vec![];
+    let mut recording = RecordingCache::default();
     let mut reason = "cap";
     let mut rounds = 0;
     for index in 0..config.max_rounds * 2 {
@@ -409,6 +443,7 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
         }
         let record = phase(
             &mut game,
+            &mut recording,
             if side == Side::Player {
                 config.player
             } else {
@@ -503,6 +538,7 @@ pub fn run_campaign(
         state.dialogue_index = state.dialogue.len();
         let initial = game.state();
         let mut phases = vec![];
+        let mut recording = RecordingCache::default();
         for index in 0..config.max_rounds * 2 {
             if game.winner.is_some() {
                 break;
@@ -514,6 +550,7 @@ pub fn run_campaign(
             };
             phases.push(phase(
                 &mut game,
+                &mut recording,
                 policy,
                 config.seed,
                 config.recruit_limit,
@@ -572,6 +609,32 @@ pub fn run(rules: &Rules, config: MatchConfig) -> Result<MatchResult, Simulation
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn cached_boundaries_share_unchanged_values_and_detach_changed_state() {
+        let rules = Rules::load().unwrap();
+        let mut game = Game::new(&rules, "mirror");
+        let mut recording = RecordingCache::default();
+        let before = recording.units(&game).unwrap();
+        let same = recording.units(&game).unwrap();
+        assert!(Arc::ptr_eq(&before[0], &same[0]));
+        let expected = serde_json::to_value(&before[0]).unwrap();
+        game.units[0].hp -= 1;
+        game.units[0].moved = true;
+        let changed = recording.units(&game).unwrap();
+        assert!(!Arc::ptr_eq(&before[0], &changed[0]));
+        assert_eq!(serde_json::to_value(&before[0]).unwrap(), expected);
+        assert_eq!(
+            serde_json::to_value(&changed[0]).unwrap(),
+            serde_json::to_value(game.public_unit(&game.units[0])).unwrap()
+        );
+        let owners = recording.ownership(&game).unwrap();
+        assert!(Arc::ptr_eq(&owners, &recording.ownership(&game).unwrap()));
+        game.owners[0] = Some(game.owners[0].unwrap_or(Side::Enemy).other());
+        let changed = recording.ownership(&game).unwrap();
+        assert!(!Arc::ptr_eq(&owners, &changed));
+        assert!(Arc::ptr_eq(&owners.tiles, &changed.tiles));
+        assert_ne!(owners.owners, changed.owners);
+    }
 
     #[test]
     fn arena_charges_starters_to_a_paired_budget_without_changing_placement() {

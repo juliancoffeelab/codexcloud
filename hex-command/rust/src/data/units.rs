@@ -191,7 +191,7 @@ pub struct PublicUnit {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub rebuilding: Option<bool>,
 }
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub(crate) struct Unit {
     pub id: u32,
     pub kind: usize,

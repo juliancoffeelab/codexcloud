@@ -31,7 +31,7 @@
     "publish": "python3 scripts/publish-site.py",
     "test": "node --import tsx scripts/test-budget.ts",
     "test:watch": "vitest --watch",
-    "ai:rust:build": "node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts cargo build --locked --release --manifest-path rust/Cargo.toml --bin hex-command-sim",
+    "ai:rust:build": "node --import tsx scripts/build-simulation.ts",
     "ai:rust": "npm run ai:simulate --",
     "ai:rust:full": "npm run ai:full --",
     "ai:rust:benchmark": "node --import tsx scripts/benchmark-rust.ts",

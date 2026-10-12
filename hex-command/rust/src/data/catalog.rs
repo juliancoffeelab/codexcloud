@@ -656,6 +656,25 @@ impl Rules {
                 ));
             }
         }
+        // Different authored units often have identical movement rules. Their
+        // distance fields and ordered discovery can share one cache identity.
+        let route_classes = (0..units.len())
+            .map(|kind| {
+                (0..=kind)
+                    .find(|&other| units[other].costs == units[kind].costs)
+                    .unwrap()
+            })
+            .collect();
+        let movement_classes = (0..units.len())
+            .map(|kind| {
+                (0..=kind)
+                    .find(|&other| {
+                        units[other].costs == units[kind].costs
+                            && units[other].r#move == units[kind].r#move
+                    })
+                    .unwrap()
+            })
+            .collect();
         Ok(Self {
             content_fingerprint: content_fingerprint(bundle),
             terrain_types: terrain.iter().map(|t| t.id).collect(),
@@ -665,6 +684,8 @@ impl Rules {
             race_definitions: races.into_iter().map(|(_, race)| race).collect(),
             map_definitions,
             units,
+            movement_classes,
+            route_classes,
             types,
             terrains,
             maps,

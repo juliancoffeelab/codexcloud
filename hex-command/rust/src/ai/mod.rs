@@ -76,6 +76,7 @@ pub struct PlanningWorkspace {
     seed: u32,
     recruitment_remaining: usize,
     goals: Option<Vec<Objective>>,
+    prepared_goals: Option<Vec<Objective>>,
     diplomacy: Diplomacy,
     initialized: bool,
     finished: bool,
@@ -121,6 +122,7 @@ impl PlanningWorkspace {
             seed,
             recruitment_remaining: recruitment_limit,
             goals,
+            prepared_goals: None,
             diplomacy,
             initialized: false,
             finished: false,
@@ -168,6 +170,7 @@ impl PlanningWorkspace {
             seed: saved.seed,
             recruitment_remaining: saved.recruitment_remaining,
             goals: saved.goals,
+            prepared_goals: None,
             diplomacy: saved.diplomacy,
             initialized: saved.initialized,
             finished: saved.finished,
@@ -330,10 +333,17 @@ pub(crate) fn choose_game_command(
             }
             *remaining -= 1;
             let mut intents = Vec::new();
+            if workspace.prepared_goals.is_none() {
+                workspace.prepared_goals = workspace
+                    .goals
+                    .as_ref()
+                    .map(|g| objectives::individual(g.clone()));
+            }
             let plan = game.best_plan(
                 policy,
                 workspace.seed,
                 workspace.goals.as_deref(),
+                workspace.prepared_goals.as_deref(),
                 restrained,
                 &mut workspace.routes,
                 &mut workspace.commitments,

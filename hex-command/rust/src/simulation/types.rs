@@ -4,6 +4,7 @@ use crate::{
     data::*,
 };
 use serde::{Deserialize, Serialize};
+use std::sync::Arc;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -55,6 +56,35 @@ pub struct Ownership {
     pub tile: String,
     pub owner: Option<Side>,
 }
+/// Tile identities are shared once per chapter; boundary snapshots copy only owners.
+#[derive(Clone, Debug)]
+pub struct OwnershipSnapshot {
+    pub tiles: Arc<Vec<String>>,
+    pub owners: Vec<Option<Side>>,
+}
+impl Serialize for OwnershipSnapshot {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        use serde::ser::SerializeSeq;
+        #[derive(Serialize)]
+        struct Entry<'a> {
+            tile: &'a str,
+            owner: Option<Side>,
+        }
+        let mut sequence = serializer.serialize_seq(Some(self.owners.len()))?;
+        for (tile, &owner) in self.tiles.iter().zip(&self.owners) {
+            sequence.serialize_element(&Entry { tile, owner })?;
+        }
+        sequence.end()
+    }
+}
+impl<'de> Deserialize<'de> for OwnershipSnapshot {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        let values = Vec::<Ownership>::deserialize(deserializer)?;
+        let owners = values.iter().map(|entry| entry.owner).collect();
+        let tiles = Arc::new(values.into_iter().map(|entry| entry.tile).collect());
+        Ok(Self { tiles, owners })
+    }
+}
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Complete actions, combats, casualties and roster/objective state for one phase.
 pub struct Phase {
@@ -65,9 +95,9 @@ pub struct Phase {
     pub living: Sides<usize>,
     pub health: Sides<i32>,
     pub gold: Gold,
-    pub before: Vec<PublicUnit>,
-    pub units: Vec<PublicUnit>,
-    pub ownership: Vec<Ownership>,
+    pub before: Vec<Arc<PublicUnit>>,
+    pub units: Vec<Arc<PublicUnit>>,
+    pub ownership: Arc<OwnershipSnapshot>,
     pub goals: Vec<Progress>,
     pub objectives: Vec<Objective>,
     #[serde(skip_serializing_if = "Option::is_none")]

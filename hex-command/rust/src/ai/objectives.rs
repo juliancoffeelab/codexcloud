@@ -542,38 +542,37 @@ pub(crate) struct TileOrder {
 }
 impl TileOrder {
     pub(crate) fn new(g: &Game, u: &Unit, villages: bool) -> Self {
-        let center = |tiles: Vec<usize>| {
-            let n = tiles.len() as f64;
-            let sum = tiles.into_iter().fold((0.0, 0.0), |s, t| {
+        fn center(g: &Game, tiles: impl Iterator<Item = usize>) -> (f64, f64) {
+            let (sum, count) = tiles.fold(((0.0, 0.0), 0usize), |(s, n), t| {
                 let (c, r) = g.board.positions[t];
-                (s.0 + (c - r.div_euclid(2)) as f64, s.1 + r as f64)
+                ((s.0 + (c - r.div_euclid(2)) as f64, s.1 + r as f64), n + 1)
             });
-            (sum.0 / n, sum.1 / n)
-        };
-        let home_keeps: Vec<_> = (0..g.terrain.len())
+            (sum.0 / count as f64, sum.1 / count as f64)
+        }
+        let mut home_keeps = (0..g.terrain.len())
             .filter(|&t| g.terrain_is(t, Terrain::Keep) && g.owners[t] == Some(u.side))
-            .collect();
-        let home = center(if home_keeps.is_empty() {
-            vec![u.tile]
+            .peekable();
+        let home = if home_keeps.peek().is_some() {
+            center(g, home_keeps)
         } else {
-            home_keeps
-        });
-        let opposing: Vec<_> = (0..g.terrain.len())
+            center(g, std::iter::once(u.tile))
+        };
+        let mut opposing = (0..g.terrain.len())
             .filter(|&t| g.terrain_is(t, Terrain::Keep) && g.owners[t].is_some_and(|s| s != u.side))
-            .collect();
-        let enemies: Vec<_> = g
+            .peekable();
+        let mut enemies = g
             .units
             .iter()
             .filter(|o| o.side != u.side)
             .map(|o| o.tile)
-            .collect();
-        let target = center(if !opposing.is_empty() {
-            opposing
-        } else if !enemies.is_empty() {
-            enemies
+            .peekable();
+        let target = if opposing.peek().is_some() {
+            center(g, opposing)
+        } else if enemies.peek().is_some() {
+            center(g, enemies)
         } else {
-            (0..g.terrain.len()).collect()
-        });
+            center(g, 0..g.terrain.len())
+        };
         let mut direction = (target.0 - home.0, target.1 - home.1);
         if direction == (0.0, 0.0) {
             let (c, r) = g.board.positions[u.tile];
