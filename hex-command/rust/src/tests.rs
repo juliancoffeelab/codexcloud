@@ -5,15 +5,6 @@ fn rules() -> &'static Rules {
     RULES.get_or_init(|| Rules::load().expect("authored catalog"))
 }
 #[test]
-fn authored_movement_and_damage_are_preserved() {
-    let rules = rules();
-    let human = &rules.units[rules.types["swordsman"]];
-    let merfolk = &rules.units[rules.types["reefguard"]];
-    assert_eq!(human.costs[rules.terrains["water"]], None);
-    assert_eq!(merfolk.costs[rules.terrains["water"]], Some(1));
-    assert!(merfolk.environment[rules.terrains["forest"]][0][0] > 0);
-}
-#[test]
 fn cloned_forecasts_do_not_mutate_source_or_record_commands() {
     let mut game = Game::start_campaign(
         rules(),

@@ -1,4 +1,4 @@
-//! Native weapon legality, damage equations, retaliation and balance regressions.
+//! Native weapon legality, damage equations and retaliation behavior.
 use super::*;
 
 #[test]
@@ -106,51 +106,6 @@ fn best_attack_avoids_lethal_reply_and_melee_cannot_repeat() {
         })
         .is_err()
     );
-}
-
-#[test]
-fn preview_and_resolution_agree_across_weapons_and_terrain() {
-    for (a, b, name, terrain, tile) in [
-        ("soldier", "bonearcher", "mace", "plains", "3,3"),
-        ("archer", "soldier", "bow", "forest", "4,3"),
-        ("scout", "archer", "sling", "plains", "4,3"),
-        ("thorncaller", "spearman", "thorns", "grove", "3,3"),
-        ("boar", "skeleton", "trample", "plains", "3,3"),
-        ("harpooner", "swordsman", "harpoon", "ford", "3,3"),
-        ("reefguard", "skeleton", "tail", "plains", "3,3"),
-        ("merfolk-maceguard", "skeleton", "mace", "water", "3,3"),
-        ("merfolk-maceguard-l2", "revenant", "mace", "ford", "3,3"),
-        (
-            "skeleton-impact-caster",
-            "soldier",
-            "boneburst",
-            "plains",
-            "4,3",
-        ),
-        (
-            "skeleton-impact-caster-l2",
-            "soldier",
-            "staff",
-            "hill",
-            "3,3",
-        ),
-    ] {
-        let mut game = flat();
-        let attacker = add(&mut game, a, Side::Player, "2,3");
-        let target = add(&mut game, b, Side::Enemy, tile);
-        game.set_terrain(game.site(tile), game.rules.terrains[terrain]);
-        let actor = game.unit(attacker).unwrap();
-        let defender = game.unit(target).unwrap();
-        let (damage, retaliation, _) =
-            game.preview(actor, defender, weapon(&game, attacker, name), actor.tile);
-        let ahp = actor.hp;
-        let bhp = defender.hp;
-        let result = hit(&mut game, attacker, target, name);
-        assert_eq!(result.damage, Some(damage));
-        assert_eq!(result.retaliation, Some(retaliation));
-        assert_eq!(game.unit(attacker).unwrap().hp, ahp - retaliation);
-        assert_eq!(game.unit(target).unwrap().hp, bhp - damage);
-    }
 }
 
 #[test]

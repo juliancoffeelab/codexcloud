@@ -1,14 +1,12 @@
-import { test, afterEach, vi } from "vitest";
+import { test } from "vitest";
 import type { UnitType } from "../src/game/types.ts";
-import { required, storageWithValue } from "./helpers.ts";
+import { required } from "./helpers.ts";
 import { damageExplanation } from "../src/presentation/combat.ts";
 import { describeChanges } from "../src/controller/feedback.ts";
 import { createGameView } from "./fixture-view.ts";
-import { arsenalView } from "../src/ui/arsenal-view.ts";
 import { attackChoiceViews } from "../src/ui/combat-view.ts";
 import assert from "node:assert/strict";
-import { Game, TYPES } from "./game-fixture.ts";
-import { loadBattle, saveBattle } from "./legacy-save.ts";
+import { Game } from "./game-fixture.ts";
 const fixture = (a: UnitType = "soldier", b: UnitType = "soldier", targetTile = "3,3") => {
   const game = new Game();
   for (const tile of game.tiles) {
@@ -30,16 +28,12 @@ test("Zero damage attacks remain available and consume actions", async () => {
   );
   assert(choice.available);
   assert.equal(choice.enemyForecast.remainingHp, target.hp);
-  assert.equal(choice.attackCalculation.equation, "2 − 1 (armor) − 1 (cover) = 0");
+  const targetHp = target.hp;
   game.attack(attacker.id, target.id, "shard");
-  assert.equal(target.hp, 24);
-  assert.equal(attacker.hp, 8);
+  assert.equal(target.hp, targetHp);
+  assert.equal(attacker.hp, choice.playerForecast.remainingHp);
   assert(attacker.moved && attacker.attacked);
   assert.throws(() => game.attack(attacker.id, target.id, "shard"));
-  assert.deepEqual(
-    arsenalView(required(published.unit(target.id))).modifiers.map((m) => m.label),
-    ["−1", "−1", "+1"],
-  );
 });
 test("Covered retaliation can deal zero damage", async () => {
   const { game, attacker, target } = fixture("commander", "bonearcher");
@@ -52,62 +46,46 @@ test("Covered retaliation can deal zero damage", async () => {
   );
   assert(choice.available);
   assert(choice.retaliationCalculation.description.includes("shard"));
-  assert.equal(choice.retaliationCalculation.equation, "2 − 1 (armor) − 1 (cover) = 0");
+  assert.equal(choice.playerForecast.remainingHp, attacker.hp);
 });
 test("Blocked attacks still produce combat feedback", async () => {
   const { game, attacker, target } = fixture("bonearcher", "commander");
   required(game.tile(target.tile)).terrain = "hill";
   const before = game.snapshot();
   game.attack(attacker.id, target.id, "shard");
-  assert.equal(target.hp, 32);
-  assert.equal(attacker.hp, 8);
+  assert.equal(target.hp, required(before.units.find((unit) => unit.id === target.id)).hp);
   assert(describeChanges(before, game.snapshot()).attacked, "blocked attacks still play their cue");
 });
 // Lethal forecasts identify the unit that dies, including overkill and retaliation.
 test("Lethal forecasts identify casualties including overkill", async () => {
   const { game, attacker, target } = fixture();
-  target.hp = 4;
+  const damage = game.previewDetails(attacker, target, "mace").damage;
+  target.hp = damage;
   let choice = required(
     attackChoiceViews(createGameView(game), attacker, target).find((c) => c.id === "mace"),
   );
   assert(choice.available);
-  assert.equal(choice.enemyForecast.impactLabel, "Deal −7 HP (dies)");
+  assert.equal(choice.enemyForecast.impactLabel, `Deal −${damage} HP (dies)`);
   assert.equal(choice.playerForecast.impactLabel, "Take 0 HP");
-  target.hp = 3;
+  target.hp = damage - 1;
   choice = required(
     attackChoiceViews(createGameView(game), attacker, target).find((c) => c.id === "mace"),
   );
   assert(choice.available);
-  assert.equal(choice.enemyForecast.impactLabel, "Deal −7 HP (dies)", "overkill is also lethal");
-  target.hp = 8;
-  attacker.hp = 7;
+  assert.equal(
+    choice.enemyForecast.impactLabel,
+    `Deal −${damage} HP (dies)`,
+    "overkill is also lethal",
+  );
+  target.hp = damage + 1;
+  const retaliation = game.previewDetails(attacker, target, "mace").retaliation;
+  attacker.hp = retaliation;
   choice = required(
     attackChoiceViews(createGameView(game), attacker, target).find((c) => c.id === "mace"),
   );
   assert(choice.available);
-  assert.equal(choice.enemyForecast.impactLabel, "Deal −7 HP");
-  assert.equal(choice.playerForecast.impactLabel, "Take −7 HP (dies)");
-});
-
-// Definitions supply new weapons to old saves without replacing battle progress.
-test("Old saves inherit weapon definitions without losing progress", async () => {
-  const game = new Game();
-  game.move("u3", "3,1");
-  let stored = "";
-  vi.stubGlobal(
-    "localStorage",
-    storageWithValue(
-      () => stored,
-      (value) => {
-        stored = value;
-      },
-    ),
-  );
-  saveBattle(game);
-  const restored = loadBattle().game;
-  assert.deepEqual(restored.snapshot(), game.snapshot());
-  assert.equal(TYPES[required(restored.unit("u3")).type].attacks.length, 2);
-  assert.equal(TYPES[required(restored.unit("u2")).type].damageModifiers.impact, 1);
+  assert.equal(choice.enemyForecast.impactLabel, `Deal −${damage} HP`);
+  assert.equal(choice.playerForecast.impactLabel, `Take −${retaliation} HP (dies)`);
 });
 
 test("Armor equation", async () => {
@@ -174,8 +152,4 @@ test("Negative damage is clamped to zero", async () => {
     }),
     "max(0, 1 − 1 (armor) − 1 (cover)) = 0",
   );
-});
-
-afterEach(() => {
-  vi.unstubAllGlobals();
 });

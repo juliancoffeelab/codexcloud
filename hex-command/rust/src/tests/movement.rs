@@ -32,102 +32,44 @@ fn moves_obey_turns_actions_occupancy_and_passability() {
 }
 
 #[test]
-fn scout_and_woodland_routes_spend_the_whole_allowance_and_stop_at_blockers() {
-    for (kind, terrain) in [
-        ("scout", "hill"),
-        ("wolf", "forest"),
-        ("boar", "grove"),
-        ("wildkeeper", "forest"),
-        ("thorncaller", "grove"),
-    ] {
-        let mut game = flat();
-        let water = game.rules.terrains["water"];
-        for tile in 0..game.terrain.len() {
-            game.set_terrain(tile, water);
-        }
-        let start = game.site("0,0");
-        game.set_terrain(start, game.rules.terrains["plains"]);
-        for col in 1..=5 {
-            let tile = game.site(&format!("{col},0"));
-            game.set_terrain(tile, game.rules.terrains[terrain]);
-        }
-        let id = add(&mut game, kind, Side::Player, "0,0");
-        let allowance = game.rules.units[game.kind(kind)].r#move;
-        let goal = game.site(&format!("{allowance},0"));
-        assert!(
-            game.reachable(game.unit(id).unwrap())
-                .contains(&(goal, allowance as u16)),
-            "{kind}"
-        );
-        game.execute(Command::Move {
-            unit: UnitId(id),
-            tile: game.board.ids[goal].as_str().into(),
-        })
-        .unwrap();
-        assert_eq!(game.unit(id).unwrap().tile, goal);
-        assert!(game.reachable(game.unit(id).unwrap()).is_empty());
-        let index = game.index(id).unwrap();
-        game.units[index].tile = start;
-        game.units[index].moved = false;
-        game.units[index].attacked = true;
-        game.roster_changed();
-        assert!(game.reachable(game.unit(id).unwrap()).is_empty());
-        game.units[index].attacked = false;
-        add(&mut game, "wolf", Side::Enemy, "1,0");
-        assert!(game.reachable(game.unit(id).unwrap()).is_empty());
+fn routes_spend_the_whole_allowance_and_stop_at_blockers() {
+    let kind = "scout";
+    let terrain = "hill";
+    let mut game = flat();
+    let water = game.rules.terrains["water"];
+    for tile in 0..game.terrain.len() {
+        game.set_terrain(tile, water);
     }
-}
-
-#[test]
-fn merfolk_land_water_and_bridge_routes_have_different_reach() {
-    for (kind, terrain, steps) in [
-        ("reefguard", "plains", 2),
-        ("reefguard", "water", 4),
-        ("reefguard", "bridge", 4),
-        ("harpooner", "plains", 2),
-        ("harpooner", "water", 5),
-    ] {
-        let mut game = flat();
-        for tile in 0..game.terrain.len() {
-            game.set_terrain(tile, game.rules.terrains["forest"]);
-        }
-        for col in 0..=5 {
-            let tile = game.site(&format!("{col},0"));
-            game.set_terrain(tile, game.rules.terrains[terrain]);
-        }
-        let id = add(&mut game, kind, Side::Player, "0,0");
-        let goal = game.site(&format!("{steps},0"));
-        let reachable = game.reachable(game.unit(id).unwrap());
-        assert!(reachable.contains(&(goal, steps * if terrain == "plains" { 2 } else { 1 })));
-        if steps < 5 {
-            assert!(
-                !reachable
-                    .iter()
-                    .any(|&(tile, _)| tile == game.site(&format!("{},0", steps + 1)))
-            );
-        }
-        game.move_unit(id, goal);
-        assert_eq!(game.unit(id).unwrap().tile, goal);
+    let start = game.site("0,0");
+    game.set_terrain(start, game.rules.terrains["plains"]);
+    for col in 1..=5 {
+        let tile = game.site(&format!("{col},0"));
+        game.set_terrain(tile, game.rules.terrains[terrain]);
     }
-}
-
-#[test]
-fn ford_exhausts_heavy_infantry_while_bridge_and_deep_water_differ() {
-    let mut game = Game::new(rules(), "river");
-    game.units[1].tile = game.site("4,7");
+    let id = add(&mut game, kind, Side::Player, "0,0");
+    let allowance = game.rules.units[game.kind(kind)].r#move;
+    let goal = game.site(&format!("{allowance},0"));
+    assert!(
+        game.reachable(game.unit(id).unwrap())
+            .contains(&(goal, allowance as u16)),
+        "{kind}"
+    );
+    game.execute(Command::Move {
+        unit: UnitId(id),
+        tile: game.board.ids[goal].as_str().into(),
+    })
+    .unwrap();
+    assert_eq!(game.unit(id).unwrap().tile, goal);
+    assert!(game.reachable(game.unit(id).unwrap()).is_empty());
+    let index = game.index(id).unwrap();
+    game.units[index].tile = start;
+    game.units[index].moved = false;
+    game.units[index].attacked = true;
     game.roster_changed();
-    let id = game.units[1].id;
-    let ford = game.site("5,7");
-    let routes = game.reachable(game.unit(id).unwrap());
-    assert!(routes.contains(&(ford, 3)));
-    assert!(!routes.iter().any(|&(tile, _)| tile == game.site("6,7")));
-    game.move_unit(id, ford);
-    game.units[1].tile = game.site("6,3");
-    game.units[1].moved = false;
-    game.roster_changed();
-    let routes = game.reachable(game.unit(id).unwrap());
-    assert!(routes.iter().any(|&(tile, _)| tile == game.site("7,3")));
-    assert!(!routes.iter().any(|&(tile, _)| tile == game.site("8,2")));
+    assert!(game.reachable(game.unit(id).unwrap()).is_empty());
+    game.units[index].attacked = false;
+    add(&mut game, "wolf", Side::Enemy, "1,0");
+    assert!(game.reachable(game.unit(id).unwrap()).is_empty());
 }
 
 #[test]

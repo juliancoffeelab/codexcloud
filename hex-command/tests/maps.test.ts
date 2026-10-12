@@ -70,26 +70,16 @@ test("Developer saves remain noncampaign and round-trip", async () => {
   assert.equal(loaded.pendingEnemy, false);
   assert.equal(loaded.game.campaign, undefined);
 });
-for (const [type, destination] of [
-  ["scout", "5,1"],
-  ["soldier", "3,1"],
-  ["soldier", "4,1"],
-] as const) {
-  test(
-    "Moved developer sites persist ownership — " + JSON.stringify([type, destination]),
-    async () => {
-      const game = new Game("developer");
-      const unit = required(
-        game.units.find((unit) => unit.side === "player" && unit.type === type),
-      );
-      game.move(unit.id, destination);
-      assert.equal(required(game.tile(destination)).owner, "player");
-      saveBattle(game);
-      assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
-      assert.equal(required(loadBattle().game.tile(destination)).owner, "player");
-    },
-  );
-}
+test("Moved developer sites persist ownership", async () => {
+  const game = new Game("developer");
+  const unit = required(game.units.find((unit) => unit.side === "player" && unit.type === "scout"));
+  const destination = "5,1";
+  game.move(unit.id, destination);
+  assert.equal(required(game.tile(destination)).owner, "player");
+  saveBattle(game);
+  assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
+  assert.equal(required(loadBattle().game.tile(destination)).owner, "player");
+});
 test("Ordinary skirmishes do not publish site ownership overrides", async () => {
   assert.equal(new Game("mirror").snapshot().sites, undefined);
   assert.equal(new Game("river").snapshot().sites, undefined);

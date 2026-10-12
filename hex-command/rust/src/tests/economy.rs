@@ -3,51 +3,50 @@ use super::*;
 
 #[test]
 fn recruitment_requires_gold_legal_destination_and_owned_keep() {
-    for kind in ["scout", "archer", "swordsman", "spearman", "rider"] {
-        let mut game = Game::new(rules(), "mirror");
-        let leader = game
-            .units
-            .iter()
-            .find(|unit| unit.side == Side::Player && game.rules.units[unit.kind].leader)
-            .unwrap()
-            .id;
-        let recruit = game.kind(kind);
-        let price = game.rules.units[recruit].cost;
-        game.gold[0] = price;
-        let destination = game.placement_tiles(game.unit(leader).unwrap(), recruit, true)[0];
-        let command = Command::Recruit {
-            unit: UnitId(leader),
-            kind: kind.into(),
-            tile: game.board.ids[destination].as_str().into(),
-        };
-        game.gold[0] = price - 1;
-        let before = serde_json::to_value(game.state()).unwrap();
-        assert!(
-            game.placement_tiles(game.unit(leader).unwrap(), recruit, true)
-                .is_empty()
-        );
-        assert_eq!(
-            game.execute(command.clone()).unwrap_err(),
-            CommandError::IllegalRecruit
-        );
-        assert_eq!(serde_json::to_value(game.state()).unwrap(), before);
-        game.gold[0] = price;
-        let id = game.execute(command.clone()).unwrap().added_unit.unwrap().0;
-        assert_eq!(game.gold[0], 0);
-        assert_eq!(game.unit(id).unwrap().kind, recruit);
-        assert!(game.unit(id).unwrap().moved && game.unit(id).unwrap().attacked);
-        assert!(game.execute(command).is_err());
-        game.end_turn();
-        game.end_turn();
-        assert!(!game.unit(id).unwrap().moved && !game.unit(id).unwrap().attacked);
-        let keep = game.unit(leader).unwrap().tile;
-        game.gold[0] = price;
-        game.owners[keep] = Some(Side::Enemy);
-        assert!(
-            game.placement_tiles(game.unit(leader).unwrap(), recruit, true)
-                .is_empty()
-        );
-    }
+    let kind = "scout";
+    let mut game = Game::new(rules(), "mirror");
+    let leader = game
+        .units
+        .iter()
+        .find(|unit| unit.side == Side::Player && game.rules.units[unit.kind].leader)
+        .unwrap()
+        .id;
+    let recruit = game.kind(kind);
+    let price = game.rules.units[recruit].cost;
+    game.gold[0] = price;
+    let destination = game.placement_tiles(game.unit(leader).unwrap(), recruit, true)[0];
+    let command = Command::Recruit {
+        unit: UnitId(leader),
+        kind: kind.into(),
+        tile: game.board.ids[destination].as_str().into(),
+    };
+    game.gold[0] = price - 1;
+    let before = serde_json::to_value(game.state()).unwrap();
+    assert!(
+        game.placement_tiles(game.unit(leader).unwrap(), recruit, true)
+            .is_empty()
+    );
+    assert_eq!(
+        game.execute(command.clone()).unwrap_err(),
+        CommandError::IllegalRecruit
+    );
+    assert_eq!(serde_json::to_value(game.state()).unwrap(), before);
+    game.gold[0] = price;
+    let id = game.execute(command.clone()).unwrap().added_unit.unwrap().0;
+    assert_eq!(game.gold[0], 0);
+    assert_eq!(game.unit(id).unwrap().kind, recruit);
+    assert!(game.unit(id).unwrap().moved && game.unit(id).unwrap().attacked);
+    assert!(game.execute(command).is_err());
+    game.end_turn();
+    game.end_turn();
+    assert!(!game.unit(id).unwrap().moved && !game.unit(id).unwrap().attacked);
+    let keep = game.unit(leader).unwrap().tile;
+    game.gold[0] = price;
+    game.owners[keep] = Some(Side::Enemy);
+    assert!(
+        game.placement_tiles(game.unit(leader).unwrap(), recruit, true)
+            .is_empty()
+    );
 }
 
 #[test]

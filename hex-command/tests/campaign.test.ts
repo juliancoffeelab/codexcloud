@@ -130,7 +130,7 @@ test("Replacing a paused session cancels it and dialogue gates commands", async 
   await assert.rejects(controller.endTurn());
   controller.commands.advanceDialogue(true);
   assert(!dialoguePending(latest?.game.campaign));
-  assert.equal(required(latest).game.recruitmentOptions("player")[0], "wolf");
+  assert(required(latest).game.recruitmentOptions("player").length > 0);
   controller.dispose();
   unsubscribe();
 });

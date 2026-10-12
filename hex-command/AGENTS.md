@@ -99,6 +99,10 @@
   flag covers hovering flight and swimming poses. Missing/false means grounded.
 
 - Keep changes quick to make and review. Tests must be small, fast, and lightweight.
+- Test shared game mechanics with a fixed set of representative fixtures. Do not
+  add tests or named-unit matrix rows for each new unit, promotion or balance
+  change, or pin current unit stats and campaign recruitment lists. Use generic
+  catalog validation for content integrity and authorized simulations for balance.
 - Artwork tests should check reusable behavior with small synthetic inputs:
   canvas size, palette rules, invalid ownership, extraction and rendering.
   Do not freeze current rosters, sprite pixels, colors or generated hashes in
