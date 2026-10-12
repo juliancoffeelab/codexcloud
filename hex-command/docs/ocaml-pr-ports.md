@@ -12,7 +12,7 @@ Runtime means handwritten frontend implementation, including CSS and startup Jav
 | ------------------------------------------ | -----: | ------: | ----: |
 | Frontend runtime                           |  +4865 |   −6680 | -1815 |
 | Frontend including interfaces              |  +5720 |   −6684 |  -964 |
-| Whole authored code, including tests/tools | +11657 |   −9142 | +2515 |
+| Whole authored code, including tests/tools | +11692 |   −9142 | +2550 |
 
 **Only the frontend has a negative delta.** The whole-code count increases because it includes the test migration, additional regressions and build tooling. There are no handwritten TypeScript/JavaScript application helpers. Runtime TypeScript is generated data-only sprite metadata; Rust WASM glue and React are foreign dependencies. The terrain prebuild adapter is Node-only I/O around the same compiled OCaml renderer.
 
@@ -75,6 +75,10 @@ Foreign arrays/dictionaries retain ordinary mutable OCaml types; runtime freezin
 
 ## Validation and the 20-second requirement
 
+These measurements precede the Dune 3.24.2 environment upgrade in `02f2cb6`.
+They are retained as historical results; checks have not been rerun for that
+upgrade in this session.
+
 - Complete `npm test`: **10.738 seconds**; 241 frontend tests, 74 native Rust tests and 39 Python checks pass. Both native executables and Rustdoc discovery run, including targets with no current tests.
 - Complete `npm run verify`: **14.693 seconds**; every test plus strict TypeScript/WASM ABI, exact generated bindings, OCaml/Reason/JSON/Rust formatting, whitespace, content and prepared artifact freshness checks pass.
 - Explicit `npm run verify:prepare` compiles the pinned OCaml toolchain, release WASM, authoritative artwork, native test executables and Vite output. Production compilation emitted all 16 authored terrain PNGs. Timed checks fingerprint source inputs and entire compiled/artwork/bundle file sets; missing, stale, added, removed or corrupted outputs reject. Preparation never runs tests.
@@ -88,7 +92,7 @@ There was no instruction permitting verification over 20 seconds. The old projec
 Commit `12f1190` fixes the development workflow separately from incoming feature ports:
 
 - `npm run dev` owns preparation, ABI regeneration, the Dune watcher and Vite. It prints preparation progress, preserves compiler diagnostics, forwards Vite arguments and releases both process trees on interruption or unexpected service exit.
-- README bootstrap commands install the official standalone Dune 3.21.0 binary and explain prerequisites, first-build work, supported architectures and recovery. The documented installer was exercised, followed by a successful frontend build.
+- At this checkpoint, README bootstrap commands installed the official standalone Dune 3.21.0 binary and explained prerequisites, first-build work, supported architectures and recovery. That installer was exercised, followed by a successful frontend build. The setup change below supersedes those bootstrap instructions.
 - Actual HTTP/WebSocket checks confirmed that a Reason edit rebuilt and reached Vite, an intentional compiler error left the watcher alive, and fixing the source recovered without restarting. These were server/compilation checks, not browser automation.
 - Four small subprocess tests cover argument forwarding, interruption with descendants, watcher/server failure and initial preparation failure. Fixtures have independent lifetime and cleanup bounds. Independent code and documentation reviews completed with their findings repaired.
 
@@ -98,6 +102,22 @@ interface deltas remain unchanged. The machine ledger preserves the original
 migration comparison and records this follow-up separately from the five ports.
 The Dune directory configuration, package scripts and Markdown instructions are
 outside the source-extension counting scope described above.
+
+## Environment setup follow-up
+
+Setup commit `02f2cb6` pins Dune **3.24.2** in `.dune-version`, upgrades the Dune
+language, uses upstream OCaml packages and removes the local package metadata
+overrides. README now documents an existing Opam installation or the
+checksummed `scripts/install-dune.sh` source bootstrap. The latter needs a
+bootstrap OCaml compiler 4.14+; application OCaml remains pinned to 5.3.0 in the
+package lock. Preparation fingerprints include the Dune version and installer.
+
+The setup adds **35 authored code lines net**: the bootstrap shell script +34
+and preparation fingerprint changes +2/−1. Authored `.sh` files are now included
+in whole-code counting; frontend runtime/interface counts are unchanged. The
+machine ledger records the setup separately, and the original PR port counts
+remain unchanged. Lockfiles, package metadata and documentation stay outside
+these code counts.
 
 ## Per-file frontend changes
 

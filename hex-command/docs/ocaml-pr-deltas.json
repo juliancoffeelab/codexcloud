@@ -3715,7 +3715,7 @@
   ],
   "scope": {
     "frontend": "Authored .ts/.js/.ml/.mli/.re/.rei/.svelte/.css/.html under hex-command/src, frontend and public. Public declarations counted separately from runtime; CSS included.",
-    "wholeCode": "Authored source code throughout repository (.ts/.js/.ml/.mli/.re/.rei/.rs/.py/.svelte/.css/.html), including tests/build tools and shared upstream code.",
+    "wholeCode": "Authored source code throughout repository (.ts/.js/.ml/.mli/.re/.rei/.rs/.py/.sh/.svelte/.css/.html), including tests/build tools and shared upstream code.",
     "excluded": "Generated source banners, lockfiles, JSON/content data, artwork/assets, Markdown documentation and compiler/dependency output. JSON legacy snapshots are data, not source code."
   },
   "qualityReview": {
@@ -6220,11 +6220,11 @@
   },
   "finalComparison": {
     "before": "e59d224d829607f48f0ed62e14c2ed09a40e25ab",
-    "after": "12f11906670586f2c014110e8bf04f6416d5ac8b",
+    "after": "782f49e851e17ef53e4df171b0721819ff3c511f",
     "wholeAuthoredCode": {
-      "added": 11657,
+      "added": 11692,
       "removed": 9142,
-      "net": 2515
+      "net": 2550
     },
     "wholeCodeFiles": [
       {
@@ -6708,6 +6708,12 @@
         "publicInterface": false
       },
       {
+        "path": "hex-command/scripts/install-dune.sh",
+        "added": 34,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
         "path": "hex-command/scripts/melange-bindings.ts",
         "added": 306,
         "removed": 0,
@@ -6733,7 +6739,7 @@
       },
       {
         "path": "hex-command/scripts/test-budget.ts",
-        "added": 372,
+        "added": 373,
         "removed": 24,
         "publicInterface": false
       },
@@ -8248,6 +8254,44 @@
     "campaignTournamentBatchesRun": false,
     "compiledOutputVerification": "Authoritative prepare builds WASM, artwork, OCaml, Vite and native test executables; timed verification checks source/artifact digests and runs strict compiler checks, style, content and every test.",
     "developmentHttpWebSocketProbe": true,
-    "developmentSupervisorTests": 4
+    "developmentSupervisorTests": 4,
+    "sourceRevision": "12f11906670586f2c014110e8bf04f6416d5ac8b",
+    "duneVersion": "3.21.0",
+    "postEnvironmentSetupChecksRun": false
+  },
+  "environmentSetup": {
+    "before": "24e5e8369983b0ec77fb5cc06b8d359e1a22252f",
+    "after": "02f2cb6059c99add6d594fbcfdb1ec56c4e7d04b",
+    "wholeAuthoredCode": {
+      "added": 36,
+      "removed": 1,
+      "net": 35
+    },
+    "wholeCodeFiles": [
+      {
+        "path": "hex-command/scripts/install-dune.sh",
+        "added": 34,
+        "removed": 0,
+        "publicInterface": false
+      },
+      {
+        "path": "hex-command/scripts/test-budget.ts",
+        "added": 2,
+        "removed": 1,
+        "publicInterface": false
+      }
+    ],
+    "handwrittenFrontend": {
+      "added": 0,
+      "removed": 0,
+      "net": 0
+    },
+    "frontendRuntime": {
+      "added": 0,
+      "removed": 0,
+      "net": 0
+    },
+    "files": [],
+    "excluded": []
   }
 }
