@@ -4,52 +4,7 @@ The native Rust harness owns scheduling, battle execution, campaign transitions
 and result recording. The Python runner invokes that harness and then analyzes
 the saved report. Reporting uses only the Python standard library.
 
-Work from the project root. Use [SKILL.md](SKILL.md) for the agent workflow.
-
-## Run a panel
-
-```sh
-# Enumerate the full schedule without running matches.
-npm run ai:schedule -- --mode full --seeds 10
-
-# Simulate a complete Mixed-policy panel and analyze it.
-npm run ai:combat -- --policies mixed --seed 61 --seeds 50 --out artifacts/current
-
-# Restrict races, policies and maps.
-npm run ai:combat -- --armies human,coastal --policies classic,mixed --landscapes crossings --seeds 2 --out artifacts/coast-panel
-
-# Native arena or campaign output without the Python analysis step.
-npm run ai:simulate -- --mode arena --seeds 2 --out artifacts/arena.json
-npm run ai:simulate -- --mode campaign --seeds 5 --out artifacts/campaigns.json
-```
-
-`ai:full` runs arenas and campaigns with ten seeds. Use `ai:schedule` to
-inspect counts for a selected scope.
-
-| Option                   | Meaning                                                           |
-| ------------------------ | ----------------------------------------------------------------- |
-| `--seed`, `--seeds`      | First seed and seed count; defaults 1 and 2                       |
-| `--policies`             | `classic`, `rush`, `mixed`                                        |
-| `--armies`               | `human`, `woodland`, `undead`, `coastal`                          |
-| `--landscapes`           | `open`, `wooded`, `crossings`, `islands`                          |
-| `--rounds`, `--recruits` | Round cap and recruit limit per phase; defaults 30 and 1          |
-| `--workers`              | Up to eight workers; default follows CPU quota                    |
-| `--diplomacy`            | Campaign settings `pragmatic`, `restrained`; defaults to both     |
-| `--data-dir`             | Authored data directory; use it when selecting another checkout   |
-| `--trace`                | Also save raw typed results; detailed gameplay is always recorded |
-
-## Analyze saved reports
-
-```sh
-npm run ai:analyze -- artifacts/current/report.json --out artifacts/current/analytics
-npm run ai:analyze -- artifacts/current/report.json --baseline artifacts/previous/report.json --out artifacts/current/analytics
-```
-
-Open `index.html` for searchable tables, `summary.md` for complete matrices, or
-CSV exports for every row. For race balance, use `race_equal_policy.csv` and
-`race_map_policy.csv` to compare other factions with matching policies.
-`matchups.csv` retains every opponent and policy pairing, including self-play;
-`race_all_policies.csv` mixes policies.
+See [usage.md](usage.md) for commands and [SKILL.md](SKILL.md) for the agent workflow.
 
 ## Analyzer boundary
 
@@ -154,19 +109,6 @@ The seed-block intervals belong to the native report's aggregate rows. The
 Python analyzer exports outcome counts and win rates; it does not calculate new
 confidence intervals.
 
-## Replay and benchmarks
-
-Replay reruns the recorded matches and requires the original engine/content
-fingerprint. It validates journal references before execution:
-
-```sh
-npm run ai:simulate -- --replay artifacts/current/report.json
-```
-
-`npm run ai:benchmark -- --out artifacts/baseline.json` runs 60 representative
-matches. Use `--limit 12` for a smaller sample, or `--compare artifacts/baseline.json`
-to check identical complete-result hashes after an optimization.
-
 ## Full gameplay comparison
 
 `scripts/convert-simulation-dump.py` reads complete detail journals using an
@@ -175,12 +117,6 @@ uses a one-to-one Polars join on `(kind, config)` and preserves array order with
 matches. Missing or duplicate identities fail comparison. It excludes `stateHash`,
 `elapsedMs`, `elapsedSeconds` and `detail` at match and mission level, and records
 wall time, CPU time and peak memory. Convert each dump once and reuse its Arrow file.
-
-```sh
-uv run --with pyarrow scripts/convert-simulation-dump.py artifacts/baseline.arrow artifacts/baseline.details.jsonl
-uv run --with pyarrow scripts/convert-simulation-dump.py artifacts/current.arrow artifacts/current.details.jsonl
-uv run --with pyarrow --with polars==2.0.0 scripts/compare-simulation-dumps.py artifacts/baseline.arrow artifacts/current.arrow
-```
 
 See [AI policy implementation](../../../rust/src/ai/README.md) for planning
 behavior and [authored game data](../../../rust/data/README.md) for current stats.

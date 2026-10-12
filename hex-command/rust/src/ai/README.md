@@ -7,7 +7,7 @@ select each policy for either side.
 
 Current unit and race values are authored in [game data](../../data/README.md).
 CLI usage is in the
-[simulation guide](../../../.agents/skills/combat-simulation/implementation.md).
+[simulation guide](../../../.agents/skills/combat-simulation/usage.md).
 
 ## Complete policies
 
