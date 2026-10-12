@@ -1,20 +1,7 @@
 (version 20230505)
 
-(install
- (all_platforms
-  (progn
-   (run mkdir -p %{lib}/fix)
-   (run cp -RL fix/_build/install/default/lib/fix/. %{lib}/fix))))
-
 (build
- (all_platforms
-  ((action
-    (progn
-     (run mv fix/vendored_fix.opam fix/fix.opam)
-     (run mv fix/src/Vendored_fix.ml fix/src/Fix.ml)
-     (run sed -i.bak s/vendored_fix/fix/g fix/src/dune fix/fix.opam)
-     (run rm fix/src/dune.bak fix/fix.opam.bak)
-     (run dune build --root fix @install -j %{jobs}))))))
+ (all_platforms ((action (run dune build -p %{pkg-self:name} -j %{jobs})))))
 
 (depends
  (all_platforms
@@ -23,6 +10,6 @@
 (source
  (fetch
   (url
-   https://deb.debian.org/debian/pool/main/m/menhir/menhir_20240715+ds.orig.tar.xz)
+   https://gitlab.inria.fr/fpottier/fix/-/archive/20230505/archive.tar.gz)
   (checksum
-   sha256=6adc86fdd54309e3acc309b61266d43ea1206cdb772cfabd58d73c7116ad6cf3)))
+   sha512=30d446ba6c19aef78b52d9831eb26f8f6ac10e88bd1eff36d16fbbfb32278b2637e31e63a160aec4abbbfdb1e7612ed25d68c936f4cbf2073e51d713ff3a8adf)))

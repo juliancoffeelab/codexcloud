@@ -1,4 +1,4 @@
-(lang dune 3.21)
+(lang dune 3.24)
 (name hex_command)
 (using melange 1.0)
 (package

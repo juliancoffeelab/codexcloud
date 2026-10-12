@@ -35,6 +35,8 @@ function sourceFingerprint(): string {
     "rust/Cargo.toml",
     "rust/Cargo.lock",
     "rust/build.rs",
+    ".dune-version",
+    "scripts/install-dune.sh",
     "dune-project",
     "dune",
     "dune-workspace",
@@ -64,7 +66,6 @@ function sourceFingerprint(): string {
     "pixel/art",
     "src/save/migration/legacy/data",
     "dune.lock",
-    "build-support",
     "public",
   ]) {
     if (existsSync(join(root, directory))) walk(directory);

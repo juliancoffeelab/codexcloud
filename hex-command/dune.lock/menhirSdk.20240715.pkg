@@ -10,6 +10,6 @@
 (source
  (fetch
   (url
-   https://deb.debian.org/debian/pool/main/m/menhir/menhir_20240715+ds.orig.tar.xz)
+   https://gitlab.inria.fr/fpottier/menhir/-/archive/20240715/archive.tar.gz)
   (checksum
-   sha256=6adc86fdd54309e3acc309b61266d43ea1206cdb772cfabd58d73c7116ad6cf3)))
+   sha512=4f933cfc9026f5f2ffda9b0e626862560a233c35ecf097d179edd926d9009bdf46b6611294aea02b63c34427348568f37376a033fbe8cf98a7746fa6f1354dbd)))

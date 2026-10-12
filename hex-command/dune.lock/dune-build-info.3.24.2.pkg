@@ -1,12 +1,10 @@
-(version 3.21.1)
+(version 3.24.2)
 
 (build
  (all_platforms
   ((action
     (progn
      (when %{pkg-self:dev} (run dune subst))
-     (run rm -rf vendor/csexp)
-     (run rm -rf vendor/pp)
      (run dune build -p %{pkg-self:name} -j %{jobs} @install))))))
 
 (depends
@@ -16,6 +14,6 @@
 (source
  (fetch
   (url
-   https://github.com/ocaml/dune/releases/download/3.21.1/dune-3.21.1.tbz)
+   https://github.com/ocaml/dune/releases/download/3.24.2/dune-3.24.2.tbz)
   (checksum
-   sha256=84f7a82c6d80a7124f3847e9a489e80cfbeafb7bed3573ac01286ef56fd08d94)))
+   sha512=13082a66a28e940d4b3c9f78b556f6c1455987cd522355ba4502e01e60a3d002d3101b51284726ae21aa87494efa2dc54d016173f05b616bbc5dad714d5714a3)))
