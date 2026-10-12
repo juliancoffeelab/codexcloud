@@ -10,11 +10,12 @@
     {
       "id": "spear",
       "name": "Reef spear",
-      "damage": 6,
+      "damage": 3,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 2
     },
     {
       "id": "tail",
@@ -23,7 +24,8 @@
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     }
   ],
   "damageModifiers": {

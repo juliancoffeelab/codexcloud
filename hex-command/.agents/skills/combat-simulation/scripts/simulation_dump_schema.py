@@ -69,6 +69,8 @@ ACTION = pa.struct([
 COMBAT = pa.struct([
     ("unit", STRING), ("target", STRING), ("weapon", STRING), ("from", STRING),
     ("targetTile", STRING), ("damage", INTEGER), ("retaliation", INTEGER),
+    ("count", INTEGER), ("damagePerHit", INTEGER),
+    ("retaliationCount", INTEGER), ("retaliationPerHit", INTEGER),
     ("mediationAtRisk", BOOLEAN),
 ])
 OWNERSHIP = pa.struct([("tile", STRING), ("owner", STRING)])

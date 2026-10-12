@@ -119,13 +119,21 @@ fn cover_and_exposure_apply_to_attacks_and_retaliation_and_clamp_at_zero() {
         let defender = game.unit(b).unwrap();
         let attack = weapon(&game, a, "sword");
         let (_, reply, _) = game.preview(actor, defender, attack, actor.tile);
-        let base = game.rules.units[actor.kind].attacks[attack].damage - 1;
-        let expected = base
-            + match terrain {
-                "hill" => -1,
-                "ford" | "marsh" => 1,
-                _ => 0,
-            };
+        let rule = &game.rules.units[actor.kind];
+        let environment = match terrain {
+            "hill" => -1,
+            "ford" | "marsh" => 1,
+            _ => 0,
+        };
+        let expected = rule
+            .attacks
+            .iter()
+            .map(|a| {
+                (a.damage + rule.damage_modifiers.get(a.damage_type) + environment).max(0)
+                    * i32::from(a.count)
+            })
+            .max()
+            .unwrap();
         assert_eq!(reply, expected);
     }
     let mut game = flat();
@@ -140,4 +148,70 @@ fn cover_and_exposure_apply_to_attacks_and_retaliation_and_clamp_at_zero() {
         ),
         0
     );
+}
+
+#[test]
+fn counted_damage_keeps_the_existing_attack_and_restore_flow() {
+    let mut rules = Rules::load().unwrap();
+    let kind = rules.types["soldier"];
+    let rule = &mut rules.units[kind];
+    rule.hp = 100;
+    rule.level = 1;
+    rule.experience_needed = Some(100);
+    rule.damage_modifiers = DamageModifiers {
+        blade: -1,
+        pierce: -1,
+        impact: -1,
+    };
+    rule.environment.fill([[0; 3]; 2]);
+    rule.attacks[0].count = 3;
+    rule.attacks[0].damage = 2;
+    rule.attacks[1].count = 1;
+    rule.attacks[1].damage = 6;
+    let mut game = Game::new(&rules, "mirror");
+    game.units.clear();
+    game.roster_changed();
+    let a = add(&mut game, "soldier", Side::Player, "2,3");
+    let b = add(&mut game, "soldier", Side::Enemy, "3,3");
+    game.recordings = Some(Records::default());
+    let bi = game.index(b).unwrap();
+    game.units[bi].attacked = true;
+    let actor = game.unit(a).unwrap();
+    let target = game.unit(b).unwrap();
+    assert_eq!(game.preview(actor, target, 0, actor.tile), (3, 5, Some(1)));
+    assert_eq!(game.preview(actor, target, 1, actor.tile), (5, 5, Some(1)));
+    let result = hit(&mut game, a, b, "sword");
+    assert_eq!((result.damage, result.retaliation), (Some(3), Some(5)));
+    assert!(game.unit(a).unwrap().attacked && game.unit(a).unwrap().moved);
+    assert_eq!(game.unit(a).unwrap().experience, Some(1));
+    let recorded = &game.recordings.as_ref().unwrap().combats[0];
+    assert_eq!(
+        (recorded.count, recorded.damage_per_hit, recorded.damage),
+        (3, 1, 3)
+    );
+    let mut restored = Game::try_from_state(&rules, game.state()).unwrap();
+    assert!(
+        restored
+            .execute(Command::Attack {
+                unit: UnitId(a),
+                target: UnitId(b),
+                weapon: "mace".into()
+            })
+            .is_err()
+    );
+    restored.begin_turn(Side::Player);
+    let bi = restored.index(b).unwrap();
+    restored.units[bi].hp = 2;
+    let result = hit(&mut restored, a, b, "sword");
+    assert_eq!((result.damage, result.retaliation), (Some(3), Some(0)));
+    assert!(restored.unit(b).is_none());
+    assert_eq!(restored.unit(a).unwrap().experience, Some(7));
+    restored.begin_turn(Side::Player);
+    let c = add(&mut restored, "soldier", Side::Enemy, "3,3");
+    let ai = restored.index(a).unwrap();
+    restored.units[ai].hp = 1;
+    let result = hit(&mut restored, a, c, "sword");
+    assert_eq!((result.damage, result.retaliation), (Some(3), Some(5)));
+    assert!(restored.unit(a).is_none());
+    assert_eq!(restored.unit(c).unwrap().experience, Some(6));
 }

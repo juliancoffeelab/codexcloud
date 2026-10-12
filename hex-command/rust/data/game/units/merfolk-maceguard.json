@@ -10,11 +10,12 @@
     {
       "id": "mace",
       "name": "Shell mace",
-      "damage": 6,
+      "damage": 3,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 2
     }
   ],
   "damageModifiers": {

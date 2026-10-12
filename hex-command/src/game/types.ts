@@ -154,6 +154,7 @@ export interface Unit {
   rebuilding?: boolean;
 }
 export interface Weapon {
+  count: number;
   id: string;
   name: string;
   damage: number;
@@ -231,6 +232,8 @@ export interface MapDefinition {
   units: StartingUnit[];
 }
 export interface DamageBreakdown {
+  count?: number;
+  total?: number;
   base: number;
   damageType: DamageType;
   modifier: number;
@@ -245,6 +248,7 @@ export interface CombatPreview {
   retaliation: number;
 }
 export interface CombatPreviewDetails extends CombatPreview {
+  recommended: boolean;
   attack: Weapon;
   response: Weapon | null;
   damageDetail: DamageBreakdown;

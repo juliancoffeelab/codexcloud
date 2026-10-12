@@ -10,11 +10,12 @@
     {
       "id": "thorns",
       "name": "Thorns",
-      "damage": 8,
+      "damage": 4,
       "damageType": "pierce",
       "category": "ranged",
       "range": 2,
-      "sound": "attack-bow"
+      "sound": "attack-bow",
+      "count": 2
     },
     {
       "id": "rootstaff",
@@ -23,7 +24,8 @@
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     }
   ],
   "damageModifiers": {

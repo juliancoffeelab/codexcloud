@@ -162,19 +162,10 @@ export class LiveGame {
       .map((attack) => attack.attack) ?? []) as Weapon[];
   }
   bestAttack(unit: Unit, target: Unit, from = unit.tile): Weapon | null {
-    const score = (attack: Weapon) => {
-      const preview = this.previewDetails(unit, target, attack.id, from);
-      return (
-        preview.damage +
-        (preview.damage >= target.hp ? 18 : 0) -
-        preview.retaliation * 0.7 -
-        (preview.retaliation >= unit.hp ? 40 : 0)
-      );
-    };
-    return this.attackOptions(unit, target, from).reduce<Weapon | null>(
-      (best, attack) => (best === null || score(attack) > score(best) ? attack : best),
-      null,
-    );
+    if (from !== unit.tile) return null;
+    return (this.choices(unit.id)?.attacks.find(
+      (attack) => attack.target === target.id && attack.recommended,
+    )?.attack ?? null) as Weapon | null;
   }
   previewDetails(
     unit: Unit,
