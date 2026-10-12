@@ -1,4 +1,4 @@
-import { spawnSync } from "node:child_process";
+import { spawn, type ChildProcess } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { toolchainEnvironment } from "../.agents/skills/rust-toolchain/scripts/toolchain-env";
 
@@ -33,34 +33,79 @@ const suites = [
     ],
   },
 ];
-let failed = false;
-for (const suite of suites) {
-  const remaining = budget - (performance.now() - started);
-  if (remaining <= 0) {
-    console.error("All test suites exceeded their shared 20-second budget.");
-    process.exit(1);
+const active = new Set<ChildProcess>();
+const processGroups = process.platform !== "win32";
+let timedOut = false;
+function stopChildren() {
+  for (const child of active) {
+    if (processGroups && child.pid) {
+      try {
+        process.kill(-child.pid, "SIGKILL");
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== "ESRCH") throw error;
+      }
+    } else child.kill("SIGKILL");
   }
+}
+const deadline = setTimeout(() => {
+  timedOut = true;
+  stopChildren();
+}, budget);
+for (const signal of ["SIGINT", "SIGTERM"] as const) {
+  process.once(signal, () => {
+    stopChildren();
+    process.exit(signal === "SIGINT" ? 130 : 143);
+  });
+}
+
+async function run(suite: (typeof suites)[number]): Promise<boolean> {
+  if (timedOut) return false;
   console.log(`RUN: ${suite.name} tests`);
-  const result = spawnSync(suite.command, suite.args, {
+  const suiteStarted = performance.now();
+  const child = spawn(suite.command, suite.args, {
     cwd,
     env: toolchainEnvironment(),
     stdio: "inherit",
-    timeout: Math.ceil(remaining),
-    killSignal: "SIGKILL",
+    detached: processGroups,
   });
-  if (result.status !== 0 || result.error) {
-    failed = true;
-    if (result.error) console.error(result.error.message);
-    if (result.error && "code" in result.error && result.error.code === "ETIMEDOUT") {
-      console.error("All test suites exceeded their shared 20-second budget.");
-      process.exit(1);
-    }
-  }
+  active.add(child);
+  return new Promise((resolve) => {
+    let settled = false;
+    const finish = (passed: boolean) => {
+      if (settled) return;
+      settled = true;
+      active.delete(child);
+      console.log(
+        `${passed ? "PASS" : "FAIL"}: ${suite.name} in ${((performance.now() - suiteStarted) / 1000).toFixed(2)}s`,
+      );
+      resolve(passed);
+    };
+    child.once("error", (error) => {
+      console.error(error.message);
+      finish(false);
+    });
+    child.once("close", (code) => finish(code === 0));
+  });
 }
+
+// Rust builds native targets; Python and Vitest use independent inputs and fixtures.
+const results = await Promise.all([
+  run(suites[0]!),
+  (async () => {
+    let passed = true;
+    for (const suite of suites.slice(1)) {
+      if (!(await run(suite))) passed = false;
+      if (timedOut) break;
+    }
+    return passed;
+  })(),
+]);
+clearTimeout(deadline);
 const elapsed = performance.now() - started;
-if (elapsed > budget) {
+if (timedOut || elapsed > budget) {
   console.error("All test suites exceeded their shared 20-second budget.");
   process.exit(1);
 }
+const failed = results.some((passed) => !passed);
 console.log(`${failed ? "FAIL" : "PASS"}: all test suites in ${(elapsed / 1000).toFixed(2)}s`);
 process.exit(failed ? 1 : 0);

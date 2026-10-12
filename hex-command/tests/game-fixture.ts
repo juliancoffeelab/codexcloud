@@ -1,9 +1,34 @@
-import { LiveGame } from "../src/game/live-game";
+import { LiveGame, nativeValue } from "../src/game/live-game";
 import { TYPES } from "../src/game/catalog";
 import type { GameState, Unit, Tile, CampaignId, UnitType, Side, MapId } from "../src/game/types";
 import type { SavedGame } from "../rust/pkg/hex_command";
 import { createTestFactory } from "./native-fixture";
 export { TYPES, TERRAIN, RACES, DAMAGE_TYPES, axial, distance } from "../src/game/catalog";
+
+/** Keep the real showcase geometry but bound actors for ordinary behavior checks. */
+export function developerFixture(types: readonly UnitType[] = []): Game {
+  const engine = nativeValue(
+    createTestFactory().create({ kind: "scenario", map: "developer" }, 17),
+  );
+  let checkpoint: SavedGame;
+  try {
+    checkpoint = structuredClone(nativeValue(engine.save())) as SavedGame;
+  } finally {
+    engine.dispose();
+  }
+  const leaders = new Set(
+    (["player", "enemy"] as const).map(
+      (side) =>
+        checkpoint.state.units.find(
+          (unit) => unit.side === side && TYPES[unit.type as UnitType].family === "commander",
+        )!.id,
+    ),
+  );
+  checkpoint.state.units = checkpoint.state.units.filter(
+    (unit) => leaders.has(unit.id) || types.includes(unit.type as UnitType),
+  );
+  return Game.fromCheckpoint(checkpoint);
+}
 
 /** Editable test data backed by the actual Rust engine for every query and command. */
 export class Game implements GameState {
@@ -24,12 +49,15 @@ export class Game implements GameState {
   #native: LiveGame;
   #signature = "";
   #cost!: LiveGame["cost"];
-  constructor(map = "mirror", revision?: number) {
-    this.#native = LiveGame.create(createTestFactory(), {
-      kind: "scenario",
-      map,
-      ...(revision === undefined ? {} : { revision }),
-    });
+  constructor(map: string | SavedGame = "mirror", revision?: number) {
+    this.#native =
+      typeof map === "string"
+        ? LiveGame.create(createTestFactory(), {
+            kind: "scenario",
+            map,
+            ...(revision === undefined ? {} : { revision }),
+          })
+        : LiveGame.restore(createTestFactory(), map);
     this.#cost = this.#native.publishedView().cost;
     this.restoreData(this.#native.captureState());
   }
@@ -191,10 +219,6 @@ export class Game implements GameState {
   }
   /** Explicit fixture restoration still uses the real native acceptance path. */
   static fromCheckpoint(checkpoint: SavedGame): Game {
-    const fixture = new Game();
-    fixture.#native.dispose();
-    fixture.#native = LiveGame.restore(createTestFactory(), checkpoint);
-    fixture.restoreData(fixture.#native.captureState());
-    return fixture;
+    return new Game(checkpoint);
   }
 }

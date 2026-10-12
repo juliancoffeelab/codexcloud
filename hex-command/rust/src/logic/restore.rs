@@ -39,6 +39,11 @@ pub fn validate_state(rules: &Rules, state: &State) -> Result<(), StateError> {
     {
         return Err(fail("invalid map geometry"));
     }
+    let authored_tiles: HashSet<_> = authored
+        .tiles
+        .iter()
+        .map(|tile| (tile.id.as_str(), tile.col, tile.row))
+        .collect();
     let mut tiles = HashSet::new();
     let mut positions = HashSet::new();
     for tile in &state.tiles {
@@ -48,11 +53,7 @@ pub fn validate_state(rules: &Rules, state: &State) -> Result<(), StateError> {
         if !tiles.insert(tile.id.as_str()) || !positions.insert((tile.col, tile.row)) {
             return Err(fail("duplicate tile identity or coordinate"));
         }
-        if !authored
-            .tiles
-            .iter()
-            .any(|known| known.id == tile.id && known.col == tile.col && known.row == tile.row)
-        {
+        if !authored_tiles.contains(&(tile.id.as_str(), tile.col, tile.row)) {
             return Err(fail("invalid tile identity or coordinate"));
         }
         if tile.col < 0 || tile.col >= state.cols || tile.row < 0 || tile.row >= state.rows {

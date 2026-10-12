@@ -3,7 +3,7 @@ import { required, TestStorage } from "./helpers.ts";
 import assert from "node:assert/strict";
 import { pixelSprites } from "../src/presentation/pixel-art";
 
-const { Game, TYPES } = await import("./game-fixture.ts");
+const { Game, TYPES, developerFixture } = await import("./game-fixture.ts");
 const { MAPS, BATTLE_MAPS } = await import("../src/game/maps.ts");
 
 test("Developer map shows every playable type and reserves space for the pixel collection", () => {
@@ -41,7 +41,7 @@ test("Hidden scenarios stay loadable and saved without appearing in the map pick
 
 // These are ordinary units on an ordinary map: movement, combat and turns still work.
 test("Developer units use ordinary movement, combat and turns", async () => {
-  const developerBattle = new Game("developer");
+  const developerBattle = developerFixture(["soldier"]);
   const soldier = required(
     developerBattle.units.find((unit) => unit.type === "soldier" && unit.side === "player"),
   );
@@ -63,7 +63,7 @@ test("Developer units use ordinary movement, combat and turns", async () => {
 const { loadBattle, saveBattle, SAVE_KEY, SAVE_VERSION } = await import("./legacy-save.ts");
 
 test("Developer saves remain noncampaign and round-trip", async () => {
-  const showcase = new Game("developer");
+  const showcase = developerFixture();
   saveBattle(showcase);
   const loaded = loadBattle();
   assert.deepEqual(loaded.game.snapshot(), showcase.snapshot());
@@ -71,7 +71,7 @@ test("Developer saves remain noncampaign and round-trip", async () => {
   assert.equal(loaded.game.campaign, undefined);
 });
 test("Moved developer sites persist ownership", async () => {
-  const game = new Game("developer");
+  const game = developerFixture(["scout"]);
   const unit = required(game.units.find((unit) => unit.side === "player" && unit.type === "scout"));
   const destination = "5,1";
   game.move(unit.id, destination);
@@ -85,7 +85,7 @@ test("Ordinary skirmishes do not publish site ownership overrides", async () => 
   assert.equal(new Game("river").snapshot().sites, undefined);
 });
 function validDeveloperSave() {
-  const showcase = new Game("developer");
+  const showcase = developerFixture();
   const validSave = {
     version: SAVE_VERSION,
     pendingEnemy: false,
@@ -94,14 +94,14 @@ function validDeveloperSave() {
   return validSave;
 }
 test("Legacy developer saves gain neutral sites without resetting units", async () => {
-  const showcase = new Game("developer");
   const validSave = validDeveloperSave();
+  const units = structuredClone(validSave.state.units);
   const legacySave = structuredClone(validSave);
   delete legacySave.state.sites;
   localStorage.setItem(SAVE_KEY, JSON.stringify(legacySave));
   const legacy = loadBattle().game;
   assert.equal(legacy.mapId, "developer");
-  assert.deepEqual(legacy.units, showcase.units);
+  assert.deepEqual(legacy.units, units);
   assert(required(legacy.snapshot().sites).every((site) => site.owner === null));
 });
 test("Campaign saves still require site ownership", async () => {

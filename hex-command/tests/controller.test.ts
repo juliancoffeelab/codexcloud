@@ -3,10 +3,13 @@ import { saveBattle as writeBattle } from "../src/save/write";
 import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
 import { currentArtwork } from "../src/presentation/art";
-import type { BattleController as Controller, BattleView } from "../src/controller/battle";
-let BattleController: typeof Controller;
+import {
+  BattleController,
+  type BattleController as Controller,
+  type BattleView,
+} from "../src/controller/battle";
 import { createTestFactory } from "./native-fixture";
-import { Game, TYPES } from "./game-fixture";
+import { Game, TYPES, developerFixture } from "./game-fixture";
 import { campaignMission, dialoguePending } from "../src/game/campaign-progress";
 import { SAVE_KEY, saveBattle, loadBattle } from "./legacy-save";
 import { required, TestStorage, mockSpriteCanvas } from "./helpers";
@@ -54,9 +57,9 @@ function pauseTurn(callToPause = 1) {
 // The developer layout uses ordinary selection, movement, combat, turns and persistence.
 test("Developer map supports normal actions and persistence", async () => {
   storage.clear();
+  saveBattle(developerFixture());
   const controller = createController(immediatePause);
   const observed = observe(controller);
-  controller.commands.reset("developer");
   const opening = controller.snapshot();
   const player = required(opening.units.find((unit) => unit.side === "player"));
   const enemy = required(opening.units.find((unit) => unit.side === "enemy"));
@@ -79,18 +82,9 @@ test("Developer map supports normal actions and persistence", async () => {
   controller.attack(player.id, enemy.id);
   assert(required(controller.snapshot().units.find((unit) => unit.id === enemy.id)).hp < enemy.hp);
   assert.deepEqual(loadBattle().game.snapshot(), controller.snapshot());
-  // Keep the turn check small as the developer roster grows: retain the two
-  // commanders from the real saved battle, with the authored map and wounds.
-  const turnFixture = loadBattle().game;
-  turnFixture.units = turnFixture.units.filter(
-    (unit) => unit.id === player.id || unit.id === enemy.id,
-  );
-  saveBattle(turnFixture);
-  const turnController = createController(immediatePause);
-  await turnController.commands.endTurn();
-  assert(turnController.snapshot().round > opening.round || turnController.snapshot().winner);
-  assert.deepEqual(loadBattle().game.snapshot(), turnController.snapshot());
-  turnController.dispose();
+  await controller.commands.endTurn();
+  assert(controller.snapshot().round > opening.round || controller.snapshot().winner);
+  assert.deepEqual(loadBattle().game.snapshot(), controller.snapshot());
   controller.dispose();
   observed.unsubscribe();
   storage.clear();
@@ -141,9 +135,9 @@ test("Inspection switches tiles and closes when the inspected unit or terrain is
 });
 
 test("Click-away dismissal preserves movement, attack targeting and undo", () => {
+  saveBattle(developerFixture());
   const controller = createController(immediatePause);
   const observed = observe(controller);
-  controller.commands.reset("developer");
   const opening = controller.snapshot();
   const player = required(opening.units.find((unit) => unit.side === "player"));
   const move = required(controller.actions(player.id).moves[0]);
@@ -527,16 +521,7 @@ function createController(pause?: ConstructorParameters<typeof Controller>[0]) {
   return controller;
 }
 let restoreCanvas: () => void;
-beforeEach(async () => {
-  vi.resetModules();
-  const { initSync } = await import("../rust/pkg/hex_command");
-  const { readFileSync } = await import("node:fs");
-  initSync({
-    module: new Uint8Array(
-      readFileSync(new URL("../rust/pkg/hex_command_bg.wasm", import.meta.url)),
-    ),
-  });
-  ({ BattleController } = await import("../src/controller/battle"));
+beforeEach(() => {
   storage.clear();
   vi.stubGlobal("localStorage", storage);
   restoreCanvas = mockSpriteCanvas();
