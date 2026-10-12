@@ -22,6 +22,12 @@ impl TileSet {
             Self::Large(bits) => bits[tile / 64] |= 1 << (tile % 64),
         }
     }
+    pub(crate) fn remove(&mut self, tile: usize) {
+        match self {
+            Self::Small(bits) => *bits &= !(1u128 << tile),
+            Self::Large(bits) => bits[tile / 64] &= !(1 << (tile % 64)),
+        }
+    }
     pub(crate) fn contains(&self, tile: usize) -> bool {
         match self {
             Self::Small(bits) => bits & (1u128 << tile) != 0,
@@ -72,7 +78,27 @@ impl TileSet {
     }
 }
 pub(super) type AttackGeometry = Rc<RefCell<HashMap<(usize, u8), Rc<Vec<TileSet>>>>>;
+pub(super) type AttackMasks = Rc<RefCell<HashMap<(usize, u8), Rc<Vec<u128>>>>>;
 impl Game<'_> {
+    pub(crate) fn attack_masks(&self, category: Category, range: u8) -> Rc<Vec<u128>> {
+        let key = (category.index(), range);
+        if let Some(masks) = self.attack_masks.borrow().get(&key) {
+            return masks.clone();
+        }
+        let masks: Rc<Vec<u128>> = Rc::new(
+            self.attack_origins(category, range)
+                .iter()
+                .map(|set| {
+                    let TileSet::Small(bits) = set else {
+                        unreachable!("small-map attack masks")
+                    };
+                    *bits
+                })
+                .collect(),
+        );
+        self.attack_masks.borrow_mut().insert(key, masks.clone());
+        masks
+    }
     pub(crate) fn in_attack_range(
         &self,
         from: usize,
@@ -134,6 +160,8 @@ mod tests {
             second.insert(size - 1);
             first.insert(size - 1);
             assert!(first.intersects(&second));
+            second.remove(size - 1);
+            assert!(!first.intersects(&second));
         }
     }
     #[test]
@@ -173,9 +201,11 @@ mod tests {
             for category in [Category::Melee, Category::Ranged] {
                 for range in 1..=3 {
                     let geometry = game.attack_origins(category, range);
+                    let masks = game.attack_masks(category, range);
                     for a in 0..game.terrain.len() {
                         for b in 0..game.terrain.len() {
                             assert_eq!(geometry[a].contains(b), geometry[b].contains(a));
+                            assert_eq!(geometry[a].contains(b), masks[a] & (1u128 << b) != 0);
                         }
                     }
                 }

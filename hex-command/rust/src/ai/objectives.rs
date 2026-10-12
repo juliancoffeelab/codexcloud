@@ -540,8 +540,32 @@ pub(crate) struct TileOrder {
     direction: (f64, f64),
     villages: bool,
 }
+pub(crate) struct TileOrderContext {
+    home: Option<(f64, f64)>,
+    target: (f64, f64),
+    villages: bool,
+}
+impl TileOrderContext {
+    pub(crate) fn for_unit(&self, g: &Game, u: &Unit) -> TileOrder {
+        let (c, r) = g.board.positions[u.tile];
+        let position = ((c - r.div_euclid(2)) as f64, r as f64);
+        let home = self.home.unwrap_or(position);
+        let mut direction = (self.target.0 - home.0, self.target.1 - home.1);
+        if direction == (0.0, 0.0) {
+            direction = (position.0 - home.0, position.1 - home.1);
+        }
+        if direction == (0.0, 0.0) {
+            direction.0 = if u.side == Side::Player { 1.0 } else { -1.0 };
+        }
+        TileOrder {
+            home,
+            direction,
+            villages: self.villages,
+        }
+    }
+}
 impl TileOrder {
-    pub(crate) fn new(g: &Game, u: &Unit, villages: bool) -> Self {
+    pub(crate) fn context(g: &Game, side: Side, villages: bool) -> TileOrderContext {
         fn center(g: &Game, tiles: impl Iterator<Item = usize>) -> (f64, f64) {
             let (sum, count) = tiles.fold(((0.0, 0.0), 0usize), |(s, n), t| {
                 let (c, r) = g.board.positions[t];
@@ -550,20 +574,20 @@ impl TileOrder {
             (sum.0 / count as f64, sum.1 / count as f64)
         }
         let mut home_keeps = (0..g.terrain.len())
-            .filter(|&t| g.terrain_is(t, Terrain::Keep) && g.owners[t] == Some(u.side))
+            .filter(|&t| g.terrain_is(t, Terrain::Keep) && g.owners[t] == Some(side))
             .peekable();
         let home = if home_keeps.peek().is_some() {
-            center(g, home_keeps)
+            Some(center(g, home_keeps))
         } else {
-            center(g, std::iter::once(u.tile))
+            None
         };
         let mut opposing = (0..g.terrain.len())
-            .filter(|&t| g.terrain_is(t, Terrain::Keep) && g.owners[t].is_some_and(|s| s != u.side))
+            .filter(|&t| g.terrain_is(t, Terrain::Keep) && g.owners[t].is_some_and(|s| s != side))
             .peekable();
         let mut enemies = g
             .units
             .iter()
-            .filter(|o| o.side != u.side)
+            .filter(|o| o.side != side)
             .map(|o| o.tile)
             .peekable();
         let target = if opposing.peek().is_some() {
@@ -573,19 +597,14 @@ impl TileOrder {
         } else {
             center(g, 0..g.terrain.len())
         };
-        let mut direction = (target.0 - home.0, target.1 - home.1);
-        if direction == (0.0, 0.0) {
-            let (c, r) = g.board.positions[u.tile];
-            direction = ((c - r.div_euclid(2)) as f64 - home.0, r as f64 - home.1);
-        }
-        if direction == (0.0, 0.0) {
-            direction.0 = if u.side == Side::Player { 1.0 } else { -1.0 };
-        }
-        Self {
+        TileOrderContext {
             home,
-            direction,
+            target,
             villages,
         }
+    }
+    pub(crate) fn new(g: &Game, u: &Unit, villages: bool) -> Self {
+        Self::context(g, u.side, villages).for_unit(g, u)
     }
     pub(crate) fn compare(&self, g: &Game, first: usize, second: usize) -> Ordering {
         let axial = |t: usize| {

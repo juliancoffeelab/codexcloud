@@ -87,6 +87,7 @@ pub struct PlanningWorkspace {
     attack_continuation: Option<(UnitId, UnitId, WeaponId)>,
     routes: HashMap<(usize, Vec<usize>), Rc<Vec<u16>>>,
     commitments: HashMap<u32, String>,
+    threats: threats::ArenaThreatWorkspace,
 }
 /// Serializable continuation of a policy phase. Route caches are rebuilt after
 /// restoration; decisions, unit order and recruitment budgets remain intact.
@@ -133,6 +134,7 @@ impl PlanningWorkspace {
             attack_continuation: None,
             routes: HashMap::default(),
             commitments: HashMap::default(),
+            threats: threats::ArenaThreatWorkspace::default(),
         }
     }
     /// Whether the policy has exhausted its actions and queued continuation.
@@ -185,6 +187,7 @@ impl PlanningWorkspace {
                 .into_iter()
                 .map(|(id, goal)| (id.0, goal))
                 .collect(),
+            threats: threats::ArenaThreatWorkspace::default(),
         }
     }
 }
@@ -339,7 +342,7 @@ pub(crate) fn choose_game_command(
                     .as_ref()
                     .map(|g| objectives::individual(g.clone()));
             }
-            let plan = game.best_plan(
+            let plan = game.best_plan::<true>(
                 policy,
                 workspace.seed,
                 workspace.goals.as_deref(),
@@ -348,6 +351,7 @@ pub(crate) fn choose_game_command(
                 &mut workspace.routes,
                 &mut workspace.commitments,
                 &mut intents,
+                &mut workspace.threats,
             );
             for (id, intent) in &intents {
                 let actor = game.unit(*id).unwrap();

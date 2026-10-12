@@ -25,18 +25,20 @@ impl<'catalog> Game<'catalog> {
     /// Threat forecasts need membership, not movement discovery order. Advance
     /// all origins at each movement cost together on maps fitting one mask.
     pub(crate) fn threat_reach(&self, unit: &Unit, occupancy: Option<&[Option<Side>]>) -> TileSet {
-        let mut occupied = TileSet::new(self.terrain.len());
-        if let Some(occupancy) = occupancy {
+        let occupied = if let Some(occupancy) = occupancy {
+            let mut occupied = TileSet::new(self.terrain.len());
             for (tile, side) in occupancy.iter().enumerate() {
                 if side.is_some() {
                     occupied.insert(tile);
                 }
             }
+            occupied
         } else {
-            for unit in &self.units {
-                occupied.insert(unit.tile);
-            }
-        }
+            self.occupied_tiles.clone()
+        };
+        self.threat_reach_blocked(unit, occupied)
+    }
+    pub(crate) fn threat_reach_blocked(&self, unit: &Unit, occupied: TileSet) -> TileSet {
         let mut positions = TileSet::new(self.terrain.len());
         positions.insert(unit.tile);
         if unit.moved || unit.attacked || self.winner.is_some() {
@@ -101,7 +103,7 @@ impl<'catalog> Game<'catalog> {
             }
         }
         let mut cache = self.threat_reach_cache.borrow_mut();
-        if cache.len() >= 256 {
+        if cache.len() >= 4096 {
             cache.clear();
         }
         cache.insert(key, reached);
@@ -131,11 +133,7 @@ impl<'catalog> Game<'catalog> {
         if unit.moved || unit.attacked || self.winner.is_some() {
             return EMPTY_REACH.with(Clone::clone);
         }
-        let mut occupied = TileSet::new(self.terrain.len());
-        for unit in &self.units {
-            occupied.insert(unit.tile);
-        }
-        self.reach_filtered(unit.kind, unit.tile, occupied)
+        self.reach_filtered(unit.kind, unit.tile, self.occupied_tiles.clone())
     }
     fn reach_filtered(
         &self,
@@ -193,7 +191,7 @@ impl<'catalog> Game<'catalog> {
                 .collect::<Vec<_>>()
         }));
         let mut cache = self.reach_cache.borrow_mut();
-        if cache.len() >= 256 {
+        if cache.len() >= 1024 {
             cache.clear();
         }
         cache.insert(key, reachable.clone());
@@ -303,6 +301,8 @@ impl<'catalog> Game<'catalog> {
         );
         self.occupancy[actor.tile] = None;
         self.occupancy[tile] = Some(index);
+        self.occupied_tiles.remove(actor.tile);
+        self.occupied_tiles.insert(tile);
         self.units[index].tile = tile;
         self.units[index].moved = true;
         if [
@@ -346,5 +346,38 @@ impl<'catalog> Game<'catalog> {
             unit: format!("u{id}"),
             tile: self.board.ids[tile].clone(),
         });
+    }
+}
+
+#[cfg(test)]
+mod occupancy_tests {
+    use super::*;
+    #[test]
+    fn occupancy_mask_follows_moves_roster_changes_and_independent_forks() {
+        let rules = Rules::load().unwrap();
+        let mut game = Game::new(&rules, "mirror");
+        let forecast = game.fork();
+        let (actor, destination) = game
+            .units
+            .iter()
+            .filter(|u| u.side == game.turn)
+            .find_map(|u| game.reachable(u).first().map(|&(tile, _)| (u.id, tile)))
+            .unwrap();
+        game.move_unit(actor, destination);
+        let free = (0..game.terrain.len())
+            .find(|&tile| game.at(tile).is_none())
+            .unwrap();
+        game.add(game.units[0].kind, game.turn, free);
+        game.units.remove(0);
+        game.roster_changed();
+        for board in [&game, &forecast] {
+            for tile in 0..board.terrain.len() {
+                assert_eq!(
+                    board.occupied_tiles.contains(tile),
+                    board.at(tile).is_some()
+                );
+            }
+        }
+        assert_ne!(game.occupied_tiles, forecast.occupied_tiles);
     }
 }

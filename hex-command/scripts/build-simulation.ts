@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 import { cpus } from "node:os";
 import {
   closeSync,
+  copyFileSync,
   existsSync,
   mkdirSync,
   openSync,
@@ -138,7 +139,15 @@ if (!existsSync(profile)) {
   if (!profiles.length) throw new Error("Native training produced no compiler profile");
   run(profdata, ["merge", "-o", profile, ...profiles]);
 }
+// A stable profile path lets Cargo retain unchanged dependency builds. The
+// package build script tracks the profile key so a changed profile still
+// rebuilds the engine, including when only its training/build settings change.
+const active = join(cache, "active.profdata");
+if (!existsSync(active) || !readFileSync(active).equals(readFileSync(profile))) {
+  copyFileSync(profile, active);
+}
 run("cargo", cargo, {
   ...nativeEnv,
-  CARGO_ENCODED_RUSTFLAGS: [...flags, "-C", "profile-use=" + profile].join("\x1f"),
+  HEX_SIM_PROFILE_KEY: key,
+  CARGO_ENCODED_RUSTFLAGS: [...flags, "-C", "profile-use=" + active].join("\x1f"),
 });
