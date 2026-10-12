@@ -83,6 +83,7 @@ uses Python's standard library. It reports every recorded faction, map and polic
 pairing, including self-play, with full win/loss/cap counts and victory reasons.
 It exports every physical match, recruitment, promotion and casualty; baseline
 comparisons validate identical configurations and include individual result changes.
+Campaign changes include completion and per-chapter winners, rounds and state hashes.
 Unit stats and all nine artwork-lineup coverage lists come from the recorded source
 commit rather than the current checkout. Units outside a recorded arena pool or
 its reachable promotions are explicitly excluded.
@@ -101,8 +102,11 @@ Run and report an authorized batch with one command:
 npm run ai:combat -- --seeds 10 --out artifacts/current --baseline artifacts/previous/report.json
 ```
 
-The runner forwards simulation options to the existing native harness and reports
-only after successful completion. Reporting saved data alone never starts battles.
+The runner checks that the supplied data matches this checkout's committed files
+before starting, then forwards simulation options to the existing native harness
+and reports only after successful completion. Custom `--data-dir` paths must match
+the same commit; run from the historical checkout when testing different data.
+Reporting saved data alone never starts battles.
 
 The engine shares immutable indexed hex geometry between forecast copies, uses
 integer movement queues, and precomputes fixed movement and defense rules. Routing

@@ -185,6 +185,25 @@ def matrix(rows, factions, map_name, policy, opponent_policy):
     return markdown(result, ['Faction', *factions])
 
 
+def compare_match(key, before, current):
+    if current['kind'] == 'campaign':
+        def result(o):
+            return o['completed'], [(m['id'], m['winner']) for m in o['missions']]
+        def gameplay(o):
+            return o['completed'], [(m['id'], m['round'], m['stateHash']) for m in o['missions']]
+        return {'matchId': key, 'kind': 'campaign',
+                'beforeCompleted': before['completed'], 'completed': current['completed'],
+                'beforeMissions': before['missions'], 'missions': current['missions'],
+                'resultChanged': result(before) != result(current),
+                'gameplayChanged': gameplay(before) != gameplay(current)}
+    return {'matchId': key, 'kind': 'arena',
+            'beforeWinner': before.get('winner'), 'winner': current.get('winner'),
+            'beforeReason': before.get('reason'), 'reason': current.get('reason'),
+            'beforeRounds': before.get('rounds'), 'rounds': current.get('rounds'),
+            'resultChanged': (before.get('winner'), before.get('reason')) != (current.get('winner'), current.get('reason')),
+            'gameplayChanged': before.get('stateHash') != current.get('stateHash')}
+
+
 def build_report(inputs, baseline_inputs, out):
     start = time.perf_counter()
     current, sources = load_run(inputs)
@@ -208,12 +227,7 @@ def build_report(inputs, baseline_inputs, out):
     transitions = []
     for key, o in current.items():
         if previous:
-            b = previous[key]
-            transitions.append({'matchId': key, 'beforeWinner': b.get('winner'), 'winner': o.get('winner'),
-                                'beforeReason': b.get('reason'), 'reason': o.get('reason'),
-                                'beforeRounds': b.get('rounds'), 'rounds': o.get('rounds'),
-                                'resultChanged': (b.get('winner'), b.get('reason')) != (o.get('winner'), o.get('reason')),
-                                'gameplayChanged': b.get('stateHash') != o.get('stateHash')})
+            transitions.append(compare_match(key, previous[key], o))
     tables = {'matchups': rows, 'unit_events': units, 'matches': ledger, 'campaigns': campaigns,
               'race_equal_policy': combine(rows, ['race'], equal=True),
               'race_map_equal_policy': combine(rows, ['race', 'map'], equal=True),

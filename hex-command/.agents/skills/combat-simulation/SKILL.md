@@ -42,7 +42,11 @@ Commit candidate gameplay data on the feature branch before a balance run: the
 reporter reads unit stats from the recorded commit. A reused native binary loads
 data from its compiled crate location, regardless of the working directory. When
 running it against another checkout, always pass that checkout's `--data-dir`.
-The `ai:combat` wrapper supplies the current project's data directory explicitly.
+The `ai:combat` wrapper supplies the current project's data directory explicitly
+and checks that its files match the current commit before starting a batch.
+Custom `--data-dir` paths must contain the same committed data. For different
+historical data, run `ai:combat` from that checkout; the wrapper rejects a data
+and source-commit mismatch rather than reporting incorrect unit stats.
 
 ```sh
 simulation_run=artifacts/combat-$(date -u +%Y%m%dT%H%M%SZ)
@@ -78,6 +82,8 @@ npm run ai:analyze -- artifacts/current/report.json \
 ```
 
 Baseline comparisons require identical match configurations; mismatches fail.
+Campaign comparisons include completion, reached chapters, chapter winners,
+rounds and final-state hashes, with both sets of mission records exported.
 Check roster and rules differences as well: a change in recruitment coverage is
 part of the experiment, not evidence of a particular weapon or stat's effect.
 Use the report's recorded source commit and fingerprint when describing historical
