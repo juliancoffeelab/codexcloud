@@ -96,14 +96,13 @@ function validDeveloperSave() {
   return validSave;
 }
 test("Legacy developer saves gain neutral sites without resetting units", async () => {
-  const showcase = new Game("developer");
   const validSave = validDeveloperSave();
   const legacySave = structuredClone(validSave);
   delete legacySave.state.sites;
   localStorage.setItem(SAVE_KEY, JSON.stringify(legacySave));
   const legacy = loadBattle().game;
   assert.equal(legacy.mapId, "developer");
-  assert.deepEqual(legacy.units, showcase.units);
+  assert.deepEqual(legacy.units, validSave.state.units);
   assert(required(legacy.snapshot().sites).every((site) => site.owner === null));
 });
 test("Campaign saves still require site ownership", async () => {

@@ -82,6 +82,13 @@ function oldDeveloperSnapshot() {
   const state = structuredClone(
     Native.save(create({ kind: "scenario", map: "developer" })).state,
   ) as State;
+  // Historical saves predate the expanded gallery; keep representative actors
+  // within its original geometry rather than importing the current roster.
+  state.units = state.units.filter(
+    (unit) =>
+      unit.type === "soldier" ||
+      Catalog.unit(Native.catalog(factory), unit.type).family === "commander",
+  );
   Object.assign(state, { mapRevision: 1, cols: developer.cols, rows: developer.rows, round: 5 });
   state.tiles = Array.from({ length: developer.cols * developer.rows }, (_, index) => ({
     id: `${index % developer.cols},${Math.floor(index / developer.cols)}`,
