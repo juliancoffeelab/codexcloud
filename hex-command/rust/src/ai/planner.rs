@@ -49,6 +49,7 @@ impl Planner {
         let planner = self;
         super::cooperation::assign(game, workspace);
         super::cooperation::refresh_assignments(game, workspace);
+        workspace.escort.prepare(game, &workspace.report);
         if super::cooperation::rescue(game, workspace)? {
             return Ok(());
         }
@@ -61,14 +62,41 @@ impl Planner {
             }
         }
         if classic(planner) {
+            if workspace.classic_revision != workspace.cooperation.revision
+                && workspace.tactical_remaining.is_some()
+            {
+                workspace.classic_objectives = orders
+                    .targets
+                    .iter()
+                    .filter(|g| !g.id.starts_with("rebuild:"))
+                    .cloned()
+                    .collect();
+                workspace
+                    .classic_objectives
+                    .extend(orders.rebuild_objectives(game));
+                workspace.classic_revision = workspace.cooperation.revision;
+            }
             if workspace.tactical_remaining.is_none() {
-                workspace.classic_objectives = orders.targets.clone();
-                if !orders.campaign && workspace.goals.is_none() {
+                workspace.classic_objectives = orders
+                    .targets
+                    .iter()
+                    .filter(|g| !g.id.starts_with("rebuild:"))
+                    .cloned()
+                    .collect();
+                workspace
+                    .classic_objectives
+                    .extend(orders.rebuild_objectives(game));
+                workspace.classic_revision = workspace.cooperation.revision;
+                if workspace.goals.is_none() && (!orders.campaign || game.turn == Side::Enemy) {
                     workspace
                         .classic_objectives
                         .retain(|g| g.id.starts_with("rebuild:"));
                 }
                 workspace.classic_ids = game.classic_order(&workspace.classic_objectives).into();
+                workspace
+                    .classic_ids
+                    .make_contiguous()
+                    .sort_by_key(|id| workspace.escort.bound(*id) == 0.0);
                 workspace.tactical_remaining = Some(workspace.classic_ids.len());
                 for unit in game
                     .units
@@ -100,6 +128,7 @@ impl Planner {
                     id,
                     &workspace.classic_objectives,
                     orders,
+                    &workspace.escort,
                     restrained,
                     &mut recorder,
                 );
@@ -135,6 +164,7 @@ impl Planner {
                 game.best_plan::<true, false>(
                     planner.global_style(),
                     orders,
+                    &workspace.escort,
                     workspace.seed,
                     workspace.goals.as_deref(),
                     workspace.prepared_goals.as_deref(),

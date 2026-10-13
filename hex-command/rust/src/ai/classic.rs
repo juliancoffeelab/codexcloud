@@ -31,6 +31,7 @@ pub(super) struct ClassicRules<'game, 'catalog> {
     minimum: i32,
     holding: bool,
     orders: &'game super::orders::TacticalOrders,
+    escort: &'game super::escort::Workspace,
 }
 impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
     pub fn new(
@@ -39,6 +40,7 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         goals: &[Objective],
         _restrained: bool,
         orders: &'game super::orders::TacticalOrders,
+        escort: &'game super::escort::Workspace,
     ) -> Self {
         let important = orders.important(g, u);
         let mut threats = important.then(|| Threats::protected(g, u.side, orders));
@@ -52,19 +54,23 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         } else {
             0
         };
+        let yielding = orders.clearing(g).remove(&u.id).unwrap_or_default();
+        let holding = !yielding.contains(&u.tile)
+            && goals
+                .iter()
+                .any(|o| actor_matches(&o.actor, u.id) && o.tiles.contains(&g.board.ids[u.tile]));
         Self {
             unit: u.clone(),
             goals: goals.to_vec(),
             reserved: g.reserved(u, goals),
-            yielding: g.actor_lanes(goals).remove(&u.id).unwrap_or_default(),
+            yielding,
             lanes: orders.lanes(g),
             important,
             threats,
             minimum,
-            holding: goals
-                .iter()
-                .any(|o| actor_matches(&o.actor, u.id) && o.tiles.contains(&g.board.ids[u.tile])),
+            holding,
             orders,
+            escort,
         }
     }
     fn risk(&mut self, tile: usize, eliminated: Option<u32>) -> i32 {
@@ -74,27 +80,32 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
     }
     fn penalty(&mut self, g: &Game, tile: usize) -> f64 {
         let finishing = self.orders.arrives(g, &self.unit, tile);
-        (if self.reserved.contains(&tile) {
-            160.0
-        } else {
-            0.0
-        }) + (if self.yielding.contains(&tile) {
-            80.0
-        } else {
-            0.0
-        }) + (if self.lanes.contains(&tile) {
-            100.0
-        } else {
-            0.0
-        }) + (if self.holding && tile != self.unit.tile {
-            100.0
-        } else {
-            0.0
-        }) + if finishing {
-            -1000.0
-        } else {
-            self.risk(tile, None) as f64 * 12.0
-        }
+        -self.escort.position(self.unit.id, tile)
+            + (if self.reserved.contains(&tile) {
+                160.0
+            } else {
+                0.0
+            })
+            + (if self.yielding.contains(&tile) {
+                80.0
+            } else {
+                0.0
+            })
+            + (if self.lanes.contains(&tile) {
+                100.0
+            } else {
+                0.0
+            })
+            + (if self.holding && tile != self.unit.tile {
+                100.0
+            } else {
+                0.0
+            })
+            + if finishing {
+                -1000.0
+            } else {
+                self.risk(tile, None) as f64 * 12.0
+            }
     }
     fn movement(&mut self, g: &Game, tile: usize) -> bool {
         !self.important || self.orders.arrives(g, &self.unit, tile) || {
@@ -186,7 +197,10 @@ impl Game<'_> {
                 {
                     continue;
                 }
-                let score = self.attack_score(&u, target, u.tile, Some(weapon));
+                let score = self.attack_score(&u, target, u.tile, Some(weapon))
+                    + rules
+                        .escort
+                        .attack(id, target, self.preview(&u, target, weapon, u.tile).0);
                 if best.as_ref().is_none_or(|(b, _, s)| {
                     score > *s || (score == *s && order.compare(self, target.tile, b.tile).is_lt())
                 }) {
@@ -327,12 +341,23 @@ impl Game<'_> {
                 return vec![self.site(&post.0)];
             }
         }
-        if !orders.defensive_tiles.is_empty() {
-            return orders
-                .defensive_tiles
+        if !orders.movement_tiles.is_empty() {
+            let contested: Vec<_> = orders
+                .movement_tiles
                 .iter()
-                .map(|t| self.site(&t.0))
+                .map(|tile| self.site(&tile.0))
+                .filter(|&tile| self.owners[tile] != Some(u.side))
                 .collect();
+            if !contested.is_empty() {
+                return contested;
+            }
+            if !orders.defensive_tiles.is_empty() {
+                return orders
+                    .movement_tiles
+                    .iter()
+                    .map(|tile| self.site(&tile.0))
+                    .collect();
+            }
         }
         goals
     }
@@ -438,8 +463,13 @@ impl Game<'_> {
                     .into_iter()
                     .any(|w| rules.attack(self, &u, target, w, t))
                 {
-                    opportunity =
-                        opportunity.max(5.0 + self.attack_score(&u, target, t, None) / 5.0);
+                    let escort_bonus = self.best_attack(&u, target, t).map_or(0.0, |weapon| {
+                        rules
+                            .escort
+                            .attack(id, target, self.preview(&u, target, weapon, t).0)
+                    });
+                    opportunity = opportunity
+                        .max(5.0 + (self.attack_score(&u, target, t, None) + escort_bonus) / 5.0);
                 }
             }
             let capture = if self.terrain_is(t, Terrain::Village) && self.owners[t] != Some(u.side)
@@ -546,6 +576,7 @@ impl Game<'_> {
         id: u32,
         objectives: &[Objective],
         orders: &super::orders::TacticalOrders,
+        escort: &super::escort::Workspace,
         restrained: bool,
         recorder: &mut Recorder,
     ) {
@@ -598,7 +629,8 @@ impl Game<'_> {
         });
         let best = eligible.first().copied();
         let reserved = self.reserved(&u, objectives);
-        let clearing = self.actor_lanes(objectives).remove(&u.id);
+        let clearing = orders.clearing(self).remove(&u.id);
+        let yielding = clearing.is_some();
         let movement = if let Some(lane) = clearing {
             Some(
                 self.reachable(&u)
@@ -619,8 +651,8 @@ impl Game<'_> {
         } else {
             best.map(|g| g.tiles.iter().map(|t| self.site(t)).collect())
         };
-        let required = orders.moving_actor(id);
-        let rules = ClassicRules::new(source, &u, objectives, restrained, orders);
+        let required = orders.moving_actor(id) || yielding;
+        let rules = ClassicRules::new(source, &u, objectives, restrained, orders, escort);
         self.classic_act(id, movement, required, rules, recorder);
     }
 }

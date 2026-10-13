@@ -99,6 +99,7 @@ impl Game<'_> {
         &self,
         policy: GlobalStyle,
         orders: &super::orders::TacticalOrders,
+        escort: &super::escort::Workspace,
         seed: u32,
         _goals: Option<&[Objective]>,
         prepared_goals: Option<&[Objective]>,
@@ -126,7 +127,7 @@ impl Game<'_> {
         } else {
             Cow::Owned(orders.targets.clone())
         };
-        let escort_lanes = self.actor_lanes(&objectives);
+        let escort_lanes = orders.clearing(self);
         let rebuilds: HashMap<_, _> = self
             .units
             .iter()
@@ -139,7 +140,12 @@ impl Game<'_> {
                         .any(|g| g.kind == ObjectiveKind::Escape && actor_matches(&g.actor, u.id)),
                 )
             })
-            .map(|(id, required)| (id, orders.rebuild_plan(self, id, required)))
+            .map(|(id, required)| {
+                (
+                    id,
+                    orders.rebuild_plan(self, id, required || escort_lanes.contains_key(&id)),
+                )
+            })
             .collect();
         for (&id, (_, intent)) in &rebuilds {
             if self.unit(id).unwrap().rebuilding != *intent {
@@ -343,7 +349,8 @@ impl Game<'_> {
                 }
             }
             let reserved = self.reserved(original_unit, &objectives);
-            let required = orders.moving_actor(original_unit.id);
+            let required = orders.moving_actor(original_unit.id)
+                || escort_lanes.contains_key(&original_unit.id);
             let unchanged = (Vec::new(), original_unit.rebuilding);
             let (rebuilding, intent) = rebuilds.get(&original_unit.id).unwrap_or(&unchanged);
             let mut planned_unit = (*original_unit).clone();
@@ -384,6 +391,9 @@ impl Game<'_> {
             }
             let mut duties = Vec::with_capacity(goals.len());
             for original in goals {
+                if orders.assigned_elsewhere(unit.id, original) {
+                    continue;
+                }
                 if original.kind == ObjectiveKind::Capture
                     && original.actor.is_none()
                     && original.tiles.iter().all(|t| {
@@ -493,6 +503,7 @@ impl Game<'_> {
                 let add = |a: f64, b: f64| (a + b).upper();
                 let on_reserved = reserved.contains(&unit.tile);
                 let mut ceiling = if on_reserved { 80.0 } else { 0.0 };
+                ceiling = add(ceiling, escort.bound(unit.id));
                 if escort_lanes.contains_key(&unit.id) {
                     ceiling = add(ceiling, 40.0);
                 }
@@ -629,6 +640,7 @@ impl Game<'_> {
                     0.0
                 } - if reserved.contains(&tile) { 160.0 } else { 0.0 }
                     - if lanes.contains(&tile) { 100.0 } else { 0.0 };
+                positioning += escort.position(unit.id, tile);
                 if escort_lanes
                     .get(&unit.id)
                     .is_some_and(|lane| !lane.contains(&tile))
@@ -777,7 +789,8 @@ impl Game<'_> {
                             } else {
                                 0.0
                             }
-                            - retaliation as f64 * 1.8;
+                            - retaliation as f64 * 1.8
+                            + escort.attack(unit.id, target, damage);
                         if orders.important(self, target) {
                             combat += if killed { 18.0 } else { 4.0 };
                         }
@@ -997,6 +1010,7 @@ mod tests {
                                 ),
                             )
                             .tactics,
+                        &super::super::escort::Workspace::default(),
                         7,
                         None,
                         None,
@@ -1020,6 +1034,7 @@ mod tests {
                                 ),
                             )
                             .tactics,
+                        &super::super::escort::Workspace::default(),
                         7,
                         None,
                         None,

@@ -175,7 +175,7 @@ pub(super) fn prepare(game: &Game<'_>, workspace: &mut PlanningWorkspace) {
             .iter()
             .map(|u| (u.id, u.tile, u.retreating))
             .collect();
-        cache.clearing = game.actor_lanes(&cache.goals);
+        cache.clearing = orders.clearing(game);
         cache.lanes = orders.lanes(game);
     }
 }
@@ -225,7 +225,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
     let original = game.unit(id)?;
     let objectives = &workspace.cheap.goals;
     let orders = &workspace.orders.as_ref().unwrap().tactics;
-    let required = orders.moving_actor(id);
+    let required = orders.moving_actor(id) || workspace.cheap.clearing.contains_key(&id);
     let (rebuilding, intent) = orders.rebuild_plan(game, id, required);
     let mut unit = original.clone();
     unit.rebuilding = intent;
@@ -247,6 +247,9 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
         .for_unit(game, &unit);
     let mut duties = vec![];
     for (goal_index, original) in objectives.iter().enumerate() {
+        if orders.assigned_elsewhere(id, original) {
+            continue;
+        }
         if original.id.starts_with("rebuild:") && !actor_matches(&original.actor, id) {
             continue;
         }
@@ -463,7 +466,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
         if category != TacticalRole::Frontline && has_screens && proximity <= 4 {
             value += if proximity > front { 2.0 } else { -3.0 };
         }
-        value += support[tile];
+        value += support[tile] + workspace.escort.position(id, tile);
         value
     };
     let mut destinations = vec![unit.tile];
@@ -546,7 +549,8 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
                 } else {
                     0.0
                 }
-                - response as f64 * 1.8;
+                - response as f64 * 1.8
+                + workspace.escort.attack(id, target, damage);
             if orders.important(game, target) {
                 combat += if killed { 18.0 } else { 4.0 };
             }

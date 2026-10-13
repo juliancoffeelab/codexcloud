@@ -7,6 +7,7 @@ mod cheap;
 mod classic;
 mod context;
 mod cooperation;
+mod escort;
 pub mod objectives;
 pub mod orders;
 pub mod planner;
@@ -138,6 +139,7 @@ pub struct PlanningWorkspace {
     finished: bool,
     classic_objectives: Vec<Objective>,
     classic_ids: VecDeque<u32>,
+    classic_revision: u32,
     tactical_remaining: Option<usize>,
     commands: VecDeque<Command>,
     attack_continuation: Option<(UnitId, UnitId, WeaponId)>,
@@ -150,6 +152,7 @@ pub struct PlanningWorkspace {
     orders: Option<orders::CampaignOrders>,
     report: orders::PlanningReport,
     cooperation: cooperation::Workspace,
+    escort: escort::Workspace,
 }
 /// Serializable continuation of a policy phase. Route caches are rebuilt after
 /// restoration; decisions, unit order and recruitment budgets remain intact.
@@ -177,6 +180,8 @@ pub struct PlanningSnapshot {
     pub finished: bool,
     pub classic_objectives: Vec<Objective>,
     pub classic_ids: Vec<UnitId>,
+    #[serde(default)]
+    pub classic_revision: u32,
     pub tactical_remaining: Option<usize>,
     pub commands: Vec<Command>,
     pub attack_continuation: Option<(UnitId, UnitId, WeaponId)>,
@@ -199,6 +204,7 @@ impl PlanningWorkspace {
             orders: None,
             report: orders::PlanningReport::default(),
             cooperation: cooperation::Workspace::default(),
+            escort: escort::Workspace::default(),
             seed,
             recruitment_remaining: recruitment_limit,
             goals,
@@ -208,6 +214,7 @@ impl PlanningWorkspace {
             finished: false,
             classic_objectives: Vec::new(),
             classic_ids: VecDeque::new(),
+            classic_revision: 0,
             tactical_remaining: None,
             commands: VecDeque::new(),
             attack_continuation: None,
@@ -271,6 +278,7 @@ impl PlanningWorkspace {
             finished: self.finished,
             classic_objectives: self.classic_objectives.clone(),
             classic_ids: self.classic_ids.iter().map(|id| UnitId(*id)).collect(),
+            classic_revision: self.classic_revision,
             tactical_remaining: self.tactical_remaining,
             commands: self.commands.iter().cloned().collect(),
             attack_continuation: self.attack_continuation.clone(),
@@ -284,6 +292,7 @@ impl PlanningWorkspace {
             orders: saved.orders,
             report: saved.report,
             cooperation: saved.cooperation,
+            escort: escort::Workspace::default(),
             policy: saved.policy,
             blocks: saved.blocks,
             seed: saved.seed,
@@ -296,6 +305,7 @@ impl PlanningWorkspace {
             finished: saved.finished,
             classic_objectives: saved.classic_objectives,
             classic_ids: saved.classic_ids.into_iter().map(|id| id.0).collect(),
+            classic_revision: saved.classic_revision,
             tactical_remaining: saved.tactical_remaining,
             commands: saved.commands.into(),
             attack_continuation: saved.attack_continuation,

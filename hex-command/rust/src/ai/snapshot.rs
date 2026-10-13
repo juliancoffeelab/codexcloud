@@ -99,6 +99,7 @@ impl PlanningSnapshot {
                     .withdrawal_tiles
                     .iter()
                     .chain(&orders.tactics.defensive_tiles)
+                    .chain(&orders.tactics.movement_tiles)
                     .chain(orders.tactics.leader_post.iter())
                     .any(|tile| !valid_tile(tile))
                 || orders

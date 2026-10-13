@@ -32,6 +32,21 @@ def chapter_diagnostics(chapter):
                          for p in phases for u in p.get('units', [])
                          for g in chapter.get('goals', []) if name in g.get('label', ''))
                 for name in named_actors}
+    stalled = []
+    if chapter['winner'] is None and own and own[-1].get('planning'):
+        last = own[-1]
+        roster = {u['id']: u for u in last.get('units', [])}
+        planning = last['planning']
+        statuses = {d['id']: d for d in planning['report'].get('duties', [])}
+        for order in planning['orders']['tactics'].get('objectives', []):
+            body = order['objective'].get('GoTo') or order['objective'].get('Occupy')
+            if not body:
+                continue
+            actor = roster.get(f"u{body['actor']}", {})
+            stalled.append(dict(actor=actor.get('name') or actor.get('type') or f"u{body['actor']}",
+                                tile=actor.get('tile'), hp=actor.get('hp'), target=body.get('destination', body.get('location')),
+                                reason=statuses.get(order['id'], {}).get('reason'),
+                                allies=[dict(id=u['id'], type=u['type'], tile=u['tile'], rebuilding=u.get('rebuilding')) for u in roster.values() if u['side']=='player']))
     losses = [u for p in phases for u in p.get('losses', []) if u['side'] == 'player']
     idle = 0
     for phase in reversed(own):
@@ -94,7 +109,7 @@ def chapter_diagnostics(chapter):
                 namedLosses=dict(Counter(u['name'] for u in losses if u.get('name'))),
                 recruits=dict(recruits), casualties=dict(casualties),
                 playerDamage=player_damage, enemyDamage=enemy_damage,
-                namedGoalActors=list(named_actors), actorArrivals=arrivals,
+                namedGoalActors=list(named_actors), actorArrivals=arrivals, stalledActors=stalled,
                 recordedPhases=bool(phases), unmetOrders=dict(unmet_orders),
                 deferredOrders=dict(deferred_orders), rescueCandidates=rescue_candidates,
                 protectedRetaliationViolations=retaliation_violations,
@@ -143,7 +158,10 @@ def load_run(paths):
         sources.append(source)
         readers = {}
         try:
-            for saved in report['outcomes']:
+            # Native workers append journals in completion order. Read references
+            # in physical order so compressed baselines never repeatedly rewind.
+            ordered = sorted(report['outcomes'], key=lambda item: (item.get('detail', {}).get('file', ''), item.get('detail', {}).get('offset', 0)))
+            for saved in ordered:
                 item = dict(saved)
                 item.setdefault('kind', 'campaign' if 'campaign' in item['config'] else 'arena')
                 key = identity(item)
@@ -186,6 +204,10 @@ def load_run(paths):
                     if item['analysis'] is None:
                         item['analysis'] = recorded_analysis(item)
                 outcomes[key] = item
+            # Keep public tables in source order even though journal I/O is sorted.
+            for saved in report['outcomes']:
+                key = identity({**saved, 'kind': saved.get('kind', 'campaign' if 'campaign' in saved['config'] else 'arena')})
+                outcomes[key] = outcomes.pop(key)
         finally:
             for reader in readers.values():
                 if reader is not None:
@@ -220,7 +242,7 @@ def campaign_tables(outcomes):
                              namedLosses=mission['namedLosses'], actorArrivals=mission['actorArrivals'],
                              unmetOrders=mission.get('unmetOrders', {}), deferredOrders=mission.get('deferredOrders', {}),
                              rescueCandidates=mission.get('rescueCandidates', 0), protectedRetaliationViolations=mission.get('protectedRetaliationViolations', 0),
-                             recordedPlanning=mission.get('recordedPlanning', False),
+                             recordedPlanning=mission.get('recordedPlanning', False), stalledActors=mission.get('stalledActors', []),
                              detail=outcome.get('detail')))
             chapter = chapters.setdefault(chapter_key, Counter())
             chapter['reached'] += 1
@@ -547,6 +569,18 @@ def build_report(inputs, baseline_inputs, out):
         findings += ['## Chooser and phase CPU', '',
                      'Each turn is one side’s completed phase. These policy averages pool arenas and campaigns; phase CPU excludes turn-transition events and journal encoding. Runs can contain different numbers of turns.', '',
                      markdown(policy_timings, ['run', 'policy', 'turns', 'meanDecisionMicrosPerTurn', 'meanTurnMicros']), '']
+    stalled_examples = []
+    seen_stalls = set()
+    for run in campaign_runs:
+        key = (run['campaign'], run['player'], run['map'])
+        if run['idleTail'] < 5 or key in seen_stalls or not run['stalledActors']:
+            continue
+        seen_stalls.add(key)
+        for actor in run['stalledActors']:
+            allies = ', '.join(f"{u['id']} {u['type']} at {u['tile']}" + (' (rebuilding)' if u['rebuilding'] else '') for u in actor['allies'])
+            stalled_examples.append(dict(campaign=run['campaign'], player=run['player'], map=run['map'], seed=run['seed'], actor=actor['actor'], tile=actor['tile'], target=actor['target'], reason=actor['reason'], allies=allies))
+    if stalled_examples:
+        findings += ['## Idle cap actor positions', '', 'One recorded example per campaign, tactic and stage. Positions come from the last player phase; these observations identify a stall, without assuming its cause.', '', markdown(stalled_examples, ['campaign', 'player', 'map', 'seed', 'actor', 'tile', 'target', 'reason', 'allies']), '']
     diagnostics = Counter()
     for outcome in current.values():
         for chapter in outcome.get('analysis') or []:

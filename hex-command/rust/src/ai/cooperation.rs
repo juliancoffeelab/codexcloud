@@ -11,6 +11,7 @@ const PER_TURN: usize = 128;
 
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
+#[serde(default)]
 pub struct Workspace {
     pub assigned: bool,
     pub attempted: Vec<UnitId>,
@@ -18,6 +19,7 @@ pub struct Workspace {
     pub candidates: usize,
     pub actor_positions: Vec<(UnitId, TileId)>,
     pub revision: u32,
+    pub exhausted: Vec<UnitId>,
 }
 
 pub(super) fn assign(game: &Game<'_>, workspace: &mut PlanningWorkspace) {
@@ -107,21 +109,6 @@ pub(super) fn assign(game: &Game<'_>, workspace: &mut PlanningWorkspace) {
                 let selected: Vec<_> = eligible.into_iter().take(*guards).collect();
                 for guard in &selected {
                     allocated.push(guard.id);
-                    let tiles = game.board.adjacent[unit.tile]
-                        .iter()
-                        .copied()
-                        .filter(|&tile| game.cost(guard.kind, tile) != u16::MAX)
-                        .map(|tile| game.board.ids[tile].clone())
-                        .collect();
-                    let mut goal = objective(
-                        &format!("{}:u{}", order.id, guard.id),
-                        ObjectiveKind::Capture,
-                        tiles,
-                        18.0,
-                    );
-                    goal.actor = Some(format!("u{}", guard.id));
-                    goal.hold = Some(true);
-                    targets.push(goal);
                 }
                 workspace.report.duties.push(DutyReport {
                     id: order.id.clone(),
@@ -149,7 +136,14 @@ pub(super) fn assign(game: &Game<'_>, workspace: &mut PlanningWorkspace) {
     orders
         .targets
         .extend(targets.into_iter().filter(|goal| !goal.tiles.is_empty()));
-    workspace.prepared_goals = Some(orders.targets.clone());
+    workspace.prepared_goals = Some(
+        orders
+            .targets
+            .iter()
+            .filter(|goal| !goal.id.starts_with("rebuild:"))
+            .cloned()
+            .collect(),
+    );
 }
 
 pub(super) fn refresh_assignments(game: &Game<'_>, workspace: &mut PlanningWorkspace) {
@@ -171,30 +165,15 @@ pub(super) fn refresh_assignments(game: &Game<'_>, workspace: &mut PlanningWorks
     }
     workspace.cooperation.actor_positions = positions;
     workspace.cooperation.revision += 1;
-    for report in &workspace.report.duties {
-        if !report.id.ends_with(":escort") {
-            continue;
-        }
-        let Some(actor) = report.actor.and_then(|id| game.unit(id.0)) else {
-            continue;
-        };
-        for guard in &report.guards {
-            let Some(unit) = game.unit(guard.0) else {
-                continue;
-            };
-            let id = format!("{}:u{}", report.id, guard.0);
-            if let Some(target) = orders.targets.iter_mut().find(|g| g.id == id) {
-                target.tiles = game.board.adjacent[actor.tile]
-                    .iter()
-                    .copied()
-                    .filter(|&tile| game.cost(unit.kind, tile) != u16::MAX)
-                    .map(|tile| game.board.ids[tile].clone())
-                    .collect();
-            }
-        }
-    }
     orders.targets.retain(|g| !g.tiles.is_empty());
-    workspace.prepared_goals = Some(orders.targets.clone());
+    workspace.prepared_goals = Some(
+        orders
+            .targets
+            .iter()
+            .filter(|goal| !goal.id.starts_with("rebuild:"))
+            .cloned()
+            .collect(),
+    );
 }
 
 fn destination(game: &Game<'_>, orders: &TacticalOrders, actor: u32) -> Option<usize> {
@@ -262,6 +241,7 @@ pub(super) fn rescue(
                 u.side == game.turn
                     && !u.attacked
                     && u.id != actor.0
+                    && !game.rules.units[u.kind].leader
                     && !orders.protects(u.id)
                     && !orders.moving_actor(u.id)
                     && game.board.distance(u.tile, unit.tile) <= 5
@@ -298,10 +278,16 @@ pub(super) fn rescue(
                     }
                 }
             }
-            if used.len() >= 2 {
+            if used.len() >= 2
+                || actor_candidates >= PER_ACTOR
+                || workspace.cooperation.candidates >= PER_TURN
+            {
                 continue;
             }
             for helper in helpers.iter().filter(|id| !used.contains(id)) {
+                if actor_candidates >= PER_ACTOR || workspace.cooperation.candidates >= PER_TURN {
+                    break;
+                }
                 let Some(ally) = board.unit(*helper) else {
                     continue;
                 };
@@ -358,6 +344,9 @@ pub(super) fn rescue(
                 }
             }
         }
+        if actor_candidates >= PER_ACTOR || workspace.cooperation.candidates >= PER_TURN {
+            workspace.cooperation.exhausted.push(*actor);
+        }
     }
     Ok(false)
 }
@@ -390,11 +379,15 @@ pub(super) fn fallback(
                     id: format!("survive:u{}", actor.0),
                     actor: Some(*actor),
                     status: PlanningStatus::Unmet,
-                    reason: Some(if workspace.cooperation.candidates >= PER_TURN {
-                        PlanningReason::SearchBudget
-                    } else {
-                        PlanningReason::UnsafeFallback
-                    }),
+                    reason: Some(
+                        if workspace.cooperation.candidates >= PER_TURN
+                            || workspace.cooperation.exhausted.contains(actor)
+                        {
+                            PlanningReason::SearchBudget
+                        } else {
+                            PlanningReason::UnsafeFallback
+                        },
+                    ),
                     guards: vec![],
                     incoming: Some(incoming),
                 });
@@ -412,7 +405,7 @@ pub(super) fn report(game: &Game<'_>, workspace: &mut PlanningWorkspace) {
     workspace
         .report
         .duties
-        .retain(|r| r.id.ends_with(":escort"));
+        .retain(|r| r.id.ends_with(":escort") || r.reason == Some(PlanningReason::ConflictingDuty));
     for constraint in &orders.tactics.constraints {
         let TacticalConstraint::Survive { actor } = constraint;
         let (status, reason, incoming) = if let Some(unit) = game.unit(actor.0) {
@@ -424,11 +417,15 @@ pub(super) fn report(game: &Game<'_>, workspace: &mut PlanningWorkspace) {
                 } else {
                     PlanningStatus::Unmet
                 },
-                (incoming >= unit.hp).then_some(if workspace.cooperation.candidates >= PER_TURN {
-                    PlanningReason::SearchBudget
-                } else {
-                    PlanningReason::UnsafeFallback
-                }),
+                (incoming >= unit.hp).then_some(
+                    if workspace.cooperation.candidates >= PER_TURN
+                        || workspace.cooperation.exhausted.contains(actor)
+                    {
+                        PlanningReason::SearchBudget
+                    } else {
+                        PlanningReason::UnsafeFallback
+                    },
+                ),
                 Some(incoming),
             )
         } else {
@@ -474,7 +471,11 @@ pub(super) fn report(game: &Game<'_>, workspace: &mut PlanningWorkspace) {
             } else if unit.is_some_and(|u| u.attacked) {
                 Some(PlanningReason::InactiveActor)
             } else {
-                Some(PlanningReason::BlockedAccess)
+                Some(if passage {
+                    PlanningReason::BlockedAccess
+                } else {
+                    PlanningReason::NotReached
+                })
             },
             guards: vec![],
             incoming: None,
@@ -691,7 +692,8 @@ mod tests {
                 | PlanningReason::RecruitmentUnavailable
                 | PlanningReason::BlockedAccess
                 | PlanningReason::ConflictingDuty
-                | PlanningReason::SearchBudget => false,
+                | PlanningReason::SearchBudget
+                | PlanningReason::NotReached => false,
             }),
             PlanningStatus::Fulfilled | PlanningStatus::Deferred => false,
         }));

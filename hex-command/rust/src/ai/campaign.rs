@@ -99,6 +99,11 @@ impl CampaignBlock {
             }
         } else if let Some(mission) = &game.mission {
             tactics.leader_post = mission.enemy_leader_post.clone().map(TileId);
+            tactics.movement_tiles = game
+                .territory()
+                .into_iter()
+                .map(|tile| TileId(game.board.ids[tile].clone()))
+                .collect();
             if mission.defend_objectives {
                 tactics.defensive_tiles = game
                     .territory()
@@ -108,18 +113,27 @@ impl CampaignBlock {
             }
         }
         for unit in game.units.iter().filter(|u| u.side == game.turn) {
-            if campaign && game.essential(unit) {
+            let leader = game.rules.units[unit.kind].leader;
+            let needs_protection = campaign
+                && game.turn == Side::Player
+                && game.essential(unit)
+                && (!leader
+                    || unit.hp * 2 <= game.rules.units[unit.kind].hp
+                    || super::threats::Threats::new(game, game.turn).at(unit, unit.tile, None)
+                        >= unit.hp);
+            if needs_protection {
                 tactics.constraints.push(TacticalConstraint::Survive {
                     actor: UnitId(unit.id),
                 });
             }
-            for enemy in game.units.iter().filter(|u| u.side != game.turn) {
-                if terminal_attack(game, unit, enemy)
-                    && !tactics.terminal_targets.contains(&UnitId(enemy.id))
-                {
-                    tactics.terminal_targets.push(UnitId(enemy.id));
-                }
-            }
+        }
+        if let Some(unit) = game.units.iter().find(|u| u.side == game.turn) {
+            tactics.terminal_targets = game
+                .units
+                .iter()
+                .filter(|enemy| enemy.side != game.turn && terminal_attack(game, unit, enemy))
+                .map(|enemy| UnitId(enemy.id))
+                .collect();
         }
         if tactics.protect_withdrawal {
             tactics.mediated = game
@@ -156,12 +170,16 @@ impl CampaignBlock {
                 continue;
             };
             let actor_id = UnitId(actor.id);
-            if campaign && !tactics.protects(actor.id) {
+            if campaign && game.turn == Side::Player && !tactics.protects(actor.id) {
                 tactics
                     .constraints
                     .push(TacticalConstraint::Survive { actor: actor_id });
             }
-            let priority = ObjectivePriority::Critical;
+            let priority = if game.turn == Side::Player {
+                ObjectivePriority::Critical
+            } else {
+                ObjectivePriority::Normal
+            };
             let occupy = target.hold == Some(true) || target.kind == ObjectiveKind::Vigil;
             tactics.objectives.push(ObjectiveOrder {
                 id: target.id.clone(),
@@ -187,7 +205,7 @@ impl CampaignBlock {
                 },
             });
             recruitment.reserved.push(TileId(destination.clone()));
-            if game.proximity(game.turn, actor.tile) <= 5 {
+            if game.turn == Side::Player && super::threats::Threats::unshielded(game, actor) > 0 {
                 tactics.objectives.push(ObjectiveOrder {
                     id: format!("{}:escort", target.id),
                     priority: ObjectivePriority::Important,

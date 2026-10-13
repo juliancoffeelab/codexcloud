@@ -24,7 +24,12 @@ pub struct PrioritySnapshot {
     pub attempts: Vec<UnitId>,
 }
 impl Game<'_> {
-    fn priority_order(&self, policy: QueueMode, cache: &super::cheap::Workspace) -> Vec<UnitId> {
+    fn priority_order(
+        &self,
+        policy: QueueMode,
+        cache: &super::cheap::Workspace,
+        escort: &super::escort::Workspace,
+    ) -> Vec<UnitId> {
         let goals = &cache.goals;
         let clearing = &cache.clearing;
         let foes: Vec<_> = self.units.iter().filter(|u| u.side != self.turn).collect();
@@ -114,6 +119,9 @@ impl Game<'_> {
                     })
                     .fold(0.0f64, f64::max);
                 let mut score = offense + urgency;
+                if escort.bound(unit.id) > 0.0 {
+                    score += 40.0;
+                }
                 if clearing.contains_key(&unit.id) {
                     score += 120.0;
                 }
@@ -174,7 +182,7 @@ pub(super) fn next_plan(
     };
     if workspace.priority.is_none() {
         workspace.priority = Some(PrioritySnapshot {
-            pending: game.priority_order(policy, &workspace.cheap),
+            pending: game.priority_order(policy, &workspace.cheap, &workspace.escort),
             cursor: 0,
             retry: vec![],
             second_pass: false,
@@ -198,7 +206,7 @@ fn next_plan_inner(
 ) -> Option<Plan> {
     if queue.known_next_id != game.next_id {
         let born: Vec<_> = game
-            .priority_order(policy, &workspace.cheap)
+            .priority_order(policy, &workspace.cheap, &workspace.escort)
             .into_iter()
             .filter(|id| id.0 >= queue.known_next_id)
             .collect();
@@ -208,7 +216,7 @@ fn next_plan_inner(
     }
     if queue.dirty {
         queue.pending = game
-            .priority_order(policy, &workspace.cheap)
+            .priority_order(policy, &workspace.cheap, &workspace.escort)
             .into_iter()
             .filter(|id| queue.attempts.iter().filter(|tried| *tried == id).count() < 3)
             .collect();
@@ -276,6 +284,7 @@ fn next_plan_inner(
             plan = game.best_plan::<true, true>(
                 GlobalStyle::Mixed,
                 &workspace.orders.as_ref().unwrap().tactics,
+                &workspace.escort,
                 workspace.seed,
                 workspace.goals.as_deref(),
                 workspace.prepared_goals.as_deref(),

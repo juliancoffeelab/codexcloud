@@ -106,7 +106,7 @@ pub struct ObjectiveOrder {
 
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", default)]
 pub struct TacticalOrders {
     pub battle: BattleObjective,
     pub constraints: Vec<TacticalConstraint>,
@@ -120,11 +120,68 @@ pub struct TacticalOrders {
     pub terminal_targets: Vec<UnitId>,
     pub terminal_arrivals: Vec<(UnitId, TileId)>,
     pub defensive_tiles: Vec<TileId>,
+    pub movement_tiles: Vec<TileId>,
     pub leader_post: Option<TileId>,
     pub campaign: bool,
     pub required_units: Vec<RecruitRequirement>,
 }
 impl TacticalOrders {
+    pub(crate) fn assigned_elsewhere(&self, id: u32, goal: &Objective) -> bool {
+        fn other(order: &ObjectiveOrder, id: u32) -> bool {
+            match order.objective {
+                TacticalObjective::GoTo {
+                    actor,
+                    destination: _,
+                }
+                | TacticalObjective::Occupy { actor, location: _ } => actor.0 != id,
+                TacticalObjective::Escort { .. } | TacticalObjective::ClearPassage { .. } => false,
+            }
+        }
+        self.objectives
+            .iter()
+            .any(|order| order.id == goal.id && other(order, id))
+    }
+    pub(crate) fn clearing(
+        &self,
+        game: &Game<'_>,
+    ) -> rustc_hash::FxHashMap<u32, rustc_hash::FxHashSet<usize>> {
+        fn passage(order: &ObjectiveOrder) -> Option<(UnitId, &TileId)> {
+            match &order.objective {
+                TacticalObjective::ClearPassage { actor, destination } => {
+                    Some((*actor, destination))
+                }
+                TacticalObjective::GoTo { .. }
+                | TacticalObjective::Occupy { .. }
+                | TacticalObjective::Escort { .. } => None,
+            }
+        }
+        let missing: Vec<_> = self
+            .objectives
+            .iter()
+            .filter_map(passage)
+            .filter(|(actor, destination)| {
+                !self.targets.iter().any(|goal| {
+                    super::objectives::actor_matches(&goal.actor, actor.0)
+                        && goal.tiles.contains(&destination.0)
+                })
+            })
+            .collect();
+        if missing.is_empty() {
+            return game.actor_lanes(&self.targets);
+        }
+        let mut goals = self.targets.clone();
+        for (actor, destination) in missing {
+            let mut goal = super::objectives::objective(
+                "passage",
+                ObjectiveKind::Visit,
+                vec![destination.0.clone()],
+                24.0,
+            );
+            goal.actor = Some(format!("u{}", actor.0));
+            goals.push(goal);
+        }
+        game.actor_lanes(&goals)
+    }
     pub(crate) fn rebuild_plan(
         &self,
         game: &Game<'_>,
@@ -168,13 +225,18 @@ impl TacticalOrders {
         }
     }
     pub(crate) fn moving_actor(&self, id: u32) -> bool {
-        self.objectives.iter().any(|order| match order.objective {
-            TacticalObjective::GoTo {
-                actor,
-                destination: _,
-            }
-            | TacticalObjective::Occupy { actor, location: _ } => actor.0 == id,
-            TacticalObjective::Escort { .. } | TacticalObjective::ClearPassage { .. } => false,
+        self.objectives.iter().any(|order| {
+            order.priority == ObjectivePriority::Critical
+                && match order.objective {
+                    TacticalObjective::GoTo {
+                        actor,
+                        destination: _,
+                    }
+                    | TacticalObjective::Occupy { actor, location: _ } => actor.0 == id,
+                    TacticalObjective::Escort { .. } | TacticalObjective::ClearPassage { .. } => {
+                        false
+                    }
+                }
         })
     }
     pub(crate) fn rebuild_objectives(&self, game: &Game<'_>) -> Vec<Objective> {
@@ -284,7 +346,7 @@ pub enum PlanningStatus {
     Unmet,
 }
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum PlanningReason {
     InactiveActor,
     ActorLost,
@@ -294,6 +356,7 @@ pub enum PlanningReason {
     ConflictingDuty,
     UnsafeFallback,
     SearchBudget,
+    NotReached,
 }
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]

@@ -26,6 +26,31 @@ pub(super) struct Threats<'game, 'catalog> {
     workspace: Option<&'game mut ArenaThreatWorkspace>,
 }
 impl<'game, 'catalog> Threats<'game, 'catalog> {
+    /// Potential exposure without an allied screen, so a successful screen does
+    /// not cause Campaigner to release its escort on the following turn.
+    pub(super) fn unshielded(game: &Game<'catalog>, unit: &Unit) -> i32 {
+        let mut board = game.fork();
+        board.arena_first = None;
+        board.end_turn();
+        if board.winner.is_some() {
+            return 0;
+        }
+        let Some(target) = board.unit(unit.id) else {
+            return 0;
+        };
+        let enemies: Vec<_> = board
+            .units
+            .iter()
+            .filter(|u| u.side != unit.side)
+            .map(|enemy| {
+                let mut blocked = TileSet::new(board.terrain.len());
+                blocked.insert(enemy.tile);
+                let reach = board.threat_reach_blocked(enemy, blocked);
+                (enemy.clone(), Self::coverage(&board, enemy, &reach))
+            })
+            .collect();
+        Self::pressure(&board, target, &enemies, None, true)
+    }
     pub fn new(g: &'game Game<'catalog>, side: Side) -> Self {
         Self {
             orders: None,
@@ -145,7 +170,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             })
             .collect()
     }
-    fn coverage(board: &Game, unit: &Unit, positions: &TileSet) -> Vec<TileSet> {
+    pub(super) fn coverage(board: &Game, unit: &Unit, positions: &TileSet) -> Vec<TileSet> {
         board.rules.units[unit.kind]
             .attacks
             .iter()

@@ -30,7 +30,8 @@ three independent blocks; planner algorithms do not receive the policy enum.
   tile ordering. `orders.rs` defines explicit recruitment requirements, actor
   duties, safety constraints and compact reports; `context.rs` defines the block
   interfaces. `cooperation.rs` binds duties, assigns escorts and implements
-  bounded local rescues and defensive fallback.
+  bounded local rescues and defensive fallback. `escort.rs` scores threat removal
+  and positions that reduce enemy access, using bounded mechanical forecasts.
 
 Rust callers can select `Blocks { recruiter, campaign, planner }` with
 `PlanningWorkspace::with_blocks`. Browser `AiOptions` and native `--phase-stdio`
@@ -67,7 +68,13 @@ passages. Existing Rotation, Frontline and Balanced discretionary selection
 remain separate selectable strategies.
 
 `GoTo`, `Occupy`, `Escort` and `ClearPassage` provide actor duties with stable IDs
-and priorities. Guards are assigned greedily and their targets follow the actor.
+and priorities. Guards are assigned greedily and keep ordinary combat work.
+Escort rewards killing relevant threats and blocking their movement/attack
+approaches; adjacency to the actor alone earns no bonus. Campaigner requests
+escorts for predicted exposure, including exposure without an existing screen,
+and Planner reevaluates that protection as the battle changes. Screen evaluation
+uses at most 32 positions per guard and 128 per planning update, sharing one
+next-phase forecast rather than forking the battle at every candidate position.
 `Survive` forbids any retaliation damage to the actor, including on attacks
 expected to finish the battle. Next-phase exposure uses engine movement/damage
 forecasts rather than exhaustive enemy-action search. A local rescue considers

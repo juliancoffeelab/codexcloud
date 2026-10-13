@@ -250,9 +250,25 @@ Planner chooses suitable guards and positions based on the actor's intended
 movement and enemy movement-plus-attack possibilities. Escort units may attack
 when doing so remains compatible with their protective assignment.
 
+Campaigner requests an escort when enemies can threaten the actor in the next
+enemy phase. It also considers potential exposure without the existing allied
+screen, so successful protection does not immediately cancel the duty. Distance
+alone does not require an escort from the start of a mission.
+
+Escort assignments guide ordinary combat work. Reward attacks that remove or
+help finish enemies able to reach the actor, and screen positions that reduce
+enemy access according to mechanical movement/attack queries. Merely standing
+adjacent to the actor earns no escort reward. Guards can fight ahead of the actor
+or hold a passage farther away; their assignment must not become a personal
+occupancy objective around the actor. Recompute threat and screen assessments
+when actors move or the relevant battle state changes.
+
 Allocate guards greedily from nearby eligible units, retaining existing
 assignments while they remain valid. Use simple suitability and distance scores;
 global assignment optimization is unnecessary for the intended competence.
+Bound screen evaluation as well: evaluate at most 32 candidate positions per
+guard and 128 per planning update, using one shared next-phase forecast and
+cached mechanical geometry rather than a battle fork for each position.
 
 `ClearPassage` is a cooperation request. Planner chooses the passage and arranges
 the necessary yielding actions before moving the actor. It must account for
