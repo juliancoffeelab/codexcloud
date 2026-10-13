@@ -32,11 +32,19 @@ A reused native binary loads data from its compiled crate by default. When using
 another checkout, pass its `--data-dir` explicitly. `ai:combat` selects this
 project's data by default and forwards a custom directory.
 
-`ai:rust:build` compiles for the current CPU using LLVM profile-guided
-optimization. Its training workload covers every existing policy, landscape and
-campaign at seeds 17–18, with 30-round caps. It caches the compiler profile by
-source, catalog, toolchain and CPU; unchanged builds reuse it. Training results
-are not used as simulation answers. Build time is separate from command timing.
+`ai:rust:build` defaults to an optimized incremental native build for the current
+CPU, with LTO disabled. Routine simulations reuse Cargo's compiler cache and do
+not train PGO profiles or install LLVM profile tools. The first build populates
+the cache; later source edits rebuild affected code.
+
+Use `npm run ai:rust:build -- --pgo` for an explicit LLVM profile-guided build.
+To keep that selection through a simulation command's automatic build hook, use
+`HEX_COMMAND_SIM_PGO=1 npm run ai:full -- --out artifacts/pgo` (or the same
+environment variable with `ai:simulate` or `ai:benchmark`). PGO trains all policies,
+landscapes and campaigns at seeds 17–18 with 30-round caps; changing source,
+catalog, toolchain or CPU can require two compilations and fresh training. Its
+compiler cache is separate from routine builds. Training results are not report
+answers. Compare timings only with the same build mode and record that mode.
 Wasm builds use their ordinary toolchain and are unaffected by native flags.
 
 Frozen references `classicold`, `rushold` and `mixedold` contain the complete

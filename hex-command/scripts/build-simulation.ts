@@ -1,4 +1,4 @@
-/** Host-native, profile-guided build of the simulation CLI; wasm builds are separate. */
+/** Incremental native builds by default; explicit PGO builds serve timing comparisons. */
 import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { cpus } from "node:os";
@@ -18,19 +18,11 @@ import { toolchainEnvironment } from "../.agents/skills/rust-toolchain/scripts/t
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const env = toolchainEnvironment();
+const args = process.argv.slice(2);
+if (args.some((arg) => arg !== "--pgo")) throw new Error("Use --pgo for profile-guided builds");
+const pgo = args.includes("--pgo") || env.HEX_COMMAND_SIM_PGO === "1";
 const suffix = process.platform === "win32" ? ".exe" : "";
 const target = resolve(root, env.CARGO_TARGET_DIR ?? "rust/target");
-const cache = join(target, "ai-native");
-const raw = join(cache, "raw");
-mkdirSync(raw, { recursive: true });
-const rustc = env.RUSTC ?? "rustc";
-const capture = (command: string, args: string[]) =>
-  execFileSync(command, args, { cwd: root, env, encoding: "utf8" }).trim();
-const version = capture(rustc, ["-vV"]);
-const sysroot = capture(rustc, ["--print", "sysroot"]);
-const host = version.match(/^host: (.+)$/m)?.[1];
-if (!host) throw new Error("Rust compiler did not report its host target");
-const profdata = join(sysroot, "lib/rustlib", host, "bin", "llvm-profdata" + suffix);
 function run(command: string, args: string[], childEnv = env, log?: string) {
   const descriptor = log ? openSync(log, "w") : undefined;
   try {
@@ -47,8 +39,6 @@ function run(command: string, args: string[], childEnv = env, log?: string) {
     if (descriptor !== undefined) closeSync(descriptor);
   }
 }
-if (!existsSync(profdata)) run("rustup", ["component", "add", "llvm-tools-preview"]);
-if (!existsSync(profdata)) throw new Error("Matching LLVM profile tools are unavailable");
 const flags =
   env.CARGO_ENCODED_RUSTFLAGS?.split("\x1f") ?? (env.RUSTFLAGS ?? "").split(/\s+/).filter(Boolean);
 if (flags.some((flag) => /profile-(generate|use)/.test(flag)))
@@ -57,9 +47,21 @@ if (!flags.some((flag) => flag.includes("target-cpu"))) flags.push("-C", "target
 const nativeEnv = {
   ...env,
   CARGO_TARGET_DIR: target,
-  CARGO_PROFILE_RELEASE_CODEGEN_UNITS: env.CARGO_PROFILE_RELEASE_CODEGEN_UNITS ?? "1",
-  CARGO_PROFILE_RELEASE_LTO: env.CARGO_PROFILE_RELEASE_LTO ?? "fat",
+  ...(pgo
+    ? {
+        CARGO_PROFILE_RELEASE_CODEGEN_UNITS: env.CARGO_PROFILE_RELEASE_CODEGEN_UNITS ?? "1",
+        CARGO_PROFILE_RELEASE_LTO: env.CARGO_PROFILE_RELEASE_LTO ?? "fat",
+      }
+    : {}),
 };
+const cargo = [
+  "build",
+  "--locked",
+  "--manifest-path",
+  "rust/Cargo.toml",
+  "--bin",
+  "hex-command-sim",
+];
 // Frozen references retain main's original allocator/compiler settings. Their
 // measured chooser CPU is returned independently of the current host's IPC/IO.
 const legacyRoot = join(root, "rust/legacy");
@@ -101,6 +103,34 @@ copyFileSync(
   join(target, "legacy/release/hex-command-legacy" + suffix),
   join(target, "release/hex-command-legacy" + suffix),
 );
+// Stage either build at the launcher's stable location. Keep each compiler cache separate.
+if (!pgo) {
+  run("cargo", [...cargo, "--profile", "simulation"], {
+    ...nativeEnv,
+    HEX_SIM_PROFILE_KEY: "",
+    CARGO_ENCODED_RUSTFLAGS: flags.join("\x1f"),
+  });
+  copyFileSync(
+    join(target, "simulation/hex-command-sim" + suffix),
+    join(target, "release/hex-command-sim" + suffix),
+  );
+  process.exit(0);
+}
+const cache = join(target, "ai-native");
+const raw = join(cache, "raw");
+mkdirSync(raw, { recursive: true });
+nativeEnv.CARGO_TARGET_DIR = join(cache, "optimized");
+cargo.push("--release");
+const rustc = env.RUSTC ?? "rustc";
+const capture = (command: string, args: string[]) =>
+  execFileSync(command, args, { cwd: root, env, encoding: "utf8" }).trim();
+const version = capture(rustc, ["-vV"]);
+const sysroot = capture(rustc, ["--print", "sysroot"]);
+const host = version.match(/^host: (.+)$/m)?.[1];
+if (!host) throw new Error("Rust compiler did not report its host target");
+const profdata = join(sysroot, "lib/rustlib", host, "bin", "llvm-profdata" + suffix);
+if (!existsSync(profdata)) run("rustup", ["component", "add", "llvm-tools-preview"]);
+if (!existsSync(profdata)) throw new Error("Matching LLVM profile tools are unavailable");
 function sources(directory: string, extension: string): string[] {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
     const path = join(directory, entry.name);
@@ -135,15 +165,6 @@ for (const path of [
 }
 const key = hash.digest("hex");
 const profile = join(cache, key + ".profdata");
-const cargo = [
-  "build",
-  "--locked",
-  "--release",
-  "--manifest-path",
-  "rust/Cargo.toml",
-  "--bin",
-  "hex-command-sim",
-];
 if (!existsSync(profile)) {
   console.log(
     "Training native compiler profile: all policies, maps and campaigns; seeds 17–18, 30 rounds.",
@@ -194,3 +215,7 @@ run("cargo", cargo, {
   HEX_SIM_PROFILE_KEY: key,
   CARGO_ENCODED_RUSTFLAGS: [...flags, "-C", "profile-use=" + active].join("\x1f"),
 });
+copyFileSync(
+  join(nativeEnv.CARGO_TARGET_DIR, "release/hex-command-sim" + suffix),
+  join(target, "release/hex-command-sim" + suffix),
+);

@@ -19,3 +19,7 @@ Only when persistent direct-shell setup is requested, use
 `npm run toolchain:setup`. This installs environment hooks and managed wrappers
 in the user's home; it leaves existing unmanaged wrappers alone. Routine build
 and formatting need only the command wrapper.
+
+Native simulation builds default to an optimized incremental profile without LTO.
+PGO is opt-in (`ai:rust:build -- --pgo`, or `HEX_COMMAND_SIM_PGO=1` for automatic
+build hooks); do not select it implicitly for routine reports or source edits.

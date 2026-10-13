@@ -38,3 +38,10 @@ sha2 = "0.10"
 lto = "thin"
 codegen-units = 8
 panic = "abort"
+
+# Routine native simulations retain optimization without costly whole-program linking.
+[profile.simulation]
+inherits = "release"
+lto = false
+codegen-units = 16
+incremental = true
