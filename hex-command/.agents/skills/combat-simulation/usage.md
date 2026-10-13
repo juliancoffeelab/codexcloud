@@ -118,8 +118,8 @@ reports unmet-duty reasons and checks protected actors for retaliation damage.
 Duty counts describe observations per phase, not independent failed attempts.
 Use CSV exports only when a table-shaped view is useful.
 
-For saved reports or a baseline comparison, invoke the maintained analyzer
-directly:
+When explicitly asked to analyze a saved run or compare saved reports, invoke
+the maintained analyzer directly:
 
 ```sh
 npm run ai:analyze -- artifacts/current/report.json --out artifacts/current/analytics

@@ -31,6 +31,11 @@ conclusions.
 
 ## Run and read the report first
 
+A request to run the report means run fresh simulations and generate their report,
+including after analyzer changes. Use the full runner below. Use only the analyzer
+when the user explicitly asks to analyze or regenerate a particular saved run;
+available results from an earlier review do not replace a requested simulation.
+
 Use the full runner, which saves the native run and automatically analyzes it:
 
 ```sh
