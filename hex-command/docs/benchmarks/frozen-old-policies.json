@@ -268,11 +268,249 @@
     "Copying only old tactics into the optimized engine would silently accelerate old helpers and allocator operations. The complete source and catalog are frozen instead.",
     "Per-game IPC was 5\u201314% faster than historical chooser timing. A dedicated simulation thread repaired most Rush cost but not Classic. Overlapping IPC made chooser costs higher.",
     "The final integration runs the original execution and recording path to completion before importing records. Against a fresh frozen-binary run, Classic/Rush/Mixed chooser CPU differs by -0.13%, +0.30% and -1.07%.",
-    "The historical Classic mean was 109.49 microseconds; rerunning the unchanged frozen binary measured 117.78. Historical wall/CPU timings are observations, not deterministic equality requirements. Every gameplay field, decision count, turn count and cap count is exact."
+    "The historical Classic mean was 109.49 microseconds; rerunning the unchanged frozen binary measured 117.78. Historical wall/CPU timings are observations, not deterministic equality requirements. Every gameplay field, decision count, turn count and cap count is exact.",
+    "Final rebuilt production means were 107.11/265.27/268.76 microseconds; historical means 109.49/255.33/262.07. The unchanged frozen binary rerun measured 115.34/253.99/269.75. CPU timing is reported as measured; no calibration, delay or synthetic replay results are used."
   ],
   "limits": [
     "Native complete-match comparison entrants only; old-versus-old battles and campaigns supported. Live/WASM planner continuations and cross-version opponents rejected.",
     "Old whole-command wall time includes original JSONL recording plus Arrow import and cannot be compared directly with current engine wall time. Actual chooser/phase CPU excludes import.",
     "All eight can be compared in one arena report with --self-play --profile-turns and --data-dir rust/legacy/data."
+  ],
+  "recordingBackedIntegrationBeforeFinalBuild": {
+    "method": "Sequential arena self-play per policy; all faction pairs and authored maps, both initiatives, seeds 1\u201310; 30 rounds, one recruit, one worker. Instrumented native command wall time includes recording and reports. One turn is one completed own-side phase. Strategy changes the encountered states and phase counts.",
+    "fingerprints": {
+      "content": "96981ec4797122c6f715e0febdc9045a20d14562bf1389c9a5fe040163b35a17",
+      "engine": "27d96b70e2125be85ff81764101fd54f0c7aca68236c0093bd962ba0eb9307e2"
+    },
+    "clock": "thread_cpu",
+    "rows": [
+      {
+        "calls": 149416,
+        "meanDecisionMicrosPerTurn": 117.62998447967102,
+        "meanTurnMicros": 137.35300928566693,
+        "policy": "classicold",
+        "seconds": 3.547014552,
+        "turnSeconds": 4.141742642,
+        "turns": 30154,
+        "games": 1280,
+        "commandSeconds": 9.706302575003065,
+        "processCpuSeconds": 13.109292,
+        "caps": 2
+      },
+      {
+        "calls": 276150,
+        "meanDecisionMicrosPerTurn": 256.38240287522353,
+        "meanTurnMicros": 277.7041880130233,
+        "policy": "rushold",
+        "seconds": 11.181862119,
+        "turnSeconds": 12.111790456,
+        "turns": 43614,
+        "games": 1280,
+        "commandSeconds": 20.03456678600196,
+        "processCpuSeconds": 24.98662,
+        "caps": 181
+      },
+      {
+        "calls": 233889,
+        "meanDecisionMicrosPerTurn": 254.98552813864856,
+        "meanTurnMicros": 276.5815735666398,
+        "policy": "mixedold",
+        "seconds": 9.16596478,
+        "turnSeconds": 9.942277825,
+        "turns": 35947,
+        "games": 1280,
+        "commandSeconds": 16.512224840997078,
+        "processCpuSeconds": 20.432103,
+        "caps": 20
+      }
+    ]
+  },
+  "productionIncludedReference": {
+    "method": "Sequential arena self-play per policy; all faction pairs and authored maps, both initiatives, seeds 1\u201310; 30 rounds, one recruit, one worker. Instrumented native command wall time includes recording and reports. One turn is one completed own-side phase. Strategy changes the encountered states and phase counts.",
+    "fingerprints": {
+      "content": "96981ec4797122c6f715e0febdc9045a20d14562bf1389c9a5fe040163b35a17",
+      "engine": "59dd3f0d7cdb29f3c784d6a9f6c393da07a5e3c0a01adbbea610e8dc1730ba40"
+    },
+    "clock": "thread_cpu",
+    "rows": [
+      {
+        "calls": 149416,
+        "meanDecisionMicrosPerTurn": 107.10692823506002,
+        "meanTurnMicros": 123.99910283876103,
+        "policy": "classicold",
+        "seconds": 3.229702314,
+        "turnSeconds": 3.739068947,
+        "turns": 30154,
+        "games": 1280,
+        "commandSeconds": 10.492522469001415,
+        "processCpuSeconds": 14.697126,
+        "caps": 2
+      },
+      {
+        "calls": 276150,
+        "meanDecisionMicrosPerTurn": 265.27081056541476,
+        "meanTurnMicros": 287.54186609804196,
+        "policy": "rushold",
+        "seconds": 11.569521132,
+        "turnSeconds": 12.540850948,
+        "turns": 43614,
+        "games": 1280,
+        "commandSeconds": 21.904669256997295,
+        "processCpuSeconds": 28.156616000000003,
+        "caps": 181
+      },
+      {
+        "calls": 233889,
+        "meanDecisionMicrosPerTurn": 268.75929429437787,
+        "meanTurnMicros": 292.29865607700225,
+        "policy": "mixedold",
+        "seconds": 9.661090352,
+        "turnSeconds": 10.50725979,
+        "turns": 35947,
+        "games": 1280,
+        "commandSeconds": 18.402786074999312,
+        "processCpuSeconds": 23.566861000000006,
+        "caps": 20
+      }
+    ]
+  },
+  "freshFrozenReferenceAfterFinalBuild": {
+    "baseCommit": "b1f553de69c0de8a340088c0a9ed42b2149fb27e",
+    "method": "Unchanged main AI/engine in an isolated checkout; only matching chooser/phase timing hooks added. Same sequential single-policy arena self-play as optimized comparison: all faction/map pairs, both initiatives, seeds 1\u201310, 30 rounds, one recruit, one worker.",
+    "compiler": "Main native release defaults: thin LTO, eight codegen units, no PGO or added target-cpu flags. The optimized reference uses its production native/fat-LTO/PGO build; speedup includes engine, allocator and compiler differences.",
+    "fingerprints": {
+      "content": "96981ec4797122c6f715e0febdc9045a20d14562bf1389c9a5fe040163b35a17",
+      "engine": "40e1c4263a087c7f3cc2c643ecda9d249b23dc7653c4b0ccc6f1cb8762b85629"
+    },
+    "binarySha256": "b67893f9a4683493c9161b8f0345b26973f9ff77e5db0dd32e9015bf713a2be5",
+    "clock": "thread_cpu",
+    "rows": [
+      {
+        "calls": 149416,
+        "meanDecisionMicrosPerTurn": 115.33783710287193,
+        "meanTurnMicros": 134.75562406314253,
+        "policy": "classic",
+        "seconds": 3.47789714,
+        "turnSeconds": 4.063421088,
+        "turns": 30154,
+        "games": 1280,
+        "commandSeconds": 4.57420716600609,
+        "processCpuSeconds": 5.5764249999999995,
+        "caps": 2
+      },
+      {
+        "calls": 276150,
+        "meanDecisionMicrosPerTurn": 253.98877378823315,
+        "meanTurnMicros": 274.670393726785,
+        "policy": "rush",
+        "seconds": 11.07746638,
+        "turnSeconds": 11.979474552,
+        "turns": 43614,
+        "games": 1280,
+        "commandSeconds": 12.566740772002959,
+        "processCpuSeconds": 13.783507999999996,
+        "caps": 181
+      },
+      {
+        "calls": 233889,
+        "meanDecisionMicrosPerTurn": 269.7489256961638,
+        "meanTurnMicros": 292.80564283528525,
+        "policy": "mixed",
+        "seconds": 9.696664632,
+        "turnSeconds": 10.525484443,
+        "turns": 35947,
+        "games": 1280,
+        "commandSeconds": 11.05155869400187,
+        "processCpuSeconds": 12.236529000000003,
+        "caps": 20
+      }
+    ]
+  },
+  "productionCompleteGameplay": {
+    "frozenCommit": "b1f553de69c0de8a340088c0a9ed42b2149fb27e",
+    "rows": [
+      {
+        "policy": "classic",
+        "matches": 1280,
+        "completeGameplayEqual": true,
+        "compactOutcomesEqual": true,
+        "aggregatesEqual": true,
+        "checksumsValidated": true
+      },
+      {
+        "policy": "rush",
+        "matches": 1280,
+        "completeGameplayEqual": true,
+        "compactOutcomesEqual": true,
+        "aggregatesEqual": true,
+        "checksumsValidated": true
+      },
+      {
+        "policy": "mixed",
+        "matches": 1280,
+        "completeGameplayEqual": true,
+        "compactOutcomesEqual": true,
+        "aggregatesEqual": true,
+        "checksumsValidated": true
+      }
+    ],
+    "comparison": "Every checksummed complete gameplay record, compact outcome and aggregate; all array order and endpoint hashes retained. Only policy aliases, run metadata, journal references and selfPlay scheduling marker normalized.",
+    "seconds": 44.11458521599707
+  },
+  "campaignGameplay": {
+    "equal": true,
+    "matches": 72,
+    "completeGameplay": true,
+    "compactOutcomes": true,
+    "orderedArrays": true,
+    "endpointHashes": true,
+    "scope": "Every frozen old policy pairing, all four campaigns, both diplomacy settings, seed 1; cap 30 rounds; two workers.",
+    "seconds": 3.5232151199961663
+  },
+  "allEightSmoke": {
+    "games": 16,
+    "policies": 8,
+    "singleReport": true,
+    "workers": 2,
+    "roundCap": 30,
+    "allTimingRowsPresent": true
+  },
+  "checks": {
+    "verify": "all eight groups pass",
+    "verifySeconds": 82.01,
+    "combinedTestSeconds": 9.26,
+    "combinedTestBudgetSeconds": 20,
+    "productionNativeBuild": "pass",
+    "productionBuild": "native PGO/fat LTO/codegen 1; references remain original thin LTO/codegen 8, without PGO"
+  },
+  "productionBinaries": {
+    "hex-command-sim": "a1b53a281ee275b8abac18561ae84fff3ba07361104d2e08c1627bf1cf294901",
+    "hex-command-legacy": "c2f248fbc7b2ab60d49dcb6f4c0dab76d161a0af86dda79a42e276cb13aeeae9"
+  },
+  "productionComparison": [
+    {
+      "policy": "classicold",
+      "historicalMicrosPerTurn": 109.49365056045633,
+      "freshFrozenMicrosPerTurn": 115.33783710287193,
+      "productionIncludedMicrosPerTurn": 107.10692823506002,
+      "relativeToHistorical": -0.021797814879489175,
+      "relativeToFresh": -0.07136347511416052
+    },
+    {
+      "policy": "rushold",
+      "historicalMicrosPerTurn": 255.32960934562297,
+      "freshFrozenMicrosPerTurn": 253.98877378823315,
+      "productionIncludedMicrosPerTurn": 265.27081056541476,
+      "relativeToHistorical": 0.03893477628885189,
+      "relativeToFresh": 0.044419430862673304
+    },
+    {
+      "policy": "mixedold",
+      "historicalMicrosPerTurn": 262.0691210393079,
+      "freshFrozenMicrosPerTurn": 269.7489256961638,
+      "productionIncludedMicrosPerTurn": 268.75929429437787,
+      "relativeToHistorical": 0.025528277534332178,
+      "relativeToFresh": -0.0036687130420700598
+    }
   ]
 }
