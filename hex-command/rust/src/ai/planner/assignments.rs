@@ -611,12 +611,7 @@ mod tests {
     #[test]
     fn every_fixed_planner_rejects_retaliation_damage_for_a_protected_actor() {
         let rules = Rules::load().unwrap();
-        for planner in [
-            Planner::Classic,
-            Planner::Full,
-            Planner::Full,
-            Planner::Queued,
-        ] {
+        for planner in [Planner::Classic, Planner::Full, Planner::Queued] {
             let mut game = small_battle(&rules);
             game.units
                 .retain(|u| rules.units[u.kind].leader || u.side == Side::Enemy);
