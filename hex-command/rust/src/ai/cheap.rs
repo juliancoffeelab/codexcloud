@@ -1,7 +1,7 @@
 //! Bounded detailed evaluation: inexpensive candidates first, full safety second.
 use super::{
     PlanningWorkspace, TacticalRole,
-    objectives::{TileOrder, TileOrderContext, actor_matches, individual},
+    objectives::{TileOrder, TileOrderContext, actor_matches},
     roles::role,
     tactics::{Plan, action_jitter},
     threats::Threats,
@@ -48,8 +48,12 @@ pub(super) struct Workspace {
     reserved: FxHashMap<u32, FxHashSet<usize>>,
     fields: FxHashMap<(usize, usize, bool), Rc<Field>>,
 }
-pub(super) fn prepare(game: &Game<'_>, workspace: &mut PlanningWorkspace) {
-    let effective_restraint = restrained(game, workspace);
+pub(super) fn prepare(
+    game: &Game<'_>,
+    workspace: &mut PlanningWorkspace,
+    campaign: super::CampaignBlock,
+) {
+    let effective_restraint = campaign.restrained(game, workspace);
     let cache = &mut workspace.cheap;
     let marks = game
         .campaign
@@ -99,7 +103,7 @@ pub(super) fn prepare(game: &Game<'_>, workspace: &mut PlanningWorkspace) {
             )
         }));
 
-        cache.goals = policy_goals(game, workspace.goals.as_deref());
+        cache.goals = campaign.goals(game, workspace.goals.as_deref());
         cache.blockers.clear();
         cache.blockers.resize(game.terrain.len(), false);
         for goal in cache
@@ -177,89 +181,11 @@ pub(super) fn prepare(game: &Game<'_>, workspace: &mut PlanningWorkspace) {
             .iter()
             .map(|u| (u.id, u.tile, u.retreating))
             .collect();
-        cache.clearing = game.escort_lanes(&cache.goals);
+        cache.clearing = game.actor_lanes(&cache.goals);
         cache.lanes = game.withdrawal_lanes(game.turn, effective_restraint);
     }
 }
 
-fn policy_goals(game: &Game<'_>, provided: Option<&[Objective]>) -> Vec<Objective> {
-    let mut goals = game.policy_objectives(provided);
-    let escort_finish = provided.is_none()
-        && game.turn == Side::Player
-        && game.mission.as_ref().is_some_and(|mission| {
-            (mission.refuge.is_none() || game.campaign.as_ref().is_some_and(|c| c.escalated()))
-                && mission.goals.iter().any(|g| {
-                    !game.goal_done(g) && matches!(g, Goal::Escort { .. } | Goal::Escape { .. })
-                })
-                && mission.goals.iter().all(|g| {
-                    game.goal_done(g) || matches!(g, Goal::Escort { .. } | Goal::Escape { .. })
-                })
-        });
-    if escort_finish {
-        for goal in goals.iter_mut().filter(|g| g.id == "opposing-leader") {
-            goal.weight = 48.0;
-        }
-    }
-    individual(goals)
-}
-pub(super) fn heavy_campaign(game: &Game<'_>) -> bool {
-    game.campaign.as_ref().is_some_and(|state| {
-        game.rules.campaigns[&state.id]
-            .missions
-            .iter()
-            .any(|mission| {
-                mission
-                    .goals
-                    .iter()
-                    .any(|g| matches!(g, Goal::Defeat { .. }))
-                    && mission
-                        .goals
-                        .iter()
-                        .any(|g| matches!(g, Goal::Seal { .. }) && g.unit_type().is_none())
-            })
-    })
-}
-pub(super) fn crisis(game: &Game<'_>) -> bool {
-    if heavy_campaign(game) {
-        return game.turn == Side::Player;
-    }
-    game.turn == Side::Player
-        && game.campaign.is_some()
-        && game.units.iter().any(|u| {
-            u.side == Side::Player
-                && game.essential(u)
-                && u.hp * 2 <= game.rules.units[u.kind].hp
-                && game.proximity(u.side, u.tile) <= 5
-        })
-}
-
-pub(super) fn restrained(game: &Game<'_>, workspace: &PlanningWorkspace) -> bool {
-    workspace.diplomacy == super::Diplomacy::Restrained
-        || !heavy_campaign(game)
-            && game.turn == Side::Player
-            && game.mission.as_ref().is_some_and(|m| m.refuge.is_some())
-            && game.campaign.as_ref().is_some_and(|c| !c.escalated())
-}
-pub(super) fn terminal_attack(game: &Game<'_>, unit: &Unit, target: &Unit) -> bool {
-    if !game.rules.units[target.kind].leader {
-        return false;
-    }
-    if game.campaign.is_none() {
-        return true;
-    }
-    unit.side == Side::Player
-        && game.mission.as_ref().is_some_and(|mission| {
-            mission
-                .goals
-                .iter()
-                .all(|g| game.goal_done(g) || matches!(g, Goal::Defeat { .. }))
-        })
-        && game
-            .units
-            .iter()
-            .filter(|u| u.side != unit.side && game.rules.units[u.kind].leader)
-            .all(|u| u.id == target.id)
-}
 fn leader_may_advance(
     game: &Game<'_>,
     unit: &Unit,
@@ -302,9 +228,23 @@ struct Candidate {
     order: usize,
 }
 pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) -> Option<Plan> {
+    fn is_objective_kind_escort_escape(value: &ObjectiveKind) -> bool {
+        match value {
+            ObjectiveKind::Escort | ObjectiveKind::Escape => true,
+            ObjectiveKind::Capture
+            | ObjectiveKind::Defeat
+            | ObjectiveKind::Visit
+            | ObjectiveKind::Seal
+            | ObjectiveKind::Vigil => false,
+        }
+    }
+
     let original = game.unit(id)?;
     let objectives = &workspace.cheap.goals;
-    let restrained = restrained(game, workspace);
+    let restrained = workspace
+        .effective_blocks(workspace.policy.expect("initialized planner"))
+        .campaign
+        .restrained(game, workspace);
     let required = objectives
         .iter()
         .any(|g| g.kind == ObjectiveKind::Escape && actor_matches(&g.actor, id));
@@ -350,8 +290,8 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
             continue;
         }
         let dynamic = pursuing
-            && original.actor.is_some()
-            && matches!(original.kind, ObjectiveKind::Escort | ObjectiveKind::Escape);
+            && (original.actor.is_some() || original.family.is_some())
+            && super::campaign::actor_route(original);
         let field = workspace
             .cheap
             .fields
@@ -383,7 +323,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
         if route[unit.tile] == u16::MAX {
             continue;
         }
-        let assigned = pursuing && (original.actor.is_some() || original.family.is_some());
+        let assigned = game.assigned_duty(&unit, original);
         let priority = (route[unit.tile] as f64 + 3.0) / field.goal.weight;
         duties.push((field, route, assigned, priority));
     }
@@ -578,10 +518,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
         if unit.role == Some(Role::Courier) || unit.role == Some(Role::Leader) {
             objectives
                 .iter()
-                .filter(|g| {
-                    actor_matches(&g.actor, id)
-                        && matches!(g.kind, ObjectiveKind::Escort | ObjectiveKind::Escape)
-                })
+                .filter(|g| actor_matches(&g.actor, id) && is_objective_kind_escort_escape(&g.kind))
                 .flat_map(|g| g.tiles.iter().map(|t| game.site(t)))
                 .collect()
         } else {
@@ -625,7 +562,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
             response = retaliation;
             let killed = damage >= target.hp;
             eliminated = killed.then_some(target.id);
-            terminal = killed && terminal_attack(game, &unit, target);
+            terminal = killed && super::campaign::terminal_attack(game, &unit, target);
             combat = damage.min(target.hp) as f64 * 2.0
                 + if killed {
                     12.0 + game.rules.units[target.kind].cost as f64 * 0.3
@@ -933,8 +870,26 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ai::campaign::{policy_goals, restrained};
     #[test]
     fn shared_frames_follow_actions_and_turn_boundaries() {
+        fn is_command_endturn(value: &Command) -> bool {
+            match value {
+                Command::EndTurn => true,
+                Command::Move { .. }
+                | Command::Attack { .. }
+                | Command::Recruit { .. }
+                | Command::Advance { .. }
+                | Command::DismissDialogue
+                | Command::NextMission
+                | Command::RecallMission { .. }
+                | Command::RetryMission
+                | Command::PreviousDialogue
+                | Command::SkipDialogue
+                | Command::SetUnitIntent { .. } => false,
+            }
+        }
+
         let rules = Rules::load().unwrap();
         let mut games = vec![
             Game::new(&rules, "mirror"),
@@ -943,8 +898,9 @@ mod tests {
         for game in &mut games {
             let mut workspace =
                 PlanningWorkspace::new(7, 1, None, super::super::Diplomacy::Pragmatic);
+            workspace.policy = Some(super::super::Policy::Priority);
             for _ in 0..24 {
-                prepare(game, &mut workspace);
+                prepare(game, &mut workspace, super::super::CampaignBlock::Adaptive);
                 assert_eq!(
                     serde_json::to_value(&workspace.cheap.goals).unwrap(),
                     serde_json::to_value(policy_goals(game, None)).unwrap()
@@ -957,7 +913,7 @@ mod tests {
                 );
                 assert_eq!(
                     workspace.cheap.clearing,
-                    game.escort_lanes(&workspace.cheap.goals)
+                    game.actor_lanes(&workspace.cheap.goals)
                 );
                 assert_eq!(
                     workspace.cheap.lanes,
@@ -1009,7 +965,7 @@ mod tests {
                 if game.winner.is_some() {
                     break;
                 }
-                let boundary = matches!(command, Command::EndTurn);
+                let boundary = is_command_endturn(&command);
                 game.execute(command).unwrap();
                 if boundary {
                     workspace =

@@ -249,6 +249,16 @@ impl<'catalog> Game<'catalog> {
     /// Turn-local route fields respect blockers instead of scoring impossible steps.
     /// With yielding enabled, friendly occupants add a cost and enemies remain blocked.
     pub(crate) fn occupied_routes(&self, unit: &Unit, goals: &[usize], yielding: bool) -> Vec<u16> {
+        self.occupied_routes_with_penalty(unit, goals, yielding.then_some(2))
+    }
+    /// Campaign corridor requests can ask allies to yield without preferring
+    /// a longer detour that postpones an otherwise reachable actor arrival.
+    pub(crate) fn occupied_routes_with_penalty(
+        &self,
+        unit: &Unit,
+        goals: &[usize],
+        friendly_penalty: Option<u16>,
+    ) -> Vec<u16> {
         let entry = |tile: usize| {
             let terrain = self.cost(unit.kind, tile);
             if terrain == u16::MAX {
@@ -256,8 +266,8 @@ impl<'catalog> Game<'catalog> {
             }
             match self.at(tile) {
                 Some(other) if other.id != unit.id => {
-                    if yielding && other.side == unit.side {
-                        terrain.saturating_add(2)
+                    if let Some(penalty) = friendly_penalty.filter(|_| other.side == unit.side) {
+                        terrain.saturating_add(penalty)
                     } else {
                         u16::MAX
                     }

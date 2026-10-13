@@ -302,6 +302,9 @@ impl NativeEngineFactory {
                 None,
                 options.diplomacy,
             ));
+            if let Some(blocks) = options.blocks {
+                battle.workspace = battle.workspace.take().map(|w| w.with_blocks(blocks));
+            }
             battle.options = Some(options.clone());
             battle.pending = None;
         }
@@ -350,7 +353,8 @@ impl NativeEngineFactory {
         })?;
         let state = game.state();
         if let Some(planner) = &mut saved.planner {
-            if planner.workspace.seed != saved.seed
+            if planner.workspace.blocks != planner.options.blocks
+                || planner.workspace.seed != saved.seed
                 || planner.workspace.diplomacy != planner.options.diplomacy
                 || planner
                     .workspace
@@ -380,6 +384,7 @@ impl NativeEngineFactory {
                             planner.workspace.goals.clone(),
                             planner.workspace.diplomacy,
                         )
+                        .with_optional_blocks(planner.workspace.blocks)
                         .snapshot();
                         planner.pending = None;
                     }
@@ -464,6 +469,7 @@ mod tests {
         let board = Board::new(&state.tiles);
         let original = factory.insert(state, 17, board);
         let options = AiOptions {
+            blocks: None,
             policy: AiPolicy::Mixed,
             diplomacy: AiDiplomacy::Restrained,
             recruitment_limit: 1,
@@ -547,11 +553,12 @@ mod tests {
 
     #[test]
     fn save_restores_pending_ai_decision_and_continuation() {
-        for policy in [
-            AiPolicy::Classic,
-            AiPolicy::Mixed,
-            AiPolicy::Priority,
-            AiPolicy::Battler,
+        for (policy, blocks) in [
+            (AiPolicy::Classic, None),
+            (AiPolicy::Mixed, None),
+            (AiPolicy::Priority, None),
+            (AiPolicy::Battler, None),
+            (AiPolicy::Classic, AiPolicy::Priority.blocks()),
         ] {
             let mut factory = NativeEngineFactory {
                 rules: Rules::embedded().unwrap(),
@@ -567,6 +574,7 @@ mod tests {
             let board = Board::new(&state.tiles);
             let original = factory.insert(state, 17, board);
             let options = AiOptions {
+                blocks,
                 policy,
                 diplomacy: AiDiplomacy::Restrained,
                 recruitment_limit: 2,

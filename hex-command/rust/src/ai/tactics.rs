@@ -1,6 +1,6 @@
 use super::objectives::actor_matches;
 use super::roles::role;
-use super::{Policy, TacticalRole};
+use super::{TacticalRole, planner::GlobalStyle};
 use crate::{
     ai::objectives::{TileOrder, individual, objective},
     ai::threats::Threats,
@@ -97,7 +97,7 @@ pub(super) struct Plan {
 impl Game<'_> {
     pub(super) fn best_plan<const BOUNDED: bool, const FOCUSED: bool>(
         &self,
-        policy: Policy,
+        policy: GlobalStyle,
         seed: u32,
         goals: Option<&[Objective]>,
         prepared_goals: Option<&[Objective]>,
@@ -108,6 +108,17 @@ impl Game<'_> {
         threat_workspace: &mut super::threats::ArenaThreatWorkspace,
         focus: Option<u32>,
     ) -> Option<Plan> {
+        fn is_objective_kind_escort_escape(value: &ObjectiveKind) -> bool {
+            match value {
+                ObjectiveKind::Escort | ObjectiveKind::Escape => true,
+                ObjectiveKind::Capture
+                | ObjectiveKind::Defeat
+                | ObjectiveKind::Visit
+                | ObjectiveKind::Seal
+                | ObjectiveKind::Vigil => false,
+            }
+        }
+
         let side = self.turn;
         let objectives: Cow<'_, [Objective]> = if let Some(prepared) = prepared_goals {
             let rebuilding = self.rebuild_objectives(prepared);
@@ -125,7 +136,7 @@ impl Game<'_> {
         } else {
             Cow::Owned(individual(self.policy_objectives(goals)))
         };
-        let escort_lanes = self.escort_lanes(&objectives);
+        let escort_lanes = self.actor_lanes(&objectives);
         let rebuilds: HashMap<_, _> = self
             .units
             .iter()
@@ -196,7 +207,7 @@ impl Game<'_> {
             }
         }
         nearby_offsets.push(nearby_foes.len());
-        let protected: Vec<_> = if policy == Policy::Mixed {
+        let protected: Vec<_> = if policy == GlobalStyle::Mixed {
             allies
                 .iter()
                 .filter(|u| self.essential(u) || role(self, u.kind) != TacticalRole::Frontline)
@@ -221,7 +232,11 @@ impl Game<'_> {
                 let danger = if important {
                     9.0
                 } else if category == TacticalRole::Frontline {
-                    if policy == Policy::Rush { 0.55 } else { 0.75 }
+                    if policy == GlobalStyle::Rush {
+                        0.55
+                    } else {
+                        0.75
+                    }
                 } else {
                     1.1
                 };
@@ -233,8 +248,7 @@ impl Game<'_> {
                 let terminal_objective = self.campaign.is_some()
                     && side == Side::Player
                     && objectives.iter().any(|g| {
-                        actor_matches(&g.actor, unit.id)
-                            && matches!(g.kind, ObjectiveKind::Escort | ObjectiveKind::Escape)
+                        actor_matches(&g.actor, unit.id) && is_objective_kind_escort_escape(&g.kind)
                     });
                 let zero_cost = self.rules.units[unit.kind]
                     .costs
@@ -263,9 +277,8 @@ impl Game<'_> {
                         };
                         let value =
                             damage.min(target.hp) as f64 * 2.0 + kill_value + essential_value;
-                        let terminal_attack = killed
-                            && self.campaign.is_none()
-                            && self.rules.units[target.kind].leader;
+                        let terminal_attack =
+                            killed && super::campaign::terminal_attack(self, unit, target);
                         if !distant {
                             offense = offense.max(if terminal_attack {
                                 value + 100.0
@@ -412,8 +425,8 @@ impl Game<'_> {
                 };
                 let tiles: Vec<_> = goal.tiles.iter().map(|t| self.site(t)).collect();
                 let route = if pursuing
-                    && original.actor.is_some()
-                    && matches!(original.kind, ObjectiveKind::Escort | ObjectiveKind::Escape)
+                    && (original.actor.is_some() || original.family.is_some())
+                    && super::campaign::actor_route(original)
                 {
                     let occupied = self.occupied_routes(unit, &tiles, false);
                     if occupied[unit.tile] == u16::MAX {
@@ -433,7 +446,7 @@ impl Game<'_> {
                 }
                 duties.push(Duty {
                     priority: (before as f64 + 3.0) / goal.weight,
-                    assigned: !assisting && (original.actor.is_some() || original.family.is_some()),
+                    assigned: self.assigned_duty(&unit, original),
                     goal,
                     route,
                     before,
@@ -476,7 +489,11 @@ impl Game<'_> {
             let danger_weight = if important {
                 6.0
             } else if category == TacticalRole::Frontline {
-                if policy == Policy::Rush { 0.35 } else { 0.55 }
+                if policy == GlobalStyle::Rush {
+                    0.35
+                } else {
+                    0.55
+                }
             } else {
                 0.9
             };
@@ -513,7 +530,7 @@ impl Game<'_> {
                     (self.rules.units[unit.kind].hp - unit.hp).min(4) as f64 * 2.0,
                 );
                 ceiling = add(ceiling, 3.0);
-                if policy == Policy::Mixed {
+                if policy == GlobalStyle::Mixed {
                     if category == TacticalRole::Healer {
                         let healing = self.rules.units[unit.kind].healing;
                         for ally in &allies {
@@ -552,7 +569,7 @@ impl Game<'_> {
                     } else {
                         0.0
                     }
-                    - if policy == Policy::Mixed
+                    - if policy == GlobalStyle::Mixed
                         && category != TacticalRole::Frontline
                         && !screens.is_empty()
                         && range_to_foe(unit.tile) <= 4
@@ -595,7 +612,7 @@ impl Game<'_> {
             destinations.extend(reachable.iter().copied().map(|(t, _)| t));
             destinations = self.authored_destinations(original_unit, destinations);
             let other_healing: Vec<_> =
-                if policy == Policy::Mixed && category == TacticalRole::Healer {
+                if policy == GlobalStyle::Mixed && category == TacticalRole::Healer {
                     allies
                         .iter()
                         .map(|ally| {
@@ -665,7 +682,7 @@ impl Game<'_> {
                 if self.terrain_is(tile, Terrain::Village) && self.owners[tile] != Some(side) {
                     positioning += 3.0;
                 }
-                if policy == Policy::Mixed {
+                if policy == GlobalStyle::Mixed {
                     if category == TacticalRole::Healer {
                         let healing = self.rules.units[unit.kind].healing;
                         let mut value = 0.0;
@@ -762,9 +779,8 @@ impl Game<'_> {
                         retaliation = response;
                         let killed = damage >= target.hp;
                         eliminated = killed.then_some(target.id);
-                        finishes_battle = killed
-                            && self.campaign.is_none()
-                            && self.rules.units[target.kind].leader;
+                        finishes_battle =
+                            killed && super::campaign::terminal_attack(self, &unit, target);
                         combat = damage.min(target.hp) as f64 * 2.0
                             + if killed {
                                 12.0 + self.rules.units[target.kind].cost as f64 * 0.3
@@ -928,6 +944,23 @@ mod tests {
     use super::*;
     #[test]
     fn whole_unit_bounds_preserve_plans_and_commitments_through_live_actions() {
+        fn is_command_endturn(value: &Command) -> bool {
+            match value {
+                crate::logic::Command::EndTurn => true,
+                Command::Move { .. }
+                | Command::Attack { .. }
+                | Command::Recruit { .. }
+                | Command::Advance { .. }
+                | Command::DismissDialogue
+                | Command::NextMission
+                | Command::RecallMission { .. }
+                | Command::RetryMission
+                | Command::PreviousDialogue
+                | Command::SkipDialogue
+                | Command::SetUnitIntent { .. } => false,
+            }
+        }
+
         let rules = Rules::load().unwrap();
         for mut game in [
             Game::new(&rules, "mirror"),
@@ -955,7 +988,7 @@ mod tests {
             let mut left_threats = super::super::threats::ArenaThreatWorkspace::default();
             let mut right_threats = super::super::threats::ArenaThreatWorkspace::default();
             for _ in 0..24 {
-                for policy in [Policy::Rush, Policy::Mixed] {
+                for policy in [GlobalStyle::Rush, GlobalStyle::Mixed] {
                     let mut left_intents = vec![];
                     let mut right_intents = vec![];
                     let left = game.best_plan::<true, false>(
@@ -986,10 +1019,14 @@ mod tests {
                     assert_eq!(left_intents, right_intents);
                     assert_eq!(left_commitments, right_commitments);
                 }
-                let command =
-                    super::super::choose_game_command(&rules, &game, Policy::Mixed, &mut actual)
-                        .unwrap();
-                if matches!(command, crate::logic::Command::EndTurn) {
+                let command = super::super::choose_game_command(
+                    &rules,
+                    &game,
+                    super::super::Policy::Mixed,
+                    &mut actual,
+                )
+                .unwrap();
+                if is_command_endturn(&command) {
                     if game.winner.is_some() {
                         break;
                     }

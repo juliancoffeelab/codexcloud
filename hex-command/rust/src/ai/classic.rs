@@ -50,7 +50,7 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
             unit: u.clone(),
             goals: goals.to_vec(),
             reserved: g.reserved(u, goals),
-            yielding: g.escort_lanes(goals).remove(&u.id).unwrap_or_default(),
+            yielding: g.actor_lanes(goals).remove(&u.id).unwrap_or_default(),
             lanes: g.withdrawal_lanes(u.side, restrained),
             important,
             threats,
@@ -404,8 +404,8 @@ impl Game<'_> {
             return;
         }
         let assigned = rules.goals.iter().any(|g| {
-            actor_matches(&g.actor, id)
-                && matches!(g.kind, ObjectiveKind::Escort | ObjectiveKind::Escape)
+            (actor_matches(&g.actor, id) || g.family.is_some() && self.can_pursue(&u, g))
+                && super::campaign::actor_route(g)
         });
         let routes = if assigned {
             Some(std::rc::Rc::new(self.occupied_routes(&u, &goals, false)))
@@ -529,7 +529,7 @@ impl Game<'_> {
             .filter(|u| u.side == self.turn)
             .map(|u| u.id)
             .collect();
-        let clearing = self.escort_lanes(objectives);
+        let clearing = self.actor_lanes(objectives);
         let order = |u: &Unit| {
             let r = &self.rules.units[u.kind];
             match r.id.as_str() {
@@ -546,7 +546,15 @@ impl Game<'_> {
                     Family::Commander | Family::Wildkeeper | Family::Necromancer => {
                         ClassicOrder::Leader
                     }
-                    _ => {
+                    Family::Harpooner
+                    | Family::MerfolkMacer
+                    | Family::Reefguard
+                    | Family::Rider
+                    | Family::SkeletonMage
+                    | Family::Spearman
+                    | Family::Swordsman
+                    | Family::Tidekeeper
+                    | Family::Wavemender => {
                         if r.leader {
                             ClassicOrder::Leader
                         } else if r.range > 1 {
@@ -603,6 +611,9 @@ impl Game<'_> {
                             .any(|t| self.owners[self.site(t)] != Some(u.side)))
             })
             .collect();
+        if eligible.iter().any(|g| self.assigned_duty(&u, g)) {
+            eligible.retain(|g| self.assigned_duty(&u, g));
+        }
         eligible.sort_by(|a, b| {
             let score = |g: &Objective| {
                 g.tiles
@@ -618,7 +629,7 @@ impl Game<'_> {
         });
         let best = eligible.first().copied();
         let reserved = self.reserved(&u, objectives);
-        let clearing = self.escort_lanes(objectives).remove(&u.id);
+        let clearing = self.actor_lanes(objectives).remove(&u.id);
         let movement = if let Some(lane) = clearing {
             Some(
                 self.reachable(&u)

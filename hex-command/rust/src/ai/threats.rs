@@ -196,6 +196,59 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         minimum
     }
     pub fn at(&mut self, u: &Unit, tile: usize, eliminated: Option<u32>) -> i32 {
+        fn is_goal_escort(value: &Goal) -> bool {
+            match value {
+                Goal::Escort { .. } => true,
+                Goal::Defeat { .. }
+                | Goal::Escape { .. }
+                | Goal::Control { .. }
+                | Goal::Seal { .. }
+                | Goal::Event { .. }
+                | Goal::Hold { .. }
+                | Goal::Vigil { .. }
+                | Goal::Refuge { .. } => false,
+            }
+        }
+        fn is_goal_escape(value: &Goal) -> bool {
+            match value {
+                Goal::Escape { .. } => true,
+                Goal::Defeat { .. }
+                | Goal::Escort { .. }
+                | Goal::Control { .. }
+                | Goal::Seal { .. }
+                | Goal::Event { .. }
+                | Goal::Hold { .. }
+                | Goal::Vigil { .. }
+                | Goal::Refuge { .. } => false,
+            }
+        }
+        fn is_goal_vigil(value: &Goal) -> bool {
+            match value {
+                Goal::Vigil { .. } => true,
+                Goal::Defeat { .. }
+                | Goal::Escort { .. }
+                | Goal::Escape { .. }
+                | Goal::Control { .. }
+                | Goal::Seal { .. }
+                | Goal::Event { .. }
+                | Goal::Hold { .. }
+                | Goal::Refuge { .. } => false,
+            }
+        }
+        fn is_goal_seal(value: &Goal) -> bool {
+            match value {
+                Goal::Seal { .. } => true,
+                Goal::Defeat { .. }
+                | Goal::Escort { .. }
+                | Goal::Escape { .. }
+                | Goal::Control { .. }
+                | Goal::Event { .. }
+                | Goal::Hold { .. }
+                | Goal::Vigil { .. }
+                | Goal::Refuge { .. } => false,
+            }
+        }
+
         let important = self.source.essential(u);
         let key = (important.then_some(u.id), u.kind, tile, eliminated);
         if let Some(&risk) = self.cache.get(&key) {
@@ -235,11 +288,10 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         } else {
             let sensitive = self.source.mission.as_ref().is_some_and(|m| {
                 m.goals.iter().any(|g| {
-                    let eligible = (matches!(g, Goal::Escort { .. })
-                        && u.role == Some(Role::Courier))
-                        || (matches!(g, Goal::Escape { .. }) && u.role == Some(Role::Leader))
-                        || (matches!(g, Goal::Vigil { .. }) && u.name.as_ref() == g.companion())
-                        || (matches!(g, Goal::Seal { .. })
+                    let eligible = (is_goal_escort(g) && u.role == Some(Role::Courier))
+                        || (is_goal_escape(g) && u.role == Some(Role::Leader))
+                        || (is_goal_vigil(g) && u.name.as_ref() == g.companion())
+                        || (is_goal_seal(g)
                             && g.unit_type().is_none_or(|k| {
                                 self.source.rules.units[self.source.kind(k)].family
                                     == self.source.rules.units[u.kind].family

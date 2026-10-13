@@ -16,11 +16,19 @@ impl PlanningSnapshot {
                 "frozen reference policies run complete native matches, not live planners",
             ));
         }
-        if state.campaign.is_some() && self.policy.is_some_and(|p| !p.supports_campaign()) {
+        if state.campaign.is_some()
+            && self
+                .blocks
+                .or_else(|| self.policy.and_then(|p| p.blocks()))
+                .is_some_and(|b| !b.campaign.supports_campaign())
+        {
             return Err(fail("battle-only policy cannot resume a campaign"));
         }
         if let Some(queue) = &self.priority {
-            if !self.policy.is_some_and(|p| p.queued())
+            if !self
+                .blocks
+                .or_else(|| self.policy.and_then(|p| p.blocks()))
+                .is_some_and(|b| b.planner.queued())
                 || queue.cursor > queue.pending.len()
                 || queue.known_next_id == 0
                 || queue.known_next_id > state.next_id

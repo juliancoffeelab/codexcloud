@@ -184,6 +184,10 @@ pub struct AttackPreview {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct AiOptions {
+    /// Optional independent blocks; omitted callers use the policy preset.
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub blocks: Option<crate::ai::Blocks>,
     pub policy: crate::ai::Policy,
     pub diplomacy: crate::ai::Diplomacy,
     /// Maximum recruit commands the planner may choose during this phase.

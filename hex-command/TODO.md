@@ -15,6 +15,13 @@
 
 ## Balance and simulations
 
+- [x] Separate Recruiter, Campaign and Planner blocks; share exhaustive actor
+      routing for Vigil, Escort, Escape, typed Seal and Capture objectives, and
+      remove stale shelter targets when Refuge encounters escalate.
+- [ ] Investigate coordinated attacks when individually unfavorable trades can
+      finish a defended enemy; campaign route fixes do not solve this combat
+      stalemate.
+
 - [ ] Align simulation-player roles with infantry-only, fair use of every roster
       unit with a stable recruitment pool, and situational unit selection. All
       three must intelligently complete campaigns and objectives; current

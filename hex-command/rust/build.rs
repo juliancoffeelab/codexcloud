@@ -37,7 +37,17 @@ fn main() {
         println!("cargo:rerun-if-changed={}", file.display());
         hash.update(file.to_string_lossy().as_bytes());
         hash.update([0]);
-        hash.update(fs::read(root.join(file)).expect("engine source"));
+        let bytes = fs::read(root.join(&file)).expect("engine source");
+        if file.starts_with("src/ai") && file.extension().is_some_and(|ext| ext == "rs") {
+            let source = String::from_utf8_lossy(&bytes);
+            let compact: String = source.split_whitespace().collect();
+            assert!(
+                !compact.contains("matches!"),
+                "{}: AI filters must use nested exhaustive match functions",
+                file.display()
+            );
+        }
+        hash.update(bytes);
     }
     println!("cargo:rerun-if-changed=src");
     println!(

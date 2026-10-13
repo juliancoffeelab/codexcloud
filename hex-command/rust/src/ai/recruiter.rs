@@ -1,18 +1,48 @@
+//! Recruitment selection and placement, independent of tactical planning.
 use super::{
-    Policy, TacticalRole,
+    TacticalRole,
     objectives::TileOrder,
     roles::{recruit_role, role},
     tactics::jitter,
 };
 use crate::{data::*, logic::Game};
-impl Game<'_> {
-    pub(super) fn choose_recruit(
-        &self,
-        policy: Policy,
+use serde::{Deserialize, Serialize};
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum Recruiter {
+    Rotation,
+    Frontline,
+    Balanced,
+}
+impl Recruiter {
+    pub(super) fn choose(
+        self,
+        game: &Game<'_>,
         seed: u32,
         goals: Option<&[Objective]>,
         restrained: bool,
     ) -> Option<Command> {
+        game.choose_recruit(self, seed, goals, restrained)
+    }
+}
+impl Game<'_> {
+    pub(super) fn choose_recruit(
+        &self,
+        recruiter: Recruiter,
+        seed: u32,
+        goals: Option<&[Objective]>,
+        restrained: bool,
+    ) -> Option<Command> {
+        fn behavior(recruiter: Recruiter) -> (bool, bool, bool) {
+            match recruiter {
+                Recruiter::Rotation => (true, false, false),
+                Recruiter::Frontline => (false, true, false),
+                Recruiter::Balanced => (false, false, true),
+            }
+        }
+        let (rotation, frontline_only, balanced) = behavior(recruiter);
         let side = self.turn;
         let goals = goals.map_or_else(|| self.objectives(side), |g| g.to_vec());
         let lanes = self.withdrawal_lanes(side, restrained);
@@ -23,7 +53,12 @@ impl Game<'_> {
         else {
             return None;
         };
-        let pool = self.recruitment_options(side);
+        let required = self.required_recruit(side);
+        let pool: Vec<_> = self
+            .recruitment_options(side)
+            .into_iter()
+            .filter(|&kind| required.is_none_or(|family| self.rules.units[kind].family == family))
+            .collect();
         let reserved: std::collections::HashMap<_, _> = pool
             .iter()
             .map(|&kind| {
@@ -46,7 +81,7 @@ impl Game<'_> {
             .collect();
         let placement_allowed =
             |kind: usize, tile: usize| !reserved[&kind].contains(&tile) && !lanes.contains(&tile);
-        if policy == Policy::Classic {
+        if rotation && required.is_none() {
             if pool.is_empty() {
                 return None;
             }
@@ -95,11 +130,11 @@ impl Game<'_> {
             .sum();
         let mut choices = vec![];
         for kind in pool {
-            if policy == Policy::Rush && role(self, kind) != TacticalRole::Frontline {
+            if frontline_only && required.is_none() && role(self, kind) != TacticalRole::Frontline {
                 continue;
             }
             if !self
-                .placement_tiles(&leader, kind, policy != Policy::Mixed)
+                .placement_tiles(&leader, kind, !balanced)
                 .iter()
                 .any(|&t| placement_allowed(kind, t))
             {
@@ -160,18 +195,14 @@ impl Game<'_> {
                     / opponents.len() as f64
             };
             let efficiency = (r.hp as f64 * 0.35 + effectiveness * 1.5) / r.cost as f64;
-            let score = if policy == Policy::Rush {
+            let score = if frontline_only {
                 efficiency * 5.0 + r.hp as f64 * 0.15
             } else {
                 efficiency * 2.0
             };
             choices.push((
                 kind,
-                if policy == Policy::Mixed {
-                    deficiency
-                } else {
-                    0.0
-                },
+                if balanced { deficiency } else { 0.0 },
                 score + jitter(seed, &format!("recruit:{}:{}", self.round, r.id)),
             ));
         }
@@ -276,7 +307,9 @@ mod tests {
             game.gold = [1000, 0];
             game.roster_changed();
             for _ in 0..purchases {
-                let command = game.choose_recruit(Policy::Mixed, 1, None, false).unwrap();
+                let command = game
+                    .choose_recruit(Recruiter::Balanced, 1, None, false)
+                    .unwrap();
                 game.execute(command).unwrap();
                 let tile = (0..game.terrain.len())
                     .find(|&t| game.at(t).is_none() && game.board.distance(t, home) > 2)

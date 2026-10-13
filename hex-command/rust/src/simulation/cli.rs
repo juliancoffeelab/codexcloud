@@ -268,6 +268,8 @@ fn stdio(rules: &Rules) -> Result<(), SimulationError> {
 #[derive(serde::Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct PhaseRequest {
+    #[serde(default)]
+    blocks: Option<crate::ai::Blocks>,
     state: crate::data::State,
     policy: crate::ai::Policy,
     seed: u32,
@@ -337,14 +339,16 @@ fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, Simulation
         request.recruitment_limit,
         request.goals.clone(),
         request.diplomacy,
-    );
+    )
+    .with_optional_blocks(request.blocks);
     workspace
         .snapshot()
         .validate(rules, &game.state())
         .map_err(|error| SimulationError::InvalidConfig(error.to_string()))?;
     game.recordings = Some(crate::data::Records::default());
-    game.play_policy(
+    game.play_blocks(
         request.policy,
+        request.blocks,
         request.seed,
         request.recruitment_limit,
         request.goals.as_deref(),

@@ -5,6 +5,83 @@ resolved movement, damage and recruitment rules as the browser. Recruitment is
 part of each policy. The live enemy uses classic; the simulation harness can
 select each policy for either side.
 
+## Independent blocks
+
+Live policy names are presets defined exhaustively in `blocks.rs`. Each selects
+three independent blocks; planner algorithms do not receive the policy enum.
+
+| Preset   | Recruiter | Campaign block | Planner |
+| -------- | --------- | -------------- | ------- |
+| Classic  | Rotation  | Objectives     | Classic |
+| Rush     | Frontline | Objectives     | Rush    |
+| Mixed    | Balanced  | Objectives     | Mixed   |
+| Priority | Balanced  | Adaptive       | Queued  |
+| Battler  | Balanced  | ArenaOnly      | Queued  |
+
+- `recruiter.rs` owns recruitment selection and placement. Rotation, Frontline
+  and Balanced preserve the existing combat recruitment styles.
+- `campaign.rs` owns mission duties, required actors, reserved destinations,
+  corridor clearing, rebuilding, diplomacy and requests for full planning.
+  Adaptive requests full Mixed planning during a crisis or a complex assault.
+  ArenaOnly rejects campaign use.
+- `planner.rs` owns tactical dispatch and command staging. `classic.rs`,
+  `tactics.rs`, `priority.rs` and `cheap.rs` implement the search families.
+  `objectives.rs` retains generic target expansion and stable tile ordering.
+
+Rust callers can select `Blocks { recruiter, campaign, planner }` with
+`PlanningWorkspace::with_blocks`. Browser `AiOptions` and native `--phase-stdio`
+requests accept an optional `blocks` object. For example, a Frontline recruiter
+can use Adaptive campaign behavior and Queued tactical planning:
+
+```json
+{
+  "policy": "rush",
+  "blocks": {
+    "recruiter": "frontline",
+    "campaign": "adaptive",
+    "planner": "queued"
+  },
+  "diplomacy": "restrained",
+  "recruitmentLimit": 1
+}
+```
+
+Omitting `blocks` selects the preset. Custom blocks survive pending commands and
+saved continuations; historical saves without the optional field retain their
+presets. Full native match schedules continue to select the named presets.
+Frozen Old policies remain separate historical executables.
+
+AI filters use nested exhaustive match functions. The build rejects `matches!`
+anywhere in the current AI Rust module, including tests. The module also denies
+Clippy's wildcard enum match lint. Objective classification explicitly covers
+every authored goal and planning-objective variant.
+
+## Campaign progress and actor routing
+
+Escort, Escape, Vigil, typed Seal and actor-specific Capture duties use the same
+campaign decision for occupancy-aware routing and allied corridor clearing.
+Vigil arrival retains the real uninterrupted enemy-turn holding requirement;
+reaching its endpoint is not treated as an immediate victory.
+
+Corridor requests retain the normal weighted route. If its friendly occupancy
+penalty prevents arrival this phase, the campaign block checks whether allies
+can yield along a shorter path that permits arrival or reaching its approach. Path reconstruction
+handles equal distances on zero-cost terrain with visited parents, so it cannot
+loop on a distance plateau. Movement legality and safety remain the engine and
+planner's responsibility.
+
+An escalated Refuge objective targets the opposing patrol rather than retaining
+the shelter as a destination. All tactical planners share the campaign block's
+terminal-attack decision; finishing that patrol requires its last enemy, not
+merely its commander. Classic also retains personal actor duties when incidental
+nearby objectives compete with them.
+
+If an unfinished typed seal has no surviving eligible unit, the campaign block
+requests a recruit from that family. Its leader returns to recruitment even when
+the ordinary army is already large enough. This mission specialist overrides the
+combat recruitment preference, including Frontline; it is an objective-competence
+exception and does not make Rush a strict infantry-only balance experiment.
+
 Current unit and race values are authored in [game data](../../data/README.md).
 CLI usage is in the
 [simulation guide](../../../.agents/skills/combat-simulation/usage.md).

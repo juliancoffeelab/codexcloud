@@ -1,5 +1,10 @@
 //! A bounded duty queue replaces the global unit search after every command.
-use super::{PlanningWorkspace, Policy, TacticalRole, roles::role, tactics::Plan};
+use super::{
+    CampaignBlock, PlanningWorkspace, TacticalRole,
+    planner::{GlobalStyle, QueueMode},
+    roles::role,
+    tactics::Plan,
+};
 use crate::{data::*, logic::Game};
 use serde::{Deserialize, Serialize};
 
@@ -19,7 +24,7 @@ pub struct PrioritySnapshot {
     pub attempts: Vec<UnitId>,
 }
 impl Game<'_> {
-    fn priority_order(&self, policy: Policy, cache: &super::cheap::Workspace) -> Vec<UnitId> {
+    fn priority_order(&self, policy: QueueMode, cache: &super::cheap::Workspace) -> Vec<UnitId> {
         let goals = &cache.goals;
         let clearing = &cache.clearing;
         let foes: Vec<_> = self.units.iter().filter(|u| u.side != self.turn).collect();
@@ -61,7 +66,7 @@ impl Game<'_> {
                                 Some(unit.tile)
                             } else {
                                 let first = reachable.first_intersection(origins)?;
-                                if policy == Policy::Priority {
+                                if policy == QueueMode::CampaignBlock {
                                     self.reachable(unit)
                                         .iter()
                                         .map(|&(t, _)| t)
@@ -82,7 +87,7 @@ impl Game<'_> {
                             } else {
                                 0.0
                             }
-                            + if killed && super::cheap::terminal_attack(self, unit, foe) {
+                            + if killed && super::campaign::terminal_attack(self, unit, foe) {
                                 100.0
                             } else {
                                 0.0
@@ -112,7 +117,7 @@ impl Game<'_> {
                 if clearing.contains_key(&unit.id) {
                     score += 120.0;
                 }
-                if policy == Policy::Priority && personal {
+                if policy == QueueMode::CampaignBlock && personal {
                     score += 20.0;
                 }
                 if role(self, unit.kind) == TacticalRole::Frontline && !rule.leader {
@@ -153,36 +158,12 @@ impl Game<'_> {
 }
 pub(super) fn next_plan(
     game: &Game<'_>,
-    policy: Policy,
+    campaign: CampaignBlock,
     workspace: &mut PlanningWorkspace,
     intents: &mut Vec<(u32, Option<bool>)>,
 ) -> Option<Plan> {
-    if policy == Policy::Priority && super::cheap::crisis(game) {
-        let remaining = workspace.tactical_remaining.as_mut().unwrap();
-        if *remaining == 0 {
-            super::cheap::prepare(game, workspace);
-            return finish_intents(workspace, intents);
-        }
-        *remaining -= 1;
-        return game.best_plan::<true, false>(
-            Policy::Mixed,
-            workspace.seed,
-            workspace.goals.as_deref(),
-            workspace.prepared_goals.as_deref(),
-            super::cheap::restrained(game, workspace),
-            &mut workspace.routes,
-            &mut workspace.commitments,
-            intents,
-            &mut workspace.threats,
-            None,
-        );
-    }
-    super::cheap::prepare(game, workspace);
-    let policy = if game.campaign.is_none() {
-        Policy::Battler
-    } else {
-        policy
-    };
+    super::cheap::prepare(game, workspace, campaign);
+    let policy = campaign.queue_mode(game);
     if workspace.priority.is_none() {
         workspace.priority = Some(PrioritySnapshot {
             pending: game.priority_order(policy, &workspace.cheap),
@@ -202,7 +183,7 @@ pub(super) fn next_plan(
 }
 fn next_plan_inner(
     game: &Game<'_>,
-    policy: Policy,
+    policy: QueueMode,
     workspace: &mut PlanningWorkspace,
     queue: &mut PrioritySnapshot,
     intents: &mut Vec<(u32, Option<bool>)>,
@@ -276,15 +257,18 @@ fn next_plan_inner(
         let mut plan = super::cheap::plan(game, id.0, workspace);
         if plan.is_none()
             && game.essential(unit)
-            && (policy == Policy::Priority || game.proximity(unit.side, unit.tile) <= 6)
+            && (policy == QueueMode::CampaignBlock || game.proximity(unit.side, unit.tile) <= 6)
         {
             let mut ignored = vec![];
             plan = game.best_plan::<true, true>(
-                super::Policy::Mixed,
+                GlobalStyle::Mixed,
                 workspace.seed,
                 workspace.goals.as_deref(),
                 workspace.prepared_goals.as_deref(),
-                super::cheap::restrained(game, workspace),
+                workspace
+                    .effective_blocks(workspace.policy.expect("initialized planner"))
+                    .campaign
+                    .restrained(game, workspace),
                 &mut workspace.routes,
                 &mut workspace.commitments,
                 &mut ignored,
@@ -315,13 +299,31 @@ fn finish_intents(
 
 #[cfg(test)]
 mod tests {
+    use super::super::Policy;
     use super::*;
     #[test]
     fn complex_assaults_use_full_planning_after_snapshot_restoration() {
+        fn is_command_endturn(value: &Command) -> bool {
+            match value {
+                Command::EndTurn => true,
+                Command::Move { .. }
+                | Command::Attack { .. }
+                | Command::Recruit { .. }
+                | Command::Advance { .. }
+                | Command::DismissDialogue
+                | Command::NextMission
+                | Command::RecallMission { .. }
+                | Command::RetryMission
+                | Command::PreviousDialogue
+                | Command::SkipDialogue
+                | Command::SetUnitIntent { .. } => false,
+            }
+        }
+
         let rules = Rules::load().unwrap();
         let mut game =
             Game::start_campaign(&rules, "ashen-oath", 0, vec![], 0, vec![], vec![], vec![]);
-        assert!(super::super::cheap::heavy_campaign(&game));
+        assert!(super::super::campaign::heavy_campaign(&game));
         let mut priority = PlanningWorkspace::new(7, 1, None, super::super::Diplomacy::Pragmatic);
         let mut mixed = PlanningWorkspace::new(7, 1, None, super::super::Diplomacy::Pragmatic);
         for _ in 0..6 {
@@ -338,7 +340,7 @@ mod tests {
             priority = PlanningWorkspace::from_snapshot(
                 serde_json::from_str(&serde_json::to_string(&snapshot).unwrap()).unwrap(),
             );
-            if matches!(command, Command::EndTurn) {
+            if is_command_endturn(&command) {
                 break;
             }
             game.execute(command).unwrap();
@@ -346,6 +348,35 @@ mod tests {
     }
     #[test]
     fn queues_roundtrip_and_reject_invalid_cursors_and_campaign_battlers() {
+        fn is_command_endturn(value: &Command) -> bool {
+            match value {
+                Command::EndTurn => true,
+                Command::Move { .. }
+                | Command::Attack { .. }
+                | Command::Recruit { .. }
+                | Command::Advance { .. }
+                | Command::DismissDialogue
+                | Command::NextMission
+                | Command::RecallMission { .. }
+                | Command::RetryMission
+                | Command::PreviousDialogue
+                | Command::SkipDialogue
+                | Command::SetUnitIntent { .. } => false,
+            }
+        }
+        fn is_goal_escort_escape(value: &Goal) -> bool {
+            match value {
+                Goal::Escort { .. } | Goal::Escape { .. } => true,
+                Goal::Defeat { .. }
+                | Goal::Control { .. }
+                | Goal::Seal { .. }
+                | Goal::Event { .. }
+                | Goal::Hold { .. }
+                | Goal::Vigil { .. }
+                | Goal::Refuge { .. } => false,
+            }
+        }
+
         let rules = Rules::load().unwrap();
         let mut game = Game::new(&rules, "mirror");
         let mut workspace = PlanningWorkspace::new(7, 0, None, super::super::Diplomacy::Pragmatic);
@@ -371,7 +402,7 @@ mod tests {
                 invalid.priority.as_mut().unwrap().cursor = queue.pending.len() + 1;
                 assert!(invalid.validate(&rules, &game.state()).is_err());
             }
-            if matches!(command, Command::EndTurn) {
+            if is_command_endturn(&command) {
                 break;
             }
             game.execute(command).unwrap();
@@ -415,14 +446,18 @@ mod tests {
             .unwrap()
             .goals
             .iter()
-            .filter(|g| !matches!(g, Goal::Escort { .. } | Goal::Escape { .. }))
+            .filter(|g| !is_goal_escort_escape(g))
             .flat_map(Goal::sites)
             .map(|s| campaign.site(&s))
             .collect();
         for site in sites {
             campaign.owners[site] = Some(Side::Player);
         }
-        super::super::cheap::prepare(&campaign, &mut workspace);
+        super::super::cheap::prepare(
+            &campaign,
+            &mut workspace,
+            super::super::CampaignBlock::Adaptive,
+        );
         assert!(
             workspace
                 .cheap
@@ -458,6 +493,6 @@ mod tests {
         campaign.units[enemy].tile = tile;
         campaign.units[leader].hp = rules.units[campaign.units[leader].kind].hp / 2;
         campaign.roster_changed();
-        assert!(super::super::cheap::crisis(&campaign));
+        assert!(super::super::campaign::crisis(&campaign));
     }
 }

@@ -16,6 +16,11 @@ campaigns and armies while preserving those tests. See
 Self-play and saved-position measurements below examine compute cost; their
 results alone do not establish the intended roster-balance invariants.
 
+The validation and timing sections below describe the earlier performance-only
+implementation. The subsequent [AI block redesign](ai-block-redesign.md) fixes
+campaign behavior intentionally, so its gameplay records are no longer expected
+to equal those earlier builds. Frozen historical policies remain unchanged.
+
 ## Current-main validation
 
 The consolidated branch includes main commit `1ce0c8c` (per-attack counts,
