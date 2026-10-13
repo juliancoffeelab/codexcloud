@@ -17,9 +17,8 @@ objectives using the same engine rules as the browser. They also measure the
 cost of running those trials. Classic is the live enemy and fixed comparison
 opponent; making it stronger is not the purpose of simulation-player work.
 
-Read the [AI purpose and acceptance criteria](../../../rust/src/ai/README.md#purpose-and-acceptance-criteria)
-when assessing balance, player competence or policy changes. The intended player
-strategies are infantry-only, fair roster use and situational selection. Compare
+The intended player strategies are infantry-only, fair roster use and situational
+selection. Compare
 their success against the same fixed enemy under matching conditions. Fair roster
 use and situational selection should improve on the narrow infantry baseline,
 without a large advantage from repeatedly choosing one unit. No numeric threshold
@@ -29,8 +28,11 @@ Current presets are imperfect proxies for those intended roles. Rush recruits
 frontline units rather than strictly infantry; Mixed balances role shares rather
 than guaranteeing fair use of every unit. Priority and Battler reuse Mixed
 recruitment and experiment with planning; they are not separate situational
-recruiters. Battler is arena-only. See the linked reference for block composition
-and implementation gaps. State those limits when interpreting strategy comparisons.
+recruiters. Battler is arena-only. Check [preset composition](../../../rust/src/ai/blocks.rs)
+and the relevant implementation when explaining current policy behavior. State
+those limits when interpreting strategy comparisons. Documentation descriptions
+are not evidence that a planner branch executes in production; inspect dispatch
+and callers, including whether a helper is test-only.
 
 Campaign completion, required-actor survival and progression establish whether
 these players are useful for balance trials. Faster simulations must preserve

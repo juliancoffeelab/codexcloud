@@ -12,7 +12,7 @@ infantry melee unit. They require competent campaign objectives and progression.
 
 The optimization goal is more simulation runs and scaling to larger maps,
 campaigns and armies while preserving those tests. See
-[policy purpose, acceptance criteria and implementation gaps](../rust/src/ai/README.md#purpose-and-acceptance-criteria).
+[combat simulation purpose and policy roles](../.agents/skills/combat-simulation/SKILL.md#purpose-and-policy-roles).
 Self-play and saved-position measurements below examine compute cost; their
 results alone do not establish the intended roster-balance invariants.
 

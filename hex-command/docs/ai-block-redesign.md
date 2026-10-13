@@ -1,9 +1,8 @@
 # AI block redesign
 
 Current policy names now select independent Recruiter, Campaign and Planner
-blocks. Their composition is defined in
-[`blocks.rs`](../rust/src/ai/blocks.rs); the presets and custom configuration
-format are documented in the [AI module guide](../rust/src/ai/README.md#independent-blocks).
+blocks. Their preset composition and configurable fields are defined in
+[`blocks.rs`](../rust/src/ai/blocks.rs).
 Rust workspaces, browser options and native saved-phase requests can override the
 three blocks. Saved continuations retain the chosen composition. The three Old
 policies remain frozen historical executables.

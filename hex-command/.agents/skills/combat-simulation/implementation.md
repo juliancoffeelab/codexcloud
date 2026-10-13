@@ -26,7 +26,7 @@ player policies separate, pools recorded opponent races, seats and initiatives,
 and excludes identical race/policy self-play. Cells show wins/all games and caps;
 missing comparisons are explicit. `race_map_vs_classic.csv` exports those counts.
 This fixed-enemy overview serves the balance purpose described in the
-[AI reference](../../../rust/src/ai/README.md#purpose-and-acceptance-criteria).
+[skill purpose and policy roles](SKILL.md#purpose-and-policy-roles).
 Stage diagnostics and detailed fixed-enemy/equal-policy matrices follow the
 compact tables; the complete report retains every recorded matchup.
 
@@ -139,5 +139,7 @@ identities fail. It excludes `stateHash`, `elapsedMs`, `elapsedSeconds` and
 `detail` at match and mission level, and records wall time, CPU time and peak
 memory.
 
-Planning internals are in the [AI policy implementation](../../../rust/src/ai/README.md);
+Planning internals are in [planner dispatch](../../../rust/src/ai/planner.rs),
+[queued search](../../../rust/src/ai/priority.rs) and
+[bounded evaluation](../../../rust/src/ai/cheap.rs);
 content loading is in [authored game data](../../../rust/data/README.md).

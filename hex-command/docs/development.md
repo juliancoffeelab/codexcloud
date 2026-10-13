@@ -123,7 +123,7 @@ On failure, retain version/deployment identifiers for recovery.
 ## References
 
 - [Combat simulations and analysis](../.agents/skills/combat-simulation/usage.md)
-- [AI policy implementation](../rust/src/ai/README.md)
+- [AI preset composition](../rust/src/ai/blocks.rs) and [planner dispatch](../rust/src/ai/planner.rs)
 - Artwork skills: [generation](../.agents/skills/pinkbox-generation/SKILL.md),
   [enhancement](../.agents/skills/pinkbox-enhancement/SKILL.md),
   [cleaning](../.agents/skills/pixel-cleaning/SKILL.md),

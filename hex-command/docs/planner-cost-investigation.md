@@ -4,7 +4,7 @@ This investigation uses the consolidated PR25 code at `38be55d` and current
 combat data. It changes no production tactics. The three Old implementations
 remain frozen reference engines.
 
-The [policy purpose and acceptance criteria](../rust/src/ai/README.md#purpose-and-acceptance-criteria)
+The [simulation purpose and policy roles](../.agents/skills/combat-simulation/SKILL.md#purpose-and-policy-roles)
 define why speed matters: Classic remains the player-facing fair challenge,
 while simulation players test infantry-only, fair-roster and situational
 recruitment against a fixed Classic enemy in arenas and complete campaigns.
