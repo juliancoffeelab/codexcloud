@@ -9,6 +9,63 @@ Current unit and race values are authored in [game data](../../data/README.md).
 CLI usage is in the
 [simulation guide](../../../.agents/skills/combat-simulation/usage.md).
 
+## Purpose and acceptance criteria
+
+Classic is the simplest AI the player interacts with. It should provide a fair
+challenge and avoid automatically losing fights, without requiring exceptional
+tactics. It currently serves that purpose. This performance work does not require
+making the live enemy a stronger opponent.
+
+Simulation AIs model players to test roster-balance hypotheses and invariants.
+The intended player strategies are:
+
+1. **Infantry only:** recruit infantry melee units as the deliberately narrow
+   baseline.
+2. **Fair roster use:** use every unit fairly and maintain a stable recruitment
+   pool, rather than repeatedly exploiting whichever unit looks strongest.
+3. **Situational selection:** semi-intelligently choose the best unit for the
+   current situation.
+
+Compare each strategy against the same enemy AI, currently Classic, under matched
+arena and campaign conditions. Fair-roster and situational players should have
+better win/completion rates than the infantry-only player. The fair-roster player
+should remain reasonably close to the situational player. This compares their
+success against a fixed enemy; self-play timings or direct matches between the
+simulation strategies do not establish those balance expectations.
+
+A large advantage from selecting one roster unit indicates a balance problem.
+An infantry melee unit dominating the roster is an especially obvious failure.
+The acceptable fair-roster versus situational gap has no numeric threshold yet.
+Report the actual differences and their strata rather than inventing one.
+
+All three simulation-player roles must intelligently complete campaign objectives
+as well as fight battles. Trials start in chapter one, earn their carryover and
+receive no retries. Preserve objective completion, required actors and campaign
+progression when making planning cheaper; weakening player competence would make
+the balance comparison unreliable.
+
+This PR's goal is faster simulation players, enabling more trials, larger maps,
+longer campaigns and more units. Classic's speed is a useful reference, while
+simulation correctness and the balance comparisons remain acceptance criteria.
+
+### Current implementation gaps
+
+The policy names below describe current code, not three completed implementations
+of the intended simulation-player roles. Rush filters frontline units, including
+both warrior and flank roles, so it does not guarantee strict infantry-only
+recruitment. Mixed maintains role shares and scores types within each role; it
+does not guarantee fair use of every individual roster option.
+
+Priority and Battler are planning experiments that both reuse Mixed recruitment.
+Neither supplies a separate unrestricted situational recruitment strategy.
+Priority supports campaigns; Battler's arena-only restriction means it cannot
+fulfill a complete simulation-player role by itself. Their shared arena planner
+does not create an additional independent balance hypothesis.
+
+ClassicOld, RushOld and MixedOld are frozen historical measurement references.
+They preserve the old engine and catalog and remain separate from the intended
+simulation-player roles; optimizing them would destroy that reference.
+
 ## Complete policies
 
 **Classic** uses the shipped recruitment and combat/movement heuristics and stable

@@ -15,6 +15,15 @@
 
 ## Balance and simulations
 
+- [ ] Align simulation-player roles with infantry-only, fair use of every roster
+      unit with a stable recruitment pool, and situational unit selection. All
+      three must intelligently complete campaigns and objectives; current
+      Rush/Mixed/Priority/Battler do not yet fully implement these distinctions.
+- [ ] Validate those players against the same Classic enemy in matched arenas
+      and complete campaigns: fair-roster and situational should outperform
+      infantry-only, with fair-roster remaining reasonably close to situational.
+      Keep these balance checks and campaign competence when reducing compute
+      for larger maps, longer campaigns and more units.
 - [ ] Finish the balance pass with matched campaign and arena trials, preserving
       failed attempts and recording actual commands.
 - [ ] Run updated comparisons as needed for balance work. Keep campaign and arena

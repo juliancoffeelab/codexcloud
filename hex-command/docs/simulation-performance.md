@@ -1,5 +1,21 @@
 # Simulation performance
 
+## Goal of the simulation players
+
+Classic is the simple player-facing enemy and already provides the intended fair
+challenge. Simulation players test infantry-only, fair-roster and situational
+recruitment against that fixed Classic enemy in both arenas and complete
+campaigns. Fair-roster and situational players should outperform infantry-only;
+fair-roster results should stay reasonably close to situational selection.
+These comparisons detect an overwhelmingly strong roster unit, especially an
+infantry melee unit. They require competent campaign objectives and progression.
+
+The optimization goal is more simulation runs and scaling to larger maps,
+campaigns and armies while preserving those tests. See
+[policy purpose, acceptance criteria and implementation gaps](../rust/src/ai/README.md#purpose-and-acceptance-criteria).
+Self-play and saved-position measurements below examine compute cost; their
+results alone do not establish the intended roster-balance invariants.
+
 ## Current-main validation
 
 The consolidated branch includes main commit `1ce0c8c` (per-attack counts,

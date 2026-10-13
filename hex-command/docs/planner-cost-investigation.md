@@ -4,6 +4,13 @@ This investigation uses the consolidated PR25 code at `38be55d` and current
 combat data. It changes no production tactics. The three Old implementations
 remain frozen reference engines.
 
+The [policy purpose and acceptance criteria](../rust/src/ai/README.md#purpose-and-acceptance-criteria)
+define why speed matters: Classic remains the player-facing fair challenge,
+while simulation players test infantry-only, fair-roster and situational
+recruitment against a fixed Classic enemy in arenas and complete campaigns.
+Classic's timing is a reference, not a reason to weaken simulation-player
+competence. The existing policy names do not yet implement all three roles.
+
 ## Recruitment and tactical search are separate
 
 Rush restricts recruitment to frontline types and scores their effectiveness,
@@ -106,16 +113,20 @@ about 16% for Rush, 21% for Mixed and 18% for Battler/Priority. These are target
 not achieved improvements. Beating Classic requires further savings and
 validation on full self-play workloads, whose encountered states differ.
 
-For an intentionally simpler Rush, a fixed unit pass with Rush recruitment is
-a plausible separate design. It changes action selection: measure battle quality,
-caps, essential-actor losses and campaign/saved-planner behavior before adopting
-it. Removing campaign support from Battler alone offers no corresponding gain
-because its arena path is already shared with Priority.
+An alternative scheduler, including a fixed unit pass, is acceptable only if
+the simulation players retain their intended recruitment distinctions and can
+intelligently finish campaigns. Measure wins/completions against the same Classic
+enemy: fair-roster and situational players should outperform infantry-only, and
+fair-roster performance should remain reasonably close to situational selection.
+Also measure caps, essential-actor losses and campaign/saved-planner behavior.
+Removing campaign support from Battler does not fulfill those player roles or
+offer a corresponding arena gain because its battle path is shared with Priority.
 
 Start with exact context/cache work in the current five policies. Check complete
 gameplay against retained journals, including the existing-policy workload and
 new-policy self-play/campaign continuations. Changes to search order, safety or
-shortlist width also need paired quality measurements on current combat data.
+shortlist width also need the fixed-Classic balance comparisons on current combat
+data. Existing self-play timing measurements do not establish those invariants.
 
 Machine-readable timings, counters, fixture scope and methodological limits are
 in [planner-cost-investigation.json](benchmarks/planner-cost-investigation.json).
