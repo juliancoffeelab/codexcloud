@@ -123,6 +123,8 @@ if (!existsSync(profile)) {
       "2",
       "--seed",
       "17",
+      "--policies",
+      "classic,rush,mixed,priority,battler",
       "--workers",
       "1",
       "--data-dir",

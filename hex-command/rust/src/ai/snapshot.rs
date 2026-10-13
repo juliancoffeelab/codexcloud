@@ -7,10 +7,56 @@ impl PlanningSnapshot {
     /// each action, after its preceding movement and intent changes.
     pub fn validate(&self, catalog: &Catalog, state: &State) -> Result<(), StateError> {
         let fail = |message: &str| StateError(message.to_owned());
+        let tiles: HashSet<_> = state.tiles.iter().map(|tile| tile.id.as_str()).collect();
         if self.initialized && self.policy.is_none() {
             return Err(fail("initialized planner has no policy"));
         }
-        let tiles: HashSet<_> = state.tiles.iter().map(|tile| tile.id.as_str()).collect();
+        if state.campaign.is_some() && self.policy.is_some_and(|p| !p.supports_campaign()) {
+            return Err(fail("battle-only policy cannot resume a campaign"));
+        }
+        if let Some(queue) = &self.priority {
+            if !self.policy.is_some_and(|p| p.queued())
+                || queue.cursor > queue.pending.len()
+                || queue.known_next_id == 0
+                || queue.known_next_id > state.next_id
+                || queue.pending.len() > state.next_id as usize
+                || queue.retry.len() > state.next_id as usize
+                || queue.second_pass && !queue.retry.is_empty()
+            {
+                return Err(fail("invalid priority planning continuation"));
+            }
+            for ids in [&queue.pending, &queue.retry] {
+                let mut unique = HashSet::new();
+                if ids
+                    .iter()
+                    .any(|id| id.0 == 0 || id.0 >= queue.known_next_id || !unique.insert(*id))
+                {
+                    return Err(fail("invalid priority unit queue"));
+                }
+            }
+            if queue
+                .active
+                .is_some_and(|id| id.0 == 0 || id.0 >= queue.known_next_id)
+            {
+                return Err(fail("invalid active priority unit"));
+            }
+            if queue.attempts.len() > state.next_id as usize * 3
+                || queue
+                    .attempts
+                    .iter()
+                    .any(|id| id.0 == 0 || id.0 >= queue.known_next_id)
+            {
+                return Err(fail("invalid priority search budget"));
+            }
+            let mut counts = std::collections::HashMap::new();
+            for id in &queue.attempts {
+                let count = counts.entry(id).or_insert(0);
+                *count += 1;
+                if *count > 3 {
+                    return Err(fail("priority unit exceeds its search budget"));
+                }
+            }
+        }
         let identity = |id: UnitId| id.0 > 0 && id.0 < state.next_id;
         let actor = |id: UnitId| state.units.iter().find(|u| u.id == format!("u{}", id.0));
         let friendly = |id: UnitId| actor(id).is_some_and(|u| u.side == state.turn);

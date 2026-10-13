@@ -23,7 +23,7 @@ use std::{
     time::Instant,
 };
 
-const HELP: &str = "Usage: hex-command-sim [options]\n  --mode arena|campaign|full      default arena\n  --seeds N --seed N              count (default 2) and first seed (default 1)\n  --seed-start N                  alias for --seed\n  --policies classic,rush,mixed   complete policies to compare\n  --armies human,woodland,undead,coastal\n  --landscapes open,wooded,crossings,islands\n  --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide\n  --rounds N --recruits N         bounded rounds (default 30), recruits/phase (default 1)\n  --diplomacy pragmatic,restrained campaign behavior settings\n  --workers N                    scoped thread pool, CPU quota default, maximum 8\n  --out PATH                     JSON report and readable Markdown report\n  --details arrow|jsonl         lossless gameplay journal (default arrow)\n  --trace                        also retain raw match results\n  --replay PATH                  verify saved report details and results (strict fingerprint)\n  --data-dir PATH                authored JSON catalog root (HEX_COMMAND_DATA_ROOT also works)\n  --schedule-only                emit configurations without running any matches\n  --stdio                        compatibility JSON request/result line protocol\n  --fingerprint                  compiled content and engine SHA256 fingerprints\nArena entrants have both seats and both initiatives; self-play has both initiatives.\nCampaigns begin at chapter one, earn carryover and receive no retries. Caps remain unresolved.";
+const HELP: &str = "Usage: hex-command-sim [options]\n  --mode arena|campaign|full      default arena\n  --seeds N --seed N              count (default 2) and first seed (default 1)\n  --seed-start N                  alias for --seed\n  --policies classic,rush,mixed,priority,battler (battler: arenas only)\n  --armies human,woodland,undead,coastal\n  --landscapes open,wooded,crossings,islands\n  --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide\n  --rounds N --recruits N         bounded rounds (default 30), recruits/phase (default 1)\n  --diplomacy pragmatic,restrained campaign behavior settings\n  --workers N                    scoped thread pool, CPU quota default, maximum 8\n  --out PATH                     JSON report and readable Markdown report\n  --details arrow|jsonl         lossless gameplay journal (default arrow)\n  --trace                        also retain raw match results\n  --replay PATH                  verify saved report details and results (strict fingerprint)\n  --data-dir PATH                authored JSON catalog root (HEX_COMMAND_DATA_ROOT also works)\n  --schedule-only                emit configurations without running any matches\n  --stdio                        compatibility JSON request/result line protocol\n  --phase-stdio                  saved-position own-phase profiling protocol\n  --fingerprint                  compiled content and engine SHA256 fingerprints\nArena entrants have both seats and both initiatives; self-play has both initiatives.\nCampaigns begin at chapter one, earn carryover and receive no retries. Caps remain unresolved.";
 #[derive(Debug)]
 struct CliOptions {
     schedule: ScheduleOptions,
@@ -162,15 +162,19 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
     options.armies = selection(&values, "--armies", &options.armies)?;
     options.landscapes = selection(&values, "--landscapes", &options.landscapes)?;
     options.campaigns = selection(&values, "--campaigns", &options.campaigns)?;
-    let policy_ids: Vec<_> = options
-        .policies
+    let policy_ids: Vec<_> = crate::ai::Policy::ALL
         .iter()
-        .map(|policy| policy.as_str().to_owned())
+        .map(|p| p.as_str().to_owned())
         .collect();
-    options.policies = selection(&values, "--policies", &policy_ids)?
-        .into_iter()
-        .map(|id| serde_json::from_value(json!(id)).map_err(SimulationError::from))
-        .collect::<Result<_, _>>()?;
+    if values.contains_key("--policies") {
+        options.policies = selection(&values, "--policies", &policy_ids)?
+            .into_iter()
+            .map(|id| serde_json::from_value(json!(id)).map_err(SimulationError::from))
+            .collect::<Result<_, _>>()?;
+    }
+    if options.mode == Mode::Campaign && options.policies.iter().any(|p| !p.supports_campaign()) {
+        return Err("Battler is a battle-only policy; use Priority for campaigns".into());
+    }
     let diplomacy_ids: Vec<_> = options
         .diplomacy
         .iter()
@@ -247,6 +251,93 @@ fn stdio(rules: &Rules) -> Result<(), SimulationError> {
         output.flush()?;
     }
     Ok(())
+}
+#[derive(serde::Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+struct PhaseRequest {
+    state: crate::data::State,
+    policy: crate::ai::Policy,
+    seed: u32,
+    #[serde(default)]
+    recruitment_limit: usize,
+    #[serde(default)]
+    goals: Option<Vec<crate::data::Objective>>,
+    #[serde(default)]
+    diplomacy: crate::ai::Diplomacy,
+    #[serde(default)]
+    advance_turn: bool,
+    #[serde(default)]
+    begin_turn: bool,
+    #[serde(default)]
+    arena: Option<super::types::ArenaConfig>,
+}
+/// Replay one own phase from a saved position, for fixed-input policy profiling.
+fn phase_stdio(rules: &Rules) -> Result<(), SimulationError> {
+    let mut output = io::BufWriter::new(io::stdout().lock());
+    for line in io::stdin().lock().lines() {
+        let line = line?;
+        if line.trim().is_empty() {
+            continue;
+        }
+        let request: PhaseRequest = serde_json::from_str(&line)?;
+        serde_json::to_writer(&mut output, &saved_phase(rules, request)?)?;
+        writeln!(output)?;
+        output.flush()?;
+    }
+    Ok(())
+}
+fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, SimulationError> {
+    let arena = request
+        .arena
+        .as_ref()
+        .map(|config| super::matches::create_arena(rules, config))
+        .transpose()?;
+    if let Some(arena) = &arena {
+        if request.state.campaign.is_some() {
+            return Err(SimulationError::InvalidConfig(
+                "Arena phase contains a campaign".into(),
+            ));
+        }
+        crate::logic::validate_state_geometry(rules, &request.state, &arena.state())
+            .map_err(|error| SimulationError::InvalidConfig(error.to_string()))?;
+    } else {
+        crate::logic::validate_state(rules, &request.state)
+            .map_err(|error| SimulationError::InvalidConfig(error.to_string()))?;
+    }
+    let mut game = crate::logic::Game::from_state(rules, request.state);
+    if let Some(arena) = arena {
+        game.pools = arena.pools;
+        game.arena_first = arena.arena_first;
+    }
+    if request.advance_turn && request.begin_turn {
+        return Err(SimulationError::InvalidConfig(
+            "Select one turn-start operation".into(),
+        ));
+    }
+    if request.begin_turn {
+        game.begin_turn(game.turn);
+    } else if request.advance_turn {
+        game.end_turn();
+    }
+    let workspace = crate::ai::PlanningWorkspace::new(
+        request.seed,
+        request.recruitment_limit,
+        request.goals.clone(),
+        request.diplomacy,
+    );
+    workspace
+        .snapshot()
+        .validate(rules, &game.state())
+        .map_err(|error| SimulationError::InvalidConfig(error.to_string()))?;
+    game.recordings = Some(crate::data::Records::default());
+    game.play_policy(
+        request.policy,
+        request.seed,
+        request.recruitment_limit,
+        request.goals.as_deref(),
+        request.diplomacy,
+    )?;
+    Ok(json!({"final":game.state(),"records":game.recordings}))
 }
 fn read_report(path: &Path) -> Result<Value, SimulationError> {
     let bytes = fs::read(path)?;
@@ -644,6 +735,9 @@ pub fn run(args: &[String]) -> Result<(), SimulationError> {
     if args == ["--stdio"] {
         return stdio(&rules);
     }
+    if args == ["--phase-stdio"] {
+        return phase_stdio(&rules);
+    }
     let options = parse(&args, &rules)?;
     let fingerprint = report_fingerprint(&rules)?;
     if let Some(path) = &options.replay {
@@ -655,6 +749,46 @@ pub fn run(args: &[String]) -> Result<(), SimulationError> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn saved_phase_restores_generated_arenas_and_validates_geometry() {
+        let rules = Rules::load().unwrap();
+        let config: super::super::types::ArenaConfig = serde_json::from_value(json!({
+            "seed": 7, "maxRounds": 30, "recruitLimit": 0, "landscape": "open",
+            "first": "player", "player": "mixed", "enemy": "mixed",
+            "armies": {"player": "coastal", "enemy": "human"}
+        }))
+        .unwrap();
+        let mut expected = super::super::matches::create_arena(&rules, &config).unwrap();
+        let state = expected.state();
+        let request = |state| {
+            serde_json::from_value::<PhaseRequest>(json!({
+                "state": state, "arena": config, "policy": "mixed", "seed": 7,
+                "beginTurn": true, "recruitmentLimit": 1
+            }))
+            .unwrap()
+        };
+        expected.begin_turn(expected.turn);
+        expected.recordings = Some(crate::data::Records::default());
+        expected
+            .play_policy(
+                crate::ai::Policy::Mixed,
+                7,
+                1,
+                None,
+                crate::ai::Diplomacy::Pragmatic,
+            )
+            .unwrap();
+        assert_eq!(
+            saved_phase(&rules, request(state.clone())).unwrap(),
+            json!({"final": expected.state(), "records": expected.recordings})
+        );
+        let mut invalid = state.clone();
+        invalid.tiles[0].col = -1;
+        assert!(saved_phase(&rules, request(invalid)).is_err());
+        let mut invalid = request(state);
+        invalid.advance_turn = true;
+        assert!(saved_phase(&rules, invalid).is_err());
+    }
     #[test]
     fn append_failure_drains_in_flight_workers() {
         let jobs: Vec<_> = (0..32).collect();
