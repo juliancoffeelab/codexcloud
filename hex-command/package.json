@@ -11,7 +11,7 @@
     "art:build": "python3 scripts/build-pixel-art.py",
     "art:check": "python3 scripts/build-pixel-art.py --check",
     "ai:simulate": "node --import tsx scripts/simulate-ai.ts",
-    "ai:full": "node --import tsx scripts/simulate-ai.ts --mode full --seeds 10",
+    "ai:full": "python3 .agents/skills/combat-simulation/scripts/run-combat.py --mode full --seeds 10 --out artifacts/full",
     "ai:benchmark": "node --import tsx scripts/benchmark-rust.ts",
     "ai:analyze": "python3 .agents/skills/combat-simulation/scripts/report-combat.py",
     "ai:combat": "python3 .agents/skills/combat-simulation/scripts/run-combat.py",

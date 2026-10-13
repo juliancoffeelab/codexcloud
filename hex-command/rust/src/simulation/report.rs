@@ -456,6 +456,8 @@ mod tests {
             landscapes: vec!["open".into()],
             campaigns: vec![],
             policies: vec![Policy::Classic],
+            campaign_players: None,
+            campaign_enemies: None,
             diplomacy: vec![Diplomacy::Pragmatic],
             self_play: false,
         };

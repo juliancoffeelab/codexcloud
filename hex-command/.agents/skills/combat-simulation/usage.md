@@ -4,26 +4,29 @@ Run commands from the `hex-command/` project root. The agent workflow is in
 [SKILL.md](SKILL.md). For analyzer/harness changes or debugging, read
 [implementation.md](implementation.md).
 
-## Run a panel
+## Run the role-appropriate full panel
 
 ```sh
-# Enumerate the full schedule without running matches.
-npm run ai:schedule -- --mode full --seeds 10
+# Build if needed, run all arena policies/maps and Mixed/Priority campaigns vs Classic,
+# then automatically generate a readable analysis.
+npm run ai:full -- --out artifacts/current
 
-# Simulate a complete Mixed-policy panel and analyze it.
-npm run ai:combat -- --policies mixed --seed 61 --seeds 50 --out artifacts/current
+# Focused campaign comparison, retaining both campaign players and the fixed enemy.
+npm run ai:combat -- --mode campaign --campaign-players mixed,priority \
+  --campaign-enemies classic --seeds 30 --out artifacts/campaign-current
 
-# Restrict races, policies and maps.
-npm run ai:combat -- --armies human,coastal --policies classic,mixed --landscapes crossings --seeds 2 --out artifacts/coast-panel
-
-# Native arena or campaign output without the Python analysis step.
-npm run ai:simulate -- --mode arena --seeds 2 --out artifacts/arena.json
-npm run ai:simulate -- --mode campaign --seeds 5 --out artifacts/campaigns.json
+# Inspect a schedule without running it.
+npm run ai:schedule -- --mode full --seeds 10 \
+  --policies classic,rush,mixed,priority,battler \
+  --campaign-players mixed,priority --campaign-enemies classic
 ```
 
+`ai:full` builds the native harness when needed and runs the combined full
+panel. `ai:combat` also builds when needed and automatically runs the analyzer
+after successful simulation. Do not include Classic or Rush as campaign players
+when measuring campaign competence; they remain available in the arena matrix.
 Use `npm run ai:simulate -- --help` for current options and defaults, and
-`ai:schedule` to inspect the selected configurations and counts. `ai:full` runs
-the combined arena/campaign batch configured in `package.json`.
+`ai:schedule` to inspect selected configurations and counts.
 
 A reused native binary loads data from its compiled crate by default. When using
 another checkout, pass its `--data-dir` explicitly. `ai:combat` selects this
@@ -70,7 +73,7 @@ retain complete commands, combat records, objectives, campaign data and endpoint
 No rounds or gameplay fields are omitted. Use `--details jsonl` for legacy output.
 The analyzer reads the compact `report.json` with either format.
 
-## Interpret the panel
+## Interpret the panels
 
 Arena entrants pair a race with a policy. Opponents are scheduled in both seats
 and both initiatives; identical entrants run both initiatives once. Each round
@@ -84,30 +87,61 @@ the hold. This territory rule belongs to the simulation arena. Campaign runs use
 authored rosters, maps, objectives and waves, earn carryover and recall survivors,
 and receive no retries. Their seeds vary AI tie breaks rather than authored maps.
 
-Count unresolved round caps in win-rate denominators. Mirrored faction rows
+Count unresolved round caps in arena win-rate denominators. Mirrored faction rows
 describe the same physical matches; self-play contributes both seats. Native
 confidence intervals resample complete seed blocks, preserving map/seat/initiative
 correlations. They measure these scenarios and policies, rather than optimal or
 human play. More seeds reduce sampling uncertainty, rather than policy weakness.
 
-## Analyze saved reports
+Campaign competence is measured with Mixed/Priority as player and Classic as
+the fixed enemy. Compare those policies on matched campaign, seed, diplomacy,
+round limit and recruit limit. Campaign players use authored rosters, maps,
+objectives and waves, earn carryover and recall survivors, and receive no retries.
+Campaign seeds vary AI tie breaks rather than authored maps. Report completions
+and denominators, then stage outcomes and goal progress; keep round caps,
+defeats, and completions distinct. Classic/Rush player campaign results are not
+competence evidence.
+
+## Read the automatic report before raw data
+
+```sh
+cat artifacts/current/analytics/findings.md
+cat artifacts/current/analytics/summary.md
+# For filtering and complete tables, open:
+# artifacts/current/analytics/index.html
+```
+
+The full runner has already analyzed a successful batch. The findings and
+summary are the primary outputs; the HTML report provides filters and every
+recorded table, including arena comparisons and campaign/stage/failure
+diagnostics. Use CSV exports only when a table-shaped view is useful.
+
+For saved reports or a baseline comparison, invoke the maintained analyzer
+directly:
 
 ```sh
 npm run ai:analyze -- artifacts/current/report.json --out artifacts/current/analytics
-npm run ai:analyze -- artifacts/current/report.json --baseline artifacts/previous/report.json --out artifacts/current/analytics
+npm run ai:analyze -- artifacts/current/report.json \
+  --baseline artifacts/previous/report.json --out artifacts/current/analytics
 ```
 
-Open `index.html` for searchable tables, `summary.md` for complete matrices, or
-CSV exports for every row. For race balance, use `race_equal_policy.csv` and
-`race_map_policy.csv` to compare other factions with matching policies.
-`matchups.csv` retains every opponent and policy pairing, including self-play;
-`race_all_policies.csv` mixes policies.
+When a report lacks a finding needed to answer the question, first add that
+finding to the maintained analyzer and its tests. Then analyze the existing
+saved run again. Do not replace this step with an ad hoc scratch script or
+manual parsing of journal/CSV/JSON files. Inspect a targeted phase journal or
+the implementation only after the report identifies a specific unexplained
+match, stage or failure pattern. See [implementation.md](implementation.md) for
+the report's evidence boundary and supported diagnostics.
 
-The analyzer uses only saved outcomes and metadata. It can run outside a Git
-checkout. Baseline reports must contain exactly the same match configurations;
-missing or duplicate configurations fail analysis. Full gameplay is in the
-adjacent `.details.jsonl` journals, while `full-data.zip` contains the exported
-tables and available compact outcome journals.
+For arena balance, use the equal-policy and map-policy views to compare other
+factions with matching policies. The matchup table retains every opponent and
+policy pairing, including self-play; all-policies aggregates mix policies.
+
+The analyzer uses saved outcomes and the run's checksummed gameplay journal;
+it does not rerun battles. It can run outside a Git checkout. Baseline reports
+must contain exactly the same match configurations; missing or duplicate
+configurations fail analysis. Full gameplay remains in the adjacent detail
+journal, while `full-data.zip` contains report outputs and compact outcomes.
 
 ## Progress and recovery
 

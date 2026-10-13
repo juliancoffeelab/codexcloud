@@ -23,7 +23,7 @@ use std::{
     time::Instant,
 };
 
-const HELP: &str = "Usage: hex-command-sim [options]\n  --mode arena|campaign|full      default arena\n  --seeds N --seed N              count (default 2) and first seed (default 1)\n  --seed-start N                  alias for --seed\n  --policies classic,rush,mixed,priority,battler,classicold,rushold,mixedold (old: frozen native references)\n  --armies human,woodland,undead,coastal\n  --landscapes open,wooded,crossings,islands\n  --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide\n  --rounds N --recruits N         bounded rounds (default 30), recruits/phase (default 1)\n  --diplomacy pragmatic,restrained campaign behavior settings\n  --workers N                    scoped thread pool, CPU quota default, maximum 8\n  --out PATH                     JSON report and readable Markdown report\n  --details arrow|jsonl         lossless gameplay journal (default arrow)\n  --self-play                    arena games use the same policy on both sides\n  --profile-turns                report policy mean decision and complete-phase CPU time\n  --trace                        also retain raw match results\n  --replay PATH                  verify saved report details and results (strict fingerprint)\n  --data-dir PATH                authored JSON catalog root (HEX_COMMAND_DATA_ROOT also works)\n  --schedule-only                emit configurations without running any matches\n  --stdio                        compatibility JSON request/result line protocol\n  --phase-stdio                  saved-position own-phase profiling protocol\n  --fingerprint                  compiled content and engine SHA256 fingerprints\nArena entrants have both seats and both initiatives; self-play has both initiatives.\nCampaigns begin at chapter one, earn carryover and receive no retries. Caps remain unresolved.";
+const HELP: &str = "Usage: hex-command-sim [options]\n  --mode arena|campaign|full      default arena\n  --seeds N --seed N              count (default 2) and first seed (default 1)\n  --seed-start N                  alias for --seed\n  --policies classic,rush,mixed,priority,battler,classicold,rushold,mixedold (old: frozen native references)\n  --armies human,woodland,undead,coastal\n  --landscapes open,wooded,crossings,islands\n  --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide\n  --campaign-players mixed,priority  independent campaign player tactics\n  --campaign-enemies classic       independent campaign enemy tactics\n  --rounds N --recruits N         bounded rounds (default 30), recruits/phase (default 1)\n  --diplomacy pragmatic,restrained campaign behavior settings\n  --workers N                    scoped thread pool, CPU quota default, maximum 8\n  --out PATH                     JSON report and readable Markdown report\n  --details arrow|jsonl         lossless gameplay journal (default arrow)\n  --self-play                    arena games use the same policy on both sides\n  --profile-turns                report policy mean decision and complete-phase CPU time\n  --trace                        also retain raw match results\n  --replay PATH                  verify saved report details and results (strict fingerprint)\n  --data-dir PATH                authored JSON catalog root (HEX_COMMAND_DATA_ROOT also works)\n  --schedule-only                emit configurations without running any matches\n  --stdio                        compatibility JSON request/result line protocol\n  --phase-stdio                  saved-position own-phase profiling protocol\n  --fingerprint                  compiled content and engine SHA256 fingerprints\nArena entrants have both seats and both initiatives; self-play has both initiatives.\nCampaigns begin at chapter one, earn carryover and receive no retries. Caps remain unresolved.";
 #[derive(Debug)]
 struct CliOptions {
     schedule: ScheduleOptions,
@@ -86,6 +86,8 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
         "--seed",
         "--seed-start",
         "--policies",
+        "--campaign-players",
+        "--campaign-enemies",
         "--armies",
         "--landscapes",
         "--campaigns",
@@ -184,7 +186,26 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
             .map(|id| serde_json::from_value(json!(id)).map_err(SimulationError::from))
             .collect::<Result<_, _>>()?;
     }
-    if options.mode == Mode::Campaign && options.policies.iter().any(|p| !p.supports_campaign()) {
+    for (flag, destination) in [
+        ("--campaign-players", &mut options.campaign_players),
+        ("--campaign-enemies", &mut options.campaign_enemies),
+    ] {
+        if values.contains_key(flag) {
+            let selected = selection(&values, flag, &policy_ids)?
+                .into_iter()
+                .map(|id| serde_json::from_value(json!(id)).map_err(SimulationError::from))
+                .collect::<Result<Vec<crate::ai::Policy>, _>>()?;
+            if selected.iter().any(|p| !p.supports_campaign()) {
+                return Err("Campaign role selections require campaign-capable tactics".into());
+            }
+            *destination = Some(selected);
+        }
+    }
+    if options.mode == Mode::Campaign
+        && options.campaign_players.is_none()
+        && options.campaign_enemies.is_none()
+        && options.policies.iter().any(|p| !p.supports_campaign())
+    {
         return Err("Battler is a battle-only policy; use Priority for campaigns".into());
     }
     let diplomacy_ids: Vec<_> = options

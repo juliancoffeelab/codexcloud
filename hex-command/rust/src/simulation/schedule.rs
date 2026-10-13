@@ -37,6 +37,10 @@ pub struct ScheduleOptions {
     pub landscapes: Vec<String>,
     pub campaigns: Vec<String>,
     pub policies: Vec<Policy>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub campaign_players: Option<Vec<Policy>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub campaign_enemies: Option<Vec<Policy>>,
     pub diplomacy: Vec<Diplomacy>,
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub self_play: bool,
@@ -67,6 +71,8 @@ impl ScheduleOptions {
                 .collect(),
             campaigns: rules.campaign_defaults.campaigns.clone(),
             policies: parse(&rules.arena.policies)?,
+            campaign_players: None,
+            campaign_enemies: None,
             self_play: false,
             diplomacy: rules
                 .campaign_defaults
@@ -102,8 +108,17 @@ impl ScheduleOptions {
                 .and_then(|n| n.checked_mul(entrants))
                 .ok_or("Schedule too large")?
         };
-        let campaign_policies = self
-            .policies
+        let campaign_players = self
+            .campaign_players
+            .as_ref()
+            .unwrap_or(&self.policies)
+            .iter()
+            .filter(|p| p.supports_campaign())
+            .count();
+        let campaign_enemies = self
+            .campaign_enemies
+            .as_ref()
+            .unwrap_or(&self.policies)
             .iter()
             .filter(|p| p.supports_campaign())
             .count();
@@ -112,8 +127,8 @@ impl ScheduleOptions {
         } else {
             self.campaigns
                 .len()
-                .checked_mul(campaign_policies)
-                .and_then(|n| n.checked_mul(campaign_policies))
+                .checked_mul(campaign_players)
+                .and_then(|n| n.checked_mul(campaign_enemies))
                 .and_then(|n| n.checked_mul(self.diplomacy.len()))
                 .ok_or("Schedule too large")?
         };
@@ -130,6 +145,23 @@ pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, Simulatio
         && options.policies.iter().any(|p| p.legacy().is_none())
     {
         return Err("Use --self-play to compare frozen reference and current policies; cross-version opponents have different engines".into());
+    }
+    if options.mode != Mode::Arena {
+        for player in options
+            .campaign_players
+            .as_ref()
+            .unwrap_or(&options.policies)
+        {
+            for enemy in options
+                .campaign_enemies
+                .as_ref()
+                .unwrap_or(&options.policies)
+            {
+                if player.legacy().is_some() != enemy.legacy().is_some() {
+                    return Err("Cross-version campaign opponents have different engines".into());
+                }
+            }
+        }
     }
     if options.self_play && options.mode != Mode::Arena {
         return Err("--self-play requires --mode arena".into());
@@ -184,8 +216,20 @@ pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, Simulatio
         }
         if options.mode != Mode::Arena {
             for campaign in &options.campaigns {
-                for player in options.policies.iter().filter(|p| p.supports_campaign()) {
-                    for enemy in options.policies.iter().filter(|p| p.supports_campaign()) {
+                for player in options
+                    .campaign_players
+                    .as_ref()
+                    .unwrap_or(&options.policies)
+                    .iter()
+                    .filter(|p| p.supports_campaign())
+                {
+                    for enemy in options
+                        .campaign_enemies
+                        .as_ref()
+                        .unwrap_or(&options.policies)
+                        .iter()
+                        .filter(|p| p.supports_campaign())
+                    {
                         for diplomacy in &options.diplomacy {
                             configs.push(MatchConfig::Campaign(CampaignConfig {
                                 campaign: campaign.clone(),
@@ -221,6 +265,8 @@ mod tests {
             landscapes: vec!["open".into()],
             campaigns: vec!["chapter".into()],
             policies: vec![Policy::Classic],
+            campaign_players: None,
+            campaign_enemies: None,
             diplomacy: vec![Diplomacy::Pragmatic],
             self_play: false,
         };
@@ -302,6 +348,38 @@ mod tests {
             )
         );
         assert_eq!(mixed_schedule.iter().filter(|config| matches!(config, MatchConfig::Campaign(c) if c.player == Policy::Priority && c.enemy == Policy::Priority)).count(), 1);
+        let mut independent_roles = options.clone();
+        independent_roles.policies = vec![
+            Policy::Classic,
+            Policy::Rush,
+            Policy::Mixed,
+            Policy::Priority,
+            Policy::Battler,
+        ];
+        independent_roles.campaign_players = Some(vec![Policy::Mixed, Policy::Priority]);
+        independent_roles.campaign_enemies = Some(vec![Policy::Classic]);
+        let role_schedule = schedule(&independent_roles).unwrap();
+        assert_eq!(
+            role_schedule.len(),
+            independent_roles.expected_games().unwrap()
+        );
+        let campaign_matches: Vec<_> = role_schedule
+            .iter()
+            .filter_map(|c| {
+                if let MatchConfig::Campaign(c) = c {
+                    Some(c)
+                } else {
+                    None
+                }
+            })
+            .collect();
+        assert_eq!(campaign_matches.len(), 2);
+        assert!(
+            campaign_matches.iter().all(|c| c.enemy == Policy::Classic
+                && [Policy::Mixed, Policy::Priority].contains(&c.player))
+        );
+        independent_roles.campaign_enemies = Some(vec![Policy::ClassicOld]);
+        assert!(schedule(&independent_roles).is_err());
         let mut unique = std::collections::HashSet::new();
         for config in configs {
             assert!(unique.insert(serde_json::to_string(&config).unwrap()));
