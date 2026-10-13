@@ -92,6 +92,38 @@ class CompleteDataTests(unittest.TestCase):
         expanded, _, _, _ = report.tally({report.identity(x): x for x in items})
         self.assertEqual(totals, report.combine(expanded, ['race', 'map', 'policy'], equal=True))
 
+    def test_race_map_overview_counts_classic_opponents_before_campaign_details(self):
+        first = match(1)
+        first['config']['enemy'] = 'classic'
+        capped = match(2, enemy='c', winner=None, reason='cap')
+        capped['config']['enemy'] = 'classic'
+        swapped = match(3, 'b', 'a', winner='enemy')
+        swapped['config']['player'] = 'classic'
+        other_policy = match(4)
+        other_policy['config']['enemy'] = 'rush'
+        classic_selfplay = match(5, 'a', 'a')
+        classic_selfplay['config'].update(player='classic', enemy='classic')
+        island = match(6)
+        island['config'].update(enemy='classic', landscape='islands')
+        items = [first, capped, swapped, other_policy, classic_selfplay, island]
+        rows, _, _, _ = report.tally({report.identity(x): x for x in items})
+        summary = report.arena_race_map_summary(rows)
+        a = next(r for r in summary if r['race']=='a' and r['map']=='open')
+        self.assertEqual((a['policy'], a['games'], a['wins'], a['losses'], a['caps']),
+                         ('mixed', 3, 2, 0, 1))
+        self.assertFalse(any(r['race']=='a' and r['policy']=='classic' for r in summary))
+        campaigns = [dict(campaign='sample', player='mixed', enemy='classic', maxRounds=30,
+                          recruitLimit=1, attempts=2, completed=1)]
+        text = '\n'.join(report.overview(campaigns, [], [], [], rows))
+        self.assertIn('2/3 (66.7%); caps: 1', text)
+        self.assertIn('not recorded', text)
+        self.assertLess(text.index('Arena wins by race and map'), text.index('Campaigns against'))
+        self.assertLess(text.index('1/2 (50.0%)'), text.index('Campaign stage outcomes'))
+        self.assertLess(text.index('Campaign stage outcomes'), text.index('Arena results by tactic'))
+        missing_rows, _, _, _ = report.tally({report.identity(other_policy): other_policy})
+        self.assertIn('No non-self-play games against Classic were recorded',
+                      '\n'.join(report.overview([], [], [], [], missing_rows)))
+
     def test_unit_events_follow_actual_side_when_factions_swap_seats(self):
         item = match(1, 'b', 'a')
         item['recruits'] = [{'side': 'enemy', 'type': 'caster'}]

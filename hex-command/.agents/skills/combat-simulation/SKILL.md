@@ -10,6 +10,34 @@ running and reviewing batches. Read [implementation.md](implementation.md) when
 changing or debugging the runner or analyzer. Use the [Rust toolchain
 skill](../rust-toolchain/SKILL.md) for build problems.
 
+## Purpose and policy roles
+
+These simulations test roster balance and whether simulation players can finish
+objectives using the same engine rules as the browser. They also measure the
+cost of running those trials. Classic is the live enemy and fixed comparison
+opponent; making it stronger is not the purpose of simulation-player work.
+
+Read the [AI purpose and acceptance criteria](../../../rust/src/ai/README.md#purpose-and-acceptance-criteria)
+when assessing balance, player competence or policy changes. The intended player
+strategies are infantry-only, fair roster use and situational selection. Compare
+their success against the same fixed enemy under matching conditions. Fair roster
+use and situational selection should improve on the narrow infantry baseline,
+without a large advantage from repeatedly choosing one unit. No numeric threshold
+for the acceptable gap is established; report differences by map and opponent.
+
+Current presets are imperfect proxies for those intended roles. Rush recruits
+frontline units rather than strictly infantry; Mixed balances role shares rather
+than guaranteeing fair use of every unit. Priority and Battler reuse Mixed
+recruitment and experiment with planning; they are not separate situational
+recruiters. Battler is arena-only. See the linked reference for block composition
+and implementation gaps. State those limits when interpreting strategy comparisons.
+
+Campaign completion, required-actor survival and progression establish whether
+these players are useful for balance trials. Faster simulations must preserve
+those behaviors; speed alone does not establish correctness or balance. A round
+cap is an unresolved attempt, not a victory, and an unsafe forecast is not proof
+that an actor's death was unavoidable.
+
 ## Choose the right panel
 
 Follow the user's requested races, maps, policies, seeds and limits. When they
@@ -58,9 +86,9 @@ in a fresh ignored artifact directory, record its engine/data fingerprint, and
 include an explicit `--data-dir` when simulating another checkout. The runner
 defaults to the current catalog.
 
-The runner prints the readable findings, campaign and stage tables, and arena
-matrices automatically. Use that returned report first; do not issue extra reads
-when it already answers the question. Open `analytics/findings.md` and
+The runner prints coverage, compact race-by-map and campaign tables, then stage
+diagnostics and detailed arena matrices automatically. Use that returned report
+first; do not issue extra reads when it already answers the question. Open `analytics/findings.md` and
 `analytics/summary.md` when the returned output was truncated or more detail is
 needed. The report gives
 campaign completion and stage outcomes, failure categories and recorded
@@ -79,6 +107,24 @@ relevant code to test a narrow causal explanation. Keep any trace extraction
 targeted to the identified match and phase.
 
 ## Interpret results
+
+A full report must summarize both arenas and campaigns. Follow the report's
+opening order: completed coverage, short race-by-map results against Classic,
+then campaign completion, followed by the important detailed findings. Summarize
+both sections even when one contains more detail. For a scoped request, report
+that scope and say when a requested comparison is not recorded.
+
+Keep player policies separate in race-by-map comparisons. Name the fixed enemy,
+show wins/all games and caps, and state when opponent races or diplomacy modes
+are pooled. Arena completion means a decisive result for either side; it is not
+the race's win rate. Campaign completion means finishing the whole campaign;
+stage victories use only attempts that reached that stage. Do not mix these rates.
+
+Connect notable gaps to recorded recruitment, promotions, casualties, goal progress
+and terminal reasons. Distinguish an observed failure from its proposed cause.
+Only diagnose a causal bug after checking the relevant recorded phases and code.
+If a baseline exists, require matching panel conditions before calling a change
+a regression. Without a baseline, describe current results rather than a change.
 
 For arena balance, show all recorded factions and requested maps and policy
 pairings. Include recruitment, promotions, casualties and per-match outcomes;

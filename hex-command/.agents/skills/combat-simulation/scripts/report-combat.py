@@ -311,8 +311,33 @@ def campaign_prose(campaigns, stages, failures, events):
     return lines
 
 
+def arena_race_map_summary(rows):
+    selected = [r for r in rows if r['opponentPolicy'] == 'classic'
+                and (r['policy'] != 'classic' or r['race'] != r['opponentRace'])]
+    return combine(selected, ['race', 'map', 'policy'], cross=False)
+
+
 def overview(campaigns, stages, failures, events, arena_rows):
     lines = ['# Recorded simulation findings', '']
+    if arena_rows:
+        lines += ['## Arena wins by race and map against Classic', '',
+                  'Each cell shows wins/all games (win percentage), then round caps. Caps remain in the denominator. Opponent races, seats and initiatives are pooled; player policies stay separate. Identical race/policy self-play is excluded. Detailed opponent and equal-policy comparisons follow.', '']
+        summary = arena_race_map_summary(arena_rows)
+        factions = sorted({r['race'] for r in arena_rows})
+        maps = sorted({r['map'] for r in arena_rows})
+        if not summary:
+            lines += ['No non-self-play games against Classic were recorded; see the recorded matchups below.', '']
+        for policy in sorted({r['policy'] for r in summary}):
+            lookup = {(r['race'], r['map']): r for r in summary if r['policy'] == policy}
+            rows = []
+            for faction in factions:
+                row = {'Race': faction}
+                for map_name in maps:
+                    item = lookup.get((faction, map_name))
+                    row[map_name] = (f"{item['wins']}/{item['games']} ({item['winRate']:.1f}%); caps: {item['caps']}"
+                                     if item else 'not recorded')
+                rows.append(row)
+            lines += [f'### {policy} against Classic', '', markdown(rows, ['Race', *maps]), '']
     dimensions = sorted({(r['enemy'], r['maxRounds'], r['recruitLimit']) for r in campaigns})
     players = sorted({r['player'] for r in campaigns})
     for enemy, rounds, recruits in dimensions:
@@ -327,7 +352,12 @@ def overview(campaigns, stages, failures, events, arena_rows):
                 n, wins = sum(r['attempts'] for r in values), sum(r['completed'] for r in values)
                 row[player] = f'{wins}/{n} ({100*wins/n:.1f}%)' if n else 'not recorded'
             rows.append(row)
-        lines += [markdown(rows, ['Campaign', *players]), '',
+        lines += [markdown(rows, ['Campaign', *players]), '']
+    if dimensions:
+        lines += ['## Campaign stage outcomes and failure findings', '']
+    for enemy, rounds, recruits in dimensions:
+        selected = [r for r in campaigns if (r['enemy'], r['maxRounds'], r['recruitLimit']) == (enemy, rounds, recruits)]
+        lines += [f'### Against {enemy}: {rounds} rounds, {recruits} recruits per phase', '',
                   'Stage cells are victories/reached; D = defeats, C = round caps. Later-stage denominators exclude attempts stopped earlier.', '']
         rows = []
         selected_stages = [r for r in stages if (r['enemy'], r['maxRounds'], r['recruitLimit']) == (enemy, rounds, recruits)]
@@ -547,6 +577,7 @@ def build_report(inputs, baseline_inputs, out):
             policy_timings.extend(dict(run=label, clock=timing.get('clock'), source=source['file'], **row) for row in timing.get('policies', []))
     tables = {'campaign_runs': campaign_runs, 'campaign_summary': campaign_rows, 'campaign_stages': stage_rows,
               'campaign_failures': failure_rows, 'campaign_unit_events': campaign_events, 'matchups': rows, 'unit_events': units, 'matches': ledger, 'campaigns': campaigns,
+              'race_map_vs_classic': arena_race_map_summary(rows),
               'race_equal_policy': combine(rows, ['race'], equal=True),
               'race_map_equal_policy': combine(rows, ['race', 'map'], equal=True),
               'race_map_policy': combine(rows, ['race', 'map', 'policy'], equal=True),
@@ -562,6 +593,7 @@ def build_report(inputs, baseline_inputs, out):
                 'participantRows': sum(r['games'] for r in rows)}
     (out / 'metadata.json').write_text(json.dumps(metadata, indent=2) + '\n')
     findings = overview(campaign_rows, stage_rows, failure_rows, campaign_events, rows)
+    findings[2:2] = [f"Coverage: {len(current):,} physical matches; {metadata['arenaMatches']:,} arena games and {metadata['campaignAttempts']:,} campaign attempts.", '']
     if campaign_changes:
         findings += ['## Campaign completion versus baseline', '', markdown(campaign_changes, ['campaign', 'player', 'diplomacy', 'attempts', 'completedBefore', 'completed', 'completionRateDelta']), '']
     if policy_timings:

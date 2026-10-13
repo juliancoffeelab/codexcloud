@@ -109,8 +109,12 @@ cat artifacts/current/analytics/findings.md
 cat artifacts/current/analytics/summary.md
 ```
 
-The full runner has already analyzed a successful batch. The findings and
-summary are the primary outputs; CSV exports contain every recorded table,
+The full runner has already analyzed a successful batch. The findings open with
+coverage, compact race-by-map win tables against Classic for each player policy,
+and campaign completion tables. Wins include caps in their denominator; opponent
+races are pooled and identical race/policy self-play is excluded. Stage diagnostics
+and the existing detailed matchup matrices follow. Summarize both arenas and
+campaigns for a full run. The findings and summary are the primary outputs; CSV exports contain every recorded table,
 including arena comparisons and campaign/stage/failure diagnostics. With
 `--profile-turns`, readable reports include chooser and phase CPU by policy. A matched `--baseline` adds campaign completion changes. New
 campaign journals also retain explicit orders and planning reports; the analyzer

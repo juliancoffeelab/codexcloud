@@ -20,6 +20,16 @@ raw campaign/arena directories, JSONL journals, and Arrow journals (loading
 PyArrow only when needed). It does not rerun battles, inspect source code or
 resolve commits/catalog fingerprints.
 
+The findings begin with physical match coverage, compact arena wins by race and
+map against Classic, then campaign completion tables. The arena overview keeps
+player policies separate, pools recorded opponent races, seats and initiatives,
+and excludes identical race/policy self-play. Cells show wins/all games and caps;
+missing comparisons are explicit. `race_map_vs_classic.csv` exports those counts.
+This fixed-enemy overview serves the balance purpose described in the
+[AI reference](../../../rust/src/ai/README.md#purpose-and-acceptance-criteria).
+Stage diagnostics and detailed fixed-enemy/equal-policy matrices follow the
+compact tables; the complete report retains every recorded matchup.
+
 For campaigns it writes human-readable completion summaries by campaign and
 stage, separating victories, defeats, caps and unclassified endings under their
 recorded player, enemy, diplomacy and limit settings. Failure rows use recorded
