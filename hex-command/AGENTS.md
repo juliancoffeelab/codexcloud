@@ -32,6 +32,9 @@
   Remove redundant cases when found.
 - Keep temporary data, experiments and diagnostics in ignored `tmp/`, outside
   tracked content.
+- No tracked markdown file is allowed to contain information that is only relevant
+  for the current work. Markdown files whose sole purpose is to track current work
+  are not allowed to be in tracked places. Docs must contain permanent information.
 - Run `npm run format` to apply project formatting automatically.
 - Target 20 seconds for all test suites together, including Rust, Python
   and Vitest. Use the shared `npm test` runner; exceeding the target warns
