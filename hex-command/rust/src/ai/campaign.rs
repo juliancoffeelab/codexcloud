@@ -278,6 +278,7 @@ impl Game<'_> {
                     80.0,
                 );
                 o.actor = Some(format!("u{id}"));
+                o.hold = Some(true);
                 rebuilding.push(o);
             }
         }

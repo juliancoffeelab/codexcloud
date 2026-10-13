@@ -258,6 +258,7 @@ impl TacticalOrders {
                     80.0,
                 );
                 goal.actor = Some(format!("u{}", unit.id));
+                goal.hold = Some(true);
                 Some(goal)
             })
             .collect()

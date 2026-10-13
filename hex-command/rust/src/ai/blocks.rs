@@ -76,6 +76,33 @@ mod tests {
     }
 
     #[test]
+    fn player_and_enemy_rebuilding_emit_explicit_hold_targets() {
+        let rules = Rules::load().unwrap();
+        let mut game = Game::new(&rules, "mirror");
+        game.units.retain(|u| rules.units[u.kind].leader);
+        game.roster_changed();
+        for side in [Side::Player, Side::Enemy] {
+            game.begin_turn(side);
+            game.gold[side.index()] = 100;
+            let leader = game.units.iter().find(|u| u.side == side).unwrap().id;
+            let workspace = PlanningWorkspace::new(7, 0, None, Diplomacy::Restrained);
+            let orders = CampaignBlock::Objectives.campaign_orders(&game, &workspace);
+            let emitted: Vec<_> = orders
+                .tactics
+                .targets
+                .iter()
+                .filter(|g| g.id.starts_with("rebuild:"))
+                .collect();
+            let refreshed = orders.tactics.rebuild_objectives(&game);
+            assert!(!emitted.is_empty() && !refreshed.is_empty());
+            for goal in emitted.into_iter().chain(refreshed.iter()) {
+                assert!(crate::ai::objectives::actor_matches(&goal.actor, leader));
+                assert_eq!(goal.hold, Some(true));
+            }
+        }
+    }
+
+    #[test]
     fn unnamed_seal_specialist_gets_arrival_and_escort_without_survival_or_occupation() {
         let rules = Rules::load().unwrap();
         let mut game =

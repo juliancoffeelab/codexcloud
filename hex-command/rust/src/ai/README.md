@@ -79,6 +79,9 @@ next-phase forecast rather than forking the battle at every candidate position.
 arrival and escort duties without this constraint. A seal requires reaching
 its tile, not occupying it after sealing. Planners apply an occupation penalty
 only when the emitted objective explicitly has `hold: true`.
+Leader rebuilding emits `hold: true` for its owned keep on both sides, including
+when turn-local rebuilding targets are refreshed. The leader remains there
+while rebuilding is needed; arrival-only duties keep `hold: false`.
 `Survive` forbids any retaliation damage to the actor, including on attacks
 expected to finish the battle. Next-phase exposure uses engine movement/damage
 forecasts rather than exhaustive enemy-action search. A local rescue considers
