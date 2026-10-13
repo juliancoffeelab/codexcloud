@@ -1,0 +1,8 @@
+{
+  "id": "tide-sluice",
+  "map": "map.json",
+  "roster": "roster.json",
+  "objectives": "objectives.json",
+  "story": "story.json",
+  "scripts": "scripts.json"
+}

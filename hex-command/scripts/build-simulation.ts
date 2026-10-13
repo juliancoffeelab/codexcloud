@@ -60,6 +60,47 @@ const nativeEnv = {
   CARGO_PROFILE_RELEASE_CODEGEN_UNITS: env.CARGO_PROFILE_RELEASE_CODEGEN_UNITS ?? "1",
   CARGO_PROFILE_RELEASE_LTO: env.CARGO_PROFILE_RELEASE_LTO ?? "fat",
 };
+// Frozen references retain main's original allocator/compiler settings. Their
+// measured chooser CPU is returned independently of the current host's IPC/IO.
+const legacyRoot = join(root, "rust/legacy");
+const provenance = JSON.parse(readFileSync(join(legacyRoot, "PROVENANCE.json"), "utf8"));
+if (provenance.frozenCommit !== "b1f553de69c0de8a340088c0a9ed42b2149fb27e")
+  throw new Error("Frozen reference revision changed");
+const adapters = new Map<string, string>(
+  provenance.adapters.map((file: { path: string; sha256: string }) => [file.path, file.sha256]),
+);
+for (const file of [...provenance.originalFiles, ...provenance.adapters]) {
+  const expected = adapters.get(file.path) ?? file.sha256;
+  const actual = createHash("sha256")
+    .update(readFileSync(join(legacyRoot, file.path)))
+    .digest("hex");
+  if (actual !== expected) throw new Error(`Frozen reference file changed: ${file.path}`);
+}
+const legacyEnv = {
+  ...env,
+  CARGO_TARGET_DIR: join(target, "legacy"),
+  CARGO_ENCODED_RUSTFLAGS: "",
+  CARGO_PROFILE_RELEASE_CODEGEN_UNITS: "8",
+  CARGO_PROFILE_RELEASE_LTO: "thin",
+};
+run(
+  "cargo",
+  [
+    "build",
+    "--locked",
+    "--release",
+    "--manifest-path",
+    "rust/legacy/Cargo.toml",
+    "--bin",
+    "hex-command-legacy",
+  ],
+  legacyEnv,
+);
+mkdirSync(join(target, "release"), { recursive: true });
+copyFileSync(
+  join(target, "legacy/release/hex-command-legacy" + suffix),
+  join(target, "release/hex-command-legacy" + suffix),
+);
 function sources(directory: string, extension: string): string[] {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
     const path = join(directory, entry.name);

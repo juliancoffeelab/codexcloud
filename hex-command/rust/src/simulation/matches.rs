@@ -622,6 +622,9 @@ pub fn run_campaign(
 }
 /// Dispatch a validated configuration to the corresponding complete match runner.
 pub fn run(rules: &Rules, config: MatchConfig) -> Result<MatchResult, SimulationError> {
+    if let Some(result) = super::legacy::run(rules, &config) {
+        return result;
+    }
     match config {
         MatchConfig::Arena(config) => run_arena(rules, config).map(MatchResult::Arena),
         MatchConfig::Campaign(config) => run_campaign(rules, config).map(MatchResult::Campaign),

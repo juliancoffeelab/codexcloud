@@ -1,0 +1,40 @@
+{
+  "id": "deatharcher",
+  "role": "ranger",
+  "name": "Death archer",
+  "race": "undead",
+  "hp": 22,
+  "move": 3,
+  "cost": 11,
+  "attacks": [
+    {
+      "id": "bonebow",
+      "name": "Bone bow",
+      "damage": 10,
+      "damageType": "pierce",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "shard",
+      "name": "Shard",
+      "damage": 4,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Hollow frame",
+  "description": "A veteran skeletal archer who can defend itself at close quarters.",
+  "level": 2,
+  "family": "bonearcher",
+  "experienceNeeded": 0,
+  "advancesTo": []
+}

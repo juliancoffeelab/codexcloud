@@ -11,6 +11,11 @@ impl PlanningSnapshot {
         if self.initialized && self.policy.is_none() {
             return Err(fail("initialized planner has no policy"));
         }
+        if self.policy.is_some_and(|p| p.legacy().is_some()) {
+            return Err(fail(
+                "frozen reference policies run complete native matches, not live planners",
+            ));
+        }
         if state.campaign.is_some() && self.policy.is_some_and(|p| !p.supports_campaign()) {
             return Err(fail("battle-only policy cannot resume a campaign"));
         }

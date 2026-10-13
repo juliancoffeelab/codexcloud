@@ -1,0 +1,38 @@
+[package]
+name = "hex-command-simulation"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "hex_command_core"
+crate-type = ["rlib", "cdylib"]
+
+[[bin]]
+name = "hex-command-sim"
+path = "src/main.rs"
+
+[features]
+default = []
+wasm = ["dep:tsify", "dep:wasm-bindgen"]
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+tsify = { version = "0.5.8", default-features = false, features = ["js"], optional = true }
+wasm-bindgen = { version = "0.2", optional = true }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+flate2 = "1"
+
+[build-dependencies]
+sha2 = "0.10"
+
+[profile.release]
+lto = "thin"
+codegen-units = 8
+panic = "abort"
+
+[[bin]]
+name = "hex-command-legacy"
+path = "src/reference_main.rs"

@@ -1,0 +1,41 @@
+{
+  "id": "tidesage",
+  "role": "healer",
+  "name": "Tide sage",
+  "race": "merfolk",
+  "hp": 22,
+  "move": 4,
+  "cost": 15,
+  "attacks": [
+    {
+      "id": "surge",
+      "name": "Surge",
+      "damage": 7,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "staff",
+      "name": "Staff",
+      "damage": 2,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Incoming Tide",
+  "description": "A veteran support caster who sustains nearby allies and threatens armored foes.",
+  "healing": 4,
+  "level": 2,
+  "family": "wavemender",
+  "experienceNeeded": 0,
+  "advancesTo": []
+}

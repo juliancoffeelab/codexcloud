@@ -1,0 +1,44 @@
+{
+  "subtitle": "The first order you give yourself.",
+  "briefing": "The Master’s binding broke at midnight. For the first time, Orin and the quarry’s dead can choose where to go. Orin leads them toward the northern gate before the guards can return them to servitude. Freedom begins with getting the company out alive.",
+  "hints": [
+    "The guards watch the road more closely than the river.",
+    "Bare bones have little to fear from arrows.",
+    "Orin need not make the crossing alone.",
+    "The Ledgerkeeper guards his southern office. The road patrol and its mage pursue the company; the northern gate is the way out."
+  ],
+  "intro": [
+    {
+      "speaker": "Orin",
+      "portrait": "necromancer",
+      "text": "The binding broke at midnight. I waited for another order. None came."
+    },
+    {
+      "speaker": "A hollow voice",
+      "portrait": "skeleton",
+      "text": "Then give us one of our own."
+    },
+    {
+      "speaker": "Orin",
+      "portrait": "necromancer",
+      "text": "We leave the quarry. Keep the archers behind the bones. If the mage finds me, there may not be a second midnight."
+    }
+  ],
+  "victory": [
+    {
+      "speaker": "Orin",
+      "portrait": "necromancer",
+      "text": "The gate is open. I thought freedom would sound louder."
+    },
+    {
+      "speaker": "A hollow voice",
+      "portrait": "skeleton",
+      "text": "It sounds like no one telling us to go back."
+    },
+    {
+      "speaker": "Orin",
+      "portrait": "necromancer",
+      "text": "There are empty houses west of here. Let us give them neighbors."
+    }
+  ]
+}

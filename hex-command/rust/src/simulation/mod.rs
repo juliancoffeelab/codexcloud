@@ -4,6 +4,7 @@ mod canonical;
 pub mod checkpoint;
 pub mod cli;
 pub mod error;
+mod legacy;
 pub mod matches;
 pub mod records;
 pub mod report;

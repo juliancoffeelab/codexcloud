@@ -1,0 +1,48 @@
+{
+  "id": "soldier",
+  "role": "warrior",
+  "name": "Heavy infantry",
+  "race": "human",
+  "terrainModifiers": {
+    "ford": {
+      "cost": 1
+    },
+    "marsh": {
+      "cost": 1
+    }
+  },
+  "hp": 24,
+  "move": 3,
+  "cost": 8,
+  "attacks": [
+    {
+      "id": "sword",
+      "name": "Sword",
+      "damage": 8,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "mace",
+      "name": "Mace",
+      "damage": 6,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": -1,
+    "pierce": -1,
+    "impact": 1
+  },
+  "ability": "Armor",
+  "description": "Heavy infantry suited to holding the front. Blunt weapons threaten its armor.",
+  "level": 2,
+  "family": "swordsman",
+  "experienceNeeded": 0,
+  "advancesTo": []
+}

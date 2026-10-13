@@ -1,0 +1,35 @@
+{
+  "events": [
+    {
+      "id": "ferryman",
+      "trigger": {
+        "kind": "visit",
+        "tile": "9,1"
+      },
+      "label": "Find the ferryman’s purse in the riverside ruin",
+      "gold": 6,
+      "dialogue": [
+        {
+          "speaker": "Ferryman",
+          "portrait": "scout",
+          "text": "Take it. Six coins will not buy my ferry back, but perhaps they will buy someone else a morning."
+        }
+      ]
+    }
+  ],
+  "waves": [
+    {
+      "round": 6,
+      "label": "A skeleton patrol arrives from the southern road on turn 6",
+      "id": "southern-patrol",
+      "units": [
+        {
+          "type": "skeleton",
+          "side": "enemy",
+          "col": 11,
+          "row": 6
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "id": "tidekeeper",
+  "role": "warrior",
+  "name": "Tidekeeper",
+  "race": "merfolk",
+  "hp": 28,
+  "move": 4,
+  "cost": 0,
+  "attacks": [
+    {
+      "id": "trident",
+      "name": "Trident",
+      "damage": 6,
+      "damageType": "pierce",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "tidebolt",
+      "name": "Tide bolt",
+      "damage": 4,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Amphibious",
+  "description": "A merfolk leader who recruits from an owned keep and guides the company through coastal waters.",
+  "leader": true,
+  "level": 1,
+  "family": "tidekeeper",
+  "experienceNeeded": 18,
+  "advancesTo": ["tideseer"]
+}

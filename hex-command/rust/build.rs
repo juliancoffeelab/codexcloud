@@ -27,6 +27,7 @@ fn main() {
         PathBuf::from("Cargo.toml"),
         PathBuf::from("Cargo.lock"),
         PathBuf::from("build.rs"),
+        PathBuf::from("legacy/PROVENANCE.json"),
         PathBuf::from("../pixel/art/terrain/road/dead-ends.json"),
     ];
     sources(&root, &root.join("src"), &mut files);

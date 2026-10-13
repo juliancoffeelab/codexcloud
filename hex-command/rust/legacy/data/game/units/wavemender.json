@@ -1,0 +1,41 @@
+{
+  "id": "wavemender",
+  "role": "healer",
+  "name": "Wavemender",
+  "race": "merfolk",
+  "hp": 16,
+  "move": 4,
+  "cost": 9,
+  "attacks": [
+    {
+      "id": "surge",
+      "name": "Surge",
+      "damage": 5,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "staff",
+      "name": "Staff",
+      "damage": 2,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Incoming Tide",
+  "description": "A fragile merfolk support caster who tends nearby allies behind the front line.",
+  "healing": 2,
+  "level": 1,
+  "family": "wavemender",
+  "experienceNeeded": 10,
+  "advancesTo": ["tidesage"]
+}

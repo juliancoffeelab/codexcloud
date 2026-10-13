@@ -1,0 +1,41 @@
+{
+  "id": "wildkeeper",
+  "role": "warrior",
+  "name": "Wildkeeper",
+  "race": "beast",
+  "leader": true,
+  "hp": 28,
+  "move": 3,
+  "cost": 0,
+  "attacks": [
+    {
+      "id": "bough",
+      "name": "Bough",
+      "damage": 6,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "stones",
+      "name": "Stones",
+      "damage": 4,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": -1,
+    "impact": -1
+  },
+  "ability": "Keeper of the grove",
+  "description": "A woodland leader who uses the groves to shelter the company.",
+  "level": 1,
+  "family": "wildkeeper",
+  "experienceNeeded": 18,
+  "advancesTo": ["grovewarden"]
+}

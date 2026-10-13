@@ -125,6 +125,12 @@ impl ScheduleOptions {
 }
 /// Deterministic schedule order matches the TypeScript comparison harness.
 pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, SimulationError> {
+    if !options.self_play
+        && options.policies.iter().any(|p| p.legacy().is_some())
+        && options.policies.iter().any(|p| p.legacy().is_none())
+    {
+        return Err("Use --self-play to compare frozen reference and current policies; cross-version opponents have different engines".into());
+    }
     if options.self_play && options.mode != Mode::Arena {
         return Err("--self-play requires --mode arena".into());
     }
@@ -263,6 +269,18 @@ mod tests {
         }
         self_play_options.mode = Mode::Campaign;
         assert!(schedule(&self_play_options).is_err());
+        self_play_options.mode = Mode::Arena;
+        self_play_options.policies = vec![Policy::Mixed, Policy::MixedOld];
+        let references = schedule(&self_play_options).unwrap();
+        assert_eq!(references.len(), 16);
+        self_play_options.self_play = false;
+        assert!(schedule(&self_play_options).is_err());
+        self_play_options.mode = Mode::Full;
+        self_play_options.policies = vec![Policy::ClassicOld, Policy::RushOld, Policy::MixedOld];
+        assert_eq!(
+            schedule(&self_play_options).unwrap().len(),
+            self_play_options.expected_games().unwrap()
+        );
         assert_eq!(
             arena
                 .iter()

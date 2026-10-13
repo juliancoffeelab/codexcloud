@@ -36,6 +36,32 @@ source, catalog, toolchain and CPU; unchanged builds reuse it. Training results
 are not used as simulation answers. Build time is separate from command timing.
 Wasm builds use their ordinary toolchain and are unaffected by native flags.
 
+Frozen references `classicold`, `rushold` and `mixedold` contain the complete
+engine and catalog from `b1f553de69c0de8a340088c0a9ed42b2149fb27e`. They retain
+the system allocator, thin LTO and eight codegen units. Builds verify the vendored
+file checksums and never consult a moving Git branch. Compare all eight arena
+policies without switching branches:
+
+```sh
+npm run ai:simulate -- --data-dir rust/legacy/data --mode arena --self-play --profile-turns --policies classic,rush,mixed,battler,priority,classicold,rushold,mixedold --seeds 10 --seed 1 --rounds 30 --recruits 1 --workers 1 --out artifacts/policy-comparison/report.json
+```
+
+This runs 1,280 games per policy. One timed turn is one side's completed own phase;
+`meanDecisionMicrosPerTurn` sums chooser CPU and divides by actual completed
+phases. The frozen engine completes its original execution/JSONL recording path
+before the current host imports its complete gameplay into Arrow. Reported old
+chooser/phase CPU excludes this import; whole command wall time includes both
+recording passes. Serial per-game transport and overlapping transport altered
+allocator reuse and failed to reproduce reference CPU costs.
+
+Old references support complete native arena and campaign runs with old
+opponents. Cross-version opponents and live/WASM planner continuations are
+rejected. Use `--self-play` when combining old and current policies in an arena
+report. Use only old policies for campaign comparisons. The frozen data directory
+keeps the comparison stable after another PR changes the live catalog. Timings
+vary between runs; compare against a fresh frozen-binary run as well as historical
+measurements. Full gameplay, phase counts and decision counts must match exactly.
+
 Full gameplay is saved directly to `.details.arrow` by default. Each outcome's
 checksummed byte range contains one standard Arrow IPC stream. Troop snapshots
 use typed columns, ownership snapshots store owner codes against chapter tile

@@ -1,0 +1,102 @@
+{
+  "events": [
+    {
+      "id": "names",
+      "trigger": {
+        "kind": "visit",
+        "tile": "12,0"
+      },
+      "label": "Recover the stolen names from the old archive",
+      "gold": 6,
+      "dialogue": [
+        {
+          "speaker": "Orin",
+          "portrait": "necromancer",
+          "text": "Here they are. All the names he took. We will return them, one house at a time."
+        }
+      ]
+    }
+  ],
+  "waves": [
+    {
+      "id": "north-binding-rise",
+      "round": 5,
+      "label": "An unsealed binding stone raises a skeleton on turn 5",
+      "requiresUnsealed": "7,2",
+      "units": [
+        {
+          "type": "skeleton",
+          "side": "enemy",
+          "col": 7,
+          "row": 2
+        }
+      ]
+    },
+    {
+      "id": "south-binding-rise",
+      "round": 5,
+      "label": "An unsealed binding stone raises a skeleton on turn 5",
+      "requiresUnsealed": "7,6",
+      "units": [
+        {
+          "type": "skeleton",
+          "side": "enemy",
+          "col": 7,
+          "row": 6
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "label": "The Master's boar reaches the central road on turn 4",
+      "id": "masters-boar",
+      "units": [
+        {
+          "type": "boar",
+          "side": "enemy",
+          "col": 9,
+          "row": 4
+        }
+      ]
+    }
+  ],
+  "withoutDain": {
+    "briefing": "The refuge battle ended without an agreement. Dain and his allies will not come with Orin; the company must face the Master alone. His binding stones still hold others in servitude. Breaking them is the first step toward a freedom that can survive him.",
+    "hints": [
+      "The dead will have to look after their own.",
+      "The stones are where the Master’s reach begins."
+    ],
+    "recruits": ["skeleton", "bonearcher", "skeleton-impact-caster"],
+    "reinforcements": [
+      {
+        "type": "skeleton",
+        "side": "player",
+        "col": 2,
+        "row": 4
+      },
+      {
+        "type": "bonearcher",
+        "side": "player",
+        "col": 1,
+        "row": 3
+      }
+    ],
+    "intro": [
+      {
+        "speaker": "The Master",
+        "portrait": "necromancer",
+        "text": "You broke the patrol that came to turn you back. You have learned my methods well."
+      },
+      {
+        "speaker": "Orin",
+        "portrait": "necromancer",
+        "text": "We chose that battle. We will carry what it cost us. But you will not choose our lives again."
+      },
+      {
+        "speaker": "A hollow voice",
+        "portrait": "skeleton",
+        "text": "No captain is coming to help us. Break the binding stones. We can still bring the others home."
+      }
+    ]
+  }
+}

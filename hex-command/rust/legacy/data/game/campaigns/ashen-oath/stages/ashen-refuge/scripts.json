@@ -1,0 +1,94 @@
+{
+  "events": [
+    {
+      "id": "medicine",
+      "trigger": {
+        "kind": "visit",
+        "tile": "3,0"
+      },
+      "label": "Bring medicine to the villagers",
+      "gold": 6,
+      "warDialogue": [
+        {
+          "speaker": "Village elder",
+          "portrait": "worker",
+          "text": "The herbs will still save lives. Take these six coins. But after the bloodshed, medicine alone cannot stop the patrol’s battle with you."
+        }
+      ],
+      "dialogue": [
+        {
+          "speaker": "Village elder",
+          "portrait": "worker",
+          "text": "The fever is easing. We will send word with the families you helped; the households will gather a day sooner. Take these six coins for your shelter."
+        },
+        {
+          "speaker": "Orin",
+          "portrait": "necromancer",
+          "text": "We did not need the herbs ourselves. I am glad someone did."
+        }
+      ]
+    }
+  ],
+  "waves": [
+    {
+      "round": 3,
+      "label": "An archer and swordsman arrive on turn 3",
+      "id": "eastern-patrol",
+      "units": [
+        {
+          "type": "archer",
+          "side": "enemy",
+          "col": 9,
+          "row": 1
+        },
+        {
+          "type": "swordsman",
+          "side": "enemy",
+          "col": 9,
+          "row": 7
+        }
+      ]
+    },
+    {
+      "id": "eastern-adept",
+      "round": 5,
+      "label": "An adept arrives on turn 5",
+      "units": [
+        {
+          "type": "adept",
+          "side": "enemy",
+          "col": 9,
+          "row": 3
+        }
+      ]
+    }
+  ],
+  "refuge": {
+    "medicineEvent": "medicine",
+    "medicineTurns": 5,
+    "warBriefing": "The attempt to live beside the villages has become an open battle. After the bloodshed, the households can no longer persuade the patrol to stand down. Orin’s company must break the remaining patrol to leave, and will face the Master without Dain’s help.",
+    "warHints": [
+      "The patrol still has somewhere to run.",
+      "The empty houses remain, even after peace is lost."
+    ],
+    "escalation": [
+      {
+        "speaker": "Village elder",
+        "portrait": "worker",
+        "text": "There has been too much bloodshed for the patrol to accept our mediation. We cannot stop this battle for you."
+      },
+      {
+        "speaker": "Orin",
+        "portrait": "necromancer",
+        "text": "Then there is no agreement left to make. We must break the patrol before we can leave."
+      }
+    ],
+    "warVictory": [
+      {
+        "speaker": "Orin",
+        "portrait": "necromancer",
+        "text": "The patrol is broken. But we have lost the chance to leave here with friends. We face the Master with our own company."
+      }
+    ]
+  }
+}

@@ -1,0 +1,118 @@
+[
+  {
+    "id": "road",
+    "name": "Road",
+    "cost": 1,
+    "passable": true,
+    "description": "Normal movement. No protection."
+  },
+  {
+    "id": "plains",
+    "name": "Plains",
+    "cost": 1,
+    "passable": true,
+    "description": "Normal movement. No protection."
+  },
+  {
+    "id": "forest",
+    "damageModifiers": {
+      "ranged": -1
+    },
+    "name": "Forest",
+    "cost": 2,
+    "passable": true,
+    "description": "Costs 2 movement; ranged damage reduced by 1."
+  },
+  {
+    "id": "hill",
+    "damageModifiers": {
+      "melee": -1,
+      "ranged": -1
+    },
+    "name": "Hills",
+    "cost": 2,
+    "passable": true,
+    "description": "Costs 2 movement; all damage reduced by 1."
+  },
+  {
+    "id": "water",
+    "name": "Water",
+    "cost": 1,
+    "passable": false,
+    "description": "Impassable to land units."
+  },
+  {
+    "id": "bridge",
+    "name": "Bridge",
+    "cost": 1,
+    "passable": true,
+    "description": "A crossing over water. Normal movement; no protection."
+  },
+  {
+    "id": "ford",
+    "damageModifiers": {
+      "melee": 1,
+      "ranged": 1
+    },
+    "name": "Shallow water",
+    "cost": 2,
+    "passable": true,
+    "description": "Costs 3 movement for soldiers and commanders, 2 for archers and scouts. Units here take 1 extra damage."
+  },
+  {
+    "id": "village",
+    "name": "Village",
+    "cost": 1,
+    "passable": true,
+    "description": "+2 gold per turn. Heals a friendly occupant by 4 HP."
+  },
+  {
+    "id": "keep",
+    "name": "Keep",
+    "cost": 1,
+    "passable": true,
+    "description": "Your commander can recruit into adjacent empty hexes."
+  },
+  {
+    "id": "marsh",
+    "damageModifiers": {
+      "melee": 1,
+      "ranged": 1
+    },
+    "name": "Marsh",
+    "cost": 2,
+    "passable": true,
+    "description": "Mud slows land units and exposes them to 1 extra damage. Merfolk move easily here and take 1 less damage."
+  },
+  {
+    "id": "ruins",
+    "damageModifiers": {
+      "ranged": -1
+    },
+    "name": "Ruins",
+    "cost": 1,
+    "passable": true,
+    "description": "Broken walls reduce ranged damage by 1 without blocking shots through the tile. Some campaign ruins contain binding stones; their objectives specify who can seal them."
+  },
+  {
+    "id": "fort",
+    "damageModifiers": {
+      "melee": -1,
+      "ranged": -1
+    },
+    "name": "Fort",
+    "cost": 2,
+    "passable": true,
+    "description": "Earthworks reduce all incoming damage by 1. Capture by entering; forts provide no income or healing."
+  },
+  {
+    "id": "grove",
+    "damageModifiers": {
+      "ranged": -1
+    },
+    "name": "Sacred grove",
+    "cost": 2,
+    "passable": true,
+    "description": "Trees reduce ranged damage by 1 and block shots through the tile. An owned grove heals its friendly occupant by 4 HP, but provides no income."
+  }
+]

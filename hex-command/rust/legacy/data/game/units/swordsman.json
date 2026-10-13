@@ -1,0 +1,32 @@
+{
+  "id": "swordsman",
+  "role": "warrior",
+  "name": "Swordsman",
+  "race": "human",
+  "terrainModifiers": {},
+  "hp": 20,
+  "move": 3,
+  "cost": 6,
+  "attacks": [
+    {
+      "id": "sword",
+      "name": "Sword",
+      "damage": 6,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Line infantry",
+  "description": "Affordable sword infantry that can advance into an armored front-line fighter.",
+  "level": 1,
+  "family": "swordsman",
+  "experienceNeeded": 10,
+  "advancesTo": ["soldier"]
+}

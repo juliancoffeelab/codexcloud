@@ -1,0 +1,106 @@
+{
+  "events": [
+    {
+      "id": "reeds",
+      "trigger": {
+        "kind": "visit",
+        "tile": "5,1"
+      },
+      "label": "Meet the reed gatherers by the northern bridge",
+      "gold": 6,
+      "dialogue": [
+        {
+          "speaker": "Reed gatherer",
+          "portrait": "worker",
+          "text": "We saved what we could. Please make sure the road is still open when our children come home."
+        }
+      ]
+    }
+  ],
+  "waves": [
+    {
+      "id": "first-rise-9-1",
+      "round": 8,
+      "label": "An unsealed grave raises a skeleton on turn 8",
+      "requiresUnsealed": "9,1",
+      "units": [
+        {
+          "type": "skeleton",
+          "side": "enemy",
+          "col": 9,
+          "row": 1
+        }
+      ]
+    },
+    {
+      "id": "first-rise-11-4",
+      "round": 8,
+      "label": "An unsealed grave raises a skeleton on turn 8",
+      "requiresUnsealed": "11,4",
+      "units": [
+        {
+          "type": "skeleton",
+          "side": "enemy",
+          "col": 11,
+          "row": 4
+        }
+      ]
+    },
+    {
+      "id": "first-rise-9-7",
+      "round": 8,
+      "label": "An unsealed grave raises a skeleton on turn 8",
+      "requiresUnsealed": "9,7",
+      "units": [
+        {
+          "type": "skeleton",
+          "side": "enemy",
+          "col": 9,
+          "row": 7
+        }
+      ]
+    },
+    {
+      "id": "second-rise-9-1",
+      "round": 12,
+      "label": "An unsealed grave raises a skeleton on turn 12",
+      "requiresUnsealed": "9,1",
+      "units": [
+        {
+          "type": "skeleton",
+          "side": "enemy",
+          "col": 9,
+          "row": 1
+        }
+      ]
+    },
+    {
+      "id": "second-rise-11-4",
+      "round": 12,
+      "label": "An unsealed grave raises a skeleton on turn 12",
+      "requiresUnsealed": "11,4",
+      "units": [
+        {
+          "type": "skeleton",
+          "side": "enemy",
+          "col": 11,
+          "row": 4
+        }
+      ]
+    },
+    {
+      "id": "second-rise-9-7",
+      "round": 12,
+      "label": "An unsealed grave raises a skeleton on turn 12",
+      "requiresUnsealed": "9,7",
+      "units": [
+        {
+          "type": "skeleton",
+          "side": "enemy",
+          "col": 9,
+          "row": 7
+        }
+      ]
+    }
+  ]
+}

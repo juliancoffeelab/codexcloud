@@ -1,0 +1,40 @@
+{
+  "id": "tidehunter",
+  "role": "ranger",
+  "name": "Tide hunter",
+  "race": "merfolk",
+  "hp": 22,
+  "move": 5,
+  "cost": 11,
+  "attacks": [
+    {
+      "id": "harpoon",
+      "name": "Harpoon",
+      "damage": 8,
+      "damageType": "pierce",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "knife",
+      "name": "Knife",
+      "damage": 6,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Sea skirmisher",
+  "description": "A veteran harpoon fighter with a stronger close-combat reply.",
+  "level": 2,
+  "family": "harpooner",
+  "experienceNeeded": 0,
+  "advancesTo": []
+}

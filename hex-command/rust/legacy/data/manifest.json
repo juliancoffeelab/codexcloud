@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "terrain": "game/terrain.json",
+  "races": [
+    "game/races/merfolk.json",
+    "game/races/human.json",
+    "game/races/undead.json",
+    "game/races/beast.json"
+  ],
+  "units": [
+    "game/units/warden.json",
+    "game/units/adept.json",
+    "game/units/skeleton.json",
+    "game/units/bonearcher.json",
+    "game/units/wolf.json",
+    "game/units/boar.json",
+    "game/units/wildkeeper.json",
+    "game/units/necromancer.json",
+    "game/units/thorncaller.json",
+    "game/units/commander.json",
+    "game/units/soldier.json",
+    "game/units/archer.json",
+    "game/units/scout.json",
+    "game/units/swordsman.json",
+    "game/units/spearman.json",
+    "game/units/tidekeeper.json",
+    "game/units/reefguard.json",
+    "game/units/harpooner.json",
+    "game/units/wavemender.json",
+    "game/units/marksman.json",
+    "game/units/ranger.json",
+    "game/units/mage.json",
+    "game/units/revenant.json",
+    "game/units/deatharcher.json",
+    "game/units/direwolf.json",
+    "game/units/greatboar.json",
+    "game/units/briarweaver.json",
+    "game/units/tridentguard.json",
+    "game/units/tidehunter.json",
+    "game/units/tidesage.json",
+    "game/units/marshal.json",
+    "game/units/grovewarden.json",
+    "game/units/lich.json",
+    "game/units/tideseer.json",
+    "game/units/rider.json",
+    "game/units/lancer.json",
+    "game/units/skeleton-impact-caster.json",
+    "game/units/skeleton-impact-caster-l2.json",
+    "game/units/merfolk-maceguard.json",
+    "game/units/merfolk-maceguard-l2.json"
+  ],
+  "scenarios": [
+    "game/scenario/mirror-v1/scenario.json",
+    "game/scenario/river-v2/scenario.json",
+    "game/scenario/developer-v2/scenario.json",
+    "game/scenario/river-valley-v1/scenario.json"
+  ],
+  "campaigns": [
+    "game/campaigns/lantern-road/campaign.json",
+    "game/campaigns/green-accord/campaign.json",
+    "game/campaigns/ashen-oath/campaign.json",
+    "game/campaigns/borrowed-tide/campaign.json"
+  ],
+  "simulation": {
+    "rosters": "simulation/rosters.json",
+    "arena": "simulation/arena.json",
+    "campaign": "simulation/campaign.json"
+  }
+}

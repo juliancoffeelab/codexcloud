@@ -1,0 +1,40 @@
+{
+  "id": "archer",
+  "role": "ranger",
+  "name": "Archer",
+  "race": "human",
+  "hp": 16,
+  "move": 3,
+  "cost": 7,
+  "attacks": [
+    {
+      "id": "bow",
+      "name": "Bow",
+      "damage": 8,
+      "damageType": "pierce",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "knife",
+      "name": "Knife",
+      "damage": 4,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Bow",
+  "description": "A bow specialist best kept behind a melee screen.",
+  "level": 1,
+  "family": "archer",
+  "experienceNeeded": 10,
+  "advancesTo": ["marksman"]
+}

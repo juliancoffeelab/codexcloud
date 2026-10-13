@@ -1,0 +1,37 @@
+{
+  "subtitle": "Break the chains. Leave the names.",
+  "briefing": "Dain has chosen to stand beside Orin against the man who commanded them both. The Master still binds others to his will through stones along the road. Breaking those chains and confronting him is the company’s chance to secure a freedom he cannot simply revoke.",
+  "hints": [
+    "Dain's hammer and the adepts answer bones; spears answer beasts. Withdraw wounded named allies before they are cut off.",
+    "The stones are where the Master’s reach begins."
+  ],
+  "intro": [
+    {
+      "speaker": "The Master",
+      "portrait": "necromancer",
+      "text": "I gave you a second life. You owe me the use of it."
+    },
+    {
+      "speaker": "Orin",
+      "portrait": "necromancer",
+      "text": "A life is not a ledger. These people choose whom they follow."
+    },
+    {
+      "speaker": "Dain",
+      "portrait": "warden",
+      "text": "My wardens chose the same road. Break his binding stones. The adepts can answer his bones; my spears can keep the beasts off them."
+    }
+  ],
+  "victory": [
+    {
+      "speaker": "The Master",
+      "portrait": "necromancer",
+      "text": "Without me, what are you?"
+    },
+    {
+      "speaker": "Orin",
+      "portrait": "necromancer",
+      "text": "We have not decided yet. That is the point."
+    }
+  ]
+}

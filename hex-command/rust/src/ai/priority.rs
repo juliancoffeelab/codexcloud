@@ -394,6 +394,15 @@ mod tests {
             super::super::choose_game_command(&rules, &campaign, Policy::Battler, &mut workspace),
             Err(CommandError::BattleOnlyPolicy)
         );
+        for policy in Policy::ALL.into_iter().filter(|p| p.legacy().is_some()) {
+            assert_eq!(
+                super::super::choose_game_command(&rules, &campaign, policy, &mut workspace),
+                Err(CommandError::ReferenceOnlyPolicy)
+            );
+            let mut snapshot = workspace.snapshot();
+            snapshot.policy = Some(policy);
+            assert!(snapshot.validate(&rules, &campaign.state()).is_err());
+        }
         let normal = campaign.policy_objectives(None);
         let normal_weight = normal
             .iter()

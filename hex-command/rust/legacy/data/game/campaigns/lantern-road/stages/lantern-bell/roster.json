@@ -1,0 +1,156 @@
+{
+  "initial": {
+    "gold": {
+      "player": 12,
+      "enemy": 12
+    },
+    "units": [
+      {
+        "type": "commander",
+        "side": "player",
+        "col": 3,
+        "row": 4,
+        "name": "Captain Nera",
+        "role": "leader"
+      },
+      {
+        "type": "adept",
+        "side": "player",
+        "col": 4,
+        "row": 3
+      },
+      {
+        "type": "swordsman",
+        "side": "player",
+        "col": 4,
+        "row": 4
+      },
+      {
+        "type": "scout",
+        "side": "player",
+        "col": 4,
+        "row": 5
+      },
+      {
+        "type": "necromancer",
+        "side": "enemy",
+        "col": 13,
+        "row": 4,
+        "name": "The Bellwarden",
+        "role": "leader"
+      },
+      {
+        "type": "skeleton",
+        "side": "enemy",
+        "col": 8,
+        "row": 1
+      },
+      {
+        "type": "skeleton",
+        "side": "enemy",
+        "col": 8,
+        "row": 7
+      },
+      {
+        "type": "skeleton",
+        "side": "enemy",
+        "col": 11,
+        "row": 3
+      },
+      {
+        "type": "skeleton",
+        "side": "enemy",
+        "col": 11,
+        "row": 5
+      },
+      {
+        "type": "bonearcher",
+        "side": "enemy",
+        "col": 10,
+        "row": 2
+      },
+      {
+        "type": "bonearcher",
+        "side": "enemy",
+        "col": 10,
+        "row": 6
+      }
+    ]
+  },
+  "units": [
+    {
+      "type": "commander",
+      "side": "player",
+      "col": 3,
+      "row": 4,
+      "name": "Captain Nera",
+      "role": "leader"
+    },
+    {
+      "type": "adept",
+      "side": "player",
+      "col": 4,
+      "row": 3
+    },
+    {
+      "type": "swordsman",
+      "side": "player",
+      "col": 4,
+      "row": 4
+    },
+    {
+      "type": "scout",
+      "side": "player",
+      "col": 4,
+      "row": 5
+    },
+    {
+      "type": "necromancer",
+      "side": "enemy",
+      "col": 13,
+      "row": 4,
+      "name": "The Bellwarden",
+      "role": "leader"
+    },
+    {
+      "type": "skeleton",
+      "side": "enemy",
+      "col": 8,
+      "row": 1
+    },
+    {
+      "type": "skeleton",
+      "side": "enemy",
+      "col": 8,
+      "row": 7
+    },
+    {
+      "type": "skeleton",
+      "side": "enemy",
+      "col": 11,
+      "row": 3
+    },
+    {
+      "type": "skeleton",
+      "side": "enemy",
+      "col": 11,
+      "row": 5
+    },
+    {
+      "type": "bonearcher",
+      "side": "enemy",
+      "col": 10,
+      "row": 2
+    },
+    {
+      "type": "bonearcher",
+      "side": "enemy",
+      "col": 10,
+      "row": 6
+    }
+  ],
+  "recruits": ["swordsman", "archer", "scout", "spearman", "adept"],
+  "enemyRecruits": ["skeleton", "bonearcher", "skeleton-impact-caster"],
+  "gold": 20,
+  "enemyGold": 0
+}

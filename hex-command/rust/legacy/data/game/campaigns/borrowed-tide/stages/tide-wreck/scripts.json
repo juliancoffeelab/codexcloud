@@ -1,0 +1,104 @@
+{
+  "events": [
+    {
+      "id": "ledger",
+      "trigger": {
+        "kind": "visit",
+        "tile": "5,4"
+      },
+      "label": "Recover the unaltered salvage ledger",
+      "dialogue": [
+        {
+          "speaker": "Clerk",
+          "portrait": "worker",
+          "text": "These are the original accounts. He rewrote the council's order, then made each village pay for the delay. Keep them dry; I still have two colleagues below."
+        }
+      ]
+    },
+    {
+      "id": "await-tide",
+      "trigger": {
+        "kind": "control",
+        "tile": "5,4"
+      },
+      "requiresEvent": "ledger",
+      "beforeRound": 6,
+      "dialogue": [
+        {
+          "speaker": "Edda",
+          "portrait": "harpooner",
+          "text": "We have the wreck. Now wait for high tide on turn 6 so the rescue boat can reach us."
+        }
+      ]
+    },
+    {
+      "id": "rescue",
+      "trigger": {
+        "kind": "control",
+        "tile": "5,4",
+        "round": 6
+      },
+      "requiresEvent": "ledger",
+      "dialogue": [
+        {
+          "speaker": "Edda",
+          "portrait": "harpooner",
+          "text": "The boat is here. Hold the wreck for three turns while we bring the workers out."
+        }
+      ]
+    },
+    {
+      "id": "tide-arrived",
+      "trigger": {
+        "kind": "round",
+        "round": 6
+      },
+      "unlessEvent": "rescue",
+      "dialogue": [
+        {
+          "speaker": "Edda",
+          "portrait": "harpooner",
+          "text": "High tide. The rescue boat is waiting. Get to the wreck so we can start."
+        }
+      ]
+    }
+  ],
+  "waves": [
+    {
+      "round": 4,
+      "label": "Senn's hired guard arrives along the wooded shore",
+      "id": "senns-guards",
+      "units": [
+        {
+          "type": "swordsman",
+          "side": "enemy",
+          "col": 10,
+          "row": 1
+        },
+        {
+          "type": "archer",
+          "side": "enemy",
+          "col": 11,
+          "row": 5
+        }
+      ]
+    }
+  ],
+  "companionLosses": {
+    "Tomas": {
+      "debrief": "The workers leave with the ledger, but Tomas dies defending their escape. The rescued clerk explains that Senn's upper gate must open with the lower one to avoid flooding the village. His fellow deserters offer to guide the company along the wooded bank.",
+      "victory": [
+        {
+          "speaker": "Edda",
+          "portrait": "harpooner",
+          "text": "Last boat away. The clerk has the books. Tomas did not make it back."
+        },
+        {
+          "speaker": "Mira",
+          "portrait": "tidekeeper",
+          "text": "We carry his testimony too. The clerk says we need both gates and the beacon; nobody else will die in a release we could have prevented."
+        }
+      ]
+    }
+  }
+}

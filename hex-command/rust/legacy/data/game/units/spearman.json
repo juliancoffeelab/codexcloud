@@ -1,0 +1,32 @@
+{
+  "id": "spearman",
+  "role": "warrior",
+  "name": "Spearman",
+  "terrainModifiers": {},
+  "race": "human",
+  "hp": 20,
+  "move": 3,
+  "cost": 6,
+  "attacks": [
+    {
+      "id": "spear",
+      "name": "Spear",
+      "damage": 6,
+      "damageType": "pierce",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Spear line",
+  "description": "Affordable spear infantry suited to screening against woodland beasts.",
+  "level": 1,
+  "family": "spearman",
+  "experienceNeeded": 10,
+  "advancesTo": ["warden"]
+}

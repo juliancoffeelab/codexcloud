@@ -1,0 +1,136 @@
+{
+  "initial": {
+    "gold": {
+      "player": 12,
+      "enemy": 12
+    },
+    "units": [
+      {
+        "type": "tidekeeper",
+        "side": "player",
+        "col": 2,
+        "row": 2,
+        "name": "Mira",
+        "role": "leader"
+      },
+      {
+        "type": "reefguard",
+        "side": "player",
+        "col": 3,
+        "row": 2
+      },
+      {
+        "type": "harpooner",
+        "side": "player",
+        "col": 2,
+        "row": 3
+      },
+      {
+        "type": "wavemender",
+        "side": "player",
+        "col": 3,
+        "row": 3
+      },
+      {
+        "type": "harpooner",
+        "side": "player",
+        "col": 4,
+        "row": 4,
+        "name": "Edda",
+        "role": "courier"
+      },
+      {
+        "type": "commander",
+        "side": "enemy",
+        "col": 10,
+        "row": 5,
+        "name": "Postmaster Harl",
+        "role": "leader"
+      },
+      {
+        "type": "spearman",
+        "side": "enemy",
+        "col": 6,
+        "row": 2
+      },
+      {
+        "type": "swordsman",
+        "side": "enemy",
+        "col": 8,
+        "row": 5
+      },
+      {
+        "type": "archer",
+        "side": "enemy",
+        "col": 9,
+        "row": 4
+      }
+    ]
+  },
+  "units": [
+    {
+      "type": "tidekeeper",
+      "side": "player",
+      "col": 2,
+      "row": 2,
+      "name": "Mira",
+      "role": "leader"
+    },
+    {
+      "type": "reefguard",
+      "side": "player",
+      "col": 3,
+      "row": 2
+    },
+    {
+      "type": "harpooner",
+      "side": "player",
+      "col": 2,
+      "row": 3
+    },
+    {
+      "type": "wavemender",
+      "side": "player",
+      "col": 3,
+      "row": 3
+    },
+    {
+      "type": "harpooner",
+      "side": "player",
+      "col": 4,
+      "row": 4,
+      "name": "Edda",
+      "role": "courier"
+    },
+    {
+      "type": "commander",
+      "side": "enemy",
+      "col": 10,
+      "row": 5,
+      "name": "Postmaster Harl",
+      "role": "leader"
+    },
+    {
+      "type": "spearman",
+      "side": "enemy",
+      "col": 6,
+      "row": 2
+    },
+    {
+      "type": "swordsman",
+      "side": "enemy",
+      "col": 8,
+      "row": 5
+    },
+    {
+      "type": "archer",
+      "side": "enemy",
+      "col": 9,
+      "row": 4
+    }
+  ],
+  "recruits": ["reefguard", "harpooner", "wavemender", "merfolk-maceguard"],
+  "enemyRecruits": ["spearman", "archer", "swordsman"],
+  "gold": 18,
+  "enemyGold": 8
+}

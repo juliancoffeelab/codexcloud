@@ -1,0 +1,549 @@
+{
+  "mapRevision": 1,
+  "mapId": "mirror",
+  "cols": 11,
+  "rows": 7,
+  "tiles": [
+    {
+      "id": "0,0",
+      "col": 0,
+      "row": 0,
+      "terrain": "water",
+      "owner": null
+    },
+    {
+      "id": "1,0",
+      "col": 1,
+      "row": 0,
+      "terrain": "water",
+      "owner": null
+    },
+    {
+      "id": "2,0",
+      "col": 2,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "3,0",
+      "col": 3,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "4,0",
+      "col": 4,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "5,0",
+      "col": 5,
+      "row": 0,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "id": "6,0",
+      "col": 6,
+      "row": 0,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "id": "7,0",
+      "col": 7,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "8,0",
+      "col": 8,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "9,0",
+      "col": 9,
+      "row": 0,
+      "terrain": "water",
+      "owner": null
+    },
+    {
+      "id": "10,0",
+      "col": 10,
+      "row": 0,
+      "terrain": "water",
+      "owner": null
+    },
+    {
+      "id": "0,1",
+      "col": 0,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "1,1",
+      "col": 1,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "2,1",
+      "col": 2,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "3,1",
+      "col": 3,
+      "row": 1,
+      "terrain": "village",
+      "owner": null
+    },
+    {
+      "id": "4,1",
+      "col": 4,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "5,1",
+      "col": 5,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "6,1",
+      "col": 6,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "7,1",
+      "col": 7,
+      "row": 1,
+      "terrain": "village",
+      "owner": null
+    },
+    {
+      "id": "8,1",
+      "col": 8,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "9,1",
+      "col": 9,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "10,1",
+      "col": 10,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "0,2",
+      "col": 0,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "1,2",
+      "col": 1,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "2,2",
+      "col": 2,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "3,2",
+      "col": 3,
+      "row": 2,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "id": "4,2",
+      "col": 4,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "5,2",
+      "col": 5,
+      "row": 2,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "id": "6,2",
+      "col": 6,
+      "row": 2,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "id": "7,2",
+      "col": 7,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "8,2",
+      "col": 8,
+      "row": 2,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "id": "9,2",
+      "col": 9,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "10,2",
+      "col": 10,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "0,3",
+      "col": 0,
+      "row": 3,
+      "terrain": "keep",
+      "owner": "player"
+    },
+    {
+      "id": "1,3",
+      "col": 1,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "2,3",
+      "col": 2,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "3,3",
+      "col": 3,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "4,3",
+      "col": 4,
+      "row": 3,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "id": "5,3",
+      "col": 5,
+      "row": 3,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "id": "6,3",
+      "col": 6,
+      "row": 3,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "id": "7,3",
+      "col": 7,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "8,3",
+      "col": 8,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "9,3",
+      "col": 9,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "10,3",
+      "col": 10,
+      "row": 3,
+      "terrain": "keep",
+      "owner": "enemy"
+    },
+    {
+      "id": "0,4",
+      "col": 0,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "1,4",
+      "col": 1,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "2,4",
+      "col": 2,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "3,4",
+      "col": 3,
+      "row": 4,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "id": "4,4",
+      "col": 4,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "5,4",
+      "col": 5,
+      "row": 4,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "id": "6,4",
+      "col": 6,
+      "row": 4,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "id": "7,4",
+      "col": 7,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "8,4",
+      "col": 8,
+      "row": 4,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "id": "9,4",
+      "col": 9,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "10,4",
+      "col": 10,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "0,5",
+      "col": 0,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "1,5",
+      "col": 1,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "2,5",
+      "col": 2,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "3,5",
+      "col": 3,
+      "row": 5,
+      "terrain": "village",
+      "owner": null
+    },
+    {
+      "id": "4,5",
+      "col": 4,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "5,5",
+      "col": 5,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "6,5",
+      "col": 6,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "7,5",
+      "col": 7,
+      "row": 5,
+      "terrain": "village",
+      "owner": null
+    },
+    {
+      "id": "8,5",
+      "col": 8,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "9,5",
+      "col": 9,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "10,5",
+      "col": 10,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "0,6",
+      "col": 0,
+      "row": 6,
+      "terrain": "water",
+      "owner": null
+    },
+    {
+      "id": "1,6",
+      "col": 1,
+      "row": 6,
+      "terrain": "water",
+      "owner": null
+    },
+    {
+      "id": "2,6",
+      "col": 2,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "3,6",
+      "col": 3,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "4,6",
+      "col": 4,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "5,6",
+      "col": 5,
+      "row": 6,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "id": "6,6",
+      "col": 6,
+      "row": 6,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "id": "7,6",
+      "col": 7,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "8,6",
+      "col": 8,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "id": "9,6",
+      "col": 9,
+      "row": 6,
+      "terrain": "water",
+      "owner": null
+    },
+    {
+      "id": "10,6",
+      "col": 10,
+      "row": 6,
+      "terrain": "water",
+      "owner": null
+    }
+  ],
+  "name": "Classic mirror",
+  "description": "The original compact battlefield. Four villages and a wooded center."
+}

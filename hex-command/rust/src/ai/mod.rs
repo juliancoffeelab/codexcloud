@@ -37,16 +37,31 @@ pub enum Policy {
     Mixed,
     Priority,
     Battler,
+    ClassicOld,
+    RushOld,
+    MixedOld,
 }
 impl Policy {
     /// Complete supported policies in their stable authored order.
-    pub const ALL: [Self; 5] = [
+    pub const ALL: [Self; 8] = [
         Self::Classic,
         Self::Rush,
         Self::Mixed,
         Self::Priority,
         Self::Battler,
+        Self::ClassicOld,
+        Self::RushOld,
+        Self::MixedOld,
     ];
+    /// Frozen native reference implementations, built with their original engine.
+    pub const fn legacy(self) -> Option<&'static str> {
+        match self {
+            Self::ClassicOld => Some("classic"),
+            Self::RushOld => Some("rush"),
+            Self::MixedOld => Some("mixed"),
+            _ => None,
+        }
+    }
     /// Arena-only policies are excluded from campaign schedules and saves.
     pub const fn supports_campaign(self) -> bool {
         !matches!(self, Self::Battler)
@@ -62,6 +77,9 @@ impl Policy {
             Self::Mixed => "mixed",
             Self::Priority => "priority",
             Self::Battler => "battler",
+            Self::ClassicOld => "classicold",
+            Self::RushOld => "rushold",
+            Self::MixedOld => "mixedold",
         }
     }
 }
@@ -237,6 +255,9 @@ pub fn choose_command(
     policy: Policy,
     workspace: &mut PlanningWorkspace,
 ) -> Result<Command, CommandError> {
+    if policy.legacy().is_some() {
+        return Err(CommandError::ReferenceOnlyPolicy);
+    }
     battle
         .with_game(catalog, |game| {
             choose_game_command(catalog, game, policy, workspace)
@@ -250,6 +271,9 @@ pub(crate) fn choose_game_command(
     policy: Policy,
     workspace: &mut PlanningWorkspace,
 ) -> Result<Command, CommandError> {
+    if policy.legacy().is_some() {
+        return Err(CommandError::ReferenceOnlyPolicy);
+    }
     if !policy.supports_campaign() && game.campaign.is_some() {
         return Err(CommandError::BattleOnlyPolicy);
     }
@@ -662,7 +686,10 @@ mod courier_tests {
     #[test]
     fn allies_clear_approaches_and_complete_the_escort_for_every_policy() {
         let rules = Rules::load().unwrap();
-        for policy in Policy::ALL.into_iter().filter(|p| p.supports_campaign()) {
+        for policy in Policy::ALL
+            .into_iter()
+            .filter(|p| p.supports_campaign() && p.legacy().is_none())
+        {
             let mut game = Game::start_campaign(
                 &rules,
                 "borrowed-tide",

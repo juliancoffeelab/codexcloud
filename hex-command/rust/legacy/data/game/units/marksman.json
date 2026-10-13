@@ -1,0 +1,52 @@
+{
+  "id": "marksman",
+  "role": "ranger",
+  "name": "Marksman",
+  "race": "human",
+  "hp": 22,
+  "move": 3,
+  "cost": 11,
+  "attacks": [
+    {
+      "id": "bow",
+      "name": "Bow",
+      "damage": 10,
+      "damageType": "pierce",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "knife",
+      "name": "Knife",
+      "damage": 4,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Concealment",
+  "description": "A veteran bow specialist who uses woodland cover to survive return fire.",
+  "level": 2,
+  "family": "archer",
+  "experienceNeeded": 0,
+  "advancesTo": [],
+  "terrainModifiers": {
+    "forest": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    },
+    "grove": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    }
+  }
+}

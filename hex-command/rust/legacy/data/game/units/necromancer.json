@@ -1,0 +1,41 @@
+{
+  "id": "necromancer",
+  "role": "ranger",
+  "name": "Necromancer",
+  "race": "undead",
+  "leader": true,
+  "hp": 24,
+  "move": 3,
+  "cost": 0,
+  "attacks": [
+    {
+      "id": "gravebolt",
+      "name": "Grave bolt",
+      "damage": 6,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "bonestaff",
+      "name": "Bone staff",
+      "damage": 6,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Unbound",
+  "description": "An undead commander who combines close-combat and ranged magic.",
+  "level": 1,
+  "family": "necromancer",
+  "experienceNeeded": 18,
+  "advancesTo": ["lich"]
+}

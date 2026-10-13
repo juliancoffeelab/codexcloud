@@ -1,0 +1,25 @@
+{
+  "id": "green-accord",
+  "name": "The Green Accord",
+  "tagline": "A forest and a village can share a road.",
+  "description": "Lead Alder’s woodland pack against an illegal logging operation. Capture its camps, uncover the missing workers’ fate, and bring the evidence to the village council across the river.",
+  "race": "beast",
+  "leader": "wildkeeper",
+  "ending": [
+    {
+      "speaker": "Lark",
+      "portrait": "thorncaller",
+      "text": "The first cart crossed today. It carried apples, not axes."
+    },
+    {
+      "speaker": "Alder",
+      "portrait": "wildkeeper",
+      "text": "Keep the road open. The roots will do the rest."
+    }
+  ],
+  "stages": [
+    "stages/green-border/stage.json",
+    "stages/green-vigil/stage.json",
+    "stages/green-pact/stage.json"
+  ]
+}

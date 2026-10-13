@@ -1,0 +1,54 @@
+{
+  "events": [
+    {
+      "id": "road-cache",
+      "trigger": {
+        "kind": "visit",
+        "tile": "4,8"
+      },
+      "label": "Recover the southern road cache",
+      "gold": 6,
+      "dialogue": [
+        {
+          "speaker": "Ivo",
+          "portrait": "scout",
+          "text": "Dry blankets, clean bandages, and six coins. Someone expected the road to open again. I would hate to disappoint them."
+        }
+      ]
+    }
+  ],
+  "waves": [
+    {
+      "round": 5,
+      "label": "Two skeletons enter from the eastern road on turn 5",
+      "id": "eastern-skeletons",
+      "units": [
+        {
+          "type": "skeleton",
+          "side": "enemy",
+          "col": 11,
+          "row": 1
+        },
+        {
+          "type": "skeleton",
+          "side": "enemy",
+          "col": 11,
+          "row": 7
+        }
+      ]
+    },
+    {
+      "round": 7,
+      "label": "A bone bow reaches the southern crossing on turn 7",
+      "id": "southern-bow",
+      "units": [
+        {
+          "type": "bonearcher",
+          "side": "enemy",
+          "col": 8,
+          "row": 7
+        }
+      ]
+    }
+  ]
+}
