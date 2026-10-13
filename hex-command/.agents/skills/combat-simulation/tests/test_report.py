@@ -11,7 +11,6 @@ import sys
 import tempfile
 import unittest
 from unittest.mock import patch
-import zipfile
 
 spec = importlib.util.spec_from_file_location('report_combat', Path(__file__).parents[1] / 'scripts/report-combat.py')
 report = importlib.util.module_from_spec(spec)
@@ -70,9 +69,9 @@ class CompleteDataTests(unittest.TestCase):
             self.assertEqual(metadata['sources'][0]['sourceCommit'], 'unavailable-commit')
             self.assertIsNone(metadata['baselineSources'][0]['sourceCommit'])
             self.assertNotIn('catalogs', metadata)
-            with zipfile.ZipFile(root/'out/full-data.zip') as bundle:
-                self.assertIn('match_changes.csv', bundle.namelist())
-                self.assertNotIn('unit_stats.csv', bundle.namelist())
+            self.assertTrue((root/'out/summary.md').is_file())
+            self.assertFalse((root/'out/index.html').exists())
+            self.assertFalse((root/'out/full-data.zip').exists())
 
     def test_swapped_seats_caps_and_selfplay_do_not_inflate_physical_matches(self):
         items = [match(1), match(2, 'b', 'a'), match(3, winner=None, reason='cap'), match(4, 'a', 'a')]
@@ -162,7 +161,6 @@ class CompleteDataTests(unittest.TestCase):
                 compressed_tables = report.build_report([path], [], root/'compressed')
             self.assertEqual(tables['campaign_summary'], compressed_tables['campaign_summary'])
 
-            self.assertIn('Recorded findings', (root/'analytics/index.html').read_text())
             outcomes[0]['detail']['sha256']='wrong'
             path.write_text(json.dumps(dict(outcomes=outcomes)))
             with self.assertRaisesRegex(ValueError, 'checksum'):

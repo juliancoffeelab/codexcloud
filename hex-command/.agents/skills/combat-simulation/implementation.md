@@ -49,9 +49,8 @@ configurations. Timing and journal-file changes do not imply gameplay changes.
 The runner's default full reports use JSONL gameplay details. Direct native
 simulation can also record Arrow. The analyzer reads either format; PyArrow is
 needed only for Arrow diagnostics. It writes `findings.md`, `summary.md`,
-`index.html`, table CSVs, `metadata.json` and `full-data.zip`. HTML filtering
-affects display only. The report emits current findings to stdout and records
-analyzer elapsed time in `timings.json`. Native aggregate rows own seed-block
+table CSVs and `metadata.json`. The report emits current findings to stdout and
+records analyzer elapsed time in `timings.json`. Native aggregate rows own seed-block
 confidence intervals; the analyzer does not calculate new intervals.
 
 ## Scheduling and execution

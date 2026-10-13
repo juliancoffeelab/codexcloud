@@ -60,7 +60,7 @@ when it already answers the question. Open `analytics/findings.md` and
 needed. The report gives
 campaign completion and stage outcomes, failure categories and recorded
 reasons, named losses, objective progress, idle/repeated tails, and arena
-comparisons. Use `analytics/index.html` to filter complete tables. Do not start
+comparisons. Complete tables are available as CSV exports. Do not start
 by manually parsing outcomes, CSV/JSON, or gameplay journals for routine
 questions that the report already answers. Preserve partial output on failure
 and report completed matches; an incomplete run is not a complete panel.
@@ -90,7 +90,7 @@ progressed from a loss after partial progress, and distinguish defeat from a
 round cap. Do not infer a causal bug from aggregate rates alone: use recorded
 phase evidence and then targeted code inspection for the specific pattern.
 
-Link `analytics/findings.md`, `analytics/summary.md`, and
-`analytics/index.html`, along with the saved run location and its metadata.
+Link `analytics/findings.md` and `analytics/summary.md`, along with the saved
+run location and its metadata.
 Retain raw journals and exports in ignored `artifacts/`; do not commit generated
 simulation data.
