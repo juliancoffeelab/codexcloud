@@ -14,7 +14,7 @@ from pathlib import Path
 from time import perf_counter
 from simulation_journal import decode_detail
 
-RUN_METADATA = ("fingerprint", "sourceCommit", "elapsedSeconds", "detailFormat")
+RUN_METADATA = ("fingerprint", "sourceCommit", "elapsedSeconds", "detailFormat", "turnTiming")
 OUTCOME_METADATA = ("elapsedMs", "detail")
 
 

@@ -324,6 +324,7 @@ fn phase(
     goals: Option<&[Objective]>,
     diplomacy: Diplomacy,
 ) -> Result<Phase, SimulationError> {
+    let timing = crate::ai::profiling::Turn::start(policy, game.turn);
     let before = recording.units(game)?;
     let side = game.turn;
     let round = game.round;
@@ -349,7 +350,7 @@ fn phase(
             .map(|u| u.hp)
             .sum()
     };
-    Ok(Phase {
+    let phase = Phase {
         side,
         round,
         records,
@@ -377,7 +378,11 @@ fn phase(
         }),
         objectives: goals.unwrap_or(&[]).to_vec(),
         campaign: game.campaign.clone(),
-    })
+    };
+    if let Some(timing) = timing {
+        timing.finish();
+    }
+    Ok(phase)
 }
 /// Execute one arena until victory or its cap, retaining every phase and endpoint.
 pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, SimulationError> {

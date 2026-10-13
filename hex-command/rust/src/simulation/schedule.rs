@@ -38,6 +38,8 @@ pub struct ScheduleOptions {
     pub campaigns: Vec<String>,
     pub policies: Vec<Policy>,
     pub diplomacy: Vec<Diplomacy>,
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    pub self_play: bool,
 }
 impl ScheduleOptions {
     /// Resolve authored simulation defaults without starting any matches.
@@ -65,6 +67,7 @@ impl ScheduleOptions {
                 .collect(),
             campaigns: rules.campaign_defaults.campaigns.clone(),
             policies: parse(&rules.arena.policies)?,
+            self_play: false,
             diplomacy: rules
                 .campaign_defaults
                 .diplomacy
@@ -89,7 +92,13 @@ impl ScheduleOptions {
             self.landscapes
                 .len()
                 .checked_mul(2)
-                .and_then(|n| n.checked_mul(entrants))
+                .and_then(|n| {
+                    n.checked_mul(if self.self_play {
+                        self.armies.len()
+                    } else {
+                        entrants
+                    })
+                })
                 .and_then(|n| n.checked_mul(entrants))
                 .ok_or("Schedule too large")?
         };
@@ -116,6 +125,9 @@ impl ScheduleOptions {
 }
 /// Deterministic schedule order matches the TypeScript comparison harness.
 pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, SimulationError> {
+    if options.self_play && options.mode != Mode::Arena {
+        return Err("--self-play requires --mode arena".into());
+    }
     let end = options
         .first_seed
         .checked_add(options.seeds)
@@ -135,6 +147,9 @@ pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, Simulatio
             for landscape in &options.landscapes {
                 for a in 0..entrants.len() {
                     for b in a..entrants.len() {
+                        if options.self_play && entrants[a].1 != entrants[b].1 {
+                            continue;
+                        }
                         let seats = if a == b {
                             vec![(a, b)]
                         } else {
@@ -201,6 +216,7 @@ mod tests {
             campaigns: vec!["chapter".into()],
             policies: vec![Policy::Classic],
             diplomacy: vec![Diplomacy::Pragmatic],
+            self_play: false,
         };
         let configs = schedule(&options).unwrap();
         assert_eq!(configs.len(), 9);
@@ -228,6 +244,25 @@ mod tests {
                 .count(),
             4
         );
+        let mut self_play_options = options.clone();
+        self_play_options.mode = Mode::Arena;
+        self_play_options.policies = vec![Policy::Classic, Policy::Priority, Policy::Battler];
+        self_play_options.self_play = true;
+        let self_play = schedule(&self_play_options).unwrap();
+        assert_eq!(self_play.len(), 24);
+        assert_eq!(self_play.len(), self_play_options.expected_games().unwrap());
+        assert!(
+            self_play
+                .iter()
+                .all(|config| matches!(config, MatchConfig::Arena(c) if c.player == c.enemy))
+        );
+        for policy in &self_play_options.policies {
+            for first in [Side::Player, Side::Enemy] {
+                assert_eq!(self_play.iter().filter(|c|matches!(c, MatchConfig::Arena(c) if c.player == *policy && c.first == first)).count(), 4);
+            }
+        }
+        self_play_options.mode = Mode::Campaign;
+        assert!(schedule(&self_play_options).is_err());
         assert_eq!(
             arena
                 .iter()

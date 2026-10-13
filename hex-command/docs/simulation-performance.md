@@ -192,3 +192,54 @@ runs are lossless ZIP files whose CRCs were checked before removing their expand
 copies. Reviewed machine-readable measurements, every quality stratum, binary and
 source fingerprints, and comparison exclusions are in
 [benchmarks/priority-policies.json](benchmarks/priority-policies.json).
+
+## Direct self-play and mean turn timing
+
+Use `--self-play` to schedule arena games with the same strategy on both sides,
+while retaining every faction pair and both initiatives. Use `--profile-turns`
+to include `turnTiming` in the JSON report and console summary, plus a policy
+comparison table in the Markdown report. These options also pass through the npm
+simulation entry point. They are opt-in; default schedules and gameplay records
+keep their existing format. `--self-play` requires arena mode.
+
+```sh
+rust/target/release/hex-command-sim --mode arena --self-play --profile-turns \
+  --policies classic,rush,mixed,battler,priority --seeds 10 --seed 1 \
+  --rounds 30 --recruits 1 --workers 1 --out artifacts/self-play/report.json
+```
+
+One turn is one side's completed own phase, rather than a complete two-sided
+round. `turnTiming.policies` combines both seats by their actual turn counts;
+`turnTiming.rows` also exposes each seat separately. `meanDecisionMicrosPerTurn`
+measures chooser CPU, and `meanTurnMicros` includes command execution and phase
+snapshots. Turn-transition events, journal encoding, startup and report aggregation
+are outside the phase interval. Linux reports thread CPU time; other platforms
+identify their elapsed-clock fallback in `turnTiming.clock`. Timing is run metadata,
+explicitly excluded by the gameplay comparer.
+
+Five sequential, instrumented native runs used 1,280 self-play games per strategy:
+all faction/map pairs, both initiatives, seeds 1–10, a 30-round cap, one recruit and
+one worker. Every game retained its complete Arrow history.
+
+| Strategy | Whole command seconds | Own turns | Mean decision µs/turn | Mean complete phase µs/turn |
+| --- | ---: | ---: | ---: | ---: |
+| Classic | 1.73 | 30,154 | 35.24 | 41.69 |
+| Rush | 3.55 | 43,614 | 59.33 | 67.36 |
+| Mixed | 3.13 | 35,947 | 62.59 | 71.25 |
+| Battler | 2.77 | 34,548 | 54.58 | 63.26 |
+| Priority | 2.72 | 34,548 | 53.73 | 62.38 |
+
+Battler and Priority produced identical outcomes and endpoints in all 1,280 games
+after normalizing the policy labels; their timing difference is small. Other
+strategies generate different game states and turn counts, so these are self-play
+averages, separate from the earlier fixed-position comparison. These are single
+whole-command samples, not repeated medians. The binary reused the accepted
+compiler profile for this measurement-only change.
+
+Profiling was also switched on and off for ten production games across all five
+policies with two workers: per-game detail bytes and gameplay/report aggregates
+matched, and independently decoded phase records verified the turn counts and
+weighted means. Full verification passed all eight groups in 68.13 seconds;
+combined tests took 7.39 seconds. Exact measurements, clock, limits, fingerprints
+and provenance are in
+[benchmarks/policy-selfplay.json](benchmarks/policy-selfplay.json).

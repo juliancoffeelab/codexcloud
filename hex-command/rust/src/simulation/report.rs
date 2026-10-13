@@ -373,6 +373,19 @@ pub fn markdown(report: &Value) -> String {
             - 1,
         report["elapsedSeconds"].as_f64().unwrap_or(0.0)
     );
+    if let Some(timing) = report.get("turnTiming") {
+        text.push_str("## Turn timing\n\nOne turn is one side's own phase. CPU timing excludes journal encoding and report aggregation; turn-transition events are outside the measured phase.\n\n| Policy | Turns | Mean AI decision µs/turn | Mean complete phase µs/turn |\n|---|---:|---:|---:|\n");
+        for row in timing["policies"].as_array().into_iter().flatten() {
+            text.push_str(&format!(
+                "| {} | {} | {:.2} | {:.2} |\n",
+                row["policy"].as_str().unwrap_or(""),
+                row["turns"],
+                row["meanDecisionMicrosPerTurn"].as_f64().unwrap_or(0.0),
+                row["meanTurnMicros"].as_f64().unwrap_or(0.0)
+            ));
+        }
+        text.push('\n');
+    }
     if report["mode"] != "campaign" {
         text.push_str("| Policy | Opponent | Games | Wins | Losses | Unresolved | Mean rounds |\n|---|---|---:|---:|---:|---:|---:|\n");
         for row in report["rows"].as_array().into_iter().flatten() {
@@ -444,6 +457,7 @@ mod tests {
             campaigns: vec![],
             policies: vec![Policy::Classic],
             diplomacy: vec![Diplomacy::Pragmatic],
+            self_play: false,
         };
         let outcomes = [Some("player"),Some("enemy"),None,Some("player")].iter().enumerate().map(|(index,winner)|json!({"kind":"arena","config":{"seed":1+index/2,"armies":{"player":"human","enemy":"human"},"landscape":"open","player":"classic","enemy":"classic","first":if index%2==0{"player"}else{"enemy"}},"winner":winner,"rounds":2,"recruits":[],"casualties":[],"promotions":[]})).collect();
         let report = build_report(&options, "fp", "commit", 0.1, outcomes, None).unwrap();
