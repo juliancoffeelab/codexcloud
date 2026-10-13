@@ -547,7 +547,12 @@ mod tests {
 
     #[test]
     fn save_restores_pending_ai_decision_and_continuation() {
-        for policy in [AiPolicy::Classic, AiPolicy::Mixed] {
+        for policy in [
+            AiPolicy::Classic,
+            AiPolicy::Mixed,
+            AiPolicy::Priority,
+            AiPolicy::Battler,
+        ] {
             let mut factory = NativeEngineFactory {
                 rules: Rules::embedded().unwrap(),
                 battles: HashMap::new(),
@@ -593,6 +598,21 @@ mod tests {
                     serde_json::to_value(&factory.battles[&restored.id].state).unwrap()
                 );
             }
+            // Save after recruitment, when queued policies have a real duty cursor.
+            let saved = factory.checkpoint(original.id, 3).unwrap();
+            let saved: SavedGame =
+                serde_json::from_str(&serde_json::to_string(&saved).unwrap()).unwrap();
+            let resumed = factory.restore_saved(saved).unwrap();
+            assert_eq!(
+                factory
+                    .decision(original.id, 3, options.clone())
+                    .unwrap()
+                    .command,
+                factory
+                    .decision(resumed.id, 0, options.clone())
+                    .unwrap()
+                    .command
+            );
         }
     }
 }

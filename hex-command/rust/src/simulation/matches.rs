@@ -527,6 +527,9 @@ pub fn run_campaign(
     rules: &Rules,
     config: CampaignConfig,
 ) -> Result<CampaignResult, SimulationError> {
+    if !config.player.supports_campaign() || !config.enemy.supports_campaign() {
+        return Err("Battler is a battle-only policy; use Priority for campaigns".into());
+    }
     validate_limits(config.max_rounds, config.recruit_limit)?;
     let chapters = rules
         .campaigns

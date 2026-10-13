@@ -119,38 +119,59 @@ retain actual turn-start events, healing, waves and objective transitions.
 Native recording uses direct Arrow snapshot dictionaries with complete ordered
 phase references. Endpoint hashing streams the original sorted-key JSON bytes.
 The native CLI uses a CPU-specific LLVM profile-guided build, trained on full
-existing-policy arena and campaign schedules at seeds 17–18. Compiler profiles
+all-policy arena and supported campaign schedules at seeds 17–18. Compiler profiles
 are cached by source, data, toolchain and CPU; simulation results are always
 computed afresh. Wasm builds use separate compiler flags.
 
-## Next policy target: Priority
+## Priority and Battler
 
-Priority is a proposed policy, not an alias for Mixed or a change to existing
-policy behavior. Its target is at least four times less decision CPU time than
-Mixed on an identical workload. Measure arena and campaign results separately.
+These policies are opt-in; the authored simulation defaults and live enemy remain
+unchanged. **Priority** plays battles and complete campaigns. **Battler** is an
+arena-only entry point to the same battle planner. Campaign requests and saved
+campaign planners reject Battler. Full schedules exclude it from both campaign
+sides. Both recruit the balanced Mixed army through production recruitment rules.
 
-Retain Mixed's intent: pursue required objectives, protect couriers and named
-companions, field a balanced army, screen ranged units and healers, take useful
-attacks, heal, retreat and rebuild leaders. Use a queue of unit duties and promising
-actions rather than finding a global best action by repeatedly scoring every
-unit/destination/weapon combination. Cheap ranking selects a small candidate set;
-detailed combat and safety checks decide the action. Recompute affected duties
-after a move, attack, death, recruit, promotion, ownership change or scripted event.
-Use stable ties and a bounded amount of planning work per command.
+The planner ranks actionable units, searches one unit at a time, and refreshes its
+queue after actions. It retains objective commitments, movement corridors, reserved
+endpoints, authored posts, promotion, healing, retreat and leader rebuilding. Each
+unit has at most three searches per phase; new friendly units receive their own
+budget. Stable ordinals and the seeded action jitter resolve ties.
 
-Required actors keep the conservative next-phase safety forecast, including
-scripted waves and opponents yielding one another's routes. Clear their corridors
-and reserved endpoints. Respect authored enemy posts, diplomacy, hold/vigil
-counters, seals, mediation, income, recall and chapter transitions. Execute all
-actions through the same production battle commands. Campaigns begin in chapter
-one with earned carryover and no retries, just as the current simulation policies
-do. Arena-only shortcuts must be an explicitly separate variant.
+Detailed evaluation normally considers the twelve most promising raw actions.
+In battles, attack previews use at most four promising origins per target and
+weapon. Dominated choices sharing an origin, eliminated enemy and terminal status
+are removed before spending the shortlist on safety. An endangered essential actor
+with no positive plan searches all legal moves using its existing pressure forecast;
+a nearby leader with no bounded plan can fall back to a focused Mixed search.
+These rules keep useful retreat positions from disappearing behind unsafe attacks.
 
-Accept Priority only after matched-seed comparisons against Mixed show no observed
-campaign completion regression in each campaign, diplomacy setting and enemy-policy
-stratum, with defeats, caps, chapter reach and named deaths reported as well.
-Use enough paired seeds to assess uncertainty; an equal aggregate completion rate
-can conceal a broken campaign. Arena acceptance also reports faction/map/policy
-rates and unresolved caps. Measure speed and behavior independently. Approximate
-intent does not require identical commands, and good arena performance does not
-establish campaign support.
+Objective route fields are shared by unit kind and duty. Proximity, formation,
+withdrawal lanes and rebuilding intents refresh against their actual dependencies.
+Cheap ranking does not replace legal command validation or conservative pressure
+forecasts. Campaigns retain scripted turn-start arrivals and mission transitions.
+Derived fields stay private and rebuild after restoration; the unit queue, retries,
+search attempts and cursor are part of the validated native/WASM continuation.
+
+Priority's campaign controller uses full Mixed planning when an essential actor (a leader,
+courier or required companion) is at or below half health and an opponent is within five hexes. It also
+uses full Mixed planning from chapter one when any chapter combines defeat with
+an unrestricted seal objective, preserving the army and companion carryover needed
+for that assault. Ashen Oath currently matches this structural condition. This is a
+hybrid controller; its Ashen results come from full Mixed planning. Other campaigns
+use the bounded planner with focused Mixed fallback for required actors. Once only
+an escort or escape remains, ordinary fighters give clearing the opposing leader
+higher priority instead of camping indefinitely on the actor's approaches. This
+priority change applies to generated duties and respects refuge mediation.
+
+During an un-escalated refuge mediation, Priority prefers restrained behavior even
+when pragmatic play permits escalation, except in those complex assault campaigns.
+It changes its choices, not legal attacks, allegiance or story conditions. Real
+campaigns start at chapter one, earn their carryover and receive no retries.
+
+Measure quality and compute independently with the paired production-game runner
+and the saved-position profiler described in
+[the performance guide](../../../docs/simulation-performance.md). Report every
+campaign/diplomacy/opponent stratum, caps, defeats, chapter reach and named losses;
+aggregate wins alone do not establish campaign support. Compare battle factions,
+landscapes, opponents and both initiatives. The proposed fourfold additional
+reduction in decision CPU remains a performance target, not an achieved claim.

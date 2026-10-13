@@ -269,8 +269,8 @@ pub fn build_report(
     let mut campaign_strata = vec![];
     if options.mode != Mode::Arena {
         for campaign in &options.campaigns {
-            for player in &options.policies {
-                for enemy in &options.policies {
+            for player in options.policies.iter().filter(|p| p.supports_campaign()) {
+                for enemy in options.policies.iter().filter(|p| p.supports_campaign()) {
                     for diplomacy in &options.diplomacy {
                         let player = serde_json::to_value(player)?;
                         let enemy = serde_json::to_value(enemy)?;

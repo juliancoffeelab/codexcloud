@@ -79,3 +79,50 @@ frozen main baseline, including endpoint hashes, ordered arrays and missing/null
 distinctions. All three repeats also have byte-identical Arrow detail records
 against the previously verified journal. Full final verification passed all eight
 groups; the combined tests remained within their unchanged 20-second budget.
+
+## Opt-in policies and separate decision measurements
+
+Priority supports battles and complete campaigns. Battler exposes the same battle
+planner with campaign use explicitly rejected. The authored defaults remain
+Classic/Rush/Mixed. Select the new policies with `--policies`; full schedules omit
+Battler from both campaign sides.
+
+The paired runner executes production games against each existing enemy policy,
+using every authored faction/map pair and both arena initiatives, or every
+campaign and diplomacy setting. It saves complete gzip JSONL traces, per-game
+observations, all strata, caps, defeats, chapter reach and named losses. Campaigns
+start at chapter one with earned carryover and no retries.
+
+```sh
+python3 scripts/compare-cheap-policies.py --mode arena --policies battler \
+  --seed 1001 --seeds 50 --out artifacts/battler-comparison
+python3 scripts/compare-cheap-policies.py --mode campaign --policies priority \
+  --seed 8001 --seeds 200 --out artifacts/priority-comparison
+```
+
+Set `HEX_COMMAND_AI_PROFILE=1` for native decision measurements. Linux uses one
+thread CPU interval around each chooser call, including queued-command handling;
+production command execution and journal serialization run outside that interval.
+Other platforms explicitly report elapsed-clock measurements instead. Profiling is
+opt-in and disabled during full command acceptance timing.
+
+Whole-game decision totals can change when strategies finish sooner or encounter
+different states. The saved-position profiler also measures one own phase on the
+same tactical states for each policy. It includes initial turn-start, reconstructed
+mid/late arena boundaries with recorded next-phase objectives, and complete saved
+campaign chapter starts. Reconstructed arena log/combat display metadata is omitted
+from the tactical fixture; positions, HP, actions, ownership, resources, round and
+unit identities are restored. This is a compute comparison, not a quality study.
+
+```sh
+uv run --with pyarrow python scripts/benchmark-policy-phases.py \
+  --report artifacts/overnight-unit-zero-clean-3/report.json \
+  --campaigns artifacts/priority-essential-crisis/mixed/details.jsonl.gz \
+  --repeat 1000 --out artifacts/policy-phases
+```
+
+The native `--phase-stdio` protocol accepts `state`, `policy`, `seed`,
+`recruitmentLimit`, optional `goals` and `diplomacy`, and either `beginTurn` or
+`advanceTurn`. Generated arena states also supply their original `arena`
+configuration so geometry and recruitment pools are restored correctly. The
+response contains the complete resulting state and production action records.

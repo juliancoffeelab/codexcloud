@@ -1,8 +1,12 @@
 //! Policies choose typed commands from a read-only battle. A workspace retains
 //! turn-local commitments and the continuation of a classic unit's action.
 use self::objectives::actor_matches;
+mod cheap;
 mod classic;
 pub mod objectives;
+mod priority;
+#[cfg(not(target_arch = "wasm32"))]
+pub mod profiling;
 mod recruitment;
 mod roles;
 mod snapshot;
@@ -12,6 +16,7 @@ use crate::{
     data::*,
     logic::{Battle, Command, CommandError, Game},
 };
+pub use priority::PrioritySnapshot;
 use rustc_hash::FxHashMap as HashMap;
 use serde::{Deserialize, Serialize};
 use std::{
@@ -30,16 +35,33 @@ pub enum Policy {
     Classic,
     Rush,
     Mixed,
+    Priority,
+    Battler,
 }
 impl Policy {
     /// Complete supported policies in their stable authored order.
-    pub const ALL: [Self; 3] = [Self::Classic, Self::Rush, Self::Mixed];
+    pub const ALL: [Self; 5] = [
+        Self::Classic,
+        Self::Rush,
+        Self::Mixed,
+        Self::Priority,
+        Self::Battler,
+    ];
+    /// Arena-only policies are excluded from campaign schedules and saves.
+    pub const fn supports_campaign(self) -> bool {
+        !matches!(self, Self::Battler)
+    }
+    pub(super) const fn queued(self) -> bool {
+        matches!(self, Self::Priority | Self::Battler)
+    }
     /// Stable JSON/CLI policy identifier.
     pub const fn as_str(self) -> &'static str {
         match self {
             Self::Classic => "classic",
             Self::Rush => "rush",
             Self::Mixed => "mixed",
+            Self::Priority => "priority",
+            Self::Battler => "battler",
         }
     }
 }
@@ -88,6 +110,8 @@ pub struct PlanningWorkspace {
     routes: HashMap<(usize, Vec<usize>), Rc<Vec<u16>>>,
     commitments: HashMap<u32, String>,
     threats: threats::ArenaThreatWorkspace,
+    priority: Option<PrioritySnapshot>,
+    cheap: cheap::Workspace,
 }
 /// Serializable continuation of a policy phase. Route caches are rebuilt after
 /// restoration; decisions, unit order and recruitment budgets remain intact.
@@ -109,6 +133,9 @@ pub struct PlanningSnapshot {
     pub commands: Vec<Command>,
     pub attack_continuation: Option<(UnitId, UnitId, WeaponId)>,
     pub commitments: Vec<(UnitId, String)>,
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub priority: Option<PrioritySnapshot>,
 }
 impl PlanningWorkspace {
     /// Start a policy phase with its seed, recruitment budget and objectives.
@@ -135,6 +162,8 @@ impl PlanningWorkspace {
             routes: HashMap::default(),
             commitments: HashMap::default(),
             threats: threats::ArenaThreatWorkspace::default(),
+            priority: None,
+            cheap: cheap::Workspace::default(),
         }
     }
     /// Whether the policy has exhausted its actions and queued continuation.
@@ -163,6 +192,7 @@ impl PlanningWorkspace {
             commands: self.commands.iter().cloned().collect(),
             attack_continuation: self.attack_continuation.clone(),
             commitments,
+            priority: self.priority.clone(),
         }
     }
     /// Restore a previously validated snapshot for the same battle and turn.
@@ -174,6 +204,7 @@ impl PlanningWorkspace {
             goals: saved.goals,
             prepared_goals: None,
             diplomacy: saved.diplomacy,
+            cheap: cheap::Workspace::default(),
             initialized: saved.initialized,
             finished: saved.finished,
             classic_objectives: saved.classic_objectives,
@@ -188,6 +219,7 @@ impl PlanningWorkspace {
                 .map(|(id, goal)| (id.0, goal))
                 .collect(),
             threats: threats::ArenaThreatWorkspace::default(),
+            priority: saved.priority,
         }
     }
 }
@@ -218,6 +250,11 @@ pub(crate) fn choose_game_command(
     policy: Policy,
     workspace: &mut PlanningWorkspace,
 ) -> Result<Command, CommandError> {
+    if !policy.supports_campaign() && game.campaign.is_some() {
+        return Err(CommandError::BattleOnlyPolicy);
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    let _profile = profiling::Decision::start(policy, game.turn);
     workspace.policy.get_or_insert(policy);
     if !std::ptr::eq(rules, game.rules) {
         return Err(CommandError::CatalogMismatch);
@@ -247,7 +284,11 @@ pub(crate) fn choose_game_command(
             });
             continue;
         }
-        let restrained = workspace.diplomacy == Diplomacy::Restrained;
+        let restrained = if policy.queued() {
+            cheap::restrained(game, workspace)
+        } else {
+            workspace.diplomacy == Diplomacy::Restrained
+        };
         if !workspace.initialized {
             workspace.initialized = true;
             for unit in game.units.iter().filter(|u| {
@@ -267,7 +308,11 @@ pub(crate) fn choose_game_command(
         if workspace.recruitment_remaining > 0 {
             workspace.recruitment_remaining -= 1;
             if let Some(command) = game.choose_recruit(
-                policy,
+                if policy.queued() {
+                    Policy::Mixed
+                } else {
+                    policy
+                },
                 workspace.seed,
                 workspace.goals.as_deref(),
                 restrained,
@@ -330,11 +375,13 @@ pub(crate) fn choose_game_command(
             let remaining = workspace.tactical_remaining.get_or_insert_with(|| {
                 game.units.iter().filter(|u| u.side == game.turn).count() * 3
             });
-            if *remaining == 0 {
-                workspace.finished = true;
-                continue;
+            if !policy.queued() {
+                if *remaining == 0 {
+                    workspace.finished = true;
+                    continue;
+                }
+                *remaining -= 1;
             }
-            *remaining -= 1;
             let mut intents = Vec::new();
             if workspace.prepared_goals.is_none() {
                 workspace.prepared_goals = workspace
@@ -342,17 +389,22 @@ pub(crate) fn choose_game_command(
                     .as_ref()
                     .map(|g| objectives::individual(g.clone()));
             }
-            let plan = game.best_plan::<true>(
-                policy,
-                workspace.seed,
-                workspace.goals.as_deref(),
-                workspace.prepared_goals.as_deref(),
-                restrained,
-                &mut workspace.routes,
-                &mut workspace.commitments,
-                &mut intents,
-                &mut workspace.threats,
-            );
+            let plan = if policy.queued() {
+                priority::next_plan(game, policy, workspace, &mut intents)
+            } else {
+                game.best_plan::<true, false>(
+                    policy,
+                    workspace.seed,
+                    workspace.goals.as_deref(),
+                    workspace.prepared_goals.as_deref(),
+                    restrained,
+                    &mut workspace.routes,
+                    &mut workspace.commitments,
+                    &mut intents,
+                    &mut workspace.threats,
+                    None,
+                )
+            };
             for (id, intent) in &intents {
                 let actor = game.unit(*id).unwrap();
                 workspace.commands.push_back(intent_command(
@@ -610,7 +662,7 @@ mod courier_tests {
     #[test]
     fn allies_clear_approaches_and_complete_the_escort_for_every_policy() {
         let rules = Rules::load().unwrap();
-        for policy in Policy::ALL {
+        for policy in Policy::ALL.into_iter().filter(|p| p.supports_campaign()) {
             let mut game = Game::start_campaign(
                 &rules,
                 "borrowed-tide",

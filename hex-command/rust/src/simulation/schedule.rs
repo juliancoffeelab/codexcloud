@@ -93,13 +93,18 @@ impl ScheduleOptions {
                 .and_then(|n| n.checked_mul(entrants))
                 .ok_or("Schedule too large")?
         };
+        let campaign_policies = self
+            .policies
+            .iter()
+            .filter(|p| p.supports_campaign())
+            .count();
         let campaign = if self.mode == Mode::Arena {
             0
         } else {
             self.campaigns
                 .len()
-                .checked_mul(self.policies.len())
-                .and_then(|n| n.checked_mul(self.policies.len()))
+                .checked_mul(campaign_policies)
+                .and_then(|n| n.checked_mul(campaign_policies))
                 .and_then(|n| n.checked_mul(self.diplomacy.len()))
                 .ok_or("Schedule too large")?
         };
@@ -158,8 +163,8 @@ pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, Simulatio
         }
         if options.mode != Mode::Arena {
             for campaign in &options.campaigns {
-                for player in &options.policies {
-                    for enemy in &options.policies {
+                for player in options.policies.iter().filter(|p| p.supports_campaign()) {
+                    for enemy in options.policies.iter().filter(|p| p.supports_campaign()) {
                         for diplomacy in &options.diplomacy {
                             configs.push(MatchConfig::Campaign(CampaignConfig {
                                 campaign: campaign.clone(),
@@ -230,6 +235,20 @@ mod tests {
                 .count(),
             4
         );
+        let mut mixed_capabilities = options.clone();
+        mixed_capabilities.policies = vec![Policy::Priority, Policy::Battler];
+        let mixed_schedule = schedule(&mixed_capabilities).unwrap();
+        assert_eq!(
+            mixed_schedule.len(),
+            mixed_capabilities.expected_games().unwrap()
+        );
+        assert_eq!(mixed_schedule.len(), 33);
+        assert!(
+            mixed_schedule.iter().any(
+                |config| matches!(config, MatchConfig::Arena(c) if c.player == Policy::Battler)
+            )
+        );
+        assert_eq!(mixed_schedule.iter().filter(|config| matches!(config, MatchConfig::Campaign(c) if c.player == Policy::Priority && c.enemy == Policy::Priority)).count(), 1);
         let mut unique = std::collections::HashSet::new();
         for config in configs {
             assert!(unique.insert(serde_json::to_string(&config).unwrap()));

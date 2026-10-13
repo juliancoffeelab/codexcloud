@@ -9,6 +9,24 @@ pub(crate) enum TileSet {
     Large(Box<[u64]>),
 }
 impl TileSet {
+    pub(crate) fn first_intersection(&self, other: &Self) -> Option<usize> {
+        match (self, other) {
+            (Self::Small(a), Self::Small(b)) => {
+                let bits = a & b;
+                (bits != 0).then(|| bits.trailing_zeros() as usize)
+            }
+            (Self::Large(a), Self::Large(b)) => {
+                a.iter()
+                    .zip(b.iter())
+                    .enumerate()
+                    .find_map(|(word, (a, b))| {
+                        let bits = a & b;
+                        (bits != 0).then(|| word * 64 + bits.trailing_zeros() as usize)
+                    })
+            }
+            _ => None,
+        }
+    }
     pub(crate) fn new(tiles: usize) -> Self {
         if tiles <= 128 {
             Self::Small(0)
@@ -157,9 +175,14 @@ mod tests {
                 assert!(first.contains(tile));
             }
             assert!(!first.intersects(&second));
+            assert_eq!(first.first_intersection(&second), None);
             second.insert(size - 1);
             first.insert(size - 1);
             assert!(first.intersects(&second));
+            assert_eq!(first.first_intersection(&second), Some(size - 1));
+            second.insert(0);
+            assert_eq!(first.first_intersection(&second), Some(0));
+            second.remove(0);
             second.remove(size - 1);
             assert!(!first.intersects(&second));
         }

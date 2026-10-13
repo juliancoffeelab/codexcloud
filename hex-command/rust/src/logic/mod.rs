@@ -13,6 +13,7 @@ mod inspection;
 mod movement;
 mod restore;
 mod turns;
+pub(crate) use restore::validate_state_geometry;
 pub use restore::{StateError, validate_state};
 pub mod campaign;
 pub use crate::data::{Command, CommandError, Effects};

@@ -67,6 +67,7 @@ pub struct Effects {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum CommandError {
     CatalogMismatch,
+    BattleOnlyPolicy,
     BattleFinished,
     UnknownUnit(UnitId),
     UnknownTile(TileId),

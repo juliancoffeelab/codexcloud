@@ -42,7 +42,13 @@ fn hash_number(mut hash: u32, mut number: u32) -> u32 {
     hash
 }
 /// Hash exactly the historical UTF-16 key without allocating formatted strings.
-fn action_jitter(seed: u32, round: u32, unit: u32, tile: &str, target: Option<u32>) -> f64 {
+pub(super) fn action_jitter(
+    seed: u32,
+    round: u32,
+    unit: u32,
+    tile: &str,
+    target: Option<u32>,
+) -> f64 {
     let byte = |hash: u32, byte: u8| (hash ^ byte as u32).wrapping_mul(16777619);
     let mut hash = hash_number(seed, round);
     hash = byte(byte(hash, b':'), b'u');
@@ -89,7 +95,7 @@ pub(super) struct Plan {
     pub(super) withdrawing: bool,
 }
 impl Game<'_> {
-    pub(super) fn best_plan<const BOUNDED: bool>(
+    pub(super) fn best_plan<const BOUNDED: bool, const FOCUSED: bool>(
         &self,
         policy: Policy,
         seed: u32,
@@ -100,6 +106,7 @@ impl Game<'_> {
         commitments: &mut HashMap<u32, String>,
         intents: &mut Vec<(u32, Option<bool>)>,
         threat_workspace: &mut super::threats::ArenaThreatWorkspace,
+        focus: Option<u32>,
     ) -> Option<Plan> {
         let side = self.turn;
         let objectives: Cow<'_, [Objective]> = if let Some(prepared) = prepared_goals {
@@ -206,7 +213,7 @@ impl Game<'_> {
         let mut roster: Vec<_> = allies
             .iter()
             .enumerate()
-            .filter(|(_, u)| !u.attacked)
+            .filter(|(_, u)| !u.attacked && (!FOCUSED || Some(u.id) == focus))
             .map(|(index, &unit)| {
                 let before_risk = threats.at(unit, unit.tile, None);
                 let important = self.essential(unit);
@@ -951,7 +958,7 @@ mod tests {
                 for policy in [Policy::Rush, Policy::Mixed] {
                     let mut left_intents = vec![];
                     let mut right_intents = vec![];
-                    let left = game.best_plan::<true>(
+                    let left = game.best_plan::<true, false>(
                         policy,
                         7,
                         None,
@@ -961,8 +968,9 @@ mod tests {
                         &mut left_commitments,
                         &mut left_intents,
                         &mut left_threats,
+                        None,
                     );
-                    let right = game.best_plan::<false>(
+                    let right = game.best_plan::<false, false>(
                         policy,
                         7,
                         None,
@@ -972,6 +980,7 @@ mod tests {
                         &mut right_commitments,
                         &mut right_intents,
                         &mut right_threats,
+                        None,
                     );
                     assert_eq!(left, right);
                     assert_eq!(left_intents, right_intents);
