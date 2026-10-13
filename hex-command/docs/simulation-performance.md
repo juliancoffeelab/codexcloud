@@ -1,5 +1,37 @@
 # Simulation performance
 
+## Current-main validation
+
+The consolidated branch includes main commit `1ce0c8c` (per-attack counts,
+corrected arenas and woodland balance). The benchmark studies in the sections
+below describe their original, pre-rebase builds and frozen `b1f553d` baseline.
+
+After rebasing, all 12,240 complete Classic/Rush/Mixed gameplay records, endpoint
+hashes, ordered outcomes and report aggregates match updated main. Single clean
+whole-command observations were 31.36 seconds on main and 9.10 seconds on the
+consolidated branch, with four workers and complete recording. These are single
+samples, not repeated medians; builds and comparisons are excluded.
+
+All eight project verification groups passed. Combined tests took 18.20 seconds
+within the unchanged 20-second target. The restoration regression now reloads
+edited catalog documents, preserving movement-class and cache identities.
+Frozen combat imports preserve missing strike metadata while current records
+retain explicit zero damage and retaliation values.
+
+Frozen source and catalog checksums remain unchanged. A fresh seed-one comparison
+checks 1,152 complete arenas and all 72 old-policy campaign pairings against the
+standalone frozen engine, including full gameplay and report aggregates after
+normalizing only policy labels and explicit run metadata. All eight policies
+also complete 1,024 self-play games with timing rows. Priority/Battler complete
+512 arenas and eight Priority campaign attempts on updated live data. These
+smoke checks do not reestablish the historical paired quality claims.
+
+Fingerprints, binary hashes, scope, equality results and check timings are in
+[benchmarks/rebased-stack.json](benchmarks/rebased-stack.json). Complete journals
+and logs remain in the validation checkout's ignored `tmp/rebase-validation/`.
+
+## Original exact-policy workload
+
 The exact-policy workload is 12,240 complete games: 11,520 arenas and 720 campaign
 attempts, seeds 1–10, all authored races, landscapes and campaigns, Classic/Rush/
 Mixed, both arena initiatives/seats and both campaign diplomacy settings. Every
