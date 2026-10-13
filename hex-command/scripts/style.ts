@@ -26,7 +26,6 @@ const files = [
   "docs/development.md",
   "docs/terrain-artwork.md",
   "rust/README.md",
-  "rust/src/ai/README.md",
   "rust/data/**/*.{json,md}",
 ];
 const checks = [
