@@ -1,0 +1,97 @@
+{
+  "baseCommit": "b1f553de69c0de8a340088c0a9ed42b2149fb27e",
+  "method": "Unchanged main AI/engine in an isolated checkout; only matching chooser/phase timing hooks added. Same sequential single-policy arena self-play as optimized comparison: all faction/map pairs, both initiatives, seeds 1\u201310, 30 rounds, one recruit, one worker.",
+  "compiler": "Main native release defaults: thin LTO, eight codegen units, no PGO or added target-cpu flags. The optimized reference uses its production native/fat-LTO/PGO build; speedup includes engine, allocator and compiler differences.",
+  "fingerprints": {
+    "content": "96981ec4797122c6f715e0febdc9045a20d14562bf1389c9a5fe040163b35a17",
+    "engine": "40e1c4263a087c7f3cc2c643ecda9d249b23dc7653c4b0ccc6f1cb8762b85629"
+  },
+  "binarySha256": "b67893f9a4683493c9161b8f0345b26973f9ff77e5db0dd32e9015bf713a2be5",
+  "clock": "thread_cpu",
+  "rows": [
+    {
+      "calls": 149416,
+      "meanDecisionMicrosPerTurn": 109.49365056045633,
+      "meanTurnMicros": 126.68268893015852,
+      "policy": "classic",
+      "seconds": 3.301671539,
+      "turnSeconds": 3.819989802,
+      "turns": 30154,
+      "games": 1280,
+      "commandSeconds": 4.344411254998704,
+      "processCpuSeconds": 5.298983000000001,
+      "caps": 2
+    },
+    {
+      "calls": 276150,
+      "meanDecisionMicrosPerTurn": 255.32960934562297,
+      "meanTurnMicros": 276.2096731783372,
+      "policy": "rush",
+      "seconds": 11.135945582,
+      "turnSeconds": 12.046608686,
+      "turns": 43614,
+      "games": 1280,
+      "commandSeconds": 12.63239702199644,
+      "processCpuSeconds": 13.815371,
+      "caps": 181
+    },
+    {
+      "calls": 233889,
+      "meanDecisionMicrosPerTurn": 262.0691210393079,
+      "meanTurnMicros": 284.12702275572366,
+      "policy": "mixed",
+      "seconds": 9.420598694,
+      "turnSeconds": 10.213514087,
+      "turns": 35947,
+      "games": 1280,
+      "commandSeconds": 10.787873489003687,
+      "processCpuSeconds": 11.839224000000002,
+      "caps": 20
+    }
+  ],
+  "optimizedReference": "policy-selfplay.json",
+  "comparison": [
+    {
+      "policy": "classic",
+      "games": 1280,
+      "ownTurns": 30154,
+      "mainDecisionMicrosPerTurn": 109.49365056045633,
+      "optimizedDecisionMicrosPerTurn": 35.24247658685415,
+      "decisionSpeedup": 3.1068659516765837,
+      "mainCommandSeconds": 4.344411254998704,
+      "optimizedCommandSeconds": 1.7291215779987397,
+      "mainPhaseMicrosPerTurn": 126.68268893015852,
+      "optimizedPhaseMicrosPerTurn": 41.6853909929031
+    },
+    {
+      "policy": "rush",
+      "games": 1280,
+      "ownTurns": 43614,
+      "mainDecisionMicrosPerTurn": 255.32960934562297,
+      "optimizedDecisionMicrosPerTurn": 59.3295329252075,
+      "decisionSpeedup": 4.303583675056042,
+      "mainCommandSeconds": 12.63239702199644,
+      "optimizedCommandSeconds": 3.5547893610055326,
+      "mainPhaseMicrosPerTurn": 276.2096731783372,
+      "optimizedPhaseMicrosPerTurn": 67.35844859448801
+    },
+    {
+      "policy": "mixed",
+      "games": 1280,
+      "ownTurns": 35947,
+      "mainDecisionMicrosPerTurn": 262.0691210393079,
+      "optimizedDecisionMicrosPerTurn": 62.58736378557321,
+      "decisionSpeedup": 4.187252908385263,
+      "mainCommandSeconds": 10.787873489003687,
+      "optimizedCommandSeconds": 3.1259562080012984,
+      "mainPhaseMicrosPerTurn": 284.12702275572366,
+      "optimizedPhaseMicrosPerTurn": 71.2514216207194
+    }
+  ],
+  "validation": "All 3840 ordered outcomes, endpoint hashes, report aggregates, own-phase counts, chooser-call counts and caps match the optimized reference. Only explicit timing/source/journal metadata and the schedule selfPlay marker are excluded; complete detail histories are retained but not decoded again for this comparison.",
+  "instrumentation": {
+    "trackedDiffSha256": "14e5c3e621df71ceeed90b539b517456ce0f59de3822a08ec0d4a39d33518f81",
+    "profilerSourceSha256": "a0913fe2552d8b2ed7ebe72fb4da98ec67f3a823b2b0cdf9ace9a650b0bbae13",
+    "changes": "Copied the same profiler; added its module declaration, chooser guard, own-phase timer and final stderr summary. No tactical, recruitment, forecast, geometry, allocator or compiler-setting changes."
+  }
+}
