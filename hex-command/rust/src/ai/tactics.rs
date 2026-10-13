@@ -667,7 +667,8 @@ impl Game<'_> {
                 }
                 if tile != unit.tile
                     && objectives.iter().any(|g| {
-                        actor_matches(&g.actor, unit.id)
+                        g.hold == Some(true)
+                            && actor_matches(&g.actor, unit.id)
                             && g.tiles.contains(&self.board.ids[unit.tile])
                     })
                 {

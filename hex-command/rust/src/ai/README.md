@@ -75,6 +75,10 @@ escorts for predicted exposure, including exposure without an existing screen,
 and Planner reevaluates that protection as the battle changes. Screen evaluation
 uses at most 32 positions per guard and 128 per planning update, sharing one
 next-phase forecast rather than forking the battle at every candidate position.
+`Survive` is reserved for named actors; unnamed mission specialists receive
+arrival and escort duties without this constraint. A seal requires reaching
+its tile, not occupying it after sealing. Planners apply an occupation penalty
+only when the emitted objective explicitly has `hold: true`.
 `Survive` forbids any retaliation damage to the actor, including on attacks
 expected to finish the battle. Next-phase exposure uses engine movement/damage
 forecasts rather than exhaustive enemy-action search. A local rescue considers
@@ -99,6 +103,12 @@ Escort, Escape, Vigil, typed Seal and actor-specific Capture duties use the same
 campaign decision for occupancy-aware routing and allied corridor clearing.
 Vigil arrival retains the real uninterrupted enemy-turn holding requirement;
 reaching its endpoint is not treated as an immediate victory.
+
+A timed `hold` can optionally name a `companion`. In that case the named actor
+must occupy the owned tile throughout the hold; leaving or losing ownership
+resets progress. The authored start event and earliest completion round still
+apply. Campaign orders bind an `Occupy` duty to that actor rather than asking
+any troop to capture the location.
 
 Corridor requests retain the normal weighted route. If its friendly occupancy
 penalty prevents arrival this phase, the campaign block checks whether allies

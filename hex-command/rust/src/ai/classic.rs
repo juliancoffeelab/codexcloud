@@ -56,9 +56,11 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         };
         let yielding = orders.clearing(g).remove(&u.id).unwrap_or_default();
         let holding = !yielding.contains(&u.tile)
-            && goals
-                .iter()
-                .any(|o| actor_matches(&o.actor, u.id) && o.tiles.contains(&g.board.ids[u.tile]));
+            && goals.iter().any(|o| {
+                o.hold == Some(true)
+                    && actor_matches(&o.actor, u.id)
+                    && o.tiles.contains(&g.board.ids[u.tile])
+            });
         Self {
             unit: u.clone(),
             goals: goals.to_vec(),

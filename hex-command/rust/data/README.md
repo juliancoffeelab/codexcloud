@@ -35,6 +35,12 @@ relative to their scenario/stage descriptor. Traversal is rejected at every leve
 Standalone scenarios currently have no separate authored objective definitions;
 their existing commander-defeat rule remains in the core.
 
+Timed `hold` goals require ownership of their tile for the authored `turns`,
+after `startEvent` when present, with completion no earlier than `earliestRound`.
+An optional `companion` names a player unit that must also occupy the tile.
+Leaving the tile or losing ownership resets the counter. Without `companion`,
+ownership alone is sufficient. `vigil` always requires its named companion.
+
 Initial placements declare `type`, `side`, `col` and `row`, with optional story
 `name` and `role`. A new troop's HP comes from its unit rule. Author `hp` only for
 an intentionally wounded troop; it must be positive and at most the unit's max

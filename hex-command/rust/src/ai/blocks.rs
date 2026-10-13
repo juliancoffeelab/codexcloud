@@ -76,6 +76,64 @@ mod tests {
     }
 
     #[test]
+    fn unnamed_seal_specialist_gets_arrival_and_escort_without_survival_or_occupation() {
+        let rules = Rules::load().unwrap();
+        let mut game =
+            Game::start_campaign(&rules, "lantern-road", 2, vec![], 0, vec![], vec![], vec![]);
+        let adept = game
+            .units
+            .iter()
+            .find(|u| rules.units[u.kind].family == Family::Adept)
+            .unwrap()
+            .clone();
+        assert!(adept.name.is_none());
+        let tile = game.board.adjacent[adept.tile]
+            .iter()
+            .copied()
+            .find(|&t| game.at(t).is_none())
+            .unwrap();
+        let enemy = game
+            .units
+            .iter_mut()
+            .find(|u| u.side == Side::Enemy && !rules.units[u.kind].leader)
+            .unwrap();
+        enemy.tile = tile;
+        game.roster_changed();
+        let mut workspace = PlanningWorkspace::new(7, 0, None, Diplomacy::Restrained);
+        workspace.orders = Some(CampaignBlock::Objectives.campaign_orders(&game, &workspace));
+        crate::ai::cooperation::assign(&game, &mut workspace);
+        let orders = &workspace.orders.as_ref().unwrap().tactics;
+        assert!(!orders.protects(adept.id));
+        assert!(orders.constraints.iter().all(|constraint| {
+            let crate::ai::orders::TacticalConstraint::Survive { actor } = constraint;
+            game.unit(actor.0).unwrap().name.is_some()
+        }));
+        let mut reach = false;
+        let mut escort = false;
+        for order in &orders.objectives {
+            match &order.objective {
+                crate::ai::orders::TacticalObjective::GoTo { actor, .. } => {
+                    reach |= actor.0 == adept.id
+                }
+                crate::ai::orders::TacticalObjective::Escort { actor, .. } => {
+                    escort |= actor.0 == adept.id
+                }
+                crate::ai::orders::TacticalObjective::Occupy { actor, .. } => {
+                    assert_ne!(actor.0, adept.id)
+                }
+                crate::ai::orders::TacticalObjective::ClearPassage { .. } => {}
+            }
+        }
+        assert!(reach && escort);
+        let target = orders
+            .targets
+            .iter()
+            .find(|g| crate::ai::objectives::actor_matches(&g.actor, adept.id))
+            .unwrap();
+        assert_eq!(target.hold, Some(false));
+    }
+
+    #[test]
     fn independent_blocks_survive_a_saved_queued_phase_under_another_preset() {
         let rules = Rules::load().unwrap();
         let mut game = Game::new(&rules, "mirror");

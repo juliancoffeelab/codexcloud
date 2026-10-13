@@ -264,14 +264,19 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         }
         fn is_goal_vigil(value: &Goal) -> bool {
             match value {
-                Goal::Vigil { .. } => true,
+                Goal::Vigil { .. }
+                | Goal::Hold {
+                    companion: Some(_), ..
+                } => true,
                 Goal::Defeat { .. }
                 | Goal::Escort { .. }
                 | Goal::Escape { .. }
                 | Goal::Control { .. }
                 | Goal::Seal { .. }
                 | Goal::Event { .. }
-                | Goal::Hold { .. }
+                | Goal::Hold {
+                    companion: None, ..
+                }
                 | Goal::Refuge { .. } => false,
             }
         }

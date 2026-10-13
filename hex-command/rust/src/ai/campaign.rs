@@ -116,6 +116,7 @@ impl CampaignBlock {
             let leader = game.rules.units[unit.kind].leader;
             let needs_protection = campaign
                 && game.turn == Side::Player
+                && unit.name.is_some()
                 && game.essential(unit)
                 && (!leader
                     || unit.hp * 2 <= game.rules.units[unit.kind].hp
@@ -170,7 +171,11 @@ impl CampaignBlock {
                 continue;
             };
             let actor_id = UnitId(actor.id);
-            if campaign && game.turn == Side::Player && !tactics.protects(actor.id) {
+            if campaign
+                && game.turn == Side::Player
+                && actor.name.is_some()
+                && !tactics.protects(actor.id)
+            {
                 tactics
                     .constraints
                     .push(TacticalConstraint::Survive { actor: actor_id });
@@ -406,7 +411,18 @@ impl Game<'_> {
                 Goal::Event { .. } => (ObjectiveKind::Visit, None, None, false, false),
                 Goal::Defeat { .. } => (ObjectiveKind::Defeat, None, None, false, false),
                 Goal::Control { .. } => (ObjectiveKind::Capture, None, None, false, false),
-                Goal::Hold { .. } => (ObjectiveKind::Capture, None, None, true, false),
+                Goal::Hold { companion, .. } => (
+                    ObjectiveKind::Capture,
+                    companion.as_ref().and_then(|name| {
+                        game.units
+                            .iter()
+                            .find(|u| u.side == side && u.name.as_ref() == Some(name))
+                            .map(|u| format!("u{}", u.id))
+                    }),
+                    None,
+                    true,
+                    false,
+                ),
                 Goal::Refuge { .. } => {
                     let escalated = game.campaign.as_ref().unwrap().escalated();
                     (

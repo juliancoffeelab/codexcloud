@@ -3,6 +3,15 @@
 use crate::{data::*, logic::battle::Game};
 use std::collections::BTreeMap;
 impl<'catalog> Game<'catalog> {
+    fn hold_actor_present(&self, goal: &Goal) -> bool {
+        goal.companion().is_none_or(|name| {
+            self.units.iter().any(|u| {
+                u.side == Side::Player
+                    && u.name.as_ref() == Some(name)
+                    && self.board.ids[u.tile] == *goal.tile().unwrap()
+            })
+        })
+    }
     /// Internal completion queries do not need labels or serialized tile lists.
     pub(crate) fn goal_done(&self, goal: &Goal) -> bool {
         let state = self.campaign.as_ref().unwrap();
@@ -53,6 +62,7 @@ impl<'catalog> Game<'catalog> {
                     && self.turn == Side::Player
                     && self.round >= *earliest_round
                     && self.owners[self.site(tile)] == Some(Side::Player)
+                    && self.hold_actor_present(goal)
             }
             Goal::Vigil { turns, .. } => {
                 state.vigil.as_ref().map_or(0, |counter| counter.held_turns) >= *turns
@@ -174,6 +184,7 @@ impl<'catalog> Game<'catalog> {
                     self.turn == Side::Player
                         && self.round >= *earliest_round
                         && self.owners[self.site(tile)] == Some(Side::Player)
+                        && self.hold_actor_present(goal)
                 }
                 _ => true,
             };
@@ -370,6 +381,7 @@ impl<'catalog> Game<'catalog> {
         for goal in &mission.goals {
             if goal.kind() == GoalKind::Hold {
                 let tile = self.site(goal.tile().unwrap());
+                let actor_present = self.hold_actor_present(goal);
                 let state = self.campaign.as_mut().unwrap();
                 let started = goal
                     .start_event()
@@ -383,7 +395,7 @@ impl<'catalog> Game<'catalog> {
                         held_turns: 0,
                         last_counted_round: self.round,
                     });
-                if !started || self.owners[tile] != Some(Side::Player) {
+                if !started || !actor_present || self.owners[tile] != Some(Side::Player) {
                     counter.held_turns = 0;
                     counter.last_counted_round = self.round;
                 } else if at_turn_start && self.round > counter.last_counted_round {

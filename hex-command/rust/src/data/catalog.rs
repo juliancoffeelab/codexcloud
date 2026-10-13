@@ -828,6 +828,19 @@ fn validate_mission(
         if let Some(id) = goal.start_event() {
             event_ref(id)?;
         }
+        if let Some(name) = goal.companion() {
+            if !mission
+                .map
+                .units
+                .iter()
+                .any(|unit| unit.side == Side::Player && unit.name.as_ref() == Some(name))
+            {
+                return Err(ContentError::new(
+                    path,
+                    format!("unknown goal companion {name}"),
+                ));
+            }
+        }
         if goal.turns() == Some(0) {
             return Err(ContentError::new(path, "goal turns must be positive"));
         }

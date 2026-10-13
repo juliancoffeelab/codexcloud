@@ -2,6 +2,77 @@
 use super::*;
 
 #[test]
+fn named_hold_requires_its_actor_and_resets_without_losing_ownership() {
+    let mut game = Game::start_campaign(
+        rules(),
+        "borrowed-tide",
+        1,
+        vec![],
+        0,
+        vec![],
+        vec![],
+        vec![],
+    );
+    let mut goal = game
+        .mission
+        .as_ref()
+        .unwrap()
+        .goals
+        .iter()
+        .find(|g| g.kind() == GoalKind::Hold)
+        .unwrap()
+        .clone();
+    let Goal::Hold { companion, .. } = &mut goal else {
+        unreachable!()
+    };
+    *companion = Some("Edda".into());
+    let mission = std::rc::Rc::make_mut(game.mission.as_mut().unwrap());
+    mission.goals = vec![goal.clone()];
+    mission.waves.clear();
+    let wreck = game.site(goal.tile().unwrap());
+    let actor = game
+        .units
+        .iter()
+        .find(|u| u.name.as_deref() == Some("Edda"))
+        .unwrap()
+        .id;
+    game.units.retain(|u| u.side == Side::Player);
+    game.owners[wreck] = Some(Side::Player);
+    game.campaign
+        .as_mut()
+        .unwrap()
+        .marks
+        .push("event:ledger".into());
+    game.roster_changed();
+    let evaluate = |game: &mut Game<'_>, round| {
+        game.round = round;
+        game.evaluate_campaign(true, None);
+        assert_eq!(game.goal_done(&goal), game.goal_progress(&goal).done);
+        game.goal_progress(&goal).current
+    };
+    assert_eq!(evaluate(&mut game, 6), 0);
+    assert!(game.campaign.as_ref().unwrap().marked("event:rescue"));
+    assert_eq!(evaluate(&mut game, 7), 0);
+    game.units.iter_mut().find(|u| u.id == actor).unwrap().tile = wreck;
+    game.roster_changed();
+    assert_eq!(evaluate(&mut game, 8), 1);
+    let away = (0..game.terrain.len())
+        .find(|&tile| game.at(tile).is_none() && tile != wreck)
+        .unwrap();
+    game.units.iter_mut().find(|u| u.id == actor).unwrap().tile = away;
+    game.roster_changed();
+    game.evaluate_campaign(false, None);
+    assert_eq!(game.goal_progress(&goal).current, 0);
+    assert_eq!(game.owners[wreck], Some(Side::Player));
+    game.units.iter_mut().find(|u| u.id == actor).unwrap().tile = wreck;
+    game.roster_changed();
+    for (round, progress) in [(9, 1), (10, 2), (11, 3)] {
+        assert_eq!(evaluate(&mut game, round), progress);
+    }
+    assert_eq!(game.winner, Some(Side::Player));
+}
+
+#[test]
 fn internal_completion_queries_match_published_progress_at_goal_transitions() {
     for (campaign, index) in [
         ("lantern-road", 0),

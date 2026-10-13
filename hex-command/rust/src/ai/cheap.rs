@@ -361,9 +361,11 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
     let proximity_grid = &workspace.cheap.proximity;
     let front = workspace.cheap.front;
     let has_screens = workspace.cheap.screens > 0;
-    let holding = objectives
-        .iter()
-        .any(|g| actor_matches(&g.actor, id) && g.tiles.contains(&game.board.ids[unit.tile]));
+    let holding = objectives.iter().any(|g| {
+        g.hold == Some(true)
+            && actor_matches(&g.actor, id)
+            && g.tiles.contains(&game.board.ids[unit.tile])
+    });
     let mut support = if category == TacticalRole::Frontline {
         workspace.cheap.frontline_support.clone()
     } else {

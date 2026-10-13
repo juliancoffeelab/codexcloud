@@ -53,6 +53,8 @@ pub enum Goal {
         label: String,
         tile: String,
         turns: u32,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        companion: Option<String>,
         #[serde(rename = "earliestRound")]
         earliest_round: u32,
         #[serde(rename = "startEvent")]
@@ -147,10 +149,11 @@ impl Goal {
             _ => None,
         }
     }
-    /// Borrow the named companion required at a vigil site.
+    /// Borrow the named companion required at a vigil or named hold site.
     pub fn companion(&self) -> Option<&String> {
         match self {
             Self::Vigil { companion, .. } => Some(companion),
+            Self::Hold { companion, .. } => companion.as_ref(),
             _ => None,
         }
     }
