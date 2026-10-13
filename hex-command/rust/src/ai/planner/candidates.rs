@@ -1,12 +1,13 @@
 //! Bounded detailed evaluation: inexpensive candidates first, full safety second.
-use super::{
+use crate::ai::orders::{Target as Objective, TargetKind as ObjectiveKind};
+use crate::ai::{
     PlanningWorkspace, TacticalRole,
     objectives::{TileOrder, TileOrderContext, actor_matches},
+    planner::safety::Threats,
     roles::role,
     tactics::{Plan, action_jitter},
-    threats::Threats,
 };
-use crate::{data::*, logic::Game};
+use crate::{ai::context::BattleView, data::*};
 use rustc_hash::{FxHashMap, FxHashSet};
 use std::rc::Rc;
 
@@ -25,13 +26,13 @@ type GoalUnit = (
     Option<String>,
 );
 #[derive(Default)]
-pub(super) struct Workspace {
+pub(in crate::ai) struct Workspace {
     revision: u32,
-    pub(super) goals: Vec<Objective>,
-    pub(super) orders: super::orders::TacticalOrders,
-    pub(super) rebuild_intents: Vec<(u32, Option<bool>)>,
+    pub(in crate::ai) goals: Vec<Objective>,
+    pub(in crate::ai) orders: crate::ai::orders::TacticalOrders,
+    pub(in crate::ai) rebuild_intents: Vec<(u32, Option<bool>)>,
     blockers: Vec<bool>,
-    pub(super) proximity: Vec<u16>,
+    pub(in crate::ai) proximity: Vec<u16>,
     proximity_roster: Vec<(u32, usize)>,
     frontline_support: Vec<f64>,
     front: u16,
@@ -42,51 +43,51 @@ pub(super) struct Workspace {
     gold: i32,
     side: Option<Side>,
     positions: Vec<(u32, usize, Option<bool>)>,
-    pub(super) clearing: FxHashMap<u32, FxHashSet<usize>>,
+    pub(in crate::ai) clearing: FxHashMap<u32, FxHashSet<usize>>,
     lanes: FxHashSet<usize>,
     order: Option<TileOrderContext>,
     reserved: FxHashMap<u32, FxHashSet<usize>>,
     fields: FxHashMap<(usize, usize, bool), Rc<Field>>,
 }
-pub(super) fn prepare(game: &Game<'_>, workspace: &mut PlanningWorkspace) {
+pub(in crate::ai) fn prepare(game: &BattleView<'_, '_>, workspace: &mut PlanningWorkspace) {
     let orders = &workspace.orders.as_ref().unwrap().tactics;
     let cache = &mut workspace.cheap;
 
-    let same = cache.side == Some(game.turn)
+    let same = cache.side == Some(game.turn())
         && cache.revision == workspace.cooperation.revision
-        && cache.gold == game.gold[game.turn.index()]
-        && cache.owners == game.owners
-        && cache.terrain == game.terrain
-        && cache.roster.len() == game.units.len()
-        && cache.roster.iter().zip(&game.units).all(|(key, u)| {
+        && cache.gold == game.gold()[game.turn().index()]
+        && cache.owners == *game.owners()
+        && cache.terrain == *game.terrain()
+        && cache.roster.len() == game.units().len()
+        && cache.roster.iter().zip(game.units()).all(|(key, u)| {
             key.0 == u.id
                 && key.1 == u.kind
                 && key.2 == u.side
-                && key.3 == (u.side != game.turn).then_some(u.tile)
+                && key.3 == (u.side != game.turn()).then_some(u.tile)
                 && key.4 == u.role
                 && key.5 == u.rebuilding
                 && key.6 == u.name
         });
-    let spatial_same = cache.positions.len() == game.units.len()
+    let spatial_same = cache.positions.len() == game.units().len()
         && cache
             .positions
             .iter()
-            .zip(&game.units)
+            .zip(game.units())
             .all(|(key, u)| *key == (u.id, u.tile, u.retreating));
     if !same {
         cache.revision = workspace.cooperation.revision;
-        cache.side = Some(game.turn);
-        cache.gold = game.gold[game.turn.index()];
-        cache.owners.clone_from(&game.owners);
-        cache.terrain.clone_from(&game.terrain);
+        cache.side = Some(game.turn());
+        cache.gold = game.gold()[game.turn().index()];
+        cache.owners.clone_from(&game.owners());
+        cache.terrain.clone_from(&game.terrain());
         cache.orders = orders.clone();
         cache.roster.clear();
-        cache.roster.extend(game.units.iter().map(|u| {
+        cache.roster.extend(game.units().iter().map(|u| {
             (
                 u.id,
                 u.kind,
                 u.side,
-                (u.side != game.turn).then_some(u.tile),
+                (u.side != game.turn()).then_some(u.tile),
                 u.role,
                 u.rebuilding,
                 u.name.clone(),
@@ -95,11 +96,11 @@ pub(super) fn prepare(game: &Game<'_>, workspace: &mut PlanningWorkspace) {
 
         cache.goals = orders.targets.clone();
         cache.goals.retain(|g| !g.id.starts_with("rebuild:"));
-        cache.goals.extend(super::objectives::individual(
+        cache.goals.extend(crate::ai::objectives::individual(
             orders.rebuild_objectives(game),
         ));
         cache.blockers.clear();
-        cache.blockers.resize(game.terrain.len(), false);
+        cache.blockers.resize(game.terrain().len(), false);
         for goal in cache
             .goals
             .iter()
@@ -111,48 +112,45 @@ pub(super) fn prepare(game: &Game<'_>, workspace: &mut PlanningWorkspace) {
         }
         cache.rebuild_intents.clear();
         for unit in game
-            .units
+            .units()
             .iter()
-            .filter(|u| u.side == game.turn && game.rules.units[u.kind].leader)
+            .filter(|u| u.side == game.turn() && game.rules().units[u.kind].leader)
         {
-            let required = cache
-                .goals
-                .iter()
-                .any(|g| g.kind == ObjectiveKind::Escape && actor_matches(&g.actor, unit.id));
+            let required = orders.moving_actor(unit.id);
             let (_, intent) = orders.rebuild_plan(game, unit.id, required);
             if unit.rebuilding != intent {
                 cache.rebuild_intents.push((unit.id, intent));
             }
         }
-        cache.order = Some(TileOrder::context(game, game.turn, true));
+        cache.order = Some(TileOrder::context(game, game.turn(), true));
         cache.reserved.clear();
         cache.fields.clear();
     }
-    let proximity_same = cache.proximity.len() == game.terrain.len()
+    let proximity_same = cache.proximity.len() == game.terrain().len()
         && cache.proximity_roster.iter().copied().eq(game
-            .units
+            .units()
             .iter()
-            .filter(|u| u.side != game.turn)
+            .filter(|u| u.side != game.turn())
             .map(|u| (u.id, u.tile)));
     if !proximity_same {
         cache.proximity_roster = game
-            .units
+            .units()
             .iter()
-            .filter(|u| u.side != game.turn)
+            .filter(|u| u.side != game.turn())
             .map(|u| (u.id, u.tile))
             .collect();
-        cache.proximity = (0..game.terrain.len())
-            .map(|t| game.proximity(game.turn, t))
+        cache.proximity = (0..game.terrain().len())
+            .map(|t| game.proximity(game.turn(), t))
             .collect();
     }
     if !same || !spatial_same {
         cache.frontline_support.clear();
-        cache.frontline_support.resize(game.terrain.len(), 0.0);
+        cache.frontline_support.resize(game.terrain().len(), 0.0);
         cache.front = 20;
         cache.screens = 0;
-        for ally in game.units.iter().filter(|u| u.side == game.turn) {
+        for ally in game.units().iter().filter(|u| u.side == game.turn()) {
             if role(game, ally.kind) == TacticalRole::Frontline
-                && !game.rules.units[ally.kind].leader
+                && !game.rules().units[ally.kind].leader
             {
                 cache.front = if cache.screens == 0 {
                     cache.proximity[ally.tile]
@@ -162,7 +160,7 @@ pub(super) fn prepare(game: &Game<'_>, workspace: &mut PlanningWorkspace) {
                 cache.screens += 1;
             }
             if orders.important(game, ally) || role(game, ally.kind) != TacticalRole::Frontline {
-                for &tile in &game.board.adjacent[ally.tile] {
+                for &tile in &game.board().adjacent[ally.tile] {
                     if cache.proximity[tile] <= cache.proximity[ally.tile] {
                         cache.frontline_support[tile] += 1.5;
                     }
@@ -171,7 +169,7 @@ pub(super) fn prepare(game: &Game<'_>, workspace: &mut PlanningWorkspace) {
         }
 
         cache.positions = game
-            .units
+            .units()
             .iter()
             .map(|u| (u.id, u.tile, u.retreating))
             .collect();
@@ -181,14 +179,14 @@ pub(super) fn prepare(game: &Game<'_>, workspace: &mut PlanningWorkspace) {
 }
 
 fn leader_may_advance(
-    game: &Game<'_>,
+    game: &BattleView<'_, '_>,
     unit: &Unit,
     tile: usize,
     recruiting: bool,
     required: bool,
     proximity: &[u16],
 ) -> bool {
-    if tile == unit.tile || required || !game.units.iter().any(|u| u.side != unit.side) {
+    if tile == unit.tile || required || !game.units().iter().any(|u| u.side != unit.side) {
         return true;
     }
     let before = proximity[unit.tile];
@@ -202,8 +200,8 @@ fn leader_may_advance(
     let (count, front) = game
         .ordinary(unit)
         .filter(|u| {
-            u.hp as f64 >= game.rules.units[u.kind].hp as f64 / 2.0
-                && game.board.distance(tile, u.tile) <= 2
+            u.hp as f64 >= game.rules().units[u.kind].hp as f64 / 2.0
+                && game.board().distance(tile, u.tile) <= 2
         })
         .fold((0, false), |(count, front), ally| {
             (count + 1, front || proximity[ally.tile] <= after)
@@ -221,7 +219,11 @@ struct Candidate {
     healing: bool,
     order: usize,
 }
-pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) -> Option<Plan> {
+pub(in crate::ai) fn plan(
+    game: &BattleView<'_, '_>,
+    id: u32,
+    workspace: &mut PlanningWorkspace,
+) -> Option<Plan> {
     let original = game.unit(id)?;
     let objectives = &workspace.cheap.goals;
     let orders = &workspace.orders.as_ref().unwrap().tactics;
@@ -257,7 +259,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
             && original.actor.is_none()
             && original.tiles.iter().all(|t| {
                 let tile = game.site(t);
-                game.owners[tile] == Some(unit.side)
+                game.owners()[tile] == Some(unit.side)
                     && (original.hold != Some(true)
                         || game
                             .at(tile)
@@ -272,7 +274,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
         }
         let dynamic = pursuing
             && (original.actor.is_some() || original.family.is_some())
-            && super::objectives::actor_route(original);
+            && crate::ai::objectives::actor_route(original);
         let field = workspace
             .cheap
             .fields
@@ -333,29 +335,34 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
     } else {
         workspace.commitments.remove(&id);
     }
-    let allies: Vec<_> = game.units.iter().filter(|u| u.side == unit.side).collect();
+    let allies: Vec<_> = game
+        .units()
+        .iter()
+        .filter(|u| u.side == unit.side)
+        .collect();
     let movement = if unit.moved {
         0
     } else {
-        game.rules.units[unit.kind].r#move
+        game.rules().units[unit.kind].r#move
     };
-    let maximum_range = game.rules.units[unit.kind]
+    let maximum_range = game.rules().units[unit.kind]
         .attacks
         .iter()
         .map(|a| a.range as usize)
         .max()
         .unwrap_or(0);
-    let zero_cost = game.rules.units[unit.kind]
+    let zero_cost = game.rules().units[unit.kind]
         .costs
         .iter()
         .any(|c| *c == Some(0));
     let foes: Vec<_> = game
-        .units
+        .units()
         .iter()
         .filter(|u| {
             u.side != unit.side
                 && (zero_cost
-                    || game.board.distance(unit.tile, u.tile) as usize <= movement + maximum_range)
+                    || game.board().distance(unit.tile, u.tile) as usize
+                        <= movement + maximum_range)
         })
         .collect();
     let proximity_grid = &workspace.cheap.proximity;
@@ -364,15 +371,15 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
     let holding = objectives.iter().any(|g| {
         g.hold == Some(true)
             && actor_matches(&g.actor, id)
-            && g.tiles.contains(&game.board.ids[unit.tile])
+            && g.tiles.contains(&game.board().ids[unit.tile])
     });
     let mut support = if category == TacticalRole::Frontline {
         workspace.cheap.frontline_support.clone()
     } else {
-        vec![0.0; game.terrain.len()]
+        vec![0.0; game.terrain().len()]
     };
     if category == TacticalRole::Frontline && important {
-        for &tile in &game.board.adjacent[unit.tile] {
+        for &tile in &game.board().adjacent[unit.tile] {
             if proximity_grid[tile] <= proximity_grid[unit.tile] {
                 support[tile] -= 1.5;
             }
@@ -386,16 +393,16 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
             let other = allies
                 .iter()
                 .filter(|u| {
-                    u.id != id && u.id != ally.id && game.board.distance(u.tile, ally.tile) == 1
+                    u.id != id && u.id != ally.id && game.board().distance(u.tile, ally.tile) == 1
                 })
-                .map(|u| game.rules.units[u.kind].healing)
+                .map(|u| game.rules().units[u.kind].healing)
                 .max()
                 .unwrap_or(0);
-            let benefit = (game.rules.units[unit.kind].healing - other)
+            let benefit = (game.rules().units[unit.kind].healing - other)
                 .max(0)
-                .min(game.rules.units[ally.kind].hp - ally.hp) as f64
+                .min(game.rules().units[ally.kind].hp - ally.hp) as f64
                 * 3.0;
-            for &tile in &game.board.adjacent[ally.tile] {
+            for &tile in &game.board().adjacent[ally.tile] {
                 support[tile] += benefit;
                 if battle
                     && role(game, ally.kind) == TacticalRole::Frontline
@@ -412,10 +419,10 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
     }
     if battle
         && category == TacticalRole::Healer
-        && unit.hp as f64 > game.rules.units[unit.kind].hp as f64 / 2.0
+        && unit.hp as f64 > game.rules().units[unit.kind].hp as f64 / 2.0
         && allies.iter().any(|u| {
             role(game, u.kind) == TacticalRole::Frontline
-                && !game.rules.units[u.kind].leader
+                && !game.rules().units[u.kind].leader
                 && !u.moved
                 && !u.attacked
         })
@@ -448,17 +455,17 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
         }
         let healing = (game.terrain_is(tile, Terrain::Village)
             || game.terrain_is(tile, Terrain::Grove))
-            && (game.owners[tile] == Some(unit.side) || game.at(tile).is_none());
+            && (game.owners()[tile] == Some(unit.side) || game.at(tile).is_none());
         if healing {
-            value += (game.rules.units[unit.kind].hp - unit.hp).min(4) as f64 * 2.0;
+            value += (game.rules().units[unit.kind].hp - unit.hp).min(4) as f64 * 2.0;
         }
-        if game.terrain_is(tile, Terrain::Village) && game.owners[tile] != Some(unit.side) {
+        if game.terrain_is(tile, Terrain::Village) && game.owners()[tile] != Some(unit.side) {
             value += 3.0;
         }
         let proximity = proximity_grid[tile];
         if important
             && unit.role != Some(Role::Courier)
-            && !game.rules.units[unit.kind].leader
+            && !game.rules().units[unit.kind].leader
             && !duty.as_ref().is_some_and(|d| d.2)
             && has_screens
             && proximity <= front
@@ -475,7 +482,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
     destinations.extend(game.reachable(&unit).iter().map(|&(tile, _)| tile));
     let destinations = orders.authored_destinations(game, &unit, destinations);
     let wait_position = position(unit.tile);
-    let recruiting = game.rules.units[unit.kind].leader
+    let recruiting = game.rules().units[unit.kind].leader
         && game
             .recruitment_options(unit.side)
             .iter()
@@ -483,7 +490,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
     let geometry: Vec<_> = if foes.is_empty() {
         vec![]
     } else {
-        game.rules.units[unit.kind]
+        game.rules().units[unit.kind]
             .attacks
             .iter()
             .map(|a| game.attack_origins(a.category, a.range))
@@ -492,7 +499,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
     let may_advance: Vec<_> = destinations
         .iter()
         .map(|&tile| {
-            !game.rules.units[unit.kind].leader
+            !game.rules().units[unit.kind].leader
                 || !rebuilding.is_empty()
                 || leader_may_advance(game, &unit, tile, recruiting, required, proximity_grid)
         })
@@ -513,7 +520,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
                 position(tile),
                 finishing_sites.contains(&tile) && orders.arrives(game, &unit, tile),
                 (game.terrain_is(tile, Terrain::Village) || game.terrain_is(tile, Terrain::Grove))
-                    && (game.owners[tile] == Some(unit.side) || game.at(tile).is_none()),
+                    && (game.owners()[tile] == Some(unit.side) || game.at(tile).is_none()),
             )
         })
         .collect();
@@ -547,7 +554,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
             terminal = killed && orders.terminal_attack(target);
             combat = damage.min(target.hp) as f64 * 2.0
                 + if killed {
-                    12.0 + game.rules.units[target.kind].cost as f64 * 0.3
+                    12.0 + game.rules().units[target.kind].cost as f64 * 0.3
                 } else {
                     0.0
                 }
@@ -558,10 +565,10 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
             }
             if battle
                 && killed
-                && game.rules.units[unit.kind]
+                && game.rules().units[unit.kind]
                     .experience_needed
                     .is_some_and(|needed| {
-                        unit.experience.unwrap_or(0) + 6 * game.rules.units[target.kind].level
+                        unit.experience.unwrap_or(0) + 6 * game.rules().units[target.kind].level
                             >= needed
                     })
             {
@@ -586,7 +593,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
                 0.5
             };
         }
-        if game.rules.units[unit.kind].leader
+        if game.rules().units[unit.kind].leader
             && !finishing
             && !terminal
             && rebuilding.is_empty()
@@ -598,9 +605,9 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
             - wait_position
             + action_jitter(
                 workspace.seed,
-                game.round,
+                game.round(),
                 id,
-                &game.board.ids[tile],
+                &game.board().ids[tile],
                 target.map(|u| u.id),
             );
         let candidate = Candidate {
@@ -645,7 +652,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
         candidates.truncate(width);
     };
     if battle {
-        let mut by_tile = vec![usize::MAX; game.terrain.len()];
+        let mut by_tile = vec![usize::MAX; game.terrain().len()];
         for (index, &tile) in destinations.iter().enumerate() {
             by_tile[tile] = index;
         }
@@ -671,7 +678,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
             add(index, None, None);
         }
         for &target in &foes {
-            for weapon in 0..game.rules.units[unit.kind].attacks.len() {
+            for weapon in 0..game.rules().units[unit.kind].attacks.len() {
                 let mut origins = vec![];
                 geometry[weapon][target.tile].for_each(|tile| {
                     let index = by_tile[tile];
@@ -688,7 +695,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
         for destination in 0..destinations.len() {
             add(destination, None, None);
             for &target in &foes {
-                for weapon in 0..game.rules.units[unit.kind].attacks.len() {
+                for weapon in 0..game.rules().units[unit.kind].attacks.len() {
                     add(destination, Some(target), Some(weapon));
                 }
             }
@@ -697,17 +704,24 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
     if !orders.campaign
         && candidates.iter().all(|c| c.score <= 0.1)
         && game.promotion_options(&unit).is_empty()
-        && game.units.iter().filter(|u| u.side != unit.side).all(|u| {
-            !game.rules.units[u.kind].costs.iter().any(|c| *c == Some(0))
-                && game.board.distance(unit.tile, u.tile) as usize
-                    > game.rules.units[u.kind].r#move
-                        + game.rules.units[u.kind]
-                            .attacks
-                            .iter()
-                            .map(|a| a.range as usize)
-                            .max()
-                            .unwrap_or(0)
-        })
+        && game
+            .units()
+            .iter()
+            .filter(|u| u.side != unit.side)
+            .all(|u| {
+                !game.rules().units[u.kind]
+                    .costs
+                    .iter()
+                    .any(|c| *c == Some(0))
+                    && game.board().distance(unit.tile, u.tile) as usize
+                        > game.rules().units[u.kind].r#move
+                            + game.rules().units[u.kind]
+                                .attacks
+                                .iter()
+                                .map(|a| a.range as usize)
+                                .max()
+                                .unwrap_or(0)
+            })
     {
         return None;
     }
@@ -791,7 +805,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
         }
         let withdrawing = unit.side == Side::Enemy
             && c.target.is_none()
-            && unit.hp < game.rules.units[unit.kind].hp
+            && unit.hp < game.rules().units[unit.kind].hp
             && proximity_grid[c.tile] > proximity_grid[unit.tile]
             && (incoming < before || c.healing || unit.retreating == Some(true));
         best = Some(Plan {
@@ -829,7 +843,13 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
                 }
             }
             let score = positioning - wait_position
-                + action_jitter(workspace.seed, game.round, id, &game.board.ids[tile], None)
+                + action_jitter(
+                    workspace.seed,
+                    game.round(),
+                    id,
+                    &game.board().ids[tile],
+                    None,
+                )
                 + wait_risk
                 - incoming as f64 * danger
                 - if incoming >= unit.hp { 40.0 } else { 0.0 }
@@ -845,7 +865,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
                 weapon: None,
                 advance: None,
                 withdrawing: unit.side == Side::Enemy
-                    && unit.hp < game.rules.units[unit.kind].hp
+                    && unit.hp < game.rules().units[unit.kind].hp
                     && proximity_grid[tile] > proximity_grid[unit.tile]
                     && (incoming < before || healing || unit.retreating == Some(true)),
             });
@@ -857,7 +877,8 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ai::campaign::restrained;
+    use crate::ai::campaigner::mission::restrained;
+    use crate::logic::Game;
     #[test]
     fn shared_frames_follow_actions_and_turn_boundaries() {
         fn is_command_endturn(value: &Command) -> bool {
@@ -883,25 +904,23 @@ mod tests {
             Game::start_campaign(&rules, "lantern-road", 0, vec![], 0, vec![], vec![], vec![]),
         ];
         for game in &mut games {
-            let mut workspace =
-                PlanningWorkspace::new(7, 1, None, super::super::Diplomacy::Pragmatic);
-            workspace.policy = Some(super::super::Policy::Priority);
+            let mut workspace = PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Pragmatic);
+            workspace.policy = Some(crate::ai::Policy::Priority);
             for _ in 0..24 {
                 if workspace.orders.is_none() {
-                    workspace.orders = Some(
-                        super::super::CampaignBlock::Adaptive.campaign_orders(game, &workspace),
-                    );
+                    workspace.orders =
+                        Some(crate::ai::CampaignBlock::Mission.campaign_orders(game, &workspace));
                 }
-                prepare(game, &mut workspace);
+                prepare(&crate::ai::context::BattleView::new(game), &mut workspace);
                 let mut expected_goals = workspace.orders.as_ref().unwrap().tactics.targets.clone();
                 expected_goals.retain(|g| !g.id.starts_with("rebuild:"));
-                expected_goals.extend(super::super::objectives::individual(
+                expected_goals.extend(crate::ai::objectives::individual(
                     workspace
                         .orders
                         .as_ref()
                         .unwrap()
                         .tactics
-                        .rebuild_objectives(game),
+                        .rebuild_objectives(&crate::ai::context::BattleView::new(game)),
                 ));
                 assert_eq!(
                     serde_json::to_value(&workspace.cheap.goals).unwrap(),
@@ -910,12 +929,13 @@ mod tests {
                 assert_eq!(
                     workspace.cheap.proximity,
                     (0..game.terrain.len())
-                        .map(|tile| game.proximity(game.turn, tile))
+                        .map(|tile| crate::ai::context::BattleView::new(&game)
+                            .proximity(game.turn, tile))
                         .collect::<Vec<_>>()
                 );
                 assert_eq!(
                     workspace.cheap.clearing,
-                    game.actor_lanes(&workspace.cheap.goals)
+                    crate::ai::context::BattleView::new(&game).actor_lanes(&workspace.cheap.goals)
                 );
                 assert_eq!(
                     workspace.cheap.lanes,
@@ -929,14 +949,15 @@ mod tests {
                     for tile in 0..game.terrain.len() {
                         assert_eq!(
                             leader_may_advance(
-                                game,
+                                &crate::ai::context::BattleView::new(game),
                                 unit,
                                 tile,
                                 true,
                                 false,
                                 &workspace.cheap.proximity
                             ),
-                            game.leader_may_advance(unit, tile, true, false)
+                            crate::ai::context::BattleView::new(&game)
+                                .leader_may_advance(unit, tile, true, false)
                         );
                     }
                 }
@@ -947,7 +968,10 @@ mod tests {
                             .filter(|ally| {
                                 ally.side == game.turn
                                     && (game.essential(ally)
-                                        || role(game, ally.kind) != TacticalRole::Frontline)
+                                        || role(
+                                            &crate::ai::context::BattleView::new(game),
+                                            ally.kind,
+                                        ) != TacticalRole::Frontline)
                                     && game.board.distance(tile, ally.tile) == 1
                                     && workspace.cheap.proximity[tile]
                                         <= workspace.cheap.proximity[ally.tile]
@@ -957,10 +981,10 @@ mod tests {
                     })
                     .collect();
                 assert_eq!(workspace.cheap.frontline_support, fresh);
-                let command = super::super::choose_game_command(
+                let command = crate::ai::choose_game_command(
                     &rules,
                     game,
-                    super::super::Policy::Priority,
+                    crate::ai::Policy::Priority,
                     &mut workspace,
                 )
                 .unwrap();
@@ -970,8 +994,7 @@ mod tests {
                 let boundary = is_command_endturn(&command);
                 game.execute(command).unwrap();
                 if boundary {
-                    workspace =
-                        PlanningWorkspace::new(7, 1, None, super::super::Diplomacy::Pragmatic);
+                    workspace = PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Pragmatic);
                 }
             }
         }

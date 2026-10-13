@@ -8,15 +8,15 @@ type ArenaEnemies = HashMap<Option<u32>, Vec<(Unit, Vec<TileSet>)>>;
 /// incoming damage depend only on the roster's identities, kinds and positions.
 /// Retain those calculations for the next decision in the same planning phase.
 #[derive(Default)]
-pub(super) struct ArenaThreatWorkspace {
+pub(in crate::ai) struct ArenaThreatWorkspace {
     terrain: Vec<usize>,
     roster: Vec<(u32, usize, usize, Side)>,
     side: Option<Side>,
     arena: ArenaEnemies,
     risks: HashMap<RiskKey, i32>,
 }
-pub(super) struct Threats<'game, 'catalog> {
-    orders: Option<&'game super::orders::TacticalOrders>,
+pub(in crate::ai) struct Threats<'game, 'catalog> {
+    orders: Option<&'game crate::ai::orders::TacticalOrders>,
     source: &'game Game<'catalog>,
     side: Side,
     normal: Option<(Game<'catalog>, Vec<(Unit, Vec<TileSet>)>)>,
@@ -28,7 +28,8 @@ pub(super) struct Threats<'game, 'catalog> {
 impl<'game, 'catalog> Threats<'game, 'catalog> {
     /// Potential exposure without an allied screen, so a successful screen does
     /// not cause Campaigner to release its escort on the following turn.
-    pub(super) fn unshielded(game: &Game<'catalog>, unit: &Unit) -> i32 {
+    pub(in crate::ai) fn unshielded(game: &super::BattleView<'_, 'catalog>, unit: &Unit) -> i32 {
+        let game = game.engine();
         let mut board = game.fork();
         board.arena_first = None;
         board.end_turn();
@@ -46,12 +47,13 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                 let mut blocked = TileSet::new(board.terrain.len());
                 blocked.insert(enemy.tile);
                 let reach = board.threat_reach_blocked(enemy, blocked);
-                (enemy.clone(), Self::coverage(&board, enemy, &reach))
+                (enemy.clone(), Self::coverage_engine(&board, enemy, &reach))
             })
             .collect();
         Self::pressure(&board, target, &enemies, None, true)
     }
-    pub fn new(g: &'game Game<'catalog>, side: Side) -> Self {
+    pub fn new(g: &'game super::BattleView<'_, 'catalog>, side: Side) -> Self {
+        let g = g.engine();
         Self {
             orders: None,
             source: g,
@@ -63,25 +65,29 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             workspace: None,
         }
     }
-    pub(super) fn protected(
-        g: &'game Game<'catalog>,
+    pub(in crate::ai) fn protected(
+        g: &'game super::BattleView<'_, 'catalog>,
         side: Side,
-        orders: &'game super::orders::TacticalOrders,
+        orders: &'game crate::ai::orders::TacticalOrders,
     ) -> Self {
         let mut threats = Self::new(g, side);
         threats.orders = Some(orders);
         threats
     }
-    pub(super) fn with_orders(mut self, orders: &'game super::orders::TacticalOrders) -> Self {
+    pub(in crate::ai) fn with_orders(
+        mut self,
+        orders: &'game crate::ai::orders::TacticalOrders,
+    ) -> Self {
         self.orders = Some(orders);
         self
     }
     pub fn with_workspace(
-        g: &'game Game<'catalog>,
+        g: &'game super::BattleView<'_, 'catalog>,
         side: Side,
         workspace: &'game mut ArenaThreatWorkspace,
     ) -> Self {
         let mut threats = Self::new(g, side);
+        let g = g.engine();
         if g.campaign.is_none() {
             let same = workspace.side == Some(side)
                 && workspace.terrain == g.terrain
@@ -137,7 +143,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                     blockers.insert(enemy.tile);
                 }
                 let positions = source.threat_reach_blocked(&enemy, blockers);
-                let covered = Self::coverage(source, &enemy, &positions);
+                let covered = Self::coverage_engine(source, &enemy, &positions);
                 (enemy, covered)
             })
             .collect()
@@ -166,11 +172,25 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                 let mut blockers = occupied.clone();
                 blockers.insert(enemy.tile);
                 let positions = board.threat_reach_blocked(enemy, blockers);
-                (enemy.clone(), Self::coverage(board, enemy, &positions))
+                (
+                    enemy.clone(),
+                    Self::coverage_engine(board, enemy, &positions),
+                )
             })
             .collect()
     }
-    pub(super) fn coverage(board: &Game, unit: &Unit, positions: &TileSet) -> Vec<TileSet> {
+    pub(in crate::ai) fn coverage(
+        board: &super::BattleView<'_, '_>,
+        unit: &Unit,
+        positions: &TileSet,
+    ) -> Vec<TileSet> {
+        Self::coverage_engine(board.engine(), unit, positions)
+    }
+    pub(in crate::ai) fn coverage_engine(
+        board: &Game,
+        unit: &Unit,
+        positions: &TileSet,
+    ) -> Vec<TileSet> {
         board.rules.units[unit.kind]
             .attacks
             .iter()
@@ -236,67 +256,12 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         minimum
     }
     pub fn at(&mut self, u: &Unit, tile: usize, eliminated: Option<u32>) -> i32 {
-        fn is_goal_escort(value: &Goal) -> bool {
-            match value {
-                Goal::Escort { .. } => true,
-                Goal::Defeat { .. }
-                | Goal::Escape { .. }
-                | Goal::Control { .. }
-                | Goal::Seal { .. }
-                | Goal::Event { .. }
-                | Goal::Hold { .. }
-                | Goal::Vigil { .. }
-                | Goal::Refuge { .. } => false,
-            }
+        if self.source.winner.is_some() {
+            return 0;
         }
-        fn is_goal_escape(value: &Goal) -> bool {
-            match value {
-                Goal::Escape { .. } => true,
-                Goal::Defeat { .. }
-                | Goal::Escort { .. }
-                | Goal::Control { .. }
-                | Goal::Seal { .. }
-                | Goal::Event { .. }
-                | Goal::Hold { .. }
-                | Goal::Vigil { .. }
-                | Goal::Refuge { .. } => false,
-            }
-        }
-        fn is_goal_vigil(value: &Goal) -> bool {
-            match value {
-                Goal::Vigil { .. }
-                | Goal::Hold {
-                    companion: Some(_), ..
-                } => true,
-                Goal::Defeat { .. }
-                | Goal::Escort { .. }
-                | Goal::Escape { .. }
-                | Goal::Control { .. }
-                | Goal::Seal { .. }
-                | Goal::Event { .. }
-                | Goal::Hold {
-                    companion: None, ..
-                }
-                | Goal::Refuge { .. } => false,
-            }
-        }
-        fn is_goal_seal(value: &Goal) -> bool {
-            match value {
-                Goal::Seal { .. } => true,
-                Goal::Defeat { .. }
-                | Goal::Escort { .. }
-                | Goal::Escape { .. }
-                | Goal::Control { .. }
-                | Goal::Event { .. }
-                | Goal::Hold { .. }
-                | Goal::Vigil { .. }
-                | Goal::Refuge { .. } => false,
-            }
-        }
-
         let important = self.orders.map_or_else(
-            || self.source.essential(u),
-            |orders| orders.important(self.source, u),
+            || self.source.rules.units[u.kind].leader,
+            |orders| orders.important(&super::BattleView::new(self.source), u),
         );
         let key = (important.then_some(u.id), u.kind, tile, eliminated);
         if let Some(&risk) = self.cache.get(&key) {
@@ -327,37 +292,21 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                     .filter(|u| u.side != self.side)
                     .map(|u| {
                         let positions = shadow.threat_reach(u, None);
-                        (u.clone(), Self::coverage(&shadow, u, &positions))
+                        (u.clone(), Self::coverage_engine(&shadow, u, &positions))
                     })
                     .collect();
                 (shadow, enemies)
             });
             Self::pressure(shadow, &target, enemies, eliminated, false)
         } else {
-            let sensitive = self.source.mission.as_ref().is_some_and(|m| {
-                m.goals.iter().any(|g| {
-                    let eligible = (is_goal_escort(g) && u.role == Some(Role::Courier))
-                        || (is_goal_escape(g) && u.role == Some(Role::Leader))
-                        || (is_goal_vigil(g) && u.name.as_ref() == g.companion())
-                        || (is_goal_seal(g)
-                            && g.unit_type().is_none_or(|k| {
-                                self.source.rules.units[self.source.kind(k)].family
-                                    == self.source.rules.units[u.kind].family
-                            }));
-                    eligible
-                        && (g.tile().into_iter().chain(g.tiles()).any(|site| {
-                            site == &self.source.board.ids[u.tile]
-                                || site == &self.source.board.ids[tile]
-                        }))
-                }) || self.source.turn == Side::Player
-                    && m.waves.iter().any(|w| {
-                        self.source.round >= w.round
-                            && !self
-                                .source
-                                .campaign
-                                .as_ref()
-                                .unwrap()
-                                .marked(&format!("wave:{}", w.id))
+            let sensitive = self.orders.is_some_and(|orders| {
+                orders.pending_arrivals
+                    || orders.transition_sensitive.iter().any(|(actor, sites)| {
+                        actor.0 == u.id
+                            && sites.iter().any(|site| {
+                                site.0 == self.source.board.ids[u.tile]
+                                    || site.0 == self.source.board.ids[tile]
+                            })
                     })
             });
             if sensitive {
@@ -427,8 +376,10 @@ mod tests {
                 game.units.retain(|u| u.id != enemy);
                 game.roster_changed();
             }
-            let mut cached = Threats::with_workspace(&game, side, &mut workspace);
-            let mut fresh = Threats::new(&game, side);
+            let view = crate::ai::context::BattleView::new(&game);
+            let mut cached = Threats::with_workspace(&view, side, &mut workspace);
+            let view = crate::ai::context::BattleView::new(&game);
+            let mut fresh = Threats::new(&view, side);
             for unit in game.units.iter().filter(|u| u.side == side) {
                 for eliminated in [None, Some(enemy)] {
                     for tile in 0..game.terrain.len() {
@@ -460,7 +411,8 @@ mod tests {
                 .unwrap();
             for unit in [ordinary, essential] {
                 let important = game.essential(unit);
-                let mut threats = Threats::new(&game, side);
+                let view = crate::ai::context::BattleView::new(&game);
+                let mut threats = Threats::new(&view, side);
                 for eliminated in [None, Some(enemy)] {
                     let mut shadow = game.fork();
                     shadow.arena_first = None;
@@ -478,7 +430,14 @@ mod tests {
                             .filter(|u| u.side != side)
                             .map(|u| {
                                 let positions = shadow.threat_reach(u, None);
-                                (u.clone(), Threats::coverage(&shadow, u, &positions))
+                                (
+                                    u.clone(),
+                                    Threats::coverage(
+                                        &crate::ai::context::BattleView::new(&shadow),
+                                        u,
+                                        &positions,
+                                    ),
+                                )
                             })
                             .collect()
                     };
@@ -505,7 +464,8 @@ mod tests {
         game.units.retain(|u| u.side == Side::Player);
         game.roster_changed();
         let actor = game.units[0].clone();
-        let mut threats = Threats::new(&game, actor.side);
+        let view = crate::ai::context::BattleView::new(&game);
+        let mut threats = Threats::new(&view, actor.side);
         let visits = Cell::new(0);
         let tiles = [actor.tile, actor.tile]
             .into_iter()

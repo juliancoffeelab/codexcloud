@@ -10,6 +10,19 @@ running and reviewing batches. Read [implementation.md](implementation.md) when
 changing or debugging the runner or analyzer. Use the [Rust toolchain
 skill](../rust-toolchain/SKILL.md) for build problems.
 
+## Architecture and change boundaries
+
+Read [IDEA.md](../../../IDEA.md) before changing AI architecture. It defines fixed
+Recruiter/Campaigner/Planner composition, explicit orders, restricted battle
+views and a shared validated planning draft. Only Campaigner interprets authored
+mission kinds. A selected planner may call shared search helpers; it must not
+switch to a different planner.
+
+Structural changes must preserve the existing Rotation, Frontline and Balanced
+recruitment semantics unless the user explicitly requests a recruitment change.
+The infantry/fair/situational strategies in the design are a separate semantic
+migration; do not implement them implicitly during a module refactor.
+
 ## Purpose and policy roles
 
 These simulations test roster balance and whether simulation players can finish
@@ -28,7 +41,7 @@ Current presets are imperfect proxies for those intended roles. Rush recruits
 frontline units rather than strictly infantry; Mixed balances role shares rather
 than guaranteeing fair use of every unit. Priority and Battler reuse Mixed
 recruitment and experiment with planning; they are not separate situational
-recruiters. Battler is arena-only. Check [preset composition](../../../rust/src/ai/blocks.rs)
+recruiters. Battler is arena-only. Check [preset composition](../../../rust/src/ai/presets.rs)
 and the relevant implementation when explaining current policy behavior. State
 those limits when interpreting strategy comparisons. Documentation descriptions
 are not evidence that a planner branch executes in production; inspect dispatch

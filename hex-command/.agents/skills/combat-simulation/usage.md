@@ -222,6 +222,6 @@ uv run --with pyarrow scripts/convert-simulation-dump.py artifacts/current.arrow
 uv run --with pyarrow --with polars==2.0.0 scripts/compare-simulation-dumps.py artifacts/baseline.arrow artifacts/current.arrow
 ```
 
-For current AI behavior, inspect [preset composition](../../../rust/src/ai/blocks.rs),
-[campaign orders](../../../rust/src/ai/campaign.rs) and
-[planner dispatch](../../../rust/src/ai/planner.rs).
+For current AI behavior, inspect [preset composition](../../../rust/src/ai/presets.rs),
+[campaign orders](../../../rust/src/ai/campaigner/mission.rs) and
+[planner dispatch](../../../rust/src/ai/planner/mod.rs).

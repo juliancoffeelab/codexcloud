@@ -120,10 +120,31 @@ would omit. Packaging verifies references, file coverage and archive bytes.
 Credentials are passed to the publication command without being printed or saved.
 On failure, retain version/deployment identifiers for recovery.
 
+## AI contracts
+
+[IDEA.md](../IDEA.md) specifies the architecture. Named presets construct fixed
+Recruiter/Campaigner/Planner compositions. Native simulations retain those
+components through the whole match or campaign. `Tactic::run_turn` derives
+explicit orders, applies recruitment to one draft, then plans against that updated
+draft and returns ordered engine commands with recruitment and planning reports.
+
+Only Campaigner receives authored mission data and progression. Recruiter and
+Planner use restricted mechanical battle views. Generic capture, defeat and visit
+targets supplement typed duties; mission kinds are normalized before reaching a
+planner. Full and Queued use shared search and safety helpers without replacing
+the selected planner. Existing Rotation, Frontline and Balanced selection rules
+remain separate from the design's future recruitment strategies.
+
+The command-at-a-time host entry point adapts a completed turn plan to the
+existing browser/native command protocol. Its checkpoints retain pending commands,
+orders, reports and fixed composition; restoration validates the remaining command
+sequence against a temporary engine state. Save envelopes and host adapters remain
+separate from the block interfaces.
+
 ## References
 
 - [Combat simulations and analysis](../.agents/skills/combat-simulation/usage.md)
-- [AI preset composition](../rust/src/ai/blocks.rs) and [planner dispatch](../rust/src/ai/planner.rs)
+- [AI preset composition](../rust/src/ai/presets.rs) and [planner dispatch](../rust/src/ai/planner/mod.rs)
 - Artwork skills: [generation](../.agents/skills/pinkbox-generation/SKILL.md),
   [enhancement](../.agents/skills/pinkbox-enhancement/SKILL.md),
   [cleaning](../.agents/skills/pixel-cleaning/SKILL.md),

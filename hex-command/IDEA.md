@@ -23,6 +23,14 @@ own implementation.
 This document specifies the intended architecture and contracts. The Rust
 sketches describe those contracts rather than an already implemented API.
 
+## Structural migration
+
+Module and interface refactoring does not authorize changing recruitment
+semantics. Existing Rotation, Frontline and Balanced strategies can implement
+the Recruiter contract under their existing names. Introducing the intended
+infantry, fair and situational selection rules is a separate, explicit change.
+Shared execution and order interfaces apply to both existing and future strategies.
+
 ## Responsibilities and boundaries
 
 **Campaigner decides what must happen.** It interprets authored mission goals,

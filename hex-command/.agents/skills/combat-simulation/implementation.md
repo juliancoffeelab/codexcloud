@@ -139,7 +139,7 @@ identities fail. It excludes `stateHash`, `elapsedMs`, `elapsedSeconds` and
 `detail` at match and mission level, and records wall time, CPU time and peak
 memory.
 
-Planning internals are in [planner dispatch](../../../rust/src/ai/planner.rs),
-[queued search](../../../rust/src/ai/priority.rs) and
-[bounded evaluation](../../../rust/src/ai/cheap.rs);
+Planning internals are in [planner dispatch](../../../rust/src/ai/planner/mod.rs),
+[queued search](../../../rust/src/ai/planner/queued.rs) and
+[bounded evaluation](../../../rust/src/ai/planner/candidates.rs);
 content loading is in [authored game data](../../../rust/data/README.md).

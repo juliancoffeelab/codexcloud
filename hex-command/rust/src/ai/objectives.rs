@@ -1,4 +1,5 @@
-use crate::{data::*, logic::Game};
+use crate::ai::orders::{Target as Objective, TargetKind as ObjectiveKind};
+use crate::{ai::context::BattleView, data::*};
 use rustc_hash::{FxHashMap as HashMap, FxHashSet as HashSet};
 use std::cmp::Ordering;
 /// Compare canonical actor identities without formatting in candidate loops.
@@ -27,8 +28,13 @@ mod actor_tests {
         assert!(!actor_matches(&None, 0));
     }
 }
-pub fn objective(id: &str, kind: ObjectiveKind, tiles: Vec<String>, weight: f64) -> Objective {
-    Objective {
+pub fn objective(
+    id: &str,
+    kind: crate::data::ObjectiveKind,
+    tiles: Vec<String>,
+    weight: f64,
+) -> crate::data::Objective {
+    crate::data::Objective {
         id: id.into(),
         kind,
         tiles,
@@ -69,8 +75,8 @@ pub(crate) struct TileOrderContext {
     villages: bool,
 }
 impl TileOrderContext {
-    pub(crate) fn for_unit(&self, g: &Game, u: &Unit) -> TileOrder {
-        let (c, r) = g.board.positions[u.tile];
+    pub(crate) fn for_unit(&self, g: &BattleView, u: &Unit) -> TileOrder {
+        let (c, r) = g.board().positions[u.tile];
         let position = ((c - r.div_euclid(2)) as f64, r as f64);
         let home = self.home.unwrap_or(position);
         let mut direction = (self.target.0 - home.0, self.target.1 - home.1);
@@ -88,27 +94,27 @@ impl TileOrderContext {
     }
 }
 impl TileOrder {
-    pub(crate) fn context(g: &Game, side: Side, villages: bool) -> TileOrderContext {
-        fn center(g: &Game, tiles: impl Iterator<Item = usize>) -> (f64, f64) {
+    pub(crate) fn context(g: &BattleView, side: Side, villages: bool) -> TileOrderContext {
+        fn center(g: &BattleView, tiles: impl Iterator<Item = usize>) -> (f64, f64) {
             let (sum, count) = tiles.fold(((0.0, 0.0), 0usize), |(s, n), t| {
-                let (c, r) = g.board.positions[t];
+                let (c, r) = g.board().positions[t];
                 ((s.0 + (c - r.div_euclid(2)) as f64, s.1 + r as f64), n + 1)
             });
             (sum.0 / count as f64, sum.1 / count as f64)
         }
-        let mut home_keeps = (0..g.terrain.len())
-            .filter(|&t| g.terrain_is(t, Terrain::Keep) && g.owners[t] == Some(side))
+        let mut home_keeps = (0..g.terrain().len())
+            .filter(|&t| g.terrain_is(t, Terrain::Keep) && g.owners()[t] == Some(side))
             .peekable();
         let home = if home_keeps.peek().is_some() {
             Some(center(g, home_keeps))
         } else {
             None
         };
-        let mut opposing = (0..g.terrain.len())
-            .filter(|&t| g.terrain_is(t, Terrain::Keep) && g.owners[t].is_some_and(|s| s != side))
+        let mut opposing = (0..g.terrain().len())
+            .filter(|&t| g.terrain_is(t, Terrain::Keep) && g.owners()[t].is_some_and(|s| s != side))
             .peekable();
         let mut enemies = g
-            .units
+            .units()
             .iter()
             .filter(|o| o.side != side)
             .map(|o| o.tile)
@@ -118,7 +124,7 @@ impl TileOrder {
         } else if enemies.peek().is_some() {
             center(g, enemies)
         } else {
-            center(g, 0..g.terrain.len())
+            center(g, 0..g.terrain().len())
         };
         TileOrderContext {
             home,
@@ -126,12 +132,12 @@ impl TileOrder {
             villages,
         }
     }
-    pub(crate) fn new(g: &Game, u: &Unit, villages: bool) -> Self {
+    pub(crate) fn new(g: &BattleView, u: &Unit, villages: bool) -> Self {
         Self::context(g, u.side, villages).for_unit(g, u)
     }
-    pub(crate) fn compare(&self, g: &Game, first: usize, second: usize) -> Ordering {
+    pub(crate) fn compare(&self, g: &BattleView, first: usize, second: usize) -> Ordering {
         let axial = |t: usize| {
-            let (c, r) = g.board.positions[t];
+            let (c, r) = g.board().positions[t];
             ((c - r.div_euclid(2)) as f64, r as f64)
         };
         let a = axial(first);
@@ -163,23 +169,12 @@ impl TileOrder {
     }
 }
 
-impl Game<'_> {
+impl BattleView<'_, '_> {
     pub fn can_pursue(&self, u: &Unit, g: &Objective) -> bool {
-        fn is_objective_kind_escort_escape_vigil(value: &ObjectiveKind) -> bool {
-            match value {
-                ObjectiveKind::Escort | ObjectiveKind::Escape | ObjectiveKind::Vigil => true,
-                ObjectiveKind::Capture
-                | ObjectiveKind::Defeat
-                | ObjectiveKind::Visit
-                | ObjectiveKind::Seal => false,
-            }
-        }
-
-        (!is_objective_kind_escort_escape_vigil(&g.kind) || g.actor.is_some())
-            && (g.actor.is_none() || actor_matches(&g.actor, u.id))
+        (g.actor.is_none() || actor_matches(&g.actor, u.id))
             && g.family
                 .as_ref()
-                .is_none_or(|f| self.rules.units[u.kind].family == *f)
+                .is_none_or(|family| self.rules().units[u.kind].family == *family)
     }
 
     /// Personal duties take precedence over incidental nearby resources.
@@ -187,24 +182,9 @@ impl Game<'_> {
         self.can_pursue(unit, goal) && (goal.actor.is_some() || goal.family.is_some())
     }
     pub fn reserved(&self, u: &Unit, goals: &[Objective]) -> HashSet<usize> {
-        fn is_objective_kind_escort_escape_vigil(value: &ObjectiveKind) -> bool {
-            match value {
-                ObjectiveKind::Escort | ObjectiveKind::Escape | ObjectiveKind::Vigil => true,
-                ObjectiveKind::Capture
-                | ObjectiveKind::Defeat
-                | ObjectiveKind::Visit
-                | ObjectiveKind::Seal => false,
-            }
-        }
-
         goals
             .iter()
-            .filter(|g| {
-                (g.actor.is_some()
-                    || g.family.is_some()
-                    || is_objective_kind_escort_escape_vigil(&g.kind))
-                    && !self.can_pursue(u, g)
-            })
+            .filter(|g| (g.actor.is_some() || g.family.is_some()) && !self.can_pursue(u, g))
             .flat_map(|g| g.tiles.iter().map(|t| self.site(t)))
             .collect()
     }
@@ -218,11 +198,11 @@ impl Game<'_> {
         result.tiles = g
             .tiles
             .iter()
-            .flat_map(|t| self.board.adjacent[self.site(t)].iter().copied())
+            .flat_map(|t| self.board().adjacent[self.site(t)].iter().copied())
             .filter(|&t| {
                 seen.insert(t) && !reserved.contains(&t) && self.cost(u.kind, t) != u16::MAX
             })
-            .map(|t| self.board.ids[t].clone())
+            .map(|t| self.board().ids[t].clone())
             .collect();
         result.weight *= 0.35;
         result
@@ -233,10 +213,10 @@ impl Game<'_> {
         let mut lanes: HashMap<u32, HashSet<usize>> = HashMap::default();
         for goal in goals.iter().filter(|g| actor_route(g)) {
             let Some(actor) = self
-                .units
+                .units()
                 .iter()
                 .filter(|u| {
-                    u.side == self.turn
+                    u.side == self.turn()
                         && if goal.actor.is_some() {
                             actor_matches(&goal.actor, u.id)
                         } else {
@@ -259,7 +239,7 @@ impl Game<'_> {
             let available = if actor.moved {
                 0
             } else {
-                self.rules.units[actor.kind].r#move as u16
+                self.rules().units[actor.kind].r#move as u16
             };
             if route[actor.tile] > available {
                 let short = self.occupied_routes_with_penalty(actor, &targets, Some(0));
@@ -278,7 +258,7 @@ impl Game<'_> {
             }
             // Equal route values are valid on zero-cost terrain. Search admissible
             // edges with visited parents, rather than requiring strict descent.
-            let mut parents = vec![usize::MAX; self.terrain.len()];
+            let mut parents = vec![usize::MAX; self.terrain().len()];
             parents[actor.tile] = actor.tile;
             let mut pending = std::collections::VecDeque::from([actor.tile]);
             let mut endpoint = None;
@@ -288,7 +268,7 @@ impl Game<'_> {
                     break;
                 }
                 let mut next: Vec<_> =
-                    self.board.adjacent[current]
+                    self.board().adjacent[current]
                         .iter()
                         .copied()
                         .filter(|&tile| {
@@ -322,7 +302,7 @@ impl Game<'_> {
             let mut spent = 0;
             for &tile in path.iter().skip(1) {
                 spent += self.cost(actor.kind, tile) as usize;
-                if spent > self.rules.units[actor.kind].r#move {
+                if spent > self.rules().units[actor.kind].r#move {
                     break;
                 }
                 if let Some(blocker) = self
@@ -340,18 +320,18 @@ impl Game<'_> {
     }
     pub(super) fn ordinary(&self, u: &Unit) -> impl Iterator<Item = &Unit> {
         let side = u.side;
-        self.units.iter().filter(move |o| {
+        self.units().iter().filter(move |o| {
             o.side == side
-                && !self.rules.units[o.kind].leader
+                && !self.rules().units[o.kind].leader
                 && o.role != Some(Role::Courier)
-                && self.rules.units[o.kind].healing == 0
+                && self.rules().units[o.kind].healing == 0
         })
     }
     pub fn proximity(&self, side: Side, tile: usize) -> u16 {
-        self.units
+        self.units()
             .iter()
             .filter(|o| o.side != side)
-            .map(|o| self.board.distance(tile, o.tile))
+            .map(|o| self.board().distance(tile, o.tile))
             .min()
             .unwrap_or(20)
     }
@@ -362,7 +342,7 @@ impl Game<'_> {
         recruiting: bool,
         required: bool,
     ) -> bool {
-        if tile == u.tile || required || !self.units.iter().any(|o| o.side != u.side) {
+        if tile == u.tile || required || !self.units().iter().any(|o| o.side != u.side) {
             return true;
         }
         let before = self.proximity(u.side, u.tile);
@@ -374,8 +354,8 @@ impl Game<'_> {
             return true;
         }
         let escorts = self.ordinary(u).filter(|o| {
-            o.hp as f64 >= self.rules.units[o.kind].hp as f64 / 2.0
-                && self.board.distance(tile, o.tile) <= 2
+            o.hp as f64 >= self.rules().units[o.kind].hp as f64 / 2.0
+                && self.board().distance(tile, o.tile) <= 2
         });
         let (count, at_front) = escorts.fold((0, false), |(count, front), unit| {
             (
@@ -388,14 +368,5 @@ impl Game<'_> {
 }
 /// Whether an actor must be routed through current occupancy and allies must yield.
 pub(super) fn actor_route(goal: &Objective) -> bool {
-    fn required_arrival(goal: &Objective) -> bool {
-        match goal.kind {
-            ObjectiveKind::Escort | ObjectiveKind::Escape | ObjectiveKind::Vigil => true,
-            ObjectiveKind::Capture => goal.actor.is_some(),
-            ObjectiveKind::Seal => goal.family.is_some(),
-            ObjectiveKind::Visit => goal.actor.is_some(),
-            ObjectiveKind::Defeat => false,
-        }
-    }
-    required_arrival(goal)
+    (goal.actor.is_some() || goal.family.is_some()) && goal.kind != ObjectiveKind::Defeat
 }

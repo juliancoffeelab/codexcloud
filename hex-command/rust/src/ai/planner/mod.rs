@@ -1,51 +1,111 @@
 //! Tactical dispatch and search styles, independent of recruitment choices.
 use super::{
     PlanningWorkspace, Recorder, advance_command, intent_command, move_command,
-    objectives::{self, actor_matches},
+    objectives::{self},
     priority,
 };
-use crate::{data::*, logic::Game};
+use crate::{ai::context::BattleView, data::*};
 use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
-pub enum Planner {
+pub enum PlannerKind {
     Classic,
-    Rush,
-    Mixed,
+    #[serde(alias = "rush", alias = "mixed")]
+    Full,
     Queued,
-}
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub(super) enum GlobalStyle {
-    Rush,
-    Mixed,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(super) enum QueueMode {
     Arena,
     CampaignBlock,
 }
-impl Planner {
+pub(crate) trait Planner {
+    fn plan(
+        &mut self,
+        context: &mut crate::ai::context::TacticalContext<'_, '_>,
+        orders: &crate::ai::orders::TacticalOrders,
+    ) -> Result<crate::ai::orders::PlanningReport, CommandError>;
+}
+impl Planner for PlannerKind {
+    fn plan(
+        &mut self,
+        context: &mut crate::ai::context::TacticalContext<'_, '_>,
+        orders: &crate::ai::orders::TacticalOrders,
+    ) -> Result<crate::ai::orders::PlanningReport, CommandError> {
+        match self {
+            Self::Classic => classic::Classic.plan(context, orders),
+            Self::Full => full::Full.plan(context, orders),
+            Self::Queued => queued::Queued.plan(context, orders),
+        }
+    }
+}
+fn drive(
+    kind: PlannerKind,
+    context: &mut crate::ai::context::TacticalContext<'_, '_>,
+    orders: &crate::ai::orders::TacticalOrders,
+) -> Result<crate::ai::orders::PlanningReport, CommandError> {
+    context
+        .workspace
+        .orders
+        .as_mut()
+        .expect("turn orders")
+        .tactics = orders.clone();
+    context
+        .workspace
+        .orders
+        .as_mut()
+        .unwrap()
+        .tactics
+        .objectives
+        .sort_by(|a, b| b.priority.cmp(&a.priority).then(a.id.cmp(&b.id)));
+    let recovered: Vec<_> = context
+        .battle()
+        .units()
+        .iter()
+        .filter(|unit| {
+            unit.side == context.battle().turn()
+                && unit.retreating == Some(true)
+                && unit.hp == context.battle().rules().units[unit.kind].hp
+        })
+        .cloned()
+        .collect();
+    for unit in recovered {
+        context.emit(super::intent_command(
+            &unit,
+            None,
+            unit.rebuilding,
+            unit.attacked,
+        ))?;
+    }
+    while !context.workspace.finished
+        || !context.workspace.commands.is_empty()
+        || context.workspace.attack_continuation.is_some()
+    {
+        context.flush()?;
+        if context.workspace.finished || context.battle().winner().is_some() {
+            break;
+        }
+        kind.choose(context.draft, context.workspace)?;
+    }
+    context.flush()?;
+    Ok(context.workspace.report.clone())
+}
+
+impl PlannerKind {
     pub const fn queued(self) -> bool {
         match self {
             Self::Queued => true,
-            Self::Classic | Self::Rush | Self::Mixed => false,
-        }
-    }
-    fn global_style(self) -> GlobalStyle {
-        match self {
-            Self::Rush => GlobalStyle::Rush,
-            Self::Mixed => GlobalStyle::Mixed,
-            Self::Classic | Self::Queued => unreachable!("global planner dispatch"),
+            Self::Classic | Self::Full => false,
         }
     }
     pub(super) fn choose(
         self,
-        game: &Game<'_>,
+        game: &BattleView<'_, '_>,
         workspace: &mut PlanningWorkspace,
     ) -> Result<(), CommandError> {
-        let rules = game.rules;
+        let rules = game.rules();
         let planner = self;
         super::cooperation::assign(game, workspace);
         super::cooperation::refresh_assignments(game, workspace);
@@ -55,10 +115,10 @@ impl Planner {
         }
         let orders = &workspace.orders.as_ref().expect("campaign orders").tactics;
         let restrained = orders.restrained;
-        fn classic(planner: Planner) -> bool {
+        fn classic(planner: PlannerKind) -> bool {
             match planner {
-                Planner::Classic => true,
-                Planner::Rush | Planner::Mixed | Planner::Queued => false,
+                PlannerKind::Classic => true,
+                PlannerKind::Full | PlannerKind::Queued => false,
             }
         }
         if classic(planner) {
@@ -87,7 +147,7 @@ impl Planner {
                     .classic_objectives
                     .extend(orders.rebuild_objectives(game));
                 workspace.classic_revision = workspace.cooperation.revision;
-                if workspace.goals.is_none() && (!orders.campaign || game.turn == Side::Enemy) {
+                if workspace.goals.is_none() && (!orders.campaign || game.turn() == Side::Enemy) {
                     workspace
                         .classic_objectives
                         .retain(|g| g.id.starts_with("rebuild:"));
@@ -99,13 +159,11 @@ impl Planner {
                     .sort_by_key(|id| workspace.escort.bound(*id) == 0.0);
                 workspace.tactical_remaining = Some(workspace.classic_ids.len());
                 for unit in game
-                    .units
+                    .units()
                     .iter()
-                    .filter(|u| u.side == game.turn && rules.units[u.kind].leader)
+                    .filter(|u| u.side == game.turn() && rules.units[u.kind].leader)
                 {
-                    let required = workspace.classic_objectives.iter().any(|g| {
-                        g.kind == ObjectiveKind::Escape && actor_matches(&g.actor, unit.id)
-                    });
+                    let required = orders.moving_actor(unit.id);
                     let (_, intent) = orders.rebuild_plan(game, unit.id, required);
                     if unit.rebuilding != intent {
                         workspace.commands.push_back(intent_command(
@@ -142,7 +200,11 @@ impl Planner {
             }
         } else {
             let remaining = workspace.tactical_remaining.get_or_insert_with(|| {
-                game.units.iter().filter(|u| u.side == game.turn).count() * 3
+                game.units()
+                    .iter()
+                    .filter(|u| u.side == game.turn())
+                    .count()
+                    * 3
             });
             if !planner.queued() {
                 if *remaining == 0 {
@@ -153,22 +215,26 @@ impl Planner {
             }
             let mut intents = Vec::new();
             if workspace.prepared_goals.is_none() {
-                workspace.prepared_goals = workspace
-                    .goals
-                    .as_ref()
-                    .map(|g| objectives::individual(g.clone()));
+                workspace.prepared_goals = workspace.orders.as_ref().map(|orders| {
+                    objectives::individual(
+                        orders
+                            .tactics
+                            .targets
+                            .iter()
+                            .filter(|target| !target.id.starts_with("rebuild:"))
+                            .cloned()
+                            .collect(),
+                    )
+                });
             }
             let plan = if planner.queued() {
                 priority::next_plan(game, workspace, &mut intents)
             } else {
                 game.best_plan::<true, false>(
-                    planner.global_style(),
                     orders,
                     &workspace.escort,
                     workspace.seed,
-                    workspace.goals.as_deref(),
                     workspace.prepared_goals.as_deref(),
-                    restrained,
                     &mut workspace.routes,
                     &mut workspace.commitments,
                     &mut intents,
@@ -229,3 +295,12 @@ impl Planner {
         Ok(())
     }
 }
+
+pub(in crate::ai) mod assignments;
+pub(in crate::ai) mod candidates;
+pub(in crate::ai) mod classic;
+pub(in crate::ai) mod escort;
+mod full;
+pub(in crate::ai) mod queued;
+pub(in crate::ai) mod safety;
+pub(in crate::ai) mod search;

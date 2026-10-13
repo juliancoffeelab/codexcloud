@@ -373,12 +373,6 @@ impl NativeEngineFactory {
                     message: "planner configuration does not match its checkpoint".into(),
                 });
             }
-            planner
-                .workspace
-                .validate(&self.rules, &state)
-                .map_err(|error| EngineError::InvalidSave {
-                    message: error.to_string(),
-                })?;
             if let Some(pending) = &planner.pending {
                 match game.fork().execute(pending.clone()) {
                     Ok(_) => {}
@@ -402,6 +396,22 @@ impl NativeEngineFactory {
                     }
                 }
             }
+        }
+        if let Some(planner) = &saved.planner {
+            let mut validation = game.fork();
+            if let Some(pending) = &planner.pending {
+                validation
+                    .execute(pending.clone())
+                    .map_err(|error| EngineError::InvalidSave {
+                        message: error.to_string(),
+                    })?;
+            }
+            planner
+                .workspace
+                .validate(&self.rules, &validation.state())
+                .map_err(|error| EngineError::InvalidSave {
+                    message: error.to_string(),
+                })?;
         }
         let board = game.board.clone();
         let handle = self.insert(state, saved.seed, board);

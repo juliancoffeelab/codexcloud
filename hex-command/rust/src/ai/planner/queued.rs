@@ -1,11 +1,6 @@
 //! A bounded duty queue replaces the global unit search after every command.
-use super::{
-    PlanningWorkspace, TacticalRole,
-    planner::{GlobalStyle, QueueMode},
-    roles::role,
-    tactics::Plan,
-};
-use crate::{data::*, logic::Game};
+use crate::ai::{PlanningWorkspace, TacticalRole, planner::QueueMode, roles::role, tactics::Plan};
+use crate::{ai::context::BattleView, data::*};
 use serde::{Deserialize, Serialize};
 
 /// Persisted queue cursor and deferred units; derived scoring caches stay private.
@@ -23,23 +18,27 @@ pub struct PrioritySnapshot {
     pub dirty: bool,
     pub attempts: Vec<UnitId>,
 }
-impl Game<'_> {
+impl BattleView<'_, '_> {
     fn priority_order(
         &self,
         policy: QueueMode,
-        cache: &super::cheap::Workspace,
-        escort: &super::escort::Workspace,
+        cache: &crate::ai::cheap::Workspace,
+        escort: &crate::ai::escort::Workspace,
     ) -> Vec<UnitId> {
         let goals = &cache.goals;
         let clearing = &cache.clearing;
-        let foes: Vec<_> = self.units.iter().filter(|u| u.side != self.turn).collect();
+        let foes: Vec<_> = self
+            .units()
+            .iter()
+            .filter(|u| u.side != self.turn())
+            .collect();
         let mut ranked: Vec<_> = self
-            .units
+            .units()
             .iter()
             .enumerate()
-            .filter(|(_, u)| u.side == self.turn && !u.attacked)
+            .filter(|(_, u)| u.side == self.turn() && !u.attacked)
             .map(|(index, unit)| {
-                let rule = &self.rules.units[unit.kind];
+                let rule = &self.rules().units[unit.kind];
                 let movement = if unit.moved { 0 } else { rule.r#move };
                 let zero_cost = rule.costs.iter().any(|c| *c == Some(0));
                 let range = rule
@@ -50,7 +49,7 @@ impl Game<'_> {
                     .unwrap_or(0);
                 let reachable = (zero_cost
                     || cache.proximity[unit.tile] as usize <= movement + range)
-                    .then(|| self.threat_reach_blocked(unit, self.occupied_tiles.clone()));
+                    .then(|| self.threat_reach_blocked(unit, self.occupied_tiles().clone()));
                 let geometry: Vec<_> = rule
                     .attacks
                     .iter()
@@ -60,7 +59,7 @@ impl Game<'_> {
                 for &foe in &foes {
                     for (weapon, attack) in rule.attacks.iter().enumerate() {
                         if !zero_cost
-                            && self.board.distance(unit.tile, foe.tile) as usize
+                            && self.board().distance(unit.tile, foe.tile) as usize
                                 > movement + attack.range as usize
                         {
                             continue;
@@ -88,7 +87,7 @@ impl Game<'_> {
                         let killed = damage >= foe.hp;
                         let value = damage.min(foe.hp) as f64 * 2.0 - response as f64 * 1.8
                             + if killed {
-                                12.0 + self.rules.units[foe.kind].cost as f64 * 0.3
+                                12.0 + self.rules().units[foe.kind].cost as f64 * 0.3
                             } else {
                                 0.0
                             }
@@ -112,7 +111,7 @@ impl Game<'_> {
                         let distance = g
                             .tiles
                             .iter()
-                            .map(|t| self.board.distance(unit.tile, self.site(t)))
+                            .map(|t| self.board().distance(unit.tile, self.site(t)))
                             .min()
                             .unwrap_or(u16::MAX) as f64;
                         g.weight / (distance + 3.0)
@@ -133,16 +132,16 @@ impl Game<'_> {
                 }
                 if role(self, unit.kind) == TacticalRole::Healer {
                     for ally in self
-                        .units
+                        .units()
                         .iter()
-                        .filter(|u| u.side == self.turn && u.id != unit.id)
+                        .filter(|u| u.side == self.turn() && u.id != unit.id)
                     {
-                        if self.board.distance(unit.tile, ally.tile) as usize > movement + 1 {
+                        if self.board().distance(unit.tile, ally.tile) as usize > movement + 1 {
                             continue;
                         }
                         let heal = rule
                             .healing
-                            .min(self.rules.units[ally.kind].hp - ally.hp)
+                            .min(self.rules().units[ally.kind].hp - ally.hp)
                             .max(0) as f64;
                         score += heal
                             * if cache.orders.important(self, ally) {
@@ -169,12 +168,12 @@ impl Game<'_> {
         ranked.into_iter().map(|(_, id, _)| UnitId(id)).collect()
     }
 }
-pub(super) fn next_plan(
-    game: &Game<'_>,
+pub(in crate::ai) fn next_plan(
+    game: &BattleView<'_, '_>,
     workspace: &mut PlanningWorkspace,
     intents: &mut Vec<(u32, Option<bool>)>,
 ) -> Option<Plan> {
-    super::cheap::prepare(game, workspace);
+    crate::ai::cheap::prepare(game, workspace);
     let policy = if workspace.orders.as_ref().unwrap().tactics.campaign {
         QueueMode::CampaignBlock
     } else {
@@ -187,7 +186,7 @@ pub(super) fn next_plan(
             retry: vec![],
             second_pass: false,
             active: None,
-            known_next_id: game.next_id,
+            known_next_id: game.next_id(),
             dirty: false,
             attempts: vec![],
         });
@@ -198,13 +197,13 @@ pub(super) fn next_plan(
     result
 }
 fn next_plan_inner(
-    game: &Game<'_>,
+    game: &BattleView<'_, '_>,
     policy: QueueMode,
     workspace: &mut PlanningWorkspace,
     queue: &mut PrioritySnapshot,
     intents: &mut Vec<(u32, Option<bool>)>,
 ) -> Option<Plan> {
-    if queue.known_next_id != game.next_id {
+    if queue.known_next_id != game.next_id() {
         let born: Vec<_> = game
             .priority_order(policy, &workspace.cheap, &workspace.escort)
             .into_iter()
@@ -212,7 +211,7 @@ fn next_plan_inner(
             .collect();
         *workspace.tactical_remaining.as_mut().unwrap() += born.len() * 3;
         queue.pending.splice(queue.cursor..queue.cursor, born);
-        queue.known_next_id = game.next_id;
+        queue.known_next_id = game.next_id();
     }
     if queue.dirty {
         queue.pending = game
@@ -245,7 +244,7 @@ fn next_plan_inner(
         };
         let Some(unit) = game
             .unit(id.0)
-            .filter(|u| u.side == game.turn && !u.attacked)
+            .filter(|u| u.side == game.turn() && !u.attacked)
         else {
             continue;
         };
@@ -254,11 +253,11 @@ fn next_plan_inner(
         }
         if unit.moved
             && !game
-                .units
+                .units()
                 .iter()
-                .filter(|u| u.side != game.turn)
+                .filter(|u| u.side != game.turn())
                 .any(|target| {
-                    game.rules.units[unit.kind]
+                    game.rules().units[unit.kind]
                         .attacks
                         .iter()
                         .enumerate()
@@ -270,7 +269,7 @@ fn next_plan_inner(
         *workspace.tactical_remaining.as_mut().unwrap() -= 1;
         queue.attempts.push(id);
         finish_intents(workspace, intents);
-        let mut plan = super::cheap::plan(game, id.0, workspace);
+        let mut plan = crate::ai::cheap::plan(game, id.0, workspace);
         if plan.is_none()
             && workspace
                 .orders
@@ -282,13 +281,10 @@ fn next_plan_inner(
         {
             let mut ignored = vec![];
             plan = game.best_plan::<true, true>(
-                GlobalStyle::Mixed,
                 &workspace.orders.as_ref().unwrap().tactics,
                 &workspace.escort,
                 workspace.seed,
-                workspace.goals.as_deref(),
                 workspace.prepared_goals.as_deref(),
-                workspace.orders.as_ref().unwrap().tactics.restrained,
                 &mut workspace.routes,
                 &mut workspace.commitments,
                 &mut ignored,
@@ -319,8 +315,9 @@ fn finish_intents(
 
 #[cfg(test)]
 mod tests {
-    use super::super::Policy;
     use super::*;
+    use crate::ai::Policy;
+    use crate::logic::Game;
     #[test]
     fn complex_assaults_keep_the_selected_planner_after_snapshot_restoration() {
         fn is_command_endturn(value: &Command) -> bool {
@@ -343,26 +340,23 @@ mod tests {
         let rules = Rules::load().unwrap();
         let mut game =
             Game::start_campaign(&rules, "ashen-oath", 0, vec![], 0, vec![], vec![], vec![]);
-        assert!(super::super::campaign::heavy_campaign(&game));
-        let mut priority = PlanningWorkspace::new(7, 1, None, super::super::Diplomacy::Pragmatic);
+        assert!(crate::ai::campaigner::mission::heavy_campaign(&game));
+        let mut priority = PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Pragmatic);
         for _ in 0..6 {
             let mut resumed = PlanningWorkspace::from_snapshot(
                 serde_json::from_str(&serde_json::to_string(&priority.snapshot()).unwrap())
                     .unwrap(),
             );
             let command =
-                super::super::choose_game_command(&rules, &game, Policy::Priority, &mut priority)
+                crate::ai::choose_game_command(&rules, &game, Policy::Priority, &mut priority)
                     .unwrap();
             assert_eq!(
                 command,
-                super::super::choose_game_command(&rules, &game, Policy::Priority, &mut resumed)
+                crate::ai::choose_game_command(&rules, &game, Policy::Priority, &mut resumed)
                     .unwrap()
             );
             let snapshot = priority.snapshot();
-            assert_eq!(
-                snapshot.blocks.unwrap().planner,
-                super::super::Planner::Queued
-            );
+            assert_eq!(snapshot.blocks.unwrap().planner, crate::ai::Planner::Queued);
             snapshot.validate(&rules, &game.state()).unwrap();
             priority = PlanningWorkspace::from_snapshot(
                 serde_json::from_str(&serde_json::to_string(&snapshot).unwrap()).unwrap(),
@@ -406,7 +400,7 @@ mod tests {
 
         let rules = Rules::load().unwrap();
         let mut game = Game::new(&rules, "mirror");
-        let mut workspace = PlanningWorkspace::new(7, 0, None, super::super::Diplomacy::Pragmatic);
+        let mut workspace = PlanningWorkspace::new(7, 0, None, crate::ai::Diplomacy::Pragmatic);
         for _ in 0..8 {
             let previous = workspace.snapshot();
             previous.validate(&rules, &game.state()).unwrap();
@@ -414,11 +408,11 @@ mod tests {
                 serde_json::from_str(&serde_json::to_string(&previous).unwrap()).unwrap(),
             );
             let command =
-                super::super::choose_game_command(&rules, &game, Policy::Priority, &mut workspace)
+                crate::ai::choose_game_command(&rules, &game, Policy::Priority, &mut workspace)
                     .unwrap();
             assert_eq!(
                 command,
-                super::super::choose_game_command(&rules, &game, Policy::Priority, &mut restored)
+                crate::ai::choose_game_command(&rules, &game, Policy::Priority, &mut restored)
                     .unwrap()
             );
             let saved = workspace.snapshot();
@@ -447,14 +441,14 @@ mod tests {
             vec![],
             vec![],
         );
-        let mut workspace = PlanningWorkspace::new(7, 0, None, super::super::Diplomacy::Pragmatic);
+        let mut workspace = PlanningWorkspace::new(7, 0, None, crate::ai::Diplomacy::Pragmatic);
         assert_eq!(
-            super::super::choose_game_command(&rules, &campaign, Policy::Battler, &mut workspace),
+            crate::ai::choose_game_command(&rules, &campaign, Policy::Battler, &mut workspace),
             Err(CommandError::BattleOnlyPolicy)
         );
         for policy in Policy::ALL.into_iter().filter(|p| p.legacy().is_some()) {
             assert_eq!(
-                super::super::choose_game_command(&rules, &campaign, policy, &mut workspace),
+                crate::ai::choose_game_command(&rules, &campaign, policy, &mut workspace),
                 Err(CommandError::ReferenceOnlyPolicy)
             );
             let mut snapshot = workspace.snapshot();
@@ -481,8 +475,11 @@ mod tests {
             campaign.owners[site] = Some(Side::Player);
         }
         workspace.orders =
-            Some(super::super::CampaignBlock::Adaptive.campaign_orders(&campaign, &workspace));
-        super::super::cheap::prepare(&campaign, &mut workspace);
+            Some(crate::ai::CampaignBlock::Mission.campaign_orders(&campaign, &workspace));
+        crate::ai::cheap::prepare(
+            &crate::ai::context::BattleView::new(&campaign),
+            &mut workspace,
+        );
         assert!(
             workspace
                 .cheap
@@ -498,7 +495,7 @@ mod tests {
                 .cheap
                 .goals
                 .iter()
-                .any(|g| g.kind == ObjectiveKind::Escort && g.actor.is_some())
+                .any(|g| g.kind == crate::ai::orders::TargetKind::Visit && g.actor.is_some())
         );
         let leader = campaign
             .units
@@ -518,6 +515,17 @@ mod tests {
         campaign.units[enemy].tile = tile;
         campaign.units[leader].hp = rules.units[campaign.units[leader].kind].hp / 2;
         campaign.roster_changed();
-        assert!(super::super::campaign::crisis(&campaign));
+        assert!(crate::ai::campaigner::mission::crisis(&campaign));
+    }
+}
+
+pub(super) struct Queued;
+impl super::Planner for Queued {
+    fn plan(
+        &mut self,
+        context: &mut crate::ai::context::TacticalContext<'_, '_>,
+        orders: &crate::ai::orders::TacticalOrders,
+    ) -> Result<crate::ai::orders::PlanningReport, crate::data::CommandError> {
+        super::drive(super::PlannerKind::Queued, context, orders)
     }
 }

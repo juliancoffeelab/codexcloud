@@ -5,78 +5,124 @@ use super::{
     roles::{recruit_role, role},
     tactics::jitter,
 };
-use crate::{data::*, logic::Game};
+use crate::{ai::context::BattleView, data::*};
 use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
-pub enum Recruiter {
+pub enum RecruiterKind {
     Rotation,
     Frontline,
     Balanced,
 }
-impl Recruiter {
+pub(crate) trait Recruiter {
+    fn recruit(
+        &mut self,
+        context: &mut crate::ai::context::RecruitmentContext<'_, '_>,
+        orders: &crate::ai::orders::RecruitmentOrders,
+    ) -> Result<crate::ai::orders::RecruitmentReport, CommandError>;
+}
+impl Recruiter for RecruiterKind {
+    fn recruit(
+        &mut self,
+        context: &mut crate::ai::context::RecruitmentContext<'_, '_>,
+        orders: &crate::ai::orders::RecruitmentOrders,
+    ) -> Result<crate::ai::orders::RecruitmentReport, CommandError> {
+        match self {
+            Self::Rotation => rotation::Rotation.recruit(context, orders),
+            Self::Frontline => frontline::Frontline.recruit(context, orders),
+            Self::Balanced => balanced::Balanced.recruit(context, orders),
+        }
+    }
+}
+fn drive(
+    kind: RecruiterKind,
+    context: &mut crate::ai::context::RecruitmentContext<'_, '_>,
+    orders: &crate::ai::orders::RecruitmentOrders,
+) -> Result<crate::ai::orders::RecruitmentReport, CommandError> {
+    use crate::ai::orders::*;
+    let mut report = RecruitmentReport::default();
+    for _ in 0..context.budget {
+        let mandatory = orders
+            .requirements
+            .iter()
+            .any(|requirement| requirement.deficit(context.battle()) > 0);
+        let Some(command) = kind.choose_orders(context.battle(), context.seed, orders) else {
+            break;
+        };
+        let id = UnitId(context.battle().next_id());
+        context.emit(command)?;
+        report.recruited.push(id);
+        if mandatory {
+            report.mandatory.push(id);
+        }
+    }
+    for requirement in &orders.requirements {
+        let missing = requirement.deficit(context.battle());
+        if missing > 0 {
+            let RecruitRequirement::EnsureUnits { selector, .. } = requirement;
+            report.requirements.push(RecruitmentShortfall {
+                selector: selector.clone(),
+                missing,
+                reason: PlanningReason::RecruitmentUnavailable,
+            });
+        }
+    }
+    Ok(report)
+}
+
+impl RecruiterKind {
     pub(super) fn choose_orders(
         self,
-        game: &Game<'_>,
+        game: &BattleView<'_, '_>,
         seed: u32,
         orders: &super::orders::RecruitmentOrders,
     ) -> Option<Command> {
         game.recruit_from_orders(self, seed, orders)
     }
     #[cfg(test)]
-    pub(super) fn choose(
+    pub(in crate::ai) fn choose(
         self,
-        game: &Game<'_>,
+        game: &crate::logic::Game<'_>,
         seed: u32,
         goals: Option<&[Objective]>,
         restrained: bool,
     ) -> Option<Command> {
-        game.choose_recruit(self, seed, goals, restrained)
-    }
-}
-impl Game<'_> {
-    #[cfg(test)]
-    pub(super) fn choose_recruit(
-        &self,
-        recruiter: Recruiter,
-        seed: u32,
-        goals: Option<&[Objective]>,
-        restrained: bool,
-    ) -> Option<Command> {
-        let workspace = super::PlanningWorkspace::new(
+        let workspace = crate::ai::PlanningWorkspace::new(
             seed,
             1,
             goals.map(<[Objective]>::to_vec),
             if restrained {
-                super::Diplomacy::Restrained
+                crate::ai::Diplomacy::Restrained
             } else {
-                super::Diplomacy::Pragmatic
+                crate::ai::Diplomacy::Pragmatic
             },
         );
-        let orders = super::CampaignBlock::Objectives.campaign_orders(self, &workspace);
-        self.recruit_from_orders(recruiter, seed, &orders.recruitment)
+        let orders = crate::ai::CampaignBlock::Mission.campaign_orders(game, &workspace);
+        BattleView::new(game).recruit_from_orders(self, seed, &orders.recruitment)
     }
+}
+impl BattleView<'_, '_> {
     fn recruit_from_orders(
         &self,
-        recruiter: Recruiter,
+        recruiter: RecruiterKind,
         seed: u32,
         orders: &super::orders::RecruitmentOrders,
     ) -> Option<Command> {
-        fn behavior(recruiter: Recruiter) -> (bool, bool, bool) {
+        fn behavior(recruiter: RecruiterKind) -> (bool, bool, bool) {
             match recruiter {
-                Recruiter::Rotation => (true, false, false),
-                Recruiter::Frontline => (false, true, false),
-                Recruiter::Balanced => (false, false, true),
+                RecruiterKind::Rotation => (true, false, false),
+                RecruiterKind::Frontline => (false, true, false),
+                RecruiterKind::Balanced => (false, false, true),
             }
         }
         let (rotation, frontline_only, balanced) = behavior(recruiter);
-        let side = self.turn;
+        let side = self.turn();
         let Some(leader) = self
-            .units
+            .units()
             .iter()
-            .find(|u| u.side == side && self.rules.units[u.kind].leader)
+            .find(|u| u.side == side && self.rules().units[u.kind].leader)
         else {
             return None;
         };
@@ -103,11 +149,11 @@ impl Game<'_> {
             let swordsman = self.kind("swordsman");
             let kind =
                 if orders.rotate_pool || !pool.contains(&archer) || !pool.contains(&swordsman) {
-                    pool[(self.round as usize - 1) % pool.len()]
+                    pool[(self.round() as usize - 1) % pool.len()]
                 } else if self
-                    .units
+                    .units()
                     .iter()
-                    .any(|u| u.side == side && self.rules.units[u.kind].family == Family::Archer)
+                    .any(|u| u.side == side && self.rules().units[u.kind].family == Family::Archer)
                 {
                     swordsman
                 } else {
@@ -126,11 +172,11 @@ impl Game<'_> {
             return None;
         }
         let allies: Vec<_> = self
-            .units
+            .units()
             .iter()
-            .filter(|u| u.side == side && !self.rules.units[u.kind].leader)
+            .filter(|u| u.side == side && !self.rules().units[u.kind].leader)
             .collect();
-        let opponents: Vec<_> = self.units.iter().filter(|u| u.side != side).collect();
+        let opponents: Vec<_> = self.units().iter().filter(|u| u.side != side).collect();
         let mut counts = [0; 4];
         for ally in &allies {
             counts[recruit_role(self, ally.kind).index()] += 1;
@@ -153,7 +199,7 @@ impl Game<'_> {
             {
                 continue;
             }
-            let r = &self.rules.units[kind];
+            let r = &self.rules().units[kind];
             let category = recruit_role(self, kind);
             let deficiency = shares[category.index()] * (represented + 1) as f64
                 - counts[category.index()] as f64;
@@ -216,17 +262,17 @@ impl Game<'_> {
             choices.push((
                 kind,
                 if balanced { deficiency } else { 0.0 },
-                score + jitter(seed, &format!("recruit:{}:{}", self.round, r.id)),
+                score + jitter(seed, &format!("recruit:{}:{}", self.round(), r.id)),
             ));
         }
         choices.sort_by(|a, b| b.1.total_cmp(&a.1).then_with(|| b.2.total_cmp(&a.2)));
         let Some(&(preferred, _, _)) = choices.first() else {
             return None;
         };
-        if self.rules.units[preferred].cost > self.gold[side.index()] && self.income(side) > 0 {
+        if self.rules().units[preferred].cost > self.gold()[side.index()] && self.income(side) > 0 {
             if (recruit_role(self, preferred) == UnitRole::Warrior
                 && counts[UnitRole::Warrior.index()] == 0)
-                || self.rules.units[preferred].cost - self.gold[side.index()]
+                || self.rules().units[preferred].cost - self.gold()[side.index()]
                     <= self.income(side) * 2
             {
                 return None;
@@ -234,7 +280,7 @@ impl Game<'_> {
         }
         let Some(&(kind, _, _)) = choices
             .iter()
-            .find(|&&(k, _, _)| self.rules.units[k].cost <= self.gold[side.index()])
+            .find(|&&(k, _, _)| self.rules().units[k].cost <= self.gold()[side.index()])
         else {
             return None;
         };
@@ -246,7 +292,7 @@ impl Game<'_> {
         let proximity = |t| {
             opponents
                 .iter()
-                .map(|u| self.board.distance(t, u.tile))
+                .map(|u| self.board().distance(t, u.tile))
                 .min()
                 .unwrap_or(0)
         };
@@ -279,6 +325,7 @@ fn mixed_shares(roles: impl Iterator<Item = UnitRole>) -> [f64; 4] {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::logic::Game;
 
     #[test]
     fn absent_roles_redistribute_without_counting_duplicate_unit_choices() {
@@ -320,8 +367,8 @@ mod tests {
             game.gold = [1000, 0];
             game.roster_changed();
             for _ in 0..purchases {
-                let command = game
-                    .choose_recruit(Recruiter::Balanced, 1, None, false)
+                let command = RecruiterKind::Balanced
+                    .choose(&game, 1, None, false)
                     .unwrap();
                 game.execute(command).unwrap();
                 let tile = (0..game.terrain.len())
@@ -338,3 +385,7 @@ mod tests {
         }
     }
 }
+
+mod balanced;
+mod frontline;
+mod rotation;

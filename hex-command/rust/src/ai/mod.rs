@@ -1,33 +1,31 @@
 //! Policies choose typed commands from a read-only battle. A workspace retains
 //! turn-local commitments and the continuation of a classic unit's action.
 #![deny(clippy::wildcard_enum_match_arm)]
-mod blocks;
-pub mod campaign;
-mod cheap;
-mod classic;
-mod context;
-mod cooperation;
-mod escort;
+pub mod campaigner;
+pub mod context;
+mod presets;
+pub(crate) mod tactic;
+use planner::{
+    assignments as cooperation, candidates as cheap, escort, queued as priority, search as tactics,
+};
 pub mod objectives;
 pub mod orders;
 pub mod planner;
-mod priority;
 #[cfg(not(target_arch = "wasm32"))]
 pub mod profiling;
 pub mod recruiter;
 mod roles;
 mod snapshot;
-pub(crate) mod tactics;
-pub(crate) mod threats;
 use crate::{
     data::*,
     logic::{Battle, Command, CommandError, Game},
 };
-pub use blocks::Blocks;
-pub use campaign::CampaignBlock;
-pub use planner::Planner;
+pub use campaigner::CampaignerKind as CampaignBlock;
+use context::forecast as threats;
+pub use planner::PlannerKind as Planner;
+pub use presets::Blocks;
 pub use priority::PrioritySnapshot;
-pub use recruiter::Recruiter;
+pub use recruiter::RecruiterKind as Recruiter;
 use rustc_hash::FxHashMap as HashMap;
 use serde::{Deserialize, Serialize};
 use std::{
@@ -133,11 +131,11 @@ pub struct PlanningWorkspace {
     seed: u32,
     recruitment_remaining: usize,
     goals: Option<Vec<Objective>>,
-    prepared_goals: Option<Vec<Objective>>,
+    prepared_goals: Option<Vec<orders::Target>>,
     diplomacy: Diplomacy,
     initialized: bool,
     finished: bool,
-    classic_objectives: Vec<Objective>,
+    classic_objectives: Vec<orders::Target>,
     classic_ids: VecDeque<u32>,
     classic_revision: u32,
     tactical_remaining: Option<usize>,
@@ -151,6 +149,9 @@ pub struct PlanningWorkspace {
     blocks: Option<Blocks>,
     orders: Option<orders::CampaignOrders>,
     report: orders::PlanningReport,
+    recruitment_report: orders::RecruitmentReport,
+    turn_plan_ready: bool,
+    issued: Option<Command>,
     cooperation: cooperation::Workspace,
     escort: escort::Workspace,
 }
@@ -167,6 +168,12 @@ pub struct PlanningSnapshot {
     #[serde(default)]
     pub report: orders::PlanningReport,
     #[serde(default)]
+    pub recruitment_report: orders::RecruitmentReport,
+    #[serde(default)]
+    pub turn_plan_ready: bool,
+    #[serde(default)]
+    pub issued: Option<Command>,
+    #[serde(default)]
     pub cooperation: cooperation::Workspace,
     #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -178,7 +185,7 @@ pub struct PlanningSnapshot {
     pub diplomacy: Diplomacy,
     pub initialized: bool,
     pub finished: bool,
-    pub classic_objectives: Vec<Objective>,
+    pub classic_objectives: Vec<orders::Target>,
     pub classic_ids: Vec<UnitId>,
     #[serde(default)]
     pub classic_revision: u32,
@@ -203,6 +210,9 @@ impl PlanningWorkspace {
             blocks: None,
             orders: None,
             report: orders::PlanningReport::default(),
+            recruitment_report: orders::RecruitmentReport::default(),
+            turn_plan_ready: false,
+            issued: None,
             cooperation: cooperation::Workspace::default(),
             escort: escort::Workspace::default(),
             seed,
@@ -245,6 +255,20 @@ impl PlanningWorkspace {
             .or_else(|| policy.blocks())
             .expect("live AI preset")
     }
+    pub(crate) fn complete_turn_plan(
+        &mut self,
+        policy: Policy,
+        blocks: Blocks,
+        report: orders::PlanningReport,
+        recruitment: orders::RecruitmentReport,
+    ) {
+        self.policy = Some(policy);
+        self.blocks = Some(blocks);
+        self.report = report;
+        self.recruitment_report = recruitment;
+        self.initialized = true;
+        self.finished = true;
+    }
     /// Whether the policy has exhausted its actions and queued continuation.
     pub fn is_finished(&self) -> bool {
         self.finished && self.commands.is_empty()
@@ -254,6 +278,7 @@ impl PlanningWorkspace {
         orders.tactics.campaign.then(|| orders::TurnDiagnostics {
             orders: orders.clone(),
             report: self.report.clone(),
+            recruitment: self.recruitment_report.clone(),
         })
     }
     /// Save the exact policy continuation without its recomputable route cache.
@@ -267,6 +292,9 @@ impl PlanningWorkspace {
         PlanningSnapshot {
             orders: self.orders.clone(),
             report: self.report.clone(),
+            recruitment_report: self.recruitment_report.clone(),
+            turn_plan_ready: self.turn_plan_ready,
+            issued: self.issued.clone(),
             cooperation: self.cooperation.clone(),
             blocks: self.blocks,
             policy: self.policy,
@@ -291,6 +319,9 @@ impl PlanningWorkspace {
         Self {
             orders: saved.orders,
             report: saved.report,
+            recruitment_report: saved.recruitment_report,
+            turn_plan_ready: saved.turn_plan_ready,
+            issued: saved.issued,
             cooperation: saved.cooperation,
             escort: escort::Workspace::default(),
             policy: saved.policy,
@@ -364,77 +395,24 @@ pub(crate) fn choose_game_command(
     if !std::ptr::eq(rules, game.rules) {
         return Err(CommandError::CatalogMismatch);
     }
-    loop {
-        if let Some(command) = workspace.commands.pop_front() {
-            return Ok(command);
-        }
-        if workspace.finished || game.winner.is_some() {
-            workspace.finished = true;
-            return Ok(Command::EndTurn);
-        }
-        if let Some((unit, target, weapon)) = workspace.attack_continuation.take() {
-            let actor = game.unit(unit.0).ok_or(CommandError::UnknownUnit(unit))?;
-            if actor.retreating.is_some() {
-                workspace.commands.push_back(intent_command(
-                    actor,
-                    None,
-                    actor.rebuilding,
-                    actor.attacked,
-                ));
-            }
-            workspace.commands.push_back(Command::Attack {
-                unit,
-                target,
-                weapon,
-            });
-            continue;
-        }
-        if workspace.orders.is_none() {
-            workspace.orders = Some(context::Campaigner::objectives(
-                &blocks.campaign,
-                context::CampaignView::new(game, workspace),
-            ));
-        }
-        if !workspace.initialized {
-            workspace.initialized = true;
-            for unit in game.units.iter().filter(|u| {
-                u.side == game.turn && u.retreating == Some(true) && u.hp == rules.units[u.kind].hp
-            }) {
-                workspace.commands.push_back(intent_command(
-                    unit,
-                    None,
-                    unit.rebuilding,
-                    unit.attacked,
-                ));
-            }
-            if !workspace.commands.is_empty() {
-                continue;
-            }
-        }
-        if workspace.recruitment_remaining > 0 {
-            workspace.recruitment_remaining -= 1;
-            let recruitment = &workspace.orders.as_ref().unwrap().recruitment;
-            if let Some(command) = context::RecruitmentStrategy::recruit(
-                &blocks.recruiter,
-                context::RecruitmentContext::new(game, workspace.seed),
-                recruitment,
-            ) {
-                if recruitment.requirements.iter().any(|r| r.deficit(game) > 0) {
-                    workspace
-                        .report
-                        .mandatory_recruits
-                        .push(UnitId(game.next_id));
-                }
-                return Ok(command);
-            }
-        } else {
-            context::TacticalPlanner::plan(
-                &blocks.planner,
-                context::TacticalContext::new(game, workspace),
-            )?;
-        }
+    if game.winner.is_some() {
+        return Ok(Command::EndTurn);
     }
+    if !workspace.turn_plan_ready {
+        let mut tactic = tactic::Tactic::new(blocks.recruiter, blocks.campaign, blocks.planner);
+        let plan = tactic.run_turn(game, workspace)?;
+        workspace.report = plan.planning;
+        workspace.recruitment_report = plan.recruitment;
+        workspace.commands = plan.commands.into();
+        workspace.turn_plan_ready = true;
+        workspace.initialized = true;
+        workspace.finished = true;
+    }
+    let command = workspace.commands.pop_front().unwrap_or(Command::EndTurn);
+    workspace.issued = Some(command.clone());
+    Ok(command)
 }
+
 impl Game<'_> {
     #[allow(dead_code)] // Compact native adapter; other hosts consume one decision at a time.
     pub(crate) fn play_policy(
@@ -497,20 +475,20 @@ struct Recorder {
     retreat_logs: HashSet<u32>,
 }
 impl Recorder {
-    fn new(game: &Game<'_>) -> Self {
+    fn new(game: &context::BattleView<'_, '_>) -> Self {
         Self {
             commands: VecDeque::new(),
             error: None,
             retreat_logs: HashSet::new(),
             intents: game
-                .units
+                .units()
                 .iter()
                 .map(|u| (u.id, (u.retreating, u.rebuilding, u.attacked)))
                 .collect(),
         }
     }
-    fn flush_intents(&mut self, game: &Game<'_>) {
-        for u in &game.units {
+    fn flush_intents(&mut self, game: &context::BattleView<'_, '_>) {
+        for u in game.units() {
             let intent = (u.retreating, u.rebuilding, u.attacked);
             let record_retreat = self.retreat_logs.remove(&u.id);
             if record_retreat || self.intents.get(&u.id).is_some_and(|old| *old != intent) {
@@ -528,7 +506,7 @@ impl Recorder {
     fn mark_retreat(&mut self, unit: u32) {
         self.retreat_logs.insert(unit);
     }
-    fn emit(&mut self, game: &mut Game<'_>, command: Command) {
+    fn emit(&mut self, game: &mut context::BattleDraft<'_, '_>, command: Command) {
         self.flush_intents(game);
         if let Err(error) = game.execute(command.clone()) {
             self.error = Some(error);
@@ -536,18 +514,24 @@ impl Recorder {
         }
         self.commands.push_back(command);
         self.intents = game
-            .units
+            .units()
             .iter()
             .map(|u| (u.id, (u.retreating, u.rebuilding, u.attacked)))
             .collect();
     }
-    fn move_unit(&mut self, game: &mut Game<'_>, unit: u32, tile: usize) {
+    fn move_unit(&mut self, game: &mut context::BattleDraft<'_, '_>, unit: u32, tile: usize) {
         self.emit(game, move_command(game, unit, tile));
     }
-    fn attack(&mut self, game: &mut Game<'_>, unit: u32, target: u32, weapon: usize) {
+    fn attack(
+        &mut self,
+        game: &mut context::BattleDraft<'_, '_>,
+        unit: u32,
+        target: u32,
+        weapon: usize,
+    ) {
         self.emit(game, attack_command(game, unit, target, weapon));
     }
-    fn advance(&mut self, game: &mut Game<'_>, unit: u32, kind: usize) {
+    fn advance(&mut self, game: &mut context::BattleDraft<'_, '_>, unit: u32, kind: usize) {
         self.emit(game, advance_command(game, unit, kind));
     }
 }
@@ -566,31 +550,41 @@ fn intent_command(
         record_retreat: false,
     }
 }
-fn move_command(game: &Game<'_>, unit: u32, tile: usize) -> Command {
+fn move_command(game: &context::BattleView<'_, '_>, unit: u32, tile: usize) -> Command {
     Command::Move {
         unit: UnitId(unit),
-        tile: TileId(game.board.ids[tile].clone()),
+        tile: TileId(game.board().ids[tile].clone()),
     }
 }
-fn attack_command(game: &Game<'_>, unit: u32, target: u32, weapon: usize) -> Command {
+fn attack_command(
+    game: &context::BattleView<'_, '_>,
+    unit: u32,
+    target: u32,
+    weapon: usize,
+) -> Command {
     let kind = game.unit(unit).unwrap().kind;
     Command::Attack {
         unit: UnitId(unit),
         target: UnitId(target),
-        weapon: WeaponId(game.rules.units[kind].attacks[weapon].id.clone()),
+        weapon: WeaponId(game.rules().units[kind].attacks[weapon].id.clone()),
     }
 }
-fn recruit_command(game: &Game<'_>, unit: u32, kind: usize, tile: usize) -> Command {
+fn recruit_command(
+    game: &context::BattleView<'_, '_>,
+    unit: u32,
+    kind: usize,
+    tile: usize,
+) -> Command {
     Command::Recruit {
         unit: UnitId(unit),
-        kind: UnitTypeId(game.rules.units[kind].id.clone()),
-        tile: TileId(game.board.ids[tile].clone()),
+        kind: UnitTypeId(game.rules().units[kind].id.clone()),
+        tile: TileId(game.board().ids[tile].clone()),
     }
 }
-fn advance_command(game: &Game<'_>, unit: u32, kind: usize) -> Command {
+fn advance_command(game: &context::BattleView<'_, '_>, unit: u32, kind: usize) -> Command {
     Command::Advance {
         unit: UnitId(unit),
-        kind: UnitTypeId(game.rules.units[kind].id.clone()),
+        kind: UnitTypeId(game.rules().units[kind].id.clone()),
     }
 }
 

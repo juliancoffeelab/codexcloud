@@ -69,7 +69,7 @@ fn now() -> u64 {
         .elapsed()
         .as_nanos() as u64
 }
-pub(super) struct Decision {
+pub(crate) struct Decision {
     start: u64,
     index: usize,
 }

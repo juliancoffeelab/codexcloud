@@ -2,7 +2,7 @@
 use super::{error::SimulationError, types::*};
 use crate::{
     ai::{
-        Diplomacy, PlanningWorkspace, Policy, Random, choose_game_command, objectives::objective,
+        Diplomacy, PlanningWorkspace, Policy, Random, objectives::objective, tactic::PresetTactic,
     },
     data::*,
     logic::Game,
@@ -337,6 +337,7 @@ fn phase(
     limit: usize,
     goals: Option<&[Objective]>,
     diplomacy: Diplomacy,
+    tactic: &mut PresetTactic,
 ) -> Result<Phase, SimulationError> {
     let timing = crate::ai::profiling::Turn::start(policy, game.turn);
     let before = recording.units(game)?;
@@ -345,11 +346,16 @@ fn phase(
     game.recordings = Some(Records::default());
     let mut workspace =
         PlanningWorkspace::new(seed, limit, goals.map(<[Objective]>::to_vec), diplomacy);
-    loop {
-        let command = choose_game_command(game.rules, game, policy, &mut workspace)?;
-        if matches!(command, Command::EndTurn) {
-            break;
-        }
+    let composition = tactic.composition();
+    if !composition.campaign.supports_campaign() && game.campaign.is_some() {
+        return Err(CommandError::BattleOnlyPolicy.into());
+    }
+    let plan = {
+        let _decision = crate::ai::profiling::Decision::start(policy, game.turn);
+        tactic.run_turn(game, &mut workspace)?
+    };
+    workspace.complete_turn_plan(policy, composition, plan.planning, plan.recruitment);
+    for command in plan.commands {
         game.execute(command)?;
     }
     if let Some(state) = &mut game.campaign {
@@ -401,6 +407,10 @@ fn phase(
 }
 /// Execute one arena until victory or its cap, retaining every phase and endpoint.
 pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, SimulationError> {
+    let mut tactics = [
+        PresetTactic::preset(config.player)?,
+        PresetTactic::preset(config.enemy)?,
+    ];
     let mut game = create_arena(rules, &config)?;
     let initial = game.state();
     game.begin_turn(config.first);
@@ -473,6 +483,7 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
             config.recruit_limit,
             Some(&goals),
             Diplomacy::Pragmatic,
+            &mut tactics[side.index()],
         )?;
         for command in &record.records.actions {
             if let ActionRecord::Move { tile, .. } = command {
@@ -555,6 +566,10 @@ pub fn run_campaign(
         vec![],
         vec![],
     );
+    let mut tactics = [
+        PresetTactic::preset(config.player)?,
+        PresetTactic::preset(config.enemy)?,
+    ];
     let mut missions = vec![];
     for _ in 0..chapters {
         let state = game.campaign.as_mut().ok_or("Campaign state missing")?;
@@ -571,6 +586,7 @@ pub fn run_campaign(
             } else {
                 config.enemy
             };
+            let side = game.turn;
             phases.push(phase(
                 &mut game,
                 &mut recording,
@@ -579,6 +595,7 @@ pub fn run_campaign(
                 config.recruit_limit,
                 None,
                 config.diplomacy,
+                &mut tactics[side.index()],
             )?);
             if game.winner.is_none() && index + 1 < config.max_rounds * 2 {
                 game.end_turn();

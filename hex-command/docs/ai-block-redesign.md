@@ -2,15 +2,15 @@
 
 Current policy names now select independent Recruiter, Campaign and Planner
 blocks. Their preset composition and configurable fields are defined in
-[`blocks.rs`](../rust/src/ai/blocks.rs).
+[`presets.rs`](../rust/src/ai/presets.rs).
 Rust workspaces, browser options and native saved-phase requests can override the
 three blocks. Saved continuations retain the chosen composition. The three Old
 policies remain frozen historical executables.
 
 The Recruiter owns unit selection and placement. The Campaign block owns mission
 duties, essential actors, reservations, corridor clearing, diplomacy, rebuilding
-and planner escalation. The Planner stages legal commands through Classic,
-Rush, Mixed or queued search. Tactical algorithms no longer select recruitment
+and rebuilding directives. The Planner stages legal commands through Classic,
+Full or Queued search. Shared search helpers belong to the selected planner. Tactical algorithms no longer select recruitment
 or campaign behavior by the full policy enum.
 
 ## Objective fixes

@@ -1,11 +1,13 @@
-use super::objectives::actor_matches;
-use super::roles::role;
-use super::{TacticalRole, planner::GlobalStyle};
+use crate::ai::TacticalRole;
+use crate::ai::objectives::actor_matches;
+use crate::ai::orders::target as objective;
+use crate::ai::orders::{Target as Objective, TargetKind as ObjectiveKind};
+use crate::ai::roles::role;
 use crate::{
-    ai::objectives::{TileOrder, individual, objective},
-    ai::threats::Threats,
+    ai::context::BattleView,
+    ai::objectives::{TileOrder, individual},
+    ai::planner::safety::Threats,
     data::*,
-    logic::Game,
 };
 use rustc_hash::FxHashMap as HashMap;
 use std::borrow::Cow;
@@ -18,7 +20,7 @@ impl Random {
         (v ^ (v >> 14)) as f64 / 4294967296.0
     }
 }
-pub(super) fn jitter(seed: u32, key: &str) -> f64 {
+pub(in crate::ai) fn jitter(seed: u32, key: &str) -> f64 {
     let mut h = seed;
     for c in key.encode_utf16() {
         h = (h ^ c as u32).wrapping_mul(16777619);
@@ -42,7 +44,7 @@ fn hash_number(mut hash: u32, mut number: u32) -> u32 {
     hash
 }
 /// Hash exactly the historical UTF-16 key without allocating formatted strings.
-pub(super) fn action_jitter(
+pub(in crate::ai) fn action_jitter(
     seed: u32,
     round: u32,
     unit: u32,
@@ -85,32 +87,29 @@ impl ScoreBound for f64 {
     }
 }
 #[derive(Clone, Debug, PartialEq)]
-pub(super) struct Plan {
-    pub(super) unit: u32,
-    pub(super) tile: usize,
-    pub(super) score: f64,
-    pub(super) target: Option<u32>,
-    pub(super) weapon: Option<usize>,
-    pub(super) advance: Option<usize>,
-    pub(super) withdrawing: bool,
+pub(in crate::ai) struct Plan {
+    pub(in crate::ai) unit: u32,
+    pub(in crate::ai) tile: usize,
+    pub(in crate::ai) score: f64,
+    pub(in crate::ai) target: Option<u32>,
+    pub(in crate::ai) weapon: Option<usize>,
+    pub(in crate::ai) advance: Option<usize>,
+    pub(in crate::ai) withdrawing: bool,
 }
-impl Game<'_> {
-    pub(super) fn best_plan<const BOUNDED: bool, const FOCUSED: bool>(
+impl BattleView<'_, '_> {
+    pub(in crate::ai) fn best_plan<const BOUNDED: bool, const FOCUSED: bool>(
         &self,
-        policy: GlobalStyle,
-        orders: &super::orders::TacticalOrders,
-        escort: &super::escort::Workspace,
+        orders: &crate::ai::orders::TacticalOrders,
+        escort: &crate::ai::escort::Workspace,
         seed: u32,
-        _goals: Option<&[Objective]>,
         prepared_goals: Option<&[Objective]>,
-        _restrained: bool,
         routes: &mut HashMap<(usize, Vec<usize>), std::rc::Rc<Vec<u16>>>,
         commitments: &mut HashMap<u32, String>,
         intents: &mut Vec<(u32, Option<bool>)>,
-        threat_workspace: &mut super::threats::ArenaThreatWorkspace,
+        threat_workspace: &mut crate::ai::threats::ArenaThreatWorkspace,
         focus: Option<u32>,
     ) -> Option<Plan> {
-        let side = self.turn;
+        let side = self.turn();
         let objectives: Cow<'_, [Objective]> = if let Some(prepared) = prepared_goals {
             let rebuilding = orders.rebuild_objectives(self);
             if rebuilding.is_empty() {
@@ -129,17 +128,10 @@ impl Game<'_> {
         };
         let escort_lanes = orders.clearing(self);
         let rebuilds: HashMap<_, _> = self
-            .units
+            .units()
             .iter()
-            .filter(|u| u.side == side && self.rules.units[u.kind].leader)
-            .map(|u| {
-                (
-                    u.id,
-                    objectives
-                        .iter()
-                        .any(|g| g.kind == ObjectiveKind::Escape && actor_matches(&g.actor, u.id)),
-                )
-            })
+            .filter(|u| u.side == side && self.rules().units[u.kind].leader)
+            .map(|u| (u.id, orders.moving_actor(u.id)))
             .map(|(id, required)| {
                 (
                     id,
@@ -155,21 +147,21 @@ impl Game<'_> {
         // Commit bookkeeping in roster order, as policy_objectives and the
         // original planning loop visited leaders and units in that order.
         intents.sort_by_key(|(id, _)| self.index(*id).unwrap());
-        let allies: Vec<_> = self.units.iter().filter(|u| u.side == side).collect();
+        let allies: Vec<_> = self.units().iter().filter(|u| u.side == side).collect();
         if allies.iter().all(|u| u.attacked) {
             return None;
         }
-        let foes: Vec<_> = self.units.iter().filter(|u| u.side != side).collect();
+        let foes: Vec<_> = self.units().iter().filter(|u| u.side != side).collect();
         let lanes = orders.lanes(self);
         let mut threats = Threats::with_workspace(self, side, threat_workspace).with_orders(orders);
         let screens: Vec<_> = allies
             .iter()
             .filter(|u| {
-                role(self, u.kind) == TacticalRole::Frontline && !self.rules.units[u.kind].leader
+                role(self, u.kind) == TacticalRole::Frontline && !self.rules().units[u.kind].leader
             })
             .collect();
         let movable_screens = screens.iter().any(|u| !u.moved && !u.attacked);
-        let board = &self.board;
+        let board = &self.board();
         // These distances and possible targets depend only on this planning
         // snapshot, not on the unit or candidate move currently being scored.
         let foe_ranges: Vec<_> = (0..board.ids.len())
@@ -183,7 +175,7 @@ impl Game<'_> {
         let range_to_foe = |tile: usize| foe_ranges[tile];
         let maximum_range = allies
             .iter()
-            .flat_map(|u| &self.rules.units[u.kind].attacks)
+            .flat_map(|u| &self.rules().units[u.kind].attacks)
             .map(|a| a.range as u16)
             .max()
             .unwrap_or(0);
@@ -203,15 +195,13 @@ impl Game<'_> {
             }
         }
         nearby_offsets.push(nearby_foes.len());
-        let protected: Vec<_> = if policy == GlobalStyle::Mixed {
+        let protected: Vec<_> = {
             allies
                 .iter()
                 .filter(|u| {
                     orders.important(self, u) || role(self, u.kind) != TacticalRole::Frontline
                 })
                 .collect()
-        } else {
-            Vec::new()
         };
         let tile_order_context = TileOrder::context(self, side, true);
         let mut best: Option<Plan> = None;
@@ -230,31 +220,28 @@ impl Game<'_> {
                 let danger = if important {
                     9.0
                 } else if category == TacticalRole::Frontline {
-                    if policy == GlobalStyle::Rush {
-                        0.55
-                    } else {
-                        0.75
-                    }
+                    0.75
                 } else {
                     1.1
                 };
                 let movement = if unit.moved {
                     0
                 } else {
-                    self.rules.units[unit.kind].r#move
+                    self.rules().units[unit.kind].r#move
                 };
                 let terminal_objective = orders
                     .terminal_arrivals
                     .iter()
                     .any(|(actor, _)| actor.0 == unit.id);
-                let zero_cost = self.rules.units[unit.kind]
+                let zero_cost = self.rules().units[unit.kind]
                     .costs
                     .iter()
                     .any(|c| *c == Some(0));
                 let mut offense = 0.0f64;
                 let mut maximum_combat = 0.0f64;
                 for &target in &foes {
-                    for (weapon, attack) in self.rules.units[unit.kind].attacks.iter().enumerate() {
+                    for (weapon, attack) in self.rules().units[unit.kind].attacks.iter().enumerate()
+                    {
                         let distant = board.distance(unit.tile, target.tile) as usize
                             > movement + attack.range as usize;
                         if distant && !zero_cost {
@@ -263,7 +250,7 @@ impl Game<'_> {
                         let damage = self.damage(unit, target, weapon);
                         let killed = damage >= target.hp;
                         let kill_value = if killed {
-                            12.0 + self.rules.units[target.kind].cost as f64 * 0.3
+                            12.0 + self.rules().units[target.kind].cost as f64 * 0.3
                         } else {
                             0.0
                         };
@@ -358,7 +345,7 @@ impl Game<'_> {
             let unit = &planned_unit;
             // Only a lethal essential-actor candidate needs the full minimum.
             let mut minimum_risk = None;
-            let recruiting = self.rules.units[unit.kind].leader
+            let recruiting = self.rules().units[unit.kind].leader
                 && self
                     .recruitment_options(side)
                     .iter()
@@ -370,7 +357,7 @@ impl Game<'_> {
                     ObjectiveKind::Capture,
                     rebuilding
                         .iter()
-                        .map(|&t| self.board.ids[t].clone())
+                        .map(|&t| self.board().ids[t].clone())
                         .collect(),
                     80.0,
                 );
@@ -398,7 +385,7 @@ impl Game<'_> {
                     && original.actor.is_none()
                     && original.tiles.iter().all(|t| {
                         let tile = self.site(t);
-                        self.owners[tile] == Some(side)
+                        self.owners()[tile] == Some(side)
                             && (original.hold != Some(true)
                                 || self
                                     .at(tile)
@@ -424,7 +411,7 @@ impl Game<'_> {
                 let tiles: Vec<_> = goal.tiles.iter().map(|t| self.site(t)).collect();
                 let route = if pursuing
                     && (original.actor.is_some() || original.family.is_some())
-                    && super::objectives::actor_route(original)
+                    && crate::ai::objectives::actor_route(original)
                 {
                     let occupied = self.occupied_routes(unit, &tiles, false);
                     if occupied[unit.tile] == u16::MAX {
@@ -459,9 +446,9 @@ impl Game<'_> {
                     .iter()
                     .map(|t| self.site(t))
                     .min_by(|&a, &b| {
-                        self.board
+                        self.board()
                             .distance(unit.tile, a)
-                            .cmp(&self.board.distance(unit.tile, b))
+                            .cmp(&self.board().distance(unit.tile, b))
                             .then_with(|| order.compare(self, a, b))
                     })
                     .unwrap()
@@ -487,11 +474,7 @@ impl Game<'_> {
             let danger_weight = if important {
                 6.0
             } else if category == TacticalRole::Frontline {
-                if policy == GlobalStyle::Rush {
-                    0.35
-                } else {
-                    0.55
-                }
+                0.55
             } else {
                 0.9
             };
@@ -511,7 +494,7 @@ impl Game<'_> {
                     let movement = if unit.moved {
                         0
                     } else {
-                        self.rules.units[unit.kind].r#move
+                        self.rules().units[unit.kind].r#move
                     };
                     let progress = d.before.min(movement.min(u16::MAX as usize) as u16) as f64;
                     ceiling = add(ceiling, ((progress * d.goal.weight).upper() / 4.0).upper());
@@ -519,26 +502,28 @@ impl Game<'_> {
                     // route distance, including occupancy-aware escort routes.
                     if !unit.moved
                         && d.before as usize <= movement
-                        && !d.goal.tiles.contains(&self.board.ids[unit.tile])
+                        && !d.goal.tiles.contains(&self.board().ids[unit.tile])
                     {
                         ceiling = add(ceiling, (d.goal.weight * 0.6).upper());
                     }
                 }
                 ceiling = add(
                     ceiling,
-                    (self.rules.units[unit.kind].hp - unit.hp).min(4) as f64 * 2.0,
+                    (self.rules().units[unit.kind].hp - unit.hp).min(4) as f64 * 2.0,
                 );
                 ceiling = add(ceiling, 3.0);
-                if policy == GlobalStyle::Mixed {
+                {
                     if category == TacticalRole::Healer {
-                        let healing = self.rules.units[unit.kind].healing;
+                        let healing = self.rules().units[unit.kind].healing;
                         for ally in &allies {
                             if ally.id == unit.id {
                                 continue;
                             }
                             ceiling = add(
                                 ceiling,
-                                healing.min(self.rules.units[ally.kind].hp - ally.hp).max(0) as f64
+                                healing
+                                    .min(self.rules().units[ally.kind].hp - ally.hp)
+                                    .max(0) as f64
                                     * 3.0,
                             );
                             if role(self, ally.kind) == TacticalRole::Frontline
@@ -568,7 +553,7 @@ impl Game<'_> {
                     } else {
                         0.0
                     }
-                    - if policy == GlobalStyle::Mixed
+                    - if true
                         && category != TacticalRole::Frontline
                         && !screens.is_empty()
                         && range_to_foe(unit.tile) <= 4
@@ -610,26 +595,25 @@ impl Game<'_> {
             destinations.push(original_unit.tile);
             destinations.extend(reachable.iter().copied().map(|(t, _)| t));
             destinations = orders.authored_destinations(self, original_unit, destinations);
-            let other_healing: Vec<_> =
-                if policy == GlobalStyle::Mixed && category == TacticalRole::Healer {
-                    allies
-                        .iter()
-                        .map(|ally| {
-                            allies
-                                .iter()
-                                .filter(|o| {
-                                    o.id != unit.id
-                                        && o.id != ally.id
-                                        && self.board.distance(o.tile, ally.tile) == 1
-                                })
-                                .map(|o| self.rules.units[o.kind].healing)
-                                .max()
-                                .unwrap_or(0)
-                        })
-                        .collect()
-                } else {
-                    Vec::new()
-                };
+            let other_healing: Vec<_> = if category == TacticalRole::Healer {
+                allies
+                    .iter()
+                    .map(|ally| {
+                        allies
+                            .iter()
+                            .filter(|o| {
+                                o.id != unit.id
+                                    && o.id != ally.id
+                                    && self.board().distance(o.tile, ally.tile) == 1
+                            })
+                            .map(|o| self.rules().units[o.kind].healing)
+                            .max()
+                            .unwrap_or(0)
+                    })
+                    .collect()
+            } else {
+                Vec::new()
+            };
             let mut wait_score = f64::NEG_INFINITY;
             let mut tiles = vec![unit.tile];
             tiles.extend(destinations.iter().copied().filter(|&t| t != unit.tile));
@@ -653,8 +637,8 @@ impl Game<'_> {
                         continue;
                     }
                     positioning += (d.before as f64 - after as f64) * d.goal.weight / 4.0
-                        + ((d.goal.tiles.contains(&self.board.ids[tile]) as i32
-                            - d.goal.tiles.contains(&self.board.ids[unit.tile]) as i32)
+                        + ((d.goal.tiles.contains(&self.board().ids[tile]) as i32
+                            - d.goal.tiles.contains(&self.board().ids[unit.tile]) as i32)
                             as f64)
                             * d.goal.weight
                             * 0.6;
@@ -669,32 +653,32 @@ impl Game<'_> {
                     && objectives.iter().any(|g| {
                         g.hold == Some(true)
                             && actor_matches(&g.actor, unit.id)
-                            && g.tiles.contains(&self.board.ids[unit.tile])
+                            && g.tiles.contains(&self.board().ids[unit.tile])
                     })
                 {
                     positioning -= 24.0;
                 }
                 let healing_tile = (self.terrain_is(tile, Terrain::Village)
                     || self.terrain_is(tile, Terrain::Grove))
-                    && (self.owners[tile] == Some(side) || self.at(tile).is_none());
+                    && (self.owners()[tile] == Some(side) || self.at(tile).is_none());
                 if healing_tile {
-                    positioning += (self.rules.units[unit.kind].hp - unit.hp).min(4) as f64 * 2.0;
+                    positioning += (self.rules().units[unit.kind].hp - unit.hp).min(4) as f64 * 2.0;
                 }
-                if self.terrain_is(tile, Terrain::Village) && self.owners[tile] != Some(side) {
+                if self.terrain_is(tile, Terrain::Village) && self.owners()[tile] != Some(side) {
                     positioning += 3.0;
                 }
-                if policy == GlobalStyle::Mixed {
+                {
                     if category == TacticalRole::Healer {
-                        let healing = self.rules.units[unit.kind].healing;
+                        let healing = self.rules().units[unit.kind].healing;
                         let mut value = 0.0;
                         for (ally_index, ally) in allies.iter().enumerate() {
-                            if ally.id == unit.id || self.board.distance(tile, ally.tile) != 1 {
+                            if ally.id == unit.id || self.board().distance(tile, ally.tile) != 1 {
                                 continue;
                             }
                             let other = other_healing[ally_index];
                             value += (healing - other)
                                 .max(0)
-                                .min(self.rules.units[ally.kind].hp - ally.hp)
+                                .min(self.rules().units[ally.kind].hp - ally.hp)
                                 as f64
                                 * 3.0;
                             if role(self, ally.kind) == TacticalRole::Frontline
@@ -709,7 +693,7 @@ impl Game<'_> {
                         }
                         positioning += value
                             * if movable_screens
-                                && unit.hp as f64 > self.rules.units[unit.kind].hp as f64 / 2.0
+                                && unit.hp as f64 > self.rules().units[unit.kind].hp as f64 / 2.0
                             {
                                 0.25
                             } else {
@@ -730,7 +714,7 @@ impl Game<'_> {
                     if category == TacticalRole::Frontline {
                         for protected in &protected {
                             if protected.id != unit.id
-                                && self.board.distance(tile, protected.tile) == 1
+                                && self.board().distance(tile, protected.tile) == 1
                                 && range_to_foe(tile) <= range_to_foe(protected.tile)
                             {
                                 positioning += 1.5;
@@ -755,7 +739,7 @@ impl Game<'_> {
                     nearby_foes[nearby_offsets[tile]..nearby_offsets[tile + 1]]
                         .iter()
                         .flat_map(|&target| {
-                            (0..self.rules.units[unit.kind].attacks.len())
+                            (0..self.rules().units[unit.kind].attacks.len())
                                 .filter_map(move |weapon| Some((Some(target), Some(weapon))))
                         }),
                 );
@@ -786,7 +770,7 @@ impl Game<'_> {
                         finishes_battle = killed && orders.terminal_attack(target);
                         combat = damage.min(target.hp) as f64 * 2.0
                             + if killed {
-                                12.0 + self.rules.units[target.kind].cost as f64 * 0.3
+                                12.0 + self.rules().units[target.kind].cost as f64 * 0.3
                             } else {
                                 0.0
                             }
@@ -796,13 +780,13 @@ impl Game<'_> {
                             combat += if killed { 18.0 } else { 4.0 };
                         }
                         if killed
-                            && self.rules.units[unit.kind]
-                                .experience_needed
-                                .is_some_and(|needed| {
+                            && self.rules().units[unit.kind].experience_needed.is_some_and(
+                                |needed| {
                                     unit.experience.unwrap_or(0)
-                                        + 6 * self.rules.units[target.kind].level
+                                        + 6 * self.rules().units[target.kind].level
                                         >= needed
-                                })
+                                },
+                            )
                         {
                             combat += 3.0;
                         }
@@ -847,7 +831,7 @@ impl Game<'_> {
                     if ceiling <= best.as_ref().map_or(0.1, |b| b.score.max(0.1)) {
                         continue;
                     }
-                    if self.rules.units[unit.kind].leader
+                    if self.rules().units[unit.kind].leader
                         && !finishing
                         && !finishes_battle
                         && rebuilding.is_empty()
@@ -908,14 +892,14 @@ impl Game<'_> {
                             }
                         + action_jitter(
                             seed,
-                            self.round,
+                            self.round(),
                             unit.id,
-                            &self.board.ids[tile],
+                            &self.board().ids[tile],
                             target.map(|target| target.id),
                         );
                     let withdrawing = unit.side == Side::Enemy
                         && target.is_none()
-                        && unit.hp < self.rules.units[unit.kind].hp
+                        && unit.hp < self.rules().units[unit.kind].hp
                         && range_to_foe(tile) > range_to_foe(unit.tile)
                         && (incoming < before_risk
                             || healing_tile
@@ -949,6 +933,7 @@ impl Game<'_> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::logic::Game;
     #[test]
     fn whole_unit_bounds_preserve_plans_and_commitments_through_live_actions() {
         fn is_command_endturn(value: &Command) -> bool {
@@ -982,78 +967,69 @@ mod tests {
                 vec![],
             ),
         ] {
-            let mut actual = super::super::PlanningWorkspace::new(
-                7,
-                1,
-                None,
-                super::super::Diplomacy::Pragmatic,
-            );
+            let mut actual =
+                crate::ai::PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Pragmatic);
             let mut left_routes = HashMap::default();
             let mut right_routes = HashMap::default();
             let mut left_commitments = HashMap::default();
             let mut right_commitments = HashMap::default();
-            let mut left_threats = super::super::threats::ArenaThreatWorkspace::default();
-            let mut right_threats = super::super::threats::ArenaThreatWorkspace::default();
+            let mut left_threats = crate::ai::threats::ArenaThreatWorkspace::default();
+            let mut right_threats = crate::ai::threats::ArenaThreatWorkspace::default();
             for _ in 0..24 {
-                for policy in [GlobalStyle::Rush, GlobalStyle::Mixed] {
+                for _ in [()] {
                     let mut left_intents = vec![];
                     let mut right_intents = vec![];
-                    let left = game.best_plan::<true, false>(
-                        policy,
-                        &super::super::CampaignBlock::Objectives
+                    let left = crate::ai::context::BattleView::new(&game).best_plan::<true, false>(
+                        &crate::ai::CampaignBlock::Mission
                             .campaign_orders(
                                 &game,
-                                &super::super::PlanningWorkspace::new(
+                                &crate::ai::PlanningWorkspace::new(
                                     7,
                                     1,
                                     None,
-                                    super::super::Diplomacy::Pragmatic,
+                                    crate::ai::Diplomacy::Pragmatic,
                                 ),
                             )
                             .tactics,
-                        &super::super::escort::Workspace::default(),
+                        &crate::ai::escort::Workspace::default(),
                         7,
                         None,
-                        None,
-                        false,
                         &mut left_routes,
                         &mut left_commitments,
                         &mut left_intents,
                         &mut left_threats,
                         None,
                     );
-                    let right = game.best_plan::<false, false>(
-                        policy,
-                        &super::super::CampaignBlock::Objectives
-                            .campaign_orders(
-                                &game,
-                                &super::super::PlanningWorkspace::new(
-                                    7,
-                                    1,
-                                    None,
-                                    super::super::Diplomacy::Pragmatic,
-                                ),
-                            )
-                            .tactics,
-                        &super::super::escort::Workspace::default(),
-                        7,
-                        None,
-                        None,
-                        false,
-                        &mut right_routes,
-                        &mut right_commitments,
-                        &mut right_intents,
-                        &mut right_threats,
-                        None,
-                    );
+                    let right = crate::ai::context::BattleView::new(&game)
+                        .best_plan::<false, false>(
+                            &crate::ai::CampaignBlock::Mission
+                                .campaign_orders(
+                                    &game,
+                                    &crate::ai::PlanningWorkspace::new(
+                                        7,
+                                        1,
+                                        None,
+                                        crate::ai::Diplomacy::Pragmatic,
+                                    ),
+                                )
+                                .tactics,
+                            &crate::ai::escort::Workspace::default(),
+                            7,
+                            None,
+                            &mut right_routes,
+                            &mut right_commitments,
+                            &mut right_intents,
+                            &mut right_threats,
+                            None,
+                        );
                     assert_eq!(left, right);
                     assert_eq!(left_intents, right_intents);
                     assert_eq!(left_commitments, right_commitments);
                 }
-                let command = super::super::choose_game_command(
+                let command = crate::ai::choose_game_command(
                     &rules,
                     &game,
-                    super::super::Policy::Mixed,
+                    crate::ai::Policy::Mixed,
                     &mut actual,
                 )
                 .unwrap();
@@ -1062,11 +1038,11 @@ mod tests {
                         break;
                     }
                     game.end_turn();
-                    actual = super::super::PlanningWorkspace::new(
+                    actual = crate::ai::PlanningWorkspace::new(
                         7,
                         1,
                         None,
-                        super::super::Diplomacy::Pragmatic,
+                        crate::ai::Diplomacy::Pragmatic,
                     );
                 } else {
                     game.execute(command).unwrap();

@@ -18,27 +18,27 @@ impl Policy {
         match self {
             Self::Classic => Some(Blocks {
                 recruiter: Recruiter::Rotation,
-                campaign: CampaignBlock::Objectives,
+                campaign: CampaignBlock::Mission,
                 planner: Planner::Classic,
             }),
             Self::Rush => Some(Blocks {
                 recruiter: Recruiter::Frontline,
-                campaign: CampaignBlock::Objectives,
-                planner: Planner::Rush,
+                campaign: CampaignBlock::Mission,
+                planner: Planner::Full,
             }),
             Self::Mixed => Some(Blocks {
                 recruiter: Recruiter::Balanced,
-                campaign: CampaignBlock::Objectives,
-                planner: Planner::Mixed,
+                campaign: CampaignBlock::Mission,
+                planner: Planner::Full,
             }),
             Self::Priority => Some(Blocks {
                 recruiter: Recruiter::Balanced,
-                campaign: CampaignBlock::Adaptive,
+                campaign: CampaignBlock::Mission,
                 planner: Planner::Queued,
             }),
             Self::Battler => Some(Blocks {
                 recruiter: Recruiter::Balanced,
-                campaign: CampaignBlock::ArenaOnly,
+                campaign: CampaignBlock::Arena,
                 planner: Planner::Queued,
             }),
             Self::ClassicOld | Self::RushOld | Self::MixedOld => None,
@@ -86,14 +86,16 @@ mod tests {
             game.gold[side.index()] = 100;
             let leader = game.units.iter().find(|u| u.side == side).unwrap().id;
             let workspace = PlanningWorkspace::new(7, 0, None, Diplomacy::Restrained);
-            let orders = CampaignBlock::Objectives.campaign_orders(&game, &workspace);
+            let orders = CampaignBlock::Mission.campaign_orders(&game, &workspace);
             let emitted: Vec<_> = orders
                 .tactics
                 .targets
                 .iter()
                 .filter(|g| g.id.starts_with("rebuild:"))
                 .collect();
-            let refreshed = orders.tactics.rebuild_objectives(&game);
+            let refreshed = orders
+                .tactics
+                .rebuild_objectives(&crate::ai::context::BattleView::new(&game));
             assert!(!emitted.is_empty() && !refreshed.is_empty());
             for goal in emitted.into_iter().chain(refreshed.iter()) {
                 assert!(crate::ai::objectives::actor_matches(&goal.actor, leader));
@@ -127,8 +129,8 @@ mod tests {
         enemy.tile = tile;
         game.roster_changed();
         let mut workspace = PlanningWorkspace::new(7, 0, None, Diplomacy::Restrained);
-        workspace.orders = Some(CampaignBlock::Objectives.campaign_orders(&game, &workspace));
-        crate::ai::cooperation::assign(&game, &mut workspace);
+        workspace.orders = Some(CampaignBlock::Mission.campaign_orders(&game, &workspace));
+        crate::ai::cooperation::assign(&crate::ai::context::BattleView::new(&game), &mut workspace);
         let orders = &workspace.orders.as_ref().unwrap().tactics;
         assert!(!orders.protects(adept.id));
         assert!(orders.constraints.iter().all(|constraint| {
@@ -278,13 +280,15 @@ mod tests {
             .find(|u| u.side == Side::Enemy && rules.units[u.kind].leader)
             .unwrap()
             .clone();
-        assert!(!crate::ai::campaign::terminal_attack(
+        assert!(!crate::ai::campaigner::mission::terminal_attack(
             &game, &actor, &target
         ));
         game.units
             .retain(|u| u.side == Side::Player || u.id == target.id);
         game.roster_changed();
-        assert!(crate::ai::campaign::terminal_attack(&game, &actor, &target));
+        assert!(crate::ai::campaigner::mission::terminal_attack(
+            &game, &actor, &target
+        ));
     }
 
     #[test]

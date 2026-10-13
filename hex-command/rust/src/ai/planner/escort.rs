@@ -1,13 +1,10 @@
 //! Escort scoring rewards actual threat removal and reduced enemy access.
-use super::{orders::PlanningReport, threats::Threats};
-use crate::{
-    data::*,
-    logic::{Game, geometry::TileSet},
-};
+use crate::ai::{orders::PlanningReport, threats::Threats};
+use crate::{ai::context::BattleView, data::*, logic::geometry::TileSet};
 use rustc_hash::FxHashMap;
 
 #[derive(Default)]
-pub(super) struct Workspace {
+pub(in crate::ai) struct Workspace {
     signature: Vec<(u32, usize, usize, i32, bool, bool)>,
     terrain: Vec<usize>,
     owners: Vec<Option<Side>>,
@@ -17,10 +14,10 @@ struct Field {
     positions: Vec<f64>,
     threats: FxHashMap<u32, i32>,
 }
-fn pressure(board: &Game<'_>, actor: &Unit, enemy: &Unit, blockers: TileSet) -> i32 {
+fn pressure(board: &BattleView<'_, '_>, actor: &Unit, enemy: &Unit, blockers: TileSet) -> i32 {
     let reach = board.threat_reach_blocked(enemy, blockers);
     let coverage = Threats::coverage(board, enemy, &reach);
-    board.rules.units[enemy.kind]
+    board.rules().units[enemy.kind]
         .attacks
         .iter()
         .enumerate()
@@ -30,7 +27,7 @@ fn pressure(board: &Game<'_>, actor: &Unit, enemy: &Unit, blockers: TileSet) -> 
         .unwrap_or(0)
 }
 impl Workspace {
-    pub(super) fn prepare(&mut self, game: &Game<'_>, report: &PlanningReport) {
+    pub(in crate::ai) fn prepare(&mut self, game: &BattleView<'_, '_>, report: &PlanningReport) {
         let assignments: Vec<_> = report
             .duties
             .iter()
@@ -41,10 +38,10 @@ impl Workspace {
             self.fields.clear();
             return;
         }
-        let same = self.signature.len() == game.units.len()
-            && self.terrain == game.terrain
-            && self.owners == game.owners
-            && self.signature.iter().zip(&game.units).all(|(key, unit)| {
+        let same = self.signature.len() == game.units().len()
+            && self.terrain == *game.terrain()
+            && self.owners == *game.owners()
+            && self.signature.iter().zip(game.units()).all(|(key, unit)| {
                 *key == (
                     unit.id,
                     unit.kind,
@@ -58,17 +55,16 @@ impl Workspace {
             return;
         }
         self.signature = game
-            .units
+            .units()
             .iter()
             .map(|u| (u.id, u.kind, u.tile, u.hp, u.moved, u.attacked))
             .collect();
-        self.terrain.clone_from(&game.terrain);
-        self.owners.clone_from(&game.owners);
+        self.terrain.clone_from(&game.terrain());
+        self.owners.clone_from(&game.owners());
         self.fields.clear();
         let mut forecast = game.fork();
-        forecast.arena_first = None;
         forecast.end_turn();
-        if forecast.winner.is_some() {
+        if forecast.winner().is_some() {
             return;
         }
         let mut evaluations = 0;
@@ -77,13 +73,13 @@ impl Workspace {
                 continue;
             };
             let enemies: Vec<_> = forecast
-                .units
+                .units()
                 .iter()
                 .filter(|u| u.side != actor.side)
                 .collect();
-            let mut blocked = TileSet::new(game.terrain.len());
+            let mut blocked = TileSet::new(game.terrain().len());
             for ally in forecast
-                .units
+                .units()
                 .iter()
                 .filter(|u| u.side == actor.side && u.id != actor.id)
             {
@@ -92,7 +88,7 @@ impl Workspace {
             let mut threats = FxHashMap::default();
             let mut baseline = 0;
             for enemy in &enemies {
-                let mut own = TileSet::new(game.terrain.len());
+                let mut own = TileSet::new(game.terrain().len());
                 own.insert(enemy.tile);
                 let exposed = pressure(&forecast, actor, enemy, own);
                 if exposed > 0 {
@@ -113,22 +109,22 @@ impl Workspace {
                     let slack = enemies
                         .iter()
                         .map(|enemy| {
-                            game.board
+                            game.board()
                                 .distance(enemy.tile, tile)
-                                .saturating_add(game.board.distance(tile, actor.tile))
-                                .saturating_sub(game.board.distance(enemy.tile, actor.tile))
+                                .saturating_add(game.board().distance(tile, actor.tile))
+                                .saturating_sub(game.board().distance(enemy.tile, actor.tile))
                         })
                         .min()
                         .unwrap_or(0);
                     (
                         tile != unit.tile,
                         slack,
-                        game.board.distance(tile, actor.tile),
+                        game.board().distance(tile, actor.tile),
                         tile,
                     )
                 });
                 positions.truncate(32);
-                let mut scores = vec![0.0; game.terrain.len()];
+                let mut scores = vec![0.0; game.terrain().len()];
                 for tile in positions {
                     if evaluations >= 128 {
                         break;
@@ -155,12 +151,12 @@ impl Workspace {
             }
         }
     }
-    pub(super) fn position(&self, guard: u32, tile: usize) -> f64 {
+    pub(in crate::ai) fn position(&self, guard: u32, tile: usize) -> f64 {
         self.fields
             .get(&guard)
             .map_or(0.0, |field| field.positions[tile])
     }
-    pub(super) fn attack(&self, guard: u32, target: &Unit, damage: i32) -> f64 {
+    pub(in crate::ai) fn attack(&self, guard: u32, target: &Unit, damage: i32) -> f64 {
         let risk = self
             .fields
             .get(&guard)
@@ -176,7 +172,7 @@ impl Workspace {
             8.0 * damage.max(0).min(target.hp) as f64 / target.hp.max(1) as f64
         }
     }
-    pub(super) fn bound(&self, guard: u32) -> f64 {
+    pub(in crate::ai) fn bound(&self, guard: u32) -> f64 {
         if self.fields.contains_key(&guard) {
             64.0
         } else {
@@ -189,6 +185,7 @@ impl Workspace {
 mod tests {
     use super::*;
     use crate::ai::orders::{DutyReport, PlanningStatus};
+    use crate::logic::Game;
 
     #[test]
     fn escorts_reward_threat_removal_and_real_screens_without_adjacency_goals() {
@@ -243,7 +240,7 @@ mod tests {
             ..PlanningReport::default()
         };
         let mut escort = Workspace::default();
-        escort.prepare(&game, &report);
+        escort.prepare(&crate::ai::context::BattleView::new(&game), &report);
         let screen = game.site("4,3");
         assert!(game.board.distance(screen, actor_tile) > 1);
         assert!(escort.position(guard_id, screen) > escort.position(guard_id, branch));
@@ -255,9 +252,18 @@ mod tests {
             .find(|u| u.side == Side::Enemy && rules.units[u.kind].leader)
             .unwrap();
         assert_eq!(escort.attack(guard_id, distant, distant.hp), 0.0);
-        assert!(Threats::unshielded(&game, game.unit(actor).unwrap()) > 0);
+        assert!(
+            Threats::unshielded(
+                &crate::ai::context::BattleView::new(&game),
+                game.unit(actor).unwrap()
+            ) > 0
+        );
         assert_eq!(
-            Threats::new(&game, Side::Player).at(game.unit(actor).unwrap(), actor_tile, None),
+            Threats::new(&crate::ai::context::BattleView::new(&game), Side::Player).at(
+                game.unit(actor).unwrap(),
+                actor_tile,
+                None
+            ),
             0
         );
     }

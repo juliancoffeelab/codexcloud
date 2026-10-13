@@ -7,6 +7,32 @@ impl PlanningSnapshot {
     /// each action, after its preceding movement and intent changes.
     pub fn validate(&self, catalog: &Catalog, state: &State) -> Result<(), StateError> {
         let fail = |message: &str| StateError(message.to_owned());
+        if self.turn_plan_ready {
+            let validate_remaining = |apply_issued: bool| -> Result<(), StateError> {
+                let mut draft = crate::logic::Game::from_state(catalog, state.clone());
+                if apply_issued {
+                    if let Some(command) = &self.issued {
+                        if !matches_end_turn(command) {
+                            draft.execute(command.clone()).map_err(|error| {
+                                fail(&format!("invalid issued turn command: {error:?}"))
+                            })?;
+                        }
+                    }
+                }
+                for command in &self.commands {
+                    draft
+                        .execute(command.clone())
+                        .map_err(|error| fail(&format!("invalid queued turn plan: {error:?}")))?;
+                }
+                let mut metadata = self.clone();
+                metadata.turn_plan_ready = false;
+                metadata.issued = None;
+                metadata.commands.clear();
+                metadata.validate(catalog, &draft.state())
+            };
+            return validate_remaining(false)
+                .or_else(|first| validate_remaining(true).map_err(|_| first));
+        }
         let tiles: HashSet<_> = state.tiles.iter().map(|tile| tile.id.as_str()).collect();
         if self.initialized && self.policy.is_none() {
             return Err(fail("initialized planner has no policy"));
@@ -187,30 +213,32 @@ impl PlanningSnapshot {
         if self.commitments.iter().any(|(id, _)| !unique.insert(*id)) {
             return Err(fail("duplicate planning commitment"));
         }
-        for goal in self
-            .goals
-            .iter()
-            .flatten()
-            .chain(&self.classic_objectives)
-            .chain(
-                self.orders
-                    .iter()
-                    .flat_map(|orders| &orders.tactics.targets),
-            )
-        {
-            if !goal.weight.is_finite()
-                || goal.weight <= 0.0
-                || goal.tiles.iter().any(|t| !tiles.contains(t.as_str()))
-            {
-                return Err(fail("invalid planning objective"));
-            }
-            if goal.actor.as_ref().is_some_and(|id| {
-                id.strip_prefix('u')
-                    .and_then(|id| id.parse::<u32>().ok())
-                    .is_none_or(|id| !identity(UnitId(id)))
-            }) {
-                return Err(fail("invalid objective actor"));
-            }
+        let validate_goal =
+            |weight: f64, sites: &[String], actor: &Option<String>| -> Result<(), StateError> {
+                if !weight.is_finite()
+                    || weight <= 0.0
+                    || sites.iter().any(|tile| !tiles.contains(tile.as_str()))
+                {
+                    return Err(fail("invalid planning objective"));
+                }
+                if actor.as_ref().is_some_and(|id| {
+                    id.strip_prefix('u')
+                        .and_then(|id| id.parse::<u32>().ok())
+                        .is_none_or(|id| !identity(UnitId(id)))
+                }) {
+                    return Err(fail("invalid objective actor"));
+                }
+                Ok(())
+            };
+        for goal in self.goals.iter().flatten() {
+            validate_goal(goal.weight, &goal.tiles, &goal.actor)?;
+        }
+        for target in self.classic_objectives.iter().chain(
+            self.orders
+                .iter()
+                .flat_map(|orders| &orders.tactics.targets),
+        ) {
+            validate_goal(target.weight, &target.tiles, &target.actor)?;
         }
         let validate_attack = |unit: UnitId, target: UnitId, weapon: &WeaponId| {
             friendly(unit)
@@ -262,5 +290,22 @@ impl PlanningSnapshot {
             return Err(fail("invalid planned attack continuation"));
         }
         Ok(())
+    }
+}
+
+fn matches_end_turn(command: &Command) -> bool {
+    match command {
+        Command::EndTurn => true,
+        Command::Move { .. }
+        | Command::Attack { .. }
+        | Command::Recruit { .. }
+        | Command::Advance { .. }
+        | Command::SetUnitIntent { .. }
+        | Command::DismissDialogue
+        | Command::NextMission
+        | Command::RecallMission { .. }
+        | Command::RetryMission
+        | Command::PreviousDialogue
+        | Command::SkipDialogue => false,
     }
 }

@@ -84,6 +84,6 @@ shared 20-second budget. `npm run check:rust` is available for a focused native 
 Its WASM feature also compares embedded content with the authored disk catalog.
 
 Use the [simulation guide](../.agents/skills/combat-simulation/usage.md) for commands and comparisons,
-[AI preset composition](src/ai/blocks.rs) and [planner dispatch](src/ai/planner.rs) for planning behavior,
+[AI preset composition](src/ai/presets.rs) and [planner dispatch](src/ai/planner/mod.rs) for planning behavior,
 [recording reference](../.agents/skills/combat-simulation/usage.md#progress-and-recovery) for journals and recovery, and
 [development guide](../docs/development.md) for full verification and publication.
