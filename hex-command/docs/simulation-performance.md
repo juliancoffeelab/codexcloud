@@ -126,3 +126,69 @@ The native `--phase-stdio` protocol accepts `state`, `policy`, `seed`,
 `advanceTurn`. Generated arena states also supply their original `arena`
 configuration so geometry and recruitment pools are restored correctly. The
 response contains the complete resulting state and production action records.
+
+## Final policy validation
+
+The policy implementation is committed as `97076f1`. Its optimized native build
+keeps the existing 12,240-game workload exact: all three repeats have identical
+detail bytes, ordered outcomes and report aggregates against the accepted PR21
+journal. Whole-command times were **10.21, 9.66 and 9.52 seconds**, with a
+**9.66-second median**. The first repeat exceeded ten seconds; the earlier
+performance-only build's three measurements remain **9.49, 9.74 and 9.59 seconds**.
+
+Fresh paired quality studies used the final binary, production commands, a
+30-round cap and one recruitment per phase. Campaign attempts began in chapter
+one, earned their carryover and received no retries. Each configuration ran once
+with Mixed and once with the new player policy against the same existing enemy.
+
+| Study | Configurations per policy | Mixed completed | New policy completed | Mixed caps | New caps |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Battle, seeds 9001–9050 | 19,200 | 14,087 | 14,689 | 291 | 190 |
+| Campaign, seeds 8001–8200 | 4,800 | 3,231 | 3,701 | 787 | 319 |
+
+Battler gained **3.14 percentage points** in battle wins. A paired interval
+clustered by seed is **2.41–3.87 points**. Every landscape and existing-opponent
+aggregate improved. Coastal player armies declined from 3,528 to 3,404 wins out
+of 4,800, and 53 of 192 smaller faction/map/opponent strata had fewer wins. The
+aggregate improvement does not imply a win-rate improvement for every faction.
+
+Priority gained **9.79 percentage points** in campaign completion; the paired
+seed-clustered interval is **7.68–11.90 points**. Completion held or improved for
+each whole campaign: Ashen Oath 1,087/1,087, Borrowed Tide 1,180/1,188, Green
+Accord 442/796 and Lantern Road 522/630 (Mixed/Priority, each out of 1,200).
+Four of the 24 campaign/diplomacy/opponent strata declined. Borrowed Tide against
+Classic fell from 199 to 195 completions out of 200 under each diplomacy setting;
+Green Accord against Classic fell from 133 to 128. All strata, named losses,
+defeats and chapter counts are retained in the evidence.
+
+Priority is a hybrid campaign controller. It uses full Mixed planning for essential
+actors in crisis and throughout campaigns containing a defeat plus unrestricted
+seal objective; Ashen Oath currently meets that condition. Its Ashen results are
+therefore Mixed results. Battler rejects campaigns, and both new policies share
+the same battle planner. Neither changes the authored default policies.
+
+Across the fresh complete-game studies, player decision CPU fell from **16.23 to
+13.92 seconds** in battles and **26.43 to 18.88 seconds** in campaigns. Those
+totals include changes in game duration and encountered states. The separate
+same-position study repeated 57 arena positions and 12 complete campaign chapter
+starts 1,000 times per policy. Campaign decision CPU fell from **2.75 to 1.94
+seconds**, about **29%**. Battle decision CPU was close: **3.15 seconds** for
+Mixed, **3.05** for Priority and **3.11** for Battler. A substantial additional
+battle-compute reduction, including the proposed fourfold target, has not been
+achieved.
+
+Replacing Mixed with Priority in both seats of the full tournament still schedules
+**12,240 games** (11,520 arenas and 720 campaigns), with the same limits, seeds,
+four workers and complete Arrow recording. Whole-command times were **8.99, 9.28
+and 8.82 seconds**, giving an **8.99-second median**, about **7%** below the
+existing-policy median in this build. This changes gameplay deliberately; it is
+not part of the existing-policy equality claim. Repeats had identical ordered
+outcomes, report aggregates and reported detail hashes.
+
+The final full verification passed all eight groups in 71.12 seconds, with combined
+tests taking 7.44 seconds against the unchanged 20-second limit. Complete raw
+traces and timing logs are saved in the local `artifacts/` directories; archived
+runs are lossless ZIP files whose CRCs were checked before removing their expanded
+copies. Reviewed machine-readable measurements, every quality stratum, binary and
+source fingerprints, and comparison exclusions are in
+[benchmarks/priority-policies.json](benchmarks/priority-policies.json).
