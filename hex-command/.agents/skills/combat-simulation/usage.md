@@ -102,7 +102,7 @@ and denominators, then stage outcomes and goal progress; keep round caps,
 defeats, and completions distinct. Classic/Rush player campaign results are not
 competence evidence.
 
-## Read the automatic report before raw data
+## Read the automatic report internally and present results in chat
 
 ```sh
 cat artifacts/current/analytics/findings.md
@@ -114,8 +114,13 @@ coverage, compact race-by-map win tables against Classic for each player policy,
 and campaign completion tables. Wins include caps in their denominator; opponent
 races are pooled and identical race/policy self-play is excluded. Stage diagnostics
 and the existing detailed matchup matrices follow. Summarize both arenas and
-campaigns for a full run. The findings and summary are the primary outputs; CSV exports contain every recorded table,
-including arena comparisons and campaign/stage/failure diagnostics. With
+campaigns for a full run. Present the compact tables and important findings
+directly in chat. The Markdown reports and CSV exports are internal records;
+users in cloud environments cannot open workspace paths. Do not require the user
+to open a file or replace the answer with local file links. Deliver files only
+when explicitly requested, using a mechanism the user can access. CSV exports
+contain every recorded table, including arena comparisons and campaign/stage/failure
+diagnostics. With
 `--profile-turns`, readable reports include chooser and phase CPU by policy. A matched `--baseline` adds campaign completion changes. New
 campaign journals also retain explicit orders and planning reports; the analyzer
 reports unmet-duty reasons and checks protected actors for retaliation damage.

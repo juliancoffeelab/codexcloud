@@ -88,9 +88,9 @@ defaults to the current catalog.
 
 The runner prints coverage, compact race-by-map and campaign tables, then stage
 diagnostics and detailed arena matrices automatically. Use that returned report
-first; do not issue extra reads when it already answers the question. Open `analytics/findings.md` and
-`analytics/summary.md` when the returned output was truncated or more detail is
-needed. The report gives
+first; do not issue extra reads when it already answers the question. Read
+`analytics/findings.md` and `analytics/summary.md` internally when the returned
+output was truncated or more detail is needed. The report gives
 campaign completion and stage outcomes, failure categories and recorded
 reasons, named losses, objective progress, idle/repeated tails, and arena
 comparisons. Complete tables are available as CSV exports. Do not start
@@ -141,7 +141,10 @@ progressed from a loss after partial progress, and distinguish defeat from a
 round cap. Do not infer a causal bug from aggregate rates alone: use recorded
 phase evidence and then targeted code inspection for the specific pattern.
 
-Link `analytics/findings.md` and `analytics/summary.md`, along with the saved
-run location and its metadata.
-Retain raw journals and exports in ignored `artifacts/`; do not commit generated
-simulation data.
+Present the results directly in chat: completed coverage, compact race-by-map
+and campaign tables, then the important findings and limitations. Users working
+in cloud environments cannot open workspace files. Keep report files, metadata,
+raw journals and exports as internal records in ignored `artifacts/`; do not
+use local file links as the answer or require the user to open a file. Provide
+files only when explicitly requested and through a delivery mechanism the user
+can access. Do not commit generated simulation data.
