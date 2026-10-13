@@ -1,0 +1,5548 @@
+{
+  "schema": 1,
+  "implementationCommit": "97076f15a2c96662419d21e2c233c6b2ac594ee3",
+  "fingerprints": {
+    "content": "96981ec4797122c6f715e0febdc9045a20d14562bf1389c9a5fe040163b35a17",
+    "engine": "c3793253e0fe4cf2b4d96ce66420479007402623fc2b8cd86106fa1026c79d40"
+  },
+  "binarySha256": "3b86e073a88d2997495bc4b78309a79e1fc7c047e5987261b35f997291e733b2",
+  "environment": {
+    "cpuQuota": 4,
+    "nativeCompiler": "Rust 1.99 stable",
+    "build": "target-cpu=native; fat LTO; one codegen unit; profile-guided compilation trained on all five policies, seeds 17\u201318"
+  },
+  "existingPolicies": {
+    "games": 12240,
+    "arenas": 11520,
+    "campaigns": 720,
+    "roundCap": 30,
+    "recruitsPerPhase": 1,
+    "workers": 4,
+    "seedFirst": 1,
+    "seedCount": 10,
+    "policies": [
+      "classic",
+      "rush",
+      "mixed"
+    ],
+    "medianCommandSeconds": 9.664816491997044,
+    "runs": [
+      {
+        "timing": {
+          "commandSeconds": 10.208388084000035,
+          "processCpuSeconds": 38.409379,
+          "exitCode": 0,
+          "command": [
+            "tmp/overnight/policies-final-pgo",
+            "--data-dir",
+            "rust/data",
+            "--mode",
+            "full",
+            "--seeds",
+            "10",
+            "--rounds",
+            "30",
+            "--recruits",
+            "1",
+            "--policies",
+            "classic,rush,mixed",
+            "--workers",
+            "4",
+            "--out",
+            "artifacts/overnight-policies-exact-1/report.json"
+          ],
+          "sourceCommit": "97076f15a2c96662419d21e2c233c6b2ac594ee3",
+          "games": 12240,
+          "reportedSeconds": 9.435488843
+        },
+        "equality": {
+          "equal": true,
+          "matches": 12240,
+          "byteIdenticalDetails": 12240,
+          "outcomeOrderEqual": true,
+          "comparison": "all gameplay fields and ordered arrays; JSON object key order ignored",
+          "excludedRunMetadata": [
+            "fingerprint",
+            "sourceCommit",
+            "elapsedSeconds",
+            "detailFormat"
+          ],
+          "excludedOutcomeMetadata": [
+            "elapsedMs",
+            "detail"
+          ],
+          "baselineWallSeconds": 8.888328673,
+          "currentWallSeconds": 9.435488843,
+          "comparisonWallSeconds": 6.092410416000348
+        }
+      },
+      {
+        "timing": {
+          "commandSeconds": 9.664816491997044,
+          "processCpuSeconds": 36.396537,
+          "exitCode": 0,
+          "command": [
+            "tmp/overnight/policies-final-pgo",
+            "--data-dir",
+            "rust/data",
+            "--mode",
+            "full",
+            "--seeds",
+            "10",
+            "--rounds",
+            "30",
+            "--recruits",
+            "1",
+            "--policies",
+            "classic,rush,mixed",
+            "--workers",
+            "4",
+            "--out",
+            "artifacts/overnight-policies-exact-2/report.json"
+          ],
+          "sourceCommit": "97076f15a2c96662419d21e2c233c6b2ac594ee3",
+          "games": 12240,
+          "reportedSeconds": 8.924956526999999
+        },
+        "equality": {
+          "equal": true,
+          "matches": 12240,
+          "byteIdenticalDetails": 12240,
+          "outcomeOrderEqual": true,
+          "comparison": "all gameplay fields and ordered arrays; JSON object key order ignored",
+          "excludedRunMetadata": [
+            "fingerprint",
+            "sourceCommit",
+            "elapsedSeconds",
+            "detailFormat"
+          ],
+          "excludedOutcomeMetadata": [
+            "elapsedMs",
+            "detail"
+          ],
+          "baselineWallSeconds": 8.888328673,
+          "currentWallSeconds": 8.924956526999999,
+          "comparisonWallSeconds": 3.5659878229998867
+        }
+      },
+      {
+        "timing": {
+          "commandSeconds": 9.515280453000742,
+          "processCpuSeconds": 35.819824,
+          "exitCode": 0,
+          "command": [
+            "tmp/overnight/policies-final-pgo",
+            "--data-dir",
+            "rust/data",
+            "--mode",
+            "full",
+            "--seeds",
+            "10",
+            "--rounds",
+            "30",
+            "--recruits",
+            "1",
+            "--policies",
+            "classic,rush,mixed",
+            "--workers",
+            "4",
+            "--out",
+            "artifacts/overnight-policies-exact-3/report.json"
+          ],
+          "sourceCommit": "97076f15a2c96662419d21e2c233c6b2ac594ee3",
+          "games": 12240,
+          "reportedSeconds": 8.797561858
+        },
+        "equality": {
+          "equal": true,
+          "matches": 12240,
+          "byteIdenticalDetails": 12240,
+          "outcomeOrderEqual": true,
+          "comparison": "all gameplay fields and ordered arrays; JSON object key order ignored",
+          "excludedRunMetadata": [
+            "fingerprint",
+            "sourceCommit",
+            "elapsedSeconds",
+            "detailFormat"
+          ],
+          "excludedOutcomeMetadata": [
+            "elapsedMs",
+            "detail"
+          ],
+          "baselineWallSeconds": 8.888328673,
+          "currentWallSeconds": 8.797561858,
+          "comparisonWallSeconds": 3.651709370999015
+        }
+      }
+    ],
+    "baselineProvenance": "Each run was compared against the accepted full Arrow journal from PR21, independently verified against frozen main b1f553de69c0de8a340088c0a9ed42b2149fb27e. Ordered outcome arrays are also checked."
+  },
+  "battle": {
+    "metadata": {
+      "binarySha256": "3b86e073a88d2997495bc4b78309a79e1fc7c047e5987261b35f997291e733b2",
+      "mode": "arena",
+      "firstSeed": 9001,
+      "seeds": 50,
+      "gamesPerPolicy": 19200,
+      "policies": [
+        "mixed",
+        "battler"
+      ],
+      "fingerprints": {
+        "content": "96981ec4797122c6f715e0febdc9045a20d14562bf1389c9a5fe040163b35a17",
+        "engine": "c3793253e0fe4cf2b4d96ce66420479007402623fc2b8cd86106fa1026c79d40"
+      },
+      "sourceCommit": "97076f15a2c96662419d21e2c233c6b2ac594ee3",
+      "workers": 1,
+      "rawFormat": "complete-native-results-jsonl-gzip",
+      "limits": {
+        "rounds": 30,
+        "recruits": 1
+      },
+      "campaignRetries": 0
+    },
+    "summary": {
+      "totals": {
+        "mixed": {
+          "completed": 14087,
+          "defeated": 4822,
+          "capped": 291,
+          "playerPhases": 246538
+        },
+        "battler": {
+          "completed": 14689,
+          "defeated": 4321,
+          "capped": 190,
+          "playerPhases": 238298
+        }
+      },
+      "pairedCompletionDifference": 0.03135416666666667,
+      "seedClusterNormal95Interval": [
+        0.024052357054583435,
+        0.03865597627874991
+      ],
+      "intervalMethod": "Paired outcome differences averaged within each seed; normal 95% interval across independent seed clusters.",
+      "strataWithLowerCompletion": 53
+    },
+    "metrics": {
+      "mixed": {
+        "commandSeconds": 75.03674075500021,
+        "processCpuSeconds": 41.226543,
+        "decisionProfile": {
+          "clock": "thread_cpu",
+          "instrumentation": "one thread CPU interval per returned decision",
+          "rows": [
+            {
+              "calls": 336025,
+              "policy": "classic",
+              "seconds": 2.679380722,
+              "side": "enemy"
+            },
+            {
+              "calls": 471228,
+              "policy": "rush",
+              "seconds": 4.463785152,
+              "side": "enemy"
+            },
+            {
+              "calls": 1647454,
+              "policy": "mixed",
+              "seconds": 16.232112639,
+              "side": "player"
+            },
+            {
+              "calls": 611665,
+              "policy": "mixed",
+              "seconds": 5.788321265,
+              "side": "enemy"
+            }
+          ]
+        },
+        "games": 19200
+      },
+      "battler": {
+        "commandSeconds": 73.49028675899899,
+        "processCpuSeconds": 38.479058,
+        "decisionProfile": {
+          "clock": "thread_cpu",
+          "instrumentation": "one thread CPU interval per returned decision",
+          "rows": [
+            {
+              "calls": 321648,
+              "policy": "classic",
+              "seconds": 2.539694766,
+              "side": "enemy"
+            },
+            {
+              "calls": 438972,
+              "policy": "rush",
+              "seconds": 4.282417337,
+              "side": "enemy"
+            },
+            {
+              "calls": 590939,
+              "policy": "mixed",
+              "seconds": 5.774089023,
+              "side": "enemy"
+            },
+            {
+              "calls": 1600408,
+              "policy": "battler",
+              "seconds": 13.918932326,
+              "side": "player"
+            }
+          ]
+        },
+        "games": 19200
+      }
+    },
+    "strata": [
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "coastal",
+          "crossings",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 91,
+        "completed": 94,
+        "mixedDefeated": 9,
+        "defeated": 4,
+        "mixedCaps": 0,
+        "caps": 2,
+        "pairedImproved": 8,
+        "pairedRegressed": 5,
+        "mixedRounds": 1032,
+        "rounds": 995,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "coastal",
+          "crossings",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 53,
+        "completed": 44,
+        "mixedDefeated": 47,
+        "defeated": 56,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 14,
+        "pairedRegressed": 23,
+        "mixedRounds": 1325,
+        "rounds": 1332,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "coastal",
+          "crossings",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 88,
+        "completed": 91,
+        "mixedDefeated": 12,
+        "defeated": 8,
+        "mixedCaps": 0,
+        "caps": 1,
+        "pairedImproved": 10,
+        "pairedRegressed": 7,
+        "mixedRounds": 1229,
+        "rounds": 1250,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "coastal",
+          "islands",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 97,
+        "completed": 87,
+        "mixedDefeated": 3,
+        "defeated": 13,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 3,
+        "pairedRegressed": 13,
+        "mixedRounds": 965,
+        "rounds": 1049,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "coastal",
+          "islands",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 53,
+        "completed": 51,
+        "mixedDefeated": 47,
+        "defeated": 49,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 13,
+        "pairedRegressed": 15,
+        "mixedRounds": 1162,
+        "rounds": 1165,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "coastal",
+          "islands",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 91,
+        "completed": 86,
+        "mixedDefeated": 9,
+        "defeated": 14,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 6,
+        "pairedRegressed": 11,
+        "mixedRounds": 1141,
+        "rounds": 1189,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "coastal",
+          "open",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 92,
+        "completed": 79,
+        "mixedDefeated": 7,
+        "defeated": 21,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 3,
+        "pairedRegressed": 16,
+        "mixedRounds": 1245,
+        "rounds": 1072,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "coastal",
+          "open",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 44,
+        "completed": 43,
+        "mixedDefeated": 56,
+        "defeated": 57,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 6,
+        "pairedRegressed": 7,
+        "mixedRounds": 1301,
+        "rounds": 1209,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "coastal",
+          "open",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 100,
+        "completed": 100,
+        "mixedDefeated": 0,
+        "defeated": 0,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 1023,
+        "rounds": 1141,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "coastal",
+          "wooded",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 88,
+        "completed": 78,
+        "mixedDefeated": 10,
+        "defeated": 19,
+        "mixedCaps": 2,
+        "caps": 3,
+        "pairedImproved": 4,
+        "pairedRegressed": 14,
+        "mixedRounds": 1200,
+        "rounds": 1284,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "coastal",
+          "wooded",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 51,
+        "completed": 46,
+        "mixedDefeated": 47,
+        "defeated": 53,
+        "mixedCaps": 2,
+        "caps": 1,
+        "pairedImproved": 20,
+        "pairedRegressed": 25,
+        "mixedRounds": 1525,
+        "rounds": 1507,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "coastal",
+          "wooded",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 98,
+        "completed": 99,
+        "mixedDefeated": 1,
+        "defeated": 1,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 2,
+        "pairedRegressed": 1,
+        "mixedRounds": 1202,
+        "rounds": 1207,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "human",
+          "crossings",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 92,
+        "completed": 85,
+        "mixedDefeated": 8,
+        "defeated": 15,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 4,
+        "pairedRegressed": 11,
+        "mixedRounds": 1053,
+        "rounds": 1083,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "human",
+          "crossings",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 50,
+        "completed": 50,
+        "mixedDefeated": 49,
+        "defeated": 50,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 18,
+        "pairedRegressed": 18,
+        "mixedRounds": 1391,
+        "rounds": 1357,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "human",
+          "crossings",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 96,
+        "completed": 92,
+        "mixedDefeated": 4,
+        "defeated": 8,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 1,
+        "pairedRegressed": 5,
+        "mixedRounds": 1171,
+        "rounds": 1195,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "human",
+          "islands",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 89,
+        "completed": 89,
+        "mixedDefeated": 11,
+        "defeated": 8,
+        "mixedCaps": 0,
+        "caps": 3,
+        "pairedImproved": 9,
+        "pairedRegressed": 9,
+        "mixedRounds": 1002,
+        "rounds": 1207,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "human",
+          "islands",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 83,
+        "completed": 90,
+        "mixedDefeated": 16,
+        "defeated": 10,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 13,
+        "pairedRegressed": 6,
+        "mixedRounds": 1153,
+        "rounds": 1149,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "human",
+          "islands",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 100,
+        "completed": 100,
+        "mixedDefeated": 0,
+        "defeated": 0,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 828,
+        "rounds": 847,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "human",
+          "open",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 87,
+        "completed": 72,
+        "mixedDefeated": 13,
+        "defeated": 28,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 8,
+        "pairedRegressed": 23,
+        "mixedRounds": 1040,
+        "rounds": 1313,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "human",
+          "open",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 23,
+        "completed": 9,
+        "mixedDefeated": 77,
+        "defeated": 91,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 6,
+        "pairedRegressed": 20,
+        "mixedRounds": 1354,
+        "rounds": 1305,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "human",
+          "open",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 77,
+        "completed": 88,
+        "mixedDefeated": 22,
+        "defeated": 10,
+        "mixedCaps": 1,
+        "caps": 2,
+        "pairedImproved": 19,
+        "pairedRegressed": 8,
+        "mixedRounds": 1431,
+        "rounds": 1477,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "human",
+          "wooded",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 73,
+        "completed": 73,
+        "mixedDefeated": 25,
+        "defeated": 27,
+        "mixedCaps": 2,
+        "caps": 0,
+        "pairedImproved": 14,
+        "pairedRegressed": 14,
+        "mixedRounds": 1418,
+        "rounds": 1350,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "human",
+          "wooded",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 28,
+        "completed": 18,
+        "mixedDefeated": 72,
+        "defeated": 81,
+        "mixedCaps": 0,
+        "caps": 1,
+        "pairedImproved": 10,
+        "pairedRegressed": 20,
+        "mixedRounds": 1449,
+        "rounds": 1381,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "human",
+          "wooded",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 83,
+        "completed": 85,
+        "mixedDefeated": 15,
+        "defeated": 12,
+        "mixedCaps": 2,
+        "caps": 3,
+        "pairedImproved": 11,
+        "pairedRegressed": 9,
+        "mixedRounds": 1460,
+        "rounds": 1588,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "undead",
+          "crossings",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 67,
+        "completed": 74,
+        "mixedDefeated": 33,
+        "defeated": 26,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 18,
+        "pairedRegressed": 11,
+        "mixedRounds": 1208,
+        "rounds": 1172,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "undead",
+          "crossings",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 24,
+        "completed": 23,
+        "mixedDefeated": 76,
+        "defeated": 75,
+        "mixedCaps": 0,
+        "caps": 2,
+        "pairedImproved": 11,
+        "pairedRegressed": 12,
+        "mixedRounds": 1296,
+        "rounds": 1292,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "undead",
+          "crossings",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 94,
+        "completed": 99,
+        "mixedDefeated": 5,
+        "defeated": 1,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 6,
+        "pairedRegressed": 1,
+        "mixedRounds": 1254,
+        "rounds": 1197,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "undead",
+          "islands",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 84,
+        "completed": 80,
+        "mixedDefeated": 16,
+        "defeated": 20,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 15,
+        "pairedRegressed": 19,
+        "mixedRounds": 1252,
+        "rounds": 1177,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "undead",
+          "islands",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 47,
+        "completed": 58,
+        "mixedDefeated": 53,
+        "defeated": 42,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 26,
+        "pairedRegressed": 15,
+        "mixedRounds": 1438,
+        "rounds": 1363,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "undead",
+          "islands",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 100,
+        "completed": 100,
+        "mixedDefeated": 0,
+        "defeated": 0,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 937,
+        "rounds": 989,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "undead",
+          "open",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 80,
+        "completed": 83,
+        "mixedDefeated": 20,
+        "defeated": 17,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 17,
+        "pairedRegressed": 14,
+        "mixedRounds": 1285,
+        "rounds": 1204,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "undead",
+          "open",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 9,
+        "completed": 8,
+        "mixedDefeated": 91,
+        "defeated": 92,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 5,
+        "pairedRegressed": 6,
+        "mixedRounds": 1121,
+        "rounds": 1182,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "undead",
+          "open",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 77,
+        "completed": 89,
+        "mixedDefeated": 21,
+        "defeated": 11,
+        "mixedCaps": 2,
+        "caps": 0,
+        "pairedImproved": 19,
+        "pairedRegressed": 7,
+        "mixedRounds": 1287,
+        "rounds": 1375,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "undead",
+          "wooded",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 58,
+        "completed": 51,
+        "mixedDefeated": 40,
+        "defeated": 48,
+        "mixedCaps": 2,
+        "caps": 1,
+        "pairedImproved": 19,
+        "pairedRegressed": 26,
+        "mixedRounds": 1403,
+        "rounds": 1420,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "undead",
+          "wooded",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 15,
+        "completed": 8,
+        "mixedDefeated": 83,
+        "defeated": 90,
+        "mixedCaps": 2,
+        "caps": 2,
+        "pairedImproved": 7,
+        "pairedRegressed": 14,
+        "mixedRounds": 1464,
+        "rounds": 1411,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "undead",
+          "wooded",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 89,
+        "completed": 86,
+        "mixedDefeated": 8,
+        "defeated": 9,
+        "mixedCaps": 3,
+        "caps": 5,
+        "pairedImproved": 8,
+        "pairedRegressed": 11,
+        "mixedRounds": 1491,
+        "rounds": 1633,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "woodland",
+          "crossings",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 83,
+        "completed": 89,
+        "mixedDefeated": 17,
+        "defeated": 11,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 12,
+        "pairedRegressed": 6,
+        "mixedRounds": 1053,
+        "rounds": 959,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "woodland",
+          "crossings",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 70,
+        "completed": 62,
+        "mixedDefeated": 29,
+        "defeated": 37,
+        "mixedCaps": 1,
+        "caps": 1,
+        "pairedImproved": 14,
+        "pairedRegressed": 22,
+        "mixedRounds": 1415,
+        "rounds": 1446,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "woodland",
+          "crossings",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 97,
+        "completed": 99,
+        "mixedDefeated": 1,
+        "defeated": 1,
+        "mixedCaps": 2,
+        "caps": 0,
+        "pairedImproved": 2,
+        "pairedRegressed": 0,
+        "mixedRounds": 1110,
+        "rounds": 1105,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "woodland",
+          "islands",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 100,
+        "completed": 98,
+        "mixedDefeated": 0,
+        "defeated": 2,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 0,
+        "pairedRegressed": 2,
+        "mixedRounds": 875,
+        "rounds": 889,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "woodland",
+          "islands",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 80,
+        "completed": 74,
+        "mixedDefeated": 18,
+        "defeated": 24,
+        "mixedCaps": 2,
+        "caps": 2,
+        "pairedImproved": 8,
+        "pairedRegressed": 14,
+        "mixedRounds": 1299,
+        "rounds": 1360,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "woodland",
+          "islands",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 100,
+        "completed": 100,
+        "mixedDefeated": 0,
+        "defeated": 0,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 984,
+        "rounds": 990,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "woodland",
+          "open",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 84,
+        "completed": 85,
+        "mixedDefeated": 16,
+        "defeated": 15,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 10,
+        "pairedRegressed": 9,
+        "mixedRounds": 1039,
+        "rounds": 1189,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "woodland",
+          "open",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 60,
+        "completed": 33,
+        "mixedDefeated": 38,
+        "defeated": 67,
+        "mixedCaps": 2,
+        "caps": 0,
+        "pairedImproved": 8,
+        "pairedRegressed": 35,
+        "mixedRounds": 1456,
+        "rounds": 1559,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "woodland",
+          "open",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 99,
+        "completed": 99,
+        "mixedDefeated": 1,
+        "defeated": 1,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 1,
+        "pairedRegressed": 1,
+        "mixedRounds": 1062,
+        "rounds": 1281,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "woodland",
+          "wooded",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 77,
+        "completed": 66,
+        "mixedDefeated": 23,
+        "defeated": 34,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 11,
+        "pairedRegressed": 22,
+        "mixedRounds": 1248,
+        "rounds": 1240,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "woodland",
+          "wooded",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 24,
+        "completed": 17,
+        "mixedDefeated": 76,
+        "defeated": 82,
+        "mixedCaps": 0,
+        "caps": 1,
+        "pairedImproved": 10,
+        "pairedRegressed": 17,
+        "mixedRounds": 1430,
+        "rounds": 1444,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "coastal",
+          "woodland",
+          "wooded",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 83,
+        "completed": 74,
+        "mixedDefeated": 11,
+        "defeated": 18,
+        "mixedCaps": 6,
+        "caps": 8,
+        "pairedImproved": 9,
+        "pairedRegressed": 18,
+        "mixedRounds": 1504,
+        "rounds": 1642,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "coastal",
+          "crossings",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 89,
+        "completed": 95,
+        "mixedDefeated": 9,
+        "defeated": 5,
+        "mixedCaps": 2,
+        "caps": 0,
+        "pairedImproved": 8,
+        "pairedRegressed": 2,
+        "mixedRounds": 1118,
+        "rounds": 994,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "coastal",
+          "crossings",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 54,
+        "completed": 54,
+        "mixedDefeated": 45,
+        "defeated": 46,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 15,
+        "pairedRegressed": 15,
+        "mixedRounds": 1324,
+        "rounds": 1296,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "coastal",
+          "crossings",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 95,
+        "completed": 94,
+        "mixedDefeated": 4,
+        "defeated": 4,
+        "mixedCaps": 1,
+        "caps": 2,
+        "pairedImproved": 4,
+        "pairedRegressed": 5,
+        "mixedRounds": 1318,
+        "rounds": 1246,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "coastal",
+          "islands",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 76,
+        "completed": 73,
+        "mixedDefeated": 24,
+        "defeated": 26,
+        "mixedCaps": 0,
+        "caps": 1,
+        "pairedImproved": 13,
+        "pairedRegressed": 16,
+        "mixedRounds": 1355,
+        "rounds": 1244,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "coastal",
+          "islands",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 4,
+        "completed": 12,
+        "mixedDefeated": 96,
+        "defeated": 88,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 11,
+        "pairedRegressed": 3,
+        "mixedRounds": 1043,
+        "rounds": 1124,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "coastal",
+          "islands",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 76,
+        "completed": 74,
+        "mixedDefeated": 19,
+        "defeated": 21,
+        "mixedCaps": 5,
+        "caps": 5,
+        "pairedImproved": 14,
+        "pairedRegressed": 16,
+        "mixedRounds": 1824,
+        "rounds": 1774,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "coastal",
+          "open",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 96,
+        "completed": 92,
+        "mixedDefeated": 3,
+        "defeated": 7,
+        "mixedCaps": 1,
+        "caps": 1,
+        "pairedImproved": 3,
+        "pairedRegressed": 7,
+        "mixedRounds": 1146,
+        "rounds": 1047,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "coastal",
+          "open",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 83,
+        "completed": 80,
+        "mixedDefeated": 17,
+        "defeated": 20,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 3,
+        "pairedRegressed": 6,
+        "mixedRounds": 1178,
+        "rounds": 1169,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "coastal",
+          "open",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 100,
+        "completed": 100,
+        "mixedDefeated": 0,
+        "defeated": 0,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 1002,
+        "rounds": 1007,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "coastal",
+          "wooded",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 98,
+        "completed": 98,
+        "mixedDefeated": 1,
+        "defeated": 2,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 2,
+        "pairedRegressed": 2,
+        "mixedRounds": 1040,
+        "rounds": 987,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "coastal",
+          "wooded",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 86,
+        "completed": 78,
+        "mixedDefeated": 14,
+        "defeated": 21,
+        "mixedCaps": 0,
+        "caps": 1,
+        "pairedImproved": 6,
+        "pairedRegressed": 14,
+        "mixedRounds": 1391,
+        "rounds": 1318,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "coastal",
+          "wooded",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 100,
+        "completed": 100,
+        "mixedDefeated": 0,
+        "defeated": 0,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 1147,
+        "rounds": 1108,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "human",
+          "crossings",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 74,
+        "completed": 76,
+        "mixedDefeated": 26,
+        "defeated": 23,
+        "mixedCaps": 0,
+        "caps": 1,
+        "pairedImproved": 18,
+        "pairedRegressed": 16,
+        "mixedRounds": 1344,
+        "rounds": 1368,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "human",
+          "crossings",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 51,
+        "completed": 46,
+        "mixedDefeated": 48,
+        "defeated": 54,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 18,
+        "pairedRegressed": 23,
+        "mixedRounds": 1546,
+        "rounds": 1507,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "human",
+          "crossings",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 89,
+        "completed": 92,
+        "mixedDefeated": 10,
+        "defeated": 7,
+        "mixedCaps": 1,
+        "caps": 1,
+        "pairedImproved": 8,
+        "pairedRegressed": 5,
+        "mixedRounds": 1565,
+        "rounds": 1499,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "human",
+          "islands",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 71,
+        "completed": 82,
+        "mixedDefeated": 19,
+        "defeated": 15,
+        "mixedCaps": 10,
+        "caps": 3,
+        "pairedImproved": 22,
+        "pairedRegressed": 11,
+        "mixedRounds": 1805,
+        "rounds": 1524,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "human",
+          "islands",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 43,
+        "completed": 53,
+        "mixedDefeated": 44,
+        "defeated": 43,
+        "mixedCaps": 13,
+        "caps": 4,
+        "pairedImproved": 29,
+        "pairedRegressed": 19,
+        "mixedRounds": 1997,
+        "rounds": 1835,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "human",
+          "islands",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 94,
+        "completed": 95,
+        "mixedDefeated": 1,
+        "defeated": 0,
+        "mixedCaps": 5,
+        "caps": 5,
+        "pairedImproved": 5,
+        "pairedRegressed": 4,
+        "mixedRounds": 1544,
+        "rounds": 1686,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "human",
+          "open",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 80,
+        "completed": 77,
+        "mixedDefeated": 20,
+        "defeated": 23,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 9,
+        "pairedRegressed": 12,
+        "mixedRounds": 1332,
+        "rounds": 1134,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "human",
+          "open",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 48,
+        "completed": 49,
+        "mixedDefeated": 51,
+        "defeated": 50,
+        "mixedCaps": 1,
+        "caps": 1,
+        "pairedImproved": 23,
+        "pairedRegressed": 22,
+        "mixedRounds": 1481,
+        "rounds": 1343,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "human",
+          "open",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 91,
+        "completed": 92,
+        "mixedDefeated": 4,
+        "defeated": 8,
+        "mixedCaps": 5,
+        "caps": 0,
+        "pairedImproved": 6,
+        "pairedRegressed": 5,
+        "mixedRounds": 1565,
+        "rounds": 1551,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "human",
+          "wooded",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 76,
+        "completed": 82,
+        "mixedDefeated": 19,
+        "defeated": 18,
+        "mixedCaps": 5,
+        "caps": 0,
+        "pairedImproved": 20,
+        "pairedRegressed": 14,
+        "mixedRounds": 1523,
+        "rounds": 1329,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "human",
+          "wooded",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 52,
+        "completed": 49,
+        "mixedDefeated": 47,
+        "defeated": 51,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 21,
+        "pairedRegressed": 24,
+        "mixedRounds": 1518,
+        "rounds": 1572,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "human",
+          "wooded",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 86,
+        "completed": 94,
+        "mixedDefeated": 10,
+        "defeated": 4,
+        "mixedCaps": 4,
+        "caps": 2,
+        "pairedImproved": 14,
+        "pairedRegressed": 6,
+        "mixedRounds": 1685,
+        "rounds": 1566,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "undead",
+          "crossings",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 82,
+        "completed": 93,
+        "mixedDefeated": 18,
+        "defeated": 7,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 16,
+        "pairedRegressed": 5,
+        "mixedRounds": 1140,
+        "rounds": 1050,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "undead",
+          "crossings",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 45,
+        "completed": 56,
+        "mixedDefeated": 54,
+        "defeated": 44,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 29,
+        "pairedRegressed": 18,
+        "mixedRounds": 1466,
+        "rounds": 1500,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "undead",
+          "crossings",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 95,
+        "completed": 98,
+        "mixedDefeated": 2,
+        "defeated": 2,
+        "mixedCaps": 3,
+        "caps": 0,
+        "pairedImproved": 5,
+        "pairedRegressed": 2,
+        "mixedRounds": 1394,
+        "rounds": 1177,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "undead",
+          "islands",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 76,
+        "completed": 79,
+        "mixedDefeated": 22,
+        "defeated": 19,
+        "mixedCaps": 2,
+        "caps": 2,
+        "pairedImproved": 17,
+        "pairedRegressed": 14,
+        "mixedRounds": 1590,
+        "rounds": 1458,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "undead",
+          "islands",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 39,
+        "completed": 64,
+        "mixedDefeated": 57,
+        "defeated": 30,
+        "mixedCaps": 4,
+        "caps": 6,
+        "pairedImproved": 38,
+        "pairedRegressed": 13,
+        "mixedRounds": 1757,
+        "rounds": 1860,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "undead",
+          "islands",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 100,
+        "completed": 100,
+        "mixedDefeated": 0,
+        "defeated": 0,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 1310,
+        "rounds": 1273,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "undead",
+          "open",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 88,
+        "completed": 81,
+        "mixedDefeated": 12,
+        "defeated": 19,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 12,
+        "pairedRegressed": 19,
+        "mixedRounds": 1064,
+        "rounds": 1037,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "undead",
+          "open",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 30,
+        "completed": 40,
+        "mixedDefeated": 70,
+        "defeated": 60,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 21,
+        "pairedRegressed": 11,
+        "mixedRounds": 1223,
+        "rounds": 1148,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "undead",
+          "open",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 98,
+        "completed": 100,
+        "mixedDefeated": 2,
+        "defeated": 0,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 2,
+        "pairedRegressed": 0,
+        "mixedRounds": 1305,
+        "rounds": 1246,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "undead",
+          "wooded",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 78,
+        "completed": 87,
+        "mixedDefeated": 21,
+        "defeated": 13,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 19,
+        "pairedRegressed": 10,
+        "mixedRounds": 1286,
+        "rounds": 1074,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "undead",
+          "wooded",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 54,
+        "completed": 57,
+        "mixedDefeated": 43,
+        "defeated": 42,
+        "mixedCaps": 3,
+        "caps": 1,
+        "pairedImproved": 19,
+        "pairedRegressed": 16,
+        "mixedRounds": 1514,
+        "rounds": 1473,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "undead",
+          "wooded",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 97,
+        "completed": 100,
+        "mixedDefeated": 2,
+        "defeated": 0,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 3,
+        "pairedRegressed": 0,
+        "mixedRounds": 1370,
+        "rounds": 1237,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "woodland",
+          "crossings",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 85,
+        "completed": 87,
+        "mixedDefeated": 15,
+        "defeated": 13,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 8,
+        "pairedRegressed": 6,
+        "mixedRounds": 1021,
+        "rounds": 1074,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "woodland",
+          "crossings",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 54,
+        "completed": 70,
+        "mixedDefeated": 44,
+        "defeated": 29,
+        "mixedCaps": 2,
+        "caps": 1,
+        "pairedImproved": 27,
+        "pairedRegressed": 11,
+        "mixedRounds": 1510,
+        "rounds": 1437,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "woodland",
+          "crossings",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 98,
+        "completed": 97,
+        "mixedDefeated": 1,
+        "defeated": 2,
+        "mixedCaps": 1,
+        "caps": 1,
+        "pairedImproved": 2,
+        "pairedRegressed": 3,
+        "mixedRounds": 1326,
+        "rounds": 1214,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "woodland",
+          "islands",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 99,
+        "completed": 100,
+        "mixedDefeated": 1,
+        "defeated": 0,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 1,
+        "pairedRegressed": 0,
+        "mixedRounds": 1177,
+        "rounds": 1077,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "woodland",
+          "islands",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 83,
+        "completed": 93,
+        "mixedDefeated": 13,
+        "defeated": 5,
+        "mixedCaps": 4,
+        "caps": 2,
+        "pairedImproved": 12,
+        "pairedRegressed": 2,
+        "mixedRounds": 1408,
+        "rounds": 1420,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "woodland",
+          "islands",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 100,
+        "completed": 100,
+        "mixedDefeated": 0,
+        "defeated": 0,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 1199,
+        "rounds": 1106,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "woodland",
+          "open",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 73,
+        "completed": 84,
+        "mixedDefeated": 27,
+        "defeated": 16,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 23,
+        "pairedRegressed": 12,
+        "mixedRounds": 1124,
+        "rounds": 1080,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "woodland",
+          "open",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 61,
+        "completed": 75,
+        "mixedDefeated": 39,
+        "defeated": 25,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 26,
+        "pairedRegressed": 12,
+        "mixedRounds": 1350,
+        "rounds": 1301,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "woodland",
+          "open",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 99,
+        "completed": 100,
+        "mixedDefeated": 1,
+        "defeated": 0,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 1,
+        "pairedRegressed": 0,
+        "mixedRounds": 1127,
+        "rounds": 1072,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "woodland",
+          "wooded",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 78,
+        "completed": 82,
+        "mixedDefeated": 22,
+        "defeated": 18,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 13,
+        "pairedRegressed": 9,
+        "mixedRounds": 1058,
+        "rounds": 1113,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "woodland",
+          "wooded",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 33,
+        "completed": 40,
+        "mixedDefeated": 64,
+        "defeated": 58,
+        "mixedCaps": 3,
+        "caps": 2,
+        "pairedImproved": 23,
+        "pairedRegressed": 16,
+        "mixedRounds": 1500,
+        "rounds": 1485,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "human",
+          "woodland",
+          "wooded",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 89,
+        "completed": 93,
+        "mixedDefeated": 11,
+        "defeated": 7,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 9,
+        "pairedRegressed": 5,
+        "mixedRounds": 1605,
+        "rounds": 1459,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "coastal",
+          "crossings",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 100,
+        "completed": 99,
+        "mixedDefeated": 0,
+        "defeated": 1,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 0,
+        "pairedRegressed": 1,
+        "mixedRounds": 843,
+        "rounds": 859,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "coastal",
+          "crossings",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 76,
+        "completed": 79,
+        "mixedDefeated": 24,
+        "defeated": 21,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 14,
+        "pairedRegressed": 11,
+        "mixedRounds": 1310,
+        "rounds": 1194,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "coastal",
+          "crossings",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 87,
+        "completed": 92,
+        "mixedDefeated": 11,
+        "defeated": 8,
+        "mixedCaps": 2,
+        "caps": 0,
+        "pairedImproved": 13,
+        "pairedRegressed": 8,
+        "mixedRounds": 1315,
+        "rounds": 1274,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "coastal",
+          "islands",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 91,
+        "completed": 97,
+        "mixedDefeated": 8,
+        "defeated": 3,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 9,
+        "pairedRegressed": 3,
+        "mixedRounds": 1367,
+        "rounds": 1250,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "coastal",
+          "islands",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 23,
+        "completed": 27,
+        "mixedDefeated": 76,
+        "defeated": 72,
+        "mixedCaps": 1,
+        "caps": 1,
+        "pairedImproved": 15,
+        "pairedRegressed": 11,
+        "mixedRounds": 1435,
+        "rounds": 1441,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "coastal",
+          "islands",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 56,
+        "completed": 60,
+        "mixedDefeated": 40,
+        "defeated": 39,
+        "mixedCaps": 4,
+        "caps": 1,
+        "pairedImproved": 19,
+        "pairedRegressed": 15,
+        "mixedRounds": 1646,
+        "rounds": 1518,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "coastal",
+          "open",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 100,
+        "completed": 100,
+        "mixedDefeated": 0,
+        "defeated": 0,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 823,
+        "rounds": 830,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "coastal",
+          "open",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 91,
+        "completed": 96,
+        "mixedDefeated": 9,
+        "defeated": 4,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 8,
+        "pairedRegressed": 3,
+        "mixedRounds": 1119,
+        "rounds": 1062,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "coastal",
+          "open",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 97,
+        "completed": 95,
+        "mixedDefeated": 3,
+        "defeated": 5,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 2,
+        "pairedRegressed": 4,
+        "mixedRounds": 991,
+        "rounds": 1047,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "coastal",
+          "wooded",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 99,
+        "completed": 99,
+        "mixedDefeated": 1,
+        "defeated": 1,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 939,
+        "rounds": 904,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "coastal",
+          "wooded",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 88,
+        "completed": 95,
+        "mixedDefeated": 9,
+        "defeated": 4,
+        "mixedCaps": 3,
+        "caps": 1,
+        "pairedImproved": 10,
+        "pairedRegressed": 3,
+        "mixedRounds": 1461,
+        "rounds": 1261,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "coastal",
+          "wooded",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 93,
+        "completed": 96,
+        "mixedDefeated": 6,
+        "defeated": 3,
+        "mixedCaps": 1,
+        "caps": 1,
+        "pairedImproved": 7,
+        "pairedRegressed": 4,
+        "mixedRounds": 1264,
+        "rounds": 1195,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "human",
+          "crossings",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 98,
+        "completed": 94,
+        "mixedDefeated": 2,
+        "defeated": 6,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 2,
+        "pairedRegressed": 6,
+        "mixedRounds": 1099,
+        "rounds": 1044,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "human",
+          "crossings",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 25,
+        "completed": 37,
+        "mixedDefeated": 73,
+        "defeated": 60,
+        "mixedCaps": 2,
+        "caps": 3,
+        "pairedImproved": 28,
+        "pairedRegressed": 16,
+        "mixedRounds": 1488,
+        "rounds": 1401,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "human",
+          "crossings",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 80,
+        "completed": 87,
+        "mixedDefeated": 18,
+        "defeated": 13,
+        "mixedCaps": 2,
+        "caps": 0,
+        "pairedImproved": 15,
+        "pairedRegressed": 8,
+        "mixedRounds": 1445,
+        "rounds": 1317,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "human",
+          "islands",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 98,
+        "completed": 95,
+        "mixedDefeated": 2,
+        "defeated": 5,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 2,
+        "pairedRegressed": 5,
+        "mixedRounds": 1176,
+        "rounds": 1208,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "human",
+          "islands",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 21,
+        "completed": 26,
+        "mixedDefeated": 68,
+        "defeated": 66,
+        "mixedCaps": 11,
+        "caps": 8,
+        "pairedImproved": 17,
+        "pairedRegressed": 12,
+        "mixedRounds": 2022,
+        "rounds": 1753,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "human",
+          "islands",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 90,
+        "completed": 96,
+        "mixedDefeated": 6,
+        "defeated": 3,
+        "mixedCaps": 4,
+        "caps": 1,
+        "pairedImproved": 10,
+        "pairedRegressed": 4,
+        "mixedRounds": 1513,
+        "rounds": 1455,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "human",
+          "open",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 83,
+        "completed": 96,
+        "mixedDefeated": 17,
+        "defeated": 4,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 17,
+        "pairedRegressed": 4,
+        "mixedRounds": 1106,
+        "rounds": 951,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "human",
+          "open",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 32,
+        "completed": 49,
+        "mixedDefeated": 68,
+        "defeated": 51,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 25,
+        "pairedRegressed": 8,
+        "mixedRounds": 1380,
+        "rounds": 1356,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "human",
+          "open",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 78,
+        "completed": 97,
+        "mixedDefeated": 20,
+        "defeated": 2,
+        "mixedCaps": 2,
+        "caps": 1,
+        "pairedImproved": 21,
+        "pairedRegressed": 2,
+        "mixedRounds": 1529,
+        "rounds": 1388,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "human",
+          "wooded",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 91,
+        "completed": 92,
+        "mixedDefeated": 8,
+        "defeated": 7,
+        "mixedCaps": 1,
+        "caps": 1,
+        "pairedImproved": 7,
+        "pairedRegressed": 6,
+        "mixedRounds": 1334,
+        "rounds": 1307,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "human",
+          "wooded",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 37,
+        "completed": 44,
+        "mixedDefeated": 60,
+        "defeated": 52,
+        "mixedCaps": 3,
+        "caps": 4,
+        "pairedImproved": 19,
+        "pairedRegressed": 12,
+        "mixedRounds": 1590,
+        "rounds": 1493,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "human",
+          "wooded",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 78,
+        "completed": 91,
+        "mixedDefeated": 16,
+        "defeated": 6,
+        "mixedCaps": 6,
+        "caps": 3,
+        "pairedImproved": 19,
+        "pairedRegressed": 6,
+        "mixedRounds": 1698,
+        "rounds": 1436,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "undead",
+          "crossings",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 95,
+        "completed": 99,
+        "mixedDefeated": 5,
+        "defeated": 1,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 5,
+        "pairedRegressed": 1,
+        "mixedRounds": 884,
+        "rounds": 849,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "undead",
+          "crossings",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 32,
+        "completed": 40,
+        "mixedDefeated": 67,
+        "defeated": 60,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 20,
+        "pairedRegressed": 12,
+        "mixedRounds": 1331,
+        "rounds": 1283,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "undead",
+          "crossings",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 100,
+        "completed": 100,
+        "mixedDefeated": 0,
+        "defeated": 0,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 942,
+        "rounds": 889,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "undead",
+          "islands",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 88,
+        "completed": 95,
+        "mixedDefeated": 9,
+        "defeated": 5,
+        "mixedCaps": 3,
+        "caps": 0,
+        "pairedImproved": 10,
+        "pairedRegressed": 3,
+        "mixedRounds": 1398,
+        "rounds": 1018,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "undead",
+          "islands",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 37,
+        "completed": 52,
+        "mixedDefeated": 50,
+        "defeated": 36,
+        "mixedCaps": 13,
+        "caps": 12,
+        "pairedImproved": 27,
+        "pairedRegressed": 12,
+        "mixedRounds": 1876,
+        "rounds": 1798,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "undead",
+          "islands",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 98,
+        "completed": 99,
+        "mixedDefeated": 0,
+        "defeated": 0,
+        "mixedCaps": 2,
+        "caps": 1,
+        "pairedImproved": 2,
+        "pairedRegressed": 1,
+        "mixedRounds": 1508,
+        "rounds": 1315,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "undead",
+          "open",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 100,
+        "completed": 100,
+        "mixedDefeated": 0,
+        "defeated": 0,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 771,
+        "rounds": 770,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "undead",
+          "open",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 42,
+        "completed": 50,
+        "mixedDefeated": 58,
+        "defeated": 50,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 17,
+        "pairedRegressed": 9,
+        "mixedRounds": 1378,
+        "rounds": 1306,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "undead",
+          "open",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 100,
+        "completed": 100,
+        "mixedDefeated": 0,
+        "defeated": 0,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 783,
+        "rounds": 817,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "undead",
+          "wooded",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 94,
+        "completed": 96,
+        "mixedDefeated": 4,
+        "defeated": 4,
+        "mixedCaps": 2,
+        "caps": 0,
+        "pairedImproved": 5,
+        "pairedRegressed": 3,
+        "mixedRounds": 1004,
+        "rounds": 1000,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "undead",
+          "wooded",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 45,
+        "completed": 46,
+        "mixedDefeated": 48,
+        "defeated": 50,
+        "mixedCaps": 7,
+        "caps": 4,
+        "pairedImproved": 22,
+        "pairedRegressed": 21,
+        "mixedRounds": 1583,
+        "rounds": 1432,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "undead",
+          "wooded",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 99,
+        "completed": 100,
+        "mixedDefeated": 0,
+        "defeated": 0,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 1,
+        "pairedRegressed": 0,
+        "mixedRounds": 1116,
+        "rounds": 1067,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "woodland",
+          "crossings",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 76,
+        "completed": 92,
+        "mixedDefeated": 24,
+        "defeated": 8,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 23,
+        "pairedRegressed": 7,
+        "mixedRounds": 1168,
+        "rounds": 1132,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "woodland",
+          "crossings",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 54,
+        "completed": 59,
+        "mixedDefeated": 44,
+        "defeated": 40,
+        "mixedCaps": 2,
+        "caps": 1,
+        "pairedImproved": 23,
+        "pairedRegressed": 18,
+        "mixedRounds": 1530,
+        "rounds": 1547,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "woodland",
+          "crossings",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 77,
+        "completed": 89,
+        "mixedDefeated": 22,
+        "defeated": 9,
+        "mixedCaps": 1,
+        "caps": 2,
+        "pairedImproved": 17,
+        "pairedRegressed": 5,
+        "mixedRounds": 1307,
+        "rounds": 1301,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "woodland",
+          "islands",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 94,
+        "completed": 99,
+        "mixedDefeated": 5,
+        "defeated": 1,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 6,
+        "pairedRegressed": 1,
+        "mixedRounds": 1357,
+        "rounds": 1100,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "woodland",
+          "islands",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 51,
+        "completed": 69,
+        "mixedDefeated": 37,
+        "defeated": 21,
+        "mixedCaps": 12,
+        "caps": 10,
+        "pairedImproved": 30,
+        "pairedRegressed": 12,
+        "mixedRounds": 1817,
+        "rounds": 1811,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "woodland",
+          "islands",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 97,
+        "completed": 96,
+        "mixedDefeated": 1,
+        "defeated": 1,
+        "mixedCaps": 2,
+        "caps": 3,
+        "pairedImproved": 3,
+        "pairedRegressed": 4,
+        "mixedRounds": 1588,
+        "rounds": 1396,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "woodland",
+          "open",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 81,
+        "completed": 85,
+        "mixedDefeated": 19,
+        "defeated": 15,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 17,
+        "pairedRegressed": 13,
+        "mixedRounds": 1181,
+        "rounds": 1045,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "woodland",
+          "open",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 53,
+        "completed": 75,
+        "mixedDefeated": 46,
+        "defeated": 25,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 32,
+        "pairedRegressed": 10,
+        "mixedRounds": 1438,
+        "rounds": 1380,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "woodland",
+          "open",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 67,
+        "completed": 86,
+        "mixedDefeated": 31,
+        "defeated": 14,
+        "mixedCaps": 2,
+        "caps": 0,
+        "pairedImproved": 28,
+        "pairedRegressed": 9,
+        "mixedRounds": 1388,
+        "rounds": 1220,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "woodland",
+          "wooded",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 64,
+        "completed": 75,
+        "mixedDefeated": 35,
+        "defeated": 25,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 24,
+        "pairedRegressed": 13,
+        "mixedRounds": 1202,
+        "rounds": 1212,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "woodland",
+          "wooded",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 26,
+        "completed": 32,
+        "mixedDefeated": 74,
+        "defeated": 67,
+        "mixedCaps": 0,
+        "caps": 1,
+        "pairedImproved": 18,
+        "pairedRegressed": 12,
+        "mixedRounds": 1359,
+        "rounds": 1396,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "undead",
+          "woodland",
+          "wooded",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 45,
+        "completed": 53,
+        "mixedDefeated": 51,
+        "defeated": 45,
+        "mixedCaps": 4,
+        "caps": 2,
+        "pairedImproved": 24,
+        "pairedRegressed": 16,
+        "mixedRounds": 1479,
+        "rounds": 1391,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "coastal",
+          "crossings",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 95,
+        "completed": 90,
+        "mixedDefeated": 4,
+        "defeated": 10,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 3,
+        "pairedRegressed": 8,
+        "mixedRounds": 1074,
+        "rounds": 993,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "coastal",
+          "crossings",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 28,
+        "completed": 49,
+        "mixedDefeated": 71,
+        "defeated": 51,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 30,
+        "pairedRegressed": 9,
+        "mixedRounds": 1407,
+        "rounds": 1410,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "coastal",
+          "crossings",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 83,
+        "completed": 92,
+        "mixedDefeated": 8,
+        "defeated": 7,
+        "mixedCaps": 9,
+        "caps": 1,
+        "pairedImproved": 15,
+        "pairedRegressed": 6,
+        "mixedRounds": 1693,
+        "rounds": 1380,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "coastal",
+          "islands",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 57,
+        "completed": 79,
+        "mixedDefeated": 43,
+        "defeated": 19,
+        "mixedCaps": 0,
+        "caps": 2,
+        "pairedImproved": 31,
+        "pairedRegressed": 9,
+        "mixedRounds": 1567,
+        "rounds": 1543,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "coastal",
+          "islands",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 21,
+        "completed": 13,
+        "mixedDefeated": 78,
+        "defeated": 87,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 7,
+        "pairedRegressed": 15,
+        "mixedRounds": 1246,
+        "rounds": 1234,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "coastal",
+          "islands",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 32,
+        "completed": 47,
+        "mixedDefeated": 64,
+        "defeated": 53,
+        "mixedCaps": 4,
+        "caps": 0,
+        "pairedImproved": 27,
+        "pairedRegressed": 12,
+        "mixedRounds": 1544,
+        "rounds": 1552,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "coastal",
+          "open",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 88,
+        "completed": 93,
+        "mixedDefeated": 12,
+        "defeated": 7,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 12,
+        "pairedRegressed": 7,
+        "mixedRounds": 1274,
+        "rounds": 1098,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "coastal",
+          "open",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 59,
+        "completed": 60,
+        "mixedDefeated": 41,
+        "defeated": 40,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 13,
+        "pairedRegressed": 12,
+        "mixedRounds": 1421,
+        "rounds": 1382,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "coastal",
+          "open",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 93,
+        "completed": 96,
+        "mixedDefeated": 5,
+        "defeated": 2,
+        "mixedCaps": 2,
+        "caps": 2,
+        "pairedImproved": 7,
+        "pairedRegressed": 4,
+        "mixedRounds": 1449,
+        "rounds": 1237,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "coastal",
+          "wooded",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 94,
+        "completed": 89,
+        "mixedDefeated": 6,
+        "defeated": 11,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 3,
+        "pairedRegressed": 8,
+        "mixedRounds": 975,
+        "rounds": 939,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "coastal",
+          "wooded",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 76,
+        "completed": 81,
+        "mixedDefeated": 23,
+        "defeated": 19,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 10,
+        "pairedRegressed": 5,
+        "mixedRounds": 1332,
+        "rounds": 1271,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "coastal",
+          "wooded",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 97,
+        "completed": 100,
+        "mixedDefeated": 3,
+        "defeated": 0,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 3,
+        "pairedRegressed": 0,
+        "mixedRounds": 1175,
+        "rounds": 995,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "human",
+          "crossings",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 88,
+        "completed": 90,
+        "mixedDefeated": 11,
+        "defeated": 10,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 10,
+        "pairedRegressed": 8,
+        "mixedRounds": 1116,
+        "rounds": 1076,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "human",
+          "crossings",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 41,
+        "completed": 38,
+        "mixedDefeated": 57,
+        "defeated": 62,
+        "mixedCaps": 2,
+        "caps": 0,
+        "pairedImproved": 20,
+        "pairedRegressed": 23,
+        "mixedRounds": 1543,
+        "rounds": 1449,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "human",
+          "crossings",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 86,
+        "completed": 92,
+        "mixedDefeated": 12,
+        "defeated": 8,
+        "mixedCaps": 2,
+        "caps": 0,
+        "pairedImproved": 12,
+        "pairedRegressed": 6,
+        "mixedRounds": 1472,
+        "rounds": 1265,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "human",
+          "islands",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 79,
+        "completed": 51,
+        "mixedDefeated": 16,
+        "defeated": 45,
+        "mixedCaps": 5,
+        "caps": 4,
+        "pairedImproved": 9,
+        "pairedRegressed": 37,
+        "mixedRounds": 1662,
+        "rounds": 1629,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "human",
+          "islands",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 6,
+        "completed": 33,
+        "mixedDefeated": 89,
+        "defeated": 65,
+        "mixedCaps": 5,
+        "caps": 2,
+        "pairedImproved": 30,
+        "pairedRegressed": 3,
+        "mixedRounds": 1375,
+        "rounds": 1624,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "human",
+          "islands",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 80,
+        "completed": 86,
+        "mixedDefeated": 6,
+        "defeated": 7,
+        "mixedCaps": 14,
+        "caps": 7,
+        "pairedImproved": 18,
+        "pairedRegressed": 12,
+        "mixedRounds": 1989,
+        "rounds": 1666,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "human",
+          "open",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 98,
+        "completed": 90,
+        "mixedDefeated": 2,
+        "defeated": 10,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 1,
+        "pairedRegressed": 9,
+        "mixedRounds": 869,
+        "rounds": 906,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "human",
+          "open",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 37,
+        "completed": 45,
+        "mixedDefeated": 63,
+        "defeated": 55,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 30,
+        "pairedRegressed": 22,
+        "mixedRounds": 1371,
+        "rounds": 1355,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "human",
+          "open",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 83,
+        "completed": 89,
+        "mixedDefeated": 16,
+        "defeated": 11,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 15,
+        "pairedRegressed": 9,
+        "mixedRounds": 1423,
+        "rounds": 1208,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "human",
+          "wooded",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 96,
+        "completed": 99,
+        "mixedDefeated": 4,
+        "defeated": 1,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 4,
+        "pairedRegressed": 1,
+        "mixedRounds": 1039,
+        "rounds": 939,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "human",
+          "wooded",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 50,
+        "completed": 55,
+        "mixedDefeated": 50,
+        "defeated": 44,
+        "mixedCaps": 0,
+        "caps": 1,
+        "pairedImproved": 22,
+        "pairedRegressed": 17,
+        "mixedRounds": 1434,
+        "rounds": 1503,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "human",
+          "wooded",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 96,
+        "completed": 96,
+        "mixedDefeated": 3,
+        "defeated": 3,
+        "mixedCaps": 1,
+        "caps": 1,
+        "pairedImproved": 4,
+        "pairedRegressed": 4,
+        "mixedRounds": 1310,
+        "rounds": 1167,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "undead",
+          "crossings",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 89,
+        "completed": 91,
+        "mixedDefeated": 11,
+        "defeated": 9,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 8,
+        "pairedRegressed": 6,
+        "mixedRounds": 969,
+        "rounds": 971,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "undead",
+          "crossings",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 46,
+        "completed": 58,
+        "mixedDefeated": 52,
+        "defeated": 41,
+        "mixedCaps": 2,
+        "caps": 1,
+        "pairedImproved": 29,
+        "pairedRegressed": 17,
+        "mixedRounds": 1581,
+        "rounds": 1455,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "undead",
+          "crossings",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 100,
+        "completed": 99,
+        "mixedDefeated": 0,
+        "defeated": 1,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 0,
+        "pairedRegressed": 1,
+        "mixedRounds": 868,
+        "rounds": 883,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "undead",
+          "islands",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 73,
+        "completed": 80,
+        "mixedDefeated": 24,
+        "defeated": 19,
+        "mixedCaps": 3,
+        "caps": 1,
+        "pairedImproved": 19,
+        "pairedRegressed": 12,
+        "mixedRounds": 1601,
+        "rounds": 1474,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "undead",
+          "islands",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 13,
+        "completed": 26,
+        "mixedDefeated": 85,
+        "defeated": 65,
+        "mixedCaps": 2,
+        "caps": 9,
+        "pairedImproved": 19,
+        "pairedRegressed": 6,
+        "mixedRounds": 1580,
+        "rounds": 1934,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "undead",
+          "islands",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 100,
+        "completed": 100,
+        "mixedDefeated": 0,
+        "defeated": 0,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 972,
+        "rounds": 1063,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "undead",
+          "open",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 100,
+        "completed": 87,
+        "mixedDefeated": 0,
+        "defeated": 11,
+        "mixedCaps": 0,
+        "caps": 2,
+        "pairedImproved": 0,
+        "pairedRegressed": 13,
+        "mixedRounds": 828,
+        "rounds": 969,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "undead",
+          "open",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 56,
+        "completed": 62,
+        "mixedDefeated": 43,
+        "defeated": 38,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 21,
+        "pairedRegressed": 15,
+        "mixedRounds": 1388,
+        "rounds": 1208,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "undead",
+          "open",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 100,
+        "completed": 100,
+        "mixedDefeated": 0,
+        "defeated": 0,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 804,
+        "rounds": 830,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "undead",
+          "wooded",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 97,
+        "completed": 96,
+        "mixedDefeated": 3,
+        "defeated": 4,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 2,
+        "pairedRegressed": 3,
+        "mixedRounds": 836,
+        "rounds": 819,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "undead",
+          "wooded",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 78,
+        "completed": 85,
+        "mixedDefeated": 20,
+        "defeated": 14,
+        "mixedCaps": 2,
+        "caps": 1,
+        "pairedImproved": 21,
+        "pairedRegressed": 14,
+        "mixedRounds": 1381,
+        "rounds": 1419,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "undead",
+          "wooded",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 100,
+        "completed": 100,
+        "mixedDefeated": 0,
+        "defeated": 0,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 845,
+        "rounds": 843,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "woodland",
+          "crossings",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 72,
+        "completed": 87,
+        "mixedDefeated": 28,
+        "defeated": 13,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 25,
+        "pairedRegressed": 10,
+        "mixedRounds": 1235,
+        "rounds": 1113,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "woodland",
+          "crossings",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 40,
+        "completed": 44,
+        "mixedDefeated": 55,
+        "defeated": 54,
+        "mixedCaps": 5,
+        "caps": 2,
+        "pairedImproved": 24,
+        "pairedRegressed": 20,
+        "mixedRounds": 1602,
+        "rounds": 1558,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "woodland",
+          "crossings",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 91,
+        "completed": 93,
+        "mixedDefeated": 8,
+        "defeated": 7,
+        "mixedCaps": 1,
+        "caps": 0,
+        "pairedImproved": 9,
+        "pairedRegressed": 7,
+        "mixedRounds": 1198,
+        "rounds": 1181,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "woodland",
+          "islands",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 59,
+        "completed": 95,
+        "mixedDefeated": 41,
+        "defeated": 4,
+        "mixedCaps": 0,
+        "caps": 1,
+        "pairedImproved": 37,
+        "pairedRegressed": 1,
+        "mixedRounds": 1139,
+        "rounds": 1177,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "woodland",
+          "islands",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 29,
+        "completed": 61,
+        "mixedDefeated": 63,
+        "defeated": 29,
+        "mixedCaps": 8,
+        "caps": 10,
+        "pairedImproved": 41,
+        "pairedRegressed": 9,
+        "mixedRounds": 1681,
+        "rounds": 1610,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "woodland",
+          "islands",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 96,
+        "completed": 100,
+        "mixedDefeated": 4,
+        "defeated": 0,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 4,
+        "pairedRegressed": 0,
+        "mixedRounds": 1634,
+        "rounds": 1209,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "woodland",
+          "open",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 49,
+        "completed": 70,
+        "mixedDefeated": 51,
+        "defeated": 30,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 40,
+        "pairedRegressed": 19,
+        "mixedRounds": 1228,
+        "rounds": 1103,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "woodland",
+          "open",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 40,
+        "completed": 49,
+        "mixedDefeated": 59,
+        "defeated": 50,
+        "mixedCaps": 1,
+        "caps": 1,
+        "pairedImproved": 30,
+        "pairedRegressed": 21,
+        "mixedRounds": 1484,
+        "rounds": 1439,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "woodland",
+          "open",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 85,
+        "completed": 94,
+        "mixedDefeated": 15,
+        "defeated": 6,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 14,
+        "pairedRegressed": 5,
+        "mixedRounds": 1220,
+        "rounds": 1119,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "woodland",
+          "wooded",
+          "classic"
+        ],
+        "games": 100,
+        "mixedCompleted": 80,
+        "completed": 78,
+        "mixedDefeated": 20,
+        "defeated": 22,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 11,
+        "pairedRegressed": 13,
+        "mixedRounds": 1139,
+        "rounds": 1094,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "woodland",
+          "wooded",
+          "mixed"
+        ],
+        "games": 100,
+        "mixedCompleted": 42,
+        "completed": 51,
+        "mixedDefeated": 58,
+        "defeated": 48,
+        "mixedCaps": 0,
+        "caps": 1,
+        "pairedImproved": 28,
+        "pairedRegressed": 19,
+        "mixedRounds": 1489,
+        "rounds": 1554,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      },
+      {
+        "policy": "battler",
+        "stratum": [
+          "woodland",
+          "woodland",
+          "wooded",
+          "rush"
+        ],
+        "games": 100,
+        "mixedCompleted": 88,
+        "completed": 87,
+        "mixedDefeated": 12,
+        "defeated": 13,
+        "mixedCaps": 0,
+        "caps": 0,
+        "pairedImproved": 11,
+        "pairedRegressed": 12,
+        "mixedRounds": 1295,
+        "rounds": 1197,
+        "mixedNamedDeaths": {},
+        "namedDeaths": {}
+      }
+    ]
+  },
+  "campaign": {
+    "metadata": {
+      "binarySha256": "3b86e073a88d2997495bc4b78309a79e1fc7c047e5987261b35f997291e733b2",
+      "mode": "campaign",
+      "firstSeed": 8001,
+      "seeds": 200,
+      "gamesPerPolicy": 4800,
+      "policies": [
+        "mixed",
+        "priority"
+      ],
+      "fingerprints": {
+        "content": "96981ec4797122c6f715e0febdc9045a20d14562bf1389c9a5fe040163b35a17",
+        "engine": "c3793253e0fe4cf2b4d96ce66420479007402623fc2b8cd86106fa1026c79d40"
+      },
+      "sourceCommit": "97076f15a2c96662419d21e2c233c6b2ac594ee3",
+      "workers": 1,
+      "rawFormat": "complete-native-results-jsonl-gzip",
+      "limits": {
+        "rounds": 30,
+        "recruits": 1
+      },
+      "campaignRetries": 0
+    },
+    "summary": {
+      "totals": {
+        "mixed": {
+          "completed": 3231,
+          "defeated": 782,
+          "capped": 787,
+          "playerPhases": 133254
+        },
+        "priority": {
+          "completed": 3701,
+          "defeated": 780,
+          "capped": 319,
+          "playerPhases": 124096
+        }
+      },
+      "pairedCompletionDifference": 0.09791666666666667,
+      "seedClusterNormal95Interval": [
+        0.07683771008280244,
+        0.1189956232505309
+      ],
+      "intervalMethod": "Paired outcome differences averaged within each seed; normal 95% interval across independent seed clusters.",
+      "strataWithLowerCompletion": 4
+    },
+    "metrics": {
+      "mixed": {
+        "commandSeconds": 73.37836412799516,
+        "processCpuSeconds": 42.142087999999994,
+        "decisionProfile": {
+          "clock": "thread_cpu",
+          "instrumentation": "one thread CPU interval per returned decision",
+          "rows": [
+            {
+              "calls": 165739,
+              "policy": "classic",
+              "seconds": 1.523748257,
+              "side": "enemy"
+            },
+            {
+              "calls": 202216,
+              "policy": "rush",
+              "seconds": 3.253403335,
+              "side": "enemy"
+            },
+            {
+              "calls": 999047,
+              "policy": "mixed",
+              "seconds": 26.429693785,
+              "side": "player"
+            },
+            {
+              "calls": 203334,
+              "policy": "mixed",
+              "seconds": 3.293982654,
+              "side": "enemy"
+            }
+          ]
+        },
+        "games": 4800
+      },
+      "priority": {
+        "commandSeconds": 65.22977677999734,
+        "processCpuSeconds": 34.251159,
+        "decisionProfile": {
+          "clock": "thread_cpu",
+          "instrumentation": "one thread CPU interval per returned decision",
+          "rows": [
+            {
+              "calls": 176029,
+              "policy": "classic",
+              "seconds": 1.684852475,
+              "side": "enemy"
+            },
+            {
+              "calls": 190062,
+              "policy": "rush",
+              "seconds": 3.098883227,
+              "side": "enemy"
+            },
+            {
+              "calls": 187994,
+              "policy": "mixed",
+              "seconds": 3.083003915,
+              "side": "enemy"
+            },
+            {
+              "calls": 951475,
+              "policy": "priority",
+              "seconds": 18.879787911,
+              "side": "player"
+            }
+          ]
+        },
+        "games": 4800
+      }
+    },
+    "strata": [
+      {
+        "policy": "priority",
+        "stratum": [
+          "ashen-oath",
+          "pragmatic",
+          "classic"
+        ],
+        "games": 200,
+        "mixedCompleted": 189,
+        "completed": 189,
+        "mixedDefeated": 3,
+        "defeated": 3,
+        "mixedCaps": 8,
+        "caps": 8,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 4372,
+        "rounds": 4372,
+        "mixedNamedDeaths": {
+          "Captain Dain": 152,
+          "Orin": 3
+        },
+        "namedDeaths": {
+          "Captain Dain": 152,
+          "Orin": 3
+        },
+        "mixedChapters": 592,
+        "chapters": 592
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "ashen-oath",
+          "pragmatic",
+          "mixed"
+        ],
+        "games": 200,
+        "mixedCompleted": 167,
+        "completed": 167,
+        "mixedDefeated": 15,
+        "defeated": 15,
+        "mixedCaps": 18,
+        "caps": 18,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 4597,
+        "rounds": 4597,
+        "mixedNamedDeaths": {
+          "Captain Dain": 75,
+          "Orin": 15
+        },
+        "namedDeaths": {
+          "Captain Dain": 75,
+          "Orin": 15
+        },
+        "mixedChapters": 581,
+        "chapters": 581
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "ashen-oath",
+          "pragmatic",
+          "rush"
+        ],
+        "games": 200,
+        "mixedCompleted": 168,
+        "completed": 168,
+        "mixedDefeated": 18,
+        "defeated": 18,
+        "mixedCaps": 14,
+        "caps": 14,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 4474,
+        "rounds": 4474,
+        "mixedNamedDeaths": {
+          "Captain Dain": 90,
+          "Orin": 18
+        },
+        "namedDeaths": {
+          "Captain Dain": 90,
+          "Orin": 18
+        },
+        "mixedChapters": 581,
+        "chapters": 581
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "ashen-oath",
+          "restrained",
+          "classic"
+        ],
+        "games": 200,
+        "mixedCompleted": 197,
+        "completed": 197,
+        "mixedDefeated": 2,
+        "defeated": 2,
+        "mixedCaps": 1,
+        "caps": 1,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 4254,
+        "rounds": 4254,
+        "mixedNamedDeaths": {
+          "Captain Dain": 161,
+          "Orin": 2
+        },
+        "namedDeaths": {
+          "Captain Dain": 161,
+          "Orin": 2
+        },
+        "mixedChapters": 600,
+        "chapters": 600
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "ashen-oath",
+          "restrained",
+          "mixed"
+        ],
+        "games": 200,
+        "mixedCompleted": 183,
+        "completed": 183,
+        "mixedDefeated": 13,
+        "defeated": 13,
+        "mixedCaps": 4,
+        "caps": 4,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 4571,
+        "rounds": 4571,
+        "mixedNamedDeaths": {
+          "Captain Dain": 123,
+          "Orin": 13
+        },
+        "namedDeaths": {
+          "Captain Dain": 123,
+          "Orin": 13
+        },
+        "mixedChapters": 596,
+        "chapters": 596
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "ashen-oath",
+          "restrained",
+          "rush"
+        ],
+        "games": 200,
+        "mixedCompleted": 183,
+        "completed": 183,
+        "mixedDefeated": 15,
+        "defeated": 15,
+        "mixedCaps": 2,
+        "caps": 2,
+        "pairedImproved": 0,
+        "pairedRegressed": 0,
+        "mixedRounds": 4462,
+        "rounds": 4462,
+        "mixedNamedDeaths": {
+          "Captain Dain": 125,
+          "Orin": 15
+        },
+        "namedDeaths": {
+          "Captain Dain": 125,
+          "Orin": 15
+        },
+        "mixedChapters": 593,
+        "chapters": 593
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "borrowed-tide",
+          "pragmatic",
+          "classic"
+        ],
+        "games": 200,
+        "mixedCompleted": 199,
+        "completed": 195,
+        "mixedDefeated": 0,
+        "defeated": 2,
+        "mixedCaps": 1,
+        "caps": 3,
+        "pairedImproved": 1,
+        "pairedRegressed": 5,
+        "mixedRounds": 4412,
+        "rounds": 4625,
+        "mixedNamedDeaths": {
+          "Tomas": 133
+        },
+        "namedDeaths": {
+          "Tomas": 149,
+          "Mira": 1,
+          "Edda": 1
+        },
+        "mixedChapters": 598,
+        "chapters": 590
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "borrowed-tide",
+          "pragmatic",
+          "mixed"
+        ],
+        "games": 200,
+        "mixedCompleted": 194,
+        "completed": 199,
+        "mixedDefeated": 2,
+        "defeated": 0,
+        "mixedCaps": 4,
+        "caps": 1,
+        "pairedImproved": 6,
+        "pairedRegressed": 1,
+        "mixedRounds": 5479,
+        "rounds": 4696,
+        "mixedNamedDeaths": {
+          "Tomas": 184,
+          "Edda": 2
+        },
+        "namedDeaths": {
+          "Tomas": 174
+        },
+        "mixedChapters": 594,
+        "chapters": 598
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "borrowed-tide",
+          "pragmatic",
+          "rush"
+        ],
+        "games": 200,
+        "mixedCompleted": 197,
+        "completed": 200,
+        "mixedDefeated": 0,
+        "defeated": 0,
+        "mixedCaps": 3,
+        "caps": 0,
+        "pairedImproved": 3,
+        "pairedRegressed": 0,
+        "mixedRounds": 4939,
+        "rounds": 4636,
+        "mixedNamedDeaths": {
+          "Tomas": 145
+        },
+        "namedDeaths": {
+          "Tomas": 137
+        },
+        "mixedChapters": 598,
+        "chapters": 600
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "borrowed-tide",
+          "restrained",
+          "classic"
+        ],
+        "games": 200,
+        "mixedCompleted": 199,
+        "completed": 195,
+        "mixedDefeated": 0,
+        "defeated": 2,
+        "mixedCaps": 1,
+        "caps": 3,
+        "pairedImproved": 1,
+        "pairedRegressed": 5,
+        "mixedRounds": 4412,
+        "rounds": 4625,
+        "mixedNamedDeaths": {
+          "Tomas": 133
+        },
+        "namedDeaths": {
+          "Tomas": 149,
+          "Mira": 1,
+          "Edda": 1
+        },
+        "mixedChapters": 598,
+        "chapters": 590
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "borrowed-tide",
+          "restrained",
+          "mixed"
+        ],
+        "games": 200,
+        "mixedCompleted": 194,
+        "completed": 199,
+        "mixedDefeated": 2,
+        "defeated": 0,
+        "mixedCaps": 4,
+        "caps": 1,
+        "pairedImproved": 6,
+        "pairedRegressed": 1,
+        "mixedRounds": 5479,
+        "rounds": 4696,
+        "mixedNamedDeaths": {
+          "Tomas": 184,
+          "Edda": 2
+        },
+        "namedDeaths": {
+          "Tomas": 174
+        },
+        "mixedChapters": 594,
+        "chapters": 598
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "borrowed-tide",
+          "restrained",
+          "rush"
+        ],
+        "games": 200,
+        "mixedCompleted": 197,
+        "completed": 200,
+        "mixedDefeated": 0,
+        "defeated": 0,
+        "mixedCaps": 3,
+        "caps": 0,
+        "pairedImproved": 3,
+        "pairedRegressed": 0,
+        "mixedRounds": 4939,
+        "rounds": 4636,
+        "mixedNamedDeaths": {
+          "Tomas": 145
+        },
+        "namedDeaths": {
+          "Tomas": 137
+        },
+        "mixedChapters": 598,
+        "chapters": 600
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "green-accord",
+          "pragmatic",
+          "classic"
+        ],
+        "games": 200,
+        "mixedCompleted": 133,
+        "completed": 128,
+        "mixedDefeated": 55,
+        "defeated": 65,
+        "mixedCaps": 12,
+        "caps": 7,
+        "pairedImproved": 44,
+        "pairedRegressed": 49,
+        "mixedRounds": 6916,
+        "rounds": 6623,
+        "mixedNamedDeaths": {
+          "Captain Dain": 193,
+          "Alder": 45,
+          "Adept Tamsin": 22,
+          "Lark": 10
+        },
+        "namedDeaths": {
+          "Captain Dain": 188,
+          "Alder": 41,
+          "Adept Tamsin": 26,
+          "Lark": 24
+        },
+        "mixedChapters": 534,
+        "chapters": 528
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "green-accord",
+          "pragmatic",
+          "mixed"
+        ],
+        "games": 200,
+        "mixedCompleted": 39,
+        "completed": 137,
+        "mixedDefeated": 56,
+        "defeated": 38,
+        "mixedCaps": 105,
+        "caps": 25,
+        "pairedImproved": 111,
+        "pairedRegressed": 13,
+        "mixedRounds": 7125,
+        "rounds": 7854,
+        "mixedNamedDeaths": {
+          "Alder": 25,
+          "Lark": 31,
+          "Captain Dain": 8,
+          "Adept Tamsin": 6
+        },
+        "namedDeaths": {
+          "Adept Tamsin": 31,
+          "Captain Dain": 22,
+          "Alder": 17,
+          "Lark": 21
+        },
+        "mixedChapters": 360,
+        "chapters": 530
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "green-accord",
+          "pragmatic",
+          "rush"
+        ],
+        "games": 200,
+        "mixedCompleted": 49,
+        "completed": 133,
+        "mixedDefeated": 71,
+        "defeated": 57,
+        "mixedCaps": 80,
+        "caps": 10,
+        "pairedImproved": 102,
+        "pairedRegressed": 18,
+        "mixedRounds": 7081,
+        "rounds": 7032,
+        "mixedNamedDeaths": {
+          "Captain Dain": 15,
+          "Lark": 38,
+          "Alder": 33,
+          "Adept Tamsin": 10
+        },
+        "namedDeaths": {
+          "Lark": 31,
+          "Alder": 26,
+          "Adept Tamsin": 21,
+          "Captain Dain": 31
+        },
+        "mixedChapters": 382,
+        "chapters": 531
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "green-accord",
+          "restrained",
+          "classic"
+        ],
+        "games": 200,
+        "mixedCompleted": 133,
+        "completed": 128,
+        "mixedDefeated": 55,
+        "defeated": 65,
+        "mixedCaps": 12,
+        "caps": 7,
+        "pairedImproved": 44,
+        "pairedRegressed": 49,
+        "mixedRounds": 6916,
+        "rounds": 6623,
+        "mixedNamedDeaths": {
+          "Captain Dain": 193,
+          "Alder": 45,
+          "Adept Tamsin": 22,
+          "Lark": 10
+        },
+        "namedDeaths": {
+          "Captain Dain": 188,
+          "Alder": 41,
+          "Adept Tamsin": 26,
+          "Lark": 24
+        },
+        "mixedChapters": 534,
+        "chapters": 528
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "green-accord",
+          "restrained",
+          "mixed"
+        ],
+        "games": 200,
+        "mixedCompleted": 39,
+        "completed": 137,
+        "mixedDefeated": 56,
+        "defeated": 38,
+        "mixedCaps": 105,
+        "caps": 25,
+        "pairedImproved": 111,
+        "pairedRegressed": 13,
+        "mixedRounds": 7125,
+        "rounds": 7854,
+        "mixedNamedDeaths": {
+          "Alder": 25,
+          "Lark": 31,
+          "Captain Dain": 8,
+          "Adept Tamsin": 6
+        },
+        "namedDeaths": {
+          "Adept Tamsin": 31,
+          "Captain Dain": 22,
+          "Alder": 17,
+          "Lark": 21
+        },
+        "mixedChapters": 360,
+        "chapters": 530
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "green-accord",
+          "restrained",
+          "rush"
+        ],
+        "games": 200,
+        "mixedCompleted": 49,
+        "completed": 133,
+        "mixedDefeated": 71,
+        "defeated": 57,
+        "mixedCaps": 80,
+        "caps": 10,
+        "pairedImproved": 102,
+        "pairedRegressed": 18,
+        "mixedRounds": 7081,
+        "rounds": 7032,
+        "mixedNamedDeaths": {
+          "Captain Dain": 15,
+          "Lark": 38,
+          "Alder": 33,
+          "Adept Tamsin": 10
+        },
+        "namedDeaths": {
+          "Lark": 31,
+          "Alder": 26,
+          "Adept Tamsin": 21,
+          "Captain Dain": 31
+        },
+        "mixedChapters": 382,
+        "chapters": 531
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "lantern-road",
+          "pragmatic",
+          "classic"
+        ],
+        "games": 200,
+        "mixedCompleted": 112,
+        "completed": 154,
+        "mixedDefeated": 51,
+        "defeated": 28,
+        "mixedCaps": 37,
+        "caps": 18,
+        "pairedImproved": 63,
+        "pairedRegressed": 21,
+        "mixedRounds": 4958,
+        "rounds": 5509,
+        "mixedNamedDeaths": {
+          "Ivo": 15,
+          "Captain Nera": 36
+        },
+        "namedDeaths": {
+          "Captain Nera": 28
+        },
+        "mixedChapters": 496,
+        "chapters": 596
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "lantern-road",
+          "pragmatic",
+          "mixed"
+        ],
+        "games": 200,
+        "mixedCompleted": 70,
+        "completed": 76,
+        "mixedDefeated": 80,
+        "defeated": 99,
+        "mixedCaps": 50,
+        "caps": 25,
+        "pairedImproved": 52,
+        "pairedRegressed": 46,
+        "mixedRounds": 6337,
+        "rounds": 4047,
+        "mixedNamedDeaths": {
+          "Captain Nera": 74,
+          "Ivo": 6
+        },
+        "namedDeaths": {
+          "Captain Nera": 65,
+          "Ivo": 34
+        },
+        "mixedChapters": 510,
+        "chapters": 436
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "lantern-road",
+          "pragmatic",
+          "rush"
+        ],
+        "games": 200,
+        "mixedCompleted": 79,
+        "completed": 85,
+        "mixedDefeated": 43,
+        "defeated": 68,
+        "mixedCaps": 78,
+        "caps": 47,
+        "pairedImproved": 54,
+        "pairedRegressed": 48,
+        "mixedRounds": 7332,
+        "rounds": 5157,
+        "mixedNamedDeaths": {
+          "Captain Nera": 32,
+          "Ivo": 11
+        },
+        "namedDeaths": {
+          "Ivo": 31,
+          "Captain Nera": 37
+        },
+        "mixedChapters": 553,
+        "chapters": 523
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "lantern-road",
+          "restrained",
+          "classic"
+        ],
+        "games": 200,
+        "mixedCompleted": 112,
+        "completed": 154,
+        "mixedDefeated": 51,
+        "defeated": 28,
+        "mixedCaps": 37,
+        "caps": 18,
+        "pairedImproved": 63,
+        "pairedRegressed": 21,
+        "mixedRounds": 4958,
+        "rounds": 5509,
+        "mixedNamedDeaths": {
+          "Ivo": 15,
+          "Captain Nera": 36
+        },
+        "namedDeaths": {
+          "Captain Nera": 28
+        },
+        "mixedChapters": 496,
+        "chapters": 596
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "lantern-road",
+          "restrained",
+          "mixed"
+        ],
+        "games": 200,
+        "mixedCompleted": 70,
+        "completed": 76,
+        "mixedDefeated": 80,
+        "defeated": 99,
+        "mixedCaps": 50,
+        "caps": 25,
+        "pairedImproved": 52,
+        "pairedRegressed": 46,
+        "mixedRounds": 6337,
+        "rounds": 4047,
+        "mixedNamedDeaths": {
+          "Captain Nera": 74,
+          "Ivo": 6
+        },
+        "namedDeaths": {
+          "Captain Nera": 65,
+          "Ivo": 34
+        },
+        "mixedChapters": 510,
+        "chapters": 436
+      },
+      {
+        "policy": "priority",
+        "stratum": [
+          "lantern-road",
+          "restrained",
+          "rush"
+        ],
+        "games": 200,
+        "mixedCompleted": 79,
+        "completed": 85,
+        "mixedDefeated": 43,
+        "defeated": 68,
+        "mixedCaps": 78,
+        "caps": 47,
+        "pairedImproved": 54,
+        "pairedRegressed": 48,
+        "mixedRounds": 7332,
+        "rounds": 5157,
+        "mixedNamedDeaths": {
+          "Captain Nera": 32,
+          "Ivo": 11
+        },
+        "namedDeaths": {
+          "Ivo": 31,
+          "Captain Nera": 37
+        },
+        "mixedChapters": 553,
+        "chapters": 523
+      }
+    ]
+  },
+  "fixedPositionTiming": {
+    "method": "identical saved tactical states: initial turn-start, reconstructed mid/late arena boundaries with recorded next-phase objectives, and complete campaign chapter starts; one own phase per policy",
+    "fingerprints": {
+      "content": "96981ec4797122c6f715e0febdc9045a20d14562bf1389c9a5fe040163b35a17",
+      "engine": "c3793253e0fe4cf2b4d96ce66420479007402623fc2b8cd86106fa1026c79d40"
+    },
+    "metrics": [
+      {
+        "scope": "arena",
+        "policy": "mixed",
+        "positions": 57,
+        "repetitions": 1000,
+        "phases": 57000,
+        "actions": 283000,
+        "decisionSeconds": 3.154612609,
+        "secondsPerPhase": 5.534408085964912e-05,
+        "clock": "thread_cpu",
+        "commandSeconds": 20.160301570002048
+      },
+      {
+        "scope": "arena",
+        "policy": "priority",
+        "positions": 57,
+        "repetitions": 1000,
+        "phases": 57000,
+        "actions": 288000,
+        "decisionSeconds": 3.053241827,
+        "secondsPerPhase": 5.3565646087719295e-05,
+        "clock": "thread_cpu",
+        "commandSeconds": 19.235181839998404
+      },
+      {
+        "scope": "arena",
+        "policy": "battler",
+        "positions": 57,
+        "repetitions": 1000,
+        "phases": 57000,
+        "actions": 288000,
+        "decisionSeconds": 3.107985745,
+        "secondsPerPhase": 5.452606570175439e-05,
+        "clock": "thread_cpu",
+        "commandSeconds": 20.66991579799651
+      },
+      {
+        "scope": "campaign",
+        "policy": "mixed",
+        "positions": 12,
+        "repetitions": 1000,
+        "phases": 12000,
+        "actions": 96000,
+        "decisionSeconds": 2.749442932,
+        "secondsPerPhase": 0.00022912024433333333,
+        "clock": "thread_cpu",
+        "commandSeconds": 7.7739540730035515
+      },
+      {
+        "scope": "campaign",
+        "policy": "priority",
+        "positions": 12,
+        "repetitions": 1000,
+        "phases": 12000,
+        "actions": 96000,
+        "decisionSeconds": 1.940116576,
+        "secondsPerPhase": 0.00016167638133333335,
+        "clock": "thread_cpu",
+        "commandSeconds": 6.963868241000455
+      }
+    ]
+  },
+  "validation": {
+    "fullVerify": "PASS: all 8 groups in 71.12 seconds",
+    "combinedTestsSeconds": 7.44,
+    "testBudgetSeconds": 20
+  },
+  "limitations": [
+    "Priority and Battler share one battle planner; Battler rejects campaigns.",
+    "Priority uses full Mixed for essential actors in crisis and for campaigns combining defeat and unrestricted seal objectives; Ashen Oath currently uses full Mixed from chapter one.",
+    "Aggregate gains do not establish nonregression for every small battle stratum or faction. All observed strata are included.",
+    "Whole-game decision CPU depends on strategy and game duration. The separate saved-position measurement holds tactical input states fixed.",
+    "An additional fourfold decision-CPU reduction has not been achieved."
+  ],
+  "priorityTournamentTiming": {
+    "policies": [
+      "classic",
+      "rush",
+      "priority"
+    ],
+    "games": 12240,
+    "arenas": 11520,
+    "campaigns": 720,
+    "workers": 4,
+    "seedFirst": 1,
+    "seedCount": 10,
+    "roundCap": 30,
+    "recruitsPerPhase": 1,
+    "medianCommandSeconds": 8.994561906001763,
+    "runs": [
+      {
+        "commandSeconds": 8.994561906001763,
+        "processCpuSeconds": 33.832039,
+        "exitCode": 0,
+        "command": [
+          "tmp/overnight/policies-final-pgo",
+          "--data-dir",
+          "rust/data",
+          "--mode",
+          "full",
+          "--seeds",
+          "10",
+          "--rounds",
+          "30",
+          "--recruits",
+          "1",
+          "--policies",
+          "classic,rush,priority",
+          "--workers",
+          "4",
+          "--out",
+          "artifacts/overnight-priority-full-1/report.json"
+        ],
+        "sourceCommit": "97076f15a2c96662419d21e2c233c6b2ac594ee3",
+        "games": 12240,
+        "reportedSeconds": 8.289100916
+      },
+      {
+        "commandSeconds": 9.283831332999398,
+        "processCpuSeconds": 34.892796,
+        "exitCode": 0,
+        "command": [
+          "tmp/overnight/policies-final-pgo",
+          "--data-dir",
+          "rust/data",
+          "--mode",
+          "full",
+          "--seeds",
+          "10",
+          "--rounds",
+          "30",
+          "--recruits",
+          "1",
+          "--policies",
+          "classic,rush,priority",
+          "--workers",
+          "4",
+          "--out",
+          "artifacts/overnight-priority-full-2/report.json"
+        ],
+        "sourceCommit": "97076f15a2c96662419d21e2c233c6b2ac594ee3",
+        "games": 12240,
+        "reportedSeconds": 8.569854217
+      },
+      {
+        "commandSeconds": 8.815484808998008,
+        "processCpuSeconds": 33.299601,
+        "exitCode": 0,
+        "command": [
+          "tmp/overnight/policies-final-pgo",
+          "--data-dir",
+          "rust/data",
+          "--mode",
+          "full",
+          "--seeds",
+          "10",
+          "--rounds",
+          "30",
+          "--recruits",
+          "1",
+          "--policies",
+          "classic,rush,priority",
+          "--workers",
+          "4",
+          "--out",
+          "artifacts/overnight-priority-full-3/report.json"
+        ],
+        "sourceCommit": "97076f15a2c96662419d21e2c233c6b2ac594ee3",
+        "games": 12240,
+        "reportedSeconds": 8.160922883
+      }
+    ],
+    "repeatCheck": {
+      "matches": 12240,
+      "orderedOutcomesEqual": true,
+      "reportAggregatesEqual": true,
+      "reportedDetailHashesEqual": true,
+      "comparison": "repeat reproducibility of the new policy run; not equality with existing-policy gameplay"
+    },
+    "method": "Replace Mixed with Priority in both seats of the full tournament; identical grid size and recording, with intentionally different gameplay. Do not compare the new gameplay for equality with existing policies."
+  }
+}
