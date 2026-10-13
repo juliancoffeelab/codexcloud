@@ -15,7 +15,8 @@
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     },
     {
       "id": "stones",
@@ -24,12 +25,13 @@
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
-      "sound": "attack-bow"
+      "sound": "attack-bow",
+      "count": 1
     }
   ],
   "damageModifiers": {
     "blade": 0,
-    "pierce": -1,
+    "pierce": 0,
     "impact": -1
   },
   "ability": "Keeper of the grove",

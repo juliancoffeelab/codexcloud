@@ -75,7 +75,7 @@ function describeAttack(
       ? `, against terrain: ${TERRAIN[terrain].name.toLowerCase()}`
       : "";
 
-  return `${label}: ${weapon.damage} ${DAMAGE_TYPES[weapon.damageType].toLowerCase()}, ${weapon.name.toLowerCase()}, ${weapon.category}${terrainDescription}`;
+  return `${label}: ${weapon.count} × ${weapon.damage} ${DAMAGE_TYPES[weapon.damageType].toLowerCase()}, ${weapon.name.toLowerCase()}, ${weapon.category}${terrainDescription}`;
 }
 
 function outcomeWarning(
@@ -129,7 +129,7 @@ export function attackChoiceViews(
     return {
       available: true,
       id: weapon.id,
-      name: weapon.name,
+      name: `${weapon.name} (${weapon.count} × ${weapon.damage})`,
       buttonLabel: `Attack with ${weapon.name}: deal ${preview.damage} damage, take ${preview.retaliation} damage${warning}`,
       inspectLabel: `Inspect ${weapon.name.toLowerCase()} damage calculation`,
       detailsId: `attack-details-${weapon.id}`,

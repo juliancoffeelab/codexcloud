@@ -9,6 +9,8 @@ impl Game<'_> {
         let environment = rule.environment[self.terrain[tile]][attack.category.index()]
             [attack.damage_type.index()];
         DamageDetail {
+            count: attack.count,
+            total: (attack.damage + modifier + environment).max(0) * i32::from(attack.count),
             base: attack.damage,
             damage_type: attack.damage_type,
             modifier,
@@ -27,6 +29,7 @@ impl Game<'_> {
             .map(|unit| {
                 let mut attacks = Vec::new();
                 for target in &self.units {
+                    let recommended = self.best_attack(unit, target, unit.tile);
                     for weapon in self.attack_options(unit, target, unit.tile) {
                         let attack = self.rules.units[unit.kind].attacks[weapon].clone();
                         let (damage, retaliation, response) =
@@ -37,6 +40,7 @@ impl Game<'_> {
                             .as_ref()
                             .map(|r| self.damage_detail(r, unit, unit.tile));
                         attacks.push(AttackDetails {
+                            recommended: recommended == Some(weapon),
                             target: format!("u{}", target.id),
                             damage,
                             retaliation,

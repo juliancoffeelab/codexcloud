@@ -28,7 +28,7 @@
             <span class="weapon-detail weapon-category">{weapon.categoryLabel}</span>
           </th>
           <td class="weapon-damage">
-            <b>{weapon.damage}</b>
+            <b>{weapon.count} × {weapon.damage}</b>
             {" "}{weapon.damageLabel}
           </td>
           <td>{weapon.rangeLabel}</td>

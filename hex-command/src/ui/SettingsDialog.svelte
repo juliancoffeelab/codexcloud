@@ -63,9 +63,10 @@
       </p>
       <p>
         Select an enemy, then tap a weapon to attack. Use the magnifying glass for damage details.
-        Each unit attacks once per turn. A surviving defender replies once with its strongest weapon
-        of the same kind: melee answers melee; ranged answers ranged. Both weapons must reach.
-        Forests and hills block ranged shots through them.
+        Each unit attacks once per turn. Counts show how many hits its selected attack deals; armor
+        and terrain modify each hit before the results are added. A surviving defender replies once
+        with its strongest weapon of the same kind: melee answers melee; ranged answers ranged. Both
+        weapons must reach. Forests and hills block ranged shots through them.
       </p>
       <p>
         Blade, Pierce, and Impact damage interact with armor. Soldiers take 1 less Blade and Pierce

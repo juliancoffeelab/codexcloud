@@ -20,7 +20,7 @@ npm run dev
 ```sh
 npm run format                # Apply project formatting
 npm run wasm:build            # Prepare bindings before a fresh test run
-npm test                      # All test suites; shared 20-second budget
+npm test                      # All test suites; warns after 20 seconds
 npm run verify                # All checks and production build
 npm run verify -- types tests # Selected checks
 npm run build
@@ -37,7 +37,8 @@ selects native tests. The combined test group already includes Rust, so
 verification does not run it twice.
 
 `npm test` runs Rust, Python artwork/analyzer tests and Vitest under one shared
-20-second budget. Browser automation is separate. `art:check` validates generated
+20-second duration target. Slow runs warn and continue; only failed tests fail
+the command. Vitest tests and hooks have no hard timeout. Browser automation is separate. `art:check` validates generated
 artwork; its unit tests run in the combined test command.
 
 ## Project layout
@@ -93,10 +94,17 @@ Terrain formats, floor palettes and prop layouts are described in
 [terrain artwork implementation](terrain-artwork.md). Character creation and
 editing workflows live in the artwork skills linked below.
 
-The selected unit panel displays attacks and permanent damage modifiers. Terrain
+The selected unit panel displays attack counts, damage per hit and permanent modifiers.
+Rust applies armor and terrain modifiers per hit, then multiplies by count.
+The attack, retaliation, death, experience and turn flow remain as on main. Terrain
 effects show movement and resolved incoming-damage modifiers. Numeric abilities
 such as healing come from catalog metadata; descriptions explain roles without
 duplicating the values.
+
+Restoration caps saved HP at the current unit maximum while preserving turn
+progress. A queued AI move or recruitment invalidated by balance changes is
+replanned with the saved recruitment budget. This does not change the save format
+or add a migration.
 
 ## Sites publication
 

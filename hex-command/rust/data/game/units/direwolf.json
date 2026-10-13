@@ -10,11 +10,12 @@
     {
       "id": "fangs",
       "name": "Fangs",
-      "damage": 8,
+      "damage": 3,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 3
     }
   ],
   "damageModifiers": {
@@ -30,6 +31,12 @@
   "advancesTo": [],
   "terrainModifiers": {
     "hill": {
+      "cost": -1
+    },
+    "forest": {
+      "cost": -1
+    },
+    "grove": {
       "cost": -1
     }
   }

@@ -153,3 +153,19 @@ test("Negative damage is clamped to zero", async () => {
     "max(0, 1 − 1 (armor) − 1 (cover)) = 0",
   );
 });
+
+test("Counted damage descriptions use native per-hit and total metadata", () => {
+  assert.equal(
+    damageExplanation({
+      base: 2,
+      modifier: -1,
+      modified: 1,
+      protection: 0,
+      exposure: 0,
+      damage: 1,
+      count: 3,
+      total: 3,
+    }),
+    "(2 − 1 (armor)) × 3 = 3",
+  );
+});

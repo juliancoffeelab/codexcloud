@@ -42,6 +42,14 @@ pub struct CombatRecord {
     pub target_tile: String,
     pub damage: i32,
     pub retaliation: i32,
+    #[serde(default)]
+    pub count: u8,
+    #[serde(default)]
+    pub damage_per_hit: i32,
+    #[serde(default)]
+    pub retaliation_count: u8,
+    #[serde(default)]
+    pub retaliation_per_hit: i32,
     pub mediation_at_risk: bool,
 }
 /// Exclusively owned action, casualty and combat histories for one simulation session.

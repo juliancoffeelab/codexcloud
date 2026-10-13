@@ -18,11 +18,12 @@
     {
       "id": "spear",
       "name": "Spear",
-      "damage": 8,
+      "damage": 4,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 2
     },
     {
       "id": "shieldbash",
@@ -31,7 +32,8 @@
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     }
   ],
   "damageModifiers": {

@@ -14,7 +14,8 @@
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
-      "sound": "attack-bow"
+      "sound": "attack-bow",
+      "count": 1
     },
     {
       "id": "staff",
@@ -23,10 +24,15 @@
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     }
   ],
-  "damageModifiers": { "blade": 0, "pierce": 0, "impact": 0 },
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
   "ability": "Bone magic",
   "description": "A fragile skeletal caster whose blunt magic threatens armored infantry; keep it behind a melee screen.",
   "level": 1,

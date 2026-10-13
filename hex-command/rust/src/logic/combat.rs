@@ -42,6 +42,7 @@ impl<'catalog> Game<'catalog> {
             + rule.environment[self.terrain[target_tile]][attack.category.index()]
                 [attack.damage_type.index()])
         .max(0)
+            * i32::from(attack.count)
     }
     pub(crate) fn preview(
         &self,
@@ -109,7 +110,8 @@ impl<'catalog> Game<'catalog> {
                 && self.winner.is_none()
                 && self.can_attack(&attacker, attacker.tile, &target, weapon)
         );
-        let (damage, retaliation, _) = self.preview(&attacker, &target, weapon, attacker.tile);
+        let (damage, retaliation, response) =
+            self.preview(&attacker, &target, weapon, attacker.tile);
         let mediated = self.mediation_at_risk(&target);
         let attack = self.rules.units[attacker.kind].attacks[weapon].clone();
         let before = [self.public_unit(&attacker), self.public_unit(&target)];
@@ -234,6 +236,13 @@ impl<'catalog> Game<'catalog> {
                 target_tile: self.board.ids[target.tile].clone(),
                 damage,
                 retaliation,
+                count: attack.count,
+                damage_per_hit: damage / i32::from(attack.count),
+                retaliation_count: response
+                    .map_or(0, |w| self.rules.units[target.kind].attacks[w].count),
+                retaliation_per_hit: response.map_or(0, |w| {
+                    retaliation / i32::from(self.rules.units[target.kind].attacks[w].count)
+                }),
                 mediation_at_risk: mediated,
             });
         }

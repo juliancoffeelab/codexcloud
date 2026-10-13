@@ -11,7 +11,7 @@
       "cost": 1
     }
   },
-  "hp": 28,
+  "hp": 18,
   "move": 3,
   "cost": 9,
   "attacks": [
@@ -22,7 +22,8 @@
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     },
     {
       "id": "tusks",
@@ -31,16 +32,17 @@
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     }
   ],
   "damageModifiers": {
     "blade": -1,
-    "pierce": 0,
-    "impact": 0
+    "pierce": -1,
+    "impact": -1
   },
   "ability": "Thick hide",
-  "description": "A durable woodland screen that tramples armored foes; slow in wetlands and vulnerable to ranged harassment.",
+  "description": "A thick-skinned woodland screen that absorbs light strikes and tramples armored foes; slow in wetlands.",
   "level": 1,
   "family": "boar",
   "experienceNeeded": 10,

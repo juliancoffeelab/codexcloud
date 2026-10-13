@@ -14,8 +14,16 @@ impl std::fmt::Display for StateError {
 }
 impl std::error::Error for StateError {}
 impl<'catalog> Game<'catalog> {
-    /// Restore a snapshot after checking the complete roster and catalog references.
-    pub(crate) fn try_from_state(rules: &'catalog Rules, state: State) -> Result<Self, StateError> {
+    /// Restore against current unit limits, then validate the roster and references.
+    pub(crate) fn try_from_state(
+        rules: &'catalog Rules,
+        mut state: State,
+    ) -> Result<Self, StateError> {
+        for unit in &mut state.units {
+            if let Some(&kind) = rules.types.get(&unit.r#type) {
+                unit.hp = unit.hp.min(rules.units[kind].hp);
+            }
+        }
         validate_state(rules, &state)?;
         Ok(Self::from_state(rules, state))
     }

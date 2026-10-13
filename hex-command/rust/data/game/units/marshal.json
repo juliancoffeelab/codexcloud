@@ -19,11 +19,12 @@
     {
       "id": "sword",
       "name": "Sword",
-      "damage": 10,
+      "damage": 5,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 2
     },
     {
       "id": "mace",
@@ -32,7 +33,8 @@
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     }
   ],
   "damageModifiers": {

@@ -5,16 +5,17 @@
   "race": "beast",
   "hp": 16,
   "move": 4,
-  "cost": 5,
+  "cost": 6,
   "attacks": [
     {
       "id": "fangs",
       "name": "Fangs",
-      "damage": 6,
+      "damage": 2,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 3
     }
   ],
   "damageModifiers": {
@@ -27,5 +28,13 @@
   "level": 1,
   "family": "wolf",
   "experienceNeeded": 10,
-  "advancesTo": ["direwolf"]
+  "advancesTo": ["direwolf"],
+  "terrainModifiers": {
+    "forest": {
+      "cost": -1
+    },
+    "grove": {
+      "cost": -1
+    }
+  }
 }

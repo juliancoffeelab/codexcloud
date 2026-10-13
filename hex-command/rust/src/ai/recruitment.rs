@@ -124,7 +124,19 @@ impl Game<'_> {
                 rebuilding: None,
             };
             let effectiveness = if opponents.is_empty() {
-                r.damage as f64
+                r.attacks
+                    .iter()
+                    .filter(|a| {
+                        a.category
+                            == if category.is_ranged() {
+                                Category::Ranged
+                            } else {
+                                Category::Melee
+                            }
+                    })
+                    .map(|a| a.damage * i32::from(a.count))
+                    .max()
+                    .unwrap_or(0) as f64
             } else {
                 opponents
                     .iter()

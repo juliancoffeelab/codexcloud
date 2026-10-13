@@ -11,11 +11,12 @@
     {
       "id": "spear",
       "name": "Spear",
-      "damage": 6,
+      "damage": 3,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 2
     }
   ],
   "damageModifiers": {

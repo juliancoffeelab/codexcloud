@@ -71,18 +71,28 @@ pub(crate) fn create_arena<'catalog>(
         let q = tile.col - r.div_euclid(2) - 4;
         let terrain = match config.landscape.as_str() {
             "wooded" => {
-                if draw < 0.25 {
+                // Most unreserved ground is woodland; starters and settlements stay clear.
+                if draw < 0.75 {
                     "forest"
-                } else if draw < 0.32 {
+                } else if draw < 0.9 {
                     "grove"
-                } else if draw < 0.4 {
+                } else if draw < 0.95 {
                     "hill"
                 } else {
                     "plains"
                 }
             }
             "crossings" => {
-                if q == 0 {
+                // The curved river widens only around the island fort.
+                let river = match r {
+                    -4..=-2 => q == 2,
+                    -1 => (0..=1).contains(&q),
+                    0 => q.abs() <= 1,
+                    1 => (-1..=0).contains(&q),
+                    2..=4 => q == -2,
+                    _ => false,
+                };
+                if river {
                     "water"
                 } else if draw < 0.2 {
                     "marsh"
@@ -147,8 +157,12 @@ pub(crate) fn create_arena<'catalog>(
         terrain(q, r, kind, owner);
     }
     if config.landscape == "crossings" {
-        terrain(0, -1, "bridge", None);
-        terrain(0, 1, "bridge", None);
+        for (q, r) in [(-1, 0), (1, 0)] {
+            terrain(q, r, "bridge", None);
+        }
+        for (q, r) in [(2, -3), (-2, 3)] {
+            terrain(q, r, "ford", None);
+        }
     }
     if config.landscape == "islands" {
         for (q, r) in [(-1, 0), (1, 0)] {
@@ -572,6 +586,74 @@ pub fn run(rules: &Rules, config: MatchConfig) -> Result<MatchResult, Simulation
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn wooded_arena_has_cover_and_crossings_have_fords_and_an_island_fort() {
+        let rules = Rules::load().unwrap();
+        let mut config = ArenaConfig {
+            seed: 61,
+            armies: Armies {
+                player: rules.rosters[0].id.clone(),
+                enemy: rules.rosters[0].id.clone(),
+            },
+            landscape: "wooded".into(),
+            player: Policy::Mixed,
+            enemy: Policy::Mixed,
+            first: Side::Player,
+            max_rounds: 30,
+            recruit_limit: 1,
+        };
+        let woods = create_arena(&rules, &config).unwrap();
+        let trees = (0..woods.terrain.len())
+            .filter(|&tile| {
+                woods.terrain_is(tile, Terrain::Forest) || woods.terrain_is(tile, Terrain::Grove)
+            })
+            .count();
+        assert!(trees * 3 >= woods.terrain.len() * 2);
+
+        config.landscape = "crossings".into();
+        let river = create_arena(&rules, &config).unwrap();
+        let keeps: Vec<_> = (0..river.terrain.len())
+            .filter(|&tile| river.terrain_is(tile, Terrain::Keep))
+            .collect();
+        let reachable = |start, bridges: bool, fords: bool| {
+            let mut visited = HashSet::from([start]);
+            let mut pending = vec![start];
+            while let Some(tile) = pending.pop() {
+                for &next in &river.board.adjacent[tile] {
+                    if !river.terrain_is(next, Terrain::Water)
+                        && (bridges || !river.terrain_is(next, Terrain::Bridge))
+                        && (fords || !river.terrain_is(next, Terrain::Ford))
+                        && visited.insert(next)
+                    {
+                        pending.push(next);
+                    }
+                }
+            }
+            visited
+        };
+        assert!(reachable(keeps[0], true, false).contains(&keeps[1]));
+        assert!(reachable(keeps[0], false, true).contains(&keeps[1]));
+        assert!(!reachable(keeps[0], false, false).contains(&keeps[1]));
+        for keep in &keeps {
+            let bank = reachable(*keep, false, false);
+            assert_eq!(
+                bank.iter()
+                    .filter(|&&tile| {
+                        river.terrain_is(tile, Terrain::Village)
+                            && rules.arena.territory.contains(&river.board.ids[tile])
+                    })
+                    .count(),
+                1
+            );
+        }
+        let fort = (0..river.terrain.len())
+            .find(|&tile| river.terrain_is(tile, Terrain::Fort))
+            .unwrap();
+        assert!(river.board.adjacent[fort].iter().all(|&tile| {
+            river.terrain_is(tile, Terrain::Water) || river.terrain_is(tile, Terrain::Bridge)
+        }));
+    }
 
     #[test]
     fn arena_charges_starters_to_a_paired_budget_without_changing_placement() {

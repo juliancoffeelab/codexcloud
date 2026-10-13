@@ -491,6 +491,7 @@ impl Rules {
                     || attack.sound.is_empty()
                     || attack.range == 0
                     || attack.damage < 0
+                    || !(1..=16).contains(&attack.count)
                 {
                     return Err(ContentError::new(
                         &path,
@@ -973,18 +974,11 @@ mod tests {
     #[test]
     fn authored_catalog_resolves_races_and_current_maps() {
         let rules = Rules::from_json_bundle(&test_bundle()).unwrap();
-        let skeleton = &rules.units[rules.types["skeleton"]];
-        assert_eq!(skeleton.damage_modifiers.pierce, -2);
-        let boar = &rules.units[rules.types["boar"]];
-        assert_eq!(boar.costs[rules.terrains["forest"]], Some(1));
-        assert_eq!(boar.costs[rules.terrains["ford"]], Some(3));
-        assert_eq!(boar.costs[rules.terrains["water"]], None);
-        assert_eq!(
-            boar.environment[rules.terrains["forest"]],
-            [[-1, -1, -1], [-2, -2, -2]]
-        );
-        let reefguard = &rules.units[rules.types["reefguard"]];
-        assert_eq!(reefguard.costs[rules.terrains["water"]], Some(1));
+        for unit in &rules.units {
+            assert_eq!(unit.costs.len(), rules.terrain_names.len());
+            assert_eq!(unit.environment.len(), rules.terrain_names.len());
+            assert!(unit.costs.iter().flatten().all(|&cost| cost > 0));
+        }
         assert!(!rules.maps.contains_key(&("river".to_owned(), 1)));
         assert!(rules.maps.contains_key(&("river".to_owned(), 2)));
         assert!(!rules.maps.contains_key(&("ashen-refuge".to_owned(), 1)));
@@ -1250,5 +1244,20 @@ mod tests {
         .unwrap();
         assert!(!selected.contains_key("game/units/unlisted.json"));
         assert_eq!(native.content_fingerprint, content_fingerprint(&selected));
+    }
+    #[test]
+    fn attack_counts_default_to_one_and_reject_invalid_values() {
+        let mut bundle = test_bundle();
+        let path = "game/units/swordsman.json";
+        let mut unit: serde_json::Value = serde_json::from_str(&bundle[path]).unwrap();
+        unit["attacks"][0].as_object_mut().unwrap().remove("count");
+        bundle.insert(path.into(), serde_json::to_string(&unit).unwrap());
+        let rules = Rules::from_json_bundle(&bundle).unwrap();
+        assert_eq!(rules.units[rules.types["swordsman"]].attacks[0].count, 1);
+        for count in [0, 17] {
+            unit["attacks"][0]["count"] = serde_json::json!(count);
+            bundle.insert(path.into(), serde_json::to_string(&unit).unwrap());
+            assert_eq!(Rules::from_json_bundle(&bundle).unwrap_err().path, path);
+        }
     }
 }

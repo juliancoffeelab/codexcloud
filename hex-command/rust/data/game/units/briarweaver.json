@@ -4,17 +4,18 @@
   "name": "Briarweaver",
   "race": "beast",
   "hp": 20,
-  "move": 4,
+  "move": 3,
   "cost": 11,
   "attacks": [
     {
       "id": "thorns",
       "name": "Thorns",
-      "damage": 10,
+      "damage": 9,
       "damageType": "pierce",
       "category": "ranged",
       "range": 2,
-      "sound": "attack-bow"
+      "sound": "attack-bow",
+      "count": 1
     },
     {
       "id": "rootstaff",
@@ -23,16 +24,17 @@
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "count": 1
     }
   ],
   "damageModifiers": {
     "blade": 0,
-    "pierce": -1,
+    "pierce": 0,
     "impact": 0
   },
   "ability": "Living boughs",
-  "description": "A veteran thorncaster who supports nearby allies while fighting from woodland cover.",
+  "description": "A veteran thorncaster whose heavy thorns penetrate armor and whose living boughs tend nearby allies.",
   "level": 2,
   "family": "thorncaller",
   "experienceNeeded": 0,

@@ -64,11 +64,14 @@ impl DamageType {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct Weapon {
     pub id: String,
     pub name: String,
     pub damage: i32,
+    /// Hits in the selected attack; old definitions retain one hit.
+    #[serde(default = "one_attack")]
+    pub count: u8,
     pub damage_type: DamageType,
     pub category: Category,
     pub range: u8,
@@ -230,4 +233,8 @@ pub struct Veteran {
     #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub role: Option<Role>,
+}
+
+fn one_attack() -> u8 {
+    1
 }
