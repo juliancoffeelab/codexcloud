@@ -475,7 +475,8 @@ mod tests {
             let actor = game.units.iter().find(|u| u.side == game.turn).unwrap();
             let (tile, cost) = game
                 .reachable(actor)
-                .into_iter()
+                .iter()
+                .copied()
                 .max_by_key(|(_, cost)| *cost)
                 .unwrap();
             assert!(cost > 1);
@@ -499,8 +500,14 @@ mod tests {
         let planner = saved.planner.as_mut().unwrap();
         planner.pending = Some(command);
         planner.workspace.recruitment_remaining = 0;
-        factory.rules.units[kind].hp -= 1;
-        factory.rules.units[kind].r#move = 1;
+        let mut bundle = crate::data::catalog::embedded_bundle();
+        let path = format!("game/units/{}.json", factory.rules.units[kind].id);
+        let source = bundle.get_mut(&path).unwrap();
+        let mut definition: serde_json::Value = serde_json::from_str(source).unwrap();
+        definition["hp"] = serde_json::json!(factory.rules.units[kind].hp - 1);
+        definition["move"] = serde_json::json!(1);
+        *source = serde_json::to_string(&definition).unwrap();
+        factory.rules = Rules::from_json_bundle(&bundle).unwrap();
         let restored = factory.restore_saved(saved).unwrap();
         let actor = restored
             .view
