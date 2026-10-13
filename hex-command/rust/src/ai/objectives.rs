@@ -48,7 +48,7 @@ pub fn individual(goals: Vec<Objective>) -> Vec<Objective> {
     goals
         .into_iter()
         .flat_map(|g| {
-            if g.kind == ObjectiveKind::Capture {
+            if g.kind == ObjectiveKind::Capture && g.tiles.len() > 1 {
                 g.tiles
                     .iter()
                     .map(|t| {
@@ -369,4 +369,25 @@ impl BattleView<'_, '_> {
 /// Whether an actor must be routed through current occupancy and allies must yield.
 pub(super) fn actor_route(goal: &Objective) -> bool {
     (goal.actor.is_some() || goal.family.is_some()) && goal.kind != ObjectiveKind::Defeat
+}
+
+#[cfg(test)]
+mod target_tests {
+    use super::*;
+    #[test]
+    fn repeated_target_normalization_preserves_stable_duty_ids() {
+        let target = crate::ai::orders::target(
+            "territory",
+            ObjectiveKind::Capture,
+            vec!["a".into(), "b".into()],
+            24.0,
+        );
+        let once = individual(vec![target]);
+        let twice = individual(once.clone());
+        assert_eq!(
+            once.iter().map(|target| &target.id).collect::<Vec<_>>(),
+            twice.iter().map(|target| &target.id).collect::<Vec<_>>()
+        );
+        assert_eq!(once.len(), 2);
+    }
 }
