@@ -30,6 +30,9 @@ Fingerprints, binary hashes, scope, equality results and check timings are in
 [benchmarks/rebased-stack.json](benchmarks/rebased-stack.json). Complete journals
 and logs remain in the validation checkout's ignored `tmp/rebase-validation/`.
 
+The [planner cost investigation](planner-cost-investigation.md) explains the
+remaining gap to Classic using matched positions and diagnostic work counters.
+
 ## Original exact-policy workload
 
 The exact-policy workload is 12,240 complete games: 11,520 arenas and 720 campaign
