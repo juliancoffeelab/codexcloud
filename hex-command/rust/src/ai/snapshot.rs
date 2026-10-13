@@ -73,6 +73,96 @@ impl PlanningSnapshot {
         let identity = |id: UnitId| id.0 > 0 && id.0 < state.next_id;
         let actor = |id: UnitId| state.units.iter().find(|u| u.id == format!("u{}", id.0));
         let friendly = |id: UnitId| actor(id).is_some_and(|u| u.side == state.turn);
+        if self.cooperation.candidates > 128
+            || self.cooperation.attempted.len() > state.next_id as usize
+            || self.cooperation.fallback.len() > state.next_id as usize
+            || self
+                .cooperation
+                .attempted
+                .iter()
+                .chain(&self.cooperation.fallback)
+                .any(|id| !identity(*id))
+        {
+            return Err(fail("invalid cooperative search continuation"));
+        }
+        if let Some(orders) = &self.orders {
+            let valid_tile = |tile: &TileId| tiles.contains(tile.0.as_str());
+            let valid_actor =
+                |id: UnitId| identity(id) && actor(id).is_none_or(|u| u.side == state.turn);
+            if orders
+                .recruitment
+                .reserved
+                .iter()
+                .any(|tile| !valid_tile(tile))
+                || orders
+                    .tactics
+                    .withdrawal_tiles
+                    .iter()
+                    .chain(&orders.tactics.defensive_tiles)
+                    .chain(orders.tactics.leader_post.iter())
+                    .any(|tile| !valid_tile(tile))
+                || orders
+                    .tactics
+                    .terminal_arrivals
+                    .iter()
+                    .any(|(id, tile)| !valid_actor(*id) || !valid_tile(tile))
+                || orders
+                    .tactics
+                    .terminal_targets
+                    .iter()
+                    .any(|id| !identity(*id))
+                || orders.tactics.targets.iter().any(|goal| {
+                    !goal.weight.is_finite()
+                        || goal.weight <= 0.0
+                        || goal.tiles.iter().any(|tile| !tiles.contains(tile.as_str()))
+                })
+                || orders
+                    .recruitment
+                    .requirements
+                    .iter()
+                    .any(|requirement| match requirement {
+                        super::orders::RecruitRequirement::EnsureUnits { selector, count } => {
+                            *count > 1_000_000
+                                || match selector {
+                                    super::orders::UnitSelector::Type(kind) => {
+                                        !catalog.types.contains_key(&kind.0)
+                                    }
+                                    super::orders::UnitSelector::Family(_)
+                                    | super::orders::UnitSelector::Role(_) => false,
+                                }
+                        }
+                    })
+                || orders
+                    .tactics
+                    .constraints
+                    .iter()
+                    .any(|constraint| match constraint {
+                        super::orders::TacticalConstraint::Survive { actor } => {
+                            !valid_actor(*actor)
+                        }
+                    })
+                || orders.tactics.objectives.iter().any(|order| {
+                    order.id.is_empty()
+                        || match &order.objective {
+                            super::orders::TacticalObjective::GoTo { actor, destination }
+                            | super::orders::TacticalObjective::ClearPassage {
+                                actor,
+                                destination,
+                            } => !valid_actor(*actor) || !valid_tile(destination),
+                            super::orders::TacticalObjective::Occupy { actor, location } => {
+                                !valid_actor(*actor) || !valid_tile(location)
+                            }
+                            super::orders::TacticalObjective::Escort {
+                                actor,
+                                guards,
+                                selector: _,
+                            } => !valid_actor(*actor) || *guards > 1_000_000,
+                        }
+                })
+            {
+                return Err(fail("invalid campaign planning orders"));
+            }
+        }
         if self.recruitment_remaining > 1_000_000
             || self.tactical_remaining.is_some_and(|n| n > 1_000_000)
         {
@@ -96,7 +186,17 @@ impl PlanningSnapshot {
         if self.commitments.iter().any(|(id, _)| !unique.insert(*id)) {
             return Err(fail("duplicate planning commitment"));
         }
-        for goal in self.goals.iter().flatten().chain(&self.classic_objectives) {
+        for goal in self
+            .goals
+            .iter()
+            .flatten()
+            .chain(&self.classic_objectives)
+            .chain(
+                self.orders
+                    .iter()
+                    .flat_map(|orders| &orders.tactics.targets),
+            )
+        {
             if !goal.weight.is_finite()
                 || goal.weight <= 0.0
                 || goal.tiles.iter().any(|t| !tiles.contains(t.as_str()))

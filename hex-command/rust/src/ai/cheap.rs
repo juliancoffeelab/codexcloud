@@ -26,7 +26,9 @@ type GoalUnit = (
 );
 #[derive(Default)]
 pub(super) struct Workspace {
+    revision: u32,
     pub(super) goals: Vec<Objective>,
+    pub(super) orders: super::orders::TacticalOrders,
     pub(super) rebuild_intents: Vec<(u32, Option<bool>)>,
     blockers: Vec<bool>,
     pub(super) proximity: Vec<u16>,
@@ -37,8 +39,6 @@ pub(super) struct Workspace {
     roster: Vec<GoalUnit>,
     owners: Vec<Option<Side>>,
     terrain: Vec<usize>,
-    marks: Vec<String>,
-    escalated: bool,
     gold: i32,
     side: Option<Side>,
     positions: Vec<(u32, usize, Option<bool>)>,
@@ -48,24 +48,15 @@ pub(super) struct Workspace {
     reserved: FxHashMap<u32, FxHashSet<usize>>,
     fields: FxHashMap<(usize, usize, bool), Rc<Field>>,
 }
-pub(super) fn prepare(
-    game: &Game<'_>,
-    workspace: &mut PlanningWorkspace,
-    campaign: super::CampaignBlock,
-) {
-    let effective_restraint = campaign.restrained(game, workspace);
+pub(super) fn prepare(game: &Game<'_>, workspace: &mut PlanningWorkspace) {
+    let orders = &workspace.orders.as_ref().unwrap().tactics;
     let cache = &mut workspace.cheap;
-    let marks = game
-        .campaign
-        .as_ref()
-        .map_or(&[][..], |c| c.marks.as_slice());
-    let escalated = game.campaign.as_ref().is_some_and(|c| c.escalated());
+
     let same = cache.side == Some(game.turn)
+        && cache.revision == workspace.cooperation.revision
         && cache.gold == game.gold[game.turn.index()]
         && cache.owners == game.owners
         && cache.terrain == game.terrain
-        && cache.marks == marks
-        && cache.escalated == escalated
         && cache.roster.len() == game.units.len()
         && cache.roster.iter().zip(&game.units).all(|(key, u)| {
             key.0 == u.id
@@ -83,13 +74,12 @@ pub(super) fn prepare(
             .zip(&game.units)
             .all(|(key, u)| *key == (u.id, u.tile, u.retreating));
     if !same {
+        cache.revision = workspace.cooperation.revision;
         cache.side = Some(game.turn);
         cache.gold = game.gold[game.turn.index()];
         cache.owners.clone_from(&game.owners);
         cache.terrain.clone_from(&game.terrain);
-        cache.marks.clear();
-        cache.marks.extend_from_slice(marks);
-        cache.escalated = escalated;
+        cache.orders = orders.clone();
         cache.roster.clear();
         cache.roster.extend(game.units.iter().map(|u| {
             (
@@ -103,7 +93,11 @@ pub(super) fn prepare(
             )
         }));
 
-        cache.goals = campaign.goals(game, workspace.goals.as_deref());
+        cache.goals = orders.targets.clone();
+        cache.goals.retain(|g| !g.id.starts_with("rebuild:"));
+        cache.goals.extend(super::objectives::individual(
+            orders.rebuild_objectives(game),
+        ));
         cache.blockers.clear();
         cache.blockers.resize(game.terrain.len(), false);
         for goal in cache
@@ -125,7 +119,7 @@ pub(super) fn prepare(
                 .goals
                 .iter()
                 .any(|g| g.kind == ObjectiveKind::Escape && actor_matches(&g.actor, unit.id));
-            let (_, intent) = game.leader_rebuild_plan(unit.id, required);
+            let (_, intent) = orders.rebuild_plan(game, unit.id, required);
             if unit.rebuilding != intent {
                 cache.rebuild_intents.push((unit.id, intent));
             }
@@ -167,7 +161,7 @@ pub(super) fn prepare(
                 };
                 cache.screens += 1;
             }
-            if game.essential(ally) || role(game, ally.kind) != TacticalRole::Frontline {
+            if orders.important(game, ally) || role(game, ally.kind) != TacticalRole::Frontline {
                 for &tile in &game.board.adjacent[ally.tile] {
                     if cache.proximity[tile] <= cache.proximity[ally.tile] {
                         cache.frontline_support[tile] += 1.5;
@@ -182,7 +176,7 @@ pub(super) fn prepare(
             .map(|u| (u.id, u.tile, u.retreating))
             .collect();
         cache.clearing = game.actor_lanes(&cache.goals);
-        cache.lanes = game.withdrawal_lanes(game.turn, effective_restraint);
+        cache.lanes = orders.lanes(game);
     }
 }
 
@@ -228,32 +222,16 @@ struct Candidate {
     order: usize,
 }
 pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) -> Option<Plan> {
-    fn is_objective_kind_escort_escape(value: &ObjectiveKind) -> bool {
-        match value {
-            ObjectiveKind::Escort | ObjectiveKind::Escape => true,
-            ObjectiveKind::Capture
-            | ObjectiveKind::Defeat
-            | ObjectiveKind::Visit
-            | ObjectiveKind::Seal
-            | ObjectiveKind::Vigil => false,
-        }
-    }
-
     let original = game.unit(id)?;
     let objectives = &workspace.cheap.goals;
-    let restrained = workspace
-        .effective_blocks(workspace.policy.expect("initialized planner"))
-        .campaign
-        .restrained(game, workspace);
-    let required = objectives
-        .iter()
-        .any(|g| g.kind == ObjectiveKind::Escape && actor_matches(&g.actor, id));
-    let (rebuilding, intent) = game.leader_rebuild_plan(id, required);
+    let orders = &workspace.orders.as_ref().unwrap().tactics;
+    let required = orders.moving_actor(id);
+    let (rebuilding, intent) = orders.rebuild_plan(game, id, required);
     let mut unit = original.clone();
     unit.rebuilding = intent;
-    let important = game.essential(&unit);
+    let important = orders.important(game, &unit);
     let category = role(game, unit.kind);
-    let battle = game.campaign.is_none();
+    let battle = !orders.campaign;
     let reserved = workspace
         .cheap
         .reserved
@@ -291,7 +269,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
         }
         let dynamic = pursuing
             && (original.actor.is_some() || original.family.is_some())
-            && super::campaign::actor_route(original);
+            && super::objectives::actor_route(original);
         let field = workspace
             .cheap
             .fields
@@ -490,7 +468,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
     };
     let mut destinations = vec![unit.tile];
     destinations.extend(game.reachable(&unit).iter().map(|&(tile, _)| tile));
-    let destinations = game.authored_destinations(&unit, destinations);
+    let destinations = orders.authored_destinations(game, &unit, destinations);
     let wait_position = position(unit.tile);
     let recruiting = game.rules.units[unit.kind].leader
         && game
@@ -514,16 +492,12 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
                 || leader_may_advance(game, &unit, tile, recruiting, required, proximity_grid)
         })
         .collect();
-    let finishing_sites: Vec<_> =
-        if unit.role == Some(Role::Courier) || unit.role == Some(Role::Leader) {
-            objectives
-                .iter()
-                .filter(|g| actor_matches(&g.actor, id) && is_objective_kind_escort_escape(&g.kind))
-                .flat_map(|g| g.tiles.iter().map(|t| game.site(t)))
-                .collect()
-        } else {
-            vec![]
-        };
+    let finishing_sites: Vec<_> = orders
+        .terminal_arrivals
+        .iter()
+        .filter(|(actor, _)| actor.0 == id)
+        .map(|(_, tile)| game.site(&tile.0))
+        .collect();
     let width = 12;
     let mut candidates = Vec::with_capacity(width + 1);
     let mut ordinal = 0;
@@ -532,7 +506,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
         .map(|&tile| {
             (
                 position(tile),
-                finishing_sites.contains(&tile) && game.finishes_objective(&unit, tile, objectives),
+                finishing_sites.contains(&tile) && orders.arrives(game, &unit, tile),
                 (game.terrain_is(tile, Terrain::Village) || game.terrain_is(tile, Terrain::Grove))
                     && (game.owners[tile] == Some(unit.side) || game.at(tile).is_none()),
             )
@@ -554,15 +528,18 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
         let mut terminal = false;
         if let (Some(target), Some(weapon)) = (target, weapon) {
             if !geometry[weapon][target.tile].contains(tile)
-                || !game.diplomacy_allows(&unit, target, weapon, tile, restrained)
+                || !orders.attack_allowed(game, &unit, target, weapon, tile)
             {
                 return;
             }
             let (damage, retaliation, _) = game.preview(&unit, target, weapon, tile);
+            if orders.protects(unit.id) && retaliation > 0 {
+                return;
+            }
             response = retaliation;
             let killed = damage >= target.hp;
             eliminated = killed.then_some(target.id);
-            terminal = killed && super::campaign::terminal_attack(game, &unit, target);
+            terminal = killed && orders.terminal_attack(target);
             combat = damage.min(target.hp) as f64 * 2.0
                 + if killed {
                     12.0 + game.rules.units[target.kind].cost as f64 * 0.3
@@ -570,7 +547,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
                     0.0
                 }
                 - response as f64 * 1.8;
-            if game.essential(target) {
+            if orders.important(game, target) {
                 combat += if killed { 18.0 } else { 4.0 };
             }
             if battle
@@ -711,7 +688,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
             }
         }
     }
-    if game.campaign.is_none()
+    if !orders.campaign
         && candidates.iter().all(|c| c.score <= 0.1)
         && game.promotion_options(&unit).is_empty()
         && game.units.iter().filter(|u| u.side != unit.side).all(|u| {
@@ -728,7 +705,8 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
     {
         return None;
     }
-    let mut threats = Threats::with_workspace(game, unit.side, &mut workspace.threats);
+    let mut threats =
+        Threats::with_workspace(game, unit.side, &mut workspace.threats).with_orders(orders);
     let before = threats.at(&unit, unit.tile, None);
     let danger = if important {
         6.0
@@ -777,6 +755,9 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
             threats.at(&unit, c.tile, c.eliminated)
         };
         let lethal = incoming >= unit.hp - c.response;
+        if orders.protects(unit.id) && lethal {
+            continue;
+        }
         if important && lethal && incoming > 0 && !c.terminal {
             let least = *minimum
                 .get_or_insert_with(|| threats.minimum(&unit, destinations.iter().copied()));
@@ -870,7 +851,7 @@ pub(super) fn plan(game: &Game<'_>, id: u32, workspace: &mut PlanningWorkspace) 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ai::campaign::{policy_goals, restrained};
+    use crate::ai::campaign::restrained;
     #[test]
     fn shared_frames_follow_actions_and_turn_boundaries() {
         fn is_command_endturn(value: &Command) -> bool {
@@ -900,10 +881,25 @@ mod tests {
                 PlanningWorkspace::new(7, 1, None, super::super::Diplomacy::Pragmatic);
             workspace.policy = Some(super::super::Policy::Priority);
             for _ in 0..24 {
-                prepare(game, &mut workspace, super::super::CampaignBlock::Adaptive);
+                if workspace.orders.is_none() {
+                    workspace.orders = Some(
+                        super::super::CampaignBlock::Adaptive.campaign_orders(game, &workspace),
+                    );
+                }
+                prepare(game, &mut workspace);
+                let mut expected_goals = workspace.orders.as_ref().unwrap().tactics.targets.clone();
+                expected_goals.retain(|g| !g.id.starts_with("rebuild:"));
+                expected_goals.extend(super::super::objectives::individual(
+                    workspace
+                        .orders
+                        .as_ref()
+                        .unwrap()
+                        .tactics
+                        .rebuild_objectives(game),
+                ));
                 assert_eq!(
                     serde_json::to_value(&workspace.cheap.goals).unwrap(),
-                    serde_json::to_value(policy_goals(game, None)).unwrap()
+                    serde_json::to_value(expected_goals).unwrap()
                 );
                 assert_eq!(
                     workspace.cheap.proximity,

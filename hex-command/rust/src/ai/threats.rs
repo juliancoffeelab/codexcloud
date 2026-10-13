@@ -16,6 +16,7 @@ pub(super) struct ArenaThreatWorkspace {
     risks: HashMap<RiskKey, i32>,
 }
 pub(super) struct Threats<'game, 'catalog> {
+    orders: Option<&'game super::orders::TacticalOrders>,
     source: &'game Game<'catalog>,
     side: Side,
     normal: Option<(Game<'catalog>, Vec<(Unit, Vec<TileSet>)>)>,
@@ -27,6 +28,7 @@ pub(super) struct Threats<'game, 'catalog> {
 impl<'game, 'catalog> Threats<'game, 'catalog> {
     pub fn new(g: &'game Game<'catalog>, side: Side) -> Self {
         Self {
+            orders: None,
             source: g,
             side,
             normal: None,
@@ -35,6 +37,19 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             arena: HashMap::default(),
             workspace: None,
         }
+    }
+    pub(super) fn protected(
+        g: &'game Game<'catalog>,
+        side: Side,
+        orders: &'game super::orders::TacticalOrders,
+    ) -> Self {
+        let mut threats = Self::new(g, side);
+        threats.orders = Some(orders);
+        threats
+    }
+    pub(super) fn with_orders(mut self, orders: &'game super::orders::TacticalOrders) -> Self {
+        self.orders = Some(orders);
+        self
     }
     pub fn with_workspace(
         g: &'game Game<'catalog>,
@@ -249,7 +264,10 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             }
         }
 
-        let important = self.source.essential(u);
+        let important = self.orders.map_or_else(
+            || self.source.essential(u),
+            |orders| orders.important(self.source, u),
+        );
         let key = (important.then_some(u.id), u.kind, tile, eliminated);
         if let Some(&risk) = self.cache.get(&key) {
             return risk;

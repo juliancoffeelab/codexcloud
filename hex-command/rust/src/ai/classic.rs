@@ -30,12 +30,18 @@ pub(super) struct ClassicRules<'game, 'catalog> {
     threats: Option<Threats<'game, 'catalog>>,
     minimum: i32,
     holding: bool,
-    restrained: bool,
+    orders: &'game super::orders::TacticalOrders,
 }
 impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
-    pub fn new(g: &'game Game<'catalog>, u: &Unit, goals: &[Objective], restrained: bool) -> Self {
-        let important = g.essential(u);
-        let mut threats = important.then(|| Threats::new(g, u.side));
+    pub fn new(
+        g: &'game Game<'catalog>,
+        u: &Unit,
+        goals: &[Objective],
+        _restrained: bool,
+        orders: &'game super::orders::TacticalOrders,
+    ) -> Self {
+        let important = orders.important(g, u);
+        let mut threats = important.then(|| Threats::protected(g, u.side, orders));
         let minimum = if let Some(t) = &mut threats {
             let current = t.at(u, u.tile, None);
             if current == 0 {
@@ -51,14 +57,14 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
             goals: goals.to_vec(),
             reserved: g.reserved(u, goals),
             yielding: g.actor_lanes(goals).remove(&u.id).unwrap_or_default(),
-            lanes: g.withdrawal_lanes(u.side, restrained),
+            lanes: orders.lanes(g),
             important,
             threats,
             minimum,
             holding: goals
                 .iter()
                 .any(|o| actor_matches(&o.actor, u.id) && o.tiles.contains(&g.board.ids[u.tile])),
-            restrained,
+            orders,
         }
     }
     fn risk(&mut self, tile: usize, eliminated: Option<u32>) -> i32 {
@@ -67,7 +73,7 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
             .map_or(0, |t| t.at(&self.unit, tile, eliminated))
     }
     fn penalty(&mut self, g: &Game, tile: usize) -> f64 {
-        let finishing = g.finishes_objective(&self.unit, tile, &self.goals);
+        let finishing = self.orders.arrives(g, &self.unit, tile);
         (if self.reserved.contains(&tile) {
             160.0
         } else {
@@ -91,23 +97,29 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         }
     }
     fn movement(&mut self, g: &Game, tile: usize) -> bool {
-        !self.important || g.finishes_objective(&self.unit, tile, &self.goals) || {
+        !self.important || self.orders.arrives(g, &self.unit, tile) || {
             let risk = self.risk(tile, None);
             risk < self.unit.hp || risk <= self.minimum
         }
     }
     fn attack(&mut self, g: &Game, u: &Unit, target: &Unit, weapon: usize, from: usize) -> bool {
-        if !g.diplomacy_allows(&self.unit, target, weapon, from, self.restrained) {
+        if !self
+            .orders
+            .attack_allowed(g, &self.unit, target, weapon, from)
+        {
             return false;
         }
         if !self.important {
             return true;
         }
         let (damage, retaliation, _) = g.preview(&self.unit, target, weapon, from);
+        if self.orders.protects(self.unit.id) && retaliation > 0 {
+            return false;
+        }
         if retaliation >= self.unit.hp {
             return false;
         }
-        if damage >= target.hp && g.campaign.is_none() && g.rules.units[target.kind].leader {
+        if damage >= target.hp && !self.orders.campaign && g.rules.units[target.kind].leader {
             return true;
         }
         let incoming = self.risk(from, (damage >= target.hp).then_some(target.id));
@@ -117,37 +129,6 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
     }
 }
 impl Game<'_> {
-    pub(super) fn policy_objectives(&self, goals: Option<&[Objective]>) -> Vec<Objective> {
-        let mut goals = goals.map_or_else(|| self.objectives(self.turn), |g| g.to_vec());
-        goals.extend(self.rebuild_objectives(&goals));
-        goals
-    }
-    pub(super) fn rebuild_objectives(&self, goals: &[Objective]) -> Vec<Objective> {
-        let mut rebuilding = vec![];
-        let leaders: Vec<_> = self
-            .units
-            .iter()
-            .filter(|u| u.side == self.turn && self.rules.units[u.kind].leader)
-            .map(|u| u.id)
-            .collect();
-        for id in leaders {
-            let required = goals
-                .iter()
-                .any(|g| g.kind == ObjectiveKind::Escape && actor_matches(&g.actor, id));
-            let (keeps, _) = self.leader_rebuild_plan(id, required);
-            if !keeps.is_empty() {
-                let mut o = crate::ai::objectives::objective(
-                    &format!("rebuild:u{id}"),
-                    ObjectiveKind::Capture,
-                    keeps.iter().map(|&t| self.board.ids[t].clone()).collect(),
-                    80.0,
-                );
-                o.actor = Some(format!("u{id}"));
-                rebuilding.push(o);
-            }
-        }
-        rebuilding
-    }
     pub fn enemy_danger(&self, u: &Unit, tile: usize) -> i32 {
         let mut target = u.clone();
         target.tile = tile;
@@ -328,12 +309,11 @@ impl Game<'_> {
             Retreat::Idle
         }
     }
-    fn movement_goals(&self, u: &Unit) -> Vec<usize> {
+    fn movement_goals(&self, u: &Unit, orders: &super::orders::TacticalOrders) -> Vec<usize> {
         let villages: Vec<_> = (0..self.terrain.len())
             .filter(|&t| self.terrain_is(t, Terrain::Village) && self.owners[t] != Some(u.side))
             .collect();
-        let mut goals = if self.rules.units[u.kind].family == Family::Scout && !villages.is_empty()
-        {
+        let goals = if self.rules.units[u.kind].family == Family::Scout && !villages.is_empty() {
             villages
         } else {
             self.units
@@ -342,23 +322,17 @@ impl Game<'_> {
                 .map(|o| o.tile)
                 .collect()
         };
-        if let Some(m) = &self.mission {
-            if u.side == Side::Enemy && self.rules.units[u.kind].leader {
-                if let Some(post) = &m.enemy_leader_post {
-                    return vec![self.site(post)];
-                }
+        if self.rules.units[u.kind].leader {
+            if let Some(post) = &orders.leader_post {
+                return vec![self.site(&post.0)];
             }
-            let territory = self.territory();
-            let contested: Vec<_> = territory
+        }
+        if !orders.defensive_tiles.is_empty() {
+            return orders
+                .defensive_tiles
                 .iter()
-                .copied()
-                .filter(|&t| self.owners[t] != Some(u.side))
+                .map(|t| self.site(&t.0))
                 .collect();
-            if !contested.is_empty() {
-                goals = contested;
-            } else if m.defend_objectives && !territory.is_empty() {
-                goals = territory;
-            }
         }
         goals
     }
@@ -383,7 +357,9 @@ impl Game<'_> {
             recorder.advance(self, id, promotion);
             return;
         }
-        let rebuild = self.leader_rebuild(id, required);
+        let (rebuild, intent) = rules.orders.rebuild_plan(self, id, required);
+        let index = self.index(id).unwrap();
+        self.units[index].rebuilding = intent;
         u = self.unit(id).unwrap().clone();
         let retreat = self.retreat(id, &mut rules, recorder);
         if retreat == Retreat::Retreated {
@@ -398,25 +374,26 @@ impl Game<'_> {
         let goals = if !rebuild.is_empty() {
             rebuild.clone()
         } else {
-            movement.unwrap_or_else(|| self.movement_goals(&u))
+            movement.unwrap_or_else(|| self.movement_goals(&u, rules.orders))
         };
         if goals.is_empty() {
             return;
         }
         let assigned = rules.goals.iter().any(|g| {
             (actor_matches(&g.actor, id) || g.family.is_some() && self.can_pursue(&u, g))
-                && super::campaign::actor_route(g)
+                && super::objectives::actor_route(g)
         });
         let routes = if assigned {
             Some(std::rc::Rc::new(self.occupied_routes(&u, &goals, false)))
         } else {
-            (self.map_id == "river" || self.campaign.is_some() || !rebuild.is_empty())
+            (self.map_id == "river" || rules.orders.campaign || !rebuild.is_empty())
                 .then(|| self.routes(u.kind, &goals))
         };
         let recruiting = self
             .recruitment_options(u.side)
             .iter()
             .any(|&k| !self.placement_tiles(&u, k, true).is_empty());
+        let campaign = rules.orders.campaign;
         let mut dest: Vec<_> = std::iter::once(u.tile)
             .chain(self.reachable(&u).iter().copied().map(|(t, _)| t))
             .filter(|&t| rules.movement(self, t))
@@ -424,7 +401,7 @@ impl Game<'_> {
                 !self.rules.units[u.kind].leader
                     || !rebuild.is_empty()
                     || self.leader_may_advance(&u, t, recruiting, required)
-                    || (self.campaign.is_none()
+                    || (!campaign
                         && self.units.iter().any(|target| {
                             target.side != u.side
                                 && self.rules.units[target.kind].leader
@@ -435,17 +412,7 @@ impl Game<'_> {
                         }))
             })
             .collect();
-        if u.side == Side::Enemy
-            && self.mission.as_ref().is_some_and(|m| {
-                m.defend_objectives
-                    || (m.enemy_leader_post.is_some() && self.rules.units[u.kind].leader)
-            })
-        {
-            if let Some(r) = &routes {
-                let limit = dest.iter().map(|&t| r[t]).min().unwrap_or(u16::MAX).max(1);
-                dest.retain(|&t| r[t] <= limit);
-            }
-        }
+        dest = rules.orders.authored_destinations(self, &u, dest);
         let mut scores = vec![f64::NEG_INFINITY; self.terrain.len()];
         for &t in &dest {
             let distance = routes.as_ref().map_or_else(
@@ -578,6 +545,7 @@ impl Game<'_> {
         source: &Game<'_>,
         id: u32,
         objectives: &[Objective],
+        orders: &super::orders::TacticalOrders,
         restrained: bool,
         recorder: &mut Recorder,
     ) {
@@ -606,6 +574,7 @@ impl Game<'_> {
             .filter(|g| {
                 self.can_pursue(&u, g)
                     && (g.kind != ObjectiveKind::Capture
+                        || g.hold == Some(true)
                         || g.tiles
                             .iter()
                             .any(|t| self.owners[self.site(t)] != Some(u.side)))
@@ -650,8 +619,8 @@ impl Game<'_> {
         } else {
             best.map(|g| g.tiles.iter().map(|t| self.site(t)).collect())
         };
-        let required = best.is_some_and(|g| g.kind == ObjectiveKind::Escape);
-        let rules = ClassicRules::new(source, &u, objectives, restrained);
+        let required = orders.moving_actor(id);
+        let rules = ClassicRules::new(source, &u, objectives, restrained, orders);
         self.classic_act(id, movement, required, rules, recorder);
     }
 }

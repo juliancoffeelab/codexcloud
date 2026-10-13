@@ -21,12 +21,16 @@ three independent blocks; planner algorithms do not receive the policy enum.
 - `recruiter.rs` owns recruitment selection and placement. Rotation, Frontline
   and Balanced preserve the existing combat recruitment styles.
 - `campaign.rs` owns mission duties, required actors, reserved destinations,
-  corridor clearing, rebuilding, diplomacy and requests for full planning.
-  Adaptive requests full Mixed planning during a crisis or a complex assault.
-  ArenaOnly rejects campaign use.
+  recruitment requirements, duration and diplomacy. It produces `CampaignOrders`
+  once per phase. Adaptive adjusts its orders and diplomatic treatment; it cannot
+  select a different Planner. ArenaOnly rejects campaign use.
 - `planner.rs` owns tactical dispatch and command staging. `classic.rs`,
   `tactics.rs`, `priority.rs` and `cheap.rs` implement the search families.
-  `objectives.rs` retains generic target expansion and stable tile ordering.
+  `objectives.rs` retains generic target expansion, corridor geometry and stable
+  tile ordering. `orders.rs` defines explicit recruitment requirements, actor
+  duties, safety constraints and compact reports; `context.rs` defines the block
+  interfaces. `cooperation.rs` binds duties, assigns escorts and implements
+  bounded local rescues and defensive fallback.
 
 Rust callers can select `Blocks { recruiter, campaign, planner }` with
 `PlanningWorkspace::with_blocks`. Browser `AiOptions` and native `--phase-stdio`
@@ -50,6 +54,32 @@ Omitting `blocks` selects the preset. Custom blocks survive pending commands and
 saved continuations; historical saves without the optional field retain their
 presets. Full native match schedules continue to select the named presets.
 Frozen Old policies remain separate historical executables.
+
+Block composition is frozen when a phase starts and retained in its saved
+continuation. Full simulations retain their configured tactic throughout all
+campaign stages. Planner receives turn orders rather than authored goal counters
+or durations. Recruitment decisions are applied before tactical selection, so
+planning sees their actual cost, occupancy and inactivity.
+
+`EnsureUnits` specifies a required total. Recruiters fill mandatory specialist
+deficits before discretionary recruitment, and avoid reserved endpoints and
+passages. Existing Rotation, Frontline and Balanced discretionary selection
+remain separate selectable strategies.
+
+`GoTo`, `Occupy`, `Escort` and `ClearPassage` provide actor duties with stable IDs
+and priorities. Guards are assigned greedily and their targets follow the actor.
+`Survive` forbids any retaliation damage to the actor, including on attacks
+expected to finish the battle. Next-phase exposure uses engine movement/damage
+forecasts rather than exhaustive enemy-action search. A local rescue considers
+at most two nearby helpers, two helper actions, 32 candidate states per actor
+and 128 per phase. Ordinary combat uses the selected Planner's existing heuristics.
+
+When no safe plan is found, allies continue working and the actor may retreat to
+the least exposed legal position or stay put. A still-unsafe fallback remains
+reported as an unmet constraint. Search exhaustion is not proof that safety is
+impossible. Campaign phase journals retain orders, guard assignments, mandatory
+recruits and fulfilled/deferred/unmet duties; the maintained analyzer reports
+those diagnostics alongside stage outcomes and CPU timing.
 
 AI filters use nested exhaustive match functions. The build rejects `matches!`
 anywhere in the current AI Rust module, including tests. The module also denies

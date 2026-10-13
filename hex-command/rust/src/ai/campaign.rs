@@ -1,10 +1,11 @@
-//! CampaignBlock duties, required-actor movement, safety and planner escalation.
+//! Authored missions are interpreted here and emitted as explicit turn orders.
 use super::{
     Diplomacy, PlanningWorkspace,
-    objectives::{actor_matches, individual, objective},
+    objectives::{actor_matches, actor_route, individual, objective},
+    orders::*,
 };
 use crate::{data::*, logic::Game};
-use rustc_hash::{FxHashMap as HashMap, FxHashSet as HashSet};
+use rustc_hash::FxHashSet as HashSet;
 use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
@@ -28,40 +29,237 @@ impl CampaignBlock {
             Self::Adaptive => restrained(game, workspace),
         }
     }
-    pub(super) fn planner(self, game: &Game<'_>, selected: super::Planner) -> super::Planner {
-        fn adaptive(block: CampaignBlock) -> bool {
-            match block {
-                CampaignBlock::Adaptive => true,
-                CampaignBlock::Objectives | CampaignBlock::ArenaOnly => false,
-            }
-        }
-        if adaptive(self) && crisis(game) {
-            super::Planner::Mixed
-        } else {
-            selected
-        }
-    }
-    pub(super) fn queue_mode(self, game: &Game<'_>) -> super::planner::QueueMode {
-        fn adaptive(block: CampaignBlock) -> bool {
-            match block {
-                CampaignBlock::Adaptive => true,
-                CampaignBlock::Objectives | CampaignBlock::ArenaOnly => false,
-            }
-        }
-        if game.campaign.is_some() && adaptive(self) {
-            super::planner::QueueMode::CampaignBlock
-        } else {
-            super::planner::QueueMode::Arena
-        }
-    }
     pub(super) fn goals(self, game: &Game<'_>, provided: Option<&[Objective]>) -> Vec<Objective> {
         match self {
             Self::Adaptive => policy_goals(game, provided),
             Self::Objectives | Self::ArenaOnly => individual(game.policy_objectives(provided)),
         }
     }
+
+    pub(super) fn campaign_orders(
+        self,
+        game: &Game<'_>,
+        workspace: &PlanningWorkspace,
+    ) -> CampaignOrders {
+        let restrained = self.restrained(game, workspace);
+        let campaign = game.campaign.is_some();
+        let targets = match self {
+            Self::Objectives | Self::Adaptive => self.goals(game, workspace.goals.as_deref()),
+            Self::ArenaOnly => individual(game.policy_objectives(workspace.goals.as_deref())),
+        };
+        let mut tactics = TacticalOrders {
+            targets,
+            restrained,
+            campaign,
+            protect_withdrawal: game.protects_withdrawal(game.turn, restrained),
+            withdrawal_tiles: game
+                .withdrawal_lanes(game.turn, restrained)
+                .into_iter()
+                .map(|tile| TileId(game.board.ids[tile].clone()))
+                .collect(),
+            ..TacticalOrders::default()
+        };
+        let mut recruitment = RecruitmentOrders::default();
+        recruitment.rotate_pool = campaign;
+        if game.turn == Side::Player {
+            if let Some(mission) = &game.mission {
+                for goal in &mission.goals {
+                    let specialist = match goal {
+                        Goal::Seal { unit_type, .. } => {
+                            unit_type.as_ref().filter(|_| !game.goal_done(goal))
+                        }
+                        Goal::Defeat { .. }
+                        | Goal::Escort { .. }
+                        | Goal::Escape { .. }
+                        | Goal::Control { .. }
+                        | Goal::Event { .. }
+                        | Goal::Hold { .. }
+                        | Goal::Vigil { .. }
+                        | Goal::Refuge { .. } => None,
+                    };
+                    if let Some(kind) = specialist {
+                        let selector =
+                            UnitSelector::Family(game.rules.units[game.kind(kind)].family);
+                        if !recruitment
+                            .requirements
+                            .iter()
+                            .any(|requirement| match requirement {
+                                RecruitRequirement::EnsureUnits {
+                                    selector: existing,
+                                    count: _,
+                                } => *existing == selector,
+                            })
+                        {
+                            recruitment
+                                .requirements
+                                .push(RecruitRequirement::EnsureUnits { selector, count: 1 });
+                        }
+                    }
+                }
+            }
+        } else if let Some(mission) = &game.mission {
+            tactics.leader_post = mission.enemy_leader_post.clone().map(TileId);
+            if mission.defend_objectives {
+                tactics.defensive_tiles = game
+                    .territory()
+                    .into_iter()
+                    .map(|tile| TileId(game.board.ids[tile].clone()))
+                    .collect();
+            }
+        }
+        for unit in game.units.iter().filter(|u| u.side == game.turn) {
+            if campaign && game.essential(unit) {
+                tactics.constraints.push(TacticalConstraint::Survive {
+                    actor: UnitId(unit.id),
+                });
+            }
+            for enemy in game.units.iter().filter(|u| u.side != game.turn) {
+                if terminal_attack(game, unit, enemy)
+                    && !tactics.terminal_targets.contains(&UnitId(enemy.id))
+                {
+                    tactics.terminal_targets.push(UnitId(enemy.id));
+                }
+            }
+        }
+        if tactics.protect_withdrawal {
+            tactics.mediated = game
+                .units
+                .iter()
+                .filter(|u| u.side != game.turn && game.mediation_at_risk(u))
+                .map(|u| UnitId(u.id))
+                .collect();
+        }
+        for target in &tactics.targets {
+            if !actor_route(target) || target.id.starts_with("rebuild:") {
+                continue;
+            }
+            let Some(actor) = game
+                .units
+                .iter()
+                .filter(|u| u.side == game.turn && game.can_pursue(u, target))
+                .min_by_key(|u| {
+                    target
+                        .tiles
+                        .iter()
+                        .map(|tile| game.board.distance(u.tile, game.site(tile)))
+                        .min()
+                        .unwrap_or(u16::MAX)
+                })
+            else {
+                continue;
+            };
+            let Some(destination) = target
+                .tiles
+                .iter()
+                .min_by_key(|tile| game.board.distance(actor.tile, game.site(tile)))
+            else {
+                continue;
+            };
+            let actor_id = UnitId(actor.id);
+            if campaign && !tactics.protects(actor.id) {
+                tactics
+                    .constraints
+                    .push(TacticalConstraint::Survive { actor: actor_id });
+            }
+            let priority = ObjectivePriority::Critical;
+            let occupy = target.hold == Some(true) || target.kind == ObjectiveKind::Vigil;
+            tactics.objectives.push(ObjectiveOrder {
+                id: target.id.clone(),
+                priority,
+                objective: if occupy {
+                    TacticalObjective::Occupy {
+                        actor: actor_id,
+                        location: TileId(destination.clone()),
+                    }
+                } else {
+                    TacticalObjective::GoTo {
+                        actor: actor_id,
+                        destination: TileId(destination.clone()),
+                    }
+                },
+            });
+            tactics.objectives.push(ObjectiveOrder {
+                id: format!("{}:passage", target.id),
+                priority,
+                objective: TacticalObjective::ClearPassage {
+                    actor: actor_id,
+                    destination: TileId(destination.clone()),
+                },
+            });
+            recruitment.reserved.push(TileId(destination.clone()));
+            if game.proximity(game.turn, actor.tile) <= 5 {
+                tactics.objectives.push(ObjectiveOrder {
+                    id: format!("{}:escort", target.id),
+                    priority: ObjectivePriority::Important,
+                    objective: TacticalObjective::Escort {
+                        actor: actor_id,
+                        guards: 2,
+                        selector: UnitSelector::Role(UnitRole::Warrior),
+                    },
+                });
+            }
+            for destination in &target.tiles {
+                if game.finishes_objective(actor, game.site(destination), &tactics.targets) {
+                    tactics
+                        .terminal_arrivals
+                        .push((actor_id, TileId(destination.clone())));
+                }
+            }
+        }
+        recruitment
+            .reserved
+            .extend(tactics.withdrawal_tiles.iter().cloned());
+        let mut lanes: Vec<_> = game
+            .actor_lanes(&tactics.targets)
+            .into_values()
+            .flatten()
+            .map(|tile| TileId(game.board.ids[tile].clone()))
+            .collect();
+        lanes.sort_by(|a, b| a.0.cmp(&b.0));
+        lanes.dedup();
+        recruitment.reserved.extend(lanes);
+        tactics.required_units = recruitment.requirements.clone();
+        tactics
+            .objectives
+            .sort_by(|a, b| b.priority.cmp(&a.priority).then(a.id.cmp(&b.id)));
+        CampaignOrders {
+            recruitment,
+            tactics,
+        }
+    }
 }
 impl Game<'_> {
+    pub(super) fn policy_objectives(&self, goals: Option<&[Objective]>) -> Vec<Objective> {
+        let mut goals = goals.map_or_else(|| self.objectives(self.turn), |g| g.to_vec());
+        goals.extend(self.rebuild_objectives(&goals));
+        goals
+    }
+    pub(super) fn rebuild_objectives(&self, goals: &[Objective]) -> Vec<Objective> {
+        let mut rebuilding = vec![];
+        let leaders: Vec<_> = self
+            .units
+            .iter()
+            .filter(|u| u.side == self.turn && self.rules.units[u.kind].leader)
+            .map(|u| u.id)
+            .collect();
+        for id in leaders {
+            let required = goals
+                .iter()
+                .any(|g| g.kind == ObjectiveKind::Escape && actor_matches(&g.actor, id));
+            let (keeps, _) = self.leader_rebuild_plan(id, required);
+            if !keeps.is_empty() {
+                let mut o = crate::ai::objectives::objective(
+                    &format!("rebuild:u{id}"),
+                    ObjectiveKind::Capture,
+                    keeps.iter().map(|&t| self.board.ids[t].clone()).collect(),
+                    80.0,
+                );
+                o.actor = Some(format!("u{id}"));
+                rebuilding.push(o);
+            }
+        }
+        rebuilding
+    }
     /// Mission tools are required independently of the combat recruitment style.
     pub(super) fn required_recruit(&self, side: Side) -> Option<Family> {
         fn specialist(goal: &Goal) -> Option<&str> {
@@ -107,50 +305,6 @@ impl Game<'_> {
                         .as_ref()
                         .is_some_and(|n| m.required_companions.contains(n))
                 }))
-    }
-    pub fn can_pursue(&self, u: &Unit, g: &Objective) -> bool {
-        fn is_objective_kind_escort_escape_vigil(value: &ObjectiveKind) -> bool {
-            match value {
-                ObjectiveKind::Escort | ObjectiveKind::Escape | ObjectiveKind::Vigil => true,
-                ObjectiveKind::Capture
-                | ObjectiveKind::Defeat
-                | ObjectiveKind::Visit
-                | ObjectiveKind::Seal => false,
-            }
-        }
-
-        (!is_objective_kind_escort_escape_vigil(&g.kind) || g.actor.is_some())
-            && (g.actor.is_none() || actor_matches(&g.actor, u.id))
-            && g.family
-                .as_ref()
-                .is_none_or(|f| self.rules.units[u.kind].family == *f)
-    }
-
-    /// Personal duties take precedence over incidental nearby resources.
-    pub(super) fn assigned_duty(&self, unit: &Unit, goal: &Objective) -> bool {
-        self.can_pursue(unit, goal) && (goal.actor.is_some() || goal.family.is_some())
-    }
-    pub fn reserved(&self, u: &Unit, goals: &[Objective]) -> HashSet<usize> {
-        fn is_objective_kind_escort_escape_vigil(value: &ObjectiveKind) -> bool {
-            match value {
-                ObjectiveKind::Escort | ObjectiveKind::Escape | ObjectiveKind::Vigil => true,
-                ObjectiveKind::Capture
-                | ObjectiveKind::Defeat
-                | ObjectiveKind::Visit
-                | ObjectiveKind::Seal => false,
-            }
-        }
-
-        goals
-            .iter()
-            .filter(|g| {
-                (g.actor.is_some()
-                    || g.family.is_some()
-                    || is_objective_kind_escort_escape_vigil(&g.kind))
-                    && !self.can_pursue(u, g)
-            })
-            .flat_map(|g| g.tiles.iter().map(|t| self.site(t)))
-            .collect()
     }
     pub fn objectives(&self, side: Side) -> Vec<Objective> {
         fn is_trigger_visit(value: &Trigger) -> bool {
@@ -382,136 +536,6 @@ impl Game<'_> {
         goals.retain(|g| !g.tiles.is_empty());
         goals
     }
-    pub fn support_objective(&self, u: &Unit, g: &Objective) -> Objective {
-        let mut result = g.clone();
-        if self.can_pursue(u, g) {
-            return result;
-        }
-        let reserved = self.reserved(u, std::slice::from_ref(g));
-        let mut seen = HashSet::default();
-        result.tiles = g
-            .tiles
-            .iter()
-            .flat_map(|t| self.board.adjacent[self.site(t)].iter().copied())
-            .filter(|&t| {
-                seen.insert(t) && !reserved.contains(&t) && self.cost(u.kind, t) != u16::MAX
-            })
-            .map(|t| self.board.ids[t].clone())
-            .collect();
-        result.weight *= 0.35;
-        result
-    }
-    /// Identify friendly blockers on a required actor's next movement corridor.
-    /// Escorts clear the path rather than camping beside its destination forever.
-    pub(super) fn actor_lanes(&self, goals: &[Objective]) -> HashMap<u32, HashSet<usize>> {
-        let mut lanes: HashMap<u32, HashSet<usize>> = HashMap::default();
-        for goal in goals.iter().filter(|g| actor_route(g)) {
-            let Some(actor) = self
-                .units
-                .iter()
-                .filter(|u| {
-                    u.side == self.turn
-                        && if goal.actor.is_some() {
-                            actor_matches(&goal.actor, u.id)
-                        } else {
-                            self.can_pursue(u, goal)
-                        }
-                })
-                .min_by_key(|u| {
-                    let targets: Vec<_> = goal.tiles.iter().map(|t| self.site(t)).collect();
-                    self.routes(u.kind, &targets)[u.tile]
-                })
-            else {
-                continue;
-            };
-            let targets: Vec<_> = goal.tiles.iter().map(|t| self.site(t)).collect();
-            if targets.contains(&actor.tile) {
-                continue;
-            }
-            let mut penalty = 2;
-            let mut route = self.occupied_routes(actor, &targets, true);
-            let available = if actor.moved {
-                0
-            } else {
-                self.rules.units[actor.kind].r#move as u16
-            };
-            if route[actor.tile] > available {
-                let short = self.occupied_routes_with_penalty(actor, &targets, Some(0));
-                let arrival_cost = targets
-                    .iter()
-                    .map(|&tile| self.cost(actor.kind, tile))
-                    .min()
-                    .unwrap_or(0);
-                if short[actor.tile] <= available.saturating_add(arrival_cost) {
-                    route = short;
-                    penalty = 0;
-                }
-            }
-            if route[actor.tile] == u16::MAX {
-                continue;
-            }
-            // Equal route values are valid on zero-cost terrain. Search admissible
-            // edges with visited parents, rather than requiring strict descent.
-            let mut parents = vec![usize::MAX; self.terrain.len()];
-            parents[actor.tile] = actor.tile;
-            let mut pending = std::collections::VecDeque::from([actor.tile]);
-            let mut endpoint = None;
-            while let Some(current) = pending.pop_front() {
-                if targets.contains(&current) {
-                    endpoint = Some(current);
-                    break;
-                }
-                let mut next: Vec<_> =
-                    self.board.adjacent[current]
-                        .iter()
-                        .copied()
-                        .filter(|&tile| {
-                            if parents[tile] != usize::MAX || route[tile] == u16::MAX {
-                                return false;
-                            }
-                            let occupied = self
-                                .at(tile)
-                                .is_some_and(|u| u.id != actor.id && u.side == actor.side);
-                            let entering = self
-                                .cost(actor.kind, tile)
-                                .saturating_add(if occupied { penalty } else { 0 });
-                            route[tile].saturating_add(entering) <= route[current]
-                        })
-                        .collect();
-                next.sort_by_key(|&tile| route[tile].saturating_add(self.cost(actor.kind, tile)));
-                for tile in next {
-                    parents[tile] = current;
-                    pending.push_back(tile);
-                }
-            }
-            let Some(mut current) = endpoint else {
-                continue;
-            };
-            let mut path = vec![current];
-            while current != actor.tile {
-                current = parents[current];
-                path.push(current);
-            }
-            path.reverse();
-            let mut spent = 0;
-            for &tile in path.iter().skip(1) {
-                spent += self.cost(actor.kind, tile) as usize;
-                if spent > self.rules.units[actor.kind].r#move {
-                    break;
-                }
-                if let Some(blocker) = self
-                    .at(tile)
-                    .filter(|u| u.side == actor.side && u.id != actor.id)
-                {
-                    lanes
-                        .entry(blocker.id)
-                        .or_default()
-                        .extend(path.iter().copied());
-                }
-            }
-        }
-        lanes
-    }
     pub fn finishes_objective(&self, u: &Unit, tile: usize, goals: &[Objective]) -> bool {
         fn is_objective_kind_escort_escape(value: &ObjectiveKind) -> bool {
             match value {
@@ -563,35 +587,6 @@ impl Game<'_> {
                         || is_goal_escape(g) && u.role == Some(Role::Leader))
                         && g.tile() == Some(&self.board.ids[tile]))
             })
-    }
-    pub fn authored_destinations(&self, u: &Unit, dest: Vec<usize>) -> Vec<usize> {
-        if u.side != Side::Enemy || self.mission.is_none() {
-            return dest;
-        }
-        let mission = self.mission.as_ref().unwrap();
-        let post = if self.rules.units[u.kind].leader {
-            mission.enemy_leader_post.as_ref()
-        } else {
-            None
-        };
-        let goals = if let Some(post) = post {
-            vec![self.site(post)]
-        } else if mission.defend_objectives {
-            self.territory()
-        } else {
-            vec![]
-        };
-        if goals.is_empty() {
-            return dest;
-        }
-        let routes = self.routes(u.kind, &goals);
-        let limit = dest
-            .iter()
-            .map(|&t| routes[t])
-            .min()
-            .unwrap_or(u16::MAX)
-            .max(1);
-        dest.into_iter().filter(|&t| routes[t] <= limit).collect()
     }
     pub fn territory(&self) -> Vec<usize> {
         fn is_goal_control(value: &Goal) -> bool {
@@ -657,19 +652,6 @@ impl Game<'_> {
             && side == Side::Player
             && self.mission.as_ref().is_some_and(|m| m.refuge.is_some())
             && !self.campaign.as_ref().unwrap().escalated()
-    }
-    pub fn diplomacy_allows(
-        &self,
-        u: &Unit,
-        target: &Unit,
-        weapon: usize,
-        from: usize,
-        restrained: bool,
-    ) -> bool {
-        !self.protects_withdrawal(u.side, restrained)
-            || (target.retreating != Some(true)
-                && (!self.mediation_at_risk(target)
-                    || self.preview(u, target, weapon, from).0 < target.hp))
     }
     pub fn withdrawal_lanes(&self, side: Side, restrained: bool) -> HashSet<usize> {
         let mut lanes = HashSet::default();
@@ -740,60 +722,6 @@ impl Game<'_> {
         } else {
             (vec![], Some(rebuilding))
         }
-    }
-    pub(super) fn leader_rebuild(&mut self, id: u32, required: bool) -> Vec<usize> {
-        let (keeps, intent) = self.leader_rebuild_plan(id, required);
-        if let Some(index) = self.index(id) {
-            self.units[index].rebuilding = intent;
-        }
-        keeps
-    }
-    pub(super) fn ordinary(&self, u: &Unit) -> impl Iterator<Item = &Unit> {
-        let side = u.side;
-        self.units.iter().filter(move |o| {
-            o.side == side
-                && !self.rules.units[o.kind].leader
-                && o.role != Some(Role::Courier)
-                && self.rules.units[o.kind].healing == 0
-        })
-    }
-    pub fn proximity(&self, side: Side, tile: usize) -> u16 {
-        self.units
-            .iter()
-            .filter(|o| o.side != side)
-            .map(|o| self.board.distance(tile, o.tile))
-            .min()
-            .unwrap_or(20)
-    }
-    pub fn leader_may_advance(
-        &self,
-        u: &Unit,
-        tile: usize,
-        recruiting: bool,
-        required: bool,
-    ) -> bool {
-        if tile == u.tile || required || !self.units.iter().any(|o| o.side != u.side) {
-            return true;
-        }
-        let before = self.proximity(u.side, u.tile);
-        let after = self.proximity(u.side, tile);
-        if u.rebuilding == Some(true) && recruiting && before > 2 {
-            return false;
-        }
-        if after >= before {
-            return true;
-        }
-        let escorts = self.ordinary(u).filter(|o| {
-            o.hp as f64 >= self.rules.units[o.kind].hp as f64 / 2.0
-                && self.board.distance(tile, o.tile) <= 2
-        });
-        let (count, at_front) = escorts.fold((0, false), |(count, front), unit| {
-            (
-                count + 1,
-                front || self.proximity(u.side, unit.tile) <= after,
-            )
-        });
-        count >= 2 && at_front
     }
 }
 pub(super) fn policy_goals(game: &Game<'_>, provided: Option<&[Objective]>) -> Vec<Objective> {
@@ -872,6 +800,7 @@ pub(super) fn heavy_campaign(game: &Game<'_>) -> bool {
             })
     })
 }
+#[cfg(test)]
 pub(super) fn crisis(game: &Game<'_>) -> bool {
     if heavy_campaign(game) {
         return game.turn == Side::Player;
@@ -932,17 +861,4 @@ pub(super) fn terminal_attack(game: &Game<'_>, unit: &Unit, target: &Unit) -> bo
                     })
                     .all(|u| u.id == target.id)
         })
-}
-
-/// Whether an actor must be routed through current occupancy and allies must yield.
-pub(super) fn actor_route(goal: &Objective) -> bool {
-    fn required_arrival(goal: &Objective) -> bool {
-        match goal.kind {
-            ObjectiveKind::Escort | ObjectiveKind::Escape | ObjectiveKind::Vigil => true,
-            ObjectiveKind::Capture => goal.actor.is_some(),
-            ObjectiveKind::Seal => goal.family.is_some(),
-            ObjectiveKind::Defeat | ObjectiveKind::Visit => false,
-        }
-    }
-    required_arrival(goal)
 }

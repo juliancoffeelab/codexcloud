@@ -10,6 +10,11 @@ Campaign players must understand objectives and preserve the actors needed to
 complete them. Planning should remain efficient enough for larger maps, armies
 and campaigns.
 
+The competence target is a reasonable, repeatable chance of completing ordinary
+campaigns, roughly at the level of the existing tactics. Useful local coordination
+is sufficient. Optimal army assignments, exhaustive enemy search and guaranteed
+survival are not requirements.
+
 Recruitment strategy, campaign reasoning and tactical planning are separate
 choices. A tactic fixes their composition for its entire run. Each block can
 adapt its behavior to the state, but cannot replace another block or switch its
@@ -102,6 +107,11 @@ Both operate on one temporary planning state and record accepted decisions.
 Command emission validates and applies the command to that temporary state, so
 subsequent decisions see its effects.
 
+Views borrow engine data; creating a restricted view does not copy the battle.
+Use one draft state per turn and reuse movement/threat workspaces. Cheap candidate
+scoring should use queries against that state; additional forks or reversible
+command application are reserved for bounded cooperative sequence evaluation.
+
 ```rust
 pub trait Campaigner {
     fn objectives(&mut self, view: CampaignView<'_>) -> CampaignOrders;
@@ -151,7 +161,19 @@ pub enum RecruitRequirement {
 pub struct TacticalOrders {
     pub battle: BattleObjective,
     pub constraints: Vec<TacticalConstraint>,
-    pub objectives: Vec<TacticalObjective>,
+    pub objectives: Vec<ObjectiveOrder>,
+}
+
+pub struct ObjectiveOrder {
+    pub id: ObjectiveId,
+    pub priority: ObjectivePriority,
+    pub objective: TacticalObjective,
+}
+
+pub enum ObjectivePriority {
+    Normal,
+    Important,
+    Critical,
 }
 
 pub enum BattleObjective {
@@ -198,6 +220,11 @@ reissues `Occupy` each turn while an authored hold is incomplete, and removes or
 changes the order when campaign progress calls for that. Planner handles the
 current turn's request without knowing how many campaign turns remain.
 
+`EnsureUnits.count` is the required total of eligible living units, not the
+number to recruit this turn. Recruiter computes the deficit from the updated
+state, including recruits already issued in this turn. Overlapping selectors
+must not cause duplicate recruitment when one unit satisfies both requirements.
+
 Placement constraints protect reserved destinations and required access. A newly
 recruited unit must not obstruct a seal, an occupancy target or a passage needed
 by an actor this turn. Recruitment cannot assume Planner will later move a unit
@@ -209,6 +236,11 @@ Safety constraints are feasibility checks. They cannot be outweighed by combat
 reward or objective progress. Objectives express the desired work and its
 priority; shortfalls must be reported explicitly.
 
+Campaigner supplies stable objective IDs while a duty continues across turns.
+Planner handles higher priorities first, with stable IDs breaking ties. Priority
+does not override safety. Compatible objectives for an actor are resolved
+together; conflicting objectives are deferred with a reason.
+
 An actor can have several compatible orders. For example, `GoTo`, `Survive` and
 `Escort` refer to the same adept. Planner must resolve them together, using stable
 objective identities and consistent actor assignments.
@@ -217,6 +249,10 @@ objective identities and consistent actor assignments.
 Planner chooses suitable guards and positions based on the actor's intended
 movement and enemy movement-plus-attack possibilities. Escort units may attack
 when doing so remains compatible with their protective assignment.
+
+Allocate guards greedily from nearby eligible units, retaining existing
+assignments while they remain valid. Use simple suitability and distance scores;
+global assignment optimization is unnecessary for the intended competence.
 
 `ClearPassage` is a cooperation request. Planner chooses the passage and arranges
 the necessary yielding actions before moving the actor. It must account for
@@ -237,10 +273,12 @@ advances.
 
 The survival contract is:
 
-1. Forecast the relevant next enemy phase after the proposed allied actions,
-   including enemy movement followed by attacks. Mechanical turn-transition
-   effects and known reinforcements must be included by engine forecast queries
-   where they affect that phase.
+1. Estimate next-enemy-phase exposure after the proposed allied actions using
+   cached movement-plus-attack pressure and engine damage queries. Include
+   relevant mechanical turn transitions and known reinforcements through engine
+   queries. Do not enumerate enemy action permutations. A forecast-safe choice
+   is safe according to this bounded model, not a guarantee against every enemy
+   sequence; conservative pressure estimates can overstate exposure.
 2. Prefer zero-exposure positions and action sequences. Nonlethal residual
    exposure may be evaluated when necessary for progress, but predicted death
    cannot be accepted as a profitable trade.
@@ -256,6 +294,15 @@ The survival contract is:
 6. If no safe sequence can be found, report an unmet survival constraint. Do not
    silently reinterpret a still-lethal attack as safe because it improves on an
    even worse forecast.
+
+An unmet constraint must not freeze the army. Continue useful allied combat and
+route clearing, reevaluate the actor when those actions change its options, and
+choose a legal defensive fallback if safety remains unattainable. Prefer retreat
+or the least exposed position, including staying put when appropriate. Keep the
+constraint marked unmet even if the fallback reduces predicted damage; attacks
+with retaliation damage remain forbidden. Distinguish exhausted search budget
+from finding no safe candidate within the searched set. Neither proves that no
+safe sequence exists globally.
 
 For example, a protected companion may have no individually safe move while an
 adjacent enemy remains alive. An infantry unit can kill that enemy first, opening
@@ -328,11 +375,18 @@ Campaigner recalculates the orders each turn from resolved state:
 5. **The seal is complete.** Campaigner removes that objective and derives the
    next turn's orders from the remaining mission requirements.
 
-Recruitment requests should describe the deficit rather than demand another
-specialist every turn. Conflicts with the available pool, resources or a
-Recruiter's policy must be reported explicitly. Any policy for mission-specialist
-exceptions must be part of the recruitment contract, not a hidden switch to a
-different Recruiter.
+Campaign-capable Recruiters satisfy explicit mission-required totals first,
+then apply their infantry, fair or situational strategy to discretionary
+recruitment. This specialist exception is part of each fixed policy's contract;
+it does not switch Recruiters. An infantry simulation player may therefore
+recruit a mandatory adept, while its discretionary army remains infantry.
+Report mandatory recruits separately so balance comparisons retain that meaning.
+
+When resources, roster eligibility or legal placement make a requirement
+unavailable, report the deficit explicitly. Do not recruit another specialist
+each turn once the required total is met. A strictly infantry-only Recruiter
+without specialist exceptions is suitable only for scenarios whose requirements
+it can satisfy; its incompatibility must not be mistaken for a tactical failure.
 
 For an arena-only tactic, Campaigner returns `BattleToKill` with no special
 campaign recruitment requirements or actor duties. It does not select a
@@ -350,6 +404,12 @@ and planning reports. Reports include:
   inactive actors, insufficient eligible guards, blocked access or no safe
   sequence;
 - safety assessments needed to explain protected-actor decisions.
+
+Keep routine reports compact: order IDs, assignments, status/reason codes and
+summary safety estimates are enough. Detailed candidate and safety traces are
+opt-in diagnostics. Serialization belongs in the reporting layer, outside
+candidate scoring; routine runs must still retain the information the analyzer
+needs to explain outcomes.
 
 Simulation records should retain these diagnostics so the maintained analyzer
 can explain what was requested, how it was assigned and why it could not be
@@ -370,7 +430,16 @@ actions invalidate them. Shared helpers must not introduce hidden campaign
 interpretation or mutable component selection.
 
 Cooperative search should focus on the actors and allies involved in a request.
-The architecture must support a short dependency such as ally attack followed
-by actor retreat without requiring an unrestricted search over the whole army.
-Search limits are part of the selected Planner's behavior; reaching a limit must
-remain distinguishable from proving that no safe plan exists.
+Start with one protected actor and at most two nearby helpers, evaluating at most
+two helper actions before the actor acts. Start with a fixed budget of 32–64
+candidate states per actor and a fixed total cooperative budget per turn, so many
+protected actors cannot cause unbounded work. These are starting limits to tune
+through measurement, not demonstrated optimal values. Ordinary combat stays on
+the selected Planner's existing heuristic path. Reaching a search limit must be
+reported distinctly from finding no safe candidate in the searched set.
+
+Validate implementations with full simulations and the maintained analyzer,
+comparing campaign completion and chooser/phase CPU against the existing tactics
+under the same configuration. Include the arena balance checks. Aim for comparable
+campaign competence and inexpensive local rescues; broaden search only when
+measured results justify the extra cost.

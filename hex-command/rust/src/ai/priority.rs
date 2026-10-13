@@ -1,6 +1,6 @@
 //! A bounded duty queue replaces the global unit search after every command.
 use super::{
-    CampaignBlock, PlanningWorkspace, TacticalRole,
+    PlanningWorkspace, TacticalRole,
     planner::{GlobalStyle, QueueMode},
     roles::role,
     tactics::Plan,
@@ -87,7 +87,7 @@ impl Game<'_> {
                             } else {
                                 0.0
                             }
-                            + if killed && super::campaign::terminal_attack(self, unit, foe) {
+                            + if killed && cache.orders.terminal_attack(foe) {
                                 100.0
                             } else {
                                 0.0
@@ -136,15 +136,20 @@ impl Game<'_> {
                             .healing
                             .min(self.rules.units[ally.kind].hp - ally.hp)
                             .max(0) as f64;
-                        score += heal * if self.essential(ally) { 3.0 } else { 0.5 };
+                        score += heal
+                            * if cache.orders.important(self, ally) {
+                                3.0
+                            } else {
+                                0.5
+                            };
                     }
                 }
                 if rule.leader && !personal {
                     score -= 8.0;
                 }
-                if self.campaign.is_some()
+                if cache.orders.campaign
                     && unit.side == Side::Player
-                    && self.essential(unit)
+                    && cache.orders.important(self, unit)
                     && !personal
                 {
                     score -= 4.0;
@@ -158,12 +163,15 @@ impl Game<'_> {
 }
 pub(super) fn next_plan(
     game: &Game<'_>,
-    campaign: CampaignBlock,
     workspace: &mut PlanningWorkspace,
     intents: &mut Vec<(u32, Option<bool>)>,
 ) -> Option<Plan> {
-    super::cheap::prepare(game, workspace, campaign);
-    let policy = campaign.queue_mode(game);
+    super::cheap::prepare(game, workspace);
+    let policy = if workspace.orders.as_ref().unwrap().tactics.campaign {
+        QueueMode::CampaignBlock
+    } else {
+        QueueMode::Arena
+    };
     if workspace.priority.is_none() {
         workspace.priority = Some(PrioritySnapshot {
             pending: game.priority_order(policy, &workspace.cheap),
@@ -256,19 +264,22 @@ fn next_plan_inner(
         finish_intents(workspace, intents);
         let mut plan = super::cheap::plan(game, id.0, workspace);
         if plan.is_none()
-            && game.essential(unit)
+            && workspace
+                .orders
+                .as_ref()
+                .unwrap()
+                .tactics
+                .important(game, unit)
             && (policy == QueueMode::CampaignBlock || game.proximity(unit.side, unit.tile) <= 6)
         {
             let mut ignored = vec![];
             plan = game.best_plan::<true, true>(
                 GlobalStyle::Mixed,
+                &workspace.orders.as_ref().unwrap().tactics,
                 workspace.seed,
                 workspace.goals.as_deref(),
                 workspace.prepared_goals.as_deref(),
-                workspace
-                    .effective_blocks(workspace.policy.expect("initialized planner"))
-                    .campaign
-                    .restrained(game, workspace),
+                workspace.orders.as_ref().unwrap().tactics.restrained,
                 &mut workspace.routes,
                 &mut workspace.commitments,
                 &mut ignored,
@@ -302,7 +313,7 @@ mod tests {
     use super::super::Policy;
     use super::*;
     #[test]
-    fn complex_assaults_use_full_planning_after_snapshot_restoration() {
+    fn complex_assaults_keep_the_selected_planner_after_snapshot_restoration() {
         fn is_command_endturn(value: &Command) -> bool {
             match value {
                 Command::EndTurn => true,
@@ -325,17 +336,24 @@ mod tests {
             Game::start_campaign(&rules, "ashen-oath", 0, vec![], 0, vec![], vec![], vec![]);
         assert!(super::super::campaign::heavy_campaign(&game));
         let mut priority = PlanningWorkspace::new(7, 1, None, super::super::Diplomacy::Pragmatic);
-        let mut mixed = PlanningWorkspace::new(7, 1, None, super::super::Diplomacy::Pragmatic);
         for _ in 0..6 {
+            let mut resumed = PlanningWorkspace::from_snapshot(
+                serde_json::from_str(&serde_json::to_string(&priority.snapshot()).unwrap())
+                    .unwrap(),
+            );
             let command =
                 super::super::choose_game_command(&rules, &game, Policy::Priority, &mut priority)
                     .unwrap();
             assert_eq!(
                 command,
-                super::super::choose_game_command(&rules, &game, Policy::Mixed, &mut mixed)
+                super::super::choose_game_command(&rules, &game, Policy::Priority, &mut resumed)
                     .unwrap()
             );
             let snapshot = priority.snapshot();
+            assert_eq!(
+                snapshot.blocks.unwrap().planner,
+                super::super::Planner::Queued
+            );
             snapshot.validate(&rules, &game.state()).unwrap();
             priority = PlanningWorkspace::from_snapshot(
                 serde_json::from_str(&serde_json::to_string(&snapshot).unwrap()).unwrap(),
@@ -453,11 +471,9 @@ mod tests {
         for site in sites {
             campaign.owners[site] = Some(Side::Player);
         }
-        super::super::cheap::prepare(
-            &campaign,
-            &mut workspace,
-            super::super::CampaignBlock::Adaptive,
-        );
+        workspace.orders =
+            Some(super::super::CampaignBlock::Adaptive.campaign_orders(&campaign, &workspace));
+        super::super::cheap::prepare(&campaign, &mut workspace);
         assert!(
             workspace
                 .cheap

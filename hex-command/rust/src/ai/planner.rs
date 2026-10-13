@@ -1,6 +1,6 @@
 //! Tactical dispatch and search styles, independent of recruitment choices.
 use super::{
-    CampaignBlock, PlanningWorkspace, Recorder, advance_command, intent_command, move_command,
+    PlanningWorkspace, Recorder, advance_command, intent_command, move_command,
     objectives::{self, actor_matches},
     priority,
 };
@@ -43,12 +43,17 @@ impl Planner {
     pub(super) fn choose(
         self,
         game: &Game<'_>,
-        campaign: CampaignBlock,
         workspace: &mut PlanningWorkspace,
-        restrained: bool,
     ) -> Result<(), CommandError> {
         let rules = game.rules;
-        let planner = campaign.planner(game, self);
+        let planner = self;
+        super::cooperation::assign(game, workspace);
+        super::cooperation::refresh_assignments(game, workspace);
+        if super::cooperation::rescue(game, workspace)? {
+            return Ok(());
+        }
+        let orders = &workspace.orders.as_ref().expect("campaign orders").tactics;
+        let restrained = orders.restrained;
         fn classic(planner: Planner) -> bool {
             match planner {
                 Planner::Classic => true,
@@ -57,14 +62,12 @@ impl Planner {
         }
         if classic(planner) {
             if workspace.tactical_remaining.is_none() {
-                let explicit = workspace.goals.is_some()
-                    || (game.turn == Side::Player && game.campaign.is_some());
-                let goals = if explicit {
-                    workspace.goals.as_deref()
-                } else {
-                    Some(&[][..])
-                };
-                workspace.classic_objectives = game.policy_objectives(goals);
+                workspace.classic_objectives = orders.targets.clone();
+                if !orders.campaign && workspace.goals.is_none() {
+                    workspace
+                        .classic_objectives
+                        .retain(|g| g.id.starts_with("rebuild:"));
+                }
                 workspace.classic_ids = game.classic_order(&workspace.classic_objectives).into();
                 workspace.tactical_remaining = Some(workspace.classic_ids.len());
                 for unit in game
@@ -75,7 +78,7 @@ impl Planner {
                     let required = workspace.classic_objectives.iter().any(|g| {
                         g.kind == ObjectiveKind::Escape && actor_matches(&g.actor, unit.id)
                     });
-                    let (_, intent) = game.leader_rebuild_plan(unit.id, required);
+                    let (_, intent) = orders.rebuild_plan(game, unit.id, required);
                     if unit.rebuilding != intent {
                         workspace.commands.push_back(intent_command(
                             unit,
@@ -96,6 +99,7 @@ impl Planner {
                     game,
                     id,
                     &workspace.classic_objectives,
+                    orders,
                     restrained,
                     &mut recorder,
                 );
@@ -126,10 +130,11 @@ impl Planner {
                     .map(|g| objectives::individual(g.clone()));
             }
             let plan = if planner.queued() {
-                priority::next_plan(game, campaign, workspace, &mut intents)
+                priority::next_plan(game, workspace, &mut intents)
             } else {
                 game.best_plan::<true, false>(
                     planner.global_style(),
+                    orders,
                     workspace.seed,
                     workspace.goals.as_deref(),
                     workspace.prepared_goals.as_deref(),
@@ -186,6 +191,10 @@ impl Planner {
             } else {
                 workspace.finished = true;
             }
+        }
+        if workspace.finished {
+            super::cooperation::fallback(game, workspace)?;
+            super::cooperation::report(game, workspace);
         }
         Ok(())
     }

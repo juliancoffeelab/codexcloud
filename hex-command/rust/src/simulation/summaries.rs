@@ -314,6 +314,7 @@ mod tests {
             reason: "cap".into(),
             rounds: 1,
             phases: vec![Phase {
+                planning: None,
                 side: Side::Player,
                 round: 1,
                 records: Records {

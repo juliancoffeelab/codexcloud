@@ -56,6 +56,8 @@ def chapter_diagnostics(chapter):
         category = 'defeat; see recorded reason' if reason else 'defeat; cause not recorded'
     player_damage = enemy_damage = 0
     recruits, casualties = Counter(), Counter()
+    unmet_orders, deferred_orders = Counter(), Counter()
+    rescue_candidates = retaliation_violations = 0
     for phase in phases:
         roster = {u['id']: u for u in phase.get('before', []) + phase.get('units', []) + phase.get('losses', [])}
         for action in phase.get('actions', []):
@@ -72,6 +74,16 @@ def chapter_diagnostics(chapter):
             else:
                 enemy_damage += combat['damage']
                 player_damage += combat['retaliation']
+        if phase['side'] == 'player' and phase.get('planning'):
+            planning = phase['planning']
+            for duty in planning['report'].get('duties', []):
+                if duty['status'] == 'Unmet':
+                    unmet_orders[duty.get('reason') or 'unspecified'] += 1
+                elif duty['status'] == 'Deferred':
+                    deferred_orders[duty.get('reason') or 'unspecified'] += 1
+            rescue_candidates += planning['report'].get('candidates', 0)
+            protected = {f"u{c['Survive']['actor']}" for c in planning['orders']['tactics'].get('constraints', []) if 'Survive' in c}
+            retaliation_violations += sum(c['unit'] in protected and c['retaliation'] > 0 for c in phase.get('combats', []))
     return dict(category=category, reason=reason, idleTail=idle, repeatedTail=repeated,
                 finalPlayerUnits=sum(u['side'] == 'player' for u in units),
                 finalEnemyUnits=sum(u['side'] == 'enemy' for u in units),
@@ -83,7 +95,10 @@ def chapter_diagnostics(chapter):
                 recruits=dict(recruits), casualties=dict(casualties),
                 playerDamage=player_damage, enemyDamage=enemy_damage,
                 namedGoalActors=list(named_actors), actorArrivals=arrivals,
-                recordedPhases=bool(phases))
+                recordedPhases=bool(phases), unmetOrders=dict(unmet_orders),
+                deferredOrders=dict(deferred_orders), rescueCandidates=rescue_candidates,
+                protectedRetaliationViolations=retaliation_violations,
+                recordedPlanning=any(p.get('planning') for p in own))
 
 
 def recorded_analysis(result):
@@ -121,7 +136,7 @@ def load_run(paths):
                         diagnostics[identity(raw)] = recorded_analysis(raw)
         else:
             report = json.loads(path.read_text())
-        source = {k: report.get(k) for k in ('sourceCommit', 'fingerprint', 'status', 'mode', 'schedule', 'seeds', 'elapsedSeconds', 'detailFormat')}
+        source = {k: report.get(k) for k in ('sourceCommit', 'fingerprint', 'status', 'mode', 'schedule', 'seeds', 'elapsedSeconds', 'detailFormat', 'turnTiming')}
         source['fingerprint'] = report.get('fingerprint', report.get('fingerprints'))
         source['file'] = str(path.resolve())
         source['matches'] = len(report['outcomes'])
@@ -148,7 +163,8 @@ def load_run(paths):
                             raise ValueError('Invalid gameplay journal reference')
                         reader = readers.setdefault(name, None)
                         if reader is None:
-                            reader = readers[name] = (path.parent / name).open('rb')
+                            journal = path.parent / name
+                            reader = readers[name] = journal.open('rb') if journal.exists() else gzip.open(str(journal) + '.gz', 'rb')
                         reader.seek(reference['offset'])
                         raw = reader.read(reference['bytes'])
                         if len(raw) != reference['bytes'] or hashlib.sha256(raw).hexdigest() != reference['sha256']:
@@ -202,6 +218,9 @@ def campaign_tables(outcomes):
                              idleTail=mission['idleTail'], repeatedTail=mission['repeatedTail'],
                              maxGoalProgress=mission['maxGoalProgress'], goals=mission['goals'],
                              namedLosses=mission['namedLosses'], actorArrivals=mission['actorArrivals'],
+                             unmetOrders=mission.get('unmetOrders', {}), deferredOrders=mission.get('deferredOrders', {}),
+                             rescueCandidates=mission.get('rescueCandidates', 0), protectedRetaliationViolations=mission.get('protectedRetaliationViolations', 0),
+                             recordedPlanning=mission.get('recordedPlanning', False),
                              detail=outcome.get('detail')))
             chapter = chapters.setdefault(chapter_key, Counter())
             chapter['reached'] += 1
@@ -492,13 +511,27 @@ def build_report(inputs, baseline_inputs, out):
         if previous:
             transitions.append(compare_match(key, previous[key], o))
     campaign_rows, stage_rows, failure_rows, campaign_events, campaign_runs = campaign_tables(current)
+    baseline_campaigns, _, _, _, _ = campaign_tables(previous)
+    campaign_fields = ('campaign', 'player', 'enemy', 'diplomacy', 'maxRounds', 'recruitLimit')
+    old_campaigns = {tuple(row[k] for k in campaign_fields): row for row in baseline_campaigns}
+    campaign_changes = []
+    for row in campaign_rows:
+        old = old_campaigns.get(tuple(row[k] for k in campaign_fields))
+        if old:
+            campaign_changes.append({**row, 'completedBefore': old['completed'], 'completionRateBefore': old['completionRate'], 'completionRateDelta': row['completionRate'] - old['completionRate']})
+    policy_timings = []
+    for label, runs in [('current', sources), ('baseline', previous_sources)]:
+        for source in runs:
+            timing = source.get('turnTiming') or {}
+            policy_timings.extend(dict(run=label, clock=timing.get('clock'), source=source['file'], **row) for row in timing.get('policies', []))
     tables = {'campaign_runs': campaign_runs, 'campaign_summary': campaign_rows, 'campaign_stages': stage_rows,
               'campaign_failures': failure_rows, 'campaign_unit_events': campaign_events, 'matchups': rows, 'unit_events': units, 'matches': ledger, 'campaigns': campaigns,
               'race_equal_policy': combine(rows, ['race'], equal=True),
               'race_map_equal_policy': combine(rows, ['race', 'map'], equal=True),
               'race_map_policy': combine(rows, ['race', 'map', 'policy'], equal=True),
               'race_all_policies': combine(rows, ['race']), 'baseline_matchups': before,
-              'matchup_changes': comparison, 'match_changes': transitions, 'baseline_unit_events': before_units}
+              'matchup_changes': comparison, 'match_changes': transitions, 'baseline_unit_events': before_units,
+              'campaign_changes': campaign_changes, 'policy_timings': policy_timings}
     out.mkdir(parents=True, exist_ok=True)
     for name, table in tables.items():
         write_csv(out / (name + '.csv'), table)
@@ -508,6 +541,20 @@ def build_report(inputs, baseline_inputs, out):
                 'participantRows': sum(r['games'] for r in rows)}
     (out / 'metadata.json').write_text(json.dumps(metadata, indent=2) + '\n')
     findings = overview(campaign_rows, stage_rows, failure_rows, campaign_events, rows)
+    if campaign_changes:
+        findings += ['## Campaign completion versus baseline', '', markdown(campaign_changes, ['campaign', 'player', 'diplomacy', 'attempts', 'completedBefore', 'completed', 'completionRateDelta']), '']
+    if policy_timings:
+        findings += ['## Chooser and phase CPU', '',
+                     'Each turn is one side’s completed phase. These policy averages pool arenas and campaigns; phase CPU excludes turn-transition events and journal encoding. Runs can contain different numbers of turns.', '',
+                     markdown(policy_timings, ['run', 'policy', 'turns', 'meanDecisionMicrosPerTurn', 'meanTurnMicros']), '']
+    diagnostics = Counter()
+    for outcome in current.values():
+        for chapter in outcome.get('analysis') or []:
+            diagnostics.update(chapter.get('unmetOrders', {}))
+            diagnostics['protected retaliation violations'] += chapter.get('protectedRetaliationViolations', 0)
+    if any(any(chapter.get('recordedPlanning') for chapter in outcome.get('analysis') or []) for outcome in current.values()):
+        findings += ['## Recorded planner diagnostics', '', 'Counts are duty observations per phase, not independent failed attempts. UnsafeFallback means the forecast constraint remained unmet; it does not prove unavoidable death.', '',
+                     markdown([dict(reason=reason, observations=count) for reason, count in sorted(diagnostics.items())], ['reason', 'observations']), '']
     lines = findings + ['# Complete combat data', '', f"Physical matches: **{len(current):,}**. Recorded arena factions: **{', '.join(factions)}**.", '',
              'Each matrix cell shows **win percentage (wins/losses/caps)** for the row faction. Caps stay in the denominator. Each arena match contributes one result to each participant; mirrored cells are views of the same matches, not additional independent games. Self-play cells contain both participants. Policy pairings are kept separate.', '',
              '## Source runs', '', markdown(sources, ['sourceCommit', 'fingerprint', 'status', 'mode', 'matches', 'seeds', 'schedule']), '',

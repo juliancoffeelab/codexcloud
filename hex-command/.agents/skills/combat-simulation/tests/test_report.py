@@ -155,6 +155,13 @@ class CompleteDataTests(unittest.TestCase):
             self.assertEqual(next(r for r in tables['campaign_failures'] if r['category']=='required actor lost')['exampleSeeds'], [2])
             self.assertIn('1/5 (20.0%)', output.getvalue())
             self.assertIn('grove', (root/'analytics/findings.md').read_text())
+            with gzip.open(root/'report.details.jsonl.gz', 'wb') as compressed:
+                compressed.write((root/'report.details.jsonl').read_bytes())
+            (root/'report.details.jsonl').unlink()
+            with contextlib.redirect_stdout(io.StringIO()):
+                compressed_tables = report.build_report([path], [], root/'compressed')
+            self.assertEqual(tables['campaign_summary'], compressed_tables['campaign_summary'])
+
             self.assertIn('Recorded findings', (root/'analytics/index.html').read_text())
             outcomes[0]['detail']['sha256']='wrong'
             path.write_text(json.dumps(dict(outcomes=outcomes)))
@@ -167,6 +174,21 @@ class CompleteDataTests(unittest.TestCase):
             loaded, _ = report.load_run([legacy])
             self.assertEqual(len(loaded),4)
             self.assertTrue(all(o['analysis'] for o in loaded.values()))
+
+    def test_planner_diagnostics_and_cpu_are_reported_without_extra_queries(self):
+        phase = dict(side='player', before=[], units=[], actions=[], losses=[], goals=[], combats=[dict(unit='u2', target='u3', damage=4, retaliation=2)],
+                     planning=dict(orders=dict(tactics=dict(constraints=[dict(Survive=dict(actor=2))])),
+                                   report=dict(candidates=7, duties=[dict(id='survive:u2', status='Unmet', reason='UnsafeFallback')])))
+        diagnostic = report.chapter_diagnostics(dict(winner=None, goals=[], phases=[phase], final=dict(units=[])))
+        self.assertEqual(diagnostic['unmetOrders'], {'UnsafeFallback': 1})
+        self.assertEqual((diagnostic['protectedRetaliationViolations'], diagnostic['rescueCandidates']), (1, 7))
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp)/'report.json'
+            path.write_text(json.dumps(dict(outcomes=[match(1)], turnTiming=dict(clock='thread_cpu', policies=[dict(policy='mixed', turns=10, meanDecisionMicrosPerTurn=12, meanTurnMicros=15)]))))
+            with contextlib.redirect_stdout(io.StringIO()) as output:
+                tables = report.build_report([path], [path], Path(tmp)/'analytics')
+            self.assertEqual(len(tables['policy_timings']), 2)
+            self.assertIn('Chooser and phase CPU', output.getvalue())
 
     def test_full_runner_separates_campaign_roles_and_runs_the_analyzer(self):
         with tempfile.TemporaryDirectory() as tmp:

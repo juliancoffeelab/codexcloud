@@ -114,7 +114,12 @@ cat artifacts/current/analytics/summary.md
 The full runner has already analyzed a successful batch. The findings and
 summary are the primary outputs; the HTML report provides filters and every
 recorded table, including arena comparisons and campaign/stage/failure
-diagnostics. Use CSV exports only when a table-shaped view is useful.
+diagnostics. With `--profile-turns`, readable reports include chooser and phase
+CPU by policy. A matched `--baseline` adds campaign completion changes. New
+campaign journals also retain explicit orders and planning reports; the analyzer
+reports unmet-duty reasons and checks protected actors for retaliation damage.
+Duty counts describe observations per phase, not independent failed attempts.
+Use CSV exports only when a table-shaped view is useful.
 
 For saved reports or a baseline comparison, invoke the maintained analyzer
 directly:
@@ -142,6 +147,8 @@ it does not rerun battles. It can run outside a Git checkout. Baseline reports
 must contain exactly the same match configurations; missing or duplicate
 configurations fail analysis. Full gameplay remains in the adjacent detail
 journal, while `full-data.zip` contains report outputs and compact outcomes.
+The analyzer also accepts a journal compressed as its original filename plus
+`.gz`; offsets and checksums continue to refer to the decompressed bytes.
 
 ## Progress and recovery
 

@@ -365,6 +365,7 @@ fn phase(
             .sum()
     };
     let phase = Phase {
+        planning: workspace.diagnostics(),
         side,
         round,
         records,

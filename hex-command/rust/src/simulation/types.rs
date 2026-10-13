@@ -88,6 +88,8 @@ impl<'de> Deserialize<'de> for OwnershipSnapshot {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Complete actions, combats, casualties and roster/objective state for one phase.
 pub struct Phase {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub planning: Option<crate::ai::orders::TurnDiagnostics>,
     pub side: Side,
     pub round: u32,
     #[serde(flatten)]

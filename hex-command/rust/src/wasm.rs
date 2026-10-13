@@ -353,7 +353,14 @@ impl NativeEngineFactory {
         })?;
         let state = game.state();
         if let Some(planner) = &mut saved.planner {
-            if planner.workspace.blocks != planner.options.blocks
+            if planner
+                .workspace
+                .blocks
+                .or_else(|| planner.workspace.policy.and_then(|policy| policy.blocks()))
+                != planner
+                    .options
+                    .blocks
+                    .or_else(|| planner.options.policy.blocks())
                 || planner.workspace.seed != saved.seed
                 || planner.workspace.diplomacy != planner.options.diplomacy
                 || planner

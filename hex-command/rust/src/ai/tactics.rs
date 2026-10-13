@@ -98,30 +98,20 @@ impl Game<'_> {
     pub(super) fn best_plan<const BOUNDED: bool, const FOCUSED: bool>(
         &self,
         policy: GlobalStyle,
+        orders: &super::orders::TacticalOrders,
         seed: u32,
-        goals: Option<&[Objective]>,
+        _goals: Option<&[Objective]>,
         prepared_goals: Option<&[Objective]>,
-        restrained: bool,
+        _restrained: bool,
         routes: &mut HashMap<(usize, Vec<usize>), std::rc::Rc<Vec<u16>>>,
         commitments: &mut HashMap<u32, String>,
         intents: &mut Vec<(u32, Option<bool>)>,
         threat_workspace: &mut super::threats::ArenaThreatWorkspace,
         focus: Option<u32>,
     ) -> Option<Plan> {
-        fn is_objective_kind_escort_escape(value: &ObjectiveKind) -> bool {
-            match value {
-                ObjectiveKind::Escort | ObjectiveKind::Escape => true,
-                ObjectiveKind::Capture
-                | ObjectiveKind::Defeat
-                | ObjectiveKind::Visit
-                | ObjectiveKind::Seal
-                | ObjectiveKind::Vigil => false,
-            }
-        }
-
         let side = self.turn;
         let objectives: Cow<'_, [Objective]> = if let Some(prepared) = prepared_goals {
-            let rebuilding = self.rebuild_objectives(prepared);
+            let rebuilding = orders.rebuild_objectives(self);
             if rebuilding.is_empty() {
                 Cow::Borrowed(prepared)
             } else {
@@ -134,7 +124,7 @@ impl Game<'_> {
                 )
             }
         } else {
-            Cow::Owned(individual(self.policy_objectives(goals)))
+            Cow::Owned(orders.targets.clone())
         };
         let escort_lanes = self.actor_lanes(&objectives);
         let rebuilds: HashMap<_, _> = self
@@ -149,7 +139,7 @@ impl Game<'_> {
                         .any(|g| g.kind == ObjectiveKind::Escape && actor_matches(&g.actor, u.id)),
                 )
             })
-            .map(|(id, required)| (id, self.leader_rebuild_plan(id, required)))
+            .map(|(id, required)| (id, orders.rebuild_plan(self, id, required)))
             .collect();
         for (&id, (_, intent)) in &rebuilds {
             if self.unit(id).unwrap().rebuilding != *intent {
@@ -164,8 +154,8 @@ impl Game<'_> {
             return None;
         }
         let foes: Vec<_> = self.units.iter().filter(|u| u.side != side).collect();
-        let lanes = self.withdrawal_lanes(side, restrained);
-        let mut threats = Threats::with_workspace(self, side, threat_workspace);
+        let lanes = orders.lanes(self);
+        let mut threats = Threats::with_workspace(self, side, threat_workspace).with_orders(orders);
         let screens: Vec<_> = allies
             .iter()
             .filter(|u| {
@@ -210,7 +200,9 @@ impl Game<'_> {
         let protected: Vec<_> = if policy == GlobalStyle::Mixed {
             allies
                 .iter()
-                .filter(|u| self.essential(u) || role(self, u.kind) != TacticalRole::Frontline)
+                .filter(|u| {
+                    orders.important(self, u) || role(self, u.kind) != TacticalRole::Frontline
+                })
                 .collect()
         } else {
             Vec::new()
@@ -227,7 +219,7 @@ impl Game<'_> {
             .filter(|(_, u)| !u.attacked && (!FOCUSED || Some(u.id) == focus))
             .map(|(index, &unit)| {
                 let before_risk = threats.at(unit, unit.tile, None);
-                let important = self.essential(unit);
+                let important = orders.important(self, unit);
                 let category = role(self, unit.kind);
                 let danger = if important {
                     9.0
@@ -245,11 +237,10 @@ impl Game<'_> {
                 } else {
                     self.rules.units[unit.kind].r#move
                 };
-                let terminal_objective = self.campaign.is_some()
-                    && side == Side::Player
-                    && objectives.iter().any(|g| {
-                        actor_matches(&g.actor, unit.id) && is_objective_kind_escort_escape(&g.kind)
-                    });
+                let terminal_objective = orders
+                    .terminal_arrivals
+                    .iter()
+                    .any(|(actor, _)| actor.0 == unit.id);
                 let zero_cost = self.rules.units[unit.kind]
                     .costs
                     .iter()
@@ -270,15 +261,14 @@ impl Game<'_> {
                         } else {
                             0.0
                         };
-                        let essential_value = if self.essential(target) {
+                        let essential_value = if orders.important(self, target) {
                             if killed { 18.0 } else { 4.0 }
                         } else {
                             0.0
                         };
                         let value =
                             damage.min(target.hp) as f64 * 2.0 + kill_value + essential_value;
-                        let terminal_attack =
-                            killed && super::campaign::terminal_attack(self, unit, target);
+                        let terminal_attack = killed && orders.terminal_attack(target);
                         if !distant {
                             offense = offense.max(if terminal_attack {
                                 value + 100.0
@@ -332,7 +322,7 @@ impl Game<'_> {
             roster
         {
             let category = role(self, original_unit.kind);
-            let important = self.essential(original_unit);
+            let important = orders.important(self, original_unit);
             if let Some(&promotion) = self.promotion_options(original_unit).first() {
                 let order = (unit_order, 0, 0);
                 if before_risk < original_unit.hp
@@ -353,9 +343,7 @@ impl Game<'_> {
                 }
             }
             let reserved = self.reserved(original_unit, &objectives);
-            let required = objectives.iter().any(|g| {
-                g.kind == ObjectiveKind::Escape && actor_matches(&g.actor, original_unit.id)
-            });
+            let required = orders.moving_actor(original_unit.id);
             let unchanged = (Vec::new(), original_unit.rebuilding);
             let (rebuilding, intent) = rebuilds.get(&original_unit.id).unwrap_or(&unchanged);
             let mut planned_unit = (*original_unit).clone();
@@ -426,7 +414,7 @@ impl Game<'_> {
                 let tiles: Vec<_> = goal.tiles.iter().map(|t| self.site(t)).collect();
                 let route = if pursuing
                     && (original.actor.is_some() || original.family.is_some())
-                    && super::campaign::actor_route(original)
+                    && super::objectives::actor_route(original)
                 {
                     let occupied = self.occupied_routes(unit, &tiles, false);
                     if occupied[unit.tile] == u16::MAX {
@@ -610,7 +598,7 @@ impl Game<'_> {
             let mut destinations = Vec::with_capacity(reachable.len() + 1);
             destinations.push(original_unit.tile);
             destinations.extend(reachable.iter().copied().map(|(t, _)| t));
-            destinations = self.authored_destinations(original_unit, destinations);
+            destinations = orders.authored_destinations(self, original_unit, destinations);
             let other_healing: Vec<_> =
                 if policy == GlobalStyle::Mixed && category == TacticalRole::Healer {
                     allies
@@ -749,7 +737,7 @@ impl Game<'_> {
                 if !destinations.contains(&tile) {
                     continue;
                 }
-                let objective_finish = self.finishes_objective(&unit, tile, &objectives);
+                let objective_finish = orders.arrives(self, &unit, tile);
                 let choices = std::iter::once((None, None)).chain(
                     nearby_foes[nearby_offsets[tile]..nearby_offsets[tile + 1]]
                         .iter()
@@ -762,7 +750,7 @@ impl Game<'_> {
                 for (choice_order, (target, weapon)) in choices.enumerate() {
                     if let (Some(target), Some(weapon)) = (target, weapon) {
                         if !self.can_attack(unit, tile, target, weapon)
-                            || !self.diplomacy_allows(unit, target, weapon, tile, restrained)
+                            || !orders.attack_allowed(self, unit, target, weapon, tile)
                         {
                             continue;
                         }
@@ -777,10 +765,12 @@ impl Game<'_> {
                     if let (Some(target), Some(weapon)) = (target, weapon) {
                         let (damage, response, _) = self.preview(&unit, target, weapon, tile);
                         retaliation = response;
+                        if orders.protects(unit.id) && response > 0 {
+                            continue;
+                        }
                         let killed = damage >= target.hp;
                         eliminated = killed.then_some(target.id);
-                        finishes_battle =
-                            killed && super::campaign::terminal_attack(self, &unit, target);
+                        finishes_battle = killed && orders.terminal_attack(target);
                         combat = damage.min(target.hp) as f64 * 2.0
                             + if killed {
                                 12.0 + self.rules.units[target.kind].cost as f64 * 0.3
@@ -788,7 +778,7 @@ impl Game<'_> {
                                 0.0
                             }
                             - retaliation as f64 * 1.8;
-                        if self.essential(target) {
+                        if orders.important(self, target) {
                             combat += if killed { 18.0 } else { 4.0 };
                         }
                         if killed
@@ -857,6 +847,9 @@ impl Game<'_> {
                         threats.at(&unit, tile, eliminated)
                     };
                     let lethal = incoming >= unit.hp - retaliation;
+                    if orders.protects(unit.id) && lethal {
+                        continue;
+                    }
                     if important && lethal && incoming > 0 && !finishing && !finishes_battle && {
                         let minimum_risk = *minimum_risk.get_or_insert_with(|| {
                             threats.minimum(&unit, destinations.iter().copied())
@@ -993,6 +986,17 @@ mod tests {
                     let mut right_intents = vec![];
                     let left = game.best_plan::<true, false>(
                         policy,
+                        &super::super::CampaignBlock::Objectives
+                            .campaign_orders(
+                                &game,
+                                &super::super::PlanningWorkspace::new(
+                                    7,
+                                    1,
+                                    None,
+                                    super::super::Diplomacy::Pragmatic,
+                                ),
+                            )
+                            .tactics,
                         7,
                         None,
                         None,
@@ -1005,6 +1009,17 @@ mod tests {
                     );
                     let right = game.best_plan::<false, false>(
                         policy,
+                        &super::super::CampaignBlock::Objectives
+                            .campaign_orders(
+                                &game,
+                                &super::super::PlanningWorkspace::new(
+                                    7,
+                                    1,
+                                    None,
+                                    super::super::Diplomacy::Pragmatic,
+                                ),
+                            )
+                            .tactics,
                         7,
                         None,
                         None,

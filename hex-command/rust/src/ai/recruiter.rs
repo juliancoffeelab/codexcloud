@@ -17,6 +17,15 @@ pub enum Recruiter {
     Balanced,
 }
 impl Recruiter {
+    pub(super) fn choose_orders(
+        self,
+        game: &Game<'_>,
+        seed: u32,
+        orders: &super::orders::RecruitmentOrders,
+    ) -> Option<Command> {
+        game.recruit_from_orders(self, seed, orders)
+    }
+    #[cfg(test)]
     pub(super) fn choose(
         self,
         game: &Game<'_>,
@@ -28,12 +37,32 @@ impl Recruiter {
     }
 }
 impl Game<'_> {
+    #[cfg(test)]
     pub(super) fn choose_recruit(
         &self,
         recruiter: Recruiter,
         seed: u32,
         goals: Option<&[Objective]>,
         restrained: bool,
+    ) -> Option<Command> {
+        let workspace = super::PlanningWorkspace::new(
+            seed,
+            1,
+            goals.map(<[Objective]>::to_vec),
+            if restrained {
+                super::Diplomacy::Restrained
+            } else {
+                super::Diplomacy::Pragmatic
+            },
+        );
+        let orders = super::CampaignBlock::Objectives.campaign_orders(self, &workspace);
+        self.recruit_from_orders(recruiter, seed, &orders.recruitment)
+    }
+    fn recruit_from_orders(
+        &self,
+        recruiter: Recruiter,
+        seed: u32,
+        orders: &super::orders::RecruitmentOrders,
     ) -> Option<Command> {
         fn behavior(recruiter: Recruiter) -> (bool, bool, bool) {
             match recruiter {
@@ -44,8 +73,6 @@ impl Game<'_> {
         }
         let (rotation, frontline_only, balanced) = behavior(recruiter);
         let side = self.turn;
-        let goals = goals.map_or_else(|| self.objectives(side), |g| g.to_vec());
-        let lanes = self.withdrawal_lanes(side, restrained);
         let Some(leader) = self
             .units
             .iter()
@@ -53,34 +80,21 @@ impl Game<'_> {
         else {
             return None;
         };
-        let required = self.required_recruit(side);
+        let required = orders
+            .requirements
+            .iter()
+            .find(|requirement| requirement.deficit(self) > 0);
         let pool: Vec<_> = self
             .recruitment_options(side)
             .into_iter()
-            .filter(|&kind| required.is_none_or(|family| self.rules.units[kind].family == family))
+            .filter(|&kind| required.is_none_or(|requirement| requirement.accepts(self, kind)))
             .collect();
-        let reserved: std::collections::HashMap<_, _> = pool
+        let reserved: rustc_hash::FxHashSet<_> = orders
+            .reserved
             .iter()
-            .map(|&kind| {
-                let unit = Unit {
-                    id: 0,
-                    kind,
-                    tile: leader.tile,
-                    side,
-                    hp: self.rules.units[kind].hp,
-                    moved: true,
-                    attacked: true,
-                    experience: None,
-                    name: None,
-                    role: None,
-                    retreating: None,
-                    rebuilding: None,
-                };
-                (kind, self.reserved(&unit, &goals))
-            })
+            .map(|tile| self.site(&tile.0))
             .collect();
-        let placement_allowed =
-            |kind: usize, tile: usize| !reserved[&kind].contains(&tile) && !lanes.contains(&tile);
+        let placement_allowed = |_: usize, tile: usize| !reserved.contains(&tile);
         if rotation && required.is_none() {
             if pool.is_empty() {
                 return None;
@@ -88,8 +102,7 @@ impl Game<'_> {
             let archer = self.kind("archer");
             let swordsman = self.kind("swordsman");
             let kind =
-                if self.campaign.is_some() || !pool.contains(&archer) || !pool.contains(&swordsman)
-                {
+                if orders.rotate_pool || !pool.contains(&archer) || !pool.contains(&swordsman) {
                     pool[(self.round as usize - 1) % pool.len()]
                 } else if self
                     .units

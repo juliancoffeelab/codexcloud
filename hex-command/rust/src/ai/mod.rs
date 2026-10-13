@@ -5,7 +5,10 @@ mod blocks;
 pub mod campaign;
 mod cheap;
 mod classic;
+mod context;
+mod cooperation;
 pub mod objectives;
+pub mod orders;
 pub mod planner;
 mod priority;
 #[cfg(not(target_arch = "wasm32"))]
@@ -144,6 +147,9 @@ pub struct PlanningWorkspace {
     priority: Option<PrioritySnapshot>,
     cheap: cheap::Workspace,
     blocks: Option<Blocks>,
+    orders: Option<orders::CampaignOrders>,
+    report: orders::PlanningReport,
+    cooperation: cooperation::Workspace,
 }
 /// Serializable continuation of a policy phase. Route caches are rebuilt after
 /// restoration; decisions, unit order and recruitment budgets remain intact.
@@ -152,6 +158,13 @@ pub struct PlanningWorkspace {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct PlanningSnapshot {
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub orders: Option<orders::CampaignOrders>,
+    #[serde(default)]
+    pub report: orders::PlanningReport,
+    #[serde(default)]
+    pub cooperation: cooperation::Workspace,
     #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub blocks: Option<Blocks>,
@@ -183,6 +196,9 @@ impl PlanningWorkspace {
         Self {
             policy: None,
             blocks: None,
+            orders: None,
+            report: orders::PlanningReport::default(),
+            cooperation: cooperation::Workspace::default(),
             seed,
             recruitment_remaining: recruitment_limit,
             goals,
@@ -205,7 +221,7 @@ impl PlanningWorkspace {
     /// Select independent blocks before starting a phase. Saved continuations retain them.
     pub fn with_blocks(mut self, blocks: Blocks) -> Self {
         assert!(
-            !self.initialized,
+            !self.initialized && self.policy.is_none(),
             "cannot replace blocks during an active phase"
         );
         self.blocks = Some(blocks);
@@ -226,6 +242,13 @@ impl PlanningWorkspace {
     pub fn is_finished(&self) -> bool {
         self.finished && self.commands.is_empty()
     }
+    pub(crate) fn diagnostics(&self) -> Option<orders::TurnDiagnostics> {
+        let orders = self.orders.as_ref()?;
+        orders.tactics.campaign.then(|| orders::TurnDiagnostics {
+            orders: orders.clone(),
+            report: self.report.clone(),
+        })
+    }
     /// Save the exact policy continuation without its recomputable route cache.
     pub fn snapshot(&self) -> PlanningSnapshot {
         let mut commitments: Vec<_> = self
@@ -235,6 +258,9 @@ impl PlanningWorkspace {
             .collect();
         commitments.sort_by_key(|(id, _)| id.0);
         PlanningSnapshot {
+            orders: self.orders.clone(),
+            report: self.report.clone(),
+            cooperation: self.cooperation.clone(),
             blocks: self.blocks,
             policy: self.policy,
             seed: self.seed,
@@ -255,6 +281,9 @@ impl PlanningWorkspace {
     /// Restore a previously validated snapshot for the same battle and turn.
     pub fn from_snapshot(saved: PlanningSnapshot) -> Self {
         Self {
+            orders: saved.orders,
+            report: saved.report,
+            cooperation: saved.cooperation,
             policy: saved.policy,
             blocks: saved.blocks,
             seed: saved.seed,
@@ -321,6 +350,7 @@ pub(crate) fn choose_game_command(
     #[cfg(not(target_arch = "wasm32"))]
     let _profile = profiling::Decision::start(policy, game.turn);
     workspace.policy.get_or_insert(policy);
+    workspace.blocks.get_or_insert(blocks);
     if !std::ptr::eq(rules, game.rules) {
         return Err(CommandError::CatalogMismatch);
     }
@@ -349,7 +379,12 @@ pub(crate) fn choose_game_command(
             });
             continue;
         }
-        let restrained = blocks.campaign.restrained(game, workspace);
+        if workspace.orders.is_none() {
+            workspace.orders = Some(context::Campaigner::objectives(
+                &blocks.campaign,
+                context::CampaignView::new(game, workspace),
+            ));
+        }
         if !workspace.initialized {
             workspace.initialized = true;
             for unit in game.units.iter().filter(|u| {
@@ -368,18 +403,25 @@ pub(crate) fn choose_game_command(
         }
         if workspace.recruitment_remaining > 0 {
             workspace.recruitment_remaining -= 1;
-            if let Some(command) = blocks.recruiter.choose(
-                game,
-                workspace.seed,
-                workspace.goals.as_deref(),
-                restrained,
+            let recruitment = &workspace.orders.as_ref().unwrap().recruitment;
+            if let Some(command) = context::RecruitmentStrategy::recruit(
+                &blocks.recruiter,
+                context::RecruitmentContext::new(game, workspace.seed),
+                recruitment,
             ) {
+                if recruitment.requirements.iter().any(|r| r.deficit(game) > 0) {
+                    workspace
+                        .report
+                        .mandatory_recruits
+                        .push(UnitId(game.next_id));
+                }
                 return Ok(command);
             }
         } else {
-            blocks
-                .planner
-                .choose(game, blocks.campaign, workspace, restrained)?;
+            context::TacticalPlanner::plan(
+                &blocks.planner,
+                context::TacticalContext::new(game, workspace),
+            )?;
         }
     }
 }
