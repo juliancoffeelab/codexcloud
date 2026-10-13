@@ -243,3 +243,31 @@ weighted means. Full verification passed all eight groups in 68.13 seconds;
 combined tests took 7.39 seconds. Exact measurements, clock, limits, fingerprints
 and provenance are in
 [benchmarks/policy-selfplay.json](benchmarks/policy-selfplay.json).
+
+## Main-branch self-play reference
+
+The default branch was still `b1f553de69c0de8a340088c0a9ed42b2149fb27e` when
+checked against GitHub. It contains Classic, Rush and Mixed. An isolated checkout
+retained its AI, engine, allocator and ordinary release settings, adding only the
+same chooser/phase CPU timers and a final timing summary. Each policy ran the same
+1,280 self-play games, limits, seeds, faction/map pairs, initiatives and one worker.
+
+| Strategy | Main AI µs/turn | Optimized AI µs/turn | Decision CPU speedup | Main command seconds | Optimized command seconds |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Classic | 109.49 | 35.24 | 3.11× | 4.34 | 1.73 |
+| Rush | 255.33 | 59.33 | 4.30× | 12.63 | 3.55 |
+| Mixed | 262.07 | 62.59 | 4.19× | 10.79 | 3.13 |
+
+All 3,840 ordered game outcomes, endpoint hashes and report aggregates matched
+the optimized reference after excluding explicit run/journal metadata and its
+self-play schedule marker. Actual phase counts, chooser-call counts and caps also
+matched. Full histories remain saved locally; this comparison did not decode them
+again. Battler and Priority have no main-branch versions.
+
+These are production-build comparisons: main uses thin LTO, eight codegen units
+and no PGO/native-target additions, while the optimized reference uses its native
+fat-LTO/profile-guided build. The decision CPU improvement includes AI, engine,
+allocator and compiler changes; journal encoding is outside the decision timer.
+Whole-command numbers are single instrumented samples, not repeated medians.
+The exact measurements, compiled fingerprints and instrumentation provenance are
+in [benchmarks/main-policy-selfplay.json](benchmarks/main-policy-selfplay.json).
