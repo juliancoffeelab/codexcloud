@@ -33,7 +33,9 @@ pub struct ScheduleOptions {
     pub first_seed: u32,
     pub seeds: u32,
     pub max_rounds: u32,
-    pub recruit_limit: usize,
+    pub campaign_max_rounds: u32,
+    /// Explicit override for both sides; None uses each policy's default.
+    pub recruit_limit: Option<usize>,
     pub armies: Vec<String>,
     pub landscapes: Vec<String>,
     pub campaigns: Vec<String>,
@@ -65,7 +67,8 @@ impl ScheduleOptions {
             first_seed: 1,
             seeds: 2,
             max_rounds: rules.arena.default_max_rounds,
-            recruit_limit: rules.arena.default_recruit_limit,
+            campaign_max_rounds: rules.campaign_defaults.default_max_rounds,
+            recruit_limit: None,
             armies: rules.rosters.iter().map(|item| item.id.clone()).collect(),
             landscapes: rules
                 .arena
@@ -278,7 +281,7 @@ pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, Simulatio
                                 enemy: *enemy,
                                 diplomacy: *diplomacy,
                                 seed,
-                                max_rounds: options.max_rounds,
+                                max_rounds: options.campaign_max_rounds,
                                 recruit_limit: options.recruit_limit,
                             }));
                         }
@@ -374,7 +377,8 @@ mod tests {
             first_seed: 5,
             seeds: 1,
             max_rounds: 1,
-            recruit_limit: 0,
+            campaign_max_rounds: 1,
+            recruit_limit: Some(0),
             armies: vec!["a".into(), "b".into()],
             landscapes: vec!["open".into()],
             campaigns: vec!["chapter".into()],

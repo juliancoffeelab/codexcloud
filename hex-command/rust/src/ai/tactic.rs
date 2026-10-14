@@ -36,7 +36,7 @@ impl<R: Recruiter, C: Campaigner, P: Planner> Tactic<R, C, P> {
             &mut draft.recruitment_context(workspace.seed, workspace.recruitment_remaining),
             &orders.recruitment,
         )?;
-        workspace.recruitment_remaining = 0;
+        workspace.recruitment_remaining = Some(0);
         workspace.orders = Some(orders.clone());
         workspace
             .report

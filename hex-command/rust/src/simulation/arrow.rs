@@ -420,7 +420,7 @@ mod tests {
                 enemy: Policy::Classic,
                 first: Side::Player,
                 max_rounds: 1,
-                recruit_limit: 0,
+                recruit_limit: Some(0),
             },
         )
         .unwrap();
@@ -442,7 +442,7 @@ mod tests {
                 player: Policy::Mixed,
                 enemy: Policy::Classic,
                 max_rounds: 1,
-                recruit_limit: 0,
+                recruit_limit: Some(0),
             },
         )
         .unwrap();

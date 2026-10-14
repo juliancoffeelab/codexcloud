@@ -103,7 +103,7 @@ pub enum TacticalRole {
 /// and discard it when the turn ends.
 pub struct PlanningWorkspace {
     seed: u32,
-    recruitment_remaining: usize,
+    recruitment_remaining: Option<usize>,
     goals: Option<Vec<Objective>>,
     prepared_goals: Option<Vec<orders::Target>>,
     diplomacy: Diplomacy,
@@ -134,7 +134,7 @@ impl PlanningWorkspace {
     /// Start a policy phase with its seed, recruitment budget and objectives.
     pub fn new(
         seed: u32,
-        recruitment_limit: usize,
+        recruitment_limit: impl Into<Option<usize>>,
         goals: Option<Vec<Objective>>,
         diplomacy: Diplomacy,
     ) -> Self {
@@ -148,7 +148,7 @@ impl PlanningWorkspace {
             cooperation: cooperation::Workspace::default(),
             escort: escort::Workspace::default(),
             seed,
-            recruitment_remaining: recruitment_limit,
+            recruitment_remaining: recruitment_limit.into(),
             goals,
             prepared_goals: None,
             diplomacy,

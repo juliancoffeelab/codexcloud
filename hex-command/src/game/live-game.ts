@@ -194,7 +194,6 @@ export class LiveGame {
       this.engine.chooseAiCommand({
         policy: "classic",
         diplomacy: "restrained",
-        recruitmentLimit: 2,
       }),
     );
     nativeValue(this.engine.dispatch(decision.command, decision.revision));

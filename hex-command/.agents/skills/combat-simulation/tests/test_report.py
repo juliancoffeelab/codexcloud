@@ -133,6 +133,36 @@ class CompleteDataTests(unittest.TestCase):
         self.assertNotIn('11/20', table)
         self.assertNotIn('%', table)
 
+    def test_campaign_overview_distinguishes_policy_defaults_from_explicit_caps(self):
+        outcomes = {}
+        for seed, limit in [(1, None), (2, 1)]:
+            item = dict(kind='campaign', config=dict(seed=seed, campaign='sample', player='mixed',
+                        enemy='classic', diplomacy='pragmatic', maxRounds=30, recruitLimit=limit),
+                        completed=True, missions=[])
+            outcomes[report.identity(item)] = item
+        campaigns, stages, failures, events, _ = report.campaign_tables(outcomes)
+        text = '\n'.join(report.overview(campaigns, stages, failures, events, []))
+        self.assertIn('Classic 2 per phase; other tactics uncapped', text)
+        self.assertIn('1 recruits per phase (explicit override)', text)
+        self.assertEqual(len(campaigns), 2)
+
+    def test_policy_matrix_includes_same_race_opponents_and_keeps_caps(self):
+        won = match(1, 'a', 'a')
+        won['config'].update(player='priority', enemy='mixed')
+        capped = match(2, 'a', 'b', winner=None, reason='cap')
+        capped['config'].update(player='priority', enemy='mixed')
+        reverse = match(3, 'b', 'a', winner='enemy')
+        reverse['config'].update(player='mixed', enemy='priority')
+        same_policy = match(4, 'a', 'b')
+        rows, _, _, _ = report.tally({report.identity(x): x for x in [won, capped, reverse, same_policy]})
+        combined = report.combine([r for r in rows if r['policy'] != r['opponentPolicy']],
+                                  ['policy', 'opponentPolicy'], cross=False)
+        lookup = {(r['policy'], r['opponentPolicy']): r for r in combined}
+        self.assertEqual(set(lookup), {('priority', 'mixed'), ('mixed', 'priority')})
+        self.assertEqual((lookup['priority', 'mixed']['games'], lookup['priority', 'mixed']['wins'],
+                          lookup['priority', 'mixed']['caps']), (3, 2, 1))
+        self.assertEqual(lookup['mixed', 'priority']['losses'], 2)
+
     def test_unit_events_follow_actual_side_when_factions_swap_seats(self):
         item = match(1, 'b', 'a')
         item['recruits'] = [{'side': 'enemy', 'type': 'caster'}]

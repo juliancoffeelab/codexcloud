@@ -14,6 +14,14 @@ pub struct Blocks {
 }
 
 impl Policy {
+    /// Classic keeps its live recruitment cap; simulated player presets have none.
+    pub const fn default_recruitment_limit(self) -> Option<usize> {
+        match self {
+            Self::Classic => Some(2),
+            Self::Rush | Self::Mixed | Self::Priority | Self::Battler => None,
+        }
+    }
+
     /// Resolve a live preset. Every policy has a complete composition.
     pub const fn blocks(self) -> Blocks {
         match self {

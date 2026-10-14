@@ -366,6 +366,19 @@ pub fn build_report(
         json!({"policy":policy,"games":games.len(),"playerWins":games.iter().filter(|game|game.game["winner"]=="player").count(),"enemyWins":games.iter().filter(|game|game.game["winner"]=="enemy").count(),"firstWins":games.iter().filter(|game|game.game["winner"]==game.game["config"]["first"]).count(),"secondWins":games.iter().filter(|game|!game.game["winner"].is_null() && game.game["winner"]!=game.game["config"]["first"]).count(),"unresolved":games.iter().filter(|game|game.game["winner"].is_null()).count()})
     }).collect();
     let mut report = json!({"schema":3,"status":"complete","mode":options.mode,"fingerprint":fingerprint,"sourceCommit":source_commit,"engine":"rust","elapsedSeconds":elapsed,"seeds":{"first":options.first_seed,"count":options.seeds},"schedule":options,"rows":rows,"strata":strata,"campaignStrata":campaign_strata,"armyCompositions":army_compositions,"seatDiagnostics":seat_diagnostics,"outcomes":outcomes,"detailFormat":"jsonl-byte-ranges-v1"});
+    report["recruitmentLimits"] = serde_json::to_value(
+        crate::ai::Policy::ALL
+            .iter()
+            .map(|policy| {
+                (
+                    policy.as_str(),
+                    options
+                        .recruit_limit
+                        .or_else(|| policy.default_recruitment_limit()),
+                )
+            })
+            .collect::<BTreeMap<_, _>>(),
+    )?;
     if let Some(files) = trace_files {
         report["traceFiles"] = json!(files);
     }
@@ -463,7 +476,8 @@ mod tests {
             first_seed: 1,
             seeds: 2,
             max_rounds: 2,
-            recruit_limit: 0,
+            campaign_max_rounds: 2,
+            recruit_limit: Some(0),
             armies: vec!["human".into()],
             landscapes: vec!["open".into()],
             campaigns: vec![],

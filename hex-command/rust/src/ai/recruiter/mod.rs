@@ -43,7 +43,10 @@ fn drive(
 ) -> Result<crate::ai::orders::RecruitmentReport, CommandError> {
     use crate::ai::orders::*;
     let mut report = RecruitmentReport::default();
-    for _ in 0..context.budget {
+    while context
+        .budget
+        .is_none_or(|limit| report.recruited.len() < limit)
+    {
         let mandatory = orders
             .requirements
             .iter()

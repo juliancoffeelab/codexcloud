@@ -221,7 +221,10 @@ impl NativeEngineFactory {
             .get_mut(&id)
             .ok_or(EngineError::UnknownBattle)?;
         battle.check(revision)?;
-        if options.recruitment_limit > 1_000_000 {
+        if options
+            .recruitment_limit
+            .is_some_and(|limit| limit > 1_000_000)
+        {
             return Err(EngineError::InvalidRequest {
                 message: "AI recruitment limit is out of range".into(),
             });
@@ -229,7 +232,9 @@ impl NativeEngineFactory {
         if battle.options.as_ref() != Some(&options) {
             battle.workspace = Some(PlanningWorkspace::new(
                 battle.seed,
-                options.recruitment_limit,
+                options
+                    .recruitment_limit
+                    .or_else(|| options.policy.default_recruitment_limit()),
                 None,
                 options.diplomacy,
             ));
@@ -337,7 +342,7 @@ mod tests {
             blocks: None,
             policy: AiPolicy::Priority,
             diplomacy: AiDiplomacy::Restrained,
-            recruitment_limit: 2,
+            recruitment_limit: Some(2),
         };
         factory.decision(original.id, 0, options).unwrap();
         let saved = factory.checkpoint(original.id, 0).unwrap();

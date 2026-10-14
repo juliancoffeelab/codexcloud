@@ -18,7 +18,11 @@ npm run ai:simulate
 
 Cargo builds when needed, runs the full panel and generates the report. Defaults:
 10 seeds, all arena tactics against Classic on all maps, and Mixed/Priority
-campaigns against Classic. Honor requested scope; otherwise use this full panel.
+campaigns against Classic. Default round caps are 30 for arenas and 100 per
+campaign stage; `--rounds N` overrides both. Honor requested scope; otherwise
+use this full panel.
+Classic uses its live cap of 2 recruits per phase; the other tactics have no
+additional recruitment cap. `--recruits N` explicitly overrides both sides.
 Each run gets a fresh ignored `artifacts/simulation-*` directory.
 
 After changing the harness, analyzer or AI behavior, run fresh simulations and

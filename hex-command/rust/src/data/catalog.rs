@@ -79,7 +79,6 @@ pub struct ArenaDefaults {
     /// Minimum total gold value per side, including its leader and two starters.
     pub starting_budget: i32,
     pub default_max_rounds: u32,
-    pub default_recruit_limit: usize,
     pub policies: Vec<String>,
 }
 #[derive(Clone, Debug, Deserialize)]
@@ -87,7 +86,6 @@ pub struct ArenaDefaults {
 /// Campaign schedule dimensions and default attempt execution limits.
 pub struct CampaignDefaults {
     pub default_max_rounds: u32,
-    pub default_recruit_limit: usize,
     pub diplomacy: Vec<String>,
     pub policies: Vec<String>,
     pub campaigns: Vec<String>,

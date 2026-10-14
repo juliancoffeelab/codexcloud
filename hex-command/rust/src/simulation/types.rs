@@ -17,7 +17,8 @@ pub struct ArenaConfig {
     pub enemy: Policy,
     pub first: Side,
     pub max_rounds: u32,
-    pub recruit_limit: usize,
+    /// Explicit override for both sides; None uses each policy's default.
+    pub recruit_limit: Option<usize>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Simulation roster identifiers for the two seats.
@@ -35,7 +36,8 @@ pub struct CampaignConfig {
     pub player: Policy,
     pub enemy: Policy,
     pub max_rounds: u32,
-    pub recruit_limit: usize,
+    /// Explicit override for both sides; None uses each policy's default.
+    pub recruit_limit: Option<usize>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(untagged)]

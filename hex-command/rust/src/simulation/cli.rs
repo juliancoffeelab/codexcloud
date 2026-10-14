@@ -24,7 +24,7 @@ use std::{
     time::{Instant, SystemTime, UNIX_EPOCH},
 };
 
-const HELP: &str = "Usage: hex-command-sim [options]\n  --mode arena|campaign|full      default full\n  --seeds N --seed N              count (default 10) and first seed (default 1)\n  --policies classic,rush,mixed,priority,battler\n  --armies human,woodland,undead,coastal\n  --landscapes open,wooded,crossings,islands\n  --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide\n  --campaign-players mixed,priority  independent campaign player tactics\n  --campaign-enemies classic       independent campaign enemy tactics\n  --rounds N --recruits N         bounded rounds (default 30), recruits/phase (default 1)\n  --diplomacy pragmatic,restrained filter authored player diplomacy modes\n  --workers N                    scoped thread pool, CPU quota default, maximum 8\n  --out PATH                     Output directory or .json file (default fresh artifacts/simulation-* directory)\n  --no-report                  retain raw results without running the report analyzer\n  --details arrow|jsonl         lossless gameplay journal (default jsonl)\n  --all-pairs                    full arena policy matrix instead of facing Classic\n  --baseline PATH                compare report to a saved run (repeatable)\n  --vs-classic                   arena players face Classic (default); both seats/initiatives\n  --self-play                    arena games use the same policy on both sides\n  --profile-turns                report policy mean decision and complete-phase CPU time\n  --trace                        also retain raw match results\n  --replay PATH                  verify saved report details and results (strict fingerprint)\n  --data-dir PATH                authored JSON catalog root (HEX_COMMAND_DATA_ROOT also works)\n  --schedule-only                emit configurations without running any matches\n  --stdio                        JSON match request/result line protocol\n  --phase-stdio                  saved-position own-phase profiling protocol\n  --fingerprint                  compiled content and engine SHA256 fingerprints\nArena entrants have both seats and both initiatives; self-play has both initiatives.\nCampaigns begin at chapter one, earn carryover and receive no retries. Caps remain unresolved.";
+const HELP: &str = "Usage: hex-command-sim [options]\n  --mode arena|campaign|full      default full\n  --seeds N --seed N              count (default 10) and first seed (default 1)\n  --policies classic,rush,mixed,priority,battler\n  --armies human,woodland,undead,coastal\n  --landscapes open,wooded,crossings,islands\n  --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide\n  --campaign-players mixed,priority  independent campaign player tactics\n  --campaign-enemies classic       independent campaign enemy tactics\n  --rounds N --recruits N         bounded rounds (default arena 30, campaign 100), explicit recruits/phase override\n  --diplomacy pragmatic,restrained filter authored player diplomacy modes\n  --workers N                    scoped thread pool, CPU quota default, maximum 8\n  --out PATH                     Output directory or .json file (default fresh artifacts/simulation-* directory)\n  --no-report                  retain raw results without running the report analyzer\n  --details arrow|jsonl         lossless gameplay journal (default jsonl)\n  --all-pairs                    full arena policy matrix instead of facing Classic\n  --baseline PATH                compare report to a saved run (repeatable)\n  --vs-classic                   arena players face Classic (default); both seats/initiatives\n  --self-play                    arena games use the same policy on both sides\n  --profile-turns                report policy mean decision and complete-phase CPU time\n  --trace                        also retain raw match results\n  --replay PATH                  verify saved report details and results (strict fingerprint)\n  --data-dir PATH                authored JSON catalog root (HEX_COMMAND_DATA_ROOT also works)\n  --schedule-only                emit configurations without running any matches\n  --stdio                        JSON match request/result line protocol\n  --phase-stdio                  saved-position own-phase profiling protocol\n  --fingerprint                  compiled content and engine SHA256 fingerprints\nArena entrants have both seats and both initiatives; self-play has both initiatives.\nRecruitment defaults: Classic 2 per phase; other policies uncapped.\nCampaigns begin at chapter one, earn carryover and receive no retries. Caps remain unresolved.";
 #[derive(Debug)]
 struct CliOptions {
     schedule: ScheduleOptions,
@@ -167,14 +167,18 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
     } else {
         rules.arena.default_max_rounds
     };
-    let default_recruits = if options.mode == Mode::Campaign {
-        rules.campaign_defaults.default_recruit_limit
-    } else {
-        rules.arena.default_recruit_limit
-    };
     options.max_rounds = flag_integer(&values, "--rounds", default_rounds, 1, 1000)?;
-    options.recruit_limit =
-        flag_integer(&values, "--recruits", default_recruits as u32, 0, 20)? as usize;
+    options.campaign_max_rounds = flag_integer(
+        &values,
+        "--rounds",
+        rules.campaign_defaults.default_max_rounds,
+        1,
+        1000,
+    )?;
+    options.recruit_limit = values
+        .contains_key("--recruits")
+        .then(|| flag_integer(&values, "--recruits", 0, 0, 20).map(|limit| limit as usize))
+        .transpose()?;
     options.armies = selection(&values, "--armies", &options.armies)?;
     options.landscapes = selection(&values, "--landscapes", &options.landscapes)?;
     options.campaigns = selection(&values, "--campaigns", &options.campaigns)?;
@@ -851,6 +855,30 @@ mod tests {
         let rules = Rules::load().unwrap();
         let defaults = parse(&[], &rules).unwrap();
         assert_eq!(defaults.schedule.mode, Mode::Full);
+        assert_eq!(defaults.schedule.recruit_limit, None);
+        assert_eq!(defaults.schedule.max_rounds, rules.arena.default_max_rounds);
+        assert_eq!(
+            defaults.schedule.campaign_max_rounds,
+            rules.campaign_defaults.default_max_rounds
+        );
+        let mut one_seed = defaults.schedule.clone();
+        one_seed.seeds = 1;
+        assert!(
+            schedule(&one_seed)
+                .unwrap()
+                .iter()
+                .all(|config| match config {
+                    MatchConfig::Arena(config) =>
+                        config.max_rounds == rules.arena.default_max_rounds,
+                    MatchConfig::Campaign(config) =>
+                        config.max_rounds == rules.campaign_defaults.default_max_rounds,
+                })
+        );
+        let extended = parse(&["--rounds".into(), "100".into()], &rules).unwrap();
+        assert_eq!(extended.schedule.max_rounds, 100);
+        assert_eq!(extended.schedule.campaign_max_rounds, 100);
+        let limited = parse(&["--recruits".into(), "1".into()], &rules).unwrap();
+        assert_eq!(limited.schedule.recruit_limit, Some(1));
         assert!(defaults.schedule.vs_classic && !defaults.no_report && !defaults.arrow);
         assert_eq!(
             defaults.schedule.campaign_enemies,

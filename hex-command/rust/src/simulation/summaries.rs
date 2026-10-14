@@ -308,7 +308,7 @@ mod tests {
                 enemy: Policy::Classic,
                 first: Side::Player,
                 max_rounds: 1,
-                recruit_limit: 0,
+                recruit_limit: Some(0),
             },
             winner: None,
             reason: "cap".into(),
@@ -417,7 +417,7 @@ mod tests {
                 player: Policy::Classic,
                 enemy: Policy::Classic,
                 max_rounds: 1,
-                recruit_limit: 0,
+                recruit_limit: Some(0),
             },
             completed: false,
             missions: vec![MissionResult {
