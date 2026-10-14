@@ -8,10 +8,13 @@ use super::{
     schedule::{Mode, ScheduleOptions, WithSelection, schedule},
     types::{MatchConfig, MatchResult},
 };
-use crate::data::Rules;
+use crate::{
+    ai::{Diplomacy, Policy},
+    data::Rules,
+};
+use clap::{Parser, ValueEnum};
 use serde_json::{Value, json};
 use std::{
-    collections::{BTreeMap, HashSet},
     fs,
     io::{self, BufRead, Read, Write},
     path::{Path, PathBuf},
@@ -24,7 +27,122 @@ use std::{
     time::{Instant, SystemTime, UNIX_EPOCH},
 };
 
-const HELP: &str = "Usage: hex-command-sim [options]\n  --mode arena|campaign|full      default full\n  --with recruiter,campaigner,planner  add custom tactic; - uses workload defaults\n  --seeds N --seed N              count (default 10) and first seed (default 1)\n  --policies classic,rush,balanced,rotated,situational\n  --armies human,woodland,undead,coastal\n  --landscapes open,wooded,crossings,islands\n  --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide\n  --campaign-players balanced,rotated,situational  independent campaign player tactics\n  --campaign-enemies classic       independent campaign enemy tactics\n  --rounds N --recruits N         bounded rounds (default arena 30, campaign 100), explicit recruits/phase override\n  --diplomacy pragmatic,restrained filter authored player diplomacy modes\n  --workers N                    scoped thread pool, CPU quota default, maximum 8\n  --out PATH                     Output directory or .json file (default fresh artifacts/simulation-* directory)\n  --no-report                  retain raw results without running the report analyzer\n  --details arrow|jsonl         lossless gameplay journal (default jsonl)\n  --all-pairs                    full arena policy matrix instead of facing Classic\n  --baseline PATH                compare report to a saved run (repeatable)\n  --vs-classic                   arena players face Classic (default); both seats/initiatives\n  --self-play                    arena games use the same policy on both sides\n  --profile-turns                report policy mean decision and complete-phase CPU time\n  --trace                        also retain raw match results\n  --replay PATH                  verify saved report details and results (strict fingerprint)\n  --data-dir PATH                authored JSON catalog root (HEX_COMMAND_DATA_ROOT also works)\n  --schedule-only                emit configurations without running any matches\n  --stdio                        JSON match request/result line protocol\n  --phase-stdio                  saved-position own-phase profiling protocol\n  --fingerprint                  compiled content and engine SHA256 fingerprints\nArena entrants have both seats and both initiatives; self-play has both initiatives.\nRecruitment defaults: Classic 2 per phase; other policies uncapped.\nCampaigns begin at chapter one, earn carryover and receive no retries. Caps remain unresolved.";
+#[derive(Debug, Parser)]
+#[command(
+    name = "hex-command-sim",
+    about = "Run combat simulations and generate their report"
+)]
+#[command(group = clap::ArgGroup::new("batch").multiple(true).conflicts_with("protocol"))]
+struct SimulationArgs {
+    /// Workload to run.
+    #[arg(group = "batch", long, value_enum, default_value = "full")]
+    mode: Mode,
+    /// Add a custom tactic; - selects the workload default for that block.
+    #[arg(group = "batch", long, value_name = "RECRUITER,CAMPAIGNER,PLANNER", value_parser = WithSelection::parse, allow_hyphen_values = true)]
+    with: Option<WithSelection>,
+    /// Number of seeds.
+    #[arg(group = "batch", long, default_value_t = 10, value_parser = clap::value_parser!(u32).range(1..=10000))]
+    seeds: u32,
+    /// First seed.
+    #[arg(group = "batch", long, default_value_t = 1, value_parser = clap::value_parser!(u32).range(0..=2147483647))]
+    seed: u32,
+    /// Arena tactics; also filters default campaign players.
+    #[arg(group = "batch", long, value_enum, value_delimiter = ',', action = clap::ArgAction::Set)]
+    policies: Option<Vec<Policy>>,
+    /// Recruitment roster identifiers, separated by commas.
+    #[arg(group = "batch", long, value_delimiter = ',', action = clap::ArgAction::Set)]
+    armies: Option<Vec<String>>,
+    /// Arena landscape identifiers, separated by commas.
+    #[arg(group = "batch", long, value_delimiter = ',', action = clap::ArgAction::Set)]
+    landscapes: Option<Vec<String>>,
+    /// Campaign identifiers, separated by commas.
+    #[arg(group = "batch", long, value_delimiter = ',', action = clap::ArgAction::Set)]
+    campaigns: Option<Vec<String>>,
+    /// Campaign player tactics; custom requires --with.
+    #[arg(group = "batch", long, value_delimiter = ',', action = clap::ArgAction::Set, value_parser = campaign_participants())]
+    campaign_players: Option<Vec<String>>,
+    /// Campaign enemy tactics; custom requires --with.
+    #[arg(group = "batch", long, value_delimiter = ',', action = clap::ArgAction::Set, value_parser = campaign_participants())]
+    campaign_enemies: Option<Vec<String>>,
+    /// Override both round caps (otherwise arena 30, campaign 100 per stage).
+    #[arg(group = "batch", long, value_parser = clap::value_parser!(u32).range(1..=1000))]
+    rounds: Option<u32>,
+    /// Override recruits per phase on both sides (otherwise policy defaults).
+    #[arg(group = "batch", long, value_parser = clap::value_parser!(u32).range(0..=20))]
+    recruits: Option<u32>,
+    /// Filter the campaign's authored diplomacy modes.
+    #[arg(group = "batch", long, value_enum, value_delimiter = ',', action = clap::ArgAction::Set)]
+    diplomacy: Option<Vec<Diplomacy>>,
+    /// Worker count, defaulting to the available CPU quota.
+    #[arg(group = "batch", long, default_value_t = default_workers() as u32, value_parser = clap::value_parser!(u32).range(1..=8))]
+    workers: u32,
+    /// Output directory or .json file; otherwise use a fresh artifacts directory.
+    #[arg(group = "batch", long, value_name = "PATH")]
+    out: Option<PathBuf>,
+    /// Keep raw results without generating the report.
+    #[arg(group = "batch", long, conflicts_with = "baseline")]
+    no_report: bool,
+    /// Lossless gameplay journal format.
+    #[arg(group = "batch", long, value_enum, default_value = "jsonl")]
+    details: DetailFormat,
+    /// Compare every selected arena tactic with every other tactic.
+    #[arg(group = "batch", long, conflicts_with = "vs_classic")]
+    all_pairs: bool,
+    /// Compare arenas against Classic (the default).
+    #[arg(group = "batch", long, conflicts_with = "self_play")]
+    vs_classic: bool,
+    /// Run matching arena tactics against themselves; requires --mode arena.
+    #[arg(group = "batch", long)]
+    self_play: bool,
+    /// Compare with a saved run with identical configurations; repeatable.
+    #[arg(group = "batch", long, value_name = "PATH")]
+    baseline: Vec<PathBuf>,
+    /// Record policy decision and complete-phase CPU times.
+    #[arg(group = "batch", long)]
+    profile_turns: bool,
+    /// Also retain raw match results.
+    #[arg(group = "batch", long)]
+    trace: bool,
+    /// Verify a saved report's details and results with strict fingerprints.
+    #[arg(
+        group = "batch",
+        long,
+        value_name = "PATH",
+        conflicts_with = "schedule_only"
+    )]
+    replay: Option<PathBuf>,
+    /// Authored catalog root; otherwise use HEX_COMMAND_DATA_ROOT or this checkout.
+    #[arg(long, value_name = "PATH")]
+    data_dir: Option<PathBuf>,
+    /// Print configurations without running matches.
+    #[arg(group = "batch", long)]
+    schedule_only: bool,
+    /// Read and write JSON match requests/results, one per line.
+    #[arg(long, group = "protocol")]
+    stdio: bool,
+    /// Read and write saved-position phase profiling requests/results.
+    #[arg(long, group = "protocol")]
+    phase_stdio: bool,
+    /// Print the compiled content and engine SHA256 fingerprints.
+    #[arg(long, group = "protocol")]
+    fingerprint: bool,
+}
+
+#[derive(Clone, Copy, Debug, ValueEnum)]
+enum DetailFormat {
+    Jsonl,
+    Arrow,
+}
+
+fn campaign_participants() -> clap::builder::PossibleValuesParser {
+    clap::builder::PossibleValuesParser::new(
+        Policy::ALL
+            .into_iter()
+            .map(Policy::as_str)
+            .chain(["custom"]),
+    )
+}
+
 #[derive(Debug)]
 struct CliOptions {
     schedule: ScheduleOptions,
@@ -38,279 +156,145 @@ struct CliOptions {
     no_report: bool,
     baselines: Vec<PathBuf>,
 }
-fn flag_integer(
-    values: &BTreeMap<String, String>,
+
+// Catalog membership and duplicate selections are domain validation, after Clap
+// has handled argument syntax, types, ranges, conflicts and help.
+fn selection<T: Clone + PartialEq>(
+    input: Option<Vec<T>>,
     flag: &str,
-    fallback: u32,
-    min: u32,
-    max: u32,
-) -> Result<u32, SimulationError> {
-    let value = values
-        .get(flag)
-        .map_or(Ok(fallback), |value| value.parse::<u32>());
-    match value {
-        Ok(value) if (min..=max).contains(&value) => Ok(value),
-        _ => Err(format!("{flag} must be {min}..{max}").into()),
-    }
-}
-fn selection(
-    values: &BTreeMap<String, String>,
-    flag: &str,
-    available: &[String],
-) -> Result<Vec<String>, SimulationError> {
-    let Some(input) = values.get(flag) else {
-        return Ok(available.to_vec());
-    };
-    let selected: Vec<_> = input
-        .split(',')
-        .map(|entry| entry.trim().to_owned())
-        .collect();
-    let mut seen = HashSet::new();
+    available: &[T],
+) -> Result<Vec<T>, SimulationError> {
+    let selected = input.unwrap_or_else(|| available.to_vec());
     if selected.is_empty()
         || selected
             .iter()
-            .any(|entry| !available.contains(entry) || !seen.insert(entry))
+            .enumerate()
+            .any(|(i, entry)| !available.contains(entry) || selected[..i].contains(entry))
     {
-        return Err(format!(
-            "Invalid {flag}: expected unique entries from {}",
-            available.join(",")
-        )
-        .into());
+        return Err(format!("Invalid {flag}: expected unique available entries").into());
     }
     Ok(selected)
 }
-fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> {
-    let expanded: Vec<String> = args
-        .iter()
-        .flat_map(|arg| {
-            if let Some((flag, value)) = arg.split_once('=') {
-                vec![flag.to_owned(), value.to_owned()]
-            } else {
-                vec![arg.clone()]
-            }
-        })
-        .collect();
-    let args = &expanded;
-    let mut values = BTreeMap::new();
-    let mut switches = HashSet::new();
-    let mut baselines = vec![];
-    let mut index = 0;
-    const VALUE_FLAGS: &[&str] = &[
-        "--with",
-        "--mode",
-        "--seeds",
-        "--seed",
-        "--policies",
-        "--campaign-players",
-        "--campaign-enemies",
-        "--armies",
-        "--landscapes",
-        "--campaigns",
-        "--rounds",
-        "--recruits",
-        "--diplomacy",
-        "--workers",
-        "--out",
-        "--replay",
-        "--details",
-        "--baseline",
-    ];
-    while index < args.len() {
-        let flag = &args[index];
-        if [
-            "--trace",
-            "--schedule-only",
-            "--profile-turns",
-            "--self-play",
-            "--vs-classic",
-            "--no-report",
-            "--all-pairs",
-        ]
-        .contains(&flag.as_str())
-        {
-            switches.insert(flag.clone());
-        } else if VALUE_FLAGS.contains(&flag.as_str()) {
-            index += 1;
-            let value = args
-                .get(index)
-                .filter(|value| !value.starts_with("--"))
-                .ok_or_else(|| format!("Missing value for {flag}"))?;
-            if flag == "--baseline" {
-                baselines.push(PathBuf::from(value));
-            } else if values.insert(flag.clone(), value.clone()).is_some() {
-                return Err(format!("Duplicate option: {flag}").into());
-            }
+
+impl SimulationArgs {
+    fn resolve(self, rules: &Rules) -> Result<CliOptions, SimulationError> {
+        let mut options = ScheduleOptions::defaults(rules)?;
+        options.with = self.with;
+        options.mode = self.mode;
+        options.first_seed = self.seed;
+        options.seeds = self.seeds;
+        options.self_play = self.self_play;
+        options.vs_classic =
+            self.vs_classic || (self.mode != Mode::Campaign && !self.all_pairs && !self.self_play);
+        if self.self_play && self.mode != Mode::Arena {
+            return Err("--self-play requires --mode arena".into());
+        }
+        options.max_rounds = self.rounds.unwrap_or(if self.mode == Mode::Campaign {
+            rules.campaign_defaults.default_max_rounds
         } else {
-            return Err(format!("Unknown option: {flag}").into());
+            rules.arena.default_max_rounds
+        });
+        options.campaign_max_rounds = self
+            .rounds
+            .unwrap_or(rules.campaign_defaults.default_max_rounds);
+        options.recruit_limit = self.recruits.map(|n| n as usize);
+        options.armies = selection(self.armies, "--armies", &options.armies)?;
+        options.landscapes = selection(self.landscapes, "--landscapes", &options.landscapes)?;
+        options.campaigns = selection(self.campaigns, "--campaigns", &options.campaigns)?;
+        options.policies = selection(self.policies, "--policies", &Policy::ALL)?;
+        let mut participant_ids: Vec<_> =
+            Policy::ALL.iter().map(|p| p.as_str().to_owned()).collect();
+        if self.with.is_some() {
+            participant_ids.push("custom".into());
         }
-        index += 1;
-    }
-    if switches.contains("--schedule-only") && values.contains_key("--replay") {
-        return Err("--schedule-only cannot be combined with --replay".into());
-    }
-    if switches.contains("--no-report") && !baselines.is_empty() {
-        return Err("--baseline requires report generation; remove --no-report".into());
-    }
-    if switches.contains("--all-pairs") && switches.contains("--vs-classic") {
-        return Err("--all-pairs cannot be combined with --vs-classic".into());
-    }
-    let mut options = ScheduleOptions::defaults(rules)?;
-    options.with = values
-        .get("--with")
-        .map(|value| WithSelection::parse(value))
-        .transpose()?;
-    options.mode = match values.get("--mode").map(String::as_str).unwrap_or("full") {
-        "arena" => Mode::Arena,
-        "campaign" => Mode::Campaign,
-        "full" => Mode::Full,
-        _ => return Err("Unknown simulation mode; use arena, campaign or full".into()),
-    };
-    options.first_seed = flag_integer(&values, "--seed", 1, 0, 2147483647)?;
-    options.seeds = flag_integer(&values, "--seeds", 10, 1, 10000)?;
-    options.self_play = switches.contains("--self-play");
-    options.vs_classic = switches.contains("--vs-classic")
-        || (options.mode != Mode::Campaign
-            && !switches.contains("--all-pairs")
-            && !options.self_play);
-    if options.vs_classic && options.self_play {
-        return Err("--vs-classic cannot be combined with --self-play".into());
-    }
-    if options.self_play && options.mode != Mode::Arena {
-        return Err("--self-play requires --mode arena".into());
-    }
-    let default_rounds = if options.mode == Mode::Campaign {
-        rules.campaign_defaults.default_max_rounds
-    } else {
-        rules.arena.default_max_rounds
-    };
-    options.max_rounds = flag_integer(&values, "--rounds", default_rounds, 1, 1000)?;
-    options.campaign_max_rounds = flag_integer(
-        &values,
-        "--rounds",
-        rules.campaign_defaults.default_max_rounds,
-        1,
-        1000,
-    )?;
-    options.recruit_limit = values
-        .contains_key("--recruits")
-        .then(|| flag_integer(&values, "--recruits", 0, 0, 20).map(|limit| limit as usize))
-        .transpose()?;
-    options.armies = selection(&values, "--armies", &options.armies)?;
-    options.landscapes = selection(&values, "--landscapes", &options.landscapes)?;
-    options.campaigns = selection(&values, "--campaigns", &options.campaigns)?;
-    let policy_ids: Vec<_> = crate::ai::Policy::ALL
-        .iter()
-        .map(|p| p.as_str().to_owned())
-        .collect();
-    options.policies = crate::ai::Policy::ALL.to_vec();
-    if values.contains_key("--policies") {
-        options.policies = selection(&values, "--policies", &policy_ids)?
-            .into_iter()
-            .map(|id| serde_json::from_value(json!(id)).map_err(SimulationError::from))
-            .collect::<Result<_, _>>()?;
-    }
-    let mut participant_ids = policy_ids.clone();
-    if options.with.is_some() {
-        participant_ids.push("custom".into());
-    }
-    for (flag, destination, custom) in [
-        (
-            "--campaign-players",
-            &mut options.campaign_players,
-            &mut options.campaign_custom_player,
-        ),
-        (
-            "--campaign-enemies",
-            &mut options.campaign_enemies,
-            &mut options.campaign_custom_enemy,
-        ),
-    ] {
-        if values.contains_key(flag) {
-            let selected = selection(&values, flag, &participant_ids)?;
-            *custom = selected.iter().any(|id| id == "custom");
-            *destination = Some(
-                selected
-                    .into_iter()
-                    .filter(|id| id != "custom")
-                    .map(|id| serde_json::from_value(json!(id)).map_err(SimulationError::from))
-                    .collect::<Result<_, _>>()?,
-            );
-        }
-    }
-    if options.mode != Mode::Arena {
-        if options.campaign_players.is_none() {
-            if options.with.is_some() {
-                options.campaign_custom_player = true;
-                options.campaign_players = Some(vec![]);
-            } else {
-                let players: Vec<_> = options
-                    .policies
-                    .iter()
-                    .copied()
-                    .filter(|p| {
-                        matches!(
-                            p,
-                            crate::ai::Policy::Balanced
-                                | crate::ai::Policy::Rotated
-                                | crate::ai::Policy::Situational
-                        )
-                    })
-                    .collect();
-                if players.is_empty() {
-                    return Err("No campaign simulation players selected; use --mode arena or explicit --campaign-players".into());
-                }
-                options.campaign_players = Some(players);
+        for (input, flag, destination, custom) in [
+            (
+                self.campaign_players,
+                "--campaign-players",
+                &mut options.campaign_players,
+                &mut options.campaign_custom_player,
+            ),
+            (
+                self.campaign_enemies,
+                "--campaign-enemies",
+                &mut options.campaign_enemies,
+                &mut options.campaign_custom_enemy,
+            ),
+        ] {
+            if let Some(input) = input {
+                let selected = selection(Some(input), flag, &participant_ids)?;
+                *custom = selected.iter().any(|id| id == "custom");
+                *destination = Some(
+                    selected
+                        .into_iter()
+                        .filter(|id| id != "custom")
+                        .map(|id| Policy::from_str(&id, false).map_err(SimulationError::from))
+                        .collect::<Result<_, _>>()?,
+                );
             }
         }
-        options
-            .campaign_enemies
-            .get_or_insert_with(|| vec![crate::ai::Policy::Classic]);
+        if self.mode != Mode::Arena {
+            if options.campaign_players.is_none() {
+                if self.with.is_some() {
+                    options.campaign_custom_player = true;
+                    options.campaign_players = Some(vec![]);
+                } else {
+                    let players: Vec<_> = options
+                        .policies
+                        .iter()
+                        .copied()
+                        .filter(|p| {
+                            matches!(p, Policy::Balanced | Policy::Rotated | Policy::Situational)
+                        })
+                        .collect();
+                    if players.is_empty() {
+                        return Err("No campaign simulation players selected; use --mode arena or explicit --campaign-players".into());
+                    }
+                    options.campaign_players = Some(players);
+                }
+            }
+            options
+                .campaign_enemies
+                .get_or_insert_with(|| vec![Policy::Classic]);
+        }
+        options.diplomacy = selection(self.diplomacy, "--diplomacy", &options.diplomacy)?;
+        let mut out = self.out.unwrap_or_else(|| {
+            let timestamp = SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .unwrap_or_default()
+                .as_nanos();
+            PathBuf::from(format!(
+                "artifacts/simulation-{timestamp}-{}",
+                std::process::id()
+            ))
+        });
+        if out.extension().and_then(|ext| ext.to_str()) != Some("json") {
+            out = out.join("report.json");
+        }
+        Ok(CliOptions {
+            schedule: options,
+            workers: self.workers as usize,
+            out,
+            trace: self.trace,
+            arrow: matches!(self.details, DetailFormat::Arrow),
+            replay: self.replay,
+            schedule_only: self.schedule_only,
+            profile_turns: self.profile_turns,
+            no_report: self.no_report,
+            baselines: self.baseline,
+        })
     }
-    let diplomacy_ids: Vec<_> = options
-        .diplomacy
-        .iter()
-        .map(|diplomacy| diplomacy.as_str().to_owned())
-        .collect();
-    options.diplomacy = selection(&values, "--diplomacy", &diplomacy_ids)?
-        .into_iter()
-        .map(|id| serde_json::from_value(json!(id)).map_err(SimulationError::from))
-        .collect::<Result<_, _>>()?;
-    let workers = flag_integer(&values, "--workers", default_workers() as u32, 1, 8)? as usize;
-    let mut out = values.get("--out").map(PathBuf::from).unwrap_or_else(|| {
-        let timestamp = SystemTime::now()
-            .duration_since(UNIX_EPOCH)
-            .unwrap_or_default()
-            .as_nanos();
-        PathBuf::from(format!(
-            "artifacts/simulation-{timestamp}-{}",
-            std::process::id()
-        ))
-    });
-    if out.extension().and_then(|ext| ext.to_str()) != Some("json") {
-        out = out.join("report.json");
-    }
-    let arrow = match values
-        .get("--details")
-        .map(String::as_str)
-        .unwrap_or("jsonl")
-    {
-        "arrow" => true,
-        "jsonl" => false,
-        _ => return Err("--details must be arrow or jsonl".into()),
-    };
-    Ok(CliOptions {
-        schedule: options,
-        workers,
-        out,
-        trace: switches.contains("--trace"),
-        arrow,
-        replay: values.get("--replay").map(PathBuf::from),
-        schedule_only: switches.contains("--schedule-only"),
-        profile_turns: switches.contains("--profile-turns"),
-        no_report: switches.contains("--no-report"),
-        baselines,
-    })
 }
+
+#[cfg(test)]
+fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> {
+    SimulationArgs::try_parse_from(
+        std::iter::once("hex-command-sim").chain(args.iter().map(String::as_str)),
+    )
+    .map_err(|error| SimulationError::InvalidConfig(error.to_string()))?
+    .resolve(rules)
+}
+
 pub fn default_workers() -> usize {
     let mut count = thread::available_parallelism().map_or(1, usize::from);
     if let Ok(cpu_max) = fs::read_to_string("/sys/fs/cgroup/cpu.max") {
@@ -844,40 +828,37 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
     Ok(())
 }
 pub fn run(args: &[String]) -> Result<(), SimulationError> {
-    if args == ["--help"] || args == ["-h"] {
-        println!("{HELP}");
-        return Ok(());
-    }
-    let mut args = args.to_vec();
-    let mut data_dir = None;
-    while let Some(index) = args.iter().position(|arg| arg == "--data-dir") {
-        if data_dir.is_some() {
-            return Err("Duplicate option: --data-dir".into());
+    let args = match SimulationArgs::try_parse_from(
+        std::iter::once("hex-command-sim").chain(args.iter().map(String::as_str)),
+    ) {
+        Ok(args) => args,
+        Err(error)
+            if matches!(
+                error.kind(),
+                clap::error::ErrorKind::DisplayHelp | clap::error::ErrorKind::DisplayVersion
+            ) =>
+        {
+            error.print()?;
+            return Ok(());
         }
-        let value = args
-            .get(index + 1)
-            .filter(|value| !value.starts_with("--"))
-            .ok_or("Missing value for --data-dir")?
-            .clone();
-        data_dir = Some(PathBuf::from(value));
-        args.drain(index..=index + 1);
-    }
-    let rules = if let Some(root) = data_dir {
+        Err(error) => return Err(SimulationError::InvalidConfig(error.to_string())),
+    };
+    let rules = if let Some(root) = &args.data_dir {
         Rules::load_from(root)?
     } else {
         Rules::load()?
     };
-    if args == ["--fingerprint"] {
+    if args.fingerprint {
         println!("{}", fingerprints(&rules));
         return Ok(());
     }
-    if args == ["--stdio"] {
+    if args.stdio {
         return stdio(&rules);
     }
-    if args == ["--phase-stdio"] {
+    if args.phase_stdio {
         return phase_stdio(&rules);
     }
-    let options = parse(&args, &rules)?;
+    let options = args.resolve(&rules)?;
     if options.profile_turns {
         crate::ai::profiling::enable();
     }
@@ -931,7 +912,7 @@ mod tests {
         let self_play = schedule(&options).unwrap();
         assert_eq!(self_play.len(), 32);
         assert!(self_play.iter().all(|config| matches!(config, MatchConfig::Arena(config) if config.player == config.enemy && config.player_blocks == config.enemy_blocks)));
-        let campaign = parse(
+        let mut campaign = parse(
             &[
                 "--with".into(),
                 "rotation,-,queued".into(),
@@ -948,8 +929,13 @@ mod tests {
         )
         .unwrap()
         .schedule;
+        campaign.campaigns = vec!["example".into()];
+        campaign.campaign_diplomacy = std::collections::BTreeMap::from([(
+            "example".into(),
+            vec![crate::ai::Diplomacy::Pragmatic],
+        )]);
         let configs = schedule(&campaign).unwrap();
-        assert_eq!(configs.len(), 10);
+        assert_eq!(configs.len(), 2);
         assert_eq!(configs.len(), campaign.expected_games().unwrap());
         assert!(configs.iter().all(|config| matches!(config, MatchConfig::Campaign(config) if config.player_blocks.is_none() && config.enemy_blocks.is_none_or(|blocks| blocks.campaign == crate::ai::CampaignBlock::Mission && blocks.recruiter == crate::ai::Recruiter::Rotation))));
         assert!(parse(&["--with=-,-".into()], &rules).is_err());
@@ -970,6 +956,11 @@ mod tests {
         );
         let mut one_seed = defaults.schedule.clone();
         one_seed.seeds = 1;
+        one_seed.armies.truncate(1);
+        one_seed.landscapes.truncate(1);
+        one_seed.campaigns.truncate(1);
+        one_seed.policies = vec![crate::ai::Policy::Balanced];
+        one_seed.campaign_players = Some(vec![crate::ai::Policy::Balanced]);
         assert!(
             schedule(&one_seed)
                 .unwrap()
@@ -986,6 +977,8 @@ mod tests {
         assert_eq!(extended.schedule.campaign_max_rounds, 100);
         let limited = parse(&["--recruits".into(), "1".into()], &rules).unwrap();
         assert_eq!(limited.schedule.recruit_limit, Some(1));
+        let path = parse(&["--out".into(), "artifacts/run=sample".into()], &rules).unwrap();
+        assert_eq!(path.out, PathBuf::from("artifacts/run=sample/report.json"));
         assert!(defaults.schedule.vs_classic && !defaults.no_report && !defaults.arrow);
         assert_eq!(
             defaults.schedule.campaign_enemies,

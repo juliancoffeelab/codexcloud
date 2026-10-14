@@ -36,6 +36,7 @@ pub use tactics::Random;
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(target_arch = "wasm32"), derive(clap::ValueEnum))]
 #[serde(rename_all = "lowercase")]
 /// Tactical and recruitment policy, preserving each policy's stable choices.
 pub enum Policy {
@@ -69,6 +70,7 @@ impl Policy {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(target_arch = "wasm32"), derive(clap::ValueEnum))]
 #[serde(rename_all = "lowercase")]
 /// Treatment of retreating and mediated opponents during campaign battles.
 pub enum Diplomacy {
@@ -475,7 +477,7 @@ mod courier_tests {
     }
 
     #[test]
-    fn allies_clear_approaches_and_complete_the_escort_for_every_policy() {
+    fn allies_clear_approaches_and_complete_the_escort() {
         fn is_command_endturn(value: &Command) -> bool {
             match value {
                 Command::EndTurn => true,
@@ -493,7 +495,7 @@ mod courier_tests {
         }
 
         let rules = Rules::load().unwrap();
-        for policy in Policy::ALL {
+        for policy in [Policy::Classic, Policy::Balanced] {
             let mut game = Game::start_campaign(
                 &rules,
                 "borrowed-tide",

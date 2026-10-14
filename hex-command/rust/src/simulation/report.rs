@@ -1,10 +1,6 @@
 //! Compact reports and statistics derived from complete, owned match results.
 pub use super::summaries::{DetailedSummary, borrowed_summary, compact_summary};
-use super::{
-    error::SimulationError,
-    schedule::{Mode, ScheduleOptions},
-    types::MatchResult,
-};
+use super::{error::SimulationError, schedule::ScheduleOptions, types::MatchResult};
 use crate::ai::Random;
 use serde::Serialize;
 use serde_json::{Value, json};
@@ -467,6 +463,7 @@ pub fn markdown(report: &Value) -> String {
 
 #[cfg(test)]
 mod tests {
+    use super::super::schedule::Mode;
     use super::*;
     use crate::ai::{Diplomacy, Policy};
     #[test]

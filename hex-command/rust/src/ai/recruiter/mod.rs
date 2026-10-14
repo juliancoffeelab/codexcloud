@@ -115,18 +115,12 @@ impl BattleView<'_, '_> {
         seed: u32,
         orders: &super::orders::RecruitmentOrders,
     ) -> Option<Command> {
-        if recruiter == RecruiterKind::Situational {
-            return situational::choose(self, seed, orders);
-        }
-        fn behavior(recruiter: RecruiterKind) -> (bool, bool, bool) {
-            match recruiter {
-                RecruiterKind::Rotation => (true, false, false),
-                RecruiterKind::Frontline => (false, true, false),
-                RecruiterKind::Balanced => (false, false, true),
-                RecruiterKind::Situational => unreachable!("separate situational selector"),
-            }
-        }
-        let (rotation, frontline_only, balanced) = behavior(recruiter);
+        let (rotation, frontline_only, balanced) = match recruiter {
+            RecruiterKind::Rotation => (true, false, false),
+            RecruiterKind::Frontline => (false, true, false),
+            RecruiterKind::Balanced => (false, false, true),
+            RecruiterKind::Situational => return situational::choose(self, seed, orders),
+        };
         let side = self.turn();
         let Some(leader) = self
             .units()
