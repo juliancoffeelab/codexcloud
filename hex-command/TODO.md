@@ -43,9 +43,14 @@
 
 ## Saves
 
-- [x] Save resolved game state before and after enemy turns, without AI commands
-      or planning workspaces. Interrupted turns replay from the pre-turn snapshot;
-      migrations discard historical AI plans and normal gameplay replans.
+- [x] Save resolved game state before and after the entire enemy turn, without
+      AI commands, planning workspaces or derived caches. Interrupted turns replay
+      from the pre-turn snapshot; normal gameplay rebuilds AI plans after loading.
+- [x] Keep all migrations and historical conversion data in `src/save/migrations/`.
+      Run data-only JavaScript migrations during loading and atomically persist
+      the validated result immediately. Never execute gameplay or AI logic during
+      migration. Wipe saves that cannot be parsed, migrated or validated and start
+      a fresh battle, without rejected-save backups or save suspension.
 
 ## Mobile rendering
 
