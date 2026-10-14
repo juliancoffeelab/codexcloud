@@ -9,7 +9,6 @@ use serde::{Deserialize, Serialize};
 pub enum TargetKind {
     Capture,
     Defeat,
-    #[serde(alias = "escort", alias = "escape", alias = "vigil", alias = "seal")]
     Visit,
 }
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]

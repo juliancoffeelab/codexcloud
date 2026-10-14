@@ -43,11 +43,9 @@
 
 ## Saves
 
-- [ ] Simplify saves to snapshots of the resolved game state after completed
-      actions. Do not save unexecuted AI commands, queued moves or planning
-      workspaces. Rebuild AI plans after loading. Keep turn progress and any
-      remaining recruitment quota in the game state so completed actions are
-      neither repeated nor undone.
+- [x] Save resolved game state before and after enemy turns, without AI commands
+      or planning workspaces. Interrupted turns replay from the pre-turn snapshot;
+      migrations discard historical AI plans and normal gameplay replans.
 
 ## Mobile rendering
 

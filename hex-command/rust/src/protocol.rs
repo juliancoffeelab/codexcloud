@@ -106,24 +106,6 @@ pub struct SavedGame {
     /// Seed used when creating a new planning workspace.
     pub seed: u32,
     pub state: State,
-    /// Absent when there is no active planning workspace.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub planner: Option<SavedPlanner>,
-}
-
-/// Planner configuration, persistent workspace, and any command awaiting dispatch.
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
-pub struct SavedPlanner {
-    pub options: AiOptions,
-    pub workspace: crate::ai::PlanningSnapshot,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "wasm", tsify(optional))]
-    /// Chosen but unapplied command, returned again after restoration.
-    pub pending: Option<Command>,
 }
 
 /// Factory-local battle identity and its initial published snapshot.

@@ -13,9 +13,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum CampaignerKind {
-    #[serde(alias = "arenaOnly")]
     Arena,
-    #[serde(alias = "objectives", alias = "adaptive")]
     Mission,
 }
 impl Campaigner for CampaignerKind {

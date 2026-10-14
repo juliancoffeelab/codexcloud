@@ -464,7 +464,7 @@ export class BattleController {
     return this.runEnemyTurn(turnSessionVersion);
   }
 
-  /** Continue either a freshly ended turn or an exact restored native enemy phase. */
+  /** Resolve the enemy turn before publishing its persistent checkpoint. */
   private async runEnemyTurn(turnSessionVersion: number) {
     if (!this.#game.winner) this.message("The enemy is planning its moves…");
     await this.pause(enemyThinkingDelay);

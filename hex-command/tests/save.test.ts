@@ -254,30 +254,62 @@ test("Pending enemy replay preserves the player checkpoint through both versions
   assert.throws(() => migrateSave(old));
 });
 
-test("Native migration preserves a selected AI command and exact continuation", () => {
+test("Version-four migration discards AI actions without executing the enemy turn", () => {
   const factory = createTestFactory();
-  const engine = nativeValue(factory.create({ kind: "scenario", map: "mirror" }, 42));
-  nativeValue(engine.dispatch({ kind: "endTurn" }));
-  const options = { policy: "classic", diplomacy: "restrained", recruitmentLimit: 2 } as const;
-  const decision = nativeValue(engine.chooseAiCommand(options));
-  const saved = nativeValue(engine.save());
-  assert(saved.planner?.pending);
-  localStorage.setItem(
-    SAVE_KEY,
-    JSON.stringify({ engine: "rust-wasm", pendingEnemy: false, saved: { version: 1, ...saved } }),
+  const game = LiveGame.create(factory, { kind: "scenario", map: "mirror" });
+  game.endTurn();
+  game.enemyStep();
+  const checkpoint = nativeValue(game.checkpoint());
+  const old = {
+    version: 4,
+    pendingEnemy: false,
+    checkpoint: {
+      ...checkpoint,
+      planner: {
+        options: { recruitmentLimit: 2 },
+        workspace: { recruitmentRemaining: 0, commands: [] },
+        pending: { kind: "nonsense" },
+      },
+    },
+  };
+  const raw = JSON.stringify(old);
+  localStorage.setItem(SAVE_KEY, raw);
+  const migrated = migrateSave(old);
+  assert.equal("planner" in migrated.save.checkpoint, false);
+  assert.deepEqual(migrated.save.checkpoint.state, checkpoint.state);
+  assert.equal(localStorage.getItem(SAVE_KEY), raw);
+  const loaded = loadBattle(factory);
+  assert.equal(loaded.notice, undefined);
+  assert.deepEqual(nativeValue(loaded.game.checkpoint()), migrated.save.checkpoint);
+  assert.equal(
+    localStorage.getItem(SAVE_KEY),
+    raw,
+    "Keep recovery save throughout the enemy phase",
   );
-  const migrated = loadBattle(factory);
-  assert.equal(migrated.notice, undefined);
-  assert.equal(migrated.game.turn, "enemy");
-  const latest = migrateSave(JSON.parse(localStorage.getItem(SAVE_KEY)!)).save;
-  assert.deepEqual(latest.checkpoint.planner, saved.planner);
-  const restored = nativeValue(factory.restore(latest.checkpoint));
-  const repeated = nativeValue(restored.chooseAiCommand(options));
-  assert.deepEqual(repeated.command, decision.command);
-  nativeValue(engine.dispatch(decision.command, decision.revision));
-  nativeValue(restored.dispatch(repeated.command, repeated.revision));
-  assert.deepEqual(nativeValue(restored.view()).state, nativeValue(engine.view()).state);
-  migrated.game.dispose();
+  for (let steps = 0; loaded.game.turn === "enemy" && !loaded.game.winner; steps++) {
+    assert(steps < 100);
+    loaded.game.enemyStep();
+    saveBattle(loaded.game);
+    if (loaded.game.turn === "enemy" && !loaded.game.winner)
+      assert.equal(localStorage.getItem(SAVE_KEY), raw);
+  }
+  const latest = JSON.parse(localStorage.getItem(SAVE_KEY)!);
+  assert.equal(latest.version, SAVE_VERSION);
+  assert.equal("planner" in latest.checkpoint, false);
+  assert.deepEqual(latest.checkpoint, nativeValue(loaded.game.checkpoint()));
+  game.dispose();
+  loaded.game.dispose();
+});
+
+test("Mid-turn writes retain the pre-turn checkpoint", () => {
+  const game = LiveGame.create(createTestFactory(), { kind: "scenario", map: "mirror" });
+  saveBattle(game, true);
+  const before = localStorage.getItem(SAVE_KEY);
+  game.endTurn();
+  game.enemyStep();
+  saveBattle(game);
+  assert.equal(localStorage.getItem(SAVE_KEY), before);
+  game.dispose();
 });
 
 test("Failed backup protects the original while allowing play and explicit new battles", () => {
@@ -338,6 +370,7 @@ for (const [id, chapter, type, tile, numericMarks] of [
     assert.deepEqual(loaded.game.units, game.units);
     loaded.game.endTurn();
     assert.deepEqual(loaded.game.units, game.units, "Previously deployed waves cannot respawn");
+    while (loaded.game.turn === "enemy" && !loaded.game.winner) loaded.game.enemyStep();
     saveBattle(loaded.game);
     const again = loadBattle(createTestFactory());
     assert.deepEqual(again.game.captureState(), loaded.game.captureState());

@@ -102,8 +102,8 @@ exact zero operations avoid creating subnormal rounding operands.
 Arena incoming-damage forecasts survive HP/action-flag changes. The turn workspace
 invalidates them on identity, kind, side, position or terrain changes. Forecasted
 coverage and damage do not depend on current HP. Campaign forecasts still execute
-turn-start events, waves and objective transitions. Derived caches are rebuilt
-when restoring a saved planner; they do not alter its continuation.
+turn-start events, waves and objective transitions. Planner workspaces and derived caches are turn-local and are never persisted
+in browser saves. Interrupted enemy phases replay from their pre-turn state.
 
 Workers construct complete gameplay, encode lossless Arrow snapshot dictionaries,
 hash endpoints and release match data before sending compact outcomes and encoded

@@ -12,7 +12,6 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "lowercase")]
 pub enum PlannerKind {
     Classic,
-    #[serde(alias = "rush", alias = "mixed")]
     Full,
     Queued,
 }

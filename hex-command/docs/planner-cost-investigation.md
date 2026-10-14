@@ -118,7 +118,7 @@ the simulation players retain their intended recruitment distinctions and can
 intelligently finish campaigns. Measure wins/completions against the same Classic
 enemy: fair-roster and situational players should outperform infantry-only, and
 fair-roster performance should remain reasonably close to situational selection.
-Also measure caps, essential-actor losses and campaign/saved-planner behavior.
+Also measure caps, essential-actor losses and campaign and whole-turn recovery behavior.
 Removing campaign support from Battler does not fulfill those player roles or
 offer a corresponding arena gain because its battle path is shared with Priority.
 

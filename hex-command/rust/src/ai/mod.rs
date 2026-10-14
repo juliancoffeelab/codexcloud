@@ -15,7 +15,6 @@ pub mod planner;
 pub mod profiling;
 pub mod recruiter;
 mod roles;
-mod snapshot;
 use crate::{
     data::*,
     logic::{Battle, Command, CommandError, Game},
@@ -24,7 +23,7 @@ pub use campaigner::CampaignerKind as CampaignBlock;
 use context::forecast as threats;
 pub use planner::PlannerKind as Planner;
 pub use presets::Blocks;
-pub use priority::PrioritySnapshot;
+use priority::UnitQueue;
 pub use recruiter::RecruiterKind as Recruiter;
 use rustc_hash::FxHashMap as HashMap;
 use serde::{Deserialize, Serialize};
@@ -125,7 +124,7 @@ pub enum TacticalRole {
     Healer,
 }
 /// Reusable turn-local planning state. Create a fresh workspace for each turn
-/// or restore its saved snapshot when resuming the same battle and policy.
+/// and discard it when the turn ends.
 pub struct PlanningWorkspace {
     policy: Option<Policy>,
     seed: u32,
@@ -144,58 +143,15 @@ pub struct PlanningWorkspace {
     routes: HashMap<(usize, Vec<usize>), Rc<Vec<u16>>>,
     commitments: HashMap<u32, String>,
     threats: threats::ArenaThreatWorkspace,
-    priority: Option<PrioritySnapshot>,
+    priority: Option<UnitQueue>,
     cheap: cheap::Workspace,
     blocks: Option<Blocks>,
     orders: Option<orders::CampaignOrders>,
     report: orders::PlanningReport,
     recruitment_report: orders::RecruitmentReport,
     turn_plan_ready: bool,
-    issued: Option<Command>,
     cooperation: cooperation::Workspace,
     escort: escort::Workspace,
-}
-/// Serializable continuation of a policy phase. Route caches are rebuilt after
-/// restoration; decisions, unit order and recruitment budgets remain intact.
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
-pub struct PlanningSnapshot {
-    #[cfg_attr(feature = "wasm", tsify(optional))]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub orders: Option<orders::CampaignOrders>,
-    #[serde(default)]
-    pub report: orders::PlanningReport,
-    #[serde(default)]
-    pub recruitment_report: orders::RecruitmentReport,
-    #[serde(default)]
-    pub turn_plan_ready: bool,
-    #[serde(default)]
-    pub issued: Option<Command>,
-    #[serde(default)]
-    pub cooperation: cooperation::Workspace,
-    #[cfg_attr(feature = "wasm", tsify(optional))]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub blocks: Option<Blocks>,
-    pub policy: Option<Policy>,
-    pub seed: u32,
-    pub recruitment_remaining: usize,
-    pub goals: Option<Vec<Objective>>,
-    pub diplomacy: Diplomacy,
-    pub initialized: bool,
-    pub finished: bool,
-    pub classic_objectives: Vec<orders::Target>,
-    pub classic_ids: Vec<UnitId>,
-    #[serde(default)]
-    pub classic_revision: u32,
-    pub tactical_remaining: Option<usize>,
-    pub commands: Vec<Command>,
-    pub attack_continuation: Option<(UnitId, UnitId, WeaponId)>,
-    pub commitments: Vec<(UnitId, String)>,
-    #[cfg_attr(feature = "wasm", tsify(optional))]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub priority: Option<PrioritySnapshot>,
 }
 impl PlanningWorkspace {
     /// Start a policy phase with its seed, recruitment budget and objectives.
@@ -212,7 +168,6 @@ impl PlanningWorkspace {
             report: orders::PlanningReport::default(),
             recruitment_report: orders::RecruitmentReport::default(),
             turn_plan_ready: false,
-            issued: None,
             cooperation: cooperation::Workspace::default(),
             escort: escort::Workspace::default(),
             seed,
@@ -235,7 +190,7 @@ impl PlanningWorkspace {
             cheap: cheap::Workspace::default(),
         }
     }
-    /// Select independent blocks before starting a phase. Saved continuations retain them.
+    /// Select independent blocks before starting a phase.
     pub fn with_blocks(mut self, blocks: Blocks) -> Self {
         assert!(
             !self.initialized && self.policy.is_none(),
@@ -280,75 +235,6 @@ impl PlanningWorkspace {
             report: self.report.clone(),
             recruitment: self.recruitment_report.clone(),
         })
-    }
-    /// Save the exact policy continuation without its recomputable route cache.
-    pub fn snapshot(&self) -> PlanningSnapshot {
-        let mut commitments: Vec<_> = self
-            .commitments
-            .iter()
-            .map(|(id, goal)| (UnitId(*id), goal.clone()))
-            .collect();
-        commitments.sort_by_key(|(id, _)| id.0);
-        PlanningSnapshot {
-            orders: self.orders.clone(),
-            report: self.report.clone(),
-            recruitment_report: self.recruitment_report.clone(),
-            turn_plan_ready: self.turn_plan_ready,
-            issued: self.issued.clone(),
-            cooperation: self.cooperation.clone(),
-            blocks: self.blocks,
-            policy: self.policy,
-            seed: self.seed,
-            recruitment_remaining: self.recruitment_remaining,
-            goals: self.goals.clone(),
-            diplomacy: self.diplomacy,
-            initialized: self.initialized,
-            finished: self.finished,
-            classic_objectives: self.classic_objectives.clone(),
-            classic_ids: self.classic_ids.iter().map(|id| UnitId(*id)).collect(),
-            classic_revision: self.classic_revision,
-            tactical_remaining: self.tactical_remaining,
-            commands: self.commands.iter().cloned().collect(),
-            attack_continuation: self.attack_continuation.clone(),
-            commitments,
-            priority: self.priority.clone(),
-        }
-    }
-    /// Restore a previously validated snapshot for the same battle and turn.
-    pub fn from_snapshot(saved: PlanningSnapshot) -> Self {
-        Self {
-            orders: saved.orders,
-            report: saved.report,
-            recruitment_report: saved.recruitment_report,
-            turn_plan_ready: saved.turn_plan_ready,
-            issued: saved.issued,
-            cooperation: saved.cooperation,
-            escort: escort::Workspace::default(),
-            policy: saved.policy,
-            blocks: saved.blocks,
-            seed: saved.seed,
-            recruitment_remaining: saved.recruitment_remaining,
-            goals: saved.goals,
-            prepared_goals: None,
-            diplomacy: saved.diplomacy,
-            cheap: cheap::Workspace::default(),
-            initialized: saved.initialized,
-            finished: saved.finished,
-            classic_objectives: saved.classic_objectives,
-            classic_ids: saved.classic_ids.into_iter().map(|id| id.0).collect(),
-            classic_revision: saved.classic_revision,
-            tactical_remaining: saved.tactical_remaining,
-            commands: saved.commands.into(),
-            attack_continuation: saved.attack_continuation,
-            routes: HashMap::default(),
-            commitments: saved
-                .commitments
-                .into_iter()
-                .map(|(id, goal)| (id.0, goal))
-                .collect(),
-            threats: threats::ArenaThreatWorkspace::default(),
-            priority: saved.priority,
-        }
     }
 }
 
@@ -409,7 +295,6 @@ pub(crate) fn choose_game_command(
         workspace.finished = true;
     }
     let command = workspace.commands.pop_front().unwrap_or(Command::EndTurn);
-    workspace.issued = Some(command.clone());
     Ok(command)
 }
 

@@ -240,41 +240,6 @@ test("Stray dialogue cannot overwrite a paused turn checkpoint", async () => {
   observed.unsubscribe();
 });
 
-// Navigating native enemy-phase dialogue cannot overwrite its recovery checkpoint.
-test("Enemy-turn dialogue keeps the recovery save", async () => {
-  const fixture = Game.startCampaign("ashen-oath", 1);
-  fixture.turn = "enemy";
-  fixture.campaign!.dialogue = [...campaignMission(fixture.campaign!).refuge!.escalation];
-  fixture.campaign!.dialogueIndex = 0;
-  const native = LiveGame.restore(createTestFactory(), {
-    seed: 17,
-    state:
-      fixture.captureState() as unknown as import("../rust/pkg/hex_command").SavedGame["state"],
-  });
-  writeBattle(native);
-  native.dispose();
-  const paused = pauseTurn();
-  const controller = createController(paused.pause);
-  const observed = observe(controller);
-  controller.initialize();
-  const checkpoint = storage.getItem(SAVE_KEY);
-  await paused.reached;
-  assert.equal(observed.view.game.turn, "enemy");
-  assert(dialoguePending(observed.view.game.campaign));
-  const originalCursor = required(observed.view.game.campaign).dialogueIndex;
-  controller.commands.advanceDialogue();
-  assert.equal(required(observed.view.game.campaign).dialogueIndex, originalCursor + 1);
-  assert.equal(storage.getItem(SAVE_KEY), checkpoint);
-  controller.commands.previousDialogue();
-  assert.equal(required(observed.view.game.campaign).dialogueIndex, originalCursor);
-  assert.equal(storage.getItem(SAVE_KEY), checkpoint);
-  assert.equal(loadBattle().game.turn, "enemy");
-  controller.dispose();
-  paused.release();
-  await Promise.resolve();
-  observed.unsubscribe();
-});
-
 // Completing a vigil at the next player turn keeps the published mission outcome status.
 test("Completed vigil publishes and persists its outcome", async () => {
   storage.clear();

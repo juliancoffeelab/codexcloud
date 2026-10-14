@@ -163,7 +163,7 @@ mod tests {
     }
 
     #[test]
-    fn independent_blocks_survive_a_saved_queued_phase_under_another_preset() {
+    fn independent_blocks_keep_the_selected_planner_under_another_preset() {
         let rules = Rules::load().unwrap();
         let mut game = Game::new(&rules, "mirror");
         let blocks = Policy::Priority.blocks().unwrap();
@@ -176,12 +176,7 @@ mod tests {
                 command,
                 choose_game_command(&rules, &game, Policy::Priority, &mut preset).unwrap()
             );
-            let saved = custom.snapshot();
-            assert_eq!(saved.blocks, Some(blocks));
-            saved.validate(&rules, &game.state()).unwrap();
-            custom = PlanningWorkspace::from_snapshot(
-                serde_json::from_str(&serde_json::to_string(&saved).unwrap()).unwrap(),
-            );
+            assert_eq!(custom.blocks, Some(blocks));
             if end_turn(&command) {
                 return;
             }

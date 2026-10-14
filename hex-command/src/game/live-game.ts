@@ -251,7 +251,6 @@ export class LiveGame {
       this.factory.restore({
         ...checkpoint,
         state: state as unknown as SavedGame["state"],
-        planner: undefined,
       }),
     );
     nativeValue(this.engine.dispose());
@@ -278,7 +277,7 @@ export class LiveGame {
       ...(campaign || sites.length ? { sites } : {}),
     });
   }
-  /** Current native checkpoint, including exact AI continuation. */
+  /** Current native checkpoint of resolved game state. */
   checkpoint(): ReturnType<GameEngine["save"]> {
     return this.engine.save();
   }

@@ -355,17 +355,23 @@ fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, Simulation
     } else if request.advance_turn {
         game.end_turn();
     }
-    let workspace = crate::ai::PlanningWorkspace::new(
-        request.seed,
-        request.recruitment_limit,
-        request.goals.clone(),
-        request.diplomacy,
-    )
-    .with_optional_blocks(request.blocks);
-    workspace
-        .snapshot()
-        .validate(rules, &game.state())
-        .map_err(|error| SimulationError::InvalidConfig(error.to_string()))?;
+    if request.recruitment_limit > 1_000_000
+        || request.goals.iter().flatten().any(|goal| {
+            !goal.weight.is_finite()
+                || goal.weight <= 0.0
+                || goal.tiles.iter().any(|tile| !game.board.ids.contains(tile))
+                || goal.actor.as_ref().is_some_and(|actor| {
+                    actor
+                        .strip_prefix('u')
+                        .and_then(|id| id.parse::<u32>().ok())
+                        .is_none_or(|id| id == 0 || id >= game.next_id)
+                })
+        })
+    {
+        return Err(SimulationError::InvalidConfig(
+            "Invalid planning budget or objective".into(),
+        ));
+    }
     game.recordings = Some(crate::data::Records::default());
     game.play_blocks(
         request.policy,

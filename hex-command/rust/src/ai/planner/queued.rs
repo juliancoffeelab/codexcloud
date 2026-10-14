@@ -1,14 +1,9 @@
 //! A bounded duty queue replaces the global unit search after every command.
 use crate::ai::{PlanningWorkspace, TacticalRole, planner::QueueMode, roles::role, tactics::Plan};
 use crate::{ai::context::BattleView, data::*};
-use serde::{Deserialize, Serialize};
 
-/// Persisted queue cursor and deferred units; derived scoring caches stay private.
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
-pub struct PrioritySnapshot {
+/// Turn-local queue cursor and deferred units.
+pub struct UnitQueue {
     pub pending: Vec<UnitId>,
     pub cursor: usize,
     pub retry: Vec<UnitId>,
@@ -180,7 +175,7 @@ pub(in crate::ai) fn next_plan(
         QueueMode::Arena
     };
     if workspace.priority.is_none() {
-        workspace.priority = Some(PrioritySnapshot {
+        workspace.priority = Some(UnitQueue {
             pending: game.priority_order(policy, &workspace.cheap, &workspace.escort),
             cursor: 0,
             retry: vec![],
@@ -200,7 +195,7 @@ fn next_plan_inner(
     game: &BattleView<'_, '_>,
     policy: QueueMode,
     workspace: &mut PlanningWorkspace,
-    queue: &mut PrioritySnapshot,
+    queue: &mut UnitQueue,
     intents: &mut Vec<(u32, Option<bool>)>,
 ) -> Option<Plan> {
     if queue.known_next_id != game.next_id() {
@@ -319,72 +314,7 @@ mod tests {
     use crate::ai::Policy;
     use crate::logic::Game;
     #[test]
-    fn complex_assaults_keep_the_selected_planner_after_snapshot_restoration() {
-        fn is_command_endturn(value: &Command) -> bool {
-            match value {
-                Command::EndTurn => true,
-                Command::Move { .. }
-                | Command::Attack { .. }
-                | Command::Recruit { .. }
-                | Command::Advance { .. }
-                | Command::DismissDialogue
-                | Command::NextMission
-                | Command::RecallMission { .. }
-                | Command::RetryMission
-                | Command::PreviousDialogue
-                | Command::SkipDialogue
-                | Command::SetUnitIntent { .. } => false,
-            }
-        }
-
-        let rules = Rules::load().unwrap();
-        let mut game =
-            Game::start_campaign(&rules, "ashen-oath", 0, vec![], 0, vec![], vec![], vec![]);
-        assert!(crate::ai::campaigner::mission::heavy_campaign(&game));
-        let mut priority = PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Pragmatic);
-        for _ in 0..6 {
-            let mut resumed = PlanningWorkspace::from_snapshot(
-                serde_json::from_str(&serde_json::to_string(&priority.snapshot()).unwrap())
-                    .unwrap(),
-            );
-            let command =
-                crate::ai::choose_game_command(&rules, &game, Policy::Priority, &mut priority)
-                    .unwrap();
-            assert_eq!(
-                command,
-                crate::ai::choose_game_command(&rules, &game, Policy::Priority, &mut resumed)
-                    .unwrap()
-            );
-            let snapshot = priority.snapshot();
-            assert_eq!(snapshot.blocks.unwrap().planner, crate::ai::Planner::Queued);
-            snapshot.validate(&rules, &game.state()).unwrap();
-            priority = PlanningWorkspace::from_snapshot(
-                serde_json::from_str(&serde_json::to_string(&snapshot).unwrap()).unwrap(),
-            );
-            if is_command_endturn(&command) {
-                break;
-            }
-            game.execute(command).unwrap();
-        }
-    }
-    #[test]
-    fn queues_roundtrip_and_reject_invalid_cursors_and_campaign_battlers() {
-        fn is_command_endturn(value: &Command) -> bool {
-            match value {
-                Command::EndTurn => true,
-                Command::Move { .. }
-                | Command::Attack { .. }
-                | Command::Recruit { .. }
-                | Command::Advance { .. }
-                | Command::DismissDialogue
-                | Command::NextMission
-                | Command::RecallMission { .. }
-                | Command::RetryMission
-                | Command::PreviousDialogue
-                | Command::SkipDialogue
-                | Command::SetUnitIntent { .. } => false,
-            }
-        }
+    fn campaign_rejects_arena_and_reference_policies() {
         fn is_goal_escort_escape(value: &Goal) -> bool {
             match value {
                 Goal::Escort { .. } | Goal::Escape { .. } => true,
@@ -399,38 +329,6 @@ mod tests {
         }
 
         let rules = Rules::load().unwrap();
-        let mut game = Game::new(&rules, "mirror");
-        let mut workspace = PlanningWorkspace::new(7, 0, None, crate::ai::Diplomacy::Pragmatic);
-        for _ in 0..8 {
-            let previous = workspace.snapshot();
-            previous.validate(&rules, &game.state()).unwrap();
-            let mut restored = PlanningWorkspace::from_snapshot(
-                serde_json::from_str(&serde_json::to_string(&previous).unwrap()).unwrap(),
-            );
-            let command =
-                crate::ai::choose_game_command(&rules, &game, Policy::Priority, &mut workspace)
-                    .unwrap();
-            assert_eq!(
-                command,
-                crate::ai::choose_game_command(&rules, &game, Policy::Priority, &mut restored)
-                    .unwrap()
-            );
-            let saved = workspace.snapshot();
-            saved.validate(&rules, &game.state()).unwrap();
-            if let Some(queue) = &saved.priority {
-                assert!(queue.pending.len() <= game.units.len());
-                let mut invalid = saved.clone();
-                invalid.priority.as_mut().unwrap().cursor = queue.pending.len() + 1;
-                assert!(invalid.validate(&rules, &game.state()).is_err());
-            }
-            if is_command_endturn(&command) {
-                break;
-            }
-            game.execute(command).unwrap();
-            workspace = PlanningWorkspace::from_snapshot(
-                serde_json::from_str(&serde_json::to_string(&saved).unwrap()).unwrap(),
-            );
-        }
         let mut campaign = Game::start_campaign(
             &rules,
             "borrowed-tide",
@@ -451,9 +349,6 @@ mod tests {
                 crate::ai::choose_game_command(&rules, &campaign, policy, &mut workspace),
                 Err(CommandError::ReferenceOnlyPolicy)
             );
-            let mut snapshot = workspace.snapshot();
-            snapshot.policy = Some(policy);
-            assert!(snapshot.validate(&rules, &campaign.state()).is_err());
         }
         let normal = campaign.policy_objectives(None);
         let normal_weight = normal

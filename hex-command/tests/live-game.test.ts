@@ -195,7 +195,7 @@ test("An invalid native checkpoint preserves the old save and leaves a playable 
   restored.game.dispose();
 });
 
-test("Reloading an exact enemy-phase checkpoint resumes the saved planner once", async () => {
+test("Reloading during an enemy turn replays the whole phase from its boundary", async () => {
   // Node has no image decoder; artwork failure must not affect turn recovery.
   vi.stubGlobal(
     "Image",
@@ -207,12 +207,11 @@ test("Reloading an exact enemy-phase checkpoint resumes the saved planner once",
     },
   );
   const game = LiveGame.create(factory, { kind: "scenario", map: "mirror" });
+  writeBattle(game, true);
   game.endTurn();
+  const phaseSnapshot = game.snapshot();
   game.enemyStep();
   writeBattle(game);
-  const checkpoint = game.captureState();
-  const phaseSnapshot = game.snapshot();
-  assert.equal(checkpoint.turn, "enemy");
   for (let steps = 0; game.turn === "enemy"; steps++) {
     assert(steps < 100, "planner must finish this small phase");
     game.enemyStep();
@@ -240,7 +239,7 @@ test("Reloading an exact enemy-phase checkpoint resumes the saved planner once",
   assert.deepEqual(
     controller.snapshot(),
     expected,
-    "resume must preserve the saved planner continuation",
+    "replay must reproduce the complete enemy phase",
   );
   await Promise.resolve();
   const restored = loadLiveBattle(factory);

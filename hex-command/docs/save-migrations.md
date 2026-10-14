@@ -1,23 +1,30 @@
 # Browser saves and migrations
 
-`src/save/schema.ts` defines the current version-4 envelope:
+`src/save/schema.ts` defines the current version-5 envelope:
 
 ```json
 {
-  "version": 4,
+  "version": 5,
   "pendingEnemy": false,
-  "checkpoint": { "seed": 17, "state": {}, "planner": {} }
+  "checkpoint": { "seed": 17, "state": {} }
 }
 ```
 
-`state` is the complete generated Rust battle type. `planner` is optional and
-preserves exact enemy AI continuation, including a selected but unapplied command.
-The checkpoint itself has no format version. `pendingEnemy` instead records an
-interrupted enemy phase that must replay from a player-turn checkpoint.
+`state` is the complete generated Rust battle type. Native checkpoints contain
+only resolved game state and the AI seed. They never contain planner workspaces,
+queued actions or selected but unapplied commands.
 
-Loading parses JSON, runs consecutive migrations, validates and restores through
-Rust, then writes the current envelope. Migration steps are pure data conversions;
-new versions require another one-step module under `src/save/migration/`. Normal
+The entire enemy phase is atomic for browser persistence: save the player state
+with `pendingEnemy: true` before starting it, retain that checkpoint throughout
+all enemy actions, then replace it with the resolved state after the phase ends
+or the battle finishes. Reloading an interrupted phase replays the whole phase
+from its pre-turn checkpoint. A single `localStorage.setItem` replaces the complete
+envelope; failed writes leave the previous checkpoint intact. Storage is optional,
+so persistence cannot be guaranteed when the browser refuses writes.
+
+Loading parses JSON, runs consecutive migrations and validates through Rust before
+writing the current envelope. Migration steps are pure data conversions; new
+versions require another one-step module under `src/save/migration/`. Normal
 writes and the controller accept only the current format and native engine.
 
 Rejected saves retain their original bytes in `hex-command-battle-unrestored` and
@@ -62,3 +69,17 @@ seed and planner continuation stay intact; only missing tiles are added from
 the current map. It never resets units or respawns defeated showcase troops.
 Malformed or incomplete historical boards still fail validation. Other maps
 receive only the envelope-version update.
+
+## Version-four migration
+
+The v4-to-v5 step drops the entire historical `planner` field, including all
+queued actions, pending commands and continuation bookkeeping. It preserves
+resolved battle state and the pre-turn replay marker. Migration never executes
+AI actions or deserializes the historical planner. Normal gameplay creates a
+fresh plan when needed.
+
+Older native saves may contain resolved state halfway through an enemy phase.
+They have no pre-turn state to roll back to: completed actions remain, while
+unexecuted actions are discarded. Such saves keep their original storage bytes
+until normal gameplay finishes the phase and writes a version-five boundary.
+New saves never persist partial enemy phases.
