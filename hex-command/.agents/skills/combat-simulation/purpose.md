@@ -16,20 +16,19 @@ opponent.
 
 ## Current presets
 
-| Tactic   | Current behavior and limits                                                         |
-| -------- | ----------------------------------------------------------------------------------- |
-| Classic  | Rotation recruitment and Classic planning; fixed enemy.                             |
-| Rush     | Frontline recruitment and Full planning; not strictly infantry-only.                |
-| Mixed    | Role-balanced recruitment and Full planning; not guaranteed fair use of every unit. |
-| Priority | Mixed recruitment and Queued planning with mission orders.                          |
-| Battler  | Mixed recruitment and Queued planning with arena orders; arena-only.                |
+| Tactic   | Current behavior and limits                                                             |
+| -------- | --------------------------------------------------------------------------------------- |
+| Classic  | Rotation recruitment and Classic planning; fixed enemy, capped at 2 recruits per phase. |
+| Rush     | Frontline recruitment and Queued planning; not strictly infantry-only.                  |
+| Balanced | Role-balanced recruitment and Queued planning; not guaranteed fair use of every unit.   |
 
-Priority and Battler test planning, not separate situational recruiters.
+Queued is the default planner for simulation-player presets. Full remains
+selectable through independent block composition.
 Verify [preset composition](../../../rust/src/ai/presets.rs),
 [planner dispatch](../../../rust/src/ai/planner/mod.rs) and actual callers when
 explaining behavior; a description or test-only helper is not execution evidence.
 
-Campaign competence concerns **Mixed and Priority against Classic**, using
+Campaign competence concerns **Balanced against Classic**, using
 authored rosters and objectives. Classic/Rush campaign failures do not establish
 simulation-player competence regressions. Completion, required-actor survival
 and progression matter; speed alone does not establish correctness or balance.

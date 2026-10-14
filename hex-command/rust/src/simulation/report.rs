@@ -14,11 +14,26 @@ use std::collections::{BTreeMap, BTreeSet};
 pub fn detailed_summary(result: &MatchResult) -> Result<Value, SimulationError> {
     Ok(serde_json::to_value(borrowed_summary(result, true)?)?)
 }
+fn tactic_label(config: &Value, side: &str) -> String {
+    if let Some(blocks) = config
+        .get(format!("{side}Blocks"))
+        .filter(|value| !value.is_null())
+    {
+        format!(
+            "{}-{}-{}",
+            blocks["recruiter"].as_str().unwrap_or(""),
+            blocks["campaign"].as_str().unwrap_or(""),
+            blocks["planner"].as_str().unwrap_or("")
+        )
+    } else {
+        config[side].as_str().unwrap_or("").to_owned()
+    }
+}
 fn bot_label(outcome: &Value, side: &str) -> String {
     format!(
         "{}/{}",
         outcome["config"]["armies"][side].as_str().unwrap_or(""),
-        outcome["config"][side].as_str().unwrap_or("")
+        tactic_label(&outcome["config"], side)
     )
 }
 fn is_arena(outcome: &&Value) -> bool {
@@ -232,15 +247,16 @@ pub fn build_report(
             .or_default()
             .push(observation);
     }
-    let mut campaign_groups: BTreeMap<(&str, &str, &str, &str), Vec<&Value>> = BTreeMap::new();
+    let mut campaign_groups: BTreeMap<(String, String, String, String), Vec<&Value>> =
+        BTreeMap::new();
     for game in outcomes.iter().filter(|game| game["kind"] == "campaign") {
         let config = &game["config"];
         campaign_groups
             .entry((
-                config["campaign"].as_str().unwrap_or(""),
-                config["player"].as_str().unwrap_or(""),
-                config["enemy"].as_str().unwrap_or(""),
-                config["diplomacy"].as_str().unwrap_or(""),
+                config["campaign"].as_str().unwrap_or("").to_owned(),
+                tactic_label(config, "player"),
+                tactic_label(config, "enemy"),
+                config["diplomacy"].as_str().unwrap_or("").to_owned(),
             ))
             .or_default()
             .push(game);
@@ -267,60 +283,28 @@ pub fn build_report(
         }
     }
     let mut campaign_strata = vec![];
-    if options.mode != Mode::Arena {
-        for campaign in &options.campaigns {
-            for player in options
-                .campaign_players
-                .as_ref()
-                .unwrap_or(&options.policies)
-                .iter()
-                .filter(|p| p.supports_campaign())
-            {
-                for enemy in options
-                    .campaign_enemies
-                    .as_ref()
-                    .unwrap_or(&options.policies)
-                    .iter()
-                    .filter(|p| p.supports_campaign())
-                {
-                    for diplomacy in options.diplomacy_for(campaign) {
-                        let player = serde_json::to_value(player)?;
-                        let enemy = serde_json::to_value(enemy)?;
-                        let alignment = serde_json::to_value(diplomacy)?;
-                        let games = campaign_groups
-                            .get(&(
-                                campaign.as_str(),
-                                player.as_str().unwrap(),
-                                enemy.as_str().unwrap(),
-                                alignment.as_str().unwrap(),
-                            ))
-                            .map(Vec::as_slice)
-                            .unwrap_or(&[]);
-                        let chapters: Vec<_> = games
-                            .iter()
-                            .flat_map(|game| game["missions"].as_array().into_iter().flatten())
-                            .collect();
-                        let mut ids = Vec::new();
-                        for chapter in &chapters {
-                            if !ids.contains(&chapter["id"]) {
-                                ids.push(chapter["id"].clone());
-                            }
-                        }
-                        let missions: Vec<_> = ids.iter().map(|id| {
+    for ((campaign, player, enemy, alignment), games) in &campaign_groups {
+        let chapters: Vec<_> = games
+            .iter()
+            .flat_map(|game| game["missions"].as_array().into_iter().flatten())
+            .collect();
+        let mut ids = Vec::new();
+        for chapter in &chapters {
+            if !ids.contains(&chapter["id"]) {
+                ids.push(chapter["id"].clone());
+            }
+        }
+        let missions: Vec<_> = ids.iter().map(|id| {
                 let attempts: Vec<_> = chapters.iter().filter(|chapter| chapter["id"] == *id).collect();
                 json!({"id":id,"attempted":attempts.len(),"won":attempts.iter().filter(|chapter|chapter["winner"]=="player").count(),"defeated":attempts.iter().filter(|chapter|chapter["winner"]=="enemy").count(),"unresolved":attempts.iter().filter(|chapter|chapter["winner"].is_null()).count()})
             }).collect();
-                        let last_winner = |game: &&Value| {
-                            game["missions"]
-                                .as_array()
-                                .and_then(|missions| missions.last())
-                                .map(|mission| mission["winner"].clone())
-                        };
-                        campaign_strata.push(json!({"campaign":campaign,"player":player,"enemy":enemy,"diplomacy":alignment,"games":games.len(),"completed":games.iter().filter(|game|game["completed"]==true).count(),"defeated":games.iter().filter(|game|last_winner(game).is_some_and(|winner|winner=="enemy")).count(),"unresolved":games.iter().filter(|game|last_winner(game).is_some_and(|winner|winner.is_null())).count(),"escalated":games.iter().filter(|game|game["missions"].as_array().is_some_and(|missions|missions.iter().any(|mission|mission["escalated"]==true))).count(),"missions":missions}));
-                    }
-                }
-            }
-        }
+        let last_winner = |game: &&Value| {
+            game["missions"]
+                .as_array()
+                .and_then(|missions| missions.last())
+                .map(|mission| mission["winner"].clone())
+        };
+        campaign_strata.push(json!({"campaign":campaign,"player":player,"enemy":enemy,"diplomacy":alignment,"games":games.len(),"completed":games.iter().filter(|game|game["completed"]==true).count(),"defeated":games.iter().filter(|game|last_winner(game).is_some_and(|winner|winner=="enemy")).count(),"unresolved":games.iter().filter(|game|last_winner(game).is_some_and(|winner|winner.is_null())).count(),"escalated":games.iter().filter(|game|game["missions"].as_array().is_some_and(|missions|missions.iter().any(|mission|mission["escalated"]==true))).count(),"missions":missions}));
     }
     let army_compositions: Vec<_> = labels
         .iter()
@@ -379,6 +363,22 @@ pub fn build_report(
             })
             .collect::<BTreeMap<_, _>>(),
     )?;
+    let custom_labels: BTreeSet<_> = report["outcomes"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .flat_map(|game| {
+            ["player", "enemy"].into_iter().filter_map(move |side| {
+                game["config"]
+                    .get(format!("{side}Blocks"))
+                    .filter(|value| !value.is_null())
+                    .map(|_| tactic_label(&game["config"], side))
+            })
+        })
+        .collect();
+    for label in custom_labels {
+        report["recruitmentLimits"][label] = json!(options.recruit_limit);
+    }
     if let Some(files) = trace_files {
         report["traceFiles"] = json!(files);
     }
@@ -452,8 +452,8 @@ pub fn markdown(report: &Value) -> String {
             text.push_str(&format!(
                 "| {} | {} | {} | {} | {} | {} | {} |\n",
                 game["config"]["campaign"].as_str().unwrap_or(""),
-                game["config"]["player"].as_str().unwrap_or(""),
-                game["config"]["enemy"].as_str().unwrap_or(""),
+                tactic_label(&game["config"], "player"),
+                tactic_label(&game["config"], "enemy"),
                 game["config"]["diplomacy"].as_str().unwrap_or(""),
                 game["config"]["seed"],
                 game["completed"],
@@ -473,6 +473,9 @@ mod tests {
     fn self_play_statistics_use_player_seat_and_whole_seed_blocks() {
         let options = ScheduleOptions {
             mode: Mode::Arena,
+            with: None,
+            campaign_custom_player: false,
+            campaign_custom_enemy: false,
             first_seed: 1,
             seeds: 2,
             max_rounds: 2,

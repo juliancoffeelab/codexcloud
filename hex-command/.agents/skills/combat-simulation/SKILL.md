@@ -17,7 +17,7 @@ npm run ai:simulate
 ```
 
 Cargo builds when needed, runs the full panel and generates the report. Defaults:
-10 seeds, all arena tactics against Classic on all maps, and Mixed/Priority
+10 seeds, all arena tactics against Classic on all maps, and Balanced
 campaigns against Classic. Default round caps are 30 for arenas and 100 per
 campaign stage; `--rounds N` overrides both. Honor requested scope; otherwise
 use this full panel.
@@ -34,6 +34,7 @@ tests passed does not complete the task.
 | -------------------------------------------------------- | ------------------------------------------------------------ |
 | `--mode arena\|campaign\|full`                           | Select the workload.                                         |
 | `--seeds N`, `--seed N`                                  | Select seed count and starting seed.                         |
+| `--with R,C,P`                                           | Add a custom tactic; `-` uses workload defaults.             |
 | `--policies LIST`                                        | Select arena tactics; also filters default campaign players. |
 | `--armies LIST`, `--landscapes LIST`, `--campaigns LIST` | Select content.                                              |
 | `--campaign-players LIST`, `--campaign-enemies LIST`     | Override campaign roles.                                     |
@@ -45,6 +46,15 @@ tests passed does not complete the task.
 | `--schedule-only`                                        | Inspect configurations without running matches.              |
 | `--baseline PATH`                                        | Compare with a saved run with identical configurations.      |
 | `--help`                                                 | List remaining options.                                      |
+
+`--with=rotation,-,queued` adds an uncapped custom tactic. `rotated` aliases
+`rotation`. Slots are recruiter, campaigner and planner; defaults are Balanced
+recruitment, Arena for arenas or Mission for campaigns, and Queued planning.
+By default it plays against Classic. `--all-pairs` includes it alongside every
+selected named tactic; `--self-play` compares each tactic against itself.
+Campaign role lists can refer to the added tactic as `custom`, for example
+`--campaign-players balanced --campaign-enemies custom`. Without explicit
+campaign player selection, the custom tactic is the player.
 
 Use `--data-dir` when simulating another checkout. Determine actual coverage,
 limits and composition from report metadata; artwork lineups do not establish it.

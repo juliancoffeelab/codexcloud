@@ -966,8 +966,14 @@ mod tests {
                 vec![],
             ),
         ] {
-            let mut actual =
-                crate::ai::PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Pragmatic);
+            let workspace = || {
+                crate::ai::PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Pragmatic)
+                    .with_blocks(crate::ai::Blocks {
+                        planner: crate::ai::Planner::Full,
+                        ..crate::ai::Policy::Balanced.blocks()
+                    })
+            };
+            let mut actual = workspace();
             let mut left_routes = HashMap::default();
             let mut right_routes = HashMap::default();
             let mut left_commitments = HashMap::default();
@@ -1026,19 +1032,14 @@ mod tests {
                     assert_eq!(left_commitments, right_commitments);
                 }
                 let command =
-                    crate::ai::choose_game_command(&game, crate::ai::Policy::Mixed, &mut actual)
+                    crate::ai::choose_game_command(&game, crate::ai::Policy::Balanced, &mut actual)
                         .unwrap();
                 if is_command_endturn(&command) {
                     if game.winner.is_some() {
                         break;
                     }
                     game.end_turn();
-                    actual = crate::ai::PlanningWorkspace::new(
-                        7,
-                        1,
-                        None,
-                        crate::ai::Diplomacy::Pragmatic,
-                    );
+                    actual = workspace();
                 } else {
                     game.execute(command).unwrap();
                 }

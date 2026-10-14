@@ -39,11 +39,11 @@ const schedule = JSON.parse(
       "full",
       "--all-pairs",
       "--policies",
-      "classic,rush,mixed",
+      "classic,rush,balanced",
       "--campaign-players",
-      "classic,rush,mixed",
+      "classic,rush,balanced",
       "--campaign-enemies",
-      "classic,rush,mixed",
+      "classic,rush,balanced",
       "--seeds",
       "1",
       "--seed",
@@ -56,7 +56,7 @@ const representatives = new Map<string, Config>();
 for (const config of schedule.configs) {
   if (config.campaign) {
     if (
-      config.enemy !== (alternate ? "mixed" : "classic") ||
+      config.enemy !== (alternate ? "balanced" : "classic") ||
       config.diplomacy !== (alternate ? "pragmatic" : "restrained")
     )
       continue;

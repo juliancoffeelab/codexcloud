@@ -411,8 +411,12 @@ fn phase(
 /// Execute one arena until victory or its cap, retaining every phase and endpoint.
 pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, SimulationError> {
     let mut tactics = [
-        PresetTactic::preset(config.player),
-        PresetTactic::preset(config.enemy),
+        PresetTactic::from_blocks(
+            config
+                .player_blocks
+                .unwrap_or_else(|| config.player.blocks()),
+        ),
+        PresetTactic::from_blocks(config.enemy_blocks.unwrap_or_else(|| config.enemy.blocks())),
     ];
     let mut game = create_arena(rules, &config)?;
     let initial = game.state();
@@ -547,9 +551,6 @@ pub fn run_campaign(
     rules: &Rules,
     config: CampaignConfig,
 ) -> Result<CampaignResult, SimulationError> {
-    if !config.player.supports_campaign() || !config.enemy.supports_campaign() {
-        return Err("Battler is a battle-only policy; use Priority for campaigns".into());
-    }
     validate_limits(config.max_rounds, config.recruit_limit)?;
     let chapters = rules
         .campaigns
@@ -570,8 +571,12 @@ pub fn run_campaign(
         vec![],
     );
     let mut tactics = [
-        PresetTactic::preset(config.player),
-        PresetTactic::preset(config.enemy),
+        PresetTactic::from_blocks(
+            config
+                .player_blocks
+                .unwrap_or_else(|| config.player.blocks()),
+        ),
+        PresetTactic::from_blocks(config.enemy_blocks.unwrap_or_else(|| config.enemy.blocks())),
     ];
     let mut missions = vec![];
     for _ in 0..chapters {
@@ -658,10 +663,10 @@ mod tests {
         let base = Game::new(&rules, "mirror");
         for (policy, limit) in [
             (Policy::Classic, None),
-            (Policy::Mixed, None),
+            (Policy::Balanced, None),
             (Policy::Classic, Some(1)),
-            (Policy::Mixed, Some(1)),
-            (Policy::Mixed, Some(0)),
+            (Policy::Balanced, Some(1)),
+            (Policy::Balanced, Some(0)),
         ] {
             let mut game = base.fork();
             game.units.retain(|unit| rules.units[unit.kind].leader);
@@ -687,7 +692,7 @@ mod tests {
             match (policy, limit) {
                 (_, Some(limit)) => assert_eq!(recruited, limit),
                 (Policy::Classic, None) => assert_eq!(recruited, 2),
-                (Policy::Mixed, None) => assert!(recruited > 2),
+                (Policy::Balanced, None) => assert!(recruited > 2),
                 _ => unreachable!(),
             }
         }
@@ -729,8 +734,10 @@ mod tests {
                 enemy: rules.rosters[0].id.clone(),
             },
             landscape: "wooded".into(),
-            player: Policy::Mixed,
-            enemy: Policy::Mixed,
+            player: Policy::Balanced,
+            enemy: Policy::Balanced,
+            player_blocks: None,
+            enemy_blocks: None,
             first: Side::Player,
             max_rounds: 30,
             recruit_limit: Some(1),
@@ -802,7 +809,9 @@ mod tests {
                             },
                             landscape: landscape.into(),
                             player: Policy::Classic,
-                            enemy: Policy::Mixed,
+                            enemy: Policy::Balanced,
+                            player_blocks: None,
+                            enemy_blocks: None,
                             first: Side::Enemy,
                             max_rounds: 30,
                             recruit_limit: Some(1),

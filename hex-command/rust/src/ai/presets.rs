@@ -18,7 +18,7 @@ impl Policy {
     pub const fn default_recruitment_limit(self) -> Option<usize> {
         match self {
             Self::Classic => Some(2),
-            Self::Rush | Self::Mixed | Self::Priority | Self::Battler => None,
+            Self::Rush | Self::Balanced => None,
         }
     }
 
@@ -33,21 +33,11 @@ impl Policy {
             Self::Rush => Blocks {
                 recruiter: Recruiter::Frontline,
                 campaign: CampaignBlock::Mission,
-                planner: Planner::Full,
-            },
-            Self::Mixed => Blocks {
-                recruiter: Recruiter::Balanced,
-                campaign: CampaignBlock::Mission,
-                planner: Planner::Full,
-            },
-            Self::Priority => Blocks {
-                recruiter: Recruiter::Balanced,
-                campaign: CampaignBlock::Mission,
                 planner: Planner::Queued,
             },
-            Self::Battler => Blocks {
+            Self::Balanced => Blocks {
                 recruiter: Recruiter::Balanced,
-                campaign: CampaignBlock::Arena,
+                campaign: CampaignBlock::Mission,
                 planner: Planner::Queued,
             },
         }
@@ -173,7 +163,7 @@ mod tests {
     fn independent_blocks_keep_the_selected_planner_under_another_preset() {
         let rules = Rules::load().unwrap();
         let mut game = Game::new(&rules, "mirror");
-        let blocks = Policy::Priority.blocks();
+        let blocks = Policy::Balanced.blocks();
         let mut custom =
             PlanningWorkspace::new(7, 1, None, Diplomacy::Restrained).with_blocks(blocks);
         let mut preset = PlanningWorkspace::new(7, 1, None, Diplomacy::Restrained);
@@ -181,7 +171,7 @@ mod tests {
             let command = choose_game_command(&game, Policy::Classic, &mut custom).unwrap();
             assert_eq!(
                 command,
-                choose_game_command(&game, Policy::Priority, &mut preset).unwrap()
+                choose_game_command(&game, Policy::Balanced, &mut preset).unwrap()
             );
             assert_eq!(custom.blocks, Some(blocks));
             if end_turn(&command) {

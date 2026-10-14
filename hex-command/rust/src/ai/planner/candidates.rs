@@ -981,7 +981,7 @@ mod tests {
                 assert_eq!(workspace.cheap.frontline_support, fresh);
                 let command = crate::ai::choose_game_command(
                     game,
-                    crate::ai::Policy::Priority,
+                    crate::ai::Policy::Balanced,
                     &mut workspace,
                 )
                 .unwrap();

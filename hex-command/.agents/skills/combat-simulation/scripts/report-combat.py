@@ -28,6 +28,11 @@ def race_order(value):
     return (display_name(value) == 'Merfolk', display_name(value))
 
 
+def tactic_label(config, side):
+    blocks = config.get(side + 'Blocks')
+    return '-'.join(blocks[k] for k in ('recruiter', 'campaign', 'planner')) if blocks else config.get(side, 'unrecorded')
+
+
 def identity(outcome):
     return outcome['kind'] + ':' + json.dumps(outcome['config'], sort_keys=True, separators=(',', ':'))
 
@@ -238,7 +243,7 @@ def campaign_tables(outcomes):
             continue
         config = outcome['config']
         fields = ('campaign', 'player', 'enemy', 'diplomacy', 'maxRounds', 'recruitLimit')
-        key = tuple(config.get(k, 'unrecorded') for k in fields)
+        key = tuple(tactic_label(config, k) if k in ('player', 'enemy') else config.get(k, 'unrecorded') for k in fields)
         group = groups.setdefault(key, Counter())
         group['attempts'] += 1
         group['completed'] += bool(outcome['completed'])
@@ -461,10 +466,10 @@ def tally(outcomes):
             continue
         row.update(playerRace=c['armies']['player'], enemyRace=c['armies']['enemy'],
                    race=c['armies']['player'], opponentRace=c['armies']['enemy'],
-                   policy=c['player'], opponentPolicy=c['enemy'], map=c['landscape'])
+                   policy=tactic_label(c, 'player'), opponentPolicy=tactic_label(c, 'enemy'), map=c['landscape'])
         ledger.append(row)
         for side, other in [('player', 'enemy'), ('enemy', 'player')]:
-            group = (c['armies'][side], c['armies'][other], c[side], c[other], c['landscape'])
+            group = (c['armies'][side], c['armies'][other], tactic_label(c, side), tactic_label(c, other), c['landscape'])
             g = games[group]
             g['games'] += 1
             g['wins'] += o['winner'] == side

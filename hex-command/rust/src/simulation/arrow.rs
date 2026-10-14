@@ -416,8 +416,14 @@ mod tests {
                     enemy: "woodland".into(),
                 },
                 landscape: "wooded".into(),
-                player: Policy::Mixed,
+                player: Policy::Balanced,
                 enemy: Policy::Classic,
+                player_blocks: Some(
+                    super::super::schedule::WithSelection::parse("rotation,-,queued")
+                        .unwrap()
+                        .resolve(true),
+                ),
+                enemy_blocks: None,
                 first: Side::Player,
                 max_rounds: 1,
                 recruit_limit: Some(0),
@@ -439,8 +445,10 @@ mod tests {
                 seed: 17,
                 diplomacy: Diplomacy::Restrained,
                 campaign: "green-accord".into(),
-                player: Policy::Mixed,
+                player: Policy::Balanced,
                 enemy: Policy::Classic,
+                player_blocks: None,
+                enemy_blocks: None,
                 max_rounds: 1,
                 recruit_limit: Some(0),
             },

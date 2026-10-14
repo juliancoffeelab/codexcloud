@@ -53,8 +53,11 @@ impl<R: Recruiter, C: Campaigner, P: Planner> Tactic<R, C, P> {
 pub(crate) type PresetTactic = Tactic<super::Recruiter, super::CampaignBlock, super::Planner>;
 #[cfg(not(target_arch = "wasm32"))]
 impl PresetTactic {
+    #[cfg(test)]
     pub(crate) fn preset(policy: super::Policy) -> Self {
-        let blocks = policy.blocks();
+        Self::from_blocks(policy.blocks())
+    }
+    pub(crate) fn from_blocks(blocks: super::Blocks) -> Self {
         Self::new(blocks.recruiter, blocks.campaign, blocks.planner)
     }
     pub(crate) fn composition(&self) -> super::Blocks {

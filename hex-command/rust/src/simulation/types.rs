@@ -1,6 +1,6 @@
 //! Owned simulation configurations and complete per-phase match records.
 use crate::{
-    ai::{Diplomacy, Policy},
+    ai::{Blocks, Diplomacy, Policy},
     data::*,
 };
 use serde::{Deserialize, Serialize};
@@ -15,6 +15,10 @@ pub struct ArenaConfig {
     pub landscape: String,
     pub player: Policy,
     pub enemy: Policy,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub player_blocks: Option<Blocks>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub enemy_blocks: Option<Blocks>,
     pub first: Side,
     pub max_rounds: u32,
     /// Explicit override for both sides; None uses each policy's default.
@@ -35,6 +39,10 @@ pub struct CampaignConfig {
     pub campaign: String,
     pub player: Policy,
     pub enemy: Policy,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub player_blocks: Option<Blocks>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub enemy_blocks: Option<Blocks>,
     pub max_rounds: u32,
     /// Explicit override for both sides; None uses each policy's default.
     pub recruit_limit: Option<usize>,

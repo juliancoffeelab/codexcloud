@@ -42,34 +42,17 @@ pub enum Policy {
     #[default]
     Classic,
     Rush,
-    Mixed,
-    Priority,
-    Battler,
+    Balanced,
 }
 impl Policy {
-    /// Complete supported policies in their stable authored order.
-    pub const ALL: [Self; 5] = [
-        Self::Classic,
-        Self::Rush,
-        Self::Mixed,
-        Self::Priority,
-        Self::Battler,
-    ];
-    /// Arena-only policies are excluded from campaign schedules and saves.
-    pub const fn supports_campaign(self) -> bool {
-        match self {
-            Self::Classic | Self::Rush | Self::Mixed | Self::Priority => true,
-            Self::Battler => false,
-        }
-    }
+    /// Supported presets in their stable authored order.
+    pub const ALL: [Self; 3] = [Self::Classic, Self::Rush, Self::Balanced];
     /// Stable JSON/CLI policy identifier.
     pub const fn as_str(self) -> &'static str {
         match self {
             Self::Classic => "classic",
             Self::Rush => "rush",
-            Self::Mixed => "mixed",
-            Self::Priority => "priority",
-            Self::Battler => "battler",
+            Self::Balanced => "balanced",
         }
     }
 }
@@ -469,7 +452,7 @@ mod courier_tests {
         );
         let mut workspace = PlanningWorkspace::new(1, 0, None, Diplomacy::Restrained);
         let command = loop {
-            let command = choose_game_command(&game, Policy::Mixed, &mut workspace).unwrap();
+            let command = choose_game_command(&game, Policy::Balanced, &mut workspace).unwrap();
             if is_command_setunitintent(&command) {
                 game.execute(command).unwrap();
             } else {
@@ -500,7 +483,7 @@ mod courier_tests {
         }
 
         let rules = Rules::load().unwrap();
-        for policy in Policy::ALL.into_iter().filter(|p| p.supports_campaign()) {
+        for policy in Policy::ALL {
             let mut game = Game::start_campaign(
                 &rules,
                 "borrowed-tide",

@@ -340,7 +340,7 @@ mod tests {
         let original = factory.insert(state.clone(), 17, Board::new(&state.tiles));
         let options = AiOptions {
             blocks: None,
-            policy: AiPolicy::Priority,
+            policy: AiPolicy::Balanced,
             diplomacy: AiDiplomacy::Restrained,
             recruitment_limit: Some(2),
         };

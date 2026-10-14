@@ -25,10 +25,11 @@ def fixtures(report, campaigns):
             c = outcome["config"]
             if (
                 outcome["kind"] != "arena"
-                or c["player"] != "mixed"
-                or c["enemy"] != "mixed"
+                or c["player"] not in ["mixed", "balanced"]
+                or c["enemy"] != c["player"]
             ):
                 continue
+            c = {**c, "player": "balanced", "enemy": "balanced"}
             key = (c["armies"]["player"], c["landscape"])
             cap = outcome["winner"] is None
             tag = (key, "cap" if cap else "initial")
@@ -169,8 +170,9 @@ def main():
         selected = [x for x in positions if x["campaign"] == (scope == "campaign")]
         if not selected:
             continue
-        for policy in ["mixed", "priority", *(["battler"] if scope == "arena" else [])]:
-            label = f"{scope}-{policy}"
+        for planner in ["full", "queued"]:
+            policy = "balanced"
+            label = f"{scope}-{planner}"
             started = time.perf_counter()
             phases = 0
             actions = 0
@@ -201,6 +203,7 @@ def main():
                                 if k not in ["label", "campaign"]
                             }
                             request["policy"] = policy
+                            request["blocks"] = dict(recruiter="balanced", campaign="mission", planner=planner)
                             child.stdin.write(
                                 json.dumps(request, separators=(",", ":")).encode()
                                 + b"\n"
@@ -234,6 +237,7 @@ def main():
                 dict(
                     scope=scope,
                     policy=policy,
+                    planner=planner,
                     positions=len(selected),
                     repetitions=args.repeat,
                     phases=phases,

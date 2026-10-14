@@ -163,6 +163,21 @@ class CompleteDataTests(unittest.TestCase):
                           lookup['priority', 'mixed']['caps']), (3, 2, 1))
         self.assertEqual(lookup['mixed', 'priority']['losses'], 2)
 
+    def test_custom_blocks_keep_tactic_labels_distinct_in_arena_and_campaigns(self):
+        custom = match(1)
+        custom['config'].update(player='balanced', enemy='classic',
+                                playerBlocks=dict(recruiter='rotation', campaign='arena', planner='queued'))
+        named = match(2)
+        named['config'].update(player='balanced', enemy='classic')
+        rows, _, _, _ = report.tally({report.identity(x): x for x in [custom, named]})
+        self.assertEqual({r['policy'] for r in rows}, {'rotation-arena-queued', 'balanced', 'classic'})
+        campaign = dict(kind='campaign', completed=True, missions=[], config=dict(seed=1,
+                        campaign='sample', player='balanced', enemy='balanced', diplomacy='pragmatic',
+                        maxRounds=100, recruitLimit=None,
+                        enemyBlocks=dict(recruiter='rotation', campaign='mission', planner='queued')))
+        summary, _, _, _, _ = report.campaign_tables({report.identity(campaign): campaign})
+        self.assertEqual((summary[0]['player'], summary[0]['enemy']), ('balanced', 'rotation-mission-queued'))
+
     def test_unit_events_follow_actual_side_when_factions_swap_seats(self):
         item = match(1, 'b', 'a')
         item['recruits'] = [{'side': 'enemy', 'type': 'caster'}]
