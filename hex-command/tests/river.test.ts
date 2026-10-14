@@ -3,8 +3,8 @@ import { required, storageWithValue } from "./helpers.ts";
 import assert from "node:assert/strict";
 import { Game } from "./game-fixture.ts";
 import { loadBattle, saveBattle } from "./legacy-save.ts";
-import { LEGACY_RIVER } from "../src/save/migration/legacy/layouts";
-import { legacyBoard } from "../src/save/migration/legacy/board";
+import { LEGACY_RIVER } from "../src/save/migrations/legacy/layouts";
+import { legacyBoard } from "../src/save/migrations/legacy/board";
 
 test("River layout, checkpoint and missing map migration round-trip", async () => {
   let stored = "";

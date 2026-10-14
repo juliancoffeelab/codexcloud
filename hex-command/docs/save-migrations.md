@@ -31,7 +31,7 @@ so persistence cannot be guaranteed when the browser refuses writes.
 
 Loading parses JSON, runs consecutive migrations and validates through Rust before
 writing the current envelope. Migration steps are pure data conversions; new
-versions require another one-step module under `src/save/migration/`. Normal
+versions require another one-step module under `src/save/migrations/`. Normal
 writes and the controller accept only the current format and native engine.
 
 Migrations run in JavaScript and may only manipulate data. They must not execute
@@ -44,11 +44,13 @@ gameplay after restoration.
 After successful validation, the loader immediately replaces the stored envelope
 with the converted data in one atomic write. This conversion must not go through
 the gameplay save function or wait for an enemy turn to finish. If validation
-fails, the original save is not replaced.
+fails, discard the save and start a fresh battle.
 
-Rejected saves retain their original bytes in `hex-command-battle-unrestored` and
-leave a playable fresh battle. If the backup cannot be stored, that recovery
-battle cannot overwrite the original; starting a new battle enables saving again.
+All migration implementations, dispatch and historical conversion data belong
+exclusively in `src/save/migrations/`. Loading is the only runtime migration entry
+point. The loader parses, migrates, validates and commits before returning the
+restored battle. Unparseable, unsupported or invalid saves are wiped, along with
+obsolete rejected-save backups; start a fresh battle without suspending saving.
 Disabled or full browser storage does not stop play.
 
 ## Version-one compatibility
@@ -57,7 +59,7 @@ Both previous formats were version one. TS snapshots have a top-level `version`
 and store ownership without terrain. Native envelopes have `engine: "rust-wasm"`
 and a version inside `saved`. The v1-to-v2 step distinguishes these formats and
 removes their format markers. Historical layouts, defaults and campaign
-conversions live exclusively under `src/save/migration/legacy/`.
+conversions live exclusively under `src/save/migrations/legacy/`.
 
 TS saves tagged `campaignDeploymentFormat: "named-waves-v1"` already use authored
 wave IDs. Untagged published saves from `3956f5c` and `7a30040` translate numeric
@@ -78,7 +80,7 @@ Revision-one river and refuge checkpoints retain their own tiles, ownership and
 units, while their revision tag is changed to the current catalog entry with the
 same geometry. Normal Rust restoration validates the
 result. The catalog accepts only current authored documents; old layouts, marker
-indices and dialogue are stored under `src/save/migration/legacy/data/`.
+indices and dialogue are stored under `src/save/migrations/legacy/data/`.
 
 ## Version-three migration
 

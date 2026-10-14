@@ -1,9 +1,9 @@
 /** Fixtures for published version-one saves; never used by the browser. */
 import { Game } from "./game-fixture";
 import type { LiveGame } from "../src/game/live-game";
-import { migrateSave } from "../src/save/migration";
+import { migrateSave } from "../src/save/migrations";
 import { saveBattle as writeCurrent } from "../src/save/write";
-export { importWaveMarker } from "../src/save/migration/legacy/snapshot";
+export { importWaveMarker } from "../src/save/migrations/legacy/snapshot";
 export { SAVE_KEY } from "../src/save/storage";
 import { SAVE_KEY } from "../src/save/storage";
 export const SAVE_VERSION = 1;

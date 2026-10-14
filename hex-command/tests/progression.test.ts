@@ -2,7 +2,7 @@ import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
 import { describeChanges } from "../src/controller/feedback";
 import { Game, TYPES } from "./game-fixture";
-import { CAMPAIGNS } from "../src/save/migration/legacy/catalog";
+import { CAMPAIGNS } from "../src/save/migrations/legacy/catalog";
 import { UNIT_TYPES } from "../src/game/types";
 import { createGameView } from "./fixture-view";
 import { saveBattle, loadBattle, SAVE_KEY } from "./legacy-save";

@@ -132,16 +132,15 @@ test("Supported legacy woodland revisions migrate without losing campaign progre
   restored.game.dispose();
 });
 
-test("A failed legacy import is backed up and cannot prevent startup", () => {
+test("A failed legacy import is wiped and cannot prevent startup", () => {
   saveBattle(new Game("mirror"));
-  const rejected = JSON.parse(localStorage.getItem(SAVE_KEY)!);
   const restored = loadLiveBattle({
     ...factory,
     restore: () => ({ ok: false, error: { code: "invalidRequest", message: "Rejected" } }),
   });
   assert(restored.notice);
   assert.equal(restored.game.turn, "player");
-  assert.deepEqual(JSON.parse(localStorage.getItem(SAVE_KEY + "-unrestored")!), rejected);
+  assert.equal(localStorage.getItem(SAVE_KEY), null);
   restored.game.dispose();
 });
 
@@ -185,13 +184,13 @@ test("Live enemy planning finishes a phase and saves the resulting player turn",
   controller.dispose();
 });
 
-test("An invalid native checkpoint preserves the old save and leaves a playable battle", () => {
+test("An invalid native checkpoint is wiped and leaves a playable battle", () => {
   const rejected = { version: 999, checkpoint: {}, pendingEnemy: false };
   localStorage.setItem(SAVE_KEY, JSON.stringify(rejected));
   const restored = loadLiveBattle(factory);
   assert(restored.notice);
   assert.equal(restored.game.turn, "player");
-  assert.deepEqual(JSON.parse(localStorage.getItem(SAVE_KEY + "-unrestored")!), rejected);
+  assert.equal(localStorage.getItem(SAVE_KEY), null);
   restored.game.dispose();
 });
 
