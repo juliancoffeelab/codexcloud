@@ -122,7 +122,7 @@ On failure, retain version/deployment identifiers for recovery.
 
 ## AI contracts
 
-[IDEA.md](../IDEA.md) specifies the architecture. Named presets construct fixed
+Named presets construct fixed
 Recruiter/Campaigner/Planner compositions. Native simulations retain those
 components through the whole match or campaign. `Tactic::run_turn` derives
 explicit orders, applies recruitment to one draft, then plans against that updated
@@ -133,7 +133,7 @@ Planner use restricted mechanical battle views. Generic capture, defeat and visi
 targets supplement typed duties; mission kinds are normalized before reaching a
 planner. Full and Queued use shared search and safety helpers without replacing
 the selected planner. Existing Rotation, Frontline and Balanced selection rules
-remain separate from the design's future recruitment strategies.
+remain separate from future recruitment strategies.
 
 The command-at-a-time host entry point adapts a completed turn plan to the
 existing browser/native command protocol. Its queue exists only during execution

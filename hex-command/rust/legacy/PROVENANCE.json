@@ -1,6 +1,6 @@
 {
   "frozenCommit": "b1f553de69c0de8a340088c0a9ed42b2149fb27e",
-  "source": "Immutable Git object; never read origin/main or main when rebuilding this baseline.",
+  "source": "Vendored non-Markdown files from an immutable Git object; never read origin/main or main when rebuilding this baseline.",
   "referenceContentFingerprint": "96981ec4797122c6f715e0febdc9045a20d14562bf1389c9a5fe040163b35a17",
   "referenceDecisionMicrosPerTurn": {
     "classic": 109.49365056045633,
@@ -19,10 +19,6 @@
     {
       "path": "build.rs",
       "sha256": "e527f2824b2a463c4c428731d0b97af249fd2f16f28df4b0c1ea8664cf56c546"
-    },
-    {
-      "path": "data/README.md",
-      "sha256": "ada584fc85d87c05292107f92cec2b8003b12119f09727d1c7a7e981f529210b"
     },
     {
       "path": "data/game/campaigns/ashen-oath/campaign.json",
@@ -179,10 +175,6 @@
     {
       "path": "data/game/campaigns/green-accord/campaign.json",
       "sha256": "9d4924959d4d9b34763dc5975064e0a4219cd320d00d9e86148dbab87a48c133"
-    },
-    {
-      "path": "data/game/campaigns/green-accord/design.md",
-      "sha256": "fe676fddd61d5fcb32288d22da1d000307983d031e4a0e233d7fd7646d879bfc"
     },
     {
       "path": "data/game/campaigns/green-accord/stages/green-border/map.json",
@@ -575,10 +567,6 @@
     {
       "path": "data/simulation/rosters.json",
       "sha256": "148d6f351cab1a81a51338795b6e103da8fb50b11d3e33b44671af3cbd476405"
-    },
-    {
-      "path": "src/ai/README.md",
-      "sha256": "631a84260889b68c47e7bcb5bd8da785034cc2316efe9a012fbdcda56f3c6d55"
     },
     {
       "path": "src/ai/classic.rs",

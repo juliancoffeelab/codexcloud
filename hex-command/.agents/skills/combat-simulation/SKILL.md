@@ -12,7 +12,8 @@ skill](../rust-toolchain/SKILL.md) for build problems.
 
 ## Architecture and change boundaries
 
-Read [IDEA.md](../../../IDEA.md) before changing AI architecture. It defines fixed
+Read [AI contracts](../../../docs/development.md#ai-contracts) before changing
+AI architecture. Use fixed
 Recruiter/Campaigner/Planner composition, explicit orders, restricted battle
 views and a shared validated planning draft. Only Campaigner interprets authored
 mission kinds. A selected planner may call shared search helpers; it must not
@@ -20,7 +21,7 @@ switch to a different planner.
 
 Structural changes must preserve the existing Rotation, Frontline and Balanced
 recruitment semantics unless the user explicitly requests a recruitment change.
-The infantry/fair/situational strategies in the design are a separate semantic
+The future infantry/fair/situational strategies are a separate semantic
 migration; do not implement them implicitly during a module refactor.
 
 ## Purpose and policy roles
