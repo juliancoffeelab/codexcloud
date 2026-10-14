@@ -19,17 +19,15 @@ import {
 } from "../presentation/sound";
 import { animateTile, animateTurn, type MotionKind } from "../presentation/motion";
 import { describeChanges } from "./feedback";
-import { createGameView, type GameView } from "../game/view";
+import type { GameView } from "../game/view";
 import {
   createBattleCommands,
   recruitmentContext,
-  recruitTypes,
   type BattleView,
   type BattleCommands,
   type RecruitType,
 } from "./view";
 
-export { recruitTypes } from "./view";
 export type { BattleView, RecruitType } from "./view";
 
 interface PublishOptions {
@@ -87,7 +85,7 @@ export class BattleController {
         (game.campaign ? "Follow the mission objectives. Keep your leader safe." : initialMessage),
       sound: soundEnabled(),
     };
-    this.gameView = createGameView(game);
+    this.gameView = game.publishedView();
     this.store = writable(this.currentView());
     this.view = { subscribe: this.store.subscribe };
     this.previousFeedbackState = game.snapshot();
@@ -168,7 +166,7 @@ export class BattleController {
     }
     // Selection and preferences reuse the detached game until an engine action.
     if (gameChanged) {
-      this.gameView = createGameView(this.#game);
+      this.gameView = this.#game.publishedView();
     }
     // Subscribers see a complete view immediately; Svelte batches its DOM work.
     this.store.set(this.currentView());
@@ -464,7 +462,7 @@ export class BattleController {
     return this.runEnemyTurn(turnSessionVersion);
   }
 
-  /** Continue either a freshly ended turn or an exact restored native enemy phase. */
+  /** Resolve the enemy turn before publishing its persistent checkpoint. */
   private async runEnemyTurn(turnSessionVersion: number) {
     if (!this.#game.winner) this.message("The enemy is planning its moves…");
     await this.pause(enemyThinkingDelay);
@@ -577,15 +575,19 @@ export class BattleController {
         tile,
         cost,
       })),
-      attacks: this.#game.targets(unitId).map((target) => ({
-        id: target.id,
-        ...this.#game.preview(unit, target),
-        recommendedAttackId: this.#game.bestAttack(unit, target)!.id,
-        weapons: this.#game.attackOptions(unit, target).map((attack) => ({
-          ...attack,
-          ...this.#game.previewDetails(unit, target, attack.id),
-        })),
-      })),
+      attacks: this.#game.targets(unitId).map((target) => {
+        const { damage, retaliation } = this.#game.previewDetails(unit, target);
+        return {
+          id: target.id,
+          damage,
+          retaliation,
+          recommendedAttackId: this.#game.bestAttack(unit, target)!.id,
+          weapons: this.#game.attackOptions(unit, target).map((attack) => ({
+            ...attack,
+            ...this.#game.previewDetails(unit, target, attack.id),
+          })),
+        };
+      }),
       recruitment: Object.fromEntries(
         this.#game
           .recruitmentOptions("player")

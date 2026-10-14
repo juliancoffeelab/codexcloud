@@ -1,4 +1,6 @@
 //! Native match execution, deterministic schedules, indexed journals and reports.
+mod arrow;
+mod canonical;
 pub mod checkpoint;
 pub mod cli;
 pub mod error;

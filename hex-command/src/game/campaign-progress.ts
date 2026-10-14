@@ -140,13 +140,3 @@ export function returnsWithStory(state: Immutable<CampaignState>, unit: Readonly
     ),
   );
 }
-
-export function endsRefugeMediation(board: CampaignBoard, target: Readonly<Unit>): boolean {
-  return Boolean(
-    board.campaign &&
-    campaignMission(board.campaign).refuge &&
-    !board.campaign.refuge?.escalated &&
-    target.side === "enemy" &&
-    (target.retreating || target.role === "leader"),
-  );
-}

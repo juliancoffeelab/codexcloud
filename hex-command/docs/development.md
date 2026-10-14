@@ -32,9 +32,9 @@ npm run preview
 `npm run verify` runs automatic formatting, content validation, WASM bindings,
 UI and TypeScript checks, artwork validation, all tests and the production build.
 Independent checks continue after failures and report their statuses together.
-Select groups as shown above. Legacy `style` selects formatting; focused `rust`
-selects native tests. The combined test group already includes Rust, so
-verification does not run it twice.
+Select groups as shown above. Focused `rust` selects native tests. The combined
+test group already includes Rust, so verification does not run it twice.
+UI and TypeScript groups share one WASM binding build during verification.
 
 `npm test` runs Rust, Python artwork/analyzer tests and Vitest under one shared
 20-second duration target. Slow runs warn and continue; only failed tests fail
@@ -101,10 +101,10 @@ effects show movement and resolved incoming-damage modifiers. Numeric abilities
 such as healing come from catalog metadata; descriptions explain roles without
 duplicating the values.
 
-Restoration caps saved HP at the current unit maximum while preserving turn
-progress. A queued AI move or recruitment invalidated by balance changes is
-replanned with the saved recruitment budget. This does not change the save format
-or add a migration.
+Restoration caps saved HP at the current unit maximum while preserving resolved
+game state. Saves never contain queued AI actions or planning workspaces.
+All data migrations belong in `src/save/migrations/` and run during loading;
+unmigratable or invalid saves are wiped. See [save migrations](save-migrations.md).
 
 ## Sites publication
 
@@ -120,10 +120,31 @@ would omit. Packaging verifies references, file coverage and archive bytes.
 Credentials are passed to the publication command without being printed or saved.
 On failure, retain version/deployment identifiers for recovery.
 
+## AI contracts
+
+Named presets construct fixed
+Recruiter/Campaigner/Planner compositions. Native simulations retain those
+components through the whole match or campaign. `Tactic::run_turn` derives
+explicit orders, applies recruitment to one draft, then plans against that updated
+draft and returns ordered engine commands with recruitment and planning reports.
+
+Only Campaigner receives authored mission data and progression. Recruiter and
+Planner use restricted mechanical battle views. Generic capture, defeat and visit
+targets supplement typed duties; mission kinds are normalized before reaching a
+planner. Full and Queued use shared search and safety helpers without replacing
+the selected planner. Existing Rotation, Frontline and Balanced selection rules
+remain separate from future recruitment strategies.
+
+The command-at-a-time host entry point adapts a completed turn plan to the
+existing browser/native command protocol. Its queue exists only during execution
+and is never saved. Browser persistence brackets the entire enemy turn; loading
+an interrupted phase builds a fresh plan from its pre-turn state. Save envelopes
+and host adapters remain separate from the block interfaces.
+
 ## References
 
 - [Combat simulations and analysis](../.agents/skills/combat-simulation/usage.md)
-- [AI policy implementation](../rust/src/ai/README.md)
+- [AI preset composition](../rust/src/ai/presets.rs) and [planner dispatch](../rust/src/ai/planner/mod.rs)
 - Artwork skills: [generation](../.agents/skills/pinkbox-generation/SKILL.md),
   [enhancement](../.agents/skills/pinkbox-enhancement/SKILL.md),
   [cleaning](../.agents/skills/pixel-cleaning/SKILL.md),

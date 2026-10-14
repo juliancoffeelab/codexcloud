@@ -8,7 +8,6 @@ import type {
 import type { GameEngine, GameEngineFactory } from "./native-engine";
 import type { GameView } from "./view";
 import type {
-  CampaignId,
   CombatPreviewDetails,
   GameSnapshot,
   GameState,
@@ -95,9 +94,6 @@ export class LiveGame {
   get winner() {
     return this.state.winner;
   }
-  get nextId() {
-    return this.state.nextId;
-  }
   get log() {
     return this.state.log;
   }
@@ -139,52 +135,28 @@ export class LiveGame {
     const targets = new Set(this.choices(id)?.attacks.map((attack) => attack.target));
     return this.units.filter((unit) => targets.has(unit.id));
   }
-  canAttackFrom(
-    unit: Unit | undefined,
-    from: string,
-    target: Unit | undefined,
-    attackId: string | null = null,
-  ): boolean {
-    return (
-      !!unit &&
-      !!target &&
-      from === unit.tile &&
-      !!this.choices(unit.id)?.attacks.some(
-        (attack) =>
-          attack.target === target.id && (attackId === null || attack.attack.id === attackId),
-      )
+  canAttack(unit: Unit, target: Unit, attackId: string): boolean {
+    return !!this.choices(unit.id)?.attacks.some(
+      (attack) => attack.target === target.id && attack.attack.id === attackId,
     );
   }
-  attackOptions(unit: Unit, target: Unit, from = unit.tile): Weapon[] {
-    if (from !== unit.tile) return [];
+  attackOptions(unit: Unit, target: Unit): Weapon[] {
     return (this.choices(unit.id)
       ?.attacks.filter((attack) => attack.target === target.id)
       .map((attack) => attack.attack) ?? []) as Weapon[];
   }
-  bestAttack(unit: Unit, target: Unit, from = unit.tile): Weapon | null {
-    if (from !== unit.tile) return null;
+  bestAttack(unit: Unit, target: Unit): Weapon | null {
     return (this.choices(unit.id)?.attacks.find(
       (attack) => attack.target === target.id && attack.recommended,
     )?.attack ?? null) as Weapon | null;
   }
-  previewDetails(
-    unit: Unit,
-    target: Unit,
-    attackId?: string | null,
-    from = unit.tile,
-  ): CombatPreviewDetails {
-    const weapon = attackId ?? this.bestAttack(unit, target, from)?.id;
-    const details =
-      from === unit.tile &&
-      this.choices(unit.id)?.attacks.find(
-        (attack) => attack.target === target.id && attack.attack.id === weapon,
-      );
+  previewDetails(unit: Unit, target: Unit, attackId?: string | null): CombatPreviewDetails {
+    const weapon = attackId ?? this.bestAttack(unit, target)?.id;
+    const details = this.choices(unit.id)?.attacks.find(
+      (attack) => attack.target === target.id && attack.attack.id === weapon,
+    );
     if (!details) throw new Error("That attack cannot reach this enemy.");
     return details as CombatPreviewDetails;
-  }
-  preview(unit: Unit, target: Unit, attackId?: string | null, from = unit.tile) {
-    const { damage, retaliation } = this.previewDetails(unit, target, attackId, from);
-    return { damage, retaliation };
   }
   promotionOptions(id: string): UnitType[] {
     return (this.choices(id)?.promotions ?? []) as UnitType[];
@@ -251,7 +223,6 @@ export class LiveGame {
       this.factory.restore({
         ...checkpoint,
         state: state as unknown as SavedGame["state"],
-        planner: undefined,
       }),
     );
     nativeValue(this.engine.dispose());
@@ -278,7 +249,7 @@ export class LiveGame {
       ...(campaign || sites.length ? { sites } : {}),
     });
   }
-  /** Current native checkpoint, including exact AI continuation. */
+  /** Current native checkpoint of resolved game state. */
   checkpoint(): ReturnType<GameEngine["save"]> {
     return this.engine.save();
   }
@@ -313,7 +284,7 @@ export class LiveGame {
       reachable: detached.reachable.bind(detached),
       targets: (id: string | null | undefined) => immutable(detached.targets(id)),
       recruitTiles: (id: string, type: UnitType) => immutable(detached.recruitTiles(id, type)),
-      canAttackFrom: detached.canAttackFrom.bind(detached),
+      canAttack: detached.canAttack.bind(detached),
       previewDetails: detached.previewDetails.bind(detached),
       recruitmentOptions: detached.recruitmentOptions.bind(detached),
       promotionOptions: (id: string) => immutable(detached.promotionOptions(id)),

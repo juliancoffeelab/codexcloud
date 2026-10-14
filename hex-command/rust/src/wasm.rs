@@ -122,7 +122,7 @@ impl NativeEngineFactory {
             });
         encode(result)
     }
-    /// Validate [`SavedGame`] and restore state and AI continuation under a new handle.
+    /// Validate [`SavedGame`] and restore resolved state under a new handle.
     /// The restored handle starts at revision zero; invalid saves leave the factory unchanged.
     pub fn restore(&mut self, saved: Ts<SavedGame>) -> Result<Ts<BattleResponse>, JsError> {
         encode(decode::<SavedGame>(saved).and_then(|saved| self.restore_saved(saved)))
@@ -137,72 +137,6 @@ impl NativeEngineFactory {
             self.battle(id, revision)
                 .map(|battle| battle.game(&self.rules).inspect(revision)),
         )
-    }
-    /// Return [`ReachableTile`] destinations and costs for a stable unit identity.
-    /// The query leaves battle state and revision unchanged.
-    pub fn reachable(
-        &self,
-        id: u32,
-        revision: u32,
-        unit: u32,
-    ) -> Result<Ts<ReachableResponse>, JsError> {
-        encode(self.battle(id, revision).and_then(|battle| {
-            let game = battle.game(&self.rules);
-            let actor = game
-                .unit(unit)
-                .ok_or(CommandError::UnknownUnit(UnitId(unit)))?;
-            Ok(game
-                .reachable(actor)
-                .into_iter()
-                .map(|(tile, cost)| ReachableTile {
-                    tile: TileId(game.board.ids[tile].clone()),
-                    cost,
-                })
-                .collect::<Vec<_>>())
-        }))
-    }
-    /// Decode [`AttackQuery`] and return an [`AttackPreview`] for a legal attack.
-    /// An optional hypothetical origin affects the query without moving the attacker.
-    #[wasm_bindgen(js_name = previewAttack)]
-    pub fn preview_attack(
-        &self,
-        id: u32,
-        revision: u32,
-        query: Ts<AttackQuery>,
-    ) -> Result<Ts<AttackResponse>, JsError> {
-        encode(decode::<AttackQuery>(query).and_then(|query| {
-            let battle = self.battle(id, revision)?;
-            let game = battle.game(&self.rules);
-            let actor = game
-                .unit(query.unit.0)
-                .ok_or(CommandError::UnknownUnit(query.unit))?;
-            let target = game
-                .unit(query.target.0)
-                .ok_or(CommandError::UnknownUnit(query.target))?;
-            let weapon = self.rules.units[actor.kind]
-                .attacks
-                .iter()
-                .position(|attack| attack.id == query.weapon.0)
-                .ok_or_else(|| CommandError::UnknownWeapon(query.weapon.clone()))?;
-            let from = match query.from {
-                Some(tile) => *game
-                    .board
-                    .indices
-                    .get(&tile.0)
-                    .ok_or_else(|| CommandError::UnknownTile(tile))?,
-                None => actor.tile,
-            };
-            if !game.can_attack(actor, from, target, weapon) {
-                return Err(CommandError::IllegalAttack.into());
-            }
-            let (damage, retaliation, response) = game.preview(actor, target, weapon, from);
-            Ok(AttackPreview {
-                damage,
-                retaliation,
-                response: response
-                    .map(|index| self.rules.units[target.kind].attacks[index].clone()),
-            })
-        }))
     }
     /// Apply one decoded [`Command`] against the expected revision.
     /// Success returns [`DispatchResult`]; rejected commands leave state unchanged.
@@ -227,7 +161,7 @@ impl NativeEngineFactory {
             decode::<AiOptions>(options).and_then(|options| self.decision(id, revision, options)),
         )
     }
-    /// Return a [`SavedGame`] checkpoint including any pending AI command and continuation.
+    /// Return a [`SavedGame`] checkpoint of resolved game state.
     pub fn save(&self, id: u32, revision: u32) -> Result<Ts<SaveResponse>, JsError> {
         encode(self.checkpoint(id, revision))
     }
@@ -259,9 +193,8 @@ impl NativeEngineFactory {
         let mut game = battle.game(&self.rules);
         let ends_turn = matches!(command, Command::EndTurn);
         let planned = battle.pending.as_ref() == Some(&command);
-        let mut effects = game.execute(command.clone())?;
+        game.execute(command)?;
         let state = game.state();
-        crate::logic::complete_effects(&battle.state, &state, &command, &mut effects);
         battle.state = state;
         battle.board = game.board.clone();
         battle.revision = battle
@@ -275,7 +208,6 @@ impl NativeEngineFactory {
         }
         Ok(DispatchResult {
             view: battle.view(),
-            effects,
         })
     }
     fn decision(
@@ -301,6 +233,9 @@ impl NativeEngineFactory {
                 None,
                 options.diplomacy,
             ));
+            if let Some(blocks) = options.blocks {
+                battle.workspace = battle.workspace.take().map(|w| w.with_blocks(blocks));
+            }
             battle.options = Some(options.clone());
             battle.pending = None;
         }
@@ -312,7 +247,6 @@ impl NativeEngineFactory {
         }
         let game = battle.game(&self.rules);
         let command = ai::choose_game_command(
-            &self.rules,
             &game,
             options.policy,
             battle.workspace.as_mut().expect("workspace initialized"),
@@ -325,80 +259,18 @@ impl NativeEngineFactory {
     }
     fn checkpoint(&self, id: u32, revision: u32) -> Result<SavedGame, EngineError> {
         let battle = self.battle(id, revision)?;
-        let planner =
-            battle
-                .workspace
-                .as_ref()
-                .zip(battle.options.as_ref())
-                .map(|(workspace, options)| SavedPlanner {
-                    options: options.clone(),
-                    workspace: workspace.snapshot(),
-                    pending: battle.pending.clone(),
-                });
         Ok(SavedGame {
             seed: battle.seed,
             state: battle.state.clone(),
-            planner,
         })
     }
-    fn restore_saved(&mut self, mut saved: SavedGame) -> Result<BattleHandle, EngineError> {
+    fn restore_saved(&mut self, saved: SavedGame) -> Result<BattleHandle, EngineError> {
         let game = Game::try_from_state(&self.rules, saved.state).map_err(|error| {
             EngineError::InvalidSave {
                 message: error.to_string(),
             }
         })?;
-        let state = game.state();
-        if let Some(planner) = &mut saved.planner {
-            if planner.workspace.seed != saved.seed
-                || planner.workspace.diplomacy != planner.options.diplomacy
-                || planner
-                    .workspace
-                    .policy
-                    .is_some_and(|policy| policy != planner.options.policy)
-                || planner.workspace.recruitment_remaining > planner.options.recruitment_limit
-            {
-                return Err(EngineError::InvalidSave {
-                    message: "planner configuration does not match its checkpoint".into(),
-                });
-            }
-            planner
-                .workspace
-                .validate(&self.rules, &state)
-                .map_err(|error| EngineError::InvalidSave {
-                    message: error.to_string(),
-                })?;
-            if let Some(pending) = &planner.pending {
-                match game.fork().execute(pending.clone()) {
-                    Ok(_) => {}
-                    Err(CommandError::IllegalMove | CommandError::IllegalRecruit) => {
-                        // Rebalanced movement or prices can invalidate a queued action.
-                        // Replan from the saved turn without replenishing recruits.
-                        planner.workspace = PlanningWorkspace::new(
-                            planner.workspace.seed,
-                            planner.workspace.recruitment_remaining,
-                            planner.workspace.goals.clone(),
-                            planner.workspace.diplomacy,
-                        )
-                        .snapshot();
-                        planner.pending = None;
-                    }
-                    Err(error) => {
-                        return Err(EngineError::InvalidSave {
-                            message: error.to_string(),
-                        });
-                    }
-                }
-            }
-        }
-        let board = game.board.clone();
-        let handle = self.insert(state, saved.seed, board);
-        if let Some(planner) = saved.planner {
-            let battle = self.battles.get_mut(&handle.id).expect("inserted battle");
-            battle.workspace = Some(PlanningWorkspace::from_snapshot(planner.workspace));
-            battle.options = Some(planner.options);
-            battle.pending = planner.pending;
-        }
-        Ok(handle)
+        Ok(self.insert(game.state(), saved.seed, game.board.clone()))
     }
     fn battle(&self, id: u32, revision: u32) -> Result<&Battle, EngineError> {
         let battle = self.battles.get(&id).ok_or(EngineError::UnknownBattle)?;
@@ -453,138 +325,31 @@ mod tests {
     use super::*;
 
     #[test]
-    fn rebalanced_catalog_restores_health_and_replans_a_stale_move() {
+    fn checkpoint_discards_unexecuted_plans_and_restores_resolved_state() {
         let mut factory = NativeEngineFactory {
             rules: Rules::embedded().unwrap(),
             battles: HashMap::new(),
             next_id: 1,
         };
         let state = Game::new(&factory.rules, "mirror").state();
-        let board = Board::new(&state.tiles);
-        let original = factory.insert(state, 17, board);
+        let original = factory.insert(state.clone(), 17, Board::new(&state.tiles));
         let options = AiOptions {
-            policy: AiPolicy::Mixed,
+            blocks: None,
+            policy: AiPolicy::Priority,
             diplomacy: AiDiplomacy::Restrained,
-            recruitment_limit: 1,
+            recruitment_limit: 2,
         };
-        factory.decision(original.id, 0, options.clone()).unwrap();
-        let mut saved = factory.checkpoint(original.id, 0).unwrap();
-        let (kind, actor_id, command) = {
-            let game = factory.battles[&original.id].game(&factory.rules);
-            let actor = game.units.iter().find(|u| u.side == game.turn).unwrap();
-            let (tile, cost) = game
-                .reachable(actor)
-                .into_iter()
-                .max_by_key(|(_, cost)| *cost)
-                .unwrap();
-            assert!(cost > 1);
-            let command = Command::Move {
-                unit: UnitId(actor.id),
-                tile: TileId(game.board.ids[tile].clone()),
-            };
-            assert!(game.fork().execute(command.clone()).is_ok());
-            (actor.kind, format!("u{}", actor.id), command)
-        };
-        let finished = saved
-            .state
-            .units
-            .iter_mut()
-            .find(|u| u.side == saved.state.turn && u.id != actor_id)
-            .unwrap();
-        finished.hp = 1;
-        finished.moved = true;
-        finished.attacked = true;
-        let finished_id = finished.id.clone();
-        let planner = saved.planner.as_mut().unwrap();
-        planner.pending = Some(command);
-        planner.workspace.recruitment_remaining = 0;
-        factory.rules.units[kind].hp -= 1;
-        factory.rules.units[kind].r#move = 1;
+        factory.decision(original.id, 0, options).unwrap();
+        let saved = factory.checkpoint(original.id, 0).unwrap();
+        let json = serde_json::to_value(&saved).unwrap();
+        assert_eq!(json.as_object().unwrap().len(), 2);
+        assert_eq!(json["state"], serde_json::to_value(&state).unwrap());
         let restored = factory.restore_saved(saved).unwrap();
-        let actor = restored
-            .view
-            .state
-            .units
-            .iter()
-            .find(|u| u.id == actor_id)
-            .unwrap();
-        assert_eq!(actor.hp, factory.rules.units[kind].hp);
-        assert!(!actor.moved && !actor.attacked);
-        let finished = restored
-            .view
-            .state
-            .units
-            .iter()
-            .find(|u| u.id == finished_id)
-            .unwrap();
-        assert_eq!(finished.hp, 1);
-        assert!(finished.moved && finished.attacked);
-        assert_eq!(
-            factory.battles[&restored.id]
-                .workspace
-                .as_ref()
-                .unwrap()
-                .snapshot()
-                .recruitment_remaining,
-            0
-        );
-        let next = factory.decision(restored.id, 0, options).unwrap();
-        assert!(
-            factory.battles[&restored.id]
-                .game(&factory.rules)
-                .execute(next.command)
-                .is_ok()
-        );
-    }
-
-    #[test]
-    fn save_restores_pending_ai_decision_and_continuation() {
-        for policy in [AiPolicy::Classic, AiPolicy::Mixed] {
-            let mut factory = NativeEngineFactory {
-                rules: Rules::embedded().unwrap(),
-                battles: HashMap::new(),
-                next_id: 1,
-            };
-            let state = factory
-                .start(Start::Scenario {
-                    map: "mirror".into(),
-                    revision: None,
-                })
-                .unwrap();
-            let board = Board::new(&state.tiles);
-            let original = factory.insert(state, 17, board);
-            let options = AiOptions {
-                policy,
-                diplomacy: AiDiplomacy::Restrained,
-                recruitment_limit: 2,
-            };
-            let first = factory.decision(original.id, 0, options.clone()).unwrap();
-            let saved = factory.checkpoint(original.id, 0).unwrap();
-            assert!(saved.planner.as_ref().unwrap().pending.is_some());
-            let saved: SavedGame =
-                serde_json::from_str(&serde_json::to_string(&saved).unwrap()).unwrap();
-            let restored = factory.restore_saved(saved).unwrap();
-            let repeated = factory.decision(restored.id, 0, options.clone()).unwrap();
-            assert_eq!(first.command, repeated.command);
-            // A few individual decisions exercise the cursor and staged follow-up,
-            // without running a turn, campaign, or tournament simulation.
-            for revision in 0..3 {
-                let first = factory
-                    .decision(original.id, revision, options.clone())
-                    .unwrap();
-                let second = factory
-                    .decision(restored.id, revision, options.clone())
-                    .unwrap();
-                assert_eq!(first.command, second.command);
-                factory.apply(original.id, revision, first.command).unwrap();
-                factory
-                    .apply(restored.id, revision, second.command)
-                    .unwrap();
-                assert_eq!(
-                    serde_json::to_value(&factory.battles[&original.id].state).unwrap(),
-                    serde_json::to_value(&factory.battles[&restored.id].state).unwrap()
-                );
-            }
-        }
+        let battle = &factory.battles[&restored.id];
+        assert!(battle.workspace.is_none() && battle.pending.is_none() && battle.options.is_none());
+        assert_eq!(serde_json::to_value(&battle.state).unwrap(), json["state"]);
+        let mut old = json;
+        old["planner"] = serde_json::json!({});
+        assert!(serde_json::from_value::<SavedGame>(old).is_err());
     }
 }

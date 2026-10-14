@@ -51,41 +51,61 @@ fn labels(outcomes: &[Value]) -> Vec<String> {
         .into_iter()
         .collect()
 }
-fn arena_rows(results: &[&Value], labels: &[String], first_seed: u32) -> Vec<ArenaRow> {
+struct ArenaObservation<'a> {
+    game: &'a Value,
+    player: String,
+    enemy: String,
+}
+type Resampling = BTreeMap<usize, Vec<Vec<usize>>>;
+fn arena_rows(
+    results: &[&ArenaObservation],
+    labels: &[String],
+    first_seed: u32,
+    resampling: &mut Resampling,
+) -> Vec<ArenaRow> {
+    // Index each seat pair once. Repeatedly formatting both labels for every
+    // possible pair made aggregation scan the same games hundreds of times.
+    let mut pairs: BTreeMap<(&str, &str), Vec<&ArenaObservation>> = BTreeMap::new();
+    for &game in results {
+        let player = game.player.as_str();
+        let enemy = game.enemy.as_str();
+        pairs.entry((player, enemy)).or_default().push(game);
+        if player != enemy {
+            pairs.entry((enemy, player)).or_default().push(game);
+        }
+    }
     let mut rows = vec![];
     for policy in labels {
         for opponent in labels {
-            let games: Vec<_> = results
-                .iter()
-                .copied()
-                .filter(|game| {
-                    (bot_label(game, "player") == *policy && bot_label(game, "enemy") == *opponent)
-                        || (bot_label(game, "enemy") == *policy
-                            && bot_label(game, "player") == *opponent)
-                })
-                .collect();
-            if games.is_empty() {
+            let Some(games) = pairs.get(&(policy.as_str(), opponent.as_str())) else {
                 continue;
-            }
-            let win = |game: &Value| {
-                game["winner"].as_str().is_some_and(|winner| {
+            };
+            let win = |observation: &ArenaObservation| {
+                observation.game["winner"].as_str().is_some_and(|winner| {
                     if policy == opponent {
                         winner == "player"
                     } else {
-                        bot_label(game, winner) == *policy
+                        (if winner == "player" {
+                            &observation.player
+                        } else {
+                            &observation.enemy
+                        }) == policy
                     }
                 })
             };
             let wins = games.iter().filter(|game| win(game)).count();
-            let unresolved = games.iter().filter(|game| game["winner"].is_null()).count();
+            let unresolved = games
+                .iter()
+                .filter(|game| game.game["winner"].is_null())
+                .count();
             let losses = games.len() - wins - unresolved;
             let mut blocks: BTreeMap<u64, (usize, i32)> = BTreeMap::new();
-            for game in &games {
+            for game in games {
                 let block = blocks
-                    .entry(game["config"]["seed"].as_u64().unwrap_or(0))
+                    .entry(game.game["config"]["seed"].as_u64().unwrap_or(0))
                     .or_default();
                 block.0 += 1;
-                block.1 += if game["winner"].is_null() {
+                block.1 += if game.game["winner"].is_null() {
                     0
                 } else if win(game) {
                     1
@@ -97,20 +117,50 @@ fn arena_rows(results: &[&Value], labels: &[String], first_seed: u32) -> Vec<Are
                 None
             } else {
                 let blocks: Vec<_> = blocks.values().copied().collect();
-                let mut random = Random(first_seed);
                 let mut samples = Vec::with_capacity(1000);
-                for _ in 0..1000 {
-                    let mut count = 0;
-                    let mut margin = 0;
-                    for _ in 0..blocks.len() {
-                        let (total, change) =
-                            blocks[(random.next() * blocks.len() as f64).floor() as usize];
-                        count += total;
-                        margin += change;
+                if blocks.len() <= 64 {
+                    // Every row starts the same RNG stream. Reuse its integer
+                    // seed-block multiplicities rather than generate it again.
+                    let weights = resampling.entry(blocks.len()).or_insert_with(|| {
+                        let mut random = Random(first_seed);
+                        (0..1000)
+                            .map(|_| {
+                                let mut weights = vec![0; blocks.len()];
+                                for _ in 0..blocks.len() {
+                                    weights
+                                        [(random.next() * blocks.len() as f64).floor() as usize] +=
+                                        1;
+                                }
+                                weights
+                            })
+                            .collect()
+                    });
+                    for weights in weights {
+                        let mut count = 0;
+                        let mut margin = 0;
+                        for (&repeats, &(total, change)) in weights.iter().zip(&blocks) {
+                            count += repeats * total;
+                            margin += repeats as i32 * change;
+                        }
+                        samples.push(margin as f64 / count as f64);
                     }
-                    samples.push(margin as f64 / count as f64);
+                } else {
+                    // Keep cache memory bounded for very large seed schedules.
+                    let mut random = Random(first_seed);
+                    for _ in 0..1000 {
+                        let mut count = 0;
+                        let mut margin = 0;
+                        for _ in 0..blocks.len() {
+                            let (total, change) =
+                                blocks[(random.next() * blocks.len() as f64).floor() as usize];
+                            count += total;
+                            margin += change;
+                        }
+                        samples.push(margin as f64 / count as f64);
+                    }
                 }
-                samples.sort_by(f64::total_cmp);
+                samples.select_nth_unstable_by(974, f64::total_cmp);
+                samples[..974].select_nth_unstable_by(24, f64::total_cmp);
                 Some([samples[24], samples[974]])
             };
             let total = games.len() as f64;
@@ -130,7 +180,7 @@ fn arena_rows(results: &[&Value], labels: &[String], first_seed: u32) -> Vec<Are
                 net_completed_wins95: margin95,
                 mean_rounds: games
                     .iter()
-                    .map(|game| game["rounds"].as_f64().unwrap_or(0.0))
+                    .map(|game| game.game["rounds"].as_f64().unwrap_or(0.0))
                     .sum::<f64>()
                     / total,
             });
@@ -160,22 +210,56 @@ pub fn build_report(
         }
     }
     let labels = labels(&outcomes);
-    let arena: Vec<&Value> = outcomes.iter().filter(is_arena).collect();
-    let rows = arena_rows(&arena, &labels, options.first_seed);
+    let observations: Vec<_> = outcomes
+        .iter()
+        .filter(is_arena)
+        .map(|game| ArenaObservation {
+            game,
+            player: bot_label(game, "player"),
+            enemy: bot_label(game, "enemy"),
+        })
+        .collect();
+    let arena: Vec<_> = observations.iter().collect();
+    let mut arena_groups: BTreeMap<(&str, &str, &str), Vec<&ArenaObservation>> = BTreeMap::new();
+    for observation in &observations {
+        let config = &observation.game["config"];
+        arena_groups
+            .entry((
+                config["armies"]["player"].as_str().unwrap_or(""),
+                config["armies"]["enemy"].as_str().unwrap_or(""),
+                config["landscape"].as_str().unwrap_or(""),
+            ))
+            .or_default()
+            .push(observation);
+    }
+    let mut campaign_groups: BTreeMap<(&str, &str, &str, &str), Vec<&Value>> = BTreeMap::new();
+    for game in outcomes.iter().filter(|game| game["kind"] == "campaign") {
+        let config = &game["config"];
+        campaign_groups
+            .entry((
+                config["campaign"].as_str().unwrap_or(""),
+                config["player"].as_str().unwrap_or(""),
+                config["enemy"].as_str().unwrap_or(""),
+                config["diplomacy"].as_str().unwrap_or(""),
+            ))
+            .or_default()
+            .push(game);
+    }
+    let mut resampling = Resampling::new();
+    let rows = arena_rows(&arena, &labels, options.first_seed, &mut resampling);
     let mut strata = vec![];
     for player_army in &options.armies {
         for enemy_army in &options.armies {
             for landscape in &options.landscapes {
-                let games: Vec<_> = arena
-                    .iter()
-                    .copied()
-                    .filter(|game| {
-                        game["config"]["armies"]["player"] == *player_army
-                            && game["config"]["armies"]["enemy"] == *enemy_army
-                            && game["config"]["landscape"] == *landscape
-                    })
-                    .collect();
-                let rows = arena_rows(&games, &labels, options.first_seed);
+                let games = arena_groups
+                    .get(&(
+                        player_army.as_str(),
+                        enemy_army.as_str(),
+                        landscape.as_str(),
+                    ))
+                    .map(Vec::as_slice)
+                    .unwrap_or(&[]);
+                let rows = arena_rows(games, &labels, options.first_seed, &mut resampling);
                 if !rows.is_empty() {
                     strata.push(json!({"playerArmy":player_army,"enemyArmy":enemy_army,"landscape":landscape,"rows":rows}));
                 }
@@ -185,22 +269,21 @@ pub fn build_report(
     let mut campaign_strata = vec![];
     if options.mode != Mode::Arena {
         for campaign in &options.campaigns {
-            for player in &options.policies {
-                for enemy in &options.policies {
+            for player in options.policies.iter().filter(|p| p.supports_campaign()) {
+                for enemy in options.policies.iter().filter(|p| p.supports_campaign()) {
                     for diplomacy in &options.diplomacy {
                         let player = serde_json::to_value(player)?;
                         let enemy = serde_json::to_value(enemy)?;
                         let alignment = serde_json::to_value(diplomacy)?;
-                        let games: Vec<_> = outcomes
-                            .iter()
-                            .filter(|game| {
-                                game["kind"] == "campaign"
-                                    && game["config"]["campaign"] == *campaign
-                                    && game["config"]["player"] == player
-                                    && game["config"]["enemy"] == enemy
-                                    && game["config"]["diplomacy"] == alignment
-                            })
-                            .collect();
+                        let games = campaign_groups
+                            .get(&(
+                                campaign.as_str(),
+                                player.as_str().unwrap(),
+                                enemy.as_str().unwrap(),
+                                alignment.as_str().unwrap(),
+                            ))
+                            .map(Vec::as_slice)
+                            .unwrap_or(&[]);
                         let chapters: Vec<_> = games
                             .iter()
                             .flat_map(|game| game["missions"].as_array().into_iter().flatten())
@@ -234,7 +317,12 @@ pub fn build_report(
             let mut games = 0;
             for game in &arena {
                 for side in ["player", "enemy"] {
-                    if bot_label(game, side) != *bot {
+                    if (if side == "player" {
+                        &game.player
+                    } else {
+                        &game.enemy
+                    }) != bot
+                    {
                         continue;
                     }
                     games += 1;
@@ -243,7 +331,7 @@ pub fn build_report(
                         ("casualties", "lost"),
                         ("promotions", "promoted"),
                     ] {
-                        for unit in game[list]
+                        for unit in game.game[list]
                             .as_array()
                             .into_iter()
                             .flatten()
@@ -262,8 +350,8 @@ pub fn build_report(
         })
         .collect();
     let seat_diagnostics: Vec<_> = labels.iter().map(|policy| {
-        let games: Vec<_> = arena.iter().copied().filter(|game|bot_label(game,"player")==*policy && bot_label(game,"enemy")==*policy).collect();
-        json!({"policy":policy,"games":games.len(),"playerWins":games.iter().filter(|game|game["winner"]=="player").count(),"enemyWins":games.iter().filter(|game|game["winner"]=="enemy").count(),"firstWins":games.iter().filter(|game|game["winner"]==game["config"]["first"]).count(),"secondWins":games.iter().filter(|game|!game["winner"].is_null() && game["winner"]!=game["config"]["first"]).count(),"unresolved":games.iter().filter(|game|game["winner"].is_null()).count()})
+        let games: Vec<_> = arena.iter().copied().filter(|game|game.player==*policy && game.enemy==*policy).collect();
+        json!({"policy":policy,"games":games.len(),"playerWins":games.iter().filter(|game|game.game["winner"]=="player").count(),"enemyWins":games.iter().filter(|game|game.game["winner"]=="enemy").count(),"firstWins":games.iter().filter(|game|game.game["winner"]==game.game["config"]["first"]).count(),"secondWins":games.iter().filter(|game|!game.game["winner"].is_null() && game.game["winner"]!=game.game["config"]["first"]).count(),"unresolved":games.iter().filter(|game|game.game["winner"].is_null()).count()})
     }).collect();
     let mut report = json!({"schema":3,"status":"complete","mode":options.mode,"fingerprint":fingerprint,"sourceCommit":source_commit,"engine":"rust","elapsedSeconds":elapsed,"seeds":{"first":options.first_seed,"count":options.seeds},"schedule":options,"rows":rows,"strata":strata,"campaignStrata":campaign_strata,"armyCompositions":army_compositions,"seatDiagnostics":seat_diagnostics,"outcomes":outcomes,"detailFormat":"jsonl-byte-ranges-v1"});
     if let Some(files) = trace_files {
@@ -285,6 +373,19 @@ pub fn markdown(report: &Value) -> String {
             - 1,
         report["elapsedSeconds"].as_f64().unwrap_or(0.0)
     );
+    if let Some(timing) = report.get("turnTiming") {
+        text.push_str("## Turn timing\n\nOne turn is one side's own phase. CPU timing excludes journal encoding and report aggregation; turn-transition events are outside the measured phase.\n\n| Policy | Turns | Mean AI decision µs/turn | Mean complete phase µs/turn |\n|---|---:|---:|---:|\n");
+        for row in timing["policies"].as_array().into_iter().flatten() {
+            text.push_str(&format!(
+                "| {} | {} | {:.2} | {:.2} |\n",
+                row["policy"].as_str().unwrap_or(""),
+                row["turns"],
+                row["meanDecisionMicrosPerTurn"].as_f64().unwrap_or(0.0),
+                row["meanTurnMicros"].as_f64().unwrap_or(0.0)
+            ));
+        }
+        text.push('\n');
+    }
     if report["mode"] != "campaign" {
         text.push_str("| Policy | Opponent | Games | Wins | Losses | Unresolved | Mean rounds |\n|---|---|---:|---:|---:|---:|---:|\n");
         for row in report["rows"].as_array().into_iter().flatten() {
@@ -355,7 +456,10 @@ mod tests {
             landscapes: vec!["open".into()],
             campaigns: vec![],
             policies: vec![Policy::Classic],
+            campaign_players: None,
+            campaign_enemies: None,
             diplomacy: vec![Diplomacy::Pragmatic],
+            self_play: false,
         };
         let outcomes = [Some("player"),Some("enemy"),None,Some("player")].iter().enumerate().map(|(index,winner)|json!({"kind":"arena","config":{"seed":1+index/2,"armies":{"player":"human","enemy":"human"},"landscape":"open","player":"classic","enemy":"classic","first":if index%2==0{"player"}else{"enemy"}},"winner":winner,"rounds":2,"recruits":[],"casualties":[],"promotions":[]})).collect();
         let report = build_report(&options, "fp", "commit", 0.1, outcomes, None).unwrap();

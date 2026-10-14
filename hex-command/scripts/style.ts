@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import { toolchainEnvironment } from "../.agents/skills/rust-toolchain/scripts/toolchain-env";
 
 const args = process.argv.slice(2);
-if (args.some((arg) => arg !== "--write")) {
+if (args.length) {
   console.error("Usage: npm run format");
   process.exit(1);
 }
@@ -26,7 +26,6 @@ const files = [
   "docs/development.md",
   "docs/terrain-artwork.md",
   "rust/README.md",
-  "rust/src/ai/README.md",
   "rust/data/**/*.{json,md}",
 ];
 const checks = [

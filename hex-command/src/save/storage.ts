@@ -1,5 +1,4 @@
 export const SAVE_KEY = "hex-command-battle";
-export const REJECTED_SAVE_KEY = `${SAVE_KEY}-unrestored`;
 
 /** Browser storage is optional; failure must leave the current battle playable. */
 export function readSave(): string | null {
@@ -16,13 +15,12 @@ export function storeSave(text: string): void {
     /* Full or disabled storage. */
   }
 }
-/** Preserve the original bytes, including malformed JSON, before allowing a fresh save. */
-export function preserveRejectedSave(text: string): boolean {
+/** Failed migration or validation discards the save; historical backups are obsolete. */
+export function wipeSave(): void {
   try {
-    localStorage.setItem(REJECTED_SAVE_KEY, text);
-    return true;
+    localStorage.removeItem(SAVE_KEY);
+    localStorage.removeItem(`${SAVE_KEY}-unrestored`);
   } catch {
-    /* Full or disabled storage. */
-    return false;
+    /* Disabled browser storage must not stop a fresh game. */
   }
 }

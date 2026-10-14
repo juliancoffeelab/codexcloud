@@ -51,9 +51,7 @@ fn events<'a>(
     }
     if hash_state {
         // Keep canonical, sorted-object hashing used by existing native result journals.
-        result.state_hash = Some(sha256(&serde_json::to_vec(&serde_json::to_value(
-            final_state,
-        )?)?));
+        result.state_hash = Some(sha256(&super::canonical::state_bytes(final_state)?));
     }
     Ok(result)
 }
@@ -116,6 +114,75 @@ pub fn borrowed_summary(
             }))
         }
     }
+}
+/// Lossless Arrow header; complete phase boundaries live in indexed columns.
+pub(crate) fn arrow_header(summary: &DetailedSummary<'_>) -> Result<String, SimulationError> {
+    #[derive(Serialize)]
+    struct ArenaHeader<'a> {
+        kind: &'static str,
+        config: &'a ArenaConfig,
+        winner: Option<Side>,
+        reason: &'a str,
+        rounds: usize,
+        phases: &'a [()],
+        initial: &'a State,
+        r#final: &'a State,
+        objectives: &'a Sides<ArenaScore>,
+        #[serde(flatten)]
+        events: &'a Events<'a>,
+    }
+    #[derive(Serialize)]
+    struct MissionHeader<'a> {
+        id: &'a str,
+        winner: Option<Side>,
+        round: u32,
+        goals: &'a [Progress],
+        phases: &'a [()],
+        initial: &'a State,
+        r#final: &'a State,
+        #[serde(flatten)]
+        events: &'a Events<'a>,
+    }
+    #[derive(Serialize)]
+    struct CampaignHeader<'a> {
+        kind: &'static str,
+        config: &'a CampaignConfig,
+        completed: bool,
+        missions: Vec<MissionHeader<'a>>,
+    }
+    Ok(match summary {
+        DetailedSummary::Arena(s) => serde_json::to_string(&ArenaHeader {
+            kind: "arena",
+            config: &s.result.config,
+            winner: s.result.winner,
+            reason: &s.result.reason,
+            rounds: s.result.rounds,
+            phases: &[],
+            initial: &s.result.initial,
+            r#final: &s.result.r#final,
+            objectives: &s.result.objectives,
+            events: &s.events,
+        })?,
+        DetailedSummary::Campaign(s) => serde_json::to_string(&CampaignHeader {
+            kind: "campaign",
+            config: s.config,
+            completed: s.completed,
+            missions: s
+                .missions
+                .iter()
+                .map(|m| MissionHeader {
+                    id: &m.result.id,
+                    winner: m.result.winner,
+                    round: m.result.round,
+                    goals: &m.result.goals,
+                    phases: &[],
+                    initial: &m.result.initial,
+                    r#final: &m.result.r#final,
+                    events: &m.events,
+                })
+                .collect(),
+        })?,
+    })
 }
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -247,6 +314,7 @@ mod tests {
             reason: "cap".into(),
             rounds: 1,
             phases: vec![Phase {
+                planning: None,
                 side: Side::Player,
                 round: 1,
                 records: Records {
@@ -275,7 +343,10 @@ mod tests {
                 gold: state.gold.clone(),
                 before: vec![],
                 units: vec![],
-                ownership: vec![],
+                ownership: std::sync::Arc::new(OwnershipSnapshot {
+                    tiles: std::sync::Arc::new(vec![]),
+                    owners: vec![],
+                }),
                 goals: vec![],
                 objectives: vec![],
                 campaign: None,

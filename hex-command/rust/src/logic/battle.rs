@@ -1,8 +1,9 @@
 //! Compact battle sessions borrowing catalog rules and indexing the live roster.
 
 use crate::data::*;
+use rustc_hash::FxHashMap as HashMap;
 use std::cell::RefCell;
-use std::collections::{HashMap, VecDeque};
+use std::collections::VecDeque;
 use std::rc::Rc;
 
 #[derive(Debug)]
@@ -11,6 +12,7 @@ pub(crate) struct Board {
     pub(crate) positions: Vec<(i32, i32)>,
     pub(crate) indices: HashMap<String, usize>,
     pub(crate) adjacent: Vec<Vec<usize>>,
+    pub(crate) adjacent_bits: Vec<u128>,
     pub(crate) distances: Vec<u16>,
 }
 impl Board {
@@ -22,13 +24,25 @@ impl Board {
             .enumerate()
             .map(|(index, id)| (id.clone(), index))
             .collect();
-        let adjacent = (0..tiles.len())
+        let adjacent: Vec<Vec<usize>> = (0..tiles.len())
             .map(|first| {
                 (0..tiles.len())
                     .filter(|&second| hex_distance(positions[first], positions[second]) == 1)
                     .collect()
             })
             .collect();
+        let adjacent_bits = if tiles.len() <= 128 {
+            adjacent
+                .iter()
+                .map(|neighbors| {
+                    neighbors
+                        .iter()
+                        .fold(0, |bits, &tile| bits | (1u128 << tile))
+                })
+                .collect()
+        } else {
+            vec![]
+        };
         let coordinates = &positions;
         let distances = (0..tiles.len())
             .flat_map(|first| {
@@ -41,6 +55,7 @@ impl Board {
             positions,
             indices,
             adjacent,
+            adjacent_bits,
             distances,
         })
     }
@@ -52,6 +67,23 @@ fn hex_distance(first: (i32, i32), second: (i32, i32)) -> u16 {
     let q = first.0 - first.1.div_euclid(2) - second.0 + second.1.div_euclid(2);
     let r = first.1 - second.1;
     ((q.abs() + r.abs() + (q + r).abs()) / 2) as u16
+}
+// A generated layout is reused by many policy/race pairings. These caches
+// depend on catalog rules, geometry and terrain, never on a game's mutable state.
+type TerrainKey = (String, Vec<(String, i32, i32, String)>);
+#[derive(Clone)]
+struct SharedTerrain {
+    board: Rc<Board>,
+    routes: Rc<RefCell<HashMap<(usize, Vec<usize>, u64), Rc<Vec<u16>>>>>,
+    route_order: Rc<RefCell<VecDeque<(usize, Vec<usize>, u64)>>>,
+    attacks: super::geometry::AttackGeometry,
+    masks: super::geometry::AttackMasks,
+    reach: super::movement::ReachCache,
+    threat_reach: super::movement::ThreatReachCache,
+    movement: super::movement::MovementMasks,
+}
+thread_local! {
+    static TERRAIN_POOL: RefCell<(HashMap<TerrainKey, SharedTerrain>, VecDeque<TerrainKey>)> = RefCell::new((HashMap::default(), VecDeque::new()));
 }
 #[derive(Debug)]
 pub(crate) struct Game<'catalog> {
@@ -79,18 +111,67 @@ pub(crate) struct Game<'catalog> {
     pub(crate) pools: Option<[Vec<usize>; 2]>,
     pub(crate) arena_first: Option<Side>,
     pub(crate) mission: Option<Rc<Mission>>,
+    mission_key: Option<(String, usize, bool, Vec<String>, bool)>,
     pub(crate) recordings: Option<Records>,
-    pub(super) route_cache: RefCell<HashMap<(usize, Vec<usize>, u64), Rc<Vec<u16>>>>,
+    pub(super) route_cache: Rc<RefCell<HashMap<(usize, Vec<usize>, u64), Rc<Vec<u16>>>>>,
     pub(super) terrain_revision: u64,
     pub(super) attack_geometry: super::geometry::AttackGeometry,
-    pub(super) route_order: RefCell<VecDeque<(usize, Vec<usize>, u64)>>,
+    pub(super) attack_masks: super::geometry::AttackMasks,
+    pub(super) reach_cache: super::movement::ReachCache,
+    pub(super) threat_reach_cache: super::movement::ThreatReachCache,
+    pub(super) movement_masks: super::movement::MovementMasks,
+    pub(super) route_order: Rc<RefCell<VecDeque<(usize, Vec<usize>, u64)>>>,
     pub(super) occupancy: Vec<Option<usize>>,
+    pub(crate) occupied_tiles: super::geometry::TileSet,
     pub(super) unit_indices: HashMap<u32, usize>,
 }
 impl<'catalog> Game<'catalog> {
     pub(crate) fn from_state(rules: &'catalog Rules, state: State) -> Self {
-        let board = Board::new(&state.tiles);
-        Self::from_state_with_board(rules, state, board)
+        let key = (
+            rules.content_fingerprint.clone(),
+            state
+                .tiles
+                .iter()
+                .map(|t| (t.id.clone(), t.col, t.row, t.terrain.clone()))
+                .collect(),
+        );
+        let cached = TERRAIN_POOL.with_borrow(|(pool, _)| pool.get(&key).cloned());
+        let board = cached
+            .as_ref()
+            .map_or_else(|| Board::new(&state.tiles), |c| c.board.clone());
+        let mut game = Self::from_state_with_board(rules, state, board);
+        if let Some(cached) = cached {
+            game.route_cache = cached.routes;
+            game.route_order = cached.route_order;
+            game.attack_geometry = cached.attacks;
+            game.attack_masks = cached.masks;
+            game.reach_cache = cached.reach;
+            game.threat_reach_cache = cached.threat_reach;
+            game.movement_masks = cached.movement;
+        } else {
+            TERRAIN_POOL.with_borrow_mut(|(pool, order)| {
+                if pool.len() >= 64 {
+                    if let Some(oldest) = order.pop_front() {
+                        pool.remove(&oldest);
+                    }
+                }
+                order.push_back(key.clone());
+                pool.insert(
+                    key,
+                    SharedTerrain {
+                        board: game.board.clone(),
+                        routes: game.route_cache.clone(),
+                        route_order: game.route_order.clone(),
+                        attacks: game.attack_geometry.clone(),
+                        masks: game.attack_masks.clone(),
+                        reach: game.reach_cache.clone(),
+                        threat_reach: game.threat_reach_cache.clone(),
+                        movement: game.movement_masks.clone(),
+                    },
+                );
+            });
+        }
+        game
     }
     pub(crate) fn from_state_with_board(
         rules: &'catalog Rules,
@@ -163,13 +244,19 @@ impl<'catalog> Game<'catalog> {
             pools: None,
             arena_first: None,
             mission: None,
+            mission_key: None,
             recordings: None,
-            route_cache: RefCell::new(HashMap::new()),
+            route_cache: Rc::new(RefCell::new(HashMap::default())),
             terrain_revision: 0,
-            attack_geometry: Rc::new(RefCell::new(HashMap::new())),
-            route_order: RefCell::new(VecDeque::new()),
+            attack_geometry: Rc::new(RefCell::new(HashMap::default())),
+            attack_masks: super::geometry::AttackMasks::default(),
+            reach_cache: super::movement::ReachCache::default(),
+            threat_reach_cache: super::movement::ThreatReachCache::default(),
+            movement_masks: super::movement::MovementMasks::default(),
+            route_order: Rc::new(RefCell::new(VecDeque::new())),
             occupancy: vec![],
-            unit_indices: HashMap::new(),
+            occupied_tiles: super::geometry::TileSet::new(0),
+            unit_indices: HashMap::default(),
         };
         game.roster_changed();
         game.refresh_mission();
@@ -296,14 +383,17 @@ impl<'catalog> Game<'catalog> {
         });
         self.unit_indices.insert(id, self.units.len() - 1);
         self.occupancy[tile] = Some(self.units.len() - 1);
+        self.occupied_tiles.insert(tile);
         id
     }
     /// Refresh dense lookup tables after an internal roster transformation.
     pub(crate) fn roster_changed(&mut self) {
         self.occupancy = vec![None; self.terrain.len()];
+        self.occupied_tiles = super::geometry::TileSet::new(self.terrain.len());
         self.unit_indices.clear();
         for (index, unit) in self.units.iter().enumerate() {
             self.occupancy[unit.tile] = Some(index);
+            self.occupied_tiles.insert(unit.tile);
             self.unit_indices.insert(unit.id, index);
         }
     }
@@ -314,33 +404,49 @@ impl<'catalog> Game<'catalog> {
             self.terrain[tile] = terrain;
             Rc::make_mut(&mut self.connections)[tile] = None;
             Rc::make_mut(&mut self.dead_ends)[tile] = None;
-            self.attack_geometry = Rc::new(RefCell::new(HashMap::new()));
+            self.attack_geometry = Rc::new(RefCell::new(HashMap::default()));
+            self.attack_masks = super::geometry::AttackMasks::default();
+            self.reach_cache = super::movement::ReachCache::default();
+            self.threat_reach_cache = super::movement::ThreatReachCache::default();
+            self.movement_masks = super::movement::MovementMasks::default();
             self.terrain_revision = self.terrain_revision.wrapping_add(1);
-            self.route_cache.get_mut().clear();
-            self.route_order.get_mut().clear();
+            self.route_cache = Rc::new(RefCell::new(HashMap::default()));
+            self.route_order = Rc::new(RefCell::new(VecDeque::new()));
         }
     }
 
     pub(crate) fn refresh_mission(&mut self) {
         let Some(state) = &self.campaign else {
             self.mission = None;
+            self.mission_key = None;
             return;
         };
-        let mut mission = Rc::new(self.rules.campaigns[&state.id].missions[state.mission].clone());
-        if state.chosen("refuge-war")
+        let without_dain = state.chosen("refuge-war")
             || state.chosen("green-dain-dead")
-            || state.marked("dain-fell")
-        {
-            if let Some(patch) = mission.without_dain.clone() {
-                Rc::make_mut(&mut mission).apply(&patch);
-            }
-        }
+            || state.marked("dain-fell");
         let mut fallen = state.fallen_companions.clone().unwrap_or_default();
         for mark in &state.marks {
             if let Some(name) = mark.strip_prefix("fallen:") {
                 if !fallen.iter().any(|n| n == name) {
                     fallen.push(name.to_owned());
                 }
+            }
+        }
+        let key = (
+            state.id.clone(),
+            state.mission,
+            without_dain,
+            fallen.clone(),
+            state.escalated(),
+        );
+        if self.mission_key.as_ref() == Some(&key) {
+            return;
+        }
+        self.mission_key = Some(key);
+        let mut mission = Rc::new(self.rules.campaigns[&state.id].missions[state.mission].clone());
+        if without_dain {
+            if let Some(patch) = mission.without_dain.clone() {
+                Rc::make_mut(&mut mission).apply(&patch);
             }
         }
         for name in &fallen {
@@ -403,12 +509,18 @@ impl<'catalog> Game<'catalog> {
             pools: self.pools.clone(),
             arena_first: self.arena_first,
             mission: self.mission.clone(),
+            mission_key: self.mission_key.clone(),
             recordings: None,
-            route_cache: RefCell::new(HashMap::new()),
+            route_cache: self.route_cache.clone(),
             terrain_revision: self.terrain_revision,
             attack_geometry: self.attack_geometry.clone(),
-            route_order: RefCell::new(VecDeque::new()),
+            attack_masks: self.attack_masks.clone(),
+            reach_cache: self.reach_cache.clone(),
+            threat_reach_cache: self.threat_reach_cache.clone(),
+            movement_masks: self.movement_masks.clone(),
+            route_order: self.route_order.clone(),
             occupancy: self.occupancy.clone(),
+            occupied_tiles: self.occupied_tiles.clone(),
             unit_indices: self.unit_indices.clone(),
         }
     }
@@ -500,11 +612,11 @@ impl<'catalog> Game<'catalog> {
             .filter(|&tile| self.cost(kind, tile) != u16::MAX && self.at(tile).is_none())
             .collect()
     }
-    pub(crate) fn recruit(&mut self, id: u32, kind: usize, tile: usize) -> u32 {
+    pub(crate) fn recruit(&mut self, id: u32, kind: usize, tile: usize) {
         let leader = self.unit(id).unwrap().clone();
         assert!(self.placement_tiles(&leader, kind, true).contains(&tile));
         self.gold[leader.side.index()] -= self.rules.units[kind].cost;
-        let added = self.add(kind, leader.side, tile);
+        self.add(kind, leader.side, tile);
         let unit = self.units.last_mut().unwrap();
         unit.moved = true;
         unit.attacked = true;
@@ -522,6 +634,5 @@ impl<'catalog> Game<'catalog> {
             unit_type: self.rules.units[kind].id.clone(),
             tile: self.board.ids[tile].clone(),
         });
-        added
     }
 }

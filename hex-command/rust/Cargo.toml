@@ -16,14 +16,20 @@ default = []
 wasm = ["dep:tsify", "dep:wasm-bindgen"]
 
 [dependencies]
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
+rustc-hash = "2"
+serde = { version = "1", features = ["derive", "rc"] }
+serde_json = { version = "1", features = ["raw_value"] }
 sha2 = "0.10"
 tsify = { version = "0.5.8", default-features = false, features = ["js"], optional = true }
 wasm-bindgen = { version = "0.2", optional = true }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+arrow-array = "57"
+arrow-buffer = "57"
+arrow-schema = "57"
+arrow-ipc = "57"
 flate2 = "1"
+mimalloc = { version = "0.1", default-features = false }
 
 [build-dependencies]
 sha2 = "0.10"
@@ -32,3 +38,10 @@ sha2 = "0.10"
 lto = "thin"
 codegen-units = 8
 panic = "abort"
+
+# Routine native simulations retain optimization without costly whole-program linking.
+[profile.simulation]
+inherits = "release"
+lto = false
+codegen-units = 16
+incremental = true

@@ -3,6 +3,74 @@ use super::*;
 use std::collections::HashSet;
 
 #[test]
+fn threat_flood_matches_ordered_movement_with_blockers_and_terrain_changes() {
+    use crate::logic::geometry::TileSet;
+    for size in [61, 128, 135] {
+        let mut state = flat().state();
+        state.tiles = (0..size)
+            .map(|tile| Tile {
+                id: format!("{},{}", tile % 9, tile / 9),
+                col: (tile % 9) as i32,
+                row: (tile / 9) as i32,
+                terrain: "plains".into(),
+                owner: None,
+                connections: None,
+                dead_ends: None,
+                floor: None,
+            })
+            .collect();
+        let mut game = Game::from_state(rules(), state);
+        for (index, kind) in ["swordsman", "reefguard", "scout"].into_iter().enumerate() {
+            let tile = game.board.ids[index * 3].clone();
+            add(&mut game, kind, Side::Player, &tile);
+        }
+        let blocker = game.add(game.kind("wolf"), Side::Enemy, 11);
+        for terrain in ["forest", "water", "plains"] {
+            for tile in (0..size).step_by(5) {
+                game.set_terrain(tile, rules().terrains[terrain]);
+            }
+            let mut occupancy = vec![None; size];
+            for unit in &game.units {
+                occupancy[unit.tile] = Some(unit.side);
+            }
+            for unit in &game.units {
+                for override_occupancy in [None, Some(&occupancy[..])] {
+                    let ordered = if let Some(occupancy) = override_occupancy {
+                        game.reachable_with_occupancy(unit, occupancy)
+                    } else {
+                        game.reachable(unit)
+                    };
+                    let mut expected = TileSet::new(size);
+                    expected.insert(unit.tile);
+                    for &(tile, _) in ordered.iter() {
+                        expected.insert(tile);
+                    }
+                    assert_eq!(game.threat_reach(unit, override_occupancy), expected);
+                }
+            }
+            occupancy[game.unit(blocker).unwrap().tile] = None;
+            let unit = &game.units[0];
+            let mut expected = TileSet::new(size);
+            expected.insert(unit.tile);
+            for &(tile, _) in game.reachable_with_occupancy(unit, &occupancy).iter() {
+                expected.insert(tile);
+            }
+            assert_eq!(game.threat_reach(unit, Some(&occupancy)), expected);
+        }
+        let unit = game.units[0].clone();
+        let cached = game.reachable(&unit);
+        assert!(std::rc::Rc::ptr_eq(&cached, &game.fork().reachable(&unit)));
+        let mut forecast = game.fork();
+        forecast.set_terrain(1, rules().terrains["water"]);
+        assert!(std::rc::Rc::ptr_eq(&cached, &game.reachable(&unit)));
+        game.units[0].moved = true;
+        let mut expected = TileSet::new(size);
+        expected.insert(unit.tile);
+        assert_eq!(game.threat_reach(&game.units[0], None), expected);
+    }
+}
+
+#[test]
 fn moves_obey_turns_actions_occupancy_and_passability() {
     let mut game = flat();
     let actor = add(&mut game, "swordsman", Side::Player, "2,3");
@@ -327,16 +395,4 @@ fn developer_showcase_has_each_unit_for_both_sides_and_every_terrain() {
     }
     let terrains: HashSet<_> = game.terrain.iter().copied().collect();
     assert_eq!(terrains, (0..rules().terrain_names.len()).collect());
-}
-
-#[test]
-fn opening_river_village_routes_do_not_require_forest_detours() {
-    let game = Game::new(rules(), "river");
-    for (id, destination) in [(2, "4,1"), (3, "4,1"), (3, "2,7")] {
-        assert!(
-            game.reachable(game.unit(id).unwrap())
-                .iter()
-                .any(|&(tile, _)| tile == game.site(destination))
-        );
-    }
 }

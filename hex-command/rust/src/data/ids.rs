@@ -40,28 +40,6 @@ impl From<&str> for WeaponId {
         Self(value.to_owned())
     }
 }
-/// Authored map identifier.
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
-#[serde(transparent)]
-pub struct MapId(pub String);
-impl From<&str> for MapId {
-    fn from(value: &str) -> Self {
-        Self(value.to_owned())
-    }
-}
-/// Authored campaign identifier.
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
-#[serde(transparent)]
-pub struct CampaignId(pub String);
-impl From<&str> for CampaignId {
-    fn from(value: &str) -> Self {
-        Self(value.to_owned())
-    }
-}
 /// Closed authored race vocabulary.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
@@ -303,10 +281,3 @@ impl TriggerKind {
         }
     }
 }
-
-/// Movement spent along the cheapest legal path, in authored movement points.
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(transparent)]
-pub struct MovementCost(pub u16);

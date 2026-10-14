@@ -1,5 +1,6 @@
 //! Validation of saved states before runtime indexes are constructed.
 
+#[cfg(any(feature = "wasm", test))]
 use super::battle::Game;
 use crate::data::*;
 use serde::{Deserialize, Serialize};
@@ -13,6 +14,7 @@ impl std::fmt::Display for StateError {
     }
 }
 impl std::error::Error for StateError {}
+#[cfg(any(feature = "wasm", test))]
 impl<'catalog> Game<'catalog> {
     /// Restore against current unit limits, then validate the roster and references.
     pub(crate) fn try_from_state(
@@ -30,6 +32,24 @@ impl<'catalog> Game<'catalog> {
 }
 /// Check serialized state without modifying it or touching a live battle.
 pub fn validate_state(rules: &Rules, state: &State) -> Result<(), StateError> {
+    if state.cols <= 0 || state.rows <= 0 || state.round == 0 {
+        return Err(StateError("invalid board dimensions or round".into()));
+    }
+    if state.tiles.is_empty() {
+        return Err(StateError("board has no tiles".into()));
+    }
+    let authored = rules
+        .maps
+        .get(&(state.map_id.clone(), state.map_revision))
+        .ok_or_else(|| StateError("unknown map revision".into()))?;
+    validate_state_geometry(rules, state, authored)
+}
+/// Native generated arenas use a validated generated layout instead of an authored map.
+pub(crate) fn validate_state_geometry(
+    rules: &Rules,
+    state: &State,
+    authored: &State,
+) -> Result<(), StateError> {
     let fail = |message: &str| StateError(message.to_owned());
     if state.cols <= 0 || state.rows <= 0 || state.round == 0 {
         return Err(fail("invalid board dimensions or round"));
@@ -37,10 +57,9 @@ pub fn validate_state(rules: &Rules, state: &State) -> Result<(), StateError> {
     if state.tiles.is_empty() {
         return Err(fail("board has no tiles"));
     }
-    let authored = rules
-        .maps
-        .get(&(state.map_id.clone(), state.map_revision))
-        .ok_or_else(|| fail("unknown map revision"))?;
+    if state.map_id != authored.map_id || state.map_revision != authored.map_revision {
+        return Err(fail("unknown map revision"));
+    }
     if state.cols != authored.cols
         || state.rows != authored.rows
         || state.tiles.len() != authored.tiles.len()

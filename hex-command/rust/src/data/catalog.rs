@@ -657,6 +657,25 @@ impl Rules {
                 ));
             }
         }
+        // Different authored units often have identical movement rules. Their
+        // distance fields and ordered discovery can share one cache identity.
+        let route_classes = (0..units.len())
+            .map(|kind| {
+                (0..=kind)
+                    .find(|&other| units[other].costs == units[kind].costs)
+                    .unwrap()
+            })
+            .collect();
+        let movement_classes = (0..units.len())
+            .map(|kind| {
+                (0..=kind)
+                    .find(|&other| {
+                        units[other].costs == units[kind].costs
+                            && units[other].r#move == units[kind].r#move
+                    })
+                    .unwrap()
+            })
+            .collect();
         Ok(Self {
             content_fingerprint: content_fingerprint(bundle),
             terrain_types: terrain.iter().map(|t| t.id).collect(),
@@ -666,6 +685,8 @@ impl Rules {
             race_definitions: races.into_iter().map(|(_, race)| race).collect(),
             map_definitions,
             units,
+            movement_classes,
+            route_classes,
             types,
             terrains,
             maps,
@@ -807,6 +828,19 @@ fn validate_mission(
         if let Some(id) = goal.start_event() {
             event_ref(id)?;
         }
+        if let Some(name) = goal.companion() {
+            if !mission
+                .map
+                .units
+                .iter()
+                .any(|unit| unit.side == Side::Player && unit.name.as_ref() == Some(name))
+            {
+                return Err(ContentError::new(
+                    path,
+                    format!("unknown goal companion {name}"),
+                ));
+            }
+        }
         if goal.turns() == Some(0) {
             return Err(ContentError::new(path, "goal turns must be positive"));
         }
@@ -916,12 +950,12 @@ fn validate_simulation(
     for (ids, allowed, path) in [
         (
             &arena.policies,
-            ["classic", "rush", "mixed"].as_slice(),
+            ["classic", "rush", "mixed", "priority", "battler"].as_slice(),
             "simulation/arena.json",
         ),
         (
             &campaign.policies,
-            ["classic", "rush", "mixed"].as_slice(),
+            ["classic", "rush", "mixed", "priority"].as_slice(),
             "simulation/campaign.json",
         ),
         (
@@ -1128,8 +1162,8 @@ mod tests {
         let initial = reloaded.maps[&("mirror".to_owned(), 1)].clone();
         assert_eq!(initial.units[0].r#type, "commander");
         assert_eq!(initial.units[0].hp, revised_hp);
-        let battle = crate::logic::Battle::restore(&reloaded, initial).unwrap();
-        assert_eq!(battle.snapshot().units[0].hp, revised_hp);
+        let battle = crate::logic::Game::try_from_state(&reloaded, initial).unwrap();
+        assert_eq!(battle.units[0].hp, revised_hp);
         assert_eq!(
             original.maps[&("mirror".to_owned(), 1)].units[0].hp,
             original_hp

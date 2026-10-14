@@ -32,7 +32,8 @@ fn recruitment_requires_gold_legal_destination_and_owned_keep() {
     );
     assert_eq!(serde_json::to_value(game.state()).unwrap(), before);
     game.gold[0] = price;
-    let id = game.execute(command.clone()).unwrap().added_unit.unwrap().0;
+    let id = game.next_id;
+    game.execute(command.clone()).unwrap();
     assert_eq!(game.gold[0], 0);
     assert_eq!(game.unit(id).unwrap().kind, recruit);
     assert!(game.unit(id).unwrap().moved && game.unit(id).unwrap().attacked);

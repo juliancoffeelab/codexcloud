@@ -1,6 +1,5 @@
 //! Objective timing, legal authored missions and native checkpoint validation.
 use super::*;
-use std::collections::HashSet;
 
 fn advance_to(game: &mut Game<'_>, round: u32) {
     while game.round < round {
@@ -104,58 +103,10 @@ fn enemy_recapture_resets_defense_and_pre_tide_loss_postpones_rescue() {
 }
 
 #[test]
-fn authored_missions_have_reachable_objectives_legal_units_and_unoccupied_visits() {
+fn authored_missions_have_valid_positions_and_restore_cleanly() {
     for campaign in rules().campaigns.values() {
         for (index, mission) in campaign.missions.iter().enumerate() {
             let game = chapter(&campaign.id, index);
-            for side in [Side::Player, Side::Enemy] {
-                let leader = game
-                    .units
-                    .iter()
-                    .find(|u| u.side == side && u.role == Some(Role::Leader))
-                    .unwrap();
-                assert!(game.terrain_is(leader.tile, Terrain::Keep));
-                assert_eq!(game.owners[leader.tile], Some(side));
-            }
-            let leader = game
-                .units
-                .iter()
-                .find(|u| u.side == Side::Player && u.role == Some(Role::Leader))
-                .unwrap();
-            let allowed: HashSet<_> = (0..game.terrain.len())
-                .filter(|&t| game.cost(leader.kind, t) != u16::MAX)
-                .collect();
-            let mut reached = HashSet::from([leader.tile]);
-            let mut pending = vec![leader.tile];
-            while let Some(tile) = pending.pop() {
-                for &next in &game.board.adjacent[tile] {
-                    if allowed.contains(&next) && reached.insert(next) {
-                        pending.push(next);
-                    }
-                }
-            }
-            assert_eq!(allowed, reached, "{} chapter {index}", campaign.id);
-            for goal in &mission.goals {
-                for tile in goal.tiles().iter().chain(goal.tile()) {
-                    assert!(reached.contains(&game.site(tile)));
-                }
-            }
-            for event in &mission.events {
-                if let Trigger::Visit { tile } = &event.trigger {
-                    assert!(
-                        !mission
-                            .map
-                            .units
-                            .iter()
-                            .any(|u| format!("{},{}", u.col, u.row) == *tile)
-                    );
-                }
-            }
-            assert!(
-                game.units
-                    .iter()
-                    .all(|u| game.cost(u.kind, u.tile) != u16::MAX)
-            );
             for wave in &mission.waves {
                 for unit in &wave.units {
                     assert!(

@@ -1,5 +1,6 @@
 """Run an authorized native simulation and generate its complete data report."""
 import argparse
+import json
 from pathlib import Path
 import subprocess
 import sys
@@ -17,8 +18,28 @@ def main():
     data_dir = args.data_dir.resolve()
     out = args.out.resolve()
     out.mkdir(parents=True, exist_ok=True)
+    for flag, default in [('--mode', 'full'), ('--seeds', '10'),
+                          ('--policies', 'classic,rush,mixed,priority,battler'),
+                          ('--details', 'jsonl')]:
+        if flag not in simulation_options:
+            simulation_options += [flag, default]
+    mode = simulation_options[simulation_options.index('--mode') + 1]
+    if mode != 'arena':
+        selected = simulation_options[simulation_options.index('--policies') + 1].split(',')
+        players = [p for p in selected if p in ('mixed', 'priority')]
+        for flag, default in [('--campaign-players', ','.join(players)),
+                              ('--campaign-enemies', 'classic')]:
+            if flag not in simulation_options:
+                if not default:
+                    parser.error('No simulation-player campaign tactics selected; use --mode arena or explicit --campaign-players.')
+                simulation_options += [flag, default]
     simulation_options += ['--data-dir', str(data_dir)]
-    subprocess.run(['npm', 'run', 'ai:simulate', '--', *simulation_options, '--out', str(out / 'report.json')], cwd=ROOT, check=True)
+    print('Running complete native batch; progress and raw output: ' + str(out / 'native.log'), flush=True)
+    with (out / 'native.log').open('w') as log:
+        subprocess.run(['npm', 'run', 'ai:simulate', '--', *simulation_options, '--out', str(out / 'report.json')],
+                       cwd=ROOT, stdout=log, stderr=log, check=True)
+    saved = json.loads((out / 'report.json').read_text())
+    print(f"Native batch complete: {len(saved['outcomes']):,} matches in {saved['elapsedSeconds']:.2f}s. Analyzing recorded results.", flush=True)
     report = [sys.executable, str(Path(__file__).with_name('report-combat.py')), str(out / 'report.json'), '--out', str(out / 'analytics')]
     for baseline in args.baseline:
         report += ['--baseline', str(baseline.resolve())]

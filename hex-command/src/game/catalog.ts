@@ -17,9 +17,6 @@ export const DAMAGE_TYPES = Object.freeze({
 });
 export const TYPES = immutable<Record<UnitType, UnitDefinition>>(AUTHORED_UNITS);
 export const TERRAIN = immutable<Record<TerrainType, TerrainDefinition>>(AUTHORED_TERRAIN);
-export function axial(tile: Coordinates) {
-  return { q: tile.col - Math.floor(tile.row / 2), r: tile.row };
-}
 export function distance(first: Coordinates, second: Coordinates) {
   const q = first.col - Math.floor(first.row / 2) - second.col + Math.floor(second.row / 2);
   const r = first.row - second.row;

@@ -3,7 +3,7 @@ import { TYPES } from "../src/game/catalog";
 import type { GameState, Unit, Tile, CampaignId, UnitType, Side, MapId } from "../src/game/types";
 import type { SavedGame } from "../rust/pkg/hex_command";
 import { createTestFactory } from "./native-fixture";
-export { TYPES, TERRAIN, RACES, DAMAGE_TYPES, axial, distance } from "../src/game/catalog";
+export { TYPES, TERRAIN } from "../src/game/catalog";
 
 /** Keep the real showcase geometry but bound actors for ordinary behavior checks. */
 export function developerFixture(types: readonly UnitType[] = []): Game {
@@ -48,7 +48,6 @@ export class Game implements GameState {
   declare lastCombat?: GameState["lastCombat"];
   #native: LiveGame;
   #signature = "";
-  #cost!: LiveGame["cost"];
   constructor(map: string | SavedGame = "mirror", revision?: number) {
     this.#native =
       typeof map === "string"
@@ -58,7 +57,6 @@ export class Game implements GameState {
             ...(revision === undefined ? {} : { revision }),
           })
         : LiveGame.restore(createTestFactory(), map);
-    this.#cost = this.#native.publishedView().cost;
     this.restoreData(this.#native.captureState());
   }
   static startCampaign(id: CampaignId, mission = 0): Game {
@@ -140,14 +138,6 @@ export class Game implements GameState {
   snapshot() {
     return this.native().snapshot();
   }
-  neighbors(id: string): Tile[] {
-    return this.native()
-      .neighbors(id)
-      .map((tile) => this.tile(tile.id)!);
-  }
-  cost(unit: Pick<Unit, "type">, tile: Pick<Tile, "terrain">) {
-    return this.#cost(unit, tile);
-  }
   reachable(id: string | null | undefined) {
     return this.native().reachable(id);
   }
@@ -155,11 +145,6 @@ export class Game implements GameState {
     return this.native()
       .targets(id)
       .map((unit) => this.unit(unit.id)!);
-  }
-  recruitTiles(id: string, type: UnitType) {
-    return this.native()
-      .recruitTiles(id, type)
-      .map((tile) => this.tile(tile.id)!);
   }
   recruitmentOptions(side: Side) {
     return this.native().recruitmentOptions(side);
@@ -169,21 +154,6 @@ export class Game implements GameState {
   }
   previewDetails(...args: Parameters<LiveGame["previewDetails"]>) {
     return this.native().previewDetails(...args);
-  }
-  preview(...args: Parameters<LiveGame["preview"]>) {
-    return this.native().preview(...args);
-  }
-  attackOptions(...args: Parameters<LiveGame["attackOptions"]>) {
-    return this.native().attackOptions(...args);
-  }
-  bestAttack(...args: Parameters<LiveGame["bestAttack"]>) {
-    return this.native().bestAttack(...args);
-  }
-  canAttackFrom(...args: Parameters<LiveGame["canAttackFrom"]>) {
-    return this.native().canAttackFrom(...args);
-  }
-  income(side: Side) {
-    return this.native().income(side);
   }
   move(id: string, tile: string) {
     this.apply((native) => native.move(id, tile));

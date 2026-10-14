@@ -58,7 +58,6 @@ function fixture() {
       requests.push({ id, revision });
       return { ok: true, value: nextView };
     },
-    reachable: () => ({ ok: true, value: [{ tile: "0,0", cost: 0 }] }),
     inspect: () => ({
       ok: true,
       value: {
@@ -69,10 +68,6 @@ function fixture() {
         neighbors: {},
         income: { player: 0, enemy: 0 },
       },
-    }),
-    previewAttack: () => ({
-      ok: false,
-      error: { code: "command", error: "IllegalAttack" },
     }),
     dispatch: (id, revision) => {
       requests.push({ id, revision });
@@ -87,7 +82,6 @@ function fixture() {
         ok: true,
         value: {
           view: nextView,
-          effects: { addedUnit: null, damage: null, retaliation: null, winner: null, events: [] },
         },
       };
     },
@@ -162,10 +156,6 @@ test("Native adapter forwards revisions and keeps old publications after a stale
   });
   value(engine.view());
   assert.deepEqual(requests.at(-1), { id: 1, revision: 1 });
-  assert.deepEqual(engine.previewAttack({ unit: 1, target: 99, weapon: "sword" }), {
-    ok: false,
-    error: { code: "command", error: "IllegalAttack" },
-  });
 });
 
 test("Native factory disposes all battle handles once and invalidates their operations", () => {

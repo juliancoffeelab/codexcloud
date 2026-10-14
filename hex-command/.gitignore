@@ -38,7 +38,7 @@ Thumbs.db
 # Production output is generated from src/ and public/.
 /dist/
 
-# Local tournament output; reviewed result snapshots belong in docs/simulations/.
+# Simulation runs, timing records and diagnostic snapshots stay local.
 /artifacts/
 /rust/target/
 /rust/pkg/

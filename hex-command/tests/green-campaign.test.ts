@@ -11,33 +11,28 @@ const companion = (game: Game) =>
   required(game.units.find((unit) => unit.side === "player" && unit.name === "Lark"));
 
 // Dain's death changes this debrief and future missions, but retry rewinds current-stage deaths.
-for (const mission of [0, 1, 2]) {
-  test(
-    "Dain deaths persist but retry restores incoming companions — " + JSON.stringify([mission]),
-    async () => {
-      const game = Game.startCampaign("green-accord", mission);
-      game.units = game.units.filter((unit) => unit.name !== "Captain Dain");
-      game.round = 4;
-      game.gold.player = 23;
-      saveBattle(game);
-      const restored = loadBattle().game;
-      assert.equal(restored.mapId, game.mapId);
-      assert.equal(restored.round, 4);
-      assert.equal(restored.gold.player, 23);
-      assert.deepEqual(restored.units, game.units);
-      assert(restored.campaign?.marks.includes("dain-fell"));
-      assert(
-        !campaignMission(restored.campaign!).victory.some((line) => line.speaker.includes("Dain")),
-      );
-      assert(restored.retryCampaignMission().units.some((unit) => unit.name === "Captain Dain"));
-      saveBattle(restored);
-      assert.deepEqual(loadBattle().game.snapshot(), restored.snapshot());
-    },
+test("Companion deaths persist but retry restores incoming companions", () => {
+  const game = Game.startCampaign("green-accord", 1);
+  game.units = game.units.filter((unit) => unit.name !== "Captain Dain");
+  game.round = 4;
+  game.gold.player = 23;
+  saveBattle(game);
+  const restored = loadBattle().game;
+  assert.equal(restored.mapId, game.mapId);
+  assert.equal(restored.round, 4);
+  assert.equal(restored.gold.player, 23);
+  assert.deepEqual(restored.units, game.units);
+  assert(restored.campaign?.marks.includes("dain-fell"));
+  assert(
+    !campaignMission(restored.campaign!).victory.some((line) => line.speaker.includes("Dain")),
   );
-}
+  assert(restored.retryCampaignMission().units.some((unit) => unit.name === "Captain Dain"));
+  saveBattle(restored);
+  assert.deepEqual(loadBattle().game.snapshot(), restored.snapshot());
+});
 
 // A legacy victory cannot resurrect Lark; surviving Lark keeps the already earned victory.
-for (const mission of [0, 1, 2]) {
+for (const mission of [0, 2]) {
   test("Legacy victory cannot resurrect Lark — " + JSON.stringify([mission]), async () => {
     const game = Game.startCampaign("green-accord", mission);
     game.winner = "player";

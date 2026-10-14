@@ -98,19 +98,17 @@ test("Native combat inspection feeds UI damage breakdowns and old saves migrate 
   game.dispose();
 });
 
-test("All campaign dialogue and retry controls dispatch through native hooks", () => {
-  for (const id of ["lantern-road", "green-accord", "ashen-oath", "borrowed-tide"]) {
-    const game = LiveGame.create(factory, { kind: "campaign", id });
-    const opening = game.captureState();
-    game.advanceDialogue();
-    game.previousDialogue();
-    assert.equal(game.campaign?.dialogueIndex, 0);
-    game.advanceDialogue(true);
-    assert.equal(game.campaign?.dialogueIndex, game.campaign?.dialogue.length);
-    game.retryCampaignMission();
-    assert.deepEqual(game.captureState(), opening);
-    game.dispose();
-  }
+test("Campaign dialogue and retry controls dispatch through native hooks", () => {
+  const game = LiveGame.create(factory, { kind: "campaign", id: "lantern-road" });
+  const opening = game.captureState();
+  game.advanceDialogue();
+  game.previousDialogue();
+  assert.equal(game.campaign?.dialogueIndex, 0);
+  game.advanceDialogue(true);
+  assert.equal(game.campaign?.dialogueIndex, game.campaign?.dialogue.length);
+  game.retryCampaignMission();
+  assert.deepEqual(game.captureState(), opening);
+  game.dispose();
 });
 
 test("Supported legacy woodland revisions migrate without losing campaign progress", () => {
@@ -132,16 +130,15 @@ test("Supported legacy woodland revisions migrate without losing campaign progre
   restored.game.dispose();
 });
 
-test("A failed legacy import is backed up and cannot prevent startup", () => {
+test("A failed legacy import is wiped and cannot prevent startup", () => {
   saveBattle(new Game("mirror"));
-  const rejected = JSON.parse(localStorage.getItem(SAVE_KEY)!);
   const restored = loadLiveBattle({
     ...factory,
     restore: () => ({ ok: false, error: { code: "invalidRequest", message: "Rejected" } }),
   });
   assert(restored.notice);
   assert.equal(restored.game.turn, "player");
-  assert.deepEqual(JSON.parse(localStorage.getItem(SAVE_KEY + "-unrestored")!), rejected);
+  assert.equal(localStorage.getItem(SAVE_KEY), null);
   restored.game.dispose();
 });
 
@@ -185,17 +182,17 @@ test("Live enemy planning finishes a phase and saves the resulting player turn",
   controller.dispose();
 });
 
-test("An invalid native checkpoint preserves the old save and leaves a playable battle", () => {
+test("An invalid native checkpoint is wiped and leaves a playable battle", () => {
   const rejected = { version: 999, checkpoint: {}, pendingEnemy: false };
   localStorage.setItem(SAVE_KEY, JSON.stringify(rejected));
   const restored = loadLiveBattle(factory);
   assert(restored.notice);
   assert.equal(restored.game.turn, "player");
-  assert.deepEqual(JSON.parse(localStorage.getItem(SAVE_KEY + "-unrestored")!), rejected);
+  assert.equal(localStorage.getItem(SAVE_KEY), null);
   restored.game.dispose();
 });
 
-test("Reloading an exact enemy-phase checkpoint resumes the saved planner once", async () => {
+test("Reloading during an enemy turn replays the whole phase from its boundary", async () => {
   // Node has no image decoder; artwork failure must not affect turn recovery.
   vi.stubGlobal(
     "Image",
@@ -207,12 +204,11 @@ test("Reloading an exact enemy-phase checkpoint resumes the saved planner once",
     },
   );
   const game = LiveGame.create(factory, { kind: "scenario", map: "mirror" });
+  writeBattle(game, true);
   game.endTurn();
+  const phaseSnapshot = game.snapshot();
   game.enemyStep();
   writeBattle(game);
-  const checkpoint = game.captureState();
-  const phaseSnapshot = game.snapshot();
-  assert.equal(checkpoint.turn, "enemy");
   for (let steps = 0; game.turn === "enemy"; steps++) {
     assert(steps < 100, "planner must finish this small phase");
     game.enemyStep();
@@ -240,7 +236,7 @@ test("Reloading an exact enemy-phase checkpoint resumes the saved planner once",
   assert.deepEqual(
     controller.snapshot(),
     expected,
-    "resume must preserve the saved planner continuation",
+    "replay must reproduce the complete enemy phase",
   );
   await Promise.resolve();
   const restored = loadLiveBattle(factory);

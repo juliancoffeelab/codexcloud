@@ -2,12 +2,11 @@ import { createTestFactory } from "./native-fixture";
 import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
 import { Game } from "./game-fixture";
-import { CAMPAIGNS } from "../src/game/campaign-data";
 import { campaignMission, dialoguePending } from "../src/game/campaign-progress";
 import { loadBattle, saveBattle, SAVE_KEY } from "./legacy-save";
-import { CAMPAIGNS as MIGRATION_CAMPAIGNS } from "../src/save/migration/legacy/catalog";
-import { LEGACY_ASHEN_REFUGE } from "../src/save/migration/legacy/layouts";
-import { legacyBoard } from "../src/save/migration/legacy/board";
+import { CAMPAIGNS as MIGRATION_CAMPAIGNS } from "../src/save/migrations/legacy/catalog";
+import { LEGACY_ASHEN_REFUGE } from "../src/save/migrations/legacy/layouts";
+import { legacyBoard } from "../src/save/migrations/legacy/board";
 import { BattleController, type BattleView } from "../src/controller/battle";
 import { required, TestStorage } from "./helpers";
 

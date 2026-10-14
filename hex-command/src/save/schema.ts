@@ -1,7 +1,7 @@
 import type { SavedGame } from "../../rust/pkg/hex_command";
 
 /** Single version for browser persistence; native checkpoints are current data only. */
-export const SAVE_VERSION = 4;
+export const SAVE_VERSION = 5;
 export interface BattleSave {
   version: typeof SAVE_VERSION;
   checkpoint: SavedGame;
@@ -19,7 +19,7 @@ export function currentSave(value: unknown): BattleSave {
     typeof value.pendingEnemy !== "boolean" ||
     !isRecord(value.checkpoint) ||
     !isRecord(value.checkpoint.state) ||
-    "version" in value.checkpoint ||
+    Object.keys(value.checkpoint).some((key) => !["seed", "state"].includes(key)) ||
     (value.pendingEnemy &&
       (value.checkpoint.state.turn !== "player" || value.checkpoint.state.winner !== null))
   )

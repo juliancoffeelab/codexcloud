@@ -1,16 +1,16 @@
 import { Game } from "./game-fixture";
-import { CAMPAIGNS } from "../src/save/migration/legacy/catalog";
-import { importWaveMarker } from "../src/save/migration/legacy/snapshot";
+import { CAMPAIGNS } from "../src/save/migrations/legacy/catalog";
+import { importWaveMarker } from "../src/save/migrations/legacy/snapshot";
 import assert from "node:assert/strict";
 import { beforeEach, test, vi } from "vitest";
 import { LiveGame, nativeValue } from "../src/game/live-game";
 import { loadBattle } from "../src/save/load";
-import { migrateSave } from "../src/save/migration";
-import { migrateV1ToV2 } from "../src/save/migration/v1-to-v2";
+import { migrateSave } from "../src/save/migrations";
+import { migrateV1ToV2 } from "../src/save/migrations/v1-to-v2";
 import { SAVE_VERSION } from "../src/save/schema";
-import { SAVE_KEY, REJECTED_SAVE_KEY } from "../src/save/storage";
+import { SAVE_KEY } from "../src/save/storage";
 import { saveBattle } from "../src/save/write";
-import { LEGACY_RIVER } from "../src/save/migration/legacy/layouts";
+import { LEGACY_RIVER } from "../src/save/migrations/legacy/layouts";
 import { createTestFactory } from "./native-fixture";
 import { TestStorage } from "./helpers";
 import { MAPS } from "../src/game/maps";
@@ -67,7 +67,7 @@ for (const [cols, rows] of [
     assert.equal(restored.game.mapId, "developer");
     assert.deepEqual(nativeValue(restored.game.checkpoint()), migrated.save.checkpoint);
     assert.equal(JSON.parse(localStorage.getItem(SAVE_KEY)!).version, SAVE_VERSION);
-    assert.equal(localStorage.getItem(REJECTED_SAVE_KEY), null);
+    assert.equal(localStorage.getItem(`${SAVE_KEY}-unrestored`), null);
     const incomplete = structuredClone(old);
     incomplete.checkpoint.state.tiles.pop();
     assert.throws(() => migrateSave(incomplete), /Incomplete historical developer map/);
@@ -199,11 +199,11 @@ test("Migration chain distinguishes the original native envelope and rewrites on
   assert.equal(latest.checkpoint.seed, 42);
   assert.equal(latest.checkpoint.version, undefined);
   assert.equal(migrateSave(latest).migrated, false);
-  assert.equal(localStorage.getItem(REJECTED_SAVE_KEY), null);
+  assert.equal(localStorage.getItem(`${SAVE_KEY}-unrestored`), null);
   restored.game.dispose();
 });
 
-test("A native rejection never commits migration and preserves the original bytes", () => {
+test("A native rejection wipes the save without committing migration", () => {
   const old = oldSnapshot();
   const raw = JSON.stringify(old, null, 2);
   localStorage.setItem(SAVE_KEY, raw);
@@ -214,11 +214,11 @@ test("A native rejection never commits migration and preserves the original byte
   });
   assert(restored.notice);
   assert.equal(restored.game.mapId, "mirror");
-  assert.equal(localStorage.getItem(SAVE_KEY), raw);
-  assert.equal(localStorage.getItem(REJECTED_SAVE_KEY), raw);
+  assert.equal(localStorage.getItem(SAVE_KEY), null);
+  assert.equal(localStorage.getItem(`${SAVE_KEY}-unrestored`), null);
   saveBattle(restored.game);
   assert.equal(JSON.parse(localStorage.getItem(SAVE_KEY)!).version, SAVE_VERSION);
-  assert.equal(localStorage.getItem(REJECTED_SAVE_KEY), raw);
+  assert.equal(localStorage.getItem(`${SAVE_KEY}-unrestored`), null);
   restored.game.dispose();
 });
 
@@ -229,12 +229,12 @@ for (const raw of [
   JSON.stringify({ version: 0 }),
   JSON.stringify({ version: 1, engine: "unknown" }),
 ]) {
-  test(`Rejected save ${raw} leaves playable recovery and an exact backup`, () => {
+  test(`Rejected save ${raw} is wiped and leaves a fresh playable battle`, () => {
     localStorage.setItem(SAVE_KEY, raw);
     const restored = loadBattle(createTestFactory());
     assert(restored.notice);
-    assert.equal(localStorage.getItem(REJECTED_SAVE_KEY), raw);
-    assert.equal(localStorage.getItem(SAVE_KEY), raw);
+    assert.equal(localStorage.getItem(`${SAVE_KEY}-unrestored`), null);
+    assert.equal(localStorage.getItem(SAVE_KEY), null);
     assert.equal(restored.game.round, 1);
     restored.game.move("u3", "3,1");
     restored.game.dispose();
@@ -254,54 +254,72 @@ test("Pending enemy replay preserves the player checkpoint through both versions
   assert.throws(() => migrateSave(old));
 });
 
-test("Native migration preserves a selected AI command and exact continuation", () => {
+test("Version-four migration discards AI actions without executing the enemy turn", () => {
   const factory = createTestFactory();
-  const engine = nativeValue(factory.create({ kind: "scenario", map: "mirror" }, 42));
-  nativeValue(engine.dispatch({ kind: "endTurn" }));
-  const options = { policy: "classic", diplomacy: "restrained", recruitmentLimit: 2 } as const;
-  const decision = nativeValue(engine.chooseAiCommand(options));
-  const saved = nativeValue(engine.save());
-  assert(saved.planner?.pending);
-  localStorage.setItem(
-    SAVE_KEY,
-    JSON.stringify({ engine: "rust-wasm", pendingEnemy: false, saved: { version: 1, ...saved } }),
-  );
-  const migrated = loadBattle(factory);
-  assert.equal(migrated.notice, undefined);
-  assert.equal(migrated.game.turn, "enemy");
-  const latest = migrateSave(JSON.parse(localStorage.getItem(SAVE_KEY)!)).save;
-  assert.deepEqual(latest.checkpoint.planner, saved.planner);
-  const restored = nativeValue(factory.restore(latest.checkpoint));
-  const repeated = nativeValue(restored.chooseAiCommand(options));
-  assert.deepEqual(repeated.command, decision.command);
-  nativeValue(engine.dispatch(decision.command, decision.revision));
-  nativeValue(restored.dispatch(repeated.command, repeated.revision));
-  assert.deepEqual(nativeValue(restored.view()).state, nativeValue(engine.view()).state);
-  migrated.game.dispose();
+  const game = LiveGame.create(factory, { kind: "scenario", map: "mirror" });
+  game.endTurn();
+  game.enemyStep();
+  const checkpoint = nativeValue(game.checkpoint());
+  const old = {
+    version: 4,
+    pendingEnemy: false,
+    checkpoint: {
+      ...checkpoint,
+      planner: {
+        options: { recruitmentLimit: 2 },
+        workspace: { recruitmentRemaining: 0, commands: [] },
+        pending: { kind: "nonsense" },
+      },
+    },
+  };
+  const raw = JSON.stringify(old);
+  localStorage.setItem(SAVE_KEY, raw);
+  const migrated = migrateSave(old);
+  assert.equal("planner" in migrated.save.checkpoint, false);
+  assert.deepEqual(migrated.save.checkpoint.state, checkpoint.state);
+  assert.equal(localStorage.getItem(SAVE_KEY), raw);
+  const loaded = loadBattle(factory);
+  assert.equal(loaded.notice, undefined);
+  assert.deepEqual(nativeValue(loaded.game.checkpoint()), migrated.save.checkpoint);
+  const converted = localStorage.getItem(SAVE_KEY);
+  assert.deepEqual(JSON.parse(converted!), migrated.save);
+  assert.equal(migrateSave(JSON.parse(converted!)).migrated, false);
+  for (let steps = 0; loaded.game.turn === "enemy" && !loaded.game.winner; steps++) {
+    assert(steps < 100);
+    loaded.game.enemyStep();
+    saveBattle(loaded.game);
+    if (loaded.game.turn === "enemy" && !loaded.game.winner)
+      assert.equal(localStorage.getItem(SAVE_KEY), converted);
+  }
+  const latest = JSON.parse(localStorage.getItem(SAVE_KEY)!);
+  assert.equal(latest.version, SAVE_VERSION);
+  assert.equal("planner" in latest.checkpoint, false);
+  assert.deepEqual(latest.checkpoint, nativeValue(loaded.game.checkpoint()));
+  game.dispose();
+  loaded.game.dispose();
 });
 
-test("Failed backup protects the original while allowing play and explicit new battles", () => {
-  class QuotaStorage extends TestStorage {
-    override setItem(key: string, value: string): void {
-      if (key === REJECTED_SAVE_KEY) throw new Error("quota exceeded");
-      super.setItem(key, value);
-    }
-  }
-  const storage = new QuotaStorage();
-  const raw = "{original malformed save";
-  storage.setItem(SAVE_KEY, raw);
-  vi.stubGlobal("localStorage", storage);
-  const factory = createTestFactory();
-  const restored = loadBattle(factory);
-  assert.match(restored.notice!, /original is retained/);
+test("Mid-turn writes retain the pre-turn checkpoint", () => {
+  const game = LiveGame.create(createTestFactory(), { kind: "scenario", map: "mirror" });
+  saveBattle(game, true);
+  const before = localStorage.getItem(SAVE_KEY);
+  game.endTurn();
+  game.enemyStep();
+  saveBattle(game);
+  assert.equal(localStorage.getItem(SAVE_KEY), before);
+  game.dispose();
+});
+
+test("Rejected saves clear obsolete backups and leave saving enabled", () => {
+  localStorage.setItem(SAVE_KEY, "{broken");
+  localStorage.setItem(`${SAVE_KEY}-unrestored`, "old backup");
+  const restored = loadBattle(createTestFactory());
+  assert(restored.notice);
+  assert.equal(localStorage.getItem(SAVE_KEY), null);
+  assert.equal(localStorage.getItem(`${SAVE_KEY}-unrestored`), null);
   restored.game.move("u3", "3,1");
   saveBattle(restored.game);
-  assert.equal(storage.getItem(SAVE_KEY), raw);
-  assert.equal(storage.getItem(REJECTED_SAVE_KEY), null);
-  const fresh = LiveGame.create(factory, { kind: "scenario", map: "river" });
-  saveBattle(fresh);
-  assert.equal(JSON.parse(storage.getItem(SAVE_KEY)!).checkpoint.state.mapId, "river");
-  fresh.dispose();
+  assert.equal(JSON.parse(localStorage.getItem(SAVE_KEY)!).version, SAVE_VERSION);
   restored.game.dispose();
 });
 
@@ -338,6 +356,7 @@ for (const [id, chapter, type, tile, numericMarks] of [
     assert.deepEqual(loaded.game.units, game.units);
     loaded.game.endTurn();
     assert.deepEqual(loaded.game.units, game.units, "Previously deployed waves cannot respawn");
+    while (loaded.game.turn === "enemy" && !loaded.game.winner) loaded.game.enemyStep();
     saveBattle(loaded.game);
     const again = loadBattle(createTestFactory());
     assert.deepEqual(again.game.captureState(), loaded.game.captureState());

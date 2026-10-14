@@ -8,9 +8,9 @@ fn zero_damage_attacks_consume_actions_without_xp_and_keep_retaliation() {
     let target = add(&mut game, "soldier", Side::Enemy, "3,3");
     game.set_terrain(game.site("3,3"), game.rules.terrains["hill"]);
     let hp = game.unit(target).unwrap().hp;
-    let result = hit(&mut game, attacker, target, "shard");
-    assert_eq!(result.damage, Some(0));
-    assert!(result.retaliation.unwrap() > 0);
+    let attacker_hp = game.unit(attacker).unwrap().hp;
+    hit(&mut game, attacker, target, "shard");
+    assert!(game.unit(attacker).unwrap().hp < attacker_hp);
     assert_eq!(game.unit(target).unwrap().hp, hp);
     let unit = game.unit(attacker).unwrap();
     assert!(unit.moved && unit.attacked);
@@ -40,10 +40,7 @@ fn kills_suppress_retaliation_and_leader_death_finishes_battle() {
         let index = game.index(target).unwrap();
         game.units[index].hp = 1;
         let hp = game.unit(attacker).unwrap().hp;
-        assert_eq!(
-            hit(&mut game, attacker, target, "sword").retaliation,
-            Some(0)
-        );
+        hit(&mut game, attacker, target, "sword");
         assert!(game.unit(target).is_none());
         assert_eq!(game.unit(attacker).unwrap().hp, hp);
         assert_eq!(game.winner, leader.then_some(Side::Player));
@@ -180,8 +177,9 @@ fn counted_damage_keeps_the_existing_attack_and_restore_flow() {
     let target = game.unit(b).unwrap();
     assert_eq!(game.preview(actor, target, 0, actor.tile), (3, 5, Some(1)));
     assert_eq!(game.preview(actor, target, 1, actor.tile), (5, 5, Some(1)));
-    let result = hit(&mut game, a, b, "sword");
-    assert_eq!((result.damage, result.retaliation), (Some(3), Some(5)));
+    hit(&mut game, a, b, "sword");
+    assert_eq!(game.unit(a).unwrap().hp, 95);
+    assert_eq!(game.unit(b).unwrap().hp, 97);
     assert!(game.unit(a).unwrap().attacked && game.unit(a).unwrap().moved);
     assert_eq!(game.unit(a).unwrap().experience, Some(1));
     let recorded = &game.recordings.as_ref().unwrap().combats[0];
@@ -202,16 +200,16 @@ fn counted_damage_keeps_the_existing_attack_and_restore_flow() {
     restored.begin_turn(Side::Player);
     let bi = restored.index(b).unwrap();
     restored.units[bi].hp = 2;
-    let result = hit(&mut restored, a, b, "sword");
-    assert_eq!((result.damage, result.retaliation), (Some(3), Some(0)));
+    hit(&mut restored, a, b, "sword");
+    assert_eq!(restored.unit(a).unwrap().hp, 95);
     assert!(restored.unit(b).is_none());
     assert_eq!(restored.unit(a).unwrap().experience, Some(7));
     restored.begin_turn(Side::Player);
     let c = add(&mut restored, "soldier", Side::Enemy, "3,3");
     let ai = restored.index(a).unwrap();
     restored.units[ai].hp = 1;
-    let result = hit(&mut restored, a, c, "sword");
-    assert_eq!((result.damage, result.retaliation), (Some(3), Some(5)));
+    hit(&mut restored, a, c, "sword");
+    assert_eq!(restored.unit(c).unwrap().hp, 97);
     assert!(restored.unit(a).is_none());
     assert_eq!(restored.unit(c).unwrap().experience, Some(6));
 }

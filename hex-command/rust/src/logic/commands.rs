@@ -4,14 +4,13 @@ use super::battle::Game;
 use crate::data::*;
 impl Game<'_> {
     /// Validate all identifiers and legality before making any state mutation.
-    pub(crate) fn execute(&mut self, command: Command) -> Result<Effects, CommandError> {
+    pub(crate) fn execute(&mut self, command: Command) -> Result<(), CommandError> {
         if self.winner.is_some()
             && !matches!(
                 command,
                 Command::DismissDialogue
                     | Command::PreviousDialogue
                     | Command::SkipDialogue
-                    | Command::NextMission
                     | Command::RecallMission { .. }
                     | Command::RetryMission
                     | Command::SetUnitIntent { .. }
@@ -19,7 +18,6 @@ impl Game<'_> {
         {
             return Err(CommandError::BattleFinished);
         }
-        let mut effects = Effects::default();
         match command {
             Command::Move { unit, tile } => {
                 let actor = self.unit(unit.0).ok_or(CommandError::UnknownUnit(unit))?;
@@ -56,9 +54,7 @@ impl Game<'_> {
                 if actor.attacked || !self.can_attack(actor, actor.tile, victim, attack) {
                     return Err(CommandError::IllegalAttack);
                 }
-                let (damage, retaliation) = self.attack(unit.0, target.0, attack);
-                effects.damage = Some(damage);
-                effects.retaliation = Some(retaliation);
+                self.attack(unit.0, target.0, attack);
             }
             Command::Recruit { unit, kind, tile } => {
                 let actor = self.unit(unit.0).ok_or(CommandError::UnknownUnit(unit))?;
@@ -78,7 +74,7 @@ impl Game<'_> {
                 if !self.placement_tiles(actor, recruit, true).contains(&site) {
                     return Err(CommandError::IllegalRecruit);
                 }
-                effects.added_unit = Some(UnitId(self.recruit(unit.0, recruit, site)));
+                self.recruit(unit.0, recruit, site);
             }
             Command::Advance { unit, kind } => {
                 let actor = self.unit(unit.0).ok_or(CommandError::UnknownUnit(unit))?;
@@ -132,7 +128,7 @@ impl Game<'_> {
                 );
                 self.recordings = records;
             }
-            Command::NextMission | Command::RecallMission { .. } => {
+            Command::RecallMission { units } => {
                 let campaign = self.campaign.as_ref().ok_or(CommandError::NoCampaign)?;
                 if self.winner != Some(Side::Player)
                     || campaign.completed
@@ -140,11 +136,7 @@ impl Game<'_> {
                 {
                     return Err(CommandError::NoNextMission);
                 }
-                let selected = match &command {
-                    Command::RecallMission { units } => Some(units.as_slice()),
-                    _ => None,
-                };
-                let replacement = self.continue_campaign(selected)?;
+                let replacement = self.continue_campaign(Some(&units))?;
                 let records = self.recordings.take();
                 *self = replacement;
                 self.recordings = records;
@@ -182,8 +174,7 @@ impl Game<'_> {
                 }
             }
         }
-        effects.winner = self.winner;
-        Ok(effects)
+        Ok(())
     }
 }
 

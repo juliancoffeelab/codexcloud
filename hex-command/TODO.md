@@ -15,6 +15,18 @@
 
 ## Balance and simulations
 
+- [ ] Investigate retaliation stalls: determine when retaliation penalties cause
+      planners to repeatedly refuse attacks and fail to resolve a fight.
+
+- [ ] Align simulation-player roles with infantry-only, fair use of every roster
+      unit with a stable recruitment pool, and situational unit selection. All
+      three must intelligently complete campaigns and objectives; current
+      Rush/Mixed/Priority/Battler do not yet fully implement these distinctions.
+- [ ] Validate those players against the same Classic enemy in matched arenas
+      and complete campaigns: fair-roster and situational should outperform
+      infantry-only, with fair-roster remaining reasonably close to situational.
+      Keep these balance checks and campaign competence when reducing compute
+      for larger maps, longer campaigns and more units.
 - [ ] Finish the balance pass with matched campaign and arena trials, preserving
       failed attempts and recording actual commands.
 - [ ] Run updated comparisons as needed for balance work. Keep campaign and arena
@@ -24,14 +36,6 @@
 ## Merfolk campaign
 
 - [ ] Consider terrain-aware shoreline sprites.
-
-## Saves
-
-- [ ] Simplify saves to snapshots of the resolved game state after completed
-      actions. Do not save unexecuted AI commands, queued moves or planning
-      workspaces. Rebuild AI plans after loading. Keep turn progress and any
-      remaining recruitment quota in the game state so completed actions are
-      neither repeated nor undone.
 
 ## Mobile rendering
 

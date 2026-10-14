@@ -3,7 +3,7 @@ use super::{
     checkpoint::{IndexedOutcome, Progress},
     error::SimulationError,
     matches,
-    records::{DetailRecord, ResultJournal, read_detail, sha256},
+    records::{DetailRecord, EncodedRecord, ResultJournal, read_detail, sha256},
     report,
     schedule::{Mode, ScheduleOptions, schedule},
     types::{MatchConfig, MatchResult},
@@ -23,15 +23,17 @@ use std::{
     time::Instant,
 };
 
-const HELP: &str = "Usage: hex-command-sim [options]\n  --mode arena|campaign|full      default arena\n  --seeds N --seed N              count (default 2) and first seed (default 1)\n  --seed-start N                  alias for --seed\n  --policies classic,rush,mixed   complete policies to compare\n  --armies human,woodland,undead,coastal\n  --landscapes open,wooded,crossings,islands\n  --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide\n  --rounds N --recruits N         bounded rounds (default 30), recruits/phase (default 1)\n  --diplomacy pragmatic,restrained campaign behavior settings\n  --workers N                    scoped thread pool, CPU quota default, maximum 8\n  --out PATH                     JSON report and readable Markdown report\n  --trace                        also retain raw match results\n  --replay PATH                  verify saved report details and results (strict fingerprint)\n  --data-dir PATH                authored JSON catalog root (HEX_COMMAND_DATA_ROOT also works)\n  --schedule-only                emit configurations without running any matches\n  --stdio                        compatibility JSON request/result line protocol\n  --fingerprint                  compiled content and engine SHA256 fingerprints\nArena entrants have both seats and both initiatives; self-play has both initiatives.\nCampaigns begin at chapter one, earn carryover and receive no retries. Caps remain unresolved.";
+const HELP: &str = "Usage: hex-command-sim [options]\n  --mode arena|campaign|full      default arena\n  --seeds N --seed N              count (default 2) and first seed (default 1)\n  --policies classic,rush,mixed,priority,battler\n  --armies human,woodland,undead,coastal\n  --landscapes open,wooded,crossings,islands\n  --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide\n  --campaign-players mixed,priority  independent campaign player tactics\n  --campaign-enemies classic       independent campaign enemy tactics\n  --rounds N --recruits N         bounded rounds (default 30), recruits/phase (default 1)\n  --diplomacy pragmatic,restrained campaign behavior settings\n  --workers N                    scoped thread pool, CPU quota default, maximum 8\n  --out PATH                     JSON report and readable Markdown report\n  --details arrow|jsonl         lossless gameplay journal (default arrow)\n  --self-play                    arena games use the same policy on both sides\n  --profile-turns                report policy mean decision and complete-phase CPU time\n  --trace                        also retain raw match results\n  --replay PATH                  verify saved report details and results (strict fingerprint)\n  --data-dir PATH                authored JSON catalog root (HEX_COMMAND_DATA_ROOT also works)\n  --schedule-only                emit configurations without running any matches\n  --stdio                        JSON match request/result line protocol\n  --phase-stdio                  saved-position own-phase profiling protocol\n  --fingerprint                  compiled content and engine SHA256 fingerprints\nArena entrants have both seats and both initiatives; self-play has both initiatives.\nCampaigns begin at chapter one, earn carryover and receive no retries. Caps remain unresolved.";
 #[derive(Debug)]
 struct CliOptions {
     schedule: ScheduleOptions,
     workers: usize,
     out: PathBuf,
     trace: bool,
+    arrow: bool,
     replay: Option<PathBuf>,
     schedule_only: bool,
+    profile_turns: bool,
 }
 fn flag_integer(
     values: &BTreeMap<String, String>,
@@ -82,8 +84,9 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
         "--mode",
         "--seeds",
         "--seed",
-        "--seed-start",
         "--policies",
+        "--campaign-players",
+        "--campaign-enemies",
         "--armies",
         "--landscapes",
         "--campaigns",
@@ -93,11 +96,18 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
         "--workers",
         "--out",
         "--replay",
-        "--engine",
+        "--details",
     ];
     while index < args.len() {
         let flag = &args[index];
-        if ["--trace", "--schedule-only"].contains(&flag.as_str()) {
+        if [
+            "--trace",
+            "--schedule-only",
+            "--profile-turns",
+            "--self-play",
+        ]
+        .contains(&flag.as_str())
+        {
             switches.insert(flag.clone());
         } else if VALUE_FLAGS.contains(&flag.as_str()) {
             index += 1;
@@ -113,15 +123,6 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
         }
         index += 1;
     }
-    if values
-        .get("--engine")
-        .is_some_and(|engine| engine != "rust")
-    {
-        return Err("Native harness supports --engine rust".into());
-    }
-    if values.contains_key("--seed") && values.contains_key("--seed-start") {
-        return Err("Specify one of --seed or --seed-start".into());
-    }
     if switches.contains("--schedule-only") && values.contains_key("--replay") {
         return Err("--schedule-only cannot be combined with --replay".into());
     }
@@ -132,18 +133,12 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
         "full" => Mode::Full,
         _ => return Err("Unknown simulation mode; use arena, campaign or full".into()),
     };
-    options.first_seed = flag_integer(
-        &values,
-        if values.contains_key("--seed-start") {
-            "--seed-start"
-        } else {
-            "--seed"
-        },
-        1,
-        0,
-        2147483647,
-    )?;
+    options.first_seed = flag_integer(&values, "--seed", 1, 0, 2147483647)?;
     options.seeds = flag_integer(&values, "--seeds", 2, 1, 10000)?;
+    options.self_play = switches.contains("--self-play");
+    if options.self_play && options.mode != Mode::Arena {
+        return Err("--self-play requires --mode arena".into());
+    }
     let default_rounds = if options.mode == Mode::Campaign {
         rules.campaign_defaults.default_max_rounds
     } else {
@@ -160,15 +155,38 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
     options.armies = selection(&values, "--armies", &options.armies)?;
     options.landscapes = selection(&values, "--landscapes", &options.landscapes)?;
     options.campaigns = selection(&values, "--campaigns", &options.campaigns)?;
-    let policy_ids: Vec<_> = options
-        .policies
+    let policy_ids: Vec<_> = crate::ai::Policy::ALL
         .iter()
-        .map(|policy| policy.as_str().to_owned())
+        .map(|p| p.as_str().to_owned())
         .collect();
-    options.policies = selection(&values, "--policies", &policy_ids)?
-        .into_iter()
-        .map(|id| serde_json::from_value(json!(id)).map_err(SimulationError::from))
-        .collect::<Result<_, _>>()?;
+    if values.contains_key("--policies") {
+        options.policies = selection(&values, "--policies", &policy_ids)?
+            .into_iter()
+            .map(|id| serde_json::from_value(json!(id)).map_err(SimulationError::from))
+            .collect::<Result<_, _>>()?;
+    }
+    for (flag, destination) in [
+        ("--campaign-players", &mut options.campaign_players),
+        ("--campaign-enemies", &mut options.campaign_enemies),
+    ] {
+        if values.contains_key(flag) {
+            let selected = selection(&values, flag, &policy_ids)?
+                .into_iter()
+                .map(|id| serde_json::from_value(json!(id)).map_err(SimulationError::from))
+                .collect::<Result<Vec<crate::ai::Policy>, _>>()?;
+            if selected.iter().any(|p| !p.supports_campaign()) {
+                return Err("Campaign role selections require campaign-capable tactics".into());
+            }
+            *destination = Some(selected);
+        }
+    }
+    if options.mode == Mode::Campaign
+        && options.campaign_players.is_none()
+        && options.campaign_enemies.is_none()
+        && options.policies.iter().any(|p| !p.supports_campaign())
+    {
+        return Err("Battler is a battle-only policy; use Priority for campaigns".into());
+    }
     let diplomacy_ids: Vec<_> = options
         .diplomacy
         .iter()
@@ -188,13 +206,24 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
     if out.extension().and_then(|ext| ext.to_str()) != Some("json") {
         return Err("--out must end in .json".into());
     }
+    let arrow = match values
+        .get("--details")
+        .map(String::as_str)
+        .unwrap_or("arrow")
+    {
+        "arrow" => true,
+        "jsonl" => false,
+        _ => return Err("--details must be arrow or jsonl".into()),
+    };
     Ok(CliOptions {
         schedule: options,
         workers,
         out,
         trace: switches.contains("--trace"),
+        arrow,
         replay: values.get("--replay").map(PathBuf::from),
         schedule_only: switches.contains("--schedule-only"),
+        profile_turns: switches.contains("--profile-turns"),
     })
 }
 pub fn default_workers() -> usize {
@@ -235,6 +264,103 @@ fn stdio(rules: &Rules) -> Result<(), SimulationError> {
         output.flush()?;
     }
     Ok(())
+}
+#[derive(serde::Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+struct PhaseRequest {
+    #[serde(default)]
+    blocks: Option<crate::ai::Blocks>,
+    state: crate::data::State,
+    policy: crate::ai::Policy,
+    seed: u32,
+    #[serde(default)]
+    recruitment_limit: usize,
+    #[serde(default)]
+    goals: Option<Vec<crate::data::Objective>>,
+    #[serde(default)]
+    diplomacy: crate::ai::Diplomacy,
+    #[serde(default)]
+    advance_turn: bool,
+    #[serde(default)]
+    begin_turn: bool,
+    #[serde(default)]
+    arena: Option<super::types::ArenaConfig>,
+}
+/// Replay one own phase from a saved position, for fixed-input policy profiling.
+fn phase_stdio(rules: &Rules) -> Result<(), SimulationError> {
+    let mut output = io::BufWriter::new(io::stdout().lock());
+    for line in io::stdin().lock().lines() {
+        let line = line?;
+        if line.trim().is_empty() {
+            continue;
+        }
+        let request: PhaseRequest = serde_json::from_str(&line)?;
+        serde_json::to_writer(&mut output, &saved_phase(rules, request)?)?;
+        writeln!(output)?;
+        output.flush()?;
+    }
+    Ok(())
+}
+fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, SimulationError> {
+    let arena = request
+        .arena
+        .as_ref()
+        .map(|config| super::matches::create_arena(rules, config))
+        .transpose()?;
+    if let Some(arena) = &arena {
+        if request.state.campaign.is_some() {
+            return Err(SimulationError::InvalidConfig(
+                "Arena phase contains a campaign".into(),
+            ));
+        }
+        crate::logic::validate_state_geometry(rules, &request.state, &arena.state())
+            .map_err(|error| SimulationError::InvalidConfig(error.to_string()))?;
+    } else {
+        crate::logic::validate_state(rules, &request.state)
+            .map_err(|error| SimulationError::InvalidConfig(error.to_string()))?;
+    }
+    let mut game = crate::logic::Game::from_state(rules, request.state);
+    if let Some(arena) = arena {
+        game.pools = arena.pools;
+        game.arena_first = arena.arena_first;
+    }
+    if request.advance_turn && request.begin_turn {
+        return Err(SimulationError::InvalidConfig(
+            "Select one turn-start operation".into(),
+        ));
+    }
+    if request.begin_turn {
+        game.begin_turn(game.turn);
+    } else if request.advance_turn {
+        game.end_turn();
+    }
+    if request.recruitment_limit > 1_000_000
+        || request.goals.iter().flatten().any(|goal| {
+            !goal.weight.is_finite()
+                || goal.weight <= 0.0
+                || goal.tiles.iter().any(|tile| !game.board.ids.contains(tile))
+                || goal.actor.as_ref().is_some_and(|actor| {
+                    actor
+                        .strip_prefix('u')
+                        .and_then(|id| id.parse::<u32>().ok())
+                        .is_none_or(|id| id == 0 || id >= game.next_id)
+                })
+        })
+    {
+        return Err(SimulationError::InvalidConfig(
+            "Invalid planning budget or objective".into(),
+        ));
+    }
+    game.recordings = Some(crate::data::Records::default());
+    game.play_blocks(
+        request.policy,
+        request.blocks,
+        request.seed,
+        request.recruitment_limit,
+        request.goals.as_deref(),
+        request.diplomacy,
+    )?;
+    Ok(json!({"final":game.state(),"records":game.recordings}))
 }
 fn read_report(path: &Path) -> Result<Value, SimulationError> {
     let bytes = fs::read(path)?;
@@ -286,22 +412,60 @@ struct Completed<Output> {
     result: Output,
     elapsed_ms: f64,
 }
+struct PreparedMatch {
+    details: EncodedRecord,
+    compact: Value,
+    trace: Option<EncodedRecord>,
+}
 fn execute_schedule<F>(
     rules: &Rules,
     configs: &[MatchConfig],
     workers: usize,
-    append: F,
+    trace: bool,
+    arrow: bool,
+    mut append: F,
 ) -> Result<(), SimulationError>
 where
-    F: FnMut(usize, MatchResult, f64) -> Result<(), SimulationError>,
+    F: FnMut(usize, PreparedMatch, f64) -> Result<(), SimulationError>,
 {
-    // Catalog/configuration are immutable shared borrows. Each game and planning workspace
-    // stays entirely within its worker, with no locks or shared ownership on the turn path.
+    let prepare = |result: MatchResult, elapsed: f64| {
+        let summary = report::borrowed_summary(&result, true)?;
+        let details = if arrow {
+            EncodedRecord::from_bytes(super::arrow::encode(&result, &summary)?)
+        } else {
+            EncodedRecord::new(&summary)?
+        };
+        // The journal thread supplies the final file and byte offset.
+        let compact = report::compact_summary(
+            &summary,
+            DetailRecord {
+                file: String::new(),
+                offset: 0,
+                bytes: 0,
+                sha256: String::new(),
+            },
+            elapsed,
+        )?;
+        let trace = if trace {
+            Some(EncodedRecord::new(&result)?)
+        } else {
+            None
+        };
+        Ok::<_, SimulationError>(PreparedMatch {
+            details,
+            compact,
+            trace,
+        })
+    };
     execute_jobs(
         configs,
         workers,
-        &|config| matches::run(rules, config.clone()),
-        append,
+        &|config| {
+            let start = Instant::now();
+            let result = matches::run(rules, config.clone())?;
+            prepare(result, start.elapsed().as_secs_f64() * 1000.0)
+        },
+        |index, result, elapsed| append(index, result, elapsed),
     )
 }
 fn execute_jobs<Config, Output, Execute, Append>(
@@ -411,7 +575,12 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
     };
     fs::create_dir_all(output.parent().unwrap_or(Path::new(".")))?;
     let partial = sibling(&output, ".partial.json")?;
-    let mut journal = ResultJournal::create(&sibling(&output, ".details.jsonl")?)?;
+    let suffix = if options.arrow {
+        ".details.arrow"
+    } else {
+        ".details.jsonl"
+    };
+    let mut journal = ResultJournal::create(&sibling(&output, suffix)?)?;
     let mut index_journal = ResultJournal::create(&sibling(&output, ".outcomes.jsonl")?)?;
     let mut trace = if options.trace {
         Some(ResultJournal::create(&sibling(&output, ".trace.jsonl")?)?)
@@ -441,13 +610,15 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
         rules,
         &configs,
         options.workers,
-        |index, result, elapsed| {
-            let summary = report::borrowed_summary(&result, true)?;
-            let reference = journal.append(&summary)?;
-            if let Some(trace) = &mut trace {
-                trace.append(&result)?;
+        options.trace,
+        options.arrow,
+        |index, result, _elapsed| {
+            let reference = journal.append_encoded(&result.details)?;
+            if let (Some(trace), Some(encoded)) = (&mut trace, &result.trace) {
+                trace.append_encoded(encoded)?;
             }
-            let compact = report::compact_summary(&summary, reference, elapsed)?;
+            let mut compact = result.compact;
+            compact["detail"] = serde_json::to_value(reference)?;
             index_journal.append(&IndexedOutcome {
                 index,
                 outcome: &compact,
@@ -521,7 +692,7 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
             outcome.ok_or_else(|| SimulationError::Worker("Missing match result".into()))
         })
         .collect::<Result<_, _>>()?;
-    let report = report::build_report(
+    let mut report = report::build_report(
         &options.schedule,
         fingerprint,
         &source_commit,
@@ -529,6 +700,12 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
         outcomes,
         trace_files,
     )?;
+    if options.arrow {
+        report["detailFormat"] = Value::String(super::arrow::FORMAT.into());
+    }
+    if options.profile_turns {
+        report["turnTiming"] = crate::ai::profiling::snapshot().unwrap();
+    }
     write_json(&output, &report, true)?;
     fs::write(sibling(&output, ".md")?, report::markdown(&report))?;
     write_json(
@@ -547,10 +724,11 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
         ),
         false,
     )?;
-    println!(
-        "{}",
-        json!({"output":output,"games":completed,"elapsedSeconds":report["elapsedSeconds"],"rows":report["rows"]})
-    );
+    let mut summary = json!({"output":output,"games":completed,"elapsedSeconds":report["elapsedSeconds"],"rows":report["rows"]});
+    if let Some(timing) = report.get("turnTiming") {
+        summary["turnTiming"] = timing.clone();
+    }
+    println!("{summary}");
     Ok(())
 }
 pub fn run(args: &[String]) -> Result<(), SimulationError> {
@@ -584,7 +762,13 @@ pub fn run(args: &[String]) -> Result<(), SimulationError> {
     if args == ["--stdio"] {
         return stdio(&rules);
     }
+    if args == ["--phase-stdio"] {
+        return phase_stdio(&rules);
+    }
     let options = parse(&args, &rules)?;
+    if options.profile_turns {
+        crate::ai::profiling::enable();
+    }
     let fingerprint = report_fingerprint(&rules)?;
     if let Some(path) = &options.replay {
         return replay(&rules, path, &fingerprint);
@@ -595,6 +779,64 @@ pub fn run(args: &[String]) -> Result<(), SimulationError> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn saved_phase_restores_generated_arenas_and_validates_geometry() {
+        let rules = Rules::load().unwrap();
+        let defaults = parse(&[], &rules).unwrap();
+        assert!(!defaults.profile_turns && !defaults.schedule.self_play);
+        assert!(
+            serde_json::to_value(&defaults.schedule)
+                .unwrap()
+                .get("selfPlay")
+                .is_none()
+        );
+        let timing = parse(&["--self-play".into(), "--profile-turns".into()], &rules).unwrap();
+        assert!(timing.profile_turns && timing.schedule.self_play);
+        assert!(
+            parse(
+                &["--self-play".into(), "--mode".into(), "campaign".into()],
+                &rules
+            )
+            .is_err()
+        );
+        let config: super::super::types::ArenaConfig = serde_json::from_value(json!({
+            "seed": 7, "maxRounds": 30, "recruitLimit": 0, "landscape": "open",
+            "first": "player", "player": "mixed", "enemy": "mixed",
+            "armies": {"player": "coastal", "enemy": "human"}
+        }))
+        .unwrap();
+        let mut expected = super::super::matches::create_arena(&rules, &config).unwrap();
+        let state = expected.state();
+        let request = |state| {
+            serde_json::from_value::<PhaseRequest>(json!({
+                "state": state, "arena": config, "policy": "mixed", "seed": 7,
+                "beginTurn": true, "recruitmentLimit": 1
+            }))
+            .unwrap()
+        };
+        expected.begin_turn(expected.turn);
+        expected.recordings = Some(crate::data::Records::default());
+        expected
+            .play_blocks(
+                crate::ai::Policy::Mixed,
+                None,
+                7,
+                1,
+                None,
+                crate::ai::Diplomacy::Pragmatic,
+            )
+            .unwrap();
+        assert_eq!(
+            saved_phase(&rules, request(state.clone())).unwrap(),
+            json!({"final": expected.state(), "records": expected.recordings})
+        );
+        let mut invalid = state.clone();
+        invalid.tiles[0].col = -1;
+        assert!(saved_phase(&rules, request(invalid)).is_err());
+        let mut invalid = request(state);
+        invalid.advance_turn = true;
+        assert!(saved_phase(&rules, invalid).is_err());
+    }
     #[test]
     fn append_failure_drains_in_flight_workers() {
         let jobs: Vec<_> = (0..32).collect();

@@ -1,8 +1,7 @@
 import { LiveGame } from "../game/live-game";
 import type { GameEngineFactory } from "../game/native-engine";
-import { migrateSave } from "./migration";
-import { readSave, preserveRejectedSave } from "./storage";
-import { saveBattle, suspendSaves } from "./write";
+import { migrateSave } from "./migrations";
+import { readSave, wipeSave, storeSave } from "./storage";
 
 export interface LoadedBattle {
   game: LiveGame;
@@ -17,19 +16,18 @@ export function loadBattle(factory: GameEngineFactory): LoadedBattle {
     try {
       const { save, migrated } = migrateSave(JSON.parse(raw));
       game = LiveGame.restore(factory, save.checkpoint);
-      if (migrated) saveBattle(game, save.pendingEnemy);
+      // Commit the validated data conversion directly, independently of gameplay
+      // turn boundaries. Migration never waits for or executes enemy actions.
+      if (migrated) storeSave(JSON.stringify(save));
       return { game, pendingEnemy: save.pendingEnemy };
     } catch {
       game?.dispose();
-      const preserved = preserveRejectedSave(raw);
+      wipeSave();
       const fresh = LiveGame.create(factory, { kind: "scenario", map: "mirror" });
-      if (!preserved) suspendSaves(fresh);
       return {
         game: fresh,
         pendingEnemy: false,
-        notice: preserved
-          ? "The saved battle could not be restored. A new battle is ready."
-          : "The saved battle could not be restored. The original is retained; start a new battle to enable saving.",
+        notice: "The saved battle could not be loaded and was cleared. A new battle is ready.",
       };
     }
   }

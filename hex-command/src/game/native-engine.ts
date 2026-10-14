@@ -2,8 +2,6 @@ import { immutable, type Immutable } from "./immutable";
 import type {
   AiDecision,
   AiOptions,
-  AttackPreview,
-  AttackQuery,
   BattleHandle,
   CatalogView,
   Command,
@@ -13,7 +11,6 @@ import type {
   EngineView,
   BattleInspection,
   NativeEngineFactory as WasmEngineFactory,
-  ReachableTile,
   SavedGame,
   Start,
 } from "../../rust/pkg/hex_command";
@@ -24,8 +21,6 @@ export type NativeResponse<T> = EngineResult<Immutable<T>>;
 export interface GameEngine {
   view(): NativeResponse<EngineView>;
   inspect(): NativeResponse<BattleInspection>;
-  reachable(unit: number): NativeResponse<ReachableTile[]>;
-  previewAttack(query: AttackQuery): NativeResponse<AttackPreview>;
   dispatch(command: Immutable<Command>, expectedRevision?: number): NativeResponse<DispatchResult>;
   chooseAiCommand(options: AiOptions): NativeResponse<AiDecision>;
   save(): NativeResponse<SavedGame>;
@@ -47,8 +42,6 @@ export type NativeBridge = Pick<
   | "restore"
   | "view"
   | "inspect"
-  | "reachable"
-  | "previewAttack"
   | "dispatch"
   | "chooseAiCommand"
   | "save"
@@ -107,9 +100,6 @@ export function createNativeEngineFactory(bridge: NativeBridge): GameEngineFacto
     const result: GameEngine = Object.freeze({
       view: () => owned(active(() => bridge.view(handle.id, revision))),
       inspect: () => owned(active(() => bridge.inspect(handle.id, revision))),
-      reachable: (unit: number) => owned(active(() => bridge.reachable(handle.id, revision, unit))),
-      previewAttack: (query: AttackQuery) =>
-        owned(active(() => bridge.previewAttack(handle.id, revision, structuredClone(query)))),
       dispatch: (command: Immutable<Command>, expectedRevision = revision) => {
         const dispatched = active(() =>
           bridge.dispatch(handle.id, expectedRevision, structuredClone(command) as Command),

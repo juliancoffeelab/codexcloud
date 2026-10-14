@@ -28,6 +28,23 @@ pub struct ResultJournal {
     offset: u64,
     scratch: Vec<u8>,
 }
+/// A complete record encoded and checksummed by its producing worker.
+pub(crate) struct EncodedRecord {
+    bytes: Vec<u8>,
+    sha256: String,
+}
+impl EncodedRecord {
+    pub(crate) fn from_bytes(bytes: Vec<u8>) -> Self {
+        let sha256 = sha256(&bytes);
+        Self { bytes, sha256 }
+    }
+    pub(crate) fn new<T: Serialize>(value: &T) -> Result<Self, SimulationError> {
+        let mut bytes = serde_json::to_vec(value)?;
+        bytes.push(b'\n');
+        let sha256 = sha256(&bytes);
+        Ok(Self { bytes, sha256 })
+    }
+}
 impl ResultJournal {
     /// Create an empty journal and reset its byte cursor.
     pub fn create(path: &Path) -> Result<Self, SimulationError> {
@@ -64,6 +81,23 @@ impl ResultJournal {
     /// Number of complete record bytes appended to this journal.
     pub fn byte_len(&self) -> u64 {
         self.offset
+    }
+    pub(crate) fn append_encoded(
+        &mut self,
+        encoded: &EncodedRecord,
+    ) -> Result<DetailRecord, SimulationError> {
+        self.writer.write_all(&encoded.bytes)?;
+        let record = DetailRecord {
+            file: self.file.clone(),
+            offset: self.offset,
+            bytes: encoded.bytes.len() as u64,
+            sha256: encoded.sha256.clone(),
+        };
+        self.offset = self
+            .offset
+            .checked_add(record.bytes)
+            .ok_or("Journal size overflow")?;
+        Ok(record)
     }
     /// Flush buffered output before exposing completed journal references.
     pub fn flush(&mut self) -> Result<(), SimulationError> {
@@ -107,7 +141,11 @@ pub fn read_detail(directory: &Path, record: &DetailRecord) -> Result<Value, Sim
             record.file
         )));
     }
-    Ok(serde_json::from_slice(&bytes)?)
+    if record.file.ends_with(".arrow") {
+        super::arrow::decode(&bytes)
+    } else {
+        Ok(serde_json::from_slice(&bytes)?)
+    }
 }
 #[cfg(test)]
 mod tests {
