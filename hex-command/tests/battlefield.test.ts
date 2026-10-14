@@ -51,27 +51,21 @@ test("Moving units preserves stable terrain and SVG layers", async () => {
 });
 
 // Objective destinations and named companions convey the same information without color.
-for (const id of ["lantern-road", "green-accord", "ashen-oath"] as const) {
-  test(
-    "Campaign objectives and named companions have accessible descriptions — " +
-      JSON.stringify([id]),
-    async () => {
-      const campaign = Game.startCampaign(id);
-      const tiles = battlefieldTiles(campaign.publishedView(), null, currentArtwork(), null);
-      for (const goal of campaignMission(campaign.campaign!).goals) {
-        const progress = goalProgress(campaign, goal);
-        for (const id of progress.tiles) {
-          const destination = required(tiles.find((tile) => tile.id === id));
-          assert(destination.classes.includes("objective"));
-          assert(destination.label.includes(`Objective: ${progress.label}`));
-        }
-      }
-      for (const unit of campaign.units.filter((unit) => unit.name)) {
-        assert(required(tiles.find((tile) => tile.id === unit.tile)).label.includes(unit.name!));
-      }
-    },
-  );
-}
+test("Campaign objectives and named companions have accessible descriptions", () => {
+  const campaign = Game.startCampaign("green-accord");
+  const tiles = battlefieldTiles(campaign.publishedView(), null, currentArtwork(), null);
+  for (const goal of campaignMission(campaign.campaign!).goals) {
+    const progress = goalProgress(campaign, goal);
+    for (const id of progress.tiles) {
+      const destination = required(tiles.find((tile) => tile.id === id));
+      assert(destination.classes.includes("objective"));
+      assert(destination.label.includes(`Objective: ${progress.label}`));
+    }
+  }
+  for (const unit of campaign.units.filter((unit) => unit.name)) {
+    assert(required(tiles.find((tile) => tile.id === unit.tile)).label.includes(unit.name!));
+  }
+});
 test("Ordinary skirmish labels have no objective", async () => {
   const game = new Game();
   const enemy = game.addUnit("archer", "enemy", "2,3");

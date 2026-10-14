@@ -401,6 +401,63 @@ pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, Simulatio
 mod tests {
     use super::*;
     #[test]
+    fn custom_tactic_is_added_to_matrix_and_campaign_roles() {
+        let rules = Rules::load().unwrap();
+        let mut options = ScheduleOptions::defaults(&rules).unwrap();
+        options.mode = Mode::Arena;
+        options.seeds = 1;
+        options.vs_classic = true;
+        options.with = Some(WithSelection {
+            recruiter: Some(crate::ai::Recruiter::Rotation),
+            campaign: None,
+            planner: Some(crate::ai::Planner::Queued),
+        });
+        options.policies = vec![
+            crate::ai::Policy::Classic,
+            crate::ai::Policy::Rush,
+            crate::ai::Policy::Balanced,
+        ];
+        options.armies = vec!["a".into(), "b".into()];
+        options.landscapes = vec!["open".into()];
+        let fixed = schedule(&options).unwrap();
+        assert_eq!(fixed.len(), 16);
+        assert_eq!(fixed.len(), options.expected_games().unwrap());
+        assert!(fixed.iter().all(|config| matches!(config, MatchConfig::Arena(config) if
+            (config.player_blocks.is_some() && config.enemy == crate::ai::Policy::Classic && config.enemy_blocks.is_none())
+            || (config.enemy_blocks.is_some() && config.player == crate::ai::Policy::Classic && config.player_blocks.is_none()))));
+        options.vs_classic = false;
+        let all = schedule(&options).unwrap();
+        assert_eq!(all.len(), 128);
+        assert_eq!(all.len(), options.expected_games().unwrap());
+        assert!(all.iter().any(|config| matches!(config, MatchConfig::Arena(config) if config.player_blocks.is_some() && config.enemy == crate::ai::Policy::Balanced && config.enemy_blocks.is_none())));
+        let unique: std::collections::HashSet<_> = all
+            .iter()
+            .map(|config| serde_json::to_string(config).unwrap())
+            .collect();
+        assert_eq!(unique.len(), all.len());
+        options.self_play = true;
+        let self_play = schedule(&options).unwrap();
+        assert_eq!(self_play.len(), 32);
+        assert!(self_play.iter().all(|config| matches!(config, MatchConfig::Arena(config) if config.player == config.enemy && config.player_blocks == config.enemy_blocks)));
+        let mut campaign = ScheduleOptions::defaults(&rules).unwrap();
+        campaign.mode = Mode::Campaign;
+        campaign.seeds = 1;
+        campaign.with = options.with;
+        campaign.campaign_players = Some(vec![crate::ai::Policy::Balanced]);
+        campaign.campaign_enemies = Some(vec![crate::ai::Policy::Classic]);
+        campaign.campaign_custom_enemy = true;
+        campaign.campaigns = vec!["example".into()];
+        campaign.campaign_diplomacy = std::collections::BTreeMap::from([(
+            "example".into(),
+            vec![crate::ai::Diplomacy::Pragmatic],
+        )]);
+        let configs = schedule(&campaign).unwrap();
+        assert_eq!(configs.len(), 2);
+        assert_eq!(configs.len(), campaign.expected_games().unwrap());
+        assert!(configs.iter().all(|config| matches!(config, MatchConfig::Campaign(config) if config.player_blocks.is_none() && config.enemy_blocks.is_none_or(|blocks| blocks.campaign == crate::ai::CampaignBlock::Mission && blocks.recruiter == crate::ai::Recruiter::Rotation))));
+    }
+
+    #[test]
     fn authored_diplomacy_limits_campaign_runs_and_counts() {
         let rules = Rules::load().unwrap();
         let mut options = ScheduleOptions::defaults(&rules).unwrap();

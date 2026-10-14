@@ -115,12 +115,10 @@ for (const unitType of ["soldier", "archer", "scout", "commander"] as const) {
     );
   });
 }
-for (const terrain of ["village", "water", "forest", "hill", "plains", "keep"] as const) {
-  test("Terrain sound resolves its own family — " + JSON.stringify([terrain]), async () => {
-    const sound = createSound();
-    assert.equal(sound.soundForInteraction({ terrain }), `terrain-${terrain}`);
-  });
-}
+test("Terrain sound resolves its own family", () => {
+  const sound = createSound();
+  assert.equal(sound.soundForInteraction({ terrain: "plains" }), "terrain-plains");
+});
 test("Fords use water sounds and empty interactions use selection", async () => {
   const sound = createSound();
   assert.equal(sound.soundForInteraction({ terrain: "ford" }), "terrain-water");

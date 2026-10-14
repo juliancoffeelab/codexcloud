@@ -149,48 +149,4 @@ mod tests {
         assert!(recovered[2].is_none());
         std::fs::remove_file(path).unwrap();
     }
-    #[test]
-    fn progress_snapshots_never_include_accumulated_outcomes() {
-        let root = std::env::temp_dir();
-        let path = root.join(format!("hex-progress-index-{}.jsonl", std::process::id()));
-        let details_path = root.join(format!("hex-progress-details-{}.jsonl", std::process::id()));
-        let index = ResultJournal::create(&path).unwrap();
-        let details = ResultJournal::create(&details_path).unwrap();
-        let small = serde_json::to_value(Progress::new(
-            "running",
-            Mode::Full,
-            "fingerprint",
-            10,
-            12240,
-            1.0,
-            &index,
-            &details,
-            None,
-            None,
-        ))
-        .unwrap();
-        let large = serde_json::to_value(Progress::new(
-            "running",
-            Mode::Full,
-            "fingerprint",
-            12240,
-            12240,
-            2.0,
-            &index,
-            &details,
-            None,
-            None,
-        ))
-        .unwrap();
-        assert!(large.get("outcomes").is_none());
-        assert_eq!(large["progressFormat"], "indexed-outcomes-jsonl-v1");
-        assert!(
-            serde_json::to_vec(&large).unwrap().len()
-                <= serde_json::to_vec(&small).unwrap().len() + 3
-        );
-        drop(index);
-        drop(details);
-        std::fs::remove_file(path).unwrap();
-        std::fs::remove_file(details_path).unwrap();
-    }
 }

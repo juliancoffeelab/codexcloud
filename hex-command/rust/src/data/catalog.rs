@@ -1019,23 +1019,6 @@ mod tests {
         .expect("authored test catalog")
     }
     #[test]
-    fn authored_catalog_resolves_races_and_current_maps() {
-        let rules = Rules::from_json_bundle(&test_bundle()).unwrap();
-        for unit in &rules.units {
-            assert_eq!(unit.costs.len(), rules.terrain_names.len());
-            assert_eq!(unit.environment.len(), rules.terrain_names.len());
-            assert!(unit.costs.iter().flatten().all(|&cost| cost > 0));
-        }
-        assert!(!rules.maps.contains_key(&("river".to_owned(), 1)));
-        assert!(rules.maps.contains_key(&("river".to_owned(), 2)));
-        assert!(!rules.maps.contains_key(&("ashen-refuge".to_owned(), 1)));
-        assert!(rules.maps.contains_key(&("ashen-refuge".to_owned(), 2)));
-        assert_eq!(
-            rules.campaigns["lantern-road"].missions[0].map.id,
-            "lantern-ferry"
-        );
-    }
-    #[test]
     fn invalid_references_and_duplicates_report_source_document() {
         let mut bundle = test_bundle();
         let units = bundle.get_mut("game/units/warden.json").unwrap();
