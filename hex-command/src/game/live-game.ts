@@ -8,7 +8,6 @@ import type {
 import type { GameEngine, GameEngineFactory } from "./native-engine";
 import type { GameView } from "./view";
 import type {
-  CampaignId,
   CombatPreviewDetails,
   GameSnapshot,
   GameState,

@@ -193,9 +193,8 @@ impl NativeEngineFactory {
         let mut game = battle.game(&self.rules);
         let ends_turn = matches!(command, Command::EndTurn);
         let planned = battle.pending.as_ref() == Some(&command);
-        let mut effects = game.execute(command.clone())?;
+        game.execute(command)?;
         let state = game.state();
-        crate::logic::complete_effects(&battle.state, &state, &command, &mut effects);
         battle.state = state;
         battle.board = game.board.clone();
         battle.revision = battle
@@ -209,7 +208,6 @@ impl NativeEngineFactory {
         }
         Ok(DispatchResult {
             view: battle.view(),
-            effects,
         })
     }
     fn decision(

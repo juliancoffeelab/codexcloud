@@ -1,7 +1,7 @@
 //! Canonical transfer contract shared by native/WASM hosts and generated TypeScript.
 /// Transport options reuse the core policy and diplomacy vocabularies.
 pub use crate::ai::{Diplomacy as AiDiplomacy, Policy as AiPolicy};
-use crate::data::{Command, CommandError, Effects, State, TileId, Weapon};
+use crate::data::{Command, CommandError, State, TileId, Weapon};
 use serde::{Deserialize, Serialize};
 
 /// Select a scenario or the first mission of an authored campaign.
@@ -117,13 +117,12 @@ pub struct BattleHandle {
     pub view: EngineView,
 }
 
-/// Coherent state publication and rule effects from one successful command.
+/// Coherent state publication from one successful command.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 pub struct DispatchResult {
     pub view: EngineView,
-    pub effects: Effects,
 }
 
 /// Reachable destination and its finite accumulated movement cost.

@@ -944,7 +944,6 @@ mod tests {
                 | Command::Recruit { .. }
                 | Command::Advance { .. }
                 | Command::DismissDialogue
-                | Command::NextMission
                 | Command::RecallMission { .. }
                 | Command::RetryMission
                 | Command::PreviousDialogue

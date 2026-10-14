@@ -31,7 +31,7 @@ test("Shared rule definitions cannot be mutated", async () => {
 
 // Rendering receives plain, immutable data and pure queries, never engine commands.
 test("Published views expose immutable plain data without commands", async () => {
-  const { live, enemy, view, originalState, originalTiles } = viewFixture();
+  const { view } = viewFixture();
   assert.equal(Object.getPrototypeOf(view), Object.prototype);
   for (const command of ["move", "attack", "recruit", "endTurn", "restoreState", "addUnit"]) {
     assert.equal(command in view, false, `${command} must stay outside the published view`);
@@ -57,7 +57,7 @@ test("Published views expose immutable plain data without commands", async () =>
 
 // Query results keep snapshot identities where callers compare units with includes().
 test("Queries retain snapshot identities and freeze combat details", async () => {
-  const { live, enemy, view, originalState, originalTiles } = viewFixture();
+  const { enemy, view } = viewFixture();
   const soldier = required(view.unit("u2"));
   const target = required(view.unit(enemy.id));
   assert.equal(view.at(soldier.tile), soldier);
@@ -87,7 +87,7 @@ test("Queries retain snapshot identities and freeze combat details", async () =>
 
 // Maps returned by queries may be changed at runtime without changing the revision.
 test("Mutable query maps cannot alter published state", async () => {
-  const { live, enemy, view, originalState, originalTiles } = viewFixture();
+  const { view, originalState } = viewFixture();
   const reachable = view.reachable("u3");
   const expectedReachable = [...reachable];
   Map.prototype.clear.call(reachable);
@@ -98,7 +98,7 @@ test("Mutable query maps cannot alter published state", async () => {
 
 // Later engine actions and direct fixture changes cannot rewrite an old publication.
 test("Later engine mutations cannot rewrite an older publication", async () => {
-  const { live, enemy, view, originalState, originalTiles } = viewFixture();
+  const { live, view, originalState, originalTiles } = viewFixture();
   live.move("u3", "3,1");
   live.gold.player = 0;
   live.log[0] = "Later event";
@@ -116,7 +116,7 @@ test("Later engine mutations cannot rewrite an older publication", async () => {
 });
 
 test("Recruitment context is frozen and follows current selection", async () => {
-  const { live, enemy, view, originalState, originalTiles } = viewFixture();
+  const { view } = viewFixture();
   const context = required(recruitmentContext(view, null, "0,2"));
   assert(Object.isFrozen(context));
   assert.equal(context.commander, view.unit("u1"));
@@ -126,7 +126,7 @@ test("Recruitment context is frozen and follows current selection", async () => 
 
 // The command facade forwards calls while omitting controller reads and mutation access.
 test("Command facade forwards calls without exposing reads", async () => {
-  const { live, enemy, view, originalState, originalTiles } = viewFixture();
+  const { live, view } = viewFixture();
   const context = required(recruitmentContext(view, null, "0,2"));
   const chosen: string[] = [];
   const controller = {

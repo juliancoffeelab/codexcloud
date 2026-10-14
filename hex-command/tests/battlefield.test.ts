@@ -23,9 +23,9 @@ test("Selection and attack targets have accessible labels and health", async () 
 
 test("Recruitment highlights only legal destinations", async () => {
   const game = new Game();
-  const enemy = game.addUnit("archer", "enemy", "2,3");
+  game.addUnit("archer", "enemy", "2,3");
   const opening = game.publishedView();
-  const selected = battlefieldTiles(opening, "u2", currentArtwork(), null);
+
   const recruited = battlefieldTiles(opening, null, currentArtwork(), "0,2");
   assert(required(recruited.find((tile) => tile.id === "0,2")).classes.includes("recruitable"));
   assert(!recruited.some((tile) => /selected|reachable|target/.test(tile.classes)));
@@ -33,7 +33,7 @@ test("Recruitment highlights only legal destinations", async () => {
 
 test("Moving units preserves stable terrain and SVG layers", async () => {
   const game = new Game();
-  const enemy = game.addUnit("archer", "enemy", "2,3");
+  game.addUnit("archer", "enemy", "2,3");
   const opening = game.publishedView();
   const selected = battlefieldTiles(opening, "u2", currentArtwork(), null);
   game.move("u2", "2,2");

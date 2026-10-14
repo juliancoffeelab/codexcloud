@@ -1,8 +1,4 @@
 //! Battle rules and campaign transitions, independent of transport and policy.
-#[cfg(feature = "wasm")]
-mod effects;
-#[cfg(feature = "wasm")]
-pub(crate) use effects::complete_effects;
 pub(crate) mod battle;
 mod combat;
 mod commands;
@@ -15,7 +11,7 @@ mod turns;
 pub(crate) use restore::validate_state_geometry;
 pub use restore::{StateError, validate_state};
 pub mod campaign;
-pub use crate::data::{Command, CommandError, Effects};
+pub use crate::data::{Command, CommandError};
 pub(crate) use battle::Game;
 
 pub(crate) mod geometry;

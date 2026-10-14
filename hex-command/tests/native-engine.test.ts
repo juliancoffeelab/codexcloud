@@ -82,7 +82,6 @@ function fixture() {
         ok: true,
         value: {
           view: nextView,
-          effects: { addedUnit: null, damage: null, retaliation: null, winner: null, events: [] },
         },
       };
     },

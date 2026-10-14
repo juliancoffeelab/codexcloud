@@ -375,5 +375,3 @@ export interface CampaignVeteran {
   name?: string;
   role?: Unit["role"];
 }
-export type Attack = Weapon;
-export type DamageDetail = DamageBreakdown;

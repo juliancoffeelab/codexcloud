@@ -396,7 +396,6 @@ mod courier_tests {
                 | Command::Advance { .. }
                 | Command::EndTurn
                 | Command::DismissDialogue
-                | Command::NextMission
                 | Command::RecallMission { .. }
                 | Command::RetryMission
                 | Command::PreviousDialogue
@@ -414,7 +413,6 @@ mod courier_tests {
                 | Command::Advance { .. }
                 | Command::EndTurn
                 | Command::DismissDialogue
-                | Command::NextMission
                 | Command::RecallMission { .. }
                 | Command::RetryMission
                 | Command::PreviousDialogue
@@ -493,7 +491,6 @@ mod courier_tests {
                 | Command::Recruit { .. }
                 | Command::Advance { .. }
                 | Command::DismissDialogue
-                | Command::NextMission
                 | Command::RecallMission { .. }
                 | Command::RetryMission
                 | Command::PreviousDialogue

@@ -232,7 +232,7 @@ fn weapon(game: &Game<'_>, id: u32, weapon: &str) -> usize {
         .position(|w| w.id == weapon)
         .unwrap()
 }
-fn hit(game: &mut Game<'_>, attacker: u32, target: u32, name: &str) -> Effects {
+fn hit(game: &mut Game<'_>, attacker: u32, target: u32, name: &str) {
     game.execute(Command::Attack {
         unit: UnitId(attacker),
         target: UnitId(target),

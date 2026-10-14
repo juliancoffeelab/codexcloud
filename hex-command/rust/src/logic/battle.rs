@@ -612,11 +612,11 @@ impl<'catalog> Game<'catalog> {
             .filter(|&tile| self.cost(kind, tile) != u16::MAX && self.at(tile).is_none())
             .collect()
     }
-    pub(crate) fn recruit(&mut self, id: u32, kind: usize, tile: usize) -> u32 {
+    pub(crate) fn recruit(&mut self, id: u32, kind: usize, tile: usize) {
         let leader = self.unit(id).unwrap().clone();
         assert!(self.placement_tiles(&leader, kind, true).contains(&tile));
         self.gold[leader.side.index()] -= self.rules.units[kind].cost;
-        let added = self.add(kind, leader.side, tile);
+        self.add(kind, leader.side, tile);
         let unit = self.units.last_mut().unwrap();
         unit.moved = true;
         unit.attacked = true;
@@ -634,6 +634,5 @@ impl<'catalog> Game<'catalog> {
             unit_type: self.rules.units[kind].id.clone(),
             tile: self.board.ids[tile].clone(),
         });
-        added
     }
 }

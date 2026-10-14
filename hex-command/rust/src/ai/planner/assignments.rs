@@ -669,7 +669,6 @@ mod tests {
                     | Command::Advance { .. }
                     | Command::SetUnitIntent { .. }
                     | Command::DismissDialogue
-                    | Command::NextMission
                     | Command::RecallMission { .. }
                     | Command::RetryMission
                     | Command::PreviousDialogue

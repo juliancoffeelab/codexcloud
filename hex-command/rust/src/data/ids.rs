@@ -40,17 +40,6 @@ impl From<&str> for WeaponId {
         Self(value.to_owned())
     }
 }
-/// Authored campaign identifier.
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
-#[serde(transparent)]
-pub struct CampaignId(pub String);
-impl From<&str> for CampaignId {
-    fn from(value: &str) -> Self {
-        Self(value.to_owned())
-    }
-}
 /// Closed authored race vocabulary.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]

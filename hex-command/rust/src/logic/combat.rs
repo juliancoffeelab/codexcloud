@@ -99,7 +99,7 @@ impl<'catalog> Game<'catalog> {
             && target.side == Side::Enemy
             && (target.retreating == Some(true) || target.role == Some(Role::Leader))
     }
-    pub(crate) fn attack(&mut self, id: u32, target_id: u32, weapon: usize) -> (i32, i32) {
+    pub(crate) fn attack(&mut self, id: u32, target_id: u32, weapon: usize) {
         let a = self.index(id).unwrap();
         let b = self.index(target_id).unwrap();
         let attacker = self.units[a].clone();
@@ -246,6 +246,5 @@ impl<'catalog> Game<'catalog> {
                 mediation_at_risk: mediated,
             });
         }
-        (damage, retaliation)
     }
 }

@@ -65,7 +65,6 @@ mod tests {
                 | Command::Advance { .. }
                 | Command::SetUnitIntent { .. }
                 | Command::DismissDialogue
-                | Command::NextMission
                 | Command::RecallMission { .. }
                 | Command::RetryMission
                 | Command::PreviousDialogue
@@ -230,7 +229,6 @@ mod tests {
                 | Command::SetUnitIntent { .. }
                 | Command::EndTurn
                 | Command::DismissDialogue
-                | Command::NextMission
                 | Command::RecallMission { .. }
                 | Command::RetryMission
                 | Command::PreviousDialogue
