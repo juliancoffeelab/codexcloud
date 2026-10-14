@@ -1,6 +1,6 @@
 ---
 name: pixel-cleaning
-description: Review and repair Hex Command unit sprites or terrain matrices, including stray pixels, outlines and terrain joins, while preserving approved artwork.
+description: Use when inspecting, diagnosing, cleaning or repairing Hex Command unit sprites or terrain matrices, including generated artwork, stray pixels, broken outlines, material shading, ground alignment and terrain joins. Keep detection requests read-only; apply only individually reviewed native matrix edits when fixes are requested, preserving approved artwork and the 64×64 canvas.
 ---
 
 # Pixel cleaning

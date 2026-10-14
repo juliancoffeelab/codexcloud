@@ -1,6 +1,6 @@
 ---
 name: pinkbox-generation
-description: Generate a new Hex Command pixel unit using three approved matrix anchors and one pinkbox output, then extract and review its 64×64 matrix.
+description: Use when generating new Hex Command pixel unit artwork or regenerating a unit's silhouette, anatomy, pose or equipment through image generation. Build a pinkbox template from three approved matrix anchors, generate one output, then extract and review its native 64×64 matrix before presentation or integration.
 ---
 
 # Pinkbox generation
