@@ -1,6 +1,6 @@
 ---
 name: pixel-lineup
-description: Use when asked to show, preview or visually compare Hex Command race or faction lineups, unit upgrade trees or L1/L2/L3 progression grids. Render current source matrices read-only at a shared native scale and show the generated images; preserve source artwork and use the requested faction and layout.
+description: Use for previewing or comparing Hex Command faction lineups and unit upgrade trees or grids.
 ---
 
 # Pixel lineup

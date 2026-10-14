@@ -1,6 +1,6 @@
 ---
 name: combat-simulation
-description: Use when reviewing, explaining, comparing or changing Hex Command AI policies, recruitment, planners or campaign behavior; running or analyzing combat simulations; or assessing roster balance, campaign competence or simulation performance. Read the policy roles and architecture guidance for AI reviews, and use the maintained simulation reports as evidence before diagnosing balance or competence.
+description: Use for Hex Command AI policy reviews or changes, combat simulations, and balance or campaign competence analysis.
 ---
 
 # Combat simulation

@@ -1,6 +1,6 @@
 ---
 name: pinkbox-enhancement
-description: Use when recoloring or redesigning existing Hex Command unit artwork, changing its pose, anatomy or equipment, creating upgrade artwork from an approved unit, or recoloring terrain floors. Preserve the approved baseline and shared pixel scale; use material-aware palette edits for recoloring and the generation workflow for new shapes.
+description: Use for recoloring or redesigning existing Hex Command units, creating upgrade artwork, or recoloring terrain floors.
 ---
 
 # Pinkbox enhancement
