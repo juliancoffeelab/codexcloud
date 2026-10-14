@@ -90,12 +90,13 @@ execution and phase snapshots. Turn transitions and journal encoding are exclude
 Policies can produce different states and turn counts, so these are whole-policy
 averages, not an isolated comparison on identical tactical positions.
 
-Full gameplay is saved directly to `.details.arrow` by default. Each outcome's
-checksummed byte range contains one standard Arrow IPC stream. Troop snapshots
+Full gameplay is saved to `.details.jsonl` by default. Use `--details arrow` for
+the compact Arrow journal. Each Arrow outcome's checksummed byte range contains
+one standard Arrow IPC stream. Troop snapshots
 use typed columns, ownership snapshots store owner codes against chapter tile
 identities, and ordered phase columns reference those dictionaries. JSON headers
 retain complete commands, combat records, objectives, campaign data and endpoints.
-No rounds or gameplay fields are omitted. Use `--details jsonl` for JSONL output.
+No rounds or gameplay fields are omitted in either format.
 The analyzer reads the compact `report.json` with either format.
 
 ## Interpret the panels
