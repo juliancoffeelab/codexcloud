@@ -16,9 +16,6 @@ spec = importlib.util.spec_from_file_location('report_combat', Path(__file__).pa
 report = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(report)
 
-runner_spec = importlib.util.spec_from_file_location('run_combat', Path(__file__).parents[1] / 'scripts/run-combat.py')
-runner = importlib.util.module_from_spec(runner_spec)
-runner_spec.loader.exec_module(runner)
 
 
 def match(seed, player='a', enemy='b', winner='player', reason='leader'):
@@ -217,27 +214,6 @@ class CompleteDataTests(unittest.TestCase):
                 tables = report.build_report([path], [path], Path(tmp)/'analytics')
             self.assertEqual(len(tables['policy_timings']), 2)
             self.assertIn('Chooser and phase CPU', output.getvalue())
-
-    def test_full_runner_separates_campaign_roles_and_runs_the_analyzer(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            out = Path(tmp)
-            calls = []
-            def invoke(command, **kwargs):
-                calls.append(command)
-                if 'ai:simulate' in command:
-                    (out/'report.json').write_text(json.dumps(dict(outcomes=[], elapsedSeconds=0)))
-            with patch.object(sys, 'argv', ['run-combat.py', '--out', str(out)]), \
-                 patch.object(runner.subprocess, 'run', side_effect=invoke), \
-                 contextlib.redirect_stdout(io.StringIO()):
-                runner.main()
-            native = calls[0]
-            self.assertEqual(native[native.index('--mode')+1], 'full')
-            self.assertEqual(native[native.index('--campaign-players')+1], 'mixed,priority')
-            self.assertEqual(native[native.index('--campaign-enemies')+1], 'classic')
-            self.assertEqual(native[native.index('--details')+1], 'jsonl')
-            self.assertIn('battler', native[native.index('--policies')+1])
-            self.assertTrue(calls[1][1].endswith('report-combat.py'))
-            self.assertEqual(calls[1][2], str(out/'report.json'))
 
     def test_invalid_and_duplicate_outcomes_and_unpaired_baselines_fail(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -1,16 +1,20 @@
 # Combat simulation implementation
 
-Read this when changing or debugging the native harness, Python runner or
+Read this when changing or debugging the native harness, report invocation or
 analyzer. Normal operation and report-first interpretation are in
 [usage.md](usage.md).
 
-The Rust harness owns scheduling, battle execution, campaign transitions and
-recording. `scripts/run-combat.py` supplies the current project's data directory,
-runs the requested panel, preserves native logs, then invokes
-`scripts/report-combat.py` on the saved results. The full default panel covers
-all arena policies and maps; campaign competence uses Mixed and Priority against
-the fixed Classic enemy. Campaign players are deliberately not the full arena
-policy list.
+`npm run ai:simulate` uses `cargo run --profile simulation` through the workspace
+toolchain helper. Cargo builds when needed and launches the Rust CLI directly.
+The Rust CLI owns defaults, scheduling, battle execution, campaign transitions,
+recording and report invocation. After a successful run it starts
+`scripts/report-combat.py` unless `--no-report` is set. Schedule inspection,
+replay and diagnostic protocols do not invoke the analyzer. Report failures
+preserve the raw simulation results and return a failure status.
+
+The default full panel covers all arena policies against Classic on every map;
+campaign competence uses Mixed and Priority against the fixed Classic enemy.
+Campaign players are deliberately not the full arena policy list.
 
 ## Report evidence and limits
 
@@ -56,14 +60,22 @@ side. Caps remain in denominators. Duplicate configurations and inconsistent
 winner/cap records fail analysis. Baseline comparisons require identical
 configurations. Timing and journal-file changes do not imply gameplay changes.
 
-The runner's default full reports use JSONL gameplay details. Direct native
-simulation can also record Arrow. The analyzer reads either format; PyArrow is
+The CLI defaults to JSONL gameplay details; `--details arrow` selects Arrow. The analyzer reads either format; PyArrow is
 needed only for Arrow diagnostics. It writes `findings.md`, `summary.md`,
 table CSVs and `metadata.json`. The report emits current findings to stdout and
 records analyzer elapsed time in `timings.json`. Native aggregate rows own seed-block
 confidence intervals; the analyzer does not calculate new intervals.
 
 ## Scheduling and execution
+
+The Rust CLI defaults to full mode at 10 seeds and fixed Classic opponents.
+Every selected arena policy faces Classic across all selected factions, seats
+and initiatives. Classic is added as an opponent even when absent from selected
+player policies. `--all-pairs` selects the full matrix and `--self-play` selects
+same-policy matchups. These defaults apply equally to npm and direct executable
+calls. `--out` accepts a directory or a raw `.json` report path; omission creates
+a fresh ignored artifact directory. `--baseline` is repeatable and requires
+report generation.
 
 Arena scheduling pairs `(race, policy)` entrants across seats and initiatives;
 identical entrants avoid duplicate seat permutations. Schedule order is
@@ -89,9 +101,8 @@ trace arrays from the typed result.
 
 ## Journals and checkpoints
 
-The final native report is schema 3. Direct simulation defaults to Arrow detail
-journals; `run-combat.py` requests JSONL for the default readable diagnostic
-workflow. Compact outcomes appear in canonical schedule order and retain byte
+The final native report is schema 3. The CLI defaults to JSONL detail journals for readable diagnostics;
+`--details arrow` selects Arrow. Compact outcomes appear in canonical schedule order and retain byte
 ranges and SHA-256 digests into their detail journal. Each Arrow range is an
 independently readable IPC stream tagged
 `arrow-ipc-snapshot-dictionaries-v2`. Row zero holds the match header and

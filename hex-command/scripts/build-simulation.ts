@@ -139,6 +139,12 @@ if (!existsSync(profile)) {
   run(
     join(instrumentedTarget, "release", "hex-command-sim" + suffix),
     [
+      "--no-report",
+      "--all-pairs",
+      "--campaign-players",
+      "classic,rush,mixed,priority",
+      "--campaign-enemies",
+      "classic,rush,mixed,priority",
       "--mode",
       "full",
       "--seeds",

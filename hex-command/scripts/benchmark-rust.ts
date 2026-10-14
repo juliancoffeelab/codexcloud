@@ -33,7 +33,22 @@ const alternate = args.includes("--alternate");
 const schedule = JSON.parse(
   execFileSync(
     binary,
-    ["--schedule-only", "--mode", "full", "--seeds", "1", "--seed", alternate ? "29" : "17"],
+    [
+      "--schedule-only",
+      "--mode",
+      "full",
+      "--all-pairs",
+      "--policies",
+      "classic,rush,mixed",
+      "--campaign-players",
+      "classic,rush,mixed",
+      "--campaign-enemies",
+      "classic,rush,mixed",
+      "--seeds",
+      "1",
+      "--seed",
+      alternate ? "29" : "17",
+    ],
     { cwd, encoding: "utf8", maxBuffer: 16 * 1024 * 1024 },
   ),
 ) as { configs: Config[] };

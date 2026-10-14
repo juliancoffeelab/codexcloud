@@ -58,9 +58,9 @@ that an actor's death was unavoidable.
 
 Follow the user's requested races, maps, policies, seeds and limits. When they
 do not specify scope, strongly prefer the complete role-appropriate panel over
-an isolated duel or a hand-picked subset. The default full panel covers all five current
-arena tactics and every map, plus campaign competence for the simulation-player
-policies Mixed and Priority against the fixed Classic enemy. Campaign runs use
+an isolated duel or a hand-picked subset. The default full panel covers all five
+current arena tactics against Classic on every map, plus campaign competence for
+the simulation-player policies Mixed and Priority against the fixed Classic enemy. Campaign runs use
 authored rosters and objectives. Do not treat Classic or Rush player campaign
 failures as competence regressions; they are not the campaign simulation
 players. Classic remains the fixed campaign opponent and all requested policies
@@ -69,7 +69,7 @@ remain in the arena panel.
 Use recorded report metadata and composition summaries to establish coverage.
 Inspect `rust/data/simulation/rosters.json` and `arena.json` only when preparing
 a changed panel or resolving participation information missing from the report.
-Campaigns use their authored rosters. Artwork lineups do not establish participation. Use `ai:schedule` to inspect the exact configurations
+Campaigns use their authored rosters. Artwork lineups do not establish participation. Use `ai:simulate -- --schedule-only` to inspect the exact configurations
 and counts when useful. State the panel and completed count before drawing
 conclusions.
 
@@ -80,10 +80,10 @@ including after analyzer changes. Use the full runner below. Use only the analyz
 when the user explicitly asks to analyze or regenerate a particular saved run;
 available results from an earlier review do not replace a requested simulation.
 
-Use the full runner, which saves the native run and automatically analyzes it:
+Use the single simulation command, which saves the run and automatically analyzes it:
 
 ```sh
-npm run ai:full -- --out artifacts/current
+npm run ai:simulate -- --out artifacts/current
 ```
 
 This builds the native harness when needed, runs the default complete panel,
@@ -92,17 +92,18 @@ For an explicitly requested campaign-only panel, keep Mixed and Priority
 as players and Classic as enemy:
 
 ```sh
-npm run ai:combat -- --mode campaign --campaign-players mixed,priority \
+npm run ai:simulate -- --mode campaign --campaign-players mixed,priority \
   --campaign-enemies classic --seeds 10 --out artifacts/current
 ```
 
-Both entry points build the native binary when needed. Use `ai:full` for the
-standard panel and `ai:combat` to pass explicit scope or limits. Preserve each run
+`ai:simulate` uses `cargo run` to build when needed, run the selected panel and generate
+the readable report by default. Use `--no-report` to retain raw results without
+analysis. With no `--out`, it creates a fresh ignored artifact directory. Preserve each run
 in a fresh ignored artifact directory, record its engine/data fingerprint, and
 include an explicit `--data-dir` when simulating another checkout. The runner
 defaults to the current catalog.
 
-The runner prints coverage, compact race-by-map and campaign tables, then stage
+The command prints coverage, compact race-by-map and campaign tables, then stage
 diagnostics and detailed arena matrices automatically. Use that returned report
 first; do not issue extra reads when it already answers the question. Read
 `analytics/findings.md` and `analytics/summary.md` internally when the returned
