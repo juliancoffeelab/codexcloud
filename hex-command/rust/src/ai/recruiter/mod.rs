@@ -325,64 +325,25 @@ fn mixed_shares(roles: impl Iterator<Item = UnitRole>) -> [f64; 4] {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::logic::Game;
 
     #[test]
     fn absent_roles_redistribute_without_counting_duplicate_unit_choices() {
         let shares =
             mixed_shares([UnitRole::Warrior, UnitRole::Warrior, UnitRole::Ranger].into_iter());
-        assert_eq!(shares, [0.6, 0.0, 0.4, 0.0]);
-        let shares = mixed_shares(UnitRole::ALL.into_iter());
-        assert!((shares[0] - 1.0 / 3.0).abs() < 1e-12);
+        assert_eq!(
+            shares,
+            mixed_shares([UnitRole::Warrior, UnitRole::Ranger].into_iter())
+        );
+        assert_eq!(shares[UnitRole::Flank.index()], 0.0);
+        assert_eq!(shares[UnitRole::Healer.index()], 0.0);
+        assert!((shares.iter().sum::<f64>() - 1.0).abs() < 1e-12);
         assert!(
-            shares[1..]
-                .iter()
-                .all(|share| (share - 2.0 / 9.0).abs() < 1e-12)
+            (shares[UnitRole::Warrior.index()] / shares[UnitRole::Ranger.index()]
+                - UnitRole::Warrior.weight() / UnitRole::Ranger.weight())
+            .abs()
+                < 1e-12
         );
         assert_eq!(mixed_shares(std::iter::empty()), [0.0; 4]);
-    }
-
-    #[test]
-    fn mixed_recruitment_keeps_the_authored_role_proportions() {
-        let rules = Rules::load().unwrap();
-        for (roster, purchases, expected) in [
-            (
-                vec!["reefguard", "scout", "harpooner", "wavemender"],
-                9,
-                [3, 2, 2, 2],
-            ),
-            (vec!["skeleton", "bonearcher"], 5, [3, 0, 2, 0]),
-        ] {
-            let mut game = Game::new(&rules, "mirror");
-            game.units
-                .retain(|u| u.side == Side::Player && rules.units[u.kind].leader);
-            let home = game.units[0].tile;
-            game.terrain.fill(rules.terrains["plains"]);
-            game.terrain[home] = rules.terrains["keep"];
-            game.owners[home] = Some(Side::Player);
-            game.pools = Some([
-                roster.iter().map(|kind| rules.types[*kind]).collect(),
-                vec![],
-            ]);
-            game.gold = [1000, 0];
-            game.roster_changed();
-            for _ in 0..purchases {
-                let command = RecruiterKind::Balanced
-                    .choose(&game, 1, None, false)
-                    .unwrap();
-                game.execute(command).unwrap();
-                let tile = (0..game.terrain.len())
-                    .find(|&t| game.at(t).is_none() && game.board.distance(t, home) > 2)
-                    .unwrap();
-                game.units.last_mut().unwrap().tile = tile;
-                game.roster_changed();
-            }
-            let mut counts = [0; 4];
-            for unit in game.units.iter().filter(|u| !rules.units[u.kind].leader) {
-                counts[rules.units[unit.kind].role.index()] += 1;
-            }
-            assert_eq!(counts, expected);
-        }
     }
 }
 

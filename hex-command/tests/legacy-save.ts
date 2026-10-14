@@ -1,8 +1,10 @@
 /** Fixtures for published version-one saves; never used by the browser. */
 import { Game } from "./game-fixture";
-import type { LiveGame } from "../src/game/live-game";
-import { migrateSave } from "../src/save/migrations";
+import { nativeValue, type LiveGame } from "../src/game/live-game";
+import { loadBattle as loadCurrent } from "../src/save/load";
 import { saveBattle as writeCurrent } from "../src/save/write";
+import { createTestFactory } from "./native-fixture";
+import type { SavedGame } from "../rust/pkg/hex_command";
 export { importWaveMarker } from "../src/save/migrations/legacy/snapshot";
 export { SAVE_KEY } from "../src/save/storage";
 import { SAVE_KEY } from "../src/save/storage";
@@ -30,11 +32,15 @@ export function saveBattle(game: Game | LiveGame, pendingEnemy = false): void {
   );
 }
 export function loadBattle() {
+  const loaded = loadCurrent(createTestFactory());
   try {
-    const { save } = migrateSave(JSON.parse(localStorage.getItem(SAVE_KEY) ?? "null"));
-    const game = Game.fromCheckpoint(save.checkpoint);
-    return { game, pendingEnemy: save.pendingEnemy };
-  } catch {
-    return { game: new Game(), pendingEnemy: false };
+    return {
+      game: Game.fromCheckpoint(
+        structuredClone(nativeValue(loaded.game.checkpoint())) as SavedGame,
+      ),
+      pendingEnemy: loaded.pendingEnemy,
+    };
+  } finally {
+    loaded.game.dispose();
   }
 }

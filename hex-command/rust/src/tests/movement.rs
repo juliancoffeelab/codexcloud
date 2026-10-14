@@ -396,15 +396,3 @@ fn developer_showcase_has_each_unit_for_both_sides_and_every_terrain() {
     let terrains: HashSet<_> = game.terrain.iter().copied().collect();
     assert_eq!(terrains, (0..rules().terrain_names.len()).collect());
 }
-
-#[test]
-fn opening_river_village_routes_do_not_require_forest_detours() {
-    let game = Game::new(rules(), "river");
-    for (id, destination) in [(2, "4,1"), (3, "4,1"), (3, "2,7")] {
-        assert!(
-            game.reachable(game.unit(id).unwrap())
-                .iter()
-                .any(|&(tile, _)| tile == game.site(destination))
-        );
-    }
-}

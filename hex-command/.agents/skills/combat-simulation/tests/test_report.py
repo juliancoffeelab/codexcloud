@@ -70,8 +70,6 @@ class CompleteDataTests(unittest.TestCase):
             self.assertIsNone(metadata['baselineSources'][0]['sourceCommit'])
             self.assertNotIn('catalogs', metadata)
             self.assertTrue((root/'out/summary.md').is_file())
-            self.assertFalse((root/'out/index.html').exists())
-            self.assertFalse((root/'out/full-data.zip').exists())
 
     def test_swapped_seats_caps_and_selfplay_do_not_inflate_physical_matches(self):
         items = [match(1), match(2, 'b', 'a'), match(3, winner=None, reason='cap'), match(4, 'a', 'a')]

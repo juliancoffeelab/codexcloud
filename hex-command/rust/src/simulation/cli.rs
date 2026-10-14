@@ -23,7 +23,7 @@ use std::{
     time::Instant,
 };
 
-const HELP: &str = "Usage: hex-command-sim [options]\n  --mode arena|campaign|full      default arena\n  --seeds N --seed N              count (default 2) and first seed (default 1)\n  --seed-start N                  alias for --seed\n  --policies classic,rush,mixed,priority,battler\n  --armies human,woodland,undead,coastal\n  --landscapes open,wooded,crossings,islands\n  --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide\n  --campaign-players mixed,priority  independent campaign player tactics\n  --campaign-enemies classic       independent campaign enemy tactics\n  --rounds N --recruits N         bounded rounds (default 30), recruits/phase (default 1)\n  --diplomacy pragmatic,restrained campaign behavior settings\n  --workers N                    scoped thread pool, CPU quota default, maximum 8\n  --out PATH                     JSON report and readable Markdown report\n  --details arrow|jsonl         lossless gameplay journal (default arrow)\n  --self-play                    arena games use the same policy on both sides\n  --profile-turns                report policy mean decision and complete-phase CPU time\n  --trace                        also retain raw match results\n  --replay PATH                  verify saved report details and results (strict fingerprint)\n  --data-dir PATH                authored JSON catalog root (HEX_COMMAND_DATA_ROOT also works)\n  --schedule-only                emit configurations without running any matches\n  --stdio                        compatibility JSON request/result line protocol\n  --phase-stdio                  saved-position own-phase profiling protocol\n  --fingerprint                  compiled content and engine SHA256 fingerprints\nArena entrants have both seats and both initiatives; self-play has both initiatives.\nCampaigns begin at chapter one, earn carryover and receive no retries. Caps remain unresolved.";
+const HELP: &str = "Usage: hex-command-sim [options]\n  --mode arena|campaign|full      default arena\n  --seeds N --seed N              count (default 2) and first seed (default 1)\n  --policies classic,rush,mixed,priority,battler\n  --armies human,woodland,undead,coastal\n  --landscapes open,wooded,crossings,islands\n  --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide\n  --campaign-players mixed,priority  independent campaign player tactics\n  --campaign-enemies classic       independent campaign enemy tactics\n  --rounds N --recruits N         bounded rounds (default 30), recruits/phase (default 1)\n  --diplomacy pragmatic,restrained campaign behavior settings\n  --workers N                    scoped thread pool, CPU quota default, maximum 8\n  --out PATH                     JSON report and readable Markdown report\n  --details arrow|jsonl         lossless gameplay journal (default arrow)\n  --self-play                    arena games use the same policy on both sides\n  --profile-turns                report policy mean decision and complete-phase CPU time\n  --trace                        also retain raw match results\n  --replay PATH                  verify saved report details and results (strict fingerprint)\n  --data-dir PATH                authored JSON catalog root (HEX_COMMAND_DATA_ROOT also works)\n  --schedule-only                emit configurations without running any matches\n  --stdio                        JSON match request/result line protocol\n  --phase-stdio                  saved-position own-phase profiling protocol\n  --fingerprint                  compiled content and engine SHA256 fingerprints\nArena entrants have both seats and both initiatives; self-play has both initiatives.\nCampaigns begin at chapter one, earn carryover and receive no retries. Caps remain unresolved.";
 #[derive(Debug)]
 struct CliOptions {
     schedule: ScheduleOptions,
@@ -84,7 +84,6 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
         "--mode",
         "--seeds",
         "--seed",
-        "--seed-start",
         "--policies",
         "--campaign-players",
         "--campaign-enemies",
@@ -97,7 +96,6 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
         "--workers",
         "--out",
         "--replay",
-        "--engine",
         "--details",
     ];
     while index < args.len() {
@@ -125,15 +123,6 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
         }
         index += 1;
     }
-    if values
-        .get("--engine")
-        .is_some_and(|engine| engine != "rust")
-    {
-        return Err("Native harness supports --engine rust".into());
-    }
-    if values.contains_key("--seed") && values.contains_key("--seed-start") {
-        return Err("Specify one of --seed or --seed-start".into());
-    }
     if switches.contains("--schedule-only") && values.contains_key("--replay") {
         return Err("--schedule-only cannot be combined with --replay".into());
     }
@@ -144,17 +133,7 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
         "full" => Mode::Full,
         _ => return Err("Unknown simulation mode; use arena, campaign or full".into()),
     };
-    options.first_seed = flag_integer(
-        &values,
-        if values.contains_key("--seed-start") {
-            "--seed-start"
-        } else {
-            "--seed"
-        },
-        1,
-        0,
-        2147483647,
-    )?;
+    options.first_seed = flag_integer(&values, "--seed", 1, 0, 2147483647)?;
     options.seeds = flag_integer(&values, "--seeds", 2, 1, 10000)?;
     options.self_play = switches.contains("--self-play");
     if options.self_play && options.mode != Mode::Arena {

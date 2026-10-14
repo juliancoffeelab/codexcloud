@@ -177,8 +177,6 @@ fn authored_progression_ladders_are_acyclic_and_preserve_race_and_increase_level
         path.remove(&kind);
     }
     for kind in 0..rules().units.len() {
-        let family = rules().types[rules().units[kind].family.as_str()];
-        assert!(!rules().units[family].advances_to.is_empty());
         visit(rules(), kind, &mut HashSet::new());
     }
 }

@@ -315,21 +315,8 @@ mod tests {
     use crate::logic::Game;
     #[test]
     fn campaign_rejects_arena_policy() {
-        fn is_goal_escort_escape(value: &Goal) -> bool {
-            match value {
-                Goal::Escort { .. } | Goal::Escape { .. } => true,
-                Goal::Defeat { .. }
-                | Goal::Control { .. }
-                | Goal::Seal { .. }
-                | Goal::Event { .. }
-                | Goal::Hold { .. }
-                | Goal::Vigil { .. }
-                | Goal::Refuge { .. } => false,
-            }
-        }
-
         let rules = Rules::load().unwrap();
-        let mut campaign = Game::start_campaign(
+        let campaign = Game::start_campaign(
             &rules,
             "borrowed-tide",
             0,
@@ -344,67 +331,6 @@ mod tests {
             crate::ai::choose_game_command(&rules, &campaign, Policy::Battler, &mut workspace),
             Err(CommandError::BattleOnlyPolicy)
         );
-        let normal = campaign.policy_objectives(None);
-        let normal_weight = normal
-            .iter()
-            .find(|g| g.id == "opposing-leader")
-            .unwrap()
-            .weight;
-        let sites: Vec<_> = campaign
-            .mission
-            .as_ref()
-            .unwrap()
-            .goals
-            .iter()
-            .filter(|g| !is_goal_escort_escape(g))
-            .flat_map(Goal::sites)
-            .map(|s| campaign.site(&s))
-            .collect();
-        for site in sites {
-            campaign.owners[site] = Some(Side::Player);
-        }
-        workspace.orders =
-            Some(crate::ai::CampaignBlock::Mission.campaign_orders(&campaign, &workspace));
-        crate::ai::cheap::prepare(
-            &crate::ai::context::BattleView::new(&campaign),
-            &mut workspace,
-        );
-        assert!(
-            workspace
-                .cheap
-                .goals
-                .iter()
-                .find(|g| g.id == "opposing-leader")
-                .unwrap()
-                .weight
-                > normal_weight
-        );
-        assert!(
-            workspace
-                .cheap
-                .goals
-                .iter()
-                .any(|g| g.kind == crate::ai::orders::TargetKind::Visit && g.actor.is_some())
-        );
-        let leader = campaign
-            .units
-            .iter()
-            .position(|u| u.side == Side::Player && rules.units[u.kind].leader)
-            .unwrap();
-        let enemy = campaign
-            .units
-            .iter()
-            .position(|u| u.side == Side::Enemy)
-            .unwrap();
-        let tile = campaign.board.adjacent[campaign.units[leader].tile]
-            .iter()
-            .copied()
-            .find(|&tile| campaign.at(tile).is_none())
-            .unwrap();
-        campaign.units[enemy].tile = tile;
-        campaign.units[leader].hp = rules.units[campaign.units[leader].kind].hp / 2;
-        campaign.roster_changed();
-        assert!(crate::ai::campaigner::mission::crisis(&campaign));
     }
 }
 

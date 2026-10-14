@@ -32,9 +32,9 @@ npm run preview
 `npm run verify` runs automatic formatting, content validation, WASM bindings,
 UI and TypeScript checks, artwork validation, all tests and the production build.
 Independent checks continue after failures and report their statuses together.
-Select groups as shown above. Legacy `style` selects formatting; focused `rust`
-selects native tests. The combined test group already includes Rust, so
-verification does not run it twice.
+Select groups as shown above. Focused `rust` selects native tests. The combined
+test group already includes Rust, so verification does not run it twice.
+UI and TypeScript groups share one WASM binding build during verification.
 
 `npm test` runs Rust, Python artwork/analyzer tests and Vitest under one shared
 20-second duration target. Slow runs warn and continue; only failed tests fail

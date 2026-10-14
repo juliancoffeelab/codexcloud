@@ -39,12 +39,12 @@ impl CampaignBlock {
     ) -> CampaignOrders {
         let restrained = self.restrained(game, workspace);
         let campaign = game.campaign.is_some();
-        let legacy_targets = match self {
+        let authored_targets = match self {
             Self::Mission => self.goals(game, workspace.goals.as_deref()),
             Self::Arena => individual(game.policy_objectives(workspace.goals.as_deref())),
         };
         let mut tactics = TacticalOrders {
-            targets: legacy_targets.iter().cloned().map(Target::from).collect(),
+            targets: authored_targets.iter().cloned().map(Target::from).collect(),
             restrained,
             campaign,
             protect_withdrawal: game.protects_withdrawal(game.turn, restrained),
@@ -107,10 +107,9 @@ impl CampaignBlock {
             .filter(|unit| unit.side == game.turn && game.rules.units[unit.kind].leader)
         {
             let escaping = tactics.targets.iter().any(|target| {
-                legacy_targets
-                    .iter()
-                    .any(|legacy| legacy.id == target.id && legacy.kind == ObjectiveKind::Escape)
-                    && actor_matches(&target.actor, unit.id)
+                authored_targets.iter().any(|authored| {
+                    authored.id == target.id && authored.kind == ObjectiveKind::Escape
+                }) && actor_matches(&target.actor, unit.id)
             });
             let (_, intent) = game.leader_rebuild_plan(unit.id, escaping);
             tactics.leader_intents.push((UnitId(unit.id), intent));
@@ -205,7 +204,7 @@ impl CampaignBlock {
                 .map(|u| UnitId(u.id))
                 .collect();
         }
-        for target in &legacy_targets {
+        for target in &authored_targets {
             if !actor_route(target) || target.id.starts_with("rebuild:") {
                 continue;
             }
@@ -288,7 +287,7 @@ impl CampaignBlock {
                 });
             }
             for destination in &target.tiles {
-                if game.finishes_objective(actor, game.site(destination), &legacy_targets) {
+                if game.finishes_objective(actor, game.site(destination), &authored_targets) {
                     tactics
                         .terminal_arrivals
                         .push((actor_id, TileId(destination.clone())));
@@ -904,21 +903,6 @@ pub(in crate::ai) fn heavy_campaign(game: &Game<'_>) -> bool {
             })
     })
 }
-#[cfg(test)]
-pub(in crate::ai) fn crisis(game: &Game<'_>) -> bool {
-    if heavy_campaign(game) {
-        return game.turn == Side::Player;
-    }
-    game.turn == Side::Player
-        && game.campaign.is_some()
-        && game.units.iter().any(|u| {
-            u.side == Side::Player
-                && game.essential(u)
-                && u.hp * 2 <= game.rules.units[u.kind].hp
-                && BattleView::new(game).proximity(u.side, u.tile) <= 5
-        })
-}
-
 pub(in crate::ai) fn restrained(game: &Game<'_>, workspace: &PlanningWorkspace) -> bool {
     workspace.diplomacy == crate::ai::Diplomacy::Restrained
         || !heavy_campaign(game)

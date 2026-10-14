@@ -39,7 +39,7 @@ pub struct CampaignConfig {
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(untagged)]
-/// Native runner input; serialized shape remains compatible with saved TS runs.
+/// Typed native runner input shared by scheduling, replay and profiling clients.
 pub enum MatchConfig {
     Campaign(CampaignConfig),
     Arena(ArenaConfig),

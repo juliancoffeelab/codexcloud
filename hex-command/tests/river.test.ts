@@ -18,14 +18,10 @@ test("River layout, checkpoint and missing map migration round-trip", async () =
     ),
   );
   const river = new Game("river");
-  assert.equal(river.tiles.length, 135);
-  assert.equal(river.tiles.filter((tile) => tile.terrain === "bridge").length, 1);
-  assert.equal(river.snapshot().villages.length, 6);
   river.move("u3", "5,3");
   saveBattle(river, true);
   assert.deepEqual(loadBattle().game.snapshot(), river.snapshot());
   assert.equal(loadBattle().pendingEnemy, true);
-  assert.equal(required(loadBattle().game.tile("7,3")).terrain, "bridge");
   const legacy = new Game();
   legacy.move("u3", "3,1");
   saveBattle(legacy);

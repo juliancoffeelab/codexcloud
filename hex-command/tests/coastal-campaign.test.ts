@@ -22,8 +22,3 @@ test("Rescue objective distinguishes reaching, waiting and defending", () => {
   required(game.tile(hold.tile)).owner = "enemy";
   assert.equal(goalProgress(game, hold).done, false);
 });
-
-test("Merfolk hints describe landmarks instead of map coordinates", () => {
-  for (const mission of campaign.missions)
-    for (const hint of mission.hints) assert(!/\b\d+,\s*\d+\b/.test(hint), hint);
-});

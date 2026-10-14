@@ -267,7 +267,6 @@ pub(crate) fn choose_game_command(
 }
 
 impl Game<'_> {
-    #[allow(dead_code)] // Compact native adapter; other hosts consume one decision at a time.
     pub(crate) fn play_policy(
         &mut self,
         policy: Policy,

@@ -43,7 +43,7 @@ fn hash_number(mut hash: u32, mut number: u32) -> u32 {
     }
     hash
 }
-/// Hash exactly the historical UTF-16 key without allocating formatted strings.
+/// Hash the action key without allocating formatted strings.
 pub(in crate::ai) fn action_jitter(
     seed: u32,
     round: u32,
@@ -1071,11 +1071,15 @@ mod tests {
         }
     }
     #[test]
-    fn random_stream_and_utf16_jitter_remain_stable() {
-        let mut random = Random(1);
-        for expected in [2693262067u32, 11749833, 2265367787] {
-            assert_eq!(random.next(), expected as f64 / 4294967296.0);
+    fn seeded_random_is_reproducible_and_bounded() {
+        for seed in [0, 1, u32::MAX] {
+            let mut left = Random(seed);
+            let mut right = Random(seed);
+            for _ in 0..32 {
+                let value = left.next();
+                assert_eq!(value, right.next());
+                assert!((0.0..1.0).contains(&value));
+            }
         }
-        assert_eq!(jitter(19, "😀"), 3961270494u32 as f64 / 4294967296.0 * 0.05);
     }
 }

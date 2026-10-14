@@ -16,21 +16,24 @@ test("Combat XP and promotion preserve wounds, identity and immutable publicatio
   game.units = [];
   const attacker = game.addUnit("swordsman", "player", "3,3");
   const defender = game.addUnit("archer", "enemy", "4,3");
+  const promotion = required(TYPES.swordsman.advancesTo?.[0]);
+  const threshold = required(TYPES.swordsman.experienceNeeded);
   attacker.hp = TYPES.swordsman.hp - 4;
-  defender.hp = 3;
+  defender.hp = 1;
   game.attack(attacker.id, defender.id, "sword");
-  assert.equal(attacker.experience, 6);
+  assert.equal(attacker.experience, Math.min(threshold, 6 * (TYPES[defender.type].level ?? 1)));
+  attacker.experience = threshold - 1;
   assert.deepEqual(game.promotionOptions(attacker.id), []);
-  attacker.experience = 10;
+  attacker.experience = threshold;
   attacker.moved = attacker.attacked = false;
   const before = createGameView(game);
   const beforePromotion = game.snapshot();
-  assert.deepEqual(before.promotionOptions(attacker.id), ["soldier"]);
-  game.advanceUnit(attacker.id, "soldier");
+  assert(before.promotionOptions(attacker.id).includes(promotion));
+  game.advanceUnit(attacker.id, promotion);
   const feedback = describeChanges(beforePromotion, game.snapshot());
   assert(feedback.advanced);
   assert.equal(feedback.attacked, false, "Promotion must not replay the prior combat cue");
-  assert.equal(attacker.hp, TYPES.soldier.hp - 4, "Promotion preserves all four wounds");
+  assert.equal(attacker.hp, TYPES[promotion].hp - 4, "Promotion preserves all four wounds");
   assert.equal(attacker.id, before.units[0]!.id);
   assert.equal(attacker.experience, 0);
   assert(attacker.moved && attacker.attacked);
@@ -39,7 +42,7 @@ test("Combat XP and promotion preserve wounds, identity and immutable publicatio
     "swordsman",
     "Published progression remains immutable",
   );
-  assert.throws(() => game.advanceUnit(attacker.id, "soldier"), /IllegalAdvance/);
+  assert.throws(() => game.advanceUnit(attacker.id, promotion), /IllegalAdvance/);
 });
 
 test("Progressed campaign units persist and invalid XP is rejected", async () => {
@@ -52,10 +55,10 @@ test("Progressed campaign units persist and invalid XP is rejected", async () =>
   const recruit = required(
     campaign.units.find((unit) => unit.type === "reefguard" && unit.side === "player"),
   );
-  recruit.experience = 10;
-  campaign.advanceUnit(recruit.id, "tridentguard");
-  leader.experience = 18;
-  campaign.advanceUnit(leader.id, "tideseer");
+  recruit.experience = required(TYPES[recruit.type].experienceNeeded);
+  campaign.advanceUnit(recruit.id, required(TYPES[recruit.type].advancesTo?.[0]));
+  leader.experience = required(TYPES[leader.type].experienceNeeded);
+  campaign.advanceUnit(leader.id, required(TYPES[leader.type].advancesTo?.[0]));
   const pilot = required(campaign.units.find((unit) => unit.name === "Edda"));
   pilot.experience = 7;
   campaign.winner = "player";
@@ -64,19 +67,20 @@ test("Progressed campaign units persist and invalid XP is rejected", async () =>
   assert.equal(loadBattle().game.campaign?.id, "borrowed-tide");
   assert.deepEqual(loadBattle().game.units, next.units);
   const saved = JSON.parse(required(localStorage.getItem(SAVE_KEY)));
-  saved.state.units[0].experience = -1;
+  saved.checkpoint.state.units[0].experience = -1;
   localStorage.setItem(SAVE_KEY, JSON.stringify(saved));
   assert.equal(loadBattle().game.mapId, "mirror");
 });
 test("Promoted skirmish leaders survive reload", async () => {
   const classic = new Game();
   const commander = required(classic.unit("u1"));
-  commander.experience = 18;
-  classic.advanceUnit(commander.id, "marshal");
+  const promotion = required(TYPES[commander.type].advancesTo?.[0]);
+  commander.experience = required(TYPES[commander.type].experienceNeeded);
+  classic.advanceUnit(commander.id, promotion);
   saveBattle(classic);
   assert.equal(
     loadBattle().game.unit("u1")?.type,
-    "marshal",
+    promotion,
     "Promoted leaders survive reload outside campaigns",
   );
 });

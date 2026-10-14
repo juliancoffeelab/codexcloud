@@ -1,4 +1,4 @@
-use crate::{ai::Random, data::*, logic::Game};
+use crate::{data::*, logic::Game};
 use std::sync::OnceLock;
 fn rules() -> &'static Rules {
     static RULES: OnceLock<Rules> = OnceLock::new();
@@ -76,14 +76,6 @@ fn routing_cache_tracks_terrain_changes() {
     assert_eq!(game.routes(kind, &[goal])[start], 1);
     game.set_terrain(goal, game.rules.terrains["water"]);
     assert_eq!(game.routes(kind, &[goal])[start], u16::MAX);
-}
-#[test]
-fn seeded_random_matches_js_wrapping() {
-    let mut random = Random(17);
-    let expected = [0.6771502960473299, 0.19265692122280598, 0.5313839064911008];
-    for value in expected {
-        assert_eq!(random.next(), value);
-    }
 }
 #[test]
 fn invalid_commands_are_atomic_and_records_remain_owned() {

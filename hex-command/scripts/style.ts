@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import { toolchainEnvironment } from "../.agents/skills/rust-toolchain/scripts/toolchain-env";
 
 const args = process.argv.slice(2);
-if (args.some((arg) => arg !== "--write")) {
+if (args.length) {
   console.error("Usage: npm run format");
   process.exit(1);
 }

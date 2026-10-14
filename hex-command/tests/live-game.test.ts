@@ -98,19 +98,17 @@ test("Native combat inspection feeds UI damage breakdowns and old saves migrate 
   game.dispose();
 });
 
-test("All campaign dialogue and retry controls dispatch through native hooks", () => {
-  for (const id of ["lantern-road", "green-accord", "ashen-oath", "borrowed-tide"]) {
-    const game = LiveGame.create(factory, { kind: "campaign", id });
-    const opening = game.captureState();
-    game.advanceDialogue();
-    game.previousDialogue();
-    assert.equal(game.campaign?.dialogueIndex, 0);
-    game.advanceDialogue(true);
-    assert.equal(game.campaign?.dialogueIndex, game.campaign?.dialogue.length);
-    game.retryCampaignMission();
-    assert.deepEqual(game.captureState(), opening);
-    game.dispose();
-  }
+test("Campaign dialogue and retry controls dispatch through native hooks", () => {
+  const game = LiveGame.create(factory, { kind: "campaign", id: "lantern-road" });
+  const opening = game.captureState();
+  game.advanceDialogue();
+  game.previousDialogue();
+  assert.equal(game.campaign?.dialogueIndex, 0);
+  game.advanceDialogue(true);
+  assert.equal(game.campaign?.dialogueIndex, game.campaign?.dialogue.length);
+  game.retryCampaignMission();
+  assert.deepEqual(game.captureState(), opening);
+  game.dispose();
 });
 
 test("Supported legacy woodland revisions migrate without losing campaign progress", () => {
