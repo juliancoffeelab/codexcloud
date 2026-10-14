@@ -24,7 +24,7 @@ use std::{
     time::{Instant, SystemTime, UNIX_EPOCH},
 };
 
-const HELP: &str = "Usage: hex-command-sim [options]\n  --mode arena|campaign|full      default full\n  --with recruiter,campaigner,planner  add custom tactic; - uses workload defaults\n  --seeds N --seed N              count (default 10) and first seed (default 1)\n  --policies classic,rush,balanced\n  --armies human,woodland,undead,coastal\n  --landscapes open,wooded,crossings,islands\n  --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide\n  --campaign-players balanced  independent campaign player tactics\n  --campaign-enemies classic       independent campaign enemy tactics\n  --rounds N --recruits N         bounded rounds (default arena 30, campaign 100), explicit recruits/phase override\n  --diplomacy pragmatic,restrained filter authored player diplomacy modes\n  --workers N                    scoped thread pool, CPU quota default, maximum 8\n  --out PATH                     Output directory or .json file (default fresh artifacts/simulation-* directory)\n  --no-report                  retain raw results without running the report analyzer\n  --details arrow|jsonl         lossless gameplay journal (default jsonl)\n  --all-pairs                    full arena policy matrix instead of facing Classic\n  --baseline PATH                compare report to a saved run (repeatable)\n  --vs-classic                   arena players face Classic (default); both seats/initiatives\n  --self-play                    arena games use the same policy on both sides\n  --profile-turns                report policy mean decision and complete-phase CPU time\n  --trace                        also retain raw match results\n  --replay PATH                  verify saved report details and results (strict fingerprint)\n  --data-dir PATH                authored JSON catalog root (HEX_COMMAND_DATA_ROOT also works)\n  --schedule-only                emit configurations without running any matches\n  --stdio                        JSON match request/result line protocol\n  --phase-stdio                  saved-position own-phase profiling protocol\n  --fingerprint                  compiled content and engine SHA256 fingerprints\nArena entrants have both seats and both initiatives; self-play has both initiatives.\nRecruitment defaults: Classic 2 per phase; other policies uncapped.\nCampaigns begin at chapter one, earn carryover and receive no retries. Caps remain unresolved.";
+const HELP: &str = "Usage: hex-command-sim [options]\n  --mode arena|campaign|full      default full\n  --with recruiter,campaigner,planner  add custom tactic; - uses workload defaults\n  --seeds N --seed N              count (default 10) and first seed (default 1)\n  --policies classic,rush,balanced,rotated\n  --armies human,woodland,undead,coastal\n  --landscapes open,wooded,crossings,islands\n  --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide\n  --campaign-players balanced,rotated  independent campaign player tactics\n  --campaign-enemies classic       independent campaign enemy tactics\n  --rounds N --recruits N         bounded rounds (default arena 30, campaign 100), explicit recruits/phase override\n  --diplomacy pragmatic,restrained filter authored player diplomacy modes\n  --workers N                    scoped thread pool, CPU quota default, maximum 8\n  --out PATH                     Output directory or .json file (default fresh artifacts/simulation-* directory)\n  --no-report                  retain raw results without running the report analyzer\n  --details arrow|jsonl         lossless gameplay journal (default jsonl)\n  --all-pairs                    full arena policy matrix instead of facing Classic\n  --baseline PATH                compare report to a saved run (repeatable)\n  --vs-classic                   arena players face Classic (default); both seats/initiatives\n  --self-play                    arena games use the same policy on both sides\n  --profile-turns                report policy mean decision and complete-phase CPU time\n  --trace                        also retain raw match results\n  --replay PATH                  verify saved report details and results (strict fingerprint)\n  --data-dir PATH                authored JSON catalog root (HEX_COMMAND_DATA_ROOT also works)\n  --schedule-only                emit configurations without running any matches\n  --stdio                        JSON match request/result line protocol\n  --phase-stdio                  saved-position own-phase profiling protocol\n  --fingerprint                  compiled content and engine SHA256 fingerprints\nArena entrants have both seats and both initiatives; self-play has both initiatives.\nRecruitment defaults: Classic 2 per phase; other policies uncapped.\nCampaigns begin at chapter one, earn carryover and receive no retries. Caps remain unresolved.";
 #[derive(Debug)]
 struct CliOptions {
     schedule: ScheduleOptions,
@@ -247,7 +247,9 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
                     .policies
                     .iter()
                     .copied()
-                    .filter(|p| *p == crate::ai::Policy::Balanced)
+                    .filter(|p| {
+                        matches!(p, crate::ai::Policy::Balanced | crate::ai::Policy::Rotated)
+                    })
                     .collect();
                 if players.is_empty() {
                     return Err("No campaign simulation players selected; use --mode arena or explicit --campaign-players".into());
@@ -897,6 +899,11 @@ mod tests {
         )
         .unwrap()
         .schedule;
+        options.policies = vec![
+            crate::ai::Policy::Classic,
+            crate::ai::Policy::Rush,
+            crate::ai::Policy::Balanced,
+        ];
         options.armies = vec!["a".into(), "b".into()];
         options.landscapes = vec!["open".into()];
         let fixed = schedule(&options).unwrap();

@@ -1,6 +1,6 @@
 {
   "defaultMaxRounds": 100,
   "diplomacy": ["pragmatic", "restrained"],
-  "policies": ["classic", "rush", "balanced"],
+  "policies": ["classic", "rush", "balanced", "rotated"],
   "campaigns": ["lantern-road", "green-accord", "ashen-oath", "borrowed-tide"]
 }
