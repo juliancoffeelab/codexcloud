@@ -26,10 +26,9 @@ def main():
     mode = simulation_options[simulation_options.index('--mode') + 1]
     if mode != 'arena':
         selected = simulation_options[simulation_options.index('--policies') + 1].split(',')
-        historical = any(p.endswith('old') for p in selected)
-        players = selected if historical else [p for p in selected if p in ('mixed', 'priority')]
+        players = [p for p in selected if p in ('mixed', 'priority')]
         for flag, default in [('--campaign-players', ','.join(players)),
-                              ('--campaign-enemies', ','.join(selected) if historical else 'classic')]:
+                              ('--campaign-enemies', 'classic')]:
             if flag not in simulation_options:
                 if not default:
                     parser.error('No simulation-player campaign tactics selected; use --mode arena or explicit --campaign-players.')

@@ -68,7 +68,6 @@ pub struct Effects {
 pub enum CommandError {
     CatalogMismatch,
     BattleOnlyPolicy,
-    ReferenceOnlyPolicy,
     BattleFinished,
     UnknownUnit(UnitId),
     UnknownTile(TileId),

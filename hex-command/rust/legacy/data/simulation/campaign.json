@@ -1,7 +1,0 @@
-{
-  "defaultMaxRounds": 30,
-  "defaultRecruitLimit": 1,
-  "diplomacy": ["pragmatic", "restrained"],
-  "policies": ["classic", "rush", "mixed"],
-  "campaigns": ["lantern-road", "green-accord", "ashen-oath", "borrowed-tide"]
-}

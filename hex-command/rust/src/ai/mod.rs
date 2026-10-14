@@ -45,41 +45,20 @@ pub enum Policy {
     Mixed,
     Priority,
     Battler,
-    ClassicOld,
-    RushOld,
-    MixedOld,
 }
 impl Policy {
     /// Complete supported policies in their stable authored order.
-    pub const ALL: [Self; 8] = [
+    pub const ALL: [Self; 5] = [
         Self::Classic,
         Self::Rush,
         Self::Mixed,
         Self::Priority,
         Self::Battler,
-        Self::ClassicOld,
-        Self::RushOld,
-        Self::MixedOld,
     ];
-    /// Frozen native reference implementations, built with their original engine.
-    pub const fn legacy(self) -> Option<&'static str> {
-        match self {
-            Self::ClassicOld => Some("classic"),
-            Self::RushOld => Some("rush"),
-            Self::MixedOld => Some("mixed"),
-            Self::Classic | Self::Rush | Self::Mixed | Self::Priority | Self::Battler => None,
-        }
-    }
     /// Arena-only policies are excluded from campaign schedules and saves.
     pub const fn supports_campaign(self) -> bool {
         match self {
-            Self::Classic
-            | Self::Rush
-            | Self::Mixed
-            | Self::Priority
-            | Self::ClassicOld
-            | Self::RushOld
-            | Self::MixedOld => true,
+            Self::Classic | Self::Rush | Self::Mixed | Self::Priority => true,
             Self::Battler => false,
         }
     }
@@ -91,9 +70,6 @@ impl Policy {
             Self::Mixed => "mixed",
             Self::Priority => "priority",
             Self::Battler => "battler",
-            Self::ClassicOld => "classicold",
-            Self::RushOld => "rushold",
-            Self::MixedOld => "mixedold",
         }
     }
 }
@@ -206,9 +182,7 @@ impl PlanningWorkspace {
         }
     }
     pub(super) fn effective_blocks(&self, policy: Policy) -> Blocks {
-        self.blocks
-            .or_else(|| policy.blocks())
-            .expect("live AI preset")
+        self.blocks.unwrap_or_else(|| policy.blocks())
     }
     pub(crate) fn complete_turn_plan(
         &mut self,
@@ -251,9 +225,6 @@ pub fn choose_command(
     policy: Policy,
     workspace: &mut PlanningWorkspace,
 ) -> Result<Command, CommandError> {
-    if policy.legacy().is_some() {
-        return Err(CommandError::ReferenceOnlyPolicy);
-    }
     battle
         .with_game(catalog, |game| {
             choose_game_command(catalog, game, policy, workspace)
@@ -267,9 +238,6 @@ pub(crate) fn choose_game_command(
     policy: Policy,
     workspace: &mut PlanningWorkspace,
 ) -> Result<Command, CommandError> {
-    if policy.legacy().is_some() {
-        return Err(CommandError::ReferenceOnlyPolicy);
-    }
     let blocks = workspace.effective_blocks(policy);
     if !blocks.campaign.supports_campaign() && game.campaign.is_some() {
         return Err(CommandError::BattleOnlyPolicy);
@@ -596,10 +564,7 @@ mod courier_tests {
         }
 
         let rules = Rules::load().unwrap();
-        for policy in Policy::ALL
-            .into_iter()
-            .filter(|p| p.supports_campaign() && p.legacy().is_none())
-        {
+        for policy in Policy::ALL.into_iter().filter(|p| p.supports_campaign()) {
             let mut game = Game::start_campaign(
                 &rules,
                 "borrowed-tide",

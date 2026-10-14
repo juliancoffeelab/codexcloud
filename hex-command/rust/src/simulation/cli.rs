@@ -23,7 +23,7 @@ use std::{
     time::Instant,
 };
 
-const HELP: &str = "Usage: hex-command-sim [options]\n  --mode arena|campaign|full      default arena\n  --seeds N --seed N              count (default 2) and first seed (default 1)\n  --seed-start N                  alias for --seed\n  --policies classic,rush,mixed,priority,battler,classicold,rushold,mixedold (old: frozen native references)\n  --armies human,woodland,undead,coastal\n  --landscapes open,wooded,crossings,islands\n  --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide\n  --campaign-players mixed,priority  independent campaign player tactics\n  --campaign-enemies classic       independent campaign enemy tactics\n  --rounds N --recruits N         bounded rounds (default 30), recruits/phase (default 1)\n  --diplomacy pragmatic,restrained campaign behavior settings\n  --workers N                    scoped thread pool, CPU quota default, maximum 8\n  --out PATH                     JSON report and readable Markdown report\n  --details arrow|jsonl         lossless gameplay journal (default arrow)\n  --self-play                    arena games use the same policy on both sides\n  --profile-turns                report policy mean decision and complete-phase CPU time\n  --trace                        also retain raw match results\n  --replay PATH                  verify saved report details and results (strict fingerprint)\n  --data-dir PATH                authored JSON catalog root (HEX_COMMAND_DATA_ROOT also works)\n  --schedule-only                emit configurations without running any matches\n  --stdio                        compatibility JSON request/result line protocol\n  --phase-stdio                  saved-position own-phase profiling protocol\n  --fingerprint                  compiled content and engine SHA256 fingerprints\nArena entrants have both seats and both initiatives; self-play has both initiatives.\nCampaigns begin at chapter one, earn carryover and receive no retries. Caps remain unresolved.";
+const HELP: &str = "Usage: hex-command-sim [options]\n  --mode arena|campaign|full      default arena\n  --seeds N --seed N              count (default 2) and first seed (default 1)\n  --seed-start N                  alias for --seed\n  --policies classic,rush,mixed,priority,battler\n  --armies human,woodland,undead,coastal\n  --landscapes open,wooded,crossings,islands\n  --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide\n  --campaign-players mixed,priority  independent campaign player tactics\n  --campaign-enemies classic       independent campaign enemy tactics\n  --rounds N --recruits N         bounded rounds (default 30), recruits/phase (default 1)\n  --diplomacy pragmatic,restrained campaign behavior settings\n  --workers N                    scoped thread pool, CPU quota default, maximum 8\n  --out PATH                     JSON report and readable Markdown report\n  --details arrow|jsonl         lossless gameplay journal (default arrow)\n  --self-play                    arena games use the same policy on both sides\n  --profile-turns                report policy mean decision and complete-phase CPU time\n  --trace                        also retain raw match results\n  --replay PATH                  verify saved report details and results (strict fingerprint)\n  --data-dir PATH                authored JSON catalog root (HEX_COMMAND_DATA_ROOT also works)\n  --schedule-only                emit configurations without running any matches\n  --stdio                        compatibility JSON request/result line protocol\n  --phase-stdio                  saved-position own-phase profiling protocol\n  --fingerprint                  compiled content and engine SHA256 fingerprints\nArena entrants have both seats and both initiatives; self-play has both initiatives.\nCampaigns begin at chapter one, earn carryover and receive no retries. Caps remain unresolved.";
 #[derive(Debug)]
 struct CliOptions {
     schedule: ScheduleOptions,
@@ -478,35 +478,15 @@ where
             trace,
         })
     };
-    // References retain the original worker/reporter pipeline and allocator lifetimes.
-    let is_reference = |config: &MatchConfig| match config {
-        MatchConfig::Arena(c) => c.player.legacy().is_some(),
-        MatchConfig::Campaign(c) => c.player.legacy().is_some(),
-    };
-    let references: Vec<_> = configs
-        .iter()
-        .enumerate()
-        .filter(|(_, c)| is_reference(c))
-        .collect();
-    if !references.is_empty() {
-        super::legacy::execute_batch(rules, &references, workers, |index, result, elapsed| {
-            append(index, prepare(result, elapsed)?, elapsed)
-        })?;
-    }
-    let current: Vec<_> = configs
-        .iter()
-        .enumerate()
-        .filter(|(_, c)| !is_reference(c))
-        .collect();
     execute_jobs(
-        &current,
+        configs,
         workers,
-        &|(_, config)| {
+        &|config| {
             let start = Instant::now();
-            let result = matches::run(rules, (*config).clone())?;
+            let result = matches::run(rules, config.clone())?;
             prepare(result, start.elapsed().as_secs_f64() * 1000.0)
         },
-        |index, result, elapsed| append(current[index].0, result, elapsed),
+        |index, result, elapsed| append(index, result, elapsed),
     )
 }
 fn execute_jobs<Config, Output, Execute, Append>(

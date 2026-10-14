@@ -47,38 +47,24 @@ compiler cache is separate from routine builds. Training results are not report
 answers. Compare timings only with the same build mode and record that mode.
 Wasm builds use their ordinary toolchain and are unaffected by native flags.
 
-Frozen references `classicold`, `rushold` and `mixedold` contain the complete
-engine and catalog from `b1f553de69c0de8a340088c0a9ed42b2149fb27e`. They retain
-the system allocator, thin LTO and eight codegen units. Builds verify the vendored
-file checksums and never consult a moving Git branch. Compare all eight arena
-policies without switching branches:
+Use `--self-play --profile-turns` for per-policy timing on matching arena schedules:
 
 ```sh
-npm run ai:simulate -- --data-dir rust/legacy/data --mode arena --self-play --profile-turns --policies classic,rush,mixed,battler,priority,classicold,rushold,mixedold --seeds 10 --seed 1 --rounds 30 --recruits 1 --workers 1 --out artifacts/policy-comparison/report.json
+npm run ai:simulate -- --mode arena --self-play --profile-turns --policies classic,rush,mixed,priority,battler --seeds 10 --seed 1 --rounds 30 --recruits 1 --workers 1 --out artifacts/policy-timing/report.json
 ```
 
-This runs 1,280 games per policy. One timed turn is one side's completed own phase;
-`meanDecisionMicrosPerTurn` sums chooser CPU and divides by actual completed
-phases. The frozen engine completes its original execution/JSONL recording path
-before the current host imports its complete gameplay into Arrow. Reported old
-chooser/phase CPU excludes this import; whole command wall time includes both
-recording passes. Serial per-game transport and overlapping transport altered
-allocator reuse and failed to reproduce reference CPU costs.
-
-Old references support complete native arena and campaign runs with old
-opponents. Cross-version opponents and live/WASM planner continuations are
-rejected. Use `--self-play` when combining old and current policies in an arena
-report. Use only old policies for campaign comparisons. The frozen data directory
-keeps the comparison stable after another PR changes the live catalog. Timings
-vary between runs; compare against a fresh frozen-binary run as well as historical
-measurements. Full gameplay, phase counts and decision counts must match exactly.
+This runs 1,280 games per policy. One timed turn is one side's completed phase;
+`meanDecisionMicrosPerTurn` measures chooser CPU and `meanTurnMicros` adds command
+execution and phase snapshots. Turn transitions and journal encoding are excluded.
+Policies can produce different states and turn counts, so these are whole-policy
+averages, not an isolated comparison on identical tactical positions.
 
 Full gameplay is saved directly to `.details.arrow` by default. Each outcome's
 checksummed byte range contains one standard Arrow IPC stream. Troop snapshots
 use typed columns, ownership snapshots store owner codes against chapter tile
 identities, and ordered phase columns reference those dictionaries. JSON headers
 retain complete commands, combat records, objectives, campaign data and endpoints.
-No rounds or gameplay fields are omitted. Use `--details jsonl` for legacy output.
+No rounds or gameplay fields are omitted. Use `--details jsonl` for JSONL output.
 The analyzer reads the compact `report.json` with either format.
 
 ## Interpret the panels

@@ -14,35 +14,34 @@ pub struct Blocks {
 }
 
 impl Policy {
-    /// Resolve a live preset. Historical policies use their frozen executable.
-    pub const fn blocks(self) -> Option<Blocks> {
+    /// Resolve a live preset. Every policy has a complete composition.
+    pub const fn blocks(self) -> Blocks {
         match self {
-            Self::Classic => Some(Blocks {
+            Self::Classic => Blocks {
                 recruiter: Recruiter::Rotation,
                 campaign: CampaignBlock::Mission,
                 planner: Planner::Classic,
-            }),
-            Self::Rush => Some(Blocks {
+            },
+            Self::Rush => Blocks {
                 recruiter: Recruiter::Frontline,
                 campaign: CampaignBlock::Mission,
                 planner: Planner::Full,
-            }),
-            Self::Mixed => Some(Blocks {
+            },
+            Self::Mixed => Blocks {
                 recruiter: Recruiter::Balanced,
                 campaign: CampaignBlock::Mission,
                 planner: Planner::Full,
-            }),
-            Self::Priority => Some(Blocks {
+            },
+            Self::Priority => Blocks {
                 recruiter: Recruiter::Balanced,
                 campaign: CampaignBlock::Mission,
                 planner: Planner::Queued,
-            }),
-            Self::Battler => Some(Blocks {
+            },
+            Self::Battler => Blocks {
                 recruiter: Recruiter::Balanced,
                 campaign: CampaignBlock::Arena,
                 planner: Planner::Queued,
-            }),
-            Self::ClassicOld | Self::RushOld | Self::MixedOld => None,
+            },
         }
     }
 }
@@ -167,7 +166,7 @@ mod tests {
     fn independent_blocks_keep_the_selected_planner_under_another_preset() {
         let rules = Rules::load().unwrap();
         let mut game = Game::new(&rules, "mirror");
-        let blocks = Policy::Priority.blocks().unwrap();
+        let blocks = Policy::Priority.blocks();
         let mut custom =
             PlanningWorkspace::new(7, 1, None, Diplomacy::Restrained).with_blocks(blocks);
         let mut preset = PlanningWorkspace::new(7, 1, None, Diplomacy::Restrained);

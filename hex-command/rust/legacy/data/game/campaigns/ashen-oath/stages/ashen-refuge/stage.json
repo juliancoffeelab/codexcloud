@@ -1,8 +1,0 @@
-{
-  "id": "ashen-refuge",
-  "map": "map.json",
-  "roster": "roster.json",
-  "objectives": "objectives.json",
-  "story": "story.json",
-  "scripts": "scripts.json"
-}

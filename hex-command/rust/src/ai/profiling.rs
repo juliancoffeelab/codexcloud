@@ -30,26 +30,6 @@ fn enabled() -> bool {
         std::env::var_os("HEX_COMMAND_AI_PROFILE").is_some_and(|value| value == "1")
     })
 }
-pub(crate) fn is_enabled() -> bool {
-    enabled()
-}
-/// Import actual chooser/phase CPU measured inside the frozen reference engine.
-pub(crate) fn import(policy: Policy, side: Side, row: &serde_json::Value) {
-    if !enabled() {
-        return;
-    }
-    let slot = Policy::ALL.iter().position(|p| *p == policy).unwrap() * 2 + side.index();
-    CALLS[slot].fetch_add(row["calls"].as_u64().unwrap(), Ordering::Relaxed);
-    TURNS[slot].fetch_add(row["turns"].as_u64().unwrap(), Ordering::Relaxed);
-    TIME[slot].fetch_add(
-        (row["seconds"].as_f64().unwrap() * 1e9).round() as u64,
-        Ordering::Relaxed,
-    );
-    TURN_TIME[slot].fetch_add(
-        (row["turnSeconds"].as_f64().unwrap() * 1e9).round() as u64,
-        Ordering::Relaxed,
-    );
-}
 #[cfg(all(target_os = "linux", target_pointer_width = "64"))]
 fn now() -> u64 {
     let mut value = Timespec {

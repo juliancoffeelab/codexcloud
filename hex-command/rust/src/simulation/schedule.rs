@@ -140,29 +140,6 @@ impl ScheduleOptions {
 }
 /// Deterministic schedule order matches the TypeScript comparison harness.
 pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, SimulationError> {
-    if !options.self_play
-        && options.policies.iter().any(|p| p.legacy().is_some())
-        && options.policies.iter().any(|p| p.legacy().is_none())
-    {
-        return Err("Use --self-play to compare frozen reference and current policies; cross-version opponents have different engines".into());
-    }
-    if options.mode != Mode::Arena {
-        for player in options
-            .campaign_players
-            .as_ref()
-            .unwrap_or(&options.policies)
-        {
-            for enemy in options
-                .campaign_enemies
-                .as_ref()
-                .unwrap_or(&options.policies)
-            {
-                if player.legacy().is_some() != enemy.legacy().is_some() {
-                    return Err("Cross-version campaign opponents have different engines".into());
-                }
-            }
-        }
-    }
     if options.self_play && options.mode != Mode::Arena {
         return Err("--self-play requires --mode arena".into());
     }
@@ -315,18 +292,6 @@ mod tests {
         }
         self_play_options.mode = Mode::Campaign;
         assert!(schedule(&self_play_options).is_err());
-        self_play_options.mode = Mode::Arena;
-        self_play_options.policies = vec![Policy::Mixed, Policy::MixedOld];
-        let references = schedule(&self_play_options).unwrap();
-        assert_eq!(references.len(), 16);
-        self_play_options.self_play = false;
-        assert!(schedule(&self_play_options).is_err());
-        self_play_options.mode = Mode::Full;
-        self_play_options.policies = vec![Policy::ClassicOld, Policy::RushOld, Policy::MixedOld];
-        assert_eq!(
-            schedule(&self_play_options).unwrap().len(),
-            self_play_options.expected_games().unwrap()
-        );
         assert_eq!(
             arena
                 .iter()
@@ -378,8 +343,6 @@ mod tests {
             campaign_matches.iter().all(|c| c.enemy == Policy::Classic
                 && [Policy::Mixed, Policy::Priority].contains(&c.player))
         );
-        independent_roles.campaign_enemies = Some(vec![Policy::ClassicOld]);
-        assert!(schedule(&independent_roles).is_err());
         let mut unique = std::collections::HashSet::new();
         for config in configs {
             assert!(unique.insert(serde_json::to_string(&config).unwrap()));

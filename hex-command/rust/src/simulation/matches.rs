@@ -408,8 +408,8 @@ fn phase(
 /// Execute one arena until victory or its cap, retaining every phase and endpoint.
 pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, SimulationError> {
     let mut tactics = [
-        PresetTactic::preset(config.player)?,
-        PresetTactic::preset(config.enemy)?,
+        PresetTactic::preset(config.player),
+        PresetTactic::preset(config.enemy),
     ];
     let mut game = create_arena(rules, &config)?;
     let initial = game.state();
@@ -567,8 +567,8 @@ pub fn run_campaign(
         vec![],
     );
     let mut tactics = [
-        PresetTactic::preset(config.player)?,
-        PresetTactic::preset(config.enemy)?,
+        PresetTactic::preset(config.player),
+        PresetTactic::preset(config.enemy),
     ];
     let mut missions = vec![];
     for _ in 0..chapters {
@@ -640,9 +640,6 @@ pub fn run_campaign(
 }
 /// Dispatch a validated configuration to the corresponding complete match runner.
 pub fn run(rules: &Rules, config: MatchConfig) -> Result<MatchResult, SimulationError> {
-    if let Some(result) = super::legacy::run(rules, &config) {
-        return result;
-    }
     match config {
         MatchConfig::Arena(config) => run_arena(rules, config).map(MatchResult::Arena),
         MatchConfig::Campaign(config) => run_campaign(rules, config).map(MatchResult::Campaign),

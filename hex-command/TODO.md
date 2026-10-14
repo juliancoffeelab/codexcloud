@@ -15,9 +15,6 @@
 
 ## Balance and simulations
 
-- [x] Separate Recruiter, Campaign and Planner blocks; share exhaustive actor
-      routing for Vigil, Escort, Escape, typed Seal and Capture objectives, and
-      remove stale shelter targets when Refuge encounters escalate.
 - [ ] Investigate retaliation stalls: determine when retaliation penalties cause
       planners to repeatedly refuse attacks and fail to resolve a fight.
 

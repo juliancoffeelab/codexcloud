@@ -314,7 +314,7 @@ mod tests {
     use crate::ai::Policy;
     use crate::logic::Game;
     #[test]
-    fn campaign_rejects_arena_and_reference_policies() {
+    fn campaign_rejects_arena_policy() {
         fn is_goal_escort_escape(value: &Goal) -> bool {
             match value {
                 Goal::Escort { .. } | Goal::Escape { .. } => true,
@@ -344,12 +344,6 @@ mod tests {
             crate::ai::choose_game_command(&rules, &campaign, Policy::Battler, &mut workspace),
             Err(CommandError::BattleOnlyPolicy)
         );
-        for policy in Policy::ALL.into_iter().filter(|p| p.legacy().is_some()) {
-            assert_eq!(
-                crate::ai::choose_game_command(&rules, &campaign, policy, &mut workspace),
-                Err(CommandError::ReferenceOnlyPolicy)
-            );
-        }
         let normal = campaign.policy_objectives(None);
         let normal_weight = normal
             .iter()

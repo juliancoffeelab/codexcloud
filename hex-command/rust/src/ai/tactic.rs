@@ -51,9 +51,9 @@ impl<R: Recruiter, C: Campaigner, P: Planner> Tactic<R, C, P> {
 
 pub(crate) type PresetTactic = Tactic<super::Recruiter, super::CampaignBlock, super::Planner>;
 impl PresetTactic {
-    pub(crate) fn preset(policy: super::Policy) -> Result<Self, CommandError> {
-        let blocks = policy.blocks().ok_or(CommandError::ReferenceOnlyPolicy)?;
-        Ok(Self::new(blocks.recruiter, blocks.campaign, blocks.planner))
+    pub(crate) fn preset(policy: super::Policy) -> Self {
+        let blocks = policy.blocks();
+        Self::new(blocks.recruiter, blocks.campaign, blocks.planner)
     }
     pub(crate) fn composition(&self) -> super::Blocks {
         super::Blocks {

@@ -18,10 +18,9 @@ test("Routine simulation builds stage an incremental binary without PGO tooling 
 const fs = require("node:fs"), path = require("node:path");
 const args = process.argv.slice(2);
 fs.appendFileSync(process.env.BUILD_TEST_LOG, JSON.stringify({args, flags: process.env.CARGO_ENCODED_RUSTFLAGS}) + "\\n");
-const legacy = args.includes("rust/legacy/Cargo.toml");
-const output = path.join(process.env.CARGO_TARGET_DIR, legacy ? "release" : "simulation", legacy ? "hex-command-legacy" : "hex-command-sim");
+const output = path.join(process.env.CARGO_TARGET_DIR, "simulation", "hex-command-sim");
 fs.mkdirSync(path.dirname(output), {recursive:true});
-fs.writeFileSync(output, legacy ? "frozen" : "incremental");
+fs.writeFileSync(output, "incremental");
 `,
       { mode: 0o755 },
     );
@@ -46,15 +45,13 @@ fs.writeFileSync(output, legacy ? "frozen" : "incremental");
       .trim()
       .split("\n")
       .map((line) => JSON.parse(line) as { args: string[]; flags: string });
-    assert.equal(calls.length, 2);
-    assert(calls[0] && calls[1]);
-    assert(calls[0].args.includes("rust/legacy/Cargo.toml"));
-    assert(calls[1].args.includes("rust/Cargo.toml"));
-    assert.deepEqual(calls[1].args.slice(-2), ["--profile", "simulation"]);
-    assert(!calls[1].args.includes("--release"));
-    assert(!calls[1].flags.includes("profile-"));
+    assert.equal(calls.length, 1);
+    assert(calls[0]);
+    assert(calls[0].args.includes("rust/Cargo.toml"));
+    assert.deepEqual(calls[0].args.slice(-2), ["--profile", "simulation"]);
+    assert(!calls[0].args.includes("--release"));
+    assert(!calls[0].flags.includes("profile-"));
     assert.equal(readFileSync(join(target, "release/hex-command-sim"), "utf8"), "incremental");
-    assert.equal(readFileSync(join(target, "release/hex-command-legacy"), "utf8"), "frozen");
     assert(!existsSync(join(target, "ai-native")));
   } finally {
     rmSync(root, { recursive: true, force: true });
