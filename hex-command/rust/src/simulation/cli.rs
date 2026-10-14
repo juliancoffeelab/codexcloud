@@ -23,7 +23,7 @@ use std::{
     time::Instant,
 };
 
-const HELP: &str = "Usage: hex-command-sim [options]\n  --mode arena|campaign|full      default arena\n  --seeds N --seed N              count (default 2) and first seed (default 1)\n  --policies classic,rush,mixed,priority,battler\n  --armies human,woodland,undead,coastal\n  --landscapes open,wooded,crossings,islands\n  --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide\n  --campaign-players mixed,priority  independent campaign player tactics\n  --campaign-enemies classic       independent campaign enemy tactics\n  --rounds N --recruits N         bounded rounds (default 30), recruits/phase (default 1)\n  --diplomacy pragmatic,restrained campaign behavior settings\n  --workers N                    scoped thread pool, CPU quota default, maximum 8\n  --out PATH                     JSON report and readable Markdown report\n  --details arrow|jsonl         lossless gameplay journal (default arrow)\n  --vs-classic                   arena players face Classic; both seats/initiatives\n  --self-play                    arena games use the same policy on both sides\n  --profile-turns                report policy mean decision and complete-phase CPU time\n  --trace                        also retain raw match results\n  --replay PATH                  verify saved report details and results (strict fingerprint)\n  --data-dir PATH                authored JSON catalog root (HEX_COMMAND_DATA_ROOT also works)\n  --schedule-only                emit configurations without running any matches\n  --stdio                        JSON match request/result line protocol\n  --phase-stdio                  saved-position own-phase profiling protocol\n  --fingerprint                  compiled content and engine SHA256 fingerprints\nArena entrants have both seats and both initiatives; self-play has both initiatives.\nCampaigns begin at chapter one, earn carryover and receive no retries. Caps remain unresolved.";
+const HELP: &str = "Usage: hex-command-sim [options]\n  --mode arena|campaign|full      default arena\n  --seeds N --seed N              count (default 2) and first seed (default 1)\n  --policies classic,rush,mixed,priority,battler\n  --armies human,woodland,undead,coastal\n  --landscapes open,wooded,crossings,islands\n  --campaigns lantern-road,green-accord,ashen-oath,borrowed-tide\n  --campaign-players mixed,priority  independent campaign player tactics\n  --campaign-enemies classic       independent campaign enemy tactics\n  --rounds N --recruits N         bounded rounds (default 30), recruits/phase (default 1)\n  --diplomacy pragmatic,restrained campaign behavior settings\n  --workers N                    scoped thread pool, CPU quota default, maximum 8\n  --out PATH                     JSON report and readable Markdown report\n  --no-report                  retain raw results without Markdown output\n  --details arrow|jsonl         lossless gameplay journal (default arrow)\n  --vs-classic                   arena players face Classic; both seats/initiatives\n  --self-play                    arena games use the same policy on both sides\n  --profile-turns                report policy mean decision and complete-phase CPU time\n  --trace                        also retain raw match results\n  --replay PATH                  verify saved report details and results (strict fingerprint)\n  --data-dir PATH                authored JSON catalog root (HEX_COMMAND_DATA_ROOT also works)\n  --schedule-only                emit configurations without running any matches\n  --stdio                        JSON match request/result line protocol\n  --phase-stdio                  saved-position own-phase profiling protocol\n  --fingerprint                  compiled content and engine SHA256 fingerprints\nArena entrants have both seats and both initiatives; self-play has both initiatives.\nCampaigns begin at chapter one, earn carryover and receive no retries. Caps remain unresolved.";
 #[derive(Debug)]
 struct CliOptions {
     schedule: ScheduleOptions,
@@ -34,6 +34,7 @@ struct CliOptions {
     replay: Option<PathBuf>,
     schedule_only: bool,
     profile_turns: bool,
+    no_report: bool,
 }
 fn flag_integer(
     values: &BTreeMap<String, String>,
@@ -106,6 +107,7 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
             "--profile-turns",
             "--self-play",
             "--vs-classic",
+            "--no-report",
         ]
         .contains(&flag.as_str())
         {
@@ -229,6 +231,7 @@ fn parse(args: &[String], rules: &Rules) -> Result<CliOptions, SimulationError> 
         replay: values.get("--replay").map(PathBuf::from),
         schedule_only: switches.contains("--schedule-only"),
         profile_turns: switches.contains("--profile-turns"),
+        no_report: switches.contains("--no-report"),
     })
 }
 pub fn default_workers() -> usize {
@@ -712,7 +715,9 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
         report["turnTiming"] = crate::ai::profiling::snapshot().unwrap();
     }
     write_json(&output, &report, true)?;
-    fs::write(sibling(&output, ".md")?, report::markdown(&report))?;
+    if !options.no_report {
+        fs::write(sibling(&output, ".md")?, report::markdown(&report))?;
+    }
     write_json(
         &partial,
         &Progress::new(
@@ -788,6 +793,8 @@ mod tests {
     fn saved_phase_restores_generated_arenas_and_validates_geometry() {
         let rules = Rules::load().unwrap();
         let defaults = parse(&[], &rules).unwrap();
+        assert!(!defaults.no_report);
+        assert!(parse(&["--no-report".into()], &rules).unwrap().no_report);
         assert!(!defaults.profile_turns && !defaults.schedule.self_play);
         assert!(
             serde_json::to_value(&defaults.schedule)

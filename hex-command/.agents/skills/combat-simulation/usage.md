@@ -9,37 +9,57 @@ Run commands from the `hex-command/` project root. The agent workflow is in
 ```sh
 # Build if needed, run all arena policies/maps against Classic and Mixed/Priority campaigns vs Classic,
 # then automatically generate a readable analysis.
-npm run ai:full -- --out artifacts/current
+npm run ai:simulate -- --out artifacts/current
 
 # Explicit full arena policy matrix, followed by the standard campaign panel.
-npm run ai:full -- --all-pairs --out artifacts/all-pairs
+npm run ai:simulate -- --all-pairs --out artifacts/all-pairs
 
 # Focused campaign comparison, retaining both campaign players and the fixed enemy.
-npm run ai:combat -- --mode campaign --campaign-players mixed,priority \
+npm run ai:simulate -- --mode campaign --campaign-players mixed,priority \
   --campaign-enemies classic --seeds 30 --out artifacts/campaign-current
 
 # Inspect a schedule without running it.
-npm run ai:schedule -- --mode full --seeds 10 \
+npm run ai:simulate -- --schedule-only --mode full --seeds 10 \
   --policies classic,rush,mixed,priority,battler --vs-classic \
   --campaign-players mixed,priority --campaign-enemies classic
 ```
 
-`ai:full` builds the native harness when needed and runs the combined full
-panel. Its arena panel compares selected player policies against Classic, with
-both seats and initiatives. Pass `--all-pairs` to either Python runner entry point for the
-full arena matrix; `--self-play` retains matching-policy comparisons. Direct
-`ai:simulate` and `ai:schedule` calls retain their existing all-pairs default;
-pass `--vs-classic` to select the fixed-opponent arena panel.
+`ai:simulate` is the single simulation entry point. It builds the native harness
+once, runs the selected panel, and generates the readable analysis by default.
+With no options, it runs the full panel at 10 seeds: all five arena policies
+against Classic, plus Mixed/Priority campaigns against Classic. Results go into
+a fresh ignored `artifacts/simulation-*` directory unless `--out` is supplied.
+Use `--no-report` to retain raw results without running the analyzer:
 
-`ai:combat` also builds when needed and automatically runs the analyzer
-after successful simulation. Do not include Classic or Rush as campaign players
-when measuring campaign competence; they remain available in the arena matrix.
-Use `npm run ai:simulate -- --help` for current options and defaults, and
-`ai:schedule` to inspect selected configurations and counts.
+```sh
+npm run ai:simulate -- --no-report
+npm run ai:simulate -- --mode arena --seeds 3 --out artifacts/arena-check
+npm run ai:simulate -- --help
+```
 
-A reused native binary loads data from its compiled crate by default. When using
-another checkout, pass its `--data-dir` explicitly. `ai:combat` selects this
-project's data by default and forwards a custom directory.
+Common options:
+
+| Option                                                   | Purpose                                                      |
+| -------------------------------------------------------- | ------------------------------------------------------------ |
+| `--mode arena\|campaign\|full`                           | Select the workload; default full.                           |
+| `--seeds N`, `--seed N`                                  | Number of seeds and starting seed; defaults 10 and 1.        |
+| `--policies LIST`                                        | Select arena player policies; default all five.              |
+| `--armies LIST`, `--landscapes LIST`, `--campaigns LIST` | Limit the content panel.                                     |
+| `--all-pairs`                                            | Run the full arena policy matrix instead of facing Classic.  |
+| `--self-play`                                            | Run arena comparisons with matching policies.                |
+| `--rounds N`, `--recruits N`                             | Explicit experimental limit overrides.                       |
+| `--out PATH`                                             | Output directory, or a `.json` path for the raw report file. |
+| `--no-report`                                            | Skip analysis; raw results are still saved.                  |
+| `--schedule-only`                                        | Print the selected schedule without running or reporting.    |
+| `--baseline PATH`                                        | Compare the generated analysis with a matching saved run.    |
+
+Campaign role overrides are `--campaign-players` and `--campaign-enemies`.
+Do not include Classic or Rush as campaign players when measuring competence.
+`--schedule-only`, replay, and the engine's diagnostic protocols skip analysis.
+Use `--help` for selection, timing and output options.
+
+The runner supplies this project's data directory to the Rust engine. When
+simulating another checkout, pass its `--data-dir` explicitly.
 
 `ai:rust:build` defaults to an optimized incremental native build for the current
 CPU, with LTO disabled. Routine simulations reuse Cargo's compiler cache and do
@@ -48,8 +68,8 @@ the cache; later source edits rebuild affected code.
 
 Use `npm run ai:rust:build -- --pgo` for an explicit LLVM profile-guided build.
 To keep that selection through a simulation command's automatic build hook, use
-`HEX_COMMAND_SIM_PGO=1 npm run ai:full -- --out artifacts/pgo` (or the same
-environment variable with `ai:simulate` or `ai:benchmark`). PGO trains all policies,
+`HEX_COMMAND_SIM_PGO=1 npm run ai:simulate -- --out artifacts/pgo` (or the same
+environment variable with `ai:benchmark`). PGO trains all policies,
 landscapes and campaigns at seeds 17–18 with 30-round caps; changing source,
 catalog, toolchain or CPU can require two compilations and fresh training. Its
 compiler cache is separate from routine builds. Training results are not report

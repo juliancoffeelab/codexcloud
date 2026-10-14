@@ -6,7 +6,8 @@ analyzer. Normal operation and report-first interpretation are in
 
 The Rust harness owns scheduling, battle execution, campaign transitions and
 recording. `scripts/run-combat.py` supplies the current project's data directory,
-runs the requested panel, preserves native logs, then invokes
+is the implementation of `npm run ai:simulate`. After the single npm build hook,
+it launches the Rust executable directly, preserves native logs, then invokes
 `scripts/report-combat.py` on the saved results. The full default panel covers
 all arena policies against Classic on every map; campaign competence uses Mixed
 and Priority against the fixed Classic enemy. Campaign players are deliberately not the full arena
@@ -69,7 +70,9 @@ The Python runner adds `--vs-classic` by default: every selected arena policy
 faces Classic across all selected factions, seats and initiatives. Classic is
 added as an opponent even when absent from the selected player policies.
 `--all-pairs` keeps the full matrix and `--self-play` keeps same-policy matchups.
-Direct native calls retain the all-pairs default unless `--vs-classic` is passed.
+The npm command generates analysis unless `--no-report` is supplied. Schedule
+inspection, replay and diagnostic protocols skip analysis.
+Direct executable calls retain the all-pairs default unless `--vs-classic` is passed.
 
 Arena scheduling pairs `(race, policy)` entrants across seats and initiatives;
 identical entrants avoid duplicate seat permutations. Schedule order is

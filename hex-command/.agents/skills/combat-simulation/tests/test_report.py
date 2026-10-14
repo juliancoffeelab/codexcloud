@@ -224,13 +224,15 @@ class CompleteDataTests(unittest.TestCase):
             calls = []
             def invoke(command, **kwargs):
                 calls.append(command)
-                if 'ai:simulate' in command:
+                if command[0] == str(runner.simulation_binary()):
                     (out/'report.json').write_text(json.dumps(dict(outcomes=[], elapsedSeconds=0)))
             with patch.object(sys, 'argv', ['run-combat.py', '--out', str(out)]), \
                  patch.object(runner.subprocess, 'run', side_effect=invoke), \
                  contextlib.redirect_stdout(io.StringIO()):
                 runner.main()
             native = calls[0]
+            self.assertEqual(native[0], str(runner.simulation_binary()))
+            self.assertNotIn('npm', native)
             self.assertEqual(native[native.index('--mode')+1], 'full')
             self.assertIn('--vs-classic', native)
             self.assertEqual(native[native.index('--campaign-players')+1], 'mixed,priority')
@@ -247,7 +249,7 @@ class CompleteDataTests(unittest.TestCase):
                 calls = []
                 def invoke(command, **kwargs):
                     calls.append(command)
-                    if 'ai:simulate' in command:
+                    if command[0] == str(runner.simulation_binary()):
                         (out/'report.json').write_text(json.dumps(dict(outcomes=[], elapsedSeconds=0)))
                 with patch.object(sys, 'argv', ['run-combat.py', '--out', str(out), *flags]), \
                      patch.object(runner.subprocess, 'run', side_effect=invoke), \
@@ -257,6 +259,38 @@ class CompleteDataTests(unittest.TestCase):
                 self.assertNotIn('--all-pairs', calls[0])
                 if '--self-play' in flags:
                     self.assertIn('--self-play', calls[0])
+
+    def test_reportless_runs_keep_results_and_inspection_does_not_start_analysis(self):
+        for flags in [['--no-report'], ['--schedule-only'], ['--fingerprint'], ['--replay', 'saved.json']]:
+            with self.subTest(flags=flags), tempfile.TemporaryDirectory() as tmp:
+                out = Path(tmp)/'run'
+                calls = []
+                def invoke(command, **kwargs):
+                    calls.append(command)
+                    if '--out' in command:
+                        Path(command[command.index('--out')+1]).write_text(json.dumps(dict(outcomes=[], elapsedSeconds=0)))
+                with patch.object(sys, 'argv', ['run-combat.py', '--out', str(out), *flags]), \
+                     patch.object(runner.subprocess, 'run', side_effect=invoke), \
+                     contextlib.redirect_stdout(io.StringIO()):
+                    runner.main()
+                self.assertEqual(len(calls), 1)
+                self.assertEqual(calls[0][0], str(runner.simulation_binary()))
+                if '--no-report' in flags:
+                    self.assertTrue((out/'report.json').is_file())
+                    self.assertFalse((out/'analytics').exists())
+                else:
+                    self.assertFalse(out.exists())
+                if '--fingerprint' in flags or '--replay' in flags:
+                    self.assertNotIn('--mode', calls[0])
+
+    def test_failed_simulation_does_not_run_analyzer(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch.object(sys, 'argv', ['run-combat.py', '--out', tmp]), \
+                 patch.object(runner.subprocess, 'run', side_effect=subprocess.CalledProcessError(1, 'simulation')) as run, \
+                 contextlib.redirect_stdout(io.StringIO()):
+                with self.assertRaises(subprocess.CalledProcessError):
+                    runner.main()
+                self.assertEqual(run.call_count, 1)
 
     def test_invalid_and_duplicate_outcomes_and_unpaired_baselines_fail(self):
         with tempfile.TemporaryDirectory() as tmp:

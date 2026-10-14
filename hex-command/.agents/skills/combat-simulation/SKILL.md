@@ -69,7 +69,7 @@ remain in the arena panel.
 Use recorded report metadata and composition summaries to establish coverage.
 Inspect `rust/data/simulation/rosters.json` and `arena.json` only when preparing
 a changed panel or resolving participation information missing from the report.
-Campaigns use their authored rosters. Artwork lineups do not establish participation. Use `ai:schedule` to inspect the exact configurations
+Campaigns use their authored rosters. Artwork lineups do not establish participation. Use `ai:simulate -- --schedule-only` to inspect the exact configurations
 and counts when useful. State the panel and completed count before drawing
 conclusions.
 
@@ -83,7 +83,7 @@ available results from an earlier review do not replace a requested simulation.
 Use the full runner, which saves the native run and automatically analyzes it:
 
 ```sh
-npm run ai:full -- --out artifacts/current
+npm run ai:simulate -- --out artifacts/current
 ```
 
 This builds the native harness when needed, runs the default complete panel,
@@ -92,12 +92,13 @@ For an explicitly requested campaign-only panel, keep Mixed and Priority
 as players and Classic as enemy:
 
 ```sh
-npm run ai:combat -- --mode campaign --campaign-players mixed,priority \
+npm run ai:simulate -- --mode campaign --campaign-players mixed,priority \
   --campaign-enemies classic --seeds 10 --out artifacts/current
 ```
 
-Both entry points build the native binary when needed. Use `ai:full` for the
-standard panel and `ai:combat` to pass explicit scope or limits. Preserve each run
+`ai:simulate` builds the native binary once, runs the selected panel and generates
+the readable report by default. Use `--no-report` to retain raw results without
+analysis. With no `--out`, it creates a fresh ignored artifact directory. Preserve each run
 in a fresh ignored artifact directory, record its engine/data fingerprint, and
 include an explicit `--data-dir` when simulating another checkout. The runner
 defaults to the current catalog.
