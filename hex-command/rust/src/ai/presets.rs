@@ -1,5 +1,6 @@
 //! Independently selectable AI blocks. Policy names are compatibility presets.
 use super::{CampaignBlock, Planner, Policy, Recruiter};
+use super::{campaigner::CampaignerKind, planner::PlannerKind, recruiter::RecruiterKind};
 use serde::{Deserialize, Serialize};
 
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -7,9 +8,9 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct Blocks {
-    pub recruiter: Recruiter,
-    pub campaign: CampaignBlock,
-    pub planner: Planner,
+    pub recruiter: RecruiterKind,
+    pub campaign: CampaignerKind,
+    pub planner: PlannerKind,
 }
 
 impl Policy {
