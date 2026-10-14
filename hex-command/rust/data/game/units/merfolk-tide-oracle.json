@@ -1,0 +1,44 @@
+{
+  "id": "merfolk-tide-oracle",
+  "role": "healer",
+  "name": "Tide oracle",
+  "race": "merfolk",
+  "hp": 29,
+  "move": 4,
+  "cost": 20,
+  "attacks": [
+    {
+      "id": "surge",
+      "name": "Surge",
+      "damage": 10,
+      "count": 1,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-magic"
+    },
+    {
+      "id": "staff",
+      "name": "Staff",
+      "damage": 4,
+      "count": 1,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Healing",
+  "description": "A support mage who heals adjacent allies at turn start and fights with modest impact magic.",
+  "healing": 6,
+  "level": 3,
+  "family": "wavemender",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

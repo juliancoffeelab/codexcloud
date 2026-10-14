@@ -10,7 +10,7 @@
     {
       "id": "harpoon",
       "name": "Harpoon",
-      "damage": 6,
+      "damage": 7,
       "damageType": "pierce",
       "category": "ranged",
       "range": 2,
@@ -38,5 +38,5 @@
   "level": 1,
   "family": "harpooner",
   "experienceNeeded": 10,
-  "advancesTo": ["tidehunter"]
+  "advancesTo": ["tidehunter", "merfolk-netter-l2"]
 }

@@ -121,6 +121,44 @@ pub(super) fn choose(
         } else {
             Vec::new()
         };
+        let thorn_needs: Vec<_> = if rule.thorn_aura > 0 {
+            allies
+                .iter()
+                .map(|ally| {
+                    let covered = allies
+                        .iter()
+                        .filter(|u| {
+                            u.id != ally.id && game.board().distance(u.tile, ally.tile) == 1
+                        })
+                        .map(|u| game.rules().units[u.kind].thorn_aura)
+                        .max()
+                        .unwrap_or(0);
+                    let hits = game.rules().units[ally.kind]
+                        .attacks
+                        .iter()
+                        .filter(|w| w.category == Category::Melee)
+                        .map(|w| w.count)
+                        .max()
+                        .unwrap_or(0);
+                    let exposed = enemies.iter().any(|e| {
+                        game.board().distance(ally.tile, e.tile)
+                            <= game.rules().units[e.kind].r#move as u16 + 1
+                    });
+                    let goals: Vec<_> = game.board().adjacent[ally.tile]
+                        .iter()
+                        .copied()
+                        .filter(|&t| game.cost(kind, t) != u16::MAX)
+                        .collect();
+                    (
+                        ((rule.thorn_aura - covered).max(0) * i32::from(hits)) as f64
+                            * if exposed { 1.0 } else { 0.0 },
+                        game.routes(kind, &goals),
+                    )
+                })
+                .collect()
+        } else {
+            Vec::new()
+        };
         for tile in tiles {
             recruit.tile = tile;
             let (offense, access) = if enemies.is_empty() {
@@ -177,7 +215,14 @@ pub(super) fn choose(
                 })
                 .map(|(demand, _)| demand)
                 .sum::<f64>();
-            let score = (offense * 1.5 + durability * access * 0.35 + healing * 2.0)
+            let thorns = thorn_needs
+                .iter()
+                .filter(|(_, routes)| {
+                    routes[tile] != u16::MAX && routes[tile] as usize <= rule.r#move
+                })
+                .map(|(benefit, _)| benefit)
+                .sum::<f64>();
+            let score = (offense * 1.5 + durability * access * 0.35 + healing * 2.0 + thorns * 2.0)
                 / rule.cost.max(1) as f64
                 / (1.0 + copies as f64 * 0.2)
                 + super::jitter(
@@ -333,5 +378,41 @@ mod tests {
         let index = game.index(id).unwrap();
         game.units[index].hp = 1;
         assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(b));
+    }
+
+    #[test]
+    fn exposed_melee_allies_create_thorn_support_demand() {
+        for aura in [0, 20] {
+            let (mut rules, a, b) = fixture();
+            rules.units[b].thorn_aura = aura;
+            rules.units[b].attacks[0].damage = 0;
+            let mut game = battle(&rules, a, b);
+            let leader = game
+                .units
+                .iter()
+                .find(|u| u.side == Side::Player)
+                .unwrap()
+                .clone();
+            let tile = game.placement_tiles(&leader, a, true)[0];
+            game.add(a, Side::Player, tile);
+            let enemy = game
+                .units
+                .iter()
+                .find(|u| u.side == Side::Enemy)
+                .unwrap()
+                .id;
+            let location = game.board.adjacent[tile]
+                .iter()
+                .copied()
+                .find(|&t| game.at(t).is_none())
+                .unwrap();
+            let index = game.index(enemy).unwrap();
+            game.units[index].tile = location;
+            game.roster_changed();
+            assert_eq!(
+                selected(&game, &RecruitmentOrders::default()),
+                Some(if aura == 0 { a } else { b })
+            );
+        }
     }
 }

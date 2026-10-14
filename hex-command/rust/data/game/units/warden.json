@@ -1,7 +1,7 @@
 {
   "id": "warden",
   "role": "warrior",
-  "name": "Warden",
+  "name": "Spearman",
   "terrainModifiers": {
     "ford": {
       "cost": 1
@@ -13,7 +13,7 @@
   "race": "human",
   "hp": 24,
   "move": 3,
-  "cost": 9,
+  "cost": 10,
   "attacks": [
     {
       "id": "spear",
@@ -45,6 +45,6 @@
   "description": "A shielded spear fighter who protects the front against charging beasts.",
   "level": 2,
   "family": "spearman",
-  "experienceNeeded": 0,
-  "advancesTo": []
+  "experienceNeeded": 18,
+  "advancesTo": ["sentinel"]
 }

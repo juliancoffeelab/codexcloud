@@ -1,0 +1,33 @@
+{
+  "id": "treant",
+  "role": "warrior",
+  "name": "Treant",
+  "race": "beast",
+  "hp": 25,
+  "move": 2,
+  "cost": 11,
+  "attacks": [
+    {
+      "id": "bough",
+      "name": "Bough",
+      "damage": 5,
+      "count": 2,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": -1,
+    "pierce": -1,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Living bark",
+  "description": "A slow, resilient forest guardian. Living bark resists blades and arrows; heavy branches crush skeletal foes.",
+  "level": 1,
+  "family": "treant",
+  "advancesTo": ["treant-l2"],
+  "experienceNeeded": 10
+}

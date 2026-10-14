@@ -38,6 +38,6 @@
   "leader": true,
   "level": 2,
   "family": "tidekeeper",
-  "experienceNeeded": 0,
-  "advancesTo": []
+  "experienceNeeded": 18,
+  "advancesTo": ["merfolk-tide-sovereign"]
 }

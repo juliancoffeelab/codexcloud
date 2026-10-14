@@ -38,6 +38,6 @@
   "description": "A woodland leader who uses the groves to shelter the company.",
   "level": 1,
   "family": "wildkeeper",
-  "experienceNeeded": 18,
+  "experienceNeeded": 10,
   "advancesTo": ["grovewarden"]
 }

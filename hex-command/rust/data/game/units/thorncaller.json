@@ -33,10 +33,10 @@
     "pierce": 0,
     "impact": 0
   },
-  "ability": "Understory",
-  "description": "A woodland ranged specialist who fires heavy thorns through armor; fragile and reliant on cover and a melee screen.",
+  "ability": "Thorn magic",
+  "description": "A fragile forest damage caster who sends volleys of piercing thorns from behind the guardians.",
   "level": 1,
   "family": "thorncaller",
   "experienceNeeded": 10,
-  "advancesTo": ["briarweaver"]
+  "advancesTo": ["briarweaver", "woodland-bramble-warden"]
 }

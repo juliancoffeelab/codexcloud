@@ -65,7 +65,9 @@ developer map displays every terrain and both sides of every playable unit rank.
 
 Pixel sources are character matrices and explicit palettes under `pixel/art/`.
 Character sources are always 64×64, stored in
-`pixel/art/units/<race>/<unit-id>/`; race trees live in `pixel/art/units/lineups/`.
+`pixel/art/units/<race>/<unit-id>/`. A lineup is a faction; its unit progression
+tree lives in `pixel/art/units/lineups/<race>.json`. A faction can have sprites
+before its units are implemented in the gameplay catalog.
 Each unit folder contains only its matrix and material palette.
 
 ```sh

@@ -1,0 +1,43 @@
+{
+  "id": "skeleton-impact-caster-l3",
+  "role": "ranger",
+  "name": "Staff shade",
+  "race": "skeletons",
+  "hp": 23,
+  "move": 3,
+  "cost": 16,
+  "attacks": [
+    {
+      "id": "boneburst",
+      "name": "Boneburst",
+      "damage": 15,
+      "count": 1,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-magic"
+    },
+    {
+      "id": "staff",
+      "name": "Staff",
+      "damage": 6,
+      "count": 1,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Grave magic",
+  "description": "A fragile damage caster whose concentrated impact magic breaks armor and bones.",
+  "level": 3,
+  "family": "skeleton-impact-caster",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

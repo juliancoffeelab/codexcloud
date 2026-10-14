@@ -45,6 +45,6 @@
   "description": "A veteran boar whose thick hide withstands light strikes and whose powerful charge threatens armored foes; slow in wetlands.",
   "level": 2,
   "family": "boar",
-  "experienceNeeded": 0,
-  "advancesTo": []
+  "experienceNeeded": 18,
+  "advancesTo": ["woodland-ancient-boar"]
 }

@@ -458,6 +458,7 @@ def tally(outcomes):
                'winnerSeat': o.get('winner'), 'reason': o.get('reason'), 'rounds': o.get('rounds'),
                'stateHash': o.get('stateHash'), 'detail': o.get('detail'), 'recruits': o.get('recruits'),
                'promotions': o.get('promotions'), 'casualties': o.get('casualties')}
+        row['combatUsage'] = o.get('combatUsage')
         if o['kind'] != 'arena':
             row['missions'] = o.get('missions')
             row['completed'] = o.get('completed')
@@ -482,6 +483,10 @@ def tally(outcomes):
                 for unit in o.get(field, []):
                     if unit['side'] == side:
                         events[group + (unit['type'],)][label] += 1
+            for unit in o.get('combatUsage', []):
+                if unit['side'] == side:
+                    for field in ('attacks', 'retaliations', 'damage'):
+                        events[group + (unit['type'],)][field] += unit[field]
     rows = []
     for group, g in sorted(games.items()):
         row = dict(zip(('race', 'opponentRace', 'policy', 'opponentPolicy', 'map'), group))
@@ -495,7 +500,7 @@ def tally(outcomes):
     units = []
     for group, counts in sorted(events.items()):
         row = dict(zip(('race', 'opponentRace', 'policy', 'opponentPolicy', 'map', 'unit'), group))
-        row.update({k: counts[k] for k in ('recruited', 'promoted', 'lost')})
+        row.update({k: counts[k] for k in ('recruited', 'promoted', 'lost', 'attacks', 'retaliations', 'damage')})
         units.append(row)
     return rows, units, ledger, campaigns
 
@@ -689,7 +694,9 @@ def build_report(inputs, baseline_inputs, out):
               '## Every campaign stage', '', markdown(stage_rows, ['campaign', 'player', 'enemy', 'diplomacy', 'maxRounds', 'stage', 'map', 'reached', 'victories', 'victoryRate', 'defeats', 'caps']), '']
     if previous:
         lines += ['## Every matchup change versus baseline', '', markdown(comparison, ['race', 'opponentRace', 'policy', 'opponentPolicy', 'map', 'games', 'winRateBefore', 'winRate', 'winRateDelta', 'wins', 'losses', 'caps']), '']
-    lines += ['## All unit recruitment, promotion and casualty counts', '', markdown(units, ['race', 'opponentRace', 'policy', 'opponentPolicy', 'map', 'unit', 'recruited', 'promoted', 'lost']), '',
+    lines += ['## Unit recruitment, promotions, casualties and combat use', '',
+              'Attacks, retaliations and damage come from resolved combat records, including units that died. Older reports without combat-use summaries have no recorded combat-use evidence.', '',
+              markdown(units, ['race', 'opponentRace', 'policy', 'opponentPolicy', 'map', 'unit', 'recruited', 'promoted', 'lost', 'attacks', 'retaliations', 'damage']), '',
               '## Complete exports', '', *[f'- [{name}.csv]({name}.csv)' for name in tables], '',
               'The matches export retains every physical match configuration, result, recruitment, promotion, casualty and detail-journal reference. Original gameplay journals remain beside the input reports. This program reports saved data and runs no battles.', '']
     (out / 'findings.md').write_text('\n'.join(findings) + '\n')

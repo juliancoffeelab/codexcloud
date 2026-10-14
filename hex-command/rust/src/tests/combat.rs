@@ -1,6 +1,179 @@
 //! Native weapon legality, damage equations and retaliation behavior.
 use super::*;
 
+// Isolate new mechanics from roster balance: one counted weapon, ample HP,
+// neutral terrain/resistance and two independent aura sources.
+fn ability_rules() -> Rules {
+    let mut rules = Rules::load().unwrap();
+    for id in ["soldier", "archer", "scout"] {
+        let kind = rules.types[id];
+        let rule = &mut rules.units[kind];
+        rule.hp = 100;
+        rule.environment.fill([[0; 3]; 2]);
+        rule.damage_modifiers = DamageModifiers {
+            blade: 0,
+            pierce: 0,
+            impact: 0,
+        };
+        rule.thorns = 0;
+        rule.thorn_aura = 0;
+        for attack in &mut rule.attacks {
+            attack.damage = 4;
+            attack.count = 2;
+            attack.drain = 0;
+        }
+    }
+    rules
+}
+
+#[test]
+fn thorn_retaliation_stacks_own_shield_with_strongest_adjacent_friendly_aura() {
+    let mut rules = ability_rules();
+    rules.units[rules.types["soldier"]].thorns = 2;
+    rules.units[rules.types["archer"]].thorn_aura = 1;
+    rules.units[rules.types["scout"]].thorn_aura = 3;
+    let mut game = Game::new(&rules, "mirror");
+    game.units.clear();
+    game.roster_changed();
+    let a = add(&mut game, "soldier", Side::Player, "2,3");
+    let b = add(&mut game, "soldier", Side::Enemy, "3,3");
+    add(&mut game, "archer", Side::Enemy, "4,3");
+    let aura = add(&mut game, "scout", Side::Enemy, "3,4");
+    add(&mut game, "scout", Side::Player, "2,4");
+    let preview = |game: &Game<'_>| {
+        game.preview(
+            game.unit(a).unwrap(),
+            game.unit(b).unwrap(),
+            0,
+            game.unit(a).unwrap().tile,
+        )
+    };
+    assert_eq!(
+        preview(&game).0,
+        8,
+        "Thornshield never boosts initiating attacks"
+    );
+    assert_eq!(preview(&game).1, 18, "2 shield + strongest aura 3, per hit");
+    let inspected = game.inspect(0);
+    let choice = inspected
+        .units
+        .iter()
+        .find(|u| u.unit == format!("u{a}"))
+        .unwrap()
+        .attacks
+        .iter()
+        .find(|c| c.target == format!("u{b}") && c.attack.id == "sword")
+        .unwrap();
+    assert_eq!(
+        choice.retaliation_detail.as_ref().unwrap().total,
+        choice.retaliation
+    );
+    hit(&mut game, a, b, "sword");
+    assert_eq!(game.unit(a).unwrap().hp, 82);
+    assert_eq!(game.unit(b).unwrap().hp, 92);
+    game.units.retain(|u| u.id != aura);
+    game.roster_changed();
+    assert_eq!(
+        preview(&game).1,
+        14,
+        "aura disappears when its source leaves"
+    );
+    let mut restored = Game::try_from_state(&rules, game.state()).unwrap();
+    let bi = restored.index(b).unwrap();
+    restored.units[bi].hp = 1;
+    assert_eq!(
+        preview(&restored),
+        (8, 0, None),
+        "dead defenders cannot retaliate"
+    );
+}
+
+#[test]
+fn ranged_retaliation_never_gets_thorn_bonus() {
+    let mut rules = ability_rules();
+    let kind = rules.types["archer"];
+    rules.units[kind].thorns = 20;
+    rules.units[kind].thorn_aura = 20;
+    let mut game = Game::new(&rules, "mirror");
+    game.units.clear();
+    game.roster_changed();
+    let a = add(&mut game, "archer", Side::Player, "2,3");
+    let b = add(&mut game, "archer", Side::Enemy, "3,3");
+    add(&mut game, "archer", Side::Enemy, "4,3");
+    assert_eq!(
+        game.preview(
+            game.unit(a).unwrap(),
+            game.unit(b).unwrap(),
+            0,
+            game.unit(a).unwrap().tile
+        ),
+        (8, 8, Some(0))
+    );
+}
+
+#[test]
+fn drain_uses_actual_hp_loss_before_reply_and_cannot_overheal_or_revive() {
+    let mut rules = ability_rules();
+    let kind = rules.types["soldier"];
+    for attack in &mut rules.units[kind].attacks {
+        attack.drain = 50;
+    }
+    let mut game = Game::new(&rules, "mirror");
+    game.units.clear();
+    game.roster_changed();
+    let a = add(&mut game, "soldier", Side::Player, "2,3");
+    let b = add(&mut game, "soldier", Side::Enemy, "3,3");
+    let ai = game.index(a).unwrap();
+    game.units[ai].hp = 5;
+    let inspected = game.inspect(0);
+    let choice = inspected
+        .units
+        .iter()
+        .find(|u| u.unit == format!("u{a}"))
+        .unwrap()
+        .attacks
+        .iter()
+        .find(|c| c.target == format!("u{b}") && c.attack.id == "sword")
+        .unwrap();
+    assert_eq!((choice.healing, choice.retaliation_healing), (4, 4));
+    hit(&mut game, a, b, "sword");
+    assert_eq!(game.unit(a).unwrap().hp, 1, "heal 4 before taking reply 8");
+    assert_eq!(
+        game.unit(b).unwrap().hp,
+        96,
+        "surviving defender drains on retaliation"
+    );
+    let mut restored = Game::try_from_state(&rules, game.state()).unwrap();
+    restored.begin_turn(Side::Player);
+    let bi = restored.index(b).unwrap();
+    restored.units[bi].hp = 3;
+    hit(&mut restored, a, b, "sword");
+    assert_eq!(
+        restored.unit(a).unwrap().hp,
+        2,
+        "overkill heals only half of 3 HP, rounded down"
+    );
+    assert!(restored.unit(b).is_none());
+    restored.begin_turn(Side::Player);
+    let c = add(&mut restored, "soldier", Side::Enemy, "3,3");
+    let ai = restored.index(a).unwrap();
+    restored.units[ai].hp = 99;
+    hit(&mut restored, a, c, "sword");
+    assert_eq!(
+        restored.unit(a).unwrap().hp,
+        92,
+        "healing caps before retaliation"
+    );
+    restored.begin_turn(Side::Player);
+    let ai = restored.index(a).unwrap();
+    restored.units[ai].hp = 1;
+    hit(&mut restored, a, c, "sword");
+    assert!(
+        restored.unit(a).is_none(),
+        "insufficient drain does not resurrect a dead attacker"
+    );
+}
+
 #[test]
 fn zero_damage_attacks_consume_actions_without_xp_and_keep_retaliation() {
     let mut game = flat();

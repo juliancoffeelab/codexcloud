@@ -10,7 +10,7 @@
     {
       "id": "mace",
       "name": "Shell mace",
-      "damage": 3,
+      "damage": 4,
       "damageType": "impact",
       "category": "melee",
       "range": 1,

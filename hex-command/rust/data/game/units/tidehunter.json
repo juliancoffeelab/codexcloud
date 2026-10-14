@@ -10,7 +10,7 @@
     {
       "id": "harpoon",
       "name": "Harpoon",
-      "damage": 8,
+      "damage": 9,
       "damageType": "pierce",
       "category": "ranged",
       "range": 2,
@@ -37,6 +37,6 @@
   "description": "A veteran harpoon fighter with a stronger close-combat reply.",
   "level": 2,
   "family": "harpooner",
-  "experienceNeeded": 0,
-  "advancesTo": []
+  "experienceNeeded": 18,
+  "advancesTo": ["merfolk-harpoon-master"]
 }

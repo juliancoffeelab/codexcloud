@@ -38,5 +38,5 @@
   "level": 1,
   "family": "archer",
   "experienceNeeded": 10,
-  "advancesTo": ["marksman"]
+  "advancesTo": ["marksman", "crossbowman"]
 }

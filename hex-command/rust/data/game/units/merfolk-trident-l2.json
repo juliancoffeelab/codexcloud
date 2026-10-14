@@ -1,0 +1,33 @@
+{
+  "id": "merfolk-trident-l2",
+  "role": "warrior",
+  "name": "Two handed trident",
+  "race": "merfolk",
+  "hp": 25,
+  "move": 4,
+  "cost": 12,
+  "attacks": [
+    {
+      "id": "trident",
+      "name": "Trident",
+      "damage": 6,
+      "count": 2,
+      "damageType": "pierce",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Heavy trident",
+  "description": "A merfolk infantry fighter who sacrifices a shield for heavier two-handed piercing attacks.",
+  "level": 2,
+  "family": "reefguard",
+  "advancesTo": ["merfolk-trident-l3"],
+  "experienceNeeded": 18
+}

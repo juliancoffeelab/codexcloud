@@ -1,7 +1,7 @@
 {
   "id": "soldier",
   "role": "warrior",
-  "name": "Heavy infantry",
+  "name": "Swordsman",
   "race": "human",
   "terrainModifiers": {
     "ford": {
@@ -13,7 +13,7 @@
   },
   "hp": 24,
   "move": 3,
-  "cost": 8,
+  "cost": 10,
   "attacks": [
     {
       "id": "sword",
@@ -45,6 +45,6 @@
   "description": "Heavy infantry suited to holding the front. Blunt weapons threaten its armor.",
   "level": 2,
   "family": "swordsman",
-  "experienceNeeded": 0,
-  "advancesTo": []
+  "experienceNeeded": 18,
+  "advancesTo": ["champion"]
 }

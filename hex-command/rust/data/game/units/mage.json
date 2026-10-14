@@ -1,7 +1,7 @@
 {
   "id": "mage",
   "role": "ranger",
-  "name": "Stone mage",
+  "name": "Storm mage",
   "race": "human",
   "hp": 23,
   "move": 3,
@@ -37,6 +37,6 @@
   "description": "A veteran caster with stronger firepower who still needs cover and a melee screen.",
   "level": 2,
   "family": "adept",
-  "experienceNeeded": 0,
-  "advancesTo": []
+  "experienceNeeded": 18,
+  "advancesTo": ["archmage"]
 }

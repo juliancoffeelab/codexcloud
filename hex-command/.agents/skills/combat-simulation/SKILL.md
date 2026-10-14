@@ -57,7 +57,7 @@ Campaign role lists can refer to the added tactic as `custom`, for example
 campaign player selection, the custom tactic is the player.
 
 Use `--data-dir` when simulating another checkout. Determine actual coverage,
-limits and composition from report metadata; artwork lineups do not establish it.
+limits and composition from report metadata; available sprites do not establish it.
 Keep run files and fingerprints together. On failure, preserve partial output
 and state completed/expected counts; worker errors are not battle defeats.
 

@@ -49,5 +49,5 @@
   "level": 1,
   "family": "scout",
   "experienceNeeded": 10,
-  "advancesTo": ["ranger"]
+  "advancesTo": ["ranger", "slinger"]
 }

@@ -3,22 +3,30 @@ use super::battle::Game;
 use crate::{data::*, protocol::*};
 
 impl Game<'_> {
-    fn damage_detail(&self, attack: &Weapon, defender: &Unit, tile: usize) -> DamageDetail {
+    fn damage_detail(
+        &self,
+        attack: &Weapon,
+        defender: &Unit,
+        tile: usize,
+        bonus: i32,
+    ) -> DamageDetail {
         let rule = &self.rules.units[defender.kind];
         let modifier = rule.damage_modifiers.get(attack.damage_type);
         let environment = rule.environment[self.terrain[tile]][attack.category.index()]
             [attack.damage_type.index()];
         DamageDetail {
+            retaliation_bonus: bonus,
             count: attack.count,
-            total: (attack.damage + modifier + environment).max(0) * i32::from(attack.count),
+            total: (attack.damage + bonus + modifier + environment).max(0)
+                * i32::from(attack.count),
             base: attack.damage,
             damage_type: attack.damage_type,
             modifier,
-            modified: attack.damage + modifier,
+            modified: attack.damage + bonus + modifier,
             protection: (-environment).max(0),
             exposure: environment.max(0),
             terrain: self.rules.terrain_names[self.terrain[tile]].clone(),
-            damage: (attack.damage + modifier + environment).max(0),
+            damage: (attack.damage + bonus + modifier + environment).max(0),
         }
     }
 
@@ -34,17 +42,32 @@ impl Game<'_> {
                         let attack = self.rules.units[unit.kind].attacks[weapon].clone();
                         let (damage, retaliation, response) =
                             self.preview(unit, target, weapon, unit.tile);
+                        let healing = self.drain_healing(unit, target, weapon, damage);
+                        let retaliation_healing = response.map_or(0, |index| {
+                            let mut wounded = target.clone();
+                            wounded.hp -= damage;
+                            let mut actor = unit.clone();
+                            actor.hp += healing;
+                            self.drain_healing(&wounded, &actor, index, retaliation)
+                        });
                         let response = response
                             .map(|index| self.rules.units[target.kind].attacks[index].clone());
-                        let retaliation_detail = response
-                            .as_ref()
-                            .map(|r| self.damage_detail(r, unit, unit.tile));
+                        let retaliation_detail = response.as_ref().map(|r| {
+                            self.damage_detail(
+                                r,
+                                unit,
+                                unit.tile,
+                                self.retaliation_bonus(target, r, unit, unit.tile),
+                            )
+                        });
                         attacks.push(AttackDetails {
+                            healing,
+                            retaliation_healing,
                             recommended: recommended == Some(weapon),
                             target: format!("u{}", target.id),
                             damage,
                             retaliation,
-                            damage_detail: self.damage_detail(&attack, target, target.tile),
+                            damage_detail: self.damage_detail(&attack, target, target.tile, 0),
                             attack,
                             response,
                             retaliation_detail,

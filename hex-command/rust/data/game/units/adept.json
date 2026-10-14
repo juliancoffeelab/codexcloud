@@ -38,5 +38,5 @@
   "level": 1,
   "family": "adept",
   "experienceNeeded": 10,
-  "advancesTo": ["mage"]
+  "advancesTo": ["mage", "healer"]
 }

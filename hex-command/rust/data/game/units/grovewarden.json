@@ -1,7 +1,7 @@
 {
   "id": "grovewarden",
   "role": "warrior",
-  "name": "Grove warden",
+  "name": "Grovewarden",
   "race": "beast",
   "leader": true,
   "hp": 34,
@@ -38,6 +38,6 @@
   "description": "An experienced woodland leader who holds the groves and directs reinforcements.",
   "level": 2,
   "family": "wildkeeper",
-  "experienceNeeded": 0,
-  "advancesTo": []
+  "experienceNeeded": 18,
+  "advancesTo": ["woodland-grove-oracle"]
 }

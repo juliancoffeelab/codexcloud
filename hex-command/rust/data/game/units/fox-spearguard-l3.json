@@ -1,0 +1,47 @@
+{
+  "id": "fox-spearguard-l3",
+  "role": "warrior",
+  "name": "Thornshield L3",
+  "race": "beast",
+  "hp": 34,
+  "move": 3,
+  "cost": 18,
+  "attacks": [
+    {
+      "id": "spear",
+      "name": "Spear",
+      "damage": 5,
+      "count": 2,
+      "damageType": "pierce",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {
+    "forest": {
+      "damageModifiers": {
+        "melee": -1,
+        "ranged": -1
+      }
+    },
+    "grove": {
+      "damageModifiers": {
+        "melee": -1,
+        "ranged": -1
+      }
+    }
+  },
+  "ability": "Thornshield",
+  "description": "A forest spear guardian whose thorn shield adds damage to defensive melee retaliation. A master guardian uses forest and grove cover better than younger troops.",
+  "thorns": 3,
+  "level": 3,
+  "family": "fox-spearguard",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

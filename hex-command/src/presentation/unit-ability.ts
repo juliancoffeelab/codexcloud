@@ -10,6 +10,15 @@ export interface AbilityInfo {
 export function abilityInfo(unit: Unit): AbilityInfo {
   const type = TYPES[unit.type];
   const facts: string[] = [];
+  if (type.thorns) facts.push(`Adds ${type.thorns} damage per hit to defensive melee retaliation.`);
+  if (type.thornAura)
+    facts.push(
+      `Adjacent allies gain ${type.thornAura} damage per hit on defensive melee retaliation. The strongest aura applies and stacks with Thornshield.`,
+    );
+  if (type.attacks.some((attack) => attack.drain))
+    facts.push(
+      `Draining attacks restore ${Math.max(...type.attacks.map((attack) => attack.drain ?? 0))}% of HP removed, including retaliation, up to maximum HP.`,
+    );
   if (type.leader || unit.role === "leader") facts.push("Losing this unit ends the battle.");
   if (type.healing)
     facts.push(

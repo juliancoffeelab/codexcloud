@@ -2,30 +2,30 @@
   "id": "skeleton",
   "role": "warrior",
   "name": "Skeleton",
-  "race": "undead",
-  "hp": 18,
+  "race": "skeletons",
+  "hp": 16,
   "move": 3,
   "cost": 6,
   "attacks": [
     {
       "id": "rustblade",
-      "name": "Rust blade",
-      "damage": 3,
+      "name": "Rustblade",
+      "damage": 4,
+      "count": 2,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee",
-      "count": 2
+      "sound": "attack-melee"
     },
     {
       "id": "boneclub",
-      "name": "Bone club",
-      "damage": 4,
+      "name": "Boneclub",
+      "damage": 5,
+      "count": 1,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee",
-      "count": 1
+      "sound": "attack-melee"
     }
   ],
   "damageModifiers": {
@@ -38,5 +38,5 @@
   "level": 1,
   "family": "skeleton",
   "experienceNeeded": 10,
-  "advancesTo": ["revenant"]
+  "advancesTo": ["revenant", "skeleton-flanker-l2"]
 }

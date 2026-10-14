@@ -1,19 +1,19 @@
 {
   "id": "beast",
-  "name": "Woodland beast",
+  "name": "Woodland",
   "terrainModifiers": {
     "forest": {
-      "cost": 0,
+      "cost": -1,
       "damageModifiers": {
-        "melee": 0,
-        "ranged": 0
+        "melee": -1,
+        "ranged": -1
       }
     },
     "grove": {
-      "cost": 0,
+      "cost": -1,
       "damageModifiers": {
-        "melee": 0,
-        "ranged": 0
+        "melee": -1,
+        "ranged": -1
       }
     }
   },

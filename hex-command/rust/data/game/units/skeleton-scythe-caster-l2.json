@@ -1,0 +1,45 @@
+{
+  "id": "skeleton-scythe-caster-l2",
+  "role": "ranger",
+  "name": "Scythe servant",
+  "race": "skeletons",
+  "hp": 20,
+  "move": 3,
+  "cost": 11,
+  "attacks": [
+    {
+      "id": "soul-drain",
+      "name": "Soul Drain",
+      "damage": 8,
+      "count": 1,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-magic",
+      "drain": 50
+    },
+    {
+      "id": "scythe",
+      "name": "Scythe",
+      "damage": 5,
+      "count": 2,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee",
+      "drain": 50
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Vampire",
+  "description": "A fragile skeletal vampire that restores its own life by draining foes with soul magic and its scythe.",
+  "level": 2,
+  "family": "skeleton-impact-caster",
+  "advancesTo": ["skeleton-scythe-caster-l3"],
+  "experienceNeeded": 18
+}

@@ -1,7 +1,7 @@
 {
   "id": "spearman",
   "role": "warrior",
-  "name": "Spearman",
+  "name": "Leather spearman",
   "terrainModifiers": {},
   "race": "human",
   "hp": 20,
@@ -29,5 +29,5 @@
   "level": 1,
   "family": "spearman",
   "experienceNeeded": 10,
-  "advancesTo": ["warden"]
+  "advancesTo": ["warden", "halberdier"]
 }

@@ -115,7 +115,7 @@ impl CampaignBlock {
             tactics.leader_intents.push((UnitId(unit.id), intent));
         }
         let mut recruitment = RecruitmentOrders::default();
-        recruitment.rotate_pool = campaign;
+        recruitment.rotate_pool = campaign || game.pools.is_some();
         if game.turn == Side::Player {
             if let Some(mission) = &game.mission {
                 for goal in &mission.goals {

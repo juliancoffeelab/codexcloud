@@ -256,7 +256,17 @@ impl BattleView<'_, '_> {
                     .sum::<f64>()
                     / opponents.len() as f64
             };
-            let efficiency = (r.hp as f64 * 0.35 + effectiveness * 1.5) / r.cost as f64;
+            let copies = allies
+                .iter()
+                .filter(|u| self.rules().units[u.kind].family == r.family)
+                .count();
+            let efficiency = (r.hp as f64 * 0.35 + effectiveness * 1.5)
+                / r.cost as f64
+                / if balanced {
+                    1.0 + copies as f64 * 0.25
+                } else {
+                    1.0
+                };
             let score = if frontline_only {
                 efficiency * 5.0 + r.hp as f64 * 0.15
             } else {
@@ -328,6 +338,45 @@ fn mixed_shares(roles: impl Iterator<Item = UnitRole>) -> [f64; 4] {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn explicit_arena_pool_rotates_through_expensive_units_instead_of_legacy_two_unit_mix() {
+        let rules = Rules::load().unwrap();
+        let mut game = crate::logic::Game::new(&rules, "mirror");
+        game.units.retain(|u| rules.units[u.kind].leader);
+        game.roster_changed();
+        let pool = vec![
+            rules.types["swordsman"],
+            rules.types["archer"],
+            rules.types["rider"],
+        ];
+        game.pools = Some([pool.clone(), pool]);
+        game.round = 3;
+        game.gold[Side::Player.index()] = rules.units[rules.types["rider"]].cost;
+        let workspace =
+            crate::ai::PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Pragmatic);
+        let orders = crate::ai::CampaignBlock::Arena.campaign_orders(&game, &workspace);
+        assert!(orders.recruitment.rotate_pool);
+        let selected = RecruiterKind::Rotation
+            .choose_orders(&BattleView::new(&game), 7, &orders.recruitment)
+            .unwrap();
+        fn recruited(command: Command) -> Option<String> {
+            match command {
+                Command::Recruit { kind, .. } => Some(kind.0),
+                Command::Move { .. }
+                | Command::Attack { .. }
+                | Command::Advance { .. }
+                | Command::SetUnitIntent { .. }
+                | Command::EndTurn
+                | Command::DismissDialogue
+                | Command::PreviousDialogue
+                | Command::SkipDialogue
+                | Command::RecallMission { .. }
+                | Command::RetryMission => None,
+            }
+        }
+        assert_eq!(recruited(selected).as_deref(), Some("rider"));
+    }
 
     #[test]
     fn absent_roles_redistribute_without_counting_duplicate_unit_choices() {

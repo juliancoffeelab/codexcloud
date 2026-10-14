@@ -187,6 +187,14 @@ class CompleteDataTests(unittest.TestCase):
         self.assertEqual({(x['race'], x['unit']): (x['recruited'], x['promoted'], x['lost']) for x in units},
                          {('a', 'caster'): (1, 0, 0), ('a', 'veteran'): (0, 1, 0), ('b', 'screen'): (0, 0, 1)})
 
+    def test_combat_use_is_attributed_to_actual_sides_without_inventing_missing_records(self):
+        item = match(1, 'b', 'a')
+        item['combatUsage'] = [dict(side='player', type='mounted', attacks=3, retaliations=1, damage=25),
+                               dict(side='enemy', type='guard', attacks=1, retaliations=2, damage=9)]
+        _, units, _, _ = report.tally({report.identity(item): item})
+        self.assertEqual({(r['race'], r['unit']): (r['attacks'], r['retaliations'], r['damage']) for r in units},
+                         {('b', 'mounted'): (3, 1, 25), ('a', 'guard'): (1, 2, 9)})
+
     def test_campaign_journals_explain_conditional_stages_deaths_and_active_caps(self):
         def chapter(winner, failure=None, id='grove'):
             leader = dict(id='u1', type='leader', side='player', name='Captain', role='leader', tile='0,0', hp=20)

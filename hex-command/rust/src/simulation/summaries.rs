@@ -7,6 +7,17 @@ use super::{
 use crate::data::{ActionRecord, Progress, PublicUnit, Side, State};
 use serde::Serialize;
 use serde_json::Value;
+use std::collections::BTreeMap;
+
+#[derive(Serialize)]
+struct CombatUsage<'a> {
+    side: Side,
+    #[serde(rename = "type")]
+    kind: &'a str,
+    attacks: u32,
+    retaliations: u32,
+    damage: i32,
+}
 
 #[derive(Serialize)]
 struct UnitEvent<'a> {
@@ -16,6 +27,8 @@ struct UnitEvent<'a> {
 }
 #[derive(Serialize)]
 struct Events<'a> {
+    #[serde(rename = "combatUsage", skip_serializing_if = "Vec::is_empty")]
+    combat_usage: Vec<CombatUsage<'a>>,
     casualties: Vec<&'a PublicUnit>,
     recruits: Vec<UnitEvent<'a>>,
     promotions: Vec<UnitEvent<'a>>,
@@ -28,13 +41,50 @@ fn events<'a>(
     hash_state: bool,
 ) -> Result<Events<'a>, SimulationError> {
     let mut result = Events {
+        combat_usage: vec![],
         casualties: vec![],
         recruits: vec![],
         promotions: vec![],
         state_hash: None,
     };
+    let mut usage = BTreeMap::new();
     for phase in phases {
         result.casualties.extend(&phase.records.losses);
+        for combat in &phase.records.combats {
+            for (id, damage, retaliation) in [
+                (&combat.unit, combat.damage, false),
+                (&combat.target, combat.retaliation, true),
+            ] {
+                if retaliation && combat.retaliation_count == 0 {
+                    continue;
+                }
+                // End-of-phase and casualty records include promotions made before
+                // attacking, while `before` supplies units absent from either list.
+                let unit = phase
+                    .units
+                    .iter()
+                    .map(|u| u.as_ref())
+                    .chain(phase.records.losses.iter())
+                    .chain(phase.before.iter().map(|u| u.as_ref()))
+                    .find(|u| &u.id == id)
+                    .ok_or("Combat usage references an unknown unit")?;
+                let row = usage
+                    .entry((unit.side.index(), unit.r#type.as_str()))
+                    .or_insert_with(|| CombatUsage {
+                        side: unit.side,
+                        kind: &unit.r#type,
+                        attacks: 0,
+                        retaliations: 0,
+                        damage: 0,
+                    });
+                if retaliation {
+                    row.retaliations += 1;
+                } else {
+                    row.attacks += 1;
+                }
+                row.damage += damage;
+            }
+        }
         for action in &phase.records.actions {
             match action {
                 ActionRecord::Recruit { unit_type, .. } => result.recruits.push(UnitEvent {
@@ -49,6 +99,7 @@ fn events<'a>(
             }
         }
     }
+    result.combat_usage = usage.into_values().collect();
     if hash_state {
         // Keep canonical, sorted-object hashing used by existing native result journals.
         result.state_hash = Some(sha256(&super::canonical::state_bytes(final_state)?));
@@ -276,6 +327,42 @@ mod tests {
     use crate::ai::Policy;
     use crate::data::{Gold, Records};
     use serde_json::json;
+    #[test]
+    fn combat_usage_keeps_dead_units_and_post_promotion_types_on_their_actual_sides() {
+        let mut result = fixture();
+        let MatchResult::Arena(arena) = &mut result else {
+            unreachable!()
+        };
+        let unit = |id, kind, side| {
+            serde_json::from_value::<PublicUnit>(json!({
+                "id":id,"type":kind,"side":side,"tile":"0,0","hp":20,"moved":true,"attacked":true
+            }))
+            .unwrap()
+        };
+        let phase = &mut arena.phases[0];
+        phase.before = vec![
+            std::sync::Arc::new(unit("u1", "novice", "player")),
+            std::sync::Arc::new(unit("u2", "guard", "enemy")),
+        ];
+        phase.units = vec![std::sync::Arc::new(unit("u1", "veteran", "player"))];
+        phase.records.losses = vec![unit("u2", "guard", "enemy")];
+        phase.records.combats = vec![
+            serde_json::from_value(json!({
+                "unit":"u1","target":"u2","weapon":"hit","from":"0,0","targetTile":"0,1",
+                "damage":8,"retaliation":4,"count":2,"damagePerHit":4,"retaliationCount":1,
+                "retaliationPerHit":4,"mediationAtRisk":false
+            }))
+            .unwrap(),
+        ];
+        let summary = serde_json::to_value(borrowed_summary(&result, false).unwrap()).unwrap();
+        assert_eq!(
+            summary["combatUsage"],
+            json!([
+                {"side":"player","type":"veteran","attacks":1,"retaliations":0,"damage":8},
+                {"side":"enemy","type":"guard","attacks":0,"retaliations":1,"damage":4}
+            ])
+        );
+    }
     fn fixture() -> MatchResult {
         let state = State {
             map_id: "fixture".into(),

@@ -253,6 +253,11 @@ impl BattleView<'_, '_> {
                         ClassicOrder::Leader
                     }
                     Family::Harpooner
+                    | Family::HorseArcher
+                    | Family::SkeletonRider
+                    | Family::SkeletonAxeman
+                    | Family::FoxSpearguard
+                    | Family::Treant
                     | Family::MerfolkMacer
                     | Family::Reefguard
                     | Family::Rider

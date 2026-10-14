@@ -3,24 +3,30 @@
     "id": "human",
     "leader": "commander",
     "screen": "swordsman",
-    "pool": ["swordsman", "spearman", "archer", "scout", "adept"]
+    "pool": ["swordsman", "spearman", "scout", "archer", "adept", "rider", "horse-archer"]
   },
   {
     "id": "woodland",
     "leader": "wildkeeper",
     "screen": "boar",
-    "pool": ["boar", "wolf", "thorncaller"]
+    "pool": ["wolf", "boar", "thorncaller", "fox-spearguard", "treant"]
   },
   {
-    "id": "undead",
+    "id": "skeletons",
     "leader": "necromancer",
     "screen": "skeleton",
-    "pool": ["skeleton", "bonearcher", "skeleton-impact-caster"]
+    "pool": [
+      "skeleton",
+      "skeleton-impact-caster",
+      "skeleton-rider",
+      "bonearcher",
+      "skeleton-axeman"
+    ]
   },
   {
     "id": "coastal",
     "leader": "tidekeeper",
     "screen": "reefguard",
-    "pool": ["reefguard", "harpooner", "wavemender", "merfolk-maceguard"]
+    "pool": ["harpooner", "reefguard", "wavemender", "merfolk-maceguard"]
   }
 ]

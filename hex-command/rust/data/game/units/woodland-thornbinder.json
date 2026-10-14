@@ -1,0 +1,57 @@
+{
+  "id": "woodland-thornbinder",
+  "role": "healer",
+  "name": "Thornbinder",
+  "race": "beast",
+  "hp": 28,
+  "move": 3,
+  "cost": 18,
+  "attacks": [
+    {
+      "id": "thorns",
+      "name": "Thorns",
+      "damage": 8,
+      "count": 1,
+      "damageType": "pierce",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "rootstaff",
+      "name": "Rootstaff",
+      "damage": 6,
+      "count": 1,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {
+    "forest": {
+      "damageModifiers": {
+        "melee": -1,
+        "ranged": -1
+      }
+    },
+    "grove": {
+      "damageModifiers": {
+        "melee": -1,
+        "ranged": -1
+      }
+    }
+  },
+  "ability": "Thorn aura",
+  "description": "A forest support caster whose adjacent allies gain stronger melee retaliation, stacking with their own Thornshield. A master guardian uses forest and grove cover better than younger troops.",
+  "thornAura": 2,
+  "level": 3,
+  "family": "thorncaller",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

@@ -1,0 +1,43 @@
+{
+  "id": "merfolk-netter-l2",
+  "role": "ranger",
+  "name": "Netter",
+  "race": "merfolk",
+  "hp": 24,
+  "move": 5,
+  "cost": 12,
+  "attacks": [
+    {
+      "id": "weighted-net",
+      "name": "Weighted Net",
+      "damage": 5,
+      "count": 2,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-magic"
+    },
+    {
+      "id": "knife",
+      "name": "Knife",
+      "damage": 3,
+      "count": 2,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Weighted nets",
+  "description": "A merfolk ranged fighter who throws weighted nets for impact damage rather than piercing shots.",
+  "level": 2,
+  "family": "harpooner",
+  "advancesTo": ["merfolk-netter-l3"],
+  "experienceNeeded": 18
+}

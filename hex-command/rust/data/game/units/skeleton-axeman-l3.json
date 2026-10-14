@@ -1,0 +1,43 @@
+{
+  "id": "skeleton-axeman-l3",
+  "role": "warrior",
+  "name": "Hollow axeman",
+  "race": "skeletons",
+  "hp": 29,
+  "move": 3,
+  "cost": 15,
+  "attacks": [
+    {
+      "id": "axe",
+      "name": "Axe",
+      "damage": 6,
+      "count": 3,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "boneclub",
+      "name": "Boneclub",
+      "damage": 10,
+      "count": 1,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Grave axe",
+  "description": "A master skeletal axe fighter with powerful blade attacks and a blunt club for resistant foes.",
+  "level": 3,
+  "family": "skeleton-axeman",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

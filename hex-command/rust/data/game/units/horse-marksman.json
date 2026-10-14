@@ -1,0 +1,59 @@
+{
+  "id": "horse-marksman",
+  "role": "ranger",
+  "name": "Horse marksman",
+  "race": "human",
+  "hp": 34,
+  "move": 6,
+  "cost": 27,
+  "attacks": [
+    {
+      "id": "bow",
+      "name": "Bow",
+      "damage": 6,
+      "count": 3,
+      "damageType": "pierce",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "knife",
+      "name": "Knife",
+      "damage": 8,
+      "count": 1,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {
+    "forest": {
+      "cost": 1
+    },
+    "grove": {
+      "cost": 1
+    },
+    "hill": {
+      "cost": 1
+    },
+    "ford": {
+      "cost": 1
+    },
+    "marsh": {
+      "cost": 1
+    }
+  },
+  "ability": "Mounted",
+  "description": "Expensive cavalry that crosses open ground quickly; dense woods and rough ground slow its mount.",
+  "level": 3,
+  "family": "horse-archer",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

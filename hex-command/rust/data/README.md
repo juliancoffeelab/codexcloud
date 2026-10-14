@@ -57,6 +57,22 @@ passability. Damage modifiers add terrain, race and unit values; category and
 damage-type modifiers both apply. Unit `damageModifiers` are deviations, so race
 resistances must not be repeated in a unit specification.
 
+A lineup is a faction. Its complete L1 → L2 → L3 progression tree is authored in
+`pixel/art/units/lineups/`; `gameplayId` connects a sprite to a differently named
+stable gameplay ID. Enabled factions must implement every unit in their lineup.
+Campaign recruitment remains an explicit, lore-specific list, independent of the
+faction's full roster. Cavalry costs more than infantry and has additional movement
+costs in woods and rough ground.
+
+`healing` restores adjacent allies at turn start; only the strongest healer applies.
+`thorns` adds damage per hit to defensive melee retaliation. `thornAura` grants
+adjacent allies the strongest nearby aura, added to their own thorns; multiple
+auras do not accumulate. These effects disappear immediately when their source
+leaves or dies. Weapon `drain` is a percentage from 0 to 100: a surviving wielder
+heals that fraction of actual HP removed, rounded down and capped at maximum HP.
+An initiating attack drains before retaliation; a surviving defender also drains
+when replying. Overkill and zero damage cannot create extra healing.
+
 Native `Rules::load()` reads this directory using the crate's build-time location,
 or `HEX_COMMAND_DATA_ROOT` if configured. `Rules::load_from(path)` selects an
 explicit root. `Rules::from_json_bundle` uses the same typed loader without filesystem access,

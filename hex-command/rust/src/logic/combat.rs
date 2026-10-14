@@ -35,14 +35,67 @@ impl<'catalog> Game<'catalog> {
         self.damage_at(attacker, target, weapon, target.tile)
     }
     fn damage_at(&self, attacker: &Unit, target: &Unit, weapon: usize, target_tile: usize) -> i32 {
+        self.damage_with_bonus(attacker, target, weapon, target_tile, 0)
+    }
+    fn damage_with_bonus(
+        &self,
+        attacker: &Unit,
+        target: &Unit,
+        weapon: usize,
+        target_tile: usize,
+        bonus: i32,
+    ) -> i32 {
         let attack = &self.rules.units[attacker.kind].attacks[weapon];
         let rule = &self.rules.units[target.kind];
         (attack.damage
+            + bonus
             + rule.damage_modifiers.get(attack.damage_type)
             + rule.environment[self.terrain[target_tile]][attack.category.index()]
                 [attack.damage_type.index()])
         .max(0)
             * i32::from(attack.count)
+    }
+    pub(crate) fn retaliation_bonus(
+        &self,
+        unit: &Unit,
+        weapon: &Weapon,
+        attacker: &Unit,
+        from: usize,
+    ) -> i32 {
+        if weapon.category != Category::Melee {
+            return 0;
+        }
+        let aura = self
+            .units
+            .iter()
+            .filter(|ally| {
+                ally.id != unit.id
+                    && ally.side == unit.side
+                    && self.board.distance(
+                        if ally.id == attacker.id {
+                            from
+                        } else {
+                            ally.tile
+                        },
+                        unit.tile,
+                    ) == 1
+            })
+            .map(|ally| self.rules.units[ally.kind].thorn_aura)
+            .max()
+            .unwrap_or(0);
+        self.rules.units[unit.kind].thorns + aura
+    }
+    pub(crate) fn drain_healing(
+        &self,
+        unit: &Unit,
+        target: &Unit,
+        weapon: usize,
+        damage: i32,
+    ) -> i32 {
+        (damage.max(0).min(target.hp.max(0))
+            * i32::from(self.rules.units[unit.kind].attacks[weapon].drain)
+            / 100)
+            .min((self.rules.units[unit.kind].hp - unit.hp).max(0))
     }
     pub(crate) fn preview(
         &self,
@@ -65,7 +118,13 @@ impl<'catalog> Game<'catalog> {
             if self.rules.units[target.kind].attacks[attack].category != category {
                 continue;
             }
-            let dealt = self.damage_at(target, unit, attack, from);
+            let bonus = self.retaliation_bonus(
+                target,
+                &self.rules.units[target.kind].attacks[attack],
+                unit,
+                from,
+            );
+            let dealt = self.damage_with_bonus(target, unit, attack, from, bonus);
             if best.is_none() || dealt > response {
                 best = Some(attack);
                 response = dealt;
@@ -78,9 +137,15 @@ impl<'catalog> Game<'catalog> {
         let mut score = f64::NEG_INFINITY;
         for attack in self.attack_options(unit, target, from) {
             let (damage, retaliation, _) = self.preview(unit, target, attack, from);
-            let value = damage as f64 + if damage >= target.hp { 18.0 } else { 0.0 }
-                - retaliation as f64 * 0.7
-                - if retaliation >= unit.hp { 40.0 } else { 0.0 };
+            let healed = self.drain_healing(unit, target, attack, damage);
+            let value =
+                damage as f64 + healed as f64 + if damage >= target.hp { 18.0 } else { 0.0 }
+                    - retaliation as f64 * 0.7
+                    - if retaliation >= unit.hp + healed {
+                        40.0
+                    } else {
+                        0.0
+                    };
             if value > score {
                 score = value;
                 best = Some(attack);
@@ -124,8 +189,18 @@ impl<'catalog> Game<'catalog> {
         self.units[a].moved = true;
         self.units[a].attacked = true;
         self.units[b].hp -= damage;
+        let healed = self.drain_healing(&attacker, &target, weapon, damage);
+        self.units[a].hp += healed;
         if self.units[b].hp > 0 {
             self.units[a].hp -= retaliation;
+            if let Some(response) = response {
+                let mut wounded = target.clone();
+                wounded.hp = self.units[b].hp;
+                let mut responding_to = attacker.clone();
+                responding_to.hp += healed;
+                self.units[b].hp +=
+                    self.drain_healing(&wounded, &responding_to, response, retaliation);
+            }
         }
         for (own, opponent, dealt) in [(a, b, damage), (b, a, retaliation)] {
             let limit = self.rules.units[self.units[own].kind]

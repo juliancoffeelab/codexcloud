@@ -1,7 +1,7 @@
 {
   "id": "merfolk-maceguard-l2",
   "role": "warrior",
-  "name": "Veteran macer",
+  "name": "Macer",
   "race": "merfolk",
   "hp": 28,
   "move": 4,
@@ -10,7 +10,7 @@
     {
       "id": "mace",
       "name": "Shell mace",
-      "damage": 4,
+      "damage": 5,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
@@ -27,6 +27,6 @@
   "description": "An experienced macer whose heavier blows threaten skeletal armies and armored infantry.",
   "level": 2,
   "family": "merfolk-maceguard",
-  "experienceNeeded": 0,
-  "advancesTo": []
+  "experienceNeeded": 18,
+  "advancesTo": ["merfolk-maceguard-l3"]
 }

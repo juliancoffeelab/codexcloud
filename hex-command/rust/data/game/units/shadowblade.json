@@ -1,0 +1,43 @@
+{
+  "id": "shadowblade",
+  "role": "flank",
+  "name": "Shadowblade",
+  "race": "human",
+  "hp": 28,
+  "move": 6,
+  "cost": 15,
+  "attacks": [
+    {
+      "id": "knife",
+      "name": "Knife",
+      "damage": 4,
+      "count": 3,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "sling",
+      "name": "Sling",
+      "damage": 3,
+      "count": 2,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-magic"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Skirmisher",
+  "description": "A swift human knife fighter who strikes with repeated blade attacks and carries a sling for distant foes.",
+  "level": 3,
+  "family": "scout",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

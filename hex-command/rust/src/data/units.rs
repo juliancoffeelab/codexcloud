@@ -76,6 +76,9 @@ pub struct Weapon {
     pub category: Category,
     pub range: u8,
     pub sound: String,
+    /// Percentage of actual HP removed restored to a surviving wielder.
+    #[serde(default)]
+    pub drain: u8,
 }
 /// Per-damage-type adjustments contributed by a defending unit.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -156,6 +159,12 @@ pub struct UnitRule {
     pub leader: bool,
     #[serde(default)]
     pub healing: i32,
+    /// Extra damage per hit on defensive melee retaliation.
+    #[serde(default)]
+    pub thorns: i32,
+    /// Adjacent allies receive the strongest aura, added to their own thorns.
+    #[serde(default)]
+    pub thorn_aura: i32,
     #[serde(default)]
     pub level: u32,
     pub family: Family,

@@ -2,7 +2,7 @@
   "id": "bonearcher",
   "role": "ranger",
   "name": "Bone archer",
-  "race": "undead",
+  "race": "skeletons",
   "hp": 16,
   "move": 3,
   "cost": 7,

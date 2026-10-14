@@ -1,0 +1,33 @@
+{
+  "id": "warhammer",
+  "role": "warrior",
+  "name": "Warhammer",
+  "race": "human",
+  "hp": 34,
+  "move": 3,
+  "cost": 18,
+  "attacks": [
+    {
+      "id": "hammer",
+      "name": "Hammer",
+      "damage": 6,
+      "count": 3,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Heavy hammer",
+  "description": "A veteran hammer fighter who trades reach for repeated crushing blows in close combat.",
+  "level": 3,
+  "family": "swordsman",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

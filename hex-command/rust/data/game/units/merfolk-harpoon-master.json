@@ -1,0 +1,43 @@
+{
+  "id": "merfolk-harpoon-master",
+  "role": "ranger",
+  "name": "Harpoon master",
+  "race": "merfolk",
+  "hp": 28,
+  "move": 5,
+  "cost": 17,
+  "attacks": [
+    {
+      "id": "harpoon",
+      "name": "Harpoon",
+      "damage": 12,
+      "count": 1,
+      "damageType": "pierce",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "knife",
+      "name": "Knife",
+      "damage": 4,
+      "count": 2,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Harpoon",
+  "description": "A swift merfolk ranged veteran who concentrates piercing damage into heavy harpoons.",
+  "level": 3,
+  "family": "harpooner",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

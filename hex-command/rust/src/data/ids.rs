@@ -48,7 +48,7 @@ impl From<&str> for WeaponId {
 pub enum Race {
     Human,
     Merfolk,
-    Undead,
+    Skeletons,
     Beast,
 }
 impl Race {
@@ -57,7 +57,7 @@ impl Race {
         match self {
             Self::Human => "human",
             Self::Merfolk => "merfolk",
-            Self::Undead => "undead",
+            Self::Skeletons => "skeletons",
             Self::Beast => "beast",
         }
     }
@@ -80,6 +80,15 @@ pub enum Family {
     Bonearcher,
     Commander,
     Harpooner,
+    #[serde(rename = "horse-archer")]
+    HorseArcher,
+    #[serde(rename = "skeleton-rider")]
+    SkeletonRider,
+    #[serde(rename = "skeleton-axeman")]
+    SkeletonAxeman,
+    #[serde(rename = "fox-spearguard")]
+    FoxSpearguard,
+    Treant,
     #[serde(rename = "merfolk-maceguard")]
     MerfolkMacer,
     Necromancer,
@@ -107,6 +116,11 @@ impl Family {
             Self::Bonearcher => "bonearcher",
             Self::Commander => "commander",
             Self::Harpooner => "harpooner",
+            Self::HorseArcher => "horse-archer",
+            Self::SkeletonRider => "skeleton-rider",
+            Self::SkeletonAxeman => "skeleton-axeman",
+            Self::FoxSpearguard => "fox-spearguard",
+            Self::Treant => "treant",
             Self::MerfolkMacer => "merfolk-maceguard",
             Self::Necromancer => "necromancer",
             Self::Reefguard => "reefguard",

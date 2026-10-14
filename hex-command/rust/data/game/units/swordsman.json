@@ -1,7 +1,7 @@
 {
   "id": "swordsman",
   "role": "warrior",
-  "name": "Swordsman",
+  "name": "Leather swordsman",
   "race": "human",
   "terrainModifiers": {},
   "hp": 20,
@@ -29,5 +29,5 @@
   "level": 1,
   "family": "swordsman",
   "experienceNeeded": 10,
-  "advancesTo": ["soldier"]
+  "advancesTo": ["soldier", "hammerman"]
 }

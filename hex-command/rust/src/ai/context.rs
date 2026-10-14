@@ -99,6 +99,15 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     pub(super) fn damage(&self, attacker: &Unit, target: &Unit, weapon: usize) -> i32 {
         self.engine().damage(attacker, target, weapon)
     }
+    pub(super) fn drain_healing(
+        &self,
+        unit: &Unit,
+        target: &Unit,
+        weapon: usize,
+        damage: i32,
+    ) -> i32 {
+        self.engine().drain_healing(unit, target, weapon, damage)
+    }
     pub(super) fn preview(
         &self,
         unit: &Unit,

@@ -27,8 +27,8 @@
   "description": "A veteran wolf that pursues prey across rough ground but still fears spears.",
   "level": 2,
   "family": "wolf",
-  "experienceNeeded": 0,
-  "advancesTo": [],
+  "experienceNeeded": 18,
+  "advancesTo": ["woodland-alpha-wolf"],
   "terrainModifiers": {
     "hill": {
       "cost": -1

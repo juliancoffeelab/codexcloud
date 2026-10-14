@@ -589,10 +589,18 @@ impl<'catalog> Game<'catalog> {
             .map(|name| self.kind(name))
             .collect();
         }
-        ["swordsman", "spearman", "archer", "scout", "rider"]
-            .iter()
-            .map(|name| self.kind(name))
-            .collect()
+        [
+            "swordsman",
+            "spearman",
+            "archer",
+            "scout",
+            "adept",
+            "rider",
+            "horse-archer",
+        ]
+        .iter()
+        .map(|name| self.kind(name))
+        .collect()
     }
     pub(crate) fn placement_tiles(&self, leader: &Unit, kind: usize, price: bool) -> Vec<usize> {
         if !self.rules.units[leader.kind].leader

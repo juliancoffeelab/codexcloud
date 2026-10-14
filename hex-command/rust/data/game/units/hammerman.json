@@ -1,0 +1,33 @@
+{
+  "id": "hammerman",
+  "role": "warrior",
+  "name": "Hammerman",
+  "race": "human",
+  "hp": 26,
+  "move": 3,
+  "cost": 12,
+  "attacks": [
+    {
+      "id": "hammer",
+      "name": "Hammer",
+      "damage": 5,
+      "count": 2,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Heavy hammer",
+  "description": "A sturdy human infantryman whose hammer breaks heavy armor and brittle bones.",
+  "level": 2,
+  "family": "swordsman",
+  "advancesTo": ["warhammer"],
+  "experienceNeeded": 18
+}

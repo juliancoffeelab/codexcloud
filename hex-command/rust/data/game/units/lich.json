@@ -2,7 +2,7 @@
   "id": "lich",
   "role": "ranger",
   "name": "Lich",
-  "race": "undead",
+  "race": "skeletons",
   "leader": true,
   "hp": 30,
   "move": 3,
@@ -38,6 +38,6 @@
   "description": "A veteran undead commander with powerful magic and brittle skeletal defenses.",
   "level": 2,
   "family": "necromancer",
-  "experienceNeeded": 0,
-  "advancesTo": []
+  "experienceNeeded": 18,
+  "advancesTo": ["lich-commander-l3"]
 }

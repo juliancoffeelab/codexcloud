@@ -1,0 +1,46 @@
+{
+  "id": "woodland-alpha-wolf",
+  "role": "flank",
+  "name": "Alpha wolf",
+  "race": "beast",
+  "hp": 28,
+  "move": 5,
+  "cost": 14,
+  "attacks": [
+    {
+      "id": "fangs",
+      "name": "Fangs",
+      "damage": 4,
+      "count": 3,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {
+    "forest": {
+      "damageModifiers": {
+        "melee": -1,
+        "ranged": -1
+      }
+    },
+    "grove": {
+      "damageModifiers": {
+        "melee": -1,
+        "ranged": -1
+      }
+    }
+  },
+  "ability": "Pack hunter",
+  "description": "A swift forest predator whose repeated fang attacks punish exposed enemies. A master guardian uses forest and grove cover better than younger troops.",
+  "level": 3,
+  "family": "wolf",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

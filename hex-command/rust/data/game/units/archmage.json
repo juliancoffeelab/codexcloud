@@ -1,0 +1,43 @@
+{
+  "id": "archmage",
+  "role": "ranger",
+  "name": "Archmage",
+  "race": "human",
+  "hp": 28,
+  "move": 3,
+  "cost": 18,
+  "attacks": [
+    {
+      "id": "spark",
+      "name": "Spark",
+      "damage": 13,
+      "count": 1,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-magic"
+    },
+    {
+      "id": "staff",
+      "name": "Staff",
+      "damage": 6,
+      "count": 1,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Storm magic",
+  "description": "A master human damage caster whose concentrated impact magic breaks armor and bones.",
+  "level": 3,
+  "family": "adept",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

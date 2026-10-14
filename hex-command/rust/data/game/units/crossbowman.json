@@ -1,0 +1,43 @@
+{
+  "id": "crossbowman",
+  "role": "ranger",
+  "name": "Crossbowman",
+  "race": "human",
+  "hp": 24,
+  "move": 3,
+  "cost": 12,
+  "attacks": [
+    {
+      "id": "crossbow",
+      "name": "Crossbow",
+      "damage": 10,
+      "count": 1,
+      "damageType": "pierce",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "knife",
+      "name": "Knife",
+      "damage": 5,
+      "count": 1,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Heavy shot",
+  "description": "A sturdy human crossbow fighter who concentrates piercing damage into a single heavy bolt.",
+  "level": 2,
+  "family": "archer",
+  "advancesTo": ["arbalester"],
+  "experienceNeeded": 18
+}

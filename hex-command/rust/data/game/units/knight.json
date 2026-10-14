@@ -1,0 +1,59 @@
+{
+  "id": "knight",
+  "role": "warrior",
+  "name": "Knight",
+  "race": "human",
+  "hp": 38,
+  "move": 6,
+  "cost": 24,
+  "attacks": [
+    {
+      "id": "lance",
+      "name": "Lance",
+      "damage": 21,
+      "count": 1,
+      "damageType": "pierce",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "sword",
+      "name": "Sword",
+      "damage": 5,
+      "count": 2,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": -1,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {
+    "forest": {
+      "cost": 1
+    },
+    "grove": {
+      "cost": 1
+    },
+    "hill": {
+      "cost": 1
+    },
+    "ford": {
+      "cost": 1
+    },
+    "marsh": {
+      "cost": 1
+    }
+  },
+  "ability": "Mounted",
+  "description": "Expensive cavalry that crosses open ground quickly; dense woods and rough ground slow its mount.",
+  "level": 3,
+  "family": "rider",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

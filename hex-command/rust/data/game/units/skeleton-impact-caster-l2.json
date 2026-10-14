@@ -1,11 +1,11 @@
 {
   "id": "skeleton-impact-caster-l2",
   "role": "ranger",
-  "name": "Skeletal sorcerer",
-  "race": "undead",
+  "name": "Staff servant",
+  "race": "skeletons",
   "hp": 18,
   "move": 3,
-  "cost": 12,
+  "cost": 11,
   "attacks": [
     {
       "id": "boneburst",
@@ -33,10 +33,10 @@
     "pierce": 0,
     "impact": 0
   },
-  "ability": "Bone mastery",
-  "description": "A veteran skeletal caster with stronger impact magic who still needs cover and a melee screen.",
+  "ability": "Grave magic",
+  "description": "A fragile damage caster whose concentrated impact magic breaks armor and bones.",
   "level": 2,
   "family": "skeleton-impact-caster",
-  "experienceNeeded": 0,
-  "advancesTo": []
+  "experienceNeeded": 18,
+  "advancesTo": ["skeleton-impact-caster-l3"]
 }

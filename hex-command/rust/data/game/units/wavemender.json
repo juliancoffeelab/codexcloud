@@ -10,7 +10,7 @@
     {
       "id": "surge",
       "name": "Surge",
-      "damage": 5,
+      "damage": 6,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
@@ -33,11 +33,11 @@
     "pierce": 0,
     "impact": 0
   },
-  "ability": "Incoming Tide",
-  "description": "A fragile merfolk support caster who tends nearby allies behind the front line.",
+  "ability": "Healing",
+  "description": "A support mage who heals adjacent allies at turn start and fights with modest impact magic.",
   "healing": 2,
   "level": 1,
   "family": "wavemender",
   "experienceNeeded": 10,
-  "advancesTo": ["tidesage"]
+  "advancesTo": ["tidesage", "merfolk-tidecrusher-l2"]
 }

@@ -1,0 +1,44 @@
+{
+  "id": "merfolk-tide-sovereign",
+  "role": "warrior",
+  "name": "Tide sovereign",
+  "race": "merfolk",
+  "hp": 42,
+  "move": 4,
+  "cost": 0,
+  "attacks": [
+    {
+      "id": "trident",
+      "name": "Trident",
+      "damage": 5,
+      "count": 3,
+      "damageType": "pierce",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "tidebolt",
+      "name": "Tidebolt",
+      "damage": 7,
+      "count": 1,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-magic"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Command",
+  "description": "The senior merfolk commander protects the coast with trident strikes and ranged tide magic.",
+  "level": 3,
+  "family": "tidekeeper",
+  "advancesTo": [],
+  "experienceNeeded": 0,
+  "leader": true
+}

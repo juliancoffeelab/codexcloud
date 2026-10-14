@@ -11,11 +11,11 @@
       "id": "fangs",
       "name": "Fangs",
       "damage": 2,
+      "count": 3,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee",
-      "count": 3
+      "sound": "attack-melee"
     }
   ],
   "damageModifiers": {

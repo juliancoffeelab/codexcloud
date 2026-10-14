@@ -46,6 +46,6 @@
   "description": "Leads the company and recruits reinforcements from an owned keep.",
   "level": 1,
   "family": "commander",
-  "experienceNeeded": 18,
+  "experienceNeeded": 10,
   "advancesTo": ["marshal"]
 }

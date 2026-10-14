@@ -483,6 +483,690 @@
       "side": "enemy",
       "col": 4,
       "row": 21
+    },
+    {
+      "type": "champion",
+      "side": "player",
+      "col": 12,
+      "row": 3
+    },
+    {
+      "type": "champion",
+      "side": "enemy",
+      "col": 13,
+      "row": 3
+    },
+    {
+      "type": "hammerman",
+      "side": "player",
+      "col": 15,
+      "row": 3
+    },
+    {
+      "type": "hammerman",
+      "side": "enemy",
+      "col": 16,
+      "row": 3
+    },
+    {
+      "type": "warhammer",
+      "side": "player",
+      "col": 18,
+      "row": 3
+    },
+    {
+      "type": "warhammer",
+      "side": "enemy",
+      "col": 19,
+      "row": 3
+    },
+    {
+      "type": "sentinel",
+      "side": "player",
+      "col": 21,
+      "row": 3
+    },
+    {
+      "type": "sentinel",
+      "side": "enemy",
+      "col": 22,
+      "row": 3
+    },
+    {
+      "type": "halberdier",
+      "side": "player",
+      "col": 24,
+      "row": 3
+    },
+    {
+      "type": "halberdier",
+      "side": "enemy",
+      "col": 25,
+      "row": 3
+    },
+    {
+      "type": "halberd-master",
+      "side": "player",
+      "col": 27,
+      "row": 3
+    },
+    {
+      "type": "halberd-master",
+      "side": "enemy",
+      "col": 28,
+      "row": 3
+    },
+    {
+      "type": "shadowblade",
+      "side": "player",
+      "col": 30,
+      "row": 3
+    },
+    {
+      "type": "shadowblade",
+      "side": "enemy",
+      "col": 31,
+      "row": 3
+    },
+    {
+      "type": "slinger",
+      "side": "player",
+      "col": 9,
+      "row": 4
+    },
+    {
+      "type": "slinger",
+      "side": "enemy",
+      "col": 10,
+      "row": 4
+    },
+    {
+      "type": "fireslinger",
+      "side": "player",
+      "col": 12,
+      "row": 4
+    },
+    {
+      "type": "fireslinger",
+      "side": "enemy",
+      "col": 13,
+      "row": 4
+    },
+    {
+      "type": "sharpshooter",
+      "side": "player",
+      "col": 15,
+      "row": 4
+    },
+    {
+      "type": "sharpshooter",
+      "side": "enemy",
+      "col": 16,
+      "row": 4
+    },
+    {
+      "type": "crossbowman",
+      "side": "player",
+      "col": 18,
+      "row": 4
+    },
+    {
+      "type": "crossbowman",
+      "side": "enemy",
+      "col": 19,
+      "row": 4
+    },
+    {
+      "type": "arbalester",
+      "side": "player",
+      "col": 21,
+      "row": 4
+    },
+    {
+      "type": "arbalester",
+      "side": "enemy",
+      "col": 22,
+      "row": 4
+    },
+    {
+      "type": "archmage",
+      "side": "player",
+      "col": 24,
+      "row": 4
+    },
+    {
+      "type": "archmage",
+      "side": "enemy",
+      "col": 25,
+      "row": 4
+    },
+    {
+      "type": "healer",
+      "side": "player",
+      "col": 27,
+      "row": 4
+    },
+    {
+      "type": "healer",
+      "side": "enemy",
+      "col": 28,
+      "row": 4
+    },
+    {
+      "type": "high-healer",
+      "side": "player",
+      "col": 30,
+      "row": 4
+    },
+    {
+      "type": "high-healer",
+      "side": "enemy",
+      "col": 31,
+      "row": 4
+    },
+    {
+      "type": "knight",
+      "side": "player",
+      "col": 12,
+      "row": 5
+    },
+    {
+      "type": "knight",
+      "side": "enemy",
+      "col": 13,
+      "row": 5
+    },
+    {
+      "type": "horse-archer",
+      "side": "player",
+      "col": 15,
+      "row": 5
+    },
+    {
+      "type": "horse-archer",
+      "side": "enemy",
+      "col": 16,
+      "row": 5
+    },
+    {
+      "type": "horse-bowman",
+      "side": "player",
+      "col": 18,
+      "row": 5
+    },
+    {
+      "type": "horse-bowman",
+      "side": "enemy",
+      "col": 19,
+      "row": 5
+    },
+    {
+      "type": "horse-marksman",
+      "side": "player",
+      "col": 21,
+      "row": 5
+    },
+    {
+      "type": "horse-marksman",
+      "side": "enemy",
+      "col": 22,
+      "row": 5
+    },
+    {
+      "type": "grand-marshal",
+      "side": "player",
+      "col": 24,
+      "row": 5
+    },
+    {
+      "type": "grand-marshal",
+      "side": "enemy",
+      "col": 25,
+      "row": 5
+    },
+    {
+      "type": "skeleton-dreadguard",
+      "side": "player",
+      "col": 27,
+      "row": 5
+    },
+    {
+      "type": "skeleton-dreadguard",
+      "side": "enemy",
+      "col": 28,
+      "row": 5
+    },
+    {
+      "type": "skeleton-flanker-l2",
+      "side": "player",
+      "col": 30,
+      "row": 5
+    },
+    {
+      "type": "skeleton-flanker-l2",
+      "side": "enemy",
+      "col": 31,
+      "row": 5
+    },
+    {
+      "type": "skeleton-flanker-l3",
+      "side": "player",
+      "col": 6,
+      "row": 6
+    },
+    {
+      "type": "skeleton-flanker-l3",
+      "side": "enemy",
+      "col": 7,
+      "row": 6
+    },
+    {
+      "type": "skeleton-impact-caster-l3",
+      "side": "player",
+      "col": 12,
+      "row": 6
+    },
+    {
+      "type": "skeleton-impact-caster-l3",
+      "side": "enemy",
+      "col": 13,
+      "row": 6
+    },
+    {
+      "type": "skeleton-scythe-caster-l2",
+      "side": "player",
+      "col": 15,
+      "row": 6
+    },
+    {
+      "type": "skeleton-scythe-caster-l2",
+      "side": "enemy",
+      "col": 16,
+      "row": 6
+    },
+    {
+      "type": "skeleton-scythe-caster-l3",
+      "side": "player",
+      "col": 18,
+      "row": 6
+    },
+    {
+      "type": "skeleton-scythe-caster-l3",
+      "side": "enemy",
+      "col": 19,
+      "row": 6
+    },
+    {
+      "type": "skeleton-rider",
+      "side": "player",
+      "col": 21,
+      "row": 6
+    },
+    {
+      "type": "skeleton-rider",
+      "side": "enemy",
+      "col": 22,
+      "row": 6
+    },
+    {
+      "type": "skeleton-rider-l2",
+      "side": "player",
+      "col": 24,
+      "row": 6
+    },
+    {
+      "type": "skeleton-rider-l2",
+      "side": "enemy",
+      "col": 25,
+      "row": 6
+    },
+    {
+      "type": "skeleton-rider-l3",
+      "side": "player",
+      "col": 27,
+      "row": 6
+    },
+    {
+      "type": "skeleton-rider-l3",
+      "side": "enemy",
+      "col": 28,
+      "row": 6
+    },
+    {
+      "type": "skeleton-bow-master",
+      "side": "player",
+      "col": 30,
+      "row": 6
+    },
+    {
+      "type": "skeleton-bow-master",
+      "side": "enemy",
+      "col": 31,
+      "row": 6
+    },
+    {
+      "type": "skeleton-axeman",
+      "side": "player",
+      "col": 6,
+      "row": 7
+    },
+    {
+      "type": "skeleton-axeman",
+      "side": "enemy",
+      "col": 7,
+      "row": 7
+    },
+    {
+      "type": "skeleton-axeman-l2",
+      "side": "player",
+      "col": 9,
+      "row": 7
+    },
+    {
+      "type": "skeleton-axeman-l2",
+      "side": "enemy",
+      "col": 10,
+      "row": 7
+    },
+    {
+      "type": "skeleton-axeman-l3",
+      "side": "player",
+      "col": 12,
+      "row": 7
+    },
+    {
+      "type": "skeleton-axeman-l3",
+      "side": "enemy",
+      "col": 13,
+      "row": 7
+    },
+    {
+      "type": "lich-commander-l3",
+      "side": "player",
+      "col": 15,
+      "row": 7
+    },
+    {
+      "type": "lich-commander-l3",
+      "side": "enemy",
+      "col": 16,
+      "row": 7
+    },
+    {
+      "type": "woodland-alpha-wolf",
+      "side": "player",
+      "col": 18,
+      "row": 7
+    },
+    {
+      "type": "woodland-alpha-wolf",
+      "side": "enemy",
+      "col": 19,
+      "row": 7
+    },
+    {
+      "type": "woodland-ancient-boar",
+      "side": "player",
+      "col": 21,
+      "row": 7
+    },
+    {
+      "type": "woodland-ancient-boar",
+      "side": "enemy",
+      "col": 22,
+      "row": 7
+    },
+    {
+      "type": "woodland-thorn-oracle",
+      "side": "player",
+      "col": 24,
+      "row": 7
+    },
+    {
+      "type": "woodland-thorn-oracle",
+      "side": "enemy",
+      "col": 25,
+      "row": 7
+    },
+    {
+      "type": "woodland-bramble-warden",
+      "side": "player",
+      "col": 27,
+      "row": 7
+    },
+    {
+      "type": "woodland-bramble-warden",
+      "side": "enemy",
+      "col": 28,
+      "row": 7
+    },
+    {
+      "type": "woodland-thornbinder",
+      "side": "player",
+      "col": 30,
+      "row": 7
+    },
+    {
+      "type": "woodland-thornbinder",
+      "side": "enemy",
+      "col": 31,
+      "row": 7
+    },
+    {
+      "type": "fox-spearguard",
+      "side": "player",
+      "col": 6,
+      "row": 8
+    },
+    {
+      "type": "fox-spearguard",
+      "side": "enemy",
+      "col": 7,
+      "row": 8
+    },
+    {
+      "type": "fox-spearguard-l2",
+      "side": "player",
+      "col": 9,
+      "row": 8
+    },
+    {
+      "type": "fox-spearguard-l2",
+      "side": "enemy",
+      "col": 10,
+      "row": 8
+    },
+    {
+      "type": "fox-spearguard-l3",
+      "side": "player",
+      "col": 12,
+      "row": 8
+    },
+    {
+      "type": "fox-spearguard-l3",
+      "side": "enemy",
+      "col": 13,
+      "row": 8
+    },
+    {
+      "type": "treant",
+      "side": "player",
+      "col": 15,
+      "row": 8
+    },
+    {
+      "type": "treant",
+      "side": "enemy",
+      "col": 16,
+      "row": 8
+    },
+    {
+      "type": "treant-l2",
+      "side": "player",
+      "col": 18,
+      "row": 8
+    },
+    {
+      "type": "treant-l2",
+      "side": "enemy",
+      "col": 19,
+      "row": 8
+    },
+    {
+      "type": "treant-l3",
+      "side": "player",
+      "col": 21,
+      "row": 8
+    },
+    {
+      "type": "treant-l3",
+      "side": "enemy",
+      "col": 22,
+      "row": 8
+    },
+    {
+      "type": "woodland-grove-oracle",
+      "side": "player",
+      "col": 24,
+      "row": 8
+    },
+    {
+      "type": "woodland-grove-oracle",
+      "side": "enemy",
+      "col": 25,
+      "row": 8
+    },
+    {
+      "type": "merfolk-harpoon-master",
+      "side": "player",
+      "col": 27,
+      "row": 8
+    },
+    {
+      "type": "merfolk-harpoon-master",
+      "side": "enemy",
+      "col": 28,
+      "row": 8
+    },
+    {
+      "type": "merfolk-netter-l2",
+      "side": "player",
+      "col": 30,
+      "row": 8
+    },
+    {
+      "type": "merfolk-netter-l2",
+      "side": "enemy",
+      "col": 31,
+      "row": 8
+    },
+    {
+      "type": "merfolk-netter-l3",
+      "side": "player",
+      "col": 6,
+      "row": 9
+    },
+    {
+      "type": "merfolk-netter-l3",
+      "side": "enemy",
+      "col": 7,
+      "row": 9
+    },
+    {
+      "type": "merfolk-reef-champion",
+      "side": "player",
+      "col": 12,
+      "row": 9
+    },
+    {
+      "type": "merfolk-reef-champion",
+      "side": "enemy",
+      "col": 13,
+      "row": 9
+    },
+    {
+      "type": "merfolk-trident-l2",
+      "side": "player",
+      "col": 15,
+      "row": 9
+    },
+    {
+      "type": "merfolk-trident-l2",
+      "side": "enemy",
+      "col": 16,
+      "row": 9
+    },
+    {
+      "type": "merfolk-trident-l3",
+      "side": "player",
+      "col": 18,
+      "row": 9
+    },
+    {
+      "type": "merfolk-trident-l3",
+      "side": "enemy",
+      "col": 19,
+      "row": 9
+    },
+    {
+      "type": "merfolk-tide-oracle",
+      "side": "player",
+      "col": 21,
+      "row": 9
+    },
+    {
+      "type": "merfolk-tide-oracle",
+      "side": "enemy",
+      "col": 22,
+      "row": 9
+    },
+    {
+      "type": "merfolk-tidecrusher-l2",
+      "side": "player",
+      "col": 24,
+      "row": 9
+    },
+    {
+      "type": "merfolk-tidecrusher-l2",
+      "side": "enemy",
+      "col": 25,
+      "row": 9
+    },
+    {
+      "type": "merfolk-tidecrusher-l3",
+      "side": "player",
+      "col": 27,
+      "row": 9
+    },
+    {
+      "type": "merfolk-tidecrusher-l3",
+      "side": "enemy",
+      "col": 28,
+      "row": 9
+    },
+    {
+      "type": "merfolk-maceguard-l3",
+      "side": "player",
+      "col": 30,
+      "row": 9
+    },
+    {
+      "type": "merfolk-maceguard-l3",
+      "side": "enemy",
+      "col": 31,
+      "row": 9
+    },
+    {
+      "type": "merfolk-tide-sovereign",
+      "side": "player",
+      "col": 6,
+      "row": 10
+    },
+    {
+      "type": "merfolk-tide-sovereign",
+      "side": "enemy",
+      "col": 7,
+      "row": 10
     }
   ]
 }

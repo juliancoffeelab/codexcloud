@@ -389,6 +389,29 @@ pub(in crate::ai) fn plan(
         if ally.id == id {
             continue;
         }
+        let aura = game.rules().units[unit.kind].thorn_aura;
+        if aura > 0 {
+            let other = allies
+                .iter()
+                .filter(|u| {
+                    u.id != id && u.id != ally.id && game.board().distance(u.tile, ally.tile) == 1
+                })
+                .map(|u| game.rules().units[u.kind].thorn_aura)
+                .max()
+                .unwrap_or(0);
+            let hits = game.rules().units[ally.kind]
+                .attacks
+                .iter()
+                .filter(|w| w.category == Category::Melee)
+                .map(|w| w.count)
+                .max()
+                .unwrap_or(0);
+            for &tile in &game.board().adjacent[ally.tile] {
+                if proximity_grid[ally.tile] <= 4 {
+                    support[tile] += (aura - other).max(0) as f64 * f64::from(hits) * 2.0;
+                }
+            }
+        }
         if category == TacticalRole::Healer {
             let other = allies
                 .iter()
@@ -548,7 +571,8 @@ pub(in crate::ai) fn plan(
             if orders.protects(unit.id) && retaliation > 0 {
                 return;
             }
-            response = retaliation;
+            let drained = game.drain_healing(&unit, target, weapon, damage);
+            response = retaliation - drained;
             let killed = damage >= target.hp;
             eliminated = killed.then_some(target.id);
             terminal = killed && orders.terminal_attack(target);
@@ -558,7 +582,8 @@ pub(in crate::ai) fn plan(
                 } else {
                     0.0
                 }
-                - response as f64 * 1.8
+                - retaliation as f64 * 1.8
+                + drained as f64 * 2.0
                 + workspace.escort.attack(id, target, damage);
             if orders.important(game, target) {
                 combat += if killed { 18.0 } else { 4.0 };

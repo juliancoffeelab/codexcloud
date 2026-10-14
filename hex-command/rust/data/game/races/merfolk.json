@@ -20,7 +20,8 @@
     "water": {
       "passable": true,
       "damageModifiers": {
-        "ranged": -1
+        "melee": -1,
+        "ranged": -2
       }
     },
     "ford": {

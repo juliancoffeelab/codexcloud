@@ -163,6 +163,10 @@ struct UnitSpecification {
     leader: bool,
     #[serde(default)]
     healing: i32,
+    #[serde(default)]
+    thorns: i32,
+    #[serde(default)]
+    thorn_aura: i32,
     level: u32,
     family: Family,
     experience_needed: u32,
@@ -477,6 +481,9 @@ impl Rules {
                 || spec.r#move == 0
                 || spec.cost < 0
                 || spec.level == 0
+                || spec.healing < 0
+                || spec.thorns < 0
+                || spec.thorn_aura < 0
                 || spec.attacks.is_empty()
             {
                 return Err(ContentError::new(
@@ -492,6 +499,7 @@ impl Rules {
                     || attack.range == 0
                     || attack.damage < 0
                     || !(1..=16).contains(&attack.count)
+                    || attack.drain > 100
                 {
                     return Err(ContentError::new(
                         &path,
@@ -554,6 +562,8 @@ impl Rules {
                 role: spec.role,
                 leader: spec.leader,
                 healing: spec.healing,
+                thorns: spec.thorns,
+                thorn_aura: spec.thorn_aura,
                 level: spec.level,
                 family: spec.family,
                 experience_needed: Some(spec.experience_needed),
