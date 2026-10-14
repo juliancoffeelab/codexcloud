@@ -41,6 +41,11 @@ historical data to convert fields. Rust restoration validates the converted game
 state afterward; it is not a migration step. AI planning starts through normal
 gameplay after restoration.
 
+After successful validation, the loader immediately replaces the stored envelope
+with the converted data in one atomic write. This conversion must not go through
+the gameplay save function or wait for an enemy turn to finish. If validation
+fails, the original save is not replaced.
+
 Rejected saves retain their original bytes in `hex-command-battle-unrestored` and
 leave a playable fresh battle. If the backup cannot be stored, that recovery
 battle cannot overwrite the original; starting a new battle enables saving again.
@@ -98,8 +103,8 @@ fresh plan when needed.
 
 Older native saves may contain resolved state halfway through an enemy phase.
 They have no pre-turn state to roll back to: completed actions remain, while
-unexecuted actions are discarded. Such saves keep their original storage bytes
-until normal gameplay finishes the phase and writes a version-five boundary.
+unexecuted actions are discarded. Their converted data is persisted immediately
+after validation, without playing any remaining enemy actions.
 This is recovery of a historical format, not permission to save partial phases.
 New saves must persist only the boundaries of the entire enemy turn, even when
 that turn contains many units and commands.

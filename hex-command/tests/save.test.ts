@@ -281,17 +281,15 @@ test("Version-four migration discards AI actions without executing the enemy tur
   const loaded = loadBattle(factory);
   assert.equal(loaded.notice, undefined);
   assert.deepEqual(nativeValue(loaded.game.checkpoint()), migrated.save.checkpoint);
-  assert.equal(
-    localStorage.getItem(SAVE_KEY),
-    raw,
-    "Keep recovery save throughout the enemy phase",
-  );
+  const converted = localStorage.getItem(SAVE_KEY);
+  assert.deepEqual(JSON.parse(converted!), migrated.save);
+  assert.equal(migrateSave(JSON.parse(converted!)).migrated, false);
   for (let steps = 0; loaded.game.turn === "enemy" && !loaded.game.winner; steps++) {
     assert(steps < 100);
     loaded.game.enemyStep();
     saveBattle(loaded.game);
     if (loaded.game.turn === "enemy" && !loaded.game.winner)
-      assert.equal(localStorage.getItem(SAVE_KEY), raw);
+      assert.equal(localStorage.getItem(SAVE_KEY), converted);
   }
   const latest = JSON.parse(localStorage.getItem(SAVE_KEY)!);
   assert.equal(latest.version, SAVE_VERSION);

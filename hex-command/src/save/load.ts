@@ -1,8 +1,8 @@
 import { LiveGame } from "../game/live-game";
 import type { GameEngineFactory } from "../game/native-engine";
 import { migrateSave } from "./migration";
-import { readSave, preserveRejectedSave } from "./storage";
-import { saveBattle, suspendSaves } from "./write";
+import { readSave, preserveRejectedSave, storeSave } from "./storage";
+import { suspendSaves } from "./write";
 
 export interface LoadedBattle {
   game: LiveGame;
@@ -17,7 +17,9 @@ export function loadBattle(factory: GameEngineFactory): LoadedBattle {
     try {
       const { save, migrated } = migrateSave(JSON.parse(raw));
       game = LiveGame.restore(factory, save.checkpoint);
-      if (migrated) saveBattle(game, save.pendingEnemy);
+      // Commit the validated data conversion directly, independently of gameplay
+      // turn boundaries. Migration never waits for or executes enemy actions.
+      if (migrated) storeSave(JSON.stringify(save));
       return { game, pendingEnemy: save.pendingEnemy };
     } catch {
       game?.dispose();
