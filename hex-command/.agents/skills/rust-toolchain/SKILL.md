@@ -1,6 +1,6 @@
 ---
 name: rust-toolchain
-description: Run Hex Command Rust and wasm-pack commands with the workspace toolchain while preserving explicit environment overrides.
+description: Use for Hex Command Rust or WASM builds, tests, formatting and toolchain troubleshooting.
 ---
 
 # Rust toolchain

@@ -1,6 +1,6 @@
 ---
 name: combat-simulation
-description: Run role-appropriate Hex Command combat simulations and read the maintained analyzer's complete human-readable reports before diagnosing balance.
+description: Use for Hex Command AI policy reviews or changes, combat simulations, and balance or campaign competence analysis.
 ---
 
 # Combat simulation

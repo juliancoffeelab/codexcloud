@@ -1,6 +1,6 @@
 ---
 name: pixel-lineup
-description: Show read-only Hex Command race upgrade trees or L1/L2/L3 grids at a shared native scale.
+description: Use for previewing or comparing Hex Command faction lineups and unit upgrade trees or grids.
 ---
 
 # Pixel lineup

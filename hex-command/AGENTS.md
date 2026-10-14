@@ -62,3 +62,26 @@
   Report the actual check status and remaining work.
 - For visual changes, deploy before pushing to GitHub so the user can test them
   sooner. If deployment fails, report it and still make the required GitHub push.
+
+## Skills
+
+Read the linked `SKILL.md` before starting work that matches its trigger.
+
+- [combat-simulation](.agents/skills/combat-simulation/SKILL.md): Use when asked
+  to review, explain, compare or change AI policies; run or analyze combat
+  simulations; or assess balance, campaign competence or simulation performance.
+- [pinkbox-enhancement](.agents/skills/pinkbox-enhancement/SKILL.md): Use when
+  asked to recolor or redesign existing unit artwork, create upgrade artwork
+  from an approved unit, or recolor terrain floors.
+- [pinkbox-generation](.agents/skills/pinkbox-generation/SKILL.md): Use when
+  asked to generate a new pixel unit or regenerate a unit's shape, pose or
+  equipment through image generation.
+- [pixel-cleaning](.agents/skills/pixel-cleaning/SKILL.md): Use when asked to
+  inspect, clean or repair sprite or terrain pixels, outlines, shading, ground
+  alignment or terrain joins.
+- [pixel-lineup](.agents/skills/pixel-lineup/SKILL.md): Use when asked to show,
+  preview or visually compare faction lineups, unit upgrade trees or progression
+  grids.
+- [rust-toolchain](.agents/skills/rust-toolchain/SKILL.md): Use when building,
+  testing or formatting Rust code, compiling WASM or simulation binaries, or
+  troubleshooting Cargo, Rustup or wasm-pack.
