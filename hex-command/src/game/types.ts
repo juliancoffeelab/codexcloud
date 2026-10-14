@@ -340,6 +340,7 @@ export interface MissionDefinition {
   };
 }
 export interface CampaignDefinition {
+  playerDiplomacy: ("pragmatic" | "restrained")[];
   id: CampaignId;
   name: string;
   tagline: string;

@@ -5,6 +5,7 @@ use crate::{
     data::{Rules, Side},
 };
 use serde::{Deserialize, Serialize};
+use std::collections::BTreeMap;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
@@ -42,6 +43,7 @@ pub struct ScheduleOptions {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub campaign_enemies: Option<Vec<Policy>>,
     pub diplomacy: Vec<Diplomacy>,
+    pub campaign_diplomacy: BTreeMap<String, Vec<Diplomacy>>,
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub self_play: bool,
     #[serde(skip_serializing_if = "std::ops::Not::not")]
@@ -77,6 +79,21 @@ impl ScheduleOptions {
             campaign_enemies: None,
             self_play: false,
             vs_classic: false,
+            campaign_diplomacy: rules
+                .campaigns
+                .iter()
+                .map(|(id, campaign)| {
+                    let modes = campaign
+                        .player_diplomacy
+                        .iter()
+                        .map(|mode| {
+                            serde_json::from_value(serde_json::Value::String(mode.clone()))
+                                .map_err(SimulationError::from)
+                        })
+                        .collect::<Result<Vec<_>, _>>()?;
+                    Ok((id.clone(), modes))
+                })
+                .collect::<Result<_, SimulationError>>()?,
             diplomacy: rules
                 .campaign_defaults
                 .diplomacy
@@ -86,6 +103,14 @@ impl ScheduleOptions {
                         .map_err(SimulationError::from)
                 })
                 .collect::<Result<_, _>>()?,
+        })
+    }
+    /// Select only player diplomacy modes authored for this campaign.
+    pub fn diplomacy_for<'a>(&'a self, campaign: &'a str) -> impl Iterator<Item = &'a Diplomacy> {
+        self.diplomacy.iter().filter(move |mode| {
+            self.campaign_diplomacy
+                .get(campaign)
+                .is_none_or(|allowed| allowed.contains(mode))
         })
     }
     /// Count both seats/initiatives and campaign diplomacy settings with checked arithmetic.
@@ -145,10 +170,14 @@ impl ScheduleOptions {
             0
         } else {
             self.campaigns
-                .len()
+                .iter()
+                .try_fold(0usize, |total, campaign| {
+                    total
+                        .checked_add(self.diplomacy_for(campaign).count())
+                        .ok_or("Schedule too large")
+                })?
                 .checked_mul(campaign_players)
                 .and_then(|n| n.checked_mul(campaign_enemies))
-                .and_then(|n| n.checked_mul(self.diplomacy.len()))
                 .ok_or("Schedule too large")?
         };
         arena
@@ -242,7 +271,7 @@ pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, Simulatio
                         .iter()
                         .filter(|p| p.supports_campaign())
                     {
-                        for diplomacy in &options.diplomacy {
+                        for diplomacy in options.diplomacy_for(campaign) {
                             configs.push(MatchConfig::Campaign(CampaignConfig {
                                 campaign: campaign.clone(),
                                 player: *player,
@@ -265,6 +294,36 @@ pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, Simulatio
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn authored_diplomacy_limits_campaign_runs_and_counts() {
+        let rules = Rules::load().unwrap();
+        let mut options = ScheduleOptions::defaults(&rules).unwrap();
+        options.mode = Mode::Campaign;
+        options.seeds = 2;
+        options.campaigns = vec!["single".into(), "choice".into()];
+        options.policies = vec![Policy::Mixed];
+        options.campaign_diplomacy = BTreeMap::from([
+            ("single".into(), vec![Diplomacy::Pragmatic]),
+            (
+                "choice".into(),
+                vec![Diplomacy::Pragmatic, Diplomacy::Restrained],
+            ),
+        ]);
+        let configs = schedule(&options).unwrap();
+        assert_eq!(options.expected_games().unwrap(), 6);
+        assert_eq!(configs.len(), 6);
+        assert!(configs.iter().all(|config| match config {
+            MatchConfig::Campaign(config) =>
+                config.campaign != "single" || config.diplomacy == Diplomacy::Pragmatic,
+            _ => false,
+        }));
+        options.diplomacy = vec![Diplomacy::Restrained];
+        let configs = schedule(&options).unwrap();
+        assert_eq!(options.expected_games().unwrap(), 2);
+        assert_eq!(configs.len(), 2);
+        assert!(configs.iter().all(|config| matches!(config,
+            MatchConfig::Campaign(config) if config.campaign == "choice" && config.diplomacy == Diplomacy::Restrained)));
+    }
     #[test]
     fn fixed_classic_panel_preserves_seats_and_initiative_without_duplicate_matches() {
         let rules = Rules::load().unwrap();
@@ -323,6 +382,7 @@ mod tests {
             campaign_players: None,
             campaign_enemies: None,
             diplomacy: vec![Diplomacy::Pragmatic],
+            campaign_diplomacy: BTreeMap::new(),
             self_play: false,
             vs_classic: false,
         };

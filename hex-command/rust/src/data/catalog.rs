@@ -174,6 +174,8 @@ struct UnitSpecification {
 }
 #[derive(Deserialize)]
 struct CampaignFile {
+    #[serde(rename = "playerDiplomacy")]
+    player_diplomacy: Vec<String>,
     id: String,
     name: String,
     tagline: String,
@@ -582,6 +584,18 @@ impl Rules {
             let source: CampaignFile = parse(bundle, path)?;
             identifier(&source.id, path)?;
             reference(&source.leader, &types, path)?;
+            unique(source.player_diplomacy.iter().map(String::as_str), path)?;
+            if source.player_diplomacy.is_empty()
+                || source
+                    .player_diplomacy
+                    .iter()
+                    .any(|mode| !["pragmatic", "restrained"].contains(&mode.as_str()))
+            {
+                return Err(ContentError::new(
+                    path,
+                    "unknown or missing player diplomacy",
+                ));
+            }
             if source.name.is_empty()
                 || source.tagline.is_empty()
                 || source.description.is_empty()
@@ -634,6 +648,7 @@ impl Rules {
                         leader: source.leader,
                         missions,
                         ending: source.ending,
+                        player_diplomacy: source.player_diplomacy,
                     },
                 )
                 .is_some()

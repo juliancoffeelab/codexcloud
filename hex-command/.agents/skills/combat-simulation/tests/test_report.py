@@ -113,11 +113,25 @@ class CompleteDataTests(unittest.TestCase):
         self.assertIn('2/3 (66.7%); caps: 1', text)
         self.assertIn('not recorded', text)
         self.assertLess(text.index('Arena wins by race and map'), text.index('Campaigns against'))
-        self.assertLess(text.index('1/2 (50.0%)'), text.index('Campaign stage outcomes'))
+        self.assertLess(text.index('1/2'), text.index('Campaign stage outcomes'))
         self.assertLess(text.index('Campaign stage outcomes'), text.index('Arena results by tactic'))
         missing_rows, _, _, _ = report.tally({report.identity(other_policy): other_policy})
         self.assertIn('No non-self-play games against Classic were recorded',
                       '\n'.join(report.overview([], [], [], [], missing_rows)))
+
+    def test_campaign_overview_keeps_diplomacy_outcomes_separate(self):
+        rows = [dict(campaign='choice', player='mixed', enemy='classic', maxRounds=30,
+                     recruitLimit=1, diplomacy=mode, attempts=10, completed=wins)
+                for mode, wins in [('pragmatic', 3), ('restrained', 8)]]
+        rows.append(dict(campaign='single', player='mixed', enemy='classic', maxRounds=30,
+                         recruitLimit=1, diplomacy='pragmatic', attempts=10, completed=10))
+        text = '\n'.join(report.overview(rows, [], [], [], []))
+        table = text.split('## Campaign stage outcomes')[0]
+        self.assertIn('| choice (pragmatic) | 3/10 |', table)
+        self.assertIn('| choice (restrained) | 8/10 |', table)
+        self.assertIn('| single | 10/10 |', table)
+        self.assertNotIn('11/20', table)
+        self.assertNotIn('%', table)
 
     def test_unit_events_follow_actual_side_when_factions_swap_seats(self):
         item = match(1, 'b', 'a')
@@ -179,7 +193,7 @@ class CompleteDataTests(unittest.TestCase):
             actor_loss = next(r for r in tables['campaign_runs'] if r['category']=='required actor lost')
             self.assertEqual((actor_loss['seed'],actor_loss['map'],actor_loss['finalPlayerUnits']), (2,'grove',1))
             self.assertEqual(next(r for r in tables['campaign_failures'] if r['category']=='required actor lost')['exampleSeeds'], [2])
-            self.assertIn('1/5 (20.0%)', output.getvalue())
+            self.assertIn('| sample (restrained) | 1/5 |', output.getvalue())
             self.assertIn('grove', (root/'analytics/findings.md').read_text())
             with gzip.open(root/'report.details.jsonl.gz', 'wb') as compressed:
                 compressed.write((root/'report.details.jsonl').read_bytes())

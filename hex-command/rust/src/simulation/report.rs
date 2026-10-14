@@ -269,9 +269,21 @@ pub fn build_report(
     let mut campaign_strata = vec![];
     if options.mode != Mode::Arena {
         for campaign in &options.campaigns {
-            for player in options.policies.iter().filter(|p| p.supports_campaign()) {
-                for enemy in options.policies.iter().filter(|p| p.supports_campaign()) {
-                    for diplomacy in &options.diplomacy {
+            for player in options
+                .campaign_players
+                .as_ref()
+                .unwrap_or(&options.policies)
+                .iter()
+                .filter(|p| p.supports_campaign())
+            {
+                for enemy in options
+                    .campaign_enemies
+                    .as_ref()
+                    .unwrap_or(&options.policies)
+                    .iter()
+                    .filter(|p| p.supports_campaign())
+                {
+                    for diplomacy in options.diplomacy_for(campaign) {
                         let player = serde_json::to_value(player)?;
                         let enemy = serde_json::to_value(enemy)?;
                         let alignment = serde_json::to_value(diplomacy)?;
@@ -459,6 +471,7 @@ mod tests {
             campaign_players: None,
             campaign_enemies: None,
             diplomacy: vec![Diplomacy::Pragmatic],
+            campaign_diplomacy: Default::default(),
             self_play: false,
             vs_classic: false,
         };

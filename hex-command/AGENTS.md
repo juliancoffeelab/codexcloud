@@ -49,6 +49,10 @@
   provide a way to diagnose the error and restart cleanly.
 - Run combat simulations when needed to explore or validate balance. Do not wait
   for separate permission to use them during balance work.
+- After changing the simulation harness, analyzer or AI behavior, run fresh
+  simulations and include the report directly in the final reply without waiting
+  for another request. A successful run or test status alone is not delivery.
+  Report the affected workload; use the full panel when scope is unclear.
 - `dist/` contains generated output and is Git-ignored. Commit source and public
   assets. For Sites publication, build the selected checkout with `npm run build`,
   commit and push its exact source to the Sites source repository, then package
@@ -57,9 +61,9 @@
   packager checks client references and archive bytes.
 - Use feature branches and pull requests for publication as for other changes.
   Never push directly to `main` or bypass the repository's PR workflow.
-- For work lasting more than 10 minutes, commit and push the feature branch to
-  GitHub before returning to the user, even if checks fail or work is unfinished.
-  Report the actual check status and remaining work.
+- Commit and push before returning only if the current task took more than
+  10 minutes, even if unfinished or checks fail. Otherwise, keep changes local.
+  Report check status and remaining work.
 - For visual changes, deploy before pushing to GitHub so the user can test them
   sooner. If deployment fails, report it and still make the required GitHub push.
 

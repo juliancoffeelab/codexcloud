@@ -21,5 +21,6 @@
     "stages/lantern-ferry/stage.json",
     "stages/lantern-villages/stage.json",
     "stages/lantern-bell/stage.json"
-  ]
+  ],
+  "playerDiplomacy": ["pragmatic"]
 }

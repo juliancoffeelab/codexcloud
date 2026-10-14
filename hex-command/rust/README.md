@@ -76,7 +76,7 @@ and recording tests together with Python and browser-adapter tests under one
 shared 20-second budget. `npm run check:rust` is available for a focused native run.
 Its WASM feature also compares embedded content with the authored disk catalog.
 
-Use the [simulation guide](../.agents/skills/combat-simulation/usage.md) for commands and comparisons,
+Use the [simulation guide](../.agents/skills/combat-simulation/SKILL.md) for commands and comparisons,
 [AI preset composition](src/ai/presets.rs) and [planner dispatch](src/ai/planner/mod.rs) for planning behavior,
-[recording reference](../.agents/skills/combat-simulation/usage.md#progress-and-recovery) for journals and recovery, and
+[recording reference](../.agents/skills/combat-simulation/implementation.md#journals-and-recovery) for journals and recovery, and
 [development guide](../docs/development.md) for full verification and publication.
