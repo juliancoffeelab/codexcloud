@@ -5,163 +5,99 @@ description: Use for Hex Command AI policy reviews or changes, combat simulation
 
 # Combat simulation
 
-Work from the `hex-command/` project root. Read [usage.md](usage.md) for
-running and reviewing batches. Read [implementation.md](implementation.md) when
-changing or debugging the runner or analyzer. Use the [Rust toolchain
-skill](../rust-toolchain/SKILL.md) for build problems.
+Work from `hex-command/`. Read [purpose.md](purpose.md) before AI policy reviews
+or interpreting balance and campaign results. Read [implementation.md](implementation.md)
+only when changing or debugging the harness, analyzer, recording or performance.
+Use the [Rust toolchain skill](../rust-toolchain/SKILL.md) for build problems.
 
-## Architecture and change boundaries
-
-Read [AI contracts](../../../docs/development.md#ai-contracts) before changing
-AI architecture. Use fixed
-Recruiter/Campaigner/Planner composition, explicit orders, restricted battle
-views and a shared validated planning draft. Only Campaigner interprets authored
-mission kinds. A selected planner may call shared search helpers; it must not
-switch to a different planner.
-
-Structural changes must preserve the existing Rotation, Frontline and Balanced
-recruitment semantics unless the user explicitly requests a recruitment change.
-The future infantry/fair/situational strategies are a separate semantic
-migration; do not implement them implicitly during a module refactor.
-
-## Purpose and policy roles
-
-These simulations test roster balance and whether simulation players can finish
-objectives using the same engine rules as the browser. They also measure the
-cost of running those trials. Classic is the live enemy and fixed comparison
-opponent; making it stronger is not the purpose of simulation-player work.
-
-The intended player strategies are infantry-only, fair roster use and situational
-selection. Compare
-their success against the same fixed enemy under matching conditions. Fair roster
-use and situational selection should improve on the narrow infantry baseline,
-without a large advantage from repeatedly choosing one unit. No numeric threshold
-for the acceptable gap is established; report differences by map and opponent.
-
-Current presets are imperfect proxies for those intended roles. Rush recruits
-frontline units rather than strictly infantry; Mixed balances role shares rather
-than guaranteeing fair use of every unit. Priority and Battler reuse Mixed
-recruitment and experiment with planning; they are not separate situational
-recruiters. Battler is arena-only. Check [preset composition](../../../rust/src/ai/presets.rs)
-and the relevant implementation when explaining current policy behavior. State
-those limits when interpreting strategy comparisons. Documentation descriptions
-are not evidence that a planner branch executes in production; inspect dispatch
-and callers, including whether a helper is test-only.
-
-Campaign completion, required-actor survival and progression establish whether
-these players are useful for balance trials. Faster simulations must preserve
-those behaviors; speed alone does not establish correctness or balance. A round
-cap is an unresolved attempt, not a victory, and an unsafe forecast is not proof
-that an actor's death was unavoidable.
-
-## Choose the right panel
-
-Follow the user's requested races, maps, policies, seeds and limits. When they
-do not specify scope, strongly prefer the complete role-appropriate panel over
-an isolated duel or a hand-picked subset. The default full panel covers all five
-current arena tactics against Classic on every map, plus campaign competence for
-the simulation-player policies Mixed and Priority against the fixed Classic enemy. Campaign runs use
-authored rosters and objectives. Do not treat Classic or Rush player campaign
-failures as competence regressions; they are not the campaign simulation
-players. Classic remains the fixed campaign opponent and all requested policies
-remain in the arena panel.
-
-Use recorded report metadata and composition summaries to establish coverage.
-Inspect `rust/data/simulation/rosters.json` and `arena.json` only when preparing
-a changed panel or resolving participation information missing from the report.
-Campaigns use their authored rosters. Artwork lineups do not establish participation. Use `ai:simulate -- --schedule-only` to inspect the exact configurations
-and counts when useful. State the panel and completed count before drawing
-conclusions.
-
-## Run and read the report first
-
-A request to run the report means run fresh simulations and generate their report,
-including after analyzer changes. Use the full runner below. Use only the analyzer
-when the user explicitly asks to analyze or regenerate a particular saved run;
-available results from an earlier review do not replace a requested simulation.
-
-Use the single simulation command, which saves the run and automatically analyzes it:
+## Run
 
 ```sh
-npm run ai:simulate -- --out artifacts/current
+npm run ai:simulate
 ```
 
-This builds the native harness when needed, runs the default complete panel,
-and writes readable findings and full exports under `artifacts/current/analytics/`.
-For an explicitly requested campaign-only panel, keep Mixed and Priority
-as players and Classic as enemy:
+Cargo builds when needed, runs the full panel and generates the report. Defaults:
+10 seeds, all arena tactics against Classic on all maps, and Balanced/Rotated/Situational
+campaigns against Classic. Default round caps are 30 for arenas and 100 per
+campaign stage; `--rounds N` overrides both. Honor requested scope; otherwise
+use this full panel.
+Classic uses its live cap of 2 recruits per phase; the other tactics have no
+additional recruitment cap. `--recruits N` explicitly overrides both sides.
+Each run gets a fresh ignored `artifacts/simulation-*` directory.
+
+After changing the harness, analyzer or AI behavior, run fresh simulations and
+present the report in the final reply without another request. Use the affected
+workload, or the full panel if scope is unclear. Reporting only that a run or
+tests passed does not complete the task.
+
+| Option                                                   | Use                                                          |
+| -------------------------------------------------------- | ------------------------------------------------------------ |
+| `--mode arena\|campaign\|full`                           | Select the workload.                                         |
+| `--seeds N`, `--seed N`                                  | Select seed count and starting seed.                         |
+| `--with R,C,P`                                           | Add a custom tactic; `-` uses workload defaults.             |
+| `--policies LIST`                                        | Select arena tactics; also filters default campaign players. |
+| `--armies LIST`, `--landscapes LIST`, `--campaigns LIST` | Select content.                                              |
+| `--campaign-players LIST`, `--campaign-enemies LIST`     | Override campaign roles.                                     |
+| `--rounds N`, `--recruits N`, `--diplomacy LIST`         | Override limits or filter authored diplomacy modes.          |
+| `--out PATH`                                             | Choose an output directory or raw `.json` file.              |
+| `--no-report`                                            | Keep raw results without analysis.                           |
+| `--all-pairs`                                            | Request the full arena policy matrix.                        |
+| `--self-play`                                            | Compare matching tactics; requires `--mode arena`.           |
+| `--schedule-only`                                        | Inspect configurations without running matches.              |
+| `--baseline PATH`                                        | Compare with a saved run with identical configurations.      |
+| `--help`                                                 | List remaining options.                                      |
+
+`--with=rotation,-,queued` adds an uncapped custom tactic. `rotated` aliases
+`rotation`. Slots are recruiter, campaigner and planner; defaults are Balanced
+recruitment, Arena for arenas or Mission for campaigns, and Queued planning.
+By default it plays against Classic. `--all-pairs` includes it alongside every
+selected named tactic; `--self-play` compares each tactic against itself.
+Campaign role lists can refer to the added tactic as `custom`, for example
+`--campaign-players balanced --campaign-enemies custom`. Without explicit
+campaign player selection, the custom tactic is the player.
+
+Use `--data-dir` when simulating another checkout. Determine actual coverage,
+limits and composition from report metadata; artwork lineups do not establish it.
+Keep run files and fingerprints together. On failure, preserve partial output
+and state completed/expected counts; worker errors are not battle defeats.
+
+A request to run a report means fresh simulations, including after analyzer
+changes. Analyze an existing run only when that is requested:
 
 ```sh
-npm run ai:simulate -- --mode campaign --campaign-players mixed,priority \
-  --campaign-enemies classic --seeds 10 --out artifacts/current
+npm run ai:analyze -- artifacts/saved/report.json --out artifacts/saved/analytics
 ```
 
-`ai:simulate` uses `cargo run` to build when needed, run the selected panel and generate
-the readable report by default. Use `--no-report` to retain raw results without
-analysis. With no `--out`, it creates a fresh ignored artifact directory. Preserve each run
-in a fresh ignored artifact directory, record its engine/data fingerprint, and
-include an explicit `--data-dir` when simulating another checkout. The runner
-defaults to the current catalog.
+## Read evidence
 
-The command prints coverage, compact race-by-map and campaign tables, then stage
-diagnostics and detailed arena matrices automatically. Use that returned report
-first; do not issue extra reads when it already answers the question. Read
-`analytics/findings.md` and `analytics/summary.md` internally when the returned
-output was truncated or more detail is needed. The report gives
-campaign completion and stage outcomes, failure categories and recorded
-reasons, named losses, objective progress, idle/repeated tails, and arena
-comparisons. Complete tables are available as CSV exports. Do not start
-by manually parsing outcomes, CSV/JSON, or gameplay journals for routine
-questions that the report already answers. Preserve partial output on failure
-and report completed matches; an incomplete run is not a complete panel.
+Use the printed findings first. Read `<run>/analytics/findings.md` and
+`summary.md` internally when output is truncated or more detail is needed.
+Use their recorded recruitment, promotions, casualties, goal progress and
+terminal reasons; do not replace the report with scratch analysis of raw files.
 
-If the user's question needs evidence the maintained report does not emit,
-improve that analyzer and its focused tests, then regenerate the report from
-the saved runs. Do not substitute an ad hoc scratch analyzer, manual raw-data
-reading, or source-code speculation for a report gap. Once the report
-establishes a precise unexplained case, inspect that case's phase journal and
-relevant code to test a narrow causal explanation. Keep any trace extraction
-targeted to the identified match and phase.
+If evidence is missing, extend the maintained analyzer and its focused tests,
+then regenerate from the saved run. Inspect a targeted phase journal and code
+only after the report identifies an unexplained case. Separate recorded failure
+from proposed cause. Claim regressions only with matching baseline conditions.
 
-## Interpret results
+## Present in chat
 
-A full report must summarize both arenas and campaigns. Follow the report's
-opening order: completed coverage, short race-by-map results against Classic,
-then campaign completion, followed by the important detailed findings. Summarize
-both sections even when one contains more detail. For a scoped request, report
-that scope and say when a requested comparison is not recorded.
+1. State completed coverage, seeds, round/recruit limits and pooled dimensions.
+2. Give **a separate table for each player tactic against Classic**, with races
+   as rows and maps as columns. Cells are `78.8% (caps: 13)`: percentages and
+   caps, without win counts. Do not combine tactics. Omit Classic-player baseline
+   and reverse Classic-versus-player tables unless requested.
+   Display Coastal as Merfolk and put Merfolk last. Order map columns as Plains (open), Forests
+   (wooded), Crossing (crossings), Islands (islands).
+3. Follow with **the campaign table**, campaigns as rows and simulation-player
+   tactics as columns. Cells are completion counts such as `16/20`, without
+   percentages. Split campaigns with multiple player diplomacy modes into
+   separate labeled rows, such as Ashen Oath (pragmatic) and Ashen Oath
+   (restrained); never pool these modes. Name the fixed Classic opponent.
+4. Add important findings and limitations. For scoped requests, show that scope.
 
-Keep player policies separate in race-by-map comparisons. Name the fixed enemy,
-show wins/all games and caps, and state when opponent races or diplomacy modes
-are pooled. Arena completion means a decisive result for either side; it is not
-the race's win rate. Campaign completion means finishing the whole campaign;
-stage victories use only attempts that reached that stage. Do not mix these rates.
-
-Connect notable gaps to recorded recruitment, promotions, casualties, goal progress
-and terminal reasons. Distinguish an observed failure from its proposed cause.
-Only diagnose a causal bug after checking the relevant recorded phases and code.
-If a baseline exists, require matching panel conditions before calling a change
-a regression. Without a baseline, describe current results rather than a change.
-
-For arena balance, show all recorded factions and requested maps and policy
-pairings. Include recruitment, promotions, casualties and per-match outcomes;
-retain caps in denominators and distinguish self-play from independent matches.
-Use the report's equal-policy and map-policy tables to compare like policies,
-and its matchup table for every opponent pairing. Label sample sizes and
-unresolved results.
-
-For campaign competence, compare Mixed and Priority against the same fixed
-Classic enemy under matching campaigns, seeds, diplomacy, round limits and
-recruit limits. Report completion rates with denominators, stage-level win/cap
-outcomes, objective progress and terminal reasons. Separate a goal that never
-progressed from a loss after partial progress, and distinguish defeat from a
-round cap. Do not infer a causal bug from aggregate rates alone: use recorded
-phase evidence and then targeted code inspection for the specific pattern.
-
-Present the results directly in chat: completed coverage, compact race-by-map
-and campaign tables, then the important findings and limitations. Users working
-in cloud environments cannot open workspace files. Keep report files, metadata,
-raw journals and exports as internal records in ignored `artifacts/`; do not
-use local file links as the answer or require the user to open a file. Provide
-files only when explicitly requested and through a delivery mechanism the user
-can access. Do not commit generated simulation data.
+Keep caps in arena win-rate denominators. Campaign completion covers the whole
+campaign; stage results count only attempts reaching that stage. Keep wins,
+defeats and caps distinct. Summarize both workloads for full runs.
+Report files and exports are internal records in ignored `artifacts/`; present
+results directly, without local file links. Deliver files only when requested.

@@ -143,7 +143,7 @@ and host adapters remain separate from the block interfaces.
 
 ## References
 
-- [Combat simulations and analysis](../.agents/skills/combat-simulation/usage.md)
+- [Combat simulations and analysis](../.agents/skills/combat-simulation/SKILL.md)
 - [AI preset composition](../rust/src/ai/presets.rs) and [planner dispatch](../rust/src/ai/planner/mod.rs)
 - Artwork skills: [generation](../.agents/skills/pinkbox-generation/SKILL.md),
   [enhancement](../.agents/skills/pinkbox-enhancement/SKILL.md),

@@ -36,7 +36,7 @@ impl<R: Recruiter, C: Campaigner, P: Planner> Tactic<R, C, P> {
             &mut draft.recruitment_context(workspace.seed, workspace.recruitment_remaining),
             &orders.recruitment,
         )?;
-        workspace.recruitment_remaining = 0;
+        workspace.recruitment_remaining = Some(0);
         workspace.orders = Some(orders.clone());
         workspace
             .report
@@ -53,8 +53,11 @@ impl<R: Recruiter, C: Campaigner, P: Planner> Tactic<R, C, P> {
 pub(crate) type PresetTactic = Tactic<super::Recruiter, super::CampaignBlock, super::Planner>;
 #[cfg(not(target_arch = "wasm32"))]
 impl PresetTactic {
+    #[cfg(test)]
     pub(crate) fn preset(policy: super::Policy) -> Self {
-        let blocks = policy.blocks();
+        Self::from_blocks(policy.blocks())
+    }
+    pub(crate) fn from_blocks(blocks: super::Blocks) -> Self {
         Self::new(blocks.recruiter, blocks.campaign, blocks.planner)
     }
     pub(crate) fn composition(&self) -> super::Blocks {

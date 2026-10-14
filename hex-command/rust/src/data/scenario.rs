@@ -341,6 +341,8 @@ impl Mission {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Campaign {
+    #[serde(rename = "playerDiplomacy")]
+    pub player_diplomacy: Vec<String>,
     pub tagline: String,
     pub description: String,
     pub race: Race,

@@ -146,8 +146,10 @@ pub struct AiOptions {
     pub blocks: Option<crate::ai::Blocks>,
     pub policy: crate::ai::Policy,
     pub diplomacy: crate::ai::Diplomacy,
-    /// Maximum recruit commands the planner may choose during this phase.
-    pub recruitment_limit: usize,
+    /// Explicit recruitment override; omitted calls use the policy's default.
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub recruitment_limit: Option<usize>,
 }
 
 /// Chosen command and the battle revision against which it must be dispatched.

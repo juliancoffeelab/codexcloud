@@ -636,7 +636,7 @@ mod tests {
                 .unwrap()
                 .id;
             for _ in 0..32 {
-                let command = choose_game_command(&game, Policy::Mixed, &mut workspace).unwrap();
+                let command = choose_game_command(&game, Policy::Balanced, &mut workspace).unwrap();
                 let end = match &command {
                     Command::Attack {
                         unit,

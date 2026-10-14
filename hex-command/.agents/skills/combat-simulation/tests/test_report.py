@@ -113,11 +113,70 @@ class CompleteDataTests(unittest.TestCase):
         self.assertIn('2/3 (66.7%); caps: 1', text)
         self.assertIn('not recorded', text)
         self.assertLess(text.index('Arena wins by race and map'), text.index('Campaigns against'))
-        self.assertLess(text.index('1/2 (50.0%)'), text.index('Campaign stage outcomes'))
+        self.assertLess(text.index('1/2'), text.index('Campaign stage outcomes'))
         self.assertLess(text.index('Campaign stage outcomes'), text.index('Arena results by tactic'))
         missing_rows, _, _, _ = report.tally({report.identity(other_policy): other_policy})
         self.assertIn('No non-self-play games against Classic were recorded',
                       '\n'.join(report.overview([], [], [], [], missing_rows)))
+
+    def test_campaign_overview_keeps_diplomacy_outcomes_separate(self):
+        rows = [dict(campaign='choice', player='mixed', enemy='classic', maxRounds=30,
+                     recruitLimit=1, diplomacy=mode, attempts=10, completed=wins)
+                for mode, wins in [('pragmatic', 3), ('restrained', 8)]]
+        rows.append(dict(campaign='single', player='mixed', enemy='classic', maxRounds=30,
+                         recruitLimit=1, diplomacy='pragmatic', attempts=10, completed=10))
+        text = '\n'.join(report.overview(rows, [], [], [], []))
+        table = text.split('## Campaign stage outcomes')[0]
+        self.assertIn('| choice (pragmatic) | 3/10 |', table)
+        self.assertIn('| choice (restrained) | 8/10 |', table)
+        self.assertIn('| single | 10/10 |', table)
+        self.assertNotIn('11/20', table)
+        self.assertNotIn('%', table)
+
+    def test_campaign_overview_distinguishes_policy_defaults_from_explicit_caps(self):
+        outcomes = {}
+        for seed, limit in [(1, None), (2, 1)]:
+            item = dict(kind='campaign', config=dict(seed=seed, campaign='sample', player='mixed',
+                        enemy='classic', diplomacy='pragmatic', maxRounds=30, recruitLimit=limit),
+                        completed=True, missions=[])
+            outcomes[report.identity(item)] = item
+        campaigns, stages, failures, events, _ = report.campaign_tables(outcomes)
+        text = '\n'.join(report.overview(campaigns, stages, failures, events, []))
+        self.assertIn('Classic 2 per phase; other tactics uncapped', text)
+        self.assertIn('1 recruits per phase (explicit override)', text)
+        self.assertEqual(len(campaigns), 2)
+
+    def test_policy_matrix_includes_same_race_opponents_and_keeps_caps(self):
+        won = match(1, 'a', 'a')
+        won['config'].update(player='priority', enemy='mixed')
+        capped = match(2, 'a', 'b', winner=None, reason='cap')
+        capped['config'].update(player='priority', enemy='mixed')
+        reverse = match(3, 'b', 'a', winner='enemy')
+        reverse['config'].update(player='mixed', enemy='priority')
+        same_policy = match(4, 'a', 'b')
+        rows, _, _, _ = report.tally({report.identity(x): x for x in [won, capped, reverse, same_policy]})
+        combined = report.combine([r for r in rows if r['policy'] != r['opponentPolicy']],
+                                  ['policy', 'opponentPolicy'], cross=False)
+        lookup = {(r['policy'], r['opponentPolicy']): r for r in combined}
+        self.assertEqual(set(lookup), {('priority', 'mixed'), ('mixed', 'priority')})
+        self.assertEqual((lookup['priority', 'mixed']['games'], lookup['priority', 'mixed']['wins'],
+                          lookup['priority', 'mixed']['caps']), (3, 2, 1))
+        self.assertEqual(lookup['mixed', 'priority']['losses'], 2)
+
+    def test_custom_blocks_keep_tactic_labels_distinct_in_arena_and_campaigns(self):
+        custom = match(1)
+        custom['config'].update(player='balanced', enemy='classic',
+                                playerBlocks=dict(recruiter='rotation', campaign='arena', planner='queued'))
+        named = match(2)
+        named['config'].update(player='balanced', enemy='classic')
+        rows, _, _, _ = report.tally({report.identity(x): x for x in [custom, named]})
+        self.assertEqual({r['policy'] for r in rows}, {'rotation-arena-queued', 'balanced', 'classic'})
+        campaign = dict(kind='campaign', completed=True, missions=[], config=dict(seed=1,
+                        campaign='sample', player='balanced', enemy='balanced', diplomacy='pragmatic',
+                        maxRounds=100, recruitLimit=None,
+                        enemyBlocks=dict(recruiter='rotation', campaign='mission', planner='queued')))
+        summary, _, _, _, _ = report.campaign_tables({report.identity(campaign): campaign})
+        self.assertEqual((summary[0]['player'], summary[0]['enemy']), ('balanced', 'rotation-mission-queued'))
 
     def test_unit_events_follow_actual_side_when_factions_swap_seats(self):
         item = match(1, 'b', 'a')
@@ -179,7 +238,7 @@ class CompleteDataTests(unittest.TestCase):
             actor_loss = next(r for r in tables['campaign_runs'] if r['category']=='required actor lost')
             self.assertEqual((actor_loss['seed'],actor_loss['map'],actor_loss['finalPlayerUnits']), (2,'grove',1))
             self.assertEqual(next(r for r in tables['campaign_failures'] if r['category']=='required actor lost')['exampleSeeds'], [2])
-            self.assertIn('1/5 (20.0%)', output.getvalue())
+            self.assertIn('| sample (restrained) | 1/5 |', output.getvalue())
             self.assertIn('grove', (root/'analytics/findings.md').read_text())
             with gzip.open(root/'report.details.jsonl.gz', 'wb') as compressed:
                 compressed.write((root/'report.details.jsonl').read_bytes())

@@ -30,6 +30,7 @@ arrow-schema = "57"
 arrow-ipc = "57"
 flate2 = "1"
 mimalloc = { version = "0.1", default-features = false }
+clap = { version = "4.5", features = ["derive"] }
 
 [build-dependencies]
 sha2 = "0.10"

@@ -15,6 +15,7 @@ pub enum RecruiterKind {
     Rotation,
     Frontline,
     Balanced,
+    Situational,
 }
 pub(crate) trait Recruiter {
     fn recruit(
@@ -33,6 +34,7 @@ impl Recruiter for RecruiterKind {
             Self::Rotation => rotation::Rotation.recruit(context, orders),
             Self::Frontline => frontline::Frontline.recruit(context, orders),
             Self::Balanced => balanced::Balanced.recruit(context, orders),
+            Self::Situational => situational::Situational.recruit(context, orders),
         }
     }
 }
@@ -43,7 +45,10 @@ fn drive(
 ) -> Result<crate::ai::orders::RecruitmentReport, CommandError> {
     use crate::ai::orders::*;
     let mut report = RecruitmentReport::default();
-    for _ in 0..context.budget {
+    while context
+        .budget
+        .is_none_or(|limit| report.recruited.len() < limit)
+    {
         let mandatory = orders
             .requirements
             .iter()
@@ -110,14 +115,12 @@ impl BattleView<'_, '_> {
         seed: u32,
         orders: &super::orders::RecruitmentOrders,
     ) -> Option<Command> {
-        fn behavior(recruiter: RecruiterKind) -> (bool, bool, bool) {
-            match recruiter {
-                RecruiterKind::Rotation => (true, false, false),
-                RecruiterKind::Frontline => (false, true, false),
-                RecruiterKind::Balanced => (false, false, true),
-            }
-        }
-        let (rotation, frontline_only, balanced) = behavior(recruiter);
+        let (rotation, frontline_only, balanced) = match recruiter {
+            RecruiterKind::Rotation => (true, false, false),
+            RecruiterKind::Frontline => (false, true, false),
+            RecruiterKind::Balanced => (false, false, true),
+            RecruiterKind::Situational => return situational::choose(self, seed, orders),
+        };
         let side = self.turn();
         let Some(leader) = self
             .units()
@@ -350,3 +353,4 @@ mod tests {
 mod balanced;
 mod frontline;
 mod rotation;
+mod situational;

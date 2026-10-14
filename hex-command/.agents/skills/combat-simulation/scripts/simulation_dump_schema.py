@@ -86,12 +86,14 @@ EVENT = pa.struct([("side", STRING), ("type", STRING)])
 SCORE = pa.struct([
     ("controlled", INTEGER), ("held", INTEGER), ("optionalVisits", INTEGER),
 ])
+BLOCKS = pa.struct([(name, STRING) for name in ("recruiter", "campaign", "planner")])
 CONFIG = pa.struct([
     ("seed", INTEGER),
     ("armies", pa.struct([("player", STRING), ("enemy", STRING)])),
     ("landscape", STRING), ("player", STRING), ("enemy", STRING),
     ("first", STRING), ("maxRounds", INTEGER), ("recruitLimit", INTEGER),
     ("diplomacy", STRING), ("campaign", STRING),
+    ("playerBlocks", BLOCKS), ("enemyBlocks", BLOCKS),
 ])
 DETAIL_REFERENCE = pa.struct([
     ("file", STRING), ("offset", INTEGER), ("bytes", INTEGER), ("sha256", STRING),

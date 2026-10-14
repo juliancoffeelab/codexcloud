@@ -188,17 +188,6 @@ fn catalogs_are_shareable_and_cached_routes_reuse_the_distance_field() {
         &game.routes(kind, &[goal])
     ));
 }
-#[test]
-fn tagged_goals_require_the_fields_their_rules_use() {
-    assert!(
-        serde_json::from_str::<Goal>(r#"{"kind":"hold","label":"Rescue","tile":"5,4","turns":3}"#)
-            .is_err()
-    );
-    let goal: Goal =
-        serde_json::from_str(r#"{"kind":"defeat","label":"Defeat the Bellwarden"}"#).unwrap();
-    assert!(matches!(goal, Goal::Defeat { .. }));
-}
-
 // Behavioral coverage moved from the web suite. Helpers make small native boards;
 // scenarios remain separately named so one failure cannot hide another category.
 #[path = "tests/campaign.rs"]

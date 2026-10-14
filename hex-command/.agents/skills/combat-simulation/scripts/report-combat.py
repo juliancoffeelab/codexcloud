@@ -11,6 +11,27 @@ from collections import Counter, defaultdict
 from pathlib import Path
 import time
 
+DISPLAY_NAMES = {'coastal': 'Merfolk', 'open': 'Plains', 'wooded': 'Forests',
+                 'crossings': 'Crossing', 'islands': 'Islands'}
+MAP_ORDER = ('open', 'wooded', 'crossings', 'islands')
+
+
+def display_name(value):
+    return DISPLAY_NAMES.get(value, value)
+
+
+def map_order(value):
+    return (MAP_ORDER.index(value) if value in MAP_ORDER else len(MAP_ORDER), value)
+
+
+def race_order(value):
+    return (display_name(value) == 'Merfolk', display_name(value))
+
+
+def tactic_label(config, side):
+    blocks = config.get(side + 'Blocks')
+    return '-'.join(blocks[k] for k in ('recruiter', 'campaign', 'planner')) if blocks else config.get(side, 'unrecorded')
+
 
 def identity(outcome):
     return outcome['kind'] + ':' + json.dumps(outcome['config'], sort_keys=True, separators=(',', ':'))
@@ -150,7 +171,7 @@ def load_run(paths):
                         diagnostics[identity(raw)] = recorded_analysis(raw)
         else:
             report = json.loads(path.read_text())
-        source = {k: report.get(k) for k in ('sourceCommit', 'fingerprint', 'status', 'mode', 'schedule', 'seeds', 'elapsedSeconds', 'detailFormat', 'turnTiming')}
+        source = {k: report.get(k) for k in ('sourceCommit', 'fingerprint', 'status', 'mode', 'schedule', 'seeds', 'elapsedSeconds', 'detailFormat', 'turnTiming', 'recruitmentLimits')}
         source['fingerprint'] = report.get('fingerprint', report.get('fingerprints'))
         source['file'] = str(path.resolve())
         source['matches'] = len(report['outcomes'])
@@ -222,7 +243,7 @@ def campaign_tables(outcomes):
             continue
         config = outcome['config']
         fields = ('campaign', 'player', 'enemy', 'diplomacy', 'maxRounds', 'recruitLimit')
-        key = tuple(config.get(k, 'unrecorded') for k in fields)
+        key = tuple(tactic_label(config, k) if k in ('player', 'enemy') else config.get(k, 'unrecorded') for k in fields)
         group = groups.setdefault(key, Counter())
         group['attempts'] += 1
         group['completed'] += bool(outcome['completed'])
@@ -269,16 +290,16 @@ def campaign_tables(outcomes):
                 for unit, count in values.items():
                     units[(*chapter_key, event, unit)] += count
     campaigns = []
-    for key, counts in sorted(groups.items()):
+    for key, counts in sorted(groups.items(), key=lambda item: repr(item[0])):
         campaigns.append(dict(zip(fields, key), **{k: counts[k] for k in ('attempts', 'completed', 'defeats', 'caps', 'unclassified')}, completionRate=100 * counts['completed'] / counts['attempts']))
     stages = []
-    for key, counts in sorted(chapters.items()):
+    for key, counts in sorted(chapters.items(), key=lambda item: repr(item[0])):
         stages.append(dict(zip((*fields, 'stage', 'map'), key), **counts,
                            victoryRate=100 * counts['victories'] / counts['reached'],
                            campaignAttempts=groups[key[:6]]['attempts'],
                            meanRounds=counts['rounds'] / counts['reached']))
-    failures = [dict(zip((*fields, 'stage', 'map', 'category', 'reason'), key), attempts=count, exampleSeeds=sorted(examples[key])[:3]) for key, count in sorted(reasons.items())]
-    events = [dict(zip((*fields, 'stage', 'map', 'event', 'unit'), key), count=count) for key, count in sorted(units.items())]
+    failures = [dict(zip((*fields, 'stage', 'map', 'category', 'reason'), key), attempts=count, exampleSeeds=sorted(examples[key])[:3]) for key, count in sorted(reasons.items(), key=lambda item: repr(item[0]))]
+    events = [dict(zip((*fields, 'stage', 'map', 'event', 'unit'), key), count=count) for key, count in sorted(units.items(), key=lambda item: repr(item[0]))]
     return campaigns, stages, failures, events, runs
 
 
@@ -323,8 +344,8 @@ def overview(campaigns, stages, failures, events, arena_rows):
         lines += ['## Arena wins by race and map against Classic', '',
                   'Each cell shows wins/all games (win percentage), then round caps. Caps remain in the denominator. Opponent races, seats and initiatives are pooled; player policies stay separate. Identical race/policy self-play is excluded. Detailed opponent and equal-policy comparisons follow.', '']
         summary = arena_race_map_summary(arena_rows)
-        factions = sorted({r['race'] for r in arena_rows})
-        maps = sorted({r['map'] for r in arena_rows})
+        factions = sorted({r['race'] for r in arena_rows}, key=race_order)
+        maps = sorted({r['map'] for r in arena_rows}, key=map_order)
         if not summary:
             lines += ['No non-self-play games against Classic were recorded; see the recorded matchups below.', '']
         for policy in sorted({r['policy'] for r in summary}):
@@ -338,26 +359,34 @@ def overview(campaigns, stages, failures, events, arena_rows):
                                      if item else 'not recorded')
                 rows.append(row)
             lines += [f'### {policy} against Classic', '', markdown(rows, ['Race', *maps]), '']
-    dimensions = sorted({(r['enemy'], r['maxRounds'], r['recruitLimit']) for r in campaigns})
+    dimensions = sorted({(r['enemy'], r['maxRounds'], r['recruitLimit']) for r in campaigns}, key=repr)
     players = sorted({r['player'] for r in campaigns})
     for enemy, rounds, recruits in dimensions:
+        recruitment = (f'{recruits} recruits per phase (explicit override)' if recruits is not None
+                       else 'policy recruitment defaults: Classic 2 per phase; other tactics uncapped')
         selected = [r for r in campaigns if (r['enemy'], r['maxRounds'], r['recruitLimit']) == (enemy, rounds, recruits)]
-        lines += [f'## Campaigns against {enemy}: {rounds} rounds, {recruits} recruits per phase', '',
-                  'Completion counts / all attempts, with percentages. Recorded diplomacy modes are pooled here; detailed tables keep them separate.', '']
+        lines += [f'## Campaigns against {enemy}: {rounds} rounds, {recruitment}', '',
+                  'Completion counts / all attempts. Campaigns with multiple player diplomacy modes have separate rows; modes are never pooled.', '']
         rows = []
         for campaign in sorted({r['campaign'] for r in selected}):
-            row = {'Campaign': campaign}
-            for player in players:
-                values = [r for r in selected if r['campaign'] == campaign and r['player'] == player]
-                n, wins = sum(r['attempts'] for r in values), sum(r['completed'] for r in values)
-                row[player] = f'{wins}/{n} ({100*wins/n:.1f}%)' if n else 'not recorded'
-            rows.append(row)
+            modes = sorted({r.get('diplomacy', 'pragmatic') for r in selected if r['campaign'] == campaign})
+            for mode in modes:
+                label = f'{campaign} ({mode})' if len(modes) > 1 or mode != 'pragmatic' else campaign
+                row = {'Campaign': label}
+                for player in players:
+                    values = [r for r in selected if r['campaign'] == campaign and r['player'] == player
+                              and r.get('diplomacy', 'pragmatic') == mode]
+                    n, wins = sum(r['attempts'] for r in values), sum(r['completed'] for r in values)
+                    row[player] = f'{wins}/{n}' if n else 'not recorded'
+                rows.append(row)
         lines += [markdown(rows, ['Campaign', *players]), '']
     if dimensions:
         lines += ['## Campaign stage outcomes and failure findings', '']
     for enemy, rounds, recruits in dimensions:
+        recruitment = (f'{recruits} recruits per phase (explicit override)' if recruits is not None
+                       else 'policy recruitment defaults: Classic 2 per phase; other tactics uncapped')
         selected = [r for r in campaigns if (r['enemy'], r['maxRounds'], r['recruitLimit']) == (enemy, rounds, recruits)]
-        lines += [f'### Against {enemy}: {rounds} rounds, {recruits} recruits per phase', '',
+        lines += [f'### Against {enemy}: {rounds} rounds, {recruitment}', '',
                   'Stage cells are victories/reached; D = defeats, C = round caps. Later-stage denominators exclude attempts stopped earlier.', '']
         rows = []
         selected_stages = [r for r in stages if (r['enemy'], r['maxRounds'], r['recruitLimit']) == (enemy, rounds, recruits)]
@@ -413,11 +442,11 @@ def overview(campaigns, stages, failures, events, arena_rows):
         factions = sorted({r['race'] for r in arena_rows})
         for policy in sorted({r['policy'] for r in arena_rows}):
             for opponent_policy in dict.fromkeys(['classic', policy]):
-                for map_name in sorted({r['map'] for r in arena_rows}):
+                for map_name in sorted({r['map'] for r in arena_rows}, key=map_order):
                     selected = [r for r in arena_rows if r['policy']==policy and r['opponentPolicy']==opponent_policy and r['map']==map_name and (r['race']!=r['opponentRace'] or policy!=opponent_policy)]
                     if not selected:
                         continue
-                    lines += [f'### {policy} against {opponent_policy}: {map_name}', '', matrix(selected, factions, map_name, policy, opponent_policy), '']
+                    lines += [f'### {policy} against {opponent_policy}: {display_name(map_name)}', '', matrix(selected, factions, map_name, policy, opponent_policy), '']
     return lines
 
 
@@ -437,10 +466,10 @@ def tally(outcomes):
             continue
         row.update(playerRace=c['armies']['player'], enemyRace=c['armies']['enemy'],
                    race=c['armies']['player'], opponentRace=c['armies']['enemy'],
-                   policy=c['player'], opponentPolicy=c['enemy'], map=c['landscape'])
+                   policy=tactic_label(c, 'player'), opponentPolicy=tactic_label(c, 'enemy'), map=c['landscape'])
         ledger.append(row)
         for side, other in [('player', 'enemy'), ('enemy', 'player')]:
-            group = (c['armies'][side], c['armies'][other], c[side], c[other], c['landscape'])
+            group = (c['armies'][side], c['armies'][other], tactic_label(c, side), tactic_label(c, other), c['landscape'])
             g = games[group]
             g['games'] += 1
             g['wins'] += o['winner'] == side
@@ -482,7 +511,7 @@ def combine(rows, keys, equal=False, cross=True):
         for k in ('games', 'wins', 'losses', 'caps', 'leaderWins', 'territoryWins', 'rounds'):
             g[k] += row[k]
     output = []
-    for group, counts in sorted(groups.items()):
+    for group, counts in sorted(groups.items(), key=lambda item: repr(item[0])):
         output.append({**dict(zip(keys, group)), **counts,
                        'winRate': 100 * counts['wins'] / counts['games']})
     return output
@@ -498,14 +527,21 @@ def write_csv(path, rows):
 
 
 def markdown(rows, fields):
-    def cell(v):
+    race_field = next((field for field in ('race', 'Race', 'Faction') if field in fields), None)
+    if race_field:
+        rows = sorted(rows, key=lambda row: race_order(row.get(race_field, '')))
+    def cell(v, field):
+        if field == 'recruitLimit' and v is None:
+            return 'policy default'
+        if isinstance(v, str) and field in ('race', 'opponentRace', 'Race', 'Faction', 'map'):
+            v = display_name(v)
         if isinstance(v, float):
             return f'{v:.1f}'
         if isinstance(v, (dict, list)):
             v = json.dumps(v)
         return str(v).replace('|', '\\|').replace('\n', ' ')
-    return '\n'.join(['| ' + ' | '.join(fields) + ' |', '| ' + ' | '.join('---' for _ in fields) + ' |',
-                      *['| ' + ' | '.join(cell(r.get(k, '')) for k in fields) + ' |' for r in rows]])
+    return '\n'.join(['| ' + ' | '.join(display_name(field) for field in fields) + ' |', '| ' + ' | '.join('---' for _ in fields) + ' |',
+                      *['| ' + ' | '.join(cell(r.get(k, ''), k) for k in fields) + ' |' for r in rows]])
 
 
 def matrix(rows, factions, map_name, policy, opponent_policy):
@@ -547,8 +583,8 @@ def build_report(inputs, baseline_inputs, out):
         raise ValueError(f'Unmatched configurations: {len(current.keys() - previous.keys())} current only, {len(previous.keys() - current.keys())} baseline only')
     rows, units, ledger, campaigns = tally(current)
     before, before_units, _, _ = tally(previous)
-    factions = sorted(set(r['race'] for r in rows))
-    maps = sorted(set(r['map'] for r in rows))
+    factions = sorted(set(r['race'] for r in rows), key=race_order)
+    maps = sorted(set(r['map'] for r in rows), key=map_order)
     policies = sorted(set(r['policy'] for r in rows))
     old_index = {(r['race'], r['opponentRace'], r['policy'], r['opponentPolicy'], r['map']): r for r in before}
     comparison = []
@@ -577,6 +613,8 @@ def build_report(inputs, baseline_inputs, out):
             policy_timings.extend(dict(run=label, clock=timing.get('clock'), source=source['file'], **row) for row in timing.get('policies', []))
     tables = {'campaign_runs': campaign_runs, 'campaign_summary': campaign_rows, 'campaign_stages': stage_rows,
               'campaign_failures': failure_rows, 'campaign_unit_events': campaign_events, 'matchups': rows, 'unit_events': units, 'matches': ledger, 'campaigns': campaigns,
+              'policy_matchups': combine([r for r in rows if r['policy'] != r['opponentPolicy']],
+                                         ['policy', 'opponentPolicy'], cross=False),
               'race_map_vs_classic': arena_race_map_summary(rows),
               'race_equal_policy': combine(rows, ['race'], equal=True),
               'race_map_equal_policy': combine(rows, ['race', 'map'], equal=True),
@@ -594,6 +632,20 @@ def build_report(inputs, baseline_inputs, out):
     (out / 'metadata.json').write_text(json.dumps(metadata, indent=2) + '\n')
     findings = overview(campaign_rows, stage_rows, failure_rows, campaign_events, rows)
     findings[2:2] = [f"Coverage: {len(current):,} physical matches; {metadata['arenaMatches']:,} arena games and {metadata['campaignAttempts']:,} campaign attempts.", '']
+    if tables['policy_matchups']:
+        matchups = tables['policy_matchups']
+        lookup = {(r['policy'], r['opponentPolicy']): r for r in matchups}
+        matrix_rows = []
+        for policy in policies:
+            row = {'Tactic': policy}
+            for opponent in policies:
+                item = lookup.get((policy, opponent))
+                row[opponent] = ('—' if policy == opponent else
+                                 f"{item['winRate']:.1f}% (caps: {item['caps']})" if item else 'not recorded')
+            matrix_rows.append(row)
+        findings += ['## Tactic versus tactic arena matrix', '',
+                     'Row tactic win percentages. All races, maps, seats and initiatives are included; caps stay in denominators. Same-tactic games are excluded.', '',
+                     markdown(matrix_rows, ['Tactic', *policies]), '']
     if campaign_changes:
         findings += ['## Campaign completion versus baseline', '', markdown(campaign_changes, ['campaign', 'player', 'diplomacy', 'attempts', 'completedBefore', 'completed', 'completionRateDelta']), '']
     if policy_timings:
@@ -620,7 +672,7 @@ def build_report(inputs, baseline_inputs, out):
     if any(any(chapter.get('recordedPlanning') for chapter in outcome.get('analysis') or []) for outcome in current.values()):
         findings += ['## Recorded planner diagnostics', '', 'Counts are duty observations per phase, not independent failed attempts. UnsafeFallback means the forecast constraint remained unmet; it does not prove unavoidable death.', '',
                      markdown([dict(reason=reason, observations=count) for reason, count in sorted(diagnostics.items())], ['reason', 'observations']), '']
-    lines = findings + ['# Complete combat data', '', f"Physical matches: **{len(current):,}**. Recorded arena factions: **{', '.join(factions)}**.", '',
+    lines = findings + ['# Complete combat data', '', f"Physical matches: **{len(current):,}**. Recorded arena factions: **{', '.join(display_name(f) for f in factions)}**.", '',
              'Each matrix cell shows **win percentage (wins/losses/caps)** for the row faction. Caps stay in the denominator. Each arena match contributes one result to each participant; mirrored cells are views of the same matches, not additional independent games. Self-play cells contain both participants. Policy pairings are kept separate.', '',
              '## Source runs', '', markdown(sources, ['sourceCommit', 'fingerprint', 'status', 'mode', 'matches', 'seeds', 'schedule']), '',
              '## Factions with matching policies', '', markdown(tables['race_equal_policy'], ['race', 'games', 'wins', 'losses', 'caps', 'winRate']), '',
@@ -631,7 +683,7 @@ def build_report(inputs, baseline_inputs, out):
     for m in maps:
         for p in policies:
             for q in policies:
-                lines += [f'### {m}: row policy {p}, opponent policy {q}', '', matrix(rows, factions, m, p, q), '']
+                lines += [f'### {display_name(m)}: row policy {p}, opponent policy {q}', '', matrix(rows, factions, m, p, q), '']
     lines += campaign_prose(campaign_rows, stage_rows, failure_rows, campaign_events)
     lines += ['## Campaign completion by tactic and opponent', '', markdown(campaign_rows, ['campaign', 'player', 'enemy', 'diplomacy', 'maxRounds', 'attempts', 'completed', 'completionRate', 'defeats', 'caps']), '',
               '## Every campaign stage', '', markdown(stage_rows, ['campaign', 'player', 'enemy', 'diplomacy', 'maxRounds', 'stage', 'map', 'reached', 'victories', 'victoryRate', 'defeats', 'caps']), '']

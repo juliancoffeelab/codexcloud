@@ -302,11 +302,11 @@ fn roster<'a>(rules: &'a Rules, id: &str) -> Result<&'a crate::data::ArmyRoster,
         .find(|roster| roster.id == id)
         .ok_or_else(|| SimulationError::InvalidConfig(format!("Unknown army: {id}")))
 }
-fn validate_limits(rounds: u32, recruits: usize) -> Result<(), SimulationError> {
+fn validate_limits(rounds: u32, recruits: Option<usize>) -> Result<(), SimulationError> {
     if !(1..=1000).contains(&rounds) {
         return Err("maxRounds must be 1..1000".into());
     }
-    if recruits > 20 {
+    if recruits.is_some_and(|limit| limit > 20) {
         return Err("recruitLimit must be 0..20".into());
     }
     Ok(())
@@ -334,7 +334,7 @@ fn phase(
     recording: &mut RecordingCache,
     policy: Policy,
     seed: u32,
-    limit: usize,
+    limit: Option<usize>,
     goals: Option<&[Objective]>,
     diplomacy: Diplomacy,
     tactic: &mut PresetTactic,
@@ -344,8 +344,12 @@ fn phase(
     let side = game.turn;
     let round = game.round;
     game.recordings = Some(Records::default());
-    let mut workspace =
-        PlanningWorkspace::new(seed, limit, goals.map(<[Objective]>::to_vec), diplomacy);
+    let mut workspace = PlanningWorkspace::new(
+        seed,
+        limit.or_else(|| policy.default_recruitment_limit()),
+        goals.map(<[Objective]>::to_vec),
+        diplomacy,
+    );
     let composition = tactic.composition();
     if !composition.campaign.supports_campaign() && game.campaign.is_some() {
         return Err(CommandError::BattleOnlyPolicy.into());
@@ -407,8 +411,12 @@ fn phase(
 /// Execute one arena until victory or its cap, retaining every phase and endpoint.
 pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, SimulationError> {
     let mut tactics = [
-        PresetTactic::preset(config.player),
-        PresetTactic::preset(config.enemy),
+        PresetTactic::from_blocks(
+            config
+                .player_blocks
+                .unwrap_or_else(|| config.player.blocks()),
+        ),
+        PresetTactic::from_blocks(config.enemy_blocks.unwrap_or_else(|| config.enemy.blocks())),
     ];
     let mut game = create_arena(rules, &config)?;
     let initial = game.state();
@@ -543,9 +551,6 @@ pub fn run_campaign(
     rules: &Rules,
     config: CampaignConfig,
 ) -> Result<CampaignResult, SimulationError> {
-    if !config.player.supports_campaign() || !config.enemy.supports_campaign() {
-        return Err("Battler is a battle-only policy; use Priority for campaigns".into());
-    }
     validate_limits(config.max_rounds, config.recruit_limit)?;
     let chapters = rules
         .campaigns
@@ -566,8 +571,12 @@ pub fn run_campaign(
         vec![],
     );
     let mut tactics = [
-        PresetTactic::preset(config.player),
-        PresetTactic::preset(config.enemy),
+        PresetTactic::from_blocks(
+            config
+                .player_blocks
+                .unwrap_or_else(|| config.player.blocks()),
+        ),
+        PresetTactic::from_blocks(config.enemy_blocks.unwrap_or_else(|| config.enemy.blocks())),
     ];
     let mut missions = vec![];
     for _ in 0..chapters {
@@ -649,6 +658,46 @@ pub fn run(rules: &Rules, config: MatchConfig) -> Result<MatchResult, Simulation
 mod tests {
     use super::*;
     #[test]
+    fn recruitment_defaults_match_classic_and_leave_player_tactics_uncapped() {
+        let rules = Rules::load().unwrap();
+        let base = Game::new(&rules, "mirror");
+        for (policy, limit) in [
+            (Policy::Classic, None),
+            (Policy::Balanced, None),
+            (Policy::Classic, Some(1)),
+            (Policy::Balanced, Some(1)),
+            (Policy::Balanced, Some(0)),
+        ] {
+            let mut game = base.fork();
+            game.units.retain(|unit| rules.units[unit.kind].leader);
+            game.roster_changed();
+            game.gold[game.turn.index()] = 1000;
+            let record = phase(
+                &mut game,
+                &mut RecordingCache::default(),
+                policy,
+                7,
+                limit,
+                None,
+                Diplomacy::Pragmatic,
+                &mut PresetTactic::preset(policy),
+            )
+            .unwrap();
+            let recruited = record
+                .records
+                .actions
+                .iter()
+                .filter(|action| matches!(action, ActionRecord::Recruit { .. }))
+                .count();
+            match (policy, limit) {
+                (_, Some(limit)) => assert_eq!(recruited, limit),
+                (Policy::Classic, None) => assert_eq!(recruited, 2),
+                (Policy::Balanced, None) => assert!(recruited > 2),
+                _ => unreachable!(),
+            }
+        }
+    }
+    #[test]
     fn cached_boundaries_share_unchanged_values_and_detach_changed_state() {
         let rules = Rules::load().unwrap();
         let mut game = Game::new(&rules, "mirror");
@@ -685,11 +734,13 @@ mod tests {
                 enemy: rules.rosters[0].id.clone(),
             },
             landscape: "wooded".into(),
-            player: Policy::Mixed,
-            enemy: Policy::Mixed,
+            player: Policy::Balanced,
+            enemy: Policy::Balanced,
+            player_blocks: None,
+            enemy_blocks: None,
             first: Side::Player,
             max_rounds: 30,
-            recruit_limit: 1,
+            recruit_limit: Some(1),
         };
         let woods = create_arena(&rules, &config).unwrap();
         let trees = (0..woods.terrain.len())
@@ -758,10 +809,12 @@ mod tests {
                             },
                             landscape: landscape.into(),
                             player: Policy::Classic,
-                            enemy: Policy::Mixed,
+                            enemy: Policy::Balanced,
+                            player_blocks: None,
+                            enemy_blocks: None,
                             first: Side::Enemy,
                             max_rounds: 30,
-                            recruit_limit: 1,
+                            recruit_limit: Some(1),
                         };
                         let game = create_arena(&rules, &config).unwrap();
                         let total = |side| {

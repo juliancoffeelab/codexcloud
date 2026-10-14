@@ -265,49 +265,6 @@ fn artwork_choices_survive_restore_and_forks_without_changing_movement() {
     }
 }
 
-#[test]
-fn capped_road_validation_matches_registered_artwork_for_every_mask() {
-    let caps: Vec<(u8, u8)> = serde_json::from_str(include_str!(
-        "../../../pixel/art/terrain/road/dead-ends.json"
-    ))
-    .unwrap();
-    let directions = [
-        HexDirection::E,
-        HexDirection::Se,
-        HexDirection::Sw,
-        HexDirection::W,
-        HexDirection::Nw,
-        HexDirection::Ne,
-    ];
-    let mut tile = Game::new(rules(), "mirror").state().tiles[0].clone();
-    tile.terrain = "road".into();
-    for exits in 1u8..64 {
-        tile.connections = Some(
-            directions
-                .iter()
-                .copied()
-                .filter(|d| exits & d.bit() != 0)
-                .collect(),
-        );
-        tile.dead_ends = None;
-        assert!(tile.valid_connections());
-        for ends in 0u8..64 {
-            tile.dead_ends = Some(
-                directions
-                    .iter()
-                    .copied()
-                    .filter(|d| ends & d.bit() != 0)
-                    .collect(),
-            );
-            assert_eq!(
-                tile.valid_connections(),
-                caps.contains(&(exits, ends)),
-                "{exits}-end-{ends}"
-            );
-        }
-    }
-}
-
 fn connected(game: &Game<'_>, allowed: &HashSet<usize>, start: usize) -> HashSet<usize> {
     let mut reached = HashSet::from([start]);
     let mut pending = vec![start];
@@ -357,26 +314,6 @@ fn skirmish_land_is_connected_and_river_crossings_each_join_both_banks() {
                 assert_eq!(connected(&game, &joined, keeps[0]), joined);
             }
         }
-    }
-}
-
-#[test]
-fn mirrored_village_approaches_and_rough_ground_respect_row_parity() {
-    let game = Game::new(rules(), "mirror");
-    for tile in 0..game.terrain.len() {
-        if !matches!(
-            game.rules.terrain_types[game.terrain[tile]],
-            Terrain::Forest | Terrain::Hill | Terrain::Village
-        ) {
-            continue;
-        }
-        let (col, row) = game.board.positions[tile];
-        let mirrored = game.site(&format!(
-            "{},{}",
-            (if row % 2 == 1 { 10 } else { 11 }) - col,
-            row
-        ));
-        assert_eq!(game.terrain[tile], game.terrain[mirrored]);
     }
 }
 

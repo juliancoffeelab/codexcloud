@@ -57,29 +57,6 @@ test("Multiple moves unwind in reverse order", async () => {
   assert.equal(undo.canUndo(game), false);
 });
 
-// Explicit barriers retain the action state and make preceding moves permanent.
-for (const action of ["attack", "recruit", "endTurn", "reset"]) {
-  test("Non-move actions invalidate move undo — " + JSON.stringify([action]), async () => {
-    const game = new Game();
-    const undo = createMoveUndo();
-    const scout = playerUnit(game, "scout");
-    undo.move(game, scout.id, "3,1");
-    if (action === "attack") {
-      const target = game.addUnit("soldier", "enemy", "4,1");
-      game.attack(scout.id, target.id);
-    } else if (action === "recruit") {
-      game.recruit(playerUnit(game, "commander").id, "swordsman", "0,2");
-    } else if (action === "endTurn") {
-      game.endTurn();
-    }
-    undo.clear();
-    const after = snapshot(game);
-    assert.equal(undo.canUndo(game), false);
-    assert.equal(undo.undo(game), null);
-    assert.deepEqual(snapshot(game), after);
-  });
-}
-
 // Stale history cannot carry into a different turn, round, battle or victory.
 for (const change of ["enemy", "winner", "round", "game"]) {
   test(

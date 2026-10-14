@@ -222,7 +222,7 @@ impl<'catalog> PlanningContext<'catalog> {
     pub(super) fn recruitment_context<'a>(
         &'a mut self,
         seed: u32,
-        budget: usize,
+        budget: Option<usize>,
     ) -> RecruitmentContext<'a, 'catalog> {
         RecruitmentContext {
             draft: &mut self.draft,
@@ -257,7 +257,7 @@ pub(crate) struct RecruitmentContext<'a, 'catalog> {
     pub(super) draft: &'a mut BattleDraft<'catalog, 'catalog>,
     commands: &'a mut Vec<Command>,
     pub(super) seed: u32,
-    pub(super) budget: usize,
+    pub(super) budget: Option<usize>,
 }
 impl RecruitmentContext<'_, '_> {
     pub(super) fn battle(&self) -> &BattleView<'_, '_> {

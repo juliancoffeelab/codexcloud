@@ -314,7 +314,7 @@ mod tests {
     use crate::ai::Policy;
     use crate::logic::Game;
     #[test]
-    fn campaign_rejects_arena_policy() {
+    fn campaign_rejects_arena_campaigner() {
         let rules = Rules::load().unwrap();
         let campaign = Game::start_campaign(
             &rules,
@@ -326,9 +326,12 @@ mod tests {
             vec![],
             vec![],
         );
-        let mut workspace = PlanningWorkspace::new(7, 0, None, crate::ai::Diplomacy::Pragmatic);
+        let mut blocks = Policy::Balanced.blocks();
+        blocks.campaign = crate::ai::CampaignBlock::Arena;
+        let mut workspace =
+            PlanningWorkspace::new(7, 0, None, crate::ai::Diplomacy::Pragmatic).with_blocks(blocks);
         assert_eq!(
-            crate::ai::choose_game_command(&campaign, Policy::Battler, &mut workspace),
+            crate::ai::choose_game_command(&campaign, Policy::Balanced, &mut workspace),
             Err(CommandError::BattleOnlyPolicy)
         );
     }

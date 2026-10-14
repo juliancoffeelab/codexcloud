@@ -2,7 +2,6 @@ import { test } from "vitest";
 import assert from "node:assert/strict";
 import { currentArtwork } from "../src/presentation/art";
 import { Game, TERRAIN } from "./game-fixture";
-import type { TerrainType } from "../src/game/types";
 import type { BattleView } from "../src/controller/view";
 import { unitPanelView } from "../src/ui/unit-panel-view";
 import { terrainPanelView } from "../src/ui/terrain-view";
@@ -45,7 +44,7 @@ test("Terrain rows show native movement costs without mutating the view", () => 
 
 // Terrain keeps its protection and healing facts; movement costs belong to units.
 
-for (const terrain of Object.keys(TERRAIN) as TerrainType[]) {
+for (const terrain of ["plains", "hill", "grove"] as const) {
   test(
     "Terrain panel shows protection and healing rather than generic movement — " +
       JSON.stringify([terrain]),

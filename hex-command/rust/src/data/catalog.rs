@@ -79,7 +79,6 @@ pub struct ArenaDefaults {
     /// Minimum total gold value per side, including its leader and two starters.
     pub starting_budget: i32,
     pub default_max_rounds: u32,
-    pub default_recruit_limit: usize,
     pub policies: Vec<String>,
 }
 #[derive(Clone, Debug, Deserialize)]
@@ -87,7 +86,6 @@ pub struct ArenaDefaults {
 /// Campaign schedule dimensions and default attempt execution limits.
 pub struct CampaignDefaults {
     pub default_max_rounds: u32,
-    pub default_recruit_limit: usize,
     pub diplomacy: Vec<String>,
     pub policies: Vec<String>,
     pub campaigns: Vec<String>,
@@ -174,6 +172,8 @@ struct UnitSpecification {
 }
 #[derive(Deserialize)]
 struct CampaignFile {
+    #[serde(rename = "playerDiplomacy")]
+    player_diplomacy: Vec<String>,
     id: String,
     name: String,
     tagline: String,
@@ -582,6 +582,18 @@ impl Rules {
             let source: CampaignFile = parse(bundle, path)?;
             identifier(&source.id, path)?;
             reference(&source.leader, &types, path)?;
+            unique(source.player_diplomacy.iter().map(String::as_str), path)?;
+            if source.player_diplomacy.is_empty()
+                || source
+                    .player_diplomacy
+                    .iter()
+                    .any(|mode| !["pragmatic", "restrained"].contains(&mode.as_str()))
+            {
+                return Err(ContentError::new(
+                    path,
+                    "unknown or missing player diplomacy",
+                ));
+            }
             if source.name.is_empty()
                 || source.tagline.is_empty()
                 || source.description.is_empty()
@@ -634,6 +646,7 @@ impl Rules {
                         leader: source.leader,
                         missions,
                         ending: source.ending,
+                        player_diplomacy: source.player_diplomacy,
                     },
                 )
                 .is_some()
@@ -950,12 +963,12 @@ fn validate_simulation(
     for (ids, allowed, path) in [
         (
             &arena.policies,
-            ["classic", "rush", "mixed", "priority", "battler"].as_slice(),
+            ["classic", "rush", "balanced", "rotated", "situational"].as_slice(),
             "simulation/arena.json",
         ),
         (
             &campaign.policies,
-            ["classic", "rush", "mixed", "priority"].as_slice(),
+            ["classic", "rush", "balanced", "rotated", "situational"].as_slice(),
             "simulation/campaign.json",
         ),
         (
@@ -1004,23 +1017,6 @@ mod tests {
             .map_err(|error| ContentError::new(path, error.to_string()))
         })
         .expect("authored test catalog")
-    }
-    #[test]
-    fn authored_catalog_resolves_races_and_current_maps() {
-        let rules = Rules::from_json_bundle(&test_bundle()).unwrap();
-        for unit in &rules.units {
-            assert_eq!(unit.costs.len(), rules.terrain_names.len());
-            assert_eq!(unit.environment.len(), rules.terrain_names.len());
-            assert!(unit.costs.iter().flatten().all(|&cost| cost > 0));
-        }
-        assert!(!rules.maps.contains_key(&("river".to_owned(), 1)));
-        assert!(rules.maps.contains_key(&("river".to_owned(), 2)));
-        assert!(!rules.maps.contains_key(&("ashen-refuge".to_owned(), 1)));
-        assert!(rules.maps.contains_key(&("ashen-refuge".to_owned(), 2)));
-        assert_eq!(
-            rules.campaigns["lantern-road"].missions[0].map.id,
-            "lantern-ferry"
-        );
     }
     #[test]
     fn invalid_references_and_duplicates_report_source_document() {

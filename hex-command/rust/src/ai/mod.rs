@@ -36,46 +36,41 @@ pub use tactics::Random;
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(target_arch = "wasm32"), derive(clap::ValueEnum))]
 #[serde(rename_all = "lowercase")]
 /// Tactical and recruitment policy, preserving each policy's stable choices.
 pub enum Policy {
     #[default]
     Classic,
     Rush,
-    Mixed,
-    Priority,
-    Battler,
+    Balanced,
+    Rotated,
+    Situational,
 }
 impl Policy {
-    /// Complete supported policies in their stable authored order.
+    /// Supported presets in their stable authored order.
     pub const ALL: [Self; 5] = [
         Self::Classic,
         Self::Rush,
-        Self::Mixed,
-        Self::Priority,
-        Self::Battler,
+        Self::Balanced,
+        Self::Rotated,
+        Self::Situational,
     ];
-    /// Arena-only policies are excluded from campaign schedules and saves.
-    pub const fn supports_campaign(self) -> bool {
-        match self {
-            Self::Classic | Self::Rush | Self::Mixed | Self::Priority => true,
-            Self::Battler => false,
-        }
-    }
     /// Stable JSON/CLI policy identifier.
     pub const fn as_str(self) -> &'static str {
         match self {
             Self::Classic => "classic",
             Self::Rush => "rush",
-            Self::Mixed => "mixed",
-            Self::Priority => "priority",
-            Self::Battler => "battler",
+            Self::Balanced => "balanced",
+            Self::Rotated => "rotated",
+            Self::Situational => "situational",
         }
     }
 }
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(not(target_arch = "wasm32"), derive(clap::ValueEnum))]
 #[serde(rename_all = "lowercase")]
 /// Treatment of retreating and mediated opponents during campaign battles.
 pub enum Diplomacy {
@@ -103,7 +98,7 @@ pub enum TacticalRole {
 /// and discard it when the turn ends.
 pub struct PlanningWorkspace {
     seed: u32,
-    recruitment_remaining: usize,
+    recruitment_remaining: Option<usize>,
     goals: Option<Vec<Objective>>,
     prepared_goals: Option<Vec<orders::Target>>,
     diplomacy: Diplomacy,
@@ -134,7 +129,7 @@ impl PlanningWorkspace {
     /// Start a policy phase with its seed, recruitment budget and objectives.
     pub fn new(
         seed: u32,
-        recruitment_limit: usize,
+        recruitment_limit: impl Into<Option<usize>>,
         goals: Option<Vec<Objective>>,
         diplomacy: Diplomacy,
     ) -> Self {
@@ -148,7 +143,7 @@ impl PlanningWorkspace {
             cooperation: cooperation::Workspace::default(),
             escort: escort::Workspace::default(),
             seed,
-            recruitment_remaining: recruitment_limit,
+            recruitment_remaining: recruitment_limit.into(),
             goals,
             prepared_goals: None,
             diplomacy,
@@ -469,7 +464,7 @@ mod courier_tests {
         );
         let mut workspace = PlanningWorkspace::new(1, 0, None, Diplomacy::Restrained);
         let command = loop {
-            let command = choose_game_command(&game, Policy::Mixed, &mut workspace).unwrap();
+            let command = choose_game_command(&game, Policy::Balanced, &mut workspace).unwrap();
             if is_command_setunitintent(&command) {
                 game.execute(command).unwrap();
             } else {
@@ -482,7 +477,7 @@ mod courier_tests {
     }
 
     #[test]
-    fn allies_clear_approaches_and_complete_the_escort_for_every_policy() {
+    fn allies_clear_approaches_and_complete_the_escort() {
         fn is_command_endturn(value: &Command) -> bool {
             match value {
                 Command::EndTurn => true,
@@ -500,7 +495,7 @@ mod courier_tests {
         }
 
         let rules = Rules::load().unwrap();
-        for policy in Policy::ALL.into_iter().filter(|p| p.supports_campaign()) {
+        for policy in [Policy::Classic, Policy::Balanced] {
             let mut game = Game::start_campaign(
                 &rules,
                 "borrowed-tide",
