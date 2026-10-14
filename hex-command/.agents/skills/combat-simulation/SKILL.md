@@ -58,9 +58,9 @@ that an actor's death was unavoidable.
 
 Follow the user's requested races, maps, policies, seeds and limits. When they
 do not specify scope, strongly prefer the complete role-appropriate panel over
-an isolated duel or a hand-picked subset. The default full panel covers all five current
-arena tactics and every map, plus campaign competence for the simulation-player
-policies Mixed and Priority against the fixed Classic enemy. Campaign runs use
+an isolated duel or a hand-picked subset. The default full panel covers all five
+current arena tactics against Classic on every map, plus campaign competence for
+the simulation-player policies Mixed and Priority against the fixed Classic enemy. Campaign runs use
 authored rosters and objectives. Do not treat Classic or Rush player campaign
 failures as competence regressions; they are not the campaign simulation
 players. Classic remains the fixed campaign opponent and all requested policies

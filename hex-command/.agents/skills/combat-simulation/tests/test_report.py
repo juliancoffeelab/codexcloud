@@ -232,12 +232,31 @@ class CompleteDataTests(unittest.TestCase):
                 runner.main()
             native = calls[0]
             self.assertEqual(native[native.index('--mode')+1], 'full')
+            self.assertIn('--vs-classic', native)
             self.assertEqual(native[native.index('--campaign-players')+1], 'mixed,priority')
             self.assertEqual(native[native.index('--campaign-enemies')+1], 'classic')
             self.assertEqual(native[native.index('--details')+1], 'jsonl')
             self.assertIn('battler', native[native.index('--policies')+1])
             self.assertTrue(calls[1][1].endswith('report-combat.py'))
             self.assertEqual(calls[1][2], str(out/'report.json'))
+
+    def test_runner_preserves_explicit_diagnostic_panels(self):
+        for flags in [['--all-pairs'], ['--mode', 'arena', '--self-play'], ['--mode', 'campaign']]:
+            with self.subTest(flags=flags), tempfile.TemporaryDirectory() as tmp:
+                out = Path(tmp)
+                calls = []
+                def invoke(command, **kwargs):
+                    calls.append(command)
+                    if 'ai:simulate' in command:
+                        (out/'report.json').write_text(json.dumps(dict(outcomes=[], elapsedSeconds=0)))
+                with patch.object(sys, 'argv', ['run-combat.py', '--out', str(out), *flags]), \
+                     patch.object(runner.subprocess, 'run', side_effect=invoke), \
+                     contextlib.redirect_stdout(io.StringIO()):
+                    runner.main()
+                self.assertNotIn('--vs-classic', calls[0])
+                self.assertNotIn('--all-pairs', calls[0])
+                if '--self-play' in flags:
+                    self.assertIn('--self-play', calls[0])
 
     def test_invalid_and_duplicate_outcomes_and_unpaired_baselines_fail(self):
         with tempfile.TemporaryDirectory() as tmp:

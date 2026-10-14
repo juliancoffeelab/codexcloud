@@ -7,9 +7,12 @@ Run commands from the `hex-command/` project root. The agent workflow is in
 ## Run the role-appropriate full panel
 
 ```sh
-# Build if needed, run all arena policies/maps and Mixed/Priority campaigns vs Classic,
+# Build if needed, run all arena policies/maps against Classic and Mixed/Priority campaigns vs Classic,
 # then automatically generate a readable analysis.
 npm run ai:full -- --out artifacts/current
+
+# Explicit full arena policy matrix, followed by the standard campaign panel.
+npm run ai:full -- --all-pairs --out artifacts/all-pairs
 
 # Focused campaign comparison, retaining both campaign players and the fixed enemy.
 npm run ai:combat -- --mode campaign --campaign-players mixed,priority \
@@ -17,12 +20,18 @@ npm run ai:combat -- --mode campaign --campaign-players mixed,priority \
 
 # Inspect a schedule without running it.
 npm run ai:schedule -- --mode full --seeds 10 \
-  --policies classic,rush,mixed,priority,battler \
+  --policies classic,rush,mixed,priority,battler --vs-classic \
   --campaign-players mixed,priority --campaign-enemies classic
 ```
 
 `ai:full` builds the native harness when needed and runs the combined full
-panel. `ai:combat` also builds when needed and automatically runs the analyzer
+panel. Its arena panel compares selected player policies against Classic, with
+both seats and initiatives. Pass `--all-pairs` to either Python runner entry point for the
+full arena matrix; `--self-play` retains matching-policy comparisons. Direct
+`ai:simulate` and `ai:schedule` calls retain their existing all-pairs default;
+pass `--vs-classic` to select the fixed-opponent arena panel.
+
+`ai:combat` also builds when needed and automatically runs the analyzer
 after successful simulation. Do not include Classic or Rush as campaign players
 when measuring campaign competence; they remain available in the arena matrix.
 Use `npm run ai:simulate -- --help` for current options and defaults, and
