@@ -16,9 +16,6 @@ spec = importlib.util.spec_from_file_location('report_combat', Path(__file__).pa
 report = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(report)
 
-runner_spec = importlib.util.spec_from_file_location('run_combat', Path(__file__).parents[1] / 'scripts/run-combat.py')
-runner = importlib.util.module_from_spec(runner_spec)
-runner_spec.loader.exec_module(runner)
 
 
 def match(seed, player='a', enemy='b', winner='player', reason='leader'):
@@ -217,80 +214,6 @@ class CompleteDataTests(unittest.TestCase):
                 tables = report.build_report([path], [path], Path(tmp)/'analytics')
             self.assertEqual(len(tables['policy_timings']), 2)
             self.assertIn('Chooser and phase CPU', output.getvalue())
-
-    def test_full_runner_separates_campaign_roles_and_runs_the_analyzer(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            out = Path(tmp)
-            calls = []
-            def invoke(command, **kwargs):
-                calls.append(command)
-                if command[0] == str(runner.simulation_binary()):
-                    (out/'report.json').write_text(json.dumps(dict(outcomes=[], elapsedSeconds=0)))
-            with patch.object(sys, 'argv', ['run-combat.py', '--out', str(out)]), \
-                 patch.object(runner.subprocess, 'run', side_effect=invoke), \
-                 contextlib.redirect_stdout(io.StringIO()):
-                runner.main()
-            native = calls[0]
-            self.assertEqual(native[0], str(runner.simulation_binary()))
-            self.assertNotIn('npm', native)
-            self.assertEqual(native[native.index('--mode')+1], 'full')
-            self.assertIn('--vs-classic', native)
-            self.assertEqual(native[native.index('--campaign-players')+1], 'mixed,priority')
-            self.assertEqual(native[native.index('--campaign-enemies')+1], 'classic')
-            self.assertEqual(native[native.index('--details')+1], 'jsonl')
-            self.assertIn('battler', native[native.index('--policies')+1])
-            self.assertTrue(calls[1][1].endswith('report-combat.py'))
-            self.assertEqual(calls[1][2], str(out/'report.json'))
-
-    def test_runner_preserves_explicit_diagnostic_panels(self):
-        for flags in [['--all-pairs'], ['--mode', 'arena', '--self-play'], ['--mode', 'campaign']]:
-            with self.subTest(flags=flags), tempfile.TemporaryDirectory() as tmp:
-                out = Path(tmp)
-                calls = []
-                def invoke(command, **kwargs):
-                    calls.append(command)
-                    if command[0] == str(runner.simulation_binary()):
-                        (out/'report.json').write_text(json.dumps(dict(outcomes=[], elapsedSeconds=0)))
-                with patch.object(sys, 'argv', ['run-combat.py', '--out', str(out), *flags]), \
-                     patch.object(runner.subprocess, 'run', side_effect=invoke), \
-                     contextlib.redirect_stdout(io.StringIO()):
-                    runner.main()
-                self.assertNotIn('--vs-classic', calls[0])
-                self.assertNotIn('--all-pairs', calls[0])
-                if '--self-play' in flags:
-                    self.assertIn('--self-play', calls[0])
-
-    def test_reportless_runs_keep_results_and_inspection_does_not_start_analysis(self):
-        for flags in [['--no-report'], ['--schedule-only'], ['--fingerprint'], ['--replay', 'saved.json']]:
-            with self.subTest(flags=flags), tempfile.TemporaryDirectory() as tmp:
-                out = Path(tmp)/'run'
-                calls = []
-                def invoke(command, **kwargs):
-                    calls.append(command)
-                    if '--out' in command:
-                        Path(command[command.index('--out')+1]).write_text(json.dumps(dict(outcomes=[], elapsedSeconds=0)))
-                with patch.object(sys, 'argv', ['run-combat.py', '--out', str(out), *flags]), \
-                     patch.object(runner.subprocess, 'run', side_effect=invoke), \
-                     contextlib.redirect_stdout(io.StringIO()):
-                    runner.main()
-                self.assertEqual(len(calls), 1)
-                self.assertEqual(calls[0][0], str(runner.simulation_binary()))
-                if '--no-report' in flags:
-                    self.assertTrue((out/'report.json').is_file())
-                    self.assertFalse((out/'analytics').exists())
-                else:
-                    self.assertFalse(out.exists())
-                if '--fingerprint' in flags or '--replay' in flags:
-                    self.assertNotIn('--mode', calls[0])
-
-    def test_failed_simulation_does_not_run_analyzer(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            with patch.object(sys, 'argv', ['run-combat.py', '--out', tmp]), \
-                 patch.object(runner.subprocess, 'run', side_effect=subprocess.CalledProcessError(1, 'simulation')) as run, \
-                 contextlib.redirect_stdout(io.StringIO()):
-                with self.assertRaises(subprocess.CalledProcessError):
-                    runner.main()
-                self.assertEqual(run.call_count, 1)
 
     def test_invalid_and_duplicate_outcomes_and_unpaired_baselines_fail(self):
         with tempfile.TemporaryDirectory() as tmp:

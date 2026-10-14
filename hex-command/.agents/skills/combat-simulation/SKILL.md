@@ -80,7 +80,7 @@ including after analyzer changes. Use the full runner below. Use only the analyz
 when the user explicitly asks to analyze or regenerate a particular saved run;
 available results from an earlier review do not replace a requested simulation.
 
-Use the full runner, which saves the native run and automatically analyzes it:
+Use the single simulation command, which saves the run and automatically analyzes it:
 
 ```sh
 npm run ai:simulate -- --out artifacts/current
@@ -96,14 +96,14 @@ npm run ai:simulate -- --mode campaign --campaign-players mixed,priority \
   --campaign-enemies classic --seeds 10 --out artifacts/current
 ```
 
-`ai:simulate` builds the native binary once, runs the selected panel and generates
+`ai:simulate` uses `cargo run` to build when needed, run the selected panel and generate
 the readable report by default. Use `--no-report` to retain raw results without
 analysis. With no `--out`, it creates a fresh ignored artifact directory. Preserve each run
 in a fresh ignored artifact directory, record its engine/data fingerprint, and
 include an explicit `--data-dir` when simulating another checkout. The runner
 defaults to the current catalog.
 
-The runner prints coverage, compact race-by-map and campaign tables, then stage
+The command prints coverage, compact race-by-map and campaign tables, then stage
 diagnostics and detailed arena matrices automatically. Use that returned report
 first; do not issue extra reads when it already answers the question. Read
 `analytics/findings.md` and `analytics/summary.md` internally when the returned

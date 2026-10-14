@@ -24,8 +24,9 @@ npm run ai:simulate -- --schedule-only --mode full --seeds 10 \
   --campaign-players mixed,priority --campaign-enemies classic
 ```
 
-`ai:simulate` is the single simulation entry point. It builds the native harness
-once, runs the selected panel, and generates the readable analysis by default.
+`ai:simulate` is the single simulation entry point. `cargo run` builds the native
+harness when needed, runs the selected panel, and generates readable analysis
+by default.
 With no options, it runs the full panel at 10 seeds: all five arena policies
 against Classic, plus Mixed/Priority campaigns against Classic. Results go into
 a fresh ignored `artifacts/simulation-*` directory unless `--out` is supplied.
@@ -58,18 +59,19 @@ Do not include Classic or Rush as campaign players when measuring competence.
 `--schedule-only`, replay, and the engine's diagnostic protocols skip analysis.
 Use `--help` for selection, timing and output options.
 
-The runner supplies this project's data directory to the Rust engine. When
-simulating another checkout, pass its `--data-dir` explicitly.
+The Rust CLI loads the current compiled crate's data directory. When simulating
+another checkout, pass its `--data-dir` explicitly.
 
-`ai:rust:build` defaults to an optimized incremental native build for the current
-CPU, with LTO disabled. Routine simulations reuse Cargo's compiler cache and do
-not train PGO profiles or install LLVM profile tools. The first build populates
-the cache; later source edits rebuild affected code.
+`ai:simulate` uses Cargo's optimized incremental `simulation` profile, with LTO
+disabled. Routine simulations reuse Cargo's compiler cache and do not train PGO
+profiles or install LLVM profile tools. The first build populates the cache;
+later source edits rebuild affected code. `ai:rust:build` remains the explicit
+build/staging helper for the separate benchmark workflow.
 
 Use `npm run ai:rust:build -- --pgo` for an explicit LLVM profile-guided build.
-To keep that selection through a simulation command's automatic build hook, use
-`HEX_COMMAND_SIM_PGO=1 npm run ai:simulate -- --out artifacts/pgo` (or the same
-environment variable with `ai:benchmark`). PGO trains all policies,
+To keep that selection through the benchmark command's build hook, use
+`HEX_COMMAND_SIM_PGO=1 npm run ai:benchmark`. `ai:simulate` uses its ordinary
+Cargo profile and does not select PGO from this variable. PGO trains all policies,
 landscapes and campaigns at seeds 17–18 with 30-round caps; changing source,
 catalog, toolchain or CPU can require two compilations and fresh training. Its
 compiler cache is separate from routine builds. Training results are not report
