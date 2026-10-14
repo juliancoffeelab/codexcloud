@@ -125,15 +125,25 @@ targeted to the identified match and phase.
 
 ## Interpret results
 
-A full report must summarize both arenas and campaigns. Follow the report's
-opening order: completed coverage, short race-by-map results against Classic,
-then campaign completion, followed by the important detailed findings. Summarize
-both sections even when one contains more detail. For a scoped request, report
+A full report must present completed coverage and panel conditions, then the
+following tables in this order:
+
+1. **A separate arena table for each player tactic against Classic.** Label each
+   table with the tactic and fixed Classic opponent. Use races as rows and maps
+   as columns. Every cell must show wins/all games, win percentage and caps,
+   for example `147/160 (91.9%); caps: 0`. Do not combine tactics into one table
+   or omit percentages. Classic is the opponent; omit Classic-player baseline
+   tables and reverse Classic-versus-player tables unless explicitly requested.
+2. **The campaign completion table.** Use campaigns as rows and simulation-player
+   tactics as columns. Show completions/all attempts and completion percentages
+   in every cell, for example `16/20 (80.0%)`. Name the fixed Classic opponent.
+
+Follow the tables with important findings and limitations. Summarize both arenas
+and campaigns even when one contains more detail. For a scoped request, report
 that scope and say when a requested comparison is not recorded.
 
-Keep player policies separate in race-by-map comparisons. Name the fixed enemy,
-show wins/all games and caps, and state when opponent races or diplomacy modes
-are pooled. Arena completion means a decisive result for either side; it is not
+State when opponent races or diplomacy modes are pooled. Keep caps in win-rate
+denominators. Arena completion means a decisive result for either side; it is not
 the race's win rate. Campaign completion means finishing the whole campaign;
 stage victories use only attempts that reached that stage. Do not mix these rates.
 
@@ -158,8 +168,8 @@ progressed from a loss after partial progress, and distinguish defeat from a
 round cap. Do not infer a causal bug from aggregate rates alone: use recorded
 phase evidence and then targeted code inspection for the specific pattern.
 
-Present the results directly in chat: completed coverage, compact race-by-map
-and campaign tables, then the important findings and limitations. Users working
+Present the results directly in chat using the table format and order above.
+Users working
 in cloud environments cannot open workspace files. Keep report files, metadata,
 raw journals and exports as internal records in ignored `artifacts/`; do not
 use local file links as the answer or require the user to open a file. Provide
