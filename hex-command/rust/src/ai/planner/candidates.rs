@@ -905,7 +905,6 @@ mod tests {
         ];
         for game in &mut games {
             let mut workspace = PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Pragmatic);
-            workspace.policy = Some(crate::ai::Policy::Priority);
             for _ in 0..24 {
                 if workspace.orders.is_none() {
                     workspace.orders =
@@ -982,7 +981,6 @@ mod tests {
                     .collect();
                 assert_eq!(workspace.cheap.frontline_support, fresh);
                 let command = crate::ai::choose_game_command(
-                    &rules,
                     game,
                     crate::ai::Policy::Priority,
                     &mut workspace,

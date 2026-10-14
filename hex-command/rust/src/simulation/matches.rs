@@ -354,7 +354,6 @@ fn phase(
         let _decision = crate::ai::profiling::Decision::start(policy, game.turn);
         tactic.run_turn(game, &mut workspace)?
     };
-    workspace.complete_turn_plan(policy, composition, plan.planning, plan.recruitment);
     for command in plan.commands {
         game.execute(command)?;
     }
@@ -371,7 +370,7 @@ fn phase(
             .sum()
     };
     let phase = Phase {
-        planning: workspace.diagnostics(),
+        planning: workspace.diagnostics(plan.planning, plan.recruitment),
         side,
         round,
         records,

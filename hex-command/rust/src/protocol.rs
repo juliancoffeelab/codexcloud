@@ -1,7 +1,7 @@
 //! Canonical transfer contract shared by native/WASM hosts and generated TypeScript.
 /// Transport options reuse the core policy and diplomacy vocabularies.
 pub use crate::ai::{Diplomacy as AiDiplomacy, Policy as AiPolicy};
-use crate::data::{Command, CommandError, Effects, State, TileId, UnitId, Weapon, WeaponId};
+use crate::data::{Command, CommandError, Effects, State, TileId, Weapon};
 use serde::{Deserialize, Serialize};
 
 /// Select a scenario or the first mission of an authored campaign.
@@ -135,31 +135,6 @@ pub struct ReachableTile {
     pub cost: u16,
 }
 
-/// Stable identities needed to preview an attack without mutating the battle.
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[serde(rename_all = "camelCase")]
-pub struct AttackQuery {
-    pub unit: UnitId,
-    pub target: UnitId,
-    pub weapon: WeaponId,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "wasm", tsify(optional))]
-    /// Hypothetical origin; omission uses the attacker's current tile.
-    pub from: Option<TileId>,
-}
-
-/// Deterministic damage, retaliation, and the defender's selected response weapon.
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-pub struct AttackPreview {
-    pub damage: i32,
-    pub retaliation: i32,
-    pub response: Option<Weapon>,
-}
-
 /// Policy configuration retained for the current planning phase.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -230,10 +205,6 @@ response!(CatalogResponse, CatalogView);
 response!(BattleResponse, BattleHandle);
 #[cfg(feature = "wasm")]
 response!(ViewResponse, EngineView);
-#[cfg(feature = "wasm")]
-response!(ReachableResponse, Vec<ReachableTile>);
-#[cfg(feature = "wasm")]
-response!(AttackResponse, AttackPreview);
 #[cfg(feature = "wasm")]
 response!(DispatchResponse, DispatchResult);
 #[cfg(feature = "wasm")]

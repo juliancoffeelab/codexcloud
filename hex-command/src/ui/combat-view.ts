@@ -96,7 +96,7 @@ export function attackChoiceViews(
   target: UnitView,
 ): AttackChoiceView[] {
   return TYPES[attacker.type].attacks.map((weapon) => {
-    if (!game.canAttackFrom(attacker, attacker.tile, target, weapon.id)) {
+    if (!game.canAttack(attacker, target, weapon.id)) {
       return {
         available: false,
         id: weapon.id,

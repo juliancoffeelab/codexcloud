@@ -3,14 +3,9 @@ import assert from "node:assert/strict";
 import { describeChanges } from "../src/controller/feedback";
 import { Game, TYPES } from "./game-fixture";
 import { CAMPAIGNS } from "../src/save/migrations/legacy/catalog";
-import { UNIT_TYPES } from "../src/game/types";
-import { createGameView } from "./fixture-view";
 import { saveBattle, loadBattle, SAVE_KEY } from "./legacy-save";
 import { required, TestStorage } from "./helpers";
 
-test("Unit enum and definitions cover the same roster", async () => {
-  assert.deepEqual(Object.keys(TYPES).sort(), [...UNIT_TYPES].sort());
-});
 test("Combat XP and promotion preserve wounds, identity and immutable publications", async () => {
   const game = new Game();
   game.units = [];
@@ -26,7 +21,7 @@ test("Combat XP and promotion preserve wounds, identity and immutable publicatio
   assert.deepEqual(game.promotionOptions(attacker.id), []);
   attacker.experience = threshold;
   attacker.moved = attacker.attacked = false;
-  const before = createGameView(game);
+  const before = game.publishedView();
   const beforePromotion = game.snapshot();
   assert(before.promotionOptions(attacker.id).includes(promotion));
   game.advanceUnit(attacker.id, promotion);

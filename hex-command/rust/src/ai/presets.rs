@@ -171,10 +171,10 @@ mod tests {
             PlanningWorkspace::new(7, 1, None, Diplomacy::Restrained).with_blocks(blocks);
         let mut preset = PlanningWorkspace::new(7, 1, None, Diplomacy::Restrained);
         for _ in 0..64 {
-            let command = choose_game_command(&rules, &game, Policy::Classic, &mut custom).unwrap();
+            let command = choose_game_command(&game, Policy::Classic, &mut custom).unwrap();
             assert_eq!(
                 command,
-                choose_game_command(&rules, &game, Policy::Priority, &mut preset).unwrap()
+                choose_game_command(&game, Policy::Priority, &mut preset).unwrap()
             );
             assert_eq!(custom.blocks, Some(blocks));
             if end_turn(&command) {

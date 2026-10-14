@@ -177,41 +177,6 @@ fn restore_rejects_invalid_campaign_carryover_before_retry() {
     assert!(Game::try_from_state(rules(), state).is_ok());
 }
 #[test]
-fn public_battle_applies_typed_moves_with_feedback() {
-    use crate::logic::Battle;
-    let mut battle = Battle::new(rules(), MapId("mirror".into()), None).unwrap();
-    let unit = battle
-        .snapshot()
-        .units
-        .iter()
-        .find(|u| u.side == Side::Player)
-        .unwrap();
-    let id = UnitId(unit.id[1..].parse().unwrap());
-    let destination = battle.reachable(rules(), id).unwrap().remove(0).tile;
-    let effects = battle
-        .apply(
-            rules(),
-            Command::Move {
-                unit: id,
-                tile: destination.clone(),
-            },
-        )
-        .unwrap();
-    assert!(effects.events.iter().any(
-        |event| matches!(event,GameEvent::UnitMoved{unit,to,..} if *unit==id && *to==destination)
-    ));
-    assert_eq!(
-        battle
-            .snapshot()
-            .units
-            .iter()
-            .find(|u| u.id == format!("u{}", id.0))
-            .unwrap()
-            .tile,
-        destination.0
-    );
-}
-#[test]
 fn catalogs_are_shareable_and_cached_routes_reuse_the_distance_field() {
     fn assert_sync<T: Sync>() {}
     assert_sync::<Catalog>();

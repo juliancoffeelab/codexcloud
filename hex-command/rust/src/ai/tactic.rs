@@ -49,7 +49,9 @@ impl<R: Recruiter, C: Campaigner, P: Planner> Tactic<R, C, P> {
     }
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 pub(crate) type PresetTactic = Tactic<super::Recruiter, super::CampaignBlock, super::Planner>;
+#[cfg(not(target_arch = "wasm32"))]
 impl PresetTactic {
     pub(crate) fn preset(policy: super::Policy) -> Self {
         let blocks = policy.blocks();
@@ -78,9 +80,7 @@ mod tests {
         calls: Rc<Cell<usize>>,
     }
     impl Campaigner for Orders {
-        fn objectives(&mut self, view: CampaignView<'_, '_>) -> CampaignOrders {
-            assert!(view.mission().is_none() && view.progress().is_none());
-            assert!(view.battle().winner().is_none());
+        fn objectives(&mut self, _view: CampaignView<'_, '_>) -> CampaignOrders {
             self.calls.set(self.calls.get() + 1);
             CampaignOrders {
                 recruitment: RecruitmentOrders {

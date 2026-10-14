@@ -2,7 +2,7 @@
 
 [Authored JSON](data/README.md) supplies rules and scenario content directly.
 `data` owns definitions and snapshots, `logic` owns battle commands and campaign
-execution, and `ai` owns classic/rush/mixed planning. `simulation` owns scheduling,
+execution, and `ai` owns recruitment, campaign orders and planning. `simulation` owns scheduling,
 workers and records; `protocol` defines the browser transfer contract.
 
 A host owns `Catalog` and lends it to operations. Native workers share an immutable
@@ -10,30 +10,24 @@ catalog through scoped threads, while each match owns state and planning workspa
 Immutable geometry, effective missions and distance fields use local `Rc` inside
 one match; the core needs no shared mutable catalog or synchronization locks.
 
-## Public core API
+## Core execution
 
 `Catalog::load_from` and `Catalog::from_json_bundle` validate content and resolve
-terrain/race/unit inheritance once. `Battle::new`, `Battle::campaign` and
-`Battle::restore` construct an owned battle. Queries and `Battle::apply` borrow
-`&Catalog`; invalid commands leave state unchanged. `snapshot` borrows the coherent
-state, and `save` copies it for persistence.
+terrain/race/unit inheritance once. `Game` executes typed commands and owns battle
+state. Occupancy and unit indexes avoid roster scans; terrain revisions invalidate
+cached route fields.
 
-Commands and identifiers are typed. Goal/trigger variants require their necessary
-fields. Effective movement and damage tables are internal resolved data. Occupancy
-and unit indexes avoid roster scans; terrain revisions invalidate cached heap-based
-route fields. AI emits commands through a read-only planning interface. Recruitment
-is part of each policy, not a separate planner/recruiter dimension.
-
-Native matches use a compact internal battle directly. The public/browser facade
-uses owned snapshots at the boundary, preserving the existing JSON/save format,
-including absent versus null fields. See the Rustdoc for operation contracts.
+AI tactics compose a recruiter, campaigner and planner. Each receives a restricted
+view and contributes to a shared turn draft. Native matches execute that draft;
+the browser consumes its command queue through revision-checked battle handles.
 
 ## Browser contract
 
 The optional `wasm` feature exposes `NativeEngineFactory`: catalog, create and
-restore; battle handles expose views, movement/combat previews, dispatch, AI
+restore; battle handles expose views, precomputed action inspection, dispatch, AI
 commands, save and disposal. Revision checks reject stale decisions. Saved games
-retain pending AI commands and planner continuation, excluding disposable caches.
+contain only game state and seed. Browser saves bracket the whole enemy turn;
+commands and planning workspaces are never persisted.
 
 The live TypeScript adapter is `src/game/native-engine.ts`. Engine handles use
 `wasm-bindgen`; commands, snapshots and responses derive `Tsify`. Typed `Ts<T>`

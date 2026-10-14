@@ -1162,8 +1162,8 @@ mod tests {
         let initial = reloaded.maps[&("mirror".to_owned(), 1)].clone();
         assert_eq!(initial.units[0].r#type, "commander");
         assert_eq!(initial.units[0].hp, revised_hp);
-        let battle = crate::logic::Battle::restore(&reloaded, initial).unwrap();
-        assert_eq!(battle.snapshot().units[0].hp, revised_hp);
+        let battle = crate::logic::Game::try_from_state(&reloaded, initial).unwrap();
+        assert_eq!(battle.units[0].hp, revised_hp);
         assert_eq!(
             original.maps[&("mirror".to_owned(), 1)].units[0].hp,
             original_hp

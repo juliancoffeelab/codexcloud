@@ -122,7 +122,7 @@ impl NativeEngineFactory {
             });
         encode(result)
     }
-    /// Validate [`SavedGame`] and restore state and AI continuation under a new handle.
+    /// Validate [`SavedGame`] and restore resolved state under a new handle.
     /// The restored handle starts at revision zero; invalid saves leave the factory unchanged.
     pub fn restore(&mut self, saved: Ts<SavedGame>) -> Result<Ts<BattleResponse>, JsError> {
         encode(decode::<SavedGame>(saved).and_then(|saved| self.restore_saved(saved)))
@@ -137,73 +137,6 @@ impl NativeEngineFactory {
             self.battle(id, revision)
                 .map(|battle| battle.game(&self.rules).inspect(revision)),
         )
-    }
-    /// Return [`ReachableTile`] destinations and costs for a stable unit identity.
-    /// The query leaves battle state and revision unchanged.
-    pub fn reachable(
-        &self,
-        id: u32,
-        revision: u32,
-        unit: u32,
-    ) -> Result<Ts<ReachableResponse>, JsError> {
-        encode(self.battle(id, revision).and_then(|battle| {
-            let game = battle.game(&self.rules);
-            let actor = game
-                .unit(unit)
-                .ok_or(CommandError::UnknownUnit(UnitId(unit)))?;
-            Ok(game
-                .reachable(actor)
-                .iter()
-                .copied()
-                .map(|(tile, cost)| ReachableTile {
-                    tile: TileId(game.board.ids[tile].clone()),
-                    cost,
-                })
-                .collect::<Vec<_>>())
-        }))
-    }
-    /// Decode [`AttackQuery`] and return an [`AttackPreview`] for a legal attack.
-    /// An optional hypothetical origin affects the query without moving the attacker.
-    #[wasm_bindgen(js_name = previewAttack)]
-    pub fn preview_attack(
-        &self,
-        id: u32,
-        revision: u32,
-        query: Ts<AttackQuery>,
-    ) -> Result<Ts<AttackResponse>, JsError> {
-        encode(decode::<AttackQuery>(query).and_then(|query| {
-            let battle = self.battle(id, revision)?;
-            let game = battle.game(&self.rules);
-            let actor = game
-                .unit(query.unit.0)
-                .ok_or(CommandError::UnknownUnit(query.unit))?;
-            let target = game
-                .unit(query.target.0)
-                .ok_or(CommandError::UnknownUnit(query.target))?;
-            let weapon = self.rules.units[actor.kind]
-                .attacks
-                .iter()
-                .position(|attack| attack.id == query.weapon.0)
-                .ok_or_else(|| CommandError::UnknownWeapon(query.weapon.clone()))?;
-            let from = match query.from {
-                Some(tile) => *game
-                    .board
-                    .indices
-                    .get(&tile.0)
-                    .ok_or_else(|| CommandError::UnknownTile(tile))?,
-                None => actor.tile,
-            };
-            if !game.can_attack(actor, from, target, weapon) {
-                return Err(CommandError::IllegalAttack.into());
-            }
-            let (damage, retaliation, response) = game.preview(actor, target, weapon, from);
-            Ok(AttackPreview {
-                damage,
-                retaliation,
-                response: response
-                    .map(|index| self.rules.units[target.kind].attacks[index].clone()),
-            })
-        }))
     }
     /// Apply one decoded [`Command`] against the expected revision.
     /// Success returns [`DispatchResult`]; rejected commands leave state unchanged.
@@ -316,7 +249,6 @@ impl NativeEngineFactory {
         }
         let game = battle.game(&self.rules);
         let command = ai::choose_game_command(
-            &self.rules,
             &game,
             options.policy,
             battle.workspace.as_mut().expect("workspace initialized"),

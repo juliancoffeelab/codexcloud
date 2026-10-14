@@ -47,48 +47,6 @@ export type AdvancedTroop =
   | "tidesage"
   | "lancer";
 export type RecruitType = Exclude<UnitType, LeaderType>;
-export const UNIT_TYPES = [
-  "commander",
-  "soldier",
-  "archer",
-  "scout",
-  "warden",
-  "adept",
-  "skeleton",
-  "skeleton-impact-caster",
-  "bonearcher",
-  "wolf",
-  "boar",
-  "wildkeeper",
-  "necromancer",
-  "thorncaller",
-  "swordsman",
-  "spearman",
-  "tidekeeper",
-  "reefguard",
-  "merfolk-maceguard",
-  "harpooner",
-  "wavemender",
-  "marksman",
-  "ranger",
-  "mage",
-  "revenant",
-  "skeleton-impact-caster-l2",
-  "deatharcher",
-  "direwolf",
-  "greatboar",
-  "briarweaver",
-  "tridentguard",
-  "merfolk-maceguard-l2",
-  "tidehunter",
-  "tidesage",
-  "marshal",
-  "grovewarden",
-  "lich",
-  "tideseer",
-  "rider",
-  "lancer",
-] as const satisfies readonly UnitType[];
 export type Race = "human" | "undead" | "beast" | "merfolk";
 export type TerrainType =
   | "plains"

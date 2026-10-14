@@ -17,7 +17,7 @@ pub mod recruiter;
 mod roles;
 use crate::{
     data::*,
-    logic::{Battle, Command, CommandError, Game},
+    logic::{Command, CommandError, Game},
 };
 pub use campaigner::CampaignerKind as CampaignBlock;
 use context::forecast as threats;
@@ -102,12 +102,12 @@ pub enum TacticalRole {
 /// Reusable turn-local planning state. Create a fresh workspace for each turn
 /// and discard it when the turn ends.
 pub struct PlanningWorkspace {
-    policy: Option<Policy>,
     seed: u32,
     recruitment_remaining: usize,
     goals: Option<Vec<Objective>>,
     prepared_goals: Option<Vec<orders::Target>>,
     diplomacy: Diplomacy,
+    #[cfg(any(feature = "wasm", test))]
     initialized: bool,
     finished: bool,
     classic_objectives: Vec<orders::Target>,
@@ -121,10 +121,11 @@ pub struct PlanningWorkspace {
     threats: threats::ArenaThreatWorkspace,
     priority: Option<UnitQueue>,
     cheap: cheap::Workspace,
+    #[cfg(any(feature = "wasm", test))]
     blocks: Option<Blocks>,
     orders: Option<orders::CampaignOrders>,
     report: orders::PlanningReport,
-    recruitment_report: orders::RecruitmentReport,
+    #[cfg(any(feature = "wasm", test))]
     turn_plan_ready: bool,
     cooperation: cooperation::Workspace,
     escort: escort::Workspace,
@@ -138,11 +139,11 @@ impl PlanningWorkspace {
         diplomacy: Diplomacy,
     ) -> Self {
         Self {
-            policy: None,
+            #[cfg(any(feature = "wasm", test))]
             blocks: None,
             orders: None,
             report: orders::PlanningReport::default(),
-            recruitment_report: orders::RecruitmentReport::default(),
+            #[cfg(any(feature = "wasm", test))]
             turn_plan_ready: false,
             cooperation: cooperation::Workspace::default(),
             escort: escort::Workspace::default(),
@@ -151,6 +152,7 @@ impl PlanningWorkspace {
             goals,
             prepared_goals: None,
             diplomacy,
+            #[cfg(any(feature = "wasm", test))]
             initialized: false,
             finished: false,
             classic_objectives: Vec::new(),
@@ -167,73 +169,36 @@ impl PlanningWorkspace {
         }
     }
     /// Select independent blocks before starting a phase.
+    #[cfg(any(feature = "wasm", test))]
     pub fn with_blocks(mut self, blocks: Blocks) -> Self {
         assert!(
-            !self.initialized && self.policy.is_none(),
+            !self.initialized,
             "cannot replace blocks during an active phase"
         );
         self.blocks = Some(blocks);
         self
     }
-    pub(crate) fn with_optional_blocks(self, blocks: Option<Blocks>) -> Self {
-        match blocks {
-            Some(blocks) => self.with_blocks(blocks),
-            None => self,
-        }
-    }
+    #[cfg(any(feature = "wasm", test))]
     pub(super) fn effective_blocks(&self, policy: Policy) -> Blocks {
         self.blocks.unwrap_or_else(|| policy.blocks())
     }
-    pub(crate) fn complete_turn_plan(
-        &mut self,
-        policy: Policy,
-        blocks: Blocks,
+    #[cfg(not(target_arch = "wasm32"))]
+    pub(crate) fn diagnostics(
+        &self,
         report: orders::PlanningReport,
         recruitment: orders::RecruitmentReport,
-    ) {
-        self.policy = Some(policy);
-        self.blocks = Some(blocks);
-        self.report = report;
-        self.recruitment_report = recruitment;
-        self.initialized = true;
-        self.finished = true;
-    }
-    /// Whether the policy has exhausted its actions and queued continuation.
-    pub fn is_finished(&self) -> bool {
-        self.finished && self.commands.is_empty()
-    }
-    pub(crate) fn diagnostics(&self) -> Option<orders::TurnDiagnostics> {
+    ) -> Option<orders::TurnDiagnostics> {
         let orders = self.orders.as_ref()?;
         orders.tactics.campaign.then(|| orders::TurnDiagnostics {
             orders: orders.clone(),
-            report: self.report.clone(),
-            recruitment: self.recruitment_report.clone(),
+            report,
+            recruitment,
         })
     }
 }
 
-/// Choose the next command without changing the battle. Apply each returned
-/// command once before requesting another, using the same workspace and policy
-/// until EndTurn. A fresh turn requires a fresh workspace.
-///
-/// EndTurn signals that the policy has exhausted its actions; the caller decides
-/// when to apply it. Catalog mismatches and invalid planned actions return typed
-/// command errors without changing the battle.
-pub fn choose_command(
-    catalog: &Catalog,
-    battle: &Battle,
-    policy: Policy,
-    workspace: &mut PlanningWorkspace,
-) -> Result<Command, CommandError> {
-    battle
-        .with_game(catalog, |game| {
-            choose_game_command(catalog, game, policy, workspace)
-        })
-        .map_err(|_| CommandError::CatalogMismatch)?
-}
-
+#[cfg(any(feature = "wasm", test))]
 pub(crate) fn choose_game_command(
-    rules: &Rules,
     game: &Game<'_>,
     policy: Policy,
     workspace: &mut PlanningWorkspace,
@@ -244,11 +209,8 @@ pub(crate) fn choose_game_command(
     }
     #[cfg(not(target_arch = "wasm32"))]
     let _profile = profiling::Decision::start(policy, game.turn);
-    workspace.policy.get_or_insert(policy);
+    workspace.initialized = true;
     workspace.blocks.get_or_insert(blocks);
-    if !std::ptr::eq(rules, game.rules) {
-        return Err(CommandError::CatalogMismatch);
-    }
     if game.winner.is_some() {
         return Ok(Command::EndTurn);
     }
@@ -256,27 +218,16 @@ pub(crate) fn choose_game_command(
         let mut tactic = tactic::Tactic::new(blocks.recruiter, blocks.campaign, blocks.planner);
         let plan = tactic.run_turn(game, workspace)?;
         workspace.report = plan.planning;
-        workspace.recruitment_report = plan.recruitment;
         workspace.commands = plan.commands.into();
         workspace.turn_plan_ready = true;
-        workspace.initialized = true;
         workspace.finished = true;
     }
     let command = workspace.commands.pop_front().unwrap_or(Command::EndTurn);
     Ok(command)
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 impl Game<'_> {
-    pub(crate) fn play_policy(
-        &mut self,
-        policy: Policy,
-        seed: u32,
-        limit: usize,
-        goals: Option<&[Objective]>,
-        diplomacy: Diplomacy,
-    ) -> Result<(), CommandError> {
-        self.play_blocks(policy, None, seed, limit, goals, diplomacy)
-    }
     pub(crate) fn play_blocks(
         &mut self,
         policy: Policy,
@@ -286,31 +237,21 @@ impl Game<'_> {
         goals: Option<&[Objective]>,
         diplomacy: Diplomacy,
     ) -> Result<(), CommandError> {
-        fn is_command_endturn(value: &Command) -> bool {
-            match value {
-                Command::EndTurn => true,
-                Command::Move { .. }
-                | Command::Attack { .. }
-                | Command::Recruit { .. }
-                | Command::Advance { .. }
-                | Command::DismissDialogue
-                | Command::NextMission
-                | Command::RecallMission { .. }
-                | Command::RetryMission
-                | Command::PreviousDialogue
-                | Command::SkipDialogue
-                | Command::SetUnitIntent { .. } => false,
-            }
+        let blocks = blocks.unwrap_or_else(|| policy.blocks());
+        if !blocks.campaign.supports_campaign() && self.campaign.is_some() {
+            return Err(CommandError::BattleOnlyPolicy);
         }
-
+        if self.winner.is_some() {
+            return Ok(());
+        }
         let mut workspace =
-            PlanningWorkspace::new(seed, limit, goals.map(<[Objective]>::to_vec), diplomacy)
-                .with_optional_blocks(blocks);
-        loop {
-            let command = choose_game_command(self.rules, self, policy, &mut workspace)?;
-            if is_command_endturn(&command) {
-                break;
-            }
+            PlanningWorkspace::new(seed, limit, goals.map(<[Objective]>::to_vec), diplomacy);
+        let mut tactic = tactic::Tactic::new(blocks.recruiter, blocks.campaign, blocks.planner);
+        let plan = {
+            let _profile = profiling::Decision::start(policy, self.turn);
+            tactic.run_turn(self, &mut workspace)?
+        };
+        for command in plan.commands {
             self.execute(command)?;
         }
         Ok(())
@@ -530,8 +471,7 @@ mod courier_tests {
         );
         let mut workspace = PlanningWorkspace::new(1, 0, None, Diplomacy::Restrained);
         let command = loop {
-            let command =
-                choose_game_command(&rules, &game, Policy::Mixed, &mut workspace).unwrap();
+            let command = choose_game_command(&game, Policy::Mixed, &mut workspace).unwrap();
             if is_command_setunitintent(&command) {
                 game.execute(command).unwrap();
             } else {
@@ -586,7 +526,7 @@ mod courier_tests {
             game.roster_changed();
             let mut workspace = PlanningWorkspace::new(1, 0, None, Diplomacy::Restrained);
             for _ in 0..40 {
-                let command = choose_game_command(&rules, &game, policy, &mut workspace).unwrap();
+                let command = choose_game_command(&game, policy, &mut workspace).unwrap();
                 if is_command_endturn(&command) {
                     break;
                 }

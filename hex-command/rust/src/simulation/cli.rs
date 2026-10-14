@@ -817,8 +817,9 @@ mod tests {
         expected.begin_turn(expected.turn);
         expected.recordings = Some(crate::data::Records::default());
         expected
-            .play_policy(
+            .play_blocks(
                 crate::ai::Policy::Mixed,
+                None,
                 7,
                 1,
                 None,

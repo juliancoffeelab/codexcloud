@@ -200,15 +200,6 @@ impl<'a, 'catalog> CampaignView<'a, 'catalog> {
     pub(super) fn new(game: &'a Game<'catalog>, workspace: &'a PlanningWorkspace) -> Self {
         Self { game, workspace }
     }
-    pub(super) fn battle(&self) -> BattleView<'_, 'catalog> {
-        BattleView::new(self.game)
-    }
-    pub(super) fn mission(&self) -> Option<&Mission> {
-        self.game.mission.as_deref()
-    }
-    pub(super) fn progress(&self) -> Option<&CampaignState> {
-        self.game.campaign.as_ref()
-    }
     pub(super) fn orders(&self, kind: super::campaigner::CampaignerKind) -> CampaignOrders {
         kind.campaign_orders(self.game, self.workspace)
     }

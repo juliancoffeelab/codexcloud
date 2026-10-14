@@ -2,7 +2,6 @@ import { test } from "vitest";
 import assert from "node:assert/strict";
 import { Game, TERRAIN, TYPES } from "./game-fixture";
 import { MAPS } from "../src/game/maps";
-import { createGameView } from "./fixture-view";
 import {
   createBattleCommands,
   recruitmentContext,
@@ -14,7 +13,7 @@ import { required } from "./helpers";
 function viewFixture() {
   const live = new Game();
   const enemy = live.addUnit("soldier", "enemy", "2,3");
-  const view = createGameView(live);
+  const view = live.publishedView();
   const originalState = view.snapshot();
   const originalTiles = structuredClone(view.tiles);
   return { live, enemy, view, originalState, originalTiles };

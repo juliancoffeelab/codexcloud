@@ -328,7 +328,7 @@ mod tests {
         );
         let mut workspace = PlanningWorkspace::new(7, 0, None, crate::ai::Diplomacy::Pragmatic);
         assert_eq!(
-            crate::ai::choose_game_command(&rules, &campaign, Policy::Battler, &mut workspace),
+            crate::ai::choose_game_command(&campaign, Policy::Battler, &mut workspace),
             Err(CommandError::BattleOnlyPolicy)
         );
     }

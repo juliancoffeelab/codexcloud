@@ -1,5 +1,6 @@
 //! Validation of saved states before runtime indexes are constructed.
 
+#[cfg(any(feature = "wasm", test))]
 use super::battle::Game;
 use crate::data::*;
 use serde::{Deserialize, Serialize};
@@ -13,6 +14,7 @@ impl std::fmt::Display for StateError {
     }
 }
 impl std::error::Error for StateError {}
+#[cfg(any(feature = "wasm", test))]
 impl<'catalog> Game<'catalog> {
     /// Restore against current unit limits, then validate the roster and references.
     pub(crate) fn try_from_state(

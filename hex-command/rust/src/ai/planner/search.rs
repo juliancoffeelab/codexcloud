@@ -1026,13 +1026,9 @@ mod tests {
                     assert_eq!(left_intents, right_intents);
                     assert_eq!(left_commitments, right_commitments);
                 }
-                let command = crate::ai::choose_game_command(
-                    &rules,
-                    &game,
-                    crate::ai::Policy::Mixed,
-                    &mut actual,
-                )
-                .unwrap();
+                let command =
+                    crate::ai::choose_game_command(&game, crate::ai::Policy::Mixed, &mut actual)
+                        .unwrap();
                 if is_command_endturn(&command) {
                     if game.winner.is_some() {
                         break;

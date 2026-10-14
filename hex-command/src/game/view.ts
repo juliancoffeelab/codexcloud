@@ -1,4 +1,4 @@
-import { LiveGame } from "./live-game";
+import type { LiveGame } from "./live-game";
 import type { Immutable } from "./immutable";
 import type { Tile, Unit } from "./types";
 
@@ -32,15 +32,10 @@ type ReadableGame = Pick<
   | "reachable"
   | "targets"
   | "recruitTiles"
-  | "canAttackFrom"
+  | "canAttack"
   | "previewDetails"
   | "income"
   | "snapshot"
 >;
 
 export type GameView = Immutable<ReadableGame>;
-
-/** One detached, immutable revision. Only pure rule queries cross this boundary. */
-export function createGameView(source: LiveGame): GameView {
-  return source.publishedView();
-}

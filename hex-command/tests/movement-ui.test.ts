@@ -2,7 +2,6 @@ import { test } from "vitest";
 import assert from "node:assert/strict";
 import { currentArtwork } from "../src/presentation/art";
 import { Game, TERRAIN } from "./game-fixture";
-import { createGameView } from "./fixture-view";
 import type { TerrainType } from "../src/game/types";
 import type { BattleView } from "../src/controller/view";
 import { unitPanelView } from "../src/ui/unit-panel-view";
@@ -11,7 +10,7 @@ import { required } from "./helpers";
 
 function published(game: Game, selected: string): BattleView {
   return {
-    game: createGameView(game),
+    game: game.publishedView(),
     selected,
     target: null,
     inspectedTile: required(game.unit(selected)).tile,
@@ -55,7 +54,7 @@ for (const terrain of Object.keys(TERRAIN) as TerrainType[]) {
       const unit = required(game.units[0]);
       const view = published(game, unit.id);
       required(game.tile(unit.tile)).terrain = terrain;
-      const terrainPanel = required(terrainPanelView({ ...view, game: createGameView(game) }));
+      const terrainPanel = required(terrainPanelView({ ...view, game: game.publishedView() }));
       assert(!terrainPanel.facts.some((fact) => fact.startsWith("Movement:")));
       if (terrain === "hill") {
         assert(

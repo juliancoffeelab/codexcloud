@@ -3,7 +3,6 @@ import type { UnitType } from "../src/game/types.ts";
 import { required } from "./helpers.ts";
 import { damageExplanation } from "../src/presentation/combat.ts";
 import { describeChanges } from "../src/controller/feedback.ts";
-import { createGameView } from "./fixture-view.ts";
 import { attackChoiceViews } from "../src/ui/combat-view.ts";
 import assert from "node:assert/strict";
 import { Game } from "./game-fixture.ts";
@@ -22,7 +21,7 @@ const fixture = (a: UnitType = "soldier", b: UnitType = "soldier", targetTile = 
 test("Zero damage attacks remain available and consume actions", async () => {
   const { game, attacker, target } = fixture("bonearcher", "soldier");
   required(game.tile(target.tile)).terrain = "hill";
-  const published = createGameView(game);
+  const published = game.publishedView();
   const choice = required(
     attackChoiceViews(published, attacker, target).find((c) => c.id === "shard"),
   );
@@ -42,7 +41,7 @@ test("Covered retaliation can deal zero damage", async () => {
   assert.equal(preview.retaliation, 0);
   assert.equal(preview.response?.id, "shard");
   const choice = required(
-    attackChoiceViews(createGameView(game), attacker, target).find((c) => c.id === "sword"),
+    attackChoiceViews(game.publishedView(), attacker, target).find((c) => c.id === "sword"),
   );
   assert(choice.available);
   assert(choice.retaliationCalculation.description.includes("shard"));
@@ -62,14 +61,14 @@ test("Lethal forecasts identify casualties including overkill", async () => {
   const damage = game.previewDetails(attacker, target, "mace").damage;
   target.hp = damage;
   let choice = required(
-    attackChoiceViews(createGameView(game), attacker, target).find((c) => c.id === "mace"),
+    attackChoiceViews(game.publishedView(), attacker, target).find((c) => c.id === "mace"),
   );
   assert(choice.available);
   assert.equal(choice.enemyForecast.impactLabel, `Deal −${damage} HP (dies)`);
   assert.equal(choice.playerForecast.impactLabel, "Take 0 HP");
   target.hp = damage - 1;
   choice = required(
-    attackChoiceViews(createGameView(game), attacker, target).find((c) => c.id === "mace"),
+    attackChoiceViews(game.publishedView(), attacker, target).find((c) => c.id === "mace"),
   );
   assert(choice.available);
   assert.equal(
@@ -81,7 +80,7 @@ test("Lethal forecasts identify casualties including overkill", async () => {
   const retaliation = game.previewDetails(attacker, target, "mace").retaliation;
   attacker.hp = retaliation;
   choice = required(
-    attackChoiceViews(createGameView(game), attacker, target).find((c) => c.id === "mace"),
+    attackChoiceViews(game.publishedView(), attacker, target).find((c) => c.id === "mace"),
   );
   assert(choice.available);
   assert.equal(choice.enemyForecast.impactLabel, `Deal −${damage} HP`);
