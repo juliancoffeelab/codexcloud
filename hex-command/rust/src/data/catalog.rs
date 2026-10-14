@@ -963,12 +963,12 @@ fn validate_simulation(
     for (ids, allowed, path) in [
         (
             &arena.policies,
-            ["classic", "rush", "balanced", "rotated"].as_slice(),
+            ["classic", "rush", "balanced", "rotated", "situational"].as_slice(),
             "simulation/arena.json",
         ),
         (
             &campaign.policies,
-            ["classic", "rush", "balanced", "rotated"].as_slice(),
+            ["classic", "rush", "balanced", "rotated", "situational"].as_slice(),
             "simulation/campaign.json",
         ),
         (

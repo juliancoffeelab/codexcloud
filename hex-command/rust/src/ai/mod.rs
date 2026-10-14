@@ -44,10 +44,17 @@ pub enum Policy {
     Rush,
     Balanced,
     Rotated,
+    Situational,
 }
 impl Policy {
     /// Supported presets in their stable authored order.
-    pub const ALL: [Self; 4] = [Self::Classic, Self::Rush, Self::Balanced, Self::Rotated];
+    pub const ALL: [Self; 5] = [
+        Self::Classic,
+        Self::Rush,
+        Self::Balanced,
+        Self::Rotated,
+        Self::Situational,
+    ];
     /// Stable JSON/CLI policy identifier.
     pub const fn as_str(self) -> &'static str {
         match self {
@@ -55,6 +62,7 @@ impl Policy {
             Self::Rush => "rush",
             Self::Balanced => "balanced",
             Self::Rotated => "rotated",
+            Self::Situational => "situational",
         }
     }
 }

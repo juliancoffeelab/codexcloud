@@ -15,6 +15,7 @@ pub enum RecruiterKind {
     Rotation,
     Frontline,
     Balanced,
+    Situational,
 }
 pub(crate) trait Recruiter {
     fn recruit(
@@ -33,6 +34,7 @@ impl Recruiter for RecruiterKind {
             Self::Rotation => rotation::Rotation.recruit(context, orders),
             Self::Frontline => frontline::Frontline.recruit(context, orders),
             Self::Balanced => balanced::Balanced.recruit(context, orders),
+            Self::Situational => situational::Situational.recruit(context, orders),
         }
     }
 }
@@ -113,11 +115,15 @@ impl BattleView<'_, '_> {
         seed: u32,
         orders: &super::orders::RecruitmentOrders,
     ) -> Option<Command> {
+        if recruiter == RecruiterKind::Situational {
+            return situational::choose(self, seed, orders);
+        }
         fn behavior(recruiter: RecruiterKind) -> (bool, bool, bool) {
             match recruiter {
                 RecruiterKind::Rotation => (true, false, false),
                 RecruiterKind::Frontline => (false, true, false),
                 RecruiterKind::Balanced => (false, false, true),
+                RecruiterKind::Situational => unreachable!("separate situational selector"),
             }
         }
         let (rotation, frontline_only, balanced) = behavior(recruiter);
@@ -353,3 +359,4 @@ mod tests {
 mod balanced;
 mod frontline;
 mod rotation;
+mod situational;

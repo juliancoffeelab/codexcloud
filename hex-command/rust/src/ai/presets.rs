@@ -18,7 +18,7 @@ impl Policy {
     pub const fn default_recruitment_limit(self) -> Option<usize> {
         match self {
             Self::Classic => Some(2),
-            Self::Rush | Self::Balanced | Self::Rotated => None,
+            Self::Rush | Self::Balanced | Self::Rotated | Self::Situational => None,
         }
     }
 
@@ -42,6 +42,11 @@ impl Policy {
             },
             Self::Rotated => Blocks {
                 recruiter: Recruiter::Rotation,
+                campaign: CampaignBlock::Mission,
+                planner: Planner::Queued,
+            },
+            Self::Situational => Blocks {
+                recruiter: Recruiter::Situational,
                 campaign: CampaignBlock::Mission,
                 planner: Planner::Queued,
             },
