@@ -101,10 +101,10 @@ effects show movement and resolved incoming-damage modifiers. Numeric abilities
 such as healing come from catalog metadata; descriptions explain roles without
 duplicating the values.
 
-Restoration caps saved HP at the current unit maximum while preserving turn
-progress. A queued AI move or recruitment invalidated by balance changes is
-replanned with the saved recruitment budget. This does not change the save format
-or add a migration.
+Restoration caps saved HP at the current unit maximum while preserving resolved
+game state. Saves never contain queued AI actions or planning workspaces.
+All data migrations belong in `src/save/migrations/` and run during loading;
+unmigratable or invalid saves are wiped. See [save migrations](save-migrations.md).
 
 ## Sites publication
 
@@ -136,10 +136,10 @@ the selected planner. Existing Rotation, Frontline and Balanced selection rules
 remain separate from the design's future recruitment strategies.
 
 The command-at-a-time host entry point adapts a completed turn plan to the
-existing browser/native command protocol. Its checkpoints retain pending commands,
-orders, reports and fixed composition; restoration validates the remaining command
-sequence against a temporary engine state. Save envelopes and host adapters remain
-separate from the block interfaces.
+existing browser/native command protocol. Its queue exists only during execution
+and is never saved. Browser persistence brackets the entire enemy turn; loading
+an interrupted phase builds a fresh plan from its pre-turn state. Save envelopes
+and host adapters remain separate from the block interfaces.
 
 ## References
 

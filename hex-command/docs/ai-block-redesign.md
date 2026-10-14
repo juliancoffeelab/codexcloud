@@ -4,8 +4,9 @@ Current policy names now select independent Recruiter, Campaign and Planner
 blocks. Their preset composition and configurable fields are defined in
 [`presets.rs`](../rust/src/ai/presets.rs).
 Rust workspaces, browser options and native saved-phase requests can override the
-three blocks. Saved continuations retain the chosen composition. The three Old
-policies remain frozen historical executables.
+three blocks. Composition remains fixed during a run; browser saves contain
+resolved game state rather than planner continuations. The three Old policies
+remain frozen historical executables.
 
 The Recruiter owns unit selection and placement. The Campaign block owns mission
 duties, essential actors, reservations, corridor clearing, diplomacy, rebuilding
@@ -117,7 +118,7 @@ for policy in ["classic", "rush", "mixed", "priority"]:
 
 ## Checks and limits
 
-Five small regressions cover custom composition through queued save restoration,
+Small regressions cover custom composition through command-at-a-time execution,
 missing-specialist recruitment, blocked Vigil arrival and its real hold duration,
 the reproduced merfolk escort corridor, and escalated Refuge targets and terminal
 attacks. The escort fixture includes promoted units, an injured healer, village

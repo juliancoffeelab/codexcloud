@@ -369,7 +369,11 @@ replacement API, and Campaigner returns orders rather than a Planner selector.
 Block-local state may evolve: a fair Recruiter can maintain selection history,
 Campaigner can maintain strategic context, and Planner can retain useful caches.
 That does not change component identity. Restoring a run must preserve its
-composition and required block-local state.
+composition. Any required persistent block-local facts must be explicit,
+versioned data that JavaScript migrations can transform without executing AI
+logic. Planner workspaces, pending commands, turn plans and derived caches are
+never persisted. Rebuild them through normal gameplay after loading. Browser
+saves bracket the entire enemy turn, not individual AI actions.
 
 Recruitment decisions update the temporary state before tactical planning. This
 accounts for changed gold, occupancy and action availability. The returned plan
