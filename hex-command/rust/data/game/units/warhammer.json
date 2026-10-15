@@ -3,7 +3,7 @@
   "role": "warrior",
   "name": "Warhammer",
   "race": "human",
-  "hp": 34,
+  "hp": 32,
   "move": 3,
   "cost": 18,
   "attacks": [
@@ -19,13 +19,13 @@
     }
   ],
   "damageModifiers": {
-    "blade": 0,
-    "pierce": 0,
-    "impact": 0
+    "blade": -2,
+    "pierce": -2,
+    "impact": 1
   },
   "terrainModifiers": {},
   "ability": "Heavy hammer",
-  "description": "A veteran hammer fighter who trades reach for repeated crushing blows in close combat.",
+  "description": "An armored hammer veteran who delivers a single crushing blow; blunt weapons threaten his armor.",
   "level": 3,
   "family": "swordsman",
   "advancesTo": [],

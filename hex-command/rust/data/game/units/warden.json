@@ -38,8 +38,8 @@
   ],
   "damageModifiers": {
     "blade": -2,
-    "pierce": -2,
-    "impact": 1
+    "pierce": -1,
+    "impact": 0
   },
   "ability": "Shield wall",
   "description": "A shielded spear fighter who protects the front against charging beasts.",

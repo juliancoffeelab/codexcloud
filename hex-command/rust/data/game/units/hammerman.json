@@ -3,7 +3,7 @@
   "role": "warrior",
   "name": "Hammerman",
   "race": "human",
-  "hp": 26,
+  "hp": 24,
   "move": 3,
   "cost": 12,
   "attacks": [
@@ -19,7 +19,7 @@
     }
   ],
   "damageModifiers": {
-    "blade": 0,
+    "blade": -1,
     "pierce": 0,
     "impact": 0
   },

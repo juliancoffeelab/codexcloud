@@ -3,7 +3,7 @@
   "role": "warrior",
   "name": "Sentinel",
   "race": "human",
-  "hp": 34,
+  "hp": 32,
   "move": 3,
   "cost": 16,
   "attacks": [
@@ -29,9 +29,9 @@
     }
   ],
   "damageModifiers": {
-    "blade": -2,
-    "pierce": -2,
-    "impact": 0
+    "blade": -3,
+    "pierce": -3,
+    "impact": 1
   },
   "terrainModifiers": {},
   "ability": "Shield line",

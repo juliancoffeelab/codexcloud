@@ -29,9 +29,9 @@
     }
   ],
   "damageModifiers": {
-    "blade": 0,
-    "pierce": 0,
-    "impact": 0
+    "blade": -2,
+    "pierce": -2,
+    "impact": 1
   },
   "terrainModifiers": {},
   "ability": "Polearm mastery",

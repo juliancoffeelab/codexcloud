@@ -3,7 +3,7 @@
   "role": "warrior",
   "name": "Halberdier",
   "race": "human",
-  "hp": 25,
+  "hp": 24,
   "move": 3,
   "cost": 12,
   "attacks": [
@@ -29,7 +29,7 @@
     }
   ],
   "damageModifiers": {
-    "blade": 0,
+    "blade": -1,
     "pierce": 0,
     "impact": 0
   },

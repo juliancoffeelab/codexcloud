@@ -38,11 +38,11 @@
   ],
   "damageModifiers": {
     "blade": -2,
-    "pierce": -2,
-    "impact": 1
+    "pierce": -1,
+    "impact": 0
   },
   "ability": "Armor",
-  "description": "Heavy infantry suited to holding the front. Blunt weapons threaten its armor.",
+  "description": "Armored sword infantry whose shield adds protection against blades and piercing weapons.",
   "level": 2,
   "family": "swordsman",
   "experienceNeeded": 18,
