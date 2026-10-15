@@ -114,8 +114,8 @@ npm run ai:simulate -- --unit-usage
 npm run ai:analyze -- artifacts/saved/report.json --out artifacts/saved/analytics --unit-usage
 ```
 
-The analyzer also accepts `--battlefield-presence` or `--support-effects`
-independently. This audit reads checksummed arena journals and recorded
+The analyzer also accepts `--battlefield-presence`, `--support-effects`,
+`--battlefield-value` or `--leader-audit` independently. This audit reads checksummed journals and recorded
 `unitProfiles`, never the current catalog. Support effects require fresh runs
 with `supportTelemetryVersion`; legacy missing measurements are not zeros.
 The earlier `measure-support.py` command estimates historical healing from
@@ -132,6 +132,64 @@ Exports:
 - `support_overlap.csv`: coverage and overlap conditioned on provider count and
   available recipients, so single-provider turns do not hide overlap between
   multiple providers.
+- `battlefield_value.csv`: actual weapon HP damage, signed armour/terrain
+  prevention, captures, occupation/control turns and casualty gold, by family.
+  Includes arena and reached campaign chapters, with mixed campaign armies
+  separated by the recorded unit race.
+- `battlefield_unit_value.csv`: the same contributions separated by exact unit
+  and promotion, so shield and heavy branches are not hidden in family totals.
+- `leader_audit.csv`: phase-boundary leader HP/tile, nonleader army strength,
+  recruitment availability and reachable-tile exposure forecasts.
+- `leader_deaths.csv`: death-boundary evidence linked to that leader's last
+  own-phase decision within the same match/chapter.
+
+Fresh native `--unit-usage` runs include the value and leader exports. Older runs
+retain their original presence/support exports; requesting either newer audit
+explicitly requires its recorded telemetry version. Missing measurements are
+never substituted with zeros.
+
+Protection includes racial and unit flat modifiers, attributed before terrain.
+Both raw stage deltas and HP-capped prevention are recorded for the initiating
+attack and executed weapon retaliation. Values are signed: vulnerability is
+negative prevention. Effective weapon damage excludes overkill, reflected thorns
+and drain healing. Total HP damage additionally credits effective reflection to
+its intrinsic/aura sources, with separate weapon and thorn subtotals. Recruit gold lost counts actual purchases within this arena
+or chapter; casualty replacement value uses the dead unit's current catalog cost,
+including free starters and earned promotions. Neither is a complete economic
+valuation of an earned promotion.
+
+Captures credit the mover that changed ownership. Control turns credit that last
+captor while ownership persists, including after its death; occupation turns
+credit the living unit standing on the tile at its own phase end. Objective tiles
+are the union of capture objectives actually published for that side during the
+chapter. Already-owned initial tiles have no inferred captor. These measure
+contribution, not proof that a capture or a unit caused victory.
+
+Leader army value is the sum of nonleader unit cost times remaining HP fraction.
+Exposure sums independent enemies' legal next-turn attacks, using the existing
+planner forecast; it is conservative rather than a coordinated battle replay.
+Reachable alternatives hold other units fixed at own-phase start and may not
+fulfill mission requirements. Start-board chosen-tile risk and actual end-board
+risk are separate fields. The death export includes remaining army, its observed
+peak fraction, enemy strength and the last decision's risk. It does not label
+every exposed leader death reckless or every late death unavoidable.
+
+For sampled aura deterrence, replay observed enemy-phase positions with aura
+enabled and disabled, leaving intrinsic thorns unchanged:
+
+```sh
+python3 .agents/skills/combat-simulation/scripts/measure-thorn-deterrence.py \
+  --report artifacts/saved/report.json --data-dir rust/data \
+  --out tmp/thorn-deterrence --limit 50
+```
+
+The explicit catalog and native binary must match the report's fingerprint and
+recorded profiles. An explicit `--allow-fingerprint-mismatch` permits weaker
+profile-only validation and labels that limitation. Outputs include paired
+requests/responses, attack/target/weapon changes, reflection and HP/casualty
+differences. These are one-phase counterfactuals, not long-term win attribution;
+the first observed positions are correlated within battles. Full profiles,
+turn-start gold and ownership are preserved, without repeating begin-turn effects.
 
 All exports keep faction, tactic, opposing tactic and map separate, exclude
 same-faction games, and pool other opposing factions. All-map shares use summed

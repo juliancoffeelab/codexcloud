@@ -55,6 +55,32 @@ impl<'catalog> Game<'catalog> {
         .max(0)
             * i32::from(attack.count)
     }
+    fn damage_mitigation_record(
+        &self,
+        attacker: &Unit,
+        target: &Unit,
+        weapon: usize,
+        target_tile: usize,
+        available_hp: i32,
+    ) -> DamageMitigationRecord {
+        let attack = &self.rules.units[attacker.kind].attacks[weapon];
+        let armour = self.rules.units[target.kind]
+            .damage_modifiers
+            .get(attack.damage_type);
+        let count = i32::from(attack.count);
+        let raw_damage = attack.damage.max(0) * count;
+        let after_armour_damage = (attack.damage + armour).max(0) * count;
+        let after_terrain_damage = self.damage_at(attacker, target, weapon, target_tile);
+        let hp = available_hp.max(0);
+        DamageMitigationRecord {
+            available_hp: hp,
+            raw_damage,
+            after_armour_damage,
+            after_terrain_damage,
+            effective_armour_prevented: raw_damage.min(hp) - after_armour_damage.min(hp),
+            effective_terrain_prevented: after_armour_damage.min(hp) - after_terrain_damage.min(hp),
+        }
+    }
     /// Fixed reflection per incoming melee strike. It is separate
     /// from the defender's weapon, survives a killing hit and never drains.
     pub(crate) fn thorn_damage(
@@ -177,6 +203,24 @@ impl<'catalog> Game<'catalog> {
             self.preview(&attacker, &target, weapon, attacker.tile);
         let mediated = self.mediation_at_risk(&target);
         let attack = self.rules.units[attacker.kind].attacks[weapon].clone();
+        let mitigation_record = self.recordings.as_ref().map(|_| CombatMitigationRecord {
+            attack: self.damage_mitigation_record(
+                &attacker,
+                &target,
+                weapon,
+                target.tile,
+                target.hp,
+            ),
+            retaliation: response.map(|response| {
+                self.damage_mitigation_record(
+                    &target,
+                    &attacker,
+                    response,
+                    attacker.tile,
+                    attacker.hp + self.drain_healing(&attacker, &target, weapon, damage),
+                )
+            }),
+        });
         // Capture sources before movement, deaths or promotions can change them.
         let thorn_record = self.recordings.as_ref().map(|_| {
             let own = if attack.category == Category::Melee {
@@ -353,6 +397,7 @@ impl<'catalog> Game<'catalog> {
                 }),
                 mediation_at_risk: mediated,
                 thorns: thorn_record,
+                mitigation: mitigation_record,
             });
         }
     }

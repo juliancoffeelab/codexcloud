@@ -17,7 +17,7 @@ def adjacent(a, b):
     return abs(q) + abs(r) + abs(q + r) == 2
 
 
-def journals(inputs):
+def journals(inputs, kinds=('arena',)):
     for path in inputs:
         path = path / 'report.json' if path.is_dir() else path
         report = json.loads(path.read_text())
@@ -26,7 +26,7 @@ def journals(inputs):
         readers = {}
         try:
             for saved in sorted(report['outcomes'], key=lambda o: (o.get('detail', {}).get('file', ''), o.get('detail', {}).get('offset', 0))):
-                if saved.get('kind') != 'arena':
+                if saved.get('kind') not in kinds:
                     continue
                 ref = saved.get('detail', {})
                 name = ref.get('file', '')

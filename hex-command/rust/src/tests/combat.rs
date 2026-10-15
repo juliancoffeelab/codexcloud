@@ -467,3 +467,88 @@ fn reflected_damage_records_separate_own_aura_and_effective_damage() {
     assert_eq!(thorns.aura_sources, vec![format!("u{aura}")]);
     assert_eq!(thorns.effective_damage, 2); // ordinary retaliation removes 8 of 10 HP
 }
+
+#[test]
+fn mitigation_records_signed_stages_hp_caps_and_executed_weapon_retaliation() {
+    for (armour, terrain, hp, stages, effective) in [
+        (-2, -1, 100, (30, 24, 21), (6, 3)),
+        (-2, -1, 23, (30, 24, 21), (0, 2)),
+        (-2, -1, 20, (30, 24, 21), (0, 0)),
+        (2, -1, 100, (30, 36, 33), (-6, 3)),
+        (-12, 3, 100, (30, 0, 3), (30, -3)),
+    ] {
+        let mut rules = ability_rules();
+        let attacker = rules.types["scout"];
+        let defender = rules.types["soldier"];
+        rules.units[attacker].attacks[0].damage = 10;
+        rules.units[attacker].attacks[0].count = 3;
+        rules.units[attacker].attacks[0].drain = 50;
+        rules.units[attacker].damage_modifiers.blade = -1;
+        rules.units[attacker].damage_modifiers.impact = -1;
+        rules.units[attacker].environment.fill([[-1; 3]; 2]);
+        rules.units[defender].damage_modifiers.blade = armour;
+        rules.units[defender].environment.fill([[terrain; 3]; 2]);
+        rules.units[defender].thorns = 2;
+        let mut game = Game::new(&rules, "mirror");
+        game.units.clear();
+        game.roster_changed();
+        let a = add(&mut game, "scout", Side::Player, "2,3");
+        let b = add(&mut game, "soldier", Side::Enemy, "3,3");
+        let ai = game.index(a).unwrap();
+        let bi = game.index(b).unwrap();
+        game.units[ai].hp = 5;
+        game.units[bi].hp = hp;
+        game.recordings = Some(Records::default());
+        hit(&mut game, a, b, "knife");
+        let record = &game.recordings.as_ref().unwrap().combats[0];
+        let mitigation = record.mitigation.as_ref().unwrap();
+        assert_eq!(mitigation.attack.available_hp, hp);
+        assert_eq!(
+            (
+                mitigation.attack.raw_damage,
+                mitigation.attack.after_armour_damage,
+                mitigation.attack.after_terrain_damage
+            ),
+            stages
+        );
+        assert_eq!(
+            (
+                mitigation.attack.effective_armour_prevented,
+                mitigation.attack.effective_terrain_prevented
+            ),
+            effective
+        );
+        assert_eq!(mitigation.attack.after_terrain_damage, record.damage);
+        if hp <= stages.2 {
+            assert!(
+                mitigation.retaliation.is_none(),
+                "killed defenders never execute a weapon"
+            );
+        } else {
+            let retaliation = mitigation.retaliation.as_ref().unwrap();
+            let available = 5 + stages.2.min(hp) / 2;
+            assert_eq!(retaliation.available_hp, available);
+            assert_eq!(
+                (
+                    retaliation.raw_damage,
+                    retaliation.after_armour_damage,
+                    retaliation.after_terrain_damage
+                ),
+                (8, 6, 4)
+            );
+            assert_eq!(
+                retaliation.after_terrain_damage + 6,
+                record.retaliation,
+                "weapon mitigation excludes per-strike thorns"
+            );
+            assert_eq!(
+                retaliation.effective_armour_prevented,
+                8.min(available) - 6.min(available)
+            );
+            assert_eq!(
+                retaliation.effective_terrain_prevented,
+                6.min(available) - 4.min(available)
+            );
+        }
+    }
+}

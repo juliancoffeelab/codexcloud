@@ -403,6 +403,7 @@ mod tests {
             reason: "cap".into(),
             rounds: 1,
             phases: vec![Phase {
+                leader_audit: vec![],
                 planning: None,
                 side: Side::Player,
                 round: 1,

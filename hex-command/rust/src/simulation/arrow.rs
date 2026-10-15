@@ -19,6 +19,11 @@ pub(crate) const FORMAT: &str = "arrow-ipc-snapshot-dictionaries-v2";
 
 #[derive(Serialize)]
 struct PhaseHeader<'a> {
+    #[serde(
+        rename = "leaderAudit",
+        skip_serializing_if = "<[super::leader_audit::LeaderAudit]>::is_empty"
+    )]
+    leader_audit: &'a [super::leader_audit::LeaderAudit],
     #[serde(skip_serializing_if = "Option::is_none")]
     planning: Option<&'a crate::ai::orders::TurnDiagnostics>,
     side: Side,
@@ -181,6 +186,7 @@ pub(crate) fn encode(
             header.append_null();
             chapter.append_value(index as u32);
             phase_json.append_value(serde_json::to_string(&PhaseHeader {
+                leader_audit: &phase.leader_audit,
                 planning: phase.planning.as_ref(),
                 side: phase.side,
                 round: phase.round,

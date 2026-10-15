@@ -52,6 +52,31 @@ pub struct ThornRecord {
     pub effective_damage: i32,
     pub aura_sources: Vec<String>,
 }
+/// Damage stages for an executed weapon, before HP caps. Armour includes racial
+/// and unit modifiers; terrain includes the target's environmental modifiers.
+/// Stage differences are signed: vulnerabilities produce negative prevention.
+/// Effective prevention caps each stage at available HP, attributing armour
+/// first and terrain second, so overkill cannot earn avoided-HP credit.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct DamageMitigationRecord {
+    pub available_hp: i32,
+    pub raw_damage: i32,
+    pub after_armour_damage: i32,
+    pub after_terrain_damage: i32,
+    pub effective_armour_prevented: i32,
+    pub effective_terrain_prevented: i32,
+}
+/// Initiating weapon and actual weapon retaliation, excluding reflected thorns.
+/// A killed defender or unavailable response has no retaliation entry.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct CombatMitigationRecord {
+    pub attack: DamageMitigationRecord,
+    pub retaliation: Option<DamageMitigationRecord>,
+}
 /// The positional and damage details of a resolved attack for native reports.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
@@ -76,6 +101,8 @@ pub struct CombatRecord {
     pub mediation_at_risk: bool,
     #[serde(default)]
     pub thorns: Option<ThornRecord>,
+    #[serde(default)]
+    pub mitigation: Option<CombatMitigationRecord>,
 }
 impl Serialize for CombatRecord {
     fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
@@ -84,7 +111,9 @@ impl Serialize for CombatRecord {
         let strikes = self.count != 0;
         let mut record = serializer.serialize_struct(
             "CombatRecord",
-            (if strikes { 12 } else { 8 }) + usize::from(self.thorns.is_some()),
+            (if strikes { 12 } else { 8 })
+                + usize::from(self.thorns.is_some())
+                + usize::from(self.mitigation.is_some()),
         )?;
         record.serialize_field("unit", &self.unit)?;
         record.serialize_field("target", &self.target)?;
@@ -101,6 +130,9 @@ impl Serialize for CombatRecord {
         }
         if let Some(thorns) = &self.thorns {
             record.serialize_field("thorns", thorns)?;
+        }
+        if let Some(mitigation) = &self.mitigation {
+            record.serialize_field("mitigation", mitigation)?;
         }
         record.serialize_field("mediationAtRisk", &self.mediation_at_risk)?;
         record.end()
@@ -133,7 +165,13 @@ mod tests {
         current["damagePerHit"] = serde_json::json!(0);
         current["retaliationCount"] = serde_json::json!(0);
         current["retaliationPerHit"] = serde_json::json!(0);
-        for expected in [frozen, current] {
+        let mut measured = current.clone();
+        measured["mitigation"] = serde_json::json!({
+            "attack": {"availableHp": 10, "rawDamage": 6, "afterArmourDamage": 3,
+                "afterTerrainDamage": 0, "effectiveArmourPrevented": 3,
+                "effectiveTerrainPrevented": 3}, "retaliation": null
+        });
+        for expected in [frozen, current, measured] {
             let record: CombatRecord = serde_json::from_value(expected.clone()).unwrap();
             assert_eq!(serde_json::to_value(record).unwrap(), expected);
         }

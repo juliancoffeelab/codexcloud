@@ -103,7 +103,7 @@ struct SimulationArgs {
     /// Record policy decision and complete-phase CPU times.
     #[arg(group = "batch", long)]
     profile_turns: bool,
-    /// Analyze battlefield presence, support adjacency and recorded effects.
+    /// Analyze battlefield presence, protection, objectives, support and leader risk.
     #[arg(group = "batch", long, conflicts_with = "no_report")]
     unit_usage: bool,
     /// Also retain raw match results.
@@ -796,6 +796,8 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
             .collect::<std::collections::BTreeMap<_, _>>(),
     )?;
     report["supportTelemetryVersion"] = json!(1);
+    report["combatTelemetryVersion"] = json!(1);
+    report["leaderAuditVersion"] = json!(1);
     report["unitProfiles"] = serde_json::to_value(
         rules
             .units
@@ -804,7 +806,8 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
                 (
                     u.id.clone(),
                     json!({
-                        "name":u.name,"family":u.family,"leader":u.leader,"hp":u.hp,"level":u.level,
+                        "name":u.name,"family":u.family,"race":u.race,"leader":u.leader,"hp":u.hp,
+                        "level":u.level,"cost":u.cost,"move":u.r#move,
                         "healing":u.healing,"thornAura":u.thorn_aura,"thorns":u.thorns
                     }),
                 )

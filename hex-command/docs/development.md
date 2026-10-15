@@ -115,6 +115,14 @@ survival by living unit-turns, excluding commanders. Engine records attribute
 actual adjacent healing and thorn reflection to their sources; equal strongest
 sources share credit. See the combat-simulation skill for export definitions.
 
+Fresh runs also export armour/terrain damage prevention, objective capture and
+occupation, casualty gold and leader-risk evidence. Use analyzer options
+`--battlefield-value` and `--leader-audit` to request these independently.
+Leader deaths link to the last own-phase decision and retain army strength and
+forecast alternatives; these distinguish evidence of collapse from exposure
+without assigning an automatic causal verdict. The forecasts hold other units
+fixed and do not establish that an alternative fulfills the mission.
+
 ## Sites publication
 
 `scripts/publish-sites-call.js` coordinates the configured Sites deployment.

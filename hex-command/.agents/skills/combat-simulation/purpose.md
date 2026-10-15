@@ -19,9 +19,11 @@ completion against the same baseline conditions.
 
 Aim for roughly 70% Woodland wins in forests and 80% Merfolk wins on water,
 with viable armies outside those biomes. Woodland should beat Merfolk on dry
-plains. Humans and Skeletons should be near
-even on plains; some stalemates between them are expected. Do not weaken their
-parity merely to eliminate round caps. Preserve meaningful cavalry use and
+plains. Humans and Skeletons should be roughly equally useful overall across
+opponents and maps, particularly under Balanced and Situational. A fair direct
+matchup is desirable but not required; never infer overall parity from it alone.
+Some stalemates between them are expected. Rotation and Rush are simple baselines,
+not the primary targets for recruitment intelligence or numeric balance. Preserve meaningful cavalry use and
 lore-specific campaign recruitment pools when tuning numeric balance.
 
 The intended player strategies are infantry-only, fair roster use and

@@ -171,7 +171,7 @@ def load_run(paths):
                         diagnostics[identity(raw)] = recorded_analysis(raw)
         else:
             report = json.loads(path.read_text())
-        source = {k: report.get(k) for k in ('sourceCommit', 'fingerprint', 'status', 'mode', 'schedule', 'seeds', 'elapsedSeconds', 'detailFormat', 'turnTiming', 'recruitmentLimits', 'unitFamilies', 'unitProfiles', 'supportTelemetryVersion')}
+        source = {k: report.get(k) for k in ('sourceCommit', 'fingerprint', 'status', 'mode', 'schedule', 'seeds', 'elapsedSeconds', 'detailFormat', 'turnTiming', 'recruitmentLimits', 'unitFamilies', 'unitProfiles', 'supportTelemetryVersion', 'combatTelemetryVersion', 'leaderAuditVersion')}
         source['fingerprint'] = report.get('fingerprint', report.get('fingerprints'))
         source['file'] = str(path.resolve())
         source['matches'] = len(report['outcomes'])
@@ -607,7 +607,7 @@ def compare_match(key, before, current):
             'gameplayChanged': before.get('stateHash') != current.get('stateHash')}
 
 
-def build_report(inputs, baseline_inputs, out, unit_usage=False, support_effects=False, battlefield_presence=False):
+def build_report(inputs, baseline_inputs, out, unit_usage=False, support_effects=False, battlefield_presence=False, battlefield_value=False, leader_audit=False):
     start = time.perf_counter()
     current, sources = load_run(inputs)
     previous, previous_sources = load_run(baseline_inputs) if baseline_inputs else ({}, [])
@@ -664,15 +664,23 @@ def build_report(inputs, baseline_inputs, out, unit_usage=False, support_effects
               'race_all_policies': combine(rows, ['race']), 'baseline_matchups': before,
               'matchup_changes': comparison, 'match_changes': transitions, 'baseline_unit_events': before_units,
               'campaign_changes': campaign_changes, 'policy_timings': policy_timings}
-    if unit_usage or support_effects or battlefield_presence:
+    if unit_usage or support_effects or battlefield_presence or battlefield_value or leader_audit:
         spec = importlib.util.spec_from_file_location('unit_usage', Path(__file__).with_name('unit_usage.py'))
         usage = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(usage)
-        extra, measured = usage.analyze(inputs, presence=unit_usage or battlefield_presence, support=unit_usage or support_effects)
-        tables.update(extra)
+        if unit_usage or support_effects or battlefield_presence:
+            extra, measured = usage.analyze(inputs, presence=unit_usage or battlefield_presence, support=unit_usage or support_effects)
+            tables.update(extra)
         if unit_usage or battlefield_presence:
             nonleaders = [e for e in units if not any((source.get('unitProfiles') or {}).get(e['unit'], {}).get('leader', False) for source in sources)]
             tables['army_usage'] = usage.army_usage(nonleaders, tables['purchase_shares'], tables['battlefield_presence'], families)
+        value_enabled = battlefield_value or (unit_usage and all(s.get('combatTelemetryVersion') == 1 for s in sources))
+        leaders_enabled = leader_audit or (unit_usage and all(s.get('leaderAuditVersion') == 1 for s in sources))
+        if value_enabled or leaders_enabled:
+            spec = importlib.util.spec_from_file_location('battle_value', Path(__file__).with_name('battle_value.py'))
+            value = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(value)
+            tables.update(value.analyze(inputs, usage.journals, value_enabled, leaders_enabled))
     out.mkdir(parents=True, exist_ok=True)
     for name, table in tables.items():
         write_csv(out / (name + '.csv'), table)
@@ -692,6 +700,17 @@ def build_report(inputs, baseline_inputs, out, unit_usage=False, support_effects
         findings += ['## Actual support effects', '',
                      'Provider turns include zero-benefit turns. Healing adjacency is sampled at own-turn start; thorn adjacency at opposing-turn start. Healing and reflection are engine-recorded events. Tied strongest providers split credit. Effective reflection excludes overkill and counts only HP removed beyond ordinary retaliation. Intrinsic thorns and auras are separate. All-unit rows aggregate providers, not extra events.', '',
                      markdown([r for r in tables['support_effects'] if r['unit'] == 'all' and r['map'] != 'all' and r['opponentPolicy'] == (opponent or 'balanced')], ['race','policy','map','ability','providerTurns','adjacentAlliesPerTurn','healedHP','healedHPPerTurn','reflectedDamage','effectiveReflectedDamage','reflectedDamagePerTurn','overlapPercent']), '']
+    if tables.get('battlefield_value'):
+        findings += ['## Protection, objectives and casualty value', '',
+                     'Protection is signed and capped at HP available per hit; armour is attributed before terrain. Objective control credits the last captor, including after death; occupation credits the living occupant. Recruit gold lost covers purchases in this arena/chapter; replacement value includes free starters and earned promotions. Total HP damage includes effective thorn reflection attributed to intrinsic/aura sources, with weapon and thorn subtotals; drain healing is separate.', '',
+                     markdown([r for r in tables['battlefield_value'] if r['map'] == 'all' and r['kind'] == 'arena' and r['opponentPolicy'] == (opponent or 'balanced')],
+                              ['race','policy','family','unitTurns','hpDamageDealt','hpDamageTaken','armourDamagePrevented','terrainDamagePrevented','captures','objectiveOccupationTurns','recruitGoldLost','casualtyReplacementValue']), '']
+    if 'leader_deaths' in tables:
+        deaths = tables['leader_deaths']
+        findings += ['## Leader death evidence', '',
+                     f'{len(deaths)} recorded leader deaths. See leader_deaths.csv for army strength at death and the last own-phase decision. Forecasts sum independently reachable enemy attacks, holding other units fixed; a forecast-safe tile is not proof of a mission-compatible escape or an avoidable death.', '',
+                     markdown([r for r in deaths if r['kind'] == 'campaign' and r['side'] == 'player'],
+                              ['campaign','mission','policy','seed','round','armyUnitsAfter','armyHPValueAfter','lastDecisionArmyValueRatioBefore','lastDecisionForecastLethalWithSafeAlternative','deathDuringOwnAttack']), '']
     if tables['policy_matchups']:
         matchups = tables['policy_matchups']
         lookup = {(r['policy'], r['opponentPolicy']): r for r in matchups}
@@ -771,9 +790,11 @@ if __name__ == '__main__':
     parser.add_argument('--unit-usage', action='store_true', help='Analyze battlefield presence and actual support effects from gameplay journals')
     parser.add_argument('--support-effects', action='store_true', help='Analyze support adjacency, healing and reflected damage')
     parser.add_argument('--battlefield-presence', action='store_true', help='Analyze unit-turn army shares and actual combat use')
+    parser.add_argument('--battlefield-value', action='store_true', help='Analyze recorded mitigation, captures, occupation and casualty gold')
+    parser.add_argument('--leader-audit', action='store_true', help='Analyze leader exposure, army strength and leader deaths')
     args = parser.parse_args()
     try:
-        build_report(args.inputs, args.baseline, args.out, args.unit_usage, args.support_effects, args.battlefield_presence)
+        build_report(args.inputs, args.baseline, args.out, args.unit_usage, args.support_effects, args.battlefield_presence, args.battlefield_value, args.leader_audit)
     except ModuleNotFoundError as error:
         if error.name == 'pyarrow' or str(error) == 'pyarrow':
             print('Arrow campaign diagnostics require PyArrow; loading it through uv.', flush=True)

@@ -338,6 +338,7 @@ fn phase(
     let before = recording.units(game)?;
     let side = game.turn;
     let round = game.round;
+    let leader_audit = super::leader_audit::begin(game);
     game.recordings.get_or_insert_with(Records::default);
     let mut workspace = PlanningWorkspace::new(
         seed,
@@ -369,6 +370,7 @@ fn phase(
             .sum()
     };
     let phase = Phase {
+        leader_audit: super::leader_audit::finish(game, leader_audit),
         planning: workspace.diagnostics(plan.planning, plan.recruitment),
         side,
         round,
