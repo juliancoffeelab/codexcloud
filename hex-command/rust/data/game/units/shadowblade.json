@@ -10,7 +10,7 @@
     {
       "id": "knife",
       "name": "Knife",
-      "damage": 4,
+      "damage": 3,
       "count": 3,
       "damageType": "blade",
       "category": "melee",
@@ -33,7 +33,17 @@
     "pierce": 0,
     "impact": 0
   },
-  "terrainModifiers": {},
+  "terrainModifiers": {
+    "forest": {
+      "cost": -1
+    },
+    "grove": {
+      "cost": -1
+    },
+    "hill": {
+      "cost": -1
+    }
+  },
   "ability": "Skirmisher",
   "description": "A swift human knife fighter who strikes with repeated blade attacks and carries a sling for distant foes.",
   "level": 3,

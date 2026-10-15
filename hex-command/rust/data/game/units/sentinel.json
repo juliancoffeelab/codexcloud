@@ -29,8 +29,8 @@
     }
   ],
   "damageModifiers": {
-    "blade": -1,
-    "pierce": -1,
+    "blade": -2,
+    "pierce": -2,
     "impact": 0
   },
   "terrainModifiers": {},
