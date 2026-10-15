@@ -36,54 +36,12 @@ infantry baseline without relying on repeated selection of one dominant unit.
 No acceptable numeric gap is established; report differences by race, map and
 opponent.
 
-Situational evaluates combat exchanges, effective HP, routes, movement and
-marginal support, and can save for expensive recruits. Campaign recruitment
-requirements take priority. Scoring formulas and coefficients belong in
-[recruiter evaluation](../../../rust/src/ai/recruiter/evaluation.rs);
-[promotion selection](../../../rust/src/ai/recruiter/promotion.rs) uses the same
-assessment. Support coverage is an estimate, distinct from observed runtime
-support effects.
-
-## Current presets
-
-| Tactic      | Current behavior and limits                                                                             |
-| ----------- | ------------------------------------------------------------------------------------------------------- |
-| Classic     | Fixed Classic recruitment and Classic planning; fixed enemy, capped at 2 recruits per phase.            |
-| Rush        | Frontline recruitment and Queued planning; not strictly infantry-only.                                  |
-| Balanced    | Seeded random choice among all underfilled roles, then a random unit within that role; Queued planning. |
-| Rotated     | Rotation recruitment and Queued planning, without an additional recruitment cap.                        |
-| Situational | Adaptive recruitment and Queued planning, without an additional recruitment cap.                        |
-
-Queued is the default planner for simulation-player presets. Full remains
-selectable through independent block composition.
-Verify [preset composition](../../../rust/src/ai/presets.rs),
-[planner dispatch](../../../rust/src/ai/planner/mod.rs) and actual callers when
-explaining behavior; a description or test-only helper is not execution evidence.
-
-Arenas begin with leaders only. Both sides receive the same seeded total budget,
-minus their leader's cost, and recruit their opening troops through their policy.
-Campaign starting units remain authored.
-
-Rotation fills the least represented role, breaking ties in flank, infantry,
-ranged, healer/support order and skipping unavailable roles. Within that role it
-fills the least represented family, including expensive mounted units, and waits
-when its next recruit is not yet affordable. Authored campaign recruitment pools
-remain separate and lore-specific.
-
 Campaign competence concerns **Balanced, Rotated and Situational against Classic**, using
 authored rosters and objectives. Classic/Rush campaign failures do not establish
 simulation-player competence regressions. Completion, required-actor survival
 and progression matter; speed alone does not establish correctness or balance.
 A round cap is unresolved. An unsafe forecast is not proof of unavoidable death.
 
-## Change boundaries
-
-Before AI architecture changes, read [AI contracts](../../../docs/development.md#ai-contracts).
-Keep fixed Recruiter/Campaigner/Planner composition, explicit orders, restricted
-battle views and one validated planning draft. Only Campaigner interprets
-authored mission kinds. Planners may use shared search helpers, but must not
-switch to another planner.
-
-Preserve the fixed Classic enemy behavior when changing simulation-player
-recruitment strategies. Implementing the intended infantry/fair/
-situational strategies is a separate semantic change, not part of a refactor.
+Preserve Classic as the fixed campaign enemy when improving simulation-player
+strategies. Compare deliberate behavior changes separately from maintenance
+cleanup.

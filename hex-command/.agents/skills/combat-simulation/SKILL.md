@@ -7,8 +7,7 @@ description: Use for Hex Command AI policy reviews or changes, combat simulation
 
 Work from `hex-command/`. Read [design.md](design.md) for army design principles
 and [purpose.md](purpose.md) before AI policy reviews or interpreting balance
-and campaign results. Read [implementation.md](implementation.md)
-only when changing or debugging the harness, analyzer, recording or performance.
+and campaign results.
 Use the [Rust toolchain skill](../rust-toolchain/SKILL.md) for build problems.
 
 ## Run
@@ -79,7 +78,7 @@ changes. Analyze an existing run only when that is requested:
 npm run ai:analyze -- artifacts/saved/report.json --out artifacts/saved/analytics
 ```
 
-## Purchase shares and fixed-position scores
+## Purchase shares
 
 The analyzer exports `purchase_shares.csv`, using only recorded new recruits:
 family purchases / all purchases for the same faction, tactic, opposing tactic
@@ -89,11 +88,6 @@ Families come from report metadata, never the current checkout. Older reports
 without family metadata retain individual unit identifiers. Purchase share is
 not field composition, survival rate, damage efficiency or a unit win rate.
 
-For a targeted scorer investigation, `--phase-stdio` requests can set
-`inspectRecruitment: true`. The response includes pre-phase Situational
-recruit/promotion score components, eligibility and affordability. Diagnostics
-are read-only; normal phase execution remains unchanged.
-
 ## Battlefield presence and support effects
 
 ```sh
@@ -101,10 +95,9 @@ npm run ai:simulate -- --unit-usage
 npm run ai:analyze -- artifacts/saved/report.json --out artifacts/saved/analytics --unit-usage
 ```
 
-The analyzer also accepts `--battlefield-presence`, `--support-effects`,
-`--battlefield-value` or `--leader-audit` independently. This audit reads checksummed journals and recorded
-`unitProfiles`, never the current catalog. Support effects require fresh runs
-with `supportTelemetryVersion`; legacy missing measurements are not zeros.
+Use `--battlefield-presence`, `--support-effects`, `--battlefield-value` or
+`--leader-audit` to request those measurements independently. Saved reports must
+contain the requested evidence; missing measurements are not zero effects.
 
 Exports:
 
@@ -128,36 +121,14 @@ Exports:
 - `leader_deaths.csv`: death-boundary evidence linked to that leader's last
   own-phase decision within the same match/chapter.
 
-Fresh native `--unit-usage` runs include the value and leader exports. Older runs
-retain their original presence/support exports; requesting either newer audit
-explicitly requires its recorded telemetry version. Missing measurements are
-never substituted with zeros.
+Use actual HP damage when comparing damage output; distinguish weapon damage
+from personal and aura thorns. Protection can be negative for vulnerabilities.
+Purchase gold and casualty replacement value answer different questions, and
+neither establishes an earned promotion's full value.
 
-Protection includes racial and unit flat modifiers, attributed before terrain.
-Both raw stage deltas and HP-capped prevention are recorded for the initiating
-attack and executed weapon retaliation. Values are signed: vulnerability is
-negative prevention. Effective weapon damage excludes overkill, reflected thorns
-and drain healing. Total HP damage additionally credits effective reflection to
-its intrinsic/aura sources, with separate weapon and thorn subtotals. Recruit gold lost counts actual purchases within this arena
-or chapter; casualty replacement value uses the dead unit's current catalog cost,
-including free starters and earned promotions. Neither is a complete economic
-valuation of an earned promotion.
-
-Captures credit the mover that changed ownership. Control turns credit that last
-captor while ownership persists, including after its death; occupation turns
-credit the living unit standing on the tile at its own phase end. Objective tiles
-are the union of capture objectives actually published for that side during the
-chapter. Already-owned initial tiles have no inferred captor. These measure
-contribution, not proof that a capture or a unit caused victory.
-
-Leader army value is the sum of nonleader unit cost times remaining HP fraction.
-Exposure sums independent enemies' legal next-turn attacks, using the existing
-planner forecast; it is conservative rather than a coordinated battle replay.
-Reachable alternatives hold other units fixed at own-phase start and may not
-fulfill mission requirements. Start-board chosen-tile risk and actual end-board
-risk are separate fields. The death export includes remaining army, its observed
-peak fraction, enemy strength and the last decision's risk. It does not label
-every exposed leader death reckless or every late death unavoidable.
+Capture, control and occupation measure different contributions. Leader exposure
+is a forecast, not proof that a death was avoidable or that another position
+would satisfy the mission. Read it alongside the remaining army and objectives.
 
 For sampled aura deterrence, replay observed enemy-phase positions with aura
 enabled and disabled, leaving intrinsic thorns unchanged:
@@ -176,34 +147,22 @@ this conservative filter does not prove a legal path or an actual attack.
 Compare reflection with target/weapon switches and casualties. Low reflection
 alone does not establish that thorns lack defensive value.
 
-The explicit catalog and native binary must match the report's fingerprint and
-recorded profiles. An explicit `--allow-fingerprint-mismatch` permits weaker
-profile-only validation and labels that limitation. Outputs include paired
-requests/responses, attack/target/weapon changes, reflection and HP/casualty
-differences. These are one-phase counterfactuals, not long-term win attribution;
-the first observed positions are correlated within battles. Full profiles,
-turn-start gold and ownership are preserved, without repeating begin-turn effects.
+Use game data and a simulator matching the saved report. If deliberately testing
+a different version, state that limitation. Paired replays measure one-phase
+changes in attacks, targets, reflection and casualties; they do not establish
+long-term win effects. Spread samples across battles and seeds.
 
-Presence, support and battlefield-value arena exports keep faction, tactic,
-opposing tactic and map separate, exclude same-faction games, and pool other
-opposing factions. Raw `unit_events.csv` also retains same-faction games; filter
-those explicitly for faction comparisons. All-map shares use summed counts. Battle presence means a family appeared at any recorded point, including
-initial units that died before their first census; field share weights survival
-through unit-turns. Neither measure is a unit win rate. Army damage shares retain
-native combat attribution: aura reflection belongs to the defender in that
-legacy total; the support export attributes it to its actual aura source.
+Presence, support and battlefield-value arena exports exclude same-faction
+games and pool other opposing factions. `unit_events.csv` also retains
+same-faction games; filter those explicitly for faction comparisons. All-map
+shares use summed counts. Battlefield presence weights survival through living
+unit-turns; battle presence means a unit appeared at any point. Neither is a
+unit win rate.
 
-Healing provider-turns and adjacency are sampled at own-turn start; intrinsic
-thorns and aura opportunities at opposing-turn start after friendly positioning.
-Provider-turns include zero-effect opportunities. Healing records use actual HP
-restored after terrain healing and caps. Tied strongest sources split credit;
-weaker overlapping providers receive no effect credit. Intrinsic reflection and
-aura reflection are separate. Raw reflection includes overkill; effective
-reflection is the additional HP removed beyond ordinary weapon retaliation,
-with that marginal amount attributed proportionally to intrinsic and aura
-strength. Source IDs and damage are captured at combat time, including killing
-hits and aura providers that later die. Thorns trigger only while defending
-against an initiating melee attack, not against retaliation when attacking.
+Provider turns include zero-benefit opportunities. Distinguish actual healing
+from adjacency, and effective thorn damage from overkill. Damage shares credit
+aura reflection to the defender; support and battlefield-value exports credit
+the aura provider. Use the same definition when comparing units or reports.
 
 ## Read evidence
 
@@ -212,10 +171,10 @@ Use the printed findings first. Read `<run>/analytics/findings.md` and
 Use their recorded recruitment, promotions, casualties, goal progress and
 terminal reasons; do not replace the report with scratch analysis of raw files.
 
-If evidence is missing, extend the maintained analyzer and its focused tests,
-then regenerate from the saved run. Inspect a targeted phase journal and code
-only after the report identifies an unexplained case. Separate recorded failure
-from proposed cause. Claim regressions only with matching baseline conditions.
+If evidence is missing, collect it before drawing a conclusion. Separate recorded
+failure from proposed cause. Claim regressions only with matching baseline
+conditions. Preserve completed results if reporting fails; report completed and
+expected coverage separately.
 
 ## Present in chat
 
