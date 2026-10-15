@@ -177,6 +177,40 @@ impl<'catalog> Game<'catalog> {
             self.preview(&attacker, &target, weapon, attacker.tile);
         let mediated = self.mediation_at_risk(&target);
         let attack = self.rules.units[attacker.kind].attacks[weapon].clone();
+        // Capture sources before movement, deaths or promotions can change them.
+        let thorn_record = self.recordings.as_ref().map(|_| {
+            let own = if attack.category == Category::Melee {
+                self.rules.units[target.kind].thorns * i32::from(attack.count)
+            } else {
+                0
+            };
+            let damage = self.thorn_damage(&attacker, &target, weapon, attacker.tile);
+            let aura_damage = damage - own;
+            let aura_sources = if aura_damage > 0 {
+                let strength = aura_damage / i32::from(attack.count);
+                self.units
+                    .iter()
+                    .filter(|ally| {
+                        ally.id != target.id
+                            && ally.side == target.side
+                            && self.board.distance(ally.tile, target.tile) == 1
+                            && self.rules.units[ally.kind].thorn_aura == strength
+                    })
+                    .map(|ally| format!("u{}", ally.id))
+                    .collect()
+            } else {
+                vec![]
+            };
+            let dealt = self.damage(&attacker, &target, weapon);
+            let available = attacker.hp + self.drain_healing(&attacker, &target, weapon, dealt);
+            ThornRecord {
+                damage,
+                aura_damage,
+                effective_damage: retaliation.min(available)
+                    - (retaliation - damage).min(available),
+                aura_sources,
+            }
+        });
         let before = [self.public_unit(&attacker), self.public_unit(&target)];
         self.last_combat = Some(LastCombat {
             attacker_id: format!("u{id}"),
@@ -318,6 +352,7 @@ impl<'catalog> Game<'catalog> {
                     retaliation / i32::from(self.rules.units[target.kind].attacks[w].count)
                 }),
                 mediation_at_risk: mediated,
+                thorns: thorn_record,
             });
         }
     }

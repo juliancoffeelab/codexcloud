@@ -171,7 +171,7 @@ def load_run(paths):
                         diagnostics[identity(raw)] = recorded_analysis(raw)
         else:
             report = json.loads(path.read_text())
-        source = {k: report.get(k) for k in ('sourceCommit', 'fingerprint', 'status', 'mode', 'schedule', 'seeds', 'elapsedSeconds', 'detailFormat', 'turnTiming', 'recruitmentLimits', 'unitFamilies')}
+        source = {k: report.get(k) for k in ('sourceCommit', 'fingerprint', 'status', 'mode', 'schedule', 'seeds', 'elapsedSeconds', 'detailFormat', 'turnTiming', 'recruitmentLimits', 'unitFamilies', 'unitProfiles', 'supportTelemetryVersion')}
         source['fingerprint'] = report.get('fingerprint', report.get('fingerprints'))
         source['file'] = str(path.resolve())
         source['matches'] = len(report['outcomes'])
@@ -607,7 +607,7 @@ def compare_match(key, before, current):
             'gameplayChanged': before.get('stateHash') != current.get('stateHash')}
 
 
-def build_report(inputs, baseline_inputs, out):
+def build_report(inputs, baseline_inputs, out, unit_usage=False, support_effects=False, battlefield_presence=False):
     start = time.perf_counter()
     current, sources = load_run(inputs)
     previous, previous_sources = load_run(baseline_inputs) if baseline_inputs else ({}, [])
@@ -664,6 +664,15 @@ def build_report(inputs, baseline_inputs, out):
               'race_all_policies': combine(rows, ['race']), 'baseline_matchups': before,
               'matchup_changes': comparison, 'match_changes': transitions, 'baseline_unit_events': before_units,
               'campaign_changes': campaign_changes, 'policy_timings': policy_timings}
+    if unit_usage or support_effects or battlefield_presence:
+        spec = importlib.util.spec_from_file_location('unit_usage', Path(__file__).with_name('unit_usage.py'))
+        usage = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(usage)
+        extra, measured = usage.analyze(inputs, presence=unit_usage or battlefield_presence, support=unit_usage or support_effects)
+        tables.update(extra)
+        if unit_usage or battlefield_presence:
+            nonleaders = [e for e in units if not any((source.get('unitProfiles') or {}).get(e['unit'], {}).get('leader', False) for source in sources)]
+            tables['army_usage'] = usage.army_usage(nonleaders, tables['purchase_shares'], tables['battlefield_presence'], families)
     out.mkdir(parents=True, exist_ok=True)
     for name, table in tables.items():
         write_csv(out / (name + '.csv'), table)
@@ -675,6 +684,14 @@ def build_report(inputs, baseline_inputs, out):
     findings = overview(campaign_rows, stage_rows, failure_rows, campaign_events, rows, opponent)
     findings[2:2] = [f"Coverage: {len(current):,} physical matches; {metadata['arenaMatches']:,} arena games and {metadata['campaignAttempts']:,} campaign attempts.", '']
     findings += ['## Purchase shares', '', 'New purchases / all new purchases for the same faction, tactic, opponent tactic and map. Starting units, promotions and same-faction games are excluded. Opposing factions are pooled. The all-map rows sum purchases across maps; they do not average map percentages. Families come from the recorded catalog; older reports without family metadata use individual unit identifiers.', '', markdown([r for r in tables['purchase_shares'] if r['map'] == 'all'], ['race','policy','opponentPolicy','family','purchased','totalPurchases','sharePercent']), '']
+    if 'army_usage' in tables:
+        findings += ['## Recruitment and battlefield presence', '',
+                     'Field share counts living non-leader units at the end of each own phase, including starting units and promotions. Longer-lived units contribute more unit-turns. Attack and damage shares exclude leaders; damage includes recorded retaliation and overkill. Opposing factions are pooled, same-faction games excluded. All-map shares use summed counts.', '',
+                     markdown([r for r in tables['army_usage'] if r['map'] != 'all' and r['opponentPolicy'] == (opponent or 'balanced')], ['race','policy','map','family','purchaseSharePercent','sharePercent','attackSharePercent','damageSharePercent']), '']
+    if 'support_effects' in tables and tables['support_effects']:
+        findings += ['## Actual support effects', '',
+                     'Provider turns include zero-benefit turns. Healing adjacency is sampled at own-turn start; thorn adjacency at opposing-turn start. Healing and reflection are engine-recorded events. Tied strongest providers split credit. Effective reflection excludes overkill and counts only HP removed beyond ordinary retaliation. Intrinsic thorns and auras are separate. All-unit rows aggregate providers, not extra events.', '',
+                     markdown([r for r in tables['support_effects'] if r['unit'] == 'all' and r['map'] != 'all' and r['opponentPolicy'] == (opponent or 'balanced')], ['race','policy','map','ability','providerTurns','adjacentAlliesPerTurn','healedHP','healedHPPerTurn','reflectedDamage','effectiveReflectedDamage','reflectedDamagePerTurn','overlapPercent']), '']
     if tables['policy_matchups']:
         matchups = tables['policy_matchups']
         lookup = {(r['policy'], r['opponentPolicy']): r for r in matchups}
@@ -751,9 +768,12 @@ if __name__ == '__main__':
     parser.add_argument('inputs', nargs='+', type=Path)
     parser.add_argument('--baseline', action='append', default=[], type=Path)
     parser.add_argument('--out', required=True, type=Path)
+    parser.add_argument('--unit-usage', action='store_true', help='Analyze battlefield presence and actual support effects from gameplay journals')
+    parser.add_argument('--support-effects', action='store_true', help='Analyze support adjacency, healing and reflected damage')
+    parser.add_argument('--battlefield-presence', action='store_true', help='Analyze unit-turn army shares and actual combat use')
     args = parser.parse_args()
     try:
-        build_report(args.inputs, args.baseline, args.out)
+        build_report(args.inputs, args.baseline, args.out, args.unit_usage, args.support_effects, args.battlefield_presence)
     except ModuleNotFoundError as error:
         if error.name == 'pyarrow' or str(error) == 'pyarrow':
             print('Arrow campaign diagnostics require PyArrow; loading it through uv.', flush=True)

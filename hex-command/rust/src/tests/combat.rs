@@ -441,3 +441,29 @@ fn counted_damage_keeps_the_existing_attack_and_restore_flow() {
     assert!(restored.unit(a).is_none());
     assert_eq!(restored.unit(c).unwrap().experience, Some(6));
 }
+
+#[test]
+fn reflected_damage_records_separate_own_aura_and_effective_damage() {
+    let mut rules = ability_rules();
+    let soldier = rules.types["soldier"];
+    rules.units[soldier].thorns = 2;
+    rules.units[rules.types["scout"]].thorn_aura = 3;
+    let mut game = Game::new(&rules, "mirror");
+    game.units.clear();
+    game.roster_changed();
+    let a = add(&mut game, "soldier", Side::Player, "2,3");
+    let b = add(&mut game, "soldier", Side::Enemy, "3,3");
+    let aura = add(&mut game, "scout", Side::Enemy, "4,3");
+    let index = game.index(a).unwrap();
+    game.units[index].hp = 10;
+    game.recordings = Some(Records::default());
+    hit(&mut game, a, b, "sword");
+    let thorns = game.recordings.as_ref().unwrap().combats[0]
+        .thorns
+        .as_ref()
+        .unwrap();
+    assert_eq!(thorns.damage, 10);
+    assert_eq!(thorns.aura_damage, 6);
+    assert_eq!(thorns.aura_sources, vec![format!("u{aura}")]);
+    assert_eq!(thorns.effective_damage, 2); // ordinary retaliation removes 8 of 10 HP
+}

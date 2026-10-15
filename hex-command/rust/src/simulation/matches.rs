@@ -343,7 +343,7 @@ fn phase(
     let before = recording.units(game)?;
     let side = game.turn;
     let round = game.round;
-    game.recordings = Some(Records::default());
+    game.recordings.get_or_insert_with(Records::default);
     let mut workspace = PlanningWorkspace::new(
         seed,
         limit.or_else(|| policy.default_recruitment_limit()),
@@ -521,6 +521,7 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
             }
         }
         if game.winner.is_none() && index + 1 < config.max_rounds * 2 {
+            game.recordings = Some(Records::default());
             game.end_turn();
         }
     }
@@ -606,6 +607,7 @@ pub fn run_campaign(
                 &mut tactics[side.index()],
             )?);
             if game.winner.is_none() && index + 1 < config.max_rounds * 2 {
+                game.recordings = Some(Records::default());
                 game.end_turn();
             }
         }

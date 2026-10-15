@@ -38,23 +38,24 @@ present the report in the final reply without another request. Use the affected
 workload, or the full panel if scope is unclear. Reporting only that a run or
 tests passed does not complete the task.
 
-| Option                                                   | Use                                                                          |
-| -------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `--mode arena\|campaign\|full`                           | Select the workload.                                                         |
-| `--seeds N`, `--seed N`                                  | Select seed count and starting seed.                                         |
-| `--with R,C,P`                                           | Add a custom tactic; `-` uses workload defaults.                             |
-| `--policies LIST`                                        | Select arena tactics; also filters default campaign players.                 |
-| `--armies LIST`, `--landscapes LIST`, `--campaigns LIST` | Select content.                                                              |
-| `--campaign-players LIST`, `--campaign-enemies LIST`     | Override campaign roles.                                                     |
-| `--rounds N`, `--recruits N`, `--diplomacy LIST`         | Override limits or filter authored diplomacy modes.                          |
-| `--out PATH`                                             | Choose an output directory or raw `.json` file.                              |
-| `--no-report`                                            | Keep raw results without analysis.                                           |
-| `--vs POLICY`                                            | Fixed arena opponent; Balanced by default. Campaign opponents stay separate. |
-| `--all-pairs`                                            | Request the full arena policy matrix.                                        |
-| `--self-play`                                            | Compare matching tactics; requires `--mode arena`.                           |
-| `--schedule-only`                                        | Inspect configurations without running matches.                              |
-| `--baseline PATH`                                        | Compare with a saved run with identical configurations.                      |
-| `--help`                                                 | List remaining options.                                                      |
+| Option                                                   | Use                                                                             |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `--mode arena\|campaign\|full`                           | Select the workload.                                                            |
+| `--seeds N`, `--seed N`                                  | Select seed count and starting seed.                                            |
+| `--with R,C,P`                                           | Add a custom tactic; `-` uses workload defaults.                                |
+| `--policies LIST`                                        | Select arena tactics; also filters default campaign players.                    |
+| `--armies LIST`, `--landscapes LIST`, `--campaigns LIST` | Select content.                                                                 |
+| `--campaign-players LIST`, `--campaign-enemies LIST`     | Override campaign roles.                                                        |
+| `--rounds N`, `--recruits N`, `--diplomacy LIST`         | Override limits or filter authored diplomacy modes.                             |
+| `--out PATH`                                             | Choose an output directory or raw `.json` file.                                 |
+| `--unit-usage`                                           | Add battlefield presence, combat-use shares and actual support-effect analysis. |
+| `--no-report`                                            | Keep raw results without analysis.                                              |
+| `--vs POLICY`                                            | Fixed arena opponent; Balanced by default. Campaign opponents stay separate.    |
+| `--all-pairs`                                            | Request the full arena policy matrix.                                           |
+| `--self-play`                                            | Compare matching tactics; requires `--mode arena`.                              |
+| `--schedule-only`                                        | Inspect configurations without running matches.                                 |
+| `--baseline PATH`                                        | Compare with a saved run with identical configurations.                         |
+| `--help`                                                 | List remaining options.                                                         |
 
 `--with=rotation,-,queued` adds an uncapped custom tactic. `rotated` aliases
 `rotation`. Slots are recruiter, campaigner and planner; defaults are Balanced
@@ -105,6 +106,51 @@ terrain healing, including zero-benefit provider turns. Aura coverage is a
 position sample, not a count of actual reflected hits. First turns without a
 recorded pre-healing boundary are excluded. It pools opposing factions against
 Balanced and reports each tactic, map and support ability separately.
+
+## Battlefield presence and support effects
+
+```sh
+npm run ai:simulate -- --unit-usage
+npm run ai:analyze -- artifacts/saved/report.json --out artifacts/saved/analytics --unit-usage
+```
+
+The analyzer also accepts `--battlefield-presence` or `--support-effects`
+independently. This audit reads checksummed arena journals and recorded
+`unitProfiles`, never the current catalog. Support effects require fresh runs
+with `supportTelemetryVersion`; legacy missing measurements are not zeros.
+The earlier `measure-support.py` command estimates historical healing from
+snapshots; prefer engine-recorded events for new runs.
+
+Exports:
+
+- `battlefield_presence.csv`: family shares of living non-leader unit-turns,
+  measured at each own-phase end, including starting units and promotions.
+- `battlefield_units.csv`: the same census separated by exact unit/upgrade.
+- `army_usage.csv`: purchases, presence, attack and damage shares together.
+- `support_effects.csv`: per-unit and all-unit healing, adjacency, overlapping
+  coverage, reflected damage and effective reflected damage.
+- `support_overlap.csv`: coverage and overlap conditioned on provider count and
+  available recipients, so single-provider turns do not hide overlap between
+  multiple providers.
+
+All exports keep faction, tactic, opposing tactic and map separate, exclude
+same-faction games, and pool other opposing factions. All-map shares use summed
+counts. Battle presence means a family appeared at any recorded point, including
+initial units that died before their first census; field share weights survival
+through unit-turns. Neither measure is a unit win rate. Army damage shares retain
+native combat attribution: aura reflection belongs to the defender in that
+legacy total; the support export attributes it to its actual aura source.
+
+Healing provider-turns and adjacency are sampled at own-turn start; intrinsic
+thorns and aura opportunities at opposing-turn start after friendly positioning.
+Provider-turns include zero-effect opportunities. Healing records use actual HP
+restored after terrain healing and caps. Tied strongest sources split credit;
+weaker overlapping providers receive no effect credit. Intrinsic reflection and
+aura reflection are separate. Raw reflection includes overkill; effective
+reflection is the additional HP removed beyond ordinary weapon retaliation,
+with that marginal amount attributed proportionally to intrinsic and aura
+strength. Source IDs and damage are captured at combat time, including killing
+hits and aura providers that later die.
 
 ## Read evidence
 

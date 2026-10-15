@@ -46,6 +46,31 @@ impl<'catalog> Game<'catalog> {
                 .map(|ally| self.rules.units[ally.kind].healing)
                 .max()
                 .unwrap_or(0);
+            let amount = healing
+                .min((self.rules.units[self.units[index].kind].hp - self.units[index].hp).max(0));
+            if amount > 0 && self.recordings.is_some() {
+                let target = &self.units[index];
+                let providers = self
+                    .units
+                    .iter()
+                    .filter(|ally| {
+                        ally.side == side
+                            && ally.id != target.id
+                            && self.board.distance(ally.tile, target.tile) == 1
+                            && self.rules.units[ally.kind].healing == healing
+                    })
+                    .map(|ally| format!("u{}", ally.id))
+                    .collect();
+                self.recordings
+                    .as_mut()
+                    .unwrap()
+                    .healing
+                    .push(HealingRecord {
+                        target: format!("u{}", target.id),
+                        providers,
+                        amount,
+                    });
+            }
             self.units[index].hp =
                 (self.units[index].hp + healing).min(self.rules.units[self.units[index].kind].hp);
         }

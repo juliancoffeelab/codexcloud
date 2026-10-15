@@ -108,6 +108,13 @@ game state. Saves never contain queued AI actions or planning workspaces.
 All data migrations belong in `src/save/migrations/` and run during loading;
 unmigratable or invalid saves are wiped. See [save migrations](save-migrations.md).
 
+Simulation reports can audit actual army composition and support use with
+`npm run ai:simulate -- --unit-usage`, or add `--unit-usage` to `ai:analyze`
+for a saved run. Presence includes initial troops and promotions and weights
+survival by living unit-turns, excluding commanders. Engine records attribute
+actual adjacent healing and thorn reflection to their sources; equal strongest
+sources share credit. See the combat-simulation skill for export definitions.
+
 ## Sites publication
 
 `scripts/publish-sites-call.js` coordinates the configured Sites deployment.

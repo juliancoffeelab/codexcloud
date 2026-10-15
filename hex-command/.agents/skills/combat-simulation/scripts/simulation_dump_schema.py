@@ -72,11 +72,13 @@ COMBAT = pa.struct([
     ("count", INTEGER), ("damagePerHit", INTEGER),
     ("retaliationCount", INTEGER), ("retaliationPerHit", INTEGER),
     ("mediationAtRisk", BOOLEAN),
+    ("thorns", pa.struct([("damage",INTEGER),("auraDamage",INTEGER),("effectiveDamage",INTEGER),("auraSources",STRINGS)])),
 ])
 OWNERSHIP = pa.struct([("tile", STRING), ("owner", STRING)])
 PHASE = pa.struct([
     ("side", STRING), ("round", INTEGER), ("actions", pa.list_(ACTION)),
     ("losses", pa.list_(UNIT)), ("combats", pa.list_(COMBAT)),
+    ("healing", pa.list_(pa.struct([("target",STRING),("providers",STRINGS),("amount",INTEGER)]))),
     ("living", GOLD), ("health", GOLD), ("gold", GOLD),
     ("before", pa.list_(UNIT)), ("units", pa.list_(UNIT)),
     ("ownership", pa.list_(OWNERSHIP)), ("goals", pa.list_(PROGRESS)),

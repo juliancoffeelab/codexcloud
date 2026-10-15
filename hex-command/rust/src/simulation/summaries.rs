@@ -420,6 +420,7 @@ mod tests {
                     ],
                     losses: vec![],
                     combats: vec![],
+                    healing: vec![],
                 },
                 living: Sides {
                     player: 0,

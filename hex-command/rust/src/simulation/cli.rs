@@ -103,6 +103,9 @@ struct SimulationArgs {
     /// Record policy decision and complete-phase CPU times.
     #[arg(group = "batch", long)]
     profile_turns: bool,
+    /// Analyze battlefield presence, support adjacency and recorded effects.
+    #[arg(group = "batch", long, conflicts_with = "no_report")]
+    unit_usage: bool,
     /// Also retain raw match results.
     #[arg(group = "batch", long)]
     trace: bool,
@@ -156,6 +159,7 @@ struct CliOptions {
     replay: Option<PathBuf>,
     schedule_only: bool,
     profile_turns: bool,
+    unit_usage: bool,
     no_report: bool,
     baselines: Vec<PathBuf>,
 }
@@ -290,6 +294,7 @@ impl SimulationArgs {
             replay: self.replay,
             schedule_only: self.schedule_only,
             profile_turns: self.profile_turns,
+            unit_usage: self.unit_usage,
             no_report: self.no_report,
             baselines: self.baseline,
         })
@@ -790,6 +795,22 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
             .map(|unit| (unit.id.clone(), unit.family))
             .collect::<std::collections::BTreeMap<_, _>>(),
     )?;
+    report["supportTelemetryVersion"] = json!(1);
+    report["unitProfiles"] = serde_json::to_value(
+        rules
+            .units
+            .iter()
+            .map(|u| {
+                (
+                    u.id.clone(),
+                    json!({
+                        "name":u.name,"family":u.family,"leader":u.leader,"hp":u.hp,"level":u.level,
+                        "healing":u.healing,"thornAura":u.thorn_aura,"thorns":u.thorns
+                    }),
+                )
+            })
+            .collect::<std::collections::BTreeMap<_, _>>(),
+    )?;
     if options.profile_turns {
         report["turnTiming"] = crate::ai::profiling::snapshot().unwrap();
     }
@@ -826,6 +847,9 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
             .arg(&output)
             .arg("--out")
             .arg(output.parent().unwrap().join("analytics"));
+        if options.unit_usage {
+            analyzer.arg("--unit-usage");
+        }
         for baseline in &options.baselines {
             analyzer.arg("--baseline").arg(baseline);
         }
