@@ -340,6 +340,17 @@ mod tests {
             let (mut rules, a, b) = fixture();
             rules.units[b].thorn_aura = aura;
             rules.units[b].attacks[0].damage = 0;
+            let enemy = battle(&rules, a, b)
+                .units
+                .iter()
+                .find(|u| u.side == Side::Enemy)
+                .unwrap()
+                .kind;
+            // A committed multi-strike melee enemy makes aura support useful.
+            rules.units[enemy].attacks.truncate(1);
+            rules.units[enemy].attacks[0].category = Category::Melee;
+            rules.units[enemy].attacks[0].range = 1;
+            rules.units[enemy].attacks[0].count = 3;
             let mut game = battle(&rules, a, b);
             let leader = game
                 .units

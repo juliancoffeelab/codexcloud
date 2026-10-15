@@ -138,7 +138,20 @@ Recruiter owns promotion branch selection and passes explicit unit/type choices
 in tactical orders. Planner decides when taking the selected promotion is safe;
 it does not choose a different branch. Situational evaluates recruits and available promotion branches against combat
 exchanges, effective HP, terrain routes, movement and marginal healing or thorn
-support. Balanced fills deficient roles with seeded random unit choices and
+support. Support recruitment assumes one recipient, capped by the allies
+reachable within one move, and averages their marginal benefit. Existing adjacent
+coverage is exact; remote providers independently overlap with probability
+`min(1, 1 / possible recipients)`. Only the improvement over the strongest
+covering provider counts. This coverage value is an explicit estimate, not a
+runtime-measured statistic. Intrinsic thorns and thorn auras use
+`min(6, melee enemies / friendly units) * average melee strikes`; the friendly
+count includes the candidate. Enemies are classified by their preferred combat
+exchange against the relevant defender, including armor, retaliation, drain,
+kills, survival and the proposed aura. Preferred ranged attacks contribute zero.
+Aura value uses only its marginal strength and the expected recipient count;
+intrinsic reflection is removed from ordinary retaliation scoring to avoid
+counting it twice. Fixed damage per strike in actual combat is unchanged.
+Balanced fills deficient roles with seeded random unit choices and
 uses seeded random promotion branches, as does Frontline for promotions.
 Rotation cycles through the least represented recruit families and retains its
 next recruit while saving. Its promotion branch cycle advances by round and

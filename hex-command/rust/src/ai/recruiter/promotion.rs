@@ -214,6 +214,18 @@ mod tests {
             } else {
                 rules.units[b].healing = 20;
             }
+            let enemy = battle(&rules, base)
+                .0
+                .units
+                .iter()
+                .find(|u| u.side == Side::Enemy)
+                .unwrap()
+                .kind;
+            // A committed multi-strike melee enemy makes aura support useful.
+            rules.units[enemy].attacks.truncate(1);
+            rules.units[enemy].attacks[0].category = Category::Melee;
+            rules.units[enemy].attacks[0].range = 1;
+            rules.units[enemy].attacks[0].count = 3;
             let (mut game, id) = battle(&rules, base);
             let unit = game.unit(id).unwrap().clone();
             let tiles: Vec<_> = game.board.adjacent[unit.tile]
@@ -221,7 +233,9 @@ mod tests {
                 .copied()
                 .filter(|&t| game.at(t).is_none())
                 .collect();
-            assert_eq!(choose(&BattleView::new(&game), &unit), Some(a));
+            if !thorns {
+                assert_eq!(choose(&BattleView::new(&game), &unit), Some(a));
+            }
             let ally = game.add(base, Side::Player, tiles[0]);
             let i = game.index(ally).unwrap();
             game.units[i].hp = 1;

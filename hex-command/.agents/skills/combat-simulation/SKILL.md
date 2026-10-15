@@ -92,6 +92,20 @@ For a targeted scorer investigation, `--phase-stdio` requests can set
 recruit/promotion score components, eligibility and affordability. Diagnostics
 are read-only; normal phase execution remains unchanged.
 
+For observed support coverage in existing JSONL arena journals:
+
+```sh
+python3 scripts/measure-support.py artifacts/saved/report.json --units rust/data/game/units
+```
+
+Pass unit definitions matching that run explicitly; the audit records their hash
+and does not infer historical stats from the current checkout. It measures
+turn-start adjacent recipients, overlapping coverage, and useful healing after
+terrain healing, including zero-benefit provider turns. Aura coverage is a
+position sample, not a count of actual reflected hits. First turns without a
+recorded pre-healing boundary are excluded. It pools opposing factions against
+Balanced and reports each tactic, map and support ability separately.
+
 ## Read evidence
 
 Use the printed findings first. Read `<run>/analytics/findings.md` and
