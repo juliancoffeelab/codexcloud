@@ -239,13 +239,8 @@ pub(crate) fn create_arena<'catalog>(
             },
         )?;
         let leader = roster.leader.as_str();
-        let screen = roster.screen.as_str();
         let sign = if side == Side::Player { -1 } else { 1 };
-        for (kind, q, r) in [
-            (leader, sign * 3, 0),
-            (screen, sign * 2, 0),
-            (screen, sign * 3, -sign),
-        ] {
+        for (kind, q, r) in [(leader, sign * 3, 0)] {
             let rule = &rules.units[rules.types[kind]];
             starting_cost[side.index()] += rule.cost;
             state.units.push(PublicUnit {
@@ -797,7 +792,7 @@ mod tests {
     }
 
     #[test]
-    fn arena_charges_starters_to_a_paired_budget_without_changing_placement() {
+    fn arena_starts_with_only_leaders_and_the_remaining_paired_budget() {
         let rules = Rules::load().unwrap();
         for seed in [1, 2, 10] {
             for landscape in ["open", "wooded", "crossings", "islands"] {
@@ -822,7 +817,8 @@ mod tests {
                         let total = |side| {
                             let troops: Vec<_> =
                                 game.units.iter().filter(|u| u.side == side).collect();
-                            assert_eq!(troops.len(), 3);
+                            assert_eq!(troops.len(), 1);
+                            assert!(rules.units[troops[0].kind].leader);
                             game.gold[side.index()]
                                 + troops.iter().map(|u| rules.units[u.kind].cost).sum::<i32>()
                         };
@@ -833,11 +829,7 @@ mod tests {
                         assert_eq!(game.turn, Side::Enemy);
                         for unit in &game.units {
                             let sign = if unit.side == Side::Player { -1 } else { 1 };
-                            assert!(
-                                [(sign * 3, 0), (sign * 2, 0), (sign * 3, -sign)]
-                                    .iter()
-                                    .any(|&(q, r)| game.board.ids[unit.tile] == axial_id(q, r))
-                            );
+                            assert_eq!(game.board.ids[unit.tile], axial_id(sign * 3, 0));
                         }
                     }
                 }

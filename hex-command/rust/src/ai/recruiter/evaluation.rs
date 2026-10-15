@@ -252,47 +252,28 @@ impl Assessment {
             }
             offense += best_offense * weight;
             access += reach * weight;
-            let mut worst = None;
-            for (weapon, attack) in enemy_rule.attacks.iter().enumerate() {
-                let origins = game.attack_origins(attack.category, attack.range);
-                let mut origin = None;
-                origins[unit.tile].for_each(|tile| {
-                    if game.cost(enemy.kind, tile) != u16::MAX
-                        && origin.is_none_or(|old| {
-                            game.board().distance(enemy.tile, tile)
-                                < game.board().distance(enemy.tile, old)
-                        })
-                    {
-                        origin = Some(tile);
-                    }
-                });
-                let Some(origin) = origin else {
-                    continue;
-                };
-                let mut attacker = (*enemy).clone();
-                attacker.tile = origin;
-                let (damage, response, _) = game.preview(&attacker, unit, weapon, origin);
-                let threat = damage as f64 - response.min(enemy.hp) as f64 * 0.35;
-                if worst.is_none_or(|(previous, _, _, _)| threat > previous) {
-                    worst = Some((
-                        threat,
-                        damage,
-                        // Own reflection is valued separately by army pressure.
-                        // Preserve ordinary retaliation and existing friendly aura.
-                        response
-                            - if attack.category == Category::Melee {
-                                rule.thorns * i32::from(attack.count)
-                            } else {
-                                0
-                            },
-                        attack.damage * i32::from(attack.count),
-                    ));
-                }
-            }
-            if let Some((_, damage, response, unarmored)) = worst {
-                incoming += damage as f64 * weight;
-                raw += unarmored.max(1) as f64 * weight;
-                retaliation += response.min(enemy.hp) as f64 * weight;
+            if let Some(preferred) = preferred_attack(game, enemy, unit, None) {
+                let attack = &enemy_rule.attacks[preferred.weapon];
+                incoming += f64::from(preferred.damage) * weight;
+                // A common unarmoured, terrain-neutral target takes the enemy's
+                // strongest raw attack. This reference cannot change when armour,
+                // retaliation or thorns makes that enemy switch weapons.
+                let reference = enemy_rule
+                    .attacks
+                    .iter()
+                    .map(|a| a.damage * i32::from(a.count))
+                    .max()
+                    .unwrap_or(0);
+                raw += f64::from(reference.max(1)) * weight;
+                // Own reflection is valued separately by army pressure.
+                // Preserve ordinary retaliation and existing friendly aura.
+                let response = preferred.response
+                    - if attack.category == Category::Melee {
+                        rule.thorns * i32::from(attack.count)
+                    } else {
+                        0
+                    };
+                retaliation += f64::from(response.min(enemy.hp)) * weight;
             }
             weights += weight;
         }
@@ -382,6 +363,28 @@ fn dominant_melee_strikes(
     target: &Unit,
     aura: Option<i32>,
 ) -> Option<u8> {
+    preferred_attack(game, enemy, target, aura).map(|preferred| {
+        let attack = &game.rules().units[enemy.kind].attacks[preferred.weapon];
+        if attack.category == Category::Melee {
+            attack.count
+        } else {
+            0
+        }
+    })
+}
+
+struct PreferredAttack {
+    weapon: usize,
+    damage: i32,
+    response: i32,
+}
+
+fn preferred_attack(
+    game: &BattleView<'_, '_>,
+    enemy: &Unit,
+    target: &Unit,
+    aura: Option<i32>,
+) -> Option<PreferredAttack> {
     let rule = &game.rules().units[enemy.kind];
     let mut best = None;
     for (weapon, attack) in rule.attacks.iter().enumerate() {
@@ -416,18 +419,18 @@ fn dominant_melee_strikes(
             } else {
                 0.0
             };
-        if best.is_none_or(|(score, _)| value > score) {
+        if best.as_ref().is_none_or(|(score, _)| value > *score) {
             best = Some((
                 value,
-                if attack.category == Category::Melee {
-                    attack.count
-                } else {
-                    0
+                PreferredAttack {
+                    weapon,
+                    damage,
+                    response,
                 },
             ));
         }
     }
-    best.map(|(_, strikes)| strikes)
+    best.map(|(_, attack)| attack)
 }
 
 // With equal providers this is marginal_value * (1 - overlap_probability)^count.
@@ -559,6 +562,55 @@ mod tests {
             ),
             Some(0)
         );
+    }
+
+    #[test]
+    fn effective_hp_keeps_a_common_reference_when_armour_changes_preferred_weapon() {
+        let (mut rules, target, enemy) = thorn_fixture();
+        let mut ranged = rules.units[enemy].attacks[0].clone();
+        ranged.category = Category::Ranged;
+        ranged.range = 2;
+        ranged.damage_type = DamageType::Pierce;
+        ranged.damage = 20;
+        ranged.count = 1;
+        rules.units[enemy].attacks.push(ranged);
+        for (blade, expected_weapon, expected_hp) in [(0, 0, 100.0), (-2, 1, 120.0)] {
+            rules.units[target].damage_modifiers.blade = blade;
+            let (game, target, enemy) = thorn_battle(&rules, target, enemy);
+            let view = BattleView::new(&game);
+            let unit = game.unit(target).unwrap();
+            assert_eq!(
+                preferred_attack(&view, game.unit(enemy).unwrap(), unit, None)
+                    .unwrap()
+                    .weapon,
+                expected_weapon
+            );
+            let score = Assessment::new(&view, unit).breakdown(&view, unit);
+            assert!((score.effective_hp - expected_hp).abs() < 1e-9);
+        }
+    }
+
+    #[test]
+    fn effective_hp_values_repeated_ranged_attacks_and_per_strike_armour() {
+        let (mut rules, target, enemy) = thorn_fixture();
+        rules.units[target].hp = 40;
+        rules.units[enemy].attacks[0].category = Category::Ranged;
+        rules.units[enemy].attacks[0].range = 2;
+        for (damage, count, armour, expected) in [
+            (10, 1, 0, 40.0),
+            (10, 1, -2, 50.0),
+            (5, 2, -2, 40.0 * 10.0 / 6.0),
+            (5, 2, -5, 200.0),
+        ] {
+            rules.units[enemy].attacks[0].damage = damage;
+            rules.units[enemy].attacks[0].count = count;
+            rules.units[target].damage_modifiers.blade = armour;
+            let (game, target, _) = thorn_battle(&rules, target, enemy);
+            let view = BattleView::new(&game);
+            let unit = game.unit(target).unwrap();
+            let score = Assessment::new(&view, unit).breakdown(&view, unit);
+            assert!((score.effective_hp - expected).abs() < 1e-9);
+        }
     }
 
     #[test]

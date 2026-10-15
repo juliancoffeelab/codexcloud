@@ -8,7 +8,7 @@ cost. **Balanced is the default arena comparison opponent. Classic remains the l
 enemy and the campaign competence baseline.** Making it stronger is not the purpose of simulation-player work.
 
 For faction and unit balance, use matching Situational policies with the normal
-starting rosters, budgets, recruitment and earned promotions. Inspect each
+leader-only arena starts, equal total budgets, recruitment and earned promotions. Inspect each
 opposing faction and terrain separately. Isolated advanced-level rosters are
 supplementary diagnostics, not validation of normal progression. Classic can
 saturate before a roster is balanced. Pooling recruiters or averaging easy and
@@ -34,19 +34,26 @@ opponent.
 Situational is an adaptive recruiter, selectable with `--with=situational,-,queued`.
 It scores recruit candidates before affordability by engine combat exchanges,
 effective HP, terrain routes and movement, marginal healing and thorn support.
+Durability uses HP times the distance-weighted strongest raw enemy damage divided
+by distance-weighted damage from enemies' preferred attacks against the candidate.
+The raw reference is a common unarmoured, terrain-neutral target, independent of
+the candidate's armour or the weapon it causes an enemy to choose. Incoming damage
+includes terrain protection and per-strike armour; preferred attacks use the same
+exchange valuation as thorns. The existing five-times-HP ceiling keeps immunity
+finite. Army-size pressure does not multiply effective HP.
 It can save income for a more useful expensive recruit. A soft penalty for repeated families encourages
 variety without fixed role quotas. Campaigner recruitment requirements take priority;
 reserved lanes remain clear. It adds no recruitment cap.
 
 ## Current presets
 
-| Tactic      | Current behavior and limits                                                                  |
-| ----------- | -------------------------------------------------------------------------------------------- |
-| Classic     | Fixed Classic recruitment and Classic planning; fixed enemy, capped at 2 recruits per phase. |
-| Rush        | Frontline recruitment and Queued planning; not strictly infantry-only.                       |
-| Balanced    | Role-balanced recruitment with seeded random choices within each role and Queued planning.   |
-| Rotated     | Rotation recruitment and Queued planning, without an additional recruitment cap.             |
-| Situational | Adaptive recruitment and Queued planning, without an additional recruitment cap.             |
+| Tactic      | Current behavior and limits                                                                             |
+| ----------- | ------------------------------------------------------------------------------------------------------- |
+| Classic     | Fixed Classic recruitment and Classic planning; fixed enemy, capped at 2 recruits per phase.            |
+| Rush        | Frontline recruitment and Queued planning; not strictly infantry-only.                                  |
+| Balanced    | Seeded random choice among all underfilled roles, then a random unit within that role; Queued planning. |
+| Rotated     | Rotation recruitment and Queued planning, without an additional recruitment cap.                        |
+| Situational | Adaptive recruitment and Queued planning, without an additional recruitment cap.                        |
 
 Queued is the default planner for simulation-player presets. Full remains
 selectable through independent block composition.
@@ -54,8 +61,15 @@ Verify [preset composition](../../../rust/src/ai/presets.rs),
 [planner dispatch](../../../rust/src/ai/planner/mod.rs) and actual callers when
 explaining behavior; a description or test-only helper is not execution evidence.
 
-Rotation cycles through the least represented roster families, including expensive
-mounted units, and waits when its next recruit is not yet affordable. Authored campaign recruitment pools remain separate and lore-specific.
+Arenas begin with leaders only. Both sides receive the same seeded total budget,
+minus their leader's cost, and recruit their opening troops through their policy.
+Campaign starting units remain authored.
+
+Rotation fills the least represented role, breaking ties in flank, infantry,
+ranged, healer/support order and skipping unavailable roles. Within that role it
+fills the least represented family, including expensive mounted units, and waits
+when its next recruit is not yet affordable. Authored campaign recruitment pools
+remain separate and lore-specific.
 
 Campaign competence concerns **Balanced, Rotated and Situational against Classic**, using
 authored rosters and objectives. Classic/Rush campaign failures do not establish
