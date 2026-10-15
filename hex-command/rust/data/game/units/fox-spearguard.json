@@ -4,7 +4,7 @@
   "name": "Thornshield",
   "race": "beast",
   "hp": 20,
-  "move": 3,
+  "move": 4,
   "cost": 7,
   "attacks": [
     {

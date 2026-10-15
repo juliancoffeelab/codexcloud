@@ -3,15 +3,15 @@
   "role": "flank",
   "name": "Alpha wolf",
   "race": "beast",
-  "hp": 28,
-  "move": 5,
-  "cost": 14,
+  "hp": 29,
+  "move": 6,
+  "cost": 16,
   "attacks": [
     {
       "id": "fangs",
       "name": "Fangs",
-      "damage": 4,
-      "count": 3,
+      "damage": 7,
+      "count": 2,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
@@ -26,15 +26,17 @@
   "terrainModifiers": {
     "forest": {
       "damageModifiers": {
-        "melee": -2,
-        "ranged": -2
-      }
+        "melee": 0,
+        "ranged": -1
+      },
+      "cost": -1
     },
     "grove": {
       "damageModifiers": {
-        "melee": -2,
-        "ranged": -2
-      }
+        "melee": 0,
+        "ranged": -1
+      },
+      "cost": -1
     }
   },
   "ability": "Pack hunter",

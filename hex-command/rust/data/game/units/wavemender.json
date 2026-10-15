@@ -3,14 +3,14 @@
   "role": "healer",
   "name": "Wavemender",
   "race": "merfolk",
-  "hp": 16,
+  "hp": 17,
   "move": 4,
-  "cost": 9,
+  "cost": 10,
   "attacks": [
     {
       "id": "surge",
       "name": "Surge",
-      "damage": 6,
+      "damage": 7,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,

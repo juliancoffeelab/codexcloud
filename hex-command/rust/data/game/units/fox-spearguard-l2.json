@@ -4,7 +4,7 @@
   "name": "Thornshield L2",
   "race": "beast",
   "hp": 27,
-  "move": 3,
+  "move": 4,
   "cost": 12,
   "attacks": [
     {

@@ -4,7 +4,7 @@
   "name": "Thornbinder",
   "race": "beast",
   "hp": 28,
-  "move": 3,
+  "move": 4,
   "cost": 18,
   "attacks": [
     {
@@ -36,14 +36,14 @@
   "terrainModifiers": {
     "forest": {
       "damageModifiers": {
-        "melee": -2,
-        "ranged": -2
+        "melee": -1,
+        "ranged": -1
       }
     },
     "grove": {
       "damageModifiers": {
-        "melee": -2,
-        "ranged": -2
+        "melee": -1,
+        "ranged": -1
       }
     }
   },

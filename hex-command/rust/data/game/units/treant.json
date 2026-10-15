@@ -4,8 +4,8 @@
   "name": "Treant",
   "race": "beast",
   "hp": 25,
-  "move": 2,
-  "cost": 11,
+  "move": 3,
+  "cost": 12,
   "attacks": [
     {
       "id": "bough",
@@ -23,9 +23,23 @@
     "pierce": -1,
     "impact": 0
   },
-  "terrainModifiers": {},
+  "terrainModifiers": {
+    "forest": {
+      "damageModifiers": {
+        "melee": 0,
+        "ranged": 0
+      }
+    },
+    "grove": {
+      "cost": -1,
+      "damageModifiers": {
+        "melee": 0,
+        "ranged": 0
+      }
+    }
+  },
   "ability": "Living bark",
-  "description": "A slow, resilient forest guardian. Living bark resists blades and arrows; heavy branches crush skeletal foes.",
+  "description": "A slow, resilient forest guardian. Living bark resists blades and arrows; heavy branches crush skeletal foes. Root paths ease movement through sacred groves.",
   "level": 1,
   "family": "treant",
   "advancesTo": ["treant-l2"],

@@ -4,7 +4,7 @@
   "name": "Thorncaller",
   "race": "beast",
   "hp": 14,
-  "move": 3,
+  "move": 4,
   "cost": 7,
   "attacks": [
     {

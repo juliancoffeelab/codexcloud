@@ -4,7 +4,7 @@
   "name": "Grove oracle",
   "race": "beast",
   "hp": 40,
-  "move": 3,
+  "move": 4,
   "cost": 0,
   "attacks": [
     {
@@ -36,14 +36,14 @@
   "terrainModifiers": {
     "forest": {
       "damageModifiers": {
-        "melee": -2,
-        "ranged": -2
+        "melee": -1,
+        "ranged": -1
       }
     },
     "grove": {
       "damageModifiers": {
-        "melee": -2,
-        "ranged": -2
+        "melee": -1,
+        "ranged": -1
       }
     }
   },

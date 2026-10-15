@@ -3,14 +3,14 @@
   "role": "healer",
   "name": "Tide oracle",
   "race": "merfolk",
-  "hp": 29,
+  "hp": 30,
   "move": 4,
-  "cost": 20,
+  "cost": 21,
   "attacks": [
     {
       "id": "surge",
       "name": "Surge",
-      "damage": 11,
+      "damage": 12,
       "count": 1,
       "damageType": "impact",
       "category": "ranged",

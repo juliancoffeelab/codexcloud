@@ -3,19 +3,19 @@
   "role": "flank",
   "name": "Dire wolf",
   "race": "beast",
-  "hp": 22,
-  "move": 4,
-  "cost": 8,
+  "hp": 23,
+  "move": 5,
+  "cost": 10,
   "attacks": [
     {
       "id": "fangs",
       "name": "Fangs",
-      "damage": 3,
+      "damage": 5,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
       "sound": "attack-melee",
-      "count": 3
+      "count": 2
     }
   ],
   "damageModifiers": {
@@ -34,10 +34,16 @@
       "cost": -1
     },
     "forest": {
-      "cost": -1
+      "cost": -1,
+      "damageModifiers": {
+        "melee": 1
+      }
     },
     "grove": {
-      "cost": -1
+      "cost": -1,
+      "damageModifiers": {
+        "melee": 1
+      }
     }
   }
 }

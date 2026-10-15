@@ -4,7 +4,7 @@
   "name": "Herbkeeper",
   "race": "beast",
   "hp": 20,
-  "move": 3,
+  "move": 4,
   "cost": 11,
   "attacks": [
     {

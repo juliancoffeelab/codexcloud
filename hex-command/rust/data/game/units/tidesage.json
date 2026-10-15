@@ -3,14 +3,14 @@
   "role": "healer",
   "name": "Tide sage",
   "race": "merfolk",
-  "hp": 22,
+  "hp": 23,
   "move": 4,
-  "cost": 14,
+  "cost": 15,
   "attacks": [
     {
       "id": "surge",
       "name": "Surge",
-      "damage": 8,
+      "damage": 9,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,

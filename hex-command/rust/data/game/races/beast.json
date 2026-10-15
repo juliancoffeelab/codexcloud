@@ -3,17 +3,29 @@
   "name": "Woodland",
   "terrainModifiers": {
     "forest": {
-      "cost": -1,
       "damageModifiers": {
         "melee": -1,
-        "ranged": -1
+        "impact": -1
       }
     },
     "grove": {
-      "cost": -1,
       "damageModifiers": {
         "melee": -1,
-        "ranged": -1
+        "impact": -1
+      }
+    },
+    "ford": {
+      "cost": -1,
+      "damageModifiers": {
+        "ranged": -1,
+        "melee": -1
+      }
+    },
+    "marsh": {
+      "cost": -1,
+      "damageModifiers": {
+        "ranged": -1,
+        "melee": -1
       }
     }
   },

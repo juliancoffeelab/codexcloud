@@ -7,12 +7,22 @@ objectives using the browser's engine rules. They also measure trial execution
 cost. **Classic is the live enemy and the default policy/campaign comparison
 opponent.** Making it stronger is not the purpose of simulation-player work.
 
-For faction and unit balance, use matching Situational policies and inspect each
-opposing faction, terrain and rank separately. Classic can saturate before a
-roster is balanced. Pooling recruiters or averaging easy and hard faction
-matchups can hide failures; a pooled result alone does not establish a terrain
-advantage or a balanced head-to-head matchup. Validate on additional seeds after
-tuning, and retain campaign checks against Classic with authored recruitment pools.
+For faction and unit balance, use matching Situational policies with the normal
+starting rosters, budgets, recruitment and earned promotions. Inspect each
+opposing faction and terrain separately. Isolated advanced-level rosters are
+supplementary diagnostics, not validation of normal progression. Classic can
+saturate before a roster is balanced. Pooling recruiters or averaging easy and
+hard faction matchups can hide failures; a pooled result alone does not establish
+a terrain advantage or a balanced head-to-head matchup. Validate on additional
+seeds after tuning, and compare the full matchup matrix and authored campaign
+completion against the same baseline conditions.
+
+Aim for roughly 70% Woodland wins in forests and 80% Merfolk wins on water,
+with viable armies outside those biomes. Woodland should beat Merfolk on dry
+plains. Humans and Skeletons should be near
+even on plains; some stalemates between them are expected. Do not weaken their
+parity merely to eliminate round caps. Preserve meaningful cavalry use and
+lore-specific campaign recruitment pools when tuning numeric balance.
 
 The intended player strategies are infantry-only, fair roster use and
 situational selection. Compare them against the same fixed enemy under matching
