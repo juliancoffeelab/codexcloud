@@ -2,7 +2,6 @@ import type { DamageBreakdown } from "../game/types";
 
 export function damageExplanation(detail: Omit<DamageBreakdown, "damageType">) {
   let equation = `${detail.base}`;
-  if (detail.retaliationBonus) equation += ` + ${detail.retaliationBonus} (thorns)`;
   if (detail.modifier < 0) equation += ` − ${-detail.modifier} (armor)`;
   if (detail.modifier > 0) equation += ` + ${detail.modifier} (weakness)`;
   if (detail.protection) equation += ` − ${detail.protection} (cover)`;

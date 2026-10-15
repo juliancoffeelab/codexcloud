@@ -399,11 +399,21 @@ pub(in crate::ai) fn plan(
                 .map(|u| game.rules().units[u.kind].thorn_aura)
                 .max()
                 .unwrap_or(0);
-            let hits = game.rules().units[ally.kind]
-                .attacks
+            let hits = game
+                .units()
                 .iter()
-                .filter(|w| w.category == Category::Melee)
-                .map(|w| w.count)
+                .filter(|enemy| {
+                    enemy.side != unit.side
+                        && game.board().distance(enemy.tile, ally.tile)
+                            <= game.rules().units[enemy.kind].r#move as u16 + 1
+                })
+                .flat_map(|enemy| {
+                    game.rules().units[enemy.kind]
+                        .attacks
+                        .iter()
+                        .filter(|w| w.category == Category::Melee)
+                        .map(|w| w.count)
+                })
                 .max()
                 .unwrap_or(0);
             for &tile in &game.board().adjacent[ally.tile] {

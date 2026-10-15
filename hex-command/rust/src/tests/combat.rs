@@ -27,6 +27,61 @@ fn ability_rules() -> Rules {
 }
 
 #[test]
+fn thorns_count_incoming_strikes_and_do_not_drain_or_require_a_surviving_defender() {
+    for strikes in [1, 3] {
+        let mut rules = ability_rules();
+        let attacker = rules.types["scout"];
+        let defender = rules.types["soldier"];
+        rules.units[attacker].attacks[0].count = strikes;
+        rules.units[defender].thorns = 3;
+        rules.units[defender].attacks.truncate(1);
+        rules.units[defender].attacks[0].count = 1;
+        rules.units[defender].attacks[0].drain = 50;
+        let mut game = Game::new(&rules, "mirror");
+        game.units.clear();
+        game.roster_changed();
+        let a = add(&mut game, "scout", Side::Player, "2,3");
+        let b = add(&mut game, "soldier", Side::Enemy, "3,3");
+        let index = game.index(b).unwrap();
+        game.units[index].hp = 90;
+        let actor = game.unit(a).unwrap().clone();
+        let target = game.unit(b).unwrap().clone();
+        assert_eq!(
+            game.preview(&actor, &target, 0, actor.tile).1,
+            4 + 3 * i32::from(strikes)
+        );
+        let inspection = game.inspect(0);
+        let details = inspection
+            .units
+            .iter()
+            .find(|u| u.unit == format!("u{a}"))
+            .unwrap()
+            .attacks
+            .iter()
+            .find(|c| {
+                c.target == format!("u{b}") && c.attack.id == rules.units[attacker].attacks[0].id
+            })
+            .unwrap();
+        assert_eq!(details.thorn_damage, 3 * i32::from(strikes));
+        assert_eq!(
+            details.retaliation_healing, 2,
+            "reflection never contributes drain healing"
+        );
+        let attack_id = rules.units[attacker].attacks[0].id.clone();
+        hit(&mut game, a, b, &attack_id);
+        assert_eq!(game.unit(a).unwrap().hp, 100 - 4 - 3 * i32::from(strikes));
+        assert_eq!(game.unit(b).unwrap().hp, 92 - 4 * i32::from(strikes));
+        game.begin_turn(Side::Player);
+        let index = game.index(b).unwrap();
+        game.units[index].hp = 1;
+        let before = game.unit(a).unwrap().hp;
+        hit(&mut game, a, b, &attack_id);
+        assert!(game.unit(b).is_none());
+        assert_eq!(game.unit(a).unwrap().hp, before - 3 * i32::from(strikes));
+    }
+}
+
+#[test]
 fn thorn_retaliation_stacks_own_shield_with_strongest_adjacent_friendly_aura() {
     let mut rules = ability_rules();
     rules.units[rules.types["soldier"]].thorns = 2;
@@ -65,7 +120,7 @@ fn thorn_retaliation_stacks_own_shield_with_strongest_adjacent_friendly_aura() {
         .find(|c| c.target == format!("u{b}") && c.attack.id == "sword")
         .unwrap();
     assert_eq!(
-        choice.retaliation_detail.as_ref().unwrap().total,
+        choice.retaliation_detail.as_ref().unwrap().total + choice.thorn_damage,
         choice.retaliation
     );
     hit(&mut game, a, b, "sword");
@@ -83,8 +138,8 @@ fn thorn_retaliation_stacks_own_shield_with_strongest_adjacent_friendly_aura() {
     restored.units[bi].hp = 1;
     assert_eq!(
         preview(&restored),
-        (8, 0, None),
-        "dead defenders cannot retaliate"
+        (8, 6, None),
+        "a killing melee hit still triggers thorns"
     );
 }
 

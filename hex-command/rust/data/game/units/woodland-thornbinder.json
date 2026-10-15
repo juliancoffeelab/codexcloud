@@ -35,7 +35,7 @@
   },
   "terrainModifiers": {},
   "ability": "Thorn aura",
-  "description": "A forest support caster whose adjacent allies gain stronger melee retaliation, stacking with their own Thornshield.",
+  "description": "A forest support caster whose adjacent allies reflect damage per incoming melee strike, stacking with their own Thornshield.",
   "thornAura": 3,
   "level": 3,
   "family": "thorncaller",

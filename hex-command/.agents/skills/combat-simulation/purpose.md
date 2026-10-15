@@ -32,20 +32,21 @@ No acceptable numeric gap is established; report differences by race, map and
 opponent.
 
 Situational is an adaptive recruiter, selectable with `--with=situational,-,queued`.
-It scores affordable recruits by enemy matchups, terrain routes to attack positions,
-survivability, local healing demand and adjacent thorn support. A soft penalty for repeated families encourages
+It scores recruit candidates before affordability by engine combat exchanges,
+effective HP, terrain routes and movement, marginal healing and thorn support.
+It can save income for a more useful expensive recruit. A soft penalty for repeated families encourages
 variety without fixed role quotas. Campaigner recruitment requirements take priority;
 reserved lanes remain clear. It adds no recruitment cap.
 
 ## Current presets
 
-| Tactic      | Current behavior and limits                                                              |
-| ----------- | ---------------------------------------------------------------------------------------- |
-| Classic     | Rotation recruitment and Classic planning; fixed enemy, capped at 2 recruits per phase.  |
-| Rush        | Frontline recruitment and Queued planning; not strictly infantry-only.                   |
-| Balanced    | Role-balanced recruitment and Queued planning; repeated families receive a soft penalty. |
-| Rotated     | Rotation recruitment and Queued planning, without an additional recruitment cap.         |
-| Situational | Adaptive recruitment and Queued planning, without an additional recruitment cap.         |
+| Tactic      | Current behavior and limits                                                                  |
+| ----------- | -------------------------------------------------------------------------------------------- |
+| Classic     | Fixed Classic recruitment and Classic planning; fixed enemy, capped at 2 recruits per phase. |
+| Rush        | Frontline recruitment and Queued planning; not strictly infantry-only.                       |
+| Balanced    | Role-balanced recruitment with seeded random choices within each role and Queued planning.   |
+| Rotated     | Rotation recruitment and Queued planning, without an additional recruitment cap.             |
+| Situational | Adaptive recruitment and Queued planning, without an additional recruitment cap.             |
 
 Queued is the default planner for simulation-player presets. Full remains
 selectable through independent block composition.
@@ -53,8 +54,8 @@ Verify [preset composition](../../../rust/src/ai/presets.rs),
 [planner dispatch](../../../rust/src/ai/planner/mod.rs) and actual callers when
 explaining behavior; a description or test-only helper is not execution evidence.
 
-Rotation traverses the full explicit arena roster, including expensive mounted
-units. Authored campaign recruitment pools remain separate and lore-specific.
+Rotation cycles through the least represented roster families, including expensive
+mounted units, and waits when its next recruit is not yet affordable. Authored campaign recruitment pools remain separate and lore-specific.
 
 Campaign competence concerns **Balanced, Rotated and Situational against Classic**, using
 authored rosters and objectives. Classic/Rush campaign failures do not establish
@@ -70,6 +71,6 @@ battle views and one validated planning draft. Only Campaigner interprets
 authored mission kinds. Planners may use shared search helpers, but must not
 switch to another planner.
 
-Preserve Rotation, Frontline and Balanced recruitment semantics unless a
-recruitment change is requested. Implementing the intended infantry/fair/
+Preserve the fixed Classic enemy behavior when changing simulation-player
+recruitment strategies. Implementing the intended infantry/fair/
 situational strategies is a separate semantic change, not part of a refactor.

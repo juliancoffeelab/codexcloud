@@ -12,14 +12,16 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum RecruiterKind {
+    /// Fixed live-enemy behavior, independent of simulation-player changes.
+    Classic,
     Rotation,
     Frontline,
     Balanced,
     Situational,
 }
 pub(crate) trait Recruiter {
-    fn promotions(&mut self, game: &BattleView<'_, '_>) -> Vec<(UnitId, UnitTypeId)> {
-        promotion::choices(game, false)
+    fn promotions(&mut self, game: &BattleView<'_, '_>, seed: u32) -> Vec<(UnitId, UnitTypeId)> {
+        promotion::choices(game, RecruiterKind::Classic, seed)
     }
 
     fn recruit(
@@ -29,8 +31,8 @@ pub(crate) trait Recruiter {
     ) -> Result<crate::ai::orders::RecruitmentReport, CommandError>;
 }
 impl Recruiter for RecruiterKind {
-    fn promotions(&mut self, game: &BattleView<'_, '_>) -> Vec<(UnitId, UnitTypeId)> {
-        promotion::choices(game, *self == Self::Situational)
+    fn promotions(&mut self, game: &BattleView<'_, '_>, seed: u32) -> Vec<(UnitId, UnitTypeId)> {
+        promotion::choices(game, *self, seed)
     }
 
     fn recruit(
@@ -39,6 +41,7 @@ impl Recruiter for RecruiterKind {
         orders: &crate::ai::orders::RecruitmentOrders,
     ) -> Result<crate::ai::orders::RecruitmentReport, CommandError> {
         match self {
+            Self::Classic => drive(Self::Classic, context, orders),
             Self::Rotation => rotation::Rotation.recruit(context, orders),
             Self::Frontline => frontline::Frontline.recruit(context, orders),
             Self::Balanced => balanced::Balanced.recruit(context, orders),
@@ -124,7 +127,7 @@ impl BattleView<'_, '_> {
         orders: &super::orders::RecruitmentOrders,
     ) -> Option<Command> {
         let (rotation, frontline_only, balanced) = match recruiter {
-            RecruiterKind::Rotation => (true, false, false),
+            RecruiterKind::Classic | RecruiterKind::Rotation => (true, false, false),
             RecruiterKind::Frontline => (false, true, false),
             RecruiterKind::Balanced => (false, false, true),
             RecruiterKind::Situational => return situational::choose(self, seed, orders),
@@ -158,18 +161,39 @@ impl BattleView<'_, '_> {
             }
             let archer = self.kind("archer");
             let swordsman = self.kind("swordsman");
-            let kind =
-                if orders.rotate_pool || !pool.contains(&archer) || !pool.contains(&swordsman) {
-                    pool[(self.round() as usize - 1) % pool.len()]
-                } else if self
-                    .units()
-                    .iter()
-                    .any(|u| u.side == side && self.rules().units[u.kind].family == Family::Archer)
-                {
-                    swordsman
+            let kind = if recruiter != RecruiterKind::Classic
+                || orders.rotate_pool
+                || !pool.contains(&archer)
+                || !pool.contains(&swordsman)
+            {
+                pool[if recruiter == RecruiterKind::Classic {
+                    (self.round() as usize - 1) % pool.len()
                 } else {
-                    archer
-                };
+                    pool.iter()
+                        .enumerate()
+                        .min_by_key(|(_, kind)| {
+                            self.units()
+                                .iter()
+                                .filter(|u| {
+                                    u.side == side
+                                        && !self.rules().units[u.kind].leader
+                                        && self.rules().units[u.kind].family
+                                            == self.rules().units[**kind].family
+                                })
+                                .count()
+                        })
+                        .map(|(index, _)| index)
+                        .unwrap_or(0)
+                }]
+            } else if self
+                .units()
+                .iter()
+                .any(|u| u.side == side && self.rules().units[u.kind].family == Family::Archer)
+            {
+                swordsman
+            } else {
+                archer
+            };
             let mut tiles: Vec<_> = self
                 .placement_tiles(&leader, kind, true)
                 .into_iter()
@@ -204,7 +228,7 @@ impl BattleView<'_, '_> {
                 continue;
             }
             if !self
-                .placement_tiles(&leader, kind, !balanced)
+                .placement_tiles(&leader, kind, recruiter == RecruiterKind::Classic)
                 .iter()
                 .any(|&t| placement_allowed(kind, t))
             {
@@ -214,6 +238,17 @@ impl BattleView<'_, '_> {
             let category = recruit_role(self, kind);
             let deficiency = shares[category.index()] * (represented + 1) as f64
                 - counts[category.index()] as f64;
+            if balanced {
+                choices.push((
+                    kind,
+                    deficiency,
+                    random(
+                        seed,
+                        &format!("balanced:{:?}:{}:{}", side, represented, r.id),
+                    ),
+                ));
+                continue;
+            }
             let recruit = Unit {
                 id: 0,
                 kind,
@@ -290,20 +325,17 @@ impl BattleView<'_, '_> {
         let Some(&(preferred, _, _)) = choices.first() else {
             return None;
         };
-        if self.rules().units[preferred].cost > self.gold()[side.index()] && self.income(side) > 0 {
-            if (recruit_role(self, preferred) == UnitRole::Warrior
-                && counts[UnitRole::Warrior.index()] == 0)
-                || self.rules().units[preferred].cost - self.gold()[side.index()]
-                    <= self.income(side) * 2
-            {
-                return None;
-            }
-        }
-        let Some(&(kind, _, _)) = choices
-            .iter()
-            .find(|&&(k, _, _)| self.rules().units[k].cost <= self.gold()[side.index()])
-        else {
+        // Choose the desired unit before checking the purse. With income, keep
+        // its gold instead of continuously replacing it with cheap recruits.
+        let kind = if self.rules().units[preferred].cost <= self.gold()[side.index()] {
+            preferred
+        } else if self.income(side) > 0 {
             return None;
+        } else {
+            choices
+                .iter()
+                .find(|&&(kind, _, _)| self.rules().units[kind].cost <= self.gold()[side.index()])?
+                .0
         };
         let mut tiles: Vec<_> = self
             .placement_tiles(&leader, kind, true)
@@ -328,6 +360,13 @@ impl BattleView<'_, '_> {
     }
 }
 
+/// Seeded, well-mixed draw; the small deterministic planner jitter alone is
+/// unsuitable for choosing uniformly between adjacent content identifiers.
+fn random(seed: u32, key: &str) -> f64 {
+    let hash = (jitter(seed, key) / 0.05 * u32::MAX as f64) as u32;
+    crate::ai::planner::search::Random(hash).next()
+}
+
 /// Redistribute the authored role proportions over the current roster only.
 fn mixed_shares(roles: impl Iterator<Item = UnitRole>) -> [f64; 4] {
     let mut shares = [0.0; 4];
@@ -348,6 +387,54 @@ mod tests {
     use super::*;
 
     #[test]
+    fn balanced_draws_both_kinds_but_only_within_the_needed_role() {
+        let mut rules = Rules::load().unwrap();
+        let a = rules.types["swordsman"];
+        let b = rules.types["archer"];
+        rules.units[a].role = UnitRole::Warrior;
+        rules.units[b].role = UnitRole::Warrior;
+        let mut game = crate::logic::Game::new(&rules, "mirror");
+        game.units.retain(|u| rules.units[u.kind].leader);
+        game.roster_changed();
+        game.pools = Some([vec![a, b], vec![a, b]]);
+        game.gold[0] = 100;
+        let orders = crate::ai::orders::RecruitmentOrders::default();
+        let draw = |game: &crate::logic::Game<'_>, seed| {
+            let result =
+                RecruiterKind::Balanced.choose_orders(&BattleView::new(game), seed, &orders);
+            assert_eq!(
+                result,
+                RecruiterKind::Balanced.choose_orders(&BattleView::new(game), seed, &orders)
+            );
+            match result.unwrap() {
+                Command::Recruit { kind, .. } => kind.0,
+                _ => panic!("expected recruit"),
+            }
+        };
+        let outcomes: std::collections::BTreeSet<_> =
+            (0..64).map(|seed| draw(&game, seed)).collect();
+        assert_eq!(outcomes.len(), 2);
+        drop(game);
+        rules.units[b].role = UnitRole::Flank;
+        let mut game = crate::logic::Game::new(&rules, "mirror");
+        game.units.retain(|u| rules.units[u.kind].leader);
+        game.roster_changed();
+        game.pools = Some([vec![a, b], vec![a, b]]);
+        game.gold[0] = 100;
+        let leader = game
+            .units
+            .iter()
+            .find(|u| u.side == Side::Player)
+            .unwrap()
+            .clone();
+        let tile = game.placement_tiles(&leader, a, false)[0];
+        game.add(a, Side::Player, tile);
+        for seed in 0..16 {
+            assert_eq!(draw(&game, seed), rules.units[b].id);
+        }
+    }
+
+    #[test]
     fn explicit_arena_pool_rotates_through_expensive_units_instead_of_legacy_two_unit_mix() {
         let rules = Rules::load().unwrap();
         let mut game = crate::logic::Game::new(&rules, "mirror");
@@ -359,12 +446,31 @@ mod tests {
             rules.types["rider"],
         ];
         game.pools = Some([pool.clone(), pool]);
+        let leader = game
+            .units
+            .iter()
+            .find(|u| u.side == Side::Player)
+            .unwrap()
+            .clone();
+        let sites = game.placement_tiles(&leader, rules.types["swordsman"], false);
+        game.add(rules.types["swordsman"], Side::Player, sites[0]);
+        game.add(rules.types["archer"], Side::Player, sites[1]);
         game.round = 3;
         game.gold[Side::Player.index()] = rules.units[rules.types["rider"]].cost;
         let workspace =
             crate::ai::PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Pragmatic);
         let orders = crate::ai::CampaignBlock::Arena.campaign_orders(&game, &workspace);
         assert!(orders.recruitment.rotate_pool);
+        // A selected mount survives a round boundary while saving, rather
+        // than being skipped when the next roster entry comes around.
+        game.gold[0] = 0;
+        assert!(
+            RecruiterKind::Rotation
+                .choose_orders(&BattleView::new(&game), 7, &orders.recruitment)
+                .is_none()
+        );
+        game.round += 1;
+        game.gold[0] = rules.units[rules.types["rider"]].cost;
         let selected = RecruiterKind::Rotation
             .choose_orders(&BattleView::new(&game), 7, &orders.recruitment)
             .unwrap();
@@ -412,4 +518,5 @@ mod frontline;
 mod rotation;
 mod situational;
 
+mod evaluation;
 mod promotion;

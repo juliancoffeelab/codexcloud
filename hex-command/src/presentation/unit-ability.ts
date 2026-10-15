@@ -10,10 +10,11 @@ export interface AbilityInfo {
 export function abilityInfo(unit: Unit): AbilityInfo {
   const type = TYPES[unit.type];
   const facts: string[] = [];
-  if (type.thorns) facts.push(`Adds ${type.thorns} damage per hit to defensive melee retaliation.`);
+  if (type.thorns)
+    facts.push(`Reflects ${type.thorns} damage per incoming melee strike, including killing hits.`);
   if (type.thornAura)
     facts.push(
-      `Adjacent allies gain ${type.thornAura} damage per hit on defensive melee retaliation. The strongest aura applies and stacks with Thornshield.`,
+      `Adjacent allies reflect ${type.thornAura} damage per incoming melee strike. The strongest aura applies and stacks with Thornshield.`,
     );
   if (type.attacks.some((attack) => attack.drain))
     facts.push(

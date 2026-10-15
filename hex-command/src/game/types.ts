@@ -250,7 +250,6 @@ export interface MapDefinition {
   units: StartingUnit[];
 }
 export interface DamageBreakdown {
-  retaliationBonus?: number;
   count?: number;
   total?: number;
   base: number;
@@ -267,6 +266,7 @@ export interface CombatPreview {
   retaliation: number;
 }
 export interface CombatPreviewDetails extends CombatPreview {
+  thornDamage: number;
   healing?: number;
   retaliationHealing?: number;
   recommended: boolean;

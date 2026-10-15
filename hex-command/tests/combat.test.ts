@@ -41,6 +41,30 @@ test("Drain forecasts include healing and agree with resolved combat", () => {
   assert.equal(game.unit(target.id)?.hp ?? 0, choice.enemyForecast.remainingHp);
 });
 
+test("Thorn forecasts show separate reflection even on a killing hit", () => {
+  const thornType = required(
+    (Object.keys(TYPES) as UnitType[]).find((type) => (TYPES[type].thorns ?? 0) > 0),
+  );
+  const { game, attacker, target } = fixture("soldier", thornType);
+  target.hp = 1;
+  const weapon = required(
+    TYPES[attacker.type].attacks.find((attack) => attack.category === "melee"),
+  );
+  const preview = game.previewDetails(attacker, target, weapon.id);
+  const choice = required(
+    attackChoiceViews(game.publishedView(), attacker, target).find(
+      (choice) => choice.id === weapon.id,
+    ),
+  );
+  assert(choice.available);
+  assert.equal(preview.thornDamage, required(TYPES[thornType].thorns) * weapon.count);
+  assert.equal(preview.response, null);
+  assert(choice.retaliationCalculation.equation.includes(`${preview.thornDamage} (thorns:`));
+  game.attack(attacker.id, target.id, weapon.id);
+  assert.equal(game.unit(attacker.id)?.hp ?? 0, choice.playerForecast.remainingHp);
+  assert.equal(game.unit(target.id), undefined);
+});
+
 test("Zero damage attacks remain available and consume actions", async () => {
   const { game, attacker, target } = fixture("bonearcher", "soldier");
   required(game.tile(target.tile)).terrain = "hill";

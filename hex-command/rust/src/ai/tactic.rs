@@ -37,7 +37,9 @@ impl<R: Recruiter, C: Campaigner, P: Planner> Tactic<R, C, P> {
         let recruitment = self
             .recruiter
             .recruit(&mut recruitment_context, &orders.recruitment)?;
-        orders.tactics.promotions = self.recruiter.promotions(recruitment_context.battle());
+        orders.tactics.promotions = self
+            .recruiter
+            .promotions(recruitment_context.battle(), workspace.seed);
         workspace.recruitment_remaining = Some(0);
         workspace.orders = Some(orders.clone());
         workspace

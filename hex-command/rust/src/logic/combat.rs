@@ -55,35 +55,38 @@ impl<'catalog> Game<'catalog> {
         .max(0)
             * i32::from(attack.count)
     }
-    pub(crate) fn retaliation_bonus(
+    /// Fixed reflection per incoming melee strike. It is separate
+    /// from the defender's weapon, survives a killing hit and never drains.
+    pub(crate) fn thorn_damage(
         &self,
-        unit: &Unit,
-        weapon: &Weapon,
         attacker: &Unit,
+        target: &Unit,
+        weapon: usize,
         from: usize,
     ) -> i32 {
-        if weapon.category != Category::Melee {
+        let attack = &self.rules.units[attacker.kind].attacks[weapon];
+        if attack.category != Category::Melee {
             return 0;
         }
         let aura = self
             .units
             .iter()
             .filter(|ally| {
-                ally.id != unit.id
-                    && ally.side == unit.side
+                ally.id != target.id
+                    && ally.side == target.side
                     && self.board.distance(
                         if ally.id == attacker.id {
                             from
                         } else {
                             ally.tile
                         },
-                        unit.tile,
+                        target.tile,
                     ) == 1
             })
             .map(|ally| self.rules.units[ally.kind].thorn_aura)
             .max()
             .unwrap_or(0);
-        self.rules.units[unit.kind].thorns + aura
+        (self.rules.units[target.kind].thorns + aura) * i32::from(attack.count)
     }
     pub(crate) fn drain_healing(
         &self,
@@ -105,8 +108,9 @@ impl<'catalog> Game<'catalog> {
         from: usize,
     ) -> (i32, i32, Option<usize>) {
         let damage = self.damage(unit, target, weapon);
+        let thorns = self.thorn_damage(unit, target, weapon, from);
         if target.hp <= damage {
-            return (damage, 0, None);
+            return (damage, thorns, None);
         }
         let category = self.rules.units[unit.kind].attacks[weapon].category;
         let mut best = None;
@@ -118,19 +122,13 @@ impl<'catalog> Game<'catalog> {
             if self.rules.units[target.kind].attacks[attack].category != category {
                 continue;
             }
-            let bonus = self.retaliation_bonus(
-                target,
-                &self.rules.units[target.kind].attacks[attack],
-                unit,
-                from,
-            );
-            let dealt = self.damage_with_bonus(target, unit, attack, from, bonus);
+            let dealt = self.damage_with_bonus(target, unit, attack, from, 0);
             if best.is_none() || dealt > response {
                 best = Some(attack);
                 response = dealt;
             }
         }
-        (damage, response, best)
+        (damage, response + thorns, best)
     }
     pub(crate) fn best_attack(&self, unit: &Unit, target: &Unit, from: usize) -> Option<usize> {
         let mut best = None;
@@ -191,15 +189,16 @@ impl<'catalog> Game<'catalog> {
         self.units[b].hp -= damage;
         let healed = self.drain_healing(&attacker, &target, weapon, damage);
         self.units[a].hp += healed;
+        let thorns = self.thorn_damage(&attacker, &target, weapon, attacker.tile);
+        self.units[a].hp -= retaliation;
         if self.units[b].hp > 0 {
-            self.units[a].hp -= retaliation;
             if let Some(response) = response {
                 let mut wounded = target.clone();
                 wounded.hp = self.units[b].hp;
                 let mut responding_to = attacker.clone();
                 responding_to.hp += healed;
                 self.units[b].hp +=
-                    self.drain_healing(&wounded, &responding_to, response, retaliation);
+                    self.drain_healing(&wounded, &responding_to, response, retaliation - thorns);
             }
         }
         for (own, opponent, dealt) in [(a, b, damage), (b, a, retaliation)] {

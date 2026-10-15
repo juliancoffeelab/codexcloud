@@ -1,16 +1,62 @@
 //! Earned promotion choices use mechanical matchups and nearby support demand.
 use crate::{ai::context::BattleView, data::*};
 
-pub(super) fn choices(game: &BattleView<'_, '_>, adaptive: bool) -> Vec<(UnitId, UnitTypeId)> {
-    game.units()
+pub(super) fn choices(
+    game: &BattleView<'_, '_>,
+    policy: super::RecruiterKind,
+    seed: u32,
+) -> Vec<(UnitId, UnitTypeId)> {
+    let mut cycles = std::collections::BTreeMap::<Vec<usize>, Vec<usize>>::new();
+    // Surviving promoted siblings carry the branch cycle across turns. Eligible
+    // units in this phase then advance that same counter, independently per tree.
+    let mut units: Vec<_> = game
+        .units()
         .iter()
-        .filter(|unit| unit.side == game.turn())
+        .filter(|u| u.side == game.turn())
+        .collect();
+    units.sort_by_key(|u| u.id);
+    units
+        .into_iter()
         .filter_map(|unit| {
-            let kind = if adaptive {
-                choose(game, unit)
-            } else {
-                game.promotion_options(unit).first().copied()
-            }?;
+            let options = game.promotion_options(unit);
+            if options.is_empty() {
+                return None;
+            }
+            let kind = match policy {
+                super::RecruiterKind::Classic => options[0],
+                super::RecruiterKind::Situational => choose(game, unit)?,
+                super::RecruiterKind::Balanced | super::RecruiterKind::Frontline => {
+                    let draw = super::random(
+                        seed,
+                        &format!("promotion:{}:{}", unit.id, game.rules().units[unit.kind].id),
+                    );
+                    options[(draw * options.len() as f64) as usize]
+                }
+                super::RecruiterKind::Rotation => {
+                    let counts = cycles.entry(options.clone()).or_insert_with(|| {
+                        options
+                            .iter()
+                            .map(|&kind| {
+                                game.units()
+                                    .iter()
+                                    .filter(|ally| {
+                                        ally.side == unit.side && descendant(game, kind, ally.kind)
+                                    })
+                                    .count()
+                            })
+                            .collect()
+                    });
+                    let index = counts
+                        .iter()
+                        .enumerate()
+                        .min_by_key(|(_, count)| **count)
+                        .map(|(index, _)| index)
+                        .unwrap_or(0);
+                    counts[index] += 1;
+                    let result = options[index];
+                    result
+                }
+            };
             Some((
                 UnitId(unit.id),
                 UnitTypeId(game.rules().units[kind].id.clone()),
@@ -19,112 +65,25 @@ pub(super) fn choices(game: &BattleView<'_, '_>, adaptive: bool) -> Vec<(UnitId,
         .collect()
 }
 
-fn choose(game: &BattleView<'_, '_>, unit: &Unit) -> Option<usize> {
-    let options = game.promotion_options(unit);
-    if options.len() <= 1 {
-        return options.first().copied();
-    }
-    let wounds = game.rules().units[unit.kind].hp - unit.hp;
-    let enemies: Vec<_> = game
-        .units()
-        .iter()
-        .filter(|u| u.side != unit.side)
-        .collect();
-    let mut best = None;
-    for kind in options {
-        let rule = &game.rules().units[kind];
-        let mut promoted = unit.clone();
-        promoted.kind = kind;
-        promoted.hp = (rule.hp - wounds).max(1);
-        let mut offense = 0.0;
-        let mut incoming = 0.0;
-        let mut weights = 0.0;
-        for enemy in &enemies {
-            let distance = game.board().distance(unit.tile, enemy.tile) as f64;
-            let weight = 1.0 / (1.0 + distance);
-            let damage = rule
-                .attacks
-                .iter()
-                .enumerate()
-                .map(|(w, attack)| {
-                    let origins = game.attack_origins(attack.category, attack.range);
-                    let mut goals = Vec::new();
-                    origins[enemy.tile].for_each(|tile| {
-                        if game.cost(kind, tile) != u16::MAX {
-                            goals.push(tile);
-                        }
-                    });
-                    let route = game.routes(kind, &goals)[unit.tile];
-                    if route == u16::MAX {
-                        return 0.0;
-                    }
-                    let turns = route as f64 / rule.r#move.max(1) as f64;
-                    let damage = game.damage(&promoted, enemy, w).min(enemy.hp) as f64;
-                    // Drain remains useful after future exchanges, even when healthy now.
-                    damage * (1.0 + attack.drain as f64 / 200.0) / (1.0 + turns * 0.35)
-                })
-                .fold(0.0, f64::max);
-            offense += damage * weight;
-            let enemy_rule = &game.rules().units[enemy.kind];
-            incoming += (0..enemy_rule.attacks.len())
-                .map(|w| game.damage(enemy, &promoted, w) as f64)
-                .fold(0.0, f64::max)
-                * weight;
-            weights += weight;
-        }
-        if weights > 0.0 {
-            offense /= weights;
-            incoming /= weights;
-        }
-        let mut support = 0.0;
-        for ally in game
-            .units()
+fn descendant(game: &BattleView<'_, '_>, root: usize, kind: usize) -> bool {
+    root == kind
+        || game.rules().units[root]
+            .advances_to
             .iter()
-            .filter(|a| a.side == unit.side && a.id != unit.id)
-        {
-            if game.board().distance(unit.tile, ally.tile) as usize > rule.r#move + 1 {
-                continue;
-            }
-            let exposed = enemies.iter().any(|e| {
-                game.board().distance(ally.tile, e.tile)
-                    <= game.rules().units[e.kind].r#move as u16 + 1
-            });
-            let ally_rule = &game.rules().units[ally.kind];
-            let mut healing = 0;
-            let mut aura = 0;
-            for other in game.units().iter().filter(|a| {
-                a.side == unit.side
-                    && a.id != unit.id
-                    && a.id != ally.id
-                    && game.board().distance(a.tile, ally.tile) == 1
-            }) {
-                healing = healing.max(game.rules().units[other.kind].healing);
-                aura = aura.max(game.rules().units[other.kind].thorn_aura);
-            }
-            let demand = ally_rule.hp - ally.hp + if exposed { ally_rule.hp / 5 } else { 0 };
-            let heal = (demand - healing).max(0).min(rule.healing);
-            let hits = ally_rule
-                .attacks
-                .iter()
-                .filter(|a| a.category == Category::Melee)
-                .map(|a| a.count)
-                .max()
-                .unwrap_or(0);
-            let thorns = if exposed {
-                (rule.thorn_aura - aura).max(0) * i32::from(hits)
-            } else {
-                0
-            };
-            let distance = game.board().distance(unit.tile, ally.tile).max(1) as f64;
-            support += (heal + thorns) as f64 / distance;
-        }
-        let durability = promoted.hp as f64 / (1.0 + incoming / promoted.hp as f64);
-        let score = offense * 1.5 + durability * 0.35 + support * 2.0 + rule.r#move as f64 * 0.25;
-        if best.is_none_or(|(previous, _)| score > previous) {
-            best = Some((score, kind));
-        }
-    }
-    best.map(|(_, kind)| kind)
+            .any(|id| descendant(game, game.kind(id), kind))
+}
+
+fn choose(game: &BattleView<'_, '_>, unit: &Unit) -> Option<usize> {
+    let wounds = game.rules().units[unit.kind].hp - unit.hp;
+    game.promotion_options(unit).into_iter().max_by(|&a, &b| {
+        let score = |kind| {
+            let mut promoted = unit.clone();
+            promoted.kind = kind;
+            promoted.hp = (game.rules().units[kind].hp - wounds).max(1);
+            super::evaluation::Assessment::new(game, &promoted).score(game, &promoted)
+        };
+        score(a).total_cmp(&score(b))
+    })
 }
 
 #[cfg(test)]
@@ -171,6 +130,74 @@ mod tests {
         game.units[i].attacked = false;
         (game, id)
     }
+    #[test]
+    fn random_promotion_is_reproducible_and_reaches_both_branches() {
+        let (rules, base, a, b) = fixture();
+        let (game, _) = battle(&rules, base);
+        let view = BattleView::new(&game);
+        for policy in [
+            super::super::RecruiterKind::Balanced,
+            super::super::RecruiterKind::Frontline,
+        ] {
+            let outcomes: std::collections::BTreeSet<_> = (0..64)
+                .map(|seed| {
+                    let result = choices(&view, policy, seed);
+                    assert_eq!(result, choices(&view, policy, seed));
+                    result[0].1.0.clone()
+                })
+                .collect();
+            assert_eq!(
+                outcomes,
+                [rules.units[a].id.clone(), rules.units[b].id.clone()]
+                    .into_iter()
+                    .collect()
+            );
+        }
+    }
+
+    #[test]
+    fn rotation_alternates_promotions_in_one_phase_and_across_turns() {
+        let (rules, base, a, b) = fixture();
+        let (mut game, id) = battle(&rules, base);
+        let leader = game
+            .units
+            .iter()
+            .find(|u| rules.units[u.kind].leader && u.side == Side::Player)
+            .unwrap()
+            .clone();
+        let tile = game.placement_tiles(&leader, base, false)[0];
+        let second = game.add(base, Side::Player, tile);
+        let index = game.index(second).unwrap();
+        game.units[index].experience = Some(1);
+        let result = choices(
+            &BattleView::new(&game),
+            super::super::RecruiterKind::Rotation,
+            7,
+        );
+        assert_eq!(
+            result[0],
+            (UnitId(id), UnitTypeId(rules.units[a].id.clone()))
+        );
+        assert_eq!(
+            result[1],
+            (UnitId(second), UnitTypeId(rules.units[b].id.clone()))
+        );
+        let index = game.index(id).unwrap();
+        game.units[index].kind = a;
+        game.units[index].experience = Some(0);
+        game.round += 1;
+        assert_eq!(
+            choices(
+                &BattleView::new(&game),
+                super::super::RecruiterKind::Rotation,
+                7
+            )[0]
+            .1
+            .0,
+            rules.units[b].id
+        );
+    }
+
     #[test]
     fn resistance_selects_either_branch_without_changing_authored_order() {
         let (mut rules, base, a, b) = fixture();
@@ -247,7 +274,11 @@ mod tests {
             ) -> Result<crate::ai::orders::RecruitmentReport, CommandError> {
                 Ok(Default::default())
             }
-            fn promotions(&mut self, game: &BattleView<'_, '_>) -> Vec<(UnitId, UnitTypeId)> {
+            fn promotions(
+                &mut self,
+                game: &BattleView<'_, '_>,
+                _: u32,
+            ) -> Vec<(UnitId, UnitTypeId)> {
                 game.units()
                     .iter()
                     .filter(|u| game.promotion_options(u).contains(&self.0))

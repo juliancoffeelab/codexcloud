@@ -159,7 +159,7 @@ pub struct UnitRule {
     pub leader: bool,
     #[serde(default)]
     pub healing: i32,
-    /// Extra damage per hit on defensive melee retaliation.
+    /// Damage reflected per incoming melee strike, including killing hits.
     #[serde(default)]
     pub thorns: i32,
     /// Adjacent allies receive the strongest aura, added to their own thorns.

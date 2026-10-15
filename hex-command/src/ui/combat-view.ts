@@ -133,6 +133,12 @@ export function attackChoiceViews(
       retaliationCalculation.equation = damageExplanation(preview.retaliationDetail);
     }
 
+    if (preview.thornDamage) {
+      const weaponDamage = preview.retaliation - preview.thornDamage;
+      retaliationCalculation.description += `; thorns reflect damage per incoming melee strike`;
+      retaliationCalculation.equation += `; ${weaponDamage} + ${preview.thornDamage} (thorns: ${preview.thornDamage / weapon.count} × ${weapon.count} incoming strikes) = ${preview.retaliation}`;
+    }
+
     const enemyForecast = healthForecast(
       target,
       preview.damage,

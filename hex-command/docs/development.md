@@ -122,6 +122,11 @@ would omit. Packaging verifies references, file coverage and archive bytes.
 Credentials are passed to the publication command without being printed or saved.
 On failure, retain version/deployment identifiers for recovery.
 
+Thorns reflect fixed damage per incoming melee strike, including killing hits.
+Reflection is separate from weapon retaliation, ignores armor, cannot drain, and
+does not trigger against ranged attacks. Own thorns stack with the strongest
+adjacent friendly thorn aura.
+
 ## AI contracts
 
 Named presets construct fixed
@@ -131,16 +136,22 @@ explicit orders, applies recruitment to one draft, then plans against that updat
 draft and returns ordered engine commands with recruitment and planning reports.
 Recruiter owns promotion branch selection and passes explicit unit/type choices
 in tactical orders. Planner decides when taking the selected promotion is safe;
-it does not choose a different branch. Situational evaluates available branches
-against enemy resistances, routes and nearby healing or thorn support demand.
-The other recruiters retain their authored first-branch choices.
+it does not choose a different branch. Situational evaluates recruits and available promotion branches against combat
+exchanges, effective HP, terrain routes, movement and marginal healing or thorn
+support. Balanced fills deficient roles with seeded random unit choices and
+uses seeded random promotion branches, as does Frontline for promotions.
+Rotation cycles through the least represented recruit families and promotion
+branches, counting surviving descendants, and retains its next recruit while
+saving. The fixed
+Classic recruiter preserves the live enemy's round-based rotation and first
+promotion branch. Candidates are chosen before affordability; simulation-player
+recruiters can retain gold for an expensive choice when income is available.
 
 Only Campaigner receives authored mission data and progression. Recruiter and
 Planner use restricted mechanical battle views. Generic capture, defeat and visit
 targets supplement typed duties; mission kinds are normalized before reaching a
 planner. Full and Queued use shared search and safety helpers without replacing
-the selected planner. Existing Rotation, Frontline and Balanced selection rules
-remain separate from future recruitment strategies.
+the selected planner. Recruiter selection rules remain independent of tactical planning.
 
 The command-at-a-time host entry point adapts a completed turn plan to the
 existing browser/native command protocol. Its queue exists only during execution
