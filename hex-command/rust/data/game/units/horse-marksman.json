@@ -3,14 +3,14 @@
   "role": "ranger",
   "name": "Horse marksman",
   "race": "human",
-  "hp": 34,
+  "hp": 36,
   "move": 6,
-  "cost": 27,
+  "cost": 24,
   "attacks": [
     {
       "id": "bow",
       "name": "Bow",
-      "damage": 6,
+      "damage": 7,
       "count": 3,
       "damageType": "pierce",
       "category": "ranged",

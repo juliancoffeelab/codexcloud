@@ -5,7 +5,7 @@
   "race": "skeletons",
   "hp": 26,
   "move": 3,
-  "cost": 16,
+  "cost": 15,
   "attacks": [
     {
       "id": "soul-drain",

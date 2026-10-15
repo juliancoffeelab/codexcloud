@@ -16,7 +16,7 @@
   },
   "hp": 16,
   "move": 5,
-  "cost": 5,
+  "cost": 6,
   "attacks": [
     {
       "id": "knife",

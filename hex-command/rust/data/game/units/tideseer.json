@@ -20,7 +20,7 @@
     {
       "id": "tidebolt",
       "name": "Tide bolt",
-      "damage": 4,
+      "damage": 8,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,

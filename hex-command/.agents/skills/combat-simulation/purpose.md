@@ -4,8 +4,15 @@ Read this for AI policy reviews and when interpreting simulation results.
 
 Simulations test roster balance and whether simulation players can finish
 objectives using the browser's engine rules. They also measure trial execution
-cost. **Classic is the live enemy and fixed comparison opponent.** Making it
-stronger is not the purpose of simulation-player work.
+cost. **Classic is the live enemy and the default policy/campaign comparison
+opponent.** Making it stronger is not the purpose of simulation-player work.
+
+For faction and unit balance, use matching Situational policies and inspect each
+opposing faction, terrain and rank separately. Classic can saturate before a
+roster is balanced. Pooling recruiters or averaging easy and hard faction
+matchups can hide failures; a pooled result alone does not establish a terrain
+advantage or a balanced head-to-head matchup. Validate on additional seeds after
+tuning, and retain campaign checks against Classic with authored recruitment pools.
 
 The intended player strategies are infantry-only, fair roster use and
 situational selection. Compare them against the same fixed enemy under matching

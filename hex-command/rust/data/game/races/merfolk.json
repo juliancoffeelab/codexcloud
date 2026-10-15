@@ -3,7 +3,11 @@
   "name": "Merfolk",
   "terrainModifiers": {
     "plains": {
-      "cost": 1
+      "cost": 1,
+      "damageModifiers": {
+        "melee": 1,
+        "ranged": 1
+      }
     },
     "village": {
       "cost": 1
@@ -21,14 +25,16 @@
       "passable": true,
       "damageModifiers": {
         "melee": -1,
-        "ranged": -2
+        "ranged": -2,
+        "pierce": -1
       }
     },
     "ford": {
       "cost": -1,
       "damageModifiers": {
-        "melee": -1,
-        "ranged": -1
+        "melee": -2,
+        "ranged": -2,
+        "pierce": -1
       }
     },
     "marsh": {
@@ -57,6 +63,12 @@
       "damageModifiers": {
         "melee": 2,
         "ranged": 2
+      }
+    },
+    "road": {
+      "damageModifiers": {
+        "melee": 1,
+        "ranged": 1
       }
     }
   },

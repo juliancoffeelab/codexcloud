@@ -5,12 +5,12 @@
   "race": "merfolk",
   "hp": 27,
   "move": 4,
-  "cost": 19,
+  "cost": 17,
   "attacks": [
     {
       "id": "crushing-wave",
       "name": "Crushing Wave",
-      "damage": 16,
+      "damage": 19,
       "count": 1,
       "damageType": "impact",
       "category": "ranged",
@@ -33,9 +33,25 @@
     "pierce": 0,
     "impact": 0
   },
-  "terrainModifiers": {},
+  "terrainModifiers": {
+    "water": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    },
+    "ford": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    },
+    "marsh": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    }
+  },
   "ability": "Crushing wave",
-  "description": "A master merfolk damage caster whose crushing waves threaten armored and skeletal foes.",
+  "description": "A master merfolk damage caster whose crushing waves threaten armored and skeletal foes. Master mariners gain additional ranged cover in water, shallows and marsh.",
   "level": 3,
   "family": "wavemender",
   "advancesTo": [],

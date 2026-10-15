@@ -3,9 +3,9 @@
   "role": "ranger",
   "name": "Horse bowman",
   "race": "human",
-  "hp": 27,
+  "hp": 30,
   "move": 6,
-  "cost": 20,
+  "cost": 18,
   "attacks": [
     {
       "id": "bow",

@@ -35,9 +35,23 @@
     "impact": -1
   },
   "ability": "Keeper of the grove",
-  "description": "An experienced woodland leader who holds the groves and directs reinforcements.",
+  "description": "An experienced woodland leader who holds the groves and directs reinforcements. Veteran guardians use extra cover in forests and groves.",
   "level": 2,
   "family": "wildkeeper",
   "experienceNeeded": 18,
-  "advancesTo": ["woodland-grove-oracle"]
+  "advancesTo": ["woodland-grove-oracle"],
+  "terrainModifiers": {
+    "forest": {
+      "damageModifiers": {
+        "melee": -1,
+        "ranged": -1
+      }
+    },
+    "grove": {
+      "damageModifiers": {
+        "melee": -1,
+        "ranged": -1
+      }
+    }
+  }
 }

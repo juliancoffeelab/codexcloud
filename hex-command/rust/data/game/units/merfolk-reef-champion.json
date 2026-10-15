@@ -33,9 +33,25 @@
     "pierce": -1,
     "impact": 0
   },
-  "terrainModifiers": {},
+  "terrainModifiers": {
+    "water": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    },
+    "ford": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    },
+    "marsh": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    }
+  },
   "ability": "Reef shield",
-  "description": "A shielded merfolk spear veteran who holds the shallows and uses a blunt shell club against resistant foes.",
+  "description": "A shielded merfolk spear veteran who holds the shallows and uses a blunt shell club against resistant foes. Master mariners gain additional ranged cover in water, shallows and marsh.",
   "level": 3,
   "family": "reefguard",
   "advancesTo": [],

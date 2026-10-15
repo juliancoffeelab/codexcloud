@@ -16,6 +16,14 @@ Use the [Rust toolchain skill](../rust-toolchain/SKILL.md) for build problems.
 npm run ai:simulate
 ```
 
+For faction balance against the adaptive recruiter, use matching tactics:
+
+```sh
+npm run ai:simulate -- --mode arena --policies situational --self-play --seeds 50
+```
+
+Inspect individual opposing-faction matchups, not only pooled race averages.
+
 Cargo builds when needed, runs the full panel and generates the report. Defaults:
 10 seeds, all arena tactics against Classic on all maps, and Balanced/Rotated/Situational
 campaigns against Classic. Default round caps are 30 for arenas and 100 per

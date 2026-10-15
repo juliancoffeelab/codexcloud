@@ -23,9 +23,25 @@
     "pierce": 0,
     "impact": 0
   },
-  "terrainModifiers": {},
+  "terrainModifiers": {
+    "water": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    },
+    "ford": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    },
+    "marsh": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    }
+  },
   "ability": "Heavy trident",
-  "description": "A veteran two-handed trident fighter who delivers powerful piercing blows in the shallows.",
+  "description": "A veteran two-handed trident fighter who delivers powerful piercing blows in the shallows. Master mariners gain additional ranged cover in water, shallows and marsh.",
   "level": 3,
   "family": "reefguard",
   "advancesTo": [],

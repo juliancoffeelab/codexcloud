@@ -5,7 +5,7 @@
   "race": "skeletons",
   "hp": 23,
   "move": 3,
-  "cost": 16,
+  "cost": 15,
   "attacks": [
     {
       "id": "boneburst",

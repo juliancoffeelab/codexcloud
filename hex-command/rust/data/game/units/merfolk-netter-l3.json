@@ -33,9 +33,25 @@
     "pierce": 0,
     "impact": 0
   },
-  "terrainModifiers": {},
+  "terrainModifiers": {
+    "water": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    },
+    "ford": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    },
+    "marsh": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    }
+  },
   "ability": "Weighted nets",
-  "description": "A veteran netter who delivers repeated ranged impact damage with heavy weighted nets.",
+  "description": "A veteran netter who delivers repeated ranged impact damage with heavy weighted nets. Master mariners gain additional ranged cover in water, shallows and marsh.",
   "level": 3,
   "family": "harpooner",
   "advancesTo": [],

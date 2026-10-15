@@ -27,7 +27,7 @@
     {
       "id": "spear",
       "name": "Spear",
-      "damage": 13,
+      "damage": 12,
       "count": 1,
       "damageType": "pierce",
       "category": "melee",

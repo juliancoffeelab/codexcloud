@@ -10,7 +10,7 @@
     {
       "id": "mace",
       "name": "Mace",
-      "damage": 6,
+      "damage": 7,
       "count": 3,
       "damageType": "impact",
       "category": "melee",
@@ -23,9 +23,25 @@
     "pierce": 0,
     "impact": 0
   },
-  "terrainModifiers": {},
+  "terrainModifiers": {
+    "water": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    },
+    "ford": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    },
+    "marsh": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    }
+  },
   "ability": "Heavy mace",
-  "description": "A durable merfolk mace veteran whose repeated impact blows break armor and brittle bones.",
+  "description": "A durable merfolk mace veteran whose repeated impact blows break armor and brittle bones. Master mariners gain additional ranged cover in water, shallows and marsh.",
   "level": 3,
   "family": "merfolk-maceguard",
   "advancesTo": [],

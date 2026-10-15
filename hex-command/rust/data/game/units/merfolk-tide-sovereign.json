@@ -20,7 +20,7 @@
     {
       "id": "tidebolt",
       "name": "Tidebolt",
-      "damage": 7,
+      "damage": 11,
       "count": 1,
       "damageType": "impact",
       "category": "ranged",
@@ -33,9 +33,25 @@
     "pierce": 0,
     "impact": 0
   },
-  "terrainModifiers": {},
+  "terrainModifiers": {
+    "water": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    },
+    "ford": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    },
+    "marsh": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    }
+  },
   "ability": "Command",
-  "description": "The senior merfolk commander protects the coast with trident strikes and ranged tide magic.",
+  "description": "The senior merfolk commander protects the coast with trident strikes and ranged tide magic. Master mariners gain additional ranged cover in water, shallows and marsh.",
   "level": 3,
   "family": "tidekeeper",
   "advancesTo": [],

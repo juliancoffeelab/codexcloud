@@ -36,14 +36,14 @@
   "terrainModifiers": {
     "forest": {
       "damageModifiers": {
-        "melee": -1,
-        "ranged": -1
+        "melee": -2,
+        "ranged": -2
       }
     },
     "grove": {
       "damageModifiers": {
-        "melee": -1,
-        "ranged": -1
+        "melee": -2,
+        "ranged": -2
       }
     }
   },

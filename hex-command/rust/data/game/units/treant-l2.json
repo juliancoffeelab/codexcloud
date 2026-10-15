@@ -23,9 +23,22 @@
     "pierce": -1,
     "impact": 0
   },
-  "terrainModifiers": {},
+  "terrainModifiers": {
+    "forest": {
+      "damageModifiers": {
+        "melee": -1,
+        "ranged": -1
+      }
+    },
+    "grove": {
+      "damageModifiers": {
+        "melee": -1,
+        "ranged": -1
+      }
+    }
+  },
   "ability": "Living bark",
-  "description": "A slow, resilient forest guardian. Living bark resists blades and arrows; heavy branches crush skeletal foes.",
+  "description": "A slow, resilient forest guardian. Living bark resists blades and arrows; heavy branches crush skeletal foes. Veteran guardians use extra cover in forests and groves.",
   "level": 2,
   "family": "treant",
   "advancesTo": ["treant-l3"],

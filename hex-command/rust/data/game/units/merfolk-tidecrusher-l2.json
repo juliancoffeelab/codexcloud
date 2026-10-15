@@ -5,12 +5,12 @@
   "race": "merfolk",
   "hp": 21,
   "move": 4,
-  "cost": 13,
+  "cost": 12,
   "attacks": [
     {
       "id": "crushing-wave",
       "name": "Crushing Wave",
-      "damage": 12,
+      "damage": 14,
       "count": 1,
       "damageType": "impact",
       "category": "ranged",
