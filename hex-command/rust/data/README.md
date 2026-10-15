@@ -61,15 +61,18 @@ A lineup is a faction. Its complete L1 → L2 → L3 progression tree is authore
 `pixel/art/units/lineups/`; `gameplayId` connects a sprite to a differently named
 stable gameplay ID. Enabled factions must implement every unit in their lineup.
 Campaign recruitment remains an explicit, lore-specific list, independent of the
-faction's full roster. Cavalry costs more than infantry and has additional movement
-costs in woods and rough ground.
+faction's full roster. See [army design](../../.agents/skills/combat-simulation/design.md)
+for faction identities and unit-role tradeoffs.
 
 `healing` restores adjacent allies at turn start; only the strongest healer applies.
-`thorns` adds damage per hit to defensive melee retaliation. `thornAura` grants
+`thorns` reflects fixed damage per incoming initiating melee strike while
+defending, including killing hits. Reflection is separate from weapon retaliation,
+ignores armour, cannot drain, and does not trigger against ranged attacks or
+retaliation when the thorn-bearing unit attacks. `thornAura` grants
 adjacent allies the strongest nearby aura, added to their own thorns; multiple
-auras do not accumulate. These effects disappear immediately when their source
-leaves or dies. Weapon `drain` is a percentage from 0 to 100: a surviving wielder
-heals that fraction of actual HP removed, rounded down and capped at maximum HP.
+auras do not accumulate. Aura coverage ends when its source leaves or dies. Weapon `drain` is a
+percentage from 0 to 100: the wielder heals that fraction of actual HP removed,
+rounded down and capped at maximum HP.
 An initiating attack drains before retaliation; a surviving defender also drains
 when replying. Overkill and zero damage cannot create extra healing.
 

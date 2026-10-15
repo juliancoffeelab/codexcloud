@@ -5,8 +5,9 @@ description: Use for Hex Command AI policy reviews or changes, combat simulation
 
 # Combat simulation
 
-Work from `hex-command/`. Read [purpose.md](purpose.md) before AI policy reviews
-or interpreting balance and campaign results. Read [implementation.md](implementation.md)
+Work from `hex-command/`. Read [design.md](design.md) for army design principles
+and [purpose.md](purpose.md) before AI policy reviews or interpreting balance
+and campaign results. Read [implementation.md](implementation.md)
 only when changing or debugging the harness, analyzer, recording or performance.
 Use the [Rust toolchain skill](../rust-toolchain/SKILL.md) for build problems.
 
@@ -183,9 +184,10 @@ differences. These are one-phase counterfactuals, not long-term win attribution;
 the first observed positions are correlated within battles. Full profiles,
 turn-start gold and ownership are preserved, without repeating begin-turn effects.
 
-All exports keep faction, tactic, opposing tactic and map separate, exclude
-same-faction games, and pool other opposing factions. All-map shares use summed
-counts. Battle presence means a family appeared at any recorded point, including
+Presence, support and battlefield-value arena exports keep faction, tactic,
+opposing tactic and map separate, exclude same-faction games, and pool other
+opposing factions. Raw `unit_events.csv` also retains same-faction games; filter
+those explicitly for faction comparisons. All-map shares use summed counts. Battle presence means a family appeared at any recorded point, including
 initial units that died before their first census; field share weights survival
 through unit-turns. Neither measure is a unit win rate. Army damage shares retain
 native combat attribution: aura reflection belongs to the defender in that

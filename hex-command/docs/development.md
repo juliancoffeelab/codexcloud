@@ -98,10 +98,10 @@ editing workflows live in the artwork skills linked below.
 
 The selected unit panel displays attack counts, damage per hit and permanent modifiers.
 Rust applies armor and terrain modifiers per hit, then multiplies by count.
-The attack, retaliation, death, experience and turn flow remain as on main. Terrain
-effects show movement and resolved incoming-damage modifiers. Numeric abilities
+Terrain effects show movement and resolved incoming-damage modifiers. Numeric abilities
 such as healing come from catalog metadata; descriptions explain roles without
-duplicating the values.
+duplicating the values. See the [authored catalog](../rust/data/README.md)
+for healing, thorns and life-drain rules.
 
 Restoration caps saved HP at the current unit maximum while preserving resolved
 game state. Saves never contain queued AI actions or planning workspaces.
@@ -113,7 +113,8 @@ Simulation reports can audit actual army composition and support use with
 for a saved run. Presence includes initial troops and promotions and weights
 survival by living unit-turns, excluding commanders. Engine records attribute
 actual adjacent healing and thorn reflection to their sources; equal strongest
-sources share credit. See the combat-simulation skill for export definitions.
+sources share credit. See the [combat-simulation skill](../.agents/skills/combat-simulation/SKILL.md)
+for export definitions.
 
 Fresh runs also export armour/terrain damage prevention, objective capture and
 occupation, casualty gold and leader-risk evidence. Use analyzer options
@@ -137,11 +138,6 @@ would omit. Packaging verifies references, file coverage and archive bytes.
 Credentials are passed to the publication command without being printed or saved.
 On failure, retain version/deployment identifiers for recovery.
 
-When defending, thorns reflect fixed damage per incoming melee strike, including killing hits.
-Reflection is separate from weapon retaliation, ignores armor, cannot drain, and
-does not trigger against ranged attacks. Own thorns stack with the strongest
-adjacent friendly thorn aura. Attacking does not reflect the enemy's retaliation.
-
 ## AI contracts
 
 Named presets construct fixed
@@ -151,30 +147,16 @@ explicit orders, applies recruitment to one draft, then plans against that updat
 draft and returns ordered engine commands with recruitment and planning reports.
 Recruiter owns promotion branch selection and passes explicit unit/type choices
 in tactical orders. Planner decides when taking the selected promotion is safe;
-it does not choose a different branch. Situational evaluates recruits and available promotion branches against combat
-exchanges, effective HP, terrain routes, movement and marginal healing or thorn
-support. Support recruitment assumes one recipient, capped by the allies
-reachable within one move, and averages their marginal benefit. Existing adjacent
-coverage is exact; remote providers independently overlap with probability
-`min(1, 1 / possible recipients)`. Only the improvement over the strongest
-covering provider counts. This coverage value is an explicit estimate, not a
-runtime-measured statistic. Intrinsic thorns and thorn auras use
-`min(6, melee enemies / friendly units) * average melee strikes`; the friendly
-count includes the candidate. Enemies are classified by their preferred combat
-exchange against the relevant defender, including armor, retaliation, drain,
-kills, survival and the proposed aura. Preferred ranged attacks contribute zero.
-Aura value uses only its marginal strength and the expected recipient count;
-intrinsic reflection is removed from ordinary retaliation scoring to avoid
-counting it twice. Fixed damage per strike in actual combat is unchanged.
-Balanced fills deficient roles with seeded random unit choices and
-uses seeded random promotion branches, as does Frontline for promotions.
-Rotation cycles through the least represented recruit families and retains its
-next recruit while saving. Its promotion branch cycle advances by round and
-alternates eligible units within each round, independently per tree; casualties
-do not reset it. The fixed
-Classic recruiter preserves the live enemy's round-based rotation and first
-promotion branch. Candidates are chosen before affordability; simulation-player
-recruiters can retain gold for an expensive choice when income is available.
+it does not choose a different branch. Simulation-player recruiters can retain
+gold for an expensive choice when income is available; Classic preserves the
+fixed live-enemy behavior.
+
+Policy descriptions and evaluation methodology live in the
+[combat-simulation purpose](../.agents/skills/combat-simulation/purpose.md).
+[Recruiter evaluation](../rust/src/ai/recruiter/evaluation.rs) owns scoring
+formulas and support estimates; estimates must remain distinguishable from
+recorded effects. [Army design](../.agents/skills/combat-simulation/design.md)
+defines the intended faction and unit roles.
 
 Only Campaigner receives authored mission data and progression. Recruiter and
 Planner use restricted mechanical battle views. Generic capture, defeat and visit

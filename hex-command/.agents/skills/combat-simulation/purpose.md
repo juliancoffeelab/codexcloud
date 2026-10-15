@@ -1,6 +1,7 @@
 # Purpose and policy roles
 
 Read this for AI policy reviews and when interpreting simulation results.
+[Army design](design.md) defines faction identities and unit-role tradeoffs.
 
 Simulations test roster balance and whether simulation players can finish
 objectives using the browser's engine rules. They also measure trial execution
@@ -24,20 +25,9 @@ opponents and maps, particularly under Balanced and Situational. A fair direct
 matchup is desirable but not required; never infer overall parity from it alone.
 Some stalemates between them are expected. Rotation and Rush are simple baselines,
 not the primary targets for recruitment intelligence or numeric balance. Preserve meaningful cavalry use and
-lore-specific campaign recruitment pools when tuning numeric balance.
-
-Defensive infantry earns its place through durability. Infantry hitters should
-lead damage output, followed by ranged damage units; support weapon damage should
-be comparable to defensive infantry rather than dedicated ranged troops. Cheap
-flankers trade combat strength for speed and objective reach. Expensive mounted
-units may buy greater durability or hitter-level damage, but mounted archers
-should not outgun equivalent foot archers simply because they are mounted.
-Treants fill Woodland's expensive heavy-unit niche in place of cavalry: they
-combine strong durability with a meaningful single blow, paying through price
-and slow movement. Preserve their defensive identity and tune damage or price
-when their total contribution is excessive. Movement above three needs
-a lore reason, such as horses, wolves or scouts trained for speed; terrain access
-and cheaper forest movement also count toward a faction's mobility advantage.
+lore-specific campaign recruitment pools when tuning numeric balance. Audit
+movement above three against the lore; terrain access and movement costs also
+contribute to mobility.
 
 The intended player strategies are infantry-only, fair roster use and
 situational selection. Compare them against the same fixed enemy under matching
@@ -46,19 +36,13 @@ infantry baseline without relying on repeated selection of one dominant unit.
 No acceptable numeric gap is established; report differences by race, map and
 opponent.
 
-Situational is an adaptive recruiter, selectable with `--with=situational,-,queued`.
-It scores recruit candidates before affordability by engine combat exchanges,
-effective HP, terrain routes and movement, marginal healing and thorn support.
-Durability uses HP times the distance-weighted strongest raw enemy damage divided
-by distance-weighted damage from enemies' preferred attacks against the candidate.
-The raw reference is a common unarmoured, terrain-neutral target, independent of
-the candidate's armour or the weapon it causes an enemy to choose. Incoming damage
-includes terrain protection and per-strike armour; preferred attacks use the same
-exchange valuation as thorns. The existing five-times-HP ceiling keeps immunity
-finite. Army-size pressure does not multiply effective HP.
-It can save income for a more useful expensive recruit. A soft penalty for repeated families encourages
-variety without fixed role quotas. Campaigner recruitment requirements take priority;
-reserved lanes remain clear. It adds no recruitment cap.
+Situational evaluates combat exchanges, effective HP, routes, movement and
+marginal support, and can save for expensive recruits. Campaign recruitment
+requirements take priority. Scoring formulas and coefficients belong in
+[recruiter evaluation](../../../rust/src/ai/recruiter/evaluation.rs);
+[promotion selection](../../../rust/src/ai/recruiter/promotion.rs) uses the same
+assessment. Support coverage is an estimate, distinct from observed runtime
+support effects.
 
 ## Current presets
 
