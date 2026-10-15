@@ -111,7 +111,9 @@ from proposed cause. Claim regressions only with matching baseline conditions.
    as rows and maps as columns. Cells are `78.8% (caps: 13)`: percentages and
    caps, without win counts. Do not combine tactics. Include the Classic-player comparison; omit reverse
    Balanced-versus-player tables unless requested. Use an explicitly requested
-   alternative opponent when supplied.
+   alternative opponent when supplied. Exclude all same-faction games from these
+   faction tables so every tactic faces the same three opposing factions. Report
+   same-faction tactic comparisons separately when useful.
    Display Coastal as Merfolk and put Merfolk last. Order map columns as Plains (open), Forests
    (wooded), Crossing (crossings), Islands (islands).
 3. Follow with **the campaign table**, campaigns as rows and simulation-player

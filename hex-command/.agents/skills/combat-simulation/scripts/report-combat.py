@@ -335,7 +335,7 @@ def campaign_prose(campaigns, stages, failures, events):
 def arena_race_map_summary(rows, opponent='classic'):
     selected = [r for r in rows if r['opponentPolicy'] == opponent
                 and (r['policy'] != opponent or r['race'] != r['opponentRace'])]
-    return combine(selected, ['race', 'map', 'policy'], cross=False)
+    return combine(selected, ['race', 'map', 'policy'], cross=True)
 
 
 def overview(campaigns, stages, failures, events, arena_rows, opponent=None):
@@ -343,7 +343,7 @@ def overview(campaigns, stages, failures, events, arena_rows, opponent=None):
     lines = ['# Recorded simulation findings', '']
     if arena_rows:
         lines += [f'## Arena wins by race and map against {opponent.title()}', '',
-                  'Each cell shows wins/all games (win percentage), then round caps. Caps remain in the denominator. Opponent races, seats and initiatives are pooled; player policies stay separate. Identical race/policy self-play is excluded. Detailed opponent and equal-policy comparisons follow.', '']
+                  'Each cell shows wins/all games (win percentage), then round caps. Caps remain in the denominator. Opponent races, seats and initiatives are pooled; player policies stay separate. All same-faction games are excluded so every tactic faces the same opposing-faction pool. Detailed opponent and equal-policy comparisons follow.', '']
         summary = arena_race_map_summary(arena_rows, opponent)
         factions = sorted({r['race'] for r in arena_rows}, key=race_order)
         maps = sorted({r['map'] for r in arena_rows}, key=map_order)

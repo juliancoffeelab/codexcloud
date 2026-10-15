@@ -129,6 +129,11 @@ class CompleteDataTests(unittest.TestCase):
         self.assertEqual([(r['family'], r['purchased'], r['totalPurchases'], r['sharePercent']) for r in pooled], [('other',1,4,25.0),('tank',3,4,75.0)])
         summary = report.arena_race_map_summary([dict(race='a',opponentRace='b',policy='mixed',opponentPolicy='balanced',map='open',games=2,wins=1,losses=0,caps=1,leaderWins=1,territoryWins=0,rounds=40)], 'balanced')
         self.assertEqual((summary[0]['games'],summary[0]['winRate'],summary[0]['caps']), (2,50.0,1))
+        mirror = dict(race='a',opponentRace='a',policy='mixed',opponentPolicy='balanced',map='open',games=100,wins=100,losses=0,caps=0,leaderWins=100,territoryWins=0,rounds=100)
+        cross = dict(mirror, opponentRace='b', games=2, wins=1, caps=1, leaderWins=1)
+        fixed = report.arena_race_map_summary([mirror,cross], 'balanced')
+        self.assertEqual((fixed[0]['games'],fixed[0]['winRate']), (2,50.0))
+
 
     def test_campaign_overview_keeps_diplomacy_outcomes_separate(self):
         rows = [dict(campaign='choice', player='mixed', enemy='classic', maxRounds=30,
