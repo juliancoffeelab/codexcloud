@@ -36,7 +36,7 @@
   "terrainModifiers": {},
   "ability": "Thorn aura",
   "description": "A forest support caster whose adjacent allies reflect damage per incoming melee strike, stacking with their own Thornshield.",
-  "thornAura": 2,
+  "thornAura": 6,
   "level": 2,
   "family": "thorncaller",
   "advancesTo": ["woodland-thornbinder"],

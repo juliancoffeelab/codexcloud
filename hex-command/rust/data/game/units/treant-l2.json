@@ -10,7 +10,7 @@
     {
       "id": "bough",
       "name": "Bough",
-      "damage": 20,
+      "damage": 19,
       "count": 1,
       "damageType": "impact",
       "category": "melee",

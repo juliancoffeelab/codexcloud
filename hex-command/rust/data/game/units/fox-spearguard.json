@@ -26,7 +26,7 @@
   "terrainModifiers": {},
   "ability": "Thornshield",
   "description": "A forest spear guardian whose thorn shield reflects damage per incoming melee strike.",
-  "thorns": 1,
+  "thorns": 2,
   "level": 1,
   "family": "fox-spearguard",
   "advancesTo": ["fox-spearguard-l2"],
