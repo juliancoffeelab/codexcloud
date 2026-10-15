@@ -13,6 +13,18 @@ struct Support {
     thorns: f64,
     routes: Rc<Vec<u16>>,
 }
+#[derive(serde::Serialize)]
+pub(super) struct Score {
+    pub offense: f64,
+    pub effective_hp: f64,
+    pub access: f64,
+    pub retaliation: f64,
+    pub support: f64,
+    pub mobility: f64,
+    pub captures: f64,
+    pub total: f64,
+}
+
 pub(super) struct Assessment {
     approaches: Vec<Approach>,
     support: Vec<Support>,
@@ -163,6 +175,9 @@ impl Assessment {
         }
     }
     pub(super) fn score(&self, game: &BattleView<'_, '_>, unit: &Unit) -> f64 {
+        self.breakdown(game, unit).total
+    }
+    pub(super) fn breakdown(&self, game: &BattleView<'_, '_>, unit: &Unit) -> Score {
         let rule = &game.rules().units[unit.kind];
         let enemies: Vec<_> = game
             .units()
@@ -288,9 +303,19 @@ impl Assessment {
                     .max(0.0)
             })
             .sum::<f64>();
-        (offense * 1.5 + durability * access * 0.35 + retaliation * access * 0.5)
+        let total = (offense * 1.5 + durability * access * 0.35 + retaliation * access * 0.5)
             * (1.0 + self.mobility * 0.05 + captures * 0.1)
-            + support * 2.0
+            + support * 2.0;
+        Score {
+            offense,
+            effective_hp: durability,
+            access,
+            retaliation,
+            support,
+            mobility: self.mobility,
+            captures,
+            total,
+        }
     }
 }
 

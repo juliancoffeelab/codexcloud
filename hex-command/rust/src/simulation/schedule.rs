@@ -100,8 +100,8 @@ pub struct ScheduleOptions {
     pub campaign_diplomacy: BTreeMap<String, Vec<Diplomacy>>,
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub self_play: bool,
-    #[serde(skip_serializing_if = "std::ops::Not::not")]
-    pub vs_classic: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub opponent: Option<Policy>,
 }
 impl ScheduleOptions {
     /// Resolve authored simulation defaults without starting any matches.
@@ -136,7 +136,7 @@ impl ScheduleOptions {
             campaign_players: None,
             campaign_enemies: None,
             self_play: false,
-            vs_classic: false,
+            opponent: None,
             campaign_diplomacy: rules
                 .campaigns
                 .iter()
@@ -181,20 +181,17 @@ impl ScheduleOptions {
         let arena = if self.mode == Mode::Campaign {
             0
         } else {
-            let opponents = if self.vs_classic {
+            let opponents = if let Some(opponent) = self.opponent {
                 let nonclassic = if self.with.is_some() {
                     1
                 } else {
-                    self.policies
-                        .iter()
-                        .filter(|p| **p != Policy::Classic)
-                        .count()
+                    self.policies.iter().filter(|p| **p != opponent).count()
                 };
                 nonclassic
                     .checked_mul(2)
                     .and_then(|n| {
                         n.checked_add(usize::from(
-                            self.with.is_none() && self.policies.contains(&Policy::Classic),
+                            self.with.is_none() && self.policies.contains(&opponent),
                         ))
                     })
                     .and_then(|n| n.checked_mul(self.armies.len()))
@@ -249,8 +246,8 @@ impl ScheduleOptions {
 }
 /// Deterministic schedule order matches the TypeScript comparison harness.
 pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, SimulationError> {
-    if options.vs_classic && options.self_play {
-        return Err("--vs-classic cannot be combined with --self-play".into());
+    if options.opponent.is_some() && options.self_play {
+        return Err("--vs cannot be combined with --self-play".into());
     }
     if options.self_play && options.mode != Mode::Arena {
         return Err("--self-play requires --mode arena".into());
@@ -264,8 +261,8 @@ pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, Simulatio
     configs.try_reserve(count).map_err(|error| {
         SimulationError::InvalidConfig(format!("Schedule allocation failed: {error}"))
     })?;
-    let mut participants: Vec<_> = if options.with.is_some() && options.vs_classic {
-        vec![(Policy::Classic, None)]
+    let mut participants: Vec<_> = if options.with.is_some() && options.opponent.is_some() {
+        vec![(options.opponent.unwrap(), None)]
     } else {
         options
             .policies
@@ -273,12 +270,13 @@ pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, Simulatio
             .map(|policy| (*policy, None))
             .collect()
     };
-    if options.vs_classic
-        && !participants
+    if let Some(opponent) = options.opponent {
+        if !participants
             .iter()
-            .any(|(policy, _)| *policy == Policy::Classic)
-    {
-        participants.push((Policy::Classic, None));
+            .any(|(policy, blocks)| *policy == opponent && blocks.is_none())
+        {
+            participants.push((opponent, None));
+        }
     }
     if let Some(selection) = options.with {
         participants.push((Policy::Balanced, Some(selection.resolve(true))));
@@ -328,15 +326,18 @@ pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, Simulatio
             for landscape in &options.landscapes {
                 for a in 0..entrants.len() {
                     for b in a..entrants.len() {
-                        if options.vs_classic
-                            && ((!matches!(entrants[a].1, Policy::Classic)
-                                && !matches!(entrants[b].1, Policy::Classic))
-                                || (entrants[a].1 == Policy::Classic
-                                    && entrants[b].1 == Policy::Classic
+                        if let Some(opponent) = options.opponent {
+                            let fixed = |index: usize| {
+                                entrants[index].1 == opponent && entrants[index].2.is_none()
+                            };
+                            if (!fixed(a) && !fixed(b))
+                                || (fixed(a)
+                                    && fixed(b)
                                     && !(options.with.is_none()
-                                        && options.policies.contains(&Policy::Classic))))
-                        {
-                            continue;
+                                        && options.policies.contains(&opponent)))
+                            {
+                                continue;
+                            }
                         }
                         if options.self_play
                             && (entrants[a].1, entrants[a].2) != (entrants[b].1, entrants[b].2)
@@ -406,7 +407,7 @@ mod tests {
         let mut options = ScheduleOptions::defaults(&rules).unwrap();
         options.mode = Mode::Arena;
         options.seeds = 1;
-        options.vs_classic = true;
+        options.opponent = Some(Policy::Balanced);
         options.with = Some(WithSelection {
             recruiter: Some(crate::ai::Recruiter::Rotation),
             campaign: None,
@@ -423,9 +424,9 @@ mod tests {
         assert_eq!(fixed.len(), 16);
         assert_eq!(fixed.len(), options.expected_games().unwrap());
         assert!(fixed.iter().all(|config| matches!(config, MatchConfig::Arena(config) if
-            (config.player_blocks.is_some() && config.enemy == crate::ai::Policy::Classic && config.enemy_blocks.is_none())
-            || (config.enemy_blocks.is_some() && config.player == crate::ai::Policy::Classic && config.player_blocks.is_none()))));
-        options.vs_classic = false;
+            (config.player_blocks.is_some() && config.enemy == crate::ai::Policy::Balanced && config.enemy_blocks.is_none())
+            || (config.enemy_blocks.is_some() && config.player == crate::ai::Policy::Balanced && config.player_blocks.is_none()))));
+        options.opponent = None;
         let all = schedule(&options).unwrap();
         assert_eq!(all.len(), 128);
         assert_eq!(all.len(), options.expected_games().unwrap());
@@ -488,43 +489,45 @@ mod tests {
             MatchConfig::Campaign(config) if config.campaign == "choice" && config.diplomacy == Diplomacy::Restrained)));
     }
     #[test]
-    fn fixed_classic_panel_preserves_seats_and_initiative_without_duplicate_matches() {
+    fn fixed_opponent_panel_preserves_seats_and_initiative_without_duplicate_matches() {
         let rules = Rules::load().unwrap();
         let mut options = ScheduleOptions::defaults(&rules).unwrap();
         options.mode = Mode::Arena;
         options.seeds = 1;
         options.armies = vec!["a".into(), "b".into()];
         options.landscapes = vec!["open".into()];
-        options.policies = vec![Policy::Rush, Policy::Balanced];
-        options.vs_classic = true;
-        for include_classic in [false, true] {
-            if include_classic {
-                options.policies.push(Policy::Classic);
+        for opponent in [Policy::Classic, Policy::Balanced] {
+            options.policies = vec![Policy::Rush, Policy::Situational];
+            options.opponent = Some(opponent);
+            for include_fixed in [false, true] {
+                if include_fixed {
+                    options.policies.push(opponent);
+                }
+                let fixed = schedule(&options).unwrap();
+                assert_eq!(fixed.len(), options.expected_games().unwrap());
+                let mut unique = std::collections::HashSet::new();
+                for config in &fixed {
+                    assert!(unique.insert(serde_json::to_string(config).unwrap()));
+                }
+                let mut all = options.clone();
+                all.opponent = None;
+                if !include_fixed {
+                    all.policies.push(opponent);
+                }
+                let expected: Vec<_> = schedule(&all)
+                    .unwrap()
+                    .into_iter()
+                    .filter(|config| {
+                        matches!(config, MatchConfig::Arena(c)
+                    if (c.player == opponent || c.enemy == opponent)
+                        && (include_fixed || c.player != c.enemy))
+                    })
+                    .collect();
+                assert_eq!(
+                    serde_json::to_value(fixed).unwrap(),
+                    serde_json::to_value(expected).unwrap()
+                );
             }
-            let fixed = schedule(&options).unwrap();
-            assert_eq!(fixed.len(), options.expected_games().unwrap());
-            let mut unique = std::collections::HashSet::new();
-            for config in &fixed {
-                assert!(unique.insert(serde_json::to_string(config).unwrap()));
-            }
-            let mut all = options.clone();
-            all.vs_classic = false;
-            if !include_classic {
-                all.policies.push(Policy::Classic);
-            }
-            let expected: Vec<_> = schedule(&all)
-                .unwrap()
-                .into_iter()
-                .filter(|config| {
-                    matches!(config, MatchConfig::Arena(c)
-                    if (c.player == Policy::Classic || c.enemy == Policy::Classic)
-                        && (include_classic || c.player != c.enemy))
-                })
-                .collect();
-            assert_eq!(
-                serde_json::to_value(fixed).unwrap(),
-                serde_json::to_value(expected).unwrap()
-            );
         }
         options.self_play = true;
         assert!(schedule(&options).is_err());
@@ -551,7 +554,7 @@ mod tests {
             diplomacy: vec![Diplomacy::Pragmatic],
             campaign_diplomacy: BTreeMap::new(),
             self_play: false,
-            vs_classic: false,
+            opponent: None,
         };
         let configs = schedule(&options).unwrap();
         assert_eq!(configs.len(), 9);

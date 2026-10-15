@@ -86,11 +86,14 @@ struct SimulationArgs {
     #[arg(group = "batch", long, value_enum, default_value = "jsonl")]
     details: DetailFormat,
     /// Compare every selected arena tactic with every other tactic.
-    #[arg(group = "batch", long, conflicts_with = "vs_classic")]
+    #[arg(group = "batch", long, conflicts_with_all = ["vs_classic", "vs"])]
     all_pairs: bool,
-    /// Compare arenas against Classic (the default).
+    /// Legacy shorthand for --vs classic.
     #[arg(group = "batch", long, conflicts_with = "self_play")]
     vs_classic: bool,
+    /// Fixed arena opponent (defaults to Balanced); campaigns keep their own opponent.
+    #[arg(group = "batch", long, value_enum, conflicts_with_all = ["vs_classic", "all_pairs", "self_play"])]
+    vs: Option<Policy>,
     /// Run matching arena tactics against themselves; requires --mode arena.
     #[arg(group = "batch", long)]
     self_play: bool,
@@ -184,8 +187,15 @@ impl SimulationArgs {
         options.first_seed = self.seed;
         options.seeds = self.seeds;
         options.self_play = self.self_play;
-        options.vs_classic =
-            self.vs_classic || (self.mode != Mode::Campaign && !self.all_pairs && !self.self_play);
+        options.opponent = if self.mode == Mode::Campaign || self.all_pairs || self.self_play {
+            None
+        } else {
+            Some(if self.vs_classic {
+                Policy::Classic
+            } else {
+                self.vs.unwrap_or(Policy::Balanced)
+            })
+        };
         if self.self_play && self.mode != Mode::Arena {
             return Err("--self-play requires --mode arena".into());
         }
@@ -328,6 +338,9 @@ fn stdio(rules: &Rules) -> Result<(), SimulationError> {
 #[derive(serde::Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct PhaseRequest {
+    /// Include unchanged Situational score components before running this phase.
+    #[serde(default)]
+    inspect_recruitment: bool,
     #[serde(default)]
     blocks: Option<crate::ai::Blocks>,
     state: crate::data::State,
@@ -411,6 +424,9 @@ fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, Simulation
             "Invalid planning budget or objective".into(),
         ));
     }
+    let scores = request
+        .inspect_recruitment
+        .then(|| crate::ai::recruiter::diagnostics(&game));
     game.recordings = Some(crate::data::Records::default());
     game.play_blocks(
         request.policy,
@@ -420,7 +436,11 @@ fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, Simulation
         request.goals.as_deref(),
         request.diplomacy,
     )?;
-    Ok(json!({"final":game.state(),"records":game.recordings}))
+    let mut response = json!({"final":game.state(),"records":game.recordings});
+    if let Some(scores) = scores {
+        response["recruitmentScores"] = serde_json::to_value(scores)?;
+    }
+    Ok(response)
 }
 fn read_report(path: &Path) -> Result<Value, SimulationError> {
     let bytes = fs::read(path)?;
@@ -763,6 +783,13 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
     if options.arrow {
         report["detailFormat"] = Value::String(super::arrow::FORMAT.into());
     }
+    report["unitFamilies"] = serde_json::to_value(
+        rules
+            .units
+            .iter()
+            .map(|unit| (unit.id.clone(), unit.family))
+            .collect::<std::collections::BTreeMap<_, _>>(),
+    )?;
     if options.profile_turns {
         report["turnTiming"] = crate::ai::profiling::snapshot().unwrap();
     }
@@ -864,6 +891,27 @@ pub fn run(args: &[String]) -> Result<(), SimulationError> {
 mod tests {
     use super::*;
     #[test]
+    fn arena_opponent_defaults_to_balanced_without_changing_campaign_enemy() {
+        let rules = Rules::load().unwrap();
+        let options = SimulationArgs::try_parse_from(["sim"])
+            .unwrap()
+            .resolve(&rules)
+            .unwrap();
+        assert_eq!(options.schedule.opponent, Some(Policy::Balanced));
+        assert_eq!(
+            options.schedule.campaign_enemies,
+            Some(vec![Policy::Classic])
+        );
+        let legacy = SimulationArgs::try_parse_from(["sim", "--vs-classic"])
+            .unwrap()
+            .resolve(&rules)
+            .unwrap();
+        assert_eq!(legacy.schedule.opponent, Some(Policy::Classic));
+        assert!(
+            SimulationArgs::try_parse_from(["sim", "--vs", "balanced", "--all-pairs"]).is_err()
+        );
+    }
+    #[test]
     fn saved_phase_restores_generated_arenas_and_validates_geometry() {
         let rules = Rules::load().unwrap();
         let config: super::super::types::ArenaConfig = serde_json::from_value(json!({
@@ -896,6 +944,23 @@ mod tests {
         assert_eq!(
             saved_phase(&rules, request(state.clone())).unwrap(),
             json!({"final": expected.state(), "records": expected.recordings})
+        );
+        let mut inspected = request(state.clone());
+        inspected.inspect_recruitment = true;
+        let mut diagnostic = saved_phase(&rules, inspected).unwrap();
+        assert!(
+            !diagnostic
+                .as_object_mut()
+                .unwrap()
+                .remove("recruitmentScores")
+                .unwrap()
+                .as_array()
+                .unwrap()
+                .is_empty()
+        );
+        assert_eq!(
+            diagnostic,
+            json!({"final":expected.state(),"records":expected.recordings})
         );
         let mut invalid = state.clone();
         invalid.tiles[0].col = -1;

@@ -171,7 +171,7 @@ def load_run(paths):
                         diagnostics[identity(raw)] = recorded_analysis(raw)
         else:
             report = json.loads(path.read_text())
-        source = {k: report.get(k) for k in ('sourceCommit', 'fingerprint', 'status', 'mode', 'schedule', 'seeds', 'elapsedSeconds', 'detailFormat', 'turnTiming', 'recruitmentLimits')}
+        source = {k: report.get(k) for k in ('sourceCommit', 'fingerprint', 'status', 'mode', 'schedule', 'seeds', 'elapsedSeconds', 'detailFormat', 'turnTiming', 'recruitmentLimits', 'unitFamilies')}
         source['fingerprint'] = report.get('fingerprint', report.get('fingerprints'))
         source['file'] = str(path.resolve())
         source['matches'] = len(report['outcomes'])
@@ -332,22 +332,23 @@ def campaign_prose(campaigns, stages, failures, events):
     return lines
 
 
-def arena_race_map_summary(rows):
-    selected = [r for r in rows if r['opponentPolicy'] == 'classic'
-                and (r['policy'] != 'classic' or r['race'] != r['opponentRace'])]
+def arena_race_map_summary(rows, opponent='classic'):
+    selected = [r for r in rows if r['opponentPolicy'] == opponent
+                and (r['policy'] != opponent or r['race'] != r['opponentRace'])]
     return combine(selected, ['race', 'map', 'policy'], cross=False)
 
 
-def overview(campaigns, stages, failures, events, arena_rows):
+def overview(campaigns, stages, failures, events, arena_rows, opponent=None):
+    opponent = opponent or ('balanced' if any(r['opponentPolicy'] == 'balanced' for r in arena_rows) else 'classic')
     lines = ['# Recorded simulation findings', '']
     if arena_rows:
-        lines += ['## Arena wins by race and map against Classic', '',
+        lines += [f'## Arena wins by race and map against {opponent.title()}', '',
                   'Each cell shows wins/all games (win percentage), then round caps. Caps remain in the denominator. Opponent races, seats and initiatives are pooled; player policies stay separate. Identical race/policy self-play is excluded. Detailed opponent and equal-policy comparisons follow.', '']
-        summary = arena_race_map_summary(arena_rows)
+        summary = arena_race_map_summary(arena_rows, opponent)
         factions = sorted({r['race'] for r in arena_rows}, key=race_order)
         maps = sorted({r['map'] for r in arena_rows}, key=map_order)
         if not summary:
-            lines += ['No non-self-play games against Classic were recorded; see the recorded matchups below.', '']
+            lines += [f'No non-self-play games against {opponent.title()} were recorded; see the recorded matchups below.', '']
         for policy in sorted({r['policy'] for r in summary}):
             lookup = {(r['race'], r['map']): r for r in summary if r['policy'] == policy}
             rows = []
@@ -358,7 +359,7 @@ def overview(campaigns, stages, failures, events, arena_rows):
                     row[map_name] = (f"{item['wins']}/{item['games']} ({item['winRate']:.1f}%); caps: {item['caps']}"
                                      if item else 'not recorded')
                 rows.append(row)
-            lines += [f'### {policy} against Classic', '', markdown(rows, ['Race', *maps]), '']
+            lines += [f'### {policy} against {opponent.title()}', '', markdown(rows, ['Race', *maps]), '']
     dimensions = sorted({(r['enemy'], r['maxRounds'], r['recruitLimit']) for r in campaigns}, key=repr)
     players = sorted({r['player'] for r in campaigns})
     for enemy, rounds, recruits in dimensions:
@@ -438,10 +439,10 @@ def overview(campaigns, stages, failures, events, arena_rows):
             lines.append('')
     if arena_rows:
         lines += ['## Arena results by tactic, race, opponent and map', '',
-                  'Caps remain in denominators; self-play is excluded here. Each table names both tactics. Fixed-Classic and equal-tactic comparisons are shown; every recorded policy pairing remains in the complete report.', '']
+                  'Caps remain in denominators; self-play is excluded here. Each table names both tactics. Fixed-opponent and equal-tactic comparisons are shown; every recorded policy pairing remains in the complete report.', '']
         factions = sorted({r['race'] for r in arena_rows})
         for policy in sorted({r['policy'] for r in arena_rows}):
-            for opponent_policy in dict.fromkeys(['classic', policy]):
+            for opponent_policy in dict.fromkeys([opponent, 'balanced', 'classic', policy]):
                 for map_name in sorted({r['map'] for r in arena_rows}, key=map_order):
                     selected = [r for r in arena_rows if r['policy']==policy and r['opponentPolicy']==opponent_policy and r['map']==map_name and (r['race']!=r['opponentRace'] or policy!=opponent_policy)]
                     if not selected:
@@ -520,6 +521,32 @@ def combine(rows, keys, equal=False, cross=True):
         output.append({**dict(zip(keys, group)), **counts,
                        'winRate': 100 * counts['wins'] / counts['games']})
     return output
+
+
+def purchase_shares(events, families):
+    """New purchases only; exclude starting units, promotions and same-faction games.
+
+    Opposing factions are pooled; tactic, opponent tactic, faction and map stay
+    separate. An additional 'all' map row pools maps with purchase-count weights.
+    Older reports without recorded families retain individual unit identifiers.
+    """
+    groups = defaultdict(Counter)
+    for event in events:
+        if event['race'] == event['opponentRace']:
+            continue
+        for map_name in (event['map'], 'all'):
+            key = (event['race'], event['policy'], event['opponentPolicy'], map_name)
+            groups[key][families.get(event['unit'], event['unit'])] += event['recruited']
+    result = []
+    for key, purchases in sorted(groups.items()):
+        total = sum(purchases.values())
+        if total:
+            for family, count in sorted(purchases.items()):
+                if count:
+                    result.append(dict(zip(('race','policy','opponentPolicy','map'), key),
+                                       family=family, purchased=count, totalPurchases=total,
+                                       sharePercent=100*count/total))
+    return result
 
 
 def write_csv(path, rows):
@@ -616,11 +643,21 @@ def build_report(inputs, baseline_inputs, out):
         for source in runs:
             timing = source.get('turnTiming') or {}
             policy_timings.extend(dict(run=label, clock=timing.get('clock'), source=source['file'], **row) for row in timing.get('policies', []))
+    families = {}
+    for source in sources:
+        for unit, family in (source.get('unitFamilies') or {}).items():
+            if unit in families and families[unit] != family:
+                raise ValueError('Conflicting recorded unit family: ' + unit)
+            families[unit] = family
+    opponents = {s.get('schedule', {}).get('opponent') for s in sources if s.get('schedule')}
+    opponent = next(iter(opponents)) if len(opponents) == 1 else None
     tables = {'campaign_runs': campaign_runs, 'campaign_summary': campaign_rows, 'campaign_stages': stage_rows,
               'campaign_failures': failure_rows, 'campaign_unit_events': campaign_events, 'matchups': rows, 'unit_events': units, 'matches': ledger, 'campaigns': campaigns,
               'policy_matchups': combine([r for r in rows if r['policy'] != r['opponentPolicy']],
                                          ['policy', 'opponentPolicy'], cross=False),
               'race_map_vs_classic': arena_race_map_summary(rows),
+              'race_map_vs_balanced': arena_race_map_summary(rows, 'balanced'),
+              'purchase_shares': purchase_shares(units, families),
               'race_equal_policy': combine(rows, ['race'], equal=True),
               'race_map_equal_policy': combine(rows, ['race', 'map'], equal=True),
               'race_map_policy': combine(rows, ['race', 'map', 'policy'], equal=True),
@@ -635,8 +672,9 @@ def build_report(inputs, baseline_inputs, out):
                 'campaignAttempts': len(campaigns), 'factions': factions, 'maps': sorted(set(maps) | {r['map'] for r in stage_rows}), 'policies': sorted(set(policies) | {r['player'] for r in campaign_rows}),
                 'participantRows': sum(r['games'] for r in rows)}
     (out / 'metadata.json').write_text(json.dumps(metadata, indent=2) + '\n')
-    findings = overview(campaign_rows, stage_rows, failure_rows, campaign_events, rows)
+    findings = overview(campaign_rows, stage_rows, failure_rows, campaign_events, rows, opponent)
     findings[2:2] = [f"Coverage: {len(current):,} physical matches; {metadata['arenaMatches']:,} arena games and {metadata['campaignAttempts']:,} campaign attempts.", '']
+    findings += ['## Purchase shares', '', 'New purchases / all new purchases for the same faction, tactic, opponent tactic and map. Starting units, promotions and same-faction games are excluded. Opposing factions are pooled. The all-map rows sum purchases across maps; they do not average map percentages. Families come from the recorded catalog; older reports without family metadata use individual unit identifiers.', '', markdown([r for r in tables['purchase_shares'] if r['map'] == 'all'], ['race','policy','opponentPolicy','family','purchased','totalPurchases','sharePercent']), '']
     if tables['policy_matchups']:
         matchups = tables['policy_matchups']
         lookup = {(r['policy'], r['opponentPolicy']): r for r in matchups}

@@ -360,6 +360,80 @@ impl BattleView<'_, '_> {
     }
 }
 
+/// Native fixed-position diagnostics. These are the same mechanical components
+/// used by Situational, before the seeded tie-break. They never mutate the game.
+#[cfg(not(target_arch = "wasm32"))]
+pub(crate) fn diagnostics(game: &crate::logic::Game<'_>) -> Vec<serde_json::Value> {
+    let view = BattleView::new(game);
+    let mut rows = Vec::new();
+    for unit in view.units().iter().filter(|u| u.side == view.turn()) {
+        let recruit = view.rules().units[unit.kind].leader;
+        let options = if recruit {
+            view.recruitment_options(unit.side)
+        } else {
+            view.rules().units[unit.kind]
+                .advances_to
+                .iter()
+                .map(|id| view.kind(id))
+                .collect()
+        };
+        for kind in options {
+            let rule = &view.rules().units[kind];
+            let mut candidate = unit.clone();
+            candidate.kind = kind;
+            candidate.hp = if recruit {
+                rule.hp
+            } else {
+                (rule.hp - (view.rules().units[unit.kind].hp - unit.hp)).max(1)
+            };
+            if recruit {
+                candidate.id = 0;
+            }
+            let tiles = if recruit {
+                view.placement_tiles(unit, kind, false)
+            } else {
+                vec![unit.tile]
+            };
+            let Some(&tile) = tiles.first() else {
+                continue;
+            };
+            candidate.tile = tile;
+            let assessment = evaluation::Assessment::new(&view, &candidate);
+            let copies = view
+                .units()
+                .iter()
+                .filter(|u| {
+                    u.side == unit.side
+                        && !view.rules().units[u.kind].leader
+                        && view.rules().units[u.kind].family == rule.family
+                })
+                .count();
+            let denominator = if recruit {
+                rule.cost.max(1) as f64 * (1.0 + copies as f64 * 0.2)
+            } else {
+                1.0
+            };
+            let mut best = None;
+            for tile in tiles {
+                candidate.tile = tile;
+                let score = assessment.breakdown(&view, &candidate);
+                if best
+                    .as_ref()
+                    .is_none_or(|(_, previous): &(usize, evaluation::Score)| {
+                        score.total > previous.total
+                    })
+                {
+                    best = Some((tile, score));
+                }
+            }
+            if let Some((tile, score)) = best {
+                rows.push(serde_json::json!({"choice":if recruit {"recruit"} else {"promotion"},"actor":unit.id,"base":view.rules().units[unit.kind].id,"unit":rule.id,"tile":view.board().ids[tile],"hp":candidate.hp,"cost":rule.cost,"affordable":rule.cost <= view.gold()[unit.side.index()],"eligible":recruit || view.promotion_options(unit).contains(&kind),"denominator":denominator,"score":score.total/denominator,"components":score}));
+            }
+        }
+    }
+    rows
+}
+
 /// Seeded, well-mixed draw; the small deterministic planner jitter alone is
 /// unsuitable for choosing uniformly between adjacent content identifiers.
 fn random(seed: u32, key: &str) -> f64 {

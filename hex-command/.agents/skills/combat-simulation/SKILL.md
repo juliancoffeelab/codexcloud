@@ -25,7 +25,7 @@ npm run ai:simulate -- --mode arena --policies situational --self-play --seeds 5
 Inspect individual opposing-faction matchups, not only pooled race averages.
 
 Cargo builds when needed, runs the full panel and generates the report. Defaults:
-10 seeds, all arena tactics against Classic on all maps, and Balanced/Rotated/Situational
+10 seeds, all arena tactics against Balanced on all maps, and Balanced/Rotated/Situational
 campaigns against Classic. Default round caps are 30 for arenas and 100 per
 campaign stage; `--rounds N` overrides both. Honor requested scope; otherwise
 use this full panel.
@@ -38,27 +38,28 @@ present the report in the final reply without another request. Use the affected
 workload, or the full panel if scope is unclear. Reporting only that a run or
 tests passed does not complete the task.
 
-| Option                                                   | Use                                                          |
-| -------------------------------------------------------- | ------------------------------------------------------------ |
-| `--mode arena\|campaign\|full`                           | Select the workload.                                         |
-| `--seeds N`, `--seed N`                                  | Select seed count and starting seed.                         |
-| `--with R,C,P`                                           | Add a custom tactic; `-` uses workload defaults.             |
-| `--policies LIST`                                        | Select arena tactics; also filters default campaign players. |
-| `--armies LIST`, `--landscapes LIST`, `--campaigns LIST` | Select content.                                              |
-| `--campaign-players LIST`, `--campaign-enemies LIST`     | Override campaign roles.                                     |
-| `--rounds N`, `--recruits N`, `--diplomacy LIST`         | Override limits or filter authored diplomacy modes.          |
-| `--out PATH`                                             | Choose an output directory or raw `.json` file.              |
-| `--no-report`                                            | Keep raw results without analysis.                           |
-| `--all-pairs`                                            | Request the full arena policy matrix.                        |
-| `--self-play`                                            | Compare matching tactics; requires `--mode arena`.           |
-| `--schedule-only`                                        | Inspect configurations without running matches.              |
-| `--baseline PATH`                                        | Compare with a saved run with identical configurations.      |
-| `--help`                                                 | List remaining options.                                      |
+| Option                                                   | Use                                                                          |
+| -------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `--mode arena\|campaign\|full`                           | Select the workload.                                                         |
+| `--seeds N`, `--seed N`                                  | Select seed count and starting seed.                                         |
+| `--with R,C,P`                                           | Add a custom tactic; `-` uses workload defaults.                             |
+| `--policies LIST`                                        | Select arena tactics; also filters default campaign players.                 |
+| `--armies LIST`, `--landscapes LIST`, `--campaigns LIST` | Select content.                                                              |
+| `--campaign-players LIST`, `--campaign-enemies LIST`     | Override campaign roles.                                                     |
+| `--rounds N`, `--recruits N`, `--diplomacy LIST`         | Override limits or filter authored diplomacy modes.                          |
+| `--out PATH`                                             | Choose an output directory or raw `.json` file.                              |
+| `--no-report`                                            | Keep raw results without analysis.                                           |
+| `--vs POLICY`                                            | Fixed arena opponent; Balanced by default. Campaign opponents stay separate. |
+| `--all-pairs`                                            | Request the full arena policy matrix.                                        |
+| `--self-play`                                            | Compare matching tactics; requires `--mode arena`.                           |
+| `--schedule-only`                                        | Inspect configurations without running matches.                              |
+| `--baseline PATH`                                        | Compare with a saved run with identical configurations.                      |
+| `--help`                                                 | List remaining options.                                                      |
 
 `--with=rotation,-,queued` adds an uncapped custom tactic. `rotated` aliases
 `rotation`. Slots are recruiter, campaigner and planner; defaults are Balanced
 recruitment, Arena for arenas or Mission for campaigns, and Queued planning.
-By default it plays against Classic. `--all-pairs` includes it alongside every
+By default its arena opponent is Balanced; campaigns retain Classic. `--all-pairs` includes it alongside every
 selected named tactic; `--self-play` compares each tactic against itself.
 Campaign role lists can refer to the added tactic as `custom`, for example
 `--campaign-players balanced --campaign-enemies custom`. Without explicit
@@ -76,6 +77,21 @@ changes. Analyze an existing run only when that is requested:
 npm run ai:analyze -- artifacts/saved/report.json --out artifacts/saved/analytics
 ```
 
+## Purchase shares and fixed-position scores
+
+The analyzer exports `purchase_shares.csv`, using only recorded new recruits:
+family purchases / all purchases for the same faction, tactic, opposing tactic
+and map. Starting units, earned promotions and same-faction games are excluded;
+opposing factions are pooled. The `all` map rows sum purchase counts across maps.
+Families come from report metadata, never the current checkout. Older reports
+without family metadata retain individual unit identifiers. Purchase share is
+not field composition, survival rate, damage efficiency or a unit win rate.
+
+For a targeted scorer investigation, `--phase-stdio` requests can set
+`inspectRecruitment: true`. The response includes pre-phase Situational
+recruit/promotion score components, eligibility and affordability. Diagnostics
+are read-only; normal phase execution remains unchanged.
+
 ## Read evidence
 
 Use the printed findings first. Read `<run>/analytics/findings.md` and
@@ -91,10 +107,11 @@ from proposed cause. Claim regressions only with matching baseline conditions.
 ## Present in chat
 
 1. State completed coverage, seeds, round/recruit limits and pooled dimensions.
-2. Give **a separate table for each player tactic against Classic**, with races
+2. Give **a separate table for each player tactic against Balanced**, with races
    as rows and maps as columns. Cells are `78.8% (caps: 13)`: percentages and
-   caps, without win counts. Do not combine tactics. Omit Classic-player baseline
-   and reverse Classic-versus-player tables unless requested.
+   caps, without win counts. Do not combine tactics. Include the Classic-player comparison; omit reverse
+   Balanced-versus-player tables unless requested. Use an explicitly requested
+   alternative opponent when supplied.
    Display Coastal as Merfolk and put Merfolk last. Order map columns as Plains (open), Forests
    (wooded), Crossing (crossings), Islands (islands).
 3. Follow with **the campaign table**, campaigns as rows and simulation-player

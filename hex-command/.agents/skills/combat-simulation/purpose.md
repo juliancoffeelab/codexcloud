@@ -4,8 +4,8 @@ Read this for AI policy reviews and when interpreting simulation results.
 
 Simulations test roster balance and whether simulation players can finish
 objectives using the browser's engine rules. They also measure trial execution
-cost. **Classic is the live enemy and the default policy/campaign comparison
-opponent.** Making it stronger is not the purpose of simulation-player work.
+cost. **Balanced is the default arena comparison opponent. Classic remains the live
+enemy and the campaign competence baseline.** Making it stronger is not the purpose of simulation-player work.
 
 For faction and unit balance, use matching Situational policies with the normal
 starting rosters, budgets, recruitment and earned promotions. Inspect each
