@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 spec = importlib.util.spec_from_file_location('unit_usage', Path(__file__).parents[1] / 'scripts/unit_usage.py')
 usage = importlib.util.module_from_spec(spec)
@@ -68,6 +69,17 @@ class UsageTests(unittest.TestCase):
         result=dict(config=dict(armies=dict(player='a',enemy='b'),player='situational',enemy='balanced',landscape='open'),initial=dict(units=[]),phases=[])
         with self.assertRaisesRegex(ValueError,'fresh run'):
             self.run_record({},result)
+
+    def test_arrow_usage_requests_existing_pyarrow_fallback_when_dependency_is_missing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            raw = b'{}'
+            (root/'details.arrow').write_bytes(raw)
+            path = root/'report.json'
+            path.write_text(json.dumps(dict(status='complete',outcomes=[dict(kind='arena',config={},detail=dict(file='details.arrow',offset=0,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()))])))
+            with patch.object(usage.importlib.util,'find_spec',return_value=None):
+                with self.assertRaisesRegex(ModuleNotFoundError,'pyarrow'):
+                    list(usage.journals([path]))
 
     def run_record(self,profiles,result,**options):
         with tempfile.TemporaryDirectory() as tmp:
