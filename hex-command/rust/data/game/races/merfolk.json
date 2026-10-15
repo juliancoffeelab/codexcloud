@@ -28,13 +28,13 @@
     "forest": {
       "cost": 1,
       "damageModifiers": {
-        "ranged": 0
+        "ranged": 1
       }
     },
     "grove": {
       "cost": 1,
       "damageModifiers": {
-        "ranged": 0
+        "ranged": 1
       }
     },
     "hill": {
