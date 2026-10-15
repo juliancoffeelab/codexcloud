@@ -1,4 +1,4 @@
-"""Replay observed arena positions with/without aura; never estimates long-term wins.
+"""Replay observed arena positions with/without thorns; never estimates long-term wins.
 
 Explicit matching --data-dir is required. Full fingerprint matching is the default;
 --allow-fingerprint-mismatch permits a different engine/catalog only after matching
@@ -61,12 +61,45 @@ def before_state(detail, index, units):
     return state
 
 
-def coverage(state, units):
+def coverage(state, units, effect='aura'):
     friends = [u for u in state['units'] if u['side'] != state['turn']]
-    providers = [u for u in friends if units[u['type']].get('thornAura', 0)]
+    providers = [u for u in friends if (
+        effect in ('aura', 'all') and units[u['type']].get('thornAura', 0)) or (
+        effect in ('intrinsic', 'all') and units[u['type']].get('thorns', 0))]
     covered = {u['id'] for u in friends if any(
-        p['id'] != u['id'] and adjacent(p['tile'], u['tile']) for p in providers)}
+        p['id'] != u['id'] and units[p['type']].get('thornAura', 0)
+        and effect in ('aura', 'all') and adjacent(p['tile'], u['tile']) for p in providers)}
+    if effect in ('intrinsic', 'all'):
+        covered.update(u['id'] for u in friends if units[u['type']].get('thorns', 0))
     return providers, covered
+
+
+def without_effect(rule, effect):
+    altered = copy.deepcopy(rule)
+    for key in ('thornAura', 'thorns') if effect == 'all' else (
+            'thornAura' if effect == 'aura' else 'thorns',):
+        if key in altered:
+            altered[key] = 0
+    return altered
+
+
+def threatened(state, units, covered):
+    """Conservative geometric reach; blockers and terrain may prevent an attack."""
+    def distance(a, b):
+        x, y = map(int, a.split(','))
+        u, v = map(int, b.split(','))
+        q, r = x - y // 2 - u + v // 2, y - v
+        return (abs(q) + abs(r) + abs(q + r)) // 2
+    for enemy in state['units']:
+        if enemy['side'] != state['turn']:
+            continue
+        rule = units[enemy['type']]
+        if not any(a['category'] == 'melee' for a in rule['attacks']):
+            continue
+        if any(u['id'] in covered and distance(enemy['tile'], u['tile']) <= rule['move'] + 1
+               for u in state['units']):
+            return True
+    return False
 
 
 def measurements(response, state, covered):
@@ -77,7 +110,9 @@ def measurements(response, state, covered):
     result = dict(attacks=len(combats), coveredAttacks=sum(c['target'] in covered for c in combats),
                   attackDamage=sum(c['damage'] for c in combats),
                   retaliation=sum(c['retaliation'] for c in combats),
-                  auraReflection=sum(c.get('thorns', {}).get('auraDamage', 0) for c in combats))
+                  auraReflection=sum(c.get('thorns', {}).get('auraDamage', 0) for c in combats),
+                  totalReflection=sum(c.get('thorns', {}).get('damage', 0) for c in combats),
+                  effectiveReflection=sum(c.get('thorns', {}).get('effectiveDamage', 0) for c in combats))
     for name, roster in [('defender', defenders), ('attacker', attackers)]:
         result[name + 'OriginalHPLost'] = sum(u['hp'] - final.get(u['id'], {}).get('hp', 0) for u in roster)
         result[name + 'OriginalDeaths'] = sum(u['id'] not in final for u in roster)
@@ -92,8 +127,8 @@ def switches(on, off):
         return result
     a, b = attacks(on), attacks(off)
     common = set(a) & set(b)
-    return dict(attackersSkippingWithAura=len(set(b) - set(a)),
-                attackersAttackingOnlyWithAura=len(set(a) - set(b)),
+    return dict(attackersSkippingWithEffect=len(set(b) - set(a)),
+                attackersAttackingOnlyWithEffect=len(set(a) - set(b)),
                 targetSwitches=sum([x[0] for x in a[k]] != [x[0] for x in b[k]] for k in common),
                 weaponSwitches=sum([x[1] for x in a[k]] != [x[1] for x in b[k]] for k in common))
 
@@ -128,10 +163,16 @@ def main():
     parser.add_argument('--out', type=Path, required=True, help='Output prefix; writes .csv and .json')
     parser.add_argument('--binary', type=Path, default=Path('rust/target/simulation/hex-command-sim'))
     parser.add_argument('--limit', type=int, default=50)
+    parser.add_argument('--effect', choices=('aura', 'intrinsic', 'all'), default='aura')
+    parser.add_argument('--policy', help='Only sample phases executed by this tactic')
+    parser.add_argument('--per-seed', type=int, help='Cap sampled positions per seed to spread observations')
+    parser.add_argument('--engaged-only', action='store_true', help='Require a potential incoming melee attack within geometric movement reach')
     parser.add_argument('--allow-fingerprint-mismatch', action='store_true')
     args = parser.parse_args()
     if args.limit < 1:
         parser.error('--limit must be positive')
+    if args.per_seed is not None and args.per_seed < 1:
+        parser.error('--per-seed must be positive')
     report_path = args.report / 'report.json' if args.report.is_dir() else args.report
     report = json.loads(report_path.read_text())
     units = catalog(args.data_dir)
@@ -142,15 +183,12 @@ def main():
     strict = fingerprint == report.get('fingerprint')
     if not strict and not args.allow_fingerprint_mismatch:
         raise ValueError('Runtime/report fingerprint differs; use the original binary/catalog, or explicitly allow weaker profile-only validation')
-    rows, pairs = [], []
+    rows, pairs, seed_counts = [], [], {}
     with tempfile.TemporaryDirectory(prefix='hex-thorn-aura-off-') as scratch:
         altered = Path(scratch) / 'data'
         shutil.copytree(args.data_dir, altered)
         for path in (altered / 'game/units').glob('*.json'):
-            rule = json.loads(path.read_text())
-            if rule.get('thornAura', 0):
-                rule['thornAura'] = 0
-                path.write_text(json.dumps(rule))
+            path.write_text(json.dumps(without_effect(json.loads(path.read_text()), args.effect)))
         processes = [Replay(args.binary, root) for root in (args.data_dir, altered)]
         stream = journals([report_path])
         try:
@@ -158,12 +196,18 @@ def main():
                 config = detail['config']
                 if config['armies']['player'] == config['armies']['enemy']:
                     continue
+                if args.per_seed and seed_counts.get(config['seed'], 0) >= args.per_seed:
+                    continue
                 for index, phase in enumerate(detail['phases']):
-                    providers, covered = coverage(dict(units=phase['before'], turn=phase['side']), units)
+                    policy = config[phase['side']]
+                    if args.policy and policy != args.policy:
+                        continue
+                    providers, covered = coverage(dict(units=phase['before'], turn=phase['side']), units, args.effect)
                     if not providers:
                         continue
+                    if args.engaged_only and not threatened(dict(units=phase['before'], turn=phase['side']), units, covered):
+                        continue
                     state = before_state(detail, index, units)
-                    policy = config[phase['side']]
                     limit = config.get('recruitLimit')
                     if limit is None:
                         limit = 2 if policy == 'classic' else 1000
@@ -172,7 +216,7 @@ def main():
                     if config.get(phase['side'] + 'Blocks'):
                         request['blocks'] = config[phase['side'] + 'Blocks']
                     on, off = [process.run(request) for process in processes]
-                    row = dict(sample=len(rows), seed=config['seed'], map=config['landscape'],
+                    row = dict(sample=len(rows), effect=args.effect, seed=config['seed'], map=config['landscape'],
                                round=phase['round'], side=phase['side'], policy=policy,
                                defenderFaction=config['armies']['enemy' if phase['side'] == 'player' else 'player'],
                                providers=len(providers), coveredAllies=len(covered), recruitmentLimit=limit,
@@ -180,8 +224,11 @@ def main():
                     for label, response in [('on', on), ('off', off)]:
                         row.update({label + k[0].upper() + k[1:]: v for k, v in measurements(response, state, covered).items()})
                     rows.append(row)
+                    seed_counts[config['seed']] = seed_counts.get(config['seed'], 0) + 1
                     pairs.append(dict(sample=row['sample'], request=request, auraOn=on, auraOff=off))
                     if len(rows) >= args.limit:
+                        break
+                    if args.per_seed and seed_counts[config['seed']] >= args.per_seed:
                         break
                 if len(rows) >= args.limit:
                     break
@@ -193,7 +240,8 @@ def main():
     args.out.with_suffix('.json').write_text(json.dumps(dict(
         report=str(report_path), sourceFingerprint=report.get('fingerprint'), runtimeFingerprints=fingerprints,
         validation='strict fingerprint and profiles' if strict else 'profiles only; full catalog/engine match NOT verified',
-        sampling='first observed non-mirror aura positions in journal order; correlated within battles',
+        effect=args.effect, policy=args.policy, perSeed=args.per_seed, engagedOnly=args.engaged_only,
+        sampling='first observed non-mirror positions with the selected effect in journal order; correlated within battles',
         limitations='One phase, current runtime planning, seed held equal; no long-term win attribution. Uncapped recruitment represented by ceiling 1000. HP deltas include healing/drain and original units only.',
         rows=rows, pairs=pairs), indent=2))
     with args.out.with_suffix('.csv').open('w', newline='') as output:

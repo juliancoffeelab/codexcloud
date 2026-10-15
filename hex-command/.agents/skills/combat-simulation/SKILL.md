@@ -183,6 +183,14 @@ python3 .agents/skills/combat-simulation/scripts/measure-thorn-deterrence.py \
   --out tmp/thorn-deterrence --limit 50
 ```
 
+Use `--effect intrinsic` or `--effect all` to disable personal thorns or both
+effects instead of aura alone. `--policy situational` filters the acting tactic;
+`--per-seed 10` spreads observations across seeds. `--engaged-only` requires
+an affected recipient within an enemy melee unit's geometric movement reach;
+this conservative filter does not prove a legal path or an actual attack.
+Compare reflection with target/weapon switches and casualties. Low reflection
+alone does not establish that thorns lack defensive value.
+
 The explicit catalog and native binary must match the report's fingerprint and
 recorded profiles. An explicit `--allow-fingerprint-mismatch` permits weaker
 profile-only validation and labels that limitation. Outputs include paired
@@ -208,7 +216,8 @@ aura reflection are separate. Raw reflection includes overkill; effective
 reflection is the additional HP removed beyond ordinary weapon retaliation,
 with that marginal amount attributed proportionally to intrinsic and aura
 strength. Source IDs and damage are captured at combat time, including killing
-hits and aura providers that later die.
+hits and aura providers that later die. Thorns trigger only while defending
+against an initiating melee attack, not against retaliation when attacking.
 
 ## Read evidence
 
