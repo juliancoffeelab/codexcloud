@@ -22,11 +22,21 @@ Humans and Skeletons should be roughly equally capable across opponents and
 maps. A fair direct matchup is desirable, but overall equality does not require
 every matchup to be equal. Some stalemates between them are expected.
 
+## Damage and usefulness
+
+At comparable levels, the intended weapon damage order is:
+
+**Infantry hitters > ranged damage units > defensive infantry ≈ support.**
+
+Lower damage must buy another form of usefulness: defenders endure and protect,
+support sustains or strengthens allies, and flankers gain mobility and objective
+reach. Expensive heavy or mounted units can rival infantry hitters, with their
+strength paid for through cost and other tradeoffs. Damage alone is not a ranking
+of overall usefulness.
+
 ## Roles and tradeoffs
 
-Defensive infantry earns its place through durability. Infantry hitters should
-lead damage output, followed by ranged damage units. Support weapon damage
-should resemble defensive infantry.
+Defensive infantry earns its place through durability.
 
 Cheap flankers trade combat strength for mobility, objective control and the
 ability to punish exposed ranged units. Mounted units must be noticeably more
