@@ -5,7 +5,7 @@
   "race": "human",
   "hp": 24,
   "move": 6,
-  "cost": 14,
+  "cost": 10,
   "attacks": [
     {
       "id": "bow",
