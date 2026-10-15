@@ -41,6 +41,8 @@ def journals(inputs):
                 if len(raw) != ref['bytes'] or hashlib.sha256(raw).hexdigest() != ref['sha256']:
                     raise ValueError('Unit usage gameplay checksum mismatch')
                 if name.endswith('.arrow'):
+                    if importlib.util.find_spec('pyarrow') is None:
+                        raise ModuleNotFoundError('pyarrow')
                     decoder_path = Path(__file__).resolve().parents[4] / 'scripts/simulation_journal.py'
                     spec = importlib.util.spec_from_file_location('usage_journal', decoder_path)
                     decoder = importlib.util.module_from_spec(spec)
