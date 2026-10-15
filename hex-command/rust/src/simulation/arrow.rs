@@ -411,6 +411,20 @@ mod tests {
         data::{Catalog, Role},
     };
     #[test]
+    fn json_metadata_preserves_floating_point_bits() {
+        // Phase headers pass fractional telemetry through JSON inside Arrow.
+        // The default fast parser can round a serialized float to its neighbour.
+        for value in [19.235294117647054, -0.1, f64::MIN_POSITIVE, f64::MAX] {
+            let original = serde_json::json!({"hpValue": value});
+            let encoded = serde_json::to_string(&original).unwrap();
+            let decoded: Value = serde_json::from_str(&encoded).unwrap();
+            assert_eq!(
+                decoded["hpValue"].as_f64().unwrap().to_bits(),
+                value.to_bits()
+            );
+        }
+    }
+    #[test]
     fn dictionaries_round_trip_full_arena_and_multiple_campaign_chapters() {
         let rules = Catalog::load().unwrap();
         let mut arena = super::super::matches::run_arena(
