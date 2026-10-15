@@ -449,7 +449,7 @@ impl BattleDraft<'_, '_> {
         if u.side != self.turn() || u.attacked {
             return;
         }
-        if let Some(&promotion) = self.promotion_options(&u).first() {
+        if let Some(promotion) = rules.orders.promotion(self, &u) {
             recorder.advance(self, id, promotion);
             return;
         }

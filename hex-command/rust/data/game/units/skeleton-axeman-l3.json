@@ -10,19 +10,9 @@
     {
       "id": "axe",
       "name": "Axe",
-      "damage": 6,
-      "count": 3,
-      "damageType": "blade",
-      "category": "melee",
-      "range": 1,
-      "sound": "attack-melee"
-    },
-    {
-      "id": "boneclub",
-      "name": "Boneclub",
-      "damage": 10,
+      "damage": 18,
       "count": 1,
-      "damageType": "impact",
+      "damageType": "blade",
       "category": "melee",
       "range": 1,
       "sound": "attack-melee"

@@ -10,8 +10,8 @@
     {
       "id": "hammer",
       "name": "Hammer",
-      "damage": 5,
-      "count": 2,
+      "damage": 10,
+      "count": 1,
       "damageType": "impact",
       "category": "melee",
       "range": 1,

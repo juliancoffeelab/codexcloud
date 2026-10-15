@@ -766,11 +766,10 @@ pub(in crate::ai) fn plan(
         } else {
             0.0
         };
-    let mut best = game
-        .promotion_options(&unit)
-        .first()
+    let mut best = orders
+        .promotion(game, &unit)
         .filter(|_| before < unit.hp)
-        .map(|&kind| Plan {
+        .map(|kind| Plan {
             unit: id,
             tile: unit.tile,
             score: 14.0,

@@ -28,8 +28,8 @@
     {
       "id": "tusks",
       "name": "Tusks",
-      "damage": 5,
-      "count": 1,
+      "damage": 3,
+      "count": 2,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
@@ -42,7 +42,7 @@
     "impact": -1
   },
   "ability": "Thick hide",
-  "description": "A thick-skinned woodland screen that absorbs light strikes and tramples armored foes; slow in wetlands.",
+  "description": "A thick-skinned woodland screen that absorbs light strikes and tramples armored foes; slow in wetlands Its paired tusks deliver two piercing strikes.",
   "level": 1,
   "family": "boar",
   "experienceNeeded": 10,

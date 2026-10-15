@@ -10,8 +10,8 @@
     {
       "id": "halberd",
       "name": "Halberd",
-      "damage": 8,
-      "count": 2,
+      "damage": 16,
+      "count": 1,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
@@ -20,8 +20,8 @@
     {
       "id": "axe",
       "name": "Axe",
-      "damage": 7,
-      "count": 2,
+      "damage": 14,
+      "count": 1,
       "damageType": "blade",
       "category": "melee",
       "range": 1,

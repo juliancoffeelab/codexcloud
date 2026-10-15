@@ -33,23 +33,10 @@
     "pierce": 0,
     "impact": 0
   },
-  "terrainModifiers": {
-    "forest": {
-      "damageModifiers": {
-        "melee": -1,
-        "ranged": -1
-      }
-    },
-    "grove": {
-      "damageModifiers": {
-        "melee": -1,
-        "ranged": -1
-      }
-    }
-  },
+  "terrainModifiers": {},
   "ability": "Command",
-  "description": "A master forest guardian who commands with heavy bough attacks, thrown stones and an adjacent thorn aura. A master guardian uses forest and grove cover better than younger troops.",
-  "thornAura": 1,
+  "description": "A master forest guardian who commands with heavy bough attacks, thrown stones and an adjacent thorn aura.",
+  "thornAura": 3,
   "level": 3,
   "family": "wildkeeper",
   "advancesTo": [],

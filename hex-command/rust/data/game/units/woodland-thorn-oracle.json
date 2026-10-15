@@ -43,22 +43,9 @@
     "pierce": 0,
     "impact": 0
   },
-  "terrainModifiers": {
-    "forest": {
-      "damageModifiers": {
-        "melee": -1,
-        "ranged": -1
-      }
-    },
-    "grove": {
-      "damageModifiers": {
-        "melee": -1,
-        "ranged": -1
-      }
-    }
-  },
+  "terrainModifiers": {},
   "ability": "Thorn magic",
-  "description": "A forest damage caster who fires piercing thorns or crushes armored foes with roots. A master guardian uses forest and grove cover better than younger troops.",
+  "description": "A forest damage caster who fires piercing thorns or crushes armored foes with roots.",
   "level": 3,
   "family": "thorncaller",
   "advancesTo": [],

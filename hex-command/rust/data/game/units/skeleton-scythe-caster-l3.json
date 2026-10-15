@@ -21,8 +21,8 @@
     {
       "id": "scythe",
       "name": "Scythe",
-      "damage": 6,
-      "count": 3,
+      "damage": 18,
+      "count": 1,
       "damageType": "blade",
       "category": "melee",
       "range": 1,

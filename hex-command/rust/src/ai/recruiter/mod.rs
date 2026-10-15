@@ -18,6 +18,10 @@ pub enum RecruiterKind {
     Situational,
 }
 pub(crate) trait Recruiter {
+    fn promotions(&mut self, game: &BattleView<'_, '_>) -> Vec<(UnitId, UnitTypeId)> {
+        promotion::choices(game, false)
+    }
+
     fn recruit(
         &mut self,
         context: &mut crate::ai::context::RecruitmentContext<'_, '_>,
@@ -25,6 +29,10 @@ pub(crate) trait Recruiter {
     ) -> Result<crate::ai::orders::RecruitmentReport, CommandError>;
 }
 impl Recruiter for RecruiterKind {
+    fn promotions(&mut self, game: &BattleView<'_, '_>) -> Vec<(UnitId, UnitTypeId)> {
+        promotion::choices(game, *self == Self::Situational)
+    }
+
     fn recruit(
         &mut self,
         context: &mut crate::ai::context::RecruitmentContext<'_, '_>,
@@ -403,3 +411,5 @@ mod balanced;
 mod frontline;
 mod rotation;
 mod situational;
+
+mod promotion;

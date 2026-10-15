@@ -9,18 +9,6 @@
     },
     "marsh": {
       "cost": 1
-    },
-    "forest": {
-      "damageModifiers": {
-        "melee": -1,
-        "ranged": -1
-      }
-    },
-    "grove": {
-      "damageModifiers": {
-        "melee": -1,
-        "ranged": -1
-      }
     }
   },
   "hp": 24,
@@ -40,12 +28,12 @@
     {
       "id": "tusks",
       "name": "Tusks",
-      "damage": 10,
+      "damage": 5,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
       "sound": "attack-melee",
-      "count": 1
+      "count": 2
     }
   ],
   "damageModifiers": {
@@ -54,7 +42,7 @@
     "impact": -1
   },
   "ability": "Trample",
-  "description": "A veteran boar whose thick hide withstands light strikes and whose powerful charge threatens armored foes; slow in wetlands. Veteran guardians use extra cover in forests and groves.",
+  "description": "A veteran boar whose thick hide withstands light strikes and whose powerful charge threatens armored foes; slow in wetlands Its paired tusks deliver two piercing strikes.",
   "level": 2,
   "family": "boar",
   "experienceNeeded": 18,

@@ -33,23 +33,10 @@
     "pierce": 0,
     "impact": 0
   },
-  "terrainModifiers": {
-    "forest": {
-      "damageModifiers": {
-        "melee": -1,
-        "ranged": -1
-      }
-    },
-    "grove": {
-      "damageModifiers": {
-        "melee": -1,
-        "ranged": -1
-      }
-    }
-  },
+  "terrainModifiers": {},
   "ability": "Thorn aura",
-  "description": "A forest support caster whose adjacent allies gain stronger melee retaliation, stacking with their own Thornshield. A master guardian uses forest and grove cover better than younger troops.",
-  "thornAura": 2,
+  "description": "A forest support caster whose adjacent allies gain stronger melee retaliation, stacking with their own Thornshield.",
+  "thornAura": 3,
   "level": 3,
   "family": "thorncaller",
   "advancesTo": [],

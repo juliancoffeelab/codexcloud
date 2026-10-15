@@ -32,18 +32,6 @@
   "terrainModifiers": {
     "hill": {
       "cost": -1
-    },
-    "forest": {
-      "cost": -1,
-      "damageModifiers": {
-        "melee": 1
-      }
-    },
-    "grove": {
-      "cost": -1,
-      "damageModifiers": {
-        "melee": 1
-      }
     }
   }
 }

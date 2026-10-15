@@ -10,8 +10,8 @@
     {
       "id": "trident",
       "name": "Trident",
-      "damage": 6,
-      "count": 2,
+      "damage": 12,
+      "count": 1,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,

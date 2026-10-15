@@ -23,24 +23,9 @@
     "pierce": 0,
     "impact": 0
   },
-  "terrainModifiers": {
-    "forest": {
-      "damageModifiers": {
-        "melee": 0,
-        "ranged": -1
-      },
-      "cost": -1
-    },
-    "grove": {
-      "damageModifiers": {
-        "melee": 0,
-        "ranged": -1
-      },
-      "cost": -1
-    }
-  },
+  "terrainModifiers": {},
   "ability": "Pack hunter",
-  "description": "A swift forest predator whose repeated fang attacks punish exposed enemies. A master guardian uses forest and grove cover better than younger troops.",
+  "description": "A swift forest predator whose repeated fang attacks punish exposed enemies.",
   "level": 3,
   "family": "wolf",
   "advancesTo": [],

@@ -316,7 +316,7 @@ impl BattleView<'_, '_> {
         {
             let category = role(self, original_unit.kind);
             let important = orders.important(self, original_unit);
-            if let Some(&promotion) = self.promotion_options(original_unit).first() {
+            if let Some(promotion) = orders.promotion(self, original_unit) {
                 let order = (unit_order, 0, 0);
                 if before_risk < original_unit.hp
                     && best

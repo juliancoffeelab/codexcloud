@@ -52,7 +52,7 @@
   },
   "ability": "Healing",
   "description": "A support mage who heals adjacent allies at turn start and fights with modest impact magic. Master mariners gain additional ranged cover in water, shallows and marsh.",
-  "healing": 7,
+  "healing": 5,
   "level": 3,
   "family": "wavemender",
   "advancesTo": [],

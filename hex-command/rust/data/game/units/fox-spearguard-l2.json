@@ -23,22 +23,9 @@
     "pierce": 0,
     "impact": 0
   },
-  "terrainModifiers": {
-    "forest": {
-      "damageModifiers": {
-        "melee": -1,
-        "ranged": -1
-      }
-    },
-    "grove": {
-      "damageModifiers": {
-        "melee": -1,
-        "ranged": -1
-      }
-    }
-  },
+  "terrainModifiers": {},
   "ability": "Thornshield",
-  "description": "A forest spear guardian whose thorn shield adds damage to defensive melee retaliation. Veteran guardians use extra cover in forests and groves.",
+  "description": "A forest spear guardian whose thorn shield adds damage to defensive melee retaliation.",
   "thorns": 2,
   "level": 2,
   "family": "fox-spearguard",

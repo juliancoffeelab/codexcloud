@@ -129,6 +129,11 @@ Recruiter/Campaigner/Planner compositions. Native simulations retain those
 components through the whole match or campaign. `Tactic::run_turn` derives
 explicit orders, applies recruitment to one draft, then plans against that updated
 draft and returns ordered engine commands with recruitment and planning reports.
+Recruiter owns promotion branch selection and passes explicit unit/type choices
+in tactical orders. Planner decides when taking the selected promotion is safe;
+it does not choose a different branch. Situational evaluates available branches
+against enemy resistances, routes and nearby healing or thorn support demand.
+The other recruiters retain their authored first-branch choices.
 
 Only Campaigner receives authored mission data and progression. Recruiter and
 Planner use restricted mechanical battle views. Generic capture, defeat and visit

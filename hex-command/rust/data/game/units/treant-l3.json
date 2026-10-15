@@ -3,15 +3,15 @@
   "role": "warrior",
   "name": "Treant L3",
   "race": "beast",
-  "hp": 44,
+  "hp": 74,
   "move": 3,
-  "cost": 24,
+  "cost": 30,
   "attacks": [
     {
       "id": "bough",
       "name": "Bough",
-      "damage": 10,
-      "count": 2,
+      "damage": 27,
+      "count": 1,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
@@ -19,28 +19,20 @@
     }
   ],
   "damageModifiers": {
-    "blade": -1,
-    "pierce": -1,
+    "blade": 1,
+    "pierce": -3,
     "impact": 0
   },
   "terrainModifiers": {
     "forest": {
-      "damageModifiers": {
-        "melee": 0,
-        "ranged": 0
-      },
-      "cost": -1
+      "cost": 1
     },
     "grove": {
-      "damageModifiers": {
-        "melee": 0,
-        "ranged": 0
-      },
-      "cost": -1
+      "cost": 1
     }
   },
   "ability": "Living bark",
-  "description": "A slow, resilient forest guardian. Living bark resists blades and arrows; heavy branches crush skeletal foes. Root paths ease movement through sacred groves and forests.",
+  "description": "An expensive, slow forest tank. Thick bark strongly resists piercing, but axes bite into its wood. One heavy bough delivers a crushing blow.",
   "level": 3,
   "family": "treant",
   "advancesTo": [],

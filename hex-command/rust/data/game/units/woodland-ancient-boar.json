@@ -20,8 +20,8 @@
     {
       "id": "tusks",
       "name": "Tusks",
-      "damage": 12,
-      "count": 1,
+      "damage": 7,
+      "count": 2,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
@@ -33,22 +33,9 @@
     "pierce": 0,
     "impact": 0
   },
-  "terrainModifiers": {
-    "forest": {
-      "damageModifiers": {
-        "melee": -1,
-        "ranged": -1
-      }
-    },
-    "grove": {
-      "damageModifiers": {
-        "melee": -1,
-        "ranged": -1
-      }
-    }
-  },
+  "terrainModifiers": {},
   "ability": "Ancient tusks",
-  "description": "A durable forest beast whose trampling impact and piercing tusks threaten different defenses. A master guardian uses forest and grove cover better than younger troops.",
+  "description": "A durable forest beast whose trampling impact and piercing tusks threaten different defenses Its paired tusks deliver two piercing strikes.",
   "level": 3,
   "family": "boar",
   "advancesTo": [],

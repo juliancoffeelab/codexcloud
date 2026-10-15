@@ -29,18 +29,5 @@
   "family": "wolf",
   "experienceNeeded": 10,
   "advancesTo": ["direwolf"],
-  "terrainModifiers": {
-    "forest": {
-      "cost": -1,
-      "damageModifiers": {
-        "melee": 1
-      }
-    },
-    "grove": {
-      "cost": -1,
-      "damageModifiers": {
-        "melee": 1
-      }
-    }
-  }
+  "terrainModifiers": {}
 }
