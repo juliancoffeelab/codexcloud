@@ -9,23 +9,13 @@
 
 ## Balance and simulations
 
-- [ ] Investigate retaliation stalls: determine when retaliation penalties cause
-      planners to repeatedly refuse attacks and fail to resolve a fight.
-
-- [ ] Align simulation-player roles with infantry-only, fair use of every roster
-      unit with a stable recruitment pool, and situational unit selection. All
-      three must complete campaigns and objectives. Keep these intended strategies
-      distinct from the current named recruiter presets.
-- [ ] Validate those players against the same Classic enemy in matched arenas
-      and complete campaigns: fair-roster and situational should outperform
-      infantry-only, with fair-roster remaining reasonably close to situational.
-      Keep these balance checks and campaign competence when reducing compute
-      for larger maps, longer campaigns and more units.
-- [ ] Finish the balance pass with matched campaign and arena trials, preserving
-      failed attempts and recording actual commands.
-- [ ] Run updated comparisons as needed for balance work. Keep campaign and arena
-      rosters, scenarios and results separate.
-- [ ] Review veteran boar attacks separately after the rookie balance changes.
+- [ ] Investigate retaliation stalls where armies repeatedly refuse attacks and
+      fail to resolve a fight.
+- [ ] Compare infantry-only, fair-roster and situational strategies against the
+      same Classic opponent in arenas and campaigns, including whether broader
+      roster use improves results without sacrificing campaign completion.
+- [ ] Investigate concentrated promotion choices and test branch usefulness over
+      longer battles or multiple stages, with meaningful L3 battlefield exposure.
 
 ## Merfolk campaign
 
@@ -33,5 +23,4 @@
 
 ## Mobile rendering
 
-- [ ] Investigate and fix mobile stray lines and portrait leakage that remain
-      after replacing atlas cropping with isolated frame images.
+- [ ] Investigate and fix stray lines and portrait leakage on mobile devices.
