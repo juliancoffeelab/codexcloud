@@ -35,20 +35,9 @@ impl<'catalog> Game<'catalog> {
         self.damage_at(attacker, target, weapon, target.tile)
     }
     fn damage_at(&self, attacker: &Unit, target: &Unit, weapon: usize, target_tile: usize) -> i32 {
-        self.damage_with_bonus(attacker, target, weapon, target_tile, 0)
-    }
-    fn damage_with_bonus(
-        &self,
-        attacker: &Unit,
-        target: &Unit,
-        weapon: usize,
-        target_tile: usize,
-        bonus: i32,
-    ) -> i32 {
         let attack = &self.rules.units[attacker.kind].attacks[weapon];
         let rule = &self.rules.units[target.kind];
         (attack.damage
-            + bonus
             + rule.damage_modifiers.get(attack.damage_type)
             + rule.environment[self.terrain[target_tile]][attack.category.index()]
                 [attack.damage_type.index()])
@@ -148,7 +137,7 @@ impl<'catalog> Game<'catalog> {
             if self.rules.units[target.kind].attacks[attack].category != category {
                 continue;
             }
-            let dealt = self.damage_with_bonus(target, unit, attack, from, 0);
+            let dealt = self.damage_at(target, unit, attack, from);
             if best.is_none() || dealt > response {
                 best = Some(attack);
                 response = dealt;

@@ -60,7 +60,6 @@ struct SimulationPaths {
 pub struct ArmyRoster {
     pub id: String,
     pub leader: String,
-    pub screen: String,
     pub pool: Vec<String>,
 }
 #[derive(Clone, Debug, Deserialize)]
@@ -76,7 +75,7 @@ pub struct LandscapeConfig {
 pub struct ArenaDefaults {
     pub landscapes: Vec<LandscapeConfig>,
     pub territory: Vec<String>,
-    /// Minimum total gold value per side, including its leader and two starters.
+    /// Minimum total gold value per side, including its leader.
     pub starting_budget: i32,
     pub default_max_rounds: u32,
     pub policies: Vec<String>,
@@ -927,11 +926,7 @@ fn validate_simulation(
     for roster in rosters {
         identifier(&roster.id, path)?;
         reference(&roster.leader, types, path)?;
-        reference(&roster.screen, types, path)?;
         unique(roster.pool.iter().map(String::as_str), path)?;
-        if !roster.pool.contains(&roster.screen) {
-            return Err(ContentError::new(path, "screen must belong to roster pool"));
-        }
         for id in &roster.pool {
             reference(id, types, path)?;
         }

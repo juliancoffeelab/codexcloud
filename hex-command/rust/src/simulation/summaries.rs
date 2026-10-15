@@ -55,7 +55,7 @@ fn events<'a>(
                 (&combat.unit, combat.damage, false),
                 (&combat.target, combat.retaliation, true),
             ] {
-                if retaliation && combat.retaliation_count == 0 {
+                if retaliation && combat.retaliation_count == 0 && damage == 0 {
                     continue;
                 }
                 // End-of-phase and casualty records include promotions made before
@@ -78,7 +78,7 @@ fn events<'a>(
                         damage: 0,
                     });
                 if retaliation {
-                    row.retaliations += 1;
+                    row.retaliations += u32::from(combat.retaliation_count > 0);
                 } else {
                     row.attacks += 1;
                 }
@@ -329,40 +329,44 @@ mod tests {
     use serde_json::json;
     #[test]
     fn combat_usage_keeps_dead_units_and_post_promotion_types_on_their_actual_sides() {
-        let mut result = fixture();
-        let MatchResult::Arena(arena) = &mut result else {
-            unreachable!()
-        };
-        let unit = |id, kind, side| {
-            serde_json::from_value::<PublicUnit>(json!({
+        // Include reflection on killing hits, without inventing a weapon reply.
+        for (reply_count, reflected_or_weapon) in [(1, 4), (0, 6)] {
+            let mut result = fixture();
+            let MatchResult::Arena(arena) = &mut result else {
+                unreachable!()
+            };
+            let unit = |id, kind, side| {
+                serde_json::from_value::<PublicUnit>(json!({
                 "id":id,"type":kind,"side":side,"tile":"0,0","hp":20,"moved":true,"attacked":true
             }))
             .unwrap()
-        };
-        let phase = &mut arena.phases[0];
-        phase.before = vec![
-            std::sync::Arc::new(unit("u1", "novice", "player")),
-            std::sync::Arc::new(unit("u2", "guard", "enemy")),
-        ];
-        phase.units = vec![std::sync::Arc::new(unit("u1", "veteran", "player"))];
-        phase.records.losses = vec![unit("u2", "guard", "enemy")];
-        phase.records.combats = vec![
+            };
+            let phase = &mut arena.phases[0];
+            phase.before = vec![
+                std::sync::Arc::new(unit("u1", "novice", "player")),
+                std::sync::Arc::new(unit("u2", "guard", "enemy")),
+            ];
+            phase.units = vec![std::sync::Arc::new(unit("u1", "veteran", "player"))];
+            phase.records.losses = vec![unit("u2", "guard", "enemy")];
+            phase.records.combats = vec![
             serde_json::from_value(json!({
                 "unit":"u1","target":"u2","weapon":"hit","from":"0,0","targetTile":"0,1",
-                "damage":8,"retaliation":4,"count":2,"damagePerHit":4,"retaliationCount":1,
+                "damage":8,"retaliation":reflected_or_weapon,"count":2,"damagePerHit":4,"retaliationCount":reply_count,
                 "retaliationPerHit":4,"mediationAtRisk":false
             }))
             .unwrap(),
         ];
-        let summary = serde_json::to_value(borrowed_summary(&result, false).unwrap()).unwrap();
-        assert_eq!(
-            summary["combatUsage"],
-            json!([
-                {"side":"player","type":"veteran","attacks":1,"retaliations":0,"damage":8},
-                {"side":"enemy","type":"guard","attacks":0,"retaliations":1,"damage":4}
-            ])
-        );
+            let summary = serde_json::to_value(borrowed_summary(&result, false).unwrap()).unwrap();
+            assert_eq!(
+                summary["combatUsage"],
+                json!([
+                    {"side":"player","type":"veteran","attacks":1,"retaliations":0,"damage":8},
+                    {"side":"enemy","type":"guard","attacks":0,"retaliations":reply_count,"damage":reflected_or_weapon}
+                ])
+            );
+        }
     }
+
     fn fixture() -> MatchResult {
         let state = State {
             map_id: "fixture".into(),

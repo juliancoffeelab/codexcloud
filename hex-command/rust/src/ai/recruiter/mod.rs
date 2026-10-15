@@ -242,7 +242,7 @@ impl BattleView<'_, '_> {
             .filter(|&r| shares[r.index()] > 0.0)
             .map(|r| counts[r.index()])
             .sum();
-        let mut choices = vec![];
+        let mut choices: Vec<(usize, f64, f64)> = vec![];
         for kind in pool {
             if frontline_only && required.is_none() && role(self, kind) != TacticalRole::Frontline {
                 continue;
@@ -319,17 +319,7 @@ impl BattleView<'_, '_> {
                     .sum::<f64>()
                     / opponents.len() as f64
             };
-            let copies = allies
-                .iter()
-                .filter(|u| self.rules().units[u.kind].family == r.family)
-                .count();
-            let efficiency = (r.hp as f64 * 0.35 + effectiveness * 1.5)
-                / r.cost as f64
-                / if balanced {
-                    1.0 + copies as f64 * 0.25
-                } else {
-                    1.0
-                };
+            let efficiency = (r.hp as f64 * 0.35 + effectiveness * 1.5) / r.cost as f64;
             let score = if frontline_only {
                 efficiency * 5.0 + r.hp as f64 * 0.15
             } else {
@@ -337,7 +327,7 @@ impl BattleView<'_, '_> {
             };
             choices.push((
                 kind,
-                if balanced { deficiency } else { 0.0 },
+                0.0,
                 score + jitter(seed, &format!("recruit:{}:{}", self.round(), r.id)),
             ));
         }

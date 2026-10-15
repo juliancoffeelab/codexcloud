@@ -290,29 +290,11 @@ mod tests {
                 let mut tactic = Tactic::new(Fixed(branch), CampaignerKind::Arena, planner);
                 let mut workspace = PlanningWorkspace::new(7, 0, None, Diplomacy::Restrained);
                 let plan = tactic.run_turn(&game, &mut workspace).unwrap();
-                fn advances(command: &crate::logic::Command, id: u32, expected: &str) -> bool {
-                    match command {
-                        crate::logic::Command::Advance { unit, kind } => {
-                            unit.0 == id && kind.0 == expected
-                        }
-                        crate::logic::Command::Move { .. }
-                        | crate::logic::Command::Attack { .. }
-                        | crate::logic::Command::Recruit { .. }
-                        | crate::logic::Command::SetUnitIntent { .. }
-                        | crate::logic::Command::DismissDialogue
-                        | crate::logic::Command::RecallMission { .. }
-                        | crate::logic::Command::RetryMission
-                        | crate::logic::Command::PreviousDialogue
-                        | crate::logic::Command::SkipDialogue
-                        | crate::logic::Command::EndTurn => false,
-                    }
-                }
                 assert!(
-                    plan.commands.iter().any(|command| advances(
-                        command,
-                        id,
-                        &rules.units[branch].id
-                    )),
+                    plan.commands.contains(&crate::logic::Command::Advance {
+                        unit: UnitId(id),
+                        kind: UnitTypeId(rules.units[branch].id.clone()),
+                    }),
                     "{planner:?} did not execute selected branch"
                 );
                 let mut replay = game.fork();

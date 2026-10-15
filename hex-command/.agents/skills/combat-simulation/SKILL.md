@@ -93,20 +93,6 @@ For a targeted scorer investigation, `--phase-stdio` requests can set
 recruit/promotion score components, eligibility and affordability. Diagnostics
 are read-only; normal phase execution remains unchanged.
 
-For observed support coverage in existing JSONL arena journals:
-
-```sh
-python3 scripts/measure-support.py artifacts/saved/report.json --units rust/data/game/units
-```
-
-Pass unit definitions matching that run explicitly; the audit records their hash
-and does not infer historical stats from the current checkout. It measures
-turn-start adjacent recipients, overlapping coverage, and useful healing after
-terrain healing, including zero-benefit provider turns. Aura coverage is a
-position sample, not a count of actual reflected hits. First turns without a
-recorded pre-healing boundary are excluded. It pools opposing factions against
-Balanced and reports each tactic, map and support ability separately.
-
 ## Battlefield presence and support effects
 
 ```sh
@@ -118,8 +104,6 @@ The analyzer also accepts `--battlefield-presence`, `--support-effects`,
 `--battlefield-value` or `--leader-audit` independently. This audit reads checksummed journals and recorded
 `unitProfiles`, never the current catalog. Support effects require fresh runs
 with `supportTelemetryVersion`; legacy missing measurements are not zeros.
-The earlier `measure-support.py` command estimates historical healing from
-snapshots; prefer engine-recorded events for new runs.
 
 Exports:
 

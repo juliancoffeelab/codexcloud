@@ -2,19 +2,16 @@
   {
     "id": "human",
     "leader": "commander",
-    "screen": "swordsman",
     "pool": ["swordsman", "spearman", "scout", "archer", "adept", "rider", "horse-archer"]
   },
   {
     "id": "woodland",
     "leader": "wildkeeper",
-    "screen": "boar",
     "pool": ["wolf", "boar", "thorncaller", "fox-spearguard", "treant"]
   },
   {
     "id": "skeletons",
     "leader": "necromancer",
-    "screen": "skeleton",
     "pool": [
       "skeleton",
       "skeleton-impact-caster",
@@ -26,7 +23,6 @@
   {
     "id": "coastal",
     "leader": "tidekeeper",
-    "screen": "reefguard",
     "pool": ["harpooner", "reefguard", "wavemender", "merfolk-maceguard"]
   }
 ]

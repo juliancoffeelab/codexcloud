@@ -65,33 +65,5 @@ class SavedReportComparison(unittest.TestCase):
                 comparator.compare(a, b)
 
 
-
-
-class SupportMeasurement(unittest.TestCase):
-    def test_actual_recipients_exclude_self_and_do_not_double_count_overlapping_healers(self):
-        spec = importlib.util.spec_from_file_location('support_measure', Path(__file__).with_name('measure-support.py'))
-        audit = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(audit)
-        catalog = {'medic': {'hp': 10, 'healing': 3}, 'strong': {'hp': 10, 'healing': 5}, 'troop': {'hp': 10}}
-        units = [dict(id='a', type='medic', hp=10, side='player', tile='0,0'),
-                 dict(id='b', type='strong', hp=10, side='player', tile='2,0'),
-                 dict(id='c', type='troop', hp=3, side='player', tile='1,0')]
-        tiles = {u['tile']: {'terrain': 'plains'} for u in units}
-        counts = audit.observe(units, 'player', 'healing', catalog, tiles, {})
-        self.assertEqual(counts['providerTurns'], 2)
-        self.assertEqual(counts['contacts'], 2)
-        self.assertEqual(counts['coveredRecipients'], 1)
-        self.assertEqual(counts['overlappingRecipients'], 1)
-        self.assertEqual(counts['healedRecipients'], 1)
-        self.assertEqual(counts['healedHP'], 5)
-        tiles['1,0']['terrain'] = 'grove'
-        counts = audit.observe(units, 'player', 'healing', catalog, tiles, {'1,0': 'player'})
-        self.assertEqual(counts['healedHP'], 3)
-        units[-1]['hp'] = 6
-        counts = audit.observe(units, 'player', 'healing', catalog, tiles, {'1,0': 'player'})
-        self.assertEqual(counts['healedRecipients'], 0)
-        self.assertEqual(counts['contacts'], 2)
-
-
 if __name__ == "__main__":
     unittest.main()
