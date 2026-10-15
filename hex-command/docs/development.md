@@ -140,9 +140,10 @@ it does not choose a different branch. Situational evaluates recruits and availa
 exchanges, effective HP, terrain routes, movement and marginal healing or thorn
 support. Balanced fills deficient roles with seeded random unit choices and
 uses seeded random promotion branches, as does Frontline for promotions.
-Rotation cycles through the least represented recruit families and promotion
-branches, counting surviving descendants, and retains its next recruit while
-saving. The fixed
+Rotation cycles through the least represented recruit families and retains its
+next recruit while saving. Its promotion branch cycle advances by round and
+alternates eligible units within each round, independently per tree; casualties
+do not reset it. The fixed
 Classic recruiter preserves the live enemy's round-based rotation and first
 promotion branch. Candidates are chosen before affordability; simulation-player
 recruiters can retain gold for an expensive choice when income is available.

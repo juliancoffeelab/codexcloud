@@ -6,9 +6,9 @@ pub(super) fn choices(
     policy: super::RecruiterKind,
     seed: u32,
 ) -> Vec<(UnitId, UnitTypeId)> {
-    let mut cycles = std::collections::BTreeMap::<Vec<usize>, Vec<usize>>::new();
-    // Surviving promoted siblings carry the branch cycle across turns. Eligible
-    // units in this phase then advance that same counter, independently per tree.
+    let mut cycles = std::collections::BTreeMap::<Vec<usize>, usize>::new();
+    // The round advances each tree's cycle even when promoted siblings die.
+    // Eligible units alternate within the round, independently per tree.
     let mut units: Vec<_> = game
         .units()
         .iter()
@@ -33,27 +33,11 @@ pub(super) fn choices(
                     options[(draw * options.len() as f64) as usize]
                 }
                 super::RecruiterKind::Rotation => {
-                    let counts = cycles.entry(options.clone()).or_insert_with(|| {
-                        options
-                            .iter()
-                            .map(|&kind| {
-                                game.units()
-                                    .iter()
-                                    .filter(|ally| {
-                                        ally.side == unit.side && descendant(game, kind, ally.kind)
-                                    })
-                                    .count()
-                            })
-                            .collect()
-                    });
-                    let index = counts
-                        .iter()
-                        .enumerate()
-                        .min_by_key(|(_, count)| **count)
-                        .map(|(index, _)| index)
-                        .unwrap_or(0);
-                    counts[index] += 1;
-                    let result = options[index];
+                    let index = cycles
+                        .entry(options.clone())
+                        .or_insert(game.round().saturating_sub(1) as usize);
+                    let result = options[*index % options.len()];
+                    *index += 1;
                     result
                 }
             };
@@ -63,14 +47,6 @@ pub(super) fn choices(
             ))
         })
         .collect()
-}
-
-fn descendant(game: &BattleView<'_, '_>, root: usize, kind: usize) -> bool {
-    root == kind
-        || game.rules().units[root]
-            .advances_to
-            .iter()
-            .any(|id| descendant(game, game.kind(id), kind))
 }
 
 fn choose(game: &BattleView<'_, '_>, unit: &Unit) -> Option<usize> {
@@ -185,6 +161,8 @@ mod tests {
         let index = game.index(id).unwrap();
         game.units[index].kind = a;
         game.units[index].experience = Some(0);
+        game.units.retain(|u| u.id != id);
+        game.roster_changed();
         game.round += 1;
         assert_eq!(
             choices(
