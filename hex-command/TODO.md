@@ -11,9 +11,6 @@
 
 - [ ] Investigate retaliation stalls where armies repeatedly refuse attacks and
       fail to resolve a fight.
-- [ ] Compare infantry-only, fair-roster and situational strategies against the
-      same Classic opponent in arenas and campaigns, including whether broader
-      roster use improves results without sacrificing campaign completion.
 - [ ] Investigate concentrated promotion choices and test branch usefulness over
       longer battles or multiple stages, with meaningful L3 battlefield exposure.
 
