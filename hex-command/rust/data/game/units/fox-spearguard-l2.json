@@ -3,8 +3,8 @@
   "role": "warrior",
   "name": "Thornshield L2",
   "race": "beast",
-  "hp": 27,
-  "move": 4,
+  "hp": 30,
+  "move": 3,
   "cost": 12,
   "attacks": [
     {
@@ -19,14 +19,14 @@
     }
   ],
   "damageModifiers": {
-    "blade": 0,
-    "pierce": 0,
+    "blade": -1,
+    "pierce": -1,
     "impact": 0
   },
   "terrainModifiers": {},
   "ability": "Thornshield",
   "description": "A forest spear guardian whose thorn shield reflects damage per incoming melee strike.",
-  "thorns": 3,
+  "thorns": 6,
   "level": 2,
   "family": "fox-spearguard",
   "advancesTo": ["fox-spearguard-l3"],

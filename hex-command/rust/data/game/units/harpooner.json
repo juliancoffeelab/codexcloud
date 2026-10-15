@@ -4,13 +4,13 @@
   "name": "Harpooner",
   "race": "merfolk",
   "hp": 16,
-  "move": 5,
+  "move": 3,
   "cost": 7,
   "attacks": [
     {
       "id": "harpoon",
       "name": "Harpoon",
-      "damage": 7,
+      "damage": 6,
       "damageType": "pierce",
       "category": "ranged",
       "range": 2,

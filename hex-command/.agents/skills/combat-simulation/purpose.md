@@ -26,6 +26,19 @@ Some stalemates between them are expected. Rotation and Rush are simple baseline
 not the primary targets for recruitment intelligence or numeric balance. Preserve meaningful cavalry use and
 lore-specific campaign recruitment pools when tuning numeric balance.
 
+Defensive infantry earns its place through durability. Infantry hitters should
+lead damage output, followed by ranged damage units; support weapon damage should
+be comparable to defensive infantry rather than dedicated ranged troops. Cheap
+flankers trade combat strength for speed and objective reach. Expensive mounted
+units may buy greater durability or hitter-level damage, but mounted archers
+should not outgun equivalent foot archers simply because they are mounted.
+Treants fill Woodland's expensive heavy-unit niche in place of cavalry: they
+combine strong durability with a meaningful single blow, paying through price
+and slow movement. Preserve their defensive identity and tune damage or price
+when their total contribution is excessive. Movement above three needs
+a lore reason, such as horses, wolves or scouts trained for speed; terrain access
+and cheaper forest movement also count toward a faction's mobility advantage.
+
 The intended player strategies are infantry-only, fair roster use and
 situational selection. Compare them against the same fixed enemy under matching
 conditions. Fair and situational strategies should improve on the narrow

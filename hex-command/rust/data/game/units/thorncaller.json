@@ -4,13 +4,13 @@
   "name": "Thorncaller",
   "race": "beast",
   "hp": 14,
-  "move": 4,
+  "move": 3,
   "cost": 7,
   "attacks": [
     {
       "id": "thorns",
       "name": "Thorns",
-      "damage": 7,
+      "damage": 6,
       "damageType": "pierce",
       "category": "ranged",
       "range": 2,

@@ -3,7 +3,7 @@
   "role": "warrior",
   "name": "Knight",
   "race": "human",
-  "hp": 38,
+  "hp": 48,
   "move": 6,
   "cost": 24,
   "attacks": [

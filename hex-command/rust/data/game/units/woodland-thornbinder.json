@@ -4,13 +4,13 @@
   "name": "Thornbinder",
   "race": "beast",
   "hp": 28,
-  "move": 4,
+  "move": 3,
   "cost": 18,
   "attacks": [
     {
       "id": "thorns",
       "name": "Thorns",
-      "damage": 8,
+      "damage": 6,
       "count": 1,
       "damageType": "pierce",
       "category": "ranged",

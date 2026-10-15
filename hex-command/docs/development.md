@@ -137,10 +137,10 @@ would omit. Packaging verifies references, file coverage and archive bytes.
 Credentials are passed to the publication command without being printed or saved.
 On failure, retain version/deployment identifiers for recovery.
 
-Thorns reflect fixed damage per incoming melee strike, including killing hits.
+When defending, thorns reflect fixed damage per incoming melee strike, including killing hits.
 Reflection is separate from weapon retaliation, ignores armor, cannot drain, and
 does not trigger against ranged attacks. Own thorns stack with the strongest
-adjacent friendly thorn aura.
+adjacent friendly thorn aura. Attacking does not reflect the enemy's retaliation.
 
 ## AI contracts
 

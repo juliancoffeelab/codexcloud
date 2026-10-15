@@ -4,13 +4,13 @@
   "name": "Bramble warden",
   "race": "beast",
   "hp": 22,
-  "move": 4,
+  "move": 3,
   "cost": 12,
   "attacks": [
     {
       "id": "thorns",
       "name": "Thorns",
-      "damage": 6,
+      "damage": 4,
       "count": 1,
       "damageType": "pierce",
       "category": "ranged",

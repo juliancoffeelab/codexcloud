@@ -4,13 +4,13 @@
   "name": "Trident veteran",
   "race": "merfolk",
   "hp": 32,
-  "move": 4,
+  "move": 3,
   "cost": 18,
   "attacks": [
     {
       "id": "trident",
       "name": "Trident",
-      "damage": 16,
+      "damage": 22,
       "count": 1,
       "damageType": "pierce",
       "category": "melee",

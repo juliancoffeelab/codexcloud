@@ -3,14 +3,14 @@
   "role": "warrior",
   "name": "Ancient boar",
   "race": "beast",
-  "hp": 34,
-  "move": 4,
+  "hp": 38,
+  "move": 3,
   "cost": 20,
   "attacks": [
     {
       "id": "trample",
       "name": "Trample",
-      "damage": 14,
+      "damage": 16,
       "count": 1,
       "damageType": "impact",
       "category": "melee",
@@ -20,7 +20,7 @@
     {
       "id": "tusks",
       "name": "Tusks",
-      "damage": 7,
+      "damage": 8,
       "count": 2,
       "damageType": "pierce",
       "category": "melee",

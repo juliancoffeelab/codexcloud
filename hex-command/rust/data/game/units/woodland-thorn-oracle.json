@@ -4,7 +4,7 @@
   "name": "Bloomweaver",
   "race": "beast",
   "hp": 26,
-  "move": 4,
+  "move": 3,
   "cost": 16,
   "attacks": [
     {

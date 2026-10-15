@@ -3,14 +3,14 @@
   "role": "warrior",
   "name": "Hammerman",
   "race": "human",
-  "hp": 24,
+  "hp": 32,
   "move": 3,
   "cost": 12,
   "attacks": [
     {
       "id": "hammer",
       "name": "Hammer",
-      "damage": 10,
+      "damage": 14,
       "count": 1,
       "damageType": "impact",
       "category": "melee",

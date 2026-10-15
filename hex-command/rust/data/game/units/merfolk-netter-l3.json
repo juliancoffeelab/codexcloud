@@ -4,7 +4,7 @@
   "name": "Netter veteran",
   "race": "merfolk",
   "hp": 30,
-  "move": 5,
+  "move": 3,
   "cost": 18,
   "attacks": [
     {

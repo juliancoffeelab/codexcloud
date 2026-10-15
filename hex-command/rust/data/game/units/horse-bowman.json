@@ -10,7 +10,7 @@
     {
       "id": "bow",
       "name": "Bow",
-      "damage": 5,
+      "damage": 4,
       "count": 3,
       "damageType": "pierce",
       "category": "ranged",

@@ -11,14 +11,14 @@
       "cost": 1
     }
   },
-  "hp": 18,
-  "move": 4,
+  "hp": 21,
+  "move": 3,
   "cost": 8,
   "attacks": [
     {
       "id": "trample",
       "name": "Trample",
-      "damage": 6,
+      "damage": 8,
       "count": 1,
       "damageType": "impact",
       "category": "melee",
@@ -28,7 +28,7 @@
     {
       "id": "tusks",
       "name": "Tusks",
-      "damage": 3,
+      "damage": 4,
       "count": 2,
       "damageType": "pierce",
       "category": "melee",

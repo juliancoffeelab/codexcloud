@@ -3,14 +3,14 @@
   "role": "warrior",
   "name": "Halberdier",
   "race": "human",
-  "hp": 24,
+  "hp": 32,
   "move": 3,
   "cost": 12,
   "attacks": [
     {
       "id": "halberd",
       "name": "Halberd",
-      "damage": 12,
+      "damage": 15,
       "count": 1,
       "damageType": "pierce",
       "category": "melee",
@@ -20,7 +20,7 @@
     {
       "id": "axe",
       "name": "Axe",
-      "damage": 10,
+      "damage": 13,
       "count": 1,
       "damageType": "blade",
       "category": "melee",

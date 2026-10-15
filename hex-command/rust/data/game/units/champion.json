@@ -3,7 +3,7 @@
   "role": "warrior",
   "name": "Champion",
   "race": "human",
-  "hp": 32,
+  "hp": 42,
   "move": 3,
   "cost": 16,
   "attacks": [
@@ -29,8 +29,8 @@
     }
   ],
   "damageModifiers": {
-    "blade": -3,
-    "pierce": -3,
+    "blade": -4,
+    "pierce": -4,
     "impact": 1
   },
   "terrainModifiers": {},

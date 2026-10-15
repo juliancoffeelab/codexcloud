@@ -4,7 +4,7 @@
   "name": "Reef guard",
   "race": "merfolk",
   "hp": 22,
-  "move": 4,
+  "move": 3,
   "cost": 8,
   "attacks": [
     {

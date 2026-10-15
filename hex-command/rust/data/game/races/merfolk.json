@@ -7,7 +7,7 @@
       "damageModifiers": {
         "melee": 0,
         "ranged": -1,
-        "pierce": -1
+        "pierce": 0
       }
     },
     "ford": {
@@ -15,7 +15,7 @@
       "damageModifiers": {
         "melee": 0,
         "ranged": -1,
-        "pierce": -1
+        "pierce": 0
       }
     },
     "marsh": {
@@ -43,12 +43,7 @@
         "ranged": 1
       }
     },
-    "plains": {
-      "damageModifiers": {
-        "melee": 1,
-        "ranged": 1
-      }
-    }
+    "plains": {}
   },
   "damageModifiers": {
     "blade": 0,

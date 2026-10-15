@@ -11,7 +11,7 @@
       "cost": 1
     }
   },
-  "hp": 24,
+  "hp": 32,
   "move": 3,
   "cost": 10,
   "attacks": [
@@ -37,8 +37,8 @@
     }
   ],
   "damageModifiers": {
-    "blade": -2,
-    "pierce": -1,
+    "blade": -3,
+    "pierce": -2,
     "impact": 0
   },
   "ability": "Armor",

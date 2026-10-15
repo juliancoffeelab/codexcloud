@@ -4,13 +4,13 @@
   "name": "Macer veteran",
   "race": "merfolk",
   "hp": 36,
-  "move": 4,
+  "move": 3,
   "cost": 18,
   "attacks": [
     {
       "id": "mace",
       "name": "Mace",
-      "damage": 7,
+      "damage": 8,
       "count": 3,
       "damageType": "impact",
       "category": "melee",

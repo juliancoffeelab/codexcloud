@@ -10,7 +10,7 @@
     {
       "id": "axe",
       "name": "Axe",
-      "damage": 8,
+      "damage": 11,
       "count": 1,
       "damageType": "blade",
       "category": "melee",

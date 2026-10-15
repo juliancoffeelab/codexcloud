@@ -20,7 +20,7 @@
     {
       "id": "boneclub",
       "name": "Boneclub",
-      "damage": 9,
+      "damage": 13,
       "count": 1,
       "damageType": "impact",
       "category": "melee",

@@ -10,7 +10,7 @@
     {
       "id": "light",
       "name": "Light",
-      "damage": 6,
+      "damage": 4,
       "count": 1,
       "damageType": "impact",
       "category": "ranged",

@@ -4,13 +4,13 @@
   "name": "Wavemender",
   "race": "merfolk",
   "hp": 17,
-  "move": 4,
+  "move": 3,
   "cost": 10,
   "attacks": [
     {
       "id": "surge",
       "name": "Surge",
-      "damage": 7,
+      "damage": 3,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,

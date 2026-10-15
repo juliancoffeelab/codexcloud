@@ -4,7 +4,7 @@
   "name": "Trident guard",
   "race": "merfolk",
   "hp": 28,
-  "move": 4,
+  "move": 3,
   "cost": 12,
   "attacks": [
     {

@@ -4,7 +4,7 @@
   "name": "Grove oracle",
   "race": "beast",
   "hp": 40,
-  "move": 4,
+  "move": 3,
   "cost": 0,
   "attacks": [
     {

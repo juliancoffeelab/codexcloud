@@ -4,7 +4,7 @@
   "name": "Tide sovereign",
   "race": "merfolk",
   "hp": 42,
-  "move": 4,
+  "move": 3,
   "cost": 0,
   "attacks": [
     {

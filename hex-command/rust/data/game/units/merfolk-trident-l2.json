@@ -4,13 +4,13 @@
   "name": "Two handed trident",
   "race": "merfolk",
   "hp": 25,
-  "move": 4,
+  "move": 3,
   "cost": 12,
   "attacks": [
     {
       "id": "trident",
       "name": "Trident",
-      "damage": 12,
+      "damage": 16,
       "count": 1,
       "damageType": "pierce",
       "category": "melee",

@@ -10,7 +10,7 @@
     {
       "id": "spark",
       "name": "Spark",
-      "damage": 7,
+      "damage": 6,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,

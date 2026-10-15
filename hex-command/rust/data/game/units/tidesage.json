@@ -4,13 +4,13 @@
   "name": "Tide sage",
   "race": "merfolk",
   "hp": 23,
-  "move": 4,
+  "move": 3,
   "cost": 15,
   "attacks": [
     {
       "id": "surge",
       "name": "Surge",
-      "damage": 9,
+      "damage": 4,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,

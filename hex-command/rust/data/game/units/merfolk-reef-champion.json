@@ -4,7 +4,7 @@
   "name": "Reef champion",
   "race": "merfolk",
   "hp": 36,
-  "move": 4,
+  "move": 3,
   "cost": 18,
   "attacks": [
     {

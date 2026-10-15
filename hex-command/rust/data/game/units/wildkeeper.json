@@ -5,7 +5,7 @@
   "race": "beast",
   "leader": true,
   "hp": 28,
-  "move": 4,
+  "move": 3,
   "cost": 0,
   "attacks": [
     {

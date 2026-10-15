@@ -4,7 +4,7 @@
   "name": "Leather swordsman",
   "race": "human",
   "terrainModifiers": {},
-  "hp": 21,
+  "hp": 25,
   "move": 3,
   "cost": 7,
   "attacks": [
@@ -20,8 +20,8 @@
     }
   ],
   "damageModifiers": {
-    "blade": -1,
-    "pierce": -1,
+    "blade": -2,
+    "pierce": -2,
     "impact": 0
   },
   "ability": "Shield line",

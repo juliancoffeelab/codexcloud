@@ -20,7 +20,7 @@
     }
   },
   "race": "human",
-  "hp": 30,
+  "hp": 38,
   "move": 5,
   "cost": 19,
   "attacks": [
