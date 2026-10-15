@@ -1,12 +1,12 @@
 {
   "id": "spearman",
   "role": "warrior",
-  "name": "Spearman",
+  "name": "Leather spearman",
   "terrainModifiers": {},
   "race": "human",
-  "hp": 20,
+  "hp": 25,
   "move": 3,
-  "cost": 6,
+  "cost": 7,
   "attacks": [
     {
       "id": "spear",
@@ -20,14 +20,14 @@
     }
   ],
   "damageModifiers": {
-    "blade": 0,
-    "pierce": 0,
+    "blade": -2,
+    "pierce": -2,
     "impact": 0
   },
-  "ability": "Spear line",
-  "description": "Affordable spear infantry suited to screening against woodland beasts.",
+  "ability": "Shield line",
+  "description": "Affordable spear infantry suited to screening against woodland beasts. A shield reduces incoming blade and piercing damage.",
   "level": 1,
   "family": "spearman",
   "experienceNeeded": 10,
-  "advancesTo": ["warden"]
+  "advancesTo": ["warden", "halberdier"]
 }

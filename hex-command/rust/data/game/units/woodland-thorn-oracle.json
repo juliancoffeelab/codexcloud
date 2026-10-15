@@ -1,0 +1,53 @@
+{
+  "id": "woodland-thorn-oracle",
+  "role": "ranger",
+  "name": "Bloomweaver",
+  "race": "beast",
+  "hp": 26,
+  "move": 3,
+  "cost": 16,
+  "attacks": [
+    {
+      "id": "thorns",
+      "name": "Thorns",
+      "damage": 6,
+      "count": 2,
+      "damageType": "pierce",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "rootstaff",
+      "name": "Rootstaff",
+      "damage": 6,
+      "count": 1,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "root-crush",
+      "name": "Crushing roots",
+      "damage": 12,
+      "count": 1,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-magic"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Thorn magic",
+  "description": "A forest damage caster who fires piercing thorns or crushes armored foes with roots.",
+  "level": 3,
+  "family": "thorncaller",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

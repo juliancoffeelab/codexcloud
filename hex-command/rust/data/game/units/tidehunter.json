@@ -4,13 +4,13 @@
   "name": "Tide hunter",
   "race": "merfolk",
   "hp": 22,
-  "move": 5,
+  "move": 3,
   "cost": 11,
   "attacks": [
     {
       "id": "harpoon",
       "name": "Harpoon",
-      "damage": 8,
+      "damage": 9,
       "damageType": "pierce",
       "category": "ranged",
       "range": 2,
@@ -37,6 +37,6 @@
   "description": "A veteran harpoon fighter with a stronger close-combat reply.",
   "level": 2,
   "family": "harpooner",
-  "experienceNeeded": 0,
-  "advancesTo": []
+  "experienceNeeded": 18,
+  "advancesTo": ["merfolk-harpoon-master"]
 }

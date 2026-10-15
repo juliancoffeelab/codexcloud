@@ -66,17 +66,46 @@ ACTION = pa.struct([
     ("kind", STRING), ("unit", STRING), ("tile", STRING),
     ("target", STRING), ("weapon", STRING), ("type", STRING),
 ])
+DAMAGE_MITIGATION = pa.struct([
+    ("availableHp", INTEGER),
+    ("rawDamage", INTEGER), ("afterArmourDamage", INTEGER), ("afterTerrainDamage", INTEGER),
+    ("effectiveArmourPrevented", INTEGER), ("effectiveTerrainPrevented", INTEGER),
+])
 COMBAT = pa.struct([
     ("unit", STRING), ("target", STRING), ("weapon", STRING), ("from", STRING),
     ("targetTile", STRING), ("damage", INTEGER), ("retaliation", INTEGER),
     ("count", INTEGER), ("damagePerHit", INTEGER),
     ("retaliationCount", INTEGER), ("retaliationPerHit", INTEGER),
     ("mediationAtRisk", BOOLEAN),
+    ("thorns", pa.struct([("damage",INTEGER),("auraDamage",INTEGER),("effectiveDamage",INTEGER),("auraSources",STRINGS)])),
+    ("mitigation", pa.struct([("attack", DAMAGE_MITIGATION), ("retaliation", DAMAGE_MITIGATION)])),
 ])
 OWNERSHIP = pa.struct([("tile", STRING), ("owner", STRING)])
+ARMY_STRENGTH = pa.struct([
+    ("units", INTEGER), ("cost", INTEGER), ("hp", INTEGER),
+    ("maxHp", INTEGER), ("hpValue", pa.float64()),
+])
+LEADER_STATE = pa.struct([("tile", STRING), ("hp", INTEGER), ("maxHp", INTEGER)])
+LEADER_AUDIT = pa.struct([
+    ("leader", STRING), ("side", STRING), ("before", LEADER_STATE), ("after", LEADER_STATE),
+    ("armyBefore", ARMY_STRENGTH), ("armyAfter", ARMY_STRENGTH),
+    ("opponentBefore", ARMY_STRENGTH), ("opponentAfter", ARMY_STRENGTH),
+    ("recruitmentBefore", pa.struct([
+        ("gold", INTEGER), ("onOwnedKeep", BOOLEAN),
+        ("legalOptions", INTEGER), ("affordableOptions", INTEGER),
+    ])),
+    ("exposure", pa.struct([
+        ("beforeDamage", INTEGER), ("chosenTileDamage", INTEGER),
+        ("minDamage", INTEGER), ("minTile", STRING),
+        ("reachableTiles", INTEGER), ("safeTiles", INTEGER),
+        ("chosenTileReachable", BOOLEAN), ("afterDamage", INTEGER),
+    ])),
+])
 PHASE = pa.struct([
+    ("leaderAudit", pa.list_(LEADER_AUDIT)),
     ("side", STRING), ("round", INTEGER), ("actions", pa.list_(ACTION)),
     ("losses", pa.list_(UNIT)), ("combats", pa.list_(COMBAT)),
+    ("healing", pa.list_(pa.struct([("target",STRING),("providers",STRINGS),("amount",INTEGER)]))),
     ("living", GOLD), ("health", GOLD), ("gold", GOLD),
     ("before", pa.list_(UNIT)), ("units", pa.list_(UNIT)),
     ("ownership", pa.list_(OWNERSHIP)), ("goals", pa.list_(PROGRESS)),

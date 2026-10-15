@@ -46,7 +46,7 @@ def prepare(credential, message):
     step("Render generated assets")
     command(["npm", "run", "art:build"])
     step("Style checks")
-    command(["npm", "run", "style"])
+    command(["npm", "run", "format"])
     step("Commit project source")
     command(["git", "add", "-A", "--", "."])
     changed = subprocess.run(["git", "diff", "--cached", "--quiet", "--", "."], cwd=ROOT)

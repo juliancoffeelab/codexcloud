@@ -27,27 +27,25 @@ pub(super) fn choose(
     let required = orders.requirements.iter().find(|r| r.deficit(game) > 0);
     let reserved: rustc_hash::FxHashSet<_> =
         orders.reserved.iter().map(|t| game.site(&t.0)).collect();
-    let enemies: Vec<_> = game.units().iter().filter(|u| u.side != side).collect();
-    let allies: Vec<_> = game.units().iter().filter(|u| u.side == side).collect();
-    let mut best: Option<(f64, usize, usize)> = None;
+    let mut choices = Vec::new();
     for kind in game.recruitment_options(side) {
         if required.is_some_and(|r| !r.accepts(game, kind)) {
             continue;
         }
         let tiles: Vec<_> = game
-            .placement_tiles(leader, kind, true)
+            .placement_tiles(leader, kind, false)
             .into_iter()
             .filter(|t| !reserved.contains(t))
             .collect();
-        if tiles.is_empty() {
+        let Some(&tile) = tiles.first() else {
             continue;
-        }
+        };
         let rule = &game.rules().units[kind];
         let mut recruit = Unit {
             id: 0,
             kind,
             side,
-            tile: tiles[0],
+            tile,
             hp: rule.hp,
             moved: true,
             attacked: true,
@@ -57,139 +55,36 @@ pub(super) fn choose(
             retreating: None,
             rebuilding: None,
         };
-        // Route to legal attack origins, not the enemy's occupied tile. Ranged
-        // recruits can therefore help across water even when they cannot enter it.
-        let matchups: Vec<_> = enemies
-            .iter()
-            .map(|target| {
-                rule.attacks
-                    .iter()
-                    .enumerate()
-                    .map(|(weapon, attack)| {
-                        let origins = game.attack_origins(attack.category, attack.range);
-                        let mut goals = Vec::new();
-                        origins[target.tile].for_each(|tile| {
-                            if game.cost(kind, tile) != u16::MAX {
-                                goals.push(tile);
-                            }
-                        });
-                        (
-                            game.damage(&recruit, target, weapon).min(target.hp) as f64,
-                            game.routes(kind, &goals),
-                        )
-                    })
-                    .collect::<Vec<_>>()
-            })
-            .collect();
-        let copies = allies
+        let assessment = super::evaluation::Assessment::new(game, &recruit);
+        let copies = game
+            .units()
             .iter()
             .filter(|u| {
-                !game.rules().units[u.kind].leader
+                u.side == side
+                    && !game.rules().units[u.kind].leader
                     && game.rules().units[u.kind].family == rule.family
             })
             .count();
-        let healing_needs: Vec<_> = if rule.healing > 0 {
-            allies
-                .iter()
-                .map(|ally| {
-                    let r = &game.rules().units[ally.kind];
-                    let covered = allies
-                        .iter()
-                        .filter(|u| {
-                            u.id != ally.id && game.board().distance(u.tile, ally.tile) <= 1
-                        })
-                        .map(|u| game.rules().units[u.kind].healing)
-                        .max()
-                        .unwrap_or(0);
-                    let exposed = enemies.iter().any(|e| {
-                        game.board().distance(ally.tile, e.tile)
-                            <= game.rules().units[e.kind].r#move as u16 + 1
-                    });
-                    let demand =
-                        (r.hp - ally.hp) as f64 + if exposed { r.hp as f64 * 0.2 } else { 0.0 };
-                    let goals: Vec<_> = game.board().adjacent[ally.tile]
-                        .iter()
-                        .copied()
-                        .filter(|&t| game.cost(kind, t) != u16::MAX)
-                        .collect();
-                    (
-                        (demand - covered as f64).max(0.0).min(rule.healing as f64),
-                        game.routes(kind, &goals),
-                    )
-                })
-                .collect()
-        } else {
-            Vec::new()
-        };
+        if rule.cost > game.gold()[side.index()] && game.income(side) == 0 {
+            continue;
+        }
         for tile in tiles {
             recruit.tile = tile;
-            let (offense, access) = if enemies.is_empty() {
-                (
-                    rule.attacks
-                        .iter()
-                        .map(|a| (a.damage * i32::from(a.count)) as f64)
-                        .fold(0.0, f64::max),
-                    1.0,
-                )
-            } else {
-                let mut offense = 0.0;
-                let mut access = 0.0;
-                for weapons in &matchups {
-                    let mut value: f64 = 0.0;
-                    let mut reach: f64 = 0.0;
-                    for (damage, routes) in weapons {
-                        if routes[tile] == u16::MAX {
-                            continue;
-                        }
-                        let turns = routes[tile] as f64 / rule.r#move.max(1) as f64;
-                        let weight = 1.0 / (1.0 + turns * 0.35);
-                        value = value.max(damage * weight);
-                        reach = reach.max(weight);
-                    }
-                    offense += value;
-                    access += reach;
-                }
-                (
-                    offense / enemies.len() as f64,
-                    access / enemies.len() as f64,
-                )
-            };
-            // Resistance and spawn terrain use the same damage calculation as play.
-            let incoming = enemies
-                .iter()
-                .map(|enemy| {
-                    let r = &game.rules().units[enemy.kind];
-                    let distance = game.board().distance(tile, enemy.tile) as f64;
-                    let weight = 1.0 / (1.0 + distance / r.r#move.max(1) as f64);
-                    (0..r.attacks.len())
-                        .map(|w| game.damage(enemy, &recruit, w) as f64)
-                        .fold(0.0, f64::max)
-                        * weight
-                })
-                .sum::<f64>()
-                / enemies.len().max(1) as f64;
-            let durability = rule.hp as f64 / (1.0 + incoming / rule.hp.max(1) as f64);
-            // Healing demand is local and falls when existing healers cover it.
-            let healing = healing_needs
-                .iter()
-                .filter(|(_, routes)| {
-                    routes[tile] != u16::MAX && routes[tile] as usize <= rule.r#move
-                })
-                .map(|(demand, _)| demand)
-                .sum::<f64>();
-            let score = (offense * 1.5 + durability * access * 0.35 + healing * 2.0)
+            let score = assessment.score(game, &recruit)
                 / rule.cost.max(1) as f64
                 / (1.0 + copies as f64 * 0.2)
-                + super::jitter(
+                + super::random(
                     seed,
                     &format!("situational:{}:{}:{tile}", game.round(), rule.id),
-                ) * 0.01;
-            if best.is_none_or(|(previous, _, _)| score > previous) {
-                best = Some((score, kind, tile));
-            }
+                ) * 0.0005;
+            choices.push((score, kind, tile));
         }
     }
-    best.map(|(_, kind, tile)| crate::ai::recruit_command(game, leader.id, kind, tile))
+    let (_, kind, tile) = choices.into_iter().max_by(|a, b| a.0.total_cmp(&b.0))?;
+    if game.rules().units[kind].cost > game.gold()[side.index()] {
+        return None;
+    }
+    Some(crate::ai::recruit_command(game, leader.id, kind, tile))
 }
 
 #[cfg(test)]
@@ -242,6 +137,110 @@ mod tests {
             Command::Recruit { kind, .. } => game.kind(&kind.0),
             _ => panic!("recruiter emitted a non-recruit command"),
         })
+    }
+
+    #[test]
+    fn one_strike_is_preferred_to_equal_damage_multiple_strikes_against_thorns() {
+        let (mut rules, a, b) = fixture();
+        rules.units[a].attacks[0].damage = 6;
+        rules.units[a].attacks[0].count = 3;
+        rules.units[b].attacks[0].damage = 18;
+        let enemy = battle(&rules, a, b)
+            .units
+            .iter()
+            .find(|u| u.side == Side::Enemy)
+            .unwrap()
+            .kind;
+        rules.units[enemy].hp = 100;
+        rules.units[enemy].thorns = 4;
+        assert_eq!(
+            selected(&battle(&rules, a, b), &RecruitmentOrders::default()),
+            Some(b)
+        );
+    }
+
+    #[test]
+    fn defense_and_own_thorns_change_the_selected_recruit() {
+        for armor in [false, true] {
+            let (mut rules, a, b) = fixture();
+            if armor {
+                rules.units[b].damage_modifiers.blade = -6;
+            } else {
+                rules.units[b].thorns = 12;
+            }
+            let enemy = battle(&rules, a, b)
+                .units
+                .iter()
+                .find(|u| u.side == Side::Enemy)
+                .unwrap()
+                .kind;
+            rules.units[enemy].attacks.truncate(1);
+            rules.units[enemy].attacks[0].category = Category::Melee;
+            rules.units[enemy].attacks[0].range = 1;
+            rules.units[enemy].attacks[0].damage_type = DamageType::Blade;
+            rules.units[enemy].attacks[0].damage = 8;
+            rules.units[enemy].attacks[0].count = 3;
+            assert_eq!(
+                selected(&battle(&rules, a, b), &RecruitmentOrders::default()),
+                Some(b)
+            );
+        }
+    }
+
+    #[test]
+    fn valuable_expensive_recruit_can_wait_for_income() {
+        let (mut rules, a, b) = fixture();
+        rules.units[b].cost = 12;
+        rules.units[b].hp = 80;
+        rules.units[b].attacks[0].damage = 20;
+        let mut game = battle(&rules, a, b);
+        let village = game
+            .terrain
+            .iter()
+            .enumerate()
+            .find(|(_, t)| **t == rules.terrains["village"])
+            .unwrap()
+            .0;
+        game.owners[village] = Some(Side::Player);
+        game.gold[0] = 10;
+        assert_eq!(selected(&game, &RecruitmentOrders::default()), None);
+        game.round += 1;
+        game.gold[0] += game.income(Side::Player);
+        assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(b));
+        game.gold[0] = 10;
+        game.owners[village] = None;
+        assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(a));
+    }
+
+    #[test]
+    fn movement_and_armor_per_strike_affect_matchups() {
+        let (mut rules, a, b) = fixture();
+        rules.units[b].r#move = rules.units[a].r#move * 2;
+        assert_eq!(
+            selected(&battle(&rules, a, b), &RecruitmentOrders::default()),
+            Some(b)
+        );
+        rules.units[b].r#move = rules.units[a].r#move;
+        rules.units[a].attacks[0].damage = 6;
+        rules.units[a].attacks[0].count = 3;
+        rules.units[b].attacks[0].damage = 18;
+        let enemy = battle(&rules, a, b)
+            .units
+            .iter()
+            .find(|u| u.side == Side::Enemy)
+            .unwrap()
+            .kind;
+        let damage_type = rules.units[a].attacks[0].damage_type;
+        rules.units[b].attacks[0].damage_type = damage_type;
+        rules.units[enemy].damage_modifiers = DamageModifiers {
+            blade: -4,
+            pierce: -4,
+            impact: -4,
+        };
+        assert_eq!(
+            selected(&battle(&rules, a, b), &RecruitmentOrders::default()),
+            Some(b)
+        );
     }
 
     #[test]
@@ -333,5 +332,52 @@ mod tests {
         let index = game.index(id).unwrap();
         game.units[index].hp = 1;
         assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(b));
+    }
+
+    #[test]
+    fn exposed_melee_allies_create_thorn_support_demand() {
+        for aura in [0, 20] {
+            let (mut rules, a, b) = fixture();
+            rules.units[b].thorn_aura = aura;
+            rules.units[b].attacks[0].damage = 0;
+            let enemy = battle(&rules, a, b)
+                .units
+                .iter()
+                .find(|u| u.side == Side::Enemy)
+                .unwrap()
+                .kind;
+            // A committed multi-strike melee enemy makes aura support useful.
+            rules.units[enemy].attacks.truncate(1);
+            rules.units[enemy].attacks[0].category = Category::Melee;
+            rules.units[enemy].attacks[0].range = 1;
+            rules.units[enemy].attacks[0].count = 3;
+            let mut game = battle(&rules, a, b);
+            let leader = game
+                .units
+                .iter()
+                .find(|u| u.side == Side::Player)
+                .unwrap()
+                .clone();
+            let tile = game.placement_tiles(&leader, a, true)[0];
+            game.add(a, Side::Player, tile);
+            let enemy = game
+                .units
+                .iter()
+                .find(|u| u.side == Side::Enemy)
+                .unwrap()
+                .id;
+            let location = game.board.adjacent[tile]
+                .iter()
+                .copied()
+                .find(|&t| game.at(t).is_none())
+                .unwrap();
+            let index = game.index(enemy).unwrap();
+            game.units[index].tile = location;
+            game.roster_changed();
+            assert_eq!(
+                selected(&game, &RecruitmentOrders::default()),
+                Some(if aura == 0 { a } else { b })
+            );
+        }
     }
 }

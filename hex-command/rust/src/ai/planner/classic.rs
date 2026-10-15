@@ -253,6 +253,11 @@ impl BattleView<'_, '_> {
                         ClassicOrder::Leader
                     }
                     Family::Harpooner
+                    | Family::HorseArcher
+                    | Family::SkeletonRider
+                    | Family::SkeletonAxeman
+                    | Family::FoxSpearguard
+                    | Family::Treant
                     | Family::MerfolkMacer
                     | Family::Reefguard
                     | Family::Rider
@@ -444,7 +449,7 @@ impl BattleDraft<'_, '_> {
         if u.side != self.turn() || u.attacked {
             return;
         }
-        if let Some(&promotion) = self.promotion_options(&u).first() {
+        if let Some(promotion) = rules.orders.promotion(self, &u) {
             recorder.advance(self, id, promotion);
             return;
         }

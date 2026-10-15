@@ -3,14 +3,14 @@
   "role": "healer",
   "name": "Wavemender",
   "race": "merfolk",
-  "hp": 16,
-  "move": 4,
-  "cost": 9,
+  "hp": 17,
+  "move": 3,
+  "cost": 10,
   "attacks": [
     {
       "id": "surge",
       "name": "Surge",
-      "damage": 5,
+      "damage": 3,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
@@ -33,11 +33,11 @@
     "pierce": 0,
     "impact": 0
   },
-  "ability": "Incoming Tide",
-  "description": "A fragile merfolk support caster who tends nearby allies behind the front line.",
-  "healing": 2,
+  "ability": "Healing",
+  "description": "A support mage who heals adjacent allies at turn start and fights with modest impact magic.",
+  "healing": 3,
   "level": 1,
   "family": "wavemender",
   "experienceNeeded": 10,
-  "advancesTo": ["tidesage"]
+  "advancesTo": ["tidesage", "merfolk-tidecrusher-l2"]
 }

@@ -1,0 +1,49 @@
+{
+  "id": "skeleton-rider-l2",
+  "role": "warrior",
+  "name": "Death rider",
+  "race": "skeletons",
+  "hp": 28,
+  "move": 6,
+  "cost": 18,
+  "attacks": [
+    {
+      "id": "spear",
+      "name": "Spear",
+      "damage": 15,
+      "count": 1,
+      "damageType": "pierce",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {
+    "forest": {
+      "cost": 1
+    },
+    "grove": {
+      "cost": 1
+    },
+    "hill": {
+      "cost": 1
+    },
+    "ford": {
+      "cost": 1
+    },
+    "marsh": {
+      "cost": 1
+    }
+  },
+  "ability": "Mounted",
+  "description": "Expensive cavalry that crosses open ground quickly; dense woods and rough ground slow its mount.",
+  "level": 2,
+  "family": "skeleton-rider",
+  "advancesTo": ["skeleton-rider-l3"],
+  "experienceNeeded": 18
+}

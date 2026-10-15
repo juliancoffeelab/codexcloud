@@ -11,29 +11,29 @@
       "cost": 1
     }
   },
-  "hp": 18,
+  "hp": 21,
   "move": 3,
-  "cost": 9,
+  "cost": 8,
   "attacks": [
     {
       "id": "trample",
       "name": "Trample",
-      "damage": 6,
+      "damage": 8,
+      "count": 1,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee",
-      "count": 1
+      "sound": "attack-melee"
     },
     {
       "id": "tusks",
       "name": "Tusks",
       "damage": 4,
+      "count": 2,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee",
-      "count": 1
+      "sound": "attack-melee"
     }
   ],
   "damageModifiers": {
@@ -42,7 +42,7 @@
     "impact": -1
   },
   "ability": "Thick hide",
-  "description": "A thick-skinned woodland screen that absorbs light strikes and tramples armored foes; slow in wetlands.",
+  "description": "A thick-skinned woodland screen that absorbs light strikes and tramples armored foes; slow in wetlands Its paired tusks deliver two piercing strikes.",
   "level": 1,
   "family": "boar",
   "experienceNeeded": 10,

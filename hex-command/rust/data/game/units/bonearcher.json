@@ -2,7 +2,7 @@
   "id": "bonearcher",
   "role": "ranger",
   "name": "Bone archer",
-  "race": "undead",
+  "race": "skeletons",
   "hp": 16,
   "move": 3,
   "cost": 7,
@@ -15,7 +15,7 @@
       "category": "ranged",
       "range": 2,
       "sound": "attack-bow",
-      "count": 3
+      "count": 2
     },
     {
       "id": "shard",

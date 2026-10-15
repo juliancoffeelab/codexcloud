@@ -1,0 +1,43 @@
+{
+  "id": "skeleton-bow-master",
+  "role": "ranger",
+  "name": "Hollow archer",
+  "race": "skeletons",
+  "hp": 26,
+  "move": 3,
+  "cost": 15,
+  "attacks": [
+    {
+      "id": "bonebow",
+      "name": "Bonebow",
+      "damage": 5,
+      "count": 3,
+      "damageType": "pierce",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "shard",
+      "name": "Shard",
+      "damage": 6,
+      "count": 1,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Bone bow",
+  "description": "A fragile skeletal bow veteran whose repeated piercing shots punish unarmored enemies.",
+  "level": 3,
+  "family": "bonearcher",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

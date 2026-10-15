@@ -1,0 +1,49 @@
+{
+  "id": "merfolk-trident-l3",
+  "role": "warrior",
+  "name": "Trident veteran",
+  "race": "merfolk",
+  "hp": 32,
+  "move": 3,
+  "cost": 18,
+  "attacks": [
+    {
+      "id": "trident",
+      "name": "Trident",
+      "damage": 22,
+      "count": 1,
+      "damageType": "pierce",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {
+    "water": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    },
+    "ford": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    },
+    "marsh": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    }
+  },
+  "ability": "Heavy trident",
+  "description": "A veteran two-handed trident fighter who delivers powerful piercing blows in the shallows. Master mariners gain additional ranged cover in water, shallows and marsh.",
+  "level": 3,
+  "family": "reefguard",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

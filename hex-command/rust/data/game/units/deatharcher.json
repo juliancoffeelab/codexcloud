@@ -2,10 +2,10 @@
   "id": "deatharcher",
   "role": "ranger",
   "name": "Death archer",
-  "race": "undead",
+  "race": "skeletons",
   "hp": 22,
   "move": 3,
-  "cost": 11,
+  "cost": 10,
   "attacks": [
     {
       "id": "bonebow",
@@ -37,6 +37,6 @@
   "description": "A veteran skeletal archer who can defend itself at close quarters.",
   "level": 2,
   "family": "bonearcher",
-  "experienceNeeded": 0,
-  "advancesTo": []
+  "experienceNeeded": 18,
+  "advancesTo": ["skeleton-bow-master"]
 }

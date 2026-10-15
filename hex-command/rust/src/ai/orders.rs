@@ -162,6 +162,8 @@ pub struct ObjectiveOrder {
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", default)]
 pub struct TacticalOrders {
+    /// Promotion branches selected by Recruiter; Planner owns their timing.
+    pub promotions: Vec<(UnitId, UnitTypeId)>,
     pub battle: BattleObjective,
     pub constraints: Vec<TacticalConstraint>,
     pub objectives: Vec<ObjectiveOrder>,
@@ -184,6 +186,13 @@ pub struct TacticalOrders {
     pub leader_intents: Vec<(UnitId, Option<bool>)>,
 }
 impl TacticalOrders {
+    pub(in crate::ai) fn promotion(&self, game: &BattleView<'_, '_>, unit: &Unit) -> Option<usize> {
+        let (_, kind) = self.promotions.iter().find(|(id, _)| id.0 == unit.id)?;
+        game.promotion_options(unit)
+            .into_iter()
+            .find(|&option| game.rules().units[option].id == kind.0)
+    }
+
     pub(crate) fn assigned_elsewhere(&self, id: u32, goal: &Target) -> bool {
         fn other(order: &ObjectiveOrder, id: u32) -> bool {
             match order.objective {

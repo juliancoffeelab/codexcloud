@@ -4,13 +4,13 @@
   "name": "Macer",
   "race": "merfolk",
   "hp": 22,
-  "move": 4,
+  "move": 3,
   "cost": 8,
   "attacks": [
     {
       "id": "mace",
       "name": "Shell mace",
-      "damage": 3,
+      "damage": 5,
       "damageType": "impact",
       "category": "melee",
       "range": 1,

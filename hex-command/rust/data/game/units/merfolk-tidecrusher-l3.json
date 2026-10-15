@@ -1,0 +1,59 @@
+{
+  "id": "merfolk-tidecrusher-l3",
+  "role": "ranger",
+  "name": "Tide breaker",
+  "race": "merfolk",
+  "hp": 28,
+  "move": 3,
+  "cost": 18,
+  "attacks": [
+    {
+      "id": "crushing-wave",
+      "name": "Crushing Wave",
+      "damage": 16,
+      "count": 1,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-magic"
+    },
+    {
+      "id": "staff",
+      "name": "Staff",
+      "damage": 6,
+      "count": 1,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {
+    "water": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    },
+    "ford": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    },
+    "marsh": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    }
+  },
+  "ability": "Crushing wave",
+  "description": "A master merfolk damage caster whose crushing waves threaten armored and skeletal foes. Master mariners gain additional ranged cover in water, shallows and marsh.",
+  "level": 3,
+  "family": "wavemender",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

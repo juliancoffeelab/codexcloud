@@ -44,6 +44,77 @@ impl<'catalog> Game<'catalog> {
         .max(0)
             * i32::from(attack.count)
     }
+    fn damage_mitigation_record(
+        &self,
+        attacker: &Unit,
+        target: &Unit,
+        weapon: usize,
+        target_tile: usize,
+        available_hp: i32,
+    ) -> DamageMitigationRecord {
+        let attack = &self.rules.units[attacker.kind].attacks[weapon];
+        let armour = self.rules.units[target.kind]
+            .damage_modifiers
+            .get(attack.damage_type);
+        let count = i32::from(attack.count);
+        let raw_damage = attack.damage.max(0) * count;
+        let after_armour_damage = (attack.damage + armour).max(0) * count;
+        let after_terrain_damage = self.damage_at(attacker, target, weapon, target_tile);
+        let hp = available_hp.max(0);
+        DamageMitigationRecord {
+            available_hp: hp,
+            raw_damage,
+            after_armour_damage,
+            after_terrain_damage,
+            effective_armour_prevented: raw_damage.min(hp) - after_armour_damage.min(hp),
+            effective_terrain_prevented: after_armour_damage.min(hp) - after_terrain_damage.min(hp),
+        }
+    }
+    /// Fixed reflection per incoming melee strike. It is separate
+    /// from the defender's weapon, survives a killing hit and never drains.
+    pub(crate) fn thorn_damage(
+        &self,
+        attacker: &Unit,
+        target: &Unit,
+        weapon: usize,
+        from: usize,
+    ) -> i32 {
+        let attack = &self.rules.units[attacker.kind].attacks[weapon];
+        if attack.category != Category::Melee {
+            return 0;
+        }
+        let aura = self
+            .units
+            .iter()
+            .filter(|ally| {
+                ally.id != target.id
+                    && ally.side == target.side
+                    && self.board.distance(
+                        if ally.id == attacker.id {
+                            from
+                        } else {
+                            ally.tile
+                        },
+                        target.tile,
+                    ) == 1
+            })
+            .map(|ally| self.rules.units[ally.kind].thorn_aura)
+            .max()
+            .unwrap_or(0);
+        (self.rules.units[target.kind].thorns + aura) * i32::from(attack.count)
+    }
+    pub(crate) fn drain_healing(
+        &self,
+        unit: &Unit,
+        target: &Unit,
+        weapon: usize,
+        damage: i32,
+    ) -> i32 {
+        (damage.max(0).min(target.hp.max(0))
+            * i32::from(self.rules.units[unit.kind].attacks[weapon].drain)
+            / 100)
+            .min((self.rules.units[unit.kind].hp - unit.hp).max(0))
+    }
     pub(crate) fn preview(
         &self,
         unit: &Unit,
@@ -52,8 +123,9 @@ impl<'catalog> Game<'catalog> {
         from: usize,
     ) -> (i32, i32, Option<usize>) {
         let damage = self.damage(unit, target, weapon);
+        let thorns = self.thorn_damage(unit, target, weapon, from);
         if target.hp <= damage {
-            return (damage, 0, None);
+            return (damage, thorns, None);
         }
         let category = self.rules.units[unit.kind].attacks[weapon].category;
         let mut best = None;
@@ -71,16 +143,22 @@ impl<'catalog> Game<'catalog> {
                 response = dealt;
             }
         }
-        (damage, response, best)
+        (damage, response + thorns, best)
     }
     pub(crate) fn best_attack(&self, unit: &Unit, target: &Unit, from: usize) -> Option<usize> {
         let mut best = None;
         let mut score = f64::NEG_INFINITY;
         for attack in self.attack_options(unit, target, from) {
             let (damage, retaliation, _) = self.preview(unit, target, attack, from);
-            let value = damage as f64 + if damage >= target.hp { 18.0 } else { 0.0 }
-                - retaliation as f64 * 0.7
-                - if retaliation >= unit.hp { 40.0 } else { 0.0 };
+            let healed = self.drain_healing(unit, target, attack, damage);
+            let value =
+                damage as f64 + healed as f64 + if damage >= target.hp { 18.0 } else { 0.0 }
+                    - retaliation as f64 * 0.7
+                    - if retaliation >= unit.hp + healed {
+                        40.0
+                    } else {
+                        0.0
+                    };
             if value > score {
                 score = value;
                 best = Some(attack);
@@ -114,6 +192,58 @@ impl<'catalog> Game<'catalog> {
             self.preview(&attacker, &target, weapon, attacker.tile);
         let mediated = self.mediation_at_risk(&target);
         let attack = self.rules.units[attacker.kind].attacks[weapon].clone();
+        let mitigation_record = self.recordings.as_ref().map(|_| CombatMitigationRecord {
+            attack: self.damage_mitigation_record(
+                &attacker,
+                &target,
+                weapon,
+                target.tile,
+                target.hp,
+            ),
+            retaliation: response.map(|response| {
+                self.damage_mitigation_record(
+                    &target,
+                    &attacker,
+                    response,
+                    attacker.tile,
+                    attacker.hp + self.drain_healing(&attacker, &target, weapon, damage),
+                )
+            }),
+        });
+        // Capture sources before movement, deaths or promotions can change them.
+        let thorn_record = self.recordings.as_ref().map(|_| {
+            let own = if attack.category == Category::Melee {
+                self.rules.units[target.kind].thorns * i32::from(attack.count)
+            } else {
+                0
+            };
+            let damage = self.thorn_damage(&attacker, &target, weapon, attacker.tile);
+            let aura_damage = damage - own;
+            let aura_sources = if aura_damage > 0 {
+                let strength = aura_damage / i32::from(attack.count);
+                self.units
+                    .iter()
+                    .filter(|ally| {
+                        ally.id != target.id
+                            && ally.side == target.side
+                            && self.board.distance(ally.tile, target.tile) == 1
+                            && self.rules.units[ally.kind].thorn_aura == strength
+                    })
+                    .map(|ally| format!("u{}", ally.id))
+                    .collect()
+            } else {
+                vec![]
+            };
+            let dealt = self.damage(&attacker, &target, weapon);
+            let available = attacker.hp + self.drain_healing(&attacker, &target, weapon, dealt);
+            ThornRecord {
+                damage,
+                aura_damage,
+                effective_damage: retaliation.min(available)
+                    - (retaliation - damage).min(available),
+                aura_sources,
+            }
+        });
         let before = [self.public_unit(&attacker), self.public_unit(&target)];
         self.last_combat = Some(LastCombat {
             attacker_id: format!("u{id}"),
@@ -124,8 +254,19 @@ impl<'catalog> Game<'catalog> {
         self.units[a].moved = true;
         self.units[a].attacked = true;
         self.units[b].hp -= damage;
+        let healed = self.drain_healing(&attacker, &target, weapon, damage);
+        self.units[a].hp += healed;
+        let thorns = self.thorn_damage(&attacker, &target, weapon, attacker.tile);
+        self.units[a].hp -= retaliation;
         if self.units[b].hp > 0 {
-            self.units[a].hp -= retaliation;
+            if let Some(response) = response {
+                let mut wounded = target.clone();
+                wounded.hp = self.units[b].hp;
+                let mut responding_to = attacker.clone();
+                responding_to.hp += healed;
+                self.units[b].hp +=
+                    self.drain_healing(&wounded, &responding_to, response, retaliation - thorns);
+            }
         }
         for (own, opponent, dealt) in [(a, b, damage), (b, a, retaliation)] {
             let limit = self.rules.units[self.units[own].kind]
@@ -244,6 +385,8 @@ impl<'catalog> Game<'catalog> {
                     retaliation / i32::from(self.rules.units[target.kind].attacks[w].count)
                 }),
                 mediation_at_risk: mediated,
+                thorns: thorn_record,
+                mitigation: mitigation_record,
             });
         }
     }

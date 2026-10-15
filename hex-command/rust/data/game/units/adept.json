@@ -10,7 +10,7 @@
     {
       "id": "spark",
       "name": "Spark",
-      "damage": 7,
+      "damage": 6,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
@@ -38,5 +38,5 @@
   "level": 1,
   "family": "adept",
   "experienceNeeded": 10,
-  "advancesTo": ["mage"]
+  "advancesTo": ["mage", "healer"]
 }

@@ -1,0 +1,43 @@
+{
+  "id": "sentinel",
+  "role": "warrior",
+  "name": "Sentinel",
+  "race": "human",
+  "hp": 42,
+  "move": 3,
+  "cost": 16,
+  "attacks": [
+    {
+      "id": "spear",
+      "name": "Spear",
+      "damage": 5,
+      "count": 3,
+      "damageType": "pierce",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "shieldbash",
+      "name": "Shieldbash",
+      "damage": 8,
+      "count": 1,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": -4,
+    "pierce": -4,
+    "impact": 1
+  },
+  "terrainModifiers": {},
+  "ability": "Shield line",
+  "description": "An armored spear veteran who holds the human front with spear thrusts and a blunt shield bash.",
+  "level": 3,
+  "family": "spearman",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

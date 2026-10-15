@@ -26,7 +26,7 @@ impl Policy {
     pub const fn blocks(self) -> Blocks {
         match self {
             Self::Classic => Blocks {
-                recruiter: Recruiter::Rotation,
+                recruiter: Recruiter::Classic,
                 campaign: CampaignBlock::Mission,
                 planner: Planner::Classic,
             },

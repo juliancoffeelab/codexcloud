@@ -1,0 +1,43 @@
+{
+  "id": "slinger",
+  "role": "ranger",
+  "name": "Slinger",
+  "race": "human",
+  "hp": 22,
+  "move": 5,
+  "cost": 10,
+  "attacks": [
+    {
+      "id": "sling",
+      "name": "Sling",
+      "damage": 4,
+      "count": 3,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-magic"
+    },
+    {
+      "id": "knife",
+      "name": "Knife",
+      "damage": 3,
+      "count": 2,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Stone sling",
+  "description": "A mobile human ranged fighter whose repeated stone impacts threaten armor and bones.",
+  "level": 2,
+  "family": "scout",
+  "advancesTo": ["fireslinger"],
+  "experienceNeeded": 18
+}

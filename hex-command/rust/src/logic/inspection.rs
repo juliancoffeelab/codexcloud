@@ -34,12 +34,24 @@ impl Game<'_> {
                         let attack = self.rules.units[unit.kind].attacks[weapon].clone();
                         let (damage, retaliation, response) =
                             self.preview(unit, target, weapon, unit.tile);
+                        let healing = self.drain_healing(unit, target, weapon, damage);
+                        let thorn_damage = self.thorn_damage(unit, target, weapon, unit.tile);
+                        let retaliation_healing = response.map_or(0, |index| {
+                            let mut wounded = target.clone();
+                            wounded.hp -= damage;
+                            let mut actor = unit.clone();
+                            actor.hp += healing;
+                            self.drain_healing(&wounded, &actor, index, retaliation - thorn_damage)
+                        });
                         let response = response
                             .map(|index| self.rules.units[target.kind].attacks[index].clone());
                         let retaliation_detail = response
                             .as_ref()
                             .map(|r| self.damage_detail(r, unit, unit.tile));
                         attacks.push(AttackDetails {
+                            healing,
+                            retaliation_healing,
+                            thorn_damage,
                             recommended: recommended == Some(weapon),
                             target: format!("u{}", target.id),
                             damage,

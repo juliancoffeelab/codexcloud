@@ -1,0 +1,44 @@
+{
+  "id": "lich-commander-l3",
+  "role": "ranger",
+  "name": "Lich Sovereign",
+  "race": "skeletons",
+  "hp": 36,
+  "move": 3,
+  "cost": 0,
+  "attacks": [
+    {
+      "id": "gravebolt",
+      "name": "Gravebolt",
+      "damage": 12,
+      "count": 1,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-magic"
+    },
+    {
+      "id": "bonestaff",
+      "name": "Bonestaff",
+      "damage": 8,
+      "count": 1,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Command",
+  "description": "A skeletal sovereign whose grave magic delivers concentrated impact damage from behind the dead.",
+  "level": 3,
+  "family": "necromancer",
+  "advancesTo": [],
+  "experienceNeeded": 0,
+  "leader": true
+}

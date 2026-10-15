@@ -4,7 +4,7 @@
   "name": "Tidekeeper",
   "race": "merfolk",
   "hp": 28,
-  "move": 4,
+  "move": 3,
   "cost": 0,
   "attacks": [
     {
@@ -20,7 +20,7 @@
     {
       "id": "tidebolt",
       "name": "Tide bolt",
-      "damage": 4,
+      "damage": 5,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
@@ -38,6 +38,6 @@
   "leader": true,
   "level": 1,
   "family": "tidekeeper",
-  "experienceNeeded": 18,
+  "experienceNeeded": 10,
   "advancesTo": ["tideseer"]
 }

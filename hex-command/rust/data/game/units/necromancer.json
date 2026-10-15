@@ -1,8 +1,8 @@
 {
   "id": "necromancer",
   "role": "ranger",
-  "name": "Necromancer",
-  "race": "undead",
+  "name": "Grave Adept",
+  "race": "skeletons",
   "leader": true,
   "hp": 24,
   "move": 3,
@@ -38,6 +38,6 @@
   "description": "An undead commander who combines close-combat and ranged magic.",
   "level": 1,
   "family": "necromancer",
-  "experienceNeeded": 18,
+  "experienceNeeded": 10,
   "advancesTo": ["lich"]
 }

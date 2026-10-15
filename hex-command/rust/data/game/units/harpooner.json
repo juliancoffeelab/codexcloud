@@ -4,7 +4,7 @@
   "name": "Harpooner",
   "race": "merfolk",
   "hp": 16,
-  "move": 5,
+  "move": 3,
   "cost": 7,
   "attacks": [
     {
@@ -38,5 +38,5 @@
   "level": 1,
   "family": "harpooner",
   "experienceNeeded": 10,
-  "advancesTo": ["tidehunter"]
+  "advancesTo": ["tidehunter", "merfolk-netter-l2"]
 }

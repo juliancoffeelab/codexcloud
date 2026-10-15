@@ -46,6 +46,6 @@
   "description": "A seasoned commander who holds the line and directs reinforcements.",
   "level": 2,
   "family": "commander",
-  "experienceNeeded": 0,
-  "advancesTo": []
+  "experienceNeeded": 18,
+  "advancesTo": ["grand-marshal"]
 }

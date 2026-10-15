@@ -1,5 +1,5 @@
 /** Check authored document references; browser metadata is supplied by WASM. */
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { posix } from "node:path";
 import type { TerrainOverride } from "../src/game/types";
 import { terrainArtNames, validTerrainConnections } from "../src/presentation/terrain-connections";
@@ -57,6 +57,55 @@ for (const path of [
   ...Object.values(manifest.simulation),
 ])
   read(path);
+// A lineup is a faction. Enabled factions must implement their entire authored
+// tree; factions with no gameplay units can retain sprites awaiting implementation.
+type ContentUnit = { id: string; level: number; family: string; advancesTo: string[] };
+type LineupUnit = { id: string; level: number; gameplayId?: string };
+const units = new Map(
+  manifest.units.map((path) => {
+    const unit = read<ContentUnit>(path);
+    return [unit.id, unit] as const;
+  }),
+);
+const lineupRoot = new URL("../pixel/art/units/lineups/", import.meta.url);
+for (const file of readdirSync(lineupRoot).filter((file) => file.endsWith(".json"))) {
+  const lineup = JSON.parse(readFileSync(new URL(file, lineupRoot), "utf8")) as {
+    trees: { base: LineupUnit; branches: { units: LineupUnit[] }[] }[];
+    commander?: { units: LineupUnit[] };
+  };
+  const trees = [...lineup.trees];
+  if (lineup.commander)
+    trees.push({
+      base: lineup.commander.units[0]!,
+      branches: [{ units: lineup.commander.units.slice(1) }],
+    });
+  const id = (unit: LineupUnit) => unit.gameplayId ?? unit.id;
+  const entries = trees.flatMap((tree) => [
+    tree.base,
+    ...tree.branches.flatMap((branch) => branch.units),
+  ]);
+  if (!entries.some((entry) => units.has(id(entry)))) continue;
+  for (const tree of trees) {
+    for (const entry of [tree.base, ...tree.branches.flatMap((branch) => branch.units)]) {
+      const unit = units.get(id(entry));
+      const next =
+        entry === tree.base
+          ? tree.branches.map((branch) => id(branch.units[0]!))
+          : tree.branches.flatMap((branch) =>
+              entry === branch.units[0] ? [id(branch.units[1]!)] : [],
+            );
+      if (
+        !unit ||
+        unit.level !== entry.level ||
+        unit.family !== id(tree.base) ||
+        [...unit.advancesTo].sort().join(",") !== next.sort().join(",")
+      )
+        throw new Error(
+          `${file}: gameplay unit ${id(entry)} must match its lineup tier, family and promotions`,
+        );
+    }
+  }
+}
 for (const path of manifest.scenarios) components(path, ["map", "roster"]);
 for (const path of manifest.campaigns) {
   const campaign = read<{ stages: string[] }>(path);

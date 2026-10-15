@@ -60,7 +60,6 @@ struct SimulationPaths {
 pub struct ArmyRoster {
     pub id: String,
     pub leader: String,
-    pub screen: String,
     pub pool: Vec<String>,
 }
 #[derive(Clone, Debug, Deserialize)]
@@ -76,7 +75,7 @@ pub struct LandscapeConfig {
 pub struct ArenaDefaults {
     pub landscapes: Vec<LandscapeConfig>,
     pub territory: Vec<String>,
-    /// Minimum total gold value per side, including its leader and two starters.
+    /// Minimum total gold value per side, including its leader.
     pub starting_budget: i32,
     pub default_max_rounds: u32,
     pub policies: Vec<String>,
@@ -163,6 +162,10 @@ struct UnitSpecification {
     leader: bool,
     #[serde(default)]
     healing: i32,
+    #[serde(default)]
+    thorns: i32,
+    #[serde(default)]
+    thorn_aura: i32,
     level: u32,
     family: Family,
     experience_needed: u32,
@@ -477,6 +480,9 @@ impl Rules {
                 || spec.r#move == 0
                 || spec.cost < 0
                 || spec.level == 0
+                || spec.healing < 0
+                || spec.thorns < 0
+                || spec.thorn_aura < 0
                 || spec.attacks.is_empty()
             {
                 return Err(ContentError::new(
@@ -492,6 +498,7 @@ impl Rules {
                     || attack.range == 0
                     || attack.damage < 0
                     || !(1..=16).contains(&attack.count)
+                    || attack.drain > 100
                 {
                     return Err(ContentError::new(
                         &path,
@@ -554,6 +561,8 @@ impl Rules {
                 role: spec.role,
                 leader: spec.leader,
                 healing: spec.healing,
+                thorns: spec.thorns,
+                thorn_aura: spec.thorn_aura,
                 level: spec.level,
                 family: spec.family,
                 experience_needed: Some(spec.experience_needed),
@@ -917,11 +926,7 @@ fn validate_simulation(
     for roster in rosters {
         identifier(&roster.id, path)?;
         reference(&roster.leader, types, path)?;
-        reference(&roster.screen, types, path)?;
         unique(roster.pool.iter().map(String::as_str), path)?;
-        if !roster.pool.contains(&roster.screen) {
-            return Err(ContentError::new(path, "screen must belong to roster pool"));
-        }
         for id in &roster.pool {
             reference(id, types, path)?;
         }

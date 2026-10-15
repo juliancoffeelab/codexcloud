@@ -1,7 +1,7 @@
 {
   "id": "soldier",
   "role": "warrior",
-  "name": "Heavy infantry",
+  "name": "Swordsman",
   "race": "human",
   "terrainModifiers": {
     "ford": {
@@ -11,9 +11,9 @@
       "cost": 1
     }
   },
-  "hp": 24,
+  "hp": 32,
   "move": 3,
-  "cost": 8,
+  "cost": 10,
   "attacks": [
     {
       "id": "sword",
@@ -37,14 +37,14 @@
     }
   ],
   "damageModifiers": {
-    "blade": -1,
-    "pierce": -1,
-    "impact": 1
+    "blade": -3,
+    "pierce": -2,
+    "impact": 0
   },
   "ability": "Armor",
-  "description": "Heavy infantry suited to holding the front. Blunt weapons threaten its armor.",
+  "description": "Armored sword infantry whose shield adds protection against blades and piercing weapons.",
   "level": 2,
   "family": "swordsman",
-  "experienceNeeded": 0,
-  "advancesTo": []
+  "experienceNeeded": 18,
+  "advancesTo": ["champion"]
 }

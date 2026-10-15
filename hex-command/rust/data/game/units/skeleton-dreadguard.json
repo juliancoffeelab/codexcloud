@@ -1,0 +1,43 @@
+{
+  "id": "skeleton-dreadguard",
+  "role": "warrior",
+  "name": "Dreadguard",
+  "race": "skeletons",
+  "hp": 28,
+  "move": 3,
+  "cost": 14,
+  "attacks": [
+    {
+      "id": "rustblade",
+      "name": "Rustblade",
+      "damage": 5,
+      "count": 3,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "boneclub",
+      "name": "Boneclub",
+      "damage": 13,
+      "count": 1,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": -1,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Bone shield",
+  "description": "A shielded skeletal veteran who resists blades and arrows but remains vulnerable to impact.",
+  "level": 3,
+  "family": "skeleton",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

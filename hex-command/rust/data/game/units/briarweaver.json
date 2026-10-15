@@ -1,7 +1,7 @@
 {
   "id": "briarweaver",
   "role": "ranger",
-  "name": "Briarweaver",
+  "name": "Beekeeper",
   "race": "beast",
   "hp": 20,
   "move": 3,
@@ -10,22 +10,32 @@
     {
       "id": "thorns",
       "name": "Thorns",
-      "damage": 9,
+      "damage": 5,
+      "count": 2,
       "damageType": "pierce",
       "category": "ranged",
       "range": 2,
-      "sound": "attack-bow",
-      "count": 1
+      "sound": "attack-bow"
     },
     {
       "id": "rootstaff",
-      "name": "Root staff",
+      "name": "Rootstaff",
       "damage": 4,
+      "count": 1,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee",
-      "count": 1
+      "sound": "attack-melee"
+    },
+    {
+      "id": "root-crush",
+      "name": "Crushing roots",
+      "damage": 8,
+      "count": 1,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-magic"
     }
   ],
   "damageModifiers": {
@@ -33,11 +43,11 @@
     "pierce": 0,
     "impact": 0
   },
-  "ability": "Living boughs",
-  "description": "A veteran thorncaster whose heavy thorns penetrate armor and whose living boughs tend nearby allies.",
+  "ability": "Thorn magic",
+  "description": "A forest damage caster who fires piercing thorns or crushes armored foes with roots.",
   "level": 2,
   "family": "thorncaller",
-  "experienceNeeded": 0,
-  "advancesTo": [],
-  "healing": 2
+  "experienceNeeded": 18,
+  "advancesTo": ["woodland-thorn-oracle"],
+  "healing": 0
 }

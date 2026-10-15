@@ -239,13 +239,8 @@ pub(crate) fn create_arena<'catalog>(
             },
         )?;
         let leader = roster.leader.as_str();
-        let screen = roster.screen.as_str();
         let sign = if side == Side::Player { -1 } else { 1 };
-        for (kind, q, r) in [
-            (leader, sign * 3, 0),
-            (screen, sign * 2, 0),
-            (screen, sign * 3, -sign),
-        ] {
+        for (kind, q, r) in [(leader, sign * 3, 0)] {
             let rule = &rules.units[rules.types[kind]];
             starting_cost[side.index()] += rule.cost;
             state.units.push(PublicUnit {
@@ -343,7 +338,8 @@ fn phase(
     let before = recording.units(game)?;
     let side = game.turn;
     let round = game.round;
-    game.recordings = Some(Records::default());
+    let leader_audit = super::leader_audit::begin(game);
+    game.recordings.get_or_insert_with(Records::default);
     let mut workspace = PlanningWorkspace::new(
         seed,
         limit.or_else(|| policy.default_recruitment_limit()),
@@ -374,6 +370,7 @@ fn phase(
             .sum()
     };
     let phase = Phase {
+        leader_audit: super::leader_audit::finish(game, leader_audit),
         planning: workspace.diagnostics(plan.planning, plan.recruitment),
         side,
         round,
@@ -521,6 +518,7 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
             }
         }
         if game.winner.is_none() && index + 1 < config.max_rounds * 2 {
+            game.recordings = Some(Records::default());
             game.end_turn();
         }
     }
@@ -606,6 +604,7 @@ pub fn run_campaign(
                 &mut tactics[side.index()],
             )?);
             if game.winner.is_none() && index + 1 < config.max_rounds * 2 {
+                game.recordings = Some(Records::default());
                 game.end_turn();
             }
         }
@@ -795,7 +794,7 @@ mod tests {
     }
 
     #[test]
-    fn arena_charges_starters_to_a_paired_budget_without_changing_placement() {
+    fn arena_starts_with_only_leaders_and_the_remaining_paired_budget() {
         let rules = Rules::load().unwrap();
         for seed in [1, 2, 10] {
             for landscape in ["open", "wooded", "crossings", "islands"] {
@@ -820,7 +819,8 @@ mod tests {
                         let total = |side| {
                             let troops: Vec<_> =
                                 game.units.iter().filter(|u| u.side == side).collect();
-                            assert_eq!(troops.len(), 3);
+                            assert_eq!(troops.len(), 1);
+                            assert!(rules.units[troops[0].kind].leader);
                             game.gold[side.index()]
                                 + troops.iter().map(|u| rules.units[u.kind].cost).sum::<i32>()
                         };
@@ -831,11 +831,7 @@ mod tests {
                         assert_eq!(game.turn, Side::Enemy);
                         for unit in &game.units {
                             let sign = if unit.side == Side::Player { -1 } else { 1 };
-                            assert!(
-                                [(sign * 3, 0), (sign * 2, 0), (sign * 3, -sign)]
-                                    .iter()
-                                    .any(|&(q, r)| game.board.ids[unit.tile] == axial_id(q, r))
-                            );
+                            assert_eq!(game.board.ids[unit.tile], axial_id(sign * 3, 0));
                         }
                     }
                 }

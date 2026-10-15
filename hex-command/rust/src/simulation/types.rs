@@ -98,6 +98,8 @@ impl<'de> Deserialize<'de> for OwnershipSnapshot {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Complete actions, combats, casualties and roster/objective state for one phase.
 pub struct Phase {
+    #[serde(default, rename = "leaderAudit", skip_serializing_if = "Vec::is_empty")]
+    pub leader_audit: Vec<super::leader_audit::LeaderAudit>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub planning: Option<crate::ai::orders::TurnDiagnostics>,
     pub side: Side,

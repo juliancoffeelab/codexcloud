@@ -1,0 +1,43 @@
+{
+  "id": "fireslinger",
+  "role": "ranger",
+  "name": "Fireslinger",
+  "race": "human",
+  "hp": 28,
+  "move": 5,
+  "cost": 16,
+  "attacks": [
+    {
+      "id": "firepot",
+      "name": "Firepot",
+      "damage": 6,
+      "count": 3,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-magic"
+    },
+    {
+      "id": "knife",
+      "name": "Knife",
+      "damage": 4,
+      "count": 2,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Explosive pots",
+  "description": "A veteran slinger whose explosive pots deal repeated ranged impact damage.",
+  "level": 3,
+  "family": "scout",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

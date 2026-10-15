@@ -105,3 +105,35 @@ fn strongest_adjacent_friendly_healer_wins_without_stacking_or_overhealing() {
     game.end_turn();
     assert_eq!(game.unit(ally).unwrap().hp, maximum);
 }
+
+#[test]
+fn healing_records_credit_tied_strongest_sources_after_terrain_and_hp_caps() {
+    let mut game = flat();
+    let ally = add(&mut game, "reefguard", Side::Player, "3,3");
+    let first = add(&mut game, "tidesage", Side::Player, "2,3");
+    let second = add(&mut game, "tidesage", Side::Player, "4,3");
+    add(&mut game, "wavemender", Side::Player, "3,4");
+    let tile = game.site("3,3");
+    game.terrain[tile] = game
+        .rules
+        .terrain_types
+        .iter()
+        .position(|terrain| *terrain == Terrain::Village)
+        .unwrap();
+    game.owners[tile] = Some(Side::Player);
+    let index = game.index(ally).unwrap();
+    game.units[index].hp = game.rules.units[game.units[index].kind].hp - 5;
+    game.recordings = Some(Records::default());
+    game.begin_turn(Side::Player);
+    let events = &game.recordings.as_ref().unwrap().healing;
+    assert_eq!(events.len(), 1);
+    assert_eq!(events[0].amount, 1);
+    assert_eq!(events[0].target, format!("u{ally}"));
+    assert_eq!(
+        events[0].providers,
+        vec![format!("u{first}"), format!("u{second}")]
+    );
+    game.recordings = Some(Records::default());
+    game.begin_turn(Side::Player);
+    assert!(game.recordings.as_ref().unwrap().healing.is_empty());
+}

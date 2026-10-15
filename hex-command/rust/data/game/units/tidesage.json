@@ -3,14 +3,14 @@
   "role": "healer",
   "name": "Tide sage",
   "race": "merfolk",
-  "hp": 22,
-  "move": 4,
+  "hp": 23,
+  "move": 3,
   "cost": 15,
   "attacks": [
     {
       "id": "surge",
       "name": "Surge",
-      "damage": 7,
+      "damage": 4,
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
@@ -33,11 +33,11 @@
     "pierce": 0,
     "impact": 0
   },
-  "ability": "Incoming Tide",
-  "description": "A veteran support caster who sustains nearby allies and threatens armored foes.",
+  "ability": "Healing",
+  "description": "A support mage who heals adjacent allies at turn start and fights with modest impact magic.",
   "healing": 4,
   "level": 2,
   "family": "wavemender",
-  "experienceNeeded": 0,
-  "advancesTo": []
+  "experienceNeeded": 18,
+  "advancesTo": ["merfolk-tide-oracle"]
 }

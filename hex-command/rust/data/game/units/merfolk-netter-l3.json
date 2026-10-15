@@ -1,0 +1,59 @@
+{
+  "id": "merfolk-netter-l3",
+  "role": "ranger",
+  "name": "Netter veteran",
+  "race": "merfolk",
+  "hp": 30,
+  "move": 3,
+  "cost": 18,
+  "attacks": [
+    {
+      "id": "weighted-net",
+      "name": "Weighted Net",
+      "damage": 6,
+      "count": 3,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-magic"
+    },
+    {
+      "id": "knife",
+      "name": "Knife",
+      "damage": 4,
+      "count": 2,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {
+    "water": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    },
+    "ford": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    },
+    "marsh": {
+      "damageModifiers": {
+        "ranged": -1
+      }
+    }
+  },
+  "ability": "Weighted nets",
+  "description": "A veteran netter who delivers repeated ranged impact damage with heavy weighted nets. Master mariners gain additional ranged cover in water, shallows and marsh.",
+  "level": 3,
+  "family": "harpooner",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

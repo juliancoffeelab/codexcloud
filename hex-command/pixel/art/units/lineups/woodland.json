@@ -64,11 +64,11 @@
       },
       "branches": [
         {
-          "role": "healer",
+          "role": "Damage mage",
           "units": [
             {
               "id": "briarweaver",
-              "name": "Herbkeeper",
+              "name": "Beekeeper",
               "level": 2,
               "source": "briarweaver"
             },
@@ -81,7 +81,7 @@
           ]
         },
         {
-          "role": "thorner",
+          "role": "Thorn support",
           "units": [
             {
               "id": "woodland-bramble-warden",

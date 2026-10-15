@@ -5,6 +5,8 @@ description: Use for previewing or comparing Hex Command faction lineups and uni
 
 # Pixel lineup
 
+A lineup is a faction. This skill previews its units and progression tree.
+
 Run from the game root with Python 3 and Pillow. Read the requested tree in
 `pixel/art/units/lineups/<race>.json`.
 Render current matrices directly; do not rebuild artwork or replay recipes.

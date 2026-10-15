@@ -15,7 +15,7 @@
       "category": "ranged",
       "range": 2,
       "sound": "attack-bow",
-      "count": 3
+      "count": 2
     },
     {
       "id": "knife",
@@ -38,5 +38,5 @@
   "level": 1,
   "family": "archer",
   "experienceNeeded": 10,
-  "advancesTo": ["marksman"]
+  "advancesTo": ["marksman", "crossbowman"]
 }

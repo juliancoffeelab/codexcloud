@@ -16,12 +16,12 @@
   },
   "hp": 16,
   "move": 5,
-  "cost": 5,
+  "cost": 6,
   "attacks": [
     {
       "id": "knife",
       "name": "Knife",
-      "damage": 3,
+      "damage": 2,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
@@ -49,5 +49,5 @@
   "level": 1,
   "family": "scout",
   "experienceNeeded": 10,
-  "advancesTo": ["ranger"]
+  "advancesTo": ["ranger", "slinger"]
 }

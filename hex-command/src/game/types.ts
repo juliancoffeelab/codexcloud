@@ -3,51 +3,108 @@ import type { UnitRole } from "../../rust/pkg/hex_command";
 export type Side = "player" | "enemy";
 export type LeaderType =
   | "commander"
-  | "wildkeeper"
-  | "necromancer"
-  | "tidekeeper"
-  | "marshal"
   | "grovewarden"
   | "lich"
-  | "tideseer";
-export type UnitType =
-  | LeaderType
-  | AdvancedTroop
-  | "swordsman"
-  | "spearman"
-  | "reefguard"
-  | "merfolk-maceguard"
-  | "harpooner"
-  | "wavemender"
-  | "soldier"
-  | "archer"
-  | "scout"
-  | "warden"
-  | "adept"
-  | "skeleton"
-  | "skeleton-impact-caster"
-  | "bonearcher"
-  | "wolf"
-  | "boar"
-  | "thorncaller"
-  | "rider";
+  | "marshal"
+  | "necromancer"
+  | "tidekeeper"
+  | "tideseer"
+  | "wildkeeper"
+  | "grand-marshal"
+  | "lich-commander-l3"
+  | "woodland-grove-oracle"
+  | "merfolk-tide-sovereign";
 export type AdvancedTroop =
-  | "marksman"
-  | "ranger"
-  | "mage"
-  | "revenant"
-  | "skeleton-impact-caster-l2"
+  | "briarweaver"
   | "deatharcher"
   | "direwolf"
   | "greatboar"
-  | "briarweaver"
-  | "tridentguard"
+  | "lancer"
+  | "mage"
+  | "marksman"
   | "merfolk-maceguard-l2"
+  | "ranger"
+  | "revenant"
+  | "skeleton-impact-caster-l2"
+  | "soldier"
   | "tidehunter"
   | "tidesage"
-  | "lancer";
+  | "tridentguard"
+  | "warden"
+  | "champion"
+  | "hammerman"
+  | "warhammer"
+  | "sentinel"
+  | "halberdier"
+  | "halberd-master"
+  | "shadowblade"
+  | "slinger"
+  | "fireslinger"
+  | "sharpshooter"
+  | "crossbowman"
+  | "arbalester"
+  | "archmage"
+  | "healer"
+  | "high-healer"
+  | "knight"
+  | "horse-bowman"
+  | "horse-marksman"
+  | "skeleton-dreadguard"
+  | "skeleton-flanker-l2"
+  | "skeleton-flanker-l3"
+  | "skeleton-impact-caster-l3"
+  | "skeleton-scythe-caster-l2"
+  | "skeleton-scythe-caster-l3"
+  | "skeleton-rider-l2"
+  | "skeleton-rider-l3"
+  | "skeleton-bow-master"
+  | "skeleton-axeman-l2"
+  | "skeleton-axeman-l3"
+  | "woodland-alpha-wolf"
+  | "woodland-ancient-boar"
+  | "woodland-thorn-oracle"
+  | "woodland-bramble-warden"
+  | "woodland-thornbinder"
+  | "fox-spearguard-l2"
+  | "fox-spearguard-l3"
+  | "treant-l2"
+  | "treant-l3"
+  | "merfolk-harpoon-master"
+  | "merfolk-netter-l2"
+  | "merfolk-netter-l3"
+  | "merfolk-reef-champion"
+  | "merfolk-trident-l2"
+  | "merfolk-trident-l3"
+  | "merfolk-tide-oracle"
+  | "merfolk-tidecrusher-l2"
+  | "merfolk-tidecrusher-l3"
+  | "merfolk-maceguard-l3";
+export type UnitType =
+  | LeaderType
+  | AdvancedTroop
+  | "adept"
+  | "archer"
+  | "boar"
+  | "bonearcher"
+  | "harpooner"
+  | "merfolk-maceguard"
+  | "reefguard"
+  | "rider"
+  | "scout"
+  | "skeleton-impact-caster"
+  | "skeleton"
+  | "spearman"
+  | "swordsman"
+  | "thorncaller"
+  | "wavemender"
+  | "wolf"
+  | "horse-archer"
+  | "skeleton-rider"
+  | "skeleton-axeman"
+  | "fox-spearguard"
+  | "treant";
 export type RecruitType = Exclude<UnitType, LeaderType>;
-export type Race = "human" | "undead" | "beast" | "merfolk";
+export type Race = "human" | "skeletons" | "beast" | "merfolk";
 export type TerrainType =
   | "plains"
   | "road"
@@ -112,6 +169,7 @@ export interface Unit {
   rebuilding?: boolean;
 }
 export interface Weapon {
+  drain?: number;
   count: number;
   id: string;
   name: string;
@@ -133,6 +191,8 @@ export interface UnitDefinition {
   advancesTo?: UnitType[];
   /** Adjacent allies healed at the start of this unit's side's turn. */
   healing?: number;
+  thorns?: number;
+  thornAura?: number;
   name: string;
   hp: number;
   move: number;
@@ -206,6 +266,9 @@ export interface CombatPreview {
   retaliation: number;
 }
 export interface CombatPreviewDetails extends CombatPreview {
+  thornDamage: number;
+  healing?: number;
+  retaliationHealing?: number;
   recommended: boolean;
   attack: Weapon;
   response: Weapon | null;

@@ -1,0 +1,43 @@
+{
+  "id": "halberdier",
+  "role": "warrior",
+  "name": "Halberdier",
+  "race": "human",
+  "hp": 32,
+  "move": 3,
+  "cost": 12,
+  "attacks": [
+    {
+      "id": "halberd",
+      "name": "Halberd",
+      "damage": 15,
+      "count": 1,
+      "damageType": "pierce",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "axe",
+      "name": "Axe",
+      "damage": 13,
+      "count": 1,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": -1,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Polearm",
+  "description": "A human polearm fighter who chooses piercing thrusts or chopping axe blows to suit the foe.",
+  "level": 2,
+  "family": "spearman",
+  "advancesTo": ["halberd-master"],
+  "experienceNeeded": 18
+}

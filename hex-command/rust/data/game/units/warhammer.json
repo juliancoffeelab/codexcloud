@@ -1,0 +1,33 @@
+{
+  "id": "warhammer",
+  "role": "warrior",
+  "name": "Warhammer",
+  "race": "human",
+  "hp": 42,
+  "move": 3,
+  "cost": 18,
+  "attacks": [
+    {
+      "id": "hammer",
+      "name": "Hammer",
+      "damage": 22,
+      "count": 1,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": -2,
+    "pierce": -2,
+    "impact": 1
+  },
+  "terrainModifiers": {},
+  "ability": "Heavy hammer",
+  "description": "An armored hammer veteran who delivers a single crushing blow; blunt weapons threaten his armor.",
+  "level": 3,
+  "family": "swordsman",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

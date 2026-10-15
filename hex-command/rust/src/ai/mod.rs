@@ -33,6 +33,22 @@ use std::{
 };
 pub use tactics::Random;
 
+/// Native diagnostics reuse the planner's conservative, independent-enemy
+/// forecast without executing a plan or changing the battle.
+#[cfg(not(target_arch = "wasm32"))]
+pub(crate) fn audit_leader_exposure(
+    game: &Game<'_>,
+    leader: &Unit,
+    tiles: impl IntoIterator<Item = usize>,
+) -> Vec<(usize, i32)> {
+    let view = context::BattleView::new(game);
+    let mut forecast = threats::Threats::new(&view, leader.side);
+    tiles
+        .into_iter()
+        .map(|tile| (tile, forecast.at(leader, tile, None)))
+        .collect()
+}
+
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]

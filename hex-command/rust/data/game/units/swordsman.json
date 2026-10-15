@@ -1,12 +1,12 @@
 {
   "id": "swordsman",
   "role": "warrior",
-  "name": "Swordsman",
+  "name": "Leather swordsman",
   "race": "human",
   "terrainModifiers": {},
-  "hp": 20,
+  "hp": 25,
   "move": 3,
-  "cost": 6,
+  "cost": 7,
   "attacks": [
     {
       "id": "sword",
@@ -20,14 +20,14 @@
     }
   ],
   "damageModifiers": {
-    "blade": 0,
-    "pierce": 0,
+    "blade": -2,
+    "pierce": -2,
     "impact": 0
   },
-  "ability": "Line infantry",
-  "description": "Affordable sword infantry that can advance into an armored front-line fighter.",
+  "ability": "Shield line",
+  "description": "Affordable sword infantry that can advance into an armored front-line fighter. A shield reduces incoming blade and piercing damage.",
   "level": 1,
   "family": "swordsman",
   "experienceNeeded": 10,
-  "advancesTo": ["soldier"]
+  "advancesTo": ["soldier", "hammerman"]
 }

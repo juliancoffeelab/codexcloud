@@ -19,6 +19,11 @@ pub(crate) const FORMAT: &str = "arrow-ipc-snapshot-dictionaries-v2";
 
 #[derive(Serialize)]
 struct PhaseHeader<'a> {
+    #[serde(
+        rename = "leaderAudit",
+        skip_serializing_if = "<[super::leader_audit::LeaderAudit]>::is_empty"
+    )]
+    leader_audit: &'a [super::leader_audit::LeaderAudit],
     #[serde(skip_serializing_if = "Option::is_none")]
     planning: Option<&'a crate::ai::orders::TurnDiagnostics>,
     side: Side,
@@ -181,6 +186,7 @@ pub(crate) fn encode(
             header.append_null();
             chapter.append_value(index as u32);
             phase_json.append_value(serde_json::to_string(&PhaseHeader {
+                leader_audit: &phase.leader_audit,
                 planning: phase.planning.as_ref(),
                 side: phase.side,
                 round: phase.round,
@@ -404,6 +410,20 @@ mod tests {
         ai::{Diplomacy, Policy},
         data::{Catalog, Role},
     };
+    #[test]
+    fn json_metadata_preserves_floating_point_bits() {
+        // Phase headers pass fractional telemetry through JSON inside Arrow.
+        // The default fast parser can round a serialized float to its neighbour.
+        for value in [19.235294117647054, -0.1, f64::MIN_POSITIVE, f64::MAX] {
+            let original = serde_json::json!({"hpValue": value});
+            let encoded = serde_json::to_string(&original).unwrap();
+            let decoded: Value = serde_json::from_str(&encoded).unwrap();
+            assert_eq!(
+                decoded["hpValue"].as_f64().unwrap().to_bits(),
+                value.to_bits()
+            );
+        }
+    }
     #[test]
     fn dictionaries_round_trip_full_arena_and_multiple_campaign_chapters() {
         let rules = Catalog::load().unwrap();

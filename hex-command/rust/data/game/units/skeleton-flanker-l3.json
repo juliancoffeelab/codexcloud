@@ -1,0 +1,33 @@
+{
+  "id": "skeleton-flanker-l3",
+  "role": "flank",
+  "name": "Knife shade",
+  "race": "skeletons",
+  "hp": 26,
+  "move": 5,
+  "cost": 15,
+  "attacks": [
+    {
+      "id": "knife",
+      "name": "Knife",
+      "damage": 5,
+      "count": 4,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Twin knives",
+  "description": "A swift skeletal knife veteran who trades durability for a flurry of blade attacks.",
+  "level": 3,
+  "family": "skeleton",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

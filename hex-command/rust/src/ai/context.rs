@@ -99,6 +99,15 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     pub(super) fn damage(&self, attacker: &Unit, target: &Unit, weapon: usize) -> i32 {
         self.engine().damage(attacker, target, weapon)
     }
+    pub(super) fn drain_healing(
+        &self,
+        unit: &Unit,
+        target: &Unit,
+        weapon: usize,
+        damage: i32,
+    ) -> i32 {
+        self.engine().drain_healing(unit, target, weapon, damage)
+    }
     pub(super) fn preview(
         &self,
         unit: &Unit,
@@ -107,6 +116,15 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         from: usize,
     ) -> (i32, i32, Option<usize>) {
         self.engine().preview(unit, target, weapon, from)
+    }
+    pub(super) fn thorn_damage(
+        &self,
+        unit: &Unit,
+        target: &Unit,
+        weapon: usize,
+        from: usize,
+    ) -> i32 {
+        self.engine().thorn_damage(unit, target, weapon, from)
     }
     pub(super) fn best_attack(&self, unit: &Unit, target: &Unit, from: usize) -> Option<usize> {
         self.engine().best_attack(unit, target, from)

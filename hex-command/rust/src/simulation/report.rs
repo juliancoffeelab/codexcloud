@@ -487,7 +487,7 @@ mod tests {
             diplomacy: vec![Diplomacy::Pragmatic],
             campaign_diplomacy: Default::default(),
             self_play: false,
-            vs_classic: false,
+            opponent: None,
         };
         let outcomes = [Some("player"),Some("enemy"),None,Some("player")].iter().enumerate().map(|(index,winner)|json!({"kind":"arena","config":{"seed":1+index/2,"armies":{"player":"human","enemy":"human"},"landscape":"open","player":"classic","enemy":"classic","first":if index%2==0{"player"}else{"enemy"}},"winner":winner,"rounds":2,"recruits":[],"casualties":[],"promotions":[]})).collect();
         let report = build_report(&options, "fp", "commit", 0.1, outcomes, None).unwrap();

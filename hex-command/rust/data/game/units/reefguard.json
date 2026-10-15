@@ -4,13 +4,13 @@
   "name": "Reef guard",
   "race": "merfolk",
   "hp": 22,
-  "move": 4,
+  "move": 3,
   "cost": 8,
   "attacks": [
     {
       "id": "spear",
       "name": "Reef spear",
-      "damage": 3,
+      "damage": 4,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
@@ -20,7 +20,7 @@
     {
       "id": "tail",
       "name": "Tail strike",
-      "damage": 4,
+      "damage": 5,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
@@ -38,5 +38,5 @@
   "level": 1,
   "family": "reefguard",
   "experienceNeeded": 10,
-  "advancesTo": ["tridentguard"]
+  "advancesTo": ["tridentguard", "merfolk-trident-l2"]
 }

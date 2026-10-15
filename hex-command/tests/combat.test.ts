@@ -5,7 +5,7 @@ import { damageExplanation } from "../src/presentation/combat.ts";
 import { describeChanges } from "../src/controller/feedback.ts";
 import { attackChoiceViews } from "../src/ui/combat-view.ts";
 import assert from "node:assert/strict";
-import { Game } from "./game-fixture.ts";
+import { Game, TYPES } from "./game-fixture.ts";
 const fixture = (a: UnitType = "soldier", b: UnitType = "soldier", targetTile = "3,3") => {
   const game = new Game();
   for (const tile of game.tiles) {
@@ -17,6 +17,53 @@ const fixture = (a: UnitType = "soldier", b: UnitType = "soldier", targetTile = 
     target = game.addUnit(b, "enemy", targetTile);
   return { game, attacker, target };
 };
+
+test("Drain forecasts include healing and agree with resolved combat", () => {
+  const vampire = required(
+    (Object.keys(TYPES) as UnitType[]).find((type) =>
+      TYPES[type].attacks.some((weapon) => weapon.drain),
+    ),
+  );
+  const { game, attacker, target } = fixture(vampire, "soldier");
+  attacker.hp = 5;
+  const weapon = required(TYPES[vampire].attacks.find((weapon) => weapon.drain));
+  const preview = game.previewDetails(attacker, target, weapon.id);
+  const choice = required(
+    attackChoiceViews(game.publishedView(), attacker, target).find(
+      (choice) => choice.id === weapon.id,
+    ),
+  );
+  assert(choice.available);
+  assert((preview.healing ?? 0) > 0);
+  assert(choice.playerForecast.impactLabel.includes(`heal +${preview.healing} HP`));
+  game.attack(attacker.id, target.id, weapon.id);
+  assert.equal(game.unit(attacker.id)?.hp ?? 0, choice.playerForecast.remainingHp);
+  assert.equal(game.unit(target.id)?.hp ?? 0, choice.enemyForecast.remainingHp);
+});
+
+test("Thorn forecasts show separate reflection even on a killing hit", () => {
+  const thornType = required(
+    (Object.keys(TYPES) as UnitType[]).find((type) => (TYPES[type].thorns ?? 0) > 0),
+  );
+  const { game, attacker, target } = fixture("soldier", thornType);
+  target.hp = 1;
+  const weapon = required(
+    TYPES[attacker.type].attacks.find((attack) => attack.category === "melee"),
+  );
+  const preview = game.previewDetails(attacker, target, weapon.id);
+  const choice = required(
+    attackChoiceViews(game.publishedView(), attacker, target).find(
+      (choice) => choice.id === weapon.id,
+    ),
+  );
+  assert(choice.available);
+  assert.equal(preview.thornDamage, required(TYPES[thornType].thorns) * weapon.count);
+  assert.equal(preview.response, null);
+  assert(choice.retaliationCalculation.equation.includes(`${preview.thornDamage} (thorns:`));
+  game.attack(attacker.id, target.id, weapon.id);
+  assert.equal(game.unit(attacker.id)?.hp ?? 0, choice.playerForecast.remainingHp);
+  assert.equal(game.unit(target.id), undefined);
+});
 
 test("Zero damage attacks remain available and consume actions", async () => {
   const { game, attacker, target } = fixture("bonearcher", "soldier");

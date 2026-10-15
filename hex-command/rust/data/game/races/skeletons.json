@@ -1,6 +1,6 @@
 {
-  "id": "undead",
-  "name": "Undead",
+  "id": "skeletons",
+  "name": "Skeletons",
   "terrainModifiers": {},
   "damageModifiers": {
     "blade": 0,

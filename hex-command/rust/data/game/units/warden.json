@@ -1,7 +1,7 @@
 {
   "id": "warden",
   "role": "warrior",
-  "name": "Warden",
+  "name": "Spearman",
   "terrainModifiers": {
     "ford": {
       "cost": 1
@@ -11,9 +11,9 @@
     }
   },
   "race": "human",
-  "hp": 24,
+  "hp": 32,
   "move": 3,
-  "cost": 9,
+  "cost": 10,
   "attacks": [
     {
       "id": "spear",
@@ -37,14 +37,14 @@
     }
   ],
   "damageModifiers": {
-    "blade": -1,
-    "pierce": -1,
-    "impact": 1
+    "blade": -3,
+    "pierce": -2,
+    "impact": 0
   },
   "ability": "Shield wall",
   "description": "A shielded spear fighter who protects the front against charging beasts.",
   "level": 2,
   "family": "spearman",
-  "experienceNeeded": 0,
-  "advancesTo": []
+  "experienceNeeded": 18,
+  "advancesTo": ["sentinel"]
 }

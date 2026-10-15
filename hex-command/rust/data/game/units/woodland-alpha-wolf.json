@@ -1,0 +1,33 @@
+{
+  "id": "woodland-alpha-wolf",
+  "role": "flank",
+  "name": "Alpha wolf",
+  "race": "beast",
+  "hp": 29,
+  "move": 6,
+  "cost": 16,
+  "attacks": [
+    {
+      "id": "fangs",
+      "name": "Fangs",
+      "damage": 7,
+      "count": 2,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Pack hunter",
+  "description": "A swift forest predator whose repeated fang attacks punish exposed enemies.",
+  "level": 3,
+  "family": "wolf",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

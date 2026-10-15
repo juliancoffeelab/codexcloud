@@ -1,8 +1,6 @@
 # Development and publication
 
-Hex Command uses Svelte and TypeScript for the interface and Rust/WASM for battles
-and enemy planning. It runs entirely in the browser. Development rules live in
-[AGENTS.md](../AGENTS.md).
+Development rules live in [AGENTS.md](../AGENTS.md).
 
 ## Setup
 
@@ -15,7 +13,7 @@ npm ci
 npm run dev
 ```
 
-`npm run dev` prepares WASM bindings and artwork before starting Vite. Common commands:
+## Verification
 
 ```sh
 npm run format                # Apply project formatting
@@ -27,124 +25,45 @@ npm run build
 npm run preview
 ```
 
-## Verification
-
-`npm run verify` runs automatic formatting, content validation, WASM bindings,
-UI and TypeScript checks, artwork validation, all tests and the production build.
+Verification covers formatting, content, artwork, tests and the production build.
 Independent checks continue after failures and report their statuses together.
-Select groups as shown above. Focused `rust` selects native tests. The combined
-test group already includes Rust, so verification does not run it twice.
-UI and TypeScript groups share one WASM binding build during verification.
+The test duration target warns without terminating a successful run. Browser
+automation is separate from the default checks.
 
-`npm test` runs Rust, Python artwork/analyzer tests and Vitest under one shared
-20-second duration target. Slow runs warn and continue; only failed tests fail
-the command. Vitest tests and hooks have no hard timeout. Browser automation is separate. `art:check` validates generated
-artwork; its unit tests run in the combined test command.
+## Content and artwork
 
-## Project layout
-
-- `rust/data/` contains authored game content and simulation rosters/schedules.
-  The [content reference](../rust/data/README.md) describes schemas and inheritance.
-- `rust/src/data/`, `logic/` and `ai/` own the catalog, battles and planning.
-  `simulation/` owns scheduling and recording; `protocol.rs` and `wasm.rs` expose
-  the browser contract. See the [Rust guide](../rust/README.md).
-- `src/game/` adapts the WASM factory, catalog and battle handles. Browser code
-  receives resolved metadata rather than importing live authored JSON.
-- `src/save/` owns versioned envelopes, storage and sequential compatibility
-  migrations. See [save migrations](save-migrations.md).
-- `src/controller/` owns actions, autosaves, undo, turn sequencing and cancellation.
-  `src/ui/` renders published views; `src/presentation/` owns artwork, motion,
-  sound and icons. See [artwork rendering](#artwork-rendering-implementation).
-
-Generated bindings live in ignored `rust/pkg/`, sprites in ignored
-`public/assets/sprites/`, and production bundles in ignored `dist/`. Edit source
-files. Temporary experiments and screenshots belong in ignored `tmp/`. The
-developer map displays every terrain and both sides of every playable unit rank.
-
-## Artwork rendering implementation
-
-Pixel sources are character matrices and explicit palettes under `pixel/art/`.
-Character sources are always 64×64, stored in
-`pixel/art/units/<race>/<unit-id>/`; race trees live in `pixel/art/units/lineups/`.
-Each unit folder contains only its matrix and material palette.
+A lineup is a faction. A faction can have sprites before its gameplay roster is
+implemented. Character and terrain artwork use the permanent 64×64 canvas and
+shared battlefield scale defined in the development rules.
 
 ```sh
 npm run art:build
 npm run art:check
 ```
 
-`scripts/build-pixel-art.py` reads the sources and emits content-hashed native
-PNG sprites into ignored `public/assets/sprites/` and URL/layout metadata into
-`src/presentation/pixel-art.ts`. It applies faction/floor palettes and flattens
-prepared prop layouts at build time. Vite copies the sprites into `dist/assets/`.
+Edit authored content and artwork rather than generated output. Keep temporary
+experiments and screenshots in ignored `tmp/`.
 
-The browser fetches individual images as they are rendered. Once an authored map
-is displayed, idle work warms one canonical inspection sprite per terrain type,
-two at a time with low network priority. Details use the default floor and
-connections with the first prebuilt prop arrangement, regardless of the clicked
-tile's map variation. The browser uses the generated sprites directly, without
-an atlas or sprite cropping. Source matrices/palettes remain authoritative.
+## Simulations
 
-Production Vite builds render every authored map into a native PNG using
-the same terrain layouts and drawing code. Unchanged maps use these sprites
-directly. Terrain edits overlay changed cells until a background canvas bake
-finishes; missing map sprites also use that fallback.
+Use the [combat-simulation skill](../.agents/skills/combat-simulation/SKILL.md)
+for commands, reports and interpretation. [Army design](../.agents/skills/combat-simulation/design.md)
+defines faction identities and unit-role tradeoffs. Evaluate actual battlefield
+contributions, and distinguish observed outcomes from proposed causes.
 
-Terrain formats, floor palettes and prop layouts are described in
-[terrain artwork implementation](terrain-artwork.md). Character creation and
-editing workflows live in the artwork skills linked below.
+## Publication
 
-The selected unit panel displays attack counts, damage per hit and permanent modifiers.
-Rust applies armor and terrain modifiers per hit, then multiplies by count.
-The attack, retaliation, death, experience and turn flow remain as on main. Terrain
-effects show movement and resolved incoming-damage modifiers. Numeric abilities
-such as healing come from catalog metadata; descriptions explain roles without
-duplicating the values.
+```sh
+npm run publish
+```
 
-Restoration caps saved HP at the current unit maximum while preserving resolved
-game state. Saves never contain queued AI actions or planning workspaces.
-All data migrations belong in `src/save/migrations/` and run during loading;
-unmigratable or invalid saves are wiped. See [save migrations](save-migrations.md).
+Publish the feature branch through the repository's PR workflow. Validate the
+production build and publish the exact reviewed source. Keep credentials out
+of logs and source control. Retain deployment identifiers if publication fails.
 
-## Sites publication
+## Further guidance
 
-`scripts/publish-sites-call.js` coordinates the configured Sites deployment.
-It invokes `npm run publish`, which commits project source, synchronizes a Sites
-source checkout, builds that checkout and packages its generated output with
-`scripts/package-site.py`. The adapter saves/deploys the archive, polls deployment
-status and pushes the deployed source commit to GitHub after success.
-
-The Sites source repository receives its commit before deployment; GitHub is a
-separate push. Packages include generated files that ordinary `git archive`
-would omit. Packaging verifies references, file coverage and archive bytes.
-Credentials are passed to the publication command without being printed or saved.
-On failure, retain version/deployment identifiers for recovery.
-
-## AI contracts
-
-Named presets construct fixed
-Recruiter/Campaigner/Planner compositions. Native simulations retain those
-components through the whole match or campaign. `Tactic::run_turn` derives
-explicit orders, applies recruitment to one draft, then plans against that updated
-draft and returns ordered engine commands with recruitment and planning reports.
-
-Only Campaigner receives authored mission data and progression. Recruiter and
-Planner use restricted mechanical battle views. Generic capture, defeat and visit
-targets supplement typed duties; mission kinds are normalized before reaching a
-planner. Full and Queued use shared search and safety helpers without replacing
-the selected planner. Existing Rotation, Frontline and Balanced selection rules
-remain separate from future recruitment strategies.
-
-The command-at-a-time host entry point adapts a completed turn plan to the
-existing browser/native command protocol. Its queue exists only during execution
-and is never saved. Browser persistence brackets the entire enemy turn; loading
-an interrupted phase builds a fresh plan from its pre-turn state. Save envelopes
-and host adapters remain separate from the block interfaces.
-
-## References
-
-- [Combat simulations and analysis](../.agents/skills/combat-simulation/SKILL.md)
-- [AI preset composition](../rust/src/ai/presets.rs) and [planner dispatch](../rust/src/ai/planner/mod.rs)
+- [Authored content](../rust/data/README.md)
 - Artwork skills: [generation](../.agents/skills/pinkbox-generation/SKILL.md),
   [enhancement](../.agents/skills/pinkbox-enhancement/SKILL.md),
   [cleaning](../.agents/skills/pixel-cleaning/SKILL.md),

@@ -1,0 +1,43 @@
+{
+  "id": "sharpshooter",
+  "role": "ranger",
+  "name": "Sharpshooter",
+  "race": "human",
+  "hp": 28,
+  "move": 3,
+  "cost": 17,
+  "attacks": [
+    {
+      "id": "bow",
+      "name": "Bow",
+      "damage": 5,
+      "count": 3,
+      "damageType": "pierce",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    },
+    {
+      "id": "knife",
+      "name": "Knife",
+      "damage": 6,
+      "count": 1,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Longbow",
+  "description": "A veteran human bow fighter who delivers repeated piercing shots from behind the infantry.",
+  "level": 3,
+  "family": "archer",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

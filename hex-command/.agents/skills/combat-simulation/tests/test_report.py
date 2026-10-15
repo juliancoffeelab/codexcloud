@@ -119,6 +119,22 @@ class CompleteDataTests(unittest.TestCase):
         self.assertIn('No non-self-play games against Classic were recorded',
                       '\n'.join(report.overview([], [], [], [], missing_rows)))
 
+    def test_purchase_shares_use_recorded_families_and_only_new_cross_faction_purchases(self):
+        rows = [dict(race='a', opponentRace='b', policy='mixed', opponentPolicy='balanced', map='open', unit='base', recruited=2, promoted=0),
+                dict(race='a', opponentRace='c', policy='mixed', opponentPolicy='balanced', map='open', unit='upgrade', recruited=1, promoted=8),
+                dict(race='a', opponentRace='b', policy='mixed', opponentPolicy='balanced', map='open', unit='other', recruited=1, promoted=0),
+                dict(race='a', opponentRace='a', policy='mixed', opponentPolicy='balanced', map='open', unit='other', recruited=100, promoted=0)]
+        result = report.purchase_shares(rows, {'base':'tank','upgrade':'tank'})
+        pooled = [r for r in result if r['map']=='all']
+        self.assertEqual([(r['family'], r['purchased'], r['totalPurchases'], r['sharePercent']) for r in pooled], [('other',1,4,25.0),('tank',3,4,75.0)])
+        summary = report.arena_race_map_summary([dict(race='a',opponentRace='b',policy='mixed',opponentPolicy='balanced',map='open',games=2,wins=1,losses=0,caps=1,leaderWins=1,territoryWins=0,rounds=40)], 'balanced')
+        self.assertEqual((summary[0]['games'],summary[0]['winRate'],summary[0]['caps']), (2,50.0,1))
+        mirror = dict(race='a',opponentRace='a',policy='mixed',opponentPolicy='balanced',map='open',games=100,wins=100,losses=0,caps=0,leaderWins=100,territoryWins=0,rounds=100)
+        cross = dict(mirror, opponentRace='b', games=2, wins=1, caps=1, leaderWins=1)
+        fixed = report.arena_race_map_summary([mirror,cross], 'balanced')
+        self.assertEqual((fixed[0]['games'],fixed[0]['winRate']), (2,50.0))
+
+
     def test_campaign_overview_keeps_diplomacy_outcomes_separate(self):
         rows = [dict(campaign='choice', player='mixed', enemy='classic', maxRounds=30,
                      recruitLimit=1, diplomacy=mode, attempts=10, completed=wins)
@@ -186,6 +202,14 @@ class CompleteDataTests(unittest.TestCase):
         _, units, _, _ = report.tally({report.identity(item): item})
         self.assertEqual({(x['race'], x['unit']): (x['recruited'], x['promoted'], x['lost']) for x in units},
                          {('a', 'caster'): (1, 0, 0), ('a', 'veteran'): (0, 1, 0), ('b', 'screen'): (0, 0, 1)})
+
+    def test_combat_use_is_attributed_to_actual_sides_without_inventing_missing_records(self):
+        item = match(1, 'b', 'a')
+        item['combatUsage'] = [dict(side='player', type='mounted', attacks=3, retaliations=1, damage=25),
+                               dict(side='enemy', type='guard', attacks=1, retaliations=2, damage=9)]
+        _, units, _, _ = report.tally({report.identity(item): item})
+        self.assertEqual({(r['race'], r['unit']): (r['attacks'], r['retaliations'], r['damage']) for r in units},
+                         {('b', 'mounted'): (3, 1, 25), ('a', 'guard'): (1, 2, 9)})
 
     def test_campaign_journals_explain_conditional_stages_deaths_and_active_caps(self):
         def chapter(winner, failure=None, id='grove'):

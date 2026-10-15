@@ -11,14 +11,14 @@
       "cost": 1
     }
   },
-  "hp": 24,
+  "hp": 28,
   "move": 3,
   "cost": 14,
   "attacks": [
     {
       "id": "trample",
       "name": "Trample",
-      "damage": 10,
+      "damage": 12,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
@@ -28,12 +28,12 @@
     {
       "id": "tusks",
       "name": "Tusks",
-      "damage": 10,
+      "damage": 6,
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
       "sound": "attack-melee",
-      "count": 1
+      "count": 2
     }
   ],
   "damageModifiers": {
@@ -42,9 +42,9 @@
     "impact": -1
   },
   "ability": "Trample",
-  "description": "A veteran boar whose thick hide withstands light strikes and whose powerful charge threatens armored foes; slow in wetlands.",
+  "description": "A veteran boar whose thick hide withstands light strikes and whose powerful charge threatens armored foes; slow in wetlands Its paired tusks deliver two piercing strikes.",
   "level": 2,
   "family": "boar",
-  "experienceNeeded": 0,
-  "advancesTo": []
+  "experienceNeeded": 18,
+  "advancesTo": ["woodland-ancient-boar"]
 }

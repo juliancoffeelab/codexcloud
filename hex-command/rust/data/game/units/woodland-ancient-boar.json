@@ -1,0 +1,43 @@
+{
+  "id": "woodland-ancient-boar",
+  "role": "warrior",
+  "name": "Ancient boar",
+  "race": "beast",
+  "hp": 38,
+  "move": 3,
+  "cost": 20,
+  "attacks": [
+    {
+      "id": "trample",
+      "name": "Trample",
+      "damage": 16,
+      "count": 1,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "tusks",
+      "name": "Tusks",
+      "damage": 8,
+      "count": 2,
+      "damageType": "pierce",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "terrainModifiers": {},
+  "ability": "Ancient tusks",
+  "description": "A durable forest beast whose trampling impact and piercing tusks threaten different defenses Its paired tusks deliver two piercing strikes.",
+  "level": 3,
+  "family": "boar",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

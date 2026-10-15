@@ -1,0 +1,247 @@
+"""Recorded arena presence and support effects; no simulation or current catalog lookup."""
+from collections import Counter, defaultdict
+import gzip
+import hashlib
+import importlib.util
+import json
+from pathlib import Path
+
+
+DIMS = ('race', 'policy', 'opponentPolicy', 'map')
+
+
+def adjacent(a, b):
+    x, y = map(int, a.split(','))
+    u, v = map(int, b.split(','))
+    q, r = x - y // 2 - u + v // 2, y - v
+    return abs(q) + abs(r) + abs(q + r) == 2
+
+
+def journals(inputs, kinds=('arena',)):
+    for path in inputs:
+        path = path / 'report.json' if path.is_dir() else path
+        report = json.loads(path.read_text())
+        if report.get('status') != 'complete':
+            raise ValueError('Unit usage requires a completed run')
+        readers = {}
+        try:
+            for saved in sorted(report['outcomes'], key=lambda o: (o.get('detail', {}).get('file', ''), o.get('detail', {}).get('offset', 0))):
+                if saved.get('kind') not in kinds:
+                    continue
+                ref = saved.get('detail', {})
+                name = ref.get('file', '')
+                if not name or Path(name).name != name or ref.get('offset', -1) < 0 or ref.get('bytes', 0) <= 0:
+                    raise ValueError('Unit usage requires recorded gameplay journals')
+                if name not in readers:
+                    journal = path.parent / name
+                    readers[name] = journal.open('rb') if journal.exists() else gzip.open(str(journal) + '.gz', 'rb')
+                stream = readers[name]
+                stream.seek(ref['offset'])
+                raw = stream.read(ref['bytes'])
+                if len(raw) != ref['bytes'] or hashlib.sha256(raw).hexdigest() != ref['sha256']:
+                    raise ValueError('Unit usage gameplay checksum mismatch')
+                if name.endswith('.arrow'):
+                    if importlib.util.find_spec('pyarrow') is None:
+                        raise ModuleNotFoundError('pyarrow')
+                    decoder_path = Path(__file__).resolve().parents[4] / 'scripts/simulation_journal.py'
+                    spec = importlib.util.spec_from_file_location('usage_journal', decoder_path)
+                    decoder = importlib.util.module_from_spec(spec)
+                    spec.loader.exec_module(decoder)
+                    result = decoder.decode_detail(raw, name)
+                else:
+                    result = json.loads(raw)
+                if result['config'] != saved['config']:
+                    raise ValueError('Unit usage journal configuration mismatch')
+                yield report, result
+        finally:
+            for stream in readers.values():
+                stream.close()
+
+
+def analyze(inputs, presence=True, support=True):
+    census = defaultdict(Counter)
+    totals = defaultdict(Counter)
+    present = Counter()
+    effects = defaultdict(Counter)
+    overlaps = defaultdict(Counter)
+    catalogs = None
+    matches = 0
+    for report, result in journals(inputs):
+        config = result['config']
+        if config['armies']['player'] == config['armies']['enemy']:
+            continue
+        profiles = report.get('unitProfiles') or {}
+        families = report.get('unitFamilies') or {}
+        if support and (report.get('supportTelemetryVersion') != 1 or not profiles):
+            raise ValueError('Support effects require a fresh run with support telemetry and recorded unitProfiles')
+        if profiles:
+            if catalogs is not None and catalogs != profiles:
+                raise ValueError('Cannot pool unit usage across different recorded catalogs')
+            catalogs = profiles
+        matches += 1
+
+        def group(side, landscape):
+            other = 'enemy' if side == 'player' else 'player'
+            def label(s):
+                blocks = config.get(s + 'Blocks')
+                return '-'.join(blocks[k] for k in ('recruiter', 'campaign', 'planner')) if blocks else config[s]
+            return config['armies'][side], label(side), label(other), landscape
+
+        def leader(unit):
+            return profiles.get(unit['type'], {}).get('leader', unit.get('role') == 'leader')
+
+        def family(unit):
+            return profiles.get(unit, {}).get('family', families.get(unit, unit))
+
+        def add_effect(unit, ability, **values):
+            # All-unit rows aggregate the same measured events, not extra events.
+            for landscape in (config['landscape'], 'all'):
+                key = group(unit['side'], landscape)
+                for kind in (unit['type'], 'all'):
+                    effects[(*key, kind, ability)].update(values)
+
+        seen = {side: set() for side in ('player', 'enemy')}
+        for unit in result['initial']['units']:
+            if not leader(unit):
+                seen[unit['side']].add(unit['type'])
+        for side in ('player', 'enemy'):
+            for landscape in (config['landscape'], 'all'):
+                totals[group(side, landscape)]['battles'] += 1
+        for phase in result['phases']:
+            side = phase['side']
+            if presence:
+                own = [u for u in phase['units'] if u['side'] == side and not leader(u)]
+                for landscape in (config['landscape'], 'all'):
+                    key = group(side, landscape)
+                    totals[key]['phases'] += 1
+                    totals[key]['unitTurns'] += len(own)
+                    for unit in own:
+                        census[key][unit['type']] += 1
+                for unit in phase.get('before', []) + phase['units'] + phase.get('losses', []):
+                    if not leader(unit):
+                        seen[unit['side']].add(unit['type'])
+            if not support:
+                continue
+            before = phase['before']
+            lookup = {u['id']: u for u in phase.get('losses', []) + phase['units'] + before}
+            for ability in ('healing', 'thornAura', 'thorns'):
+                # Healing opportunities occur at own-turn start. Reflection
+                # opportunities occur at opposing-turn start, after positioning.
+                provider_side = side if ability == 'healing' else ('enemy' if side == 'player' else 'player')
+                friends = [u for u in before if u['side'] == provider_side]
+                providers = [u for u in friends if profiles[u['type']].get(ability, 0) > 0]
+                for provider in providers:
+                    add_effect(provider, ability, providerTurns=1)
+                if ability == 'thorns':
+                    continue
+                composition = Counter(opportunities=1, eligiblePairs=len(providers) * max(0, len(friends)-1))
+                for ally in friends:
+                    touching = [p for p in providers if p['id'] != ally['id'] and adjacent(p['tile'], ally['tile'])]
+                    composition['contacts'] += len(touching)
+                    composition['coveredRecipients'] += bool(touching)
+                    composition['overlappingRecipients'] += len(touching) > 1
+                    for provider in touching:
+                        add_effect(provider, ability, adjacentContacts=1,
+                                   coveredRecipients=1 / len(touching),
+                                   overlappingRecipients=(1 / len(touching) if len(touching) > 1 else 0))
+                if providers:
+                    for landscape in (config['landscape'], 'all'):
+                        overlaps[(*group(provider_side, landscape), ability, len(providers), max(0, len(friends)-1))].update(composition)
+            for event in phase.get('healing', []):
+                providers = event['providers']
+                if not providers:
+                    raise ValueError('Healing event has no provider')
+                for provider in providers:
+                    add_effect(lookup[provider], 'healing', healedHP=event['amount'] / len(providers),
+                               healedRecipients=1 / len(providers))
+            for combat in phase['combats']:
+                thorns = combat.get('thorns')
+                if thorns is None:
+                    raise ValueError('Support telemetry missing from combat record')
+                raw = thorns['damage']
+                if raw <= 0:
+                    continue
+                own = raw - thorns['auraDamage']
+                effective = thorns['effectiveDamage']
+                if own:
+                    add_effect(lookup[combat['target']], 'thorns', triggeredCombats=1,
+                               reflectedDamage=own, effectiveReflectedDamage=effective * own / raw)
+                sources = thorns['auraSources']
+                if thorns['auraDamage'] and not sources:
+                    raise ValueError('Thorn aura event has no provider')
+                for source in sources:
+                    damage = thorns['auraDamage'] / len(sources)
+                    add_effect(lookup[source], 'thornAura', triggeredCombats=1 / len(sources),
+                               reflectedDamage=damage, effectiveReflectedDamage=effective * damage / raw)
+        for side, units in seen.items():
+            for landscape in (config['landscape'], 'all'):
+                key = group(side, landscape)
+                for unit in units:
+                    present[(*key, 'unit', unit)] += 1
+                for fam in {family(unit) for unit in units}:
+                    present[(*key, 'family', fam)] += 1
+
+    unit_rows, family_rows = [], []
+    for key, total in sorted(totals.items()):
+        if not presence:
+            break
+        counts = census[key]
+        for grouping, target in [('unit', unit_rows), ('family', family_rows)]:
+            units = {k[-1] for k in present if k[:4] == key and k[4] == grouping}
+            for unit in sorted(units):
+                turns = counts[unit] if grouping == 'unit' else sum(v for k, v in counts.items() if (catalogs.get(k, {}).get('family', k) if catalogs else k) == unit)
+                # Legacy presence has only unitFamilies; preserve its recorded grouping.
+                if grouping == 'family' and not catalogs:
+                    turns = sum(v for k, v in counts.items() if families.get(k, k) == unit)
+                target.append(dict(zip(DIMS, key), **{grouping: unit}, unitTurns=turns,
+                                   totalUnitTurns=total['unitTurns'], sharePercent=100 * turns / max(1, total['unitTurns']),
+                                   observedPhases=total['phases'], meanUnitsPerPhase=turns / max(1, total['phases']),
+                                   battlesPresent=present[(*key, grouping, unit)], battles=total['battles'],
+                                   battlePresencePercent=100 * present[(*key, grouping, unit)] / max(1, total['battles'])))
+    effect_rows = []
+    for (*key, unit, ability), counts in sorted(effects.items()):
+        turns = counts['providerTurns']
+        effect_rows.append(dict(zip(DIMS, key), unit=unit, family=(catalogs[unit]['family'] if unit != 'all' else 'all'),
+                               ability=ability, **{k: counts[k] for k in ['providerTurns','adjacentContacts','coveredRecipients','overlappingRecipients','healedHP','healedRecipients','triggeredCombats','reflectedDamage','effectiveReflectedDamage']},
+                               adjacentAlliesPerTurn=(counts['adjacentContacts'] / turns if turns and ability != 'thorns' else None),
+                               usefulRecipientsPerTurn=(counts['healedRecipients'] / turns if turns and ability == 'healing' else None),
+                               healedHPPerTurn=(counts['healedHP'] / turns if turns and ability == 'healing' else None),
+                               reflectedDamagePerTurn=(counts['reflectedDamage'] / turns if turns and ability != 'healing' else None),
+                               overlapPercent=(100 * counts['overlappingRecipients'] / counts['coveredRecipients'] if counts['coveredRecipients'] else 0)))
+    tables = {}
+    if presence:
+        tables.update(battlefield_presence=family_rows, battlefield_units=unit_rows)
+    if support:
+        tables['support_effects'] = effect_rows
+        tables['support_overlap'] = [dict(zip(DIMS, key[:4]), ability=key[4], providerCount=key[5], recipientsPerProvider=key[6], **stats,
+            pairCoverageProbability=stats['contacts'] / max(1, stats['eligiblePairs']),
+            overlapPercent=100 * stats['overlappingRecipients'] / max(1, stats['coveredRecipients']),
+            redundantContactPercent=100 * (stats['contacts'] - stats['coveredRecipients']) / max(1, stats['contacts']))
+            for key, stats in sorted(overlaps.items())]
+    return tables, matches
+
+
+def army_usage(events, purchases, presence, families):
+    totals = defaultdict(Counter)
+    counts = defaultdict(Counter)
+    for event in events:
+        if event['race'] == event['opponentRace']:
+            continue
+        for landscape in (event['map'], 'all'):
+            key = tuple(event[k] for k in DIMS[:-1]) + (landscape,)
+            family = families.get(event['unit'], event['unit'])
+            for field in ('recruited','promoted','lost','attacks','retaliations','damage'):
+                counts[(*key, family)][field] += event[field]
+                totals[key][field] += event[field]
+    buys = {tuple(r[k] for k in DIMS) + (r['family'],): r for r in purchases}
+    rows = []
+    for row in presence:
+        key = tuple(row[k] for k in DIMS)
+        own = (*key, row['family'])
+        stats, total = counts[own], totals[key]
+        rows.append(dict(row, purchaseSharePercent=buys.get(own, {}).get('sharePercent', 0),
+                         attackSharePercent=100 * stats['attacks'] / max(1, total['attacks']),
+                         damageSharePercent=100 * stats['damage'] / max(1, total['damage']),
+                         attacksPerUnitTurn=stats['attacks'] / max(1, row['unitTurns']),
+                         retaliationsPerUnitTurn=stats['retaliations'] / max(1, row['unitTurns']), **stats))
+    return rows

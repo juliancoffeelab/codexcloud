@@ -3,19 +3,19 @@
   "role": "flank",
   "name": "Wolf",
   "race": "beast",
-  "hp": 16,
-  "move": 4,
-  "cost": 6,
+  "hp": 17,
+  "move": 5,
+  "cost": 8,
   "attacks": [
     {
       "id": "fangs",
       "name": "Fangs",
-      "damage": 2,
+      "damage": 4,
+      "count": 2,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee",
-      "count": 3
+      "sound": "attack-melee"
     }
   ],
   "damageModifiers": {
@@ -29,12 +29,5 @@
   "family": "wolf",
   "experienceNeeded": 10,
   "advancesTo": ["direwolf"],
-  "terrainModifiers": {
-    "forest": {
-      "cost": -1
-    },
-    "grove": {
-      "cost": -1
-    }
-  }
+  "terrainModifiers": {}
 }

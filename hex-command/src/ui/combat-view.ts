@@ -47,9 +47,10 @@ function healthForecast(
   damage: number,
   label: "You" | "Enemy",
   impact: "Take" | "Deal",
+  healing = 0,
 ): HealthForecastView {
   const maximumHp = TYPES[unit.type].hp;
-  const remainingHp = Math.max(0, unit.hp - damage);
+  const remainingHp = Math.max(0, unit.hp - damage + healing);
 
   return {
     side: unit.side,
@@ -60,7 +61,7 @@ function healthForecast(
     healthLabel: `${label}: ${unit.hp} to ${remainingHp} HP after this attack`,
     currentPercent: (unit.hp / maximumHp) * 100,
     remainingPercent: (remainingHp / maximumHp) * 100,
-    impactLabel: `${impact} ${damage ? `−${damage}` : 0} HP${remainingHp === 0 ? " (dies)" : ""}`,
+    impactLabel: `${impact} ${damage ? `−${damage}` : 0} HP${healing ? `, heal +${healing} HP` : ""}${remainingHp === 0 ? " (dies)" : ""}`,
   };
 }
 
@@ -83,8 +84,9 @@ function outcomeWarning(
   target: UnitView,
   damage: number,
   retaliation: number,
+  healing = 0,
 ): string {
-  if (retaliation >= attacker.hp) return ", you fall";
+  if (retaliation >= attacker.hp + healing) return ", you fall";
   if (damage >= target.hp) return ", enemy falls";
   return "";
 }
@@ -109,7 +111,13 @@ export function attackChoiceViews(
     // Available attacks have already validated both combatants' tiles.
     const attackerTerrain = game.tile(attacker.tile)!.terrain;
     const targetTerrain = game.tile(target.tile)!.terrain;
-    const warning = outcomeWarning(attacker, target, preview.damage, preview.retaliation);
+    const warning = outcomeWarning(
+      attacker,
+      target,
+      preview.damage,
+      preview.retaliation,
+      preview.healing,
+    );
     const retaliationCalculation: CombatCalculationView = {
       description: "Their attack: none",
       equation: preview.damage >= target.hp ? "0 (enemy defeated)" : "0 (out of range)",
@@ -125,7 +133,19 @@ export function attackChoiceViews(
       retaliationCalculation.equation = damageExplanation(preview.retaliationDetail);
     }
 
-    const enemyForecast = healthForecast(target, preview.damage, "Enemy", "Deal");
+    if (preview.thornDamage) {
+      const weaponDamage = preview.retaliation - preview.thornDamage;
+      retaliationCalculation.description += `; thorns reflect damage per incoming melee strike`;
+      retaliationCalculation.equation += `; ${weaponDamage} + ${preview.thornDamage} (thorns: ${preview.thornDamage / weapon.count} × ${weapon.count} incoming strikes) = ${preview.retaliation}`;
+    }
+
+    const enemyForecast = healthForecast(
+      target,
+      preview.damage,
+      "Enemy",
+      "Deal",
+      preview.retaliationHealing,
+    );
     return {
       available: true,
       id: weapon.id,
@@ -133,7 +153,7 @@ export function attackChoiceViews(
       buttonLabel: `Attack with ${weapon.name}: deal ${preview.damage} damage, take ${preview.retaliation} damage${warning}`,
       inspectLabel: `Inspect ${weapon.name.toLowerCase()} damage calculation`,
       detailsId: `attack-details-${weapon.id}`,
-      playerForecast: healthForecast(attacker, preview.retaliation, "You", "Take"),
+      playerForecast: healthForecast(attacker, preview.retaliation, "You", "Take", preview.healing),
       enemyForecast,
       attackCalculation: {
         description: describeAttack("Your attack", weapon, preview.damageDetail, targetTerrain),
