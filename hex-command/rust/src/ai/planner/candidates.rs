@@ -186,27 +186,7 @@ fn leader_may_advance(
     required: bool,
     proximity: &[u16],
 ) -> bool {
-    if tile == unit.tile || required || !game.units().iter().any(|u| u.side != unit.side) {
-        return true;
-    }
-    let before = proximity[unit.tile];
-    let after = proximity[tile];
-    if unit.rebuilding == Some(true) && recruiting && before > 2 {
-        return false;
-    }
-    if after >= before {
-        return true;
-    }
-    let (count, front) = game
-        .ordinary(unit)
-        .filter(|u| {
-            u.hp as f64 >= game.rules().units[u.kind].hp as f64 / 2.0
-                && game.board().distance(tile, u.tile) <= 2
-        })
-        .fold((0, false), |(count, front), ally| {
-            (count + 1, front || proximity[ally.tile] <= after)
-        });
-    count >= 2 && front
+    game.leader_may_advance_using(unit, tile, recruiting, required, |tile| proximity[tile])
 }
 struct Candidate {
     tile: usize,
@@ -977,26 +957,6 @@ mod tests {
                     workspace.cheap.lanes,
                     game.withdrawal_lanes(game.turn, restrained(game, &workspace))
                 );
-                for unit in game
-                    .units
-                    .iter()
-                    .filter(|u| u.side == game.turn && game.rules.units[u.kind].leader)
-                {
-                    for tile in 0..game.terrain.len() {
-                        assert_eq!(
-                            leader_may_advance(
-                                &crate::ai::context::BattleView::new(game),
-                                unit,
-                                tile,
-                                true,
-                                false,
-                                &workspace.cheap.proximity
-                            ),
-                            crate::ai::context::BattleView::new(&game)
-                                .leader_may_advance(unit, tile, true, false)
-                        );
-                    }
-                }
                 let fresh: Vec<_> = (0..game.terrain.len())
                     .map(|tile| {
                         game.units

@@ -340,6 +340,20 @@ impl BattleView<'_, '_> {
             .min()
             .unwrap_or(20)
     }
+    /// A rebuilding leader must recover income before returning to an unaffordable keep.
+    pub(super) fn leader_needs_income(&self, u: &Unit) -> bool {
+        if !self.rules().units[u.kind].leader
+            || u.rebuilding != Some(true)
+            || self.income(u.side) > 0
+        {
+            return false;
+        }
+        let options = self.recruitment_options(u.side);
+        !options.is_empty()
+            && !options
+                .iter()
+                .any(|&kind| self.rules().units[kind].cost <= self.gold()[u.side.index()])
+    }
     pub fn leader_may_advance(
         &self,
         u: &Unit,
@@ -347,15 +361,33 @@ impl BattleView<'_, '_> {
         recruiting: bool,
         required: bool,
     ) -> bool {
+        self.leader_may_advance_using(u, tile, recruiting, required, |tile| {
+            self.proximity(u.side, tile)
+        })
+    }
+    /// Queued planning supplies its cached proximity field; the movement rule stays shared.
+    pub(super) fn leader_may_advance_using(
+        &self,
+        u: &Unit,
+        tile: usize,
+        recruiting: bool,
+        required: bool,
+        proximity: impl Fn(usize) -> u16,
+    ) -> bool {
         if tile == u.tile || required || !self.units().iter().any(|o| o.side != u.side) {
             return true;
         }
-        let before = self.proximity(u.side, u.tile);
-        let after = self.proximity(u.side, tile);
+        let before = proximity(u.tile);
+        let after = proximity(tile);
         if u.rebuilding == Some(true) && recruiting && before > 2 {
             return false;
         }
         if after >= before {
+            return true;
+        }
+        // Recover income outside immediate attack coverage. Callers still apply
+        // their move-then-attack threat forecasts and leader safety checks.
+        if self.leader_needs_income(u) && self.enemy_danger(u, tile) == 0 {
             return true;
         }
         let escorts = self.ordinary(u).filter(|o| {
@@ -363,10 +395,7 @@ impl BattleView<'_, '_> {
                 && self.board().distance(tile, o.tile) <= 2
         });
         let (count, at_front) = escorts.fold((0, false), |(count, front), unit| {
-            (
-                count + 1,
-                front || self.proximity(u.side, unit.tile) <= after,
-            )
+            (count + 1, front || proximity(unit.tile) <= after)
         });
         count >= 2 && at_front
     }
