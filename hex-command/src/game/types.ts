@@ -429,6 +429,7 @@ export interface CampaignDefinition {
   name: string;
   tagline: string;
   description: string;
+  shortDescription: string;
   race: Race;
   leader: LeaderType;
   missions: MissionDefinition[];

@@ -3,6 +3,7 @@
   "name": "The Green Accord",
   "tagline": "A forest and a village can share a road.",
   "description": "Lead Alder’s woodland pack against an illegal logging operation. Capture its camps, uncover the missing workers’ fate, and bring the evidence to the village council across the river.",
+  "shortDescription": "The forest is falling, and the workers are disappearing.",
   "race": "beast",
   "leader": "wildkeeper",
   "ending": [

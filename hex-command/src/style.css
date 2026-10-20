@@ -1775,19 +1775,7 @@ select {
   color: var(--muted);
   font-size: 0.85rem;
 }
-#new-campaign {
-  width: 100%;
-  margin: 8px 0 12px;
-}
 @media (max-width: 480px) {
-  .campaign-choice {
-    grid-template-columns: 16px minmax(0, 1fr);
-    padding: 12px;
-    gap: 10px;
-  }
-  .campaign-portrait {
-    display: none;
-  }
   .story-line {
     grid-template-columns: 64px minmax(0, 1fr);
     gap: 12px;
@@ -2160,4 +2148,16 @@ select {
 .setup-army .choice-trigger > span {
   flex: 1;
   text-align: center;
+}
+
+.choice-copy > span {
+  display: block;
+}
+.choice-copy small {
+  display: block;
+  margin-top: 5px;
+  font:
+    13px/1.5 system-ui,
+    sans-serif;
+  color: var(--muted);
 }

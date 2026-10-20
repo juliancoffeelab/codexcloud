@@ -350,7 +350,10 @@ impl NativeEngineFactory {
                                         self.rules.units[self.rules.types[*id]].role
                                             == original.role
                                     })
-                                    .unwrap_or(&roster.pool[0])
+                                    .or_else(|| roster.pool.first())
+                                    .ok_or_else(|| EngineError::InvalidRequest {
+                                        message: "Faction has no unit for the starting army".into(),
+                                    })?
                                     .as_str()
                             };
                             let rule = &self.rules.units[self.rules.types[kind]];

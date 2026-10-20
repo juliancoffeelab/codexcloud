@@ -31,11 +31,13 @@
   const maps = BATTLE_MAPS.map((map) => ({
     value: map.id,
     label: map.id === "river-valley" ? "River Valley" : map.name,
+    description: map.description,
     map,
   }));
   const campaigns = Object.values(CAMPAIGNS).map((c) => ({
     value: c.id,
     label: c.name,
+    description: c.shortDescription,
     sprite: c.leader,
   }));
   const map = $derived(BATTLE_MAPS.find((m) => m.id === mapId)!);
@@ -95,14 +97,7 @@
       },
     };
     try {
-      if (mode === "campaign")
-        actions.startCampaign(campaignId as CampaignId, {
-          ...setup,
-          enemy: {
-            policy: (difficulty === "custom" ? "situational" : difficulty) as AiOptions["policy"],
-            diplomacy: "restrained",
-          },
-        });
+      if (mode === "campaign") actions.startCampaign(campaignId as CampaignId, setup);
       else {
         preloadTerrainMap(mapId);
         actions.reset(mapId, {
@@ -156,11 +151,7 @@
           onchange={() => preloadTerrainMap(mapId)}
         />
         <p class="setup-meta">
-          {map.id === "mirror"
-            ? "A compact, mirrored battlefield."
-            : map.id === "river-valley"
-              ? "Two keeps across a winding river."
-              : "A sandbox for trying out units."}
+          {map.description}
         </p>
       </div>
     </div>
@@ -204,7 +195,7 @@
           <em>{campaign.tagline}</em>
         </div>
       </div>
-      <p>{campaign.description}</p>
+      <p>{campaign.shortDescription}</p>
       <span class="setup-meta">
         {campaign.missions.length} missions · {campaign.race === "human"
           ? "Human"

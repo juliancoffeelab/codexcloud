@@ -4,6 +4,7 @@
   export interface Choice {
     value: string;
     label: string;
+    description?: string;
     sprite?: UnitType;
     map?: Immutable<MapDefinition>;
   }
@@ -27,6 +28,7 @@
     side?: "player" | "enemy";
     onchange?: () => void;
   } = $props();
+  const choiceId = $props.id();
   let dialog: HTMLDialogElement;
   let trigger: HTMLButtonElement;
   let expanded = $state(false);
@@ -98,10 +100,12 @@
     <button class="setup-close" aria-label="Close picker" onclick={() => dialog.close()}>×</button>
   </header>
   <div class="choice-list" role="listbox" aria-label={label}>
-    {#each choices as choice}
+    {#each choices as choice, index}
       <button
         class="choice-row"
         role="option"
+        aria-label={choice.label}
+        aria-describedby={choice.description ? `${choiceId}-${index}` : undefined}
         aria-selected={choice.value === value}
         onclick={() => choose(choice)}
       >
@@ -117,7 +121,12 @@
             side,
           )}{/if}
         {#if choice.map}<MapThumbnail map={choice.map} />{/if}
-        <span>{choice.label}</span>
+        <span class="choice-copy">
+          <span>{choice.label}</span>
+          {#if choice.description}<small id={`${choiceId}-${index}`}>
+              {choice.description}
+            </small>{/if}
+        </span>
         <span class="choice-tick" aria-hidden="true">{choice.value === value ? "✓" : ""}</span>
       </button>
     {/each}
