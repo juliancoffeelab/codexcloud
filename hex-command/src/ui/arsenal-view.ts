@@ -12,6 +12,9 @@ export function arsenalView(unit: UnitView) {
   const definition = TYPES[unit.type];
   const weapons = definition.attacks.map((weapon) => ({
     ...weapon,
+    rollLabel: weapon.spread
+      ? `${weapon.damage - weapon.spread}–${weapon.damage + weapon.spread}`
+      : `${weapon.damage}`,
     categoryLabel: weapon.category === "melee" ? "Melee" : "Ranged",
     damageLabel: DAMAGE_TYPES[weapon.damageType],
     rangeLabel: weapon.range === 1 ? "1 hex range" : `1–${weapon.range} hex range`,

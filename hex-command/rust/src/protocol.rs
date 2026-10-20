@@ -221,6 +221,11 @@ response!(UnitResponse, ());
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[serde(rename_all = "camelCase")]
 pub struct DamageDetail {
+    pub roll_min: i32,
+    pub roll_max: i32,
+    pub minimum: i32,
+    pub maximum: i32,
+    pub expected: f64,
     pub count: u8,
     pub total: i32,
     pub base: i32,
@@ -239,6 +244,10 @@ pub struct DamageDetail {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[serde(rename_all = "camelCase")]
 pub struct AttackDetails {
+    pub kill_chance: f64,
+    pub death_chance: f64,
+    pub retaliation_min: i32,
+    pub retaliation_max: i32,
     pub thorn_damage: i32,
     pub healing: i32,
     pub retaliation_healing: i32,

@@ -104,6 +104,7 @@ pub(crate) struct Game<'catalog> {
     pub(crate) gold: [i32; 2],
     pub(crate) winner: Option<Side>,
     pub(crate) next_id: u32,
+    pub(crate) combat_rng: u32,
     pub(crate) log: Vec<String>,
     pub(crate) campaign: Option<CampaignState>,
     pub(crate) last_combat: Option<LastCombat>,
@@ -237,6 +238,7 @@ impl<'catalog> Game<'catalog> {
             gold: [state.gold.player, state.gold.enemy],
             winner: state.winner,
             next_id: state.next_id,
+            combat_rng: state.combat_rng.unwrap_or(0x6d2b79f5),
             log: state.log,
             campaign: state.campaign,
             last_combat,
@@ -288,6 +290,7 @@ impl<'catalog> Game<'catalog> {
             },
             winner: self.winner,
             next_id: self.next_id,
+            combat_rng: Some(self.combat_rng),
             log: self.log.clone(),
             tiles: self.tiles(),
             units: self.public_units(),
@@ -483,6 +486,11 @@ impl<'catalog> Game<'catalog> {
 }
 
 impl<'catalog> Game<'catalog> {
+    pub(crate) fn planning_fork(&self) -> Self {
+        let mut draft = self.fork();
+        draft.combat_rng = 0x6d2b79f5;
+        draft
+    }
     pub(crate) fn fork(&self) -> Self {
         Self {
             rules: self.rules,
@@ -502,6 +510,7 @@ impl<'catalog> Game<'catalog> {
             gold: self.gold,
             winner: self.winner,
             next_id: self.next_id,
+            combat_rng: self.combat_rng,
             log: self.log.clone(),
             campaign: self.campaign.clone(),
             last_combat: self.last_combat.clone(),

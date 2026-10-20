@@ -18,6 +18,7 @@ fn ability_rules() -> Rules {
         rule.thorns = 0;
         rule.thorn_aura = 0;
         for attack in &mut rule.attacks {
+            attack.spread = 0;
             attack.damage = 4;
             attack.count = 2;
             attack.drain = 0;
@@ -389,6 +390,9 @@ fn counted_damage_keeps_the_existing_attack_and_restore_flow() {
         impact: -1,
     };
     rule.environment.fill([[0; 3]; 2]);
+    for attack in &mut rule.attacks {
+        attack.spread = 0;
+    }
     rule.attacks[0].count = 3;
     rule.attacks[0].damage = 2;
     rule.attacks[1].count = 1;
@@ -551,4 +555,115 @@ fn mitigation_records_signed_stages_hp_caps_and_executed_weapon_retaliation() {
             );
         }
     }
+}
+
+#[test]
+fn independent_roll_distributions_include_clamping_and_exact_kill_odds() {
+    let mut rules = ability_rules();
+    let attack = &mut rules.units[rules.types["archer"]].attacks[0];
+    attack.damage = 1;
+    attack.spread = 1;
+    attack.count = 2;
+    let distribution = crate::logic::damage::distribution(attack, 0);
+    assert_eq!((distribution.min, distribution.max), (0, 4));
+    for (actual, expected) in distribution.probabilities.iter().zip([1., 2., 3., 2., 1.]) {
+        assert!((actual - expected / 9.).abs() < 1e-12);
+    }
+    assert!((distribution.chance(3) - 1. / 3.).abs() < 1e-12);
+    let protected = crate::logic::damage::distribution(attack, -1);
+    assert!((protected.mean - 2. / 3.).abs() < 1e-12);
+    assert!((protected.chance(1) - 5. / 9.).abs() < 1e-12);
+    assert_eq!((protected.min, protected.max), (0, 2));
+}
+
+#[test]
+fn seeded_strikes_restore_exactly_and_previews_never_consume_randomness() {
+    let mut rules = ability_rules();
+    let kind = rules.types["archer"];
+    rules.units[kind].attacks[0].spread = 4;
+    rules.units[kind].attacks[0].count = 3;
+    let mut observed = std::collections::BTreeSet::new();
+    for seed in 0..32 {
+        let mut game = Game::new(&rules, "mirror");
+        game.units.clear();
+        game.roster_changed();
+        game.combat_rng = seed;
+        let a = add(&mut game, "archer", Side::Player, "2,3");
+        let b = add(&mut game, "archer", Side::Enemy, "3,3");
+        game.recordings = Some(Records::default());
+        let before = serde_json::to_value(game.state()).unwrap();
+        let first = serde_json::to_value(game.inspect(0)).unwrap();
+        assert_eq!(first, serde_json::to_value(game.inspect(0)).unwrap());
+        assert_eq!(before, serde_json::to_value(game.state()).unwrap());
+        let mut restored = Game::try_from_state(&rules, game.state()).unwrap();
+        hit(&mut game, a, b, "bow");
+        hit(&mut restored, a, b, "bow");
+        assert_eq!(
+            serde_json::to_value(game.state()).unwrap(),
+            serde_json::to_value(restored.state()).unwrap()
+        );
+        let record = &game.recordings.as_ref().unwrap().combats[0];
+        assert_eq!(record.rolls.len(), 3);
+        assert_eq!(record.rolls.iter().sum::<i32>(), record.damage);
+        assert_eq!(
+            record.response_rolls.iter().sum::<i32>(),
+            record.retaliation
+        );
+        assert_eq!(
+            record
+                .mitigation
+                .as_ref()
+                .unwrap()
+                .attack
+                .after_terrain_damage,
+            record.damage
+        );
+        observed.extend(record.raw_rolls.iter().copied());
+        assert!(record.raw_rolls.iter().all(|&roll| (0..=8).contains(&roll)));
+    }
+    assert!(observed.contains(&0) && observed.contains(&8));
+    assert!(observed.len() > 5);
+}
+
+#[test]
+fn uncertain_kills_allow_actual_replies_and_ai_does_not_peek_at_combat_seed() {
+    let mut rules = ability_rules();
+    let kind = rules.types["archer"];
+    rules.units[kind].attacks[0].damage = 4;
+    rules.units[kind].attacks[0].spread = 4;
+    rules.units[kind].attacks[0].count = 1;
+    let mut outcomes = [false; 2];
+    let mut decision = None;
+    for seed in 0..32 {
+        let mut game = Game::new(&rules, "mirror");
+        game.units.clear();
+        game.roster_changed();
+        game.combat_rng = seed;
+        let a = add(&mut game, "archer", Side::Player, "2,3");
+        let b = add(&mut game, "archer", Side::Enemy, "3,3");
+        let bi = game.index(b).unwrap();
+        game.units[bi].hp = 4;
+        game.gold = [0, 0];
+        let actor = game.unit(a).unwrap();
+        let target = game.unit(b).unwrap();
+        assert!((game.kill_chance(actor, target, 0) - 5. / 9.).abs() < 1e-12);
+        assert!(game.preview(actor, target, 0, actor.tile).2.is_some());
+        let mut workspace =
+            crate::ai::PlanningWorkspace::new(7, 0, None, crate::ai::Diplomacy::Pragmatic);
+        let command =
+            crate::ai::choose_game_command(&game, crate::ai::Policy::Balanced, &mut workspace)
+                .unwrap();
+        assert_eq!(decision.get_or_insert(command.clone()), &command);
+        game.recordings = Some(Records::default());
+        hit(&mut game, a, b, "bow");
+        let record = &game.recordings.as_ref().unwrap().combats[0];
+        if game.unit(b).is_none() {
+            outcomes[0] = true;
+            assert!(record.response_rolls.is_empty());
+        } else {
+            outcomes[1] = true;
+            assert_eq!(record.response_rolls.len(), 1);
+        }
+    }
+    assert_eq!(outcomes, [true, true]);
 }

@@ -103,6 +103,10 @@ pub struct State {
     pub gold: Gold,
     pub winner: Option<Side>,
     pub next_id: u32,
+    /// Persisted combat PRNG state; absent legacy saves start from a stable seed.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub combat_rng: Option<u32>,
     pub log: Vec<String>,
     pub tiles: Vec<Tile>,
     pub units: Vec<PublicUnit>,

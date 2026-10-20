@@ -95,6 +95,14 @@ pub struct CombatRecord {
     #[serde(default)]
     pub damage_per_hit: i32,
     #[serde(default)]
+    pub raw_rolls: Vec<i32>,
+    #[serde(default)]
+    pub rolls: Vec<i32>,
+    #[serde(default)]
+    pub response_raw_rolls: Vec<i32>,
+    #[serde(default)]
+    pub response_rolls: Vec<i32>,
+    #[serde(default)]
     pub retaliation_count: u8,
     #[serde(default)]
     pub retaliation_per_hit: i32,
@@ -112,6 +120,7 @@ impl Serialize for CombatRecord {
         let mut record = serializer.serialize_struct(
             "CombatRecord",
             (if strikes { 12 } else { 8 })
+                + if self.rolls.is_empty() { 0 } else { 4 }
                 + usize::from(self.thorns.is_some())
                 + usize::from(self.mitigation.is_some()),
         )?;
@@ -127,6 +136,12 @@ impl Serialize for CombatRecord {
             record.serialize_field("damagePerHit", &self.damage_per_hit)?;
             record.serialize_field("retaliationCount", &self.retaliation_count)?;
             record.serialize_field("retaliationPerHit", &self.retaliation_per_hit)?;
+        }
+        if !self.rolls.is_empty() {
+            record.serialize_field("rawRolls", &self.raw_rolls)?;
+            record.serialize_field("rolls", &self.rolls)?;
+            record.serialize_field("responseRawRolls", &self.response_raw_rolls)?;
+            record.serialize_field("responseRolls", &self.response_rolls)?;
         }
         if let Some(thorns) = &self.thorns {
             record.serialize_field("thorns", thorns)?;

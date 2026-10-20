@@ -578,25 +578,27 @@ pub(in crate::ai) fn plan(
                 return;
             }
             let (damage, retaliation, _) = game.preview(&unit, target, weapon, tile);
-            if orders.protects(unit.id) && retaliation > 0 {
+            if orders.protects(unit.id) && game.maximum_retaliation(&unit, target, weapon, tile) > 0
+            {
                 return;
             }
             let drained = game.drain_healing(&unit, target, weapon, damage);
-            response = retaliation - drained;
-            let killed = damage >= target.hp;
+            response = if important {
+                game.maximum_retaliation(&unit, target, weapon, tile)
+            } else {
+                retaliation - drained
+            };
+            let kill_chance = game.kill_chance(&unit, target, weapon);
+            let killed = game.guaranteed_kill(&unit, target, weapon);
             eliminated = killed.then_some(target.id);
             terminal = killed && orders.terminal_attack(target);
-            combat = damage.min(target.hp) as f64 * 2.0
-                + if killed {
-                    12.0 + game.rules().units[target.kind].cost as f64 * 0.3
-                } else {
-                    0.0
-                }
+            combat = game.effective_damage(&unit, target, weapon) * 2.0
+                + kill_chance * (12.0 + game.rules().units[target.kind].cost as f64 * 0.3)
                 - retaliation as f64 * 1.8
                 + drained as f64 * 2.0
-                + workspace.escort.attack(id, target, damage);
+                + workspace.escort.attack(id, target, damage, kill_chance);
             if orders.important(game, target) {
-                combat += if killed { 18.0 } else { 4.0 };
+                combat += 4.0 + 14.0 * kill_chance;
             }
             if battle
                 && killed

@@ -778,7 +778,7 @@ impl<'catalog> Game<'catalog> {
                 fallen.push(name);
             }
         }
-        Ok(Self::start_campaign(
+        let mut next = Self::start_campaign(
             self.rules,
             &state.id,
             state.mission + 1,
@@ -787,6 +787,8 @@ impl<'catalog> Game<'catalog> {
             choices,
             story,
             fallen,
-        ))
+        );
+        next.combat_rng = self.combat_rng;
+        Ok(next)
     }
 }

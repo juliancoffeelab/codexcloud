@@ -169,6 +169,7 @@ export interface Unit {
   rebuilding?: boolean;
 }
 export interface Weapon {
+  spread?: number;
   drain?: number;
   count: number;
   id: string;
@@ -250,6 +251,11 @@ export interface MapDefinition {
   units: StartingUnit[];
 }
 export interface DamageBreakdown {
+  rollMin?: number;
+  rollMax?: number;
+  minimum?: number;
+  maximum?: number;
+  expected?: number;
   count?: number;
   total?: number;
   base: number;
@@ -266,6 +272,10 @@ export interface CombatPreview {
   retaliation: number;
 }
 export interface CombatPreviewDetails extends CombatPreview {
+  killChance: number;
+  deathChance: number;
+  retaliationMin: number;
+  retaliationMax: number;
   thornDamage: number;
   healing?: number;
   retaliationHealing?: number;
@@ -298,6 +308,7 @@ export interface GameSnapshot {
 }
 /** Full session state, including mutable terrain, for exact move undo. */
 export interface GameState {
+  combatRng?: number;
   mapId: MapId;
   mapRevision: number;
   cols: number;

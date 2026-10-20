@@ -38,7 +38,7 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     }
     pub(super) fn fork(&self) -> BattleDraft<'a, 'catalog> {
         BattleDraft(BattleView {
-            engine: EngineAccess::Draft(self.engine().fork()),
+            engine: EngineAccess::Draft(self.engine().planning_fork()),
         })
     }
     pub(super) fn rules(&self) -> BattleRules<'_> {
@@ -98,6 +98,36 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     }
     pub(super) fn damage(&self, attacker: &Unit, target: &Unit, weapon: usize) -> i32 {
         self.engine().damage(attacker, target, weapon)
+    }
+    pub(super) fn guaranteed_kill(&self, attacker: &Unit, target: &Unit, weapon: usize) -> bool {
+        self.engine().guaranteed_kill(attacker, target, weapon)
+    }
+    pub(super) fn kill_chance(&self, attacker: &Unit, target: &Unit, weapon: usize) -> f64 {
+        self.engine().kill_chance(attacker, target, weapon)
+    }
+    pub(super) fn effective_damage(&self, attacker: &Unit, target: &Unit, weapon: usize) -> f64 {
+        self.engine()
+            .damage_distribution(attacker, target, weapon, target.tile)
+            .effective(target.hp)
+    }
+    pub(super) fn maximum_retaliation(
+        &self,
+        attacker: &Unit,
+        target: &Unit,
+        weapon: usize,
+        from: usize,
+    ) -> i32 {
+        self.engine()
+            .maximum_retaliation(attacker, target, weapon, from)
+    }
+    pub(super) fn death_chance(
+        &self,
+        attacker: &Unit,
+        target: &Unit,
+        weapon: usize,
+        from: usize,
+    ) -> f64 {
+        self.engine().death_chance(attacker, target, weapon, from)
     }
     pub(super) fn drain_healing(
         &self,
@@ -232,7 +262,7 @@ impl<'catalog> PlanningContext<'catalog> {
     pub(super) fn fork(game: &Game<'catalog>) -> Self {
         Self {
             draft: BattleDraft(BattleView {
-                engine: EngineAccess::Draft(game.fork()),
+                engine: EngineAccess::Draft(game.planning_fork()),
             }),
             commands: Vec::new(),
         }
@@ -257,6 +287,7 @@ impl<'catalog> PlanningContext<'catalog> {
             draft: &mut self.draft,
             commands: &mut self.commands,
             workspace,
+            combat_boundary: false,
         }
     }
     pub(super) fn finish(
@@ -288,6 +319,7 @@ impl RecruitmentContext<'_, '_> {
     }
 }
 pub(crate) struct TacticalContext<'a, 'catalog> {
+    pub(super) combat_boundary: bool,
     pub(super) draft: &'a mut BattleDraft<'catalog, 'catalog>,
     commands: &'a mut Vec<Command>,
     pub(super) workspace: &'a mut PlanningWorkspace,
@@ -298,6 +330,7 @@ impl TacticalContext<'_, '_> {
     }
     pub(super) fn emit(&mut self, command: Command) -> Result<(), CommandError> {
         self.draft.execute(command.clone())?;
+        self.combat_boundary = command.is_attack();
         self.commands.push(command);
         Ok(())
     }
@@ -310,6 +343,10 @@ impl TacticalContext<'_, '_> {
                 return Ok(());
             }
             self.emit(command)?;
+            if self.combat_boundary {
+                self.workspace.commands.clear();
+                return Ok(());
+            }
         }
         if self.draft.winner().is_some() {
             self.workspace.attack_continuation = None;
@@ -335,6 +372,7 @@ impl TacticalContext<'_, '_> {
                 target,
                 weapon,
             })?;
+            return Ok(());
         }
         Ok(())
     }

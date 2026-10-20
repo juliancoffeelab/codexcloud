@@ -286,6 +286,7 @@ impl InitialState {
             tiles: self.tiles,
             units,
             campaign: None,
+            combat_rng: None,
             last_combat: None,
         })
     }
@@ -497,6 +498,9 @@ impl Rules {
                     || attack.sound.is_empty()
                     || attack.range == 0
                     || attack.damage < 0
+                    || attack.damage > 1000
+                    || attack.spread < 0
+                    || attack.spread > attack.damage
                     || !(1..=16).contains(&attack.count)
                     || attack.drain > 100
                 {
@@ -1289,6 +1293,12 @@ mod tests {
         bundle.insert(path.into(), serde_json::to_string(&unit).unwrap());
         let rules = Rules::from_json_bundle(&bundle).unwrap();
         assert_eq!(rules.units[rules.types["swordsman"]].attacks[0].count, 1);
+        for spread in [-1, unit["attacks"][0]["damage"].as_i64().unwrap() + 1] {
+            let mut invalid = unit.clone();
+            invalid["attacks"][0]["spread"] = serde_json::json!(spread);
+            bundle.insert(path.into(), serde_json::to_string(&invalid).unwrap());
+            assert_eq!(Rules::from_json_bundle(&bundle).unwrap_err().path, path);
+        }
         for count in [0, 17] {
             unit["attacks"][0]["count"] = serde_json::json!(count);
             bundle.insert(path.into(), serde_json::to_string(&unit).unwrap());

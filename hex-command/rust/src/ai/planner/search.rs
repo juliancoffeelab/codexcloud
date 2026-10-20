@@ -247,20 +247,18 @@ impl BattleView<'_, '_> {
                         if distant && !zero_cost {
                             continue;
                         }
-                        let damage = self.damage(unit, target, weapon);
-                        let killed = damage >= target.hp;
-                        let kill_value = if killed {
-                            12.0 + self.rules().units[target.kind].cost as f64 * 0.3
-                        } else {
-                            0.0
-                        };
+                        let kill_chance = self.kill_chance(unit, target, weapon);
+                        let killed = self.guaranteed_kill(unit, target, weapon);
+                        let kill_value = kill_chance
+                            * (12.0 + self.rules().units[target.kind].cost as f64 * 0.3);
                         let essential_value = if orders.important(self, target) {
-                            if killed { 18.0 } else { 4.0 }
+                            4.0 + 14.0 * kill_chance
                         } else {
                             0.0
                         };
-                        let value =
-                            damage.min(target.hp) as f64 * 2.0 + kill_value + essential_value;
+                        let value = self.effective_damage(unit, target, weapon) * 2.0
+                            + kill_value
+                            + essential_value;
                         let terminal_attack = killed && orders.terminal_attack(target);
                         if !distant {
                             offense = offense.max(if terminal_attack {
@@ -279,8 +277,9 @@ impl BattleView<'_, '_> {
                         if BOUNDED {
                             // Dropping retaliation and death penalties gives an upper bound.
                             // A kill may also award the three-point promotion bonus.
-                            let mut bound =
-                                (damage.min(target.hp) as f64 * 2.0 + kill_value.upper()).upper();
+                            let mut bound = (self.effective_damage(unit, target, weapon) * 2.0
+                                + kill_value.upper())
+                            .upper();
                             bound = (bound + essential_value).upper();
                             if killed {
                                 bound = (bound + 3.0).upper();
@@ -761,23 +760,27 @@ impl BattleView<'_, '_> {
                     let mut finishes_battle = false;
                     if let (Some(target), Some(weapon)) = (target, weapon) {
                         let (damage, response, _) = self.preview(&unit, target, weapon, tile);
-                        retaliation = response;
-                        if orders.protects(unit.id) && response > 0 {
+                        retaliation = if important {
+                            self.maximum_retaliation(unit, target, weapon, tile)
+                        } else {
+                            response
+                        };
+                        if orders.protects(unit.id)
+                            && self.maximum_retaliation(unit, target, weapon, tile) > 0
+                        {
                             continue;
                         }
-                        let killed = damage >= target.hp;
+                        let kill_chance = self.kill_chance(unit, target, weapon);
+                        let killed = self.guaranteed_kill(unit, target, weapon);
                         eliminated = killed.then_some(target.id);
                         finishes_battle = killed && orders.terminal_attack(target);
-                        combat = damage.min(target.hp) as f64 * 2.0
-                            + if killed {
-                                12.0 + self.rules().units[target.kind].cost as f64 * 0.3
-                            } else {
-                                0.0
-                            }
+                        combat = self.effective_damage(unit, target, weapon) * 2.0
+                            + kill_chance
+                                * (12.0 + self.rules().units[target.kind].cost as f64 * 0.3)
                             - retaliation as f64 * 1.8
-                            + escort.attack(unit.id, target, damage);
+                            + escort.attack(unit.id, target, damage, kill_chance);
                         if orders.important(self, target) {
-                            combat += if killed { 18.0 } else { 4.0 };
+                            combat += 4.0 + 14.0 * kill_chance;
                         }
                         if killed
                             && self.rules().units[unit.kind].experience_needed.is_some_and(

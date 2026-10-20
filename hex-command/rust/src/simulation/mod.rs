@@ -3,6 +3,7 @@ mod arrow;
 mod canonical;
 pub mod checkpoint;
 pub mod cli;
+mod damage;
 pub mod error;
 pub mod leader_audit;
 pub mod matches;

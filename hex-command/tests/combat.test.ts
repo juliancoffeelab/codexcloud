@@ -18,7 +18,7 @@ const fixture = (a: UnitType = "soldier", b: UnitType = "soldier", targetTile = 
   return { game, attacker, target };
 };
 
-test("Drain forecasts include healing and agree with resolved combat", () => {
+test("Drain forecasts show expected healing and seeded combat replays exactly", () => {
   const vampire = required(
     (Object.keys(TYPES) as UnitType[]).find((type) =>
       TYPES[type].attacks.some((weapon) => weapon.drain),
@@ -35,10 +35,13 @@ test("Drain forecasts include healing and agree with resolved combat", () => {
   );
   assert(choice.available);
   assert((preview.healing ?? 0) > 0);
-  assert(choice.playerForecast.impactLabel.includes(`heal +${preview.healing} HP`));
+  assert(choice.playerForecast.impactLabel.includes(`heal ≈${preview.healing}`));
+  const checkpoint = game.captureState();
   game.attack(attacker.id, target.id, weapon.id);
-  assert.equal(game.unit(attacker.id)?.hp ?? 0, choice.playerForecast.remainingHp);
-  assert.equal(game.unit(target.id)?.hp ?? 0, choice.enemyForecast.remainingHp);
+  const result = game.captureState();
+  game.restoreState(checkpoint);
+  game.attack(attacker.id, target.id, weapon.id);
+  assert.deepEqual(game.captureState(), result);
 });
 
 test("Thorn forecasts show separate reflection even on a killing hit", () => {
@@ -75,9 +78,12 @@ test("Zero damage attacks remain available and consume actions", async () => {
   assert(choice.available);
   assert.equal(choice.enemyForecast.remainingHp, target.hp);
   const targetHp = target.hp;
+  const attackerHp = attacker.hp;
+  const preview = game.previewDetails(attacker, target, "shard");
   game.attack(attacker.id, target.id, "shard");
   assert.equal(target.hp, targetHp);
-  assert.equal(attacker.hp, choice.playerForecast.remainingHp);
+  assert(attacker.hp >= Math.max(0, attackerHp - preview.retaliationMax));
+  assert(attacker.hp <= Math.max(0, attackerHp - preview.retaliationMin));
   assert(attacker.moved && attacker.attacked);
   assert.throws(() => game.attack(attacker.id, target.id, "shard"));
 });
@@ -94,44 +100,40 @@ test("Covered retaliation can deal zero damage", async () => {
   assert(choice.retaliationCalculation.description.includes("shard"));
   assert.equal(choice.playerForecast.remainingHp, attacker.hp);
 });
-test("Blocked attacks still produce combat feedback", async () => {
+test("A zero-damage roll still produces combat feedback", async () => {
   const { game, attacker, target } = fixture("bonearcher", "commander");
   required(game.tile(target.tile)).terrain = "hill";
+  game.restoreState({ ...game.captureState(), combatRng: 1 });
   const before = game.snapshot();
   game.attack(attacker.id, target.id, "shard");
   assert.equal(target.hp, required(before.units.find((unit) => unit.id === target.id)).hp);
   assert(describeChanges(before, game.snapshot()).attacked, "blocked attacks still play their cue");
 });
-// Lethal forecasts identify the unit that dies, including overkill and retaliation.
-test("Lethal forecasts identify casualties including overkill", async () => {
+test("Forecasts distinguish guaranteed kills, uncertain kills and lethal retaliation", () => {
   const { game, attacker, target } = fixture();
-  const damage = game.previewDetails(attacker, target, "mace").damage;
-  target.hp = damage;
-  let choice = required(
-    attackChoiceViews(game.publishedView(), attacker, target).find((c) => c.id === "mace"),
-  );
-  assert(choice.available);
-  assert.equal(choice.enemyForecast.impactLabel, `Deal −${damage} HP (dies)`);
-  assert.equal(choice.playerForecast.impactLabel, "Take 0 HP");
-  target.hp = damage - 1;
-  choice = required(
-    attackChoiceViews(game.publishedView(), attacker, target).find((c) => c.id === "mace"),
-  );
-  assert(choice.available);
-  assert.equal(
-    choice.enemyForecast.impactLabel,
-    `Deal −${damage} HP (dies)`,
-    "overkill is also lethal",
-  );
-  target.hp = damage + 1;
-  const retaliation = game.previewDetails(attacker, target, "mace").retaliation;
-  attacker.hp = retaliation;
-  choice = required(
-    attackChoiceViews(game.publishedView(), attacker, target).find((c) => c.id === "mace"),
-  );
-  assert(choice.available);
-  assert.equal(choice.enemyForecast.impactLabel, `Deal −${damage} HP`);
-  assert.equal(choice.playerForecast.impactLabel, `Take −${retaliation} HP (dies)`);
+  const preview = game.previewDetails(attacker, target, "mace");
+  const minimum = required(preview.damageDetail.minimum);
+  const maximum = required(preview.damageDetail.maximum);
+  assert(minimum > 0 && maximum > minimum);
+  const choice = () => {
+    const view = required(
+      attackChoiceViews(game.publishedView(), attacker, target).find((c) => c.id === "mace"),
+    );
+    assert(view.available);
+    return view;
+  };
+  target.hp = minimum;
+  assert(choice().enemyForecast.impactLabel.includes("100% kill"));
+  assert.equal(choice().enemyForecast.remainingClass, "fatal");
+  target.hp = preview.damage;
+  const uncertain = game.previewDetails(attacker, target, "mace");
+  assert(uncertain.killChance > 0 && uncertain.killChance < 1);
+  assert.equal(choice().enemyForecast.remainingClass, "");
+  assert(uncertain.response);
+  target.hp = maximum + 1;
+  attacker.hp = 1;
+  assert(choice().playerForecast.impactLabel.includes("100% death"));
+  assert.equal(choice().playerForecast.remainingClass, "fatal");
 });
 
 test("Armor equation", async () => {

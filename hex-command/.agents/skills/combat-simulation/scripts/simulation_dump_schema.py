@@ -50,7 +50,7 @@ LAST_COMBAT = pa.struct([
 STATE = pa.struct([
     ("mapId", STRING), ("mapRevision", INTEGER), ("cols", INTEGER),
     ("rows", INTEGER), ("round", INTEGER), ("turn", STRING), ("gold", GOLD),
-    ("winner", STRING), ("nextId", INTEGER), ("log", STRINGS),
+    ("winner", STRING), ("nextId", INTEGER), ("combatRng", INTEGER), ("log", STRINGS),
     ("tiles", pa.list_(TILE)), ("units", pa.list_(UNIT)),
     ("campaign", CAMPAIGN), ("lastCombat", LAST_COMBAT),
 ])
@@ -75,6 +75,8 @@ COMBAT = pa.struct([
     ("unit", STRING), ("target", STRING), ("weapon", STRING), ("from", STRING),
     ("targetTile", STRING), ("damage", INTEGER), ("retaliation", INTEGER),
     ("count", INTEGER), ("damagePerHit", INTEGER),
+    ("rawRolls", pa.list_(INTEGER)), ("rolls", pa.list_(INTEGER)),
+    ("responseRawRolls", pa.list_(INTEGER)), ("responseRolls", pa.list_(INTEGER)),
     ("retaliationCount", INTEGER), ("retaliationPerHit", INTEGER),
     ("mediationAtRisk", BOOLEAN),
     ("thorns", pa.struct([("damage",INTEGER),("auraDamage",INTEGER),("effectiveDamage",INTEGER),("auraSources",STRINGS)])),

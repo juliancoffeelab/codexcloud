@@ -8,9 +8,15 @@ impl Game<'_> {
         let modifier = rule.damage_modifiers.get(attack.damage_type);
         let environment = rule.environment[self.terrain[tile]][attack.category.index()]
             [attack.damage_type.index()];
+        let distribution = super::damage::distribution(attack, modifier + environment);
         DamageDetail {
+            roll_min: attack.damage - attack.spread,
+            roll_max: attack.damage + attack.spread,
+            minimum: distribution.min,
+            maximum: distribution.max,
+            expected: distribution.mean,
             count: attack.count,
-            total: (attack.damage + modifier + environment).max(0) * i32::from(attack.count),
+            total: distribution.mean.round() as i32,
             base: attack.damage,
             damage_type: attack.damage_type,
             modifier,
@@ -34,14 +40,37 @@ impl Game<'_> {
                         let attack = self.rules.units[unit.kind].attacks[weapon].clone();
                         let (damage, retaliation, response) =
                             self.preview(unit, target, weapon, unit.tile);
-                        let healing = self.drain_healing(unit, target, weapon, damage);
+                        let distribution =
+                            self.damage_distribution(unit, target, weapon, target.tile);
+                        let healing = distribution
+                            .outcomes()
+                            .map(|(damage, p)| {
+                                p * f64::from(self.drain_healing(unit, target, weapon, damage))
+                            })
+                            .sum::<f64>()
+                            .round() as i32;
                         let thorn_damage = self.thorn_damage(unit, target, weapon, unit.tile);
                         let retaliation_healing = response.map_or(0, |index| {
-                            let mut wounded = target.clone();
-                            wounded.hp -= damage;
-                            let mut actor = unit.clone();
-                            actor.hp += healing;
-                            self.drain_healing(&wounded, &actor, index, retaliation - thorn_damage)
+                            let reply = self.damage_distribution(target, unit, index, unit.tile);
+                            distribution
+                                .outcomes()
+                                .filter(|&(damage, _)| damage < target.hp)
+                                .map(|(damage, p)| {
+                                    let mut wounded = target.clone();
+                                    wounded.hp -= damage;
+                                    let mut actor = unit.clone();
+                                    actor.hp += self.drain_healing(unit, target, weapon, damage);
+                                    p * reply
+                                        .outcomes()
+                                        .map(|(dealt, q)| {
+                                            q * f64::from(
+                                                self.drain_healing(&wounded, &actor, index, dealt),
+                                            )
+                                        })
+                                        .sum::<f64>()
+                                })
+                                .sum::<f64>()
+                                .round() as i32
                         });
                         let response = response
                             .map(|index| self.rules.units[target.kind].attacks[index].clone());
@@ -49,6 +78,27 @@ impl Game<'_> {
                             .as_ref()
                             .map(|r| self.damage_detail(r, unit, unit.tile));
                         attacks.push(AttackDetails {
+                            kill_chance: distribution.chance(target.hp),
+                            death_chance: self.death_chance(unit, target, weapon, unit.tile),
+                            retaliation_min: thorn_damage
+                                + if distribution.max >= target.hp {
+                                    0
+                                } else {
+                                    response.as_ref().map_or(0, |r| {
+                                        super::damage::distribution(
+                                            r,
+                                            self.rules.units[unit.kind]
+                                                .damage_modifiers
+                                                .get(r.damage_type)
+                                                + self.rules.units[unit.kind].environment
+                                                    [self.terrain[unit.tile]][r.category.index()]
+                                                    [r.damage_type.index()],
+                                        )
+                                        .min
+                                    })
+                                },
+                            retaliation_max: self
+                                .maximum_retaliation(unit, target, weapon, unit.tile),
                             healing,
                             retaliation_healing,
                             thorn_damage,

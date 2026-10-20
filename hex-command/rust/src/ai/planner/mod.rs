@@ -83,12 +83,17 @@ fn drive(
         || context.workspace.attack_continuation.is_some()
     {
         context.flush()?;
+        if context.combat_boundary {
+            break;
+        }
         if context.workspace.finished || context.battle().winner().is_some() {
             break;
         }
         kind.choose(context.draft, context.workspace)?;
     }
-    context.flush()?;
+    if !context.combat_boundary {
+        context.flush()?;
+    }
     Ok(context.workspace.report.clone())
 }
 

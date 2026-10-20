@@ -2,6 +2,7 @@
 pub(crate) mod battle;
 mod combat;
 mod commands;
+pub(crate) mod damage;
 #[cfg(feature = "wasm")]
 mod inspection;
 mod movement;

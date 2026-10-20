@@ -817,6 +817,7 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
     if options.profile_turns {
         report["turnTiming"] = crate::ai::profiling::snapshot().unwrap();
     }
+    super::damage::write(rules, output.parent().unwrap_or(Path::new(".")))?;
     write_json(&output, &report, true)?;
     if !options.no_report {
         fs::write(sibling(&output, ".md")?, report::markdown(&report))?;

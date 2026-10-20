@@ -179,6 +179,10 @@ impl PlanningWorkspace {
             cheap: cheap::Workspace::default(),
         }
     }
+    #[cfg(not(target_arch = "wasm32"))]
+    pub(crate) fn finished(&self) -> bool {
+        self.finished
+    }
     /// Select independent blocks before starting a phase.
     #[cfg(any(feature = "wasm", test))]
     pub fn with_blocks(mut self, blocks: Blocks) -> Self {
@@ -231,9 +235,11 @@ pub(crate) fn choose_game_command(
         workspace.report = plan.planning;
         workspace.commands = plan.commands.into();
         workspace.turn_plan_ready = true;
-        workspace.finished = true;
     }
     let command = workspace.commands.pop_front().unwrap_or(Command::EndTurn);
+    if command.is_attack() {
+        workspace.turn_plan_ready = false;
+    }
     Ok(command)
 }
 
@@ -258,12 +264,17 @@ impl Game<'_> {
         let mut workspace =
             PlanningWorkspace::new(seed, limit, goals.map(<[Objective]>::to_vec), diplomacy);
         let mut tactic = tactic::Tactic::new(blocks.recruiter, blocks.campaign, blocks.planner);
-        let plan = {
-            let _profile = profiling::Decision::start(policy, self.turn);
-            tactic.run_turn(self, &mut workspace)?
-        };
-        for command in plan.commands {
-            self.execute(command)?;
+        loop {
+            let plan = {
+                let _profile = profiling::Decision::start(policy, self.turn);
+                tactic.run_turn(self, &mut workspace)?
+            };
+            for command in plan.commands {
+                self.execute(command)?;
+            }
+            if workspace.finished || self.winner.is_some() {
+                break;
+            }
         }
         Ok(())
     }

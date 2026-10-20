@@ -275,6 +275,7 @@ pub(crate) fn create_arena<'catalog>(
     state.campaign = None;
     state.last_combat = None;
     let mut game = Game::from_state(rules, state);
+    game.combat_rng = config.seed;
     game.pools = Some([
         roster(rules, &config.armies.player)?
             .pool
@@ -350,13 +351,20 @@ fn phase(
     if !composition.campaign.supports_campaign() && game.campaign.is_some() {
         return Err(CommandError::BattleOnlyPolicy.into());
     }
-    let plan = {
-        let _decision = crate::ai::profiling::Decision::start(policy, game.turn);
-        tactic.run_turn(game, &mut workspace)?
+    let mut recruitment = None;
+    let planning = loop {
+        let plan = {
+            let _decision = crate::ai::profiling::Decision::start(policy, game.turn);
+            tactic.run_turn(game, &mut workspace)?
+        };
+        recruitment.get_or_insert(plan.recruitment);
+        for command in plan.commands {
+            game.execute(command)?;
+        }
+        if workspace.finished() || game.winner.is_some() {
+            break plan.planning;
+        }
     };
-    for command in plan.commands {
-        game.execute(command)?;
-    }
     if let Some(state) = &mut game.campaign {
         state.dialogue_index = state.dialogue.len();
     }
@@ -371,7 +379,7 @@ fn phase(
     };
     let phase = Phase {
         leader_audit: super::leader_audit::finish(game, leader_audit),
-        planning: workspace.diagnostics(plan.planning, plan.recruitment),
+        planning: workspace.diagnostics(planning, recruitment.unwrap_or_default()),
         side,
         round,
         records,
@@ -576,6 +584,7 @@ pub fn run_campaign(
         ),
         PresetTactic::from_blocks(config.enemy_blocks.unwrap_or_else(|| config.enemy.blocks())),
     ];
+    game.combat_rng = config.seed;
     let mut missions = vec![];
     for _ in 0..chapters {
         let state = game.campaign.as_mut().ok_or("Campaign state missing")?;

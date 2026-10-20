@@ -116,7 +116,8 @@ impl NativeEngineFactory {
     pub fn create(&mut self, start: Ts<Start>, seed: u32) -> Result<Ts<BattleResponse>, JsError> {
         let result = decode::<Start>(start)
             .and_then(|start| self.start(start))
-            .map(|state| {
+            .map(|mut state| {
+                state.combat_rng = Some(seed);
                 let board = Board::new(&state.tiles);
                 self.insert(state, seed, board)
             });

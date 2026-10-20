@@ -8,7 +8,7 @@
   <span class="forecast-label">
     <span>
       {forecast.currentHp} →
-      <b class={forecast.remainingClass}>{forecast.remainingHp}</b>
+      <b class={forecast.remainingClass}>≈{forecast.remainingHp}</b>
       / {forecast.maximumHp} HP
     </span>
   </span>

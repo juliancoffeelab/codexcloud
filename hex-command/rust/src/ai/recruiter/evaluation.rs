@@ -239,9 +239,9 @@ impl Assessment {
                 let (damage, response, _) = game.preview(&attacker, enemy, approach.weapon, origin);
                 let attack = &rule.attacks[approach.weapon];
                 let drain = damage.min(enemy.hp) as f64 * f64::from(attack.drain) / 100.0;
-                let value = damage.min(enemy.hp) as f64 + drain * 0.5
+                let value = game.effective_damage(&attacker, enemy, approach.weapon) + drain * 0.5
                     - response.min(unit.hp) as f64 * 0.5
-                    + if damage >= enemy.hp { 3.0 } else { 0.0 }
+                    + game.kill_chance(&attacker, enemy, approach.weapon) * 3.0
                     - if response as f64 >= unit.hp as f64 + drain {
                         unit.hp as f64
                     } else {
@@ -412,7 +412,9 @@ fn preferred_attack(
             response += reflection - game.thorn_damage(&attacker, target, weapon, origin);
         }
         let healed = game.drain_healing(&attacker, target, weapon, damage);
-        let value = damage as f64 + healed as f64 + if damage >= target.hp { 18.0 } else { 0.0 }
+        let value = game.effective_damage(&attacker, target, weapon)
+            + healed as f64
+            + game.kill_chance(&attacker, target, weapon) * 18.0
             - response as f64 * 0.7
             - if response >= attacker.hp + healed {
                 40.0
