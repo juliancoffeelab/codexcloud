@@ -53,6 +53,10 @@ contributions, and distinguish observed outcomes from proposed causes.
 
 ## Publication
 
+Use the [publish skill](../.agents/skills/publish/SKILL.md) when the user requests
+deployment or an update to the live game. Simulation experiments, image previews
+and Git pushes do not imply publication.
+
 ```sh
 npm run publish
 ```

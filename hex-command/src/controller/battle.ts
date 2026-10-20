@@ -1,3 +1,4 @@
+import { BATTLE_MAPS } from "../game/maps";
 import { dialoguePending } from "../game/campaign-progress";
 import type { CampaignId, UnitType } from "../game/types";
 import { writable, type Readable, type Writable } from "svelte/store";
@@ -485,7 +486,7 @@ export class BattleController {
   reset(mapId = "mirror") {
     this.requireSession();
     // Validate before changing the current battle, its undo history, or its turn.
-    if (mapId !== "mirror" && mapId !== "river" && mapId !== "developer")
+    if (!BATTLE_MAPS.some((map) => map.id === mapId))
       throw new Error("Unknown battlefield. Choose a skirmish or start a campaign.");
     return this.replaceGame(LiveGame.create(this.nativeFactory, { kind: "scenario", map: mapId }));
   }

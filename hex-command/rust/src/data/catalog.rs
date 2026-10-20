@@ -68,6 +68,10 @@ pub struct ArmyRoster {
 pub struct LandscapeConfig {
     pub id: String,
     pub hold_turns: u32,
+    /// Optional authored scenario layout, shared with the playable map.
+    pub map: Option<String>,
+    /// Capture targets for this layout; omitted uses the generated-arena defaults.
+    pub territory: Option<Vec<String>>,
 }
 #[derive(Clone, Debug, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -670,7 +674,7 @@ impl Rules {
         let rosters: Vec<ArmyRoster> = parse(bundle, &manifest.simulation.rosters)?;
         let arena: ArenaDefaults = parse(bundle, &manifest.simulation.arena)?;
         let campaign_defaults: CampaignDefaults = parse(bundle, &manifest.simulation.campaign)?;
-        validate_simulation(&rosters, &arena, &campaign_defaults, &types)?;
+        validate_simulation(&rosters, &arena, &campaign_defaults, &types, &maps)?;
         unique(
             campaign_defaults.campaigns.iter().map(String::as_str),
             "simulation/campaign.json",
@@ -921,6 +925,7 @@ fn validate_simulation(
     arena: &ArenaDefaults,
     campaign: &CampaignDefaults,
     types: &HashMap<String, usize>,
+    maps: &HashMap<(String, u32), State>,
 ) -> Result<(), ContentError> {
     let path = "simulation/rosters.json";
     unique(rosters.iter().map(|r| r.id.as_str()), path)?;
@@ -950,10 +955,48 @@ fn validate_simulation(
         ));
     }
     for landscape in &arena.landscapes {
-        if !["open", "wooded", "crossings", "islands"].contains(&landscape.id.as_str())
+        identifier(&landscape.id, path)?;
+        if (landscape.map.is_none()
+            && !["open", "wooded", "crossings", "islands"].contains(&landscape.id.as_str()))
             || landscape.hold_turns == 0
         {
             return Err(ContentError::new(path, "invalid landscape or holdTurns"));
+        }
+        let territory = landscape.territory.as_ref().unwrap_or(&arena.territory);
+        unique(territory.iter().map(String::as_str), path)?;
+        if territory.is_empty() {
+            return Err(ContentError::new(path, "arena territory must not be empty"));
+        }
+        if let Some(id) = &landscape.map {
+            let map = maps
+                .iter()
+                .filter(|((name, _), _)| name == id)
+                .max_by_key(|((_, revision), _)| revision)
+                .map(|(_, map)| map)
+                .ok_or_else(|| ContentError::new(path, format!("unknown arena map {id}")))?;
+            if territory
+                .iter()
+                .any(|id| !map.tiles.iter().any(|tile| &tile.id == id))
+            {
+                return Err(ContentError::new(
+                    path,
+                    "arena territory is outside its authored map",
+                ));
+            }
+            for side in [Side::Player, Side::Enemy] {
+                if map
+                    .tiles
+                    .iter()
+                    .filter(|t| t.terrain == "keep" && t.owner == Some(side))
+                    .count()
+                    != 1
+                {
+                    return Err(ContentError::new(
+                        path,
+                        "authored arenas require one owned keep per side",
+                    ));
+                }
+            }
         }
     }
     for tile in &arena.territory {

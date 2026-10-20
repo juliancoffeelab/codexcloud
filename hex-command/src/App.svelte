@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { BATTLE_MAPS } from "./game/maps";
   import { preloadTerrainMap } from "./presentation/terrain-preload";
   import { onMount } from "svelte";
   import { BattleController } from "./controller/battle";
@@ -45,10 +46,9 @@
   let mapChoice = $state("mirror");
   function openMapPicker() {
     settingsDialog?.close();
-    mapChoice =
-      $view.game.mapId === "river" || $view.game.mapId === "developer"
-        ? $view.game.mapId
-        : "mirror";
+    mapChoice = BATTLE_MAPS.some((map) => map.id === $view.game.mapId)
+      ? $view.game.mapId
+      : "mirror";
     resetDialog.showModal();
   }
   function openSettings() {

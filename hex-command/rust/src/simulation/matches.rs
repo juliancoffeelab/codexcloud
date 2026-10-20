@@ -59,20 +59,102 @@ pub(crate) fn create_arena<'catalog>(
 ) -> Result<Game<'catalog>, SimulationError> {
     validate_arena(rules, config)?;
     let mut random = Random(config.seed);
+    let landscape = rules
+        .arena
+        .landscapes
+        .iter()
+        .find(|l| l.id == config.landscape)
+        .unwrap();
+    let map_id = landscape.map.as_deref().unwrap_or_else(|| {
+        if config.landscape == "crossings" || config.landscape == "islands" {
+            "river"
+        } else {
+            "mirror"
+        }
+    });
     let mut state = rules
         .maps
         .iter()
-        .filter(|((id, _), _)| {
-            id == if config.landscape == "crossings" || config.landscape == "islands" {
-                "river"
-            } else {
-                "mirror"
-            }
-        })
+        .filter(|((id, _), _)| id == map_id)
         .max_by_key(|((_, revision), _)| revision)
-        .ok_or("Arena requires mirror and river maps")?
+        .ok_or("Arena layout is unavailable")?
         .1
         .clone();
+    if landscape.map.is_none() {
+        generate_arena_terrain(&mut state, &config.landscape, &mut random);
+    }
+    state.units.clear();
+    state.next_id = 1;
+    let mut starting_cost = [0; 2];
+    for side in [Side::Player, Side::Enemy] {
+        let roster = roster(
+            rules,
+            if side == Side::Player {
+                &config.armies.player
+            } else {
+                &config.armies.enemy
+            },
+        )?;
+        let leader = roster.leader.as_str();
+        let start = state
+            .tiles
+            .iter()
+            .find(|tile| tile.terrain == "keep" && tile.owner == Some(side))
+            .ok_or("Arena requires an owned keep for each side")?
+            .id
+            .clone();
+        for kind in [leader] {
+            let rule = &rules.units[rules.types[kind]];
+            starting_cost[side.index()] += rule.cost;
+            state.units.push(PublicUnit {
+                id: format!("u{}", state.next_id),
+                r#type: kind.into(),
+                side,
+                tile: start.clone(),
+                hp: rule.hp,
+                moved: false,
+                attacked: false,
+                experience: Some(0),
+                name: None,
+                role: rule.leader.then_some(Role::Leader),
+                retreating: None,
+                rebuilding: None,
+            });
+            state.next_id += 1;
+        }
+    }
+    let budget = rules.arena.starting_budget + (random.next() * 3.0).floor() as i32 * 3;
+    if starting_cost.iter().any(|&cost| cost > budget) {
+        return Err("Arena starting troops exceed the shared budget".into());
+    }
+    state.gold = Gold {
+        player: budget - starting_cost[Side::Player.index()],
+        enemy: budget - starting_cost[Side::Enemy.index()],
+    };
+    state.round = 1;
+    state.turn = config.first;
+    state.winner = None;
+    state.log.clear();
+    state.campaign = None;
+    state.last_combat = None;
+    let mut game = Game::from_state(rules, state);
+    game.combat_rng = config.seed;
+    game.pools = Some([
+        roster(rules, &config.armies.player)?
+            .pool
+            .iter()
+            .map(|k| game.kind(k))
+            .collect(),
+        roster(rules, &config.armies.enemy)?
+            .pool
+            .iter()
+            .map(|k| game.kind(k))
+            .collect(),
+    ]);
+    game.arena_first = Some(config.first);
+    Ok(game)
+}
+fn generate_arena_terrain(state: &mut State, landscape: &str, random: &mut Random) {
     state.cols = 9;
     state.rows = 9;
     state.tiles.clear();
@@ -110,7 +192,7 @@ pub(crate) fn create_arena<'catalog>(
         let draw = random.next();
         let r = tile.row - 4;
         let q = tile.col - r.div_euclid(2) - 4;
-        let terrain = match config.landscape.as_str() {
+        let terrain = match landscape {
             "wooded" => {
                 // Most unreserved ground is woodland; starters and settlements stay clear.
                 if draw < 0.75 {
@@ -197,7 +279,7 @@ pub(crate) fn create_arena<'catalog>(
     ] {
         terrain(q, r, kind, owner);
     }
-    if config.landscape == "crossings" {
+    if landscape == "crossings" {
         for (q, r) in [(-1, 0), (1, 0)] {
             terrain(q, r, "bridge", None);
         }
@@ -205,7 +287,7 @@ pub(crate) fn create_arena<'catalog>(
             terrain(q, r, "ford", None);
         }
     }
-    if config.landscape == "islands" {
+    if landscape == "islands" {
         for (q, r) in [(-1, 0), (1, 0)] {
             terrain(q, r, "bridge", None);
         }
@@ -226,70 +308,6 @@ pub(crate) fn create_arena<'catalog>(
             terrain(q, r, "ford", None);
         }
     }
-    state.units.clear();
-    state.next_id = 1;
-    let mut starting_cost = [0; 2];
-    for side in [Side::Player, Side::Enemy] {
-        let roster = roster(
-            rules,
-            if side == Side::Player {
-                &config.armies.player
-            } else {
-                &config.armies.enemy
-            },
-        )?;
-        let leader = roster.leader.as_str();
-        let sign = if side == Side::Player { -1 } else { 1 };
-        for (kind, q, r) in [(leader, sign * 3, 0)] {
-            let rule = &rules.units[rules.types[kind]];
-            starting_cost[side.index()] += rule.cost;
-            state.units.push(PublicUnit {
-                id: format!("u{}", state.next_id),
-                r#type: kind.into(),
-                side,
-                tile: axial_id(q, r),
-                hp: rule.hp,
-                moved: false,
-                attacked: false,
-                experience: Some(0),
-                name: None,
-                role: rule.leader.then_some(Role::Leader),
-                retreating: None,
-                rebuilding: None,
-            });
-            state.next_id += 1;
-        }
-    }
-    let budget = rules.arena.starting_budget + (random.next() * 3.0).floor() as i32 * 3;
-    if starting_cost.iter().any(|&cost| cost > budget) {
-        return Err("Arena starting troops exceed the shared budget".into());
-    }
-    state.gold = Gold {
-        player: budget - starting_cost[Side::Player.index()],
-        enemy: budget - starting_cost[Side::Enemy.index()],
-    };
-    state.round = 1;
-    state.turn = config.first;
-    state.winner = None;
-    state.log.clear();
-    state.campaign = None;
-    state.last_combat = None;
-    let mut game = Game::from_state(rules, state);
-    game.combat_rng = config.seed;
-    game.pools = Some([
-        roster(rules, &config.armies.player)?
-            .pool
-            .iter()
-            .map(|k| game.kind(k))
-            .collect(),
-        roster(rules, &config.armies.enemy)?
-            .pool
-            .iter()
-            .map(|k| game.kind(k))
-            .collect(),
-    ]);
-    game.arena_first = Some(config.first);
-    Ok(game)
 }
 fn roster<'a>(rules: &'a Rules, id: &str) -> Result<&'a crate::data::ArmyRoster, SimulationError> {
     rules
@@ -426,14 +444,17 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
     let mut game = create_arena(rules, &config)?;
     let initial = game.state();
     game.begin_turn(config.first);
-    let territory = &rules.arena.territory;
-    let hold_turns = rules
+    let landscape = rules
         .arena
         .landscapes
         .iter()
         .find(|item| item.id == config.landscape)
-        .ok_or("Unknown arena landscape")?
-        .hold_turns;
+        .ok_or("Unknown arena landscape")?;
+    let territory = landscape
+        .territory
+        .as_ref()
+        .unwrap_or(&rules.arena.territory);
+    let hold_turns = landscape.hold_turns;
     let mut held = [0u32; 2];
     let mut visits: [HashSet<String>; 2] = Default::default();
     let mut phases = vec![];

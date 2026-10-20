@@ -110,7 +110,9 @@
     "game/scenario/mirror-v1/scenario.json",
     "game/scenario/river-v2/scenario.json",
     "game/scenario/developer-v2/scenario.json",
-    "game/scenario/river-valley-v1/scenario.json"
+    "game/scenario/river-valley-v1/scenario.json",
+    "game/scenario/two-routes-v1/scenario.json",
+    "game/scenario/two-routes-v2/scenario.json"
   ],
   "campaigns": [
     "game/campaigns/lantern-road/campaign.json",

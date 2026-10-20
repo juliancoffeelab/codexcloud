@@ -12,6 +12,12 @@ Use the [Rust toolchain skill](../rust-toolchain/SKILL.md) for build problems.
 
 ## Run
 
+Keep experimental content in an ignored copy of `rust/data`, under `tmp/` or
+`artifacts/`, and pass that copy with `--data-dir`. Register experimental maps
+inside that copied catalog only. Running, rendering or evaluating an experiment
+does not authorize adding it to the playable catalog or deploying it. Read the
+[publish skill](../publish/SKILL.md) only when the user requests publication.
+
 ```sh
 npm run ai:simulate
 ```
