@@ -3,6 +3,7 @@
   "name": "The Ashen Oath",
   "tagline": "Freedom is an order you give yourself.",
   "description": "Lead Orin’s unbound dead out of servitude. Escape a quarry, defend a refuge, and break the Master’s bindings with unexpected living allies.",
+  "shortDescription": "The dead have broken their chains—but their Master wants them back.",
   "race": "skeletons",
   "leader": "necromancer",
   "ending": [

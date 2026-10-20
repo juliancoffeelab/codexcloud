@@ -3,6 +3,7 @@
   "name": "The Borrowed Tide",
   "tagline": "Neither shore can keep the tide alone.",
   "description": "Lead Mira's merfolk through a drained estuary, rescue a salvage crew and coordinate two sluice gates. Open sea routes, sandbars, wooded shores and marsh channels reward different troops.",
+  "shortDescription": "The waters have receded, and a salvage crew hasn’t returned.",
   "race": "merfolk",
   "leader": "tidekeeper",
   "ending": [

@@ -111,6 +111,7 @@ pub(crate) struct Game<'catalog> {
     #[cfg(feature = "wasm")]
     pub(crate) combat_animation: Option<crate::protocol::CombatAnimation>,
     pub(crate) combat_present: bool,
+    pub(crate) armies: Option<[String; 2]>,
     pub(crate) pools: Option<[Vec<usize>; 2]>,
     pub(crate) arena_first: Option<Side>,
     pub(crate) mission: Option<Rc<Mission>>,
@@ -247,6 +248,7 @@ impl<'catalog> Game<'catalog> {
             #[cfg(feature = "wasm")]
             combat_animation: None,
             combat_present,
+            armies: state.armies,
             pools: None,
             arena_first: None,
             mission: None,
@@ -282,6 +284,7 @@ impl<'catalog> Game<'catalog> {
     /// Materialize the protocol snapshot without changing battle state.
     pub(crate) fn state(&self) -> State {
         State {
+            armies: self.armies.clone(),
             map_id: self.map_id.clone(),
             map_revision: self.map_revision,
             cols: self.cols,
@@ -521,6 +524,7 @@ impl<'catalog> Game<'catalog> {
             #[cfg(feature = "wasm")]
             combat_animation: None,
             combat_present: self.combat_present,
+            armies: self.armies.clone(),
             pools: self.pools.clone(),
             arena_first: self.arena_first,
             mission: self.mission.clone(),
@@ -593,6 +597,18 @@ impl<'catalog> Game<'catalog> {
     pub(crate) fn recruitment_options(&self, side: Side) -> Vec<usize> {
         if let Some(pools) = &self.pools {
             return pools[side.index()].clone();
+        }
+        if let Some(armies) = &self.armies {
+            return self
+                .rules
+                .rosters
+                .iter()
+                .find(|roster| roster.id == armies[side.index()])
+                .expect("validated skirmish faction")
+                .pool
+                .iter()
+                .map(|name| self.kind(name))
+                .collect();
         }
         if let Some(mission) = &self.mission {
             return if side == Side::Player {

@@ -16,6 +16,12 @@ pub enum Start {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         #[cfg_attr(feature = "wasm", tsify(optional))]
         revision: Option<u32>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        armies: Option<[String; 2]>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        first: Option<crate::data::Side>,
     },
     /// Begin a campaign without incoming veterans or carried gold.
     Campaign { id: String },

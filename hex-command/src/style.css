@@ -1075,65 +1075,6 @@ select {
   }
 }
 
-#map-picker {
-  border: 0;
-  padding: 0;
-  margin: 18px 0;
-  display: grid;
-  gap: 12px;
-}
-#map-picker legend {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-}
-.map-choice {
-  display: grid;
-  grid-template-columns: 20px minmax(0, 1fr);
-  gap: 12px;
-  align-items: start;
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  padding: 12px;
-  cursor: pointer;
-}
-.map-choice:has(input:checked) {
-  border-color: var(--gold);
-  background: #d8ba6f09;
-}
-.map-choice input {
-  width: 18px;
-  height: 18px;
-  margin: 4px 0;
-  accent-color: var(--gold);
-}
-.map-choice input:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 3px;
-}
-.map-preview {
-  display: block;
-  width: 100%;
-  max-height: 115px;
-  margin: 0 0 8px;
-}
-.map-choice strong {
-  font:
-    16px Georgia,
-    serif;
-  color: var(--text);
-}
-.map-description {
-  display: block;
-  margin-top: 5px;
-  font:
-    13px/1.5 system-ui,
-    sans-serif;
-  color: var(--muted);
-}
-
 .arsenal,
 .resistances {
   margin-top: 14px;
@@ -1766,70 +1707,9 @@ select {
 .hex.objective.recruitable .tile-outline {
   stroke: #6fdec0;
 }
-.campaign-dialog {
-  width: min(720px, calc(100% - 24px));
-}
-.campaign-picker {
-  border: 0;
-  padding: 0;
-  margin: 0;
-}
-.campaign-picker legend {
-  margin-bottom: 12px;
-  color: var(--gold);
-}
-.campaign-choice {
-  display: grid;
-  grid-template-columns: 18px 64px minmax(0, 1fr);
-  gap: 12px;
-  padding: 16px;
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  margin: 12px 0;
-  cursor: pointer;
-}
-.campaign-choice.selected,
 .recall-choice.selected {
   border-color: var(--gold);
   background: rgba(204, 177, 108, 0.06);
-}
-.campaign-choice input {
-  margin-top: 6px;
-}
-.campaign-choice h3 {
-  color: var(--gold);
-  margin: 0;
-}
-.campaign-choice p {
-  margin: 7px 0;
-  font-size: 0.93rem;
-}
-.campaign-choice .campaign-tagline {
-  color: var(--text);
-}
-.campaign-length {
-  color: var(--muted);
-  font-size: 0.85rem;
-}
-.campaign-portrait svg {
-  width: 64px;
-  height: 90px;
-}
-.mission-list {
-  padding: 0;
-  list-style: none;
-  margin: 12px 0;
-}
-.mission-list li {
-  margin: 12px 0;
-}
-.mission-list strong,
-.mission-list span {
-  display: block;
-  font-size: 0.88rem;
-}
-.mission-list span {
-  color: var(--muted);
 }
 .story-dialog {
   width: min(620px, calc(100% - 24px));
@@ -1895,19 +1775,7 @@ select {
   color: var(--muted);
   font-size: 0.85rem;
 }
-#new-campaign {
-  width: 100%;
-  margin: 8px 0 12px;
-}
 @media (max-width: 480px) {
-  .campaign-choice {
-    grid-template-columns: 16px minmax(0, 1fr);
-    padding: 12px;
-    gap: 10px;
-  }
-  .campaign-portrait {
-    display: none;
-  }
   .story-line {
     grid-template-columns: 64px minmax(0, 1fr);
     gap: 12px;
@@ -1926,9 +1794,6 @@ select {
   font-size: 0.82rem;
 }
 
-.campaign-dialog {
-  max-width: 720px;
-}
 .story-dialog {
   max-width: 620px;
 }
@@ -1993,4 +1858,306 @@ select {
   margin-top: 6px;
   color: var(--muted);
   font-size: 13px;
+}
+
+/* New-game controls share the game's dialog, type and palette. */
+.new-game-dialog {
+  max-height: calc(100dvh - 32px);
+  max-width: 440px;
+  padding: 22px;
+}
+.setup-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.setup-heading h2 {
+  font-size: 27px;
+}
+.setup-close {
+  border: 0;
+  padding: 0;
+  min-height: 36px;
+  width: 36px;
+  font-size: 25px;
+  color: var(--muted);
+}
+.setup-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+.setup-tabs button {
+  border: 0;
+  border-radius: 0;
+  padding: 0 0 12px;
+  color: var(--muted);
+  font-size: 16px;
+}
+.setup-tabs button[aria-pressed="true"] {
+  border-bottom: 2px solid var(--gold);
+  color: var(--gold);
+}
+.setup-label {
+  display: block;
+  font: 14px system-ui;
+  color: var(--muted);
+  margin-bottom: 9px;
+}
+.setup-map {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 12px;
+  margin-bottom: 20px;
+}
+.setup-map-preview {
+  display: block;
+  width: 100%;
+  height: 92px;
+}
+.new-game-dialog .setup-meta {
+  font: 13px/1.5 system-ui;
+  color: var(--muted);
+  margin: 0;
+}
+.setup-armies {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.setup-army {
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.setup-army .setup-label {
+  margin-bottom: 4px;
+}
+.setup-army[data-side="player"] .setup-label {
+  color: var(--mint);
+}
+.setup-army[data-side="enemy"] .setup-label {
+  color: var(--red);
+}
+.setup-army > .art-sprite {
+  flex-shrink: 0;
+}
+.choice-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  border: 0;
+  padding: 8px 4px;
+  text-align: left;
+  font:
+    18px Georgia,
+    serif;
+}
+.choice-trigger svg {
+  flex-shrink: 0;
+  color: var(--muted);
+}
+.setup-army .choice-trigger {
+  font-size: 17px;
+}
+.setup-difficulty {
+  margin-bottom: 20px;
+}
+.setup-segments {
+  display: flex;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.setup-segments button {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 10px 6px;
+  font-size: 15px;
+}
+.setup-segments button[aria-pressed="true"] {
+  color: var(--gold);
+  background: #d8ba6f14;
+  box-shadow: inset 0 -2px var(--gold);
+}
+.setup-difficulty .setup-meta {
+  margin-top: 10px;
+  min-height: 40px;
+}
+.setup-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 0 8px;
+  font: 14px system-ui;
+  color: var(--muted);
+}
+.setup-field .setup-label {
+  margin: 0;
+}
+.setup-field .choice-trigger {
+  width: 158px;
+  flex-shrink: 0;
+  border: 1px solid var(--line);
+  padding: 8px 10px;
+  font: 15px system-ui;
+}
+.setup-advanced {
+  border: 0;
+  margin: 0;
+  padding: 14px 0 20px;
+  font: 14px system-ui;
+  color: var(--muted);
+}
+.setup-advanced summary {
+  cursor: pointer;
+}
+.setup-advanced .setup-field {
+  padding-top: 14px;
+}
+.setup-advanced .choice-trigger {
+  font-size: 13px;
+}
+.setup-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: stretch;
+  margin-top: 18px;
+}
+.setup-actions > button {
+  margin: 0;
+  min-height: 48px;
+  line-height: 1.25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.setup-story {
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  background: #d8ba6f09;
+  padding: 16px;
+  margin-bottom: 22px;
+}
+.setup-story-heading {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.setup-story-heading .choice-trigger {
+  font:
+    22px Georgia,
+    serif;
+  padding: 0 0 6px;
+}
+.setup-story em {
+  color: var(--gold);
+  font:
+    italic 15px/1.5 Georgia,
+    serif;
+}
+.setup-story > p {
+  margin: 0 0 16px;
+}
+.choice-dialog {
+  max-width: 380px;
+  padding: 20px;
+}
+.choice-dialog .setup-heading {
+  margin-bottom: 16px;
+}
+.choice-dialog .setup-heading h2 {
+  font-size: 25px;
+}
+.choice-list {
+  display: grid;
+  gap: 6px;
+  max-height: 60dvh;
+  overflow: auto;
+}
+.choice-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 12px;
+  min-height: 56px;
+  border: 1px solid transparent;
+  text-align: left;
+  font:
+    19px Georgia,
+    serif;
+}
+.choice-row[aria-selected="true"] {
+  border-color: var(--gold);
+  background: #d8ba6f0d;
+}
+.choice-row > .art-sprite {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+}
+.choice-row > .setup-map-preview {
+  width: 90px;
+  height: 70px;
+  flex-shrink: 0;
+}
+.choice-row > span:not(.choice-tick) {
+  flex: 1;
+}
+.choice-tick {
+  width: 20px;
+  color: var(--gold);
+  font: 22px system-ui;
+  text-align: center;
+}
+@media (max-width: 380px) {
+  .new-game-dialog {
+    padding: 18px;
+  }
+  .setup-armies {
+    gap: 10px;
+  }
+  .setup-army {
+    padding: 10px 6px;
+  }
+  .setup-army .choice-trigger {
+    font-size: 16px;
+  }
+}
+
+.setup-army .choice-trigger > span {
+  flex: 1;
+  text-align: center;
+}
+
+.choice-copy > span {
+  display: block;
+}
+.choice-copy small {
+  display: block;
+  margin-top: 5px;
+  font:
+    13px/1.5 system-ui,
+    sans-serif;
+  color: var(--muted);
 }

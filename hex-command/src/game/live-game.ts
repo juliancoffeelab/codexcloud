@@ -5,6 +5,7 @@ import type {
   SavedGame,
   Start,
 } from "../../rust/pkg/hex_command";
+import { DEFAULT_SETUP, type SessionSetup } from "./setup";
 import type { GameEngine, GameEngineFactory } from "./native-engine";
 import type { GameView } from "./view";
 import type {
@@ -45,6 +46,7 @@ export class LiveGame {
   constructor(
     private readonly factory: GameEngineFactory,
     private engine: GameEngine,
+    readonly setup: SessionSetup = DEFAULT_SETUP,
   ) {
     try {
       this.refresh();
@@ -53,11 +55,19 @@ export class LiveGame {
       throw error;
     }
   }
-  static create(factory: GameEngineFactory, start: Start): LiveGame {
-    return new LiveGame(factory, nativeValue(factory.create(start, 17)));
+  static create(
+    factory: GameEngineFactory,
+    start: Start,
+    setup: SessionSetup = DEFAULT_SETUP,
+  ): LiveGame {
+    return new LiveGame(factory, nativeValue(factory.create(start, 17)), structuredClone(setup));
   }
-  static restore(factory: GameEngineFactory, saved: SavedGame): LiveGame {
-    return new LiveGame(factory, nativeValue(factory.restore(saved)));
+  static restore(
+    factory: GameEngineFactory,
+    saved: SavedGame,
+    setup: SessionSetup = DEFAULT_SETUP,
+  ): LiveGame {
+    return new LiveGame(factory, nativeValue(factory.restore(saved)), structuredClone(setup));
   }
   private refresh(): void {
     const view = nativeValue(this.engine.view());
@@ -196,12 +206,7 @@ export class LiveGame {
   }
   /** One staged enemy action; the controller owns pacing and cancellation. */
   enemyStep(): void {
-    const decision = nativeValue(
-      this.engine.chooseAiCommand({
-        policy: "classic",
-        diplomacy: "restrained",
-      }),
-    );
+    const decision = nativeValue(this.engine.chooseAiCommand(this.setup.enemy));
     this.dispatch(decision.command, decision.revision);
   }
   advanceDialogue(skip = false): void {

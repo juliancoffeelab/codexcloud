@@ -189,6 +189,8 @@ struct CampaignFile {
     name: String,
     tagline: String,
     description: String,
+    #[serde(rename = "shortDescription")]
+    short_description: String,
     race: Race,
     leader: String,
     stages: Vec<String>,
@@ -281,6 +283,7 @@ impl InitialState {
             });
         }
         Ok(State {
+            armies: None,
             map_id: self.map_id,
             map_revision: self.map_revision,
             cols: self.cols,
@@ -672,6 +675,7 @@ impl Rules {
                         name: source.name,
                         tagline: source.tagline,
                         description: source.description,
+                        short_description: source.short_description,
                         race: source.race,
                         leader: source.leader,
                         missions,
