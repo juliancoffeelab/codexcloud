@@ -5,7 +5,9 @@ use super::{
     matches,
     records::{DetailRecord, EncodedRecord, ResultJournal, read_detail, sha256},
     report,
-    schedule::{Mode, ScheduleOptions, WithSelection, schedule},
+    schedule::{
+        DEFAULT_ARENA_SEEDS, DEFAULT_CAMPAIGN_SEEDS, Mode, ScheduleOptions, WithSelection, schedule,
+    },
     types::{MatchConfig, MatchResult},
 };
 use crate::{
@@ -40,9 +42,9 @@ struct SimulationArgs {
     /// Add a custom tactic; - selects the workload default for that block.
     #[arg(group = "batch", long, value_name = "RECRUITER,CAMPAIGNER,PLANNER", value_parser = WithSelection::parse, allow_hyphen_values = true)]
     with: Option<WithSelection>,
-    /// Number of seeds.
-    #[arg(group = "batch", long, default_value_t = 10, value_parser = clap::value_parser!(u32).range(1..=10000))]
-    seeds: u32,
+    /// Seed count override for both workloads (defaults: arena 50, campaign 100).
+    #[arg(group = "batch", long, value_parser = clap::value_parser!(u32).range(1..=10000))]
+    seeds: Option<u32>,
     /// First seed.
     #[arg(group = "batch", long, default_value_t = 1, value_parser = clap::value_parser!(u32).range(0..=2147483647))]
     seed: u32,
@@ -189,7 +191,12 @@ impl SimulationArgs {
         options.with = self.with;
         options.mode = self.mode;
         options.first_seed = self.seed;
-        options.seeds = self.seeds;
+        options.seeds = self.seeds.unwrap_or(if self.mode == Mode::Campaign {
+            DEFAULT_CAMPAIGN_SEEDS
+        } else {
+            DEFAULT_ARENA_SEEDS
+        });
+        options.campaign_seeds = self.seeds.unwrap_or(DEFAULT_CAMPAIGN_SEEDS);
         options.self_play = self.self_play;
         options.opponent = if self.mode == Mode::Campaign || self.all_pairs || self.self_play {
             None
@@ -258,7 +265,13 @@ impl SimulationArgs {
                         .iter()
                         .copied()
                         .filter(|p| {
-                            matches!(p, Policy::Balanced | Policy::Rotated | Policy::Situational)
+                            matches!(
+                                p,
+                                Policy::Balanced
+                                    | Policy::Rotated
+                                    | Policy::Situational
+                                    | Policy::Predictor
+                            )
                         })
                         .collect();
                     if players.is_empty() {
@@ -343,7 +356,7 @@ fn stdio(rules: &Rules) -> Result<(), SimulationError> {
 #[derive(serde::Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct PhaseRequest {
-    /// Include unchanged Situational score components before running this phase.
+    /// Include selected adaptive recruiter score components before running this phase.
     #[serde(default)]
     inspect_recruitment: bool,
     #[serde(default)]
@@ -429,9 +442,12 @@ fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, Simulation
             "Invalid planning budget or objective".into(),
         ));
     }
-    let scores = request
-        .inspect_recruitment
-        .then(|| crate::ai::recruiter::diagnostics(&game));
+    let scores = request.inspect_recruitment.then(|| {
+        crate::ai::recruiter::diagnostics(
+            &game,
+            request.blocks.unwrap_or(request.policy.blocks()).recruiter,
+        )
+    });
     game.recordings = Some(crate::data::Records::default());
     game.play_blocks(
         request.policy,
@@ -925,6 +941,25 @@ mod tests {
             .unwrap()
             .resolve(&rules)
             .unwrap();
+        assert_eq!(options.schedule.seeds, 50);
+        assert_eq!(options.schedule.campaign_seeds, 100);
+        for (mode, arena_seeds) in [("arena", 50), ("campaign", 100), ("full", 50)] {
+            let args = ["sim", "--mode", mode];
+            let defaults = SimulationArgs::try_parse_from(args)
+                .unwrap()
+                .resolve(&rules)
+                .unwrap();
+            assert_eq!(defaults.schedule.seeds, arena_seeds);
+            assert_eq!(defaults.schedule.campaign_seeds, 100);
+            let override_seeds =
+                SimulationArgs::try_parse_from(args.into_iter().chain(["--seeds", "7"]))
+                    .unwrap()
+                    .resolve(&rules)
+                    .unwrap();
+            assert_eq!(override_seeds.schedule.seeds, 7);
+            assert_eq!(override_seeds.schedule.campaign_seeds, 7);
+        }
+
         assert_eq!(options.schedule.opponent, Some(Policy::Balanced));
         assert_eq!(
             options.schedule.campaign_enemies,

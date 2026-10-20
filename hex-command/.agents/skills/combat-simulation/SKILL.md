@@ -16,11 +16,20 @@ Use the [Rust toolchain skill](../rust-toolchain/SKILL.md) for build problems.
 npm run ai:simulate
 ```
 
-For faction balance against the adaptive recruiter, use matching tactics:
+For faction balance across the fair-roster and adaptive recruiters, use
+matching tactics:
 
 ```sh
-npm run ai:simulate -- --mode arena --policies situational --self-play --seeds 50 --unit-usage
+npm run ai:simulate -- --mode arena --policies balanced,situational,predictor --self-play --seeds 50 --unit-usage
 ```
+
+Situational scores observed enemies only. Predictor uses the same distance-free
+valuation plus a fading prior over legal future recruits, including their
+weapon pressure, effective HP and thorn interactions. Both retain movement
+value for village capture and terrain reachability, with no proximity discount,
+nearby-enemy healing gate, or nearest-origin exchange projection. Select both
+with `--policies situational,predictor`; `--with predictor,-,queued` selects the
+Predictor recruiter independently of the other AI blocks.
 
 Inspect individual opposing-faction matchups, not only pooled race averages.
 
@@ -37,7 +46,7 @@ pair pooled presence with exact-opponent purchases as though scopes matched. If 
 evidence is missing, collect it before making the claim.
 
 Cargo builds when needed, runs the full panel and generates the report. Defaults:
-10 seeds, all arena tactics against Balanced on all maps, and Balanced/Rotated/Situational
+50 arena seeds and 100 campaign seeds, all arena tactics against Balanced on all maps, and Balanced/Rotated/Situational/Predictor
 campaigns against Classic. Default round caps are 30 for arenas and 100 per
 campaign stage; `--rounds N` overrides both. Honor requested scope; otherwise
 use this full panel.
@@ -53,7 +62,7 @@ tests passed does not complete the task.
 | Option                                                   | Use                                                                            |
 | -------------------------------------------------------- | ------------------------------------------------------------------------------ |
 | `--mode arena\|campaign\|full`                           | Select the workload.                                                           |
-| `--seeds N`, `--seed N`                                  | Select seed count and starting seed.                                           |
+| `--seeds N`, `--seed N`                                  | Override both workload seed counts and select the starting seed.               |
 | `--with R,C,P`                                           | Add a custom tactic; `-` uses workload defaults.                               |
 | `--policies LIST`                                        | Select arena tactics; also filters default campaign players.                   |
 | `--armies LIST`, `--landscapes LIST`, `--campaigns LIST` | Select content.                                                                |
@@ -179,7 +188,10 @@ effects instead of aura alone. `--policy situational` filters the acting tactic;
 an affected recipient within an enemy melee unit's geometric movement reach;
 this conservative filter does not prove a legal path or an actual attack.
 Compare reflection with target/weapon switches and casualties. Low reflection
-alone does not establish that thorns lack defensive value.
+alone does not establish that thorns lack defensive value. Saved-phase replays
+restore combat RNG from recorded attack and retaliation draws and verify the
+final RNG. Strict replays must reproduce the original actions, units and gold
+before interpreting an intervention; unsupported draw histories fail explicitly.
 
 Use game data and a simulator matching the saved report. If deliberately testing
 a different version, state that limitation. Paired replays measure one-phase
@@ -215,15 +227,29 @@ expected coverage separately.
 ### Required elements
 
 1. State completed coverage, seeds, round/recruit limits and pooled dimensions.
-2. Give **a separate table for each player tactic against Balanced**, with races
-   as rows and maps as columns. Cells are `78.8% (caps: 13)`: percentages and
-   caps, without win counts. Do not combine tactics. Include the Classic-player comparison; omit reverse
-   Balanced-versus-player tables unless requested. Use an explicitly requested
-   alternative opponent when supplied. Exclude all same-faction games from these
-   faction tables so every tactic faces the same three opposing factions. Report
-   same-faction tactic comparisons separately when useful.
-   Display Coastal as Merfolk and put Merfolk last. Order map columns as Plains (open), Forests
-   (wooded), Crossing (crossings), Islands (islands).
+2. Default to **one faction-versus-faction matrix per map**, with row factions
+   winning against column factions. Show every recorded opposing faction;
+   pooled race averages must not replace the matchup breakdown. Order maps as
+   Plains (open), Forests (wooded), Crossing (crossings), Islands (islands).
+   Order factions as Humans, Skeletons, Woodland, Merfolk (recorded as Coastal).
+   Put comparable policies in each cell in the order **Balanced → Situational →
+   Predictor**, using the available subset (for example Situational → Predictor
+   when Balanced is absent). State the order and that values are win percentages
+   with cap counts in parentheses, for example `55.0 (2) → 49.8 (9) → 70.8 (14)`.
+   With one policy, show its single value. Keep caps in the denominator and omit
+   win counts.
+   Name the row and opponent tactics for each panel. Pair only comparable scopes:
+   Balanced-versus-Balanced → Situational-versus-Situational →
+   Predictor-versus-Predictor for faction-balance self-play, or all selected row
+   tactics against the same fixed opponent for a fixed-opponent panel. Explain when both sides change policy; this does not
+   measure head-to-head recruiter strength. Present other tactic panels separately,
+   including Classic when recorded. Mark missing configurations as unrecorded;
+   do not fabricate a full matrix or broaden a scoped request.
+   Mark same-faction diagonals as **Mirror**. Follow with a separate mirror table
+   of first-to-act win percentages and cap counts, using physical-game
+   denominators, in the same Balanced → Situational → Predictor order using
+   the available subset. Do not
+   present the mechanically symmetric faction win rate as mirror balance evidence.
 3. Follow with **the campaign table**, campaigns as rows and simulation-player
    tactics as columns. Cells are completion counts such as `16/20`, without
    percentages. Split campaigns with multiple player diplomacy modes into
@@ -253,7 +279,8 @@ accounting exports are distinct outputs.
 | **Battlefield presence**                    | Living nonleader unit-turn counts and shares at own-phase end, including starting units and promotions, from `battlefield_presence.csv` or exact-unit `battlefield_units.csv`. Longer survival contributes more observations; presence is not a unit win rate.                                                                                                                                                                                                                                                                    |
 | **Support effects / overlap**               | Actual HP healed, personal/aura reflection, effective reflection, covered allies and overlapping coverage, from `support_effects.csv` and `support_overlap.csv`. Include provider-turn denominators and zero-benefit opportunities; adjacency alone is not healing or damage.                                                                                                                                                                                                                                                     |
 | **Objective and casualty value**            | Captures, control and occupation turns, purchased recruit gold lost and casualty replacement value, from the battlefield-value exports. Keep these measures separate: ownership can persist after a captor dies, and replacement value includes free starters and earned promotions.                                                                                                                                                                                                                                              |
-| **Faction matchups / policy comparisons**   | Results against each opposing faction or tactic, with maps, seats, initiative and same-faction comparisons identified. Use `matchups.csv` and policy summaries; keep caps in denominators. These expose differences hidden by pooled faction averages.                                                                                                                                                                                                                                                                            |
+| **Additional matchup / policy comparisons** | Breakdowns beyond the default per-map faction matrices, such as additional tactic pairings, seat/initiative splits or baseline changes. Use `matchups.csv` and policy summaries; keep caps in denominators and identify the compared scopes.                                                                                                                                                                                                                                                                                      |
+| **Pooled arena summaries**                  | Factions as rows and maps as columns, pooling the other opposing factions and excluding mirrors. Keep tactics separate and name the opponent policy. These optional summaries supplement the default full matchup matrices; they do not replace them.                                                                                                                                                                                                                                                                             |
 | **Campaign failure / stage tables**         | Victories among attempts reaching each chapter, defeats, caps, failed goals and recorded terminal reasons, from campaign stage and failure exports. Later-stage success is not whole-campaign completion.                                                                                                                                                                                                                                                                                                                         |
 | **Before/after comparisons**                | Changes against a matching baseline in matchups, campaign completion, recruitment or contributions. State matching seeds, schedules and limits, and distinguish observed changes from proposed causes.                                                                                                                                                                                                                                                                                                                            |
 | **Leader safety audit**                     | Army strength, leader position/HP, forecast exposure, alternatives and death-boundary evidence, from `leader_audit.csv` and `leader_deaths.csv`. An unsafe forecast does not prove an avoidable death or a mission-compatible escape.                                                                                                                                                                                                                                                                                             |

@@ -154,13 +154,13 @@ class CompleteDataTests(unittest.TestCase):
         campaigns = [dict(campaign='sample', player='mixed', enemy='classic', maxRounds=30,
                           recruitLimit=1, attempts=2, completed=1)]
         text = '\n'.join(report.overview(campaigns, [], [], [], rows))
-        self.assertIn('2/3 (66.7%); caps: 1', text)
+        self.assertIn('Additional pairing: mixed against classic', text)
         self.assertIn('not recorded', text)
-        self.assertLess(text.index('Arena wins by race and map'), text.index('Campaigns against'))
+        self.assertLess(text.index('Arena faction matchups'), text.index('Campaigns against'))
         self.assertLess(text.index('1/2'), text.index('Campaign stage outcomes'))
-        self.assertLess(text.index('Campaign stage outcomes'), text.index('Arena results by tactic'))
+        self.assertLess(text.index('Matching-policy faction mirrors'), text.index('Campaign stage outcomes'))
         missing_rows, _, _, _ = report.tally({report.identity(other_policy): other_policy})
-        self.assertIn('No non-self-play games against Classic were recorded',
+        self.assertIn('Additional pairing: mixed against rush',
                       '\n'.join(report.overview([], [], [], [], missing_rows)))
 
     def test_purchase_shares_use_recorded_families_and_only_new_cross_faction_purchases(self):
@@ -179,6 +179,66 @@ class CompleteDataTests(unittest.TestCase):
         self.assertEqual((fixed[0]['games'],fixed[0]['winRate']), (2,50.0))
 
 
+    def test_default_arena_panels_group_policies_keep_missing_cells_and_scope(self):
+        items = []
+        def arena(seed, p, q, winner='player', landscape='open', races=('human', 'skeletons')):
+            item = match(seed, *races, winner=winner, reason='cap' if winner is None else 'leader')
+            item['config'].update(player=p, enemy=q, landscape=landscape)
+            items.append(item)
+        arena(1, 'balanced', 'balanced')
+        arena(2, 'balanced', 'balanced', winner=None)
+        arena(3, 'situational', 'balanced')
+        arena(4, 'predictor', 'balanced', landscape='crossings')
+        arena(5, 'situational', 'situational', winner='enemy')
+        arena(6, 'predictor', 'predictor', winner=None)
+        arena(7, 'custom', 'classic', landscape='islands', races=('woodland', 'coastal'))
+        arena(8, 'custom', 'classic', landscape='wooded', races=('other', 'human'))
+        rows, _, _, _ = report.tally({report.identity(x): x for x in items})
+        text = '\n'.join(report.overview([], [], [], [], rows))
+        self.assertIn('Arrow order: **Balanced → Situational → Predictor**', text)
+        self.assertIn('Matching-policy self-play: each arrow changes both armies', text)
+        self.assertIn('Fixed opponent: Balanced; arrows change only the row policy', text)
+        self.assertIn('50.0% (1) → 100.0% (0) → —', text)
+        self.assertIn('| Faction | Humans | Skeletons | Woodland | Merfolk | other |', text)
+        self.assertIn('| Humans | Mirror |', text)
+        self.assertIn('Additional pairing: custom against classic', text)
+        self.assertNotIn('Arena wins by race and map', text)
+        self.assertNotIn('### balanced against balanced:', text)
+        self.assertIn('Physical outcomes unavailable', text)
+        fixed = text.split('### Fixed opponent:', 1)[1]
+        self.assertLess(fixed.index('#### Plains'), fixed.index('#### Crossing'))
+        # A default fixed-opponent run must not repeat B/B as four self-play tables.
+        restricted = [r for r in rows if r['opponentPolicy'] == 'balanced']
+        default = '\n'.join(report.overview([], [], [], [], restricted))
+        self.assertNotIn('Matching-policy self-play:', default)
+        self.assertEqual(default.count('Fixed opponent: Balanced;'), 1)
+
+    def test_mirror_initiative_uses_physical_games_once_and_excludes_policy_comparisons(self):
+        physical = []
+        for seed in range(100):
+            first = 'enemy' if seed % 2 else 'player'
+            winner = first if seed < 60 else ('enemy' if first == 'player' else 'player') if seed < 90 else None
+            item = match(seed, 'a', 'a', winner=winner)
+            item['config'].update(first=first, player='predictor', enemy='predictor')
+            physical.append(item)
+        comparison = match(101, 'a', 'a')
+        comparison['config'].update(player='predictor', enemy='situational')
+        physical.append(comparison)
+        rows, _, _, _ = report.tally({report.identity(x): x for x in physical})
+        mirror = next(r for r in rows if r['policy'] == r['opponentPolicy'] == 'predictor')
+        self.assertEqual(mirror['games'], 200)
+        text = '\n'.join(report.overview([], [], [], [], rows, physical_outcomes=physical))
+        initiative = text.split('### Matching-policy faction mirrors:', 1)[1]
+        self.assertIn('60.0% (10; n=100)', initiative)
+        self.assertNotIn('n=200', initiative)
+        self.assertNotIn('n=101', initiative)
+        self.assertNotIn('50.0%', initiative)
+        incomplete = {**physical[0], 'config': {k:v for k,v in physical[0]['config'].items() if k != 'first'}}
+        unavailable = '\n'.join(report.overview([], [], [], [], rows, physical_outcomes=[incomplete]))
+        self.assertIn('lack recorded initiative/outcome', unavailable)
+        self.assertIn('No matching-policy faction mirrors', unavailable)
+
+
     def test_campaign_overview_keeps_diplomacy_outcomes_separate(self):
         rows = [dict(campaign='choice', player='mixed', enemy='classic', maxRounds=30,
                      recruitLimit=1, diplomacy=mode, attempts=10, completed=wins)
@@ -192,6 +252,16 @@ class CompleteDataTests(unittest.TestCase):
         self.assertIn('| single | 10/10 |', table)
         self.assertNotIn('11/20', table)
         self.assertNotIn('%', table)
+        stages = [dict(campaign='choice', player='mixed', enemy='classic', maxRounds=30,
+                       recruitLimit=1, diplomacy=mode, stage=1, map='entry', reached=10,
+                       victories=wins, defeats=10-wins, caps=0)
+                  for mode, wins in [('pragmatic', 3), ('restrained', 8)]]
+        detailed = '\n'.join(report.overview(rows, stages, [], [], []))
+        self.assertIn('| choice: entry (pragmatic) | 3/10; 7D 0C |', detailed)
+        self.assertIn('| choice: entry (restrained) | 8/10; 2D 0C |', detailed)
+        self.assertIn('Why choice (pragmatic) attempts stop', detailed)
+        self.assertIn('Why choice (restrained) attempts stop', detailed)
+        self.assertNotIn('11/20', detailed)
 
     def test_campaign_overview_distinguishes_policy_defaults_from_explicit_caps(self):
         outcomes = {}

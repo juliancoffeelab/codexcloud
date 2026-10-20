@@ -18,6 +18,7 @@ pub enum RecruiterKind {
     Frontline,
     Balanced,
     Situational,
+    Predictor,
 }
 pub(crate) trait Recruiter {
     fn promotions(&mut self, game: &BattleView<'_, '_>, seed: u32) -> Vec<(UnitId, UnitTypeId)> {
@@ -46,6 +47,7 @@ impl Recruiter for RecruiterKind {
             Self::Frontline => frontline::Frontline.recruit(context, orders),
             Self::Balanced => balanced::Balanced.recruit(context, orders),
             Self::Situational => situational::Situational.recruit(context, orders),
+            Self::Predictor => drive(Self::Predictor, context, orders),
         }
     }
 }
@@ -131,6 +133,9 @@ impl BattleView<'_, '_> {
             RecruiterKind::Frontline => (false, true, false),
             RecruiterKind::Balanced => (false, false, true),
             RecruiterKind::Situational => return situational::choose(self, seed, orders),
+            RecruiterKind::Predictor => {
+                return situational::choose_with_forecast(self, seed, orders, true);
+            }
         };
         let side = self.turn();
         let Some(leader) = self
@@ -396,7 +401,10 @@ impl BattleView<'_, '_> {
 /// Native fixed-position diagnostics. These are the same mechanical components
 /// used by Situational, before the seeded tie-break. They never mutate the game.
 #[cfg(not(target_arch = "wasm32"))]
-pub(crate) fn diagnostics(game: &crate::logic::Game<'_>) -> Vec<serde_json::Value> {
+pub(crate) fn diagnostics(
+    game: &crate::logic::Game<'_>,
+    recruiter: RecruiterKind,
+) -> Vec<serde_json::Value> {
     let view = BattleView::new(game);
     let mut rows = Vec::new();
     for unit in view.units().iter().filter(|u| u.side == view.turn()) {
@@ -431,7 +439,11 @@ pub(crate) fn diagnostics(game: &crate::logic::Game<'_>) -> Vec<serde_json::Valu
                 continue;
             };
             candidate.tile = tile;
-            let assessment = evaluation::Assessment::new(&view, &candidate);
+            let assessment = evaluation::Assessment::with_forecast(
+                &view,
+                &candidate,
+                recruiter == RecruiterKind::Predictor,
+            );
             let copies = view
                 .units()
                 .iter()
@@ -449,7 +461,11 @@ pub(crate) fn diagnostics(game: &crate::logic::Game<'_>) -> Vec<serde_json::Valu
             let mut best = None;
             for tile in tiles {
                 candidate.tile = tile;
-                let score = assessment.breakdown(&view, &candidate);
+                let score = if recruit {
+                    assessment.recruitment_breakdown(&view, &candidate)
+                } else {
+                    assessment.breakdown(&view, &candidate)
+                };
                 if best
                     .as_ref()
                     .is_none_or(|(_, previous): &(usize, evaluation::Score)| {

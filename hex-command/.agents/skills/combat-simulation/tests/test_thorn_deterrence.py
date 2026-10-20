@@ -16,17 +16,46 @@ class ThornDeterrenceTests(unittest.TestCase):
         actor = dict(id='u8', type='foot', side='enemy', tile='0,0', hp=7, moved=False)
         phase = dict(side='enemy', round=3, before=[actor], gold=dict(player=4, enemy=2),
                      actions=[dict(kind='recruit', type='foot'), dict(kind='advance', type='aura')],
-                     ownership=[dict(tile='0,0', owner='enemy')])
+                     ownership=[dict(tile='0,0', owner='enemy')], combats=[])
         previous = dict(ownership=[dict(tile='0,0', owner='player')],
-                        before=[dict(id='u12')], units=[], losses=[dict(id='u15')])
-        detail = dict(initial=dict(nextId=3, tiles=[dict(id='0,0', owner=None)]), phases=[previous, phase])
+                        before=[dict(id='u12')], units=[], losses=[dict(id='u15')], combats=[])
+        detail = dict(initial=dict(nextId=3, tiles=[dict(id='0,0', owner=None)], combatRng=7),
+                      final=dict(combatRng=7), phases=[previous, phase])
         state = audit.before_state(detail, 1, {'foot': dict(cost=6)})
         self.assertEqual(state['gold'], dict(player=4, enemy=8))
         self.assertEqual(state['tiles'][0]['owner'], 'player')
         self.assertEqual(state['nextId'], 16)
         self.assertEqual(state['units'], [actor])
         self.assertEqual(state['turn'], 'enemy')
+        self.assertEqual(state['combatRng'], 7)
         self.assertEqual(phase['gold']['enemy'], 2)
+
+    def test_phase_rng_includes_attack_retaliation_and_zero_spread_strikes(self):
+        # Two identical fixed-damage strikes still consume two draws; the reply
+        # consumes a third. The next phase must start after all three draws.
+        previous = dict(combats=[dict(rawRolls=[5, 5], responseRawRolls=[0])],
+                        ownership=[], before=[], units=[], losses=[])
+        phase = dict(side='player', round=2, before=[], gold=dict(player=0, enemy=0),
+                     actions=[], combats=[dict(rawRolls=[2], responseRawRolls=[])])
+        detail = dict(initial=dict(combatRng=7, nextId=1, tiles=[]),
+                      final=dict(combatRng=3981355051), phases=[previous, phase])
+        self.assertEqual(audit.before_state(detail, 1, {})['combatRng'], 2630631676)
+        self.assertEqual(detail['initial']['combatRng'], 7)
+
+    def test_rng_reconstruction_rejects_missing_draws_or_unsupported_history(self):
+        detail = dict(initial=dict(combatRng=7), final=dict(combatRng=1025555898),
+                      phases=[dict(combats=[dict(rawRolls=[5], responseRawRolls=[])])])
+        self.assertEqual(audit.combat_rng_states(detail), [7])
+        detail['final']['combatRng'] = 3923423697
+        with self.assertRaisesRegex(ValueError, 'rejected random samples'):
+            audit.combat_rng_states(detail)
+        detail['final']['combatRng'] = 1025555898
+        del detail['phases'][0]['combats'][0]['responseRawRolls']
+        with self.assertRaisesRegex(ValueError, 'responseRawRolls'):
+            audit.combat_rng_states(detail)
+        del detail['initial']['combatRng']
+        with self.assertRaisesRegex(ValueError, 'initial.combatRng'):
+            audit.combat_rng_states(detail)
 
     def test_aura_covers_intrinsic_thorns_but_not_itself(self):
         state = dict(turn='enemy', units=[
@@ -36,6 +65,16 @@ class ThornDeterrenceTests(unittest.TestCase):
         providers, covered = audit.coverage(state, {'aura': dict(thornAura=2), 'shield': dict(thorns=1), 'foot': {}})
         self.assertEqual(len(providers), 1)
         self.assertEqual(covered, {'u2'})
+
+    def test_unchanged_replay_must_reproduce_recorded_phase(self):
+        phase = dict(actions=[dict(kind='move', unit='u1', tile='1,0')],
+                     units=[dict(id='u1', hp=7)], gold=dict(player=2, enemy=0))
+        response = dict(records=dict(actions=phase['actions']),
+                        final=dict(units=phase['units'], gold=phase['gold']))
+        audit.verify_original_phase(response, phase)
+        response['final']['units'] = [dict(id='u1', hp=6)]
+        with self.assertRaisesRegex(ValueError, 'does not reproduce'):
+            audit.verify_original_phase(response, phase)
 
     def test_switches_distinguish_missing_attackers_and_weapon_changes(self):
         def response(combats):

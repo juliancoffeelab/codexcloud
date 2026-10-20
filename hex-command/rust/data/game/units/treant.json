@@ -17,6 +17,17 @@
       "range": 1,
       "sound": "attack-melee",
       "spread": 3
+    },
+    {
+      "id": "spikes",
+      "name": "Spikes",
+      "damage": 5,
+      "count": 2,
+      "damageType": "pierce",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee",
+      "spread": 1
     }
   ],
   "damageModifiers": {
@@ -33,7 +44,7 @@
     }
   },
   "ability": "Living bark",
-  "description": "An expensive, slow forest tank. Thick bark strongly resists piercing, but axes bite into its wood. One heavy bough delivers a crushing blow.",
+  "description": "An expensive, slow forest tank. Thick bark strongly resists piercing, but axes bite into its wood. One heavy bough delivers a crushing blow. Sharp wooden spikes provide a paired piercing melee attack.",
   "level": 1,
   "family": "treant",
   "advancesTo": ["treant-l2"],

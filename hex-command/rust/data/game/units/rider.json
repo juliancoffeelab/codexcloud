@@ -38,7 +38,7 @@
   ],
   "damageModifiers": {
     "blade": 0,
-    "pierce": 0,
+    "pierce": 1,
     "impact": 0
   },
   "ability": "Mounted",

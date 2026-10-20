@@ -32,7 +32,7 @@
   ],
   "damageModifiers": {
     "blade": -1,
-    "pierce": 0,
+    "pierce": 1,
     "impact": 0
   },
   "terrainModifiers": {

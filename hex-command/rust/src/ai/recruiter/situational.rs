@@ -19,6 +19,15 @@ pub(super) fn choose(
     seed: u32,
     orders: &RecruitmentOrders,
 ) -> Option<Command> {
+    choose_with_forecast(game, seed, orders, false)
+}
+
+pub(super) fn choose_with_forecast(
+    game: &BattleView<'_, '_>,
+    seed: u32,
+    orders: &RecruitmentOrders,
+    predict: bool,
+) -> Option<Command> {
     let side = game.turn();
     let leader = game
         .units()
@@ -55,7 +64,7 @@ pub(super) fn choose(
             retreating: None,
             rebuilding: None,
         };
-        let assessment = super::evaluation::Assessment::new(game, &recruit);
+        let assessment = super::evaluation::Assessment::with_forecast(game, &recruit, predict);
         let copies = game
             .units()
             .iter()
@@ -68,11 +77,16 @@ pub(super) fn choose(
         if rule.cost > game.gold()[side.index()] && game.income(side) == 0 {
             continue;
         }
+        // An unaffordable unit must justify the income spent waiting rather
+        // than fielding an available alternative now.
+        let wait = f64::from((rule.cost - game.gold()[side.index()]).max(0))
+            / f64::from(game.income(side).max(1));
         for tile in tiles {
             recruit.tile = tile;
-            let score = assessment.score(game, &recruit)
+            let score = assessment.recruitment_breakdown(game, &recruit).total
                 / rule.cost.max(1) as f64
                 / (1.0 + copies as f64 * 0.2)
+                / (1.0 + wait * 0.25)
                 + super::random(
                     seed,
                     &format!("situational:{}:{}:{tile}", game.round(), rule.id),
@@ -213,6 +227,25 @@ mod tests {
     }
 
     #[test]
+    fn modest_upgrade_does_not_delay_an_affordable_recruit() {
+        let (mut rules, a, b) = fixture();
+        rules.units[b].cost = 12;
+        rules.units[b].hp = 54;
+        let mut game = battle(&rules, a, b);
+        let village = game
+            .terrain
+            .iter()
+            .enumerate()
+            .find(|(_, t)| **t == rules.terrains["village"])
+            .unwrap()
+            .0;
+        game.owners[village] = Some(Side::Player);
+        assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(a));
+        game.gold[0] = 12;
+        assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(b));
+    }
+
+    #[test]
     fn movement_and_armor_per_strike_affect_matchups() {
         let (mut rules, a, b) = fixture();
         rules.units[b].r#move = rules.units[a].r#move * 2;
@@ -241,6 +274,48 @@ mod tests {
             selected(&battle(&rules, a, b), &RecruitmentOrders::default()),
             Some(b)
         );
+    }
+
+    #[test]
+    fn predictor_anticipates_legal_recruits_while_situational_uses_observed_enemies() {
+        let (mut rules, a, b) = fixture();
+        rules.units[a].attacks[0].damage = 11;
+        rules.units[a].attacks[0].damage_type = DamageType::Blade;
+        rules.units[b].attacks[0].damage_type = DamageType::Pierce;
+        let future = rules.types["scout"];
+        let mut foe = rules.units[a].clone();
+        foe.id = rules.units[future].id.clone();
+        foe.damage_modifiers.blade = -10;
+        rules.units[future] = foe;
+        rules.route_classes[future] = future;
+        let observed = battle(&rules, a, b)
+            .units
+            .iter()
+            .find(|u| u.side == Side::Enemy)
+            .unwrap()
+            .kind;
+        rules.units[observed].damage_modifiers = DamageModifiers {
+            blade: 0,
+            pierce: 0,
+            impact: 0,
+        };
+        for environment in &mut rules.units[observed].environment {
+            *environment = [[0; 3]; 2];
+        }
+        rules.units[observed].attacks.truncate(1);
+        rules.units[observed].attacks[0].category = Category::Melee;
+        rules.units[observed].attacks[0].range = 1;
+        rules.units[observed].attacks[0].damage = 8;
+        rules.units[observed].attacks[0].count = 1;
+        let mut game = battle(&rules, a, b);
+        game.pools.as_mut().unwrap()[1] = vec![future];
+        let pick = |recruiter: RecruiterKind| match recruiter.choose(&game, 7, None, false).unwrap()
+        {
+            Command::Recruit { kind, .. } => game.kind(&kind.0),
+            _ => panic!("expected recruitment"),
+        };
+        assert_eq!(pick(RecruiterKind::Situational), a);
+        assert_eq!(pick(RecruiterKind::Predictor), b);
     }
 
     #[test]
@@ -329,9 +404,25 @@ mod tests {
         let tile = game.placement_tiles(&leader, a, true)[0];
         let id = game.add(a, Side::Player, tile);
         assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(a));
+        let mut healer = leader.clone();
+        healer.id = 0;
+        healer.kind = b;
+        healer.hp = rules.units[b].hp;
+        healer.tile = game.placement_tiles(&leader, b, true)[0];
+        let assess = |game: &Game<'_>| {
+            let view = BattleView::new(game);
+            crate::ai::recruiter::evaluation::Assessment::new(&view, &healer)
+                .recruitment_breakdown(&view, &healer)
+        };
+        let healthy = assess(&game);
         let index = game.index(id).unwrap();
         game.units[index].hp = 1;
-        assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(b));
+        let wounded = assess(&game);
+        // Wounds create healing value; they do not guarantee that buying a
+        // healer beats every alternative under every combat valuation.
+        assert!(healthy.support > 0.0);
+        assert!(wounded.support > healthy.support);
+        assert!(wounded.total > healthy.total);
     }
 
     #[test]
@@ -352,6 +443,9 @@ mod tests {
             rules.units[enemy].attacks[0].range = 1;
             rules.units[enemy].attacks[0].count = 3;
             let mut game = battle(&rules, a, b);
+            // This fixture isolates a committed, observed melee threat, with
+            // no future enemy roster to dilute that pressure estimate.
+            game.pools.as_mut().unwrap()[1].clear();
             let leader = game
                 .units
                 .iter()
