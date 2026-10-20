@@ -65,13 +65,7 @@ pub(crate) fn create_arena<'catalog>(
         .iter()
         .find(|l| l.id == config.landscape)
         .unwrap();
-    let map_id = landscape.map.as_deref().unwrap_or_else(|| {
-        if config.landscape == "crossings" || config.landscape == "islands" {
-            "river"
-        } else {
-            "mirror"
-        }
-    });
+    let map_id = landscape.map.as_deref().unwrap_or("mirror");
     let mut state = rules
         .maps
         .iter()
@@ -154,6 +148,11 @@ pub(crate) fn create_arena<'catalog>(
     Ok(game)
 }
 fn generate_arena_terrain(state: &mut State, landscape: &str, random: &mut Random) {
+    // Preserve generated water-arena identities without the retired skirmish template.
+    if matches!(landscape, "crossings" | "islands") {
+        state.map_id = "river".into();
+        state.map_revision = 2;
+    }
     state.cols = 9;
     state.rows = 9;
     state.tiles.clear();

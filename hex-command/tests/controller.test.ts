@@ -413,12 +413,12 @@ test("Unmounted sessions cannot overwrite replacements", async () => {
   const pending = previous.endTurn();
   previous.dispose();
   const replacement = createController(immediatePause);
-  replacement.reset("river");
+  replacement.reset("river-valley");
   const saved = storage.getItem(SAVE_KEY);
   paused.release();
   await pending;
   assert.equal(storage.getItem(SAVE_KEY), saved);
-  assert.equal(replacement.snapshot().mapId, "river");
+  assert.equal(replacement.snapshot().mapId, "river-valley");
   assert.equal(replacement.snapshot().round, 1);
   assert.throws(() => previous.reset(), /session has closed/);
   assert.throws(() => previous.move("u3", "3,1"), /session has closed/);
@@ -435,10 +435,10 @@ test("Replay is consumed once and replacement discards pending initialization", 
   saveBattle(new Game(), true);
   const replacement = createController(immediatePause);
   const observed = observe(replacement);
-  replacement.reset("river");
+  replacement.reset("river-valley");
   replacement.initialize();
   replacement.initialize();
-  assert.equal(observed.view.game.mapId, "river");
+  assert.equal(observed.view.game.mapId, "river-valley");
   assert.equal(observed.view.game.turn, "player");
   assert.equal(observed.view.game.round, 1);
   replacement.dispose();

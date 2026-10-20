@@ -142,7 +142,7 @@ fn routes_spend_the_whole_allowance_and_stop_at_blockers() {
 
 #[test]
 fn adjacency_matches_hex_distance_including_edges() {
-    for (map, revision) in [("mirror", 1), ("river", 2)] {
+    for (map, revision) in [("mirror", 1), ("river-valley", 2)] {
         let game = Game::from_state(rules(), rules().maps[&(map.into(), revision)].clone());
         for first in 0..game.board.ids.len() {
             let expected: Vec<_> = (0..game.board.ids.len())
@@ -261,58 +261,6 @@ fn artwork_choices_survive_restore_and_forks_without_changing_movement() {
                     .connections,
                 Some(exits)
             );
-        }
-    }
-}
-
-fn connected(game: &Game<'_>, allowed: &HashSet<usize>, start: usize) -> HashSet<usize> {
-    let mut reached = HashSet::from([start]);
-    let mut pending = vec![start];
-    while let Some(tile) = pending.pop() {
-        for &next in &game.board.adjacent[tile] {
-            if allowed.contains(&next) && reached.insert(next) {
-                pending.push(next);
-            }
-        }
-    }
-    reached
-}
-
-#[test]
-fn skirmish_land_is_connected_and_river_crossings_each_join_both_banks() {
-    for map in ["mirror", "river"] {
-        let game = Game::new(rules(), map);
-        let land: HashSet<_> = (0..game.terrain.len())
-            .filter(|&t| !game.terrain_is(t, Terrain::Water))
-            .collect();
-        let keeps: Vec<_> = land
-            .iter()
-            .copied()
-            .filter(|&t| game.terrain_is(t, Terrain::Keep))
-            .collect();
-        assert_eq!(connected(&game, &land, keeps[0]), land);
-        assert!(game.units.iter().all(|u| land.contains(&u.tile)));
-        if map == "river" {
-            let crossings: Vec<_> = land
-                .iter()
-                .copied()
-                .filter(|&t| {
-                    game.terrain_is(t, Terrain::Bridge) || game.terrain_is(t, Terrain::Ford)
-                })
-                .collect();
-            let banks: HashSet<_> = land
-                .difference(&crossings.iter().copied().collect())
-                .copied()
-                .collect();
-            let a = connected(&game, &banks, keeps[0]);
-            let b = connected(&game, &banks, keeps[1]);
-            assert!(a.is_disjoint(&b));
-            assert_eq!(a.len() + b.len(), banks.len());
-            for crossing in crossings {
-                let mut joined = banks.clone();
-                joined.insert(crossing);
-                assert_eq!(connected(&game, &joined, keeps[0]), joined);
-            }
         }
     }
 }

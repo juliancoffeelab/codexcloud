@@ -12,8 +12,7 @@ export function migrateV2ToV3(
     throw new Error("Invalid version-two native save");
   const state = checkpoint.state;
   const map = typeof state.mapId === "string" ? MAPS[state.mapId as MapId] : undefined;
-  const retired =
-    state.mapRevision === 1 && ["river", "ashen-refuge"].includes(String(state.mapId));
+  const retired = state.mapRevision === 1 && state.mapId === "ashen-refuge";
   if (retired && !map) throw new Error("Unknown historical map");
   return {
     ...value,

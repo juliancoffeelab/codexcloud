@@ -137,8 +137,7 @@ export type CampaignMapId =
   | "ashen-refuge"
   | "ashen-dawn";
 export type CoastalMapId = "tide-nets" | "tide-wreck" | "tide-sluice";
-export type MapId =
-  "mirror" | "river" | "developer" | "river-valley" | "two-routes" | CampaignMapId | CoastalMapId;
+export type MapId = "mirror" | "developer" | "river-valley" | CampaignMapId | CoastalMapId;
 export interface Coordinates {
   col: number;
   row: number;

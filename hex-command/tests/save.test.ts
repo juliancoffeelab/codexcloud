@@ -10,7 +10,6 @@ import { migrateV1ToV2 } from "../src/save/migrations/v1-to-v2";
 import { SAVE_VERSION } from "../src/save/schema";
 import { SAVE_KEY } from "../src/save/storage";
 import { saveBattle } from "../src/save/write";
-import { LEGACY_RIVER } from "../src/save/migrations/legacy/layouts";
 import { createTestFactory } from "./native-fixture";
 import { TestStorage } from "./helpers";
 import { MAPS } from "../src/game/maps";
@@ -84,42 +83,10 @@ test("Version-three ordinary battles receive only an envelope update", () => {
   assert.deepEqual(migrateSave(old).save, { ...old, version: SAVE_VERSION });
 });
 
-test("Version-two river migration preserves old tiles, units and checkpoint state", () => {
-  const factory = createTestFactory();
-  const game = LiveGame.create(factory, { kind: "scenario", map: "river" });
-  game.move("u3", "5,3");
-  const checkpoint = structuredClone(
-    nativeValue(game.checkpoint()),
-  ) as import("../rust/pkg/hex_command").SavedGame;
-  checkpoint.state.mapRevision = 1;
-  checkpoint.state.tiles = LEGACY_RIVER.terrain.map(({ connections, deadEnds, ...tile }) => ({
-    ...tile,
-    ...(connections ? { connections: [...connections] } : {}),
-    ...(deadEnds ? { deadEnds: [...deadEnds] } : {}),
-    id: `${tile.col},${tile.row}`,
-    owner: tile.owner ?? null,
-  }));
-  const old = { version: 2, checkpoint, pendingEnemy: false };
-  const before = structuredClone(old);
-  const result = migrateSave(old);
-  assert.equal(result.migrated, true);
-  assert.equal(result.save.version, SAVE_VERSION);
-  assert.equal(result.save.checkpoint.state.mapRevision, 2);
-  assert.deepEqual(old, before);
-  assert.deepEqual(result.save.checkpoint.state.tiles, checkpoint.state.tiles);
-  assert.deepEqual(result.save.checkpoint.state.units, checkpoint.state.units);
-  const restored = LiveGame.restore(factory, result.save.checkpoint);
-  assert.equal(restored.tile("7,1")?.terrain, "bridge");
-  assert.deepEqual(nativeValue(restored.checkpoint()), result.save.checkpoint);
-  restored.dispose();
-  game.dispose();
-});
-
 test("Live WASM catalog contains no historical save metadata", () => {
   const result = createTestFactory().catalog();
   assert(result.ok);
   const catalog = result.value;
-  assert(!catalog.maps.some((map) => map.id === "river" && map.revision === 1));
   assert(!catalog.maps.some((map) => map.id === "ashen-refuge" && map.revision === 1));
   for (const unit of catalog.units) assert.equal("terrainModifiers" in unit, false);
   for (const campaign of catalog.campaigns)

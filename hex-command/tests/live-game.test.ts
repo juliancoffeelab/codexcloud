@@ -69,7 +69,7 @@ test("A native enemy turn cancelled by map selection never acts on the new battl
   assert(checkpoint.pendingEnemy);
   assert.deepEqual(checkpoint.game.snapshot(), opening);
   checkpoint.game.dispose();
-  controller.reset("river");
+  controller.reset("river-valley");
   const replacement = controller.snapshot();
   resume();
   await pending;
