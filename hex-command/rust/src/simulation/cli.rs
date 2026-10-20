@@ -804,6 +804,7 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
     if options.arrow {
         report["detailFormat"] = Value::String(super::arrow::FORMAT.into());
     }
+    report["recruitmentProfiles"] = serde_json::to_value(&rules.recruitment)?;
     report["unitFamilies"] = serde_json::to_value(
         rules
             .units

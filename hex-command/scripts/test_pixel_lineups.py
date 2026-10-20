@@ -15,6 +15,16 @@ load_lineups = art.load_lineups
 
 
 class RaceTrees(unittest.TestCase):
+    def test_composite_uses_source_over_for_partial_alpha(self):
+        layer = ((1, 1, bytes([255, 0, 0, 128])), 0, 0)
+        for background, expected in [
+            ([0, 0, 255, 255], [128, 0, 127, 255]),
+            ([0, 0, 255, 128], [170, 0, 85, 192]),
+            ([0, 0, 0, 0], [255, 0, 0, 128]),
+        ]:
+            with self.subTest(background=background):
+                self.assertEqual(list(art.composite((1, 1, bytes(background)), [layer])[2]), expected)
+
     def test_variant_coverage_rejects_missing_and_unregistered_connections(self):
         caps = {(34, 1), (34, 8)}
         roads = {'tile'} | {str(mask) for mask in range(1, 64) if mask != 9}
@@ -254,12 +264,10 @@ class NativeComposition(unittest.TestCase):
         top = (1, 1, bytearray(red))
         self.assertEqual(art.composite(base, [(layer, -1, 1), (top, 0, 1)])[2], base[2])
 
-    def test_rejects_fractional_offsets_and_partial_alpha(self):
+    def test_rejects_fractional_offsets(self):
         base = (1, 1, bytearray([0, 0, 0, 0]))
         with self.assertRaisesRegex(ValueError, 'integer'):
             art.composite(base, [(base, .5, 0)])
-        with self.assertRaisesRegex(ValueError, 'flat alpha'):
-            art.composite(base, [((1, 1, bytearray([1, 2, 3, 128])), 0, 0)])
 
 
 if __name__ == "__main__":

@@ -1,7 +1,9 @@
 //! Typed authored content, immutable catalog data and owned battle snapshots.
 use std::collections::HashMap;
 mod ids;
+mod recruitment;
 pub use ids::*;
+pub use recruitment::{RecruitmentProfiles, RecruitmentWeights};
 mod commands;
 pub use commands::*;
 mod units;
@@ -29,6 +31,7 @@ pub use catalog::{
 pub struct Rules {
     /// SHA-256 of relative document paths and their exact JSON bytes.
     pub content_fingerprint: String,
+    pub recruitment: RecruitmentProfiles,
     /// Ordered simulation recruitment rosters, independent of campaign rosters.
     pub rosters: Vec<ArmyRoster>,
     /// Native arena defaults and landscape definitions.
@@ -57,6 +60,8 @@ pub struct Rules {
     pub terrains: HashMap<String, usize>,
     /// Fresh initial states indexed by authored map and revision.
     pub maps: HashMap<(String, u32), State>,
+    /// Arena layouts kept outside playable scenarios and map metadata.
+    pub arena_maps: HashMap<(String, u32), State>,
     /// Campaign definitions indexed by their authored identifier.
     pub campaigns: HashMap<String, Campaign>,
 }

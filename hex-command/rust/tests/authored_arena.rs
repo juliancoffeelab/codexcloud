@@ -8,6 +8,12 @@ use hex_command_core::{
 fn authored_arena_uses_its_board_keeps_and_capture_targets() {
     let mut rules = Rules::load().unwrap();
     let source = rules.maps[&("mirror".into(), 1)].clone();
+    rules
+        .maps
+        .remove(&(source.map_id.clone(), source.map_revision));
+    rules
+        .arena_maps
+        .insert((source.map_id.clone(), source.map_revision), source.clone());
     let targets = vec![
         source
             .tiles
@@ -59,6 +65,29 @@ fn authored_arena_uses_its_board_keeps_and_capture_targets() {
         assert_eq!(unit.tile, keep.id);
     }
     assert_eq!(result.phases[0].objectives[0].tiles, targets);
+}
+
+#[cfg(feature = "wasm")]
+#[test]
+fn arena_only_scenarios_are_loaded_without_playable_metadata() {
+    let mut bundle = hex_command_core::data::catalog::embedded_bundle();
+    let mut manifest: serde_json::Value = serde_json::from_str(&bundle["manifest.json"]).unwrap();
+    let scenarios = manifest["scenarios"].as_array_mut().unwrap();
+    let path = scenarios
+        .iter()
+        .find(|p| p.as_str().unwrap().contains("/mirror-v1/"))
+        .unwrap()
+        .clone();
+    scenarios.retain(|p| !p.as_str().unwrap().contains("/mirror-"));
+    manifest["arenaScenarios"]
+        .as_array_mut()
+        .unwrap()
+        .push(path);
+    bundle.insert("manifest.json".into(), manifest.to_string());
+    let rules = Rules::from_json_bundle(&bundle).unwrap();
+    assert!(rules.arena_maps.keys().any(|(id, _)| id == "mirror"));
+    assert!(!rules.maps.keys().any(|(id, _)| id == "mirror"));
+    assert!(!rules.map_definitions.iter().any(|map| map.id == "mirror"));
 }
 
 #[cfg(feature = "wasm")]

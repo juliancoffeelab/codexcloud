@@ -26,7 +26,8 @@ class UsageTests(unittest.TestCase):
             'foe': dict(family='foe', race='other'),
         }
         dims = dict(race='woodland', policy='balanced', opponentPolicy='balanced', map='all')
-        presence = [dict(dims, unit='tree', unitTurns=10), dict(dims, unit='sapling', unitTurns=90)]
+        presence = [dict(dims, unit='tree', unitTurns=10), dict(dims, unit='sapling', unitTurns=90),
+                    dict(dims, unit='unused', unitTurns=0)]
         values = [dict(dims, kind='arena', unit=u, unitTurns=t, weaponHPDamageDealt=d,
                        thornHPDamageDealt=thorns) for u, t, d, thorns in
                   [('tree', 10, 500, 900), ('sapling', 90, 500, 0), ('boss', 999, 100000, 100000)]]
@@ -70,7 +71,7 @@ class UsageTests(unittest.TestCase):
         for landscape, policy, dealt in [('open', 'balanced', 20), ('wooded', 'balanced', 0),
                                           ('open', 'situational', 80)]:
             dims = dict(race='a', policy=policy, opponentPolicy=policy, map=landscape)
-            for unit, turns in [('foot', 2), ('idle', 8)]:
+            for unit, turns in [('foot', 2), ('idle', 8), ('unseen', 0)]:
                 presence.append(dict(dims, unit=unit, unitTurns=turns))
                 values.append(dict(dims, kind='arena', unit=unit, unitTurns=turns,
                     weaponHPDamageDealt=dealt if unit=='foot' else 0, thornHPDamageDealt=0))

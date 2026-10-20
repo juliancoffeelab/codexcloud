@@ -144,14 +144,16 @@ pub(super) fn collect_bundle(
         &manifest.simulation.campaign,
     ]
     .into_iter()
+    .chain(manifest.recruitment.iter())
     .chain(&manifest.races)
     .chain(&manifest.units)
     .chain(&manifest.scenarios)
+    .chain(&manifest.arena_scenarios)
     .chain(&manifest.campaigns)
     {
         read(&mut bundle, &mut source, path)?;
     }
-    for path in &manifest.scenarios {
+    for path in manifest.scenarios.iter().chain(&manifest.arena_scenarios) {
         let documents: ScenarioDocuments = parse(&bundle, path)?;
         for component in [&documents.map, &documents.roster] {
             read(&mut bundle, &mut source, &sibling(path, component)?)?;

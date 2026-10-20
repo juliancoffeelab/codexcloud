@@ -17,9 +17,9 @@
       "holdTurns": 6
     },
     {
-      "id": "two-routes",
+      "id": "wood-edge",
       "holdTurns": 4,
-      "map": "two-routes",
+      "map": "wood-edge",
       "territory": ["4,4", "4,2", "4,6"]
     }
   ],

@@ -45,23 +45,18 @@ export type AttackChoiceView = AvailableAttackChoice | UnavailableAttackChoice;
 function healthForecast(
   unit: UnitView,
   damage: number,
-  label: "You" | "Enemy",
-  impact: "Take" | "Deal",
   healing = 0,
-): HealthForecastView {
+): Omit<HealthForecastView, "healthLabel" | "impactLabel" | "remainingClass"> {
   const maximumHp = TYPES[unit.type].hp;
   const remainingHp = Math.max(0, unit.hp - damage + healing);
 
   return {
     side: unit.side,
     remainingHp,
-    remainingClass: remainingHp === 0 ? "fatal" : "",
     currentHp: unit.hp,
     maximumHp,
-    healthLabel: `${label}: ${unit.hp} to ${remainingHp} HP after this attack`,
     currentPercent: (unit.hp / maximumHp) * 100,
     remainingPercent: (remainingHp / maximumHp) * 100,
-    impactLabel: `${impact} ${damage ? `−${damage}` : 0} HP${healing ? `, heal +${healing} HP` : ""}${remainingHp === 0 ? " (dies)" : ""}`,
   };
 }
 
@@ -131,26 +126,20 @@ export function attackChoiceViews(
       retaliationCalculation.equation += `; ${weaponDamage} + ${preview.thornDamage} (thorns: ${preview.thornDamage / weapon.count} × ${weapon.count} incoming strikes) = ${preview.retaliation}`;
     }
 
-    const enemyForecast = healthForecast(
-      target,
-      preview.damage,
-      "Enemy",
-      "Deal",
-      preview.retaliationHealing,
-    );
-    enemyForecast.impactLabel = `Deal ${preview.damageDetail.minimum}–${preview.damageDetail.maximum} HP; ${chance(preview.killChance)} kill`;
-    enemyForecast.healthLabel = `Enemy: estimated ${enemyForecast.remainingHp} HP; ${chance(preview.killChance)} chance of death`;
-    enemyForecast.remainingClass = preview.killChance === 1 ? "fatal" : "";
-    const playerForecast = healthForecast(
-      attacker,
-      preview.retaliation,
-      "You",
-      "Take",
-      preview.healing,
-    );
-    playerForecast.impactLabel = `Take ${preview.retaliationMin}–${preview.retaliationMax} HP; ${chance(preview.deathChance)} death${preview.healing ? `; heal ≈${preview.healing}` : ""}`;
-    playerForecast.healthLabel = `You: estimated ${playerForecast.remainingHp} HP; ${chance(preview.deathChance)} chance of death`;
-    playerForecast.remainingClass = preview.deathChance === 1 ? "fatal" : "";
+    const enemyHealth = healthForecast(target, preview.damage, preview.retaliationHealing);
+    const enemyForecast: HealthForecastView = {
+      ...enemyHealth,
+      impactLabel: `Deal ${preview.damageDetail.minimum}–${preview.damageDetail.maximum} HP; ${chance(preview.killChance)} kill`,
+      healthLabel: `Enemy: estimated ${enemyHealth.remainingHp} HP; ${chance(preview.killChance)} chance of death`,
+      remainingClass: preview.killChance === 1 ? "fatal" : "",
+    };
+    const playerHealth = healthForecast(attacker, preview.retaliation, preview.healing);
+    const playerForecast: HealthForecastView = {
+      ...playerHealth,
+      impactLabel: `Take ${preview.retaliationMin}–${preview.retaliationMax} HP; ${chance(preview.deathChance)} death${preview.healing ? `; heal ≈${preview.healing}` : ""}`,
+      healthLabel: `You: estimated ${playerHealth.remainingHp} HP; ${chance(preview.deathChance)} chance of death`,
+      remainingClass: preview.deathChance === 1 ? "fatal" : "",
+    };
     return {
       available: true,
       id: weapon.id,

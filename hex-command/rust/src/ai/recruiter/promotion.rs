@@ -24,8 +24,10 @@ pub(super) fn choices(
             }
             let kind = match policy {
                 super::RecruiterKind::Classic => options[0],
-                super::RecruiterKind::Situational | super::RecruiterKind::Predictor => {
-                    choose(game, unit, policy == super::RecruiterKind::Predictor)?
+                super::RecruiterKind::Situational
+                | super::RecruiterKind::Predictor
+                | super::RecruiterKind::AggressivePredictor => {
+                    choose(game, unit, policy != super::RecruiterKind::Situational)?
                 }
                 super::RecruiterKind::Balanced | super::RecruiterKind::Frontline => {
                     let draw = super::random(
@@ -230,9 +232,7 @@ mod tests {
             pierce: 0,
             impact: 0,
         };
-        for environment in &mut rules.units[observed].environment {
-            *environment = [[0; 3]; 2];
-        }
+        rules.units[observed].environment.fill([[0; 3]; 2]);
         for attack in &mut rules.units[observed].attacks {
             attack.damage = 0;
             attack.spread = 0;

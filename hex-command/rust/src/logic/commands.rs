@@ -139,10 +139,8 @@ impl Game<'_> {
                     return Err(CommandError::NoNextMission);
                 }
                 let replacement = self.continue_campaign(Some(&units))?;
-                let combat_rng = self.combat_rng;
                 let records = self.recordings.take();
                 *self = replacement;
-                self.combat_rng = combat_rng;
                 self.recordings = records;
             }
             Command::SetUnitIntent {

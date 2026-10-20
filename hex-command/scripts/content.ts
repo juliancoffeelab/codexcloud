@@ -45,14 +45,17 @@ function components(path: string, fields: string[]): void {
 const manifest = read<{
   units: string[];
   terrain: string;
+  recruitment?: string;
   races: string[];
   scenarios: string[];
+  arenaScenarios?: string[];
   campaigns: string[];
   simulation: Record<string, string>;
 }>("manifest.json");
 for (const path of [
   ...manifest.units,
   manifest.terrain,
+  ...(manifest.recruitment ? [manifest.recruitment] : []),
   ...manifest.races,
   ...Object.values(manifest.simulation),
 ])
@@ -107,6 +110,7 @@ for (const file of readdirSync(lineupRoot).filter((file) => file.endsWith(".json
   }
 }
 for (const path of manifest.scenarios) components(path, ["map", "roster"]);
+for (const path of manifest.arenaScenarios ?? []) components(path, ["map", "roster"]);
 for (const path of manifest.campaigns) {
   const campaign = read<{ stages: string[] }>(path);
   for (const stage of campaign.stages)

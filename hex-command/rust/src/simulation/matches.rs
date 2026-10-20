@@ -75,6 +75,7 @@ pub(crate) fn create_arena<'catalog>(
     let mut state = rules
         .maps
         .iter()
+        .chain(rules.arena_maps.iter())
         .filter(|((id, _), _)| id == map_id)
         .max_by_key(|((_, revision), _)| revision)
         .ok_or("Arena layout is unavailable")?
@@ -103,25 +104,23 @@ pub(crate) fn create_arena<'catalog>(
             .ok_or("Arena requires an owned keep for each side")?
             .id
             .clone();
-        for kind in [leader] {
-            let rule = &rules.units[rules.types[kind]];
-            starting_cost[side.index()] += rule.cost;
-            state.units.push(PublicUnit {
-                id: format!("u{}", state.next_id),
-                r#type: kind.into(),
-                side,
-                tile: start.clone(),
-                hp: rule.hp,
-                moved: false,
-                attacked: false,
-                experience: Some(0),
-                name: None,
-                role: rule.leader.then_some(Role::Leader),
-                retreating: None,
-                rebuilding: None,
-            });
-            state.next_id += 1;
-        }
+        let rule = &rules.units[rules.types[leader]];
+        starting_cost[side.index()] += rule.cost;
+        state.units.push(PublicUnit {
+            id: format!("u{}", state.next_id),
+            r#type: leader.into(),
+            side,
+            tile: start.clone(),
+            hp: rule.hp,
+            moved: false,
+            attacked: false,
+            experience: Some(0),
+            name: None,
+            role: rule.leader.then_some(Role::Leader),
+            retreating: None,
+            rebuilding: None,
+        });
+        state.next_id += 1;
     }
     let budget = rules.arena.starting_budget + (random.next() * 3.0).floor() as i32 * 3;
     if starting_cost.iter().any(|&cost| cost > budget) {

@@ -19,6 +19,8 @@ export type AdvancedTroop =
   | "deatharcher"
   | "direwolf"
   | "greatboar"
+  | "wraith"
+  | "spectre"
   | "lancer"
   | "mage"
   | "marksman"
@@ -86,6 +88,7 @@ export type UnitType =
   | "archer"
   | "boar"
   | "bonearcher"
+  | "ghost"
   | "harpooner"
   | "merfolk-maceguard"
   | "reefguard"
@@ -104,7 +107,7 @@ export type UnitType =
   | "fox-spearguard"
   | "treant";
 export type RecruitType = Exclude<UnitType, LeaderType>;
-export type Race = "human" | "skeletons" | "beast" | "merfolk";
+export type Race = "human" | "skeletons" | "beast" | "merfolk" | "spirit";
 export type TerrainType =
   | "plains"
   | "road"

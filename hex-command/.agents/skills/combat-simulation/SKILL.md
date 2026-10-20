@@ -10,6 +10,10 @@ and [purpose.md](purpose.md) before AI policy reviews or interpreting balance
 and campaign results.
 Use the [Rust toolchain skill](../rust-toolchain/SKILL.md) for build problems.
 
+See [recruitment coefficients](recruitment.md) for independently tunable adaptive
+profiles and the opt-in `aggressive-predictor` recruiter. When recorded, its
+matching-policy arena values follow Predictor in the arrow panel.
+
 ## Run
 
 Keep experimental content in an ignored copy of `rust/data`, under `tmp/` or
@@ -143,7 +147,10 @@ Exports:
   separately as `thornDamage` and `thornDamagePerUnitTurn`; they never inflate
   weapon D/P. The weighted faction baseline uses total weapon damage divided by
   total nonleader unit-turns. Thus 10% presence and 50% damage means 5.00× D/P.
-  Unobserved units have zero presence and undefined rates, rather than zero DPS.
+  Units recorded for a faction elsewhere in the analyzed run or baseline have
+  zero presence and undefined rates in scopes where they were not fielded.
+  Units never recorded for that faction are omitted. Membership comes from
+  recorded faction rows, never from a unit's mechanical race.
   Damage-free factions have undefined D/P. Catalog units come from recorded
   profiles; promotion tiers remain separate.
   Rows sort by recorded unit role: infantry, flank, ranger, support, then family
@@ -237,6 +244,8 @@ expected coverage separately.
    winning against column factions. Show every recorded opposing faction;
    pooled race averages must not replace the matchup breakdown. Order maps as
    Plains (open), Forests (wooded), Crossing (crossings), Islands (islands).
+   Include Wood Edge (wood-edge) after Islands. All five maps belong to the
+   default arena roster; a playable-map picker does not define arena coverage.
    Order factions as Humans, Skeletons, Woodland, Merfolk (recorded as Coastal).
    Put comparable policies in each cell in the order **Balanced → Situational →
    Predictor**, using the available subset (for example Situational → Predictor
@@ -279,7 +288,7 @@ accounting exports are distinct outputs.
 
 | Requested element                           | Meaning and evidence                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Damage tables**                           | Per exact unit/tier: Presence %, weapon Damage/turn, D/P and separate Thorns/turn, from `unit_damage.csv`. D/P is weapon damage share divided by presence share: 10% presence and 50% damage is 5.00×. Both shares exclude leaders; weapon damage includes retaliation and excludes overkill and thorns. Thorn damage is effective HP removed, credited to personal/aura sources. Include unused recorded-catalog units as 0% presence and undefined rates (—). Use `unit_damage_changes.csv` for baseline → current comparisons. |
+| **Damage tables**                           | Per exact unit/tier: Presence %, weapon Damage/turn, D/P and separate Thorns/turn, from `unit_damage.csv`. D/P is weapon damage share divided by presence share: 10% presence and 50% damage is 5.00×. Both shares exclude leaders; weapon damage includes retaliation and excludes overkill and thorns. Thorn damage is effective HP removed, credited to personal/aura sources. Include unused recorded faction units as 0% presence and undefined rates (—). Use `unit_damage_changes.csv` for baseline → current comparisons. |
 | **Damage shares / combat usage**            | Each family's share of recorded attacks and damage, alongside recruitment and battlefield presence, from `army_usage.csv`. These legacy damage shares include retaliation and overkill and credit aura reflection to the defender; they are not the actual-HP damage table above.                                                                                                                                                                                                                                                 |
 | **Recruitment / purchase tables**           | New recruits as counts and shares of purchases, from `purchase_shares.csv`. Starting units and earned promotions are excluded. This measures purchasing choices, not field composition or effectiveness.                                                                                                                                                                                                                                                                                                                          |
 | **Battlefield presence**                    | Living nonleader unit-turn counts and shares at own-phase end, including starting units and promotions, from `battlefield_presence.csv` or exact-unit `battlefield_units.csv`. Longer survival contributes more observations; presence is not a unit win rate.                                                                                                                                                                                                                                                                    |

@@ -6,6 +6,7 @@ use std::rc::Rc;
 
 pub(super) struct BattleRules<'a> {
     pub units: &'a [UnitRule],
+    pub recruitment: &'a RecruitmentProfiles,
 }
 
 enum EngineAccess<'a, 'catalog> {
@@ -44,6 +45,7 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     pub(super) fn rules(&self) -> BattleRules<'_> {
         BattleRules {
             units: &self.engine().rules.units,
+            recruitment: &self.engine().rules.recruitment,
         }
     }
     pub(super) fn board(&self) -> &Board {
@@ -128,6 +130,17 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         from: usize,
     ) -> f64 {
         self.engine().death_chance(attacker, target, weapon, from)
+    }
+    pub(super) fn death_chance_with_thorns(
+        &self,
+        attacker: &Unit,
+        target: &Unit,
+        weapon: usize,
+        from: usize,
+        thorns: i32,
+    ) -> f64 {
+        self.engine()
+            .death_chance_with_thorns(attacker, target, weapon, from, thorns)
     }
     pub(super) fn drain_healing(
         &self,

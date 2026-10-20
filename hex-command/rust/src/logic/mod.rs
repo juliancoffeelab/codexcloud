@@ -3,7 +3,7 @@ pub(crate) mod battle;
 mod combat;
 mod commands;
 pub(crate) mod damage;
-#[cfg(feature = "wasm")]
+#[cfg(any(test, feature = "wasm"))]
 mod inspection;
 mod movement;
 mod restore;

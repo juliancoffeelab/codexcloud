@@ -26,7 +26,17 @@ def match(seed, player='a', enemy='b', winner='player', reason='leader'):
 
 
 class CompleteDataTests(unittest.TestCase):
-    def test_unit_usage_writes_damage_presence_comparison_with_unused_units(self):
+    def test_compressed_reports_keep_effective_recruitment_profiles(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp)/'report.json.gz'
+            profiles = {'standard': {'speed': 0}, 'aggressivePredictor': {'speed': 0.5}}
+            with gzip.open(path, 'wt') as stream:
+                json.dump({'outcomes': [match(1)], 'recruitmentProfiles': profiles}, stream)
+            outcomes, metadata = report.load_run([path])
+            self.assertEqual(len(outcomes), 1)
+            self.assertEqual(metadata[0]['recruitmentProfiles'], profiles)
+
+    def test_unit_usage_writes_damage_presence_comparison(self):
         profiles = {u: dict(name=u.title(), family=u, race=race, level=level)
                     for u, race, level in [('foot', 'a', 1), ('unused', 'a', 2), ('foe', 'b', 1)]}
         roster = [dict(id='f', type='foot', side='player', tile='0,0', hp=10),
@@ -49,9 +59,10 @@ class CompleteDataTests(unittest.TestCase):
                             mitigation=dict(attack=stage, retaliation=None))])])).encode()
                 (directory/'details.jsonl').write_bytes(raw)
                 saved['detail'] = dict(file='details.jsonl', offset=0, bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
-                path = directory/'report.json'
-                path.write_text(json.dumps(dict(status='complete', outcomes=[saved], unitProfiles=profiles,
-                    supportTelemetryVersion=1, combatTelemetryVersion=1)))
+                path = directory/('report.json.gz' if label == 'after' else 'report.json')
+                with gzip.open(path, 'wt') if path.suffix == '.gz' else path.open('w') as stream:
+                    json.dump(dict(status='complete', outcomes=[saved], unitProfiles=profiles,
+                        supportTelemetryVersion=1, combatTelemetryVersion=1), stream)
                 paths.append(path)
             with contextlib.redirect_stdout(io.StringIO()):
                 tables = report.build_report([paths[1]], [paths[0]], root/'out', unit_usage=True)
@@ -60,7 +71,6 @@ class CompleteDataTests(unittest.TestCase):
             self.assertEqual((row['presenceSharePercent'], row['damagePresenceRatio']), (100, 1))
             text = (root/'out/findings.md').read_text()
             self.assertIn('| Foot (L1) | unknown | 100.00% → 100.00% | 2.00 → 4.00 | 1.00× → 1.00× |', text)
-            self.assertIn('| Unused (L2) | unknown | 0.00% → 0.00% | — → — | — → — |', text)
             paired = text.split('## Battlefield presence and recruitment flow', 1)[1].split('## Purchase shares', 1)[0]
             self.assertIn('| a | situational | situational | Plains | foot |', paired)
             self.assertLess(paired.index('sharePercent'), paired.index('purchaseSharePercent'))

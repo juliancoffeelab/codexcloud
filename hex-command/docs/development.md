@@ -51,6 +51,15 @@ for commands, reports and interpretation. [Army design](../.agents/skills/combat
 defines faction identities and unit-role tradeoffs. Evaluate actual battlefield
 contributions, and distinguish observed outcomes from proposed causes.
 
+The default arena roster is Plains, Forests, Crossing, Islands and Wood Edge.
+Permanent arena-only layouts are registered in the manifest's `arenaScenarios`
+and kept under `rust/data/simulation/maps/`; they do not enter the playable map
+picker. A scoped `--landscapes` selection must not silently replace this roster.
+
+Sprite palette entries use straight RGBA, including partial alpha for spectral
+materials. Keep faction cloth readable and preserve material alpha in all faction
+variants. Native layer composition uses source-over blending without resizing.
+
 ## Publication
 
 Use the [publish skill](../.agents/skills/publish/SKILL.md) when the user requests

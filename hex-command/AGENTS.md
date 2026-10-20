@@ -33,8 +33,11 @@
   cases in existing test matrices.
 - Validate content through generic schema and consistency checks. Measure
   balance through simulations.
-- Add tests for new mechanics, changed code paths, or reproduced bugs that
-  existing coverage misses. Identify that missing coverage before writing tests.
+- Do not add permanent tests unless you can guarantee that they will fail in
+  the future. A reproduced bug alone does not justify a permanent regression test.
+- For bug fixes, use a disposable test or probe: reproduce the failure, fix the
+  code, verify that the probe passes, then delete it. Run the relevant existing
+  suites and remove obsolete expectations rather than preserving incorrect behavior.
 - Use a small, fixed set of representative fixtures. Do not freeze current
   unit stats, promotion choices, recruitment lists or roster sizes.
 - Do not duplicate existing coverage merely because new content uses it.

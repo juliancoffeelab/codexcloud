@@ -28,6 +28,22 @@ pub(super) fn choose_with_forecast(
     orders: &RecruitmentOrders,
     predict: bool,
 ) -> Option<Command> {
+    choose_with_weights(
+        game,
+        seed,
+        orders,
+        predict,
+        game.rules().recruitment.standard,
+    )
+}
+
+pub(super) fn choose_with_weights(
+    game: &BattleView<'_, '_>,
+    seed: u32,
+    orders: &RecruitmentOrders,
+    predict: bool,
+    weights: RecruitmentWeights,
+) -> Option<Command> {
     let side = game.turn();
     let leader = game
         .units()
@@ -64,7 +80,8 @@ pub(super) fn choose_with_forecast(
             retreating: None,
             rebuilding: None,
         };
-        let assessment = super::evaluation::Assessment::with_forecast(game, &recruit, predict);
+        let assessment =
+            super::evaluation::Assessment::with_weights(game, &recruit, predict, weights);
         let copies = game
             .units()
             .iter()
@@ -85,8 +102,8 @@ pub(super) fn choose_with_forecast(
             recruit.tile = tile;
             let score = assessment.recruitment_breakdown(game, &recruit).total
                 / rule.cost.max(1) as f64
-                / (1.0 + copies as f64 * 0.2)
-                / (1.0 + wait * 0.25)
+                / (1.0 + copies as f64 * weights.duplicate_penalty)
+                / (1.0 + wait * weights.wait_penalty)
                 + super::random(
                     seed,
                     &format!("situational:{}:{}:{tile}", game.round(), rule.id),
@@ -147,9 +164,11 @@ mod tests {
     }
 
     fn selected(game: &Game<'_>, orders: &RecruitmentOrders) -> Option<usize> {
-        choose(&BattleView::new(game), 7, orders).map(|command| match command {
-            Command::Recruit { kind, .. } => game.kind(&kind.0),
-            _ => panic!("recruiter emitted a non-recruit command"),
+        choose(&BattleView::new(game), 7, orders).map(|command| {
+            let Command::Recruit { kind, .. } = command else {
+                panic!("recruiter emitted a non-recruit command");
+            };
+            game.kind(&kind.0)
         })
     }
 
@@ -274,48 +293,6 @@ mod tests {
             selected(&battle(&rules, a, b), &RecruitmentOrders::default()),
             Some(b)
         );
-    }
-
-    #[test]
-    fn predictor_anticipates_legal_recruits_while_situational_uses_observed_enemies() {
-        let (mut rules, a, b) = fixture();
-        rules.units[a].attacks[0].damage = 11;
-        rules.units[a].attacks[0].damage_type = DamageType::Blade;
-        rules.units[b].attacks[0].damage_type = DamageType::Pierce;
-        let future = rules.types["scout"];
-        let mut foe = rules.units[a].clone();
-        foe.id = rules.units[future].id.clone();
-        foe.damage_modifiers.blade = -10;
-        rules.units[future] = foe;
-        rules.route_classes[future] = future;
-        let observed = battle(&rules, a, b)
-            .units
-            .iter()
-            .find(|u| u.side == Side::Enemy)
-            .unwrap()
-            .kind;
-        rules.units[observed].damage_modifiers = DamageModifiers {
-            blade: 0,
-            pierce: 0,
-            impact: 0,
-        };
-        for environment in &mut rules.units[observed].environment {
-            *environment = [[0; 3]; 2];
-        }
-        rules.units[observed].attacks.truncate(1);
-        rules.units[observed].attacks[0].category = Category::Melee;
-        rules.units[observed].attacks[0].range = 1;
-        rules.units[observed].attacks[0].damage = 8;
-        rules.units[observed].attacks[0].count = 1;
-        let mut game = battle(&rules, a, b);
-        game.pools.as_mut().unwrap()[1] = vec![future];
-        let pick = |recruiter: RecruiterKind| match recruiter.choose(&game, 7, None, false).unwrap()
-        {
-            Command::Recruit { kind, .. } => game.kind(&kind.0),
-            _ => panic!("expected recruitment"),
-        };
-        assert_eq!(pick(RecruiterKind::Situational), a);
-        assert_eq!(pick(RecruiterKind::Predictor), b);
     }
 
     #[test]

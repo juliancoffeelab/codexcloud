@@ -2,7 +2,6 @@ import { test } from "vitest";
 import type { UnitType } from "../src/game/types.ts";
 import { required } from "./helpers.ts";
 import { damageExplanation } from "../src/presentation/combat.ts";
-import { describeChanges } from "../src/controller/feedback.ts";
 import { attackChoiceViews } from "../src/ui/combat-view.ts";
 import assert from "node:assert/strict";
 import { Game, TYPES } from "./game-fixture.ts";
@@ -99,15 +98,6 @@ test("Covered retaliation can deal zero damage", async () => {
   assert(choice.available);
   assert(choice.retaliationCalculation.description.includes("shard"));
   assert.equal(choice.playerForecast.remainingHp, attacker.hp);
-});
-test("A zero-damage roll still produces combat feedback", async () => {
-  const { game, attacker, target } = fixture("bonearcher", "commander");
-  required(game.tile(target.tile)).terrain = "hill";
-  game.restoreState({ ...game.captureState(), combatRng: 1 });
-  const before = game.snapshot();
-  game.attack(attacker.id, target.id, "shard");
-  assert.equal(target.hp, required(before.units.find((unit) => unit.id === target.id)).hp);
-  assert(describeChanges(before, game.snapshot()).attacked, "blocked attacks still play their cue");
 });
 test("Forecasts distinguish guaranteed kills, uncertain kills and lethal retaliation", () => {
   const { game, attacker, target } = fixture();

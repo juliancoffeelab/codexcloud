@@ -8,13 +8,9 @@ struct Approach {
     origins: Vec<usize>,
     routes: Rc<Vec<u16>>,
 }
-// Recruitment estimates typical coverage, rather than summing mutually
-// exclusive future positions. This is a prior, not a measured runtime statistic.
-const EXPECTED_SUPPORT_RECIPIENTS: f64 = 1.0;
 // Before four troops are visible, blend the known legal enemy roster into the
 // matchup estimate. This prior prevents opening purchases from countering only
 // a leader. Observed troops progressively replace it, including after losses.
-const EXPECTED_ENEMY_TROOPS: f64 = 4.0;
 
 struct Support {
     healing: f64,
@@ -31,10 +27,15 @@ pub(super) struct Score {
     pub thorns: f64,
     pub mobility: f64,
     pub captures: f64,
+    pub leader_pressure: f64,
+    pub movement_bonus: f64,
+    pub healing: f64,
+    pub aura_thorns: f64,
     pub total: f64,
 }
 
 pub(super) struct Assessment {
+    weights: RecruitmentWeights,
     forecasts: Vec<Unit>,
     forecast_weight: f64,
     approaches: Vec<Approach>,
@@ -48,6 +49,14 @@ impl Assessment {
         Self::with_forecast(game, unit, false)
     }
     pub(super) fn with_forecast(game: &BattleView<'_, '_>, unit: &Unit, predict: bool) -> Self {
+        Self::with_weights(game, unit, predict, game.rules().recruitment.standard)
+    }
+    pub(super) fn with_weights(
+        game: &BattleView<'_, '_>,
+        unit: &Unit,
+        predict: bool,
+        weights: RecruitmentWeights,
+    ) -> Self {
         let rule = &game.rules().units[unit.kind];
         let enemies: Vec<_> = game
             .units()
@@ -69,7 +78,7 @@ impl Assessment {
             if let Some(leader) = enemies.iter().find(|e| game.rules().units[e.kind].leader) {
                 let options = game.recruitment_options(leader.side);
                 forecast_weight =
-                    (EXPECTED_ENEMY_TROOPS - actual as f64).max(0.0) / options.len().max(1) as f64;
+                    (weights.future_enemies - actual as f64).max(0.0) / options.len().max(1) as f64;
                 if forecast_weight > 0.0 {
                     for kind in options {
                         let mut forecast = (*leader).clone();
@@ -101,8 +110,14 @@ impl Assessment {
         }
         // An existing provider cannot support itself. Treat remote providers'
         // future coverage as independent; current adjacent coverage is exact.
-        let overlap_probability =
-            (EXPECTED_SUPPORT_RECIPIENTS / allies.len().saturating_sub(1).max(1) as f64).min(1.0);
+        let overlap_probability = (weights.support_recipients
+            / allies.len().saturating_sub(1).max(1) as f64
+            * weights.healing_overlap)
+            .min(1.0);
+        let aura_overlap_probability = (weights.support_recipients
+            / allies.len().saturating_sub(1).max(1) as f64
+            * weights.aura_overlap)
+            .min(1.0);
         let mut support = Vec::new();
         if rule.healing > 0 || rule.thorn_aura > 0 {
             for ally in &allies {
@@ -130,7 +145,8 @@ impl Assessment {
                 }
                 // Anticipate support use without a nearby-enemy gate.
                 let healing = expected_marginal_support(
-                    (ally_rule.hp - ally.hp).max(0) as f64 + ally_rule.hp as f64 * 0.2,
+                    (ally_rule.hp - ally.hp).max(0) as f64
+                        + ally_rule.hp as f64 * weights.future_wounds,
                     covered,
                     rule.healing,
                     &mut remote_healing,
@@ -141,7 +157,7 @@ impl Assessment {
                     aura,
                     rule.thorn_aura,
                     &mut remote_auras,
-                    overlap_probability,
+                    aura_overlap_probability,
                 );
                 // Classify the enemy's preferred exchange against this ally,
                 // including the proposed aura, rather than any melee backup.
@@ -213,6 +229,7 @@ impl Assessment {
             })
             .collect();
         Self {
+            weights,
             forecasts,
             forecast_weight,
             approaches,
@@ -231,14 +248,16 @@ impl Assessment {
         self.valuation(game, unit, false)
     }
     fn valuation(&self, game: &BattleView<'_, '_>, unit: &Unit, recruitment: bool) -> Score {
-        // Movement contributes only through village capture, for both purchases
-        // and earned promotion choices. Enemy relevance never depends on distance.
+        // Recruitment can reward village capture and configured mobility; earned
+        // promotions retain village value. Enemy relevance never depends on distance.
         let rule = &game.rules().units[unit.kind];
         let enemies: Vec<_> = game
             .units()
             .iter()
             .filter(|u| u.side != unit.side)
             .collect();
+        let coefficients = self.weights;
+        let mut leader_pressure: f64 = 0.0;
         let mut offense = 0.0;
         let mut retaliation = 0.0;
         let mut raw = 0.0;
@@ -270,6 +289,7 @@ impl Assessment {
                     continue;
                 }
                 let mut value = 0.0;
+                let mut leader_damage = 0.0;
                 for &origin in &origins {
                     let mut attacker = unit.clone();
                     attacker.tile = origin;
@@ -278,17 +298,23 @@ impl Assessment {
                     let attack = &rule.attacks[approach.weapon];
                     let drain = damage.min(enemy.hp) as f64 * f64::from(attack.drain) / 100.0;
                     let exchange = game.effective_damage(&attacker, enemy, approach.weapon)
-                        + drain * 0.5
-                        - response.min(unit.hp) as f64 * 0.5
-                        + game.kill_chance(&attacker, enemy, approach.weapon) * 3.0
+                        + drain * coefficients.drain
+                        - response.min(unit.hp) as f64 * coefficients.exchange_retaliation
+                        + game.kill_chance(&attacker, enemy, approach.weapon) * coefficients.kill
                         - if response as f64 >= unit.hp as f64 + drain {
                             unit.hp as f64
                         } else {
                             0.0
                         };
                     value += exchange;
+                    leader_damage += damage.min(enemy.hp).max(0) as f64;
                 }
                 value /= origins.len() as f64;
+                if recruitment && coefficients.leader_pressure > 0.0 && enemy_rule.leader {
+                    let turns = f64::from(route) / rule.r#move.max(1) as f64;
+                    let fraction = leader_damage / origins.len() as f64 / enemy.hp.max(1) as f64;
+                    leader_pressure = leader_pressure.max(fraction.min(1.0) / (1.0 + turns));
+                }
                 best_offense = best_offense.max(value * access);
                 reach = reach.max(access);
             }
@@ -338,11 +364,19 @@ impl Assessment {
         // Effective HP in raw incoming damage, including per-strike armor. A
         // floor keeps complete immunity to one observed weapon finite.
         let durability = unit.hp.max(1) as f64 * raw / incoming.max(raw * 0.2).max(1.0);
-        let support = expected_support_coverage(
+        let support = support_coverage(
             self.support
                 .iter()
                 .filter_map(|s| (s.routes[unit.tile] != u16::MAX).then_some(s.healing + s.thorns)),
+            coefficients.support_recipients,
         );
+        let aura_thorns = support_coverage(
+            self.support
+                .iter()
+                .filter_map(|s| (s.routes[unit.tile] != u16::MAX).then_some(s.thorns)),
+            coefficients.support_recipients,
+        );
+        let healing = (support - aura_thorns).max(0.0);
         let captures = self
             .captures
             .iter()
@@ -386,13 +420,28 @@ impl Assessment {
             // Linear endurance values sustained contribution. Normalize to
             // the former square-root score at 20 effective HP so retaliation
             // and support keep the same relative scale at that reference.
-            let endurance = durability / 20.0_f64.sqrt();
-            offense * endurance + retaliation * access * 0.5
+            let endurance = durability / coefficients.endurance_reference_hp.sqrt();
+            offense * coefficients.offense * endurance
+                + retaliation * access * coefficients.retaliation
         } else {
             offense * 1.5 + durability * access * 0.35 + retaliation * access * 0.5
         };
-        let mobility = 0.0;
-        let total = combat * (1.0 + captures * 0.1) + (support + thorns) * 2.0;
+        let mobility = if recruitment && coefficients.speed > 0.0 {
+            terrain_speed(game, unit)
+        } else {
+            0.0
+        };
+        let movement_bonus = if recruitment {
+            movement_bonus(captures, mobility, leader_pressure, coefficients)
+        } else {
+            captures * 0.1
+        };
+        // Keep the old arithmetic when the support weights agree. The aura
+        // adjustment exposes a separate coefficient without changing defaults.
+        let total = combat * (1.0 + movement_bonus)
+            + (support + thorns) * coefficients.healing
+            + aura_thorns * (coefficients.aura_thorns - coefficients.healing)
+            + thorns * (coefficients.intrinsic_thorns - coefficients.healing);
         Score {
             offense,
             effective_hp: durability,
@@ -402,16 +451,31 @@ impl Assessment {
             thorns,
             mobility,
             captures,
+            leader_pressure,
+            movement_bonus,
+            healing,
+            aura_thorns,
             total,
         }
     }
 }
 
-// Each zero is an enemy whose preferred attack is ranged. Exclude it from
-// melee pressure and the melee strike average. Cap attackers, not strikes.
-#[cfg(test)]
-fn expected_thorn_triggers(strikes: impl Iterator<Item = u8>, friendly_count: usize) -> f64 {
-    expected_weighted_thorn_triggers(strikes.map(|count| (count, 1.0)), friendly_count)
+// Intrinsic speed uses typical traversable terrain cost, not distance to troops.
+fn terrain_speed(game: &BattleView<'_, '_>, unit: &Unit) -> f64 {
+    let costs: Vec<_> = (0..game.board().ids.len())
+        .map(|t| game.cost(unit.kind, t))
+        .filter(|&c| c != u16::MAX)
+        .collect();
+    let mean = costs.iter().map(|&x| f64::from(x)).sum::<f64>() / costs.len().max(1) as f64;
+    ((game.rules().units[unit.kind].r#move as f64 / mean.max(1.0) - 3.0) / 3.0).clamp(0.0, 1.0)
+}
+
+// Speed and leader delivery describe alternative uses of the same mobility.
+// Take their maximum, then add distinct marginal village value, with one cap.
+fn movement_bonus(captures: f64, speed: f64, leader: f64, weights: RecruitmentWeights) -> f64 {
+    let bonus = captures * weights.village_capture
+        + (speed * weights.speed).max(leader * weights.leader_pressure);
+    weights.movement_cap.map_or(bonus, |cap| bonus.min(cap))
 }
 
 // Forecast types carry fractional troop weights. Ranged preferences contribute
@@ -501,24 +565,23 @@ fn preferred_attack(
             let mut attacker = enemy.clone();
             attacker.tile = origin;
             let (damage, mut response, _) = game.preview(&attacker, target, weapon, origin);
+            let actual_thorns = game.thorn_damage(&attacker, target, weapon, origin);
+            let mut thorns = actual_thorns;
             if let Some(aura) = aura {
                 let reflection = if attack.category == Category::Melee {
                     (game.rules().units[target.kind].thorns + aura) * i32::from(attack.count)
                 } else {
                     0
                 };
-                response += reflection - game.thorn_damage(&attacker, target, weapon, origin);
+                thorns = reflection;
+                response += reflection - actual_thorns;
             }
             let healed = game.drain_healing(&attacker, target, weapon, damage);
             let exchange = game.effective_damage(&attacker, target, weapon)
                 + healed as f64
                 + game.kill_chance(&attacker, target, weapon) * 18.0
                 - response as f64 * 0.7
-                - if response >= attacker.hp + healed {
-                    40.0
-                } else {
-                    0.0
-                };
+                - game.death_chance_with_thorns(&attacker, target, weapon, origin, thorns) * 40.0;
             value += exchange;
             damage_sum += damage as f64;
             response_sum += response as f64;
@@ -562,14 +625,16 @@ fn expected_marginal_support(
     value + uncovered_probability * marginal_healing(demand, covered, candidate)
 }
 
-fn expected_support_coverage(values: impl Iterator<Item = f64>) -> f64 {
+// Recruitment estimates typical coverage, rather than summing mutually
+// exclusive future positions. This is a prior, not a measured runtime statistic.
+fn support_coverage(values: impl Iterator<Item = f64>, recipients: f64) -> f64 {
     let (sum, count) = values.fold((0.0, 0usize), |(sum, count), value| {
         (sum + value, count + 1)
     });
     if count == 0 {
         0.0
     } else {
-        sum * EXPECTED_SUPPORT_RECIPIENTS.min(count as f64) / count as f64
+        sum * recipients.min(count as f64) / count as f64
     }
 }
 
@@ -581,12 +646,88 @@ fn marginal_healing(demand: f64, covered: i32, candidate: i32) -> f64 {
 mod tests {
     use super::*;
     #[test]
+    fn movement_controls_are_optional_separate_and_share_a_cap() {
+        let (mut rules, target, enemy) = thorn_fixture();
+        rules.units[enemy].leader = true;
+        rules.units[target].r#move = 6;
+        let (mut game, target_id, enemy_id) = thorn_battle(&rules, target, enemy);
+        let a = game.site("1,4");
+        let b = game.site("8,4");
+        game.units
+            .iter_mut()
+            .find(|u| u.id == target_id)
+            .unwrap()
+            .tile = a;
+        game.units
+            .iter_mut()
+            .find(|u| u.id == enemy_id)
+            .unwrap()
+            .tile = b;
+        game.owners.fill(Some(Side::Player));
+        let view = BattleView::new(&game);
+        let unit = game.unit(target_id).unwrap();
+        let score = |weights| {
+            Assessment::with_weights(&view, unit, false, weights).recruitment_breakdown(&view, unit)
+        };
+        let baseline = score(RecruitmentWeights::default());
+        let speed = score(RecruitmentWeights {
+            speed: 0.5,
+            ..RecruitmentWeights::default()
+        });
+        let leader = score(RecruitmentWeights {
+            leader_pressure: 2.0,
+            ..RecruitmentWeights::default()
+        });
+        assert_eq!(baseline.movement_bonus, 0.0);
+        assert!(speed.movement_bonus > 0.0 && leader.movement_bonus > 0.0);
+        assert_eq!(speed.leader_pressure, 0.0);
+        assert_eq!(leader.mobility, 0.0);
+        assert_eq!(baseline.offense, leader.offense);
+        assert_eq!(baseline.effective_hp, speed.effective_hp);
+        let capped = score(RecruitmentWeights {
+            speed: 100.0,
+            leader_pressure: 100.0,
+            movement_cap: Some(0.25),
+            ..RecruitmentWeights::default()
+        });
+        assert_eq!(capped.movement_bonus, 0.25);
+        assert_eq!(
+            movement_bonus(
+                0.0,
+                1.0,
+                1.0,
+                RecruitmentWeights {
+                    speed: 0.4,
+                    leader_pressure: 0.4,
+                    ..RecruitmentWeights::default()
+                }
+            ),
+            0.4
+        );
+    }
+
+    #[test]
     fn thorn_pressure_caps_attackers_before_strikes_and_ignores_ranged_enemies() {
-        assert_eq!(expected_thorn_triggers([3; 20].into_iter(), 1), 18.0);
-        assert_eq!(expected_thorn_triggers([1].into_iter(), 10), 0.1);
-        assert_eq!(expected_thorn_triggers([0; 20].into_iter(), 1), 0.0);
-        assert_eq!(expected_thorn_triggers([0, 0, 1, 3].into_iter(), 4), 1.0);
-        assert_eq!(expected_thorn_triggers([].into_iter(), 1), 0.0);
+        assert_eq!(
+            expected_weighted_thorn_triggers([(3, 1.0); 20].into_iter(), 1),
+            18.0
+        );
+        assert_eq!(
+            expected_weighted_thorn_triggers([(1, 1.0)].into_iter(), 10),
+            0.1
+        );
+        assert_eq!(
+            expected_weighted_thorn_triggers([(0, 1.0); 20].into_iter(), 1),
+            0.0
+        );
+        assert_eq!(
+            expected_weighted_thorn_triggers(
+                [(0, 1.0), (0, 1.0), (1, 1.0), (3, 1.0)].into_iter(),
+                4
+            ),
+            1.0
+        );
+        assert_eq!(expected_weighted_thorn_triggers([].into_iter(), 1), 0.0);
     }
 
     fn thorn_fixture() -> (Rules, usize, usize) {
@@ -1033,10 +1174,10 @@ mod tests {
 
     #[test]
     fn expected_coverage_does_not_sum_exclusive_future_positions() {
-        assert_eq!(expected_support_coverage([].into_iter()), 0.0);
-        assert_eq!(expected_support_coverage([4.0].into_iter()), 4.0);
-        assert_eq!(expected_support_coverage([4.0; 2].into_iter()), 4.0);
-        assert_eq!(expected_support_coverage([4.0; 8].into_iter()), 4.0);
+        assert_eq!(support_coverage([].into_iter(), 1.0), 0.0);
+        assert_eq!(support_coverage([4.0].into_iter(), 1.0), 4.0);
+        assert_eq!(support_coverage([4.0; 2].into_iter(), 1.0), 4.0);
+        assert_eq!(support_coverage([4.0; 8].into_iter(), 1.0), 4.0);
     }
 
     #[test]

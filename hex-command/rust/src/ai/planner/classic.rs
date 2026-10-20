@@ -245,7 +245,7 @@ impl BattleView<'_, '_> {
                 "soldier" | "skeleton" | "warden" | "boar" => ClassicOrder::Frontline,
                 "commander" | "wildkeeper" | "necromancer" => ClassicOrder::Leader,
                 _ => match r.family {
-                    Family::Scout | Family::Wolf => ClassicOrder::Scout,
+                    Family::Scout | Family::Wolf | Family::Ghost => ClassicOrder::Scout,
                     Family::Archer | Family::Thorncaller | Family::Bonearcher | Family::Adept => {
                         ClassicOrder::Ranged
                     }

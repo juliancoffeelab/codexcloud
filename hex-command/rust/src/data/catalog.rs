@@ -44,8 +44,12 @@ struct Manifest {
     races: Vec<String>,
     units: Vec<String>,
     scenarios: Vec<String>,
+    #[serde(default)]
+    arena_scenarios: Vec<String>,
     campaigns: Vec<String>,
     simulation: SimulationPaths,
+    #[serde(default)]
+    recruitment: Option<String>,
 }
 #[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -581,6 +585,7 @@ impl Rules {
         }
         let mut map_definitions = Vec::new();
         let mut maps = HashMap::new();
+        let mut arena_maps = HashMap::new();
         let mut campaigns = HashMap::new();
         let mut used_paths = HashSet::new();
         for path in &manifest.scenarios {
@@ -591,6 +596,14 @@ impl Rules {
             let state = initial.resolve(&units, &types, &roster_path)?;
             map_definitions.push(documents::map_metadata(bundle, path, &state, None)?);
             insert_map(&mut maps, state, &terrains, &types, path)?;
+        }
+        for path in &manifest.arena_scenarios {
+            if !used_paths.insert(path.clone()) {
+                return Err(ContentError::new(path, "duplicate catalog path"));
+            }
+            let (initial, roster_path) = documents::scenario(bundle, path)?;
+            let state = initial.resolve(&units, &types, &roster_path)?;
+            insert_map(&mut arena_maps, state, &terrains, &types, path)?;
         }
         for path in &manifest.campaigns {
             if !used_paths.insert(path.clone()) {
@@ -671,10 +684,26 @@ impl Rules {
                 return Err(ContentError::new(path, "duplicate campaign identifier"));
             }
         }
+        let recruitment: RecruitmentProfiles = if let Some(path) = &manifest.recruitment {
+            let profiles: RecruitmentProfiles = parse(bundle, path)?;
+            profiles
+                .validate()
+                .map_err(|message| ContentError::new(path, message))?;
+            profiles
+        } else {
+            RecruitmentProfiles::default()
+        };
         let rosters: Vec<ArmyRoster> = parse(bundle, &manifest.simulation.rosters)?;
         let arena: ArenaDefaults = parse(bundle, &manifest.simulation.arena)?;
         let campaign_defaults: CampaignDefaults = parse(bundle, &manifest.simulation.campaign)?;
-        validate_simulation(&rosters, &arena, &campaign_defaults, &types, &maps)?;
+        validate_simulation(
+            &rosters,
+            &arena,
+            &campaign_defaults,
+            &types,
+            &maps,
+            &arena_maps,
+        )?;
         unique(
             campaign_defaults.campaigns.iter().map(String::as_str),
             "simulation/campaign.json",
@@ -708,6 +737,7 @@ impl Rules {
             .collect();
         Ok(Self {
             content_fingerprint: content_fingerprint(bundle),
+            recruitment,
             terrain_types: terrain.iter().map(|t| t.id).collect(),
             terrain_names,
             terrain_labels: terrain.iter().map(|t| t.name.clone()).collect(),
@@ -720,6 +750,7 @@ impl Rules {
             types,
             terrains,
             maps,
+            arena_maps,
             campaigns,
             rosters,
             arena,
@@ -926,6 +957,7 @@ fn validate_simulation(
     campaign: &CampaignDefaults,
     types: &HashMap<String, usize>,
     maps: &HashMap<(String, u32), State>,
+    arena_maps: &HashMap<(String, u32), State>,
 ) -> Result<(), ContentError> {
     let path = "simulation/rosters.json";
     unique(rosters.iter().map(|r| r.id.as_str()), path)?;
@@ -970,6 +1002,7 @@ fn validate_simulation(
         if let Some(id) = &landscape.map {
             let map = maps
                 .iter()
+                .chain(arena_maps.iter())
                 .filter(|((name, _), _)| name == id)
                 .max_by_key(|((_, revision), _)| revision)
                 .map(|(_, map)| map)

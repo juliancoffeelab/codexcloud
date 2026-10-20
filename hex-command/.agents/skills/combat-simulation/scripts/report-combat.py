@@ -12,8 +12,8 @@ from pathlib import Path
 import time
 
 DISPLAY_NAMES = {'human': 'Humans', 'skeletons': 'Skeletons', 'woodland': 'Woodland', 'coastal': 'Merfolk', 'open': 'Plains', 'wooded': 'Forests',
-                 'crossings': 'Crossing', 'islands': 'Islands'}
-MAP_ORDER = ('open', 'wooded', 'crossings', 'islands')
+                 'crossings': 'Crossing', 'islands': 'Islands', 'wood-edge': 'Wood Edge'}
+MAP_ORDER = ('open', 'wooded', 'crossings', 'islands', 'wood-edge')
 
 
 def display_name(value):
@@ -146,7 +146,9 @@ def load_run(paths):
     outcomes, sources = {}, []
     for path in paths:
         if path.is_dir() and not (path / 'outcomes.json').exists():
-            children = [path / 'report.json'] if (path / 'report.json').exists() else sorted(
+            report_path = next((path / name for name in ('report.json', 'report.json.gz')
+                                if (path / name).exists()), None)
+            children = [report_path] if report_path else sorted(
                 p for p in path.iterdir() if p.is_dir() and (p / 'outcomes.json').exists())
             if not children:
                 raise ValueError('No recorded reports in ' + str(path))
@@ -171,8 +173,8 @@ def load_run(paths):
                         raw.setdefault('kind', 'campaign' if 'missions' in raw else 'arena')
                         diagnostics[identity(raw)] = recorded_analysis(raw)
         else:
-            report = json.loads(path.read_text())
-        source = {k: report.get(k) for k in ('sourceCommit', 'fingerprint', 'status', 'mode', 'schedule', 'seeds', 'elapsedSeconds', 'detailFormat', 'turnTiming', 'recruitmentLimits', 'unitFamilies', 'unitProfiles', 'supportTelemetryVersion', 'combatTelemetryVersion', 'leaderAuditVersion')}
+            report = json.loads(gzip.open(path, 'rt').read() if path.suffix == '.gz' else path.read_text())
+        source = {k: report.get(k) for k in ('sourceCommit', 'fingerprint', 'status', 'mode', 'schedule', 'seeds', 'elapsedSeconds', 'detailFormat', 'turnTiming', 'recruitmentLimits', 'recruitmentProfiles', 'unitFamilies', 'unitProfiles', 'supportTelemetryVersion', 'combatTelemetryVersion', 'leaderAuditVersion')}
         source['fingerprint'] = report.get('fingerprint', report.get('fingerprints'))
         source['file'] = str(path.resolve())
         source['matches'] = len(report['outcomes'])
@@ -339,8 +341,8 @@ def arena_race_map_summary(rows, opponent='classic'):
     return combine(selected, ['race', 'map', 'policy'], cross=True)
 
 
-CORE_POLICIES = ('balanced', 'situational', 'predictor')
-POLICY_NAMES = {'balanced': 'Balanced', 'situational': 'Situational', 'predictor': 'Predictor'}
+CORE_POLICIES = ('balanced', 'situational', 'predictor', 'aggressive-predictor-arena-queued')
+POLICY_NAMES = {'balanced': 'Balanced', 'situational': 'Situational', 'predictor': 'Predictor', 'aggressive-predictor-arena-queued': 'Aggressive Predictor'}
 
 
 def policy_order(value):
@@ -754,13 +756,16 @@ def build_report(inputs, baseline_inputs, out, unit_usage=False, support_effects
             spec.loader.exec_module(value)
             tables.update(value.analyze(inputs, usage.journals, value_enabled, leaders_enabled))
         if unit_usage:
-            tables['unit_damage'] = usage.unit_damage(tables['battlefield_units'],
-                tables['battlefield_unit_value'], sources[0]['unitProfiles'])
+            membership = tables['battlefield_units']
             if baseline_inputs:
                 old_presence, _ = usage.analyze(baseline_inputs, presence=True, support=False)
                 old_value = value.analyze(baseline_inputs, usage.journals, value=True, leaders=False)
+                membership = membership + old_presence['battlefield_units']
+            tables['unit_damage'] = usage.unit_damage(tables['battlefield_units'],
+                tables['battlefield_unit_value'], sources[0]['unitProfiles'], membership)
+            if baseline_inputs:
                 tables['baseline_unit_damage'] = usage.unit_damage(old_presence['battlefield_units'],
-                    old_value['battlefield_unit_value'], previous_sources[0]['unitProfiles'])
+                    old_value['battlefield_unit_value'], previous_sources[0]['unitProfiles'], membership)
                 tables['unit_damage_changes'] = usage.compare_unit_damage(
                     tables['unit_damage'], tables['baseline_unit_damage'])
     out.mkdir(parents=True, exist_ok=True)

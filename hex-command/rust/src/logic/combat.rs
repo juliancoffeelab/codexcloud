@@ -112,24 +112,50 @@ impl<'catalog> Game<'catalog> {
         weapon: usize,
         from: usize,
     ) -> f64 {
+        self.death_chance_with_thorns(
+            unit,
+            target,
+            weapon,
+            from,
+            self.thorn_damage(unit, target, weapon, from),
+        )
+    }
+    pub(crate) fn death_chance_with_thorns(
+        &self,
+        unit: &Unit,
+        target: &Unit,
+        weapon: usize,
+        from: usize,
+        thorns: i32,
+    ) -> f64 {
         let incoming = self
             .response(unit, target, weapon, from)
             .map(|w| self.damage_distribution(target, unit, w, from));
-        let thorns = self.thorn_damage(unit, target, weapon, from);
-        self.damage_distribution(unit, target, weapon, target.tile)
+        let mut certain = true;
+        let probability = self
+            .damage_distribution(unit, target, weapon, target.tile)
             .outcomes()
             .map(|(damage, p)| {
                 let hp = unit.hp + self.drain_healing(unit, target, weapon, damage) - thorns;
-                p * if hp <= 0 {
+                let risk = if hp <= 0 {
                     1.0
                 } else if damage >= target.hp {
                     0.0
                 } else {
                     incoming.as_ref().map_or(0.0, |d| d.chance(hp))
+                };
+                if p > 0.0 && risk < 1.0 {
+                    certain = false;
                 }
+                p * risk
             })
-            .sum::<f64>()
-            .clamp(0.0, 1.0)
+            .sum::<f64>();
+        // Preserve certainty exactly, independently of probability-sum rounding.
+        if certain {
+            1.0
+        } else {
+            probability.clamp(0.0, 1.0)
+        }
     }
     fn roll_weapon(
         &mut self,
