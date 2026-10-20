@@ -281,6 +281,7 @@ impl InitialState {
             });
         }
         Ok(State {
+            armies: None,
             map_id: self.map_id,
             map_revision: self.map_revision,
             cols: self.cols,

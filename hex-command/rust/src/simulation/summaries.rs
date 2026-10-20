@@ -369,6 +369,7 @@ mod tests {
 
     fn fixture() -> MatchResult {
         let state = State {
+            armies: None,
             map_id: "fixture".into(),
             map_revision: 1,
             cols: 1,

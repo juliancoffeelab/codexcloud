@@ -54,6 +54,15 @@ pub(crate) fn validate_state_geometry(
     if state.cols <= 0 || state.rows <= 0 || state.round == 0 {
         return Err(fail("invalid board dimensions or round"));
     }
+    if let Some(armies) = &state.armies {
+        if state.campaign.is_some()
+            || armies
+                .iter()
+                .any(|id| !rules.rosters.iter().any(|r| &r.id == id))
+        {
+            return Err(StateError("invalid skirmish factions".into()));
+        }
+    }
     if state.tiles.is_empty() {
         return Err(fail("board has no tiles"));
     }

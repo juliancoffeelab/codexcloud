@@ -94,6 +94,10 @@ pub struct Gold {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct State {
+    /// Selected skirmish factions; campaigns use their authored recruitment.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub armies: Option<[String; 2]>,
     pub map_id: String,
     pub map_revision: u32,
     pub cols: i32,

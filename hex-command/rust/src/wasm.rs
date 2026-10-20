@@ -305,16 +305,65 @@ impl NativeEngineFactory {
     }
     fn start(&self, start: Start) -> Result<State, EngineError> {
         match start {
-            Start::Scenario { map, revision } => self
-                .rules
-                .maps
-                .iter()
-                .filter(|((id, rev), _)| {
-                    id == &map && revision.is_none_or(|expected| expected == *rev)
-                })
-                .max_by_key(|((_, revision), _)| revision)
-                .map(|(_, state)| state.clone())
-                .ok_or(EngineError::UnknownMap { map }),
+            Start::Scenario {
+                map,
+                revision,
+                armies,
+                first,
+            } => {
+                let mut state = self
+                    .rules
+                    .maps
+                    .iter()
+                    .filter(|((id, rev), _)| {
+                        id == &map && revision.is_none_or(|expected| expected == *rev)
+                    })
+                    .max_by_key(|((_, revision), _)| revision)
+                    .map(|(_, state)| state.clone())
+                    .ok_or(EngineError::UnknownMap { map: map.clone() })?;
+                if let Some(armies) = armies {
+                    if map == "developer" {
+                        return Err(EngineError::InvalidRequest {
+                            message: "Developer armies are authored".into(),
+                        });
+                    }
+                    for side in [Side::Player, Side::Enemy] {
+                        let roster = self
+                            .rules
+                            .rosters
+                            .iter()
+                            .find(|r| r.id == armies[side.index()])
+                            .ok_or_else(|| EngineError::InvalidRequest {
+                                message: "Unknown faction".into(),
+                            })?;
+                        for unit in state.units.iter_mut().filter(|u| u.side == side) {
+                            let original = &self.rules.units[self.rules.types[&unit.r#type]];
+                            let kind = if original.leader {
+                                roster.leader.as_str()
+                            } else if roster.id == "human" || roster.pool.contains(&unit.r#type) {
+                                unit.r#type.as_str()
+                            } else {
+                                roster
+                                    .pool
+                                    .iter()
+                                    .find(|id| {
+                                        self.rules.units[self.rules.types[*id]].role
+                                            == original.role
+                                    })
+                                    .unwrap_or(&roster.pool[0])
+                                    .as_str()
+                            };
+                            let rule = &self.rules.units[self.rules.types[kind]];
+                            unit.r#type = kind.to_owned();
+                            unit.hp = rule.hp;
+                            unit.experience = Some(0);
+                        }
+                    }
+                    state.armies = Some(armies);
+                }
+                state.turn = first.unwrap_or(Side::Player);
+                Ok(state)
+            }
             Start::Campaign { id } => {
                 if !self.rules.campaigns.contains_key(&id) {
                     return Err(EngineError::UnknownCampaign { id });

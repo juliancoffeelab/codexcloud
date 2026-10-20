@@ -1,20 +1,17 @@
 <script lang="ts">
-  import { BATTLE_MAPS } from "./game/maps";
   import { preloadTerrainMap } from "./presentation/terrain-preload";
   import { onMount } from "svelte";
   import { BattleController } from "./controller/battle";
   import { registerBattleTools } from "./controller/tools";
   import { unlockSound, playSound } from "./presentation/sound";
-  import CampaignPicker from "./ui/CampaignPicker.svelte";
+  import NewGameDialog from "./ui/NewGameDialog.svelte";
   import CampaignPanel from "./ui/CampaignPanel.svelte";
   import Dialogue from "./ui/Dialogue.svelte";
-  import type { CampaignId } from "./game/types";
   import TurnBar from "./ui/TurnBar.svelte";
   import Battlefield from "./ui/Battlefield.svelte";
   import UnitPanel from "./ui/UnitPanel.svelte";
   import TerrainPanel from "./ui/TerrainPanel.svelte";
   import SettingsDialog from "./ui/SettingsDialog.svelte";
-  import MapPicker from "./ui/MapPicker.svelte";
   let { controller }: { controller: BattleController } = $props();
   const view = $derived(controller.view);
   const actions = $derived(controller.commands);
@@ -28,38 +25,18 @@
     briefingExpanded = false;
   });
   let settingsDialog = $state<HTMLDialogElement>();
-  let campaignDialog: HTMLDialogElement;
-  let campaignPickerOpen = $state(false);
-  let campaignChoice = $state<CampaignId>("lantern-road");
+  let newGame: { open: (mode: "skirmish" | "campaign") => void };
   function openCampaignPicker() {
     settingsDialog?.close();
-    campaignPickerOpen = true;
-    campaignDialog.showModal();
+    newGame.open("campaign");
   }
-  function startCampaign() {
-    briefingExpanded = false;
-    actions.startCampaign(campaignChoice);
-    campaignDialog.close();
-    campaignPickerOpen = false;
-  }
-  let resetDialog: HTMLDialogElement;
-  let mapChoice = $state("mirror");
   function openMapPicker() {
     settingsDialog?.close();
-    mapChoice = BATTLE_MAPS.some((map) => map.id === $view.game.mapId)
-      ? $view.game.mapId
-      : "mirror";
-    resetDialog.showModal();
+    newGame.open("skirmish");
   }
   function openSettings() {
     settingsDialog?.showModal();
     playSound("select");
-  }
-  function startNewBattle() {
-    preloadTerrainMap(mapChoice);
-    briefingExpanded = false;
-    resetDialog.close();
-    actions.reset(mapChoice);
   }
   function globalKeydown(event: KeyboardEvent) {
     if (event.key === "Escape" && !document.querySelector("dialog[open]"))
@@ -133,37 +110,6 @@
     </div>
   </div>
 </main>
-<SettingsDialog
-  view={$view}
-  {actions}
-  bind:dialog={settingsDialog}
-  onNewBattle={openMapPicker}
-  onNewCampaign={openCampaignPicker}
-/>
+<SettingsDialog view={$view} {actions} bind:dialog={settingsDialog} onNewBattle={openMapPicker} />
 <Dialogue view={$view} {actions} />
-<dialog
-  class="campaign-dialog"
-  bind:this={campaignDialog}
-  onclose={() => (campaignPickerOpen = false)}
->
-  <h2>New campaign</h2>
-  <p>Choose a company and a story. Starting replaces your current battle.</p>
-  {#if campaignPickerOpen}
-    <CampaignPicker bind:selected={campaignChoice} artwork={$view.artwork} />
-  {/if}
-  <div class="dialog-actions">
-    <button class="quiet" onclick={() => campaignDialog.close()}>Keep playing</button>
-    <button class="primary" onclick={startCampaign}>Start campaign</button>
-  </div>
-</dialog>
-<dialog bind:this={resetDialog} id="reset-dialog">
-  <h2>Start a new battle?</h2>
-  <p>Choose your battlefield. Your current battle will be replaced.</p>
-  <MapPicker bind:selected={mapChoice} />
-  <div class="dialog-actions">
-    <button id="keep-playing" class="quiet" onclick={() => resetDialog.close()}>
-      Keep playing
-    </button>
-    <button id="confirm-reset" class="primary" onclick={startNewBattle}>New battle</button>
-  </div>
-</dialog>
+<NewGameDialog bind:this={newGame} view={$view} {actions} />

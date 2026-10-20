@@ -19,6 +19,7 @@ function published(game: Game, selected: string): BattleView {
     artwork: currentArtwork(),
     sound: false,
     canUndo: false,
+    completedTurns: 0,
     recruitment: null,
   };
 }

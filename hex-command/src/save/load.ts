@@ -15,7 +15,7 @@ export function loadBattle(factory: GameEngineFactory): LoadedBattle {
     let game: LiveGame | undefined;
     try {
       const { save, migrated } = migrateSave(JSON.parse(raw));
-      game = LiveGame.restore(factory, save.checkpoint);
+      game = LiveGame.restore(factory, save.checkpoint, save.setup);
       // Commit the validated data conversion directly, independently of gameplay
       // turn boundaries. Migration never waits for or executes enemy actions.
       if (migrated) storeSave(JSON.stringify(save));
