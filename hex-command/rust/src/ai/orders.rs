@@ -260,7 +260,7 @@ impl TacticalOrders {
             .iter()
             .find(|(actor, _)| actor.0 == id)
             .and_then(|(_, intent)| *intent);
-        let keeps = self
+        let targets = self
             .targets
             .iter()
             .filter(|goal| {
@@ -268,7 +268,7 @@ impl TacticalOrders {
             })
             .flat_map(|goal| goal.tiles.iter().map(|tile| game.site(tile)))
             .collect();
-        (keeps, intent)
+        (targets, intent)
     }
     pub(crate) fn moving_actor(&self, id: u32) -> bool {
         self.objectives.iter().any(|order| {
