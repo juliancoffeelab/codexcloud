@@ -10,7 +10,16 @@ enemy and the campaign competence baseline.** Making it stronger is not the purp
 
 For faction and unit balance, use matching Situational policies with the normal
 leader-only arena starts, equal total budgets, recruitment and earned promotions. Inspect each
-opposing faction and terrain separately. Isolated advanced-level rosters are
+opposing faction and terrain separately. Collect battlefield
+presence and actual contributions (`--unit-usage`, or the relevant presence/value
+telemetry) for balance investigations. Lead composition claims with living
+unit-turns, then compare recruitment flow with presence and casualties. Purchase
+shares can reflect replacement churn; they do not measure the army on the field,
+survival or unit strength. Purchase/presence ratios do not identify survival
+without cohort evidence. Keep opponents, terrain and policy scopes aligned.
+Current presence exports pool opponents: restrict runs to the two relevant
+armies, or use an equivalent maintained scoped census, for opponent-specific
+composition claims. Do not pair pooled presence with exact-opponent purchases. Isolated advanced-level rosters are
 supplementary diagnostics, not validation of normal progression. Classic can
 saturate before a roster is balanced. Pooling recruiters or averaging easy and
 hard faction matchups can hide failures; a pooled result alone does not establish

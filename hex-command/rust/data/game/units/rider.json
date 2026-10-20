@@ -1,6 +1,6 @@
 {
   "id": "rider",
-  "role": "warrior",
+  "role": "flank",
   "name": "Mounted spearman",
   "terrainModifiers": {
     "forest": {

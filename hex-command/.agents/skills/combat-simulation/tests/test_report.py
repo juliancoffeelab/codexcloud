@@ -26,6 +26,49 @@ def match(seed, player='a', enemy='b', winner='player', reason='leader'):
 
 
 class CompleteDataTests(unittest.TestCase):
+    def test_unit_usage_writes_damage_presence_comparison_with_unused_units(self):
+        profiles = {u: dict(name=u.title(), family=u, race=race, level=level)
+                    for u, race, level in [('foot', 'a', 1), ('unused', 'a', 2), ('foe', 'b', 1)]}
+        roster = [dict(id='f', type='foot', side='player', tile='0,0', hp=10),
+                  dict(id='e', type='foe', side='enemy', tile='1,0', hp=10)]
+        initial = dict(units=roster, tiles=[dict(id=u['tile'], terrain='plains') for u in roster])
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            paths = []
+            for label, damage in [('before', 2), ('after', 4)]:
+                directory = root/label
+                directory.mkdir()
+                saved = match(1)
+                saved['config'].update(player='situational', enemy='situational')
+                stage = dict(rawDamage=damage, afterArmourDamage=damage, afterTerrainDamage=damage,
+                    availableHp=10, effectiveArmourPrevented=0, effectiveTerrainPrevented=0)
+                raw = json.dumps(dict(kind='arena', config=saved['config'], initial=initial,
+                    phases=[dict(side='player', before=roster, units=roster, losses=[], actions=[],
+                        ownership=[], combats=[dict(unit='f', target='e', damage=damage, retaliation=0,
+                            thorns=dict(damage=0, auraDamage=0, effectiveDamage=0, auraSources=[]),
+                            mitigation=dict(attack=stage, retaliation=None))])])).encode()
+                (directory/'details.jsonl').write_bytes(raw)
+                saved['detail'] = dict(file='details.jsonl', offset=0, bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
+                path = directory/'report.json'
+                path.write_text(json.dumps(dict(status='complete', outcomes=[saved], unitProfiles=profiles,
+                    supportTelemetryVersion=1, combatTelemetryVersion=1)))
+                paths.append(path)
+            with contextlib.redirect_stdout(io.StringIO()):
+                tables = report.build_report([paths[1]], [paths[0]], root/'out', unit_usage=True)
+            row = next(r for r in tables['unit_damage_changes'] if r['unit']=='foot' and r['map']=='all')
+            self.assertEqual((row['damagePerUnitTurnBefore'], row['damagePerUnitTurn']), (2, 4))
+            self.assertEqual((row['presenceSharePercent'], row['damagePresenceRatio']), (100, 1))
+            text = (root/'out/findings.md').read_text()
+            self.assertIn('| Foot (L1) | unknown | 100.00% → 100.00% | 2.00 → 4.00 | 1.00× → 1.00× |', text)
+            self.assertIn('| Unused (L2) | unknown | 0.00% → 0.00% | — → — | — → — |', text)
+            paired = text.split('## Battlefield presence and recruitment flow', 1)[1].split('## Purchase shares', 1)[0]
+            self.assertIn('| a | situational | situational | Plains | foot |', paired)
+            self.assertLess(paired.index('sharePercent'), paired.index('purchaseSharePercent'))
+            self.assertLess(text.index('## Battlefield presence'), text.index('## Purchase shares'))
+            self.assertIn('replacement churn', paired)
+            self.assertTrue((root/'out/unit_damage_changes.csv').is_file())
+            self.assertTrue((root/'out/baseline_unit_damage.csv').is_file())
+
     def test_standalone_report_compares_campaigns_without_git_or_catalogs(self):
         def campaign(seed, completed, missions):
             return {'kind': 'campaign', 'config': {'seed': seed, 'campaign': 'example'},
@@ -67,6 +110,7 @@ class CompleteDataTests(unittest.TestCase):
             self.assertIsNone(metadata['baselineSources'][0]['sourceCommit'])
             self.assertNotIn('catalogs', metadata)
             self.assertTrue((root/'out/summary.md').is_file())
+            self.assertIn('Field composition unavailable', (root/'out/findings.md').read_text())
 
     def test_swapped_seats_caps_and_selfplay_do_not_inflate_physical_matches(self):
         items = [match(1), match(2, 'b', 'a'), match(3, winner=None, reason='cap'), match(4, 'a', 'a')]

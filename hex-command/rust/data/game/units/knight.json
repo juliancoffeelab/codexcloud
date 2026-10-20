@@ -1,6 +1,6 @@
 {
   "id": "knight",
-  "role": "warrior",
+  "role": "flank",
   "name": "Knight",
   "race": "human",
   "hp": 48,

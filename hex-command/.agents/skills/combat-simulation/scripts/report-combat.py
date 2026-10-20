@@ -665,6 +665,8 @@ def build_report(inputs, baseline_inputs, out, unit_usage=False, support_effects
               'matchup_changes': comparison, 'match_changes': transitions, 'baseline_unit_events': before_units,
               'campaign_changes': campaign_changes, 'policy_timings': policy_timings}
     if unit_usage or support_effects or battlefield_presence or battlefield_value or leader_audit:
+        if unit_usage and any(s.get('combatTelemetryVersion') != 1 for s in sources + previous_sources):
+            raise ValueError('Damage tables require fresh runs with combat telemetry, including the baseline')
         spec = importlib.util.spec_from_file_location('unit_usage', Path(__file__).with_name('unit_usage.py'))
         usage = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(usage)
@@ -681,6 +683,16 @@ def build_report(inputs, baseline_inputs, out, unit_usage=False, support_effects
             value = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(value)
             tables.update(value.analyze(inputs, usage.journals, value_enabled, leaders_enabled))
+        if unit_usage:
+            tables['unit_damage'] = usage.unit_damage(tables['battlefield_units'],
+                tables['battlefield_unit_value'], sources[0]['unitProfiles'])
+            if baseline_inputs:
+                old_presence, _ = usage.analyze(baseline_inputs, presence=True, support=False)
+                old_value = value.analyze(baseline_inputs, usage.journals, value=True, leaders=False)
+                tables['baseline_unit_damage'] = usage.unit_damage(old_presence['battlefield_units'],
+                    old_value['battlefield_unit_value'], previous_sources[0]['unitProfiles'])
+                tables['unit_damage_changes'] = usage.compare_unit_damage(
+                    tables['unit_damage'], tables['baseline_unit_damage'])
     out.mkdir(parents=True, exist_ok=True)
     for name, table in tables.items():
         write_csv(out / (name + '.csv'), table)
@@ -691,20 +703,36 @@ def build_report(inputs, baseline_inputs, out, unit_usage=False, support_effects
     (out / 'metadata.json').write_text(json.dumps(metadata, indent=2) + '\n')
     findings = overview(campaign_rows, stage_rows, failure_rows, campaign_events, rows, opponent)
     findings[2:2] = [f"Coverage: {len(current):,} physical matches; {metadata['arenaMatches']:,} arena games and {metadata['campaignAttempts']:,} campaign attempts.", '']
-    findings += ['## Purchase shares', '', 'New purchases / all new purchases for the same faction, tactic, opponent tactic and map. Starting units, promotions and same-faction games are excluded. Opposing factions are pooled. The all-map rows sum purchases across maps; they do not average map percentages. Families come from the recorded catalog; older reports without family metadata use individual unit identifiers.', '', markdown([r for r in tables['purchase_shares'] if r['map'] == 'all'], ['race','policy','opponentPolicy','family','purchased','totalPurchases','sharePercent']), '']
+    if 'unit_damage' in tables:
+        findings += ['## Damage tables', '',
+            'Presence is each exact unit/tier’s share of living nonleader unit-turns. Damage means actual weapon HP removed, including retaliation; overkill and healing are excluded. Effective personal/aura thorns are credited to their source and shown separately, excluded from weapon damage shares and D/P. Leaders are excluded from both shares. Damage/turn divides damage by that unit’s unit-turns. D/P = damage share / presence share: 10% presence and 50% damage is 5.00×. The faction average uses summed damage and unit-turns, not an average of unit rates. Unobserved units have 0% presence and undefined rates (—); a faction with no damage has undefined D/P. Small samples are not reliable rankings.', '']
+        damage_rows = tables.get('unit_damage_changes', tables['unit_damage'])
+        if 'unit_damage_changes' in tables:
+            findings += ['Comparison cells show baseline → current. Scopes match the report configuration; all-map rows sum counts before calculating shares and rates.', '']
+        for p in policies:
+            for q in sorted({r['opponentPolicy'] for r in damage_rows if r['policy'] == p}):
+                for race in factions:
+                    selected = [r for r in damage_rows if r['policy'] == p and r['opponentPolicy'] == q
+                                and r['race'] == race and r['map'] == 'all']
+                    if selected:
+                        findings += [f'### {display_name(race)}: {p} against {q}, all maps', '',
+                            usage.damage_markdown(selected, baseline='unit_damage_changes' in tables), '']
     if 'army_usage' in tables:
-        findings += ['## Recruitment and battlefield presence', '',
-                     'Field share counts living non-leader units at the end of each own phase, including starting units and promotions. Longer-lived units contribute more unit-turns. Attack and damage shares exclude leaders; damage includes recorded retaliation and overkill. Opposing factions are pooled, same-faction games excluded. All-map shares use summed counts.', '',
-                     markdown([r for r in tables['army_usage'] if r['map'] != 'all' and r['opponentPolicy'] == (opponent or 'balanced')], ['race','policy','map','family','purchaseSharePercent','sharePercent','attackSharePercent','damageSharePercent']), '']
+        findings += ['## Battlefield presence and recruitment flow', '',
+                     'Lead composition analysis with field share and actual contributions. Purchases are recruitment flow, including replacement churn; compare them with field presence and casualties, not as army composition or strength. Neither purchase counts nor purchase/presence ratios establish survival without cohort evidence. Field share counts living non-leader units at the end of each own phase, including starting units and promotions. Longer-lived units contribute more unit-turns. Attack and damage shares exclude leaders; damage includes recorded retaliation and overkill. Opposing factions are pooled, same-faction games excluded. For opponent-specific composition, use a restricted two-army run or equivalent scoped census; do not pair these pooled shares with exact-opponent purchases. All-map shares use summed counts.', '',
+                     markdown([r for r in tables['army_usage'] if r['map'] != 'all'], ['race','policy','opponentPolicy','map','family','sharePercent','unitTurns','purchaseSharePercent','recruited','lost','attackSharePercent','damageSharePercent']), '']
     if 'support_effects' in tables and tables['support_effects']:
         findings += ['## Actual support effects', '',
                      'Provider turns include zero-benefit turns. Healing adjacency is sampled at own-turn start; thorn adjacency at opposing-turn start. Healing and reflection are engine-recorded events. Tied strongest providers split credit. Effective reflection excludes overkill and counts only HP removed beyond ordinary retaliation. Intrinsic thorns and auras are separate. All-unit rows aggregate providers, not extra events.', '',
-                     markdown([r for r in tables['support_effects'] if r['unit'] == 'all' and r['map'] != 'all' and r['opponentPolicy'] == (opponent or 'balanced')], ['race','policy','map','ability','providerTurns','adjacentAlliesPerTurn','healedHP','healedHPPerTurn','reflectedDamage','effectiveReflectedDamage','reflectedDamagePerTurn','overlapPercent']), '']
+                     markdown([r for r in tables['support_effects'] if r['unit'] == 'all' and r['map'] != 'all'], ['race','policy','opponentPolicy','map','ability','providerTurns','adjacentAlliesPerTurn','healedHP','healedHPPerTurn','reflectedDamage','effectiveReflectedDamage','reflectedDamagePerTurn','overlapPercent']), '']
     if tables.get('battlefield_value'):
         findings += ['## Protection, objectives and casualty value', '',
                      'Protection is signed and capped at HP available per hit; armour is attributed before terrain. Objective control credits the last captor, including after death; occupation credits the living occupant. Recruit gold lost covers purchases in this arena/chapter; replacement value includes free starters and earned promotions. Total HP damage includes effective thorn reflection attributed to intrinsic/aura sources, with weapon and thorn subtotals; drain healing is separate.', '',
-                     markdown([r for r in tables['battlefield_value'] if r['map'] == 'all' and r['kind'] == 'arena' and r['opponentPolicy'] == (opponent or 'balanced')],
-                              ['race','policy','family','unitTurns','hpDamageDealt','hpDamageTaken','armourDamagePrevented','terrainDamagePrevented','captures','objectiveOccupationTurns','recruitGoldLost','casualtyReplacementValue']), '']
+                     markdown([r for r in tables['battlefield_value'] if r['map'] == 'all' and r['kind'] == 'arena'],
+                              ['race','policy','opponentPolicy','family','unitTurns','hpDamageDealt','hpDamageTaken','armourDamagePrevented','terrainDamagePrevented','captures','objectiveOccupationTurns','casualties','recruitGoldLost','casualtyReplacementValue']), '']
+    if 'army_usage' not in tables:
+        findings += ['**Field composition unavailable:** this report has no battlefield presence. Purchase flow includes replacement churn; do not infer field composition, survival or unit strength from purchases. For balance investigations, regenerate with `--unit-usage` or battlefield presence and relevant value telemetry.', '']
+    findings += ['## Purchase shares', '', 'New purchases / all new purchases for the same faction, tactic, opponent tactic and map. Starting units, promotions and same-faction games are excluded. Opposing factions are pooled. The all-map rows sum purchases across maps; they do not average map percentages. Families come from the recorded catalog; older reports without family metadata use individual unit identifiers.', '', markdown([r for r in tables['purchase_shares'] if r['map'] == 'all'], ['race','policy','opponentPolicy','family','purchased','totalPurchases','sharePercent']), '']
     if 'leader_deaths' in tables:
         deaths = tables['leader_deaths']
         findings += ['## Leader death evidence', '',
@@ -787,7 +815,7 @@ if __name__ == '__main__':
     parser.add_argument('inputs', nargs='+', type=Path)
     parser.add_argument('--baseline', action='append', default=[], type=Path)
     parser.add_argument('--out', required=True, type=Path)
-    parser.add_argument('--unit-usage', action='store_true', help='Analyze battlefield presence and actual support effects from gameplay journals')
+    parser.add_argument('--unit-usage', action='store_true', help='Analyze per-unit damage/presence ratios, battlefield presence and actual support effects')
     parser.add_argument('--support-effects', action='store_true', help='Analyze support adjacency, healing and reflected damage')
     parser.add_argument('--battlefield-presence', action='store_true', help='Analyze unit-turn army shares and actual combat use')
     parser.add_argument('--battlefield-value', action='store_true', help='Analyze recorded mitigation, captures, occupation and casualty gold')

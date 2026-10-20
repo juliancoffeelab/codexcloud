@@ -1,6 +1,6 @@
 {
   "id": "lancer",
-  "role": "warrior",
+  "role": "flank",
   "name": "Lancer",
   "terrainModifiers": {
     "forest": {
