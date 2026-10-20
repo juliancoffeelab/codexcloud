@@ -209,6 +209,7 @@ impl NativeEngineFactory {
         }
         Ok(DispatchResult {
             view: battle.view(),
+            combat: game.combat_animation.take(),
         })
     }
     fn decision(

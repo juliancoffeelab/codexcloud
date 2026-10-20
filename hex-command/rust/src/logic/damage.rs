@@ -40,13 +40,16 @@ thread_local! {
     static CACHE: RefCell<HashMap<Key, Rc<DamageDistribution>>> = RefCell::new(HashMap::new());
 }
 pub(crate) fn distribution(attack: &Weapon, modifier: i32) -> Rc<DamageDistribution> {
-    let key = (attack.damage, attack.spread, attack.count, modifier);
+    rolls(attack.damage, attack.spread, attack.count, modifier)
+}
+pub(super) fn rolls(damage: i32, spread: i32, count: u8, modifier: i32) -> Rc<DamageDistribution> {
+    let key = (damage, spread, count, modifier);
     CACHE.with_borrow_mut(|cache| {
         if let Some(result) = cache.get(&key) {
             return result.clone();
         }
-        let low = (attack.damage - attack.spread).max(0);
-        let high = attack.damage + attack.spread;
+        let low = (damage - spread).max(0);
+        let high = damage + spread;
         let minimum = (low + modifier).max(0);
         let maximum = (high + modifier).max(0);
         let mut single = vec![0.0; (maximum - minimum + 1) as usize];
@@ -54,7 +57,7 @@ pub(crate) fn distribution(attack: &Weapon, modifier: i32) -> Rc<DamageDistribut
             single[((raw + modifier).max(0) - minimum) as usize] += 1.0 / f64::from(high - low + 1);
         }
         let mut probabilities = vec![1.0];
-        for _ in 0..attack.count {
+        for _ in 0..count {
             let mut next = vec![0.0; probabilities.len() + single.len() - 1];
             for (i, &p) in probabilities.iter().enumerate() {
                 for (j, &q) in single.iter().enumerate() {
@@ -63,8 +66,8 @@ pub(crate) fn distribution(attack: &Weapon, modifier: i32) -> Rc<DamageDistribut
             }
             probabilities = next;
         }
-        let min = minimum * i32::from(attack.count);
-        let max = maximum * i32::from(attack.count);
+        let min = minimum * i32::from(count);
+        let max = maximum * i32::from(count);
         let mean = probabilities
             .iter()
             .enumerate()

@@ -1,4 +1,4 @@
-import type { UnitRole } from "../../rust/pkg/hex_command";
+import type { CombatStrike, HpForecast, UnitRole } from "../../rust/pkg/hex_command";
 
 export type Side = "player" | "enemy";
 export type LeaderType =
@@ -254,6 +254,7 @@ export interface MapDefinition {
   units: StartingUnit[];
 }
 export interface DamageBreakdown {
+  probabilities?: readonly number[];
   rollMin?: number;
   rollMax?: number;
   minimum?: number;
@@ -275,6 +276,8 @@ export interface CombatPreview {
   retaliation: number;
 }
 export interface CombatPreviewDetails extends CombatPreview {
+  attackerHealth: HpForecast;
+  defenderHealth: HpForecast;
   killChance: number;
   deathChance: number;
   retaliationMin: number;
@@ -292,6 +295,10 @@ export interface LastCombat {
   attackerId: string;
   attackId: string;
   sound: string;
+}
+export interface CombatAnimation {
+  units: [Unit, Unit];
+  strikes: CombatStrike[];
 }
 export interface VillageState {
   id: string;

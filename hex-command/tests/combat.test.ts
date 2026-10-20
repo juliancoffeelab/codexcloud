@@ -27,14 +27,7 @@ test("Drain forecasts show expected healing and seeded combat replays exactly", 
   attacker.hp = 5;
   const weapon = required(TYPES[vampire].attacks.find((weapon) => weapon.drain));
   const preview = game.previewDetails(attacker, target, weapon.id);
-  const choice = required(
-    attackChoiceViews(game.publishedView(), attacker, target).find(
-      (choice) => choice.id === weapon.id,
-    ),
-  );
-  assert(choice.available);
   assert((preview.healing ?? 0) > 0);
-  assert(choice.playerForecast.impactLabel.includes(`heal ≈${preview.healing}`));
   const checkpoint = game.captureState();
   game.attack(attacker.id, target.id, weapon.id);
   const result = game.captureState();
@@ -59,7 +52,7 @@ test("Thorn forecasts show separate reflection even on a killing hit", () => {
     ),
   );
   assert(choice.available);
-  assert.equal(preview.thornDamage, required(TYPES[thornType].thorns) * weapon.count);
+  assert.equal(preview.thornDamage, required(TYPES[thornType].thorns));
   assert.equal(preview.response, null);
   assert(choice.retaliationCalculation.equation.includes(`${preview.thornDamage} (thorns:`));
   game.attack(attacker.id, target.id, weapon.id);
@@ -86,18 +79,18 @@ test("Zero damage attacks remain available and consume actions", async () => {
   assert(attacker.moved && attacker.attacked);
   assert.throws(() => game.attack(attacker.id, target.id, "shard"));
 });
-test("Covered retaliation can deal zero damage", async () => {
+test("Covered retaliation includes a zero-damage outcome", async () => {
   const { game, attacker, target } = fixture("commander", "bonearcher");
   required(game.tile(attacker.tile)).terrain = "hill";
   const preview = game.previewDetails(attacker, target, "sword");
-  assert.equal(preview.retaliation, 0);
+  assert.equal(preview.retaliationMin, 0);
   assert.equal(preview.response?.id, "shard");
   const choice = required(
     attackChoiceViews(game.publishedView(), attacker, target).find((c) => c.id === "sword"),
   );
   assert(choice.available);
   assert(choice.retaliationCalculation.description.includes("shard"));
-  assert.equal(choice.playerForecast.remainingHp, attacker.hp);
+  assert.equal(preview.attackerHealth.maximum, attacker.hp);
 });
 test("Forecasts distinguish guaranteed kills, uncertain kills and lethal retaliation", () => {
   const { game, attacker, target } = fixture();
@@ -113,7 +106,7 @@ test("Forecasts distinguish guaranteed kills, uncertain kills and lethal retalia
     return view;
   };
   target.hp = minimum;
-  assert(choice().enemyForecast.impactLabel.includes("100% kill"));
+  assert(choice().enemyForecast.impactLabel.includes("(dies)"));
   assert.equal(choice().enemyForecast.remainingClass, "fatal");
   target.hp = preview.damage;
   const uncertain = game.previewDetails(attacker, target, "mace");
@@ -122,7 +115,7 @@ test("Forecasts distinguish guaranteed kills, uncertain kills and lethal retalia
   assert(uncertain.response);
   target.hp = maximum + 1;
   attacker.hp = 1;
-  assert(choice().playerForecast.impactLabel.includes("100% death"));
+  assert(choice().playerForecast.impactLabel.includes("(dies)"));
   assert.equal(choice().playerForecast.remainingClass, "fatal");
 });
 

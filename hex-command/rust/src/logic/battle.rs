@@ -108,6 +108,8 @@ pub(crate) struct Game<'catalog> {
     pub(crate) log: Vec<String>,
     pub(crate) campaign: Option<CampaignState>,
     pub(crate) last_combat: Option<LastCombat>,
+    #[cfg(feature = "wasm")]
+    pub(crate) combat_animation: Option<crate::protocol::CombatAnimation>,
     pub(crate) combat_present: bool,
     pub(crate) pools: Option<[Vec<usize>; 2]>,
     pub(crate) arena_first: Option<Side>,
@@ -242,6 +244,8 @@ impl<'catalog> Game<'catalog> {
             log: state.log,
             campaign: state.campaign,
             last_combat,
+            #[cfg(feature = "wasm")]
+            combat_animation: None,
             combat_present,
             pools: None,
             arena_first: None,
@@ -514,6 +518,8 @@ impl<'catalog> Game<'catalog> {
             log: self.log.clone(),
             campaign: self.campaign.clone(),
             last_combat: self.last_combat.clone(),
+            #[cfg(feature = "wasm")]
+            combat_animation: None,
             combat_present: self.combat_present,
             pools: self.pools.clone(),
             arena_first: self.arena_first,

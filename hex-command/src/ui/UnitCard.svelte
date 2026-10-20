@@ -8,11 +8,12 @@
     artwork: Artwork;
     showName?: boolean;
     showProgress?: boolean;
+    hp?: number;
   }
-  let { unit, artwork, showName = false, showProgress = false }: Props = $props();
+  let { unit, artwork, showName = false, showProgress = false, hp = unit.hp }: Props = $props();
 
   const definition = $derived(TYPES[unit.type]);
-  const healthPercent = $derived((unit.hp / definition.hp) * 100);
+  const healthPercent = $derived((hp / definition.hp) * 100);
   const portrait = $derived(
     artSprite(
       artwork,
@@ -47,10 +48,10 @@
   {#if unit.retreating}<span class="retreat-label">Retreating</span>{/if}
   {#if showName && unit.name}<span class="named-unit-type">{definition.name}</span>{/if}
   <div class="health-numbers">
-    <b>{unit.hp}</b>
+    <b>{hp}</b>
     <span>{" "}/ {definition.hp} HP</span>
   </div>
-  <div class="health-track" role="img" aria-label={`${unit.hp} of ${definition.hp} current health`}>
+  <div class="health-track" role="img" aria-label={`${hp} of ${definition.hp} current health`}>
     <span class="health-left" style={`width:${healthPercent}%`}></span>
   </div>
 </div>

@@ -67,7 +67,7 @@ ACTION = pa.struct([
     ("target", STRING), ("weapon", STRING), ("type", STRING),
 ])
 DAMAGE_MITIGATION = pa.struct([
-    ("availableHp", INTEGER),
+    ("availableHp", INTEGER), ("effectiveDamage", INTEGER),
     ("rawDamage", INTEGER), ("afterArmourDamage", INTEGER), ("afterTerrainDamage", INTEGER),
     ("effectiveArmourPrevented", INTEGER), ("effectiveTerrainPrevented", INTEGER),
 ])

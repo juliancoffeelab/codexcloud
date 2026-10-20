@@ -293,14 +293,14 @@ impl Assessment {
                 for &origin in &origins {
                     let mut attacker = unit.clone();
                     attacker.tile = origin;
-                    let (damage, response, _) =
-                        game.preview(&attacker, enemy, approach.weapon, origin);
+                    let forecast = game.exchange(&attacker, enemy, approach.weapon, origin);
+                    let damage = forecast.damage[0].round() as i32;
+                    let response = forecast.damage[1].round() as i32;
                     let attack = &rule.attacks[approach.weapon];
                     let drain = damage.min(enemy.hp) as f64 * f64::from(attack.drain) / 100.0;
-                    let exchange = game.effective_damage(&attacker, enemy, approach.weapon)
-                        + drain * coefficients.drain
+                    let exchange = forecast.effective[0] + drain * coefficients.drain
                         - response.min(unit.hp) as f64 * coefficients.exchange_retaliation
-                        + game.kill_chance(&attacker, enemy, approach.weapon) * coefficients.kill
+                        + forecast.death[1] * coefficients.kill
                         - if response as f64 >= unit.hp as f64 + drain {
                             unit.hp as f64
                         } else {
@@ -332,16 +332,16 @@ impl Assessment {
             raw += f64::from(reference.max(1)) * weight;
             if let Some(preferred) = preferred_attack(game, enemy, unit, None) {
                 let attack = &enemy_rule.attacks[preferred.weapon];
-                incoming += f64::from(preferred.damage) * weight;
+                incoming += preferred.damage * weight;
                 // Own reflection is valued separately by army pressure.
                 // Preserve ordinary retaliation and existing friendly aura.
                 let response = preferred.response
                     - if attack.category == Category::Melee {
-                        rule.thorns * i32::from(attack.count)
+                        f64::from(rule.thorns) * preferred.strikes
                     } else {
-                        0
+                        0.0
                     };
-                retaliation += f64::from(response.min(enemy.hp)) * weight;
+                retaliation += response.max(0.0).min(enemy.hp as f64) * weight;
             }
             weights += weight;
         }
@@ -481,13 +481,13 @@ fn movement_bonus(captures: f64, speed: f64, leader: f64, weights: RecruitmentWe
 // Forecast types carry fractional troop weights. Ranged preferences contribute
 // no melee triggers; the six-attacker cap remains the same as observed pressure.
 fn expected_weighted_thorn_triggers(
-    strikes: impl Iterator<Item = (u8, f64)>,
+    strikes: impl Iterator<Item = (f64, f64)>,
     friendly_count: usize,
 ) -> f64 {
     let (enemies, strikes) = strikes
-        .filter(|&(count, weight)| count > 0 && weight > 0.0)
+        .filter(|&(count, weight)| count > 0.0 && weight > 0.0)
         .fold((0.0, 0.0), |(enemies, strikes), (count, weight)| {
-            (enemies + weight, strikes + f64::from(count) * weight)
+            (enemies + weight, strikes + count * weight)
         });
     if enemies == 0.0 {
         0.0
@@ -506,13 +506,13 @@ fn dominant_melee_strikes(
     enemy: &Unit,
     target: &Unit,
     aura: Option<i32>,
-) -> Option<u8> {
+) -> Option<f64> {
     preferred_attack(game, enemy, target, aura).map(|preferred| {
         let attack = &game.rules().units[enemy.kind].attacks[preferred.weapon];
         if attack.category == Category::Melee {
-            attack.count
+            preferred.strikes
         } else {
-            0
+            0.0
         }
     })
 }
@@ -534,8 +534,9 @@ fn representative_origins(
 
 struct PreferredAttack {
     weapon: usize,
-    damage: i32,
-    response: i32,
+    damage: f64,
+    response: f64,
+    strikes: f64,
 }
 
 fn preferred_attack(
@@ -561,34 +562,34 @@ fn preferred_attack(
         let mut value = 0.0;
         let mut damage_sum = 0.0;
         let mut response_sum = 0.0;
+        let mut strikes_sum = 0.0;
         for &origin in &origins {
             let mut attacker = enemy.clone();
             attacker.tile = origin;
-            let (damage, mut response, _) = game.preview(&attacker, target, weapon, origin);
-            let actual_thorns = game.thorn_damage(&attacker, target, weapon, origin);
-            let mut thorns = actual_thorns;
-            if let Some(aura) = aura {
+            let forecast = if let Some(aura) = aura {
                 let reflection = if attack.category == Category::Melee {
-                    (game.rules().units[target.kind].thorns + aura) * i32::from(attack.count)
+                    game.rules().units[target.kind].thorns + aura
                 } else {
                     0
                 };
-                thorns = reflection;
-                response += reflection - actual_thorns;
-            }
-            let healed = game.drain_healing(&attacker, target, weapon, damage);
-            let exchange = game.effective_damage(&attacker, target, weapon)
-                + healed as f64
-                + game.kill_chance(&attacker, target, weapon) * 18.0
-                - response as f64 * 0.7
-                - game.death_chance_with_thorns(&attacker, target, weapon, origin, thorns) * 40.0;
+                game.exchange_with_thorns(&attacker, target, weapon, origin, reflection)
+            } else {
+                game.exchange(&attacker, target, weapon, origin)
+            };
+            let damage = forecast.damage[0];
+            let response = forecast.damage[1];
+            let exchange = forecast.effective[0] + forecast.healing[0] + forecast.death[1] * 18.0
+                - response * 0.7
+                - forecast.death[0] * 40.0;
             value += exchange;
-            damage_sum += damage as f64;
-            response_sum += response as f64;
+            damage_sum += damage;
+            response_sum += response;
+            strikes_sum += forecast.strikes[0];
         }
         value /= origins.len() as f64;
-        let damage = (damage_sum / origins.len() as f64).round() as i32;
-        let response = (response_sum / origins.len() as f64).round() as i32;
+        let damage = damage_sum / origins.len() as f64;
+        let response = response_sum / origins.len() as f64;
+        let strikes = strikes_sum / origins.len() as f64;
         if best.as_ref().is_none_or(|(score, _)| value > *score) {
             best = Some((
                 value,
@@ -596,6 +597,7 @@ fn preferred_attack(
                     weapon,
                     damage,
                     response,
+                    strikes,
                 },
             ));
         }
@@ -709,20 +711,20 @@ mod tests {
     #[test]
     fn thorn_pressure_caps_attackers_before_strikes_and_ignores_ranged_enemies() {
         assert_eq!(
-            expected_weighted_thorn_triggers([(3, 1.0); 20].into_iter(), 1),
+            expected_weighted_thorn_triggers([(3.0, 1.0); 20].into_iter(), 1),
             18.0
         );
         assert_eq!(
-            expected_weighted_thorn_triggers([(1, 1.0)].into_iter(), 10),
+            expected_weighted_thorn_triggers([(1.0, 1.0)].into_iter(), 10),
             0.1
         );
         assert_eq!(
-            expected_weighted_thorn_triggers([(0, 1.0); 20].into_iter(), 1),
+            expected_weighted_thorn_triggers([(0.0, 1.0); 20].into_iter(), 1),
             0.0
         );
         assert_eq!(
             expected_weighted_thorn_triggers(
-                [(0, 1.0), (0, 1.0), (1, 1.0), (3, 1.0)].into_iter(),
+                [(0.0, 1.0), (0.0, 1.0), (1.0, 1.0), (3.0, 1.0)].into_iter(),
                 4
             ),
             1.0
@@ -791,11 +793,13 @@ mod tests {
             let view = BattleView::new(&game);
             let target = game.unit(target).unwrap();
             let enemy = game.unit(enemy).unwrap();
-            assert_eq!(dominant_melee_strikes(&view, enemy, target, None), Some(3));
+            assert!(
+                (dominant_melee_strikes(&view, enemy, target, None).unwrap() - 3.0).abs() < 1e-9
+            );
             // The buff makes melee a worse exchange, so the enemy avoids it.
             assert_eq!(
                 dominant_melee_strikes(&view, enemy, target, Some(2)),
-                Some(0)
+                Some(0.0)
             );
         }
         rules.units[target].damage_modifiers.blade = -2;
@@ -808,7 +812,7 @@ mod tests {
                 game.unit(target).unwrap(),
                 None
             ),
-            Some(0)
+            Some(0.0)
         );
     }
 
@@ -1163,13 +1167,13 @@ mod tests {
         let unit = game.unit(target).unwrap();
         let view = BattleView::new(&game);
         let score = Assessment::new(&view, unit).breakdown(&view, unit);
-        assert_eq!(score.thorns, 9.0);
-        assert_eq!(score.retaliation, 2.0);
+        assert!((score.thorns - 9.0).abs() < 1e-9);
+        assert!((score.retaliation - 2.0).abs() < 1e-9);
         let mut recruit = unit.clone();
         recruit.id = 0;
         // A new recruit joins the existing army; it is not omitted from F.
         let score = Assessment::new(&view, &recruit).breakdown(&view, &recruit);
-        assert_eq!(score.thorns, 4.5);
+        assert!((score.thorns - 4.5).abs() < 1e-9);
     }
 
     #[test]

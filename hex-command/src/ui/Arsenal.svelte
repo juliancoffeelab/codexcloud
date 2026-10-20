@@ -29,7 +29,7 @@
           </th>
           <td class="weapon-damage">
             <b>{weapon.count} × {weapon.rollLabel}</b>
-            {" "}{weapon.damageLabel}
+            <span class="weapon-detail">{weapon.damageLabel}</span>
           </td>
           <td>{weapon.rangeLabel}</td>
         </tr>

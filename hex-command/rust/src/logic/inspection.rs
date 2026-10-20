@@ -15,6 +15,7 @@ impl Game<'_> {
             minimum: distribution.min,
             maximum: distribution.max,
             expected: distribution.mean,
+            probabilities: distribution.probabilities.clone(),
             count: attack.count,
             total: distribution.mean.round() as i32,
             base: attack.damage,
@@ -40,68 +41,27 @@ impl Game<'_> {
                         let attack = self.rules.units[unit.kind].attacks[weapon].clone();
                         let (damage, retaliation, response) =
                             self.preview(unit, target, weapon, unit.tile);
-                        let distribution =
-                            self.damage_distribution(unit, target, weapon, target.tile);
-                        let healing = distribution
-                            .outcomes()
-                            .map(|(damage, p)| {
-                                p * f64::from(self.drain_healing(unit, target, weapon, damage))
-                            })
-                            .sum::<f64>()
-                            .round() as i32;
-                        let thorn_damage = self.thorn_damage(unit, target, weapon, unit.tile);
-                        let retaliation_healing = response.map_or(0, |index| {
-                            let reply = self.damage_distribution(target, unit, index, unit.tile);
-                            distribution
-                                .outcomes()
-                                .filter(|&(damage, _)| damage < target.hp)
-                                .map(|(damage, p)| {
-                                    let mut wounded = target.clone();
-                                    wounded.hp -= damage;
-                                    let mut actor = unit.clone();
-                                    actor.hp += self.drain_healing(unit, target, weapon, damage);
-                                    p * reply
-                                        .outcomes()
-                                        .map(|(dealt, q)| {
-                                            q * f64::from(
-                                                self.drain_healing(&wounded, &actor, index, dealt),
-                                            )
-                                        })
-                                        .sum::<f64>()
-                                })
-                                .sum::<f64>()
-                                .round() as i32
-                        });
+                        let forecast = self.exchange(unit, target, weapon, unit.tile);
+                        let health = |side| HpForecast {
+                            minimum: forecast.hp_minimum[side],
+                            maximum: forecast.hp_maximum[side],
+                            expected: forecast.hp_expected[side],
+                        };
                         let response = response
                             .map(|index| self.rules.units[target.kind].attacks[index].clone());
                         let retaliation_detail = response
                             .as_ref()
                             .map(|r| self.damage_detail(r, unit, unit.tile));
                         attacks.push(AttackDetails {
-                            kill_chance: distribution.chance(target.hp),
-                            death_chance: self.death_chance(unit, target, weapon, unit.tile),
-                            retaliation_min: thorn_damage
-                                + if distribution.max >= target.hp {
-                                    0
-                                } else {
-                                    response.as_ref().map_or(0, |r| {
-                                        super::damage::distribution(
-                                            r,
-                                            self.rules.units[unit.kind]
-                                                .damage_modifiers
-                                                .get(r.damage_type)
-                                                + self.rules.units[unit.kind].environment
-                                                    [self.terrain[unit.tile]][r.category.index()]
-                                                    [r.damage_type.index()],
-                                        )
-                                        .min
-                                    })
-                                },
-                            retaliation_max: self
-                                .maximum_retaliation(unit, target, weapon, unit.tile),
-                            healing,
-                            retaliation_healing,
-                            thorn_damage,
+                            attacker_health: health(0),
+                            defender_health: health(1),
+                            kill_chance: forecast.death[1],
+                            death_chance: forecast.death[0],
+                            retaliation_min: forecast.minimum[1],
+                            retaliation_max: forecast.maximum[1],
+                            healing: forecast.healing[0].round() as i32,
+                            retaliation_healing: forecast.healing[1].round() as i32,
+                            thorn_damage: forecast.reflection.round() as i32,
                             recommended: recommended == Some(weapon),
                             target: format!("u{}", target.id),
                             damage,

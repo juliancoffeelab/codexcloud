@@ -8,13 +8,38 @@
   <span class="forecast-label">
     <span>
       {forecast.currentHp} →
-      <b class={forecast.remainingClass}>≈{forecast.remainingHp}</b>
+      <b class={forecast.remainingClass}>{forecast.remainingLabel}</b>
       / {forecast.maximumHp} HP
     </span>
   </span>
   <span class="health-track" role="img" aria-label={forecast.healthLabel}>
-    <span class="health-lost" style={`width:${forecast.currentPercent}%`}></span>
-    <span class="health-left" style={`width:${forecast.remainingPercent}%`}></span>
+    <span
+      class="forecast-loss"
+      style={`left:${forecast.maximumPercent}%;width:${Math.max(0, forecast.currentPercent - forecast.maximumPercent)}%`}
+    ></span>
+    <span
+      class="forecast-possible"
+      style={`left:${Math.min(forecast.minimumPercent, forecast.currentPercent)}%;width:${Math.min(forecast.maximumPercent, forecast.currentPercent) - Math.min(forecast.minimumPercent, forecast.currentPercent)}%`}
+    ></span>
+    <span
+      class="forecast-certain"
+      style={`width:${Math.min(forecast.minimumPercent, forecast.currentPercent)}%`}
+    ></span>
+    <span
+      class="forecast-healing"
+      style={`left:${forecast.currentPercent}%;width:${Math.max(0, forecast.maximumPercent - forecast.currentPercent)}%`}
+    ></span>
+    <span
+      class="forecast-current"
+      style={`left:${forecast.currentPercent}%`}
+      title={`Current HP: ${forecast.currentHp}`}
+    ></span>
   </span>
-  <span class="forecast-impact">{forecast.impactLabel}</span>
+  <span class="forecast-impact">
+    {#each forecast.impactLabel.split(/(\([^)]*\))/) as part}
+      {#if part.startsWith("(")}
+        <span class="keep-together">{part}</span>
+      {:else}{part}{/if}
+    {/each}
+  </span>
 </span>

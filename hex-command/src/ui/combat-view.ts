@@ -1,17 +1,25 @@
 import type { GameView, UnitView } from "../game/view";
 import { DAMAGE_TYPES, TERRAIN, TYPES } from "../game/catalog";
-import type { DamageBreakdown, Side, TerrainType, Weapon } from "../game/types";
+import type {
+  CombatPreviewDetails,
+  DamageBreakdown,
+  Side,
+  TerrainType,
+  Weapon,
+} from "../game/types";
 import { damageExplanation } from "../presentation/combat";
 
 export interface HealthForecastView {
   side: Side;
   remainingHp: number;
+  remainingLabel: string;
   remainingClass: string;
   currentHp: number;
   maximumHp: number;
   healthLabel: string;
   currentPercent: number;
-  remainingPercent: number;
+  minimumPercent: number;
+  maximumPercent: number;
   impactLabel: string;
 }
 
@@ -28,6 +36,7 @@ interface AttackChoiceBase {
 
 export interface AvailableAttackChoice extends AttackChoiceBase {
   available: true;
+  responseName: string;
   inspectLabel: string;
   detailsId: string;
   playerForecast: HealthForecastView;
@@ -42,21 +51,55 @@ export interface UnavailableAttackChoice extends AttackChoiceBase {
 
 export type AttackChoiceView = AvailableAttackChoice | UnavailableAttackChoice;
 
+function range(minimum: number, maximum: number): string {
+  return minimum === maximum ? `${minimum}` : `${minimum}–${maximum}`;
+}
+
+function weaponRange(weapon: Weapon): string {
+  const spread = weapon.spread ?? 0;
+  return range(weapon.damage - spread, weapon.damage + spread);
+}
+
+function weaponLabel(weapon: Weapon, damage: DamageBreakdown): string {
+  // Engine bounds cover all strikes; headings show the adjusted range per strike.
+  const minimum = damage.minimum === undefined ? damage.damage : damage.minimum / weapon.count;
+  const maximum = damage.maximum === undefined ? damage.damage : damage.maximum / weapon.count;
+  return `(${weapon.count} × ${range(minimum, maximum)}) ${weapon.name}`;
+}
+
 function healthForecast(
   unit: UnitView,
-  damage: number,
-  healing = 0,
-): Omit<HealthForecastView, "healthLabel" | "impactLabel" | "remainingClass"> {
+  label: "You" | "Enemy",
+  impact: "Take" | "Deal",
+  deathChance: number,
+  health: CombatPreviewDetails["attackerHealth"],
+): HealthForecastView {
   const maximumHp = TYPES[unit.type].hp;
-  const remainingHp = Math.max(0, unit.hp - damage + healing);
+  const remainingHp = Math.round(health.expected * 10) / 10;
+  const minimumLoss = unit.hp - health.maximum;
+  const maximumLoss = unit.hp - health.minimum;
+  let impactLabel: string;
+  if (minimumLoss >= 0) {
+    const loss = range(minimumLoss, maximumLoss);
+    impactLabel = `${impact} ${minimumLoss > 0 ? `−${loss}` : loss} HP`;
+  } else if (maximumLoss <= 0) {
+    impactLabel = `${label === "You" ? "Heal" : "Enemy heals"} +${range(-maximumLoss, -minimumLoss)} HP`;
+  } else {
+    impactLabel = `Change −${maximumLoss}–+${-minimumLoss} HP`;
+  }
 
   return {
     side: unit.side,
     remainingHp,
+    remainingLabel: range(health.minimum, health.maximum),
+    remainingClass: deathChance === 1 ? "fatal" : "",
     currentHp: unit.hp,
     maximumHp,
+    healthLabel: `${label}: ${unit.hp} HP before, ${range(health.minimum, health.maximum)} HP after this attack, average ${remainingHp} HP${deathNotice(deathChance)}`,
     currentPercent: (unit.hp / maximumHp) * 100,
-    remainingPercent: (remainingHp / maximumHp) * 100,
+    minimumPercent: (health.minimum / maximumHp) * 100,
+    maximumPercent: (health.maximum / maximumHp) * 100,
+    impactLabel: `${impactLabel}${deathNotice(deathChance)}`,
   };
 }
 
@@ -71,7 +114,15 @@ function describeAttack(
       ? `, against terrain: ${TERRAIN[terrain].name.toLowerCase()}`
       : "";
 
-  return `${label}: ${weapon.count} × ${weapon.damage - (weapon.spread ?? 0)}–${weapon.damage + (weapon.spread ?? 0)} ${DAMAGE_TYPES[weapon.damageType].toLowerCase()}, ${weapon.name.toLowerCase()}, ${weapon.category}${terrainDescription}`;
+  return `${label}: ${weapon.count} × ${weaponRange(weapon)} ${DAMAGE_TYPES[weapon.damageType].toLowerCase()}, ${weapon.name.toLowerCase()}, ${weapon.category}${terrainDescription}`;
+}
+
+function deathNotice(probability: number): string {
+  if (probability === 0) return "";
+  if (probability === 1) return " (dies)";
+  const percent =
+    probability < 0.01 ? "<1" : probability > 0.99 ? ">99" : Math.round(probability * 100);
+  return ` (${percent}% chance to die)`;
 }
 
 /** Prepare display text and forecasts; damage and legality remain engine decisions. */
@@ -94,17 +145,6 @@ export function attackChoiceViews(
     // Available attacks have already validated both combatants' tiles.
     const attackerTerrain = game.tile(attacker.tile)!.terrain;
     const targetTerrain = game.tile(target.tile)!.terrain;
-    const chance = (p: number) =>
-      p === 0
-        ? "0%"
-        : p === 1
-          ? "100%"
-          : p < 0.01
-            ? "<1%"
-            : p > 0.99
-              ? ">99%"
-              : `${Math.round(p * 100)}%`;
-    const warning = `, kill chance ${chance(preview.killChance)}, your death chance ${chance(preview.deathChance)}`;
     const retaliationCalculation: CombatCalculationView = {
       description: "Their attack: none",
       equation: preview.killChance === 1 ? "0 (enemy defeated)" : "0 (out of range)",
@@ -117,34 +157,40 @@ export function attackChoiceViews(
         preview.retaliationDetail,
         attackerTerrain,
       );
-      retaliationCalculation.equation = `${damageExplanation(preview.retaliationDetail)}; only if the enemy survives`;
+      retaliationCalculation.equation = damageExplanation(preview.retaliationDetail);
     }
 
     if (preview.thornDamage) {
       const weaponDamage = preview.retaliation - preview.thornDamage;
       retaliationCalculation.description += `; thorns reflect damage per incoming melee strike`;
-      retaliationCalculation.equation += `; ${weaponDamage} + ${preview.thornDamage} (thorns: ${preview.thornDamage / weapon.count} × ${weapon.count} incoming strikes) = ${preview.retaliation}`;
+      retaliationCalculation.equation += `; ${weaponDamage} + ${preview.thornDamage} (thorns: average across executed strikes) = ${preview.retaliation}`;
     }
 
-    const enemyHealth = healthForecast(target, preview.damage, preview.retaliationHealing);
-    const enemyForecast: HealthForecastView = {
-      ...enemyHealth,
-      impactLabel: `Deal ${preview.damageDetail.minimum}–${preview.damageDetail.maximum} HP; ${chance(preview.killChance)} kill`,
-      healthLabel: `Enemy: estimated ${enemyHealth.remainingHp} HP; ${chance(preview.killChance)} chance of death`,
-      remainingClass: preview.killChance === 1 ? "fatal" : "",
-    };
-    const playerHealth = healthForecast(attacker, preview.retaliation, preview.healing);
-    const playerForecast: HealthForecastView = {
-      ...playerHealth,
-      impactLabel: `Take ${preview.retaliationMin}–${preview.retaliationMax} HP; ${chance(preview.deathChance)} death${preview.healing ? `; heal ≈${preview.healing}` : ""}`,
-      healthLabel: `You: estimated ${playerHealth.remainingHp} HP; ${chance(preview.deathChance)} chance of death`,
-      remainingClass: preview.deathChance === 1 ? "fatal" : "",
-    };
+    const enemyForecast = healthForecast(
+      target,
+      "Enemy",
+      "Deal",
+      preview.killChance,
+      preview.defenderHealth,
+    );
+    const playerForecast = healthForecast(
+      attacker,
+      "You",
+      "Take",
+      preview.deathChance,
+      preview.attackerHealth,
+    );
+    const name = weaponLabel(weapon, preview.damageDetail);
+    const responseName =
+      preview.response && preview.retaliationDetail
+        ? weaponLabel(preview.response, preview.retaliationDetail)
+        : "No retaliation";
     return {
       available: true,
+      responseName,
       id: weapon.id,
-      name: `${weapon.name} (${weapon.count} × ${weapon.damage - (weapon.spread ?? 0)}–${weapon.damage + (weapon.spread ?? 0)})`,
-      buttonLabel: `Attack with ${weapon.name}: deal ${preview.damageDetail.minimum}–${preview.damageDetail.maximum} damage, take ${preview.retaliationMin}–${preview.retaliationMax} damage${warning}`,
+      name,
+      buttonLabel: `Attack with ${name}. Enemy: ${responseName}. ${playerForecast.healthLabel}. ${enemyForecast.healthLabel}.`,
       inspectLabel: `Inspect ${weapon.name.toLowerCase()} damage calculation`,
       detailsId: `attack-details-${weapon.id}`,
       playerForecast,

@@ -305,7 +305,7 @@ pub(in crate::ai) fn rescue(
                     for enemy in board.units().iter().filter(|u| u.side != game.turn()) {
                         for weapon in board.attack_options(ally, enemy, tile) {
                             let response = board.maximum_retaliation(ally, enemy, weapon, tile);
-                            if board.guaranteed_kill(ally, enemy, weapon)
+                            if board.exchange(ally, enemy, weapon, tile).death[1] == 1.0
                                 && response < ally.hp
                                 && orders.attack_allowed(&board, ally, enemy, weapon, tile)
                             {

@@ -128,6 +128,7 @@ export class BattleController {
     return Object.freeze({
       ...this.state,
       game: this.gameView,
+      combat: this.#game.combat,
       artwork: currentArtwork(),
       canUndo: !dialoguePending(this.#game.campaign) && this.history.canUndo(this.#game),
       recruitment: recruitmentContext(this.gameView, this.state.selected, this.state.inspectedTile),

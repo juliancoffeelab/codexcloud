@@ -247,8 +247,8 @@ impl BattleView<'_, '_> {
                         if distant && !zero_cost {
                             continue;
                         }
-                        let kill_chance = self.kill_chance(unit, target, weapon);
-                        let killed = self.guaranteed_kill(unit, target, weapon);
+                        let kill_chance = self.potential_kill_chance(unit, target, weapon);
+                        let killed = kill_chance == 1.0;
                         let kill_value = kill_chance
                             * (12.0 + self.rules().units[target.kind].cost as f64 * 0.3);
                         let essential_value = if orders.important(self, target) {
@@ -256,7 +256,7 @@ impl BattleView<'_, '_> {
                         } else {
                             0.0
                         };
-                        let value = self.effective_damage(unit, target, weapon) * 2.0
+                        let value = self.potential_damage(unit, target, weapon) * 2.0
                             + kill_value
                             + essential_value;
                         let terminal_attack = killed && orders.terminal_attack(target);
@@ -277,7 +277,7 @@ impl BattleView<'_, '_> {
                         if BOUNDED {
                             // Dropping retaliation and death penalties gives an upper bound.
                             // A kill may also award the three-point promotion bonus.
-                            let mut bound = (self.effective_damage(unit, target, weapon) * 2.0
+                            let mut bound = (self.potential_damage(unit, target, weapon) * 2.0
                                 + kill_value.upper())
                             .upper();
                             bound = (bound + essential_value).upper();
@@ -759,7 +759,9 @@ impl BattleView<'_, '_> {
                     let mut eliminated = None;
                     let mut finishes_battle = false;
                     if let (Some(target), Some(weapon)) = (target, weapon) {
-                        let (damage, response, _) = self.preview(&unit, target, weapon, tile);
+                        let forecast = self.exchange(unit, target, weapon, tile);
+                        let damage = forecast.damage[0].round() as i32;
+                        let response = forecast.damage[1].round() as i32;
                         retaliation = if important {
                             self.maximum_retaliation(unit, target, weapon, tile)
                         } else {
@@ -770,11 +772,11 @@ impl BattleView<'_, '_> {
                         {
                             continue;
                         }
-                        let kill_chance = self.kill_chance(unit, target, weapon);
-                        let killed = self.guaranteed_kill(unit, target, weapon);
+                        let kill_chance = forecast.death[1];
+                        let killed = kill_chance == 1.0;
                         eliminated = killed.then_some(target.id);
                         finishes_battle = killed && orders.terminal_attack(target);
-                        combat = self.effective_damage(unit, target, weapon) * 2.0
+                        combat = forecast.effective[0] * 2.0
                             + kill_chance
                                 * (12.0 + self.rules().units[target.kind].cost as f64 * 0.3)
                             - retaliation as f64 * 1.8

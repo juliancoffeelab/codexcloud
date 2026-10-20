@@ -40,9 +40,9 @@ pub struct HealingRecord {
     pub providers: Vec<String>,
     pub amount: i32,
 }
-/// Reflection separated from weapon retaliation. Effective damage is the extra
-/// HP removed beyond ordinary retaliation, excluding overkill. Aura ties share
-/// attribution; intrinsic reflection belongs to the combat's target.
+/// Reflection separated from weapon retaliation. Effective damage is the actual
+/// HP removed by reflection as each initiating strike lands, excluding overkill.
+/// Aura ties share attribution; intrinsic reflection belongs to the combat's target.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -55,13 +55,16 @@ pub struct ThornRecord {
 /// Damage stages for an executed weapon, before HP caps. Armour includes racial
 /// and unit modifiers; terrain includes the target's environmental modifiers.
 /// Stage differences are signed: vulnerabilities produce negative prevention.
-/// Effective prevention caps each stage at available HP, attributing armour
+/// Effective prevention caps each strike at its available HP, attributing armour
 /// first and terrain second, so overkill cannot earn avoided-HP credit.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DamageMitigationRecord {
     pub available_hp: i32,
+    /// Summed per-strike HP damage, accounting for drain between strikes.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub effective_damage: Option<i32>,
     pub raw_damage: i32,
     pub after_armour_damage: i32,
     pub after_terrain_damage: i32,
@@ -69,7 +72,7 @@ pub struct DamageMitigationRecord {
     pub effective_terrain_prevented: i32,
 }
 /// Initiating weapon and actual weapon retaliation, excluding reflected thorns.
-/// A killed defender or unavailable response has no retaliation entry.
+/// A defender killed before its first reply has no retaliation entry.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]

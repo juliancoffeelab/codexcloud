@@ -123,6 +123,36 @@ pub struct BattleHandle {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 pub struct DispatchResult {
     pub view: EngineView,
+    pub combat: Option<CombatAnimation>,
+}
+
+/// One resolved exchange for presentation; never retained in a checkpoint.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+pub struct CombatAnimation {
+    pub units: [crate::data::PublicUnit; 2],
+    pub strikes: Vec<CombatStrike>,
+}
+
+/// The actual roll, modifiers and HP effects of one executed strike.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[serde(rename_all = "camelCase")]
+pub struct CombatStrike {
+    pub side: crate::data::Side,
+    pub weapon: String,
+    pub roll_min: i32,
+    pub roll_max: i32,
+    pub raw: i32,
+    pub modifier: i32,
+    pub terrain: i32,
+    pub damage: i32,
+    pub effective: i32,
+    pub drain: u8,
+    pub healed: i32,
+    pub thorns: i32,
+    pub reflected: i32,
+    pub health: [i32; 2],
 }
 
 /// Reachable destination and its finite accumulated movement cost.
@@ -226,6 +256,8 @@ pub struct DamageDetail {
     pub minimum: i32,
     pub maximum: i32,
     pub expected: f64,
+    /// Probability of each total, starting at minimum.
+    pub probabilities: Vec<f64>,
     pub count: u8,
     pub total: i32,
     pub base: i32,
@@ -238,12 +270,24 @@ pub struct DamageDetail {
     pub damage: i32,
 }
 
+/// Remaining health across all attack, healing and retaliation outcomes.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[serde(rename_all = "camelCase")]
+pub struct HpForecast {
+    pub minimum: i32,
+    pub maximum: i32,
+    pub expected: f64,
+}
+
 /// A legal current-position attack and its complete display forecast.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[serde(rename_all = "camelCase")]
 pub struct AttackDetails {
+    pub attacker_health: HpForecast,
+    pub defender_health: HpForecast,
     pub kill_chance: f64,
     pub death_chance: f64,
     pub retaliation_min: i32,

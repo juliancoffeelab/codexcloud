@@ -63,18 +63,26 @@
       </p>
       <p>
         Select an enemy, then tap a weapon to attack. Use the magnifying glass for damage details.
-        Each unit attacks once per turn. Counts show how many hits its selected attack deals; armor
-        and terrain modify each hit before the results are added. A surviving defender replies once
-        with its strongest weapon of the same kind: melee answers melee; ranged answers ranged. Both
-        weapons must reach. Forests and hills block ranged shots through them.
+        The weapon’s count is its maximum number of strikes. The attacker strikes first, then the
+        defender answers with its strongest legal weapon of the same kind: melee answers melee;
+        ranged answers ranged. Strikes alternate, skipping a weapon that has used all its strikes,
+        until both weapons finish or either unit dies. Both weapons must reach. Forests and hills
+        block ranged shots through them.
       </p>
       <p>
-        Blade, Pierce, and Impact damage interact with armor. Soldiers take 1 less Blade and Pierce
-        damage, and 1 more Impact damage. Commanders take 1 less Blade damage. Archers and scouts
-        have no modifiers. Armor and weakness change base damage first, then terrain cover and
-        shallow-water exposure apply. No rounding is needed. Damage cannot fall below 0. A fully
-        blocked hit still spends the attack, and a surviving defender can reply. The combat preview
-        shows the exact outcome; there are no hit-chance rolls.
+        Each strike rolls damage independently within its weapon’s range. Armor, weaknesses and
+        terrain modify each roll; damage cannot fall below 0. Check the unit’s armor and terrain
+        details for its modifiers. There is no separate hit-or-miss roll. The combat preview shows
+        the range of remaining HP and the chance of death. Green shows current HP guaranteed to
+        remain, yellow shows HP that might be lost, red shows guaranteed loss, and blue shows HP
+        that could be gained. The thin white marker shows current HP. These are final HP outcomes,
+        including healing.
+      </p>
+      <p>
+        Drain restores HP after each strike, based on the HP actually removed, rounded down and
+        capped at maximum HP. Defensive thorns then reflect damage from each incoming melee strike,
+        including a killing hit or one that deals no damage. Strikes prevented by death do not roll,
+        heal or trigger thorns.
       </p>
       <p>
         Each unit’s Movement costs list shows how much movement it spends entering each terrain.

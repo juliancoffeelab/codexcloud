@@ -78,7 +78,7 @@ fn thorns_count_incoming_strikes_and_do_not_drain_or_require_a_surviving_defende
         let before = game.unit(a).unwrap().hp;
         hit(&mut game, a, b, &attack_id);
         assert!(game.unit(b).is_none());
-        assert_eq!(game.unit(a).unwrap().hp, before - 3 * i32::from(strikes));
+        assert_eq!(game.unit(a).unwrap().hp, before - 3);
     }
 }
 
@@ -139,7 +139,7 @@ fn thorn_retaliation_stacks_own_shield_with_strongest_adjacent_friendly_aura() {
     restored.units[bi].hp = 1;
     assert_eq!(
         preview(&restored),
-        (8, 6, None),
+        (4, 3, None),
         "a killing melee hit still triggers thorns"
     );
 }
@@ -217,8 +217,8 @@ fn drain_uses_actual_hp_loss_before_reply_and_cannot_overheal_or_revive() {
     hit(&mut restored, a, c, "sword");
     assert_eq!(
         restored.unit(a).unwrap().hp,
-        92,
-        "healing caps before retaliation"
+        94,
+        "healing caps separately before each retaliation"
     );
     restored.begin_turn(Side::Player);
     let ai = restored.index(a).unwrap();
@@ -433,7 +433,7 @@ fn counted_damage_keeps_the_existing_attack_and_restore_flow() {
     let bi = restored.index(b).unwrap();
     restored.units[bi].hp = 2;
     hit(&mut restored, a, b, "sword");
-    assert_eq!(restored.unit(a).unwrap().hp, 95);
+    assert_eq!(restored.unit(a).unwrap().hp, 90);
     assert!(restored.unit(b).is_none());
     assert_eq!(restored.unit(a).unwrap().experience, Some(7));
     restored.begin_turn(Side::Player);
@@ -441,7 +441,7 @@ fn counted_damage_keeps_the_existing_attack_and_restore_flow() {
     let ai = restored.index(a).unwrap();
     restored.units[ai].hp = 1;
     hit(&mut restored, a, c, "sword");
-    assert_eq!(restored.unit(c).unwrap().hp, 97);
+    assert_eq!(restored.unit(c).unwrap().hp, 99);
     assert!(restored.unit(a).is_none());
     assert_eq!(restored.unit(c).unwrap().experience, Some(6));
 }
@@ -469,15 +469,15 @@ fn reflected_damage_records_separate_own_aura_and_effective_damage() {
     assert_eq!(thorns.damage, 10);
     assert_eq!(thorns.aura_damage, 6);
     assert_eq!(thorns.aura_sources, vec![format!("u{aura}")]);
-    assert_eq!(thorns.effective_damage, 2); // ordinary retaliation removes 8 of 10 HP
+    assert_eq!(thorns.effective_damage, 6); // first reflection 5, reply 4, final reflection 1
 }
 
 #[test]
 fn mitigation_records_signed_stages_hp_caps_and_executed_weapon_retaliation() {
     for (armour, terrain, hp, stages, effective) in [
         (-2, -1, 100, (30, 24, 21), (6, 3)),
-        (-2, -1, 23, (30, 24, 21), (0, 2)),
-        (-2, -1, 20, (30, 24, 21), (0, 0)),
+        (-2, -1, 23, (30, 24, 21), (5, 3)),
+        (-2, -1, 20, (30, 24, 21), (4, 2)),
         (2, -1, 100, (30, 36, 33), (-6, 3)),
         (-12, 3, 100, (30, 0, 3), (30, -3)),
     ] {
@@ -500,7 +500,7 @@ fn mitigation_records_signed_stages_hp_caps_and_executed_weapon_retaliation() {
         let b = add(&mut game, "soldier", Side::Enemy, "3,3");
         let ai = game.index(a).unwrap();
         let bi = game.index(b).unwrap();
-        game.units[ai].hp = 5;
+        game.units[ai].hp = 50;
         game.units[bi].hp = hp;
         game.recordings = Some(Records::default());
         hit(&mut game, a, b, "knife");
@@ -523,37 +523,23 @@ fn mitigation_records_signed_stages_hp_caps_and_executed_weapon_retaliation() {
             effective
         );
         assert_eq!(mitigation.attack.after_terrain_damage, record.damage);
-        if hp <= stages.2 {
-            assert!(
-                mitigation.retaliation.is_none(),
-                "killed defenders never execute a weapon"
-            );
-        } else {
-            let retaliation = mitigation.retaliation.as_ref().unwrap();
-            let available = 5 + stages.2.min(hp) / 2;
-            assert_eq!(retaliation.available_hp, available);
-            assert_eq!(
-                (
-                    retaliation.raw_damage,
-                    retaliation.after_armour_damage,
-                    retaliation.after_terrain_damage
-                ),
-                (8, 6, 4)
-            );
-            assert_eq!(
-                retaliation.after_terrain_damage + 6,
-                record.retaliation,
-                "weapon mitigation excludes per-strike thorns"
-            );
-            assert_eq!(
-                retaliation.effective_armour_prevented,
-                8.min(available) - 6.min(available)
-            );
-            assert_eq!(
-                retaliation.effective_terrain_prevented,
-                6.min(available) - 4.min(available)
-            );
-        }
+        // A defender killed by the third strike has already used both replies.
+        let retaliation = mitigation.retaliation.as_ref().unwrap();
+        let per_hit = stages.2 / 3;
+        let available = 50 + per_hit.min(hp) / 2 - 2;
+        assert_eq!(retaliation.available_hp, available);
+        assert_eq!(
+            (
+                retaliation.raw_damage,
+                retaliation.after_armour_damage,
+                retaliation.after_terrain_damage
+            ),
+            (8, 6, 4)
+        );
+        assert_eq!(retaliation.after_terrain_damage + 6, record.retaliation);
+        assert_eq!(retaliation.effective_armour_prevented, 2);
+        assert_eq!(retaliation.effective_terrain_prevented, 2);
+        assert_eq!(mitigation.attack.effective_damage, Some(stages.2.min(hp)));
     }
 }
 
@@ -646,7 +632,7 @@ fn uncertain_kills_allow_actual_replies_and_ai_does_not_peek_at_combat_seed() {
         game.gold = [0, 0];
         let actor = game.unit(a).unwrap();
         let target = game.unit(b).unwrap();
-        assert!((game.kill_chance(actor, target, 0) - 5. / 9.).abs() < 1e-12);
+        assert!((game.exchange(actor, target, 0, actor.tile).death[1] - 5. / 9.).abs() < 1e-12);
         assert!(game.preview(actor, target, 0, actor.tile).2.is_some());
         let mut workspace =
             crate::ai::PlanningWorkspace::new(7, 0, None, crate::ai::Diplomacy::Pragmatic);

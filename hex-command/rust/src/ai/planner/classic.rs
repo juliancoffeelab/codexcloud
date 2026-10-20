@@ -134,7 +134,7 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
             return true;
         }
         let retaliation = g.maximum_retaliation(&self.unit, target, weapon, from);
-        let killed = g.guaranteed_kill(&self.unit, target, weapon);
+        let killed = g.exchange(&self.unit, target, weapon, from).death[1] == 1.0;
         if self.orders.protects(self.unit.id) && retaliation > 0 {
             return false;
         }
@@ -176,17 +176,18 @@ impl BattleView<'_, '_> {
         let Some(w) = weapon.or_else(|| self.best_attack(u, target, from)) else {
             return -100.0;
         };
-        let (_, retaliation, _) = self.preview(u, target, w, from);
+        let forecast = self.exchange(u, target, w, from);
+        let retaliation = forecast.damage[1];
         (if self.rules().units[target.kind].leader {
             20.0
         } else if target.role == Some(Role::Courier) {
             12.0
         } else {
             0.0
-        }) + self.kill_chance(u, target, w) * 12.0
+        }) + forecast.death[1] * 12.0
             + (self.rules().units[target.kind].hp - target.hp) as f64 * 0.3
-            + self.effective_damage(u, target, w)
-            - retaliation as f64 * 0.7
+            + forecast.effective[0]
+            - retaliation * 0.7
             - self.death_chance(u, target, w, from) * 30.0
     }
 
@@ -312,7 +313,7 @@ impl BattleDraft<'_, '_> {
                         id,
                         target,
                         self.preview(&u, target, weapon, u.tile).0,
-                        self.kill_chance(&u, target, weapon),
+                        self.exchange(&u, target, weapon, u.tile).death[1],
                     );
                 if best.as_ref().is_none_or(|(b, _, s)| {
                     score > *s || (score == *s && order.compare(self, target.tile, b.tile).is_lt())
@@ -543,7 +544,7 @@ impl BattleDraft<'_, '_> {
                             id,
                             target,
                             self.preview(&u, target, weapon, t).0,
-                            self.kill_chance(&u, target, weapon),
+                            self.exchange(&u, target, weapon, t).death[1],
                         )
                     });
                     opportunity = opportunity
