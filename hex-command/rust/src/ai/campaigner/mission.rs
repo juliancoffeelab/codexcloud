@@ -334,12 +334,12 @@ impl Game<'_> {
             let required = goals
                 .iter()
                 .any(|g| g.kind == ObjectiveKind::Escape && actor_matches(&g.actor, id));
-            let (keeps, _) = self.leader_rebuild_plan(id, required);
-            if !keeps.is_empty() {
+            let (targets, _) = self.leader_rebuild_plan(id, required);
+            if !targets.is_empty() {
                 let mut o = crate::ai::objectives::objective(
                     &format!("rebuild:u{id}"),
                     ObjectiveKind::Capture,
-                    keeps.iter().map(|&t| self.board.ids[t].clone()).collect(),
+                    targets.iter().map(|&t| self.board.ids[t].clone()).collect(),
                     80.0,
                 );
                 o.actor = Some(format!("u{id}"));
@@ -812,16 +812,23 @@ impl Game<'_> {
         } else {
             u.rebuilding.unwrap_or(true)
         };
-        if rebuilding
-            && (self.income(u.side) > 0
-                || options
-                    .iter()
-                    .any(|&k| self.rules.units[k].cost <= self.gold[u.side.index()]))
+        let targets = if !rebuilding {
+            vec![]
+        } else if self.income(u.side) > 0
+            || options
+                .iter()
+                .any(|&k| self.rules.units[k].cost <= self.gold[u.side.index()])
         {
-            (keeps, Some(rebuilding))
+            keeps
         } else {
-            (vec![], Some(rebuilding))
-        }
+            // Recover village income before returning to an unaffordable keep.
+            (0..self.terrain.len())
+                .filter(|&tile| {
+                    self.terrain_is(tile, Terrain::Village) && self.owners[tile] != Some(u.side)
+                })
+                .collect()
+        };
+        (targets, Some(rebuilding))
     }
 }
 pub(in crate::ai) fn policy_goals(

@@ -195,10 +195,7 @@ impl BattleView<'_, '_> {
         let villages: Vec<_> = (0..self.terrain().len())
             .filter(|&t| self.terrain_is(t, Terrain::Village) && self.owners()[t] != Some(u.side))
             .collect();
-        let goals = if (self.rules().units[u.kind].family == Family::Scout
-            || self.leader_needs_income(u))
-            && !villages.is_empty()
-        {
+        let goals = if self.rules().units[u.kind].family == Family::Scout && !villages.is_empty() {
             villages
         } else {
             self.units()
