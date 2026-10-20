@@ -15,7 +15,8 @@
       "category": "melee",
       "range": 1,
       "sound": "attack-melee",
-      "count": 2
+      "count": 2,
+      "spread": 1
     }
   ],
   "damageModifiers": {

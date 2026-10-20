@@ -76,7 +76,7 @@ inferred from surviving troop health.
 ## Version-two migration
 
 The v2-to-v3 step removes the need for historical layouts in the live catalog.
-Revision-one river and refuge checkpoints retain their own tiles, ownership and
+Revision-one refuge checkpoints retain their own tiles, ownership and
 units, while their revision tag is changed to the current catalog entry with the
 same geometry. Normal Rust restoration validates the
 result. The catalog accepts only current authored documents; old layouts, marker

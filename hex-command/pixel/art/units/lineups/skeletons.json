@@ -169,6 +169,33 @@
           ]
         }
       ]
+    },
+    {
+      "base": {
+        "id": "ghost",
+        "name": "Ghost",
+        "level": 1,
+        "source": "ghost"
+      },
+      "branches": [
+        {
+          "role": "Spectral scout",
+          "units": [
+            {
+              "id": "wraith",
+              "name": "Wraith",
+              "level": 2,
+              "source": "wraith"
+            },
+            {
+              "id": "spectre",
+              "name": "Spectre",
+              "level": 3,
+              "source": "spectre"
+            }
+          ]
+        }
+      ]
     }
   ],
   "commander": {

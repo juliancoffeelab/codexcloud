@@ -1,0 +1,10 @@
+{
+  "id": "spirit",
+  "name": "Spirits",
+  "terrainModifiers": {},
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": -2
+  }
+}

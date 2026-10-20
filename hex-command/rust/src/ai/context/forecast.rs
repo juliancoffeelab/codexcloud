@@ -231,7 +231,13 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             let mut best = 0;
             for weapon in 0..board.rules.units[enemy.kind].attacks.len() {
                 if positions[weapon].contains(target.tile) {
-                    best = best.max(board.damage(enemy, target, weapon));
+                    best = best.max(if sum {
+                        board
+                            .damage_distribution(enemy, target, weapon, target.tile)
+                            .max
+                    } else {
+                        board.damage(enemy, target, weapon)
+                    });
                 }
             }
             total += best;

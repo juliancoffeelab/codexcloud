@@ -1,0 +1,55 @@
+{
+  "id": "ghost",
+  "role": "flank",
+  "name": "Ghost",
+  "race": "spirit",
+  "terrainModifiers": {
+    "forest": {
+      "cost": -1
+    },
+    "grove": {
+      "cost": -1
+    },
+    "hill": {
+      "cost": -1
+    }
+  },
+  "hp": 16,
+  "move": 5,
+  "cost": 6,
+  "attacks": [
+    {
+      "id": "spectral-touch",
+      "name": "Spectral touch",
+      "damage": 3,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee",
+      "count": 2,
+      "spread": 1
+    },
+    {
+      "id": "spectral-orb",
+      "name": "Spectral orb",
+      "damage": 3,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow",
+      "count": 1,
+      "spread": 1
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Restless spirit",
+  "description": "A swift spirit that scouts rough ground, strikes with a spectral touch and hurls a small orb of force. Its incorporeal form resists impact damage.",
+  "level": 1,
+  "family": "ghost",
+  "experienceNeeded": 10,
+  "advancesTo": ["wraith"]
+}

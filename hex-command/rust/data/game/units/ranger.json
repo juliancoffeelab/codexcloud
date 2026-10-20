@@ -26,7 +26,8 @@
       "category": "melee",
       "range": 1,
       "sound": "attack-melee",
-      "count": 2
+      "count": 2,
+      "spread": 1
     },
     {
       "id": "sling",
@@ -36,7 +37,8 @@
       "category": "ranged",
       "range": 2,
       "sound": "attack-bow",
-      "count": 2
+      "count": 2,
+      "spread": 2
     }
   ],
   "damageModifiers": {

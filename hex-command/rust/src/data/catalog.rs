@@ -44,8 +44,12 @@ struct Manifest {
     races: Vec<String>,
     units: Vec<String>,
     scenarios: Vec<String>,
+    #[serde(default)]
+    arena_scenarios: Vec<String>,
     campaigns: Vec<String>,
     simulation: SimulationPaths,
+    #[serde(default)]
+    recruitment: Option<String>,
 }
 #[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -68,6 +72,10 @@ pub struct ArmyRoster {
 pub struct LandscapeConfig {
     pub id: String,
     pub hold_turns: u32,
+    /// Optional authored scenario layout, shared with the playable map.
+    pub map: Option<String>,
+    /// Capture targets for this layout; omitted uses the generated-arena defaults.
+    pub territory: Option<Vec<String>>,
 }
 #[derive(Clone, Debug, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -286,6 +294,7 @@ impl InitialState {
             tiles: self.tiles,
             units,
             campaign: None,
+            combat_rng: None,
             last_combat: None,
         })
     }
@@ -497,6 +506,9 @@ impl Rules {
                     || attack.sound.is_empty()
                     || attack.range == 0
                     || attack.damage < 0
+                    || attack.damage > 1000
+                    || attack.spread < 0
+                    || attack.spread > attack.damage
                     || !(1..=16).contains(&attack.count)
                     || attack.drain > 100
                 {
@@ -573,6 +585,7 @@ impl Rules {
         }
         let mut map_definitions = Vec::new();
         let mut maps = HashMap::new();
+        let mut arena_maps = HashMap::new();
         let mut campaigns = HashMap::new();
         let mut used_paths = HashSet::new();
         for path in &manifest.scenarios {
@@ -583,6 +596,14 @@ impl Rules {
             let state = initial.resolve(&units, &types, &roster_path)?;
             map_definitions.push(documents::map_metadata(bundle, path, &state, None)?);
             insert_map(&mut maps, state, &terrains, &types, path)?;
+        }
+        for path in &manifest.arena_scenarios {
+            if !used_paths.insert(path.clone()) {
+                return Err(ContentError::new(path, "duplicate catalog path"));
+            }
+            let (initial, roster_path) = documents::scenario(bundle, path)?;
+            let state = initial.resolve(&units, &types, &roster_path)?;
+            insert_map(&mut arena_maps, state, &terrains, &types, path)?;
         }
         for path in &manifest.campaigns {
             if !used_paths.insert(path.clone()) {
@@ -663,10 +684,26 @@ impl Rules {
                 return Err(ContentError::new(path, "duplicate campaign identifier"));
             }
         }
+        let recruitment: RecruitmentProfiles = if let Some(path) = &manifest.recruitment {
+            let profiles: RecruitmentProfiles = parse(bundle, path)?;
+            profiles
+                .validate()
+                .map_err(|message| ContentError::new(path, message))?;
+            profiles
+        } else {
+            RecruitmentProfiles::default()
+        };
         let rosters: Vec<ArmyRoster> = parse(bundle, &manifest.simulation.rosters)?;
         let arena: ArenaDefaults = parse(bundle, &manifest.simulation.arena)?;
         let campaign_defaults: CampaignDefaults = parse(bundle, &manifest.simulation.campaign)?;
-        validate_simulation(&rosters, &arena, &campaign_defaults, &types)?;
+        validate_simulation(
+            &rosters,
+            &arena,
+            &campaign_defaults,
+            &types,
+            &maps,
+            &arena_maps,
+        )?;
         unique(
             campaign_defaults.campaigns.iter().map(String::as_str),
             "simulation/campaign.json",
@@ -700,6 +737,7 @@ impl Rules {
             .collect();
         Ok(Self {
             content_fingerprint: content_fingerprint(bundle),
+            recruitment,
             terrain_types: terrain.iter().map(|t| t.id).collect(),
             terrain_names,
             terrain_labels: terrain.iter().map(|t| t.name.clone()).collect(),
@@ -712,6 +750,7 @@ impl Rules {
             types,
             terrains,
             maps,
+            arena_maps,
             campaigns,
             rosters,
             arena,
@@ -917,6 +956,8 @@ fn validate_simulation(
     arena: &ArenaDefaults,
     campaign: &CampaignDefaults,
     types: &HashMap<String, usize>,
+    maps: &HashMap<(String, u32), State>,
+    arena_maps: &HashMap<(String, u32), State>,
 ) -> Result<(), ContentError> {
     let path = "simulation/rosters.json";
     unique(rosters.iter().map(|r| r.id.as_str()), path)?;
@@ -946,10 +987,49 @@ fn validate_simulation(
         ));
     }
     for landscape in &arena.landscapes {
-        if !["open", "wooded", "crossings", "islands"].contains(&landscape.id.as_str())
+        identifier(&landscape.id, path)?;
+        if (landscape.map.is_none()
+            && !["open", "wooded", "crossings", "islands"].contains(&landscape.id.as_str()))
             || landscape.hold_turns == 0
         {
             return Err(ContentError::new(path, "invalid landscape or holdTurns"));
+        }
+        let territory = landscape.territory.as_ref().unwrap_or(&arena.territory);
+        unique(territory.iter().map(String::as_str), path)?;
+        if territory.is_empty() {
+            return Err(ContentError::new(path, "arena territory must not be empty"));
+        }
+        if let Some(id) = &landscape.map {
+            let map = maps
+                .iter()
+                .chain(arena_maps.iter())
+                .filter(|((name, _), _)| name == id)
+                .max_by_key(|((_, revision), _)| revision)
+                .map(|(_, map)| map)
+                .ok_or_else(|| ContentError::new(path, format!("unknown arena map {id}")))?;
+            if territory
+                .iter()
+                .any(|id| !map.tiles.iter().any(|tile| &tile.id == id))
+            {
+                return Err(ContentError::new(
+                    path,
+                    "arena territory is outside its authored map",
+                ));
+            }
+            for side in [Side::Player, Side::Enemy] {
+                if map
+                    .tiles
+                    .iter()
+                    .filter(|t| t.terrain == "keep" && t.owner == Some(side))
+                    .count()
+                    != 1
+                {
+                    return Err(ContentError::new(
+                        path,
+                        "authored arenas require one owned keep per side",
+                    ));
+                }
+            }
         }
     }
     for tile in &arena.territory {
@@ -1289,6 +1369,12 @@ mod tests {
         bundle.insert(path.into(), serde_json::to_string(&unit).unwrap());
         let rules = Rules::from_json_bundle(&bundle).unwrap();
         assert_eq!(rules.units[rules.types["swordsman"]].attacks[0].count, 1);
+        for spread in [-1, unit["attacks"][0]["damage"].as_i64().unwrap() + 1] {
+            let mut invalid = unit.clone();
+            invalid["attacks"][0]["spread"] = serde_json::json!(spread);
+            bundle.insert(path.into(), serde_json::to_string(&invalid).unwrap());
+            assert_eq!(Rules::from_json_bundle(&bundle).unwrap_err().path, path);
+        }
         for count in [0, 17] {
             unit["attacks"][0]["count"] = serde_json::json!(count);
             bundle.insert(path.into(), serde_json::to_string(&unit).unwrap());

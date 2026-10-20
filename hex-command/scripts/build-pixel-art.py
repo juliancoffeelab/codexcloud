@@ -245,9 +245,8 @@ def read_palette(matrix, floor=None):
             or not isinstance(rgba, list)
             or len(rgba) != 4
             or any(type(channel) is not int or not 0 <= channel <= 255 for channel in rgba)
-            or rgba[3] not in (0, 255)
         ):
-            raise ValueError(f"Invalid flat RGBA palette entry: {symbol!r}")
+            raise ValueError(f"Invalid RGBA palette entry: {symbol!r}")
     if matrix.stem == "sprite" and ("^" in palette or "*" in palette):
         raise ValueError(f"{matrix}: faction shades belong in factions.json")
     if palette.get(".") != [0, 0, 0, 0]:
@@ -333,7 +332,7 @@ def png_bytes(width, height, rgba):
 
 
 def composite(base, layers):
-    """Flatten opaque pixel-art layers at native integer offsets, in depth order."""
+    """Composite straight-alpha layers at native integer offsets, in depth order."""
     width, height, pixels = base
     result = bytearray(pixels)
     for (layer_width, layer_height, layer), dx, dy in layers:
@@ -345,11 +344,18 @@ def composite(base, layers):
                     continue
                 source = (y * layer_width + x) * 4
                 alpha = layer[source + 3]
-                if alpha not in (0, 255):
-                    raise ValueError('Pixel-art layers must have flat alpha')
                 if alpha:
                     target = ((y + dy) * width + x + dx) * 4
-                    result[target:target + 4] = layer[source:source + 4]
+                    if alpha == 255:
+                        result[target:target + 4] = layer[source:source + 4]
+                    else:
+                        background_alpha = result[target + 3]
+                        combined = alpha * 255 + background_alpha * (255 - alpha)
+                        for channel in range(3):
+                            numerator = (layer[source + channel] * alpha * 255
+                                         + result[target + channel] * background_alpha * (255 - alpha))
+                            result[target + channel] = (numerator + combined // 2) // combined
+                        result[target + 3] = (combined + 127) // 255
     return width, height, result
 
 

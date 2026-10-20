@@ -15,7 +15,8 @@
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "spread": 1
     },
     {
       "id": "shellclub",
@@ -25,7 +26,8 @@
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "spread": 2
     }
   ],
   "damageModifiers": {

@@ -372,6 +372,70 @@ aside {
 .health-left {
   background: #9dbc89;
 }
+#unit-panel.resolving .duel .health-left {
+  transition: width 120ms linear;
+}
+.exchange-log {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  font:
+    14px/1.5 system-ui,
+    sans-serif;
+}
+.exchange-event {
+  border-bottom: 1px solid var(--line);
+}
+.exchange-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 46px;
+}
+.exchange-line strong {
+  font-weight: 500;
+}
+.exchange-inspect {
+  flex: 0 0 44px;
+  padding: 10px;
+  border: 0;
+  color: var(--muted);
+}
+.exchange-inspect svg {
+  width: 20px;
+  height: 20px;
+}
+.exchange-calculation {
+  padding: 0 0 12px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.exchange-calculation[hidden] {
+  display: none;
+}
+.exchange-calculation p + p {
+  margin-top: 6px;
+}
+.exchange-outcome {
+  padding: 14px 0;
+  color: var(--gold);
+}
+.exchange-totals {
+  display: grid;
+  gap: 4px;
+  padding-bottom: 12px;
+}
+.exchange-log .good > .exchange-line > strong,
+.exchange-outcome.good,
+.exchange-totals .good {
+  color: var(--mint);
+}
+.exchange-log .bad > .exchange-line > strong,
+.exchange-outcome.bad,
+.exchange-totals .bad {
+  color: var(--red);
+}
 .enemy .health-left {
   background: #cf8a79;
 }
@@ -1381,6 +1445,10 @@ select {
 .attack-heading > strong {
   color: var(--gold);
 }
+.attack-action .keep-together {
+  white-space: nowrap;
+  color: inherit;
+}
 .attack-outcome {
   gap: 10px;
   font-size: 13px;
@@ -1400,6 +1468,7 @@ select {
 }
 .attack-health {
   min-width: 0;
+  --forecast-health: #9dbc89;
 }
 .forecast-label {
   display: flex;
@@ -1416,9 +1485,26 @@ select {
 .attack-health .health-track {
   display: block;
   margin: 5px 0 0;
+  height: 9px;
 }
-.attack-health.enemy .health-left {
-  background: #cf8a79;
+.forecast-certain {
+  background: var(--forecast-health);
+}
+.forecast-possible {
+  background: #c5aa62;
+}
+.forecast-healing {
+  background: #79adce;
+}
+.forecast-loss {
+  background: #ba726a;
+}
+.health-track .forecast-current {
+  top: -3px;
+  bottom: -3px;
+  width: 1px;
+  background: var(--text);
+  transform: translateX(-50%);
 }
 .attack-kind {
   display: flex;
@@ -1533,6 +1619,16 @@ select {
   gap: 14px;
   padding-right: 34px;
 }
+.attack-box .attack-heading.paired {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 12px;
+  padding-right: 0;
+}
+.attack-heading.paired > strong:last-child {
+  padding-right: 28px;
+}
 .attack-box .attack-inspect {
   position: absolute;
   top: 0;
@@ -1544,7 +1640,7 @@ select {
 .weapon-category {
   padding-left: 23px;
 }
-.weapon-damage {
+.weapon-damage b {
   white-space: nowrap;
 }
 

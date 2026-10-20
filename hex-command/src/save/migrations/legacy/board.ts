@@ -2,7 +2,7 @@ import { MAPS } from "../../../game/maps";
 import { TYPES } from "../../../game/catalog";
 import { TERRAIN_ORDER } from "../../../game/authored-content";
 import type { GameState, MapId, Tile, Unit } from "../../../game/types";
-import { LEGACY_RIVER, LEGACY_ASHEN_REFUGE } from "./layouts";
+import { LEGACY_ASHEN_REFUGE } from "./layouts";
 
 /** Reconstructed data plus lookup helpers; deliberately has no gameplay commands. */
 export interface LegacyBoard extends GameState {
@@ -18,12 +18,7 @@ export function legacyBoard(mapId = "mirror", revision: unknown = 1): LegacyBoar
   const current = MAPS[mapId as MapId];
   if (revision !== 1 && revision !== (current.revision ?? 1))
     throw new Error("Unknown legacy battlefield revision");
-  const layout =
-    mapId === "river" && revision === 1
-      ? LEGACY_RIVER
-      : mapId === "ashen-refuge" && revision === 1
-        ? LEGACY_ASHEN_REFUGE
-        : current;
+  const layout = mapId === "ashen-refuge" && revision === 1 ? LEGACY_ASHEN_REFUGE : current;
   const tiles: Tile[] = Array.from({ length: layout.cols * layout.rows }, (_, index) => {
     const col = index % layout.cols,
       row = Math.floor(index / layout.cols);

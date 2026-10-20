@@ -5,7 +5,8 @@
     "game/races/merfolk.json",
     "game/races/human.json",
     "game/races/skeletons.json",
-    "game/races/beast.json"
+    "game/races/beast.json",
+    "game/races/spirit.json"
   ],
   "units": [
     "game/units/warden.json",
@@ -104,13 +105,16 @@
     "game/units/merfolk-tidecrusher-l2.json",
     "game/units/merfolk-tidecrusher-l3.json",
     "game/units/merfolk-maceguard-l3.json",
-    "game/units/merfolk-tide-sovereign.json"
+    "game/units/merfolk-tide-sovereign.json",
+    "game/units/ghost.json",
+    "game/units/wraith.json",
+    "game/units/spectre.json"
   ],
   "scenarios": [
     "game/scenario/mirror-v1/scenario.json",
-    "game/scenario/river-v2/scenario.json",
-    "game/scenario/developer-v2/scenario.json",
-    "game/scenario/river-valley-v1/scenario.json"
+    "game/scenario/river-valley-v1/scenario.json",
+    "game/scenario/river-valley-v2/scenario.json",
+    "game/scenario/developer-v2/scenario.json"
   ],
   "campaigns": [
     "game/campaigns/lantern-road/campaign.json",
@@ -122,5 +126,7 @@
     "rosters": "simulation/rosters.json",
     "arena": "simulation/arena.json",
     "campaign": "simulation/campaign.json"
-  }
+  },
+  "arenaScenarios": ["simulation/maps/wood-edge/scenario.json"],
+  "recruitment": "game/recruitment.json"
 }

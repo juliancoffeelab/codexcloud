@@ -6,6 +6,7 @@ use std::rc::Rc;
 
 pub(super) struct BattleRules<'a> {
     pub units: &'a [UnitRule],
+    pub recruitment: &'a RecruitmentProfiles,
 }
 
 enum EngineAccess<'a, 'catalog> {
@@ -38,12 +39,13 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     }
     pub(super) fn fork(&self) -> BattleDraft<'a, 'catalog> {
         BattleDraft(BattleView {
-            engine: EngineAccess::Draft(self.engine().fork()),
+            engine: EngineAccess::Draft(self.engine().planning_fork()),
         })
     }
     pub(super) fn rules(&self) -> BattleRules<'_> {
         BattleRules {
             units: &self.engine().rules.units,
+            recruitment: &self.engine().rules.recruitment,
         }
     }
     pub(super) fn board(&self) -> &Board {
@@ -99,14 +101,70 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     pub(super) fn damage(&self, attacker: &Unit, target: &Unit, weapon: usize) -> i32 {
         self.engine().damage(attacker, target, weapon)
     }
-    pub(super) fn drain_healing(
+    pub(super) fn exchange(
         &self,
-        unit: &Unit,
+        attacker: &Unit,
         target: &Unit,
         weapon: usize,
-        damage: i32,
+        from: usize,
+    ) -> Rc<crate::logic::exchange::ExchangeForecast> {
+        self.engine().exchange(attacker, target, weapon, from)
+    }
+    pub(super) fn exchange_with_thorns(
+        &self,
+        attacker: &Unit,
+        target: &Unit,
+        weapon: usize,
+        from: usize,
+        reflection: i32,
+    ) -> Rc<crate::logic::exchange::ExchangeForecast> {
+        self.engine()
+            .exchange_with_thorns(attacker, target, weapon, from, reflection)
+    }
+    /// Optimistic full-weapon values bound searches before an attack origin is chosen.
+    pub(super) fn potential_damage(&self, attacker: &Unit, target: &Unit, weapon: usize) -> f64 {
+        let distribution = self
+            .engine()
+            .damage_distribution(attacker, target, weapon, target.tile);
+        // Drain can replace HP between strikes, so damage may exceed starting HP.
+        if self.rules().units[target.kind]
+            .attacks
+            .iter()
+            .any(|attack| attack.drain > 0)
+        {
+            distribution.mean
+        } else {
+            distribution.effective(target.hp)
+        }
+    }
+    pub(super) fn potential_kill_chance(
+        &self,
+        attacker: &Unit,
+        target: &Unit,
+        weapon: usize,
+    ) -> f64 {
+        self.engine()
+            .damage_distribution(attacker, target, weapon, target.tile)
+            .chance(target.hp)
+    }
+    pub(super) fn maximum_retaliation(
+        &self,
+        attacker: &Unit,
+        target: &Unit,
+        weapon: usize,
+        from: usize,
     ) -> i32 {
-        self.engine().drain_healing(unit, target, weapon, damage)
+        self.engine()
+            .maximum_retaliation(attacker, target, weapon, from)
+    }
+    pub(super) fn death_chance(
+        &self,
+        attacker: &Unit,
+        target: &Unit,
+        weapon: usize,
+        from: usize,
+    ) -> f64 {
+        self.engine().death_chance(attacker, target, weapon, from)
     }
     pub(super) fn preview(
         &self,
@@ -116,15 +174,6 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         from: usize,
     ) -> (i32, i32, Option<usize>) {
         self.engine().preview(unit, target, weapon, from)
-    }
-    pub(super) fn thorn_damage(
-        &self,
-        unit: &Unit,
-        target: &Unit,
-        weapon: usize,
-        from: usize,
-    ) -> i32 {
-        self.engine().thorn_damage(unit, target, weapon, from)
     }
     pub(super) fn best_attack(&self, unit: &Unit, target: &Unit, from: usize) -> Option<usize> {
         self.engine().best_attack(unit, target, from)
@@ -232,7 +281,7 @@ impl<'catalog> PlanningContext<'catalog> {
     pub(super) fn fork(game: &Game<'catalog>) -> Self {
         Self {
             draft: BattleDraft(BattleView {
-                engine: EngineAccess::Draft(game.fork()),
+                engine: EngineAccess::Draft(game.planning_fork()),
             }),
             commands: Vec::new(),
         }
@@ -257,6 +306,7 @@ impl<'catalog> PlanningContext<'catalog> {
             draft: &mut self.draft,
             commands: &mut self.commands,
             workspace,
+            combat_boundary: false,
         }
     }
     pub(super) fn finish(
@@ -288,6 +338,7 @@ impl RecruitmentContext<'_, '_> {
     }
 }
 pub(crate) struct TacticalContext<'a, 'catalog> {
+    pub(super) combat_boundary: bool,
     pub(super) draft: &'a mut BattleDraft<'catalog, 'catalog>,
     commands: &'a mut Vec<Command>,
     pub(super) workspace: &'a mut PlanningWorkspace,
@@ -298,6 +349,7 @@ impl TacticalContext<'_, '_> {
     }
     pub(super) fn emit(&mut self, command: Command) -> Result<(), CommandError> {
         self.draft.execute(command.clone())?;
+        self.combat_boundary = command.is_attack();
         self.commands.push(command);
         Ok(())
     }
@@ -310,6 +362,10 @@ impl TacticalContext<'_, '_> {
                 return Ok(());
             }
             self.emit(command)?;
+            if self.combat_boundary {
+                self.workspace.commands.clear();
+                return Ok(());
+            }
         }
         if self.draft.winner().is_some() {
             self.workspace.attack_continuation = None;
@@ -335,6 +391,7 @@ impl TacticalContext<'_, '_> {
                 target,
                 weapon,
             })?;
+            return Ok(());
         }
         Ok(())
     }

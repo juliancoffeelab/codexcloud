@@ -18,6 +18,9 @@ pub enum RecruiterKind {
     Frontline,
     Balanced,
     Situational,
+    Predictor,
+    #[serde(rename = "aggressive-predictor")]
+    AggressivePredictor,
 }
 pub(crate) trait Recruiter {
     fn promotions(&mut self, game: &BattleView<'_, '_>, seed: u32) -> Vec<(UnitId, UnitTypeId)> {
@@ -46,6 +49,8 @@ impl Recruiter for RecruiterKind {
             Self::Frontline => frontline::Frontline.recruit(context, orders),
             Self::Balanced => balanced::Balanced.recruit(context, orders),
             Self::Situational => situational::Situational.recruit(context, orders),
+            Self::Predictor => drive(Self::Predictor, context, orders),
+            Self::AggressivePredictor => drive(Self::AggressivePredictor, context, orders),
         }
     }
 }
@@ -89,6 +94,17 @@ fn drive(
 }
 
 impl RecruiterKind {
+    #[cfg(not(target_arch = "wasm32"))]
+    pub(super) fn predicts(self) -> bool {
+        match self {
+            Self::Predictor | Self::AggressivePredictor => true,
+            Self::Classic
+            | Self::Rotation
+            | Self::Frontline
+            | Self::Balanced
+            | Self::Situational => false,
+        }
+    }
     pub(super) fn choose_orders(
         self,
         game: &BattleView<'_, '_>,
@@ -131,6 +147,18 @@ impl BattleView<'_, '_> {
             RecruiterKind::Frontline => (false, true, false),
             RecruiterKind::Balanced => (false, false, true),
             RecruiterKind::Situational => return situational::choose(self, seed, orders),
+            RecruiterKind::Predictor => {
+                return situational::choose_with_forecast(self, seed, orders, true);
+            }
+            RecruiterKind::AggressivePredictor => {
+                return situational::choose_with_weights(
+                    self,
+                    seed,
+                    orders,
+                    true,
+                    self.rules().recruitment.aggressive_predictor,
+                );
+            }
         };
         let side = self.turn();
         let Some(leader) = self
@@ -396,7 +424,10 @@ impl BattleView<'_, '_> {
 /// Native fixed-position diagnostics. These are the same mechanical components
 /// used by Situational, before the seeded tie-break. They never mutate the game.
 #[cfg(not(target_arch = "wasm32"))]
-pub(crate) fn diagnostics(game: &crate::logic::Game<'_>) -> Vec<serde_json::Value> {
+pub(crate) fn diagnostics(
+    game: &crate::logic::Game<'_>,
+    recruiter: RecruiterKind,
+) -> Vec<serde_json::Value> {
     let view = BattleView::new(game);
     let mut rows = Vec::new();
     for unit in view.units().iter().filter(|u| u.side == view.turn()) {
@@ -431,7 +462,21 @@ pub(crate) fn diagnostics(game: &crate::logic::Game<'_>) -> Vec<serde_json::Valu
                 continue;
             };
             candidate.tile = tile;
-            let assessment = evaluation::Assessment::new(&view, &candidate);
+            let weights = if recruiter == RecruiterKind::AggressivePredictor {
+                view.rules().recruitment.aggressive_predictor
+            } else {
+                view.rules().recruitment.standard
+            };
+            let assessment = evaluation::Assessment::with_weights(
+                &view,
+                &candidate,
+                recruiter.predicts(),
+                if recruit {
+                    weights
+                } else {
+                    view.rules().recruitment.standard
+                },
+            );
             let copies = view
                 .units()
                 .iter()
@@ -442,14 +487,23 @@ pub(crate) fn diagnostics(game: &crate::logic::Game<'_>) -> Vec<serde_json::Valu
                 })
                 .count();
             let denominator = if recruit {
-                rule.cost.max(1) as f64 * (1.0 + copies as f64 * 0.2)
+                rule.cost.max(1) as f64
+                    * (1.0 + copies as f64 * weights.duplicate_penalty)
+                    * (1.0
+                        + f64::from((rule.cost - view.gold()[unit.side.index()]).max(0))
+                            / f64::from(view.income(unit.side).max(1))
+                            * weights.wait_penalty)
             } else {
                 1.0
             };
             let mut best = None;
             for tile in tiles {
                 candidate.tile = tile;
-                let score = assessment.breakdown(&view, &candidate);
+                let score = if recruit {
+                    assessment.recruitment_breakdown(&view, &candidate)
+                } else {
+                    assessment.breakdown(&view, &candidate)
+                };
                 if best
                     .as_ref()
                     .is_none_or(|(_, previous): &(usize, evaluation::Score)| {
@@ -513,10 +567,10 @@ mod tests {
                 result,
                 RecruiterKind::Balanced.choose_orders(&BattleView::new(game), seed, &orders)
             );
-            match result.unwrap() {
-                Command::Recruit { kind, .. } => kind.0,
-                _ => panic!("expected recruit"),
-            }
+            let Command::Recruit { kind, .. } = result.unwrap() else {
+                panic!("expected recruit");
+            };
+            kind.0
         };
         let outcomes: std::collections::BTreeSet<_> =
             (0..64).map(|seed| draw(&game, seed)).collect();

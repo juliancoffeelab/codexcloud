@@ -1,4 +1,4 @@
-import type { UnitRole } from "../../rust/pkg/hex_command";
+import type { CombatStrike, HpForecast, UnitRole } from "../../rust/pkg/hex_command";
 
 export type Side = "player" | "enemy";
 export type LeaderType =
@@ -19,6 +19,8 @@ export type AdvancedTroop =
   | "deatharcher"
   | "direwolf"
   | "greatboar"
+  | "wraith"
+  | "spectre"
   | "lancer"
   | "mage"
   | "marksman"
@@ -86,6 +88,7 @@ export type UnitType =
   | "archer"
   | "boar"
   | "bonearcher"
+  | "ghost"
   | "harpooner"
   | "merfolk-maceguard"
   | "reefguard"
@@ -104,7 +107,7 @@ export type UnitType =
   | "fox-spearguard"
   | "treant";
 export type RecruitType = Exclude<UnitType, LeaderType>;
-export type Race = "human" | "skeletons" | "beast" | "merfolk";
+export type Race = "human" | "skeletons" | "beast" | "merfolk" | "spirit";
 export type TerrainType =
   | "plains"
   | "road"
@@ -134,8 +137,7 @@ export type CampaignMapId =
   | "ashen-refuge"
   | "ashen-dawn";
 export type CoastalMapId = "tide-nets" | "tide-wreck" | "tide-sluice";
-export type MapId =
-  "mirror" | "river" | "developer" | "river-valley" | CampaignMapId | CoastalMapId;
+export type MapId = "mirror" | "developer" | "river-valley" | CampaignMapId | CoastalMapId;
 export interface Coordinates {
   col: number;
   row: number;
@@ -169,6 +171,7 @@ export interface Unit {
   rebuilding?: boolean;
 }
 export interface Weapon {
+  spread?: number;
   drain?: number;
   count: number;
   id: string;
@@ -250,6 +253,12 @@ export interface MapDefinition {
   units: StartingUnit[];
 }
 export interface DamageBreakdown {
+  probabilities?: readonly number[];
+  rollMin?: number;
+  rollMax?: number;
+  minimum?: number;
+  maximum?: number;
+  expected?: number;
   count?: number;
   total?: number;
   base: number;
@@ -266,6 +275,12 @@ export interface CombatPreview {
   retaliation: number;
 }
 export interface CombatPreviewDetails extends CombatPreview {
+  attackerHealth: HpForecast;
+  defenderHealth: HpForecast;
+  killChance: number;
+  deathChance: number;
+  retaliationMin: number;
+  retaliationMax: number;
   thornDamage: number;
   healing?: number;
   retaliationHealing?: number;
@@ -279,6 +294,10 @@ export interface LastCombat {
   attackerId: string;
   attackId: string;
   sound: string;
+}
+export interface CombatAnimation {
+  units: [Unit, Unit];
+  strikes: CombatStrike[];
 }
 export interface VillageState {
   id: string;
@@ -298,6 +317,7 @@ export interface GameSnapshot {
 }
 /** Full session state, including mutable terrain, for exact move undo. */
 export interface GameState {
+  combatRng?: number;
   mapId: MapId;
   mapRevision: number;
   cols: number;

@@ -133,17 +133,18 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         if !self.important {
             return true;
         }
-        let (damage, retaliation, _) = g.preview(&self.unit, target, weapon, from);
+        let retaliation = g.maximum_retaliation(&self.unit, target, weapon, from);
+        let killed = g.exchange(&self.unit, target, weapon, from).death[1] == 1.0;
         if self.orders.protects(self.unit.id) && retaliation > 0 {
             return false;
         }
         if retaliation >= self.unit.hp {
             return false;
         }
-        if damage >= target.hp && !self.orders.campaign && g.rules().units[target.kind].leader {
+        if killed && !self.orders.campaign && g.rules().units[target.kind].leader {
             return true;
         }
-        let incoming = self.risk(from, (damage >= target.hp).then_some(target.id));
+        let incoming = self.risk(from, (killed).then_some(target.id));
         incoming + retaliation < self.unit.hp
             && (self.unit.role != Some(Role::Courier) || incoming + retaliation == 0)
             && u.side == self.unit.side
@@ -175,18 +176,19 @@ impl BattleView<'_, '_> {
         let Some(w) = weapon.or_else(|| self.best_attack(u, target, from)) else {
             return -100.0;
         };
-        let (damage, retaliation, _) = self.preview(u, target, w, from);
+        let forecast = self.exchange(u, target, w, from);
+        let retaliation = forecast.damage[1];
         (if self.rules().units[target.kind].leader {
             20.0
         } else if target.role == Some(Role::Courier) {
             12.0
         } else {
             0.0
-        }) + if target.hp <= damage { 12.0 } else { 0.0 }
+        }) + forecast.death[1] * 12.0
             + (self.rules().units[target.kind].hp - target.hp) as f64 * 0.3
-            + damage as f64
-            - retaliation as f64 * 0.7
-            - if retaliation >= u.hp { 30.0 } else { 0.0 }
+            + forecast.effective[0]
+            - retaliation * 0.7
+            - self.death_chance(u, target, w, from) * 30.0
     }
 
     fn movement_goals(&self, u: &Unit, orders: &crate::ai::orders::TacticalOrders) -> Vec<usize> {
@@ -244,7 +246,7 @@ impl BattleView<'_, '_> {
                 "soldier" | "skeleton" | "warden" | "boar" => ClassicOrder::Frontline,
                 "commander" | "wildkeeper" | "necromancer" => ClassicOrder::Leader,
                 _ => match r.family {
-                    Family::Scout | Family::Wolf => ClassicOrder::Scout,
+                    Family::Scout | Family::Wolf | Family::Ghost => ClassicOrder::Scout,
                     Family::Archer | Family::Thorncaller | Family::Bonearcher | Family::Adept => {
                         ClassicOrder::Ranged
                     }
@@ -307,9 +309,12 @@ impl BattleDraft<'_, '_> {
                     continue;
                 }
                 let score = self.attack_score(&u, target, u.tile, Some(weapon))
-                    + rules
-                        .escort
-                        .attack(id, target, self.preview(&u, target, weapon, u.tile).0);
+                    + rules.escort.attack(
+                        id,
+                        target,
+                        self.preview(&u, target, weapon, u.tile).0,
+                        self.exchange(&u, target, weapon, u.tile).death[1],
+                    );
                 if best.as_ref().is_none_or(|(b, _, s)| {
                     score > *s || (score == *s && order.compare(self, target.tile, b.tile).is_lt())
                 }) {
@@ -535,9 +540,12 @@ impl BattleDraft<'_, '_> {
                     .any(|w| rules.attack(self, &u, target, w, t))
                 {
                     let escort_bonus = self.best_attack(&u, target, t).map_or(0.0, |weapon| {
-                        rules
-                            .escort
-                            .attack(id, target, self.preview(&u, target, weapon, t).0)
+                        rules.escort.attack(
+                            id,
+                            target,
+                            self.preview(&u, target, weapon, t).0,
+                            self.exchange(&u, target, weapon, t).death[1],
+                        )
                     });
                     opportunity = opportunity
                         .max(5.0 + (self.attack_score(&u, target, t, None) + escort_bonus) / 5.0);

@@ -17,6 +17,83 @@ def unit(id, kind, side='player', tile='0,0'):
 
 
 class UsageTests(unittest.TestCase):
+    def test_damage_presence_ratio_weights_faction_totals_and_separates_thorns_and_tiers(self):
+        profiles = {
+            'boss': dict(family='boss', race='forest', leader=True),
+            'tree': dict(name='Tree', level=1, family='tree', race='forest'),
+            'sapling': dict(name='Sapling', level=2, family='tree', race='forest'),
+            'unused': dict(name='Unused', level=3, family='tree', race='forest'),
+            'foe': dict(family='foe', race='other'),
+        }
+        dims = dict(race='woodland', policy='balanced', opponentPolicy='balanced', map='all')
+        presence = [dict(dims, unit='tree', unitTurns=10), dict(dims, unit='sapling', unitTurns=90),
+                    dict(dims, unit='unused', unitTurns=0)]
+        values = [dict(dims, kind='arena', unit=u, unitTurns=t, weaponHPDamageDealt=d,
+                       thornHPDamageDealt=thorns) for u, t, d, thorns in
+                  [('tree', 10, 500, 900), ('sapling', 90, 500, 0), ('boss', 999, 100000, 100000)]]
+        rows = {r['unit']: r for r in usage.unit_damage(presence, values, profiles)}
+        tree = rows['tree']
+        self.assertEqual(tree['presenceSharePercent'], 10)
+        self.assertEqual(tree['damageSharePercent'], 50)
+        self.assertEqual(tree['damagePresenceRatio'], 5)
+        self.assertEqual(tree['damagePerUnitTurn'], 50)
+        self.assertEqual(tree['factionDamagePerUnitTurn'], 10)
+        self.assertEqual(tree['thornDamagePerUnitTurn'], 90)
+        self.assertAlmostEqual(rows['sapling']['damagePresenceRatio'], 5/9)
+        self.assertEqual(rows['unused']['presenceSharePercent'], 0)
+        self.assertIsNone(rows['unused']['damagePerUnitTurn'])
+        self.assertIsNone(rows['unused']['damagePresenceRatio'])
+        self.assertNotIn('boss', rows)
+        self.assertNotIn('foe', rows)
+        self.assertEqual(len(rows), 3, 'promotion tiers stay separate within a family')
+        self.assertAlmostEqual(sum(r['presenceSharePercent'] * (r['damagePresenceRatio'] or 0)
+                                   for r in rows.values()), 100)
+        changed = usage.compare_unit_damage(list(rows.values()), list(rows.values()))
+        self.assertEqual(changed[0]['damagePresenceRatioDelta'], 0)
+        self.assertIsNone(next(r for r in changed if r['unit']=='unused')['damagePresenceRatioDelta'])
+        text = usage.damage_markdown(changed, baseline=True)
+        self.assertIn('10.00% → 10.00%', text)
+        self.assertIn('5.00× → 5.00×', text)
+        self.assertIn('90.00 → 90.00', text)
+        self.assertIn('Unused (L3) | unknown | 0.00% → 0.00% | — → — | — → —', text)
+        ordered = usage.unit_damage(presence, values, {
+            k: dict(v, role='healer' if k == 'tree' else 'warrior') for k, v in profiles.items()})
+        self.assertEqual([r['unitKind'] for r in ordered], ['infantry', 'infantry', 'support'])
+        mixed = [dict(tree, unitKind=kind, name=kind) for kind in
+                 ['support', 'unknown', 'ranger', 'flank', 'infantry']]
+        rendered = usage.damage_markdown(mixed)
+        self.assertEqual([line.split('|')[1].strip().split()[0] for line in rendered.splitlines()[2:]],
+                         ['infantry', 'flank', 'ranger', 'support', 'unknown'])
+
+    def test_damage_rates_keep_zero_damage_and_zero_exposure_distinct_and_do_not_pool_scopes(self):
+        profiles = {u: dict(family=u, race='a') for u in ['foot', 'idle', 'unseen']}
+        presence, values = [], []
+        for landscape, policy, dealt in [('open', 'balanced', 20), ('wooded', 'balanced', 0),
+                                          ('open', 'situational', 80)]:
+            dims = dict(race='a', policy=policy, opponentPolicy=policy, map=landscape)
+            for unit, turns in [('foot', 2), ('idle', 8), ('unseen', 0)]:
+                presence.append(dict(dims, unit=unit, unitTurns=turns))
+                values.append(dict(dims, kind='arena', unit=unit, unitTurns=turns,
+                    weaponHPDamageDealt=dealt if unit=='foot' else 0, thornHPDamageDealt=0))
+        rows = usage.unit_damage(presence, values, profiles)
+        def row(unit, landscape='open', policy='balanced'):
+            return next(r for r in rows if r['unit']==unit and r['map']==landscape and r['policy']==policy)
+        self.assertEqual(row('idle')['damagePresenceRatio'], 0)
+        self.assertEqual(row('idle')['damagePerUnitTurn'], 0)
+        self.assertIsNone(row('unseen')['damagePresenceRatio'])
+        self.assertIsNone(row('foot', 'wooded')['damagePresenceRatio'])
+        self.assertEqual(row('foot', 'wooded')['damagePerUnitTurn'], 0)
+        self.assertEqual(row('foot', policy='situational')['damagePerUnitTurn'], 40)
+        before = [dict(row('foot'), damagePresenceRatio=2, damagePerUnitTurn=4)]
+        comparison = usage.compare_unit_damage(rows, before)
+        first = next(r for r in comparison if r['unit']=='foot' and r['map']=='open' and r['policy']=='balanced')
+        self.assertEqual(first['damagePresenceRatioDelta'], 3)
+        self.assertEqual(first['damagePerUnitTurnDelta'], 6)
+        self.assertIsNone(next(r for r in comparison if r['unit']=='idle')['damagePresenceRatioBefore'])
+        values[0]['unitTurns'] += 1
+        with self.assertRaisesRegex(ValueError, 'census mismatch'):
+            usage.unit_damage(presence, values, profiles)
+
     def test_presence_includes_starts_promotions_and_survival_but_excludes_leaders(self):
         profiles = {'boss':dict(family='boss',leader=True), 'foot':dict(family='foot'),
                     'heavy':dict(family='foot'), 'scout':dict(family='scout'), 'early':dict(family='early')}

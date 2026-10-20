@@ -2,7 +2,15 @@ use crate::{data::*, logic::Game};
 use std::sync::OnceLock;
 fn rules() -> &'static Rules {
     static RULES: OnceLock<Rules> = OnceLock::new();
-    RULES.get_or_init(|| Rules::load().expect("authored catalog"))
+    RULES.get_or_init(|| {
+        let mut rules = Rules::load().expect("authored catalog");
+        for unit in &mut rules.units {
+            for attack in &mut unit.attacks {
+                attack.spread = 0;
+            }
+        }
+        rules
+    })
 }
 #[test]
 fn cloned_forecasts_do_not_mutate_source_or_record_commands() {

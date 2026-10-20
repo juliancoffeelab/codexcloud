@@ -49,6 +49,7 @@ pub enum Race {
     Human,
     Merfolk,
     Skeletons,
+    Spirit,
     Beast,
 }
 impl Race {
@@ -58,6 +59,7 @@ impl Race {
             Self::Human => "human",
             Self::Merfolk => "merfolk",
             Self::Skeletons => "skeletons",
+            Self::Spirit => "spirit",
             Self::Beast => "beast",
         }
     }
@@ -95,6 +97,7 @@ pub enum Family {
     Reefguard,
     Rider,
     Scout,
+    Ghost,
     Skeleton,
     #[serde(rename = "skeleton-impact-caster")]
     SkeletonMage,
@@ -126,6 +129,7 @@ impl Family {
             Self::Reefguard => "reefguard",
             Self::Rider => "rider",
             Self::Scout => "scout",
+            Self::Ghost => "ghost",
             Self::Skeleton => "skeleton",
             Self::SkeletonMage => "skeleton-impact-caster",
             Self::Spearman => "spearman",

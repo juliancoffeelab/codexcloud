@@ -42,6 +42,8 @@ Cheap flankers trade combat strength for mobility, objective control and the
 ability to punish exposed ranged units. Mounted units must be noticeably more
 expensive; their cost can buy speed, durability or hitter-level damage. A mount
 alone does not justify a stronger bow than an equivalent foot archer's.
+Melee riders use the flank role at every promotion tier. Ranged riders retain
+their separately authored roles.
 
 Woodland's Treants fill an expensive heavy-unit role in place of cavalry. They
 combine strong protection with a meaningful blow, paying through price and slow
@@ -64,8 +66,10 @@ Campaign armies belong to their stories. Expand recruitment only when the lore
 supports it; a faction's full roster does not automatically belong in every
 campaign.
 
-Judge balance through actual battles: what gets recruited, what remains on the
-field, and what units accomplish. Assess damage alongside protection, support,
+Judge balance through actual battles: what remains on the field and what units
+accomplish, then interpret purchases alongside that presence and casualties.
+Purchases are recruitment flow, including replacements; purchase share alone
+does not establish field composition, survival or strength. Assess damage alongside protection, support,
 mobility and objectives. Low reflected damage alone does not establish weak
 thorns: deterrence can prevent attacks or redirect them toward vulnerable allies.
 Attractive stat sheets and faction averages alone cannot establish balance.

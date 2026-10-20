@@ -20,7 +20,7 @@ test("Terrain cache keys ignore ownership but include every terrain input", () =
   );
   assert.equal(terrainMapKey({ ...game, tiles: [{ ...tile, owner: "player" }] }), key);
   for (const changed of [
-    { ...game, mapId: "river" as const },
+    { ...game, mapId: "river-valley" as const },
     { ...game, cols: 2 },
     { ...game, rows: 2 },
     { ...game, tiles: [{ ...tile, col: 1 }] },
@@ -194,7 +194,7 @@ test("Prebuilt maps match static terrain or preview matching geometry with edite
     assert.equal(preview.sprite, sprite);
     assert.deepEqual([...preview.changed], ["0,0"]);
   }
-  for (const change of [{ mapId: "river" as const }, { cols: 2 }, { rows: 2 }])
+  for (const change of [{ mapId: "river-valley" as const }, { cols: 2 }, { rows: 2 }])
     assert.equal(terrainMapPreview(terrainMapKey({ ...game, ...change }), sprites), undefined);
 });
 
@@ -226,5 +226,5 @@ test("Static scenes reuse geometry through ownership and unit changes, but inval
     const changed = cache.prepare({ ...game, tiles: [{ ...tile, ...change }] }, artwork);
     assert.notEqual(changed.key, first.key);
   }
-  assert.notEqual(cache.prepare({ ...game, mapId: "river" }, artwork).key, first.key);
+  assert.notEqual(cache.prepare({ ...game, mapId: "river-valley" }, artwork).key, first.key);
 });

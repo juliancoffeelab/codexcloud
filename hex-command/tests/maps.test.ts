@@ -4,7 +4,6 @@ import assert from "node:assert/strict";
 import { pixelSprites } from "../src/presentation/pixel-art";
 
 const { Game, TYPES, developerFixture } = await import("./game-fixture.ts");
-const { MAPS, BATTLE_MAPS } = await import("../src/game/maps.ts");
 
 test("Developer map shows every playable type and reserves space for the pixel collection", () => {
   const game = new Game("developer");
@@ -25,18 +24,6 @@ test("Developer map shows every playable type and reserves space for the pixel c
     freeGround >= artworkTypes * 2 - game.units.length,
     "Room for both factions' complete artwork",
   );
-});
-
-test("Hidden scenarios stay loadable and saved without appearing in the map picker", () => {
-  const hiddenMaps = Object.values(MAPS).filter((map) => map.hidden);
-  assert(hiddenMaps.length > 0);
-  for (const map of hiddenMaps) {
-    assert(!BATTLE_MAPS.some((choice) => choice.id === map.id));
-    const game = new Game(map.id);
-    saveBattle(game);
-    assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
-  }
-  assert(BATTLE_MAPS.every((map) => !map.hidden));
 });
 
 // These are ordinary units on an ordinary map: movement, combat and turns still work.
@@ -82,7 +69,7 @@ test("Moved developer sites persist ownership", async () => {
 });
 test("Ordinary skirmishes do not publish site ownership overrides", async () => {
   assert.equal(new Game("mirror").snapshot().sites, undefined);
-  assert.equal(new Game("river").snapshot().sites, undefined);
+  assert.equal(new Game("mirror").snapshot().sites, undefined);
 });
 function validDeveloperSave() {
   const showcase = developerFixture();

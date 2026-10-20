@@ -8,15 +8,31 @@ objectives using the browser's engine rules. They also measure trial execution
 cost. **Balanced is the default arena comparison opponent. Classic remains the live
 enemy and the campaign competence baseline.** Making it stronger is not the purpose of simulation-player work.
 
-For faction and unit balance, use matching Situational policies with the normal
+For faction and unit balance, use matching Situational or Predictor policies with the normal
 leader-only arena starts, equal total budgets, recruitment and earned promotions. Inspect each
-opposing faction and terrain separately. Isolated advanced-level rosters are
+opposing faction and terrain separately. Collect battlefield
+presence and actual contributions (`--unit-usage`, or the relevant presence/value
+telemetry) for balance investigations. Lead composition claims with living
+unit-turns, then compare recruitment flow with presence and casualties. Purchase
+shares can reflect replacement churn; they do not measure the army on the field,
+survival or unit strength. Purchase/presence ratios do not identify survival
+without cohort evidence. Keep opponents, terrain and policy scopes aligned.
+Current presence exports pool opponents: restrict runs to the two relevant
+armies, or use an equivalent maintained scoped census, for opponent-specific
+composition claims. Do not pair pooled presence with exact-opponent purchases. Isolated advanced-level rosters are
 supplementary diagnostics, not validation of normal progression. Classic can
 saturate before a roster is balanced. Pooling recruiters or averaging easy and
 hard faction matchups can hide failures; a pooled result alone does not establish
 a terrain advantage or a balanced head-to-head matchup. Validate on additional
 seeds after tuning, and compare the full matchup matrix and authored campaign
 completion against the same baseline conditions.
+
+The default arena presentation is a faction-versus-faction matrix for each map,
+with Balanced → Situational → Predictor values in each cell when comparable
+panels are recorded, using the available subset. Show win percentages and caps,
+and separate mirror initiative results. Keep opponent-specific failures visible rather than leading with
+pooled faction averages. This presentation preference does not change the
+selected simulation workload or the fixed-opponent baseline.
 
 Aim for roughly 70% Woodland wins in forests and 80% Merfolk wins on water,
 with viable armies outside those biomes. Woodland should beat Merfolk on dry
@@ -30,13 +46,17 @@ movement above three against the lore; terrain access and movement costs also
 contribute to mobility.
 
 The intended player strategies are infantry-only, fair roster use and
-situational selection. Compare them against the same fixed enemy under matching
-conditions. Fair and situational strategies should improve on the narrow
-infantry baseline without relying on repeated selection of one dominant unit.
-No acceptable numeric gap is established; report differences by race, map and
-opponent.
+adaptive selection. Situational evaluates observed enemies; Predictor additionally
+anticipates legal future recruits. Both use distance-free combat and support
+valuation, with movement rewarded through village capture. Balanced represents fair roster use. Both adaptive recruiters should
+maximize winning strength, including repeated selection of a successful unit.
+Do not weaken either adaptive recruiter or impose roster diversity to conceal a strong unit.
+Concentrated field presence is balance evidence to investigate, not a reason to
+reject a winning recruitment strategy. Compare strategies against the same fixed
+enemy under matching conditions and validate on separate seeds. No acceptable
+numeric gap is established; report differences by race, map and opponent.
 
-Campaign competence concerns **Balanced, Rotated and Situational against Classic**, using
+Campaign competence concerns **Balanced, Rotated, Situational and Predictor against Classic**, using
 authored rosters and objectives. Classic/Rush campaign failures do not establish
 simulation-player competence regressions. Completion, required-actor survival
 and progression matter; speed alone does not establish correctness or balance.

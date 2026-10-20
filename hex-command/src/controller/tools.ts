@@ -1,3 +1,4 @@
+import { BATTLE_MAPS } from "../game/maps";
 import { TYPES } from "../game/catalog";
 import type { RecruitType, CampaignId, UnitType } from "../game/types";
 import { CAMPAIGNS } from "../game/campaign-data";
@@ -183,7 +184,7 @@ export function registerBattleTools(controller: BattleController): () => void {
       name: "start_new_battle",
       description: "Replace the current battle with a fresh battle.",
       inputSchema: schema({
-        mapId: { type: "string", enum: ["mirror", "river", "developer"] },
+        mapId: { type: "string", enum: BATTLE_MAPS.map((map) => map.id) },
       }),
       execute: (value) => {
         const input = inputs(value);

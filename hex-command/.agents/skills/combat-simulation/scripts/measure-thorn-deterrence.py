@@ -40,11 +40,46 @@ def validate_profiles(profiles, units):
                 raise ValueError(f'Catalog/profile mismatch: {name}.{key}: {actual!r} != {value!r}')
 
 
+def combat_rng_states(detail):
+    """Recover phase-start RNG only when every recorded draw reaches the final RNG.
+
+    Every attack and retaliation raw roll consumes one LCG step, even with zero
+    spread. Rejected samples consume additional steps absent from the journal;
+    the final-state check rejects those histories rather than silently guessing.
+    """
+    def recorded_rng(boundary):
+        value = detail.get(boundary, {}).get('combatRng')
+        if type(value) is not int or not 0 <= value <= 0xffffffff:
+            raise ValueError(f'Combat RNG reconstruction requires recorded {boundary}.combatRng')
+        return value
+
+    rng = recorded_rng('initial')
+    expected = recorded_rng('final')
+    states = []
+    for phase in detail['phases']:
+        states.append(rng)
+        combats = phase.get('combats')
+        if not isinstance(combats, list):
+            raise ValueError('Combat RNG reconstruction requires recorded phase combats')
+        for combat in combats:
+            for field in ('rawRolls', 'responseRawRolls'):
+                rolls = combat.get(field)
+                if not isinstance(rolls, list) or any(type(roll) is not int for roll in rolls):
+                    raise ValueError(f'Combat RNG reconstruction requires recorded {field}')
+                for _ in rolls:
+                    rng = (rng * 1664525 + 1013904223) & 0xffffffff
+    if rng != expected:
+        raise ValueError('Combat RNG reconstruction does not match final.combatRng; '
+                         'rejected random samples or incomplete/unsupported draw records cannot be replayed exactly')
+    return states
+
+
 def before_state(detail, index, units):
     phase = detail['phases'][index]
     state = copy.deepcopy(detail['initial'])
     state.update(units=copy.deepcopy(phase['before']), round=phase['round'],
-                 turn=phase['side'], gold=copy.deepcopy(phase['gold']), winner=None, lastCombat=None)
+                 turn=phase['side'], gold=copy.deepcopy(phase['gold']), winner=None, lastCombat=None,
+                 combatRng=combat_rng_states(detail)[index])
     # Gold is recorded after spending. Promotions are free; only recruits spend.
     for action in phase['actions']:
         if action['kind'] == 'recruit':
@@ -133,6 +168,13 @@ def switches(on, off):
                 weaponSwitches=sum([x[1] for x in a[k]] != [x[1] for x in b[k]] for k in common))
 
 
+def verify_original_phase(response, phase):
+    if (response['records']['actions'] != phase['actions']
+            or response['final']['units'] != phase['units']
+            or response['final']['gold'] != phase['gold']):
+        raise ValueError('Unchanged phase replay does not reproduce recorded actions, units and gold')
+
+
 class Replay:
     def __init__(self, binary, data):
         self.errors = tempfile.TemporaryFile(mode='w+t')
@@ -216,6 +258,8 @@ def main():
                     if config.get(phase['side'] + 'Blocks'):
                         request['blocks'] = config[phase['side'] + 'Blocks']
                     on, off = [process.run(request) for process in processes]
+                    if strict:
+                        verify_original_phase(on, phase)
                     row = dict(sample=len(rows), effect=args.effect, seed=config['seed'], map=config['landscape'],
                                round=phase['round'], side=phase['side'], policy=policy,
                                defenderFaction=config['armies']['enemy' if phase['side'] == 'player' else 'player'],
@@ -240,9 +284,10 @@ def main():
     args.out.with_suffix('.json').write_text(json.dumps(dict(
         report=str(report_path), sourceFingerprint=report.get('fingerprint'), runtimeFingerprints=fingerprints,
         validation='strict fingerprint and profiles' if strict else 'profiles only; full catalog/engine match NOT verified',
+        originalPhaseReproductionChecked=strict,
         effect=args.effect, policy=args.policy, perSeed=args.per_seed, engagedOnly=args.engaged_only,
         sampling='first observed non-mirror positions with the selected effect in journal order; correlated within battles',
-        limitations='One phase, current runtime planning, seed held equal; no long-term win attribution. Uncapped recruitment represented by ceiling 1000. HP deltas include healing/drain and original units only.',
+        limitations='One phase, recorded phase-start combat RNG restored and final journal RNG verified; rejected-sample histories fail rather than guess. No long-term win attribution. Uncapped recruitment represented by ceiling 1000. HP deltas include healing/drain and original units only.',
         rows=rows, pairs=pairs), indent=2))
     with args.out.with_suffix('.csv').open('w', newline='') as output:
         writer = csv.DictWriter(output, fieldnames=list(rows[0]) if rows else ['sample'])

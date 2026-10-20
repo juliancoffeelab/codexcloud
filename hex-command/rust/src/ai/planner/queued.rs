@@ -78,14 +78,12 @@ impl BattleView<'_, '_> {
                         let Some(origin) = origin else {
                             continue;
                         };
-                        let (damage, response, _) = self.preview(unit, foe, weapon, origin);
-                        let killed = damage >= foe.hp;
-                        let value = damage.min(foe.hp) as f64 * 2.0 - response as f64 * 1.8
-                            + if killed {
-                                12.0 + self.rules().units[foe.kind].cost as f64 * 0.3
-                            } else {
-                                0.0
-                            }
+                        let forecast = self.exchange(unit, foe, weapon, origin);
+                        let response = forecast.damage[1];
+                        let kill_chance = forecast.death[1];
+                        let killed = kill_chance == 1.0;
+                        let value = forecast.effective[0] * 2.0 - response * 1.8
+                            + kill_chance * (12.0 + self.rules().units[foe.kind].cost as f64 * 0.3)
                             + if killed && cache.orders.terminal_attack(foe) {
                                 100.0
                             } else {

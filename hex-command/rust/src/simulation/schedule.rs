@@ -7,6 +7,9 @@ use crate::{
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
+pub(super) const DEFAULT_ARENA_SEEDS: u32 = 50;
+pub(super) const DEFAULT_CAMPAIGN_SEEDS: u32 = 100;
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Deserialize, Serialize, clap::ValueEnum)]
 #[serde(rename_all = "lowercase")]
 /// Which independent workload families are scheduled.
@@ -84,6 +87,7 @@ pub struct ScheduleOptions {
     pub campaign_custom_enemy: bool,
     pub first_seed: u32,
     pub seeds: u32,
+    pub campaign_seeds: u32,
     pub max_rounds: u32,
     pub campaign_max_rounds: u32,
     /// Explicit override for both sides; None uses each policy's default.
@@ -120,7 +124,8 @@ impl ScheduleOptions {
             campaign_custom_player: false,
             campaign_custom_enemy: false,
             first_seed: 1,
-            seeds: 2,
+            seeds: DEFAULT_ARENA_SEEDS,
+            campaign_seeds: DEFAULT_CAMPAIGN_SEEDS,
             max_rounds: rules.arena.default_max_rounds,
             campaign_max_rounds: rules.campaign_defaults.default_max_rounds,
             recruit_limit: None,
@@ -239,8 +244,12 @@ impl ScheduleOptions {
                 .ok_or("Schedule too large")?
         };
         arena
-            .checked_add(campaign)
-            .and_then(|n| n.checked_mul(self.seeds as usize))
+            .checked_mul(self.seeds as usize)
+            .and_then(|n| {
+                campaign
+                    .checked_mul(self.campaign_seeds as usize)
+                    .and_then(|c| n.checked_add(c))
+            })
             .ok_or_else(|| "Schedule too large".into())
     }
 }
@@ -254,7 +263,11 @@ pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, Simulatio
     }
     let end = options
         .first_seed
-        .checked_add(options.seeds)
+        .checked_add(match options.mode {
+            Mode::Arena => options.seeds,
+            Mode::Campaign => options.campaign_seeds,
+            Mode::Full => options.seeds.max(options.campaign_seeds),
+        })
         .ok_or("Seed range overflows u32")?;
     let count = options.expected_games()?;
     let mut configs = Vec::new();
@@ -322,7 +335,7 @@ pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, Simulatio
         }
     }
     for seed in options.first_seed..end {
-        if options.mode != Mode::Campaign {
+        if options.mode != Mode::Campaign && seed - options.first_seed < options.seeds {
             for landscape in &options.landscapes {
                 for a in 0..entrants.len() {
                     for b in a..entrants.len() {
@@ -372,7 +385,7 @@ pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, Simulatio
                 }
             }
         }
-        if options.mode != Mode::Arena {
+        if options.mode != Mode::Arena && seed - options.first_seed < options.campaign_seeds {
             for campaign in &options.campaigns {
                 for (player, player_blocks) in &campaign_players {
                     for (enemy, enemy_blocks) in &campaign_enemies {
@@ -443,6 +456,7 @@ mod tests {
         let mut campaign = ScheduleOptions::defaults(&rules).unwrap();
         campaign.mode = Mode::Campaign;
         campaign.seeds = 1;
+        campaign.campaign_seeds = 1;
         campaign.with = options.with;
         campaign.campaign_players = Some(vec![crate::ai::Policy::Balanced]);
         campaign.campaign_enemies = Some(vec![crate::ai::Policy::Classic]);
@@ -464,6 +478,7 @@ mod tests {
         let mut options = ScheduleOptions::defaults(&rules).unwrap();
         options.mode = Mode::Campaign;
         options.seeds = 2;
+        options.campaign_seeds = 2;
         options.campaigns = vec!["single".into(), "choice".into()];
         options.policies = vec![Policy::Balanced];
         options.campaign_diplomacy = BTreeMap::from([
@@ -542,6 +557,7 @@ mod tests {
             campaign_custom_enemy: false,
             first_seed: 5,
             seeds: 1,
+            campaign_seeds: 1,
             max_rounds: 1,
             campaign_max_rounds: 1,
             recruit_limit: Some(0),
@@ -558,6 +574,31 @@ mod tests {
         };
         let configs = schedule(&options).unwrap();
         assert_eq!(configs.len(), 9);
+        let mut mixed = options.clone();
+        mixed.seeds = 2;
+        mixed.campaign_seeds = 3;
+        let mixed_configs = schedule(&mixed).unwrap();
+        assert_eq!(mixed.expected_games().unwrap(), 19);
+        assert_eq!(mixed_configs.len(), 19);
+        assert_eq!(
+            mixed_configs
+                .iter()
+                .filter(|c| matches!(c, MatchConfig::Arena(_)))
+                .count(),
+            16
+        );
+        assert_eq!(
+            mixed_configs
+                .iter()
+                .filter(|c| matches!(c, MatchConfig::Campaign(_)))
+                .count(),
+            3
+        );
+        assert!(mixed_configs.iter().all(|c| match c {
+            MatchConfig::Arena(c) => (5..7).contains(&c.seed),
+            MatchConfig::Campaign(c) => (5..8).contains(&c.seed),
+        }));
+
         let arena: Vec<_> = configs
             .iter()
             .filter_map(|config| {

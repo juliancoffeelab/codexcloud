@@ -157,8 +157,13 @@ impl TileOrder {
             } else {
                 0.0
             },
-            (b.0 - a.0) * self.direction.0 + (b.1 - a.1) * self.direction.1,
-            (a.0 - b.0) * self.direction.1 - (a.1 - b.1) * self.direction.0,
+            // Axial axes are 60 degrees apart: use the Cartesian hex metric.
+            (b.0 - a.0) * (self.direction.0 + self.direction.1 * 0.5)
+                + (b.1 - a.1) * (self.direction.1 + self.direction.0 * 0.5),
+            // Keep equal-progress choices in a fixed world order. Rotating this
+            // tie-break with the side sends mirrored armies into opposite biomes.
+            a.1 - b.1,
+            (a.0 + a.1 * 0.5) - (b.0 + b.1 * 0.5),
         ];
         values
             .into_iter()
@@ -374,6 +379,50 @@ pub(super) fn actor_route(goal: &Objective) -> bool {
 #[cfg(test)]
 mod target_tests {
     use super::*;
+    #[test]
+    fn horizontal_spawn_reflections_preserve_tile_preferences() {
+        let rules = crate::data::Rules::load().unwrap();
+        let game = crate::logic::Game::new(&rules, "mirror");
+        let view = BattleView::new(&game);
+        let leader = |side| {
+            view.units()
+                .iter()
+                .find(|unit| unit.side == side && view.rules().units[unit.kind].leader)
+                .unwrap()
+        };
+        let left = leader(Side::Player);
+        let right = leader(Side::Enemy);
+        let (lc, lr) = view.board().positions[left.tile];
+        let (rc, rr) = view.board().positions[right.tile];
+        assert_eq!(lr, rr);
+        let axis = lc + rc + lr.rem_euclid(2);
+        let pairs: Vec<_> = view
+            .board()
+            .positions
+            .iter()
+            .enumerate()
+            .filter_map(|(tile, &(col, row))| {
+                let reflected = format!("{},{}", axis - col - row.rem_euclid(2), row);
+                view.board()
+                    .indices
+                    .get(&reflected)
+                    .map(|&other| (tile, other))
+            })
+            .collect();
+        assert!(pairs.len() > 2);
+        let left_order = TileOrder::new(&view, left, false);
+        let right_order = TileOrder::new(&view, right, false);
+        for &(a, reflected_a) in &pairs {
+            for &(b, reflected_b) in &pairs {
+                assert_eq!(
+                    left_order.compare(&view, a, b),
+                    right_order.compare(&view, reflected_a, reflected_b),
+                    "tile preferences changed after exchanging horizontal spawns"
+                );
+            }
+        }
+    }
+
     #[test]
     fn repeated_target_normalization_preserves_stable_duty_ids() {
         let target = crate::ai::orders::target(

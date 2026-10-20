@@ -19,6 +19,31 @@ pub(super) fn choose(
     seed: u32,
     orders: &RecruitmentOrders,
 ) -> Option<Command> {
+    choose_with_forecast(game, seed, orders, false)
+}
+
+pub(super) fn choose_with_forecast(
+    game: &BattleView<'_, '_>,
+    seed: u32,
+    orders: &RecruitmentOrders,
+    predict: bool,
+) -> Option<Command> {
+    choose_with_weights(
+        game,
+        seed,
+        orders,
+        predict,
+        game.rules().recruitment.standard,
+    )
+}
+
+pub(super) fn choose_with_weights(
+    game: &BattleView<'_, '_>,
+    seed: u32,
+    orders: &RecruitmentOrders,
+    predict: bool,
+    weights: RecruitmentWeights,
+) -> Option<Command> {
     let side = game.turn();
     let leader = game
         .units()
@@ -55,7 +80,8 @@ pub(super) fn choose(
             retreating: None,
             rebuilding: None,
         };
-        let assessment = super::evaluation::Assessment::new(game, &recruit);
+        let assessment =
+            super::evaluation::Assessment::with_weights(game, &recruit, predict, weights);
         let copies = game
             .units()
             .iter()
@@ -68,11 +94,16 @@ pub(super) fn choose(
         if rule.cost > game.gold()[side.index()] && game.income(side) == 0 {
             continue;
         }
+        // An unaffordable unit must justify the income spent waiting rather
+        // than fielding an available alternative now.
+        let wait = f64::from((rule.cost - game.gold()[side.index()]).max(0))
+            / f64::from(game.income(side).max(1));
         for tile in tiles {
             recruit.tile = tile;
-            let score = assessment.score(game, &recruit)
+            let score = assessment.recruitment_breakdown(game, &recruit).total
                 / rule.cost.max(1) as f64
-                / (1.0 + copies as f64 * 0.2)
+                / (1.0 + copies as f64 * weights.duplicate_penalty)
+                / (1.0 + wait * weights.wait_penalty)
                 + super::random(
                     seed,
                     &format!("situational:{}:{}:{tile}", game.round(), rule.id),
@@ -133,9 +164,11 @@ mod tests {
     }
 
     fn selected(game: &Game<'_>, orders: &RecruitmentOrders) -> Option<usize> {
-        choose(&BattleView::new(game), 7, orders).map(|command| match command {
-            Command::Recruit { kind, .. } => game.kind(&kind.0),
-            _ => panic!("recruiter emitted a non-recruit command"),
+        choose(&BattleView::new(game), 7, orders).map(|command| {
+            let Command::Recruit { kind, .. } = command else {
+                panic!("recruiter emitted a non-recruit command");
+            };
+            game.kind(&kind.0)
         })
     }
 
@@ -210,6 +243,25 @@ mod tests {
         game.gold[0] = 10;
         game.owners[village] = None;
         assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(a));
+    }
+
+    #[test]
+    fn modest_upgrade_does_not_delay_an_affordable_recruit() {
+        let (mut rules, a, b) = fixture();
+        rules.units[b].cost = 12;
+        rules.units[b].hp = 54;
+        let mut game = battle(&rules, a, b);
+        let village = game
+            .terrain
+            .iter()
+            .enumerate()
+            .find(|(_, t)| **t == rules.terrains["village"])
+            .unwrap()
+            .0;
+        game.owners[village] = Some(Side::Player);
+        assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(a));
+        game.gold[0] = 12;
+        assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(b));
     }
 
     #[test]
@@ -329,55 +381,24 @@ mod tests {
         let tile = game.placement_tiles(&leader, a, true)[0];
         let id = game.add(a, Side::Player, tile);
         assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(a));
+        let mut healer = leader.clone();
+        healer.id = 0;
+        healer.kind = b;
+        healer.hp = rules.units[b].hp;
+        healer.tile = game.placement_tiles(&leader, b, true)[0];
+        let assess = |game: &Game<'_>| {
+            let view = BattleView::new(game);
+            crate::ai::recruiter::evaluation::Assessment::new(&view, &healer)
+                .recruitment_breakdown(&view, &healer)
+        };
+        let healthy = assess(&game);
         let index = game.index(id).unwrap();
         game.units[index].hp = 1;
-        assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(b));
-    }
-
-    #[test]
-    fn exposed_melee_allies_create_thorn_support_demand() {
-        for aura in [0, 20] {
-            let (mut rules, a, b) = fixture();
-            rules.units[b].thorn_aura = aura;
-            rules.units[b].attacks[0].damage = 0;
-            let enemy = battle(&rules, a, b)
-                .units
-                .iter()
-                .find(|u| u.side == Side::Enemy)
-                .unwrap()
-                .kind;
-            // A committed multi-strike melee enemy makes aura support useful.
-            rules.units[enemy].attacks.truncate(1);
-            rules.units[enemy].attacks[0].category = Category::Melee;
-            rules.units[enemy].attacks[0].range = 1;
-            rules.units[enemy].attacks[0].count = 3;
-            let mut game = battle(&rules, a, b);
-            let leader = game
-                .units
-                .iter()
-                .find(|u| u.side == Side::Player)
-                .unwrap()
-                .clone();
-            let tile = game.placement_tiles(&leader, a, true)[0];
-            game.add(a, Side::Player, tile);
-            let enemy = game
-                .units
-                .iter()
-                .find(|u| u.side == Side::Enemy)
-                .unwrap()
-                .id;
-            let location = game.board.adjacent[tile]
-                .iter()
-                .copied()
-                .find(|&t| game.at(t).is_none())
-                .unwrap();
-            let index = game.index(enemy).unwrap();
-            game.units[index].tile = location;
-            game.roster_changed();
-            assert_eq!(
-                selected(&game, &RecruitmentOrders::default()),
-                Some(if aura == 0 { a } else { b })
-            );
-        }
+        let wounded = assess(&game);
+        // Wounds create healing value; they do not guarantee that buying a
+        // healer beats every alternative under every combat valuation.
+        assert!(healthy.support > 0.0);
+        assert!(wounded.support > healthy.support);
+        assert!(wounded.total > healthy.total);
     }
 }

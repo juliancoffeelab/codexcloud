@@ -82,6 +82,7 @@ function fixture() {
         ok: true,
         value: {
           view: nextView,
+          combat: null,
         },
       };
     },

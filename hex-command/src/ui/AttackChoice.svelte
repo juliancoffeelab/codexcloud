@@ -6,9 +6,10 @@
   interface Props {
     choice: AttackChoiceView;
     onAttack: (attackId: string) => void;
+    busy?: boolean;
   }
 
-  let { choice, onAttack }: Props = $props();
+  let { choice, onAttack, busy = false }: Props = $props();
   let expanded = $state(false);
 
   function toggleExplanation() {
@@ -22,11 +23,19 @@
       class="attack-action"
       data-attack={choice.id}
       aria-label={choice.buttonLabel}
-      disabled={!choice.available}
+      disabled={busy || !choice.available}
       onclick={() => onAttack(choice.id)}
     >
-      <span class="attack-heading">
-        <strong>{choice.name}</strong>
+      <span class="attack-heading" class:paired={choice.available}>
+        {#each choice.available ? [choice.name, choice.responseName] : [choice.name] as name}
+          <strong>
+            {#each name.split(/(\([^)]*\))/) as part}
+              {#if part.startsWith("(")}
+                <span class="keep-together">{part}</span>
+              {:else}{part}{/if}
+            {/each}
+          </strong>
+        {/each}
         {#if !choice.available}
           <span>Out of reach or blocked</span>
         {/if}

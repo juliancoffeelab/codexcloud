@@ -110,6 +110,7 @@ impl Game<'_> {
             }
             Command::RetryMission => {
                 let campaign = self.campaign.as_ref().ok_or(CommandError::NoCampaign)?;
+                let combat_rng = self.combat_rng;
                 let records = self.recordings.take();
                 let choices = if self.mission.as_ref().is_some_and(|m| m.refuge.is_some()) {
                     vec![]
@@ -126,6 +127,7 @@ impl Game<'_> {
                     campaign.story_veterans.clone().unwrap_or_default(),
                     campaign.fallen_companions.clone().unwrap_or_default(),
                 );
+                self.combat_rng = combat_rng;
                 self.recordings = records;
             }
             Command::RecallMission { units } => {

@@ -1,6 +1,7 @@
-import type { GameView, UnitView } from "../game/view";
+import type { GameView, UnitView, Immutable } from "../game/view";
 import type {
   GameSnapshot,
+  CombatAnimation,
   CampaignId,
   UnitType,
   RecruitType as GameRecruitType,
@@ -28,6 +29,7 @@ export interface BattleView {
   readonly sound: boolean;
   readonly canUndo: boolean;
   readonly recruitment: RecruitmentContext | null;
+  readonly combat?: Immutable<CombatAnimation> | null;
 }
 
 /** Components can issue commands, but cannot read hidden controller state. */

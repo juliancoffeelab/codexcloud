@@ -111,7 +111,8 @@ def analyze(inputs, journals, value=True, leaders=True):
                         ):
                             if event is None:
                                 continue
-                            actual = min(event['afterTerrainDamage'], event['availableHp'])
+                            actual = (event['effectiveDamage'] if event.get('effectiveDamage') is not None
+                                      else min(event['afterTerrainDamage'], event['availableHp']))
                             add(actor, hpDamageDealt=actual, weaponHPDamageDealt=actual)
                             add(defender, hpDamageTaken=actual, weaponHPDamageTaken=actual,
                                 armourDamagePrevented=event['effectiveArmourPrevented'],

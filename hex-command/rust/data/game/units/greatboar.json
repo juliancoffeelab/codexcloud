@@ -23,7 +23,8 @@
       "category": "melee",
       "range": 1,
       "sound": "attack-melee",
-      "count": 1
+      "count": 1,
+      "spread": 3
     },
     {
       "id": "tusks",
@@ -33,7 +34,8 @@
       "category": "melee",
       "range": 1,
       "sound": "attack-melee",
-      "count": 2
+      "count": 2,
+      "spread": 2
     }
   ],
   "damageModifiers": {

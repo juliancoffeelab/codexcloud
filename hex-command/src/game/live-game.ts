@@ -9,6 +9,7 @@ import type { GameEngine, GameEngineFactory } from "./native-engine";
 import type { GameView } from "./view";
 import type {
   CombatPreviewDetails,
+  CombatAnimation,
   GameSnapshot,
   GameState,
   RecruitType,
@@ -18,7 +19,7 @@ import type {
   UnitType,
   Weapon,
 } from "./types";
-import { immutable } from "./immutable";
+import { immutable, type Immutable } from "./immutable";
 
 /** Turn native rule errors into the controller's existing error/status path. */
 export function nativeValue<T>(result: EngineResult<T>): T {
@@ -37,6 +38,10 @@ export function nativeValue<T>(result: EngineResult<T>): T {
 export class LiveGame {
   private state!: GameState;
   private inspection!: BattleInspection;
+  private combatEvent: Immutable<CombatAnimation> | null = null;
+  get combat() {
+    return this.combatEvent;
+  }
   constructor(
     private readonly factory: GameEngineFactory,
     private engine: GameEngine,
@@ -62,8 +67,9 @@ export class LiveGame {
     if (view.revision !== this.inspection.revision)
       throw new Error("Incoherent native publication");
   }
-  private dispatch(command: Command): void {
-    nativeValue(this.engine.dispatch(command));
+  private dispatch(command: Immutable<Command>, expectedRevision?: number): void {
+    const result = nativeValue(this.engine.dispatch(command, expectedRevision));
+    this.combatEvent = immutable(result.combat as unknown as CombatAnimation | null);
     this.refresh();
   }
   private id(id: string): number {
@@ -196,8 +202,7 @@ export class LiveGame {
         diplomacy: "restrained",
       }),
     );
-    nativeValue(this.engine.dispatch(decision.command, decision.revision));
-    this.refresh();
+    this.dispatch(decision.command, decision.revision);
   }
   advanceDialogue(skip = false): void {
     this.dispatch({ kind: skip ? "skipDialogue" : "dismissDialogue" });

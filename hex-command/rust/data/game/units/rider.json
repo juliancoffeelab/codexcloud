@@ -1,6 +1,6 @@
 {
   "id": "rider",
-  "role": "warrior",
+  "role": "flank",
   "name": "Mounted spearman",
   "terrainModifiers": {
     "forest": {
@@ -32,12 +32,13 @@
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "spread": 3
     }
   ],
   "damageModifiers": {
     "blade": 0,
-    "pierce": 0,
+    "pierce": 1,
     "impact": 0
   },
   "ability": "Mounted",

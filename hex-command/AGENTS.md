@@ -2,6 +2,15 @@
 
 - Use [docs/development.md](docs/development.md) for setup and technical references.
   The README is user-owned; modify it only when explicitly asked.
+- Keep simulation experiments separate from the playable game. Requests to
+  prototype, render, simulate or evaluate a map or balance change do not authorize
+  adding it to the playable catalog. Use an ignored copy of the data and
+  `--data-dir`; promote experimental content only when the user requests it.
+- Publication requires a user instruction to publish, deploy or update the live
+  game. Building, testing, showing an image, committing and pushing do not imply
+  publication. Visual changes and time spent working are not publication triggers.
+  Follow the [publish skill](.agents/skills/publish/SKILL.md) when publication is
+  authorized; do not invoke the hosted-site workflow for simulation-only work.
 
 - **Permanent character canvas rule: every character/unit sprite and portrait is
   exactly 64×64 native pixels. This rule must never be changed; do not reintroduce
@@ -24,8 +33,11 @@
   cases in existing test matrices.
 - Validate content through generic schema and consistency checks. Measure
   balance through simulations.
-- Add tests for new mechanics, changed code paths, or reproduced bugs that
-  existing coverage misses. Identify that missing coverage before writing tests.
+- Do not add permanent tests unless you can guarantee that they will fail in
+  the future. A reproduced bug alone does not justify a permanent regression test.
+- For bug fixes, use a disposable test or probe: reproduce the failure, fix the
+  code, verify that the probe passes, then delete it. Run the relevant existing
+  suites and remove obsolete expectations rather than preserving incorrect behavior.
 - Use a small, fixed set of representative fixtures. Do not freeze current
   unit stats, promotion choices, recruitment lists or roster sizes.
 - Do not duplicate existing coverage merely because new content uses it.
@@ -53,24 +65,19 @@
   simulations and include the report directly in the final reply without waiting
   for another request. A successful run or test status alone is not delivery.
   Report the affected workload; use the full panel when scope is unclear.
-- `dist/` contains generated output and is Git-ignored. Commit source and public
-  assets. For Sites publication, build the selected checkout with `npm run build`,
-  commit and push its exact source to the Sites source repository, then package
-  it with `python3 scripts/package-site.py /tmp/hex-command.tar.gz`. Publish the
-  archive and source commit. Do not use `git archive` for generated output; the
-  packager checks client references and archive bytes.
 - Use feature branches and pull requests for publication as for other changes.
   Never push directly to `main` or bypass the repository's PR workflow.
 - Commit and push before returning only if the current task took more than
   10 minutes, even if unfinished or checks fail. Otherwise, keep changes local.
   Report check status and remaining work.
-- For visual changes, deploy before pushing to GitHub so the user can test them
-  sooner. If deployment fails, report it and still make the required GitHub push.
 
 ## Skills
 
 Read the linked `SKILL.md` before starting work that matches its trigger.
 
+- [publish](.agents/skills/publish/SKILL.md): Use when the user authorizes
+  publication, deployment or an update to the live game. Simulation, preview,
+  commit and push requests alone do not trigger this skill.
 - [combat-simulation](.agents/skills/combat-simulation/SKILL.md): Use when asked
   to review, explain, compare or change AI policies; run or analyze combat
   simulations; or assess balance, campaign competence or simulation performance.

@@ -69,7 +69,7 @@ test("A native enemy turn cancelled by map selection never acts on the new battl
   assert(checkpoint.pendingEnemy);
   assert.deepEqual(checkpoint.game.snapshot(), opening);
   checkpoint.game.dispose();
-  controller.reset("river");
+  controller.reset("river-valley");
   const replacement = controller.snapshot();
   resume();
   await pending;
@@ -89,7 +89,9 @@ test("Native combat inspection feeds UI damage breakdowns and old saves migrate 
   game.attack(actor.id, target.id, forecast.attack.id);
   assert.equal(previous.unit(target.id)?.hp, target.hp);
   const after = game.unit(target.id);
-  assert.equal(after?.hp ?? 0, Math.max(0, target.hp - forecast.damage));
+  const remaining = after?.hp ?? 0;
+  assert(remaining >= Math.max(0, target.hp - required(forecast.damageDetail.maximum)));
+  assert(remaining <= Math.max(0, target.hp - required(forecast.damageDetail.minimum)));
   writeBattle(game);
   assert.equal(JSON.parse(localStorage.getItem(SAVE_KEY)!).version, SAVE_VERSION);
   const restored = loadLiveBattle(factory).game;

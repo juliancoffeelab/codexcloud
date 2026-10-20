@@ -1167,6 +1167,42 @@
       "side": "enemy",
       "col": 7,
       "row": 10
+    },
+    {
+      "type": "ghost",
+      "side": "player",
+      "col": 31,
+      "row": 31
+    },
+    {
+      "type": "wraith",
+      "side": "player",
+      "col": 30,
+      "row": 31
+    },
+    {
+      "type": "spectre",
+      "side": "player",
+      "col": 29,
+      "row": 31
+    },
+    {
+      "type": "ghost",
+      "side": "enemy",
+      "col": 28,
+      "row": 31
+    },
+    {
+      "type": "wraith",
+      "side": "enemy",
+      "col": 27,
+      "row": 31
+    },
+    {
+      "type": "spectre",
+      "side": "enemy",
+      "col": 26,
+      "row": 31
     }
   ]
 }

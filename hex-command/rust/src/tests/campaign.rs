@@ -134,7 +134,7 @@ fn killing_fighting_troops_does_not_escalate_mediation() {
     game.units[index].tile = game.site("6,4");
     game.units[index].hp = 1;
     game.roster_changed();
-    hit(&mut game, defender, target, "boneclub");
+    hit(&mut game, defender, target, "shieldbash");
     assert!(!game.campaign.as_ref().unwrap().escalated());
 }
 

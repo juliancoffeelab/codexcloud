@@ -1,6 +1,6 @@
 {
   "id": "knight",
-  "role": "warrior",
+  "role": "flank",
   "name": "Knight",
   "race": "human",
   "hp": 48,
@@ -15,7 +15,8 @@
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "spread": 5
     },
     {
       "id": "sword",
@@ -25,12 +26,13 @@
       "damageType": "blade",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "spread": 1
     }
   ],
   "damageModifiers": {
     "blade": -1,
-    "pierce": 0,
+    "pierce": 1,
     "impact": 0
   },
   "terrainModifiers": {

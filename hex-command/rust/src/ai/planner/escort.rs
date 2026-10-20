@@ -156,7 +156,13 @@ impl Workspace {
             .get(&guard)
             .map_or(0.0, |field| field.positions[tile])
     }
-    pub(in crate::ai) fn attack(&self, guard: u32, target: &Unit, damage: i32) -> f64 {
+    pub(in crate::ai) fn attack(
+        &self,
+        guard: u32,
+        target: &Unit,
+        damage: i32,
+        kill_chance: f64,
+    ) -> f64 {
         let risk = self
             .fields
             .get(&guard)
@@ -166,11 +172,9 @@ impl Workspace {
         if risk == 0 {
             return 0.0;
         }
-        if damage >= target.hp {
-            (risk as f64 * 2.0).min(32.0)
-        } else {
-            8.0 * damage.max(0).min(target.hp) as f64 / target.hp.max(1) as f64
-        }
+        kill_chance * (risk as f64 * 2.0).min(32.0)
+            + (1.0 - kill_chance) * 8.0 * damage.max(0).min(target.hp) as f64
+                / target.hp.max(1) as f64
     }
     pub(in crate::ai) fn bound(&self, guard: u32) -> f64 {
         if self.fields.contains_key(&guard) {
@@ -245,13 +249,13 @@ mod tests {
         assert!(game.board.distance(screen, actor_tile) > 1);
         assert!(escort.position(guard_id, screen) > escort.position(guard_id, branch));
         let enemy = game.unit(enemy_id).unwrap();
-        assert!(escort.attack(guard_id, enemy, enemy.hp) > 0.0);
+        assert!(escort.attack(guard_id, enemy, enemy.hp, 1.0) > 0.0);
         let distant = game
             .units
             .iter()
             .find(|u| u.side == Side::Enemy && rules.units[u.kind].leader)
             .unwrap();
-        assert_eq!(escort.attack(guard_id, distant, distant.hp), 0.0);
+        assert_eq!(escort.attack(guard_id, distant, distant.hp, 1.0), 0.0);
         assert!(
             Threats::unshielded(
                 &crate::ai::context::BattleView::new(&game),

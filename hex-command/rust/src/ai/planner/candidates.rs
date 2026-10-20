@@ -577,26 +577,30 @@ pub(in crate::ai) fn plan(
             {
                 return;
             }
-            let (damage, retaliation, _) = game.preview(&unit, target, weapon, tile);
-            if orders.protects(unit.id) && retaliation > 0 {
+            let forecast = game.exchange(&unit, target, weapon, tile);
+            let damage = forecast.damage[0].round() as i32;
+            let retaliation = forecast.damage[1].round() as i32;
+            if orders.protects(unit.id) && game.maximum_retaliation(&unit, target, weapon, tile) > 0
+            {
                 return;
             }
-            let drained = game.drain_healing(&unit, target, weapon, damage);
-            response = retaliation - drained;
-            let killed = damage >= target.hp;
+            let drained = forecast.healing[0].round() as i32;
+            response = if important {
+                game.maximum_retaliation(&unit, target, weapon, tile)
+            } else {
+                retaliation - drained
+            };
+            let kill_chance = forecast.death[1];
+            let killed = kill_chance == 1.0;
             eliminated = killed.then_some(target.id);
             terminal = killed && orders.terminal_attack(target);
-            combat = damage.min(target.hp) as f64 * 2.0
-                + if killed {
-                    12.0 + game.rules().units[target.kind].cost as f64 * 0.3
-                } else {
-                    0.0
-                }
+            combat = forecast.effective[0] * 2.0
+                + kill_chance * (12.0 + game.rules().units[target.kind].cost as f64 * 0.3)
                 - retaliation as f64 * 1.8
                 + drained as f64 * 2.0
-                + workspace.escort.attack(id, target, damage);
+                + workspace.escort.attack(id, target, damage, kill_chance);
             if orders.important(game, target) {
-                combat += if killed { 18.0 } else { 4.0 };
+                combat += 4.0 + 14.0 * kill_chance;
             }
             if battle
                 && killed

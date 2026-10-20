@@ -60,7 +60,7 @@ impl DamageType {
         }
     }
 }
-/// An authored attack option with deterministic damage, range and feedback metadata.
+/// An authored attack option with independent uniform strike rolls.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -69,6 +69,9 @@ pub struct Weapon {
     pub id: String,
     pub name: String,
     pub damage: i32,
+    /// Uniform raw roll is damage ± spread, inclusive; omitted means fixed damage.
+    #[serde(default)]
+    pub spread: i32,
     /// Hits in the selected attack; old definitions retain one hit.
     #[serde(default = "one_attack")]
     pub count: u8,

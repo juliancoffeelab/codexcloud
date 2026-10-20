@@ -8,9 +8,16 @@ impl Game<'_> {
         let modifier = rule.damage_modifiers.get(attack.damage_type);
         let environment = rule.environment[self.terrain[tile]][attack.category.index()]
             [attack.damage_type.index()];
+        let distribution = super::damage::distribution(attack, modifier + environment);
         DamageDetail {
+            roll_min: attack.damage - attack.spread,
+            roll_max: attack.damage + attack.spread,
+            minimum: distribution.min,
+            maximum: distribution.max,
+            expected: distribution.mean,
+            probabilities: distribution.probabilities.clone(),
             count: attack.count,
-            total: (attack.damage + modifier + environment).max(0) * i32::from(attack.count),
+            total: distribution.mean.round() as i32,
             base: attack.damage,
             damage_type: attack.damage_type,
             modifier,
@@ -34,24 +41,27 @@ impl Game<'_> {
                         let attack = self.rules.units[unit.kind].attacks[weapon].clone();
                         let (damage, retaliation, response) =
                             self.preview(unit, target, weapon, unit.tile);
-                        let healing = self.drain_healing(unit, target, weapon, damage);
-                        let thorn_damage = self.thorn_damage(unit, target, weapon, unit.tile);
-                        let retaliation_healing = response.map_or(0, |index| {
-                            let mut wounded = target.clone();
-                            wounded.hp -= damage;
-                            let mut actor = unit.clone();
-                            actor.hp += healing;
-                            self.drain_healing(&wounded, &actor, index, retaliation - thorn_damage)
-                        });
+                        let forecast = self.exchange(unit, target, weapon, unit.tile);
+                        let health = |side| HpForecast {
+                            minimum: forecast.hp_minimum[side],
+                            maximum: forecast.hp_maximum[side],
+                            expected: forecast.hp_expected[side],
+                        };
                         let response = response
                             .map(|index| self.rules.units[target.kind].attacks[index].clone());
                         let retaliation_detail = response
                             .as_ref()
                             .map(|r| self.damage_detail(r, unit, unit.tile));
                         attacks.push(AttackDetails {
-                            healing,
-                            retaliation_healing,
-                            thorn_damage,
+                            attacker_health: health(0),
+                            defender_health: health(1),
+                            kill_chance: forecast.death[1],
+                            death_chance: forecast.death[0],
+                            retaliation_min: forecast.minimum[1],
+                            retaliation_max: forecast.maximum[1],
+                            healing: forecast.healing[0].round() as i32,
+                            retaliation_healing: forecast.healing[1].round() as i32,
+                            thorn_damage: forecast.reflection.round() as i32,
                             recommended: recommended == Some(weapon),
                             target: format!("u{}", target.id),
                             damage,

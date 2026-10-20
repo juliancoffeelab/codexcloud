@@ -40,9 +40,9 @@ pub struct HealingRecord {
     pub providers: Vec<String>,
     pub amount: i32,
 }
-/// Reflection separated from weapon retaliation. Effective damage is the extra
-/// HP removed beyond ordinary retaliation, excluding overkill. Aura ties share
-/// attribution; intrinsic reflection belongs to the combat's target.
+/// Reflection separated from weapon retaliation. Effective damage is the actual
+/// HP removed by reflection as each initiating strike lands, excluding overkill.
+/// Aura ties share attribution; intrinsic reflection belongs to the combat's target.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -55,13 +55,16 @@ pub struct ThornRecord {
 /// Damage stages for an executed weapon, before HP caps. Armour includes racial
 /// and unit modifiers; terrain includes the target's environmental modifiers.
 /// Stage differences are signed: vulnerabilities produce negative prevention.
-/// Effective prevention caps each stage at available HP, attributing armour
+/// Effective prevention caps each strike at its available HP, attributing armour
 /// first and terrain second, so overkill cannot earn avoided-HP credit.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DamageMitigationRecord {
     pub available_hp: i32,
+    /// Summed per-strike HP damage, accounting for drain between strikes.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub effective_damage: Option<i32>,
     pub raw_damage: i32,
     pub after_armour_damage: i32,
     pub after_terrain_damage: i32,
@@ -69,7 +72,7 @@ pub struct DamageMitigationRecord {
     pub effective_terrain_prevented: i32,
 }
 /// Initiating weapon and actual weapon retaliation, excluding reflected thorns.
-/// A killed defender or unavailable response has no retaliation entry.
+/// A defender killed before its first reply has no retaliation entry.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -95,6 +98,14 @@ pub struct CombatRecord {
     #[serde(default)]
     pub damage_per_hit: i32,
     #[serde(default)]
+    pub raw_rolls: Vec<i32>,
+    #[serde(default)]
+    pub rolls: Vec<i32>,
+    #[serde(default)]
+    pub response_raw_rolls: Vec<i32>,
+    #[serde(default)]
+    pub response_rolls: Vec<i32>,
+    #[serde(default)]
     pub retaliation_count: u8,
     #[serde(default)]
     pub retaliation_per_hit: i32,
@@ -112,6 +123,7 @@ impl Serialize for CombatRecord {
         let mut record = serializer.serialize_struct(
             "CombatRecord",
             (if strikes { 12 } else { 8 })
+                + if self.rolls.is_empty() { 0 } else { 4 }
                 + usize::from(self.thorns.is_some())
                 + usize::from(self.mitigation.is_some()),
         )?;
@@ -127,6 +139,12 @@ impl Serialize for CombatRecord {
             record.serialize_field("damagePerHit", &self.damage_per_hit)?;
             record.serialize_field("retaliationCount", &self.retaliation_count)?;
             record.serialize_field("retaliationPerHit", &self.retaliation_per_hit)?;
+        }
+        if !self.rolls.is_empty() {
+            record.serialize_field("rawRolls", &self.raw_rolls)?;
+            record.serialize_field("rolls", &self.rolls)?;
+            record.serialize_field("responseRawRolls", &self.response_raw_rolls)?;
+            record.serialize_field("responseRolls", &self.response_rolls)?;
         }
         if let Some(thorns) = &self.thorns {
             record.serialize_field("thorns", thorns)?;

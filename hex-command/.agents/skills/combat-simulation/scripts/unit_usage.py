@@ -1,4 +1,4 @@
-"""Recorded arena presence and support effects; no simulation or current catalog lookup."""
+"""Recorded arena presence, damage/presence ratios and support effects."""
 from collections import Counter, defaultdict
 import gzip
 import hashlib
@@ -7,7 +7,15 @@ import json
 from pathlib import Path
 
 
+# The legacy arena "race" column identifies a faction from config.armies.
 DIMS = ('race', 'policy', 'opponentPolicy', 'map')
+UNIT_KINDS = {'warrior': 'infantry', 'flank': 'flank', 'ranger': 'ranger', 'healer': 'support'}
+
+
+def damage_order(row):
+    kind = row.get('unitKind', 'unknown')
+    return ((*UNIT_KINDS.values(), 'unknown').index(kind), row['family'],
+            row.get('level') or 0, row['name'])
 
 
 def adjacent(a, b):
@@ -19,8 +27,10 @@ def adjacent(a, b):
 
 def journals(inputs, kinds=('arena',)):
     for path in inputs:
-        path = path / 'report.json' if path.is_dir() else path
-        report = json.loads(path.read_text())
+        if path.is_dir():
+            path = path / ('report.json' if (path / 'report.json').exists() else 'report.json.gz')
+        with gzip.open(path, 'rt') if path.suffix == '.gz' else path.open() as stream:
+            report = json.load(stream)
         if report.get('status') != 'complete':
             raise ValueError('Unit usage requires a completed run')
         readers = {}
@@ -245,3 +255,96 @@ def army_usage(events, purchases, presence, families):
                          attacksPerUnitTurn=stats['attacks'] / max(1, row['unitTurns']),
                          retaliationsPerUnitTurn=stats['retaliations'] / max(1, row['unitTurns']), **stats))
     return rows
+
+
+def unit_damage(presence, battlefield_units, profiles, membership=()):
+    """Exact-unit damage share / presence share, with one nonleader denominator.
+
+    Weapon HP damage includes retaliation and excludes overkill. Effective
+    provider-attributed thorns stay separate from weapon shares and D/P.
+    Both come from the maintained battlefield-value audit.
+    Faction membership comes from recorded rows, never mechanical race. Units
+    recorded in another scope (or the comparison run) retain zero-exposure rows;
+    units never recorded for that faction are omitted.
+    Never average map percentages or per-unit rates to create faction totals.
+    """
+    groups = defaultdict(lambda: dict(presence={}, damage={}))
+    faction_units = defaultdict(set)
+    for rows in (presence, battlefield_units, membership):
+        for row in rows:
+            unit = row['unit']
+            if row.get('kind', 'arena') == 'arena' and unit in profiles and not profiles[unit].get('leader', False):
+                faction_units[row['race']].add(unit)
+    for rows, field in [(presence, 'presence'), (battlefield_units, 'damage')]:
+        for row in rows:
+            if field == 'damage' and row['kind'] != 'arena':
+                continue
+            unit = row['unit']
+            if unit not in profiles:
+                raise ValueError('Missing recorded unit profile: ' + unit)
+            group = groups[tuple(row[k] for k in DIMS)]
+            if not profiles[unit].get('leader', False):
+                group[field][unit] = row
+    result = []
+    for key, group in sorted(groups.items()):
+        census, values = group['presence'], group['damage']
+        turns = sum(r['unitTurns'] for r in census.values())
+        damage = sum(r['weaponHPDamageDealt'] for r in values.values())
+        for unit in census.keys() | values.keys():
+            if census.get(unit, {}).get('unitTurns', 0) != values.get(unit, {}).get('unitTurns', 0):
+                raise ValueError('Damage/presence census mismatch: ' + unit)
+        for unit in sorted(faction_units[key[0]]):
+            profile = profiles[unit]
+            observed = census.get(unit, {}).get('unitTurns', 0)
+            stats = values.get(unit, {})
+            dealt = stats.get('weaponHPDamageDealt', 0)
+            presence_share = 100 * observed / turns if turns else 0.0
+            damage_share = 100 * dealt / damage if damage else None
+            result.append(dict(zip(DIMS, key), unit=unit, name=profile.get('name', unit),
+                level=profile.get('level'), family=profile['family'],
+                unitKind=UNIT_KINDS.get(profile.get('role'), 'unknown'), unitTurns=observed,
+                totalUnitTurns=turns, damage=dealt, totalDamage=damage,
+                weaponDamage=stats.get('weaponHPDamageDealt', 0),
+                thornDamage=stats.get('thornHPDamageDealt', 0),
+                thornDamagePerUnitTurn=stats.get('thornHPDamageDealt', 0) / observed if observed else None,
+                presenceSharePercent=presence_share, damageSharePercent=damage_share,
+                damagePerUnitTurn=dealt / observed if observed else None,
+                factionDamagePerUnitTurn=damage / turns if turns else None,
+                damagePresenceRatio=damage_share / presence_share
+                    if presence_share and damage_share is not None else None))
+    return sorted(result, key=lambda row: (tuple(row[k] for k in DIMS), damage_order(row)))
+
+
+def compare_unit_damage(current, baseline):
+    """Keep missing rates undefined and compare matching unit/scope rows only."""
+    fields = ('unitTurns', 'damage', 'presenceSharePercent', 'damageSharePercent',
+              'damagePerUnitTurn', 'damagePresenceRatio', 'thornDamage', 'thornDamagePerUnitTurn')
+    index = {tuple(r[k] for k in (*DIMS, 'unit')): r for r in baseline}
+    result = []
+    for row in current:
+        before = index.get(tuple(row[k] for k in (*DIMS, 'unit')))
+        compared = dict(row)
+        for field in fields:
+            old = before.get(field) if before else None
+            compared[field + 'Before'] = old
+            compared[field + 'Delta'] = row[field] - old if row[field] is not None and old is not None else None
+        result.append(compared)
+    return result
+
+
+def damage_markdown(rows, baseline=False):
+    """The user-facing damage table: presence, damage/turn and D/P."""
+    def number(value, suffix=''):
+        return '—' if value is None else f'{value:.2f}{suffix}'
+
+    def cell(row, field, suffix=''):
+        after = number(row[field], suffix)
+        return f'{number(row[field + "Before"], suffix)} → {after}' if baseline else after
+
+    lines = ['| Unit | Kind | Presence | Damage/turn | D/P | Thorns/turn |', '| --- | --- | ---: | ---: | ---: | ---: |']
+    for row in sorted(rows, key=damage_order):
+        name = row['name'] + (f' (L{row["level"]})' if row.get('level') else '')
+        lines.append(f'| {name} | {row.get("unitKind", "unknown")} | {cell(row, "presenceSharePercent", "%")} | '
+                     f'{cell(row, "damagePerUnitTurn")} | {cell(row, "damagePresenceRatio", "×")} | '
+                     f'{cell(row, "thornDamagePerUnitTurn")} |')
+    return '\n'.join(lines)

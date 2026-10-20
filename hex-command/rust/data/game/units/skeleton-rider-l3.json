@@ -1,6 +1,6 @@
 {
   "id": "skeleton-rider-l3",
-  "role": "warrior",
+  "role": "flank",
   "name": "Hollow rider",
   "race": "skeletons",
   "hp": 34,
@@ -15,7 +15,8 @@
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "spread": 5
     }
   ],
   "damageModifiers": {
