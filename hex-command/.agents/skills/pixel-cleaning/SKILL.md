@@ -11,6 +11,34 @@ and image in a fresh `tmp/` directory. Use the branch matching the source.
 
 ## Unit sprites
 
+Start with color isolation: inspect brown, ivory, skin and steel in separate views.
+The script highlights **every occurrence** of the selected RGB colors, including
+pixels outside their intended material. No spatial or ownership filtering is
+allowed. The agent judges which highlighted pixels are misplaced, edits those
+pixels individually, then reruns the views. Brown belongs to leather, wood or
+hair; do not reinterpret misplaced brown as a gold shadow.
+
+```sh
+python3 .agents/skills/pixel-cleaning/scripts/highlight_colors.py \
+  pixel/art/units/humans/scout/sprite.txt --output tmp/scout-colors
+# Or select exact colors rather than a preset (quote shell # characters):
+python3 .agents/skills/pixel-cleaning/scripts/highlight_colors.py \
+  pixel/art/units/humans/scout/sprite.txt --color '#6f482b' --color '#40281c' \
+  --output tmp/scout-browns
+```
+
+Each check accepts **at most two source colors**. Presets expand into separate
+pairwise original/recolored comparisons; do not recolor a whole multi-color
+family at once. Each matching source color gets a **different high-contrast
+replacement**, with a visible color key: do not
+flatten base and shadow colors into one highlight. All occurrences of a source
+color receive the same replacement, like a faction-palette preview.
+Presets are explicit RGB
+lists in `references/highlight-colors.json`, not complete material definitions.
+Check `report.json` for selected colors, all matching coordinates and the source's
+RGB counts; add missing colors explicitly. Inspect shade colors as well as bases.
+Use existing player/enemy/debug previews for faction-cloth ownership.
+
 ```sh
 python3 .agents/skills/pixel-cleaning/scripts/review.py \
   pixel/art/units/humans/scout/sprite.txt tmp/scout-review
@@ -29,7 +57,8 @@ Character matrices remain 64×64. Keep grounded feet or bodies at native row 63;
 equipment touching it is insufficient. Preserve every painted pixel during
 alignment. Intentionally suspended poses retain their explicit flying flag.
 Use the approved human scout as a finish benchmark for material planes,
-without copying its pose or palette.
+without copying its pose or palette. Its detector count is not a cleanup target;
+preserve the unit's established shapes and readable shading.
 
 ## Terrain matrices
 
