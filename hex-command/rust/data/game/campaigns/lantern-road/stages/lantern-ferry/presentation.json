@@ -1,0 +1,9 @@
+{
+  "time": "night",
+  "lights": [
+    { "col": 1, "row": 3, "dx": 17, "dy": 4, "radius": 110, "power": 0.95 },
+    { "col": 3, "row": 1, "dy": 6, "radius": 78, "power": 0.75 },
+    { "col": 3, "row": 5, "dy": 6, "radius": 73, "power": 0.65 },
+    { "col": 11, "row": 1, "dy": 8, "radius": 92, "power": 1.05 }
+  ]
+}

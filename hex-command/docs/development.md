@@ -81,3 +81,26 @@ of logs and source control. Retain deployment identifiers if publication fails.
   [enhancement](../.agents/skills/pinkbox-enhancement/SKILL.md),
   [cleaning](../.agents/skills/pixel-cleaning/SKILL.md),
   [lineup previews](../.agents/skills/pixel-lineup/SKILL.md)
+
+## Battlefield presentation
+
+An optional `presentation.json` beside an authored scenario or campaign stage
+selects browser-only lighting. It contains `time` (`day` or `night`) and optional
+`lights`, each with integer `col`/`row`, optional `dx`/`dy`, positive `radius` and
+nonnegative `power`. Positions and radii use battlefield coordinates; terrain
+baking converts them to native pixels at `64 / battlefieldSpriteSize`. Scenarios
+without this file use daylight. These settings do not change simulation rules.
+
+Production emits finished terrain PNGs with the authored lighting and fixed
+lantern fixtures. Cache keys include terrain geometry, artwork inputs and every
+lighting setting; ownership, selection and unit moves reuse the same image.
+Units receive the corresponding color transform at their position, while health,
+selection and interaction overlays retain their normal colors. Static light
+settings need no per-turn terrain processing.
+
+Custom or changed terrain uses the existing batched canvas bake. Uncached night
+processing prefers a disposable Worker with OffscreenCanvas and transfers a
+bitmap copy, then swaps the completed result. Worker failure, lack of support or
+timeout falls back to yielding row batches. Replaced or disposed requests cancel
+processing and stale results never replace the active map. Daylight needs no
+pixel processing. Development uses this same uncached path.

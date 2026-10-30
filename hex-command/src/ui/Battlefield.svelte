@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { tick, untrack } from "svelte";
+  import { onDestroy, tick, untrack } from "svelte";
   import type { TileView } from "../game/view";
   import type { BattleCommands, BattleView } from "../controller/view";
   import { MAPS } from "../game/maps";
@@ -11,7 +11,8 @@
     terrainMapPreview,
     type TerrainMapImage,
   } from "../presentation/terrain-map";
-  import terrainSprites from "virtual:terrain-prebuilt";
+  import { daylight, lightingKey, lightingMatrix } from "../presentation/battlefield-lighting";
+  import terrainSprites, { presentations } from "virtual:terrain-prebuilt";
   import type { Artwork } from "../presentation/art";
   import { TerrainTilePrefetcher, terrainInspectionUrls } from "../presentation/terrain-prefetch";
 
@@ -55,7 +56,11 @@
   const mapWidth = $derived(size.width);
   const mapHeight = $derived(size.height);
   const viewBox = $derived(`0 0 ${mapWidth} ${mapHeight}`);
-  const terrainKey = $derived(terrainScene.key);
+  const lighting = $derived(presentations[game.mapId] ?? daylight);
+  const terrainKey = $derived(
+    JSON.stringify([...JSON.parse(terrainScene.key).slice(0, 4), lightingKey(lighting)]),
+  );
+  onDestroy(() => terrainCache.dispose());
   const backdrop = $derived(
     bakedTerrain?.key === terrainKey && bakedTerrain.artwork === terrainResources
       ? bakedTerrain.image
@@ -129,12 +134,16 @@
   $effect(() => {
     const key = terrainKey;
     const resources = terrainResources;
-    if ((prebuilt && !prebuilt.changed.size) || tiles.some((tile) => !tile.terrainFrame)) return;
+    if ((prebuilt && !prebuilt.changed.size) || tiles.some((tile) => !tile.terrainFrame)) {
+      terrainCache.dispose();
+      return;
+    }
     const plan = {
       width: mapWidth,
       height: mapHeight,
       pixelScale: 64 / battlefieldSpriteSize,
       tiles: untrack(() => tiles),
+      lighting,
     };
     let current = true;
     void terrainCache.prepare(key, resources, plan).then((image) => {
@@ -229,6 +238,16 @@
       aria-label={`${MAPS[game.mapId].name} battlefield`}
     >
       <defs>
+        {#if lighting.time === "night"}
+          {#each tiles as tile (tile.id)}
+            <filter id={`night-tile-${tile.col}-${tile.row}`} color-interpolation-filters="sRGB">
+              <feColorMatrix
+                type="matrix"
+                values={lightingMatrix(tile.x, tile.y, lighting).join(" ")}
+              />
+            </filter>
+          {/each}
+        {/if}
         {#each overlayTiles as tile (tile.id)}
           <clipPath id={tile.clipId}><polygon points={tile.points} /></clipPath>
         {/each}
@@ -274,7 +293,7 @@
           {/key}
         {/if}
         {#if hasBackdrop}
-          {#if hovered?.terrainFrame}
+          {#if hovered?.terrainFrame && lighting.time === "day"}
             <g
               class="terrain-hover"
               clip-path="url(#terrain-hover-clip)"
@@ -305,9 +324,15 @@
             {#if hasBackdrop && (backdrop || !prebuilt?.changed.has(tile.id))}
               <polygon points={tile.points} fill="transparent" pointer-events="all" />
             {:else}
-              <polygon class="tile-ground" points={tile.points} fill={tile.fill} />
-              <g clip-path={`url(#${tile.clipId})`}>
-                {@render terrainSprite(tile)}
+              <g
+                filter={lighting.time === "night"
+                  ? `url(#night-tile-${tile.col}-${tile.row})`
+                  : undefined}
+              >
+                <polygon class="tile-ground" points={tile.points} fill={tile.fill} />
+                <g clip-path={`url(#${tile.clipId})`}>
+                  {@render terrainSprite(tile)}
+                </g>
               </g>
             {/if}
             {#if tile.classes.includes("objective") || tile.classes.includes("recruitable")}
@@ -338,6 +363,9 @@
             />
             {#if occupant.frame}
               <svg
+                filter={lighting.time === "night"
+                  ? `url(#night-tile-${tile.col}-${tile.row})`
+                  : undefined}
                 class="art-sprite pixel-art unit-art"
                 class:enemy-unit={occupant.unit.side === "enemy"}
                 class:spent-unit={occupant.unit.attacked}

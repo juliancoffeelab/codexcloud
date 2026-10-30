@@ -1,4 +1,12 @@
 /** Production-only assets; map JSON and pixel matrices remain the tracked sources. */
+import { existsSync } from "node:fs";
+import {
+  daylight,
+  paintLights,
+  readLighting,
+  shadePixels,
+  type BattlefieldLighting,
+} from "../src/presentation/battlefield-lighting";
 import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import type { Canvas } from "@napi-rs/canvas";
@@ -30,8 +38,7 @@ export function terrainPrebuild(): Plugin {
     },
     async load(id) {
       if (id !== "\0" + virtualId) return;
-      // Development keeps the ordinary renderer; production emits complete map PNGs.
-      if (!production) return "export default {};";
+      // Development uses the same authored settings with the asynchronous fallback.
       const { createCanvas, loadImage } = await import("@napi-rs/canvas");
       const read = async <T>(path: string): Promise<T> => {
         this.addWatchFile(path);
@@ -51,13 +58,20 @@ export function terrainPrebuild(): Plugin {
       const artwork = currentArtwork();
       const frames = new Map<string, Canvas>();
       const entries: string[] = [];
+      const presentations: Record<string, BattlefieldLighting> = {};
       const keys = new Set<string>();
       for (const descriptor of descriptors) {
         const { map: mapPath } = await read<{ map: string }>(descriptor);
         const map = await read<Pick<GameView, "cols" | "rows" | "mapId" | "tiles">>(
           resolve(dirname(descriptor), mapPath),
         );
-        const key = terrainMapKey(map);
+        const presentationPath = resolve(dirname(descriptor), "presentation.json");
+        const lighting = existsSync(presentationPath)
+          ? readLighting(await read(presentationPath))
+          : daylight;
+        presentations[map.mapId] = lighting;
+        if (!production) continue;
+        const key = terrainMapKey(map, lighting);
         if (keys.has(key)) continue;
         keys.add(key);
         const plan = {
@@ -85,6 +99,19 @@ export function terrainPrebuild(): Plugin {
         context.imageSmoothingEnabled = false;
         context.scale(plan.pixelScale, plan.pixelScale);
         paintTerrainTiles(context, plan.tiles, frames);
+        if (lighting.time !== "day") {
+          const pixels = context.getImageData(0, 0, dimensions.width, dimensions.height);
+          shadePixels(
+            pixels.data,
+            dimensions.width,
+            0,
+            dimensions.height,
+            plan.pixelScale,
+            lighting,
+          );
+          context.putImageData(pixels, 0, 0);
+          paintLights(context, lighting);
+        }
         const reference = this.emitFile({
           type: "asset",
           name: `terrain-${map.mapId}.png`,
@@ -95,7 +122,7 @@ export function terrainPrebuild(): Plugin {
         );
       }
       console.log(`Prebuilt terrain for ${entries.length} authored maps`);
-      return `export default {${entries.join(",\n")}};`;
+      return `export const presentations = ${JSON.stringify(presentations)};\nexport default {${entries.join(",\n")}};`;
     },
   };
 }
