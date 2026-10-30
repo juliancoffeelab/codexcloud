@@ -4,6 +4,7 @@ import {
   daylight,
   paintLights,
   readLighting,
+  resolveLighting,
   shadePixels,
   type BattlefieldLighting,
 } from "../src/presentation/battlefield-lighting";
@@ -23,6 +24,22 @@ import { pixelSprites } from "../src/presentation/pixel-art";
 import type { GameView } from "../src/game/view";
 
 const virtualId = "virtual:terrain-prebuilt";
+
+function lightingVariants(lighting: BattlefieldLighting, tiles: GameView["tiles"]) {
+  const initial = resolveLighting(lighting, tiles);
+  const controlled = (lighting.lights ?? []).filter((light) => light.whenOwner);
+  // Bound build output. Larger authored combinations use the existing worker cache.
+  if (controlled.length > 4) return [initial];
+  return [
+    initial,
+    ...Array.from({ length: 2 ** controlled.length }, (_, mask) => ({
+      time: lighting.time,
+      lights: lighting.lights?.filter(
+        (light) => !light.whenOwner || mask & (1 << controlled.indexOf(light)),
+      ),
+    })),
+  ];
+}
 
 export function terrainPrebuild(): Plugin {
   let root: string;
@@ -66,60 +83,62 @@ export function terrainPrebuild(): Plugin {
           resolve(dirname(descriptor), mapPath),
         );
         const presentationPath = resolve(dirname(descriptor), "presentation.json");
-        const lighting = existsSync(presentationPath)
+        const presentation = existsSync(presentationPath)
           ? readLighting(await read(presentationPath))
           : daylight;
-        presentations[map.mapId] = lighting;
+        presentations[map.mapId] = presentation;
         if (!production) continue;
-        const key = terrainMapKey(map, lighting);
-        if (keys.has(key)) continue;
-        keys.add(key);
-        const plan = {
-          ...mapDimensions(map),
-          pixelScale: 64 / battlefieldSpriteSize,
-          tiles: map.tiles.map((tile) => ({
-            ...tile,
-            ...terrainTileView(tile, map.mapId, artwork),
-          })),
-        };
-        for (const tile of plan.tiles) {
-          const name = tile.terrainFrame?.url;
-          if (!name) throw new Error(`${map.mapId}/${tile.id}: missing terrain artwork`);
-          if (frames.has(name)) continue;
-          const path = resolve(root, "public", pixelSprites[tile.frameKey]!);
-          this.addWatchFile(path);
-          // Keep build-time raster clipping identical to the canvas fallback.
-          const frame = createCanvas(64, 64);
-          frame.getContext("2d").drawImage(await loadImage(path), 0, 0);
-          frames.set(name, frame);
-        }
-        const dimensions = terrainMapDimensions(plan);
-        const canvas = createCanvas(dimensions.width, dimensions.height);
-        const context = canvas.getContext("2d");
-        context.imageSmoothingEnabled = false;
-        context.scale(plan.pixelScale, plan.pixelScale);
-        paintTerrainTiles(context, plan.tiles, frames);
-        if (lighting.time !== "day") {
-          const pixels = context.getImageData(0, 0, dimensions.width, dimensions.height);
-          shadePixels(
-            pixels.data,
-            dimensions.width,
-            0,
-            dimensions.height,
-            plan.pixelScale,
-            lighting,
+        for (const lighting of lightingVariants(presentation, map.tiles)) {
+          const key = terrainMapKey(map, lighting);
+          if (keys.has(key)) continue;
+          keys.add(key);
+          const plan = {
+            ...mapDimensions(map),
+            pixelScale: 64 / battlefieldSpriteSize,
+            tiles: map.tiles.map((tile) => ({
+              ...tile,
+              ...terrainTileView(tile, map.mapId, artwork),
+            })),
+          };
+          for (const tile of plan.tiles) {
+            const name = tile.terrainFrame?.url;
+            if (!name) throw new Error(`${map.mapId}/${tile.id}: missing terrain artwork`);
+            if (frames.has(name)) continue;
+            const path = resolve(root, "public", pixelSprites[tile.frameKey]!);
+            this.addWatchFile(path);
+            // Keep build-time raster clipping identical to the canvas fallback.
+            const frame = createCanvas(64, 64);
+            frame.getContext("2d").drawImage(await loadImage(path), 0, 0);
+            frames.set(name, frame);
+          }
+          const dimensions = terrainMapDimensions(plan);
+          const canvas = createCanvas(dimensions.width, dimensions.height);
+          const context = canvas.getContext("2d");
+          context.imageSmoothingEnabled = false;
+          context.scale(plan.pixelScale, plan.pixelScale);
+          paintTerrainTiles(context, plan.tiles, frames);
+          if (lighting.time !== "day") {
+            const pixels = context.getImageData(0, 0, dimensions.width, dimensions.height);
+            shadePixels(
+              pixels.data,
+              dimensions.width,
+              0,
+              dimensions.height,
+              plan.pixelScale,
+              lighting,
+            );
+            context.putImageData(pixels, 0, 0);
+            paintLights(context, lighting);
+          }
+          const reference = this.emitFile({
+            type: "asset",
+            name: `terrain-${map.mapId}.png`,
+            source: canvas.toBuffer("image/png"),
+          });
+          entries.push(
+            `${JSON.stringify(key)}: { ...${JSON.stringify(dimensions)}, url: import.meta.ROLLUP_FILE_URL_${reference} }`,
           );
-          context.putImageData(pixels, 0, 0);
-          paintLights(context, lighting);
         }
-        const reference = this.emitFile({
-          type: "asset",
-          name: `terrain-${map.mapId}.png`,
-          source: canvas.toBuffer("image/png"),
-        });
-        entries.push(
-          `${JSON.stringify(key)}: { ...${JSON.stringify(dimensions)}, url: import.meta.ROLLUP_FILE_URL_${reference} }`,
-        );
       }
       console.log(`Prebuilt terrain for ${entries.length} authored maps`);
       return `export const presentations = ${JSON.stringify(presentations)};\nexport default {${entries.join(",\n")}};`;

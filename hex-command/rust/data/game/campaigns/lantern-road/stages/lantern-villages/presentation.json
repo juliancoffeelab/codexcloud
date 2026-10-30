@@ -1,0 +1,8 @@
+{
+  "time": "night",
+  "lights": [
+    { "col": 7, "row": 1, "dy": 6, "radius": 90, "power": 0.85, "whenOwner": "player" },
+    { "col": 7, "row": 4, "dy": 6, "radius": 90, "power": 0.85, "whenOwner": "player" },
+    { "col": 7, "row": 7, "dy": 6, "radius": 90, "power": 0.85, "whenOwner": "player" }
+  ]
+}

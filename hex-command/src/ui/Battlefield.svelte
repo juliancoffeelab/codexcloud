@@ -11,7 +11,12 @@
     terrainMapPreview,
     type TerrainMapImage,
   } from "../presentation/terrain-map";
-  import { daylight, lightingKey, lightingMatrix } from "../presentation/battlefield-lighting";
+  import {
+    daylight,
+    lightingKey,
+    lightingMatrix,
+    resolveLighting,
+  } from "../presentation/battlefield-lighting";
   import terrainSprites, { presentations } from "virtual:terrain-prebuilt";
   import type { Artwork } from "../presentation/art";
   import { TerrainTilePrefetcher, terrainInspectionUrls } from "../presentation/terrain-prefetch";
@@ -56,7 +61,7 @@
   const mapWidth = $derived(size.width);
   const mapHeight = $derived(size.height);
   const viewBox = $derived(`0 0 ${mapWidth} ${mapHeight}`);
-  const lighting = $derived(presentations[game.mapId] ?? daylight);
+  const lighting = $derived(resolveLighting(presentations[game.mapId] ?? daylight, game.tiles));
   const terrainKey = $derived(
     JSON.stringify([...JSON.parse(terrainScene.key).slice(0, 4), lightingKey(lighting)]),
   );

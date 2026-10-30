@@ -7,6 +7,7 @@ export interface BattlefieldLight {
   readonly dy?: number;
   readonly radius: number;
   readonly power: number;
+  readonly whenOwner?: "player" | "enemy";
 }
 
 /** Presentation only: lights never grant sight, targeting or movement. */
@@ -16,6 +17,24 @@ export interface BattlefieldLighting {
 }
 
 export const daylight: BattlefieldLighting = Object.freeze({ time: "day" });
+
+/** Resolve ownership against the current snapshot, including restored saves and undo. */
+export function resolveLighting(
+  lighting: BattlefieldLighting,
+  tiles: readonly { col: number; row: number; owner: string | null }[],
+): BattlefieldLighting {
+  return {
+    time: lighting.time,
+    lights: lighting.lights?.filter(
+      (light) =>
+        !light.whenOwner ||
+        tiles.some(
+          (tile) =>
+            tile.col === light.col && tile.row === light.row && tile.owner === light.whenOwner,
+        ),
+    ),
+  };
+}
 
 export function lightingKey(lighting: BattlefieldLighting = daylight): string {
   return JSON.stringify([
@@ -150,6 +169,7 @@ export function readLighting(value: unknown): BattlefieldLighting {
             light.radius <= 0 ||
             !Number.isFinite(light.power) ||
             light.power < 0 ||
+            (light.whenOwner !== undefined && !["player", "enemy"].includes(light.whenOwner)) ||
             (light.dx !== undefined && !Number.isFinite(light.dx)) ||
             (light.dy !== undefined && !Number.isFinite(light.dy)),
         )))

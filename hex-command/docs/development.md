@@ -87,13 +87,18 @@ of logs and source control. Retain deployment identifiers if publication fails.
 An optional `presentation.json` beside an authored scenario or campaign stage
 selects browser-only lighting. It contains `time` (`day` or `night`) and optional
 `lights`, each with integer `col`/`row`, optional `dx`/`dy`, positive `radius` and
-nonnegative `power`. Positions and radii use battlefield coordinates; terrain
+nonnegative `power`. A light may specify `whenOwner: "player"` or `"enemy"`
+to follow the owner of its tile. Capturing or losing that tile changes the light;
+loading and undo use the same ownership state. Positions and radii use battlefield coordinates; terrain
 baking converts them to native pixels at `64 / battlefieldSpriteSize`. Scenarios
 without this file use daylight. These settings do not change simulation rules.
 
 Production emits finished terrain PNGs with the authored lighting and fixed
 lantern fixtures. Cache keys include terrain geometry, artwork inputs and every
-lighting setting; ownership, selection and unit moves reuse the same image.
+lighting setting. Up to four ownership-controlled lights have every combination
+prebaked (at most 16 variants); larger combinations use runtime processing.
+Ownership only selects a different image when a controlled light changes.
+Selection and ordinary unit moves reuse the same image.
 Units receive the corresponding color transform at their position, while health,
 selection and interaction overlays retain their normal colors. Static light
 settings need no per-turn terrain processing.
