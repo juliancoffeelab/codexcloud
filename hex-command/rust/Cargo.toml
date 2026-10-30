@@ -46,6 +46,13 @@ lto = "thin"
 codegen-units = 8
 panic = "abort"
 
+# Web downloads benefit from less inlining and whole-program size optimization.
+[profile.wasm-release]
+inherits = "release"
+opt-level = "z"
+lto = "fat"
+codegen-units = 1
+
 # Routine native simulations retain optimization without costly whole-program linking.
 [profile.simulation]
 inherits = "release"
