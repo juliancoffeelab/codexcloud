@@ -1,3 +1,4 @@
+import { DEFAULT_SETUP, type SessionSetup } from "../game/setup";
 import { BATTLE_MAPS } from "../game/maps";
 import { dialoguePending } from "../game/campaign-progress";
 import type { CampaignId, UnitType } from "../game/types";
@@ -130,6 +131,12 @@ export class BattleController {
       game: this.gameView,
       combat: this.#game.combat,
       artwork: currentArtwork(),
+      completedTurns: Math.max(
+        0,
+        (this.#game.round - 1) * 2 +
+          (this.#game.turn === "enemy" ? 1 : 0) -
+          (this.#game.setup.first === "enemy" ? 1 : 0),
+      ),
       canUndo: !dialoguePending(this.#game.campaign) && this.history.canUndo(this.#game),
       recruitment: recruitmentContext(this.gameView, this.state.selected, this.state.inspectedTile),
     });
@@ -178,9 +185,8 @@ export class BattleController {
   }
 
   private commitAction() {
-    if (this.#game.turn === "player") {
-      saveBattle(this.#game);
-    }
+    // The save writer owns turn-boundary rules, including enemy-first openings.
+    saveBattle(this.#game);
     this.publish();
   }
 
@@ -484,17 +490,23 @@ export class BattleController {
     return this.snapshot();
   }
 
-  reset(mapId = "mirror") {
+  reset(mapId = "mirror", options?: { armies?: [string, string]; setup: SessionSetup }) {
     this.requireSession();
     // Validate before changing the current battle, its undo history, or its turn.
     if (!BATTLE_MAPS.some((map) => map.id === mapId))
       throw new Error("Unknown battlefield. Choose a skirmish or start a campaign.");
-    return this.replaceGame(LiveGame.create(this.nativeFactory, { kind: "scenario", map: mapId }));
+    return this.replaceGame(
+      LiveGame.create(
+        this.nativeFactory,
+        { kind: "scenario", map: mapId, armies: options?.armies, first: options?.setup.first },
+        options?.setup,
+      ),
+    );
   }
 
-  startCampaign(id: CampaignId) {
+  startCampaign(id: CampaignId, setup: SessionSetup = DEFAULT_SETUP) {
     this.requireSession();
-    return this.replaceGame(LiveGame.create(this.nativeFactory, { kind: "campaign", id }));
+    return this.replaceGame(LiveGame.create(this.nativeFactory, { kind: "campaign", id }, setup));
   }
 
   nextMission(recallIds: string[]) {
@@ -544,6 +556,8 @@ export class BattleController {
       ? "Follow the mission objectives. Keep your leader safe."
       : initialMessage;
     this.commitAction();
+    if (this.#game.turn === "enemy" && !this.#game.winner)
+      void this.runEnemyTurn(this.sessionVersion).catch((error) => this.error(error));
     return this.snapshot();
   }
 

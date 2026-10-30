@@ -3,6 +3,7 @@
   "name": "The Lantern Road",
   "tagline": "A message becomes a road home.",
   "description": "Lead Captain Nera through a haunted river valley. Escort a courier, reclaim villages, and silence the graves. Human infantry, wardens, and adepts face the undead.",
+  "shortDescription": "A courier must cross the valley, but the dead hold the road.",
   "race": "human",
   "leader": "commander",
   "ending": [

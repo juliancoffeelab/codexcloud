@@ -1,0 +1,116 @@
+{
+  "mask": [
+    "................................................................",
+    "................................................................",
+    "................................................................",
+    "................................................................",
+    "................................................................",
+    "................................................................",
+    "................................................................",
+    "................................................................",
+    "................................................................",
+    "................................................................",
+    "................................................................",
+    "................................................................",
+    "................................................................",
+    "................................................................",
+    "................................................................",
+    ".....................................o..........................",
+    ".....................................fo.........................",
+    ".................................foooffo..ff....................",
+    "..............................o.ooofoffo.off....................",
+    "....................o......foooffoffoffffofff...................",
+    "...................ooo....ofoooffofffffffofff...................",
+    "...................oioooooofffffffffffffffffoo..................",
+    "...................oiiooooffffffffffffffffffoo..................",
+    "...............oooooiiioffooffffffffffffffffffo.................",
+    "...............oioofoiisssssofffffffofffffffffff................",
+    "...............oiiifiiiisssssoffffoffffffffffffoo...............",
+    "................oiiiissssssssofffffffffffffooofff...............",
+    ".............ooooiisssssssssssoffoffffffffffeofff...............",
+    ".............oiiosssssssssssssofffofffffffffoofffo..............",
+    ".............oiiisssssssssssssoffffffffffffffffffoo.............",
+    "............oooiiissssssssssssoffofffffffffifffffooo............",
+    "...........oooossssssssssssssoffffffffffffffiifffooo............",
+    "..........oofffossssssssssssosfffoffffffofffiiioooo.............",
+    "..........offfffooossssssssofofffffffffooooofiiiiif.............",
+    ".........ooffffffffoosssooofffffffffffffffo.ffifoo..............",
+    ".........ooffffffffffoofffofffffffffffffffo..foo................",
+    "..........offffffooooooffffffffffffffffffoo.....................",
+    "...........offfsso....offfffffffffffffffffoff...................",
+    "..........offssssooo...offffffffffffffffffsfoo..................",
+    "..........ofsssssssoo.ollollloooolloffffsssssoooooo.............",
+    "...........ffsssssiio.ollllllssssoloofffssssssosssoo............",
+    "...........oossssosio.ollllllssssllooffssssssssssfffo...........",
+    "...........oosssosoiooocccllossssolo.ofssssssssssoffoo..........",
+    "...........offiioo.ofoffffcccooooccooooossssffffoffiioo.........",
+    "...........ofoiiif..oofffffccccccccffoooofofffoffiiiiio.........",
+    "...........ofioiio..ooffffffccccccccffoo...offfffiooiio.........",
+    "...........fiioiiooooffffffffccccccfffffo...offfiiooioo.........",
+    "............oiooooofoffffffffccccccfffffoo..oofooiiooo..........",
+    ".............oofffffoffffffffocccccffffffof..oiioioo............",
+    "......offfo...offfffoffffffffocccccfffffffo..oiooooo............",
+    "......offffoooffffffofffffffocccccfffffffffo..iofoo.............",
+    ".......offffffffffffofffffffocccccoffffffffo..o.................",
+    ".......offffffffffoffofffffoocccco.offffffo.....................",
+    "........offfffffoffffffffff..occo...offfffo.....................",
+    ".........fffffffoffffffffoo..occo...offffo......................",
+    "..........ooffffffffffooo.....oc...offffo.......................",
+    "............oooofffffo.........o..offfffo.......................",
+    "...............offffo.............offfffo.......................",
+    "..............offfff...............offfffo......................",
+    ".............offfffo................offffo......................",
+    ".............offfffo................offffffoo...................",
+    "............offffffo.................offffffooo.................",
+    "...........offioififo................offiffiffo.................",
+    "...........ofiioiioiio...............offiiioifioo..............."
+  ],
+  "allowed": {
+    "f": [
+      "D",
+      "k",
+      "G"
+    ],
+    "s": [
+      "N",
+      "a",
+      "M",
+      "A"
+    ],
+    "l": [
+      "B",
+      "b"
+    ],
+    "g": [
+      "Y"
+    ],
+    "i": [
+      "I",
+      "j"
+    ],
+    "c": [
+      "^",
+      "*"
+    ],
+    "e": [
+      "H"
+    ],
+    "o": [
+      "O"
+    ],
+    ".": [
+      "."
+    ]
+  },
+  "materials": {
+    "f": "fur",
+    "s": "steel",
+    "l": "leather",
+    "g": "gold",
+    "i": "ivory",
+    "c": "faction cloth",
+    "e": "eye",
+    "o": "outline",
+    ".": "transparent"
+  }
+}

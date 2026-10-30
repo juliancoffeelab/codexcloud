@@ -317,6 +317,7 @@ export interface GameSnapshot {
 }
 /** Full session state, including mutable terrain, for exact move undo. */
 export interface GameState {
+  armies?: [string, string];
   combatRng?: number;
   mapId: MapId;
   mapRevision: number;
@@ -428,6 +429,7 @@ export interface CampaignDefinition {
   name: string;
   tagline: string;
   description: string;
+  shortDescription: string;
   race: Race;
   leader: LeaderType;
   missions: MissionDefinition[];

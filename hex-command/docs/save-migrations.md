@@ -14,6 +14,13 @@
 only resolved game state and the AI seed. They never contain planner workspaces,
 queued actions or selected but unapplied commands.
 
+The optional envelope `setup` records the opening side and enemy AI selection
+(policy and optional planner/recruiter overrides). Saves without it retain Classic
+AI. These are user preferences, not planner workspaces; they persist across
+campaign missions and retries. Configured skirmish faction IDs live in native
+`state.armies` so recruitment survives native state restoration. Campaigns retain
+their authored pools.
+
 The save format is a data contract, independent of planner implementation.
 Persist durable game facts such as units, health, gold, ownership, completed
 events and turn counters. Do not persist search cursors, AI orders, derived
@@ -21,7 +28,9 @@ caches, forecasts, callbacks or other objects whose meaning requires running
 the logic that created them. Changing an AI algorithm must not require a save
 migration or retaining its old implementation.
 
-The entire enemy phase is atomic for browser persistence: save the player state
+An enemy-first skirmish saves its untouched initial enemy state before planning;
+reloading resumes that opening phase from the same checkpoint. Thereafter the
+entire enemy phase is atomic for browser persistence: save the player state
 with `pendingEnemy: true` before starting it, retain that checkpoint throughout
 all enemy actions, then replace it with the resolved state after the phase ends
 or the battle finishes. Reloading an interrupted phase replays the whole phase

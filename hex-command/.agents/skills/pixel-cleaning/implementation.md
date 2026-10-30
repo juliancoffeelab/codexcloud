@@ -3,6 +3,18 @@
 Read this when changing or debugging detectors, review rendering or the guarded
 editor. Unit and terrain workflows are in [SKILL.md](SKILL.md).
 
+`highlight_colors.py` renders at most two explicit RGB colors per check, comparing the
+unchanged sprite with a diagnostic recolor. Distinct selected RGB colors get
+distinct replacements absent from the original sprite, preserving shade
+boundaries rather than flattening the group into a single highlight. A visible
+key and the report record the exact mapping. It matches rendered RGB values across
+all nontransparent pixels, regardless of palette symbol, position, neighbors or
+ownership. Matching pixels retain their original alpha. Presets are editable color
+lists, not material classifiers; presets expand into separate pairwise checks.
+Custom `--color` values bypass presets and reject more than two distinct colors.
+Reports include source hashes, RGB counts and every matching native coordinate.
+Highlights are review evidence for the agent, not automatic edit instructions.
+
 `review.py` combines the isolated-pixel and outline detectors for unit sprites,
 validates faction alpha and fixed-material consistency, and creates enlarged
 contexts with eight-neighbor material-component information. Optional shade

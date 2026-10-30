@@ -345,6 +345,8 @@ pub struct Campaign {
     pub player_diplomacy: Vec<String>,
     pub tagline: String,
     pub description: String,
+    #[serde(rename = "shortDescription")]
+    pub short_description: String,
     pub race: Race,
     pub id: String,
     pub name: String,

@@ -5,9 +5,8 @@
     actions: BattleCommands;
     dialog?: HTMLDialogElement;
     onNewBattle: () => void;
-    onNewCampaign: () => void;
   }
-  let { view, actions, dialog = $bindable(), onNewBattle, onNewCampaign }: Props = $props();
+  let { view, actions, dialog = $bindable(), onNewBattle }: Props = $props();
   function closeOnBackdropClick(event: MouseEvent) {
     if (!dialog || event.target !== dialog) return;
     const bounds = dialog.getBoundingClientRect();
@@ -41,15 +40,7 @@
       onchange={(event) => void actions.setSound(event.currentTarget.checked)}
     />
   </label>
-  <button id="new-campaign" class="primary" onclick={onNewCampaign}>New campaign</button>
-  <button
-    id="new-game"
-    class="quiet"
-    disabled={view.game.turn === "enemy" && !view.game.winner}
-    onclick={onNewBattle}
-  >
-    New battle
-  </button>
+  <button id="new-game" class="primary" onclick={onNewBattle}>New game</button>
   <details class="panel">
     <summary>Field manual</summary>
     <div class="manual">

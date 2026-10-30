@@ -1,3 +1,4 @@
+import type { SessionSetup } from "../game/setup";
 import type { GameView, UnitView, Immutable } from "../game/view";
 import type {
   GameSnapshot,
@@ -28,13 +29,14 @@ export interface BattleView {
   readonly artwork: Artwork;
   readonly sound: boolean;
   readonly canUndo: boolean;
+  readonly completedTurns: number;
   readonly recruitment: RecruitmentContext | null;
   readonly combat?: Immutable<CombatAnimation> | null;
 }
 
 /** Components can issue commands, but cannot read hidden controller state. */
 export interface BattleCommands {
-  startCampaign(id: CampaignId): GameSnapshot;
+  startCampaign(id: CampaignId, setup?: SessionSetup): GameSnapshot;
   nextMission(recallIds: string[]): GameSnapshot;
   retryMission(): GameSnapshot;
   advanceDialogue(skip?: boolean): void;
@@ -47,7 +49,7 @@ export interface BattleCommands {
   advanceUnit(unitId: string, type: UnitType): void;
   endTurn(): Promise<GameSnapshot | undefined>;
   undoMove(): GameSnapshot;
-  reset(mapId?: string): GameSnapshot;
+  reset(mapId?: string, options?: { armies?: [string, string]; setup: SessionSetup }): GameSnapshot;
   setSound(enabled: boolean): Promise<void>;
   error(error: unknown): void;
 }
