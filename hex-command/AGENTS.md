@@ -81,15 +81,16 @@ Read the linked `SKILL.md` before starting work that matches its trigger.
 - [combat-simulation](.agents/skills/combat-simulation/SKILL.md): Use when asked
   to review, explain, compare or change AI policies; run or analyze combat
   simulations; or assess balance, campaign competence or simulation performance.
-- [pinkbox-enhancement](.agents/skills/pinkbox-enhancement/SKILL.md): Use when
-  asked to recolor or redesign existing unit artwork, create upgrade artwork
-  from an approved unit, or recolor terrain floors.
+- [design-unit](.agents/skills/design-unit/SKILL.md): Use to make pixel art for new unit line.
+- [design-terrain](.agents/skills/design-terrain/SKILL.md): Use to make pixel art for new terrain.
 - [pinkbox-generation](.agents/skills/pinkbox-generation/SKILL.md): Use when
-  asked to generate a new pixel unit or regenerate a unit's shape, pose or
-  equipment through image generation.
-- [pixel-cleaning](.agents/skills/pixel-cleaning/SKILL.md): Use when asked to
-  inspect, clean or repair sprite or terrain pixels, outlines, shading, ground
-  alignment or terrain joins.
+  generating or regenerating native pixel artwork from reference matrices,
+  including units, terrain and foreground props.
+- [pixel-cleaning](.agents/skills/pixel-cleaning/SKILL.md): Use when inspecting,
+  cleaning or repairing native pixel artwork, including units, terrain and props.
+- [pinkbox-enhancement](.agents/skills/pinkbox-enhancement/SKILL.md): Use when
+  revising approved pixel artwork manually or through another pinkbox generation,
+  including unit upgrades and terrain changes.
 - [pixel-lineup](.agents/skills/pixel-lineup/SKILL.md): Use when asked to show,
   preview or visually compare faction lineups, unit upgrade trees or progression
   grids.

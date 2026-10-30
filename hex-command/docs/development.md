@@ -77,7 +77,9 @@ of logs and source control. Retain deployment identifiers if publication fails.
 ## Further guidance
 
 - [Authored content](../rust/data/README.md)
-- Artwork skills: [generation](../.agents/skills/pinkbox-generation/SKILL.md),
+- Artwork design: [unit lines](../.agents/skills/design-unit/SKILL.md),
+  [terrain](../.agents/skills/design-terrain/SKILL.md).
+- Shared artwork skills: [generation](../.agents/skills/pinkbox-generation/SKILL.md),
   [enhancement](../.agents/skills/pinkbox-enhancement/SKILL.md),
   [cleaning](../.agents/skills/pixel-cleaning/SKILL.md),
   [lineup previews](../.agents/skills/pixel-lineup/SKILL.md)
