@@ -3,19 +3,20 @@
 use super::*;
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use sha2::{Digest, Sha256};
+use std::borrow::Cow;
 use std::{
-    collections::{BTreeMap, HashSet},
+    collections::{BTreeMap, HashMap, HashSet},
     fmt,
     path::{Component, Path},
 };
 #[path = "catalog_documents.rs"]
 mod documents;
-#[cfg(feature = "wasm")]
-include!(concat!(env!("OUT_DIR"), "/catalog_documents.rs"));
 
 /// Relative document paths mapped to their complete UTF-8 JSON source.
 pub type JsonBundle = BTreeMap<String, String>;
 #[derive(Debug)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 /// A catalog error carrying the authoring document and a concrete diagnostic.
 pub struct ContentError {
     pub path: String,
@@ -58,48 +59,58 @@ struct SimulationPaths {
     arena: String,
     campaign: String,
 }
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(deny_unknown_fields)]
 /// An arena roster, authored independently of story campaign recruitment.
 pub struct ArmyRoster {
-    pub id: String,
-    pub leader: String,
-    pub pool: Vec<String>,
+    pub id: Cow<'static, str>,
+    pub leader: Cow<'static, str>,
+    pub pool: Cow<'static, [Cow<'static, str>]>,
 }
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 /// A generated arena landscape and its required territory hold duration.
 pub struct LandscapeConfig {
-    pub id: String,
+    pub id: Cow<'static, str>,
     pub hold_turns: u32,
     /// Optional authored scenario layout, shared with the playable map.
-    pub map: Option<String>,
+    pub map: Option<Cow<'static, str>>,
     /// Capture targets for this layout; omitted uses the generated-arena defaults.
-    pub territory: Option<Vec<String>>,
+    pub territory: Option<Cow<'static, [Cow<'static, str>]>>,
 }
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 /// Authored arena dimensions and default per-match execution limits.
 pub struct ArenaDefaults {
-    pub landscapes: Vec<LandscapeConfig>,
-    pub territory: Vec<String>,
+    pub landscapes: Cow<'static, [LandscapeConfig]>,
+    pub territory: Cow<'static, [Cow<'static, str>]>,
     /// Minimum total gold value per side, including its leader.
     pub starting_budget: i32,
     pub default_max_rounds: u32,
-    pub policies: Vec<String>,
+    pub policies: Cow<'static, [Cow<'static, str>]>,
 }
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 /// Campaign schedule dimensions and default attempt execution limits.
 pub struct CampaignDefaults {
     pub default_max_rounds: u32,
-    pub diplomacy: Vec<String>,
-    pub policies: Vec<String>,
-    pub campaigns: Vec<String>,
+    pub diplomacy: Cow<'static, [Cow<'static, str>]>,
+    pub policies: Cow<'static, [Cow<'static, str>]>,
+    pub campaigns: Cow<'static, [Cow<'static, str>]>,
 }
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(default, deny_unknown_fields)]
 /// Category and damage-type contributions; both apply to an incoming hit.
 pub struct EnvironmentalModifiers {
@@ -117,6 +128,8 @@ impl EnvironmentalModifiers {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 /// A race or unit deviation from base terrain movement and damage rules.
 pub struct TerrainModifier {
@@ -130,26 +143,31 @@ pub struct TerrainModifier {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 /// Authored terrain defaults, also exposed to the browser for display.
 pub struct TerrainDefinition {
     pub id: Terrain,
-    pub name: String,
+    pub name: Cow<'static, str>,
     pub cost: u16,
     pub passable: bool,
-    pub description: String,
+    pub description: Cow<'static, str>,
     #[serde(default)]
     pub damage_modifiers: EnvironmentalModifiers,
 }
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 /// Authored racial defaults inherited by every unit of that race.
 pub struct RaceDefinition {
     pub id: Race,
-    pub name: String,
-    pub terrain_modifiers: HashMap<Terrain, TerrainModifier>,
+    pub name: Cow<'static, str>,
+    #[cfg_attr(feature = "wasm", tsify(type = "Record<Terrain, TerrainModifier>"))]
+    pub terrain_modifiers: Table<Terrain, TerrainModifier>,
     pub damage_modifiers: DamageModifiers,
 }
 #[derive(Debug, Deserialize)]
@@ -165,7 +183,7 @@ struct UnitSpecification {
     race: Race,
     role: UnitRole,
     #[serde(default)]
-    terrain_modifiers: HashMap<Terrain, TerrainModifier>,
+    terrain_modifiers: Table<Terrain, TerrainModifier>,
     #[serde(default)]
     leader: bool,
     #[serde(default)]
@@ -295,7 +313,7 @@ impl InitialState {
             next_id,
             log: vec!["Capture villages for gold. Defeat the enemy commander.".to_owned()],
             tiles: self.tiles,
-            units,
+            units: units.into(),
             campaign: None,
             combat_rng: None,
             last_combat: None,
@@ -361,39 +379,13 @@ impl Rules {
     pub fn load() -> Result<Self, ContentError> {
         let root = std::env::var_os("HEX_COMMAND_DATA_ROOT")
             .map(std::path::PathBuf::from)
-            .unwrap_or_else(|| Path::new(env!("CARGO_MANIFEST_DIR")).join("data"));
+            .unwrap_or_else(|| Path::new(env!("CARGO_MANIFEST_DIR")).join("../data"));
         Self::load_from(root)
-    }
-    /// Load the compiled WASM catalog, or report that an explicit bundle is needed.
-    #[cfg(target_arch = "wasm32")]
-    pub fn load() -> Result<Self, ContentError> {
-        #[cfg(feature = "wasm")]
-        {
-            Self::embedded()
-        }
-        #[cfg(not(feature = "wasm"))]
-        {
-            Err(ContentError::new(
-                "manifest.json",
-                "WebAssembly callers must supply a JSON bundle",
-            ))
-        }
     }
     /// Read and validate a native catalog rooted at an explicit filesystem path.
     #[cfg(not(target_arch = "wasm32"))]
     pub fn load_from(root: impl AsRef<Path>) -> Result<Self, ContentError> {
-        let root = root.as_ref();
-        documents::collect_bundle(|path| {
-            checked_path(path)?;
-            std::fs::read_to_string(root.join(path))
-                .map_err(|error| ContentError::new(path, error.to_string()))
-        })
-        .and_then(|bundle| Self::from_json_bundle(&bundle))
-    }
-    /// Load the bundled catalog for WASM deployment and embedding checks.
-    #[cfg(feature = "wasm")]
-    pub fn embedded() -> Result<Self, ContentError> {
-        Self::from_json_bundle(&embedded_bundle())
+        Self::from_json_bundle(&load_bundle_from(root)?)
     }
     /// Validate named documents and resolve inheritance without filesystem access.
     pub fn from_json_bundle(bundle: &JsonBundle) -> Result<Self, ContentError> {
@@ -405,13 +397,13 @@ impl Rules {
             ));
         }
         let terrain: Vec<TerrainDefinition> = parse(bundle, &manifest.terrain)?;
-        unique(manifest.races.iter().map(String::as_str), "manifest.json")?;
+        unique(manifest.races.iter().map(|s| s.as_ref()), "manifest.json")?;
         let races: Vec<(String, RaceDefinition)> = manifest
             .races
             .iter()
             .map(|path| parse(bundle, path).map(|race| (path.clone(), race)))
             .collect::<Result<_, _>>()?;
-        unique(manifest.units.iter().map(String::as_str), "manifest.json")?;
+        unique(manifest.units.iter().map(|s| s.as_ref()), "manifest.json")?;
         let specs: Vec<(String, UnitSpecification)> = manifest
             .units
             .iter()
@@ -455,16 +447,15 @@ impl Rules {
             .collect();
         let race_by_id: HashMap<Race, &RaceDefinition> =
             races.iter().map(|(_, r)| (r.id, r)).collect();
-        let validate_modifiers = |modifiers: &HashMap<Terrain, TerrainModifier>,
-                                  path: &str|
-         -> Result<(), ContentError> {
-            for id in modifiers.keys() {
-                if !terrains.contains_key(id.as_str()) {
-                    return Err(ContentError::new(path, format!("unknown terrain {id}")));
+        let validate_modifiers =
+            |modifiers: &Table<Terrain, TerrainModifier>, path: &str| -> Result<(), ContentError> {
+                for id in modifiers.keys() {
+                    if !terrains.contains_key(id.as_str()) {
+                        return Err(ContentError::new(path, format!("unknown terrain {id}")));
+                    }
                 }
-            }
-            Ok(())
-        };
+                Ok(())
+            };
         for t in &terrain {
             if t.name.is_empty() || t.description.is_empty() || t.cost == 0 {
                 return Err(ContentError::new(
@@ -502,7 +493,7 @@ impl Rules {
                     format!("invalid required stats for {}", spec.id),
                 ));
             }
-            unique(spec.attacks.iter().map(|w| w.id.as_str()), &path)?;
+            unique(spec.attacks.iter().map(|w| w.id.as_ref()), &path)?;
             for attack in &spec.attacks {
                 identifier(&attack.id, &path)?;
                 if attack.name.is_empty()
@@ -557,16 +548,16 @@ impl Rules {
                 environment.push(modifiers);
             }
             units.push(UnitRule {
-                id: spec.id,
-                name: spec.name,
-                ability: spec.ability,
-                description: spec.description,
+                id: spec.id.into(),
+                name: spec.name.into(),
+                ability: spec.ability.into(),
+                description: spec.description.into(),
                 hp: spec.hp,
                 r#move: spec.r#move,
                 damage: spec.attacks[0].damage,
                 range: spec.attacks.iter().map(|w| w.range).max().unwrap(),
                 cost: spec.cost,
-                attacks: spec.attacks,
+                attacks: spec.attacks.into(),
                 damage_modifiers: DamageModifiers {
                     blade: race.damage_modifiers.blade + spec.damage_modifiers.blade,
                     pierce: race.damage_modifiers.pierce + spec.damage_modifiers.pierce,
@@ -581,9 +572,9 @@ impl Rules {
                 level: spec.level,
                 family: spec.family,
                 experience_needed: Some(spec.experience_needed),
-                advances_to: spec.advances_to,
-                costs,
-                environment,
+                advances_to: spec.advances_to.into_iter().map(Into::into).collect(),
+                costs: costs.into(),
+                environment: environment.into(),
             });
         }
         let mut map_definitions = Vec::new();
@@ -615,7 +606,7 @@ impl Rules {
             let source: CampaignFile = parse(bundle, path)?;
             identifier(&source.id, path)?;
             reference(&source.leader, &types, path)?;
-            unique(source.player_diplomacy.iter().map(String::as_str), path)?;
+            unique(source.player_diplomacy.iter().map(|s| s.as_ref()), path)?;
             if source.player_diplomacy.is_empty()
                 || source
                     .player_diplomacy
@@ -661,7 +652,7 @@ impl Rules {
                     bundle,
                     &stage_path,
                     &state,
-                    Some(stage.mission.map.units.clone()),
+                    Some(stage.mission.map.units.to_vec()),
                 )?);
                 insert_map(&mut maps, state, &terrains, &types, &stage_path)?;
                 missions.push(stage.mission);
@@ -671,16 +662,20 @@ impl Rules {
                 .insert(
                     id,
                     Campaign {
-                        id: source.id,
-                        name: source.name,
-                        tagline: source.tagline,
-                        description: source.description,
-                        short_description: source.short_description,
+                        id: source.id.into(),
+                        name: source.name.into(),
+                        tagline: source.tagline.into(),
+                        description: source.description.into(),
+                        short_description: source.short_description.into(),
                         race: source.race,
-                        leader: source.leader,
-                        missions,
-                        ending: source.ending,
-                        player_diplomacy: source.player_diplomacy,
+                        leader: source.leader.into(),
+                        missions: missions.into(),
+                        ending: source.ending.into(),
+                        player_diplomacy: source
+                            .player_diplomacy
+                            .into_iter()
+                            .map(Into::into)
+                            .collect(),
                     },
                 )
                 .is_some()
@@ -709,11 +704,11 @@ impl Rules {
             &arena_maps,
         )?;
         unique(
-            campaign_defaults.campaigns.iter().map(String::as_str),
+            campaign_defaults.campaigns.iter().map(|s| s.as_ref()),
             "simulation/campaign.json",
         )?;
-        for id in &campaign_defaults.campaigns {
-            if !campaigns.contains_key(id) {
+        for id in campaign_defaults.campaigns.iter() {
+            if !campaigns.contains_key(id.as_ref()) {
                 return Err(ContentError::new(
                     "simulation/campaign.json",
                     format!("unknown campaign {id}"),
@@ -740,23 +735,29 @@ impl Rules {
             })
             .collect();
         Ok(Self {
-            content_fingerprint: content_fingerprint(bundle),
+            content_fingerprint: content_fingerprint(bundle).into(),
             recruitment,
             terrain_types: terrain.iter().map(|t| t.id).collect(),
-            terrain_names,
+            terrain_names: terrain_names.into_iter().map(Into::into).collect(),
             terrain_labels: terrain.iter().map(|t| t.name.clone()).collect(),
-            terrain_definitions: terrain,
+            terrain_definitions: terrain.into(),
             race_definitions: races.into_iter().map(|(_, race)| race).collect(),
-            map_definitions,
-            units,
+            map_definitions: map_definitions.into_iter().map(Seed::Owned).collect(),
+            units: units.into(),
             movement_classes,
             route_classes,
-            types,
-            terrains,
-            maps,
-            arena_maps,
-            campaigns,
-            rosters,
+            types: types.into_iter().map(|(k, v)| (k.into(), v)).collect(),
+            terrains: terrains.into_iter().map(|(k, v)| (k.into(), v)).collect(),
+            maps: maps
+                .into_iter()
+                .map(|((k, r), v)| ((k.into(), r), Seed::Owned(v)))
+                .collect(),
+            arena_maps: arena_maps
+                .into_iter()
+                .map(|((k, r), v)| ((k.into(), r), Seed::Owned(v)))
+                .collect(),
+            campaigns: campaigns.into_iter().map(|(k, v)| (k.into(), v)).collect(),
+            rosters: rosters.into(),
             arena,
             campaign_defaults,
         })
@@ -790,7 +791,7 @@ fn insert_map(
         ));
     }
     unique(state.tiles.iter().map(|t| t.id.as_str()), path)?;
-    unique(state.units.iter().map(|u| u.id.as_str()), path)?;
+    unique(state.units.iter().map(|u| u.id.as_ref()), path)?;
     unique(state.units.iter().map(|u| u.tile.as_str()), path)?;
     let mut coordinates = HashSet::new();
     let tiles: HashSet<&str> = state.tiles.iter().map(|t| t.id.as_str()).collect();
@@ -851,9 +852,9 @@ fn validate_mission(
         }
         Ok(())
     };
-    unique(mission.events.iter().map(|e| e.id.as_str()), path)?;
-    unique(mission.waves.iter().map(|w| w.id.as_str()), path)?;
-    let events: HashSet<&str> = mission.events.iter().map(|e| e.id.as_str()).collect();
+    unique(mission.events.iter().map(|e| e.id.as_ref()), path)?;
+    unique(mission.waves.iter().map(|w| w.id.as_ref()), path)?;
+    let events: HashSet<&str> = mission.events.iter().map(|e| e.id.as_ref()).collect();
     let event_ref = |id: &str| -> Result<(), ContentError> {
         if !events.contains(id) {
             return Err(ContentError::new(path, format!("unknown event {id}")));
@@ -868,7 +869,7 @@ fn validate_mission(
         Ok(())
     };
     starting(&mission.map.units)?;
-    for id in mission.recruits.iter().chain(&mission.enemy_recruits) {
+    for id in mission.recruits.iter().chain(mission.enemy_recruits.iter()) {
         reference(id, types, path)?;
     }
     if let Some(id) = &mission.enemy_leader_post {
@@ -880,7 +881,7 @@ fn validate_mission(
             "mission briefing and goals are required",
         ));
     }
-    for goal in &mission.goals {
+    for goal in mission.goals.iter() {
         for site in goal.sites() {
             tile_ref(&site)?;
         }
@@ -898,7 +899,7 @@ fn validate_mission(
                 .map
                 .units
                 .iter()
-                .any(|unit| unit.side == Side::Player && unit.name.as_ref() == Some(name))
+                .any(|unit| unit.side == Side::Player && unit.name.as_deref() == Some(name))
             {
                 return Err(ContentError::new(
                     path,
@@ -910,10 +911,10 @@ fn validate_mission(
             return Err(ContentError::new(path, "goal turns must be positive"));
         }
     }
-    for event in &mission.events {
+    for event in mission.events.iter() {
         identifier(&event.id, path)?;
         match &event.trigger {
-            Trigger::Visit { tile } | Trigger::Control { tile, .. } => tile_ref(tile)?,
+            Trigger::Visit { tile } | Trigger::Control { tile, .. } => tile_ref(&tile)?,
             Trigger::Round { round } => {
                 if *round == 0 {
                     return Err(ContentError::new(path, "event round must be positive"));
@@ -924,7 +925,7 @@ fn validate_mission(
             event_ref(id)?;
         }
     }
-    for wave in &mission.waves {
+    for wave in mission.waves.iter() {
         identifier(&wave.id, path)?;
         starting(&wave.units)?;
         if let Some(id) = &wave.requires_unsealed {
@@ -936,7 +937,7 @@ fn validate_mission(
     }
     let validate_patch = |patch: &MissionPatch| -> Result<(), ContentError> {
         if let Some(recruits) = &patch.recruits {
-            for id in recruits {
+            for id in recruits.iter() {
                 reference(id, types, path)?;
             }
         }
@@ -964,21 +965,21 @@ fn validate_simulation(
     arena_maps: &HashMap<(String, u32), State>,
 ) -> Result<(), ContentError> {
     let path = "simulation/rosters.json";
-    unique(rosters.iter().map(|r| r.id.as_str()), path)?;
+    unique(rosters.iter().map(|r| r.id.as_ref()), path)?;
     if rosters.is_empty() {
         return Err(ContentError::new(path, "rosters must be nonempty"));
     }
     for roster in rosters {
         identifier(&roster.id, path)?;
         reference(&roster.leader, types, path)?;
-        unique(roster.pool.iter().map(String::as_str), path)?;
-        for id in &roster.pool {
+        unique(roster.pool.iter().map(|s| s.as_ref()), path)?;
+        for id in roster.pool.iter() {
             reference(id, types, path)?;
         }
     }
     let path = "simulation/arena.json";
-    unique(arena.landscapes.iter().map(|l| l.id.as_str()), path)?;
-    unique(arena.territory.iter().map(String::as_str), path)?;
+    unique(arena.landscapes.iter().map(|l| l.id.as_ref()), path)?;
+    unique(arena.territory.iter().map(|s| s.as_ref()), path)?;
     if arena.landscapes.is_empty()
         || arena.territory.is_empty()
         || arena.starting_budget <= 0
@@ -990,16 +991,16 @@ fn validate_simulation(
             "landscapes, territory, starting budget and round limits must be nonempty/positive",
         ));
     }
-    for landscape in &arena.landscapes {
+    for landscape in arena.landscapes.iter() {
         identifier(&landscape.id, path)?;
         if (landscape.map.is_none()
-            && !["open", "wooded", "crossings", "islands"].contains(&landscape.id.as_str()))
+            && !["open", "wooded", "crossings", "islands"].contains(&landscape.id.as_ref()))
             || landscape.hold_turns == 0
         {
             return Err(ContentError::new(path, "invalid landscape or holdTurns"));
         }
         let territory = landscape.territory.as_ref().unwrap_or(&arena.territory);
-        unique(territory.iter().map(String::as_str), path)?;
+        unique(territory.iter().map(|s| s.as_ref()), path)?;
         if territory.is_empty() {
             return Err(ContentError::new(path, "arena territory must not be empty"));
         }
@@ -1036,7 +1037,7 @@ fn validate_simulation(
             }
         }
     }
-    for tile in &arena.territory {
+    for tile in arena.territory.iter() {
         let parts: Vec<_> = tile.split(',').collect();
         if parts.len() != 2
             || parts
@@ -1066,8 +1067,8 @@ fn validate_simulation(
             "simulation/campaign.json",
         ),
     ] {
-        unique(ids.iter().map(String::as_str), path)?;
-        if ids.is_empty() || ids.iter().any(|id| !allowed.contains(&id.as_str())) {
+        unique(ids.iter().map(|s| s.as_ref()), path)?;
+        if ids.is_empty() || ids.iter().any(|id| !allowed.contains(&id.as_ref())) {
             return Err(ContentError::new(
                 path,
                 "unknown or missing simulation strategy",
@@ -1077,30 +1078,14 @@ fn validate_simulation(
     Ok(())
 }
 
-/// The authored documents are also available without native filesystem APIs.
-#[cfg(feature = "wasm")]
-pub fn embedded_bundle() -> JsonBundle {
-    documents::collect_bundle(|path| {
-        EMBEDDED_DOCUMENTS
-            .iter()
-            .find(|(name, _)| *name == path)
-            .map(|(_, source)| (*source).to_owned())
-            .ok_or_else(|| ContentError::new(path, "missing embedded catalog document"))
-    })
-    .expect("compiled catalog document references")
-}
-
 #[cfg(test)]
 mod tests {
-    #[cfg(feature = "wasm")]
-    use super::embedded_bundle as test_bundle;
     use super::*;
-    #[cfg(not(feature = "wasm"))]
     fn test_bundle() -> JsonBundle {
         documents::collect_bundle(|path| {
             std::fs::read_to_string(
                 Path::new(env!("CARGO_MANIFEST_DIR"))
-                    .join("data")
+                    .join("../data")
                     .join(path),
             )
             .map_err(|error| ContentError::new(path, error.to_string()))
@@ -1244,13 +1229,11 @@ mod tests {
         );
         assert_ne!(original.content_fingerprint, reloaded.content_fingerprint);
         assert_eq!(original.rosters[0].pool, reloaded.rosters[0].pool);
-        let initial = reloaded.maps[&("mirror".to_owned(), 1)].clone();
+        let initial = reloaded.maps[&("mirror".to_owned(), 1)].instantiate();
         assert_eq!(initial.units[0].r#type, "commander");
         assert_eq!(initial.units[0].hp, revised_hp);
-        let battle = crate::logic::Game::try_from_state(&reloaded, initial).unwrap();
-        assert_eq!(battle.units[0].hp, revised_hp);
         assert_eq!(
-            original.maps[&("mirror".to_owned(), 1)].units[0].hp,
+            original.maps[&("mirror".to_owned(), 1)].instantiate().units[0].hp,
             original_hp
         );
     }
@@ -1273,6 +1256,7 @@ mod tests {
             let metadata = rules
                 .map_definitions
                 .iter()
+                .map(Seed::instantiate)
                 .find(|map| map.id == "mirror")
                 .unwrap();
             assert_eq!(metadata.hidden, hidden.unwrap_or(false));
@@ -1308,7 +1292,7 @@ mod tests {
             1,
         );
         let rules = Rules::from_json_bundle(&bundle).unwrap();
-        let state = &rules.maps[&("mirror".to_owned(), 1)];
+        let state = rules.maps[&("mirror".to_owned(), 1)].instantiate();
         assert_eq!(state.units[0].hp, 7);
         assert_eq!(state.units[1].hp, rules.units[rules.types["soldier"]].hp);
         assert_eq!(state.units[0].id, "u1");
@@ -1345,14 +1329,9 @@ mod tests {
 
     #[cfg(all(feature = "wasm", not(target_arch = "wasm32")))]
     #[test]
-    fn native_and_embedded_load_only_manifest_referenced_documents() {
-        let native = Rules::load_from(Path::new(env!("CARGO_MANIFEST_DIR")).join("data")).unwrap();
-        assert_eq!(
-            native.content_fingerprint,
-            Rules::embedded().unwrap().content_fingerprint
-        );
-        // Unreferenced files must not create a different catalog on WASM.
+    fn bundle_collection_ignores_unreferenced_documents() {
         let mut sources = test_bundle();
+        let fingerprint = content_fingerprint(&sources);
         sources.insert("game/units/unlisted.json".into(), "{}".into());
         let selected = documents::collect_bundle(|path| {
             sources
@@ -1362,7 +1341,7 @@ mod tests {
         })
         .unwrap();
         assert!(!selected.contains_key("game/units/unlisted.json"));
-        assert_eq!(native.content_fingerprint, content_fingerprint(&selected));
+        assert_eq!(fingerprint, content_fingerprint(&selected));
     }
     #[test]
     fn attack_counts_default_to_one_and_reject_invalid_values() {
@@ -1385,4 +1364,15 @@ mod tests {
             assert_eq!(Rules::from_json_bundle(&bundle).unwrap_err().path, path);
         }
     }
+}
+
+/// Read exactly the manifest-referenced documents, for native editing and explicit bundles.
+#[cfg(not(target_arch = "wasm32"))]
+pub fn load_bundle_from(root: impl AsRef<Path>) -> Result<JsonBundle, ContentError> {
+    let root = root.as_ref();
+    documents::collect_bundle(|path| {
+        checked_path(path)?;
+        std::fs::read_to_string(root.join(path))
+            .map_err(|error| ContentError::new(path, error.to_string()))
+    })
 }

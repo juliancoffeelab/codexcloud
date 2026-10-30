@@ -74,7 +74,7 @@ pub(crate) fn create_arena<'catalog>(
         .max_by_key(|((_, revision), _)| revision)
         .ok_or("Arena layout is unavailable")?
         .1
-        .clone();
+        .instantiate();
     if landscape.map.is_none() {
         generate_arena_terrain(&mut state, &config.landscape, &mut random);
     }
@@ -90,7 +90,7 @@ pub(crate) fn create_arena<'catalog>(
                 &config.armies.enemy
             },
         )?;
-        let leader = roster.leader.as_str();
+        let leader = roster.leader.as_ref();
         let start = state
             .tiles
             .iter()
@@ -467,7 +467,10 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
         let mut goals = vec![objective(
             "required-territory",
             ObjectiveKind::Capture,
-            territory.clone(),
+            (territory.clone())
+                .iter()
+                .map(ToString::to_string)
+                .collect(),
             24.0,
         )];
         for tile in 0..game.terrain.len() {
@@ -757,8 +760,8 @@ mod tests {
         let mut config = ArenaConfig {
             seed: 61,
             armies: Armies {
-                player: rules.rosters[0].id.clone(),
-                enemy: rules.rosters[0].id.clone(),
+                player: rules.rosters[0].id.to_string(),
+                enemy: rules.rosters[0].id.to_string(),
             },
             landscape: "wooded".into(),
             player: Policy::Balanced,
@@ -807,7 +810,11 @@ mod tests {
                 bank.iter()
                     .filter(|&&tile| {
                         river.terrain_is(tile, Terrain::Village)
-                            && rules.arena.territory.contains(&river.board.ids[tile])
+                            && rules
+                                .arena
+                                .territory
+                                .iter()
+                                .any(|id| id == &river.board.ids[tile])
                     })
                     .count(),
                 1
@@ -826,13 +833,13 @@ mod tests {
         let rules = Rules::load().unwrap();
         for seed in [1, 2, 10] {
             for landscape in ["open", "wooded", "crossings", "islands"] {
-                for player in &rules.rosters {
-                    for enemy in &rules.rosters {
+                for player in rules.rosters.iter() {
+                    for enemy in rules.rosters.iter() {
                         let config = ArenaConfig {
                             seed,
                             armies: Armies {
-                                player: player.id.clone(),
-                                enemy: enemy.id.clone(),
+                                player: player.id.to_string(),
+                                enemy: enemy.id.to_string(),
                             },
                             landscape: landscape.into(),
                             player: Policy::Classic,

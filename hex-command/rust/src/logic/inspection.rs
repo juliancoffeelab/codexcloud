@@ -24,7 +24,7 @@ impl Game<'_> {
             modified: attack.damage + modifier,
             protection: (-environment).max(0),
             exposure: environment.max(0),
-            terrain: self.rules.terrain_names[self.terrain[tile]].clone(),
+            terrain: self.rules.terrain_names[self.terrain[tile]].to_string(),
             damage: (attack.damage + modifier + environment).max(0),
         }
     }
@@ -88,14 +88,14 @@ impl Game<'_> {
                     promotions: self
                         .promotion_options(unit)
                         .into_iter()
-                        .map(|kind| self.rules.units[kind].id.clone())
+                        .map(|kind| self.rules.units[kind].id.to_string())
                         .collect(),
                     recruitment: self
                         .recruitment_options(unit.side)
                         .into_iter()
                         .map(|kind| {
                             (
-                                self.rules.units[kind].id.clone(),
+                                self.rules.units[kind].id.to_string(),
                                 self.placement_tiles(unit, kind, true)
                                     .into_iter()
                                     .map(|tile| self.board.ids[tile].clone())
@@ -120,7 +120,7 @@ impl Game<'_> {
                         },
                         self.recruitment_options(side)
                             .into_iter()
-                            .map(|kind| self.rules.units[kind].id.clone())
+                            .map(|kind| self.rules.units[kind].id.to_string())
                             .collect(),
                     )
                 })
@@ -131,11 +131,11 @@ impl Game<'_> {
                 .iter()
                 .map(|rule| {
                     (
-                        rule.id.clone(),
+                        rule.id.to_string(),
                         self.rules
                             .terrain_names
                             .iter()
-                            .cloned()
+                            .map(ToString::to_string)
                             .zip(rule.costs.iter().copied())
                             .collect(),
                     )

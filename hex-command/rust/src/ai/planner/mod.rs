@@ -284,7 +284,7 @@ impl PlannerKind {
                         workspace.attack_continuation = Some((
                             UnitId(plan.unit),
                             UnitId(target),
-                            WeaponId(rules.units[actor.kind].attacks[weapon].id.clone()),
+                            WeaponId(rules.units[actor.kind].attacks[weapon].id.to_string()),
                         ));
                     }
                 }

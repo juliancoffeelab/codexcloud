@@ -136,7 +136,7 @@ mod tests {
             Orders {
                 requirements: vec![
                     RecruitRequirement::EnsureUnits {
-                        selector: UnitSelector::Type(UnitTypeId(rules.units[kind].id.clone())),
+                        selector: UnitSelector::Type(UnitTypeId(rules.units[kind].id.to_string())),
                         count: 1,
                     },
                     RecruitRequirement::EnsureUnits {

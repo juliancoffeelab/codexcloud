@@ -4,8 +4,8 @@ fn rules() -> &'static Rules {
     static RULES: OnceLock<Rules> = OnceLock::new();
     RULES.get_or_init(|| {
         let mut rules = Rules::load().expect("authored catalog");
-        for unit in &mut rules.units {
-            for attack in &mut unit.attacks {
+        for unit in rules.units.to_mut().iter_mut() {
+            for attack in unit.attacks.to_mut().iter_mut() {
                 attack.spread = 0;
             }
         }

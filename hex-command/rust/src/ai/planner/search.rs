@@ -175,7 +175,7 @@ impl BattleView<'_, '_> {
         let range_to_foe = |tile: usize| foe_ranges[tile];
         let maximum_range = allies
             .iter()
-            .flat_map(|u| &self.rules().units[u.kind].attacks)
+            .flat_map(|u| self.rules().units[u.kind].attacks.iter())
             .map(|a| a.range as u16)
             .max()
             .unwrap_or(0);

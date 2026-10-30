@@ -163,10 +163,9 @@ impl Game<'_> {
                     return Err(CommandError::IllegalIntent);
                 }
                 let name = record_retreat.then(|| {
-                    self.units[index]
-                        .name
-                        .clone()
-                        .unwrap_or_else(|| self.rules.units[self.units[index].kind].name.clone())
+                    self.units[index].name.clone().unwrap_or_else(|| {
+                        self.rules.units[self.units[index].kind].name.to_string()
+                    })
                 });
                 self.units[index].retreating = retreating;
                 self.units[index].rebuilding = rebuilding;

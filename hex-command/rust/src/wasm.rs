@@ -7,6 +7,7 @@ use crate::{
     protocol::*,
 };
 use serde::{Serialize, de::DeserializeOwned};
+use std::borrow::Cow;
 use std::collections::HashMap;
 use std::rc::Rc;
 use tsify::{Ts, Tsify};
@@ -62,30 +63,41 @@ impl Battle {
 /// Owns one validated catalog and independent battles for a browser host.
 #[wasm_bindgen]
 pub struct NativeEngineFactory {
-    rules: Rules,
+    rules: Cow<'static, Rules>,
     battles: HashMap<u32, Battle>,
     next_id: u32,
 }
 
 #[wasm_bindgen]
 impl NativeEngineFactory {
-    /// Omit the bundle for the host default: disk on native, embedded JSON on WASM.
+    /// Omit the bundle for the host default: disk on native, baked statics on WASM.
     /// An explicit bundle supplies relative path -> JSON text.
     /// Construction errors carry an encoded [`EngineResult`] failure for the host adapter.
     #[wasm_bindgen(constructor)]
     pub fn new(bundle: Option<Ts<CatalogDocuments>>) -> Result<NativeEngineFactory, JsValue> {
         let loaded = if let Some(bundle) = bundle {
             decode(bundle).and_then(|bundle| {
-                Rules::from_json_bundle(&bundle.0).map_err(|error| EngineError::Content {
-                    path: error.path,
-                    message: error.message,
-                })
+                Rules::from_json_bundle(&bundle.0)
+                    .map(Cow::Owned)
+                    .map_err(|error| EngineError::Content {
+                        path: error.path,
+                        message: error.message,
+                    })
             })
         } else {
-            Rules::load().map_err(|error| EngineError::Content {
-                path: error.path,
-                message: error.message,
-            })
+            #[cfg(target_arch = "wasm32")]
+            {
+                Ok(Cow::Borrowed(&BAKED_RULES))
+            }
+            #[cfg(not(target_arch = "wasm32"))]
+            {
+                Rules::load()
+                    .map(Cow::Owned)
+                    .map_err(|error| EngineError::Content {
+                        path: error.path,
+                        message: error.message,
+                    })
+            }
         };
         let rules = loaded.map_err(|error| match encode::<(), UnitResponse>(Err(error)) {
             Ok(response) => response.js_value(),
@@ -103,10 +115,15 @@ impl NativeEngineFactory {
         let mut campaigns: Vec<_> = self.rules.campaigns.values().cloned().collect();
         campaigns.sort_by(|a, b| a.id.cmp(&b.id));
         encode(Ok(CatalogView {
-            units: self.rules.units.clone(),
-            terrain: self.rules.terrain_definitions.clone(),
-            races: self.rules.race_definitions.clone(),
-            maps: self.rules.map_definitions.clone(),
+            units: self.rules.units.to_vec(),
+            terrain: self.rules.terrain_definitions.to_vec(),
+            races: self.rules.race_definitions.to_vec(),
+            maps: self
+                .rules
+                .map_definitions
+                .iter()
+                .map(Seed::instantiate)
+                .collect(),
             campaigns,
         }))
     }
@@ -319,7 +336,7 @@ impl NativeEngineFactory {
                         id == &map && revision.is_none_or(|expected| expected == *rev)
                     })
                     .max_by_key(|((_, revision), _)| revision)
-                    .map(|(_, state)| state.clone())
+                    .map(|(_, state)| state.instantiate())
                     .ok_or(EngineError::UnknownMap { map: map.clone() })?;
                 if let Some(armies) = armies {
                     if map == "developer" {
@@ -339,8 +356,10 @@ impl NativeEngineFactory {
                         for unit in state.units.iter_mut().filter(|u| u.side == side) {
                             let original = &self.rules.units[self.rules.types[&unit.r#type]];
                             let kind = if original.leader {
-                                roster.leader.as_str()
-                            } else if roster.id == "human" || roster.pool.contains(&unit.r#type) {
+                                roster.leader.as_ref()
+                            } else if roster.id == "human"
+                                || roster.pool.iter().any(|id| id == &unit.r#type)
+                            {
                                 unit.r#type.as_str()
                             } else {
                                 roster
@@ -354,7 +373,7 @@ impl NativeEngineFactory {
                                     .ok_or_else(|| EngineError::InvalidRequest {
                                         message: "Faction has no unit for the starting army".into(),
                                     })?
-                                    .as_str()
+                                    .as_ref()
                             };
                             let rule = &self.rules.units[self.rules.types[kind]];
                             unit.r#type = kind.to_owned();
@@ -386,7 +405,7 @@ mod tests {
     #[test]
     fn checkpoint_discards_unexecuted_plans_and_restores_resolved_state() {
         let mut factory = NativeEngineFactory {
-            rules: Rules::embedded().unwrap(),
+            rules: Cow::Borrowed(&BAKED_RULES),
             battles: HashMap::new(),
             next_id: 1,
         };

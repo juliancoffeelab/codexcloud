@@ -3,6 +3,10 @@ name = "hex-command-simulation"
 version = "0.1.0"
 edition = "2024"
 
+[workspace]
+members = ["catalog"]
+resolver = "2"
+
 [lib]
 name = "hex_command_core"
 crate-type = ["rlib", "cdylib"]
@@ -13,9 +17,10 @@ path = "src/main.rs"
 
 [features]
 default = []
-wasm = ["dep:tsify", "dep:wasm-bindgen"]
+wasm = ["dep:tsify", "dep:wasm-bindgen", "hex-command-catalog/wasm"]
 
 [dependencies]
+hex-command-catalog = { path = "catalog" }
 rustc-hash = "2"
 serde = { version = "1", features = ["derive", "rc"] }
 serde_json = { version = "1", features = ["raw_value", "float_roundtrip"] }
@@ -33,6 +38,7 @@ mimalloc = { version = "0.1", default-features = false }
 clap = { version = "4.5", features = ["derive"] }
 
 [build-dependencies]
+hex-command-catalog = { path = "catalog", features = ["bake"] }
 sha2 = "0.10"
 
 [profile.release]

@@ -132,7 +132,7 @@ pub(crate) struct Game<'catalog> {
 impl<'catalog> Game<'catalog> {
     pub(crate) fn from_state(rules: &'catalog Rules, state: State) -> Self {
         let key = (
-            rules.content_fingerprint.clone(),
+            rules.content_fingerprint.to_string(),
             state
                 .tiles
                 .iter()
@@ -278,7 +278,7 @@ impl<'catalog> Game<'catalog> {
             .max_by_key(|((_, revision), _)| revision)
             .unwrap()
             .1
-            .clone();
+            .instantiate();
         Self::from_state(rules, state)
     }
     /// Materialize the protocol snapshot without changing battle state.
@@ -314,7 +314,7 @@ impl<'catalog> Game<'catalog> {
                 id: id.clone(),
                 col: self.board.positions[index].0,
                 row: self.board.positions[index].1,
-                terrain: self.rules.terrain_names[self.terrain[index]].clone(),
+                terrain: self.rules.terrain_names[self.terrain[index]].to_string(),
                 owner: self.owners[index],
                 connections: self.connections[index].clone(),
                 dead_ends: self.dead_ends[index].clone(),
@@ -325,7 +325,7 @@ impl<'catalog> Game<'catalog> {
     pub(crate) fn public_unit(&self, unit: &Unit) -> PublicUnit {
         PublicUnit {
             id: format!("u{}", unit.id),
-            r#type: self.rules.units[unit.kind].id.clone(),
+            r#type: self.rules.units[unit.kind].id.to_string(),
             side: unit.side,
             tile: self.board.ids[unit.tile].clone(),
             hp: unit.hp,
@@ -472,14 +472,18 @@ impl<'catalog> Game<'catalog> {
         if mission
             .intro
             .iter()
-            .chain(&mission.victory)
-            .any(|line| fallen.contains(&line.speaker))
+            .chain(mission.victory.iter())
+            .any(|line| fallen.iter().any(|name| name == &line.speaker))
         {
             let changed = Rc::make_mut(&mut mission);
-            changed.intro.retain(|line| !fallen.contains(&line.speaker));
+            changed
+                .intro
+                .to_mut()
+                .retain(|line| !fallen.iter().any(|name| name == &line.speaker));
             changed
                 .victory
-                .retain(|line| !fallen.contains(&line.speaker));
+                .to_mut()
+                .retain(|line| !fallen.iter().any(|name| name == &line.speaker));
         }
         if state.escalated() {
             if let Some(refuge) = mission.refuge.clone() {
@@ -572,7 +576,7 @@ impl<'catalog> Game<'catalog> {
         let name = self.units[index]
             .name
             .clone()
-            .unwrap_or(previous.name.clone());
+            .unwrap_or(previous.name.to_string());
         let wounds = previous.hp - self.units[index].hp;
         let experience = self.units[index]
             .experience
@@ -590,7 +594,7 @@ impl<'catalog> Game<'catalog> {
         ));
         self.action(ActionRecord::Advance {
             unit: format!("u{id}"),
-            unit_type: self.rules.units[kind].id.clone(),
+            unit_type: self.rules.units[kind].id.to_string(),
         });
     }
 
@@ -670,7 +674,7 @@ impl<'catalog> Game<'catalog> {
         ));
         self.action(ActionRecord::Recruit {
             unit: format!("u{id}"),
-            unit_type: self.rules.units[kind].id.clone(),
+            unit_type: self.rules.units[kind].id.to_string(),
             tile: self.board.ids[tile].clone(),
         });
     }

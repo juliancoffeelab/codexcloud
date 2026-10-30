@@ -75,7 +75,7 @@ impl std::fmt::Display for CommandError {
 impl std::error::Error for CommandError {}
 
 impl Command {
-    pub(crate) fn is_attack(&self) -> bool {
+    pub fn is_attack(&self) -> bool {
         matches!(self, Self::Attack { .. })
     }
 }

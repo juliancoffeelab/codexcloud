@@ -7,8 +7,8 @@ pub(super) fn write(rules: &Rules, directory: &Path) -> Result<(), SimulationErr
     let mut csv = String::from(
         "unit,level,weapon,category,damageType,count,rollMin,rollMax,incomingModifier,min,max,expected,kill10,kill20\n",
     );
-    for unit in &rules.units {
-        for attack in &unit.attacks {
+    for unit in rules.units.iter() {
+        for attack in unit.attacks.iter() {
             for modifier in [0, -2, -4, 1] {
                 let d = distribution(attack, modifier);
                 writeln!(

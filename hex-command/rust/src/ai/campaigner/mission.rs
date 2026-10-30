@@ -67,14 +67,14 @@ impl CampaignBlock {
                 });
             for unit in game.units.iter().filter(|unit| unit.side == game.turn) {
                 let mut sites = Vec::new();
-                for goal in &mission.goals {
+                for goal in mission.goals.iter() {
                     let eligible = match goal {
                         Goal::Escort { .. } => unit.role == Some(Role::Courier),
                         Goal::Escape { .. } => unit.role == Some(Role::Leader),
                         Goal::Vigil { .. }
                         | Goal::Hold {
                             companion: Some(_), ..
-                        } => unit.name.as_ref() == goal.companion(),
+                        } => unit.name.as_deref() == goal.companion(),
                         Goal::Seal { .. } => goal.unit_type().is_none_or(|kind| {
                             game.rules.units[game.kind(kind)].family
                                 == game.rules.units[unit.kind].family
@@ -91,8 +91,8 @@ impl CampaignBlock {
                         sites.extend(
                             goal.tile()
                                 .into_iter()
-                                .chain(goal.tiles())
-                                .map(|tile| TileId(tile.clone())),
+                                .chain(goal.tiles().iter().map(|s| s.as_ref()))
+                                .map(|tile| TileId(tile.to_string())),
                         );
                     }
                 }
@@ -118,7 +118,7 @@ impl CampaignBlock {
         recruitment.rotate_pool = campaign || game.pools.is_some();
         if game.turn == Side::Player {
             if let Some(mission) = &game.mission {
-                for goal in &mission.goals {
+                for goal in mission.goals.iter() {
                     let specialist = match goal {
                         Goal::Seal { unit_type, .. } => {
                             unit_type.as_ref().filter(|_| !game.goal_done(goal))
@@ -153,7 +153,10 @@ impl CampaignBlock {
                 }
             }
         } else if let Some(mission) = &game.mission {
-            tactics.leader_post = mission.enemy_leader_post.clone().map(TileId);
+            tactics.leader_post = mission
+                .enemy_leader_post
+                .clone()
+                .map(|id| TileId(id.into()));
             tactics.movement_tiles = game
                 .territory()
                 .into_iter()
@@ -392,7 +395,7 @@ impl Game<'_> {
                 && self.mission.as_ref().is_some_and(|m| {
                     u.name
                         .as_ref()
-                        .is_some_and(|n| m.required_companions.contains(n))
+                        .is_some_and(|n| m.required_companions.iter().any(|id| id == n))
                 }))
     }
     pub fn objectives(&self, side: Side) -> Vec<Objective> {
@@ -459,7 +462,7 @@ impl Game<'_> {
                     ObjectiveKind::Vigil,
                     game.units
                         .iter()
-                        .find(|u| u.side == side && u.name.as_ref() == Some(companion))
+                        .find(|u| u.side == side && u.name.as_deref() == Some(companion.as_ref()))
                         .map(|u| format!("u{}", u.id)),
                     None,
                     false,
@@ -482,7 +485,7 @@ impl Game<'_> {
                     companion.as_ref().and_then(|name| {
                         game.units
                             .iter()
-                            .find(|u| u.side == side && u.name.as_ref() == Some(name))
+                            .find(|u| u.side == side && u.name.as_deref() == Some(name.as_ref()))
                             .map(|u| format!("u{}", u.id))
                     }),
                     None,
@@ -560,7 +563,7 @@ impl Game<'_> {
                         goals.push(result);
                     }
                 }
-                for e in &mission.events {
+                for e in mission.events.iter() {
                     if is_trigger_visit(&e.trigger)
                         && !state.marked(&format!("event:{}", e.id))
                         && !mission
@@ -572,7 +575,7 @@ impl Game<'_> {
                             &format!("optional:{}", e.id),
                             ObjectiveKind::Visit,
                             vec![match &e.trigger {
-                                Trigger::Visit { tile } => tile.clone(),
+                                Trigger::Visit { tile } => tile.to_string(),
                                 Trigger::Round { .. } | Trigger::Control { .. } => {
                                     unreachable!("visit event classification")
                                 }
@@ -591,7 +594,7 @@ impl Game<'_> {
                     let mut o = objective(
                         "authored-post",
                         ObjectiveKind::Capture,
-                        vec![post.clone()],
+                        vec![post.to_string()],
                         80.0,
                     );
                     o.actor = Some(format!("u{}", leader.id));
@@ -734,11 +737,11 @@ impl Game<'_> {
                 .iter()
                 .flat_map(|g| {
                     if is_goal_control(g) {
-                        g.tiles().to_vec()
+                        g.tiles().iter().map(|s| s.as_ref()).collect()
                     } else if is_goal_hold(g)
                         || (is_goal_refuge(g) && !self.campaign.as_ref().unwrap().escalated())
                     {
-                        vec![g.tile().unwrap().clone()]
+                        vec![g.tile().unwrap()]
                     } else {
                         vec![]
                     }

@@ -27,7 +27,7 @@
     "test": "node --import tsx scripts/test-budget.ts",
     "test:watch": "vitest --watch",
     "ai:rust:build": "node --import tsx scripts/build-simulation.ts",
-    "check:rust": "node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts cargo test --locked --manifest-path rust/Cargo.toml --features wasm",
+    "check:rust": "node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts cargo test --locked --manifest-path rust/Cargo.toml --workspace --features wasm",
     "preai:benchmark": "npm run ai:rust:build",
     "wasm:build": "node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts wasm-pack build rust --target web --dev --out-dir pkg --out-name hex_command --no-pack --no-opt --locked --features wasm",
     "prewasm:build": "npm run content:check",

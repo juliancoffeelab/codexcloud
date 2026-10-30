@@ -240,7 +240,7 @@ impl BattleView<'_, '_> {
         let clearing = self.actor_lanes(objectives);
         let order = |u: &Unit| {
             let r = &self.rules().units[u.kind];
-            match r.id.as_str() {
+            match r.id.as_ref() {
                 "scout" | "wolf" => ClassicOrder::Scout,
                 "archer" | "thorncaller" | "bonearcher" | "adept" => ClassicOrder::Ranged,
                 "soldier" | "skeleton" | "warden" | "boar" => ClassicOrder::Frontline,
@@ -421,7 +421,7 @@ impl BattleDraft<'_, '_> {
                 self.record(format!(
                     "{} is retreating.",
                     u.name
-                        .unwrap_or_else(|| self.rules().units[u.kind].name.clone())
+                        .unwrap_or_else(|| self.rules().units[u.kind].name.to_string())
                 ));
                 return Retreat::Retreated;
             }

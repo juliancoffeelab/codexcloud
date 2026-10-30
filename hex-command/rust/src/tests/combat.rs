@@ -7,9 +7,9 @@ fn ability_rules() -> Rules {
     let mut rules = Rules::load().unwrap();
     for id in ["soldier", "archer", "scout"] {
         let kind = rules.types[id];
-        let rule = &mut rules.units[kind];
+        let rule = &mut rules.units.to_mut()[kind];
         rule.hp = 100;
-        rule.environment.fill([[0; 3]; 2]);
+        rule.environment.to_mut().fill([[0; 3]; 2]);
         rule.damage_modifiers = DamageModifiers {
             blade: 0,
             pierce: 0,
@@ -17,7 +17,7 @@ fn ability_rules() -> Rules {
         };
         rule.thorns = 0;
         rule.thorn_aura = 0;
-        for attack in &mut rule.attacks {
+        for attack in rule.attacks.to_mut().iter_mut() {
             attack.spread = 0;
             attack.damage = 4;
             attack.count = 2;
@@ -33,11 +33,11 @@ fn thorns_count_incoming_strikes_and_do_not_drain_or_require_a_surviving_defende
         let mut rules = ability_rules();
         let attacker = rules.types["scout"];
         let defender = rules.types["soldier"];
-        rules.units[attacker].attacks[0].count = strikes;
-        rules.units[defender].thorns = 3;
-        rules.units[defender].attacks.truncate(1);
-        rules.units[defender].attacks[0].count = 1;
-        rules.units[defender].attacks[0].drain = 50;
+        rules.units.to_mut()[attacker].attacks.to_mut()[0].count = strikes;
+        rules.units.to_mut()[defender].thorns = 3;
+        rules.units.to_mut()[defender].attacks.to_mut().truncate(1);
+        rules.units.to_mut()[defender].attacks.to_mut()[0].count = 1;
+        rules.units.to_mut()[defender].attacks.to_mut()[0].drain = 50;
         let mut game = Game::new(&rules, "mirror");
         game.units.clear();
         game.roster_changed();
@@ -85,9 +85,9 @@ fn thorns_count_incoming_strikes_and_do_not_drain_or_require_a_surviving_defende
 #[test]
 fn thorn_retaliation_stacks_own_shield_with_strongest_adjacent_friendly_aura() {
     let mut rules = ability_rules();
-    rules.units[rules.types["soldier"]].thorns = 2;
-    rules.units[rules.types["archer"]].thorn_aura = 1;
-    rules.units[rules.types["scout"]].thorn_aura = 3;
+    rules.units.to_mut()[rules.types["soldier"]].thorns = 2;
+    rules.units.to_mut()[rules.types["archer"]].thorn_aura = 1;
+    rules.units.to_mut()[rules.types["scout"]].thorn_aura = 3;
     let mut game = Game::new(&rules, "mirror");
     game.units.clear();
     game.roster_changed();
@@ -148,8 +148,8 @@ fn thorn_retaliation_stacks_own_shield_with_strongest_adjacent_friendly_aura() {
 fn ranged_retaliation_never_gets_thorn_bonus() {
     let mut rules = ability_rules();
     let kind = rules.types["archer"];
-    rules.units[kind].thorns = 20;
-    rules.units[kind].thorn_aura = 20;
+    rules.units.to_mut()[kind].thorns = 20;
+    rules.units.to_mut()[kind].thorn_aura = 20;
     let mut game = Game::new(&rules, "mirror");
     game.units.clear();
     game.roster_changed();
@@ -171,7 +171,7 @@ fn ranged_retaliation_never_gets_thorn_bonus() {
 fn drain_uses_actual_hp_loss_before_reply_and_cannot_overheal_or_revive() {
     let mut rules = ability_rules();
     let kind = rules.types["soldier"];
-    for attack in &mut rules.units[kind].attacks {
+    for attack in rules.units.to_mut()[kind].attacks.to_mut().iter_mut() {
         attack.drain = 50;
     }
     let mut game = Game::new(&rules, "mirror");
@@ -380,7 +380,7 @@ fn cover_and_exposure_apply_to_attacks_and_retaliation_and_clamp_at_zero() {
 fn counted_damage_keeps_the_existing_attack_and_restore_flow() {
     let mut rules = Rules::load().unwrap();
     let kind = rules.types["soldier"];
-    let rule = &mut rules.units[kind];
+    let rule = &mut rules.units.to_mut()[kind];
     rule.hp = 100;
     rule.level = 1;
     rule.experience_needed = Some(100);
@@ -389,14 +389,14 @@ fn counted_damage_keeps_the_existing_attack_and_restore_flow() {
         pierce: -1,
         impact: -1,
     };
-    rule.environment.fill([[0; 3]; 2]);
-    for attack in &mut rule.attacks {
+    rule.environment.to_mut().fill([[0; 3]; 2]);
+    for attack in rule.attacks.to_mut().iter_mut() {
         attack.spread = 0;
     }
-    rule.attacks[0].count = 3;
-    rule.attacks[0].damage = 2;
-    rule.attacks[1].count = 1;
-    rule.attacks[1].damage = 6;
+    rule.attacks.to_mut()[0].count = 3;
+    rule.attacks.to_mut()[0].damage = 2;
+    rule.attacks.to_mut()[1].count = 1;
+    rule.attacks.to_mut()[1].damage = 6;
     let mut game = Game::new(&rules, "mirror");
     game.units.clear();
     game.roster_changed();
@@ -450,8 +450,8 @@ fn counted_damage_keeps_the_existing_attack_and_restore_flow() {
 fn reflected_damage_records_separate_own_aura_and_effective_damage() {
     let mut rules = ability_rules();
     let soldier = rules.types["soldier"];
-    rules.units[soldier].thorns = 2;
-    rules.units[rules.types["scout"]].thorn_aura = 3;
+    rules.units.to_mut()[soldier].thorns = 2;
+    rules.units.to_mut()[rules.types["scout"]].thorn_aura = 3;
     let mut game = Game::new(&rules, "mirror");
     game.units.clear();
     game.roster_changed();
@@ -484,15 +484,21 @@ fn mitigation_records_signed_stages_hp_caps_and_executed_weapon_retaliation() {
         let mut rules = ability_rules();
         let attacker = rules.types["scout"];
         let defender = rules.types["soldier"];
-        rules.units[attacker].attacks[0].damage = 10;
-        rules.units[attacker].attacks[0].count = 3;
-        rules.units[attacker].attacks[0].drain = 50;
-        rules.units[attacker].damage_modifiers.blade = -1;
-        rules.units[attacker].damage_modifiers.impact = -1;
-        rules.units[attacker].environment.fill([[-1; 3]; 2]);
-        rules.units[defender].damage_modifiers.blade = armour;
-        rules.units[defender].environment.fill([[terrain; 3]; 2]);
-        rules.units[defender].thorns = 2;
+        rules.units.to_mut()[attacker].attacks.to_mut()[0].damage = 10;
+        rules.units.to_mut()[attacker].attacks.to_mut()[0].count = 3;
+        rules.units.to_mut()[attacker].attacks.to_mut()[0].drain = 50;
+        rules.units.to_mut()[attacker].damage_modifiers.blade = -1;
+        rules.units.to_mut()[attacker].damage_modifiers.impact = -1;
+        rules.units.to_mut()[attacker]
+            .environment
+            .to_mut()
+            .fill([[-1; 3]; 2]);
+        rules.units.to_mut()[defender].damage_modifiers.blade = armour;
+        rules.units.to_mut()[defender]
+            .environment
+            .to_mut()
+            .fill([[terrain; 3]; 2]);
+        rules.units.to_mut()[defender].thorns = 2;
         let mut game = Game::new(&rules, "mirror");
         game.units.clear();
         game.roster_changed();
@@ -546,7 +552,7 @@ fn mitigation_records_signed_stages_hp_caps_and_executed_weapon_retaliation() {
 #[test]
 fn independent_roll_distributions_include_clamping_and_exact_kill_odds() {
     let mut rules = ability_rules();
-    let attack = &mut rules.units[rules.types["archer"]].attacks[0];
+    let attack = &mut rules.units.to_mut()[rules.types["archer"]].attacks.to_mut()[0];
     attack.damage = 1;
     attack.spread = 1;
     attack.count = 2;
@@ -566,8 +572,8 @@ fn independent_roll_distributions_include_clamping_and_exact_kill_odds() {
 fn seeded_strikes_restore_exactly_and_previews_never_consume_randomness() {
     let mut rules = ability_rules();
     let kind = rules.types["archer"];
-    rules.units[kind].attacks[0].spread = 4;
-    rules.units[kind].attacks[0].count = 3;
+    rules.units.to_mut()[kind].attacks.to_mut()[0].spread = 4;
+    rules.units.to_mut()[kind].attacks.to_mut()[0].count = 3;
     let mut observed = std::collections::BTreeSet::new();
     for seed in 0..32 {
         let mut game = Game::new(&rules, "mirror");
@@ -615,9 +621,9 @@ fn seeded_strikes_restore_exactly_and_previews_never_consume_randomness() {
 fn uncertain_kills_allow_actual_replies_and_ai_does_not_peek_at_combat_seed() {
     let mut rules = ability_rules();
     let kind = rules.types["archer"];
-    rules.units[kind].attacks[0].damage = 4;
-    rules.units[kind].attacks[0].spread = 4;
-    rules.units[kind].attacks[0].count = 1;
+    rules.units.to_mut()[kind].attacks.to_mut()[0].damage = 4;
+    rules.units.to_mut()[kind].attacks.to_mut()[0].spread = 4;
+    rules.units.to_mut()[kind].attacks.to_mut()[0].count = 1;
     let mut outcomes = [false; 2];
     let mut decision = None;
     for seed in 0..32 {

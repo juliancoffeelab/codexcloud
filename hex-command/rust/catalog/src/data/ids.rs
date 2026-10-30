@@ -4,13 +4,17 @@ use serde::{Deserialize, Serialize};
 /// Stable unit identity independent of roster order.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(transparent)]
 pub struct UnitId(pub u32);
 /// Authored tile identifier.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(transparent)]
 pub struct TileId(pub String);
 impl From<&str> for TileId {
@@ -21,7 +25,9 @@ impl From<&str> for TileId {
 /// Authored unittype identifier.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(transparent)]
 pub struct UnitTypeId(pub String);
 impl From<&str> for UnitTypeId {
@@ -32,7 +38,9 @@ impl From<&str> for UnitTypeId {
 /// Authored weapon identifier.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(transparent)]
 pub struct WeaponId(pub String);
 impl From<&str> for WeaponId {
@@ -43,7 +51,9 @@ impl From<&str> for WeaponId {
 /// Closed authored race vocabulary.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "lowercase")]
 pub enum Race {
     Human,
@@ -73,7 +83,9 @@ impl std::fmt::Display for Race {
 /// Closed authored family vocabulary.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "lowercase")]
 pub enum Family {
     Adept,
@@ -151,7 +163,9 @@ impl std::fmt::Display for Family {
 /// Closed authored terrain vocabulary.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "lowercase")]
 pub enum Terrain {
     Plains,
@@ -197,7 +211,9 @@ impl std::fmt::Display for Terrain {
 /// Closed authored role vocabulary.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "lowercase")]
 pub enum Role {
     Leader,
@@ -221,7 +237,9 @@ impl std::fmt::Display for Role {
 /// Kind of objective selected by the planner.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "lowercase")]
 pub enum ObjectiveKind {
     Capture,
@@ -250,7 +268,9 @@ impl ObjectiveKind {
 /// Structural campaign objective category.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "lowercase")]
 pub enum GoalKind {
     Defeat,
@@ -282,7 +302,9 @@ impl GoalKind {
 /// Structural campaign event activation category.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "lowercase")]
 pub enum TriggerKind {
     Visit,

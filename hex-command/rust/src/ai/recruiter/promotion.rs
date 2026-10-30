@@ -47,7 +47,7 @@ pub(super) fn choices(
             };
             Some((
                 UnitId(unit.id),
-                UnitTypeId(game.rules().units[kind].id.clone()),
+                UnitTypeId(game.rules().units[kind].id.to_string()),
             ))
         })
         .collect()
@@ -77,19 +77,23 @@ mod tests {
         let base = rules.types["swordsman"];
         let a = rules.types["soldier"];
         let b = rules.types["hammerman"];
-        rules.units[base].advances_to = vec![rules.units[a].id.clone(), rules.units[b].id.clone()];
-        rules.units[base].experience_needed = Some(1);
+        rules.units.to_mut()[base].advances_to = vec![
+            rules.units.to_mut()[a].id.clone(),
+            rules.units.to_mut()[b].id.clone(),
+        ]
+        .into();
+        rules.units.to_mut()[base].experience_needed = Some(1);
         let mut branch = rules.units[a].clone();
-        branch.attacks.truncate(1);
-        branch.attacks[0].count = 1;
-        branch.attacks[0].damage = 10;
-        branch.attacks[0].drain = 0;
+        branch.attacks.to_mut().truncate(1);
+        branch.attacks.to_mut()[0].count = 1;
+        branch.attacks.to_mut()[0].damage = 10;
+        branch.attacks.to_mut()[0].drain = 0;
         branch.healing = 0;
         branch.thorn_aura = 0;
         for kind in [a, b] {
             let id = rules.units[kind].id.clone();
-            rules.units[kind] = branch.clone();
-            rules.units[kind].id = id;
+            rules.units.to_mut()[kind] = branch.clone();
+            rules.units.to_mut()[kind].id = id;
         }
         (rules, base, a, b)
     }
@@ -129,7 +133,7 @@ mod tests {
                 .collect();
             assert_eq!(
                 outcomes,
-                [rules.units[a].id.clone(), rules.units[b].id.clone()]
+                [rules.units[a].id.to_string(), rules.units[b].id.to_string()]
                     .into_iter()
                     .collect()
             );
@@ -157,11 +161,11 @@ mod tests {
         );
         assert_eq!(
             result[0],
-            (UnitId(id), UnitTypeId(rules.units[a].id.clone()))
+            (UnitId(id), UnitTypeId(rules.units[a].id.to_string()))
         );
         assert_eq!(
             result[1],
-            (UnitId(second), UnitTypeId(rules.units[b].id.clone()))
+            (UnitId(second), UnitTypeId(rules.units[b].id.to_string()))
         );
         let index = game.index(id).unwrap();
         game.units[index].kind = a;
@@ -184,8 +188,8 @@ mod tests {
     #[test]
     fn resistance_selects_either_branch_without_changing_authored_order() {
         let (mut rules, base, a, b) = fixture();
-        rules.units[a].attacks[0].damage_type = DamageType::Blade;
-        rules.units[b].attacks[0].damage_type = DamageType::Pierce;
+        rules.units.to_mut()[a].attacks.to_mut()[0].damage_type = DamageType::Blade;
+        rules.units.to_mut()[b].attacks.to_mut()[0].damage_type = DamageType::Pierce;
         let enemy = battle(&rules, base)
             .0
             .units
@@ -194,8 +198,8 @@ mod tests {
             .unwrap()
             .kind;
         for (blade, pierce, expected) in [(-10, 0, b), (0, -10, a)] {
-            rules.units[enemy].damage_modifiers.blade = blade;
-            rules.units[enemy].damage_modifiers.pierce = pierce;
+            rules.units.to_mut()[enemy].damage_modifiers.blade = blade;
+            rules.units.to_mut()[enemy].damage_modifiers.pierce = pierce;
             let (mut game, id) = battle(&rules, base);
             assert_eq!(
                 choose(&BattleView::new(&game), game.unit(id).unwrap(), false),
@@ -216,9 +220,9 @@ mod tests {
         let (mut rules, base, a, b) = fixture();
         for (kind, damage_type, damage) in [(a, DamageType::Blade, 11), (b, DamageType::Pierce, 10)]
         {
-            rules.units[kind].attacks[0].damage_type = damage_type;
-            rules.units[kind].attacks[0].damage = damage;
-            rules.units[kind].attacks[0].spread = 0;
+            rules.units.to_mut()[kind].attacks.to_mut()[0].damage_type = damage_type;
+            rules.units.to_mut()[kind].attacks.to_mut()[0].damage = damage;
+            rules.units.to_mut()[kind].attacks.to_mut()[0].spread = 0;
         }
         let observed = battle(&rules, base)
             .0
@@ -227,13 +231,16 @@ mod tests {
             .find(|u| u.side == Side::Enemy)
             .unwrap()
             .kind;
-        rules.units[observed].damage_modifiers = DamageModifiers {
+        rules.units.to_mut()[observed].damage_modifiers = DamageModifiers {
             blade: 0,
             pierce: 0,
             impact: 0,
         };
-        rules.units[observed].environment.fill([[0; 3]; 2]);
-        for attack in &mut rules.units[observed].attacks {
+        rules.units.to_mut()[observed]
+            .environment
+            .to_mut()
+            .fill([[0; 3]; 2]);
+        for attack in rules.units.to_mut()[observed].attacks.to_mut().iter_mut() {
             attack.damage = 0;
             attack.spread = 0;
         }
@@ -242,8 +249,8 @@ mod tests {
         foe.id = rules.units[future].id.clone();
         foe.leader = false;
         foe.damage_modifiers.blade = -10;
-        rules.units[future] = foe;
-        rules.route_classes[future] = future;
+        rules.units.to_mut()[future] = foe;
+        rules.route_classes.to_mut()[future] = future;
         let (mut game, actor) = battle(&rules, base);
         game.pools = Some([vec![], vec![]]);
         for anticipate in [false, true] {
@@ -281,11 +288,11 @@ mod tests {
     fn wounded_and_exposed_allies_make_support_branch_useful() {
         for thorns in [false, true] {
             let (mut rules, base, a, b) = fixture();
-            rules.units[b].attacks[0].damage = 0;
+            rules.units.to_mut()[b].attacks.to_mut()[0].damage = 0;
             if thorns {
-                rules.units[b].thorn_aura = 20;
+                rules.units.to_mut()[b].thorn_aura = 20;
             } else {
-                rules.units[b].healing = 20;
+                rules.units.to_mut()[b].healing = 20;
             }
             let enemy = battle(&rules, base)
                 .0
@@ -295,10 +302,10 @@ mod tests {
                 .unwrap()
                 .kind;
             // A committed multi-strike melee enemy makes aura support useful.
-            rules.units[enemy].attacks.truncate(1);
-            rules.units[enemy].attacks[0].category = Category::Melee;
-            rules.units[enemy].attacks[0].range = 1;
-            rules.units[enemy].attacks[0].count = 3;
+            rules.units.to_mut()[enemy].attacks.to_mut().truncate(1);
+            rules.units.to_mut()[enemy].attacks.to_mut()[0].category = Category::Melee;
+            rules.units.to_mut()[enemy].attacks.to_mut()[0].range = 1;
+            rules.units.to_mut()[enemy].attacks.to_mut()[0].count = 3;
             let (mut game, id) = battle(&rules, base);
             let unit = game.unit(id).unwrap().clone();
             let tiles: Vec<_> = game.board.adjacent[unit.tile]
@@ -350,7 +357,7 @@ mod tests {
                     .map(|u| {
                         (
                             UnitId(u.id),
-                            UnitTypeId(game.rules().units[self.0].id.clone()),
+                            UnitTypeId(game.rules().units[self.0].id.to_string()),
                         )
                     })
                     .collect()
@@ -366,7 +373,7 @@ mod tests {
                 assert!(
                     plan.commands.contains(&crate::logic::Command::Advance {
                         unit: UnitId(id),
-                        kind: UnitTypeId(rules.units[branch].id.clone()),
+                        kind: UnitTypeId(rules.units[branch].id.to_string()),
                     }),
                     "{planner:?} did not execute selected branch"
                 );

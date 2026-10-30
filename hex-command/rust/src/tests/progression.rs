@@ -27,8 +27,8 @@ fn named_hold_requires_its_actor_and_resets_without_losing_ownership() {
     };
     *companion = Some("Edda".into());
     let mission = std::rc::Rc::make_mut(game.mission.as_mut().unwrap());
-    mission.goals = vec![goal.clone()];
-    mission.waves.clear();
+    mission.goals = vec![goal.clone()].into();
+    mission.waves.to_mut().clear();
     let wreck = game.site(goal.tile().unwrap());
     let actor = game
         .units
@@ -83,7 +83,7 @@ fn internal_completion_queries_match_published_progress_at_goal_transitions() {
         let mut game =
             Game::start_campaign(rules(), campaign, index, vec![], 0, vec![], vec![], vec![]);
         let goals = game.mission.as_ref().unwrap().goals.clone();
-        for goal in &goals {
+        for goal in goals.iter() {
             assert_eq!(game.goal_done(goal), game.goal_progress(goal).done);
         }
         game.units.retain(|unit| unit.side == Side::Player);
@@ -94,7 +94,7 @@ fn internal_completion_queries_match_published_progress_at_goal_transitions() {
             game.turn = side;
             for held in [0, 1, 100] {
                 let state = game.campaign.as_mut().unwrap();
-                for goal in &goals {
+                for goal in goals.iter() {
                     for tile in goal.tiles() {
                         state.marks.push(format!("sealed:{tile}"));
                     }
@@ -120,7 +120,7 @@ fn internal_completion_queries_match_published_progress_at_goal_transitions() {
                 if let Some(refuge) = &mut state.refuge {
                     refuge.held_turns = held;
                 }
-                for goal in &goals {
+                for goal in goals.iter() {
                     assert_eq!(game.goal_done(goal), game.goal_progress(goal).done);
                 }
             }
@@ -167,7 +167,7 @@ fn authored_progression_ladders_are_acyclic_and_preserve_race_and_increase_level
     fn visit(rules: &Rules, kind: usize, path: &mut HashSet<usize>) {
         assert!(path.insert(kind), "cyclic advancement");
         let unit = &rules.units[kind];
-        for next in &unit.advances_to {
+        for next in unit.advances_to.iter() {
             let advanced = rules.types[next];
             let rule = &rules.units[advanced];
             assert_eq!(rule.race, unit.race);

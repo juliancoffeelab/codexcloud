@@ -202,8 +202,8 @@ mod tests {
             .unwrap()
             .clone();
         drop(original);
-        rules.units[enemy.kind].r#move = 1;
-        for attack in &mut rules.units[enemy.kind].attacks {
+        rules.units.to_mut()[enemy.kind].r#move = 1;
+        for attack in rules.units.to_mut()[enemy.kind].attacks.to_mut().iter_mut() {
             attack.damage = 100;
             attack.count = 1;
             attack.category = Category::Melee;

@@ -2,18 +2,13 @@
 
 use super::*;
 use serde::{Deserialize, Serialize};
-use std::sync::LazyLock;
-
-static ROAD_DEAD_ENDS: LazyLock<Vec<(u8, u8)>> = LazyLock::new(|| {
-    serde_json::from_str(include_str!(
-        "../../../pixel/art/terrain/road/dead-ends.json"
-    ))
-    .expect("registered native road caps")
-});
+include!(concat!(env!("OUT_DIR"), "/road_caps.rs"));
 
 /// Clockwise edge names for a pointy-top hex. These describe artwork only.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "lowercase")]
 pub enum HexDirection {
     E,
@@ -33,6 +28,8 @@ impl HexDirection {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 pub struct Tile {
     pub id: String,
     pub col: i32,
@@ -84,6 +81,8 @@ impl Tile {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 pub struct Gold {
     pub player: i32,
     pub enemy: i32,
@@ -92,6 +91,8 @@ pub struct Gold {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "camelCase")]
 pub struct State {
     /// Selected skirmish factions; campaigns use their authored recruitment.

@@ -1,19 +1,20 @@
 use hex_command_core::{
     ai::Policy,
-    data::{LandscapeConfig, Rules, Side},
+    data::{LandscapeConfig, Rules, Seed, Side},
     simulation::{ArenaConfig, Armies, run_arena},
 };
 
 #[test]
 fn authored_arena_uses_its_board_keeps_and_capture_targets() {
     let mut rules = Rules::load().unwrap();
-    let source = rules.maps[&("mirror".into(), 1)].clone();
+    let source = rules.maps[&("mirror".to_owned(), 1)].instantiate();
     rules
         .maps
         .remove(&(source.map_id.clone(), source.map_revision));
-    rules
-        .arena_maps
-        .insert((source.map_id.clone(), source.map_revision), source.clone());
+    rules.arena_maps.insert(
+        (source.map_id.clone().into(), source.map_revision),
+        Seed::Owned(source.clone()),
+    );
     let targets = vec![
         source
             .tiles
@@ -23,11 +24,11 @@ fn authored_arena_uses_its_board_keeps_and_capture_targets() {
             .id
             .clone(),
     ];
-    rules.arena.landscapes.push(LandscapeConfig {
+    rules.arena.landscapes.to_mut().push(LandscapeConfig {
         id: "authored-fixture".into(),
         hold_turns: 4,
-        map: Some(source.map_id.clone()),
-        territory: Some(targets.clone()),
+        map: Some(source.map_id.clone().into()),
+        territory: Some(targets.iter().cloned().map(Into::into).collect()),
     });
     let army = rules.rosters[0].id.clone();
     let result = run_arena(
@@ -35,8 +36,8 @@ fn authored_arena_uses_its_board_keeps_and_capture_targets() {
         ArenaConfig {
             seed: 19,
             armies: Armies {
-                player: army.clone(),
-                enemy: army,
+                player: (army.clone()).to_string(),
+                enemy: (army).to_string(),
             },
             landscape: "authored-fixture".into(),
             player: Policy::Balanced,
@@ -70,7 +71,11 @@ fn authored_arena_uses_its_board_keeps_and_capture_targets() {
 #[cfg(feature = "wasm")]
 #[test]
 fn arena_only_scenarios_are_loaded_without_playable_metadata() {
-    let mut bundle = hex_command_core::data::catalog::embedded_bundle();
+    let mut bundle = hex_command_core::data::catalog::load_bundle_from(concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/data"
+    ))
+    .unwrap();
     let mut manifest: serde_json::Value = serde_json::from_str(&bundle["manifest.json"]).unwrap();
     let scenarios = manifest["scenarios"].as_array_mut().unwrap();
     let path = scenarios
@@ -87,7 +92,12 @@ fn arena_only_scenarios_are_loaded_without_playable_metadata() {
     let rules = Rules::from_json_bundle(&bundle).unwrap();
     assert!(rules.arena_maps.keys().any(|(id, _)| id == "mirror"));
     assert!(!rules.maps.keys().any(|(id, _)| id == "mirror"));
-    assert!(!rules.map_definitions.iter().any(|map| map.id == "mirror"));
+    assert!(
+        !rules
+            .map_definitions
+            .iter()
+            .any(|map| map.instantiate().id == "mirror")
+    );
 }
 
 #[cfg(feature = "wasm")]
@@ -97,7 +107,11 @@ fn invalid_authored_layout_and_capture_references_are_rejected() {
         ("missing-layout", vec!["0,0"], "unknown arena map"),
         ("mirror", vec!["999,999"], "outside its authored map"),
     ] {
-        let mut bundle = hex_command_core::data::catalog::embedded_bundle();
+        let mut bundle = hex_command_core::data::catalog::load_bundle_from(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/data"
+        ))
+        .unwrap();
         let mut arena: serde_json::Value =
             serde_json::from_str(&bundle["simulation/arena.json"]).unwrap();
         arena["landscapes"][0]["map"] = serde_json::json!(map);

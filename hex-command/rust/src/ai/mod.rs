@@ -384,7 +384,7 @@ fn attack_command(
     Command::Attack {
         unit: UnitId(unit),
         target: UnitId(target),
-        weapon: WeaponId(game.rules().units[kind].attacks[weapon].id.clone()),
+        weapon: WeaponId(game.rules().units[kind].attacks[weapon].id.to_string()),
     }
 }
 fn recruit_command(
@@ -395,14 +395,14 @@ fn recruit_command(
 ) -> Command {
     Command::Recruit {
         unit: UnitId(unit),
-        kind: UnitTypeId(game.rules().units[kind].id.clone()),
+        kind: UnitTypeId(game.rules().units[kind].id.to_string()),
         tile: TileId(game.board().ids[tile].clone()),
     }
 }
 fn advance_command(game: &context::BattleView<'_, '_>, unit: u32, kind: usize) -> Command {
     Command::Advance {
         unit: UnitId(unit),
-        kind: UnitTypeId(game.rules().units[kind].id.clone()),
+        kind: UnitTypeId(game.rules().units[kind].id.to_string()),
     }
 }
 

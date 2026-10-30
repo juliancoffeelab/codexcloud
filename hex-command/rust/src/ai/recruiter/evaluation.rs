@@ -650,8 +650,8 @@ mod tests {
     #[test]
     fn movement_controls_are_optional_separate_and_share_a_cap() {
         let (mut rules, target, enemy) = thorn_fixture();
-        rules.units[enemy].leader = true;
-        rules.units[target].r#move = 6;
+        rules.units.to_mut()[enemy].leader = true;
+        rules.units.to_mut()[target].r#move = 6;
         let (mut game, target_id, enemy_id) = thorn_battle(&rules, target, enemy);
         let a = game.site("1,4");
         let b = game.site("8,4");
@@ -737,29 +737,29 @@ mod tests {
         let target = rules.types["swordsman"];
         let enemy = rules.types["archer"];
         for kind in [target, enemy] {
-            let rule = &mut rules.units[kind];
+            let rule = &mut rules.units.to_mut()[kind];
             rule.hp = 100;
             rule.thorns = 0;
             rule.thorn_aura = 0;
             rule.healing = 0;
-            rule.attacks.truncate(1);
-            rule.attacks[0].category = Category::Melee;
-            rule.attacks[0].range = 1;
-            rule.attacks[0].damage_type = DamageType::Blade;
-            rule.attacks[0].damage = 2;
-            rule.attacks[0].count = 1;
-            rule.attacks[0].drain = 0;
+            rule.attacks.to_mut().truncate(1);
+            rule.attacks.to_mut()[0].category = Category::Melee;
+            rule.attacks.to_mut()[0].range = 1;
+            rule.attacks.to_mut()[0].damage_type = DamageType::Blade;
+            rule.attacks.to_mut()[0].damage = 2;
+            rule.attacks.to_mut()[0].count = 1;
+            rule.attacks.to_mut()[0].drain = 0;
             rule.damage_modifiers = DamageModifiers {
                 blade: 0,
                 pierce: 0,
                 impact: 0,
             };
-            for environment in &mut rule.environment {
+            for environment in rule.environment.to_mut().iter_mut() {
                 *environment = [[0; 3]; 2];
             }
         }
-        rules.units[enemy].attacks[0].damage = 8;
-        rules.units[enemy].attacks[0].count = 3;
+        rules.units.to_mut()[enemy].attacks.to_mut()[0].damage = 8;
+        rules.units.to_mut()[enemy].attacks.to_mut()[0].count = 3;
         (rules, target, enemy)
     }
 
@@ -787,7 +787,7 @@ mod tests {
         ranged.damage_type = DamageType::Pierce;
         ranged.damage = 20;
         ranged.count = 1;
-        rules.units[enemy].attacks.push(ranged);
+        rules.units.to_mut()[enemy].attacks.to_mut().push(ranged);
         {
             let (game, target, enemy) = thorn_battle(&rules, target, enemy);
             let view = BattleView::new(&game);
@@ -802,7 +802,7 @@ mod tests {
                 Some(0.0)
             );
         }
-        rules.units[target].damage_modifiers.blade = -2;
+        rules.units.to_mut()[target].damage_modifiers.blade = -2;
         let (game, target, enemy) = thorn_battle(&rules, target, enemy);
         let view = BattleView::new(&game);
         assert_eq!(
@@ -819,21 +819,21 @@ mod tests {
     #[test]
     fn recruitment_anticipates_legal_enemy_rosters_until_observed_troops_replace_them() {
         let (mut rules, target, enemy) = thorn_fixture();
-        rules.units[enemy].leader = true;
-        rules.units[target].attacks[0].category = Category::Ranged;
-        rules.units[target].attacks[0].range = 2;
-        rules.units[target].attacks[0].damage = 12;
-        rules.units[target].attacks[0].spread = 0;
+        rules.units.to_mut()[enemy].leader = true;
+        rules.units.to_mut()[target].attacks.to_mut()[0].category = Category::Ranged;
+        rules.units.to_mut()[target].attacks.to_mut()[0].range = 2;
+        rules.units.to_mut()[target].attacks.to_mut()[0].damage = 12;
+        rules.units.to_mut()[target].attacks.to_mut()[0].spread = 0;
         let resistant = rules.types["scout"];
         let observed = rules.types["spearman"];
         for kind in [resistant, observed] {
             let mut rule = rules.units[enemy].clone();
             rule.id = rules.units[kind].id.clone();
             rule.leader = false;
-            rules.units[kind] = rule;
-            rules.route_classes[kind] = kind;
+            rules.units.to_mut()[kind] = rule;
+            rules.route_classes.to_mut()[kind] = kind;
         }
-        rules.units[resistant].damage_modifiers.blade = -8;
+        rules.units.to_mut()[resistant].damage_modifiers.blade = -8;
         let (mut game, target, _) = thorn_battle(&rules, target, enemy);
         game.owners.fill(Some(Side::Player));
         let assess = |game: &crate::logic::Game<'_>| {
@@ -871,14 +871,14 @@ mod tests {
         for aura in [false, true] {
             let (mut rules, target, enemy) = thorn_fixture();
             let melee = rules.types["scout"];
-            rules.units[melee] = rules.units[enemy].clone();
-            rules.units[enemy].leader = true;
-            rules.units[enemy].attacks[0].category = Category::Ranged;
-            rules.units[enemy].attacks[0].range = 2;
+            rules.units.to_mut()[melee] = rules.units.to_mut()[enemy].clone();
+            rules.units.to_mut()[enemy].leader = true;
+            rules.units.to_mut()[enemy].attacks.to_mut()[0].category = Category::Ranged;
+            rules.units.to_mut()[enemy].attacks.to_mut()[0].range = 2;
             if aura {
-                rules.units[target].thorn_aura = 4;
+                rules.units.to_mut()[target].thorn_aura = 4;
             } else {
-                rules.units[target].thorns = 4;
+                rules.units.to_mut()[target].thorns = 4;
             }
             let (mut game, target_id, _) = thorn_battle(&rules, target, enemy);
             if aura {
@@ -904,16 +904,16 @@ mod tests {
     #[test]
     fn effective_hp_and_thorn_weapon_preferences_do_not_choose_the_nearest_terrain() {
         let (mut rules, target, enemy) = thorn_fixture();
-        rules.units[target].attacks[0].spread = 0;
-        rules.units[enemy].attacks[0].spread = 0;
+        rules.units.to_mut()[target].attacks.to_mut()[0].spread = 0;
+        rules.units.to_mut()[enemy].attacks.to_mut()[0].spread = 0;
         let mut ranged = rules.units[enemy].attacks[0].clone();
         ranged.category = Category::Ranged;
         ranged.range = 2;
         ranged.damage = 20;
         ranged.count = 1;
-        rules.units[enemy].attacks.push(ranged);
+        rules.units.to_mut()[enemy].attacks.to_mut().push(ranged);
         let forest = rules.terrains["forest"];
-        rules.units[enemy].environment[forest][Category::Melee.index()]
+        rules.units.to_mut()[enemy].environment.to_mut()[forest][Category::Melee.index()]
             [DamageType::Blade.index()] = 10;
         let (mut game, target, enemy) = thorn_battle(&rules, target, enemy);
         for tile in 0..game.terrain.len() {
@@ -960,9 +960,9 @@ mod tests {
         ranged.damage_type = DamageType::Pierce;
         ranged.damage = 20;
         ranged.count = 1;
-        rules.units[enemy].attacks.push(ranged);
+        rules.units.to_mut()[enemy].attacks.to_mut().push(ranged);
         for (blade, expected_weapon, expected_hp) in [(0, 0, 100.0), (-2, 1, 120.0)] {
-            rules.units[target].damage_modifiers.blade = blade;
+            rules.units.to_mut()[target].damage_modifiers.blade = blade;
             let (game, target, enemy) = thorn_battle(&rules, target, enemy);
             let view = BattleView::new(&game);
             let unit = game.unit(target).unwrap();
@@ -980,18 +980,18 @@ mod tests {
     #[test]
     fn effective_hp_values_repeated_ranged_attacks_and_per_strike_armour() {
         let (mut rules, target, enemy) = thorn_fixture();
-        rules.units[target].hp = 40;
-        rules.units[enemy].attacks[0].category = Category::Ranged;
-        rules.units[enemy].attacks[0].range = 2;
+        rules.units.to_mut()[target].hp = 40;
+        rules.units.to_mut()[enemy].attacks.to_mut()[0].category = Category::Ranged;
+        rules.units.to_mut()[enemy].attacks.to_mut()[0].range = 2;
         for (damage, count, armour, expected) in [
             (10, 1, 0, 40.0),
             (10, 1, -2, 50.0),
             (5, 2, -2, 40.0 * 10.0 / 6.0),
             (5, 2, -5, 200.0),
         ] {
-            rules.units[enemy].attacks[0].damage = damage;
-            rules.units[enemy].attacks[0].count = count;
-            rules.units[target].damage_modifiers.blade = armour;
+            rules.units.to_mut()[enemy].attacks.to_mut()[0].damage = damage;
+            rules.units.to_mut()[enemy].attacks.to_mut()[0].count = count;
+            rules.units.to_mut()[target].damage_modifiers.blade = armour;
             let (game, target, _) = thorn_battle(&rules, target, enemy);
             let view = BattleView::new(&game);
             let unit = game.unit(target).unwrap();
@@ -1007,8 +1007,8 @@ mod tests {
         // Recruiting should instead value the useful damage it can sustain.
         for (hp, damage) in [(100, 2), (30, 8)] {
             let (mut rules, target, enemy) = thorn_fixture();
-            rules.units[target].hp = hp;
-            let attack = &mut rules.units[target].attacks[0];
+            rules.units.to_mut()[target].hp = hp;
+            let attack = &mut rules.units.to_mut()[target].attacks.to_mut()[0];
             attack.category = Category::Ranged;
             attack.range = 2;
             attack.damage = damage;
@@ -1031,8 +1031,8 @@ mod tests {
         let mut scores = Vec::new();
         for hp in [40, 80] {
             let (mut rules, target, enemy) = thorn_fixture();
-            rules.units[target].hp = 80;
-            let attack = &mut rules.units[target].attacks[0];
+            rules.units.to_mut()[target].hp = 80;
+            let attack = &mut rules.units.to_mut()[target].attacks.to_mut()[0];
             attack.category = Category::Ranged;
             attack.range = 2;
             attack.damage = 8;
@@ -1058,17 +1058,17 @@ mod tests {
     #[test]
     fn recruitment_combat_and_future_healing_ignore_enemy_proximity() {
         let (mut rules, target, enemy) = thorn_fixture();
-        rules.units[target].attacks[0].category = Category::Ranged;
-        rules.units[target].attacks[0].range = 2;
-        rules.units[target].attacks[0].damage = 12;
-        rules.units[target].healing = 4;
-        rules.units[target].damage_modifiers.blade = -2;
+        rules.units.to_mut()[target].attacks.to_mut()[0].category = Category::Ranged;
+        rules.units.to_mut()[target].attacks.to_mut()[0].range = 2;
+        rules.units.to_mut()[target].attacks.to_mut()[0].damage = 12;
+        rules.units.to_mut()[target].healing = 4;
+        rules.units.to_mut()[target].damage_modifiers.blade = -2;
         let other = rules.types["scout"];
-        rules.units[other] = rules.units[enemy].clone();
-        rules.units[other].damage_modifiers.blade = -8;
-        rules.units[other].attacks[0].damage = 20;
-        rules.units[other].attacks[0].count = 1;
-        rules.units[other].attacks[0].damage_type = DamageType::Pierce;
+        rules.units.to_mut()[other] = rules.units.to_mut()[enemy].clone();
+        rules.units.to_mut()[other].damage_modifiers.blade = -8;
+        rules.units.to_mut()[other].attacks.to_mut()[0].damage = 20;
+        rules.units.to_mut()[other].attacks.to_mut()[0].count = 1;
+        rules.units.to_mut()[other].attacks.to_mut()[0].damage_type = DamageType::Pierce;
         let (mut game, target, enemy) = thorn_battle(&rules, target, enemy);
         let plains = rules.terrains["plains"];
         for tile in 0..game.terrain.len() {
@@ -1107,8 +1107,8 @@ mod tests {
             let mut samples = Vec::new();
             for movement in [1, 6] {
                 let (mut rules, target, enemy) = thorn_fixture();
-                rules.units[target].r#move = movement;
-                rules.units[target].healing = healing;
+                rules.units.to_mut()[target].r#move = movement;
+                rules.units.to_mut()[target].healing = healing;
                 let (mut game, target_id, enemy_id) = thorn_battle(&rules, target, enemy);
                 let start = game.site("1,4");
                 let end = game.site("8,4");
@@ -1162,7 +1162,7 @@ mod tests {
     #[test]
     fn intrinsic_thorns_use_pressure_without_also_counting_as_weapon_retaliation() {
         let (mut rules, target, enemy) = thorn_fixture();
-        rules.units[target].thorns = 3;
+        rules.units.to_mut()[target].thorns = 3;
         let (game, target, _) = thorn_battle(&rules, target, enemy);
         let unit = game.unit(target).unwrap();
         let view = BattleView::new(&game);

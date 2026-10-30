@@ -552,8 +552,8 @@ mod tests {
         let mut rules = Rules::load().unwrap();
         let a = rules.types["swordsman"];
         let b = rules.types["archer"];
-        rules.units[a].role = UnitRole::Warrior;
-        rules.units[b].role = UnitRole::Warrior;
+        rules.units.to_mut()[a].role = UnitRole::Warrior;
+        rules.units.to_mut()[b].role = UnitRole::Warrior;
         let mut game = crate::logic::Game::new(&rules, "mirror");
         game.units.retain(|u| rules.units[u.kind].leader);
         game.roster_changed();
@@ -576,7 +576,7 @@ mod tests {
             (0..64).map(|seed| draw(&game, seed)).collect();
         assert_eq!(outcomes.len(), 2);
         drop(game);
-        rules.units[b].role = UnitRole::Flank;
+        rules.units.to_mut()[b].role = UnitRole::Flank;
         let mut game = crate::logic::Game::new(&rules, "mirror");
         game.units.retain(|u| rules.units[u.kind].leader);
         game.roster_changed();
@@ -613,7 +613,7 @@ mod tests {
             UnitRole::Healer,
         ];
         for (&kind, role) in kinds.iter().zip(roles) {
-            rules.units[kind].role = role;
+            rules.units.to_mut()[kind].role = role;
         }
         for available in [kinds.to_vec(), vec![kinds[1], kinds[2]]] {
             let mut game = crate::logic::Game::new(&rules, "mirror");

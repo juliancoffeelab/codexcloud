@@ -143,7 +143,10 @@ fn routes_spend_the_whole_allowance_and_stop_at_blockers() {
 #[test]
 fn adjacency_matches_hex_distance_including_edges() {
     for (map, revision) in [("mirror", 1), ("river-valley", 2)] {
-        let game = Game::from_state(rules(), rules().maps[&(map.into(), revision)].clone());
+        let game = Game::from_state(
+            rules(),
+            rules().maps[&(map.to_owned(), revision)].instantiate(),
+        );
         for first in 0..game.board.ids.len() {
             let expected: Vec<_> = (0..game.board.ids.len())
                 .filter(|&second| game.board.distance(first, second) == 1)

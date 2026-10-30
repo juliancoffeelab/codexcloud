@@ -110,14 +110,15 @@ pub struct ScheduleOptions {
 impl ScheduleOptions {
     /// Resolve authored simulation defaults without starting any matches.
     pub fn defaults(rules: &Rules) -> Result<Self, SimulationError> {
-        let parse = |ids: &[String]| -> Result<Vec<Policy>, SimulationError> {
-            ids.iter()
-                .map(|id| {
-                    serde_json::from_value(serde_json::Value::String(id.clone()))
-                        .map_err(SimulationError::from)
-                })
-                .collect()
-        };
+        let parse =
+            |ids: &[std::borrow::Cow<'static, str>]| -> Result<Vec<Policy>, SimulationError> {
+                ids.iter()
+                    .map(|id| {
+                        serde_json::from_value(serde_json::Value::String(id.to_string()))
+                            .map_err(SimulationError::from)
+                    })
+                    .collect()
+            };
         Ok(Self {
             mode: Mode::Arena,
             with: None,
@@ -129,14 +130,21 @@ impl ScheduleOptions {
             max_rounds: rules.arena.default_max_rounds,
             campaign_max_rounds: rules.campaign_defaults.default_max_rounds,
             recruit_limit: None,
-            armies: rules.rosters.iter().map(|item| item.id.clone()).collect(),
+            armies: rules
+                .rosters
+                .iter()
+                .map(|item| item.id.to_string())
+                .collect(),
             landscapes: rules
                 .arena
                 .landscapes
                 .iter()
-                .map(|item| item.id.clone())
+                .map(|item| item.id.to_string())
                 .collect(),
-            campaigns: rules.campaign_defaults.campaigns.clone(),
+            campaigns: (rules.campaign_defaults.campaigns.clone())
+                .iter()
+                .map(ToString::to_string)
+                .collect(),
             policies: parse(&rules.arena.policies)?,
             campaign_players: None,
             campaign_enemies: None,
@@ -150,11 +158,11 @@ impl ScheduleOptions {
                         .player_diplomacy
                         .iter()
                         .map(|mode| {
-                            serde_json::from_value(serde_json::Value::String(mode.clone()))
+                            serde_json::from_value(serde_json::Value::String(mode.to_string()))
                                 .map_err(SimulationError::from)
                         })
                         .collect::<Result<Vec<_>, _>>()?;
-                    Ok((id.clone(), modes))
+                    Ok((id.to_string(), modes))
                 })
                 .collect::<Result<_, SimulationError>>()?,
             diplomacy: rules
@@ -162,7 +170,7 @@ impl ScheduleOptions {
                 .diplomacy
                 .iter()
                 .map(|id| {
-                    serde_json::from_value(serde_json::Value::String(id.clone()))
+                    serde_json::from_value(serde_json::Value::String(id.to_string()))
                         .map_err(SimulationError::from)
                 })
                 .collect::<Result<_, _>>()?,

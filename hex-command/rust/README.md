@@ -1,7 +1,8 @@
 # Rust game core
 
 [Authored JSON](data/README.md) supplies rules and scenario content directly.
-`data` owns definitions and snapshots, `logic` owns battle commands and campaign
+The `hex-command-catalog` mini crate owns definitions, snapshots and catalog validation;
+`logic` owns battle commands and campaign
 execution, and `ai` owns recruitment, campaign orders and planning. `simulation` owns scheduling,
 workers and records; `protocol` defines the browser transfer contract.
 
@@ -13,13 +14,34 @@ one match; the core needs no shared mutable catalog or synchronization locks.
 ## Core execution
 
 `Catalog::load_from` and `Catalog::from_json_bundle` validate content and resolve
-terrain/race/unit inheritance once. `Game` executes typed commands and owns battle
+terrain/race/unit inheritance once. Native hosts use disk content, including
+`--data-dir` overrides; explicit browser bundles use the same loader. `Game` executes typed commands and owns battle
 state. Occupancy and unit indexes avoid roster scans; terrain revisions invalidate
 cached route fields.
 
 AI tactics compose a recruiter, campaigner and planner. Each receives a restricted
 view and contributes to a shared turn draft. Native matches execute that draft;
 the browser consumes its command queue through revision-checked battle handles.
+
+## Baked catalog
+
+With the `wasm` feature, `build.rs` calls the catalog crate's host-only compiler.
+It validates authored JSON and emits resolved Rust statics into Cargo's `OUT_DIR`.
+The default WASM factory borrows that catalog directly: it performs no JSON parsing,
+inheritance resolution, fingerprint hashing or catalog collection construction.
+Content edits trigger regeneration through Cargo's directory dependency tracking.
+Generated files remain build artifacts; JSON remains the authoring source.
+
+Catalog strings and slices use `Cow`; baked values borrow literals, while native
+loads own their data. Ordered lookup tables borrow sorted entries and use binary
+search. Derived movement classes and content fingerprints are computed by the
+shared loader during compilation. Initial map snapshots and map-picker metadata
+use static templates: they become owned only when a match starts, a save is
+validated or metadata is requested. Live battle state and save formats remain owned.
+Road-cap validation also uses a generated static table.
+
+The catalog crate's `bake` feature and `databake` dependency are build-host tools;
+they are not needed by the WASM runtime. The crate is internal to this project.
 
 ## Browser contract
 
@@ -74,7 +96,8 @@ See [save migrations](../docs/save-migrations.md).
 `npm test` includes native rules, commands, catalog validation, saves, scheduling
 and recording tests together with Python and browser-adapter tests under one
 shared 20-second budget. `npm run check:rust` is available for a focused native run.
-Its WASM feature also compares embedded content with the authored disk catalog.
+Its WASM feature also compares every baked catalog field and deferred snapshot
+with the authored disk catalog.
 
 Use the [simulation guide](../.agents/skills/combat-simulation/SKILL.md) for
 commands, comparisons and interpreting evidence, and the

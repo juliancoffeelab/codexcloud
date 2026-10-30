@@ -58,8 +58,8 @@ struct InitialRoster {
 struct StageRoster {
     initial: InitialRoster,
     units: Vec<StartingUnit>,
-    recruits: Vec<String>,
-    enemy_recruits: Vec<String>,
+    recruits: Cow<'static, [Cow<'static, str>]>,
+    enemy_recruits: Cow<'static, [Cow<'static, str>]>,
     gold: i32,
     enemy_gold: i32,
 }
@@ -68,19 +68,19 @@ struct StageRoster {
 struct StageObjectives {
     goals: Vec<Goal>,
     #[serde(default)]
-    required_companions: Vec<String>,
+    required_companions: Cow<'static, [Cow<'static, str>]>,
     #[serde(default)]
     defend_objectives: bool,
-    enemy_leader_post: Option<String>,
+    enemy_leader_post: Option<Cow<'static, str>>,
 }
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct StageStory {
     #[serde(rename = "subtitle")]
-    subtitle: Option<String>,
-    briefing: String,
-    debrief: Option<String>,
-    hints: Vec<String>,
+    subtitle: Option<Cow<'static, str>>,
+    briefing: Cow<'static, str>,
+    debrief: Option<Cow<'static, str>>,
+    hints: Cow<'static, [Cow<'static, str>]>,
     intro: Vec<Dialogue>,
     victory: Vec<Dialogue>,
 }
@@ -89,7 +89,7 @@ struct StageStory {
 struct StageScripts {
     events: Vec<Event>,
     waves: Vec<Wave>,
-    companion_losses: Option<BTreeMap<String, MissionPatch>>,
+    companion_losses: Option<Table<Cow<'static, str>, MissionPatch>>,
     refuge: Option<Refuge>,
     without_dain: Option<MissionPatch>,
 }
@@ -114,6 +114,7 @@ pub(super) fn stage_path(campaign: &str, stage: &str) -> Result<String, ContentE
 }
 /// Load precisely the documents referenced by the manifest; unrelated files
 /// never affect native-versus-embedded catalog fingerprints.
+#[cfg(not(target_arch = "wasm32"))]
 pub(super) fn collect_bundle(
     mut source: impl FnMut(&str) -> Result<String, ContentError>,
 ) -> Result<JsonBundle, ContentError> {
@@ -196,8 +197,8 @@ pub(super) fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, Conten
     let story: StageStory = parse(bundle, &sibling(path, &documents.story)?)?;
     let scripts: StageScripts = parse(bundle, &sibling(path, &documents.scripts)?)?;
     let layout = Layout {
-        id: map.map_id.clone(),
-        units: roster.units,
+        id: map.map_id.clone().into(),
+        units: roster.units.into(),
     };
     Ok(StageFile {
         id: documents.id,
@@ -208,18 +209,18 @@ pub(super) fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, Conten
             briefing: story.briefing,
             debrief: story.debrief,
             hints: story.hints,
-            intro: story.intro,
-            victory: story.victory,
+            intro: story.intro.into(),
+            victory: story.victory.into(),
             required_companions: objectives.required_companions,
-            goals: objectives.goals,
+            goals: objectives.goals.into(),
             defend_objectives: objectives.defend_objectives,
             enemy_leader_post: objectives.enemy_leader_post,
             recruits: roster.recruits,
             enemy_recruits: roster.enemy_recruits,
             gold: roster.gold,
             enemy_gold: roster.enemy_gold,
-            events: scripts.events,
-            waves: scripts.waves,
+            events: scripts.events.into(),
+            waves: scripts.waves.into(),
             companion_losses: scripts.companion_losses,
             refuge: scripts.refuge,
             without_dain: scripts.without_dain,
@@ -256,9 +257,9 @@ pub(super) fn map_metadata(
                 Ok(StartingUnit {
                     col: tile.col,
                     row: tile.row,
-                    r#type: unit.r#type.clone(),
+                    r#type: unit.r#type.clone().into(),
                     side: unit.side,
-                    name: unit.name.clone(),
+                    name: unit.name.clone().map(Into::into),
                     role: unit.role,
                 })
             })

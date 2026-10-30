@@ -44,7 +44,7 @@ const checks = [
   {
     name: "Rust formatting",
     command: "cargo",
-    args: ["fmt", "--manifest-path", "rust/Cargo.toml"],
+    args: ["fmt", "--manifest-path", "rust/Cargo.toml", "--all"],
   },
   { name: "Unstaged whitespace", command: "git", args: ["diff", "--check", "--", "."] },
   {

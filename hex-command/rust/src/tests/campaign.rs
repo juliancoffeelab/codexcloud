@@ -107,8 +107,8 @@ fn authored_missions_have_valid_positions_and_restore_cleanly() {
     for campaign in rules().campaigns.values() {
         for (index, mission) in campaign.missions.iter().enumerate() {
             let game = chapter(&campaign.id, index);
-            for wave in &mission.waves {
-                for unit in &wave.units {
+            for wave in mission.waves.iter() {
+                for unit in wave.units.iter() {
                     assert!(
                         game.board
                             .indices

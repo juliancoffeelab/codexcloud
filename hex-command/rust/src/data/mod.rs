@@ -1,70 +1,23 @@
-//! Typed authored content, immutable catalog data and owned battle snapshots.
-use std::collections::HashMap;
-mod ids;
-mod recruitment;
-pub use ids::*;
-pub use recruitment::{RecruitmentProfiles, RecruitmentWeights};
-mod commands;
-pub use commands::*;
-mod units;
-pub use units::*;
-mod campaign;
-pub use campaign::*;
-mod state;
-pub use state::*;
-mod scenario;
-pub use scenario::*;
-mod objectives;
-pub use objectives::*;
-mod records;
-pub use records::*;
-pub mod catalog;
-pub use catalog::{
-    ArenaDefaults, ArmyRoster, CampaignDefaults, ContentError, EnvironmentalModifiers, JsonBundle,
-    LandscapeConfig, RaceDefinition, TerrainDefinition, TerrainModifier,
-};
-#[derive(Debug)]
-/// Loaded, validated content with inheritance resolved into runtime tables.
-///
-/// A host owns this value and lends it to battle operations. Authored array order
-/// determines the dense unit and terrain indices used inside each match.
-pub struct Rules {
-    /// SHA-256 of relative document paths and their exact JSON bytes.
-    pub content_fingerprint: String,
-    pub recruitment: RecruitmentProfiles,
-    /// Ordered simulation recruitment rosters, independent of campaign rosters.
-    pub rosters: Vec<ArmyRoster>,
-    /// Native arena defaults and landscape definitions.
-    pub arena: ArenaDefaults,
-    /// Native campaign workload defaults.
-    pub campaign_defaults: CampaignDefaults,
-    /// Terrain identifiers in dense runtime order.
-    pub terrain_names: Vec<String>,
-    /// Closed terrain variants in the same runtime order.
-    pub terrain_types: Vec<Terrain>,
-    /// Display labels corresponding to terrain identifiers.
-    pub terrain_labels: Vec<String>,
-    /// Display metadata from the same validated definitions used by the engine.
-    pub terrain_definitions: Vec<TerrainDefinition>,
-    /// Racial display metadata from the validated catalog.
-    pub race_definitions: Vec<RaceDefinition>,
-    /// Current authored map descriptions and layouts.
-    pub map_definitions: Vec<MapDefinition>,
-    /// Effective unit rules after terrain, race and unit inheritance.
-    pub units: Vec<UnitRule>,
-    pub(crate) movement_classes: Vec<usize>,
-    pub(crate) route_classes: Vec<usize>,
-    /// Authored unit identifiers mapped to dense runtime indices.
-    pub types: HashMap<String, usize>,
-    /// Authored terrain identifiers mapped to dense runtime indices.
-    pub terrains: HashMap<String, usize>,
-    /// Fresh initial states indexed by authored map and revision.
-    pub maps: HashMap<(String, u32), State>,
-    /// Arena layouts kept outside playable scenarios and map metadata.
-    pub arena_maps: HashMap<(String, u32), State>,
-    /// Campaign definitions indexed by their authored identifier.
-    pub campaigns: HashMap<String, Campaign>,
-}
+//! Catalog models and loading shared with the build-time compiler.
+pub use hex_command_catalog::data::*;
 
-/// Immutable authored content shared by battles and scoped simulation workers.
-pub type Catalog = Rules;
+#[cfg(feature = "wasm")]
+extern crate alloc;
+#[cfg(feature = "wasm")]
+include!(concat!(env!("OUT_DIR"), "/catalog_baked.rs"));
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub(crate) struct Unit {
+    pub id: u32,
+    pub kind: usize,
+    pub side: Side,
+    pub tile: usize,
+    pub hp: i32,
+    pub moved: bool,
+    pub attacked: bool,
+    pub experience: Option<u32>,
+    pub name: Option<String>,
+    pub role: Option<Role>,
+    pub retreating: Option<bool>,
+    pub rebuilding: Option<bool>,
+}

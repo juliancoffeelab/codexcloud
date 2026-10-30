@@ -1,4 +1,5 @@
 //! Resolved unit rules and serializable unit snapshots.
+use std::borrow::Cow;
 
 use super::*;
 use serde::{Deserialize, Serialize};
@@ -6,6 +7,8 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "lowercase")]
 pub enum Side {
     Player,
@@ -29,6 +32,8 @@ impl Side {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "lowercase")]
 pub enum Category {
     Melee,
@@ -44,6 +49,8 @@ impl Category {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "lowercase")]
 pub enum DamageType {
     Blade,
@@ -64,10 +71,12 @@ impl DamageType {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct Weapon {
-    pub id: String,
-    pub name: String,
+    pub id: Cow<'static, str>,
+    pub name: Cow<'static, str>,
     pub damage: i32,
     /// Uniform raw roll is damage ± spread, inclusive; omitted means fixed damage.
     #[serde(default)]
@@ -78,7 +87,7 @@ pub struct Weapon {
     pub damage_type: DamageType,
     pub category: Category,
     pub range: u8,
-    pub sound: String,
+    pub sound: Cow<'static, str>,
     /// Percentage of actual HP removed restored to a surviving wielder.
     #[serde(default)]
     pub drain: u8,
@@ -87,6 +96,8 @@ pub struct Weapon {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "camelCase")]
 pub struct DamageModifiers {
     pub blade: i32,
@@ -107,6 +118,8 @@ impl DamageModifiers {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "lowercase")]
 pub enum UnitRole {
     Warrior,
@@ -143,18 +156,20 @@ impl UnitRole {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "camelCase")]
 pub struct UnitRule {
-    pub ability: String,
-    pub description: String,
-    pub id: String,
-    pub name: String,
+    pub ability: Cow<'static, str>,
+    pub description: Cow<'static, str>,
+    pub id: Cow<'static, str>,
+    pub name: Cow<'static, str>,
     pub hp: i32,
     pub r#move: usize,
     pub damage: i32,
     pub range: u8,
     pub cost: i32,
-    pub attacks: Vec<Weapon>,
+    pub attacks: Cow<'static, [Weapon]>,
     pub damage_modifiers: DamageModifiers,
     pub race: Race,
     pub role: UnitRole,
@@ -173,14 +188,16 @@ pub struct UnitRule {
     pub family: Family,
     pub experience_needed: Option<u32>,
     #[serde(default)]
-    pub advances_to: Vec<String>,
-    pub costs: Vec<Option<u16>>,
-    pub environment: Vec<[[i32; 3]; 2]>,
+    pub advances_to: Cow<'static, [Cow<'static, str>]>,
+    pub costs: Cow<'static, [Option<u16>]>,
+    pub environment: Cow<'static, [[[i32; 3]; 2]]>,
 }
 /// An owned unit snapshot preserving stable IDs and optional campaign metadata.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "camelCase")]
 pub struct PublicUnit {
     pub id: String,
@@ -206,25 +223,12 @@ pub struct PublicUnit {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub rebuilding: Option<bool>,
 }
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-pub(crate) struct Unit {
-    pub id: u32,
-    pub kind: usize,
-    pub side: Side,
-    pub tile: usize,
-    pub hp: i32,
-    pub moved: bool,
-    pub attacked: bool,
-    pub experience: Option<u32>,
-    pub name: Option<String>,
-    pub role: Option<Role>,
-    pub retreating: Option<bool>,
-    pub rebuilding: Option<bool>,
-}
 /// Feedback identifying the latest attack until the next turn clears it.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "camelCase")]
 pub struct LastCombat {
     pub attacker_id: String,
@@ -235,6 +239,8 @@ pub struct LastCombat {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "camelCase")]
 pub struct Veteran {
     pub r#type: String,

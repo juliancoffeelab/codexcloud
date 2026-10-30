@@ -42,7 +42,7 @@ pub fn validate_state(rules: &Rules, state: &State) -> Result<(), StateError> {
         .maps
         .get(&(state.map_id.clone(), state.map_revision))
         .ok_or_else(|| StateError("unknown map revision".into()))?;
-    validate_state_geometry(rules, state, authored)
+    validate_state_geometry(rules, state, &authored.instantiate())
 }
 /// Native generated arenas use a validated generated layout instead of an authored map.
 pub(crate) fn validate_state_geometry(
@@ -163,7 +163,7 @@ pub(crate) fn validate_state_geometry(
         }
         let previous_companions: HashSet<_> = definition.missions[..campaign.mission]
             .iter()
-            .flat_map(|mission| &mission.map.units)
+            .flat_map(|mission| mission.map.units.iter())
             .filter(|unit| unit.side == Side::Player && unit.role != Some(Role::Leader))
             .filter_map(|unit| unit.name.as_deref())
             .collect();
@@ -210,7 +210,8 @@ pub(crate) fn validate_state_geometry(
                             && (if veteran.role == Some(Role::Leader) {
                                 unit.role == Some(Role::Leader)
                             } else {
-                                veteran.name.is_some() && veteran.name == unit.name
+                                veteran.name.is_some()
+                                    && veteran.name.as_deref() == unit.name.as_deref()
                             })
                             && rules.units[rules.types[&unit.r#type]].family == *family
                     })

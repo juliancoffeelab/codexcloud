@@ -1,4 +1,5 @@
 //! Persistent campaign progress, companions and dialogue state.
+use std::borrow::Cow;
 
 use super::*;
 use serde::{Deserialize, Serialize};
@@ -7,15 +8,19 @@ use std::collections::BTreeMap;
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 pub struct Dialogue {
-    pub speaker: String,
-    pub portrait: String,
-    pub text: String,
+    pub speaker: Cow<'static, str>,
+    pub portrait: Cow<'static, str>,
+    pub text: Cow<'static, str>,
 }
 /// Consecutive defended turns and the last round counted for an objective.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "camelCase")]
 pub struct Counter {
     pub held_turns: u32,
@@ -25,6 +30,8 @@ pub struct Counter {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "camelCase")]
 pub struct RefugeCounter {
     pub held_turns: u32,
@@ -35,6 +42,8 @@ pub struct RefugeCounter {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "camelCase")]
 pub struct CampaignState {
     pub id: String,
@@ -73,7 +82,7 @@ impl CampaignState {
     pub fn marked(&self, mark: &str) -> bool {
         self.marks.iter().any(|m| m == mark)
     }
-    pub(crate) fn marked_prefixed(&self, prefix: &str, value: &str) -> bool {
+    pub fn marked_prefixed(&self, prefix: &str, value: &str) -> bool {
         self.marks
             .iter()
             .any(|mark| mark.strip_prefix(prefix) == Some(value))

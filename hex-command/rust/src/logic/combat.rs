@@ -339,7 +339,7 @@ impl<'catalog> Game<'catalog> {
                     let rule = &self.rules.units[defender.kind];
                     playback.push(crate::protocol::CombatStrike {
                         side: actor.side,
-                        weapon: attack.name.clone(),
+                        weapon: attack.name.to_string(),
                         roll_min: attack.damage - attack.spread,
                         roll_max: attack.damage + attack.spread,
                         raw,
@@ -424,8 +424,8 @@ impl<'catalog> Game<'catalog> {
         }
         self.last_combat = Some(LastCombat {
             attacker_id: format!("u{id}"),
-            attack_id: attack.id.clone(),
-            sound: attack.sound.clone(),
+            attack_id: attack.id.to_string(),
+            sound: attack.sound.to_string(),
         });
         self.combat_present = true;
         self.units[a].moved = true;
@@ -483,7 +483,7 @@ impl<'catalog> Game<'catalog> {
                             .any(|chapter| {
                                 chapter.map.units.iter().any(|incoming| {
                                     incoming.side == Side::Player
-                                        && incoming.name.as_ref() == Some(name)
+                                        && incoming.name.as_deref() == Some(name.as_ref())
                                 })
                             })
                         {
@@ -524,7 +524,7 @@ impl<'catalog> Game<'catalog> {
         self.action(ActionRecord::Attack {
             unit: format!("u{id}"),
             target: format!("u{target_id}"),
-            weapon: attack.id.clone(),
+            weapon: attack.id.to_string(),
         });
         if let Some(records) = &mut self.recordings {
             records.losses.extend(before.into_iter().filter(|unit| {
@@ -536,7 +536,7 @@ impl<'catalog> Game<'catalog> {
             records.combats.push(CombatRecord {
                 unit: format!("u{id}"),
                 target: format!("u{target_id}"),
-                weapon: attack.id,
+                weapon: attack.id.to_string(),
                 from: self.board.ids[attacker.tile].clone(),
                 target_tile: self.board.ids[target.tile].clone(),
                 damage,

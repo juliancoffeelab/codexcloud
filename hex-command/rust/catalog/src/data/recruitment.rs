@@ -2,6 +2,8 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(default, rename_all = "camelCase", deny_unknown_fields)]
 pub struct RecruitmentWeights {
     pub offense: f64,
@@ -53,6 +55,8 @@ impl Default for RecruitmentWeights {
     }
 }
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "bake", derive(databake::Bake))]
+#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(default, rename_all = "camelCase", deny_unknown_fields)]
 pub struct RecruitmentProfiles {
     pub standard: RecruitmentWeights,

@@ -132,25 +132,25 @@ mod tests {
         alternative.hp = 40;
         alternative.cost = 10;
         alternative.healing = 0;
-        alternative.attacks.truncate(1);
-        alternative.attacks[0].damage = 10;
-        alternative.attacks[0].count = 1;
-        alternative.attacks[0].category = Category::Melee;
-        alternative.attacks[0].range = 1;
+        alternative.attacks.to_mut().truncate(1);
+        alternative.attacks.to_mut()[0].damage = 10;
+        alternative.attacks.to_mut()[0].count = 1;
+        alternative.attacks.to_mut()[0].category = Category::Melee;
+        alternative.attacks.to_mut()[0].range = 1;
         alternative.damage_modifiers = DamageModifiers {
             blade: 0,
             pierce: 0,
             impact: 0,
         };
-        for environment in &mut alternative.environment {
+        for environment in alternative.environment.to_mut().iter_mut() {
             *environment = [[0; 3]; 2];
         }
         alternative.id = rules.units[a].id.clone();
-        rules.units[a] = alternative.clone();
+        rules.units.to_mut()[a] = alternative.clone();
         alternative.id = rules.units[b].id.clone();
-        rules.units[b] = alternative;
-        rules.route_classes[a] = a;
-        rules.route_classes[b] = b;
+        rules.units.to_mut()[b] = alternative;
+        rules.route_classes.to_mut()[a] = a;
+        rules.route_classes.to_mut()[b] = b;
         (rules, a, b)
     }
 
@@ -175,17 +175,17 @@ mod tests {
     #[test]
     fn one_strike_is_preferred_to_equal_damage_multiple_strikes_against_thorns() {
         let (mut rules, a, b) = fixture();
-        rules.units[a].attacks[0].damage = 6;
-        rules.units[a].attacks[0].count = 3;
-        rules.units[b].attacks[0].damage = 18;
+        rules.units.to_mut()[a].attacks.to_mut()[0].damage = 6;
+        rules.units.to_mut()[a].attacks.to_mut()[0].count = 3;
+        rules.units.to_mut()[b].attacks.to_mut()[0].damage = 18;
         let enemy = battle(&rules, a, b)
             .units
             .iter()
             .find(|u| u.side == Side::Enemy)
             .unwrap()
             .kind;
-        rules.units[enemy].hp = 100;
-        rules.units[enemy].thorns = 4;
+        rules.units.to_mut()[enemy].hp = 100;
+        rules.units.to_mut()[enemy].thorns = 4;
         assert_eq!(
             selected(&battle(&rules, a, b), &RecruitmentOrders::default()),
             Some(b)
@@ -197,9 +197,9 @@ mod tests {
         for armor in [false, true] {
             let (mut rules, a, b) = fixture();
             if armor {
-                rules.units[b].damage_modifiers.blade = -6;
+                rules.units.to_mut()[b].damage_modifiers.blade = -6;
             } else {
-                rules.units[b].thorns = 12;
+                rules.units.to_mut()[b].thorns = 12;
             }
             let enemy = battle(&rules, a, b)
                 .units
@@ -207,12 +207,12 @@ mod tests {
                 .find(|u| u.side == Side::Enemy)
                 .unwrap()
                 .kind;
-            rules.units[enemy].attacks.truncate(1);
-            rules.units[enemy].attacks[0].category = Category::Melee;
-            rules.units[enemy].attacks[0].range = 1;
-            rules.units[enemy].attacks[0].damage_type = DamageType::Blade;
-            rules.units[enemy].attacks[0].damage = 8;
-            rules.units[enemy].attacks[0].count = 3;
+            rules.units.to_mut()[enemy].attacks.to_mut().truncate(1);
+            rules.units.to_mut()[enemy].attacks.to_mut()[0].category = Category::Melee;
+            rules.units.to_mut()[enemy].attacks.to_mut()[0].range = 1;
+            rules.units.to_mut()[enemy].attacks.to_mut()[0].damage_type = DamageType::Blade;
+            rules.units.to_mut()[enemy].attacks.to_mut()[0].damage = 8;
+            rules.units.to_mut()[enemy].attacks.to_mut()[0].count = 3;
             assert_eq!(
                 selected(&battle(&rules, a, b), &RecruitmentOrders::default()),
                 Some(b)
@@ -223,9 +223,9 @@ mod tests {
     #[test]
     fn valuable_expensive_recruit_can_wait_for_income() {
         let (mut rules, a, b) = fixture();
-        rules.units[b].cost = 12;
-        rules.units[b].hp = 80;
-        rules.units[b].attacks[0].damage = 20;
+        rules.units.to_mut()[b].cost = 12;
+        rules.units.to_mut()[b].hp = 80;
+        rules.units.to_mut()[b].attacks.to_mut()[0].damage = 20;
         let mut game = battle(&rules, a, b);
         let village = game
             .terrain
@@ -248,8 +248,8 @@ mod tests {
     #[test]
     fn modest_upgrade_does_not_delay_an_affordable_recruit() {
         let (mut rules, a, b) = fixture();
-        rules.units[b].cost = 12;
-        rules.units[b].hp = 54;
+        rules.units.to_mut()[b].cost = 12;
+        rules.units.to_mut()[b].hp = 54;
         let mut game = battle(&rules, a, b);
         let village = game
             .terrain
@@ -267,15 +267,15 @@ mod tests {
     #[test]
     fn movement_and_armor_per_strike_affect_matchups() {
         let (mut rules, a, b) = fixture();
-        rules.units[b].r#move = rules.units[a].r#move * 2;
+        rules.units.to_mut()[b].r#move = rules.units.to_mut()[a].r#move * 2;
         assert_eq!(
             selected(&battle(&rules, a, b), &RecruitmentOrders::default()),
             Some(b)
         );
-        rules.units[b].r#move = rules.units[a].r#move;
-        rules.units[a].attacks[0].damage = 6;
-        rules.units[a].attacks[0].count = 3;
-        rules.units[b].attacks[0].damage = 18;
+        rules.units.to_mut()[b].r#move = rules.units.to_mut()[a].r#move;
+        rules.units.to_mut()[a].attacks.to_mut()[0].damage = 6;
+        rules.units.to_mut()[a].attacks.to_mut()[0].count = 3;
+        rules.units.to_mut()[b].attacks.to_mut()[0].damage = 18;
         let enemy = battle(&rules, a, b)
             .units
             .iter()
@@ -283,8 +283,8 @@ mod tests {
             .unwrap()
             .kind;
         let damage_type = rules.units[a].attacks[0].damage_type;
-        rules.units[b].attacks[0].damage_type = damage_type;
-        rules.units[enemy].damage_modifiers = DamageModifiers {
+        rules.units.to_mut()[b].attacks.to_mut()[0].damage_type = damage_type;
+        rules.units.to_mut()[enemy].damage_modifiers = DamageModifiers {
             blade: -4,
             pierce: -4,
             impact: -4,
@@ -298,8 +298,8 @@ mod tests {
     #[test]
     fn enemy_resistance_changes_selection() {
         let (mut rules, a, b) = fixture();
-        rules.units[a].attacks[0].damage_type = DamageType::Blade;
-        rules.units[b].attacks[0].damage_type = DamageType::Pierce;
+        rules.units.to_mut()[a].attacks.to_mut()[0].damage_type = DamageType::Blade;
+        rules.units.to_mut()[b].attacks.to_mut()[0].damage_type = DamageType::Pierce;
         let enemy = battle(&rules, a, b)
             .units
             .iter()
@@ -307,9 +307,9 @@ mod tests {
             .unwrap()
             .kind;
         for (blade, pierce, expected) in [(-10, 0, b), (0, -10, a)] {
-            rules.units[enemy].damage_modifiers.blade = blade;
-            rules.units[enemy].damage_modifiers.pierce = pierce;
-            for environment in &mut rules.units[enemy].environment {
+            rules.units.to_mut()[enemy].damage_modifiers.blade = blade;
+            rules.units.to_mut()[enemy].damage_modifiers.pierce = pierce;
+            for environment in rules.units.to_mut()[enemy].environment.to_mut().iter_mut() {
                 *environment = [[0; 3]; 2];
             }
             assert_eq!(
@@ -323,8 +323,8 @@ mod tests {
     fn terrain_access_and_campaign_requirements_override_free_selection() {
         let (mut rules, a, b) = fixture();
         let water = rules.terrains["water"];
-        rules.units[a].costs[water] = None;
-        rules.units[b].costs[water] = Some(1);
+        rules.units.to_mut()[a].costs.to_mut()[water] = None;
+        rules.units.to_mut()[b].costs.to_mut()[water] = Some(1);
         let mut game = battle(&rules, a, b);
         let leader = game
             .units
@@ -349,7 +349,7 @@ mod tests {
         assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(b));
         let mut orders = RecruitmentOrders {
             requirements: vec![crate::ai::orders::RecruitRequirement::EnsureUnits {
-                selector: crate::ai::orders::UnitSelector::Type(rules.units[a].id.as_str().into()),
+                selector: crate::ai::orders::UnitSelector::Type(rules.units[a].id.as_ref().into()),
                 count: 1,
             }],
             ..Default::default()
@@ -369,8 +369,8 @@ mod tests {
     #[test]
     fn wounded_company_creates_healing_demand() {
         let (mut rules, a, b) = fixture();
-        rules.units[b].healing = 20;
-        rules.units[b].attacks[0].damage = 0;
+        rules.units.to_mut()[b].healing = 20;
+        rules.units.to_mut()[b].attacks.to_mut()[0].damage = 0;
         let mut game = battle(&rules, a, b);
         let leader = game
             .units
