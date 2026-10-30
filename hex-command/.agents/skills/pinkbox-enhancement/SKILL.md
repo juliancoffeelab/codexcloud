@@ -1,14 +1,35 @@
 ---
 name: pinkbox-enhancement
-description: Use for recoloring or redesigning existing Hex Command units, creating upgrade artwork, or recoloring terrain floors.
+description: Use to revise approved pixel artwork manually or through another pinkbox generation, including unit upgrades and terrain changes.
 ---
 
 # Pinkbox enhancement
 
 Work from the game root with Python 3 and Pillow. Save the approved matrix and
 palette as an exact baseline in `tmp/`.
-Identify the requested changes to anatomy, pose, grips, equipment, materials and
-faction cloth. Preserve the shared pixel scale; progression needs readable shapes.
+Identify the requested shape, pose, equipment, material or composition changes.
+Use [design-unit](../design-unit/SKILL.md) or
+[design-terrain](../design-terrain/SKILL.md) for subject-specific requirements.
+Preserve the shared pixel scale.
+
+## Choose an enhancement route
+
+There are two ways to enhance approved artwork:
+
+- **Manual:** edit individually reviewed native pixels or explicitly selected
+  material regions. This preserves approved details for small, controlled
+  changes; use the guarded editor for shape/boundary edits and the fill helper
+  for material recoloring.
+- **Another pinkbox generation:** use approved artwork as the first anchor
+  and prompt for the requested changes. This is often safer for substantial
+  silhouette, anatomy or equipment changes than reshaping everything by hand.
+  It can still damage correct details and always needs extraction, comparison
+  with the approved baseline, and another cleanup pass. Generation does not
+  make enhancement free or remove the cleanup work.
+
+Both routes finish with [pixel-cleaning](../pixel-cleaning/SKILL.md).
+
+## Manual changes
 
 For palette changes, inspect actual surfaces before recoloring. Keep skin and
 cloth colors unless the user asks to change them. Preserve outlines, alpha and
@@ -21,14 +42,16 @@ has `seed: [x,y]`, `mapping: {old: new}`, `expected_pixels`, `material` and `rea
 Optional `palette_additions` maps new material symbols to RGBA colors. Use a fresh
 output directory under `tmp/`. The helper produces the candidate matrix/palette,
 an exact `before/` copy, a change record and comparison image. Outline, transparency
-and faction-cloth changes use individually reviewed [pixel edits](../pixel-cleaning/SKILL.md#unit-sprites).
+and faction-cloth changes use individually reviewed [pixel edits](../pixel-cleaning/SKILL.md#repair).
 
 ```sh
 python3 .agents/skills/pinkbox-enhancement/scripts/fill.py \
   pixel/art/units/humans/adept/sprite.txt tmp/upgrade/fill.json tmp/upgrade/candidate
 ```
 
-For new anatomy, silhouettes or equipment shapes, use
+## Regeneration
+
+For new anatomy, silhouettes, equipment or terrain shapes, use
 [pinkbox generation](../pinkbox-generation/SKILL.md). Specify the changes in the
 prompt and save the unchanged output. Prepare a separate native 64×64 template
 for each tier, with the approved unit first and two style anchors:
@@ -38,13 +61,20 @@ python3 .agents/skills/pinkbox-enhancement/scripts/prepare.py \
   scout tmp/scout-upgrade/template.png --label 'Scout L2' --style-anchors ranger archer
 ```
 
-The template preserves the approved unit's flying/swimming pose flag by default.
+The helper infers the approved matrix kind; use `--kind prop` for isolated
+pieces in scratch directories. Unit templates preserve the approved unit's
+flying/swimming pose flag by default.
 Use `--flying` or `--no-flying` only when changing that pose. Pass `--output-palette`
 when its material colors must stay fixed.
 
+## Terrain and integration
+
 For terrain floor recoloring, change the selected shared palette or a tile's
 floor selection as described in [terrain artwork](../../../docs/terrain-artwork.md).
-The matrix stays unchanged; inspect the affected tiles after rebuilding artwork.
+The matrix stays unchanged; inspect affected tiles after rebuilding artwork.
+Terrain/prop fill candidates preserve the matrix filename and carry resolved
+floor colors for scratch previews. Before integration, keep canonical `G`/`g`
+colors in `floors.json`, not local material palettes.
 
 Use [pixel cleaning](../pixel-cleaning/SKILL.md) before showing the result and
 [lineup previews](../pixel-lineup/SKILL.md) for progression. Show clean matrix
