@@ -32,7 +32,7 @@
     "wasm:build": "node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts wasm-pack build rust --target web --dev --out-dir pkg --out-name hex_command --no-pack --no-opt --locked --features wasm",
     "prewasm:build": "npm run content:check",
     "prewasm:build:release": "npm run content:check",
-    "wasm:build:release": "node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts wasm-pack build rust --target web --release --out-dir pkg --out-name hex_command --no-pack --no-opt --locked --features wasm",
+    "wasm:build:release": "node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts wasm-pack build rust --target web --release --out-dir pkg --out-name hex_command --no-pack --no-opt --locked --features wasm && node --import tsx scripts/strip-wasm.ts rust/pkg/hex_command_bg.wasm",
     "check:wasm": "npm run wasm:build && tsc --noEmit --strict --target ES2022 --module ESNext --moduleResolution Bundler rust/pkg/hex_command.d.ts",
     "toolchain:setup": "node --import tsx .agents/skills/rust-toolchain/scripts/setup-toolchain-shell.ts"
   },

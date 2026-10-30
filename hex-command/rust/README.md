@@ -81,7 +81,10 @@ npm run check:wasm
 
 `wasm-pack` is pinned as an npm development dependency and installs the matching
 `wasm-bindgen` tool. Development and type-check commands build the bindings before
-using them; the production build uses the release profile. When npm runs
+using them; the production build uses the release profile and removes diagnostic
+function names and DWARF sections from the final WASM. Development builds retain
+names for debugging. Executable sections, exports and target-feature metadata are
+preserved. When npm runs
 behind an environment proxy, use `NODE_USE_ENV_PROXY=1 npm ci` with Node 24.5 or
 newer so its binary installer uses that proxy.
 
