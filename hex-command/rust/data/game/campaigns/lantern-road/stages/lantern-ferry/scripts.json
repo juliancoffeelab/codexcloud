@@ -1,35 +1,318 @@
 {
   "events": [
     {
-      "id": "ferryman",
+      "id": "contact-route-scout",
       "trigger": {
-        "kind": "visit",
-        "tile": "9,1"
+        "kind": "condition",
+        "condition": {
+          "kind": "proximity",
+          "tile": "5,6",
+          "radius": 1,
+          "side": "player"
+        }
       },
-      "label": "Find the ferryman’s purse in the riverside ruin",
-      "gold": 6,
+      "label": "A scouting patrol joins the company",
+      "dialogue": [
+        {
+          "speaker": "Scout",
+          "portrait": "scout",
+          "text": "We were scouting these woods. We can join your patrol."
+        }
+      ],
+      "spawn": {
+        "area": ["5,6", "4,5", "5,5", "4,6", "6,6", "4,7", "5,7"],
+        "units": [
+          {
+            "type": "scout",
+            "side": "player",
+            "id": "member-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "contact-western-scout",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "proximity",
+          "tile": "2,5",
+          "radius": 1,
+          "side": "player"
+        }
+      },
+      "label": "A scouting patrol joins the company",
+      "dialogue": [
+        {
+          "speaker": "Scout",
+          "portrait": "scout",
+          "text": "We were scouting these woods. We can join your patrol."
+        }
+      ],
+      "spawn": {
+        "area": ["2,5", "2,4", "3,4", "1,5", "3,5", "2,6", "3,6"],
+        "units": [
+          {
+            "type": "scout",
+            "side": "player",
+            "id": "member-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "contact-northern-scout",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "proximity",
+          "tile": "4,3",
+          "radius": 1,
+          "side": "player"
+        }
+      },
+      "label": "A scouting patrol joins the company",
+      "dialogue": [
+        {
+          "speaker": "Scout",
+          "portrait": "scout",
+          "text": "We were scouting these woods. We can join your patrol."
+        }
+      ],
+      "spawn": {
+        "area": ["4,3", "4,2", "5,2", "3,3", "5,3", "4,4", "5,4"],
+        "units": [
+          {
+            "type": "scout",
+            "side": "player",
+            "id": "member-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "quarry-bear",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "proximity",
+          "tile": "3,0",
+          "radius": 1,
+          "side": "player"
+        }
+      },
+      "label": "A bear emerges from the cave",
+      "dialogue": [],
+      "spawn": {
+        "area": ["2,1", "3,0", "3,1"],
+        "units": [
+          {
+            "type": "bear",
+            "side": "enemy",
+            "id": "member-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "western-ford",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "proximity",
+          "tile": "7,5",
+          "radius": 0,
+          "side": "player"
+        }
+      },
+      "label": "Three bats burst from the island woods",
+      "dialogue": [],
+      "spawn": {
+        "area": ["13,4", "14,5", "14,7"],
+        "units": [
+          {
+            "type": "giant-bat",
+            "side": "enemy",
+            "id": "member-1"
+          },
+          {
+            "type": "giant-bat",
+            "side": "enemy",
+            "id": "member-2"
+          },
+          {
+            "type": "giant-bat",
+            "side": "enemy",
+            "id": "member-3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "eastern-ford",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "proximity",
+          "tile": "17,8",
+          "radius": 0,
+          "side": "player"
+        }
+      },
+      "label": "The skeletons notice the patrol",
       "dialogue": [
         {
           "speaker": "Ferryman",
           "portrait": "scout",
-          "text": "Take it. Six coins will not buy my ferry back, but perhaps they will buy someone else a morning."
+          "text": "Help! They\u2019re breaking down the door!"
         }
       ]
+    },
+    {
+      "id": "house-visit",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "proximity",
+          "tile": "18,10",
+          "radius": 0,
+          "side": "player"
+        }
+      },
+      "label": "The patrol reaches the ferryman",
+      "dialogue": [
+        {
+          "speaker": "Nera",
+          "portrait": "swordsman",
+          "text": "We saw your lantern go out. What happened here?"
+        },
+        {
+          "speaker": "Ferryman",
+          "portrait": "scout",
+          "text": "Skeletons came from the eastern road. They took the villagers."
+        },
+        {
+          "speaker": "Mage",
+          "portrait": "adept",
+          "text": "Who commands them?"
+        },
+        {
+          "speaker": "Ferryman",
+          "portrait": "scout",
+          "text": "A lich. Light the villages if you can\u2014but watch what has moved into those houses."
+        }
+      ]
+    },
+    {
+      "id": "village-1",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "proximity",
+          "tile": "21,5",
+          "radius": 0,
+          "side": "player"
+        }
+      },
+      "label": "Spiders emerge from the village",
+      "dialogue": [
+        {
+          "speaker": "Ivo",
+          "portrait": "scout",
+          "text": "Since when do spiders get that big?"
+        }
+      ],
+      "spawn": {
+        "area": ["20,5", "21,4", "21,5", "21,6", "22,4", "22,5", "22,6"],
+        "units": [
+          {
+            "type": "giant-spider",
+            "side": "enemy",
+            "id": "member-1"
+          },
+          {
+            "type": "giant-spider",
+            "side": "enemy",
+            "id": "member-2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "village-2",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "proximity",
+          "tile": "21,12",
+          "radius": 0,
+          "side": "player"
+        }
+      },
+      "label": "Spiders emerge from the village",
+      "dialogue": [
+        {
+          "speaker": "Ivo",
+          "portrait": "scout",
+          "text": "Since when do spiders get that big?"
+        }
+      ],
+      "spawn": {
+        "area": ["20,12", "20,11", "21,12", "20,13", "21,11", "22,12", "21,13"],
+        "units": [
+          {
+            "type": "giant-spider",
+            "side": "enemy",
+            "id": "member-1"
+          },
+          {
+            "type": "giant-spider",
+            "side": "enemy",
+            "id": "member-2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "villages-secured",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "all",
+          "conditions": [
+            {
+              "kind": "event",
+              "event": "house-visit"
+            },
+            {
+              "kind": "event",
+              "event": "village-1"
+            },
+            {
+              "kind": "event",
+              "event": "village-2"
+            },
+            {
+              "kind": "owner",
+              "tile": "21,5",
+              "side": "player"
+            },
+            {
+              "kind": "owner",
+              "tile": "21,12",
+              "side": "player"
+            },
+            {
+              "kind": "noUnits",
+              "side": "enemy",
+              "unitType": "giant-spider"
+            }
+          ]
+        }
+      },
+      "label": "The eastern villages are lit and the spiders are defeated",
+      "dialogue": []
     }
   ],
-  "waves": [
-    {
-      "round": 6,
-      "label": "A skeleton patrol arrives from the southern road on turn 6",
-      "id": "southern-patrol",
-      "units": [
-        {
-          "type": "skeleton",
-          "side": "enemy",
-          "col": 11,
-          "row": 6
-        }
-      ]
-    }
-  ]
+  "waves": []
 }

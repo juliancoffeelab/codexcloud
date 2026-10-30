@@ -57,10 +57,12 @@ def require_terrain_variants(kind, stems, road_caps):
         expected = {'tile'} | {str(mask) for mask in range(1, 64) if mask != 9}
         expected |= {f'{exits}-end-{ends}' for exits, ends in road_caps}
     elif kind == 'village':
-        expected = {'tile', '0'} | {str(mask) for mask in range(1, 64)
-                                    if mask != 9 and mask.bit_count() <= 3}
+        expected = {'0'} | {str(mask) for mask in range(1, 64)
+                            if mask.bit_count() <= 3}
     elif kind in ('bridge', 'ford'):
         expected = {'tile', 'ne-sw', 'nw-se'}
+    elif kind in ('landing', 'ferry'):
+        expected = {'tile', 'east'}
     else:
         return
     missing, unsupported = expected - set(stems), set(stems) - expected
@@ -188,18 +190,16 @@ def load_terrain_floors():
         if not re.fullmatch(r'[a-z][a-z0-9-]*', name):
             raise ValueError(f'Invalid floor name: {name!r}')
         require_shared_palette(palette, ('G', 'g'), f'{name} floor')
-    for kind, name in floors['defaults'].items():
-        if name not in floors['palettes']:
-            raise ValueError(f'{kind}: unknown default floor {name!r}')
     return floors
 
 
 def terrain_floor_palette(kind, floor=None):
     floors = load_terrain_floors()
-    name = floor if floor is not None else floors['defaults'].get(kind)
-    if name not in floors['palettes']:
-        raise ValueError(f'{kind}: unknown floor {name!r}')
-    return floors['palettes'][name]
+    if floor is None:
+        return {'G': [0, 0, 0, 0], 'g': [0, 0, 0, 0]}
+    if floor not in floors['palettes']:
+        raise ValueError(f'{kind}: unknown floor {floor!r}')
+    return floors['palettes'][floor]
 
 
 def chunk(kind, data):
@@ -396,17 +396,18 @@ def pixel_sprites():
 
     def add_terrain(key, matrix):
         terrain[key] = rgba_pixels(matrix)
-        if not any(terrain[key][2][3::4]):
-            raise ValueError(f'{matrix}: expected nonempty terrain artwork')
         for floor in floors['palettes']:
             terrain[f'{key}__{floor}'] = rgba_pixels(matrix, floor=floor)
+            if not any(terrain[f'{key}__{floor}'][2][3::4]):
+                raise ValueError(f'{matrix}: expected nonempty terrain artwork')
 
-    for matrix in sorted((ART / "terrain").glob("*/tile.txt")):
-        key = f"terrain_{FRAME_NAMES.get(matrix.parent.name, matrix.parent.name)}"
-        add_terrain(key, matrix)
-        kind = matrix.parent.name
+    for palette in sorted((ART / "terrain").glob("*/palette.json")):
+        kind = palette.parent.name
+        matrix = palette.parent / ('0.txt' if kind == 'village' else 'tile.txt')
+        key = f"terrain_{FRAME_NAMES.get(kind, kind)}"
+        add_terrain(f'{key}_0' if kind == 'village' else key, matrix)
         require_terrain_variants(kind, [path.stem for path in matrix.parent.glob('*.txt')], road_caps)
-        default_mask = {"road": 9, "village": 9}.get(kind)
+        default_mask = {"road": 9, "village": 0}.get(kind)
         surface = frozenset("RrC" if kind == "road" else "RrH")
         if default_mask is not None:
             require_road_exits(read_matrix(matrix), default_mask, surface, label=kind)
@@ -414,6 +415,7 @@ def pixel_sprites():
             if variant == matrix:
                 continue
             crossing = matrix.parent.name in ("bridge", "ford") and variant.stem in ("ne-sw", "nw-se")
+            landing = kind in ('landing', 'ferry') and variant.stem == 'east'
             path = (default_mask is not None and variant.stem.isdigit() and
                     (0 if kind == "village" else 1) <= int(variant.stem) <= 63 and int(variant.stem) != default_mask and
                     (kind == "road" or (kind == "village" and int(variant.stem).bit_count() <= 3)))
@@ -421,7 +423,7 @@ def pixel_sprites():
             if capped:
                 exits, ends = map(int, capped.groups())
                 capped = (exits, ends) in road_caps
-            if not (crossing or path or capped):
+            if not (crossing or path or capped or landing):
                 raise ValueError(f"{variant}: unknown terrain orientation")
             if path:
                 require_road_exits(read_matrix(variant), int(variant.stem), surface, label=kind)
@@ -459,17 +461,21 @@ def pixel_sprites():
         f'  {property_name(name)}: {json.dumps("#" + "".join(f"{c:02x}" for c in palette["G"][:3]))},\n'
         for name, palette in sorted(floors['palettes'].items())
     )
-    default_fields = ''.join(
-        f'  {property_name(kind)}: {json.dumps(name)},\n'
-        for kind, name in sorted(floors['defaults'].items())
-    )
     layout_fields = ''
     for kind, variants in layouts.items():
+        def placement_field(p):
+            return f'{{ name: {json.dumps(p["name"])}, x: {p["x"]}, y: {p["y"]} }}'
+        if len(variants) == 1 and len(variants[0]) == 1:
+            layout_fields += f'  {property_name(kind)}: [[{placement_field(variants[0][0])}]],\n'
+            continue
         layout_fields += f'  {property_name(kind)}: [\n'
         for placements in variants:
+            if len(placements) == 1:
+                layout_fields += f'    [{placement_field(placements[0])}],\n'
+                continue
             layout_fields += '    [\n'
             for p in placements:
-                layout_fields += f'      {{ name: {json.dumps(p["name"])}, x: {p["x"]}, y: {p["y"]} }},\n'
+                layout_fields += f'      {placement_field(p)},\n'
             layout_fields += '    ],\n'
         layout_fields += '  ],\n'
     model_fields = "".join(
@@ -480,7 +486,6 @@ def pixel_sprites():
         "// Generated by scripts/build-pixel-art.py; edit pixel/art matrices and palettes.\n"
         + "export const pixelSprites: Readonly<Record<string, string>> = {\n" + sprite_fields + "};\n"
         + "\nexport const pixelFloorColors: Readonly<Record<string, string>> = {\n" + floor_fields + "};\n"
-        + "\nexport const pixelDefaultFloors = {\n" + default_fields + "} as const;\n"
         + "\nexport const pixelTerrainLayouts: Readonly<\n"
         + "  Record<string, readonly (readonly { name: string; x: number; y: number }[])[]>\n"
         + "> = {\n" + layout_fields + "};\n"

@@ -45,6 +45,7 @@ export class Game implements GameState {
   declare tiles: Tile[];
   declare units: Unit[];
   declare campaign?: GameState["campaign"];
+  declare conditionMemory?: string[];
   declare lastCombat?: GameState["lastCombat"];
   #native: LiveGame;
   #signature = "";
@@ -89,6 +90,7 @@ export class Game implements GameState {
         for (const key of Object.keys(previous)) Reflect.deleteProperty(previous, key);
         return Object.assign(previous, unit);
       });
+    delete this.conditionMemory;
     delete this.campaign;
     delete this.lastCombat;
     Object.assign(this, state);

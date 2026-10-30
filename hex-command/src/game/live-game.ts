@@ -1,5 +1,6 @@
 import type {
   BattleInspection,
+  BattlefieldPresentation,
   Command,
   EngineResult,
   SavedGame,
@@ -38,6 +39,10 @@ export function nativeValue<T>(result: EngineResult<T>): T {
 /** Browser orchestration only. State mutations and rule queries are owned by Rust. */
 export class LiveGame {
   private state!: GameState;
+  private resolvedPresentation!: Immutable<BattlefieldPresentation>;
+  get presentation() {
+    return this.resolvedPresentation;
+  }
   private inspection!: BattleInspection;
   private combatEvent: Immutable<CombatAnimation> | null = null;
   get combat() {
@@ -73,6 +78,7 @@ export class LiveGame {
     const view = nativeValue(this.engine.view());
     // Authored string IDs cross into the existing presentation vocabulary here.
     this.state = view.state as unknown as GameState;
+    this.resolvedPresentation = view.presentation;
     this.inspection = nativeValue(this.engine.inspect()) as BattleInspection;
     if (view.revision !== this.inspection.revision)
       throw new Error("Incoherent native publication");
@@ -117,7 +123,9 @@ export class LiveGame {
     return this.state.tiles;
   }
   get units() {
-    return this.state.units;
+    return this.state.units.filter(
+      (unit) => unit.side === "player" || !this.presentation.fog.includes(unit.tile),
+    );
   }
   get campaign() {
     return this.state.campaign;
@@ -250,7 +258,7 @@ export class LiveGame {
       turn,
       gold,
       winner,
-      units,
+      units: this.units,
       ...(campaign ? { campaign } : {}),
       villages: tiles
         .filter((tile) => tile.terrain === "village")
@@ -272,7 +280,9 @@ export class LiveGame {
     const detached = Object.create(LiveGame.prototype) as LiveGame;
     detached.state = state;
     detached.inspection = inspection;
+    detached.resolvedPresentation = this.resolvedPresentation;
     return immutable({
+      presentation: this.resolvedPresentation,
       campaign: state.campaign,
       mapId: state.mapId,
       mapRevision: state.mapRevision,
@@ -284,7 +294,7 @@ export class LiveGame {
       winner: state.winner,
       log: state.log,
       tiles: state.tiles,
-      units: state.units,
+      units: detached.units,
       tile: detached.tile.bind(detached),
       unit: detached.unit.bind(detached),
       at: detached.at.bind(detached),

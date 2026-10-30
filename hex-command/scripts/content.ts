@@ -50,7 +50,7 @@ const manifest = read<{
   scenarios: string[];
   arenaScenarios?: string[];
   campaigns: string[];
-  simulation: Record<string, string>;
+  simulation: { rosters: string; arena: string; campaign: string };
 }>("manifest.json");
 for (const path of [
   ...manifest.units,
@@ -60,8 +60,8 @@ for (const path of [
   ...Object.values(manifest.simulation),
 ])
   read(path);
-// A lineup is a faction. Enabled factions must implement their entire authored
-// tree; factions with no gameplay units can retain sprites awaiting implementation.
+// Enabled factions must implement their entire authored tree. Standalone
+// scenario wildlife does not enable its entire artwork faction.
 type ContentUnit = { id: string; level: number; family: string; advancesTo: string[] };
 type LineupUnit = { id: string; level: number; gameplayId?: string };
 const units = new Map(
@@ -69,6 +69,9 @@ const units = new Map(
     const unit = read<ContentUnit>(path);
     return [unit.id, unit] as const;
   }),
+);
+const enabledLeaders = new Set(
+  read<{ leader: string }[]>(manifest.simulation.rosters).map((roster) => roster.leader),
 );
 const lineupRoot = new URL("../pixel/art/units/lineups/", import.meta.url);
 for (const file of readdirSync(lineupRoot).filter((file) => file.endsWith(".json"))) {
@@ -87,7 +90,7 @@ for (const file of readdirSync(lineupRoot).filter((file) => file.endsWith(".json
     tree.base,
     ...tree.branches.flatMap((branch) => branch.units),
   ]);
-  if (!entries.some((entry) => units.has(id(entry)))) continue;
+  if (!entries.some((entry) => enabledLeaders.has(id(entry)))) continue;
   for (const tree of trees) {
     for (const entry of [tree.base, ...tree.branches.flatMap((branch) => branch.units)]) {
       const unit = units.get(id(entry));

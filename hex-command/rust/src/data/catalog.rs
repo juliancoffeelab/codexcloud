@@ -283,6 +283,7 @@ impl InitialState {
             });
         }
         Ok(State {
+            condition_memory: vec![],
             armies: None,
             map_id: self.map_id,
             map_revision: self.map_revision,
@@ -739,6 +740,23 @@ impl Rules {
                     .unwrap()
             })
             .collect();
+        for map in &map_definitions {
+            for rule in map
+                .terrain
+                .iter()
+                .filter_map(|tile| tile.fog.as_ref())
+                .chain(
+                    map.lighting
+                        .lights
+                        .iter()
+                        .filter_map(|light| light.when.as_ref()),
+                )
+            {
+                rule.condition
+                    .validate_units(&types)
+                    .map_err(|message| ContentError::new(&map.id, message))?;
+            }
+        }
         Ok(Self {
             content_fingerprint: content_fingerprint(bundle),
             recruitment,
@@ -912,7 +930,32 @@ fn validate_mission(
     }
     for event in &mission.events {
         identifier(&event.id, path)?;
+        if let Some(group) = &event.spawn {
+            if group.area.is_empty() || group.units.is_empty() {
+                return Err(ContentError::new(
+                    path,
+                    "spawn area and units must not be empty",
+                ));
+            }
+            unique(group.area.iter().map(String::as_str), path)?;
+            unique(group.units.iter().map(|unit| unit.id.as_str()), path)?;
+            for tile in &group.area {
+                tile_ref(tile)?;
+            }
+            for unit in &group.units {
+                identifier(&unit.id, path)?;
+                reference(&unit.r#type, types, path)?;
+            }
+        }
+        if let Trigger::Condition { condition } = &event.trigger {
+            condition
+                .validate_units(types)
+                .map_err(|message| ContentError::new(path, message))?;
+        }
         match &event.trigger {
+            Trigger::Condition { condition } => condition
+                .validate(&state.tiles, &mission.events, false)
+                .map_err(|message| ContentError::new(path, message))?,
             Trigger::Visit { tile } | Trigger::Control { tile, .. } => tile_ref(tile)?,
             Trigger::Round { round } => {
                 if *round == 0 {

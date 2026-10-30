@@ -51,6 +51,10 @@ pub struct Tile {
     #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub floor: Option<String>,
+    /// Condition that clears this tile's authored fog.
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub fog: Option<ConditionRule>,
 }
 impl Tile {
     pub fn valid_connections(&self) -> bool {
@@ -76,6 +80,7 @@ impl Tile {
             "road" => true,
             "village" => mask.count_ones() <= 3,
             "bridge" | "ford" => matches!(mask, 9 | 18 | 36),
+            "landing" | "ferry" => matches!(mask, 1 | 8),
             _ => false,
         }
     }
@@ -98,6 +103,10 @@ pub struct State {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub armies: Option<[String; 2]>,
+    /// Durable facts about conditions that have been satisfied at least once.
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub condition_memory: Vec<String>,
     pub map_id: String,
     pub map_revision: u32,
     pub cols: i32,

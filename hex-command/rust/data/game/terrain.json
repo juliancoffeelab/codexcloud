@@ -114,5 +114,40 @@
     "cost": 2,
     "passable": true,
     "description": "Trees reduce ranged damage by 1 and block shots through the tile. An owned grove heals its friendly occupant by 4 HP, but provides no income."
+  },
+  {
+    "id": "landing",
+    "name": "Ferry landing",
+    "cost": 1,
+    "passable": true,
+    "description": "A jetty on the riverbank. Normal movement; no protection."
+  },
+  {
+    "id": "ferry",
+    "name": "Moored ferry",
+    "cost": 1,
+    "passable": true,
+    "description": "A boat moored beside a riverbank jetty. Normal movement; no protection. Boarding does not move units across the river."
+  },
+  {
+    "id": "house",
+    "name": "House",
+    "cost": 1,
+    "passable": true,
+    "description": "A single home. Normal movement; no protection, income or healing."
+  },
+  {
+    "id": "mountain",
+    "name": "Mountains",
+    "cost": 3,
+    "passable": false,
+    "description": "A sheer mountain ridge, impassable to land units."
+  },
+  {
+    "id": "cave",
+    "name": "Quarry cave",
+    "cost": 2,
+    "passable": true,
+    "description": "A sheltered entrance at the foot of a mountain. Costs 2 movement; no protection. Scenario objectives specify what can be found inside."
   }
 ]

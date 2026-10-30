@@ -16,6 +16,11 @@ const descriptions: Record<TerrainType, string> = {
   water: "Deep water is impassable to land units. Merfolk can swim through it.",
   bridge: "A sturdy crossing over water with easy footing, but no protection.",
   ford: "Shallow water can be crossed on foot. The open water leaves units exposed.",
+  landing: "A wooden jetty connects the river to its bank. Normal movement and no protection.",
+  ferry: "A river ferry is moored alongside the landing. Normal movement and no protection.",
+  house: "A single riverside home. Provides no income or healing.",
+  mountain: "A sheer mountain ridge, impassable to land units.",
+  cave: "A quarry entrance at the foot of a mountain. Scenario objectives describe what can be found inside.",
   village: "Capture this settlement by moving a unit onto it.",
   keep: "A fortified home for its army’s commander.",
 };
@@ -92,7 +97,7 @@ function recruitmentView(view: BattleView, tile: TileView, context: RecruitmentC
 
 export function terrainPanelView(view: BattleView) {
   const tile = view.game.tile(view.inspectedTile);
-  if (!tile) return null;
+  if (!tile || view.game.presentation?.fog.includes(tile.id)) return null;
 
   const hasOwnership = ["village", "keep", "grove", "ruins", "fort"].includes(tile.terrain);
   let ownerLabel = "Unclaimed";

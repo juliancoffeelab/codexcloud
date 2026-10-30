@@ -1,0 +1,41 @@
+{
+  "id": "giant-bat",
+  "name": "Giant Bat",
+  "role": "flank",
+  "race": "beast",
+  "hp": 13,
+  "move": 6,
+  "cost": 7,
+  "attacks": [
+    {
+      "id": "bite",
+      "name": "Bite",
+      "damage": 3,
+      "count": 2,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee",
+      "spread": 1
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Flight",
+  "description": "A fast, fragile flier that can cross water and mountains.",
+  "level": 1,
+  "family": "giant-bat",
+  "experienceNeeded": 0,
+  "advancesTo": [],
+  "terrainModifiers": {
+    "water": {
+      "passable": true
+    },
+    "mountain": {
+      "passable": true
+    }
+  }
+}

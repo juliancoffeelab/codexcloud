@@ -22,7 +22,6 @@ const files = [
   "pixel/art/units/*/*/palette.json",
   "pixel/art/terrain/*/palette.json",
   "pixel/art/portraits/*/palette.json",
-  "docs/save-migrations.md",
   "docs/development.md",
   "docs/terrain-artwork.md",
   "rust/README.md",

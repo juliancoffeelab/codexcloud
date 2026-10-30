@@ -65,31 +65,56 @@
   simulations and include the report directly in the final reply without waiting
   for another request. A successful run or test status alone is not delivery.
   Report the affected workload; use the full panel when scope is unclear.
-- Use feature branches and pull requests for publication as for other changes.
-  Never push directly to `main` or bypass the repository's PR workflow.
+- Continue on the current feature branch and pull request unless the user asks
+  to change branches. New branches must start from the freshly fetched upstream
+  default branch (`main` here), never a stale local copy. Never push directly to
+  `main` or bypass the repository's PR workflow.
 - Commit and push before returning only if the current task took more than
   10 minutes, even if unfinished or checks fail. Otherwise, keep changes local.
   Report check status and remaining work.
+
+## Runtime data ownership
+
+Runtime code must obtain current authored game data, including scenarios and their
+settings, through Rust. Do not bypass Rust by importing JSON or injecting game
+data through generated frontend modules. Pure rendering details such as terrain
+colors and shading may live in the frontend. Devtool scripts may read source data
+directly.
+
+## Failures
+
+When a user asks to diagnose agent failure, you need to diagnose it. Failed
+instruction is a failure of instruction, never the agent. Gaps or ambiguity in
+instructions are instruction failures too. Prefer fixing code or architecture to
+prevent recurrence, unless the cause is clearly a bad instruction. Resolve
+instruction failures by editing or removing the instruction, or, in rarer cases,
+extending it.
 
 ## Skills
 
 Read the linked `SKILL.md` before starting work that matches its trigger.
 
+- [save-migrations](.agents/skills/save-migrations/SKILL.md): Use when changing or
+  auditing save loading, save formats, migrations, or their data and dependencies.
 - [publish](.agents/skills/publish/SKILL.md): Use when the user authorizes
   publication, deployment or an update to the live game. Simulation, preview,
   commit and push requests alone do not trigger this skill.
 - [combat-simulation](.agents/skills/combat-simulation/SKILL.md): Use when asked
   to review, explain, compare or change AI policies; run or analyze combat
   simulations; or assess balance, campaign competence or simulation performance.
-- [pinkbox-enhancement](.agents/skills/pinkbox-enhancement/SKILL.md): Use when
-  asked to recolor or redesign existing unit artwork, create upgrade artwork
-  from an approved unit, or recolor terrain floors.
+- [design-campaign](.agents/skills/design-campaign/SKILL.md): Use to design or
+  revise campaigns and scenarios, including writing, objectives, maps, encounters,
+  progression, and supporting mechanics.
+- [design-unit](.agents/skills/design-unit/SKILL.md): Use to make pixel art for new unit line.
+- [design-terrain](.agents/skills/design-terrain/SKILL.md): Use to make pixel art for new terrain.
 - [pinkbox-generation](.agents/skills/pinkbox-generation/SKILL.md): Use when
-  asked to generate a new pixel unit or regenerate a unit's shape, pose or
-  equipment through image generation.
-- [pixel-cleaning](.agents/skills/pixel-cleaning/SKILL.md): Use when asked to
-  inspect, clean or repair sprite or terrain pixels, outlines, shading, ground
-  alignment or terrain joins.
+  generating or regenerating native pixel artwork from reference matrices,
+  including units, terrain and foreground props.
+- [pixel-cleaning](.agents/skills/pixel-cleaning/SKILL.md): Use when inspecting,
+  cleaning or repairing native pixel artwork, including units, terrain and props.
+- [pinkbox-enhancement](.agents/skills/pinkbox-enhancement/SKILL.md): Use when
+  revising approved pixel artwork manually or through another pinkbox generation,
+  including unit upgrades and terrain changes.
 - [pixel-lineup](.agents/skills/pixel-lineup/SKILL.md): Use when asked to show,
   preview or visually compare faction lineups, unit upgrade trees or progression
   grids.

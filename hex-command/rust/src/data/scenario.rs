@@ -179,8 +179,29 @@ impl Goal {
 #[serde(tag = "kind", rename_all = "lowercase")]
 pub enum Trigger {
     Visit { tile: String },
+    Condition { condition: Condition },
     Round { round: u32 },
     Control { tile: String, round: Option<u32> },
+}
+/// A stable member identity prevents repeated or skipped spawns after restoration.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct SpawnUnit {
+    pub id: String,
+    pub r#type: String,
+    pub side: Side,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub role: Option<Role>,
+}
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct SpawnGroup {
+    pub area: Vec<String>,
+    pub units: Vec<SpawnUnit>,
 }
 /// A once-per-mission scripted event gated by a typed trigger and prior markers.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -203,6 +224,10 @@ pub struct Event {
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub label: Option<String>,
     pub dialogue: Vec<Dialogue>,
+    /// Once activated, unplaced members remain pending until an area tile fits.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub spawn: Option<SpawnGroup>,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub gold: Option<i32>,
@@ -359,6 +384,7 @@ impl Trigger {
     pub fn kind(&self) -> TriggerKind {
         match self {
             Self::Visit { .. } => TriggerKind::Visit,
+            Self::Condition { .. } => TriggerKind::Condition,
             Self::Round { .. } => TriggerKind::Round,
             Self::Control { .. } => TriggerKind::Control,
         }
@@ -387,4 +413,6 @@ pub struct MapDefinition {
     pub rows: i32,
     pub terrain: Vec<Tile>,
     pub units: Vec<StartingUnit>,
+    pub lighting: BattlefieldLighting,
+    pub presentation: BattlefieldPresentation,
 }

@@ -17,3 +17,5 @@ pub use crate::data::{Command, CommandError};
 pub(crate) use battle::Game;
 
 pub(crate) mod geometry;
+
+pub mod conditions;

@@ -4,6 +4,7 @@ import importlib.util
 from collections import Counter
 import hashlib
 import json
+import math
 from pathlib import Path
 from PIL import Image
 
@@ -27,10 +28,15 @@ def extract(source, manifest_path, output):
     if manifest.get('canvas') != [1024, 1168] or manifest['slots'][0].get('rect') != [512, 576, 512, 512]:
         raise ValueError('Pinkbox requires a 2x2 layout with the fill box at bottom right')
     if manifest['slots'][0].get('native') != 64 or manifest['slots'][0].get('origin') != [0, 0]:
-        raise ValueError('Character outputs must be exactly 64×64 at origin (0,0)')
+        raise ValueError('Pixel artwork outputs must be exactly 64×64 at origin (0,0)')
     if type(manifest['slots'][0].get('flying', False)) is not bool:
         raise ValueError("Slot 'flying' must be a boolean")
-    if any(manifest['palette'].get(s) != c for s, c in faction_palette('player').items()):
+    kind = manifest['slots'][0].get('kind', 'unit')
+    if kind not in ('unit', 'terrain', 'prop'):
+        raise ValueError('Unknown output kind')
+    if kind != 'unit' and (manifest['palette'].keys() & {'^', '*'} or manifest['slots'][0].get('flying', False)):
+        raise ValueError('Terrain and props do not use faction symbols or flying metadata')
+    if kind == 'unit' and any(manifest['palette'].get(s) != c for s, c in faction_palette('player').items()):
         raise ValueError('Faction colors changed since this template; refresh generation inputs')
     image = Image.open(source)
     if image.format != 'PNG':
@@ -79,19 +85,19 @@ def extract(source, manifest_path, output):
             rows.append(row)
         size = slot['native']; ox, oy = slot['origin']
         if size != 64 or (ox, oy) != (0, 0):
-            raise ValueError('Character outputs must be exactly 64×64 without cropping')
+            raise ValueError('Pixel artwork outputs must be exactly 64×64 without cropping')
         outside = [[xx, yy] for yy, row in enumerate(rows) for xx, s in enumerate(row)
                    if s != '.' and not (ox <= xx < ox + size and oy <= yy < oy + size)]
-        directory = output / f'unit-{index}'
+        directory = output / f'{kind}-{index}'
         directory.mkdir()
         crop.save(directory / 'crop.png')
         (directory / 'extracted-64.txt').write_text('\n'.join(rows) + '\n')
         (directory / 'extraction.json').write_text(json.dumps({'label': slot['label'], 'source': list(image.size),
             'source_sha256': hashlib.sha256(source.read_bytes()).hexdigest(), 'bounds': bounds,
             'native': size, 'origin': [ox, oy], 'outside': outside,
-            'factionOwnership': 'Provisional color quantization: inspect sleeves, hands, hems and outlines'}, indent=2) + '\n')
+            'materialOwnership': 'Provisional color quantization: inspect intended surfaces and boundaries'}, indent=2) + '\n')
         materials = {s: c for s, c in palette.items() if s not in '^*'}
-        if slot.get('flying', False):
+        if kind == 'unit' and slot.get('flying', False):
             materials['flying'] = True
         (directory / 'palette.json').write_text(json.dumps(materials, indent=2) + '\n')
         if outside:
@@ -101,13 +107,23 @@ def extract(source, manifest_path, output):
         if not any(s != '.' for r in native for s in r):
             failures.append(f'{slot["label"]}: empty output box')
             continue
-        try:
-            renderer.require_grounded(native, palette, slot.get('flying', False), slot['label'])
-        except ValueError as error:
-            failures.append(str(error))
-            continue
-        (directory / 'sprite.txt').write_text('\n'.join(native) + '\n')
-        print(directory / 'sprite.txt')
+        if kind == 'unit':
+            try:
+                renderer.require_grounded(native, palette, slot.get('flying', False), slot['label'])
+            except ValueError as error:
+                failures.append(str(error))
+                continue
+        elif kind == 'terrain':
+            # Reject, never silently clip artwork outside the native terrain hex.
+            outside_hex = [(x, y) for y, row in enumerate(native) for x, s in enumerate(row)
+                           if s != '.' and (abs(x + .5 - 32) > 16 * math.sqrt(3)
+                           or abs(y + .5 - 32) > 32 - abs(x + .5 - 32) / math.sqrt(3))]
+            if outside_hex:
+                failures.append(f'{slot["label"]}: {len(outside_hex)} pixels outside the pointy-top hex')
+                continue
+        filename = 'sprite.txt' if kind == 'unit' else 'tile.txt'
+        (directory / filename).write_text('\n'.join(native) + '\n')
+        print(directory / filename)
     if failures:
         raise ValueError('; '.join(failures) + '. Evidence retained; inspect or regenerate, never silently trim anatomy.')
 

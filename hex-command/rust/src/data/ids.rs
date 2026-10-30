@@ -76,6 +76,11 @@ impl std::fmt::Display for Race {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Family {
+    Bear,
+    #[serde(rename = "giant-bat")]
+    GiantBat,
+    #[serde(rename = "giant-spider")]
+    GiantSpider,
     Adept,
     Archer,
     Boar,
@@ -113,6 +118,9 @@ impl Family {
     /// Return the stable authored identifier used at serialization boundaries.
     pub fn as_str(self) -> &'static str {
         match self {
+            Self::Bear => "bear",
+            Self::GiantBat => "giant-bat",
+            Self::GiantSpider => "giant-spider",
             Self::Adept => "adept",
             Self::Archer => "archer",
             Self::Boar => "boar",
@@ -167,6 +175,11 @@ pub enum Terrain {
     Marsh,
     Bridge,
     Ford,
+    Landing,
+    Ferry,
+    House,
+    Mountain,
+    Cave,
 }
 impl Terrain {
     /// Return the stable authored identifier used at serialization boundaries.
@@ -185,6 +198,11 @@ impl Terrain {
             Self::Marsh => "marsh",
             Self::Bridge => "bridge",
             Self::Ford => "ford",
+            Self::Landing => "landing",
+            Self::Ferry => "ferry",
+            Self::House => "house",
+            Self::Mountain => "mountain",
+            Self::Cave => "cave",
         }
     }
 }
@@ -285,6 +303,7 @@ impl GoalKind {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum TriggerKind {
+    Condition,
     Visit,
     Round,
     Control,
@@ -293,6 +312,7 @@ impl TriggerKind {
     /// Return the stable authored identifier used at serialization boundaries.
     pub fn as_str(self) -> &'static str {
         match self {
+            Self::Condition => "condition",
             Self::Visit => "visit",
             Self::Round => "round",
             Self::Control => "control",

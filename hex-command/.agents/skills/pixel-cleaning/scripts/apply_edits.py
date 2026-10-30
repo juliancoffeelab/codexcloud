@@ -9,8 +9,6 @@ require_canvas = render.require_canvas
 
 
 def apply(matrix, edits_path, output):
-    if matrix.name != 'sprite.txt':
-        raise ValueError('Edit a shared sprite.txt matrix')
     render.rgba_pixels(matrix, 'player')
     output = output.resolve()
     if not output.is_relative_to(ROOT / 'tmp') or output.exists():
@@ -23,7 +21,8 @@ def apply(matrix, edits_path, output):
         raise ValueError('Palette changed since review; inspect it again')
     rows = [list(r) for r in render.read_matrix(matrix)]
     require_canvas(rows, matrix)
-    palette = render.read_palette(matrix); symbols = set(palette) | set(faction_palette('player'))
+    palette = render.read_palette(matrix)
+    symbols = set(palette) | (set(faction_palette('player')) if matrix.stem == 'sprite' else set())
     seen = set()
     if not document['edits']:
         raise ValueError('No edits supplied')
@@ -39,17 +38,21 @@ def apply(matrix, edits_path, output):
             raise ValueError(f'Outline/transparency edit at {x},{y} needs boundary_reviewed: true')
         rows[y][x] = after; seen.add((x, y))
     output.mkdir(parents=True)
-    (output / 'sprite.txt').write_text('\n'.join(''.join(r) for r in rows) + '\n')
-    shutil.copyfile(palette_path, output / 'palette.json')
+    (output / matrix.name).write_text('\n'.join(''.join(r) for r in rows) + '\n')
+    # Scratch terrain palettes must carry resolved floor shades so the candidate
+    # can render outside its canonical folder. The baseline remains byte-exact.
+    candidate_palette = json.loads(palette_path.read_text())
+    candidate_palette.update(palette)
+    (output / 'palette.json').write_text(json.dumps(candidate_palette, indent=2) + '\n')
     before_dir = output / 'before'; before_dir.mkdir()
-    shutil.copyfile(matrix, before_dir / 'sprite.txt'); shutil.copyfile(palette_path, before_dir / 'palette.json')
+    shutil.copyfile(matrix, before_dir / matrix.name); shutil.copyfile(palette_path, before_dir / 'palette.json')
     # Ownership stays a review input, never a blanket painting mask.
     ownership = matrix.with_suffix('.ownership.json')
     if ownership.exists():
-        shutil.copyfile(ownership, output / 'sprite.ownership.json')
+        shutil.copyfile(ownership, output / ownership.name)
     (output / 'changes.json').write_text(json.dumps(document, indent=2) + '\n')
-    previews([before_dir / 'sprite.txt', output / 'sprite.txt'], output / 'comparison.png')
-    print(json.dumps({'candidate': str(output / 'sprite.txt'), 'changedPixels': len(seen)}))
+    previews([matrix, output / matrix.name], output / 'comparison.png')
+    print(json.dumps({'candidate': str(output / matrix.name), 'changedPixels': len(seen)}))
 
 
 if __name__ == '__main__':

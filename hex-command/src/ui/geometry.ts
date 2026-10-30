@@ -34,6 +34,11 @@ export const previewColors: Record<TerrainType, string> = {
   water: "#407899",
   bridge: "#b3ab8d",
   ford: "#78a4a6",
+  landing: "#78a4a6",
+  ferry: "#78a4a6",
+  house: "#d4b476",
+  mountain: "#727063",
+  cave: "#727063",
   village: "#d4b476",
   keep: "#b9b597",
 };

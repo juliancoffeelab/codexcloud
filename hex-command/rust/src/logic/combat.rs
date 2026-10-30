@@ -12,6 +12,15 @@ impl<'catalog> Game<'catalog> {
         target: &Unit,
         weapon: usize,
     ) -> bool {
+        if unit.side == Side::Player
+            && self.fog[target.tile].is_some()
+            && self
+                .presentation()
+                .fog
+                .contains(&self.board.ids[target.tile])
+        {
+            return false;
+        }
         self.can_attack_at(unit, from, target, target.tile, weapon)
     }
     fn can_attack_at(

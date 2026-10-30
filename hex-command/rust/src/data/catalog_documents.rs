@@ -26,6 +26,8 @@ struct MapDocument {
     rows: i32,
     tiles: Vec<Tile>,
     #[serde(default)]
+    lighting: BattlefieldLighting,
+    #[serde(default)]
     hidden: bool,
     #[serde(rename = "name")]
     name: Option<String>,
@@ -183,18 +185,40 @@ pub(super) fn scenario(
     path: &str,
 ) -> Result<(InitialState, String), ContentError> {
     let documents: ScenarioDocuments = parse(bundle, path)?;
-    let map: MapDocument = parse(bundle, &sibling(path, &documents.map)?)?;
+    let map_path = sibling(path, &documents.map)?;
+    let map: MapDocument = parse(bundle, &map_path)?;
+    map.lighting
+        .validate(&map.tiles, &[])
+        .map_err(|message| ContentError::new(&map_path, message))?;
+    for tile in &map.tiles {
+        if let Some(rule) = &tile.fog {
+            rule.condition
+                .validate(&map.tiles, &[], true)
+                .map_err(|message| ContentError::new(&map_path, message))?;
+        }
+    }
     let roster_path = sibling(path, &documents.roster)?;
     let roster: InitialRoster = parse(bundle, &roster_path)?;
     Ok((map.initial(roster), roster_path))
 }
 pub(super) fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, ContentError> {
     let documents: StageDocuments = parse(bundle, path)?;
-    let map: MapDocument = parse(bundle, &sibling(path, &documents.map)?)?;
+    let map_path = sibling(path, &documents.map)?;
+    let map: MapDocument = parse(bundle, &map_path)?;
     let roster: StageRoster = parse(bundle, &sibling(path, &documents.roster)?)?;
     let objectives: StageObjectives = parse(bundle, &sibling(path, &documents.objectives)?)?;
     let story: StageStory = parse(bundle, &sibling(path, &documents.story)?)?;
     let scripts: StageScripts = parse(bundle, &sibling(path, &documents.scripts)?)?;
+    map.lighting
+        .validate(&map.tiles, &scripts.events)
+        .map_err(|message| ContentError::new(&map_path, message))?;
+    for tile in &map.tiles {
+        if let Some(rule) = &tile.fog {
+            rule.condition
+                .validate(&map.tiles, &scripts.events, true)
+                .map_err(|message| ContentError::new(&map_path, message))?;
+        }
+    }
     let layout = Layout {
         id: map.map_id.clone(),
         units: roster.units,
@@ -264,7 +288,19 @@ pub(super) fn map_metadata(
             })
             .collect::<Result<Vec<_>, ContentError>>()?,
     };
+    let presentation =
+        crate::logic::conditions::resolve(&crate::logic::conditions::PresentationInput {
+            pending: vec![],
+            tiles: state.tiles.clone(),
+            units: units.clone(),
+            lighting: metadata.lighting.clone(),
+            marks: vec![],
+            memory: vec![],
+            round: 1,
+        })
+        .0;
     Ok(MapDefinition {
+        presentation,
         id: state.map_id.clone(),
         revision: state.map_revision,
         name: metadata.name.unwrap_or_else(|| state.map_id.clone()),
@@ -274,5 +310,6 @@ pub(super) fn map_metadata(
         rows: state.rows,
         terrain: state.tiles.clone(),
         units,
+        lighting: metadata.lighting,
     })
 }

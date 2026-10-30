@@ -108,7 +108,10 @@
     "game/units/merfolk-tide-sovereign.json",
     "game/units/ghost.json",
     "game/units/wraith.json",
-    "game/units/spectre.json"
+    "game/units/spectre.json",
+    "game/units/bear.json",
+    "game/units/giant-bat.json",
+    "game/units/giant-spider.json"
   ],
   "scenarios": [
     "game/scenario/mirror-v1/scenario.json",

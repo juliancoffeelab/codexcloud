@@ -362,6 +362,10 @@ export class BattleController {
     this.state.target = null;
     this.publish({ gameChanged: false });
     this.playSelectionFeedback(tile.id);
+    if (this.#game.presentation.fog.includes(tile.id)) {
+      this.message("Unexplored terrain.");
+      return;
+    }
     const terrain = TERRAIN[tile.terrain];
     this.message(`${terrain.name}: ${terrain.description}`);
   }

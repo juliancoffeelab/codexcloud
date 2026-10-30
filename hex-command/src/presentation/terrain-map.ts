@@ -1,5 +1,7 @@
+import { daylight, lightingKey, type BattlefieldLighting } from "./battlefield-lighting";
+import { processTerrain } from "./terrain-process";
 import { artFrame, artFrameKey, type Artwork } from "./art";
-import { pixelDefaultFloors, pixelFloorColors } from "./pixel-art";
+import { pixelFloorColors } from "./pixel-art";
 import { terrainLayout } from "./terrain-layout";
 import { battlefieldSpriteSize, hexPoints, tileCenter } from "../ui/geometry";
 import type { GameView, TileView } from "../game/view";
@@ -20,6 +22,7 @@ export interface TerrainMapPlan {
   readonly height: number;
   readonly pixelScale: number;
   readonly tiles: readonly TerrainMapTile[];
+  readonly lighting?: BattlefieldLighting;
 }
 
 export interface TerrainMapSprite extends FrameImage {
@@ -38,9 +41,7 @@ export function terrainTileView(tile: TileView, mapId: string, artwork: Artwork)
     points: hexPoints(x, y),
     clipId: `hex-clip-${tile.col}-${tile.row}`,
     spriteSize: battlefieldSpriteSize,
-    fill:
-      (tile.floor && pixelFloorColors[tile.floor]) ||
-      pixelFloorColors[pixelDefaultFloors[tile.terrain]]!,
+    fill: (tile.floor && pixelFloorColors[tile.floor]) || "transparent",
     terrainFrame: artFrame(artwork, "terrain", frameName, "player", tile.floor),
   };
 }
@@ -65,7 +66,10 @@ export interface TerrainMapImage {
 }
 
 /** Ownership, units and turn state do not affect the static terrain. */
-export function terrainMapKey(game: Pick<GameView, "mapId" | "cols" | "rows" | "tiles">): string {
+export function terrainMapKey(
+  game: Pick<GameView, "mapId" | "cols" | "rows" | "tiles">,
+  lighting: BattlefieldLighting = daylight,
+): string {
   return JSON.stringify([
     game.mapId,
     game.cols,
@@ -81,30 +85,49 @@ export function terrainMapKey(game: Pick<GameView, "mapId" | "cols" | "rows" | "
         tile.connections,
         tile.deadEnds,
       ]),
+    lightingKey(lighting),
   ]);
+}
+
+/** Opaque asset identity; generated image indexes must not export scenario definitions. */
+export function terrainAssetKey(key: string): string {
+  let first = 2166136261;
+  let second = 2246822519;
+  for (let index = 0; index < key.length; index++) {
+    const code = key.charCodeAt(index);
+    first = Math.imul(first ^ code, 16777619);
+    second = Math.imul(second ^ code, 3266489917);
+  }
+  return [first, second].map((value) => (value >>> 0).toString(16).padStart(8, "0")).join("");
 }
 
 /** For edits, keep the authored sprite underneath and repaint only changed cells until baking finishes. */
 export function terrainMapPreview(
   key: string,
   sprites: Readonly<Record<string, TerrainMapSprite>>,
+  baselineKey?: string,
 ) {
-  const exact = sprites[key];
+  const exact = sprites[terrainAssetKey(key)];
   if (exact) return { sprite: exact, changed: new Set<string>() };
-  type Key = [string, number, number, [string, ...unknown[]][]];
+  if (!baselineKey) return undefined;
+  type Key = [string, number, number, [string, ...unknown[]][], string];
   const current = JSON.parse(key) as Key;
-  const prefix = JSON.stringify(current.slice(0, 3)).slice(0, -1) + ",";
-  const baseline = Object.entries(sprites).find(([candidate]) => candidate.startsWith(prefix));
-  if (!baseline) return undefined;
-  const original = new Map(
-    (JSON.parse(baseline[0]) as Key)[3].map((tile) => [tile[0], JSON.stringify(tile)]),
-  );
+  // Both keys come from Rust-owned catalog/state data, never a generated module.
+  const baseline = JSON.parse(baselineKey) as Key;
+  if (
+    JSON.stringify(current.slice(0, 3)) !== JSON.stringify(baseline.slice(0, 3)) ||
+    current[4] !== baseline[4]
+  )
+    return undefined;
+  const sprite = sprites[terrainAssetKey(baselineKey)];
+  if (!sprite) return undefined;
+  const original = new Map(baseline[3].map((tile) => [tile[0], JSON.stringify(tile)]));
   const changed = new Set(
     current[3]
       .filter((tile) => original.get(tile[0]) !== JSON.stringify(tile))
       .map((tile) => tile[0]),
   );
-  return { sprite: baseline[1], changed };
+  return { sprite, changed };
 }
 
 export type TerrainTileView = ReturnType<typeof terrainTileView>;
@@ -217,7 +240,10 @@ export function paintTerrainTiles<Image>(
 }
 
 /** Bake only published, isolated tile images; no atlas or mutable game crosses this boundary. */
-async function bake(plan: TerrainMapPlan): Promise<Readonly<TerrainMapImage> | undefined> {
+async function bake(
+  plan: TerrainMapPlan,
+  signal?: AbortSignal,
+): Promise<Readonly<TerrainMapImage> | undefined> {
   const canvas = document.createElement("canvas");
   const dimensions = terrainMapDimensions(plan);
   canvas.width = dimensions.width;
@@ -239,15 +265,22 @@ async function bake(plan: TerrainMapPlan): Promise<Readonly<TerrainMapImage> | u
     ),
   );
   if (decoded.some((image) => !image)) return undefined;
+  if (plan.lighting?.time === "night" && signal?.aborted) return undefined;
   const images = new Map(sources.map((source, index) => [source, decoded[index]!]));
   context.imageSmoothingEnabled = false;
   context.scale(plan.pixelScale, plan.pixelScale);
   for (let offset = 0; offset < plan.tiles.length; offset += 64) {
+    if (plan.lighting?.time === "night" && signal?.aborted) return undefined;
     paintTerrainTiles(context, plan.tiles.slice(offset, offset + 64), images);
     // Yield between batches so changed/custom maps do not monopolize the UI thread.
     if (offset + 64 < plan.tiles.length)
       await new Promise<void>((resolve) => setTimeout(resolve, 0));
   }
+  if (
+    plan.lighting?.time === "night" &&
+    !(await processTerrain(canvas, plan.pixelScale, plan.lighting, signal))
+  )
+    return undefined;
   // Publish the completed bitmap directly: no SVG parse, PNG encode or second decode.
   return Object.freeze({
     canvas,
@@ -258,16 +291,28 @@ async function bake(plan: TerrainMapPlan): Promise<Readonly<TerrainMapImage> | u
 /** Retain only the latest map; revisiting game state must not accumulate large bitmaps. */
 export class TerrainMapCache {
   private entry:
-    | { key: string; artwork: Artwork; image: Promise<Readonly<TerrainMapImage> | undefined> }
+    | {
+        key: string;
+        artwork: Artwork;
+        image: Promise<Readonly<TerrainMapImage> | undefined>;
+        abort: AbortController;
+      }
     | undefined;
 
   prepare(key: string, artwork: Artwork, plan: TerrainMapPlan) {
     if (this.entry?.key === key && this.entry.artwork === artwork) return this.entry.image;
-    const entry = { key, artwork, image: bake(plan).catch(() => undefined) };
+    this.entry?.abort.abort();
+    const abort = new AbortController();
+    const entry = { key, artwork, abort, image: bake(plan, abort.signal).catch(() => undefined) };
     this.entry = entry;
     void entry.image.then((image) => {
       if (!image && this.entry === entry) this.entry = undefined;
     });
     return entry.image;
+  }
+
+  dispose() {
+    this.entry?.abort.abort();
+    this.entry = undefined;
   }
 }

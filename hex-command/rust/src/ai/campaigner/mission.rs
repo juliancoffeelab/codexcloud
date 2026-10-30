@@ -399,7 +399,9 @@ impl Game<'_> {
         fn is_trigger_visit(value: &Trigger) -> bool {
             match value {
                 Trigger::Visit { .. } => true,
-                Trigger::Round { .. } | Trigger::Control { .. } => false,
+                Trigger::Condition { .. } | Trigger::Round { .. } | Trigger::Control { .. } => {
+                    false
+                }
             }
         }
         fn is_goal_event(value: &Goal) -> bool {
@@ -573,7 +575,9 @@ impl Game<'_> {
                             ObjectiveKind::Visit,
                             vec![match &e.trigger {
                                 Trigger::Visit { tile } => tile.clone(),
-                                Trigger::Round { .. } | Trigger::Control { .. } => {
+                                Trigger::Condition { .. }
+                                | Trigger::Round { .. }
+                                | Trigger::Control { .. } => {
                                     unreachable!("visit event classification")
                                 }
                             }],

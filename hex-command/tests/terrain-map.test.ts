@@ -4,6 +4,7 @@ import {
   TerrainMapCache,
   terrainMapKey,
   terrainMapPreview,
+  terrainAssetKey,
   type TerrainMapPlan,
 } from "../src/presentation/terrain-map";
 import { mockSpriteCanvas } from "./helpers";
@@ -175,7 +176,7 @@ test("Prebuilt maps match static terrain or preview matching geometry with edite
   const tile = { id: "0,0", col: 0, row: 0, terrain: "plains" as const, owner: null };
   const game = { mapId: "mirror" as const, cols: 1, rows: 1, tiles: [tile] };
   const sprite = { url: "map.png", width: 64, height: 64, displayWidth: 70, displayHeight: 70 };
-  const sprites = { [terrainMapKey(game)]: sprite };
+  const sprites = { [terrainAssetKey(terrainMapKey(game))]: sprite };
   const exact = terrainMapPreview(
     terrainMapKey({ ...game, tiles: [{ ...tile, owner: "player" }] }),
     sprites,
@@ -190,12 +191,16 @@ test("Prebuilt maps match static terrain or preview matching geometry with edite
     const preview = terrainMapPreview(
       terrainMapKey({ ...game, tiles: [{ ...tile, ...change }] }),
       sprites,
+      terrainMapKey(game),
     )!;
     assert.equal(preview.sprite, sprite);
     assert.deepEqual([...preview.changed], ["0,0"]);
   }
   for (const change of [{ mapId: "river-valley" as const }, { cols: 2 }, { rows: 2 }])
-    assert.equal(terrainMapPreview(terrainMapKey({ ...game, ...change }), sprites), undefined);
+    assert.equal(
+      terrainMapPreview(terrainMapKey({ ...game, ...change }), sprites, terrainMapKey(game)),
+      undefined,
+    );
 });
 
 test("Static scenes reuse geometry through ownership and unit changes, but invalidate terrain and artwork", async () => {

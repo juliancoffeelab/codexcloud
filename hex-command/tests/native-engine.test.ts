@@ -38,7 +38,11 @@ function fixture() {
     ],
   };
   let nextId = 1;
-  let nextView: EngineView = { revision: 0, state };
+  let nextView: EngineView = {
+    revision: 0,
+    state,
+    presentation: { lighting: { time: "day", lights: [] }, fog: [] },
+  };
   const requests: { id: number; revision: number }[] = [];
   const releases: number[] = [];
   let frees = 0;
@@ -52,7 +56,13 @@ function fixture() {
     create: () => ({ ok: true, value: { id: nextId++, view: nextView } }),
     restore: (input) => {
       saved = input;
-      return { ok: true, value: { id: nextId++, view: { revision: 0, state: input.state } } };
+      return {
+        ok: true,
+        value: {
+          id: nextId++,
+          view: { revision: 0, state: input.state, presentation: nextView.presentation },
+        },
+      };
     },
     view: (id, revision) => {
       requests.push({ id, revision });
@@ -77,7 +87,11 @@ function fixture() {
           error: { code: "staleRevision", expected: revision, actual: revision + 1 },
         };
       }
-      nextView = { revision: revision + 1, state: { ...state, round: state.round + 1 } };
+      nextView = {
+        presentation: nextView.presentation,
+        revision: revision + 1,
+        state: { ...state, round: state.round + 1 },
+      };
       return {
         ok: true,
         value: {

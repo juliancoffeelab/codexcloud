@@ -1203,6 +1203,42 @@
       "side": "enemy",
       "col": 26,
       "row": 31
+    },
+    {
+      "type": "bear",
+      "side": "player",
+      "col": 25,
+      "row": 31
+    },
+    {
+      "type": "bear",
+      "side": "enemy",
+      "col": 24,
+      "row": 31
+    },
+    {
+      "type": "giant-bat",
+      "side": "player",
+      "col": 23,
+      "row": 31
+    },
+    {
+      "type": "giant-bat",
+      "side": "enemy",
+      "col": 22,
+      "row": 31
+    },
+    {
+      "type": "giant-spider",
+      "side": "player",
+      "col": 21,
+      "row": 31
+    },
+    {
+      "type": "giant-spider",
+      "side": "enemy",
+      "col": 20,
+      "row": 31
     }
   ]
 }

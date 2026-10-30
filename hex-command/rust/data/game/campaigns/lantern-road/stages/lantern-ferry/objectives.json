@@ -1,9 +1,15 @@
 {
   "goals": [
     {
-      "kind": "escort",
-      "label": "Bring Ivo to the northeastern landing",
-      "tile": "11,1"
+      "kind": "event",
+      "label": "Reach the ferryman\u2019s house",
+      "tile": "18,10",
+      "event": "house-visit"
+    },
+    {
+      "kind": "event",
+      "label": "Light both eastern villages and defeat their spiders",
+      "event": "villages-secured"
     }
   ]
 }

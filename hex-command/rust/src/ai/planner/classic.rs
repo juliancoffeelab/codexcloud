@@ -254,7 +254,10 @@ impl BattleView<'_, '_> {
                     Family::Commander | Family::Wildkeeper | Family::Necromancer => {
                         ClassicOrder::Leader
                     }
-                    Family::Harpooner
+                    Family::Bear
+                    | Family::GiantBat
+                    | Family::GiantSpider
+                    | Family::Harpooner
                     | Family::HorseArcher
                     | Family::SkeletonRider
                     | Family::SkeletonAxeman

@@ -1,4 +1,27 @@
-# Browser saves and migrations
+---
+name: save-migrations
+description: Use when changing save loading, save formats, migration code, historical conversion fixtures, or auditing their data ownership and dependencies.
+---
+
+# Save migrations
+
+Read this skill before changing save loading, save formats, migration code or
+historical conversion fixtures, including changes proposed during data-ownership
+audits.
+
+## Isolation
+
+Migration conversion code and its historical fixtures must stay self-contained
+under `src/save/migrations/`. Do not import or call runtime gameplay modules,
+query the live game catalog, or fetch current scenario definitions to perform a
+historical conversion. Use frozen, versioned conversion data stored alongside the
+migration. Shared type contracts do not authorize runtime behavior dependencies.
+
+Historical conversion fixtures are migration data, not current authored game
+data. Keep them out of Rust game catalogs and engine modules. Rust validates the
+converted state after migration; validation must not run historical gameplay.
+
+## Save contract
 
 `src/save/schema.ts` defines the current version-5 envelope:
 

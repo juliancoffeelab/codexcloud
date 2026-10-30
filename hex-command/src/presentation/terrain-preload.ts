@@ -1,12 +1,24 @@
 import terrainSprites from "virtual:terrain-prebuilt";
+import { MAPS } from "../game/maps";
+
+import { terrainAssetKey, terrainMapKey } from "./terrain-map";
+import type { TileView } from "../game/view";
 
 // Only the latest choice is retained; the browser owns its normal HTTP/image cache.
 let pending: { url: string; image: HTMLImageElement } | undefined;
 
 /** Start the authored PNG request before a new battle is created. */
 export function preloadTerrainMap(mapId: string): void {
-  const prefix = `[${JSON.stringify(mapId)},`;
-  const sprite = Object.entries(terrainSprites).find(([key]) => key.startsWith(prefix))?.[1];
+  const map = MAPS[mapId as keyof typeof MAPS];
+  if (!map) return;
+  const tiles = map.terrain as readonly TileView[];
+  const lighting = map.presentation.lighting;
+  const sprite =
+    terrainSprites[
+      terrainAssetKey(
+        terrainMapKey({ mapId: map.id, cols: map.cols, rows: map.rows, tiles }, lighting),
+      )
+    ];
   if (!sprite || pending?.url === sprite.url) return;
   const image = new Image();
   pending = { url: sprite.url, image };

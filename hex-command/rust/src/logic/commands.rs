@@ -176,6 +176,7 @@ impl Game<'_> {
                 }
             }
         }
+        self.remember_conditions();
         Ok(())
     }
 }
@@ -193,7 +194,7 @@ mod browser_controls_tests {
         let leader = game
             .units
             .iter()
-            .find(|u| rules.units[u.kind].leader && u.side == Side::Player)
+            .find(|u| u.role == Some(Role::Leader) && u.side == Side::Player)
             .unwrap();
         let kind = rules.types["archer"];
         let site = game.board.adjacent[leader.tile]

@@ -10,6 +10,7 @@ export type TileView = Immutable<Tile>;
 
 type ReadableGame = Pick<
   LiveGame,
+  | "presentation"
   | "campaign"
   | "recruitmentOptions"
   | "promotionOptions"

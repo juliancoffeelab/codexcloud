@@ -101,6 +101,7 @@ pub struct EngineView {
     pub revision: u32,
     /// Preserves the core snapshot's distinction between absent and null values.
     pub state: State,
+    pub presentation: crate::data::BattlefieldPresentation,
 }
 
 /// Current checkpoint data. Hosts version their save envelope and migrate before restore.

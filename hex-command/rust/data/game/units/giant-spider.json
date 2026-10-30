@@ -1,0 +1,34 @@
+{
+  "id": "giant-spider",
+  "name": "Giant Spider",
+  "role": "warrior",
+  "race": "beast",
+  "hp": 20,
+  "move": 4,
+  "cost": 10,
+  "attacks": [
+    {
+      "id": "bite",
+      "name": "Bite",
+      "damage": 4,
+      "count": 2,
+      "damageType": "pierce",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee",
+      "spread": 1
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Village lurker",
+  "description": "A large woodland predator with paired piercing bites.",
+  "level": 1,
+  "family": "giant-spider",
+  "experienceNeeded": 0,
+  "advancesTo": [],
+  "terrainModifiers": {}
+}

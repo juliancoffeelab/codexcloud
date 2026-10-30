@@ -24,6 +24,7 @@ def fill(matrix, specification, output):
     original = render.require_canvas(render.read_matrix(matrix), matrix)
     rows = [list(row) for row in original]
     palette = json.loads(palette_path.read_text())
+    palette.update(render.read_palette(matrix))
     for symbol, color in config.get('palette_additions', {}).items():
         if symbol in palette or symbol in '.O^*' or len(symbol) != 1 or len(color) != 4:
             raise ValueError('Additional material must have a new symbol and RGBA color')
@@ -62,14 +63,14 @@ def fill(matrix, specification, output):
     output.mkdir(parents=True)
     before = output / 'before'
     before.mkdir()
-    shutil.copyfile(matrix, before / 'sprite.txt')
+    shutil.copyfile(matrix, before / matrix.name)
     shutil.copyfile(palette_path, before / 'palette.json')
-    (output / 'sprite.txt').write_text('\n'.join(''.join(row) for row in rows) + '\n')
+    (output / matrix.name).write_text('\n'.join(''.join(row) for row in rows) + '\n')
     (output / 'palette.json').write_text(json.dumps(palette, indent=2) + '\n')
     (output / 'fill.json').write_text(json.dumps(config, indent=2) + '\n')
     (output / 'changes.json').write_text(json.dumps(changes, indent=2) + '\n')
-    previews([before / 'sprite.txt', output / 'sprite.txt'], output / 'comparison.png')
-    print(json.dumps({'candidate': str(output / 'sprite.txt'), 'changedPixels': len(changes)}))
+    previews([matrix, output / matrix.name], output / 'comparison.png')
+    print(json.dumps({'candidate': str(output / matrix.name), 'changedPixels': len(changes)}))
 
 
 if __name__ == '__main__':

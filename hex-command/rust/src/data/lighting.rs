@@ -1,0 +1,79 @@
+//! Authored scenario lighting, loaded and validated with the Rust catalog.
+use super::{ConditionRule, Event, Tile};
+use serde::{Deserialize, Serialize};
+
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Copy, Debug, Default, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum TimeOfDay {
+    #[default]
+    Day,
+    Night,
+}
+
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct BattlefieldLight {
+    pub col: i32,
+    pub row: i32,
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub dx: Option<f64>,
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub dy: Option<f64>,
+    pub radius: f64,
+    pub power: f64,
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub when: Option<ConditionRule>,
+}
+
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct BattlefieldLighting {
+    pub time: TimeOfDay,
+    #[serde(default)]
+    pub lights: Vec<BattlefieldLight>,
+}
+
+impl BattlefieldLighting {
+    pub(super) fn validate(&self, tiles: &[Tile], events: &[Event]) -> Result<(), String> {
+        for light in &self.lights {
+            if !tiles
+                .iter()
+                .any(|tile| tile.col == light.col && tile.row == light.row)
+            {
+                return Err(format!(
+                    "light is outside the map: {},{}",
+                    light.col, light.row
+                ));
+            }
+            if !light.radius.is_finite()
+                || light.radius <= 0.0
+                || !light.power.is_finite()
+                || light.power < 0.0
+                || light.dx.is_some_and(|value| !value.is_finite())
+                || light.dy.is_some_and(|value| !value.is_finite())
+            {
+                return Err(
+                    "light requires a positive radius, nonnegative power and finite offsets".into(),
+                );
+            }
+            if let Some(rule) = &light.when {
+                rule.condition.validate(tiles, events, true)?;
+            }
+        }
+        Ok(())
+    }
+}
+
+/// Resolved current presentation; sent with views, never persisted as a cache.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct BattlefieldPresentation {
+    pub lighting: BattlefieldLighting,
+    pub fog: Vec<String>,
+}

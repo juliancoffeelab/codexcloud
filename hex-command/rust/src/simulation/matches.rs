@@ -163,6 +163,7 @@ fn generate_arena_terrain(state: &mut State, landscape: &str, random: &mut Rando
             }
             let col = q + r.div_euclid(2) + 4;
             state.tiles.push(Tile {
+                fog: None,
                 id: axial_id(q, r),
                 col,
                 row: r + 4,

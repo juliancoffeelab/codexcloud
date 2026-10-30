@@ -82,6 +82,9 @@ export type AdvancedTroop =
   | "merfolk-tidecrusher-l3"
   | "merfolk-maceguard-l3";
 export type UnitType =
+  | "bear"
+  | "giant-bat"
+  | "giant-spider"
   | LeaderType
   | AdvancedTroop
   | "adept"
@@ -116,6 +119,11 @@ export type TerrainType =
   | "water"
   | "bridge"
   | "ford"
+  | "landing"
+  | "ferry"
+  | "house"
+  | "mountain"
+  | "cave"
   | "village"
   | "keep"
   | "marsh"
@@ -152,6 +160,7 @@ export interface Tile extends Coordinates {
   deadEnds?: HexDirection[];
   /** Artwork only: reusable floor palette, independent of terrain rules. */
   floor?: string;
+  fog?: import("../../rust/pkg/hex_command").ConditionRule;
 }
 export interface Unit {
   /** Missing on pre-progression saves, which load as zero. */
@@ -234,6 +243,7 @@ export interface TerrainOverride extends Coordinates {
   connections?: HexDirection[];
   deadEnds?: HexDirection[];
   floor?: string;
+  fog?: import("../../rust/pkg/hex_command").ConditionRule;
 }
 export interface StartingUnit extends Coordinates {
   type: UnitType;
@@ -251,6 +261,8 @@ export interface MapDefinition {
   rows: number;
   terrain: TerrainOverride[];
   units: StartingUnit[];
+  lighting?: import("../../rust/pkg/hex_command").BattlefieldLighting;
+  presentation: import("../../rust/pkg/hex_command").BattlefieldPresentation;
 }
 export interface DamageBreakdown {
   probabilities?: readonly number[];
@@ -317,6 +329,7 @@ export interface GameSnapshot {
 }
 /** Full session state, including mutable terrain, for exact move undo. */
 export interface GameState {
+  conditionMemory?: string[];
   armies?: [string, string];
   combatRng?: number;
   mapId: MapId;
@@ -356,11 +369,13 @@ export type MissionGoal =
   | { kind: "vigil"; label: string; tile: string; turns: number; companion: string }
   | { kind: "refuge"; label: string; tile: string; turns: number }
   | { kind: "seal"; label: string; tiles: string[]; unitType?: UnitType }
-  | { kind: "event"; label: string; tile: string; event: string }
+  | { kind: "event"; label: string; tile?: string; event: string }
   | { kind: "defeat"; label: string };
 export interface MissionEvent {
   id: string;
+  spawn?: import("../../rust/pkg/hex_command").SpawnGroup;
   trigger:
+    | { kind: "condition"; condition: import("../../rust/pkg/hex_command").Condition }
     | { kind: "visit"; tile: string }
     | { kind: "round"; round: number }
     | { kind: "control"; tile: string; round?: number };

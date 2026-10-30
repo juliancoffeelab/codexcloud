@@ -1,38 +1,29 @@
 {
-  "subtitle": "Carry a message, not a conquest.",
-  "briefing": "The eastern villages have gone dark. Ivo carries their names and a message for the last ferryman; Nera promises to get him across the river. The Tollkeeper’s guards block the road, but this journey is about reaching the living, not conquering the valley.",
+  "subtitle": "Find out why the other bank went dark.",
+  "briefing": "The lantern across the river has gone out, and the ferry is closed. The villagers have sent a patrol to find out what happened. Reach the ferryman\u2019s house on the eastern bank, then investigate the villages.",
   "hints": [
-    "Move Ivo's support first. Keep him outside enemy reach until the company opens a safe path; reaching the landing matters more than clearing the map.",
-    "Arrows find little purchase in bare bones. A scout's stone sling provides ranged Impact without a skeleton's melee reply.",
-    "The river has more than one crossing."
+    "The ferry is closed. The two fords lead across the island.",
+    "Scouting patrols are working in the western woods. Contact them to gain reinforcements; ordinary recruitment is unavailable.",
+    "Explored ground stays visible. Capturing a village lights it, but surviving spiders can take it back."
   ],
   "intro": [
     {
-      "speaker": "Ivo",
-      "portrait": "scout",
-      "text": "The eastern villages have not seen a lantern in three nights. I have their names here. Someone has to read them."
-    },
-    {
       "speaker": "Nera",
-      "portrait": "commander",
-      "text": "Then we get you across. Stay behind the shields. We are not here to win the river; we are here to reach the other bank."
+      "portrait": "swordsman",
+      "text": "The other bank is completely dark. We need to reach the ferryman and find out why."
     },
     {
       "speaker": "Ivo",
       "portrait": "scout",
-      "text": "The ford north of the bridge is still open. And the ferryman hid his purse in the old riverside ruin, if we need supplies."
+      "text": "The ferry is closed. We can cross by the island fords. Our scouts should still be watching the woods."
     }
   ],
   "victory": [
     {
-      "speaker": "Ivo",
-      "portrait": "scout",
-      "text": "The names are safe. But the ferryman says the dead have taken three settlements farther up the road."
-    },
-    {
       "speaker": "Nera",
-      "portrait": "commander",
-      "text": "We will light each one. Let the people see that the road still belongs to the living."
+      "portrait": "swordsman",
+      "text": "The lanterns are burning again. Take the eastern road\u2014we need to find out where they took everyone."
     }
-  ]
+  ],
+  "debrief": "The patrol reached the ferryman and secured the eastern villages."
 }

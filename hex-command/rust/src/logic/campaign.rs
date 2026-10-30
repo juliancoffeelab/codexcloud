@@ -283,6 +283,43 @@ impl<'catalog> Game<'catalog> {
             }
         }
     }
+    /// Activation is remembered independently from placement and each member is released once.
+    pub(crate) fn spawn_events(&mut self) {
+        let Some(mission) = self.mission.clone() else {
+            return;
+        };
+        for event in &mission.events {
+            let Some(group) = &event.spawn else {
+                continue;
+            };
+            if !self
+                .campaign
+                .as_ref()
+                .is_some_and(|state| state.marked(&format!("event:{}", event.id)))
+            {
+                continue;
+            }
+            for incoming in &group.units {
+                let marker = format!("spawn:{}:{}", event.id, incoming.id);
+                if self.campaign.as_ref().unwrap().marked(&marker) {
+                    continue;
+                }
+                let kind = self.kind(&incoming.r#type);
+                let tile = group
+                    .area
+                    .iter()
+                    .map(|id| self.site(id))
+                    .find(|&tile| self.at(tile).is_none() && self.cost(kind, tile) != u16::MAX);
+                if let Some(tile) = tile {
+                    let id = self.add(kind, incoming.side, tile);
+                    let unit = self.units.iter_mut().find(|unit| unit.id == id).unwrap();
+                    unit.name = incoming.name.clone();
+                    unit.role = incoming.role.clone();
+                    self.campaign.as_mut().unwrap().marks.push(marker);
+                }
+            }
+        }
+    }
     pub(crate) fn evaluate_campaign(&mut self, at_turn_start: bool, entered: Option<usize>) {
         if self.campaign.is_none() || self.winner.is_some() {
             return;
@@ -432,6 +469,9 @@ impl<'catalog> Game<'catalog> {
                 let marker = format!("event:{}", event.id);
                 let state = self.campaign.as_ref().unwrap();
                 let triggered = match &event.trigger {
+                    Trigger::Condition { condition } => {
+                        super::conditions::matches(condition, &self.presentation_input(), None)
+                    }
                     Trigger::Visit { tile } => entered.is_some_and(|t| &self.board.ids[t] == tile),
                     Trigger::Round { round } => self.round >= *round,
                     Trigger::Control { tile, round } => {
@@ -470,6 +510,7 @@ impl<'catalog> Game<'catalog> {
                 );
             }
         }
+        self.spawn_events();
         if mission.goals.iter().all(|g| self.goal_done(g)) {
             self.winner = Some(Side::Player);
             let dain_survived = self
@@ -665,16 +706,21 @@ impl<'catalog> Game<'catalog> {
     }
     pub(crate) fn returns_with_story(&self, u: &Unit) -> bool {
         let state = self.campaign.as_ref().unwrap();
-        u.name.as_ref().is_some_and(|name| {
-            self.rules.campaigns[&state.id]
-                .missions
-                .get(state.mission + 1)
-                .is_some_and(|m| {
-                    m.map.units.iter().any(|incoming| {
-                        incoming.side == Side::Player && incoming.name.as_ref() == Some(name)
-                    })
+        self.rules.campaigns[&state.id]
+            .missions
+            .get(state.mission + 1)
+            .is_some_and(|mission| {
+                mission.map.units.iter().any(|incoming| {
+                    incoming.side == Side::Player
+                        && self.rules.units[self.kind(&incoming.r#type)].family
+                            == self.rules.units[u.kind].family
+                        && if u.role == Some(Role::Leader) {
+                            incoming.role == Some(Role::Leader)
+                        } else {
+                            u.name.is_some() && incoming.name == u.name
+                        }
                 })
-        })
+            })
     }
     #[cfg(not(target_arch = "wasm32"))]
     pub(crate) fn next_campaign(&self) -> Self {
@@ -694,6 +740,7 @@ impl<'catalog> Game<'catalog> {
             .filter(|u| {
                 u.side == Side::Player
                     && !self.rules.units[u.kind].leader
+                    && u.role != Some(Role::Leader)
                     && u.role != Some(Role::Courier)
                     && u.name
                         .as_ref()
@@ -742,10 +789,7 @@ impl<'catalog> Game<'catalog> {
         let story = self
             .units
             .iter()
-            .filter(|u| {
-                u.side == Side::Player
-                    && (u.role == Some(Role::Leader) || self.returns_with_story(u))
-            })
+            .filter(|u| u.side == Side::Player && self.returns_with_story(u))
             .map(|u| veteran(u, true))
             .collect();
         let mut choices = state.choices.clone().unwrap_or_default();

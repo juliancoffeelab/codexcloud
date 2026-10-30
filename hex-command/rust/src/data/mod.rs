@@ -14,6 +14,8 @@ mod state;
 pub use state::*;
 mod scenario;
 pub use scenario::*;
+mod lighting;
+pub use lighting::*;
 mod objectives;
 pub use objectives::*;
 mod records;
@@ -68,3 +70,6 @@ pub struct Rules {
 
 /// Immutable authored content shared by battles and scoped simulation workers.
 pub type Catalog = Rules;
+
+mod conditions;
+pub use conditions::*;

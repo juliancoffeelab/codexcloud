@@ -41,8 +41,9 @@ impl Battle {
     fn game<'catalog>(&self, rules: &'catalog Rules) -> Game<'catalog> {
         Game::from_state_with_board(rules, self.state.clone(), self.board.clone())
     }
-    fn view(&self) -> EngineView {
+    fn view(&self, rules: &Rules) -> EngineView {
         EngineView {
+            presentation: self.game(rules).presentation(),
             revision: self.revision,
             state: self.state.clone(),
         }
@@ -119,7 +120,8 @@ impl NativeEngineFactory {
             .map(|mut state| {
                 state.combat_rng = Some(seed);
                 let board = Board::new(&state.tiles);
-                self.insert(state, seed, board)
+                let game = Game::from_state_with_board(&self.rules, state, board.clone());
+                self.insert(game.state(), seed, board)
             });
         encode(result)
     }
@@ -130,7 +132,10 @@ impl NativeEngineFactory {
     }
     /// Return a detached [`EngineView`] when the handle and expected revision are current.
     pub fn view(&self, id: u32, revision: u32) -> Result<Ts<ViewResponse>, JsError> {
-        encode(self.battle(id, revision).map(Battle::view))
+        encode(
+            self.battle(id, revision)
+                .map(|battle| battle.view(&self.rules)),
+        )
     }
     /// Publish legal actions and display forecasts without exposing mutable state.
     pub fn inspect(&self, id: u32, revision: u32) -> Result<Ts<InspectionResponse>, JsError> {
@@ -208,7 +213,7 @@ impl NativeEngineFactory {
             battle.options = None;
         }
         Ok(DispatchResult {
-            view: battle.view(),
+            view: battle.view(&self.rules),
             combat: game.combat_animation.take(),
         })
     }
@@ -299,7 +304,7 @@ impl NativeEngineFactory {
             options: None,
             pending: None,
         };
-        let view = battle.view();
+        let view = battle.view(&self.rules);
         self.battles.insert(id, battle);
         BattleHandle { id, view }
     }
@@ -411,4 +416,13 @@ mod tests {
         old["planner"] = serde_json::json!({});
         assert!(serde_json::from_value::<SavedGame>(old).is_err());
     }
+}
+
+/// Offline authoring uses the live Rust condition evaluator, without a second JS implementation.
+#[wasm_bindgen(js_name = previewPresentation)]
+pub fn preview_presentation(
+    input: Ts<crate::logic::conditions::PresentationInput>,
+) -> Result<Ts<BattlefieldPresentation>, JsError> {
+    let input = input.to_rust().map_err(|e| JsError::new(&e.to_string()))?;
+    Ok(crate::logic::conditions::resolve(&input).0.into_ts()?)
 }

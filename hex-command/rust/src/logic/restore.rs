@@ -99,6 +99,29 @@ pub(crate) fn validate_state_geometry(
             return Err(fail("unknown terrain"));
         }
     }
+    let mut allowed_memory: HashSet<String> = authored
+        .tiles
+        .iter()
+        .filter(|tile| tile.fog.as_ref().is_some_and(|rule| rule.remember))
+        .map(|tile| format!("fog:{}", tile.id))
+        .collect();
+    if let Some(map) = rules
+        .map_definitions
+        .iter()
+        .find(|map| map.id == state.map_id)
+    {
+        for (index, light) in map.lighting.lights.iter().enumerate() {
+            if light.when.as_ref().is_some_and(|rule| rule.remember) {
+                allowed_memory.insert(format!("light:{index}:{},{}", light.col, light.row));
+            }
+        }
+    }
+    let mut remembered = HashSet::new();
+    for key in &state.condition_memory {
+        if !allowed_memory.contains(key) || !remembered.insert(key) {
+            return Err(fail("invalid remembered condition"));
+        }
+    }
     let mut ids = HashSet::new();
     let mut occupied = HashSet::new();
     for unit in &state.units {

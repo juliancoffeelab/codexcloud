@@ -63,7 +63,7 @@ impl Board {
         self.distances[first * self.ids.len() + second]
     }
 }
-fn hex_distance(first: (i32, i32), second: (i32, i32)) -> u16 {
+pub(crate) fn hex_distance(first: (i32, i32), second: (i32, i32)) -> u16 {
     let q = first.0 - first.1.div_euclid(2) - second.0 + second.1.div_euclid(2);
     let r = first.1 - second.1;
     ((q.abs() + r.abs() + (q + r).abs()) / 2) as u16
@@ -93,6 +93,8 @@ pub(crate) struct Game<'catalog> {
     pub(crate) owners: Vec<Option<Side>>,
     pub(crate) connections: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) dead_ends: Rc<Vec<Option<Vec<HexDirection>>>>,
+    pub(crate) fog: Rc<Vec<Option<ConditionRule>>>,
+    pub(crate) condition_memory: Vec<String>,
     pub(crate) floors: Rc<Vec<Option<String>>>,
     pub(crate) units: Vec<Unit>,
     pub(crate) map_id: String,
@@ -224,6 +226,8 @@ impl<'catalog> Game<'catalog> {
         let last_combat = state.last_combat.flatten();
         let floors = Rc::new(state.tiles.iter().map(|tile| tile.floor.clone()).collect());
         let mut game = Self {
+            fog: Rc::new(state.tiles.iter().map(|t| t.fog.clone()).collect()),
+            condition_memory: state.condition_memory,
             rules,
             board,
             terrain,
@@ -268,6 +272,7 @@ impl<'catalog> Game<'catalog> {
         };
         game.roster_changed();
         game.refresh_mission();
+        game.remember_conditions();
         game
     }
     pub(crate) fn new(rules: &'catalog Rules, map: &str) -> Self {
@@ -284,6 +289,7 @@ impl<'catalog> Game<'catalog> {
     /// Materialize the protocol snapshot without changing battle state.
     pub(crate) fn state(&self) -> State {
         State {
+            condition_memory: self.condition_memory.clone(),
             armies: self.armies.clone(),
             map_id: self.map_id.clone(),
             map_revision: self.map_revision,
@@ -319,6 +325,7 @@ impl<'catalog> Game<'catalog> {
                 connections: self.connections[index].clone(),
                 dead_ends: self.dead_ends[index].clone(),
                 floor: self.floors[index].clone(),
+                fog: self.fog[index].clone(),
             })
             .collect()
     }
@@ -500,6 +507,8 @@ impl<'catalog> Game<'catalog> {
     }
     pub(crate) fn fork(&self) -> Self {
         Self {
+            condition_memory: self.condition_memory.clone(),
+            fog: self.fog.clone(),
             rules: self.rules,
             board: self.board.clone(),
             terrain: self.terrain.clone(),

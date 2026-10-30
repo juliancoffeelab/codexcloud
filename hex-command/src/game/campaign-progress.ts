@@ -41,7 +41,7 @@ export function campaignMission(state: Immutable<CampaignState>): Immutable<Miss
 
 export function goalTiles(goal: Immutable<MissionGoal>): readonly string[] {
   if (goal.kind === "defeat") return [];
-  return "tiles" in goal ? goal.tiles : [goal.tile];
+  return "tiles" in goal ? goal.tiles : goal.tile ? [goal.tile] : [];
 }
 
 export function goalProgress(board: CampaignBoard, goal: Immutable<MissionGoal>) {

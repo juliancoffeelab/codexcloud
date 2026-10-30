@@ -36,6 +36,9 @@ export function validTerrainConnections(tile: ConnectedTile): boolean {
     case "bridge":
     case "ford":
       return [9, 18, 36].includes(mask);
+    case "landing":
+    case "ferry":
+      return [1, 8].includes(mask);
     default:
       return false;
   }
@@ -44,10 +47,12 @@ export function validTerrainConnections(tile: ConnectedTile): boolean {
 /** Connections select native frames; they do not change movement or protection. */
 export function terrainArtNames(tile: ConnectedTile): string[] {
   const mask = directionMask(tile.connections ?? []);
+  if ((tile.terrain === "landing" || tile.terrain === "ferry") && mask === 1)
+    return [`${tile.terrain}_east`];
   if (tile.terrain === "road" && tile.deadEnds?.length)
     return [`road_${mask}-end-${directionMask(tile.deadEnds)}`];
-  if (tile.terrain === "road" || tile.terrain === "village") {
-    if (tile.terrain === "village" && !mask) return ["village_0"];
+  if (tile.terrain === "village") return [`village_${mask}`];
+  if (tile.terrain === "road") {
     if (mask && mask !== 9) return [`${tile.terrain}_${mask}`];
   }
   if (tile.terrain === "bridge" || tile.terrain === "ford") {
