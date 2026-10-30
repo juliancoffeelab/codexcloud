@@ -1,4 +1,5 @@
 //! Earned promotions use distance-independent mechanical matchups and support demand.
+use crate::sort::Order;
 use crate::{ai::context::BattleView, data::*};
 
 pub(super) fn choices(
@@ -14,7 +15,7 @@ pub(super) fn choices(
         .iter()
         .filter(|u| u.side == game.turn())
         .collect();
-    units.sort_by_key(|u| u.id);
+    units.order_by_key(|u| u.id);
     units
         .into_iter()
         .filter_map(|unit| {

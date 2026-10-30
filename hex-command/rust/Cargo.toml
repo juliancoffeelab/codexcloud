@@ -17,18 +17,19 @@ path = "src/main.rs"
 
 [features]
 default = []
+runtime-catalog = ["hex-command-catalog/runtime-catalog"]
 wasm = ["dep:tsify", "dep:wasm-bindgen", "hex-command-catalog/wasm"]
 
 [dependencies]
 hex-command-catalog = { path = "catalog" }
 rustc-hash = "2"
 serde = { version = "1", features = ["derive", "rc"] }
-serde_json = { version = "1", features = ["raw_value", "float_roundtrip"] }
-sha2 = "0.10"
 tsify = { version = "0.5.8", default-features = false, features = ["js"], optional = true }
 wasm-bindgen = { version = "0.2", optional = true }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+serde_json = { version = "1", features = ["raw_value", "float_roundtrip"] }
+sha2 = "0.10"
 arrow-array = "57"
 arrow-buffer = "57"
 arrow-schema = "57"

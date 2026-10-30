@@ -326,13 +326,13 @@ impl<'catalog> Game<'catalog> {
             && self.owners[tile] != Some(actor.side)
         {
             self.owners[tile] = Some(actor.side);
-            let unit_name = self.rules.units[actor.kind].name.to_lowercase();
+            let unit_name = &self.rules.unit_log_names[actor.kind];
             let capture = if self.terrain_is(tile, Terrain::Village) {
                 "captured a village".to_owned()
             } else {
                 format!(
                     "claimed {}",
-                    self.rules.terrain_labels[self.terrain[tile]].to_lowercase()
+                    self.rules.terrain_log_labels[self.terrain[tile]]
                 )
             };
             self.record(format!(
@@ -352,6 +352,7 @@ impl<'catalog> Game<'catalog> {
                 None
             },
         );
+        #[cfg(not(target_arch = "wasm32"))]
         self.action(ActionRecord::Move {
             unit: format!("u{id}"),
             tile: self.board.ids[tile].clone(),

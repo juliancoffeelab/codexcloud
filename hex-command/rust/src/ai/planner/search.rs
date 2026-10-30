@@ -3,6 +3,7 @@ use crate::ai::objectives::actor_matches;
 use crate::ai::orders::target as objective;
 use crate::ai::orders::{Target as Objective, TargetKind as ObjectiveKind};
 use crate::ai::roles::role;
+use crate::sort::Order;
 use crate::{
     ai::context::BattleView,
     ai::objectives::{TileOrder, individual},
@@ -97,7 +98,8 @@ pub(in crate::ai) struct Plan {
     pub(in crate::ai) withdrawing: bool,
 }
 impl BattleView<'_, '_> {
-    pub(in crate::ai) fn best_plan<const BOUNDED: bool, const FOCUSED: bool>(
+    #[inline(never)]
+    pub(in crate::ai) fn best_plan<const BOUNDED: bool>(
         &self,
         orders: &crate::ai::orders::TacticalOrders,
         escort: &crate::ai::escort::Workspace,
@@ -146,7 +148,7 @@ impl BattleView<'_, '_> {
         }
         // Commit bookkeeping in roster order, as policy_objectives and the
         // original planning loop visited leaders and units in that order.
-        intents.sort_by_key(|(id, _)| self.index(*id).unwrap());
+        intents.order_by_key(|(id, _)| self.index(*id).unwrap());
         let allies: Vec<_> = self.units().iter().filter(|u| u.side == side).collect();
         if allies.iter().all(|u| u.attacked) {
             return None;
@@ -212,7 +214,7 @@ impl BattleView<'_, '_> {
         let mut roster: Vec<_> = allies
             .iter()
             .enumerate()
-            .filter(|(_, u)| !u.attacked && (!FOCUSED || Some(u.id) == focus))
+            .filter(|(_, u)| !u.attacked && focus.is_none_or(|id| id == u.id))
             .map(|(index, &unit)| {
                 let before_risk = threats.at(unit, unit.tile, None);
                 let important = orders.important(self, unit);
@@ -309,7 +311,7 @@ impl BattleView<'_, '_> {
                 )
             })
             .collect();
-        roster.sort_unstable_by(|a, b| b.3.total_cmp(&a.3).then(a.0.cmp(&b.0)));
+        roster.order_unstable_by(|a, b| b.3.total_cmp(&a.3).then(a.0.cmp(&b.0)));
         for (unit_order, original_unit, before_risk, _, maximum_combat, terminal_objective) in
             roster
         {
@@ -458,7 +460,7 @@ impl BattleView<'_, '_> {
             let duty = if let Some(index) = committed {
                 Some(duties.swap_remove(index))
             } else {
-                duties.sort_by(|a, b| {
+                duties.order_by(|a, b| {
                     a.priority
                         .total_cmp(&b.priority)
                         .then_with(|| order.compare(self, nearest(&a.goal), nearest(&b.goal)))
@@ -989,7 +991,7 @@ mod tests {
                 for _ in [()] {
                     let mut left_intents = vec![];
                     let mut right_intents = vec![];
-                    let left = crate::ai::context::BattleView::new(&game).best_plan::<true, false>(
+                    let left = crate::ai::context::BattleView::new(&game).best_plan::<true>(
                         &crate::ai::CampaignBlock::Mission
                             .campaign_orders(
                                 &game,
@@ -1010,28 +1012,27 @@ mod tests {
                         &mut left_threats,
                         None,
                     );
-                    let right = crate::ai::context::BattleView::new(&game)
-                        .best_plan::<false, false>(
-                            &crate::ai::CampaignBlock::Mission
-                                .campaign_orders(
-                                    &game,
-                                    &crate::ai::PlanningWorkspace::new(
-                                        7,
-                                        1,
-                                        None,
-                                        crate::ai::Diplomacy::Pragmatic,
-                                    ),
-                                )
-                                .tactics,
-                            &crate::ai::escort::Workspace::default(),
-                            7,
-                            None,
-                            &mut right_routes,
-                            &mut right_commitments,
-                            &mut right_intents,
-                            &mut right_threats,
-                            None,
-                        );
+                    let right = crate::ai::context::BattleView::new(&game).best_plan::<false>(
+                        &crate::ai::CampaignBlock::Mission
+                            .campaign_orders(
+                                &game,
+                                &crate::ai::PlanningWorkspace::new(
+                                    7,
+                                    1,
+                                    None,
+                                    crate::ai::Diplomacy::Pragmatic,
+                                ),
+                            )
+                            .tactics,
+                        &crate::ai::escort::Workspace::default(),
+                        7,
+                        None,
+                        &mut right_routes,
+                        &mut right_commitments,
+                        &mut right_intents,
+                        &mut right_threats,
+                        None,
+                    );
                     assert_eq!(left, right);
                     assert_eq!(left_intents, right_intents);
                     assert_eq!(left_commitments, right_commitments);

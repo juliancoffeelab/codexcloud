@@ -4,6 +4,7 @@ use super::{
     objectives::{self},
     priority,
 };
+use crate::sort::Order;
 use crate::{ai::context::BattleView, data::*};
 use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -58,7 +59,7 @@ fn drive(
         .unwrap()
         .tactics
         .objectives
-        .sort_by(|a, b| b.priority.cmp(&a.priority).then(a.id.cmp(&b.id)));
+        .order_by(|a, b| b.priority.cmp(&a.priority).then(a.id.cmp(&b.id)));
     let recovered: Vec<_> = context
         .battle()
         .units()
@@ -160,7 +161,7 @@ impl PlannerKind {
                 workspace
                     .classic_ids
                     .make_contiguous()
-                    .sort_by_key(|id| workspace.escort.bound(*id) == 0.0);
+                    .order_by_key(|id| workspace.escort.bound(*id) == 0.0);
                 workspace.tactical_remaining = Some(workspace.classic_ids.len());
                 for unit in game
                     .units()
@@ -234,7 +235,7 @@ impl PlannerKind {
             let plan = if planner.queued() {
                 priority::next_plan(game, workspace, &mut intents)
             } else {
-                game.best_plan::<true, false>(
+                game.best_plan::<true>(
                     orders,
                     &workspace.escort,
                     workspace.seed,

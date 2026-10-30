@@ -7,6 +7,7 @@ use crate::ai::{
     roles::role,
     tactics::{Plan, action_jitter},
 };
+use crate::sort::Order;
 use crate::{ai::context::BattleView, data::*};
 use rustc_hash::{FxHashMap, FxHashSet};
 use std::rc::Rc;
@@ -319,7 +320,7 @@ pub(in crate::ai) fn plan(
     let duty = if let Some(index) = committed {
         Some(duties.swap_remove(index))
     } else {
-        duties.sort_by(|a, b| {
+        duties.order_by(|a, b| {
             a.3.total_cmp(&b.3).then_with(|| {
                 order.compare(
                     game,
@@ -687,7 +688,8 @@ pub(in crate::ai) fn plan(
             return;
         }
         candidates.push(candidate);
-        candidates.sort_unstable_by(|a, b| b.score.total_cmp(&a.score).then(a.order.cmp(&b.order)));
+        candidates
+            .order_unstable_by(|a, b| b.score.total_cmp(&a.score).then(a.order.cmp(&b.order)));
         candidates.truncate(width);
     };
     if battle {

@@ -116,6 +116,7 @@ pub(crate) struct Game<'catalog> {
     pub(crate) arena_first: Option<Side>,
     pub(crate) mission: Option<Rc<Mission>>,
     mission_key: Option<(String, usize, bool, Vec<String>, bool)>,
+    #[cfg(not(target_arch = "wasm32"))]
     pub(crate) recordings: Option<Records>,
     pub(super) route_cache: Rc<RefCell<HashMap<(usize, Vec<usize>, u64), Rc<Vec<u16>>>>>,
     pub(super) terrain_revision: u64,
@@ -253,6 +254,7 @@ impl<'catalog> Game<'catalog> {
             arena_first: None,
             mission: None,
             mission_key: None,
+            #[cfg(not(target_arch = "wasm32"))]
             recordings: None,
             route_cache: Rc::new(RefCell::new(HashMap::default())),
             terrain_revision: 0,
@@ -533,6 +535,7 @@ impl<'catalog> Game<'catalog> {
             arena_first: self.arena_first,
             mission: self.mission.clone(),
             mission_key: self.mission_key.clone(),
+            #[cfg(not(target_arch = "wasm32"))]
             recordings: None,
             route_cache: self.route_cache.clone(),
             terrain_revision: self.terrain_revision,
@@ -547,6 +550,7 @@ impl<'catalog> Game<'catalog> {
             unit_indices: self.unit_indices.clone(),
         }
     }
+    #[cfg(not(target_arch = "wasm32"))]
     pub(crate) fn action(&mut self, value: ActionRecord) {
         if let Some(records) = &mut self.recordings {
             records.actions.push(value);
@@ -592,6 +596,7 @@ impl<'catalog> Game<'catalog> {
             "{} advanced to {}.",
             name, self.rules.units[kind].name
         ));
+        #[cfg(not(target_arch = "wasm32"))]
         self.action(ActionRecord::Advance {
             unit: format!("u{id}"),
             unit_type: self.rules.units[kind].id.to_string(),
@@ -670,8 +675,9 @@ impl<'catalog> Game<'catalog> {
             } else {
                 "Enemy"
             },
-            self.rules.units[kind].name.to_lowercase()
+            self.rules.unit_log_names[kind]
         ));
+        #[cfg(not(target_arch = "wasm32"))]
         self.action(ActionRecord::Recruit {
             unit: format!("u{id}"),
             unit_type: self.rules.units[kind].id.to_string(),

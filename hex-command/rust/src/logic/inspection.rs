@@ -1,5 +1,5 @@
 //! Immutable browser query publication; no work is added to simulation turns.
-use super::battle::Game;
+use super::{battle::Game, collect_map};
 use crate::{data::*, protocol::*};
 
 impl Game<'_> {
@@ -90,10 +90,8 @@ impl Game<'_> {
                         .into_iter()
                         .map(|kind| self.rules.units[kind].id.to_string())
                         .collect(),
-                    recruitment: self
-                        .recruitment_options(unit.side)
-                        .into_iter()
-                        .map(|kind| {
+                    recruitment: collect_map(self.recruitment_options(unit.side).into_iter().map(
+                        |kind| {
                             (
                                 self.rules.units[kind].id.to_string(),
                                 self.placement_tiles(unit, kind, true)
@@ -101,61 +99,48 @@ impl Game<'_> {
                                     .map(|tile| self.board.ids[tile].clone())
                                     .collect(),
                             )
-                        })
-                        .collect(),
+                        },
+                    )),
                 }
             })
             .collect();
         BattleInspection {
             revision,
             units,
-            recruitment: [Side::Player, Side::Enemy]
-                .into_iter()
-                .map(|side| {
-                    (
-                        if side == Side::Player {
-                            "player".into()
-                        } else {
-                            "enemy".into()
-                        },
-                        self.recruitment_options(side)
-                            .into_iter()
-                            .map(|kind| self.rules.units[kind].id.to_string())
-                            .collect(),
-                    )
-                })
-                .collect(),
-            costs: self
-                .rules
-                .units
-                .iter()
-                .map(|rule| {
-                    (
-                        rule.id.to_string(),
+            recruitment: collect_map([Side::Player, Side::Enemy].into_iter().map(|side| {
+                (
+                    if side == Side::Player {
+                        "player".into()
+                    } else {
+                        "enemy".into()
+                    },
+                    self.recruitment_options(side)
+                        .into_iter()
+                        .map(|kind| self.rules.units[kind].id.to_string())
+                        .collect(),
+                )
+            })),
+            costs: collect_map(self.rules.units.iter().map(|rule| {
+                (
+                    rule.id.to_string(),
+                    collect_map(
                         self.rules
                             .terrain_names
                             .iter()
                             .map(ToString::to_string)
-                            .zip(rule.costs.iter().copied())
-                            .collect(),
-                    )
-                })
-                .collect(),
-            neighbors: self
-                .board
-                .ids
-                .iter()
-                .enumerate()
-                .map(|(index, id)| {
-                    (
-                        id.clone(),
-                        self.board.adjacent[index]
-                            .iter()
-                            .map(|&next| self.board.ids[next].clone())
-                            .collect(),
-                    )
-                })
-                .collect(),
+                            .zip(rule.costs.iter().copied()),
+                    ),
+                )
+            })),
+            neighbors: collect_map(self.board.ids.iter().enumerate().map(|(index, id)| {
+                (
+                    id.clone(),
+                    self.board.adjacent[index]
+                        .iter()
+                        .map(|&next| self.board.ids[next].clone())
+                        .collect(),
+                )
+            })),
             income: Gold {
                 player: self.income(Side::Player),
                 enemy: self.income(Side::Enemy),

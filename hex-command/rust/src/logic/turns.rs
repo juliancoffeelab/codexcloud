@@ -46,8 +46,10 @@ impl<'catalog> Game<'catalog> {
                 .map(|ally| self.rules.units[ally.kind].healing)
                 .max()
                 .unwrap_or(0);
+            #[cfg(not(target_arch = "wasm32"))]
             let amount = healing
                 .min((self.rules.units[self.units[index].kind].hp - self.units[index].hp).max(0));
+            #[cfg(not(target_arch = "wasm32"))]
             if amount > 0 && self.recordings.is_some() {
                 let target = &self.units[index];
                 let providers = self

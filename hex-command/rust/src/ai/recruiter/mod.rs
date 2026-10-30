@@ -5,6 +5,7 @@ use super::{
     roles::{recruit_role, role},
     tactics::jitter,
 };
+use crate::sort::Order;
 use crate::{ai::context::BattleView, data::*};
 use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -248,7 +249,7 @@ impl BattleView<'_, '_> {
                 .filter(|&t| placement_allowed(kind, t))
                 .collect();
             let order = TileOrder::new(self, &leader, false);
-            tiles.sort_by(|&a, &b| order.compare(self, a, b));
+            tiles.order_by(|&a, &b| order.compare(self, a, b));
             if let Some(&tile) = tiles.first() {
                 return Some(super::recruit_command(self, leader.id, kind, tile));
             }
@@ -359,7 +360,7 @@ impl BattleView<'_, '_> {
                 score + jitter(seed, &format!("recruit:{}:{}", self.round(), r.id)),
             ));
         }
-        choices.sort_by(|a, b| {
+        choices.order_by(|a, b| {
             b.1.total_cmp(&a.1)
                 .then_with(|| {
                     if balanced {
@@ -410,7 +411,7 @@ impl BattleView<'_, '_> {
                 .min()
                 .unwrap_or(0)
         };
-        tiles.sort_by(|&a, &b| {
+        tiles.order_by(|&a, &b| {
             if role(self, kind) == TacticalRole::Frontline {
                 proximity(a).cmp(&proximity(b))
             } else {

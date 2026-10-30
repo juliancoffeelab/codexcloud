@@ -12,6 +12,7 @@ pub mod objectives;
 pub mod orders;
 pub mod planner;
 #[cfg(not(target_arch = "wasm32"))]
+#[cfg(not(target_arch = "wasm32"))]
 pub mod profiling;
 pub mod recruiter;
 mod roles;
@@ -226,6 +227,7 @@ pub(crate) fn choose_game_command(
         return Err(CommandError::BattleOnlyPolicy);
     }
     #[cfg(not(target_arch = "wasm32"))]
+    #[cfg(not(target_arch = "wasm32"))]
     let _profile = profiling::Decision::start(policy, game.turn);
     workspace.initialized = true;
     workspace.blocks.get_or_insert(blocks);
@@ -269,6 +271,7 @@ impl Game<'_> {
         let mut tactic = tactic::Tactic::new(blocks.recruiter, blocks.campaign, blocks.planner);
         loop {
             let plan = {
+                #[cfg(not(target_arch = "wasm32"))]
                 let _profile = profiling::Decision::start(policy, self.turn);
                 tactic.run_turn(self, &mut workspace)?
             };

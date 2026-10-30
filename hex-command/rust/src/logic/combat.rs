@@ -4,6 +4,12 @@ use super::battle::Game;
 use super::exchange::{self, ExchangeForecast, Strikes};
 use crate::data::*;
 use std::rc::Rc;
+struct ResolvedStrike {
+    raw: i32,
+    damage: i32,
+    #[cfg(not(target_arch = "wasm32"))]
+    mitigation: DamageMitigationRecord,
+}
 impl<'catalog> Game<'catalog> {
     pub(crate) fn can_attack(
         &self,
@@ -162,7 +168,7 @@ impl<'catalog> Game<'catalog> {
         target: &Unit,
         weapon: usize,
         tile: usize,
-    ) -> (i32, i32, DamageMitigationRecord) {
+    ) -> ResolvedStrike {
         let attack = &self.rules.units[attacker.kind].attacks[weapon];
         let armour = self.rules.units[target.kind]
             .damage_modifiers
@@ -186,23 +192,27 @@ impl<'catalog> Game<'catalog> {
             }
         };
         let raw = attack.damage - attack.spread + roll as i32;
-        let after_armour = (raw + armour).max(0);
         let damage = (raw + armour + environment).max(0);
-        let hp = target.hp.max(0);
-        (
+        ResolvedStrike {
             raw,
             damage,
-            DamageMitigationRecord {
-                available_hp: hp,
-                effective_damage: Some(damage.min(hp)),
-                raw_damage: raw,
-                after_armour_damage: after_armour,
-                after_terrain_damage: damage,
-                effective_armour_prevented: raw.min(hp) - after_armour.min(hp),
-                effective_terrain_prevented: after_armour.min(hp) - damage.min(hp),
+            #[cfg(not(target_arch = "wasm32"))]
+            mitigation: {
+                let after_armour = (raw + armour).max(0);
+                let hp = target.hp.max(0);
+                DamageMitigationRecord {
+                    available_hp: hp,
+                    effective_damage: Some(damage.min(hp)),
+                    raw_damage: raw,
+                    after_armour_damage: after_armour,
+                    after_terrain_damage: damage,
+                    effective_armour_prevented: raw.min(hp) - after_armour.min(hp),
+                    effective_terrain_prevented: after_armour.min(hp) - damage.min(hp),
+                }
             },
-        )
+        }
     }
+
     /// Fixed reflection per incoming melee strike. It is separate
     /// from the defender's weapon, survives a killing hit and never drains.
     pub(crate) fn thorn_damage(
@@ -308,10 +318,16 @@ impl<'catalog> Game<'catalog> {
         let mut hp = [attacker.hp, target.hp];
         #[cfg(feature = "wasm")]
         let mut playback = Vec::new();
+        #[cfg(not(target_arch = "wasm32"))]
         let mut draws: [Vec<i32>; 2] = Default::default();
+        #[cfg(not(target_arch = "wasm32"))]
         let mut hits: [Vec<i32>; 2] = Default::default();
+        #[cfg(not(target_arch = "wasm32"))]
         let mut mitigation: [Option<DamageMitigationRecord>; 2] = [None, None];
+        #[cfg(not(target_arch = "wasm32"))]
         let mut effective_thorns = 0;
+        let mut totals = [0i32; 2];
+        let mut counts = [0usize; 2];
         for index in 0..strikes[0].count.max(strikes[1].count) {
             for side in 0..2 {
                 if hp.contains(&0) {
@@ -327,12 +343,20 @@ impl<'catalog> Game<'catalog> {
                 };
                 actor.hp = hp[side];
                 defender.hp = hp[1 - side];
-                let (raw, damage, record) =
-                    self.roll_strike(&actor, &defender, selected, defender.tile);
-                draws[side].push(raw);
-                hits[side].push(damage);
+                let rolled = self.roll_strike(&actor, &defender, selected, defender.tile);
+                let (raw, damage) = (rolled.raw, rolled.damage);
+                totals[side] += damage;
+                counts[side] += 1;
+                #[cfg(not(target_arch = "wasm32"))]
+                {
+                    draws[side].push(raw);
+                    hits[side].push(damage);
+                }
                 let effect = strikes[side].apply(&mut hp, side, damage);
-                effective_thorns += effect.reflected;
+                #[cfg(not(target_arch = "wasm32"))]
+                {
+                    effective_thorns += effect.reflected;
+                }
                 #[cfg(feature = "wasm")]
                 {
                     let attack = &self.rules.units[actor.kind].attacks[selected];
@@ -355,35 +379,46 @@ impl<'catalog> Game<'catalog> {
                         health: hp,
                     });
                 }
-                if let Some(total) = &mut mitigation[side] {
-                    total.raw_damage += record.raw_damage;
-                    total.after_armour_damage += record.after_armour_damage;
-                    total.after_terrain_damage += record.after_terrain_damage;
-                    total.effective_armour_prevented += record.effective_armour_prevented;
-                    total.effective_terrain_prevented += record.effective_terrain_prevented;
-                    total.effective_damage = Some(
-                        total.effective_damage.unwrap_or(0) + record.effective_damage.unwrap_or(0),
-                    );
-                } else {
-                    mitigation[side] = Some(record);
+                #[cfg(not(target_arch = "wasm32"))]
+                {
+                    let record = rolled.mitigation;
+                    if let Some(total) = &mut mitigation[side] {
+                        total.raw_damage += record.raw_damage;
+                        total.after_armour_damage += record.after_armour_damage;
+                        total.after_terrain_damage += record.after_terrain_damage;
+                        total.effective_armour_prevented += record.effective_armour_prevented;
+                        total.effective_terrain_prevented += record.effective_terrain_prevented;
+                        total.effective_damage = Some(
+                            total.effective_damage.unwrap_or(0)
+                                + record.effective_damage.unwrap_or(0),
+                        );
+                    } else {
+                        mitigation[side] = Some(record);
+                    }
                 }
             }
             if hp.contains(&0) {
                 break;
             }
         }
+        #[cfg(not(target_arch = "wasm32"))]
         let [raw_rolls, response_raw_rolls] = draws;
+        #[cfg(not(target_arch = "wasm32"))]
         let [rolls, response_rolls] = hits;
+        #[cfg(not(target_arch = "wasm32"))]
         let [attack_mitigation, response_mitigation] = mitigation;
-        let damage = rolls.iter().sum::<i32>();
-        let thorns = per_thorn * rolls.len() as i32;
-        let retaliation = response_rolls.iter().sum::<i32>() + thorns;
+        let damage = totals[0];
+        let thorns = per_thorn * counts[0] as i32;
+        let retaliation = totals[1] + thorns;
+        #[cfg(not(target_arch = "wasm32"))]
         let mediated = self.mediation_at_risk(&target);
+        #[cfg(not(target_arch = "wasm32"))]
         let mitigation_record = self.recordings.as_ref().map(|_| CombatMitigationRecord {
             attack: attack_mitigation.unwrap(),
             retaliation: response_mitigation,
         });
         // Capture sources before movement, deaths or promotions can change them.
+        #[cfg(not(target_arch = "wasm32"))]
         let thorn_record = self.recordings.as_ref().map(|_| {
             let own = if attack.category == Category::Melee {
                 self.rules.units[target.kind].thorns * rolls.len() as i32
@@ -417,8 +452,12 @@ impl<'catalog> Game<'catalog> {
         let before = [self.public_unit(&attacker), self.public_unit(&target)];
         #[cfg(feature = "wasm")]
         {
+            #[cfg(target_arch = "wasm32")]
+            let animation_units = before;
+            #[cfg(not(target_arch = "wasm32"))]
+            let animation_units = before.clone();
             self.combat_animation = Some(crate::protocol::CombatAnimation {
-                units: before.clone(),
+                units: animation_units,
                 strikes: playback,
             });
         }
@@ -464,8 +503,8 @@ impl<'catalog> Game<'catalog> {
             } else {
                 "Enemy"
             },
-            self.rules.units[attacker.kind].name.to_lowercase(),
-            attack.name.to_lowercase()
+            self.rules.unit_log_names[attacker.kind],
+            self.rules.weapon_log_names[attacker.kind][weapon]
         ));
         let defeated: Vec<Unit> = self
             .units
@@ -514,18 +553,20 @@ impl<'catalog> Game<'catalog> {
                 } else {
                     "Enemy"
                 },
-                self.rules.units[unit.kind].name.to_lowercase()
+                self.rules.unit_log_names[unit.kind]
             ));
         }
         self.units.retain(|unit| unit.hp > 0);
         self.roster_changed();
         self.refresh_mission();
         self.evaluate_campaign(false, None);
+        #[cfg(not(target_arch = "wasm32"))]
         self.action(ActionRecord::Attack {
             unit: format!("u{id}"),
             target: format!("u{target_id}"),
             weapon: attack.id.to_string(),
         });
+        #[cfg(not(target_arch = "wasm32"))]
         if let Some(records) = &mut self.recordings {
             records.losses.extend(before.into_iter().filter(|unit| {
                 !self

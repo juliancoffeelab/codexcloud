@@ -4,6 +4,7 @@ use crate::ai::orders::target as objective;
 use crate::ai::{
     PlanningWorkspace, attack_command, move_command, orders::*, planner::safety::Threats,
 };
+use crate::sort::Order;
 use crate::{ai::context::BattleView, data::*};
 use serde::{Deserialize, Serialize};
 
@@ -106,7 +107,7 @@ pub(in crate::ai) fn assign(game: &BattleView<'_, '_>, workspace: &mut PlanningW
                             && selector.accepts(game, u.kind)
                     })
                     .collect();
-                eligible.sort_by_key(|u| (game.board().distance(u.tile, unit.tile), u.id));
+                eligible.order_by_key(|u| (game.board().distance(u.tile, unit.tile), u.id));
                 let selected: Vec<_> = eligible.into_iter().take(*guards).collect();
                 for guard in &selected {
                     allocated.push(guard.id);
@@ -251,7 +252,7 @@ pub(in crate::ai) fn rescue(
                     && game.board().distance(u.tile, unit.tile) <= 5
             })
             .collect();
-        helpers.sort_by_key(|u| (game.board().distance(u.tile, unit.tile), u.id));
+        helpers.order_by_key(|u| (game.board().distance(u.tile, unit.tile), u.id));
         let helpers: Vec<_> = helpers.into_iter().take(2).map(|u| u.id).collect();
         let mut pending = std::collections::VecDeque::from([(
             game.fork(),
@@ -299,7 +300,7 @@ pub(in crate::ai) fn rescue(
                 let mut positions: Vec<_> = std::iter::once(ally.tile)
                     .chain(board.reachable(ally).iter().map(|&(tile, _)| tile))
                     .collect();
-                positions.sort_by_key(|&tile| (board.board().distance(tile, unit.tile), tile));
+                positions.order_by_key(|&tile| (board.board().distance(tile, unit.tile), tile));
                 let mut actions = Vec::new();
                 for tile in positions {
                     for enemy in board.units().iter().filter(|u| u.side != game.turn()) {
@@ -314,7 +315,7 @@ pub(in crate::ai) fn rescue(
                         }
                     }
                 }
-                actions.sort_by_key(|&(tile, target, _)| {
+                actions.order_by_key(|&(tile, target, _)| {
                     (
                         board
                             .board()

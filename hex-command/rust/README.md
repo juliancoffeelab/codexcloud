@@ -38,7 +38,20 @@ search. Derived movement classes and content fingerprints are computed by the
 shared loader during compilation. Initial map snapshots and map-picker metadata
 use static templates: they become owned only when a match starts, a save is
 validated or metadata is requested. Live battle state and save formats remain owned.
-Road-cap validation also uses a generated static table.
+Road-cap validation also uses a generated static table. Unicode lowercase log labels
+are computed by the catalog compiler, so browser actions do not need Unicode casing
+code or allocate transformed labels. Native-only arena layouts and workload defaults
+are excluded from the browser catalog.
+
+The JSON loader, inheritance resolver, validator and fingerprint hasher are excluded
+from default WASM builds. Custom JSON bundles require the opt-in `runtime-catalog`
+feature; passing a bundle to a default factory returns an `invalidRequest` error.
+Native disk loading and `--data-dir` remain available without that feature. To build
+browser bindings with custom importing enabled:
+
+```sh
+node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts wasm-pack build rust --target web --dev --out-dir pkg --out-name hex_command --no-pack --no-opt --locked --features wasm,runtime-catalog
+```
 
 The catalog crate's `bake` feature and `databake` dependency are build-host tools;
 they are not needed by the WASM runtime. The crate is internal to this project.
@@ -86,7 +99,12 @@ function names and DWARF sections from the final WASM. Development builds retain
 names for debugging. Executable sections, exports and target-feature metadata are
 preserved. The WASM profile uses size optimization, full LTO and one codegen unit
 to limit inlining and repeated generic code. Native release and simulation profiles
-keep their separate speed-oriented settings. When npm runs
+keep their separate speed-oriented settings. WASM sorting uses one shared index
+kernel with original positions as tie breakers, instead of instantiating full sort
+implementations for every record and comparator. Native sorting remains specialized.
+Small ordered publication maps use incremental insertion to avoid bulk-sort code.
+Simulation recording and profiling are compiled only for native targets; browser
+combat retains its animation events without duplicate telemetry buffers. When npm runs
 behind an environment proxy, use `NODE_USE_ENV_PROXY=1 npm ci` with Node 24.5 or
 newer so its binary installer uses that proxy.
 

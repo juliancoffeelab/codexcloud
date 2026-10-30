@@ -13,6 +13,22 @@ use std::rc::Rc;
 use tsify::{Ts, Tsify};
 use wasm_bindgen::prelude::*;
 
+// Without the importer, the linker can discard the catalog module's Tsify
+// registration objects. Anchor its outbound declarations at the facade, using
+// the derived declarations so the TypeScript contract stays owned by Rust.
+#[cfg(not(feature = "runtime-catalog"))]
+mod catalog_declarations {
+    use super::*;
+    #[wasm_bindgen(typescript_custom_section)]
+    const TERRAIN: &str = <TerrainDefinition as Tsify>::DECL;
+    #[wasm_bindgen(typescript_custom_section)]
+    const RACE: &str = <RaceDefinition as Tsify>::DECL;
+    #[wasm_bindgen(typescript_custom_section)]
+    const TERRAIN_MODIFIER: &str = <TerrainModifier as Tsify>::DECL;
+    #[wasm_bindgen(typescript_custom_section)]
+    const ENVIRONMENT: &str = <EnvironmentalModifiers as Tsify>::DECL;
+}
+
 fn encode<T, Response>(result: Result<T, EngineError>) -> Result<Ts<Response>, JsError>
 where
     Response: Tsify + Serialize + From<Result<T, EngineError>>,
@@ -76,14 +92,24 @@ impl NativeEngineFactory {
     #[wasm_bindgen(constructor)]
     pub fn new(bundle: Option<Ts<CatalogDocuments>>) -> Result<NativeEngineFactory, JsValue> {
         let loaded = if let Some(bundle) = bundle {
-            decode(bundle).and_then(|bundle| {
-                Rules::from_json_bundle(&bundle.0)
-                    .map(Cow::Owned)
-                    .map_err(|error| EngineError::Content {
-                        path: error.path,
-                        message: error.message,
-                    })
-            })
+            #[cfg(any(not(target_arch = "wasm32"), feature = "runtime-catalog"))]
+            {
+                decode(bundle).and_then(|bundle| {
+                    Rules::from_json_bundle(&bundle.0)
+                        .map(Cow::Owned)
+                        .map_err(|error| EngineError::Content {
+                            path: error.path,
+                            message: error.message,
+                        })
+                })
+            }
+            #[cfg(all(target_arch = "wasm32", not(feature = "runtime-catalog")))]
+            {
+                let _ = bundle;
+                Err(EngineError::InvalidRequest {
+                    message: "Custom catalogs require a runtime-catalog build".into(),
+                })
+            }
         } else {
             #[cfg(target_arch = "wasm32")]
             {
@@ -112,8 +138,7 @@ impl NativeEngineFactory {
 
     /// Return owned catalog metadata as an encoded [`EngineResult<CatalogView>`].
     pub fn catalog(&self) -> Result<Ts<CatalogResponse>, JsError> {
-        let mut campaigns: Vec<_> = self.rules.campaigns.values().cloned().collect();
-        campaigns.sort_by(|a, b| a.id.cmp(&b.id));
+        let campaigns: Vec<_> = self.rules.campaigns.values().cloned().collect();
         encode(Ok(CatalogView {
             units: self.rules.units.to_vec(),
             terrain: self.rules.terrain_definitions.to_vec(),

@@ -6,6 +6,7 @@ use crate::ai::{
     objectives::{actor_matches, objective},
     orders::*,
 };
+use crate::sort::Order;
 use crate::{data::*, logic::Game};
 use rustc_hash::FxHashSet as HashSet;
 impl CampaignBlock {
@@ -306,13 +307,13 @@ impl CampaignBlock {
             .flatten()
             .map(|tile| TileId(game.board.ids[tile].clone()))
             .collect();
-        lanes.sort_by(|a, b| a.0.cmp(&b.0));
+        lanes.order_by(|a, b| a.0.cmp(&b.0));
         lanes.dedup();
         recruitment.reserved.extend(lanes);
         tactics.required_units = recruitment.requirements.clone();
         tactics
             .objectives
-            .sort_by(|a, b| b.priority.cmp(&a.priority).then(a.id.cmp(&b.id)));
+            .order_by(|a, b| b.priority.cmp(&a.priority).then(a.id.cmp(&b.id)));
         CampaignOrders {
             recruitment,
             tactics,

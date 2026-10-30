@@ -25,8 +25,6 @@ pub use catalog::{
     LandscapeConfig, RaceDefinition, TerrainDefinition, TerrainModifier,
 };
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "bake", derive(databake::Bake))]
-#[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 /// Loaded, validated content with inheritance resolved into runtime tables.
 ///
 /// A host owns this value and lends it to battle operations. Authored array order
@@ -38,8 +36,10 @@ pub struct Rules {
     /// Ordered simulation recruitment rosters, independent of campaign rosters.
     pub rosters: Cow<'static, [ArmyRoster]>,
     /// Native arena defaults and landscape definitions.
+    #[cfg(not(target_arch = "wasm32"))]
     pub arena: ArenaDefaults,
     /// Native campaign workload defaults.
+    #[cfg(not(target_arch = "wasm32"))]
     pub campaign_defaults: CampaignDefaults,
     /// Terrain identifiers in dense runtime order.
     pub terrain_names: Cow<'static, [Cow<'static, str>]>,
@@ -47,6 +47,10 @@ pub struct Rules {
     pub terrain_types: Cow<'static, [Terrain]>,
     /// Display labels corresponding to terrain identifiers.
     pub terrain_labels: Cow<'static, [Cow<'static, str>]>,
+    /// Precomputed Unicode lowercase labels used in battle logs.
+    pub unit_log_names: Cow<'static, [Cow<'static, str>]>,
+    pub weapon_log_names: Cow<'static, [Cow<'static, [Cow<'static, str>]>]>,
+    pub terrain_log_labels: Cow<'static, [Cow<'static, str>]>,
     /// Display metadata from the same validated definitions used by the engine.
     pub terrain_definitions: Cow<'static, [TerrainDefinition]>,
     /// Racial display metadata from the validated catalog.
@@ -64,6 +68,7 @@ pub struct Rules {
     /// Fresh initial states indexed by authored map and revision.
     pub maps: Table<(Cow<'static, str>, u32), Seed<State>>,
     /// Arena layouts kept outside playable scenarios and map metadata.
+    #[cfg(not(target_arch = "wasm32"))]
     pub arena_maps: Table<(Cow<'static, str>, u32), Seed<State>>,
     /// Campaign definitions indexed by their authored identifier.
     pub campaigns: Table<Cow<'static, str>, Campaign>,

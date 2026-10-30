@@ -9,6 +9,7 @@ pub mod logic;
 pub mod protocol;
 #[cfg(not(target_arch = "wasm32"))]
 pub mod simulation;
+mod sort;
 #[cfg(feature = "wasm")]
 pub mod wasm;
 

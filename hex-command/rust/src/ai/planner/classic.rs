@@ -1,6 +1,7 @@
 use crate::ai::Recorder;
 use crate::ai::objectives::actor_matches;
 use crate::ai::orders::{Target as Objective, TargetKind as ObjectiveKind};
+use crate::sort::Order;
 use crate::{
     ai::context::{BattleDraft, BattleView},
     ai::objectives::{TileOrder, individual},
@@ -279,8 +280,8 @@ impl BattleView<'_, '_> {
                 },
             }
         };
-        ids.sort_by_key(|&id| order(self.unit(id).unwrap()));
-        ids.sort_by_key(|&id| {
+        ids.order_by_key(|&id| order(self.unit(id).unwrap()));
+        ids.order_by_key(|&id| {
             let u = self.unit(id).unwrap();
             !self.reserved(u, &objectives).contains(&u.tile) && !clearing.contains_key(&id)
         });
@@ -406,7 +407,7 @@ impl BattleDraft<'_, '_> {
         }
         drop(routes);
         let order = TileOrder::new(self, &u, true);
-        destinations.sort_by(|&a, &b| {
+        destinations.order_by(|&a, &b| {
             scores[b]
                 .total_cmp(&scores[a])
                 .then_with(|| order.compare(self, a, b))
@@ -584,7 +585,7 @@ impl BattleDraft<'_, '_> {
         }
         drop(routes);
         let order = TileOrder::new(self, &u, true);
-        dest.sort_by(|&a, &b| {
+        dest.order_by(|&a, &b| {
             scores[b]
                 .total_cmp(&scores[a])
                 .then_with(|| order.compare(self, a, b))
@@ -642,7 +643,7 @@ impl BattleDraft<'_, '_> {
         if eligible.iter().any(|g| self.assigned_duty(&u, g)) {
             eligible.retain(|g| self.assigned_duty(&u, g));
         }
-        eligible.sort_by(|a, b| {
+        eligible.order_by(|a, b| {
             let score = |g: &Objective| {
                 g.tiles
                     .iter()

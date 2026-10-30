@@ -17,3 +17,13 @@ pub use crate::data::{Command, CommandError};
 pub(crate) use battle::Game;
 
 pub(crate) mod geometry;
+
+// These maps are small publication/campaign tables. Incremental insertion avoids
+// compiling a separate bulk stable-sort pipeline for each key/value pair.
+fn collect_map<K: Ord, V>(
+    entries: impl IntoIterator<Item = (K, V)>,
+) -> std::collections::BTreeMap<K, V> {
+    let mut map = std::collections::BTreeMap::new();
+    map.extend(entries);
+    map
+}

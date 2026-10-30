@@ -63,6 +63,7 @@ pub struct RecruitmentProfiles {
     pub aggressive_predictor: RecruitmentWeights,
 }
 impl RecruitmentProfiles {
+    #[cfg(any(not(target_arch = "wasm32"), feature = "runtime-catalog"))]
     pub(super) fn validate(&self) -> Result<(), String> {
         for (name, profile) in [
             ("standard", self.standard),
