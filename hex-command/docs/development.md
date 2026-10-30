@@ -99,8 +99,9 @@ selection and interaction overlays retain their normal colors. Static light
 settings need no per-turn terrain processing.
 
 Custom or changed terrain uses the existing batched canvas bake. Uncached night
-processing prefers a disposable Worker with OffscreenCanvas and transfers a
-bitmap copy, then swaps the completed result. Worker failure, lack of support or
+processing transfers an RGBA pixel buffer to a disposable Worker, then draws
+the returned pixels and swaps the completed result. Workers need no canvas or
+image APIs. Worker failure, lack of support or
 timeout falls back to yielding row batches. Replaced or disposed requests cancel
 processing and stale results never replace the active map. Daylight needs no
 pixel processing. Development uses this same uncached path.

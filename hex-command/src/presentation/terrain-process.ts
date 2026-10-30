@@ -9,12 +9,11 @@ export async function processTerrain(
 ): Promise<boolean> {
   if (lighting.time === "day") return true;
   if (signal?.aborted) return false;
-  // Transfer a copy: a failed/unsupported worker can still use the original canvas.
-  if (
-    typeof Worker !== "undefined" &&
-    typeof OffscreenCanvas !== "undefined" &&
-    typeof createImageBitmap !== "undefined"
-  ) {
+  const context = canvas.getContext("2d");
+  if (!context) return false;
+  // Transfer pixel data only. The worker needs no canvas or image APIs.
+  // The original canvas remains intact for error recovery.
+  if (typeof Worker !== "undefined") {
     const processed = await new Promise<boolean>((resolve) => {
       let worker: Worker | undefined;
       let finished = false;
@@ -29,54 +28,44 @@ export async function processTerrain(
       const abort = () => finish(false);
       const timeout = setTimeout(() => finish(false), 15000);
       signal?.addEventListener("abort", abort, { once: true });
-      void createImageBitmap(canvas)
-        .then((bitmap) => {
-          if (finished || signal?.aborted) {
-            bitmap.close();
+      try {
+        const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data.buffer;
+        worker = new Worker(new URL("./terrain-process.worker.ts", import.meta.url), {
+          type: "module",
+        });
+        worker.onerror = () => finish(false);
+        worker.onmessage = (event: MessageEvent<{ pixels?: ArrayBuffer }>) => {
+          if (!event.data.pixels || finished || signal?.aborted) {
             finish(false);
             return;
           }
           try {
-            worker = new Worker(new URL("./terrain-process.worker.ts", import.meta.url), {
-              type: "module",
-            });
-            worker.onerror = () => finish(false);
-            worker.onmessage = (event: MessageEvent<{ bitmap?: ImageBitmap }>) => {
-              const result = event.data.bitmap;
-              if (!result || finished || signal?.aborted) {
-                result?.close();
-                finish(false);
-                return;
-              }
-              try {
-                const context = canvas.getContext("2d");
-                if (!context) {
-                  finish(false);
-                  return;
-                }
-                context.resetTransform();
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                context.drawImage(result, 0, 0);
-                finish(true);
-              } catch {
-                finish(false);
-              } finally {
-                result.close();
-              }
-            };
-            worker.postMessage({ bitmap, pixelScale, lighting }, [bitmap]);
+            const result = context.createImageData(canvas.width, canvas.height);
+            result.data.set(new Uint8ClampedArray(event.data.pixels));
+            context.putImageData(result, 0, 0);
+            finish(true);
           } catch {
-            bitmap.close();
             finish(false);
           }
-        })
-        .catch(() => finish(false));
+        };
+        worker.postMessage(
+          { pixels, width: canvas.width, height: canvas.height, pixelScale, lighting },
+          [pixels],
+        );
+      } catch {
+        finish(false);
+      }
     });
-    if (processed) return true;
     if (signal?.aborted) return false;
+    if (processed) {
+      context.save();
+      context.resetTransform();
+      context.scale(pixelScale, pixelScale);
+      paintLights(context, lighting);
+      context.restore();
+      return true;
+    }
   }
-  const context = canvas.getContext("2d");
-  if (!context) return false;
   const pixels = context.getImageData(0, 0, canvas.width, canvas.height);
   for (let row = 0; row < canvas.height; row += 32) {
     if (signal?.aborted) return false;
