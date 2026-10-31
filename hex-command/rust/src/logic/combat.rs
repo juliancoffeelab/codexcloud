@@ -358,7 +358,7 @@ impl<'catalog> Game<'catalog> {
                     effective_thorns += effect.reflected;
                 }
                 #[cfg(feature = "wasm")]
-                {
+                if self.presentation {
                     let attack = &self.rules.units[actor.kind].attacks[selected];
                     let rule = &self.rules.units[defender.kind];
                     playback.push(crate::protocol::CombatStrike {
@@ -449,24 +449,32 @@ impl<'catalog> Game<'catalog> {
                 aura_sources,
             }
         });
-        let before = [self.public_unit(&attacker), self.public_unit(&target)];
+        let need_snapshot = false;
         #[cfg(feature = "wasm")]
-        {
+        let need_snapshot = need_snapshot || self.presentation;
+        #[cfg(not(target_arch = "wasm32"))]
+        let need_snapshot = need_snapshot || self.recordings.is_some();
+        let before =
+            need_snapshot.then(|| [self.public_unit(&attacker), self.public_unit(&target)]);
+        #[cfg(feature = "wasm")]
+        if self.presentation {
             #[cfg(target_arch = "wasm32")]
-            let animation_units = before;
+            let animation_units = before.expect("animation snapshot");
             #[cfg(not(target_arch = "wasm32"))]
-            let animation_units = before.clone();
+            let animation_units = before.as_ref().expect("animation snapshot").clone();
             self.combat_animation = Some(crate::protocol::CombatAnimation {
                 units: animation_units,
                 strikes: playback,
             });
         }
-        self.last_combat = Some(LastCombat {
-            attacker_id: format!("u{id}"),
-            attack_id: attack.id.to_string(),
-            sound: attack.sound.to_string(),
-        });
-        self.combat_present = true;
+        if self.presentation {
+            self.last_combat = Some(LastCombat {
+                attacker_id: format!("u{id}"),
+                attack_id: attack.id.to_string(),
+                sound: attack.sound.to_string(),
+            });
+            self.combat_present = true;
+        }
         self.units[a].moved = true;
         self.units[a].attacked = true;
         self.units[a].hp = hp[0];
@@ -491,21 +499,26 @@ impl<'catalog> Game<'catalog> {
                 );
             }
         }
-        let message = if retaliation > 0 {
-            format!(" and took {retaliation} in retaliation")
-        } else {
-            String::new()
-        };
-        self.record(format!(
-            "{} {} used {} for {damage} damage{message}.",
-            if attacker.side == Side::Player {
-                "Your"
+        if self.presentation {
+            let message = if retaliation > 0 {
+                format!(" and took {retaliation} in retaliation")
             } else {
-                "Enemy"
-            },
-            self.rules.unit_log_names[attacker.kind],
-            self.rules.weapon_log_names[attacker.kind][weapon]
-        ));
+                String::new()
+            };
+            game_log!(
+                self,
+                format!(
+                    "{} {} used {} for {damage} damage{message}.",
+                    if attacker.side == Side::Player {
+                        "Your"
+                    } else {
+                        "Enemy"
+                    },
+                    self.rules.unit_log_names[attacker.kind],
+                    self.rules.weapon_log_names[attacker.kind][weapon]
+                )
+            );
+        }
         let defeated: Vec<Unit> = self
             .units
             .iter()
@@ -546,15 +559,18 @@ impl<'catalog> Game<'catalog> {
             if self.rules.units[unit.kind].leader && self.campaign.is_none() {
                 self.winner = Some(unit.side.other());
             }
-            self.record(format!(
-                "{} {} fell.",
-                if unit.side == Side::Player {
-                    "Your"
-                } else {
-                    "Enemy"
-                },
-                self.rules.unit_log_names[unit.kind]
-            ));
+            game_log!(
+                self,
+                format!(
+                    "{} {} fell.",
+                    if unit.side == Side::Player {
+                        "Your"
+                    } else {
+                        "Enemy"
+                    },
+                    self.rules.unit_log_names[unit.kind]
+                )
+            );
         }
         self.units.retain(|unit| unit.hp > 0);
         self.roster_changed();
@@ -568,12 +584,17 @@ impl<'catalog> Game<'catalog> {
         });
         #[cfg(not(target_arch = "wasm32"))]
         if let Some(records) = &mut self.recordings {
-            records.losses.extend(before.into_iter().filter(|unit| {
-                !self
-                    .units
-                    .iter()
-                    .any(|alive| format!("u{}", alive.id) == unit.id)
-            }));
+            records.losses.extend(
+                before
+                    .expect("recording snapshot")
+                    .into_iter()
+                    .filter(|unit| {
+                        !self
+                            .units
+                            .iter()
+                            .any(|alive| format!("u{}", alive.id) == unit.id)
+                    }),
+            );
             records.combats.push(CombatRecord {
                 unit: format!("u{id}"),
                 target: format!("u{target_id}"),

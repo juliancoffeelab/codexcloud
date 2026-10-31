@@ -326,23 +326,28 @@ impl<'catalog> Game<'catalog> {
             && self.owners[tile] != Some(actor.side)
         {
             self.owners[tile] = Some(actor.side);
-            let unit_name = &self.rules.unit_log_names[actor.kind];
-            let capture = if self.terrain_is(tile, Terrain::Village) {
-                "captured a village".to_owned()
-            } else {
-                format!(
-                    "claimed {}",
-                    self.rules.terrain_log_labels[self.terrain[tile]]
-                )
-            };
-            self.record(format!(
-                "{} {unit_name} {capture}.",
-                if actor.side == Side::Player {
-                    "Your"
+            if self.presentation {
+                let unit_name = &self.rules.unit_log_names[actor.kind];
+                let capture = if self.terrain_is(tile, Terrain::Village) {
+                    "captured a village".to_owned()
                 } else {
-                    "Enemy"
-                }
-            ));
+                    format!(
+                        "claimed {}",
+                        self.rules.terrain_log_labels[self.terrain[tile]]
+                    )
+                };
+                game_log!(
+                    self,
+                    format!(
+                        "{} {unit_name} {capture}.",
+                        if actor.side == Side::Player {
+                            "Your"
+                        } else {
+                            "Enemy"
+                        }
+                    )
+                );
+            }
         }
         self.evaluate_campaign(
             false,

@@ -85,11 +85,35 @@ struct SharedTerrain {
 thread_local! {
     static TERRAIN_POOL: RefCell<(HashMap<TerrainKey, SharedTerrain>, VecDeque<TerrainKey>)> = RefCell::new((HashMap::default(), VecDeque::new()));
 }
+/// Borrow native catalogs without ownership overhead; browser battles retain their
+/// catalog safely without borrowing the factory that owns their handle table.
+#[derive(Clone, Debug)]
+pub(crate) enum RuleSource<'catalog> {
+    Borrowed(&'catalog Rules),
+    #[cfg(all(
+        feature = "wasm",
+        any(not(target_arch = "wasm32"), feature = "runtime-catalog")
+    ))]
+    Shared(Rc<Rules>),
+}
+impl std::ops::Deref for RuleSource<'_> {
+    type Target = Rules;
+    fn deref(&self) -> &Rules {
+        match self {
+            Self::Borrowed(rules) => rules,
+            #[cfg(all(
+                feature = "wasm",
+                any(not(target_arch = "wasm32"), feature = "runtime-catalog")
+            ))]
+            Self::Shared(rules) => rules,
+        }
+    }
+}
 #[derive(Debug)]
 pub(crate) struct Game<'catalog> {
-    pub(crate) rules: &'catalog Rules,
+    pub(crate) rules: RuleSource<'catalog>,
     pub(crate) board: Rc<Board>,
-    pub(crate) terrain: Vec<usize>,
+    pub(crate) terrain: Rc<Vec<usize>>,
     pub(crate) owners: Vec<Option<Side>>,
     pub(crate) connections: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) dead_ends: Rc<Vec<Option<Vec<HexDirection>>>>,
@@ -106,6 +130,7 @@ pub(crate) struct Game<'catalog> {
     pub(crate) next_id: u32,
     pub(crate) combat_rng: u32,
     pub(crate) log: Vec<String>,
+    pub(crate) presentation: bool,
     pub(crate) campaign: Option<CampaignState>,
     pub(crate) last_combat: Option<LastCombat>,
     #[cfg(feature = "wasm")]
@@ -131,7 +156,11 @@ pub(crate) struct Game<'catalog> {
     pub(super) unit_indices: HashMap<u32, usize>,
 }
 impl<'catalog> Game<'catalog> {
+    #[cfg(any(not(target_arch = "wasm32"), test))]
     pub(crate) fn from_state(rules: &'catalog Rules, state: State) -> Self {
+        Self::from_source(RuleSource::Borrowed(rules), state)
+    }
+    pub(crate) fn from_source(rules: RuleSource<'catalog>, state: State) -> Self {
         let key = (
             rules.content_fingerprint.to_string(),
             state
@@ -144,7 +173,7 @@ impl<'catalog> Game<'catalog> {
         let board = cached
             .as_ref()
             .map_or_else(|| Board::new(&state.tiles), |c| c.board.clone());
-        let mut game = Self::from_state_with_board(rules, state, board);
+        let mut game = Self::from_source_with_board(rules, state, board);
         if let Some(cached) = cached {
             game.route_cache = cached.routes;
             game.route_order = cached.route_order;
@@ -178,11 +207,7 @@ impl<'catalog> Game<'catalog> {
         }
         game
     }
-    pub(crate) fn from_state_with_board(
-        rules: &'catalog Rules,
-        state: State,
-        board: Rc<Board>,
-    ) -> Self {
+    fn from_source_with_board(rules: RuleSource<'catalog>, state: State, board: Rc<Board>) -> Self {
         let units: Vec<Unit> = state
             .units
             .iter()
@@ -201,11 +226,13 @@ impl<'catalog> Game<'catalog> {
                 rebuilding: unit.rebuilding,
             })
             .collect();
-        let terrain = state
-            .tiles
-            .iter()
-            .map(|tile| rules.terrains[&tile.terrain])
-            .collect();
+        let terrain = Rc::new(
+            state
+                .tiles
+                .iter()
+                .map(|tile| rules.terrains[&tile.terrain])
+                .collect(),
+        );
         let owners = state.tiles.iter().map(|tile| tile.owner).collect();
         let connections = Rc::new(
             state
@@ -244,6 +271,7 @@ impl<'catalog> Game<'catalog> {
             next_id: state.next_id,
             combat_rng: state.combat_rng.unwrap_or(0x6d2b79f5),
             log: state.log,
+            presentation: true,
             campaign: state.campaign,
             last_combat,
             #[cfg(feature = "wasm")]
@@ -272,7 +300,11 @@ impl<'catalog> Game<'catalog> {
         game.refresh_mission();
         game
     }
+    #[cfg(test)]
     pub(crate) fn new(rules: &'catalog Rules, map: &str) -> Self {
+        Self::new_source(RuleSource::Borrowed(rules), map)
+    }
+    pub(super) fn new_source(rules: RuleSource<'catalog>, map: &str) -> Self {
         let state = rules
             .maps
             .iter()
@@ -281,7 +313,7 @@ impl<'catalog> Game<'catalog> {
             .unwrap()
             .1
             .instantiate();
-        Self::from_state(rules, state)
+        Self::from_source(rules, state)
     }
     /// Materialize the protocol snapshot without changing battle state.
     pub(crate) fn state(&self) -> State {
@@ -373,6 +405,9 @@ impl<'catalog> Game<'catalog> {
         self.rules.terrain_types[self.terrain[tile]] == terrain
     }
     pub(crate) fn record(&mut self, message: String) {
+        if !self.presentation {
+            return;
+        }
         self.log.insert(0, message);
         self.log.truncate(8);
     }
@@ -413,7 +448,7 @@ impl<'catalog> Game<'catalog> {
     #[cfg(test)]
     pub(crate) fn set_terrain(&mut self, tile: usize, terrain: usize) {
         if self.terrain[tile] != terrain {
-            self.terrain[tile] = terrain;
+            Rc::make_mut(&mut self.terrain)[tile] = terrain;
             Rc::make_mut(&mut self.connections)[tile] = None;
             Rc::make_mut(&mut self.dead_ends)[tile] = None;
             self.attack_geometry = Rc::new(RefCell::new(HashMap::default()));
@@ -500,13 +535,20 @@ impl<'catalog> Game<'catalog> {
 
 impl<'catalog> Game<'catalog> {
     pub(crate) fn planning_fork(&self) -> Self {
-        let mut draft = self.fork();
+        let mut draft = self.forecast_fork();
         draft.combat_rng = 0x6d2b79f5;
         draft
     }
+    #[cfg(test)]
     pub(crate) fn fork(&self) -> Self {
+        self.fork_mode(self.presentation)
+    }
+    pub(crate) fn forecast_fork(&self) -> Self {
+        self.fork_mode(false)
+    }
+    fn fork_mode(&self, presentation: bool) -> Self {
         Self {
-            rules: self.rules,
+            rules: self.rules.clone(),
             board: self.board.clone(),
             terrain: self.terrain.clone(),
             owners: self.owners.clone(),
@@ -524,12 +566,21 @@ impl<'catalog> Game<'catalog> {
             winner: self.winner,
             next_id: self.next_id,
             combat_rng: self.combat_rng,
-            log: self.log.clone(),
+            log: if presentation {
+                self.log.clone()
+            } else {
+                Vec::new()
+            },
+            presentation,
             campaign: self.campaign.clone(),
-            last_combat: self.last_combat.clone(),
+            last_combat: if presentation {
+                self.last_combat.clone()
+            } else {
+                None
+            },
             #[cfg(feature = "wasm")]
             combat_animation: None,
-            combat_present: self.combat_present,
+            combat_present: presentation && self.combat_present,
             armies: self.armies.clone(),
             pools: self.pools.clone(),
             arena_first: self.arena_first,
@@ -577,10 +628,12 @@ impl<'catalog> Game<'catalog> {
         let index = self.index(id).unwrap();
         assert!(self.promotion_options(&self.units[index]).contains(&kind));
         let previous = &self.rules.units[self.units[index].kind];
-        let name = self.units[index]
-            .name
-            .clone()
-            .unwrap_or(previous.name.to_string());
+        let name = self.presentation.then(|| {
+            self.units[index]
+                .name
+                .clone()
+                .unwrap_or_else(|| previous.name.to_string())
+        });
         let wounds = previous.hp - self.units[index].hp;
         let experience = self.units[index]
             .experience
@@ -592,10 +645,14 @@ impl<'catalog> Game<'catalog> {
         unit.hp = (self.rules.units[kind].hp - wounds).max(1);
         unit.moved = true;
         unit.attacked = true;
-        self.record(format!(
-            "{} advanced to {}.",
-            name, self.rules.units[kind].name
-        ));
+        game_log!(
+            self,
+            format!(
+                "{} advanced to {}.",
+                name.as_ref().expect("live promotion"),
+                self.rules.units[kind].name
+            )
+        );
         #[cfg(not(target_arch = "wasm32"))]
         self.action(ActionRecord::Advance {
             unit: format!("u{id}"),
@@ -668,15 +725,18 @@ impl<'catalog> Game<'catalog> {
         let unit = self.units.last_mut().unwrap();
         unit.moved = true;
         unit.attacked = true;
-        self.record(format!(
-            "{} recruited a {}. It acts next turn.",
-            if leader.side == Side::Player {
-                "You"
-            } else {
-                "Enemy"
-            },
-            self.rules.unit_log_names[kind]
-        ));
+        game_log!(
+            self,
+            format!(
+                "{} recruited a {}. It acts next turn.",
+                if leader.side == Side::Player {
+                    "You"
+                } else {
+                    "Enemy"
+                },
+                self.rules.unit_log_names[kind]
+            )
+        );
         #[cfg(not(target_arch = "wasm32"))]
         self.action(ActionRecord::Recruit {
             unit: format!("u{id}"),

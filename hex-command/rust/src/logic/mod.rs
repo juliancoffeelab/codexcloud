@@ -1,4 +1,12 @@
 //! Battle rules and campaign transitions, independent of transport and policy.
+// Speculative drafts update mechanics without building presentation-only strings.
+macro_rules! game_log {
+    ($game:expr, $message:expr $(,)?) => {
+        if $game.presentation {
+            $game.record($message);
+        }
+    };
+}
 pub(crate) mod battle;
 mod combat;
 mod commands;

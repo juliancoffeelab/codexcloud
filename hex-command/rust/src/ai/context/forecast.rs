@@ -30,7 +30,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
     /// not cause Campaigner to release its escort on the following turn.
     pub(in crate::ai) fn unshielded(game: &super::BattleView<'_, 'catalog>, unit: &Unit) -> i32 {
         let game = game.engine();
-        let mut board = game.fork();
+        let mut board = game.forecast_fork();
         board.arena_first = None;
         board.end_turn();
         if board.winner.is_some() {
@@ -90,7 +90,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         let g = g.engine();
         if g.campaign.is_none() {
             let same = workspace.side == Some(side)
-                && workspace.terrain == g.terrain
+                && workspace.terrain == *g.terrain
                 && workspace.roster.len() == g.units.len()
                 && workspace
                     .roster
@@ -289,7 +289,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             Self::pressure(self.source, &target, enemies, eliminated, important)
         } else if !important {
             let (shadow, enemies) = self.normal.get_or_insert_with(|| {
-                let mut shadow = self.source.fork();
+                let mut shadow = self.source.forecast_fork();
                 shadow.arena_first = None;
                 shadow.end_turn();
                 let enemies = shadow
@@ -316,7 +316,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                     })
             });
             if sensitive {
-                let mut board = self.source.fork();
+                let mut board = self.source.forecast_fork();
                 board.arena_first = None;
                 if let Some(index) = board.index(u.id) {
                     board.units[index].tile = tile;
@@ -334,7 +334,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             } else {
                 let fkey = (u.id, eliminated);
                 let (board, enemies) = self.forecasts.entry(fkey).or_insert_with(|| {
-                    let mut board = self.source.fork();
+                    let mut board = self.source.forecast_fork();
                     board.arena_first = None;
                     board.units.retain(|o| Some(o.id) != eliminated);
                     board.roster_changed();

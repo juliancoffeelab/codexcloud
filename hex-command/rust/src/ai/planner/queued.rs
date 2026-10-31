@@ -283,6 +283,7 @@ fn next_plan_inner(
                 &mut workspace.commitments,
                 &mut ignored,
                 &mut workspace.threats,
+                &mut workspace.search,
                 Some(id.0),
             );
         }

@@ -12,7 +12,6 @@ pub mod objectives;
 pub mod orders;
 pub mod planner;
 #[cfg(not(target_arch = "wasm32"))]
-#[cfg(not(target_arch = "wasm32"))]
 pub mod profiling;
 pub mod recruiter;
 mod roles;
@@ -136,6 +135,7 @@ pub struct PlanningWorkspace {
     threats: threats::ArenaThreatWorkspace,
     priority: Option<UnitQueue>,
     cheap: cheap::Workspace,
+    search: tactics::Scratch,
     #[cfg(any(feature = "wasm", test))]
     blocks: Option<Blocks>,
     orders: Option<orders::CampaignOrders>,
@@ -181,6 +181,7 @@ impl PlanningWorkspace {
             threats: threats::ArenaThreatWorkspace::default(),
             priority: None,
             cheap: cheap::Workspace::default(),
+            search: tactics::Scratch::default(),
         }
     }
     #[cfg(not(target_arch = "wasm32"))]
@@ -226,7 +227,6 @@ pub(crate) fn choose_game_command(
     if !blocks.campaign.supports_campaign() && game.campaign.is_some() {
         return Err(CommandError::BattleOnlyPolicy);
     }
-    #[cfg(not(target_arch = "wasm32"))]
     #[cfg(not(target_arch = "wasm32"))]
     let _profile = profiling::Decision::start(policy, game.turn);
     workspace.initialized = true;

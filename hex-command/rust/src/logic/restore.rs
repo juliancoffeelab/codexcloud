@@ -17,8 +17,12 @@ impl std::error::Error for StateError {}
 #[cfg(any(feature = "wasm", test))]
 impl<'catalog> Game<'catalog> {
     /// Restore against current unit limits, then validate the roster and references.
-    pub(crate) fn try_from_state(
-        rules: &'catalog Rules,
+    #[cfg(test)]
+    pub(crate) fn try_from_state(rules: &'catalog Rules, state: State) -> Result<Self, StateError> {
+        Self::try_from_source(super::battle::RuleSource::Borrowed(rules), state)
+    }
+    pub(crate) fn try_from_source(
+        rules: super::battle::RuleSource<'catalog>,
         mut state: State,
     ) -> Result<Self, StateError> {
         for unit in &mut state.units {
@@ -26,8 +30,8 @@ impl<'catalog> Game<'catalog> {
                 unit.hp = unit.hp.min(rules.units[kind].hp);
             }
         }
-        validate_state(rules, &state)?;
-        Ok(Self::from_state(rules, state))
+        validate_state(&rules, &state)?;
+        Ok(Self::from_source(rules, state))
     }
 }
 /// Check serialized state without modifying it or touching a live battle.

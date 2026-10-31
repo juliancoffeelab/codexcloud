@@ -97,6 +97,16 @@ pub(in crate::ai) struct Plan {
     pub(in crate::ai) advance: Option<usize>,
     pub(in crate::ai) withdrawing: bool,
 }
+/// Integer scratch belongs to the planning phase, not individual searches or units.
+#[derive(Default)]
+pub(in crate::ai) struct Scratch {
+    foe_ranges: Vec<u16>,
+    nearby_foes: Vec<usize>,
+    nearby_offsets: Vec<usize>,
+    destinations: Vec<usize>,
+    tiles: Vec<usize>,
+    other_healing: Vec<i32>,
+}
 impl BattleView<'_, '_> {
     #[inline(never)]
     pub(in crate::ai) fn best_plan<const BOUNDED: bool>(
@@ -109,8 +119,17 @@ impl BattleView<'_, '_> {
         commitments: &mut HashMap<u32, String>,
         intents: &mut Vec<(u32, Option<bool>)>,
         threat_workspace: &mut crate::ai::threats::ArenaThreatWorkspace,
+        scratch: &mut Scratch,
         focus: Option<u32>,
     ) -> Option<Plan> {
+        let Scratch {
+            foe_ranges,
+            nearby_foes,
+            nearby_offsets,
+            destinations,
+            tiles,
+            other_healing,
+        } = scratch;
         let side = self.turn();
         let objectives: Cow<'_, [Objective]> = if let Some(prepared) = prepared_goals {
             let rebuilding = orders.rebuild_objectives(self);
@@ -166,14 +185,13 @@ impl BattleView<'_, '_> {
         let board = &self.board();
         // These distances and possible targets depend only on this planning
         // snapshot, not on the unit or candidate move currently being scored.
-        let foe_ranges: Vec<_> = (0..board.ids.len())
-            .map(|tile| {
-                foes.iter()
-                    .map(|u| board.distance(tile, u.tile))
-                    .min()
-                    .unwrap_or(20)
-            })
-            .collect();
+        foe_ranges.clear();
+        foe_ranges.extend((0..board.ids.len()).map(|tile| {
+            foes.iter()
+                .map(|u| board.distance(tile, u.tile))
+                .min()
+                .unwrap_or(20)
+        }));
         let range_to_foe = |tile: usize| foe_ranges[tile];
         let maximum_range = allies
             .iter()
@@ -183,16 +201,18 @@ impl BattleView<'_, '_> {
             .unwrap_or(0);
         let range = maximum_range as usize;
         let capacity = (3 * range * (range + 1) * foes.len()).min(board.ids.len() * foes.len());
-        let mut nearby_foes = Vec::with_capacity(capacity);
-        let mut nearby_offsets = Vec::with_capacity(board.ids.len() + 1);
+        nearby_foes.clear();
+        nearby_foes.reserve(capacity);
+        nearby_offsets.clear();
+        nearby_offsets.reserve(board.ids.len() + 1);
         // One compact target array replaces a separately allocated list per tile.
         // Each slice retains the original foe roster order.
         for tile in 0..board.ids.len() {
             nearby_offsets.push(nearby_foes.len());
-            for &foe in &foes {
+            for (foe_index, &foe) in foes.iter().enumerate() {
                 let distance = board.distance(tile, foe.tile);
                 if distance > 0 && distance <= maximum_range {
-                    nearby_foes.push(foe);
+                    nearby_foes.push(foe_index);
                 }
             }
         }
@@ -592,33 +612,31 @@ impl BattleView<'_, '_> {
                 }
             }
             let reachable = self.reachable(original_unit);
-            let mut destinations = Vec::with_capacity(reachable.len() + 1);
+            destinations.clear();
+            destinations.reserve(reachable.len() + 1);
             destinations.push(original_unit.tile);
             destinations.extend(reachable.iter().copied().map(|(t, _)| t));
-            destinations = orders.authored_destinations(self, original_unit, destinations);
-            let other_healing: Vec<_> = if category == TacticalRole::Healer {
-                allies
-                    .iter()
-                    .map(|ally| {
-                        allies
-                            .iter()
-                            .filter(|o| {
-                                o.id != unit.id
-                                    && o.id != ally.id
-                                    && self.board().distance(o.tile, ally.tile) == 1
-                            })
-                            .map(|o| self.rules().units[o.kind].healing)
-                            .max()
-                            .unwrap_or(0)
-                    })
-                    .collect()
-            } else {
-                Vec::new()
-            };
+            orders.authored_destinations(self, original_unit, destinations);
+            other_healing.clear();
+            if category == TacticalRole::Healer {
+                other_healing.extend(allies.iter().map(|ally| {
+                    allies
+                        .iter()
+                        .filter(|o| {
+                            o.id != unit.id
+                                && o.id != ally.id
+                                && self.board().distance(o.tile, ally.tile) == 1
+                        })
+                        .map(|o| self.rules().units[o.kind].healing)
+                        .max()
+                        .unwrap_or(0)
+                }));
+            }
             let mut wait_score = f64::NEG_INFINITY;
-            let mut tiles = vec![unit.tile];
+            tiles.clear();
+            tiles.push(unit.tile);
             tiles.extend(destinations.iter().copied().filter(|&t| t != unit.tile));
-            for (tile_order, tile) in tiles.into_iter().enumerate() {
+            for (tile_order, tile) in tiles.iter().copied().enumerate() {
                 let mut positioning = if reserved.contains(&unit.tile) {
                     80.0
                 } else {
@@ -739,7 +757,8 @@ impl BattleView<'_, '_> {
                 let choices = std::iter::once((None, None)).chain(
                     nearby_foes[nearby_offsets[tile]..nearby_offsets[tile + 1]]
                         .iter()
-                        .flat_map(|&target| {
+                        .flat_map(|&foe_index| {
+                            let target = foes[foe_index];
                             (0..self.rules().units[unit.kind].attacks.len())
                                 .filter_map(move |weapon| Some((Some(target), Some(weapon))))
                         }),
@@ -1010,6 +1029,7 @@ mod tests {
                         &mut left_commitments,
                         &mut left_intents,
                         &mut left_threats,
+                        &mut Scratch::default(),
                         None,
                     );
                     let right = crate::ai::context::BattleView::new(&game).best_plan::<false>(
@@ -1031,6 +1051,7 @@ mod tests {
                         &mut right_commitments,
                         &mut right_intents,
                         &mut right_threats,
+                        &mut Scratch::default(),
                         None,
                     );
                     assert_eq!(left, right);

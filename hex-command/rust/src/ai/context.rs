@@ -253,9 +253,6 @@ impl<'a, 'catalog> BattleDraft<'a, 'catalog> {
     pub(super) fn execute(&mut self, command: Command) -> Result<(), CommandError> {
         self.0.engine_mut().execute(command).map(|_| ())
     }
-    pub(super) fn record(&mut self, message: String) {
-        self.0.engine_mut().record(message);
-    }
 }
 #[path = "context/forecast.rs"]
 pub(super) mod forecast;

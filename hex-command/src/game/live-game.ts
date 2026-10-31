@@ -69,8 +69,7 @@ export class LiveGame {
   ): LiveGame {
     return new LiveGame(factory, nativeValue(factory.restore(saved)), structuredClone(setup));
   }
-  private refresh(): void {
-    const view = nativeValue(this.engine.view());
+  private refresh(view = nativeValue(this.engine.view())): void {
     // Authored string IDs cross into the existing presentation vocabulary here.
     this.state = view.state as unknown as GameState;
     this.inspection = nativeValue(this.engine.inspect()) as BattleInspection;
@@ -80,7 +79,7 @@ export class LiveGame {
   private dispatch(command: Immutable<Command>, expectedRevision?: number): void {
     const result = nativeValue(this.engine.dispatch(command, expectedRevision));
     this.combatEvent = immutable(result.combat as unknown as CombatAnimation | null);
-    this.refresh();
+    this.refresh(result.view);
   }
   private id(id: string): number {
     if (!/^u[1-9]\d*$/.test(id)) throw new Error("Unknown unit.");

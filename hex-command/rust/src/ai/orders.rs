@@ -340,8 +340,8 @@ impl TacticalOrders {
         &self,
         game: &BattleView<'_, '_>,
         unit: &Unit,
-        destinations: Vec<usize>,
-    ) -> Vec<usize> {
+        destinations: &mut Vec<usize>,
+    ) {
         let goals: Vec<_> = if game.rules().units[unit.kind].leader && self.leader_post.is_some() {
             self.leader_post.iter().map(|t| game.site(&t.0)).collect()
         } else {
@@ -351,7 +351,7 @@ impl TacticalOrders {
                 .collect()
         };
         if goals.is_empty() {
-            return destinations;
+            return;
         }
         let routes = game.routes(unit.kind, &goals);
         let limit = destinations
@@ -360,10 +360,7 @@ impl TacticalOrders {
             .min()
             .unwrap_or(u16::MAX)
             .max(1);
-        destinations
-            .into_iter()
-            .filter(|&t| routes[t] <= limit)
-            .collect()
+        destinations.retain(|&t| routes[t] <= limit);
     }
 }
 

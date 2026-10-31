@@ -241,7 +241,10 @@ impl<'catalog> Game<'catalog> {
         }
         counter.escalated = true;
         state.say(refuge.escalation.iter().cloned());
-        self.record("The chance of mediation is lost. Defeat the remaining patrol.".into());
+        game_log!(
+            self,
+            "The chance of mediation is lost. Defeat the remaining patrol.".into()
+        );
         self.refresh_mission();
     }
     pub(crate) fn spawn_waves(&mut self) {
@@ -280,7 +283,7 @@ impl<'catalog> Game<'catalog> {
                 }
             }
             if arrived > 0 {
-                self.record(wave.label.to_string());
+                game_log!(self, wave.label.to_string());
             }
         }
     }
@@ -322,7 +325,7 @@ impl<'catalog> Game<'catalog> {
                 portrait: self.rules.campaigns[&state.id].leader.clone(),
                 text: text.clone().into(),
             }]);
-            self.record(text);
+            game_log!(self, text);
             return;
         }
         if let Some(goal) = mission.goals.iter().find(|g| g.kind() == GoalKind::Vigil) {
@@ -422,7 +425,8 @@ impl<'catalog> Game<'catalog> {
                 });
                 if eligible {
                     self.campaign.as_mut().unwrap().marks.push(mark);
-                    self.record(
+                    game_log!(
+                        self,
                         "A binding stone was sealed. It will no longer raise the dead.".into(),
                     );
                 }
@@ -465,7 +469,8 @@ impl<'catalog> Game<'catalog> {
                     &event.dialogue
                 };
                 state.say(lines.iter().cloned());
-                self.record(
+                game_log!(
+                    self,
                     (event
                         .label
                         .clone()
@@ -520,7 +525,7 @@ impl<'catalog> Game<'catalog> {
             } else {
                 "Mission complete.".into()
             };
-            self.record(text);
+            game_log!(self, text);
         }
     }
     pub(crate) fn start_campaign(
@@ -533,8 +538,29 @@ impl<'catalog> Game<'catalog> {
         story: Vec<Veteran>,
         fallen: Vec<String>,
     ) -> Self {
+        Self::start_campaign_source(
+            super::battle::RuleSource::Borrowed(rules),
+            id,
+            index,
+            veterans,
+            carry,
+            choices,
+            story,
+            fallen,
+        )
+    }
+    pub(crate) fn start_campaign_source(
+        rules: super::battle::RuleSource<'catalog>,
+        id: &str,
+        index: usize,
+        veterans: Vec<Veteran>,
+        carry: i32,
+        choices: Vec<String>,
+        story: Vec<Veteran>,
+        fallen: Vec<String>,
+    ) -> Self {
         let original = rules.campaigns[id].missions[index].clone();
-        let mut game = Game::new(rules, &original.map.id);
+        let mut game = Game::new_source(rules, &original.map.id);
         let holds = super::collect_map(
             original
                 .goals
@@ -645,10 +671,10 @@ impl<'catalog> Game<'catalog> {
             let kind = game.kind(&veteran.r#type);
             let Some(slot) = slots.iter().position(|&t| game.cost(kind, t) != u16::MAX) else {
                 // A changed map may not have a passable recall tile for this family.
-                game.record(format!(
-                    "No safe recall space for {}.",
-                    game.rules.units[kind].name
-                ));
+                game_log!(
+                    game,
+                    format!("No safe recall space for {}.", game.rules.units[kind].name)
+                );
                 continue;
             };
             let tile = slots.remove(slot);
@@ -671,7 +697,7 @@ impl<'catalog> Game<'catalog> {
             }
         }
         game.log.clear();
-        game.record(game.mission.as_ref().unwrap().briefing.to_string());
+        game_log!(game, game.mission.as_ref().unwrap().briefing.to_string());
         game
     }
     pub(crate) fn returns_with_story(&self, u: &Unit) -> bool {
@@ -790,8 +816,8 @@ impl<'catalog> Game<'catalog> {
                 fallen.push(name);
             }
         }
-        let mut next = Self::start_campaign(
-            self.rules,
+        let mut next = Self::start_campaign_source(
+            self.rules.clone(),
             &state.id,
             state.mission + 1,
             veterans,

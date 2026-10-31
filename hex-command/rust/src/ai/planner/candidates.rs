@@ -514,7 +514,7 @@ pub(in crate::ai) fn plan(
     };
     let mut destinations = vec![unit.tile];
     destinations.extend(game.reachable(&unit).iter().map(|&(tile, _)| tile));
-    let destinations = orders.authored_destinations(game, &unit, destinations);
+    orders.authored_destinations(game, &unit, &mut destinations);
     let wait_position = position(unit.tile);
     let recruiting = game.rules().units[unit.kind].leader
         && game
@@ -697,37 +697,25 @@ pub(in crate::ai) fn plan(
         for (index, &tile) in destinations.iter().enumerate() {
             by_tile[tile] = index;
         }
-        let top = |indices: &[usize]| {
-            let mut best: Vec<usize> = Vec::with_capacity(4 + 1);
-            for &index in indices {
-                if !positions[index].0.is_finite() {
-                    continue;
-                }
-                let offset = best.partition_point(|&old| positions[old].0 >= positions[index].0);
-                if offset < 4 {
-                    best.insert(offset, index);
-                    best.truncate(4);
-                }
+        let mut best = BestOrigins::default();
+        for index in 0..destinations.len() {
+            if destinations[index] != unit.tile {
+                best.insert(index, positions[index].0);
             }
-            best
-        };
-        for index in top(&(0..destinations.len())
-            .filter(|&i| destinations[i] != unit.tile)
-            .collect::<Vec<_>>())
-        .into_iter()
-        {
+        }
+        for index in best.indices() {
             add(index, None, None);
         }
         for &target in &foes {
             for weapon in 0..game.rules().units[unit.kind].attacks.len() {
-                let mut origins = vec![];
+                let mut best = BestOrigins::default();
                 geometry[weapon][target.tile].for_each(|tile| {
                     let index = by_tile[tile];
                     if index != usize::MAX {
-                        origins.push(index);
+                        best.insert(index, positions[index].0);
                     }
                 });
-                for index in top(&origins).into_iter() {
+                for index in best.indices() {
                     add(index, Some(target), Some(weapon));
                 }
             }
@@ -1035,5 +1023,31 @@ mod tests {
                 }
             }
         }
+    }
+}
+
+/// Candidate pruning keeps exactly four origins, with discovery order breaking ties.
+#[derive(Default)]
+struct BestOrigins {
+    entries: [(usize, f64); 4],
+    len: usize,
+}
+impl BestOrigins {
+    fn insert(&mut self, index: usize, score: f64) {
+        if !score.is_finite() {
+            return;
+        }
+        let offset = self.entries[..self.len].partition_point(|&(_, old)| old >= score);
+        if offset < self.entries.len() {
+            self.len = (self.len + 1).min(self.entries.len());
+            self.entries.copy_within(offset..self.len - 1, offset + 1);
+            self.entries[offset] = (index, score);
+        }
+    }
+    fn indices(self) -> impl Iterator<Item = usize> {
+        self.entries
+            .into_iter()
+            .take(self.len)
+            .map(|(index, _)| index)
     }
 }

@@ -419,11 +419,6 @@ impl BattleDraft<'_, '_> {
                 self.units_mut()[index].retreating = Some(true);
                 self.units_mut()[index].attacked = true;
                 recorder.mark_retreat(id);
-                self.record(format!(
-                    "{} is retreating.",
-                    u.name
-                        .unwrap_or_else(|| self.rules().units[u.kind].name.to_string())
-                ));
                 return Retreat::Retreated;
             }
         }
@@ -514,7 +509,7 @@ impl BattleDraft<'_, '_> {
                         }))
             })
             .collect();
-        dest = rules.orders.authored_destinations(self, &u, dest);
+        rules.orders.authored_destinations(self, &u, &mut dest);
         let mut scores = vec![f64::NEG_INFINITY; self.terrain().len()];
         for &t in &dest {
             let distance = routes.as_ref().map_or_else(

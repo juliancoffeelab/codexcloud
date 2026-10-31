@@ -244,6 +244,7 @@ impl PlannerKind {
                     &mut workspace.commitments,
                     &mut intents,
                     &mut workspace.threats,
+                    &mut workspace.search,
                     None,
                 )
             };

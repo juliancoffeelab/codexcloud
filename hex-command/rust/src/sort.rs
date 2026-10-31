@@ -1,5 +1,19 @@
 //! Ordering without cloning the sorting algorithm for every comparator and record type.
 use std::cmp::Ordering;
+#[cfg(target_arch = "wasm32")]
+thread_local! {
+    static INDICES: std::cell::RefCell<Vec<usize>> = const { std::cell::RefCell::new(Vec::new()) };
+}
+
+#[cfg(target_arch = "wasm32")]
+#[inline(never)]
+fn recycle(indices: Vec<usize>) {
+    INDICES.with_borrow_mut(|cached| {
+        if indices.capacity() > cached.capacity() {
+            *cached = indices;
+        }
+    });
+}
 
 // WASM sorts indices through one non-generic kernel. Original ordinals resolve ties,
 // preserving stable order. Only the small comparison thunk and record swaps depend
@@ -7,7 +21,11 @@ use std::cmp::Ordering;
 #[cfg(target_arch = "wasm32")]
 #[inline(never)]
 fn permutation(count: usize, compare: &mut dyn FnMut(usize, usize) -> Ordering) -> Vec<usize> {
-    let mut indices: Vec<_> = (0..count).collect();
+    // Taking the buffer releases the RefCell borrow before invoking comparisons,
+    // so a comparator can perform a nested sort safely.
+    let mut indices = INDICES.with(std::cell::RefCell::take);
+    indices.clear();
+    indices.extend(0..count);
     indices.sort_unstable_by(|&a, &b| compare(a, b).then(a.cmp(&b)));
     indices
 }
@@ -30,6 +48,7 @@ fn apply<T>(values: &mut [T], mut compare: impl FnMut(&T, &T) -> Ordering) {
         }
         sources[slot] = slot;
     }
+    recycle(sources);
 }
 
 pub(crate) trait Order<T> {

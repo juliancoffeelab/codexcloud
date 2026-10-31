@@ -114,12 +114,13 @@ fn healing_records_credit_tied_strongest_sources_after_terrain_and_hp_caps() {
     let second = add(&mut game, "tidesage", Side::Player, "4,3");
     add(&mut game, "wavemender", Side::Player, "3,4");
     let tile = game.site("3,3");
-    game.terrain[tile] = game
+    let terrain = game
         .rules
         .terrain_types
         .iter()
         .position(|terrain| *terrain == Terrain::Village)
         .unwrap();
+    std::rc::Rc::make_mut(&mut game.terrain)[tile] = terrain;
     game.owners[tile] = Some(Side::Player);
     let index = game.index(ally).unwrap();
     game.units[index].hp = game.rules.units[game.units[index].kind].hp - 5;

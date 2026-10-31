@@ -118,8 +118,8 @@ impl Game<'_> {
                 } else {
                     campaign.choices.clone().unwrap_or_default()
                 };
-                *self = Self::start_campaign(
-                    self.rules,
+                *self = Self::start_campaign_source(
+                    self.rules.clone(),
                     &campaign.id,
                     campaign.mission,
                     campaign.veterans.clone().unwrap_or_default(),
@@ -170,7 +170,7 @@ impl Game<'_> {
                 {
                     return Err(CommandError::IllegalIntent);
                 }
-                let name = record_retreat.then(|| {
+                let name = (self.presentation && record_retreat).then(|| {
                     self.units[index].name.clone().unwrap_or_else(|| {
                         self.rules.units[self.units[index].kind].name.to_string()
                     })
@@ -179,7 +179,7 @@ impl Game<'_> {
                 self.units[index].rebuilding = rebuilding;
                 self.units[index].attacked = attacked;
                 if let Some(name) = name {
-                    self.record(format!("{name} is retreating."));
+                    game_log!(self, format!("{name} is retreating."));
                 }
             }
         }

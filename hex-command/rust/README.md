@@ -6,7 +6,7 @@ The `hex-command-catalog` mini crate owns definitions, snapshots and catalog val
 execution, and `ai` owns recruitment, campaign orders and planning. `simulation` owns scheduling,
 workers and records; `protocol` defines the browser transfer contract.
 
-A host owns `Catalog` and lends it to operations. Native workers share an immutable
+A native host owns `Catalog` and lends it to operations. Native workers share an immutable
 catalog through scoped threads, while each match owns state and planning workspace.
 Immutable geometry, effective missions and distance fields use local `Rc` inside
 one match; the core needs no shared mutable catalog or synchronization locks.
@@ -63,6 +63,22 @@ restore; battle handles expose views, precomputed action inspection, dispatch, A
 commands, save and disposal. Revision checks reject stale decisions. Saved games
 contain only game state and seed. Browser saves bracket the whole enemy turn;
 commands and planning workspaces are never persisted.
+
+Each browser handle retains its live `Game`, numeric indexes and mechanical caches.
+Choosing commands and inspecting actions borrow that runtime; dispatch mutates it
+only after command validation. Protocol snapshots are materialized at publication
+and save boundaries, without reconstructing a game for each command. Catalogs
+borrow baked statics or share an owned custom catalog through `Rc`; native matches
+keep their borrowed catalog path. The live adapter publishes the snapshot returned
+by dispatch instead of requesting the same snapshot again.
+
+Planning forks share terrain through `Rc`, with copy-on-write terrain updates.
+They skip log copying, narration formatting and combat-animation publication;
+resolved live commands retain their presentation and recording behavior.
+Each planning workspace retains integer search buffers; destination filtering
+operates in place and bounded origin selection uses four stack entries. WASM's
+shared sorting kernel recycles an index buffer per thread. Taking that buffer
+before comparison also permits nested sorts without a mutable-borrow conflict.
 
 The live TypeScript adapter is `src/game/native-engine.ts`. Engine handles use
 `wasm-bindgen`; commands, snapshots and responses derive `Tsify`. Typed `Ts<T>`
