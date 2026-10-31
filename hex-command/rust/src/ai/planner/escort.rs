@@ -3,11 +3,12 @@ use crate::ai::{orders::PlanningReport, threats::Threats};
 use crate::sort::Order;
 use crate::{ai::context::BattleView, data::*, logic::geometry::TileSet};
 use rustc_hash::FxHashMap;
+use std::rc::Rc;
 
 #[derive(Default)]
 pub(in crate::ai) struct Workspace {
     signature: Vec<(u32, usize, usize, i32, bool, bool)>,
-    terrain: Vec<usize>,
+    terrain: Option<Rc<[usize]>>,
     owners: Vec<Option<Side>>,
     fields: FxHashMap<u32, Field>,
 }
@@ -40,7 +41,10 @@ impl Workspace {
             return;
         }
         let same = self.signature.len() == game.units().len()
-            && self.terrain == *game.terrain()
+            && self
+                .terrain
+                .as_ref()
+                .is_some_and(|terrain| Rc::ptr_eq(terrain, game.terrain_storage()))
             && self.owners == *game.owners()
             && self.signature.iter().zip(game.units()).all(|(key, unit)| {
                 *key == (
@@ -60,7 +64,7 @@ impl Workspace {
             .iter()
             .map(|u| (u.id, u.kind, u.tile, u.hp, u.moved, u.attacked))
             .collect();
-        self.terrain.clone_from(&game.terrain());
+        self.terrain = Some(game.terrain_storage().clone());
         self.owners.clone_from(&game.owners());
         self.fields.clear();
         let mut forecast = game.fork();

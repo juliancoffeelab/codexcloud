@@ -72,7 +72,9 @@ borrow baked statics or share an owned custom catalog through `Rc`; native match
 keep their borrowed catalog path. The live adapter publishes the snapshot returned
 by dispatch instead of requesting the same snapshot again.
 
-Planning forks share terrain through `Rc`, with copy-on-write terrain updates.
+Planning forks share terrain through `Rc<[usize]>`, with copy-on-write terrain
+updates. Cache validation compares shared terrain identities without copying or
+scanning the grid.
 They skip log copying, narration formatting and combat-animation publication;
 resolved live commands retain their presentation and recording behavior.
 Each planning workspace retains integer search buffers; destination filtering

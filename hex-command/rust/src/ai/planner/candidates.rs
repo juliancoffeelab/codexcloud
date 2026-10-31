@@ -40,7 +40,7 @@ pub(in crate::ai) struct Workspace {
     screens: usize,
     roster: Vec<GoalUnit>,
     owners: Vec<Option<Side>>,
-    terrain: Vec<usize>,
+    terrain: Option<Rc<[usize]>>,
     gold: i32,
     side: Option<Side>,
     positions: Vec<(u32, usize, Option<bool>)>,
@@ -58,7 +58,10 @@ pub(in crate::ai) fn prepare(game: &BattleView<'_, '_>, workspace: &mut Planning
         && cache.revision == workspace.cooperation.revision
         && cache.gold == game.gold()[game.turn().index()]
         && cache.owners == *game.owners()
-        && cache.terrain == *game.terrain()
+        && cache
+            .terrain
+            .as_ref()
+            .is_some_and(|terrain| Rc::ptr_eq(terrain, game.terrain_storage()))
         && cache.roster.len() == game.units().len()
         && cache.roster.iter().zip(game.units()).all(|(key, u)| {
             key.0 == u.id
@@ -80,7 +83,7 @@ pub(in crate::ai) fn prepare(game: &BattleView<'_, '_>, workspace: &mut Planning
         cache.side = Some(game.turn());
         cache.gold = game.gold()[game.turn().index()];
         cache.owners.clone_from(&game.owners());
-        cache.terrain.clone_from(&game.terrain());
+        cache.terrain = Some(game.terrain_storage().clone());
         cache.orders = orders.clone();
         cache.roster.clear();
         cache.roster.extend(game.units().iter().map(|u| {

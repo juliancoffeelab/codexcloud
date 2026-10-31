@@ -113,7 +113,7 @@ impl std::ops::Deref for RuleSource<'_> {
 pub(crate) struct Game<'catalog> {
     pub(crate) rules: RuleSource<'catalog>,
     pub(crate) board: Rc<Board>,
-    pub(crate) terrain: Rc<Vec<usize>>,
+    pub(crate) terrain: Rc<[usize]>,
     pub(crate) owners: Vec<Option<Side>>,
     pub(crate) connections: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) dead_ends: Rc<Vec<Option<Vec<HexDirection>>>>,
@@ -226,13 +226,11 @@ impl<'catalog> Game<'catalog> {
                 rebuilding: unit.rebuilding,
             })
             .collect();
-        let terrain = Rc::new(
-            state
-                .tiles
-                .iter()
-                .map(|tile| rules.terrains[&tile.terrain])
-                .collect(),
-        );
+        let terrain = state
+            .tiles
+            .iter()
+            .map(|tile| rules.terrains[&tile.terrain])
+            .collect();
         let owners = state.tiles.iter().map(|tile| tile.owner).collect();
         let connections = Rc::new(
             state

@@ -1,5 +1,6 @@
 use crate::{data::*, logic::Game};
 use rustc_hash::FxHashMap as HashMap;
+use std::rc::Rc;
 // Dense reachability sets intersect attack origins a machine word at a time.
 use crate::logic::geometry::TileSet;
 type RiskKey = (Option<u32>, usize, usize, Option<u32>);
@@ -9,7 +10,7 @@ type ArenaEnemies = HashMap<Option<u32>, Vec<(Unit, Vec<TileSet>)>>;
 /// Retain those calculations for the next decision in the same planning phase.
 #[derive(Default)]
 pub(in crate::ai) struct ArenaThreatWorkspace {
-    terrain: Vec<usize>,
+    terrain: Option<Rc<[usize]>>,
     roster: Vec<(u32, usize, usize, Side)>,
     side: Option<Side>,
     arena: ArenaEnemies,
@@ -90,7 +91,10 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         let g = g.engine();
         if g.campaign.is_none() {
             let same = workspace.side == Some(side)
-                && workspace.terrain == *g.terrain
+                && workspace
+                    .terrain
+                    .as_ref()
+                    .is_some_and(|terrain| Rc::ptr_eq(terrain, &g.terrain))
                 && workspace.roster.len() == g.units.len()
                 && workspace
                     .roster
@@ -101,7 +105,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                     });
             if !same {
                 workspace.side = Some(side);
-                workspace.terrain.clone_from(&g.terrain);
+                workspace.terrain = Some(g.terrain.clone());
                 workspace.roster.clear();
                 workspace
                     .roster

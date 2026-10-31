@@ -55,7 +55,10 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         &self.engine().units
     }
 
-    pub(super) fn terrain(&self) -> &Vec<usize> {
+    pub(super) fn terrain(&self) -> &[usize] {
+        &self.engine().terrain
+    }
+    pub(super) fn terrain_storage(&self) -> &Rc<[usize]> {
         &self.engine().terrain
     }
     pub(super) fn owners(&self) -> &Vec<Option<Side>> {
