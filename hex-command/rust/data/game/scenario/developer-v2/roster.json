@@ -1253,6 +1253,30 @@
       "side": "enemy",
       "col": 19,
       "row": 31
+    },
+    {
+      "type": "zombie-walker",
+      "side": "player",
+      "col": 17,
+      "row": 31
+    },
+    {
+      "type": "zombie-walker",
+      "side": "enemy",
+      "col": 16,
+      "row": 31
+    },
+    {
+      "type": "zombie-decay-caster",
+      "side": "player",
+      "col": 15,
+      "row": 31
+    },
+    {
+      "type": "zombie-decay-caster",
+      "side": "enemy",
+      "col": 14,
+      "row": 31
     }
   ]
 }

@@ -11,6 +11,11 @@
   publication. Visual changes and time spent working are not publication triggers.
   Follow the [publish skill](.agents/skills/publish/SKILL.md) when publication is
   authorized; do not invoke the hosted-site workflow for simulation-only work.
+- Finish checked, pushed game implementation batches by preparing and saving an
+  unpublished Site release through the publish skill. A deployment request only
+  publishes that saved version: no Git, checks, formatting or rebuilding. A hold
+  on deployment does not prohibit preparation; drafts and simulations do not
+  trigger release preparation.
 
 - **Permanent character canvas rule: every character/unit sprite and portrait is
   exactly 64×64 native pixels. This rule must never be changed; do not reintroduce
@@ -73,6 +78,13 @@
   10 minutes, even if unfinished or checks fail. Otherwise, keep changes local.
   Report check status and remaining work.
 
+## Interruptions
+
+When the user interrupts ongoing work, stop that work and keep it paused. Address
+only the interruption and any explicitly requested follow-up. Do not resume the
+earlier implementation, checks, commits or deployment until the user asks you to
+continue.
+
 ## Runtime data ownership
 
 Runtime code must obtain current authored game data, including scenarios and their
@@ -85,10 +97,10 @@ directly.
 
 When a user asks to diagnose agent failure, you need to diagnose it. Failed
 instruction is a failure of instruction, never the agent. Gaps or ambiguity in
-instructions are instruction failures too. Prefer fixing code or architecture to
-prevent recurrence, unless the cause is clearly a bad instruction. Resolve
-instruction failures by editing or removing the instruction, or, in rarer cases,
-extending it.
+instructions are instruction failures too. Prefer finding ways to fix code or
+architecture to prevent recurrence, unless the cause is clearly a bad instruction.
+For instruction failures, identify how the instruction should be edited or removed,
+or, in rarer cases, extended.
 
 ## Skills
 
@@ -97,8 +109,8 @@ Read the linked `SKILL.md` before starting work that matches its trigger.
 - [save-migrations](.agents/skills/save-migrations/SKILL.md): Use when changing or
   auditing save loading, save formats, migrations, or their data and dependencies.
 - [publish](.agents/skills/publish/SKILL.md): Use when the user authorizes
-  publication, deployment or an update to the live game. Simulation, preview,
-  commit and push requests alone do not trigger this skill.
+  preparing a completed game implementation batch, publication, deployment or an
+  update to the live game. Drafts and simulation-only work do not trigger it.
 - [combat-simulation](.agents/skills/combat-simulation/SKILL.md): Use when asked
   to review, explain, compare or change AI policies; run or analyze combat
   simulations; or assess balance, campaign competence or simulation performance.

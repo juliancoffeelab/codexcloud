@@ -11,6 +11,7 @@
   import Battlefield from "./ui/Battlefield.svelte";
   import UnitPanel from "./ui/UnitPanel.svelte";
   import TerrainPanel from "./ui/TerrainPanel.svelte";
+  import GroundItemsPanel from "./ui/GroundItemsPanel.svelte";
   import SettingsDialog from "./ui/SettingsDialog.svelte";
   let { controller }: { controller: BattleController } = $props();
   const view = $derived(controller.view);
@@ -105,6 +106,7 @@
         <aside aria-label="Unit and terrain details">
           <UnitPanel view={$view} {actions} onNewBattle={openMapPicker} />
           <TerrainPanel view={$view} {actions} />
+          <GroundItemsPanel view={$view} />
         </aside>
       {/if}
     </div>

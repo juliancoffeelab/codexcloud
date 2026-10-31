@@ -8,6 +8,9 @@ use std::collections::BTreeMap;
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct StartingUnit {
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub items: Vec<Item>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub faction: Option<String>,
@@ -27,7 +30,7 @@ pub struct StartingUnit {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct ItemRecipient {
+pub struct UnitFilter {
     pub side: Side,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
@@ -36,7 +39,7 @@ pub struct ItemRecipient {
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub name: Option<String>,
 }
-impl ItemRecipient {
+impl UnitFilter {
     pub(crate) fn accepts(&self, unit: &Unit) -> bool {
         unit.side == self.side
             && self
@@ -53,8 +56,16 @@ impl ItemRecipient {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct ItemReward {
-    pub recipient: ItemRecipient,
+    pub recipient: UnitFilter,
     pub item: Item,
+}
+/// Remove matching units at a safe destination without killing them.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Evacuation {
+    pub tile: String,
+    pub units: UnitFilter,
 }
 /// An authored objective. Each variant requires the fields its rule consumes.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -64,32 +75,81 @@ pub struct ItemReward {
 pub enum Goal {
     Defeat {
         label: String,
+        #[serde(
+            default,
+            rename = "visibleWhen",
+            skip_serializing_if = "Option::is_none"
+        )]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        visible_when: Option<Condition>,
     },
     Escort {
         label: String,
+        #[serde(
+            default,
+            rename = "visibleWhen",
+            skip_serializing_if = "Option::is_none"
+        )]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        visible_when: Option<Condition>,
         tile: String,
     },
     Escape {
         label: String,
+        #[serde(
+            default,
+            rename = "visibleWhen",
+            skip_serializing_if = "Option::is_none"
+        )]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        visible_when: Option<Condition>,
         tile: String,
     },
     Control {
         label: String,
+        #[serde(
+            default,
+            rename = "visibleWhen",
+            skip_serializing_if = "Option::is_none"
+        )]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        visible_when: Option<Condition>,
         tiles: Vec<String>,
     },
     Seal {
         label: String,
+        #[serde(
+            default,
+            rename = "visibleWhen",
+            skip_serializing_if = "Option::is_none"
+        )]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        visible_when: Option<Condition>,
         tiles: Vec<String>,
         #[serde(rename = "unitType")]
         unit_type: Option<String>,
     },
     Event {
         label: String,
+        #[serde(
+            default,
+            rename = "visibleWhen",
+            skip_serializing_if = "Option::is_none"
+        )]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        visible_when: Option<Condition>,
         tile: Option<String>,
         event: String,
     },
     Hold {
         label: String,
+        #[serde(
+            default,
+            rename = "visibleWhen",
+            skip_serializing_if = "Option::is_none"
+        )]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        visible_when: Option<Condition>,
         tile: String,
         turns: u32,
         #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -101,17 +161,44 @@ pub enum Goal {
     },
     Vigil {
         label: String,
+        #[serde(
+            default,
+            rename = "visibleWhen",
+            skip_serializing_if = "Option::is_none"
+        )]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        visible_when: Option<Condition>,
         tile: String,
         turns: u32,
         companion: String,
     },
     Refuge {
         label: String,
+        #[serde(
+            default,
+            rename = "visibleWhen",
+            skip_serializing_if = "Option::is_none"
+        )]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        visible_when: Option<Condition>,
         tile: String,
         turns: u32,
     },
 }
 impl Goal {
+    pub fn visible_when(&self) -> Option<&Condition> {
+        match self {
+            Self::Defeat { visible_when, .. }
+            | Self::Escort { visible_when, .. }
+            | Self::Escape { visible_when, .. }
+            | Self::Control { visible_when, .. }
+            | Self::Seal { visible_when, .. }
+            | Self::Event { visible_when, .. }
+            | Self::Hold { visible_when, .. }
+            | Self::Vigil { visible_when, .. }
+            | Self::Refuge { visible_when, .. } => visible_when.as_ref(),
+        }
+    }
     /// Return the structural category without interpreting a string tag.
     pub fn kind(&self) -> GoalKind {
         match self {
@@ -129,7 +216,7 @@ impl Goal {
     /// Borrow the authored objective label.
     pub fn label(&self) -> &str {
         match self {
-            Self::Defeat { label }
+            Self::Defeat { label, .. }
             | Self::Escort { label, .. }
             | Self::Escape { label, .. }
             | Self::Control { label, .. }
@@ -257,6 +344,13 @@ pub struct SpawnGroup {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Event {
+    /// Recruitment unlocked by this event, derived from its durable marker.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub recruits: Vec<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub evacuate: Option<Evacuation>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub items: Vec<ItemReward>,
@@ -353,12 +447,26 @@ pub struct Layout {
     pub id: String,
     pub units: Vec<StartingUnit>,
 }
+/// Local orders constrain only members of the authored group.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(tag = "kind", rename_all = "camelCase", deny_unknown_fields)]
+pub enum GroupOrder {
+    Hold {
+        area: Vec<String>,
+        #[serde(rename = "attackRadius")]
+        attack_radius: u16,
+    },
+}
 /// Independent mission-controlled enemies; activation and goals do not require leaders.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct EnemyGroup {
     pub id: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub order: Option<GroupOrder>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub when: Option<ConditionRule>,
@@ -410,6 +518,22 @@ pub struct Mission {
     pub without_dain: Option<MissionPatch>,
 }
 impl Mission {
+    /// Named companions may arrive through encounters as well as the opening roster.
+    pub fn companion_names(&self) -> impl Iterator<Item = &str> {
+        self.map
+            .units
+            .iter()
+            .filter(|u| u.side == Side::Player && u.role != Some(Role::Leader))
+            .filter_map(|u| u.name.as_deref())
+            .chain(
+                self.events
+                    .iter()
+                    .filter_map(|e| e.spawn.as_ref())
+                    .flat_map(|group| &group.units)
+                    .filter(|u| u.side == Side::Player && u.role != Some(Role::Leader))
+                    .filter_map(|u| u.name.as_deref()),
+            )
+    }
     /// Shared progress rules apply to required and optional goals alike.
     pub fn all_goals(&self) -> impl Iterator<Item = &Goal> {
         self.goals.iter().chain(&self.optional_goals)

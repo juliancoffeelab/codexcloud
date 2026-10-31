@@ -461,6 +461,18 @@ export class BattleController {
     return this.snapshot();
   }
 
+  dropItem(unitId: string, itemId: string): void {
+    try {
+      this.requirePlayerActor(unitId);
+      this.#game.dropItem(unitId, itemId);
+      this.history.clear();
+      this.commitAction();
+      this.message("Item dropped. Move away so another unit can collect it.");
+    } catch (error) {
+      this.error(error);
+    }
+  }
+
   async endTurn() {
     this.requireSession();
     if (!this.active()) {

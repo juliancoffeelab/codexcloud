@@ -1,0 +1,20 @@
+{
+  "saveVersion": 6,
+  "maps": [
+    {
+      "mapId": "lantern-ferry",
+      "mapRevision": 2,
+      "factions": [
+        {
+          "id": "wildlife",
+          "phase": "enemy",
+          "controller": { "kind": "ai", "policy": "classic" },
+          "palette": "enemy",
+          "relations": { "player": "hostile" }
+        }
+      ],
+      "wildlifeGroups": ["animals"],
+      "wildlifeTypes": ["bear", "giant-bat", "giant-spider"]
+    }
+  ]
+}

@@ -30,6 +30,7 @@ export function validTerrainConnections(tile: ConnectedTile): boolean {
   }
   switch (tile.terrain) {
     case "road":
+    case "signpost":
       return true;
     case "village":
       return tile.connections.length <= 3;

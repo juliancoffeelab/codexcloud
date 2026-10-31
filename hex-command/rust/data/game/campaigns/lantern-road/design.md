@@ -49,7 +49,8 @@ hex. The northern scout warns about it. The cave is a detour and a threat, not a
 required step on the main route. Defeating its bear reveals abandoned quarry
 tools. Nera takes a quarry hammer, gaining a melee impact attack while keeping
 her existing weapons. Equipment belongs to the individual, survives promotion,
-and travels with her into later chapters. The detour costs time and health;
+and travels with her into later chapters. She can drop it for another unit to
+collect; anyone killed leaves their equipment on their tile. The detour costs time and health;
 the hammer helps against the armored dead beyond the crossing.
 
 Crossing the western ford disturbs three bats in the island's eastern forests.
@@ -63,11 +64,14 @@ it engages the patrol. The staged siege does not require attacks against a
 building's health bar. Animals have independent orders and do not wait for the
 skeleton group's activation.
 
-Entering the house tile is the objective. That same visit enables its lantern;
-there is no additional rescue action hidden behind the wording. Arriving by turn
-15 finds the ferryman alive. Arriving from turn 16 finds his letter. The mission
-continues on either path, and the time limit must be communicated before the
-player commits to long detours.
+Entering the house tile is the main objective. That same visit enables its
+lantern. The optional rescue is secured when the patrol crosses the eastern ford
+by turn 15: the ferryman calls for help and the skeletons turn toward the patrol.
+That remembered encounter keeps him alive even if the house is visited after
+turn 15. Crossing from turn 16 instead leads to silence and his letter at the
+house. Visiting the house remains required for the conversation or letter and
+mission progress. The mission continues on either path, and the time limit must
+be communicated before the player commits to long detours.
 
 A living ferryman describes the abduction. If the mage approaches him, the
 conversation identifies a lich behind the skeletons. The letter supplies a route
@@ -88,20 +92,65 @@ villagers have already been recovered.
 ## Beyond the crossing
 
 The revised road scenario is a conventional battle. Nera approaches through the
-woods, away from the main road, and joins Sella's force at its keep. The
+woods, away from the main road, with Ivo if he survived the crossing. Warden
+Sella emerges when any patrol unit enters the hidden village. Her appearance,
+the lamps and her account of the prisoners share that same encounter. The starting
+village survived by extinguishing its lamps and remaining hidden in the forest;
+the skeletons following the road missed it. Its lamps come on only when a unit enters and the villagers reveal themselves. The
 Tollkeeper holds an opposing keep and recruits from the villages' income.
 Scouting, taking settlements and disrupting recruitment matter alongside combat.
 
-The road, northern woodland approach and southern marsh flank offer different
+One through-road runs from the western map edge to the eastern map edge. Two
+roadside villages accompany the hidden starting village; the hidden village has
+no road connection. The northern woodland approach and southern marsh flank offer different
 ways through the terrain. Settlements use village tiles; standalone houses are
 reserved for the ferryman's home in the crossing. Burned villages use charred
 home remains at the intact buildings' scale.
 
-Captive villagers are represented by a group of people acting as one unit. They
-use white faction cloth while captive. Reaching the group brings it under player
-control and changes the cloth to the ordinary player blue; the same people then
-move together. Rescue does not create replacement villagers or change their
-physical appearance beyond faction colors.
+One skeleton holds the pass fort. Its local order does not draw the keep's army
+into defending it. The level-one Tollkeeper starts alone at the eastern keep and
+recruits skeletons with ordinary gold and income. Three walkers and a mire caster
+inhabit the southern swamp under their own controller, without recruitment. They
+remain dormant until a player-controlled unit steps onto swamp terrain; that
+activation is remembered, and afterward they can pursue freely beyond the swamp.
+
+The captive group uses one simple genderless villager sprite repeated three
+times in a native 64×64 frame. White cloth and a white base identify neutral,
+passive captives. Reaching them transfers that same group to player control and
+blue colors, preserving identity, wounds and belongings. Unused actions remain
+available so a rescue need not strand civilians in front of the fort guard.
+
+Escort the group to the hidden village. Arrival evacuates it from the board and
+records a durable safe outcome; it is not a casualty and must not undo escort
+completion after a reload. A runner takes word back to the ferry asking for
+reinforcements. Only then does Nera depart at the sign beside the eastern road exit. The
+player may first clear every hostile force from the map. Defeating the Tollkeeper
+stops recruitment, but the remaining skeletons and swamp dead must also be
+defeated to complete that optional objective. The rescued people remain with the village.
+
+The opening objective is to investigate. It completes when the patrol has claimed
+the camp and met Sella. Rescuing and escorting the prisoners is revealed only by
+her account; the eastern departure and optional defeat-all-enemies objective appear only after
+the captives reach safety. Unknown goals have no list entries or map markers.
+There is no separate generic courier-protection objective.
+
+Sella joins through that village-entry encounter and unlocks recruitment. If
+Oren survives with the company, he notices a villager with a gift for magic and
+unlocks adept recruitment without needing a separate visit of his own. His death
+therefore changes the available army without preventing the rescue. Any patrol
+unit entering swamp terrain awakens the dead and triggers his observations if
+he is alive. He recalls Edrin, an old healer who lived nearby; defeating the mire
+caster reveals what became of his friend. The caster retains that identity when
+promoted. Reactions concern the company’s discovery, not Oren’s exact position.
+
+Fresh chapters do not add a replacement unnamed archer. Surviving ordinary troops
+come from the player’s chosen recalls; named companions retain their progression.
+
+The mire caster carries a healing bottle. Defeating it leaves the bottle on its
+tile; the unit that collects it restores 2 HP to itself and adjacent allies at
+the start of its turn. It can be passed on by dropping it and moving away.
+The prisoner departure deadline remains a tentative idea. Recruitment pressure
+and the exposed return journey supply urgency without an undisclosed countdown.
 
 Nera remains an infantry captain and retains progression. Ivo travels with the
 company if alive. A fallen scout must not reappear in a later roster or dialogue.

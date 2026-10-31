@@ -104,6 +104,9 @@ export class LiveGame {
   get rows() {
     return this.state.rows;
   }
+  get objectives() {
+    return this.inspection.objectives;
+  }
   get round() {
     return this.state.round;
   }
@@ -122,9 +125,13 @@ export class LiveGame {
   get tiles() {
     return this.state.tiles;
   }
+  get groundItems() {
+    return this.state.groundItems.filter((ground) => !this.presentation.fog.includes(ground.tile));
+  }
   get units() {
     return this.state.units.filter(
-      (unit) => unit.side === "player" || !this.presentation.fog.includes(unit.tile),
+      (unit) =>
+        this.choices(unit.id)?.faction.controllable || !this.presentation.fog.includes(unit.tile),
     );
   }
   get campaign() {
@@ -214,6 +221,9 @@ export class LiveGame {
   advanceUnit(id: string, type: UnitType): void {
     this.dispatch({ kind: "advance", unit: this.id(id), type });
   }
+  dropItem(id: string, item: string): void {
+    this.dispatch({ kind: "dropItem", unit: this.id(id), item });
+  }
   endTurn(): void {
     this.dispatch({ kind: "endTurn" });
   }
@@ -288,6 +298,7 @@ export class LiveGame {
     detached.resolvedPresentation = this.resolvedPresentation;
     return immutable({
       presentation: this.resolvedPresentation,
+      objectives: this.objectives,
       campaign: state.campaign,
       mapId: state.mapId,
       mapRevision: state.mapRevision,
@@ -300,6 +311,7 @@ export class LiveGame {
       log: state.log,
       tiles: state.tiles,
       units: detached.units,
+      groundItems: detached.groundItems,
       tile: detached.tile.bind(detached),
       unit: detached.unit.bind(detached),
       faction: detached.faction.bind(detached),

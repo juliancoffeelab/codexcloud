@@ -15,9 +15,9 @@
   "optionalGoals": [
     {
       "kind": "event",
-      "label": "Save the ferryman by turn 15",
-      "event": "ferryman-alive",
-      "tile": "18,10"
+      "label": "Reach the ferryman by turn 15",
+      "event": "ford-shout",
+      "tile": "17,8"
     }
   ]
 }

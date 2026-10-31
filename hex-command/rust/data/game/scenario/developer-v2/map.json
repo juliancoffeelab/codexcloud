@@ -188,7 +188,7 @@
       "id": "22,0",
       "col": 22,
       "row": 0,
-      "terrain": "plains",
+      "terrain": "burned-village",
       "owner": null,
       "floor": "green-plain"
     },
@@ -204,7 +204,7 @@
       "id": "24,0",
       "col": 24,
       "row": 0,
-      "terrain": "plains",
+      "terrain": "signpost",
       "owner": null,
       "floor": "green-plain"
     },

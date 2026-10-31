@@ -83,6 +83,7 @@ mod tests {
                 | Command::RecallMission { .. }
                 | Command::RetryMission
                 | Command::PreviousDialogue
+                | Command::DropItem { .. }
                 | Command::SkipDialogue => false,
             }
         }
@@ -244,6 +245,7 @@ mod tests {
                 | Command::RecallMission { .. }
                 | Command::RetryMission
                 | Command::PreviousDialogue
+                | Command::DropItem { .. }
                 | Command::SkipDialogue => panic!("expected specialist recruitment"),
             }
         }

@@ -923,6 +923,7 @@ mod tests {
                 | Command::RetryMission
                 | Command::PreviousDialogue
                 | Command::SkipDialogue
+                | Command::DropItem { .. }
                 | Command::SetUnitIntent { .. } => false,
             }
         }

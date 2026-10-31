@@ -29,6 +29,95 @@ impl Game<'_> {
         }
     }
 
+    fn event_unavailable(&self, id: &str, remaining: usize) -> bool {
+        let state = self.campaign.as_ref().unwrap();
+        if state.marked(&format!("event:{id}")) || remaining == 0 {
+            return false;
+        }
+        let Some(event) = self
+            .mission
+            .as_ref()
+            .unwrap()
+            .events
+            .iter()
+            .find(|e| e.id == id)
+        else {
+            return false;
+        };
+        event.before_round.is_some_and(|round| self.round >= round)
+            || event
+                .unless_event
+                .as_ref()
+                .is_some_and(|other| state.marked(&format!("event:{other}")))
+            || event
+                .requires_event
+                .as_ref()
+                .is_some_and(|other| self.event_unavailable(other, remaining - 1))
+    }
+    fn objective_status(&self, goal: &Goal) -> ObjectiveStatus {
+        let progress = self.goal_progress(goal);
+        let failed = !progress.done
+            && (self.winner.is_some()
+                || match goal {
+                    Goal::Event { event, .. } => {
+                        self.event_unavailable(event, self.mission.as_ref().unwrap().events.len())
+                    }
+                    _ => false,
+                });
+        ObjectiveStatus {
+            visible: self.goal_visible(goal),
+            progress,
+            failed,
+        }
+    }
+    fn campaign_objectives(&self) -> Option<CampaignObjectives> {
+        let state = self.campaign.as_ref()?;
+        let mission = self.mission.as_ref()?;
+        let leader_alive = self
+            .units
+            .iter()
+            .any(|u| u.side == Side::Player && u.role == Some(Role::Leader))
+            || state.evacuated.iter().any(|record| {
+                record.unit.side == Side::Player && record.unit.role == Some(Role::Leader)
+            });
+        let survival = |label: String, alive: bool| ObjectiveStatus {
+            visible: true,
+            progress: Progress {
+                label,
+                current: u32::from(self.winner.is_some() && alive),
+                total: 1,
+                done: self.winner.is_some() && alive,
+                tiles: vec![],
+            },
+            failed: !alive,
+        };
+        let mut protected = vec![survival("Keep your leader alive.".into(), leader_alive)];
+        for name in &mission.required_companions {
+            let alive = self
+                .units
+                .iter()
+                .any(|u| u.side == Side::Player && u.name.as_ref() == Some(name))
+                || state
+                    .evacuated
+                    .iter()
+                    .any(|record| record.unit.name.as_ref() == Some(name));
+            protected.push(survival(format!("Keep {name} alive."), alive));
+        }
+        Some(CampaignObjectives {
+            goals: mission
+                .goals
+                .iter()
+                .map(|g| self.objective_status(g))
+                .collect(),
+            optional: mission
+                .optional_goals
+                .iter()
+                .map(|g| self.objective_status(g))
+                .collect(),
+            survival: protected,
+        })
+    }
+
     pub(crate) fn inspect(&self, revision: u32) -> BattleInspection {
         let units = self
             .units
@@ -107,6 +196,7 @@ impl Game<'_> {
             })
             .collect();
         BattleInspection {
+            objectives: self.campaign_objectives(),
             revision,
             units,
             recruitment: [Side::Player, Side::Enemy]

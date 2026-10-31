@@ -59,6 +59,6 @@ flying flag unless overridden. The unit design skill explains anatomy, ground
 contact and faction-material ownership.
 
 For an object derived from an existing prop, measure the reference's painted
-bounds and use `--object-guide X Y W H` to constrain its physical footprint.
+bounds and use `--bounding-box X Y W H` to constrain its painted bounds.
 This is a hard extraction check: overflow is rejected with evidence, never
 trimmed or resized. A ruined version retains the original building's scale.

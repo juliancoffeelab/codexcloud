@@ -38,12 +38,7 @@ impl<'catalog> Game<'catalog> {
             let healing = self
                 .units
                 .iter()
-                .filter(|ally| {
-                    self.allied(ally, &self.units[index])
-                        && ally.id != self.units[index].id
-                        && self.board.distance(ally.tile, self.units[index].tile) == 1
-                })
-                .map(|ally| self.rules.units[ally.kind].healing)
+                .map(|ally| self.healing_from(ally, &self.units[index]))
                 .max()
                 .unwrap_or(0);
             let amount = healing
@@ -53,12 +48,7 @@ impl<'catalog> Game<'catalog> {
                 let providers = self
                     .units
                     .iter()
-                    .filter(|ally| {
-                        self.allied(ally, target)
-                            && ally.id != target.id
-                            && self.board.distance(ally.tile, target.tile) == 1
-                            && self.rules.units[ally.kind].healing == healing
-                    })
+                    .filter(|ally| self.healing_from(ally, target) == healing)
                     .map(|ally| format!("u{}", ally.id))
                     .collect();
                 self.recordings

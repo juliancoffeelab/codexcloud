@@ -47,6 +47,7 @@ export interface BattleCommands {
   attackSelected(attackId: string): void;
   recruitHere(type: RecruitType, tileId: string): void;
   advanceUnit(unitId: string, type: UnitType): void;
+  dropItem(unitId: string, itemId: string): void;
   endTurn(): Promise<GameSnapshot | undefined>;
   undoMove(): GameSnapshot;
   reset(mapId?: string, options?: { armies?: [string, string]; setup: SessionSetup }): GameSnapshot;
@@ -67,6 +68,7 @@ export function createBattleCommands(controller: BattleCommands): BattleCommands
     attackSelected: controller.attackSelected.bind(controller),
     recruitHere: controller.recruitHere.bind(controller),
     advanceUnit: controller.advanceUnit.bind(controller),
+    dropItem: controller.dropItem.bind(controller),
     endTurn: controller.endTurn.bind(controller),
     undoMove: controller.undoMove.bind(controller),
     reset: controller.reset.bind(controller),

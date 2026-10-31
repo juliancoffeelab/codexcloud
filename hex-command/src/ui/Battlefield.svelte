@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { pixelSprites } from "../presentation/pixel-art";
   import { onDestroy, tick, untrack } from "svelte";
   import type { TileView } from "../game/view";
   import type { BattleCommands, BattleView } from "../controller/view";
@@ -389,6 +390,32 @@
         {/each}
       </g>
 
+      <g class="ground-items pixel-art" pointer-events="none" aria-hidden="true">
+        {#each game.groundItems as ground, index (`${ground.tile}-${index}`)}
+          {@const site = tiles.find((tile) => tile.id === ground.tile)!}
+          {@const pile = game.groundItems.filter((item) => item.tile === ground.tile)}
+          {@const offset = (pile.indexOf(ground) - (pile.length - 1) / 2) * 12}
+          <g
+            transform={`translate(${site.x + offset} ${site.y})`}
+            filter={lighting.time === "night"
+              ? `url(#night-tile-${site.col}-${site.row})`
+              : undefined}
+          >
+            <ellipse cx="0" cy="14" rx="12" ry="5" fill="#d5bc68" opacity="0.4" />
+            {#if pixelSprites[`terrain_prop_items_${ground.item.id}`]}
+              <image
+                href={pixelSprites[`terrain_prop_items_${ground.item.id}`]}
+                x="-32"
+                y="-32"
+                width="64"
+                height="64"
+              />
+            {:else}
+              <path d="M0,-6 8,2 0,10 -8,2Z" fill="#e2c778" stroke="#302c28" stroke-width="2" />
+            {/if}
+          </g>
+        {/each}
+      </g>
       {#if fogTiles.length}
         <g class="fog-layer" pointer-events="none" aria-hidden="true">
           <foreignObject x="0" y="0" width={mapWidth} height={mapHeight}>
@@ -463,7 +490,7 @@
         {/each}
         {#each tiles as tile (tile.id)}
           <g data-indicator-tile={tile.id}>
-            {#if tile.owner}
+            {#if tile.owner && !fogSet.has(tile.id)}
               <circle
                 class="territory-badge"
                 cx={tile.x + 23}

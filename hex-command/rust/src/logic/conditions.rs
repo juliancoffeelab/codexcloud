@@ -57,13 +57,34 @@ pub(crate) fn matches(
                         <= *radius
             })
         }
-        Condition::NoUnits { side, unit_type } => {
+        Condition::HasUnits {
+            side,
+            unit_type,
+            name,
+        } => input.units.iter().any(|unit| {
+            faction_matches_side(&input.factions, unit.faction.as_deref(), unit.side, *side)
+                && unit_type.as_ref().is_none_or(|kind| unit.r#type == *kind)
+                && name
+                    .as_ref()
+                    .is_none_or(|name| unit.name.as_ref() == Some(name))
+        }),
+        Condition::NoUnits {
+            side,
+            unit_type,
+            name,
+        } => {
             !input.units.iter().any(|unit| {
                 faction_matches_side(&input.factions, unit.faction.as_deref(), unit.side, *side)
                     && unit_type.as_ref().is_none_or(|kind| unit.r#type == *kind)
+                    && name
+                        .as_ref()
+                        .is_none_or(|name| unit.name.as_ref() == Some(name))
             }) && !input.pending.iter().any(|unit| {
                 faction_matches_side(&input.factions, unit.faction.as_deref(), unit.side, *side)
                     && unit_type.as_ref().is_none_or(|kind| unit.r#type == *kind)
+                    && name
+                        .as_ref()
+                        .is_none_or(|name| unit.name.as_ref() == Some(name))
             })
         }
         Condition::Choice { choice } => input.choices.contains(choice),
@@ -135,6 +156,7 @@ impl Game<'_> {
                 .units
                 .iter()
                 .map(|u| StartingUnit {
+                    items: vec![],
                     faction: u.faction.clone(),
                     ai_group: u.ai_group.clone(),
                     col: self.board.positions[u.tile].0,

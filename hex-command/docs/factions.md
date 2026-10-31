@@ -29,15 +29,22 @@ For example, a civilian faction can wait for a neighboring player unit:
   "phase": "enemy",
   "controller": { "kind": "passive" },
   "palette": "passive",
-  "transferOnProximity": { "by": "player", "to": "player", "radius": 1 }
+  "transfer": {
+    "to": "player",
+    "when": {
+      "condition": { "kind": "proximity", "side": "player", "radius": 1 },
+      "remember": false
+    }
+  }
 }
 ```
 
 An initial unit uses `"side": "enemy", "faction": "villagers"`; a scripted spawn
 sets `faction` on its spawn group. Here `enemy` selects the automatic phase, not
-hostility. The passive palette is white. On proximity transfer, the existing unit
+hostility. The passive palette is white. On conditional transfer, the existing unit
 changes faction and phase, retaining its ID, health, items and physical type. It
-has spent its actions for the current turn. The destination faction supplies
+retains its existing action flags: a passive unit that has not acted can move
+immediately, while a unit that already acted gains no extra actions. The destination faction supplies
 control and palette, so transfer to the implicit player makes the unit blue and
 controllable without spawning a replacement.
 
@@ -46,3 +53,40 @@ ownership. Separate unit factions and controllers do not create separate
 territorial economies. Runtime state and inspection facts are published by Rust;
 the frontend uses resolved faction palettes, relations and control permissions
 for display and input.
+
+Transfer conditions use the shared `ConditionRule` vocabulary. An omitted tile
+refers to the unit's current tile. Ownership, event, turn, proximity, and combined
+conditions are supported; the transfer itself is the durable result, so there is
+no separate transfer-memory record. Escort simulation planning can approach an
+unowned nonhostile courier using its authored transfer condition before escorting
+it under player control.
+
+An enemy group can declare a local hold order:
+
+```json
+{
+  "id": "post-guard",
+  "order": { "kind": "hold", "area": ["7,6"], "attackRadius": 1 }
+}
+```
+
+Only units assigned to that group receive the order. They remain inside the hold
+area and attack only legal targets within its engagement radius; a displaced unit
+approaches its assigned area. The order creates no army-wide survival, escort or
+defense duty. Other army units retain their own objectives. Group activation
+conditions continue to apply independently.
+
+## Safe evacuation and recruitment
+
+A campaign event may declare `evacuate: { tile, units }`. The unit filter uses
+`side` and optional `role` and `name`, independently of promotion/type. The event
+waits for a matching unit to occupy the destination, then removes it without a
+combat casualty. Its full unit record and the event ID remain in the chapter's
+`evacuated` results. Escort/escape completion, required companions and leader
+survival recognize these safe outcomes after reload. Matching named companions
+and leaders can carry their progression and equipment into the next chapter;
+ordinary rescued civilians remain off the battlefield.
+
+Events can also unlock a `recruits` list. Recruitment availability is derived
+from completed event markers, so it persists without a parallel saved unlock
+flag and can depend on meeting or retaining a particular character.

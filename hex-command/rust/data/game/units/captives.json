@@ -3,7 +3,7 @@
   "role": "flank",
   "name": "Captive villagers",
   "race": "human",
-  "hp": 18,
+  "hp": 24,
   "move": 3,
   "cost": 0,
   "attacks": [],

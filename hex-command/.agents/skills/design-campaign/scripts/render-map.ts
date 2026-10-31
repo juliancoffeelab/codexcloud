@@ -172,11 +172,35 @@ paintFog(
   ctx,
   map.tiles.filter((tile) => fog.has(tile.id)),
 );
-for (const unit of units) {
-  if (unit.side === "enemy" && fog.has(`${unit.col},${unit.row}`)) continue;
+// Match Battlefield.svelte: tile order, feet at center + 20, then a separate
+// indicator layer above every sprite. Draft placements depict full-health units.
+const occupants = new Map(units.map((unit) => [`${unit.col},${unit.row}`, unit]));
+const visibleUnits = map.tiles.flatMap((tile) => {
+  const unit = occupants.get(tile.id);
+  return unit && !(unit.side === "enemy" && fog.has(tile.id)) ? [unit] : [];
+});
+for (const unit of visibleUnits) {
   const p = position(unit),
     frame = createCanvas(64, 64),
     fc = frame.getContext("2d");
+  const palette = unit.faction ?? unit.side;
+  const teamColor =
+    palette === "passive"
+      ? "#efecdc"
+      : palette === "green"
+        ? "#83b765"
+        : unit.side === "player"
+          ? "#6fdec0"
+          : "#ff9590";
+  ctx.beginPath();
+  ctx.ellipse(p.x, p.y + 19, 19, 7, 0, 0, Math.PI * 2);
+  ctx.fillStyle = teamColor;
+  ctx.globalAlpha = 0.5;
+  ctx.fill();
+  ctx.globalAlpha = 1;
+  ctx.strokeStyle = teamColor;
+  ctx.lineWidth = 1.8;
+  ctx.stroke();
   fc.drawImage(await sprite(artFrameKey("units", unit.type, unit.faction ?? unit.side)), 0, 0);
   const data = fc.getImageData(0, 0, 64, 64),
     matrix = lightingMatrix(p.x, p.y, lighting);
@@ -193,10 +217,17 @@ for (const unit of units) {
   ctx.drawImage(
     frame,
     p.x - battlefieldSpriteSize / 2,
-    p.y - battlefieldSpriteSize / 2,
+    p.y + 20 - battlefieldSpriteSize,
     battlefieldSpriteSize,
     battlefieldSpriteSize,
   );
+}
+for (const unit of visibleUnits) {
+  const p = position(unit);
+  ctx.beginPath();
+  ctx.roundRect(p.x - 19, p.y + 27, 38, 4, 2);
+  ctx.fillStyle = "#a9d0a5";
+  ctx.fill();
 }
 for (const arrow of overlay.arrows ?? []) {
   const from = position(arrow.from),

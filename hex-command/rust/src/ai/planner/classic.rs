@@ -256,6 +256,8 @@ impl BattleView<'_, '_> {
                     }
                     Family::Skeleton | Family::Boar => ClassicOrder::Frontline,
                     Family::Commander
+                    | Family::ZombieWalker
+                    | Family::ZombieDecayCaster
                     | Family::Wildkeeper
                     | Family::Necromancer
                     | Family::Bear

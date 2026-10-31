@@ -1,5 +1,5 @@
 //! Faction allegiance is independent of the two input/turn phases and AI policy.
-use super::Side;
+use super::{ConditionRule, Side};
 use crate::ai::Policy;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -23,15 +23,14 @@ pub enum Controller {
         policy: Policy,
     },
 }
-/// Transfer the same unit when another faction approaches; useful for rescuing
-/// civilians, joining allies, and other proximity-based changes of control.
+/// Transfer the same unit when a shared authored condition is satisfied.
+/// Contextual conditions use the unit's current tile.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
-pub struct ProximityTransfer {
-    pub by: String,
+pub struct FactionTransfer {
     pub to: String,
-    pub radius: u16,
+    pub when: ConditionRule,
 }
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -47,7 +46,7 @@ pub struct Faction {
     pub relations: BTreeMap<String, Relation>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub transfer_on_proximity: Option<ProximityTransfer>,
+    pub transfer: Option<FactionTransfer>,
 }
 impl Side {
     pub fn faction_id(self) -> &'static str {
@@ -101,9 +100,9 @@ pub(crate) fn validate_factions(
                 return Err("conflicting faction relation".into());
             }
         }
-        if let Some(rule) = &faction.transfer_on_proximity {
-            if !known(&rule.by) || !known(&rule.to) || rule.to == faction.id || rule.radius == 0 {
-                return Err("invalid faction proximity transfer".into());
+        if let Some(rule) = &faction.transfer {
+            if !known(&rule.to) || rule.to == faction.id {
+                return Err("invalid faction transfer".into());
             }
         }
     }
@@ -185,4 +184,19 @@ pub(crate) fn faction_matches_side(
             .find(|f| f.id == id)
             .map_or(phase == Side::Player, |f| f.controller == Controller::Human),
     }
+}
+
+pub(crate) fn validate_faction_conditions(
+    factions: &[Faction],
+    tiles: &[super::Tile],
+    events: &[super::Event],
+    types: &std::collections::HashMap<String, usize>,
+) -> Result<(), String> {
+    for faction in factions {
+        if let Some(transfer) = &faction.transfer {
+            transfer.when.condition.validate(tiles, events, true)?;
+            transfer.when.condition.validate_units(types)?;
+        }
+    }
+    Ok(())
 }

@@ -44,6 +44,7 @@ export class Game implements GameState {
   declare log: string[];
   declare tiles: Tile[];
   declare units: Unit[];
+  declare groundItems: GameState["groundItems"];
   declare campaign?: GameState["campaign"];
   declare conditionMemory?: string[];
   declare lastCombat?: GameState["lastCombat"];

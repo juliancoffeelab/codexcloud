@@ -160,10 +160,47 @@ pub struct ObjectiveOrder {
     pub objective: TacticalObjective,
 }
 
+/// Mechanical local bounds for an individual actor; never an army-wide duty.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ScopedOrder {
+    pub actor: UnitId,
+    pub area: Vec<TileId>,
+    pub attack_radius: u16,
+}
+
+impl ScopedOrder {
+    pub(super) fn allows_move(&self, game: &BattleView<'_, '_>, unit: &Unit, to: usize) -> bool {
+        let area: Vec<_> = self.area.iter().map(|tile| game.site(&tile.0)).collect();
+        if area.contains(&to) {
+            return true;
+        }
+        if area.contains(&unit.tile) {
+            return false;
+        }
+        let routes = game.routes(unit.kind, &area);
+        routes[to] < routes[unit.tile]
+    }
+    pub(super) fn allows_attack(
+        &self,
+        game: &BattleView<'_, '_>,
+        from: usize,
+        target: usize,
+    ) -> bool {
+        self.area.iter().any(|tile| game.site(&tile.0) == from)
+            && self
+                .area
+                .iter()
+                .any(|tile| game.board().distance(game.site(&tile.0), target) <= self.attack_radius)
+    }
+}
+
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", default)]
 pub struct TacticalOrders {
+    pub scoped: Vec<ScopedOrder>,
     /// Actors withheld by Campaigner, independent of unit archetypes or economy.
     pub inactive: Vec<UnitId>,
     /// Promotion branches selected by Recruiter; Planner owns their timing.
@@ -327,7 +364,11 @@ impl TacticalOrders {
         from: usize,
     ) -> bool {
         let preview = || game.preview(unit, target, weapon, from);
-        (!self.protects(unit.id) || preview().1 == 0)
+        self.scoped
+            .iter()
+            .filter(|order| order.actor.0 == unit.id)
+            .all(|order| order.allows_attack(game, from, target.tile))
+            && (!self.protects(unit.id) || preview().1 == 0)
             && (!self.protect_withdrawal
                 || target.retreating != Some(true)
                     && (!self.mediated.contains(&UnitId(target.id)) || preview().0 < target.hp))

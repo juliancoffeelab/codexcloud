@@ -59,14 +59,22 @@ export function goalProgress(board: CampaignBoard, goal: Immutable<MissionGoal>)
       current = Number(
         board.units.some(
           (unit) => unit.side === "player" && unit.role === "courier" && unit.tile === goal.tile,
-        ),
+        ) ||
+          board.campaign?.evacuated?.some(
+            ({ unit }) =>
+              unit.side === "player" && unit.role === "courier" && unit.tile === goal.tile,
+          ),
       );
       break;
     case "escape":
       current = Number(
         board.units.some(
           (unit) => unit.side === "player" && unit.role === "leader" && unit.tile === goal.tile,
-        ),
+        ) ||
+          board.campaign?.evacuated?.some(
+            ({ unit }) =>
+              unit.side === "player" && unit.role === "leader" && unit.tile === goal.tile,
+          ),
       );
       break;
     case "control":

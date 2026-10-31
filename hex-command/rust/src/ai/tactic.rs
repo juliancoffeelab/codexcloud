@@ -27,12 +27,14 @@ impl<R: Recruiter, C: Campaigner, P: Planner> Tactic<R, C, P> {
         game: &Game<'_>,
         workspace: &mut PlanningWorkspace,
     ) -> Result<TurnPlan, CommandError> {
+        workspace.refresh_control(game);
         let mut orders = workspace.orders.clone().unwrap_or_else(|| {
             self.campaigner
                 .objectives(CampaignView::new(game, workspace))
         });
         let mut draft = PlanningContext::fork(game);
         draft.restrict_actors(&orders.tactics.inactive);
+        draft.restrict_positions(&orders.tactics.scoped);
         let mut recruitment_context =
             draft.recruitment_context(workspace.seed, workspace.recruitment_remaining);
         let recruitment = self

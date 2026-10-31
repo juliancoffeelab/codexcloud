@@ -493,6 +493,12 @@ impl<'catalog> Game<'catalog> {
             .cloned()
             .collect();
         for unit in &defeated {
+            for item in &unit.items {
+                self.ground_items.push(GroundItem {
+                    tile: self.board.ids[unit.tile].clone(),
+                    item: item.clone(),
+                });
+            }
             if let Some(campaign) = &mut self.campaign {
                 if unit.side == Side::Player {
                     if let Some(name) = &unit.name {
@@ -500,10 +506,7 @@ impl<'catalog> Game<'catalog> {
                             .missions
                             .iter()
                             .any(|chapter| {
-                                chapter.map.units.iter().any(|incoming| {
-                                    incoming.side == Side::Player
-                                        && incoming.name.as_ref() == Some(name)
-                                })
+                                chapter.companion_names().any(|incoming| incoming == name)
                             })
                         {
                             let mark = format!("fallen:{name}");

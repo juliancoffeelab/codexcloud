@@ -1,4 +1,4 @@
-import { MAPS } from "../../game/maps";
+import { MAPS } from "./legacy/frozen";
 import type { MapId } from "../../game/types";
 import { isRecord, type BattleSave } from "../schema";
 

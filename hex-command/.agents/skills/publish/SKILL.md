@@ -1,57 +1,81 @@
 ---
 name: publish
-description: Publish Hex Command when the user authorizes deployment or updating the live game. Simulation, rendering, committing and pushing alone do not authorize publication.
+description: Prepare checked game implementation batches as unpublished Site releases; deploy an already prepared release only when the user asks.
 ---
 
 # Publish
 
-## Scope
+## Two separate operations
 
-Use only with a user instruction to publish, deploy or update the live game.
-Existing authorization in the session counts; do not ask for it again.
-An instruction to push authorizes Git, not deployment. Visual changes, a
-successful build and elapsed working time do not authorize deployment.
+**Prepare while implementing. Deploy when asked.** Checked and pushed game changes
+must have an archive-backed saved Site version ready before reporting the batch
+finished. A deploy request publishes that version in one native hosting operation.
+Do not run Git, tests, formatting, builds, packaging or source synchronization at
+deployment time. Do not use deployment as a reason to recommit or push GitHub.
 
-Simulation and balance experiments stay in ignored `tmp/` or `artifacts/`
-data snapshots. Run them with `--data-dir`; render their terrain directly.
-Do not register an experimental map in the playable catalog, update the hosted
-site or invoke Sites merely because the experiment produces a visual result.
-Promoting an experiment to playable content requires a user request for that
-product change. Publication requires its own authorization.
+A deployment hold still permits source pushes and unpublished release preparation.
+Simulation experiments, visual drafts, reviews and unfinished work do not trigger
+preparation. Publishing-tool or documentation-only changes do not require a new
+game build. Explicit local-only or no-build instructions take precedence.
+Publishing to the live game still requires the user's instruction; preparing or
+saving a release never authorizes deployment.
 
-If publication is outside the requested scope, finish the requested local work
-and report it. Do not introduce a permission question just to offer deployment.
+## Prepare a completed implementation batch
 
-## Prepare
+Read the installed Sites skill for its native API and access rules. Reuse
+`.openai/hosting.json`'s project ID and preserve the existing audience. Continue on
+the existing feature branch and PR. Perform appropriate checks, commit and push
+as part of implementation, once. Do not repeat already successful checks.
 
-Read the installed Sites skill for the current native API and access rules.
-Reuse `.openai/hosting.json`'s project ID and preserve its audience. Use the
-existing feature branch and PR; never push directly to the default branch.
+Obtain a fresh source credential and run:
 
-Verify that the selected product changes are authorized and that ignored
-experiment data has not entered the playable catalog. Run checks appropriate
-to those changes. `dist/` is generated and Git-ignored; commit source and public
-assets, not build output.
+```sh
+npm run release:prepare -- --message 'Describe the checked changes'
+```
 
-## Package and deploy
+Pass the credential through hidden stdin, never arguments, files or logs. The
+helper exports the committed source into the Site checkout, preserves ignored
+compiler/build caches, builds once, pushes the Site source and packages generated
+output. It does not format, test or commit the working tree. Retain its returned
+project ID, source commit, Site commit and archive path.
 
-Use `python3 scripts/publish-site.py --message 'Describe the product change'`
-with the current Site source credential through its hidden stdin prompt.
-Keep credentials out of files, shell arguments and logs.
+Call `save_site_version` with that exact Site commit and archive **without
+calling any deployment operation**. Retain the returned saved version ID and
+version number. Sites stores the version and archive remotely; release readiness
+must not depend on an ignored local file surviving this cloud environment.
+Finish the batch with that unpublished version ready. If preparation fails,
+report the failure rather than claiming the batch is ready to deploy.
 
-The helper commits the project source, builds that exact source with
-`npm run build` in the isolated Site checkout, pushes the Site source repository
-and packages the output with `scripts/package-site.py`. Retain its returned
-project ID, source commit, Site commit and archive path. Never use `git archive`
-to package generated output; the packager verifies client references and bytes.
+The named `prepareSite` export in `scripts/publish-sites-call.js` orchestrates
+this preparation and save operation; it never deploys or pushes GitHub. Its
+returned receipt contains the exact version ID and audience for deployment.
 
-Publish the returned archive and Site commit through the appropriate native
-Sites operation. Follow an existing nonterminal deployment to completion;
-retain saved-version and deployment IDs on failure rather than saving twice.
+## Deploy: one action
 
-For authorized visual publication, deploy before pushing the feature branch to
-GitHub. If deployment fails, report it and still perform an authorized or
-repository-required GitHub push. A GitHub push alone must never invoke deployment.
+The default export in `scripts/publish-sites-call.js` accepts that receipt and
+calls only native hosting operations. With its version ID and known audience,
+it makes exactly one deployment call. Use this adapter or the native call
+directly; never repeat the preparation workflow.
 
-Report the verified production URL and any verification limits. Do not describe
-a packaged build, pushed source or pending deployment as live.
+With an archive-backed version already prepared, call the native operation:
+
+- Confirmed owner-private Site: `deploy_private_site_version`.
+- Other supported audiences: `deploy_site_version` with the existing audience.
+
+Use the exact saved version ID from preparation. For a fresh session, retrieve
+it through `list_site_versions` and select the newest archive-backed release;
+perform discovery and deployment in the same orchestration call. Do not inspect
+Git or rebuild to rediscover an already saved release.
+
+Use an initial execution yield long enough for the hosting operation to finish
+(for example 120 seconds) instead of repeatedly returning to poll a running cell.
+A terminal successful result and its URL complete the deployment. Poll only when
+the hosting API itself returns a nonterminal deployment; retain deployment and
+saved-version IDs on failure. Never save or upload the same release again merely
+to deploy it.
+
+If no prepared release exists, state that preparation was missed. Do not silently
+fall back to the former multi-step build/Git workflow during a deploy request.
+
+Report the literal verified production URL. Never describe a prepared or saved
+version as live. Do not redeploy an unchanged version just to demonstrate speed.

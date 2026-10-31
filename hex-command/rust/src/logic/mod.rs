@@ -7,6 +7,7 @@ pub(crate) mod exchange;
 mod factions;
 #[cfg(any(test, feature = "wasm"))]
 mod inspection;
+mod items;
 mod movement;
 mod restore;
 mod turns;

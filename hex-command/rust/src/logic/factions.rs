@@ -2,6 +2,12 @@
 use super::Game;
 use crate::data::*;
 impl Game<'_> {
+    pub(crate) fn control_roster(&self) -> Vec<(u32, Side, Option<String>, Option<Role>)> {
+        self.units
+            .iter()
+            .map(|unit| (unit.id, unit.side, unit.faction.clone(), unit.role))
+            .collect()
+    }
     pub(crate) fn unit_faction<'a>(&self, unit: &'a Unit) -> &'a str {
         unit.faction.as_deref().unwrap_or(unit.side.faction_id())
     }
@@ -88,39 +94,35 @@ impl Game<'_> {
         }
         controllers
     }
-    pub(crate) fn apply_proximity_transfers(&mut self) {
+    pub(crate) fn apply_faction_transfers(&mut self) {
         if self
             .factions
             .iter()
-            .all(|faction| faction.transfer_on_proximity.is_none())
+            .all(|faction| faction.transfer.is_none())
         {
             return;
         }
+        let input = self.presentation_input();
         let changes: Vec<_> = self
             .units
             .iter()
             .filter_map(|unit| {
-                let rule = self
-                    .faction(self.unit_faction(unit))?
-                    .transfer_on_proximity
-                    .as_ref()?;
-                self.units
-                    .iter()
-                    .any(|other| {
-                        other.id != unit.id
-                            && self.unit_faction(other) == rule.by
-                            && self.board.distance(unit.tile, other.tile) <= rule.radius
-                    })
-                    .then(|| {
-                        let phase = self.faction(&rule.to).map(|f| f.phase).unwrap_or_else(|| {
-                            if rule.to == "player" {
-                                Side::Player
-                            } else {
-                                Side::Enemy
-                            }
-                        });
-                        (unit.id, rule.to.clone(), phase)
-                    })
+                let rule = self.faction(self.unit_faction(unit))?.transfer.as_ref()?;
+                crate::logic::conditions::matches(
+                    &rule.when.condition,
+                    &input,
+                    Some(&self.board.ids[unit.tile]),
+                )
+                .then(|| {
+                    let phase = self.faction(&rule.to).map(|f| f.phase).unwrap_or_else(|| {
+                        if rule.to == "player" {
+                            Side::Player
+                        } else {
+                            Side::Enemy
+                        }
+                    });
+                    (unit.id, rule.to.clone(), phase)
+                })
             })
             .collect();
         if changes.is_empty() {
@@ -132,8 +134,6 @@ impl Game<'_> {
             unit.faction = Some(faction.clone());
             unit.side = phase;
             unit.ai_group = None;
-            unit.moved = true;
-            unit.attacked = true;
             unit.retreating = None;
             unit.rebuilding = None;
             let label = self.rules.units[unit.kind].name.clone();

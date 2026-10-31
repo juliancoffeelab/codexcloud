@@ -1,4 +1,4 @@
-import { MAPS } from "../../game/maps";
+import { MAPS } from "./legacy/frozen";
 import { isRecord, type BattleSave } from "../schema";
 
 /** Grow the two published developer layouts, preserving owned tiles and battle progress. */

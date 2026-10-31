@@ -678,6 +678,7 @@ mod tests {
                     | Command::RecallMission { .. }
                     | Command::RetryMission
                     | Command::PreviousDialogue
+                    | Command::DropItem { .. }
                     | Command::SkipDialogue => false,
                 };
                 if end {

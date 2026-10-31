@@ -28,6 +28,10 @@ pub enum Command {
         #[serde(rename = "type")]
         kind: UnitTypeId,
     },
+    DropItem {
+        unit: UnitId,
+        item: String,
+    },
     EndTurn,
     DismissDialogue,
     /// Continue with the browser's explicitly selected surviving recruits.
@@ -65,6 +69,7 @@ pub enum CommandError {
     IllegalAttack,
     IllegalRecruit,
     IllegalAdvance,
+    IllegalItem,
     IllegalIntent,
 }
 impl std::fmt::Display for CommandError {

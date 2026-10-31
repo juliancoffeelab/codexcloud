@@ -77,7 +77,7 @@ impl Tile {
             }
         }
         match self.terrain.as_str() {
-            "road" => true,
+            "road" | "signpost" => true,
             "village" => mask.count_ones() <= 3,
             "bridge" | "ford" => matches!(mask, 9 | 18 | 36),
             "landing" | "ferry" => matches!(mask, 1 | 8),
@@ -85,6 +85,15 @@ impl Tile {
         }
     }
 }
+/// An item left on a battlefield tile. Ownership passes only when collected.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct GroundItem {
+    pub tile: String,
+    pub item: Item,
+}
+
 /// Treasury balances for the player and enemy.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
@@ -99,9 +108,8 @@ pub struct Gold {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct State {
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    #[cfg_attr(feature = "wasm", tsify(optional))]
     pub factions: Vec<Faction>,
+    pub ground_items: Vec<GroundItem>,
     /// Selected skirmish factions; campaigns use their authored recruitment.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]

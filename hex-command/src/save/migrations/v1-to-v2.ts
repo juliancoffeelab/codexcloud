@@ -1,5 +1,5 @@
 import type { SavedGame } from "../../../rust/pkg/hex_command";
-import { MAPS } from "../../game/maps";
+import { MAPS } from "./legacy/frozen";
 import { importLegacySnapshot } from "./legacy/snapshot";
 import { isRecord, type BattleSave } from "../schema";
 

@@ -14,6 +14,8 @@ function value<T>(result: EngineResult<T>): T {
 
 function fixture() {
   const state: State = {
+    factions: [],
+    groundItems: [],
     mapId: "mirror",
     mapRevision: 1,
     cols: 1,
@@ -73,6 +75,7 @@ function fixture() {
       value: {
         revision: nextView.revision,
         units: [],
+        objectives: null,
         recruitment: {},
         costs: {},
         neighbors: {},

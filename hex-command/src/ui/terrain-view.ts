@@ -5,11 +5,13 @@ import type { TerrainType } from "../game/types";
 import { campaignMission } from "../game/campaign-progress";
 
 const descriptions: Record<TerrainType, string> = {
+  "burned-village": "Burned homes. No income, healing or protection.",
   marsh: "Mud and reeds expose land troops; merfolk find protection here.",
   ruins: "Broken walls shelter against ranged attacks.",
   fort: "Earthworks protect against every damage kind. Capture them to hold a crossing.",
   grove: "A sacred woodland refuge. Its owner’s occupants heal 4 HP each turn.",
   plains: "Open grassland with easy footing.",
+  signpost: "A waymarker beside the road. Follow the scenario objective to leave the area.",
   road: "A winding dirt road through grassland. Normal movement and no protection.",
   forest: "Trees shelter land troops and obstruct ranged shots. Merfolk are exposed here.",
   hill: "High ground shelters land troops and obstructs ranged shots. Merfolk are exposed here.",
@@ -19,10 +21,11 @@ const descriptions: Record<TerrainType, string> = {
   landing: "A wooden jetty connects the river to its bank. Normal movement and no protection.",
   ferry: "A river ferry is moored alongside the landing. Normal movement and no protection.",
   house: "A single riverside home. Provides no income or healing.",
-  mountain: "A sheer mountain ridge, impassable to land units.",
-  cave: "A quarry entrance at the foot of a mountain. Scenario objectives describe what can be found inside.",
+  mountain:
+    "A sheer mountain ridge, impassable to land units. Blocks ranged attacks through the tile.",
+  cave: "A quarry entrance at the foot of a mountain. Blocks ranged attacks through the tile. Scenario objectives describe what can be found inside.",
   village: "Capture this settlement by moving a unit onto it.",
-  keep: "A fortified home for its army’s commander.",
+  keep: "A fortified home for its army’s commander. Blocks ranged attacks through the tile.",
 };
 
 function protectionFact(terrain: TerrainType): string {
@@ -55,7 +58,7 @@ function terrainFacts(terrain: TerrainType): string[] {
     facts.push(
       "Its owner’s leader can recruit into adjacent empty terrain passable to the recruit",
       "Select an empty adjacent hex to recruit",
-      "Keeps cannot be captured",
+      "Move onto a keep to claim it",
     );
   }
   return facts;

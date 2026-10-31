@@ -19,12 +19,14 @@ enum EngineAccess<'a, 'catalog> {
 pub(crate) struct BattleView<'a, 'catalog> {
     engine: EngineAccess<'a, 'catalog>,
     inactive: Rc<rustc_hash::FxHashSet<u32>>,
+    scoped: Rc<Vec<ScopedOrder>>,
 }
 impl<'a, 'catalog> BattleView<'a, 'catalog> {
     pub(super) fn new(game: &'a Game<'catalog>) -> Self {
         Self {
             engine: EngineAccess::Borrowed(game),
             inactive: Rc::default(),
+            scoped: Rc::default(),
         }
     }
     fn engine(&self) -> &Game<'catalog> {
@@ -43,6 +45,7 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         BattleDraft(BattleView {
             engine: EngineAccess::Draft(self.engine().planning_fork()),
             inactive: self.inactive.clone(),
+            scoped: self.scoped.clone(),
         })
     }
     pub(super) fn rules(&self) -> BattleRules<'_> {
@@ -69,9 +72,28 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     }
     fn permits(&self, command: &Command) -> bool {
         match command {
-            Command::Move { unit, .. }
-            | Command::Attack { unit, .. }
-            | Command::Recruit { unit, .. }
+            Command::Move { unit, tile } => {
+                self.can_act(unit.0)
+                    && self.unit(unit.0).is_some_and(|actor| {
+                        self.scoped
+                            .iter()
+                            .filter(|order| order.actor == *unit)
+                            .all(|order| order.allows_move(self, actor, self.site(&tile.0)))
+                    })
+            }
+            Command::Attack { unit, target, .. } => {
+                self.can_act(unit.0)
+                    && self
+                        .unit(unit.0)
+                        .zip(self.unit(target.0))
+                        .is_some_and(|(actor, target)| {
+                            self.scoped
+                                .iter()
+                                .filter(|order| order.actor == *unit)
+                                .all(|order| order.allows_attack(self, actor.tile, target.tile))
+                        })
+            }
+            Command::Recruit { unit, .. }
             | Command::Advance { unit, .. }
             | Command::SetUnitIntent { unit, .. } => self.can_act(unit.0),
             _ => true,
@@ -88,6 +110,9 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     }
     pub(super) fn belongs_to_phase(&self, unit: &Unit, side: Side) -> bool {
         self.engine().belongs_to_phase(unit, side)
+    }
+    pub(super) fn control_roster(&self) -> Vec<(u32, Side, Option<String>, Option<Role>)> {
+        self.engine().control_roster()
     }
     pub(super) fn units(&self) -> &Vec<Unit> {
         &self.engine().units
@@ -131,10 +156,22 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         target: &Unit,
         weapon: usize,
     ) -> bool {
-        self.can_act(unit.id) && self.engine().can_attack(unit, from, target, weapon)
+        self.can_act(unit.id)
+            && self
+                .scoped
+                .iter()
+                .filter(|order| order.actor.0 == unit.id)
+                .all(|order| order.allows_attack(self, from, target.tile))
+            && self.engine().can_attack(unit, from, target, weapon)
     }
     pub(super) fn attack_options(&self, unit: &Unit, target: &Unit, from: usize) -> Vec<usize> {
-        if !self.can_act(unit.id) {
+        if !self.can_act(unit.id)
+            || !self
+                .scoped
+                .iter()
+                .filter(|order| order.actor.0 == unit.id)
+                .all(|order| order.allows_attack(self, from, target.tile))
+        {
             return vec![];
         }
         self.engine().attack_options(unit, target, from)
@@ -258,7 +295,22 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         if !self.can_act(unit.id) {
             return Rc::new(vec![]);
         }
-        self.engine().reachable(unit)
+        let reachable = self.engine().reachable(unit);
+        if self.scoped.is_empty() {
+            return reachable;
+        }
+        Rc::new(
+            reachable
+                .iter()
+                .copied()
+                .filter(|(to, _)| {
+                    self.scoped
+                        .iter()
+                        .filter(|order| order.actor.0 == unit.id)
+                        .all(|order| order.allows_move(self, unit, *to))
+                })
+                .collect(),
+        )
     }
     pub(super) fn routes(&self, kind: usize, goals: &[usize]) -> Rc<Vec<u16>> {
         self.engine().routes(kind, goals)
@@ -329,9 +381,13 @@ impl<'catalog> PlanningContext<'catalog> {
             draft: BattleDraft(BattleView {
                 engine: EngineAccess::Draft(game.planning_fork()),
                 inactive: Rc::default(),
+                scoped: Rc::default(),
             }),
             commands: Vec::new(),
         }
+    }
+    pub(super) fn restrict_positions(&mut self, scoped: &[ScopedOrder]) {
+        self.draft.0.scoped = Rc::new(scoped.to_vec());
     }
     pub(super) fn restrict_actors(&mut self, inactive: &[UnitId]) {
         self.draft.0.inactive = Rc::new(inactive.iter().map(|id| id.0).collect());
@@ -404,8 +460,13 @@ impl TacticalContext<'_, '_> {
         if !self.draft.permits(&command) {
             return Err(CommandError::IllegalIntent);
         }
+        let before = self.draft.control_roster();
         self.draft.execute(command.clone())?;
-        self.combat_boundary = command.is_attack();
+        let control_changed = command != Command::EndTurn && before != self.draft.control_roster();
+        self.combat_boundary = command.is_attack() || control_changed;
+        if control_changed {
+            self.workspace.finished = false;
+        }
         self.commands.push(command);
         Ok(())
     }

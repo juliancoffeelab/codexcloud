@@ -361,30 +361,60 @@ fn phase(
     let round = game.round;
     let leader_audit = super::leader_audit::begin(game);
     game.recordings.get_or_insert_with(Records::default);
-    let mut workspace = PlanningWorkspace::new(
-        seed,
-        limit.or_else(|| policy.default_recruitment_limit()),
-        goals.map(<[Objective]>::to_vec),
-        diplomacy,
-    );
-    let composition = tactic.composition();
-    if !composition.campaign.supports_campaign() && game.campaign.is_some() {
-        return Err(CommandError::BattleOnlyPolicy.into());
-    }
-    let mut recruitment = None;
-    let planning = loop {
-        let plan = {
-            let _decision = crate::ai::profiling::Decision::start(policy, game.turn);
-            tactic.run_turn(game, &mut workspace)?
-        };
-        recruitment.get_or_insert(plan.recruitment);
-        for command in plan.commands {
-            game.execute(command)?;
-        }
-        if workspace.finished() || game.winner.is_some() {
-            break plan.planning;
-        }
+    let scoped = !game.factions.is_empty();
+    let controllers = if scoped {
+        game.automatic_factions()
+            .into_iter()
+            .map(|(id, policy)| (Some(id), policy))
+            .collect()
+    } else {
+        vec![(None, None)]
     };
+    let mut diagnostics = None;
+    for (index, (faction, authored_policy)) in controllers.into_iter().enumerate() {
+        if game.winner.is_some() {
+            break;
+        }
+        let selected = authored_policy.unwrap_or(policy);
+        let mut authored_tactic = PresetTactic::from_blocks(selected.blocks());
+        let selected_tactic = if authored_policy.is_some() {
+            &mut authored_tactic
+        } else {
+            &mut *tactic
+        };
+        let mut workspace = PlanningWorkspace::new(
+            seed.wrapping_add(index as u32),
+            limit.or_else(|| selected.default_recruitment_limit()),
+            goals.map(<[Objective]>::to_vec),
+            diplomacy,
+        );
+        let composition = selected_tactic.composition();
+        if !composition.campaign.supports_campaign() && game.campaign.is_some() {
+            return Err(CommandError::BattleOnlyPolicy.into());
+        }
+        game.active_faction = faction;
+        let mut recruitment = None;
+        let planning = loop {
+            let plan = {
+                let _decision = crate::ai::profiling::Decision::start(selected, game.turn);
+                selected_tactic.run_turn(game, &mut workspace)?
+            };
+            recruitment.get_or_insert(plan.recruitment);
+            for command in plan.commands {
+                if scoped && command == Command::EndTurn {
+                    continue;
+                }
+                game.execute(command)?;
+            }
+            if workspace.finished() || game.winner.is_some() {
+                break plan.planning;
+            }
+        };
+        game.active_faction = None;
+        if diagnostics.is_none() {
+            diagnostics = workspace.diagnostics(planning, recruitment.unwrap_or_default());
+        }
+    }
     if let Some(state) = &mut game.campaign {
         state.dialogue_index = state.dialogue.len();
     }
@@ -399,7 +429,7 @@ fn phase(
     };
     let phase = Phase {
         leader_audit: super::leader_audit::finish(game, leader_audit),
-        planning: workspace.diagnostics(planning, recruitment.unwrap_or_default()),
+        planning: diagnostics,
         side,
         round,
         records,

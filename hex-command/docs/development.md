@@ -66,13 +66,20 @@ Use the [publish skill](../.agents/skills/publish/SKILL.md) when the user reques
 deployment or an update to the live game. Simulation experiments, image previews
 and Git pushes do not imply publication.
 
-```sh
-npm run publish
-```
+Implementation work produces a ready, unpublished release before it is reported
+as checked and pushed. Run `npm run release:prepare` with a fresh Site source
+credential through hidden stdin, then save its archive with `save_site_version`.
+This preparation does not deploy. It preserves the isolated checkout’s build
+caches and does not rerun tests, formatting or working-tree commits. Saved
+versions and their archives live in Sites, so a replacement workspace can still
+publish them.
 
-Publish the feature branch through the repository's PR workflow. Validate the
-production build and publish the exact reviewed source. Keep credentials out
-of logs and source control. Retain deployment identifiers if publication fails.
+Deployment is one native hosting operation on that saved version. It performs
+no Git operations, checks, formatting, builds, packaging or source synchronization.
+Do not repeat release preparation in response to a deploy request. Use the
+prepared version ID from context, or discover the latest archive-backed saved
+version through Sites when resuming in a fresh environment. Preserve the Site's
+existing audience.
 
 ## Further guidance
 
@@ -159,4 +166,32 @@ weapon IDs must be distinct from ordinary unit attacks. The engine waits for a
 matching recipient and grants each item once per recipient. Inventory is durable
 unit state: it survives checkpoints, promotion, story carryover and recall.
 Combat, forecasts, tactical planners and the UI share the unit's base attacks
-plus its equipment attacks. Existing checkpoints without inventory load empty.
+plus its equipment attacks. Dropping equipment leaves it on the current tile without spending movement.
+Move away, then move another unit onto the tile to collect it. Death also drops
+all carried equipment. Items with conflicting inventory or weapon IDs stay on
+the ground. Ground inventory is durable battle state, initialized for old saves
+by the version-seven migration. Optional item `healing: {amount, radius}` grants
+a carried aura at allied turn start; overlapping sources use the strongest heal.
+Item artwork uses transparent 64×64 foreground props under
+`pixel/art/terrain/props/items/<item-id>/`. The item ID selects artwork only;
+Rust owns item effects and pickup/drop rules.
+
+## Objective display
+
+Rust inspection publishes required, optional and survival objective status.
+Completed objectives retain their check marks after their deadlines. An unfinished
+event objective fails when its exclusive round limit has passed, a cancelling
+event has completed, or a required predecessor has become unavailable. Unfinished
+objectives also fail when the chapter ends. Survival objectives distinguish living
+or safely evacuated participants from casualties. The frontend renders pending
+objectives with a dash, completed objectives with a green check, and failed
+objectives with a red cross and an accessible failure label. These are derived
+query results, not additional save fields.
+
+Objectives may use `visibleWhen` with the shared Rust condition format. Hidden
+objectives remain victory requirements, but are omitted from the briefing and map
+markers until revealed; campaign planning also respects that discovery gate.
+`hasUnits` tests for an existing live unit by side and optional name/type without
+requiring a separate proximity visit. Encounter events can share their durable
+marker across dialogue, pending spawns, lights, group activation and objective
+visibility. Keep terrain can be claimed by moving onto it.

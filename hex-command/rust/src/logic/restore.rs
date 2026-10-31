@@ -52,6 +52,15 @@ pub(crate) fn validate_state_geometry(
 ) -> Result<(), StateError> {
     let fail = |message: &str| StateError(message.to_owned());
     validate_factions(&state.factions, &state.units).map_err(StateError)?;
+    for required in &authored.factions {
+        if !state
+            .factions
+            .iter()
+            .any(|faction| faction.id == required.id)
+        {
+            return Err(fail("missing authored faction definition"));
+        }
+    }
     if state.cols <= 0 || state.rows <= 0 || state.round == 0 {
         return Err(fail("invalid board dimensions or round"));
     }
@@ -144,6 +153,15 @@ pub(crate) fn validate_state_geometry(
             return Err(fail("invalid remembered condition"));
         }
     }
+    for ground in &state.ground_items {
+        if !tiles.contains(ground.tile.as_str()) {
+            return Err(fail("invalid ground item tile"));
+        }
+        ground
+            .item
+            .validate("ground item")
+            .map_err(|e| StateError(e.to_string()))?;
+    }
     let mut ids = HashSet::new();
     let mut occupied = HashSet::new();
     for unit in &state.units {
@@ -197,6 +215,57 @@ pub(crate) fn validate_state_geometry(
         {
             return Err(fail("missing objective tile"));
         }
+        for record in &campaign.evacuated {
+            let unit = &record.unit;
+            let id = unit
+                .id
+                .strip_prefix('u')
+                .and_then(|id| id.parse::<u32>().ok())
+                .filter(|id| unit.id == format!("u{id}") && *id < state.next_id)
+                .ok_or_else(|| fail("invalid evacuated unit identity"))?;
+            if !ids.insert(id) {
+                return Err(fail("duplicate evacuated unit identity"));
+            }
+            let event = mission
+                .events
+                .iter()
+                .find(|event| event.id == record.event)
+                .ok_or_else(|| fail("unknown evacuation event"))?;
+            let effect = event
+                .evacuate
+                .as_ref()
+                .ok_or_else(|| fail("event does not evacuate units"))?;
+            if !campaign.marked_prefixed("event:", &record.event)
+                || unit.tile != effect.tile
+                || unit.side != effect.units.side
+                || effect
+                    .units
+                    .role
+                    .is_some_and(|role| unit.role != Some(role))
+                || effect
+                    .units
+                    .name
+                    .as_ref()
+                    .is_some_and(|name| unit.name.as_ref() != Some(name))
+            {
+                return Err(fail("invalid evacuated unit outcome"));
+            }
+            let kind = *rules
+                .types
+                .get(&unit.r#type)
+                .ok_or_else(|| fail("unknown evacuated unit type"))?;
+            if unit.hp <= 0 || unit.hp > rules.units[kind].hp {
+                return Err(fail("invalid evacuated unit hit points"));
+            }
+            validate_equipment(
+                &unit.items,
+                &rules.units[kind].attacks,
+                "evacuated unit equipment",
+            )
+            .map_err(|error| StateError(error.to_string()))?;
+            validate_faction_reference(&state.factions, unit.faction.as_deref(), unit.side)
+                .map_err(StateError)?;
+        }
         if campaign.dialogue_index > campaign.dialogue.len() {
             return Err(fail("invalid dialogue index"));
         }
@@ -211,9 +280,7 @@ pub(crate) fn validate_state_geometry(
         }
         let previous_companions: HashSet<_> = definition.missions[..campaign.mission]
             .iter()
-            .flat_map(|mission| &mission.map.units)
-            .filter(|unit| unit.side == Side::Player && unit.role != Some(Role::Leader))
-            .filter_map(|unit| unit.name.as_deref())
+            .flat_map(|mission| mission.companion_names())
             .collect();
         if let Some(fallen) = &campaign.fallen_companions {
             let unique: HashSet<_> = fallen.iter().collect();
@@ -289,6 +356,11 @@ pub(crate) fn validate_state_geometry(
                     .iter()
                     .flat_map(|u| &u.items)
                     .flat_map(|i| &i.attacks)
+                    .any(|a| a.id == combat.attack_id)
+                && !state
+                    .ground_items
+                    .iter()
+                    .flat_map(|g| &g.item.attacks)
                     .any(|a| a.id == combat.attack_id)
                 && !rules
                     .campaigns

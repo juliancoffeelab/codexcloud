@@ -29,6 +29,7 @@ export const previewColors: Record<TerrainType, string> = {
   grove: "#4d884e",
   plains: "#8d9f4f",
   road: "#8fb337",
+  signpost: "#8fb337",
   forest: "#536e3d",
   hill: "#85866c",
   water: "#407899",
@@ -39,6 +40,7 @@ export const previewColors: Record<TerrainType, string> = {
   house: "#d4b476",
   mountain: "#727063",
   cave: "#727063",
+  "burned-village": "#8d9f4f",
   village: "#d4b476",
   keep: "#b9b597",
 };

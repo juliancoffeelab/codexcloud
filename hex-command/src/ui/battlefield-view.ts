@@ -89,7 +89,8 @@ export function battlefieldTiles(
 
   const objectiveTiles = new Map<string, string[]>();
   if (game.campaign) {
-    for (const goal of campaignMission(game.campaign).goals) {
+    for (const [index, goal] of campaignMission(game.campaign).goals.entries()) {
+      if (game.objectives && !game.objectives.goals[index]?.visible) continue;
       const progress = goalProgress(game, goal);
       for (const tile of activeGoalTiles(game, goal)) {
         const labels = objectiveTiles.get(tile) ?? [];

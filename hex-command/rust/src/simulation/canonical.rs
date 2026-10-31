@@ -31,7 +31,14 @@ impl Serialize for Canonical<'_, State> {
         if let Some(rng) = s.combat_rng {
             map.serialize_entry("combatRng", &rng)?;
         }
+        if !s.condition_memory.is_empty() {
+            map.serialize_entry("conditionMemory", &s.condition_memory)?;
+        }
+        let factions = serde_json::to_value(&s.factions).map_err(serde::ser::Error::custom)?;
+        map.serialize_entry("factions", &factions)?;
         map.serialize_entry("gold", &Canonical(&s.gold))?;
+        let ground = serde_json::to_value(&s.ground_items).map_err(serde::ser::Error::custom)?;
+        map.serialize_entry("groundItems", &ground)?;
         if let Some(combat) = &s.last_combat {
             map.serialize_entry("lastCombat", &combat.as_ref().map(Canonical))?;
         }
@@ -62,6 +69,12 @@ impl Serialize for Canonical<'_, Tile> {
         if let Some(value) = &t.floor {
             map.serialize_entry("floor", value)?;
         }
+        if let Some(fog) = &t.fog {
+            map.serialize_entry(
+                "fog",
+                &serde_json::to_value(fog).map_err(serde::ser::Error::custom)?,
+            )?;
+        }
         map.serialize_entry("id", &t.id)?;
         map.serialize_entry("owner", &t.owner)?;
         map.serialize_entry("row", &t.row)?;
@@ -73,12 +86,24 @@ impl Serialize for Canonical<'_, PublicUnit> {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         let u = self.0;
         let mut map = serializer.serialize_map(None)?;
+        if let Some(group) = &u.ai_group {
+            map.serialize_entry("aiGroup", group)?;
+        }
         map.serialize_entry("attacked", &u.attacked)?;
         if let Some(value) = &u.experience {
             map.serialize_entry("experience", value)?;
         }
+        if let Some(faction) = &u.faction {
+            map.serialize_entry("faction", faction)?;
+        }
         map.serialize_entry("hp", &u.hp)?;
         map.serialize_entry("id", &u.id)?;
+        if !u.items.is_empty() {
+            map.serialize_entry(
+                "items",
+                &serde_json::to_value(&u.items).map_err(serde::ser::Error::custom)?,
+            )?;
+        }
         map.serialize_entry("moved", &u.moved)?;
         if let Some(value) = &u.name {
             map.serialize_entry("name", value)?;

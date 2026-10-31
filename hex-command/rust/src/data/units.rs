@@ -93,6 +93,17 @@ pub struct Item {
     pub name: String,
     pub description: String,
     pub attacks: Vec<Weapon>,
+    /// A carried aura, applied at the start of the carrier's allied turn.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub healing: Option<ItemHealing>,
+}
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ItemHealing {
+    pub amount: i32,
+    pub radius: u16,
 }
 impl Weapon {
     pub(crate) fn validate(&self, path: &str) -> Result<(), ContentError> {
@@ -118,11 +129,21 @@ impl Weapon {
 impl Item {
     pub(crate) fn validate(&self, path: &str) -> Result<(), ContentError> {
         super::catalog::identifier(&self.id, path)?;
-        if self.name.is_empty() || self.description.is_empty() || self.attacks.is_empty() {
+        if self.name.is_empty()
+            || self.description.is_empty()
+            || (self.attacks.is_empty() && self.healing.is_none())
+        {
             return Err(ContentError::new(
                 path,
-                "item name, description and attacks are required",
+                "item name, description and at least one effect are required",
             ));
+        }
+        if self
+            .healing
+            .as_ref()
+            .is_some_and(|h| h.amount <= 0 || h.amount > 100 || h.radius > 10)
+        {
+            return Err(ContentError::new(path, "invalid item healing aura"));
         }
         super::catalog::unique(self.attacks.iter().map(|a| a.id.as_str()), path)?;
         for attack in &self.attacks {

@@ -1,7 +1,5 @@
-import { CAMPAIGN_MAPS } from "../../../game/campaign-data";
+import { CAMPAIGN_MAPS, MAPS, distance, TYPES } from "./frozen";
 import { CAMPAIGNS } from "./catalog";
-import { MAPS } from "../../../game/maps";
-import { distance, TYPES } from "../../../game/catalog";
 import type {
   CampaignId,
   CampaignState,
@@ -11,9 +9,8 @@ import type {
   Unit,
   UnitType,
   VillageState,
-  GameState,
 } from "../../../game/types";
-import { legacyBoard, boardState, type LegacyBoard } from "./board";
+import { legacyBoard, boardState, type LegacyBoard, type LegacyState } from "./board";
 const record = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null;
 
@@ -354,7 +351,10 @@ function campaignState(
 }
 
 /** Convert the historical TS snapshot without executing any game commands. */
-export function importLegacySnapshot(saved: unknown): { state: GameState; pendingEnemy: boolean } {
+export function importLegacySnapshot(saved: unknown): {
+  state: LegacyState;
+  pendingEnemy: boolean;
+} {
   if (
     !record(saved) ||
     saved.version !== 1 ||

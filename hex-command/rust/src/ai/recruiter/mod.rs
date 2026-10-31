@@ -718,6 +718,7 @@ mod tests {
                 | Command::PreviousDialogue
                 | Command::SkipDialogue
                 | Command::RecallMission { .. }
+                | Command::DropItem { .. }
                 | Command::RetryMission => None,
             }
         }

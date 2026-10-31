@@ -70,6 +70,8 @@ export type AdvancedTroop =
   | "merfolk-maceguard-l3";
 export type UnitType =
   | "captives"
+  | "zombie-walker"
+  | "zombie-decay-caster"
   | "bear"
   | "giant-bat"
   | "giant-spider"
@@ -109,7 +111,7 @@ export type UnitType =
   | "fox-spearguard"
   | "treant";
 export type RecruitType = UnitType;
-export type Race = "human" | "skeletons" | "beast" | "merfolk" | "spirit";
+export type Race = "human" | "skeletons" | "beast" | "merfolk" | "spirit" | "zombies";
 export type TerrainType =
   | "plains"
   | "road"
@@ -123,6 +125,8 @@ export type TerrainType =
   | "house"
   | "mountain"
   | "cave"
+  | "signpost"
+  | "burned-village"
   | "village"
   | "keep"
   | "marsh"
@@ -333,6 +337,7 @@ export interface GameSnapshot {
 }
 /** Full session state, including mutable terrain, for exact move undo. */
 export interface GameState {
+  groundItems: import("../../rust/pkg/hex_command").GroundItem[];
   factions?: import("../../rust/pkg/hex_command").Faction[];
   conditionMemory?: string[];
   armies?: [string, string];
@@ -359,7 +364,7 @@ export interface DialogueLine {
   portrait: DialoguePortrait;
   text: string;
 }
-export type MissionGoal =
+export type MissionGoal = (
   | { kind: "escort"; label: string; tile: string }
   | { kind: "escape"; label: string; tile: string }
   | { kind: "control"; label: string; tiles: string[] }
@@ -375,7 +380,8 @@ export type MissionGoal =
   | { kind: "refuge"; label: string; tile: string; turns: number }
   | { kind: "seal"; label: string; tiles: string[]; unitType?: UnitType }
   | { kind: "event"; label: string; tile?: string; event: string }
-  | { kind: "defeat"; label: string };
+  | { kind: "defeat"; label: string }
+) & { visibleWhen?: import("../../rust/pkg/hex_command").Condition };
 export interface MissionEvent {
   id: string;
   spawn?: import("../../rust/pkg/hex_command").SpawnGroup;
@@ -457,6 +463,7 @@ export interface CampaignDefinition {
   ending: DialogueLine[];
 }
 export interface CampaignState {
+  evacuated?: { event: string; unit: Unit }[];
   id: CampaignId;
   mission: number;
   recall: RecruitType[];

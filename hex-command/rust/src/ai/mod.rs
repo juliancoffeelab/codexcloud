@@ -116,6 +116,7 @@ pub enum TacticalRole {
 /// Reusable turn-local planning state. Create a fresh workspace for each turn
 /// and discard it when the turn ends.
 pub struct PlanningWorkspace {
+    control_roster: Option<Vec<(u32, Side, Option<String>, Option<Role>)>>,
     #[cfg(any(feature = "wasm", test))]
     controller_index: usize,
     #[cfg(any(feature = "wasm", test))]
@@ -159,6 +160,7 @@ impl PlanningWorkspace {
         diplomacy: Diplomacy,
     ) -> Self {
         Self {
+            control_roster: None,
             #[cfg(any(feature = "wasm", test))]
             controller_index: 0,
             #[cfg(any(feature = "wasm", test))]
@@ -192,6 +194,42 @@ impl PlanningWorkspace {
             threats: threats::ArenaThreatWorkspace::default(),
             priority: None,
             cheap: cheap::Workspace::default(),
+        }
+    }
+    fn refresh_control(&mut self, game: &Game<'_>) {
+        let roster = game.control_roster();
+        let changed = self.control_roster.as_ref().is_some_and(|before| {
+            before.iter().any(|old| {
+                roster
+                    .iter()
+                    .find(|unit| unit.0 == old.0)
+                    .map_or(old.3 == Some(Role::Courier), |unit| {
+                        unit.1 != old.1 || unit.2 != old.2 || unit.3 != old.3
+                    })
+            })
+        });
+        self.control_roster = Some(roster);
+        if !changed {
+            return;
+        }
+        self.orders = None;
+        self.prepared_goals = None;
+        self.commands.clear();
+        self.attack_continuation = None;
+        self.classic_ids.clear();
+        self.classic_objectives.clear();
+        self.classic_revision = 0;
+        self.priority = None;
+        self.tactical_remaining = None;
+        self.commitments.clear();
+        self.cooperation = cooperation::Workspace::default();
+        self.escort = escort::Workspace::default();
+        self.cheap = cheap::Workspace::default();
+        self.threats = threats::ArenaThreatWorkspace::default();
+        self.finished = false;
+        #[cfg(any(feature = "wasm", test))]
+        {
+            self.turn_plan_ready = false;
         }
     }
     #[cfg(not(target_arch = "wasm32"))]
@@ -266,6 +304,7 @@ pub(crate) fn choose_game_command(
         }
         return Ok(Command::EndTurn);
     }
+    workspace.refresh_control(game);
     let blocks = workspace.effective_blocks(policy);
     if !blocks.campaign.supports_campaign() && game.campaign.is_some() {
         return Err(CommandError::BattleOnlyPolicy);
@@ -325,9 +364,6 @@ impl Game<'_> {
                 );
                 self.active_faction = None;
                 result?;
-            }
-            if self.winner.is_none() {
-                self.end_turn();
             }
             return Ok(());
         }
@@ -501,6 +537,7 @@ mod courier_tests {
                 | Command::RecallMission { .. }
                 | Command::RetryMission
                 | Command::PreviousDialogue
+                | Command::DropItem { .. }
                 | Command::SkipDialogue => false,
             }
         }
@@ -519,6 +556,7 @@ mod courier_tests {
                 | Command::RetryMission
                 | Command::PreviousDialogue
                 | Command::SkipDialogue
+                | Command::DropItem { .. }
                 | Command::SetUnitIntent { .. } => false,
             }
         }
@@ -600,6 +638,7 @@ mod courier_tests {
                 | Command::RetryMission
                 | Command::PreviousDialogue
                 | Command::SkipDialogue
+                | Command::DropItem { .. }
                 | Command::SetUnitIntent { .. } => false,
             }
         }

@@ -1,11 +1,10 @@
-import { MAPS } from "../../../game/maps";
-import { TYPES } from "../../../game/catalog";
-import { TERRAIN_ORDER } from "../../../game/authored-content";
+import { MAPS, TYPES, TERRAIN_ORDER } from "./frozen";
 import type { GameState, MapId, Tile, Unit } from "../../../game/types";
 import { LEGACY_ASHEN_REFUGE } from "./layouts";
 
 /** Reconstructed data plus lookup helpers; deliberately has no gameplay commands. */
-export interface LegacyBoard extends GameState {
+export type LegacyState = Omit<GameState, "groundItems">;
+export interface LegacyBoard extends LegacyState {
   tile(id: string): Tile | undefined;
   at(id: string): Unit | undefined;
   cost(unit: Pick<Unit, "type">, tile: Tile): number;
@@ -65,7 +64,7 @@ export function legacyBoard(mapId = "mirror", revision: unknown = 1): LegacyBoar
 }
 
 /** Remove the importer-only helpers before crossing the native checkpoint boundary. */
-export function boardState(board: LegacyBoard): GameState {
+export function boardState(board: LegacyBoard): LegacyState {
   const { tile: _tile, at: _at, cost: _cost, addUnit: _addUnit, record: _record, ...state } = board;
   return state;
 }

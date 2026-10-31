@@ -21,10 +21,19 @@ pub enum Condition {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         name: Option<String>,
     },
+    HasUnits {
+        side: Side,
+        #[serde(default, rename = "unitType", skip_serializing_if = "Option::is_none")]
+        unit_type: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        name: Option<String>,
+    },
     NoUnits {
         side: Side,
         #[serde(default, rename = "unitType", skip_serializing_if = "Option::is_none")]
         unit_type: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        name: Option<String>,
     },
     Choice {
         choice: String,
@@ -52,6 +61,30 @@ pub struct ConditionRule {
     pub remember: bool,
 }
 impl Condition {
+    /// Bind contextual tile predicates for tooling that needs explicit destinations.
+    pub(crate) fn contextualized(&self, target: &str) -> Self {
+        let mut condition = self.clone();
+        match &mut condition {
+            Self::Owner { tile, .. } | Self::Proximity { tile, .. } => {
+                if tile.is_none() {
+                    *tile = Some(target.to_owned());
+                }
+            }
+            Self::All { conditions } | Self::Any { conditions } => {
+                *conditions = conditions
+                    .iter()
+                    .map(|condition| condition.contextualized(target))
+                    .collect();
+            }
+            Self::HasUnits { .. }
+            | Self::NoUnits { .. }
+            | Self::Choice { .. }
+            | Self::Event { .. }
+            | Self::Round { .. } => {}
+        }
+        condition
+    }
+
     pub(crate) fn uses_proximity(&self) -> bool {
         match self {
             Self::Proximity { .. } => true,
@@ -68,6 +101,10 @@ impl Condition {
     ) -> Result<(), String> {
         match self {
             Self::Proximity {
+                unit_type: Some(kind),
+                ..
+            }
+            | Self::HasUnits {
                 unit_type: Some(kind),
                 ..
             }

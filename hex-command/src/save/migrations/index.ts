@@ -1,6 +1,9 @@
 import { currentSave, isRecord, SAVE_VERSION, type BattleSave } from "../schema";
 import { migrateV1ToV2 } from "./v1-to-v2";
 import { migrateV2ToV3 } from "./v2-to-v3";
+import { migrateV8ToV9 } from "./v8-to-v9";
+import { migrateV7ToV8 } from "./v7-to-v8";
+import { migrateV6ToV7 } from "./v6-to-v7";
 import { migrateV5ToV6 } from "./v5-to-v6";
 import { migrateV4ToV5 } from "./v4-to-v5";
 import { migrateV3ToV4 } from "./v3-to-v4";
@@ -38,6 +41,15 @@ export function migrateSave(input: unknown): MigrationResult {
         break;
       case 5:
         value = migrateV5ToV6(value) as unknown as Record<string, unknown>;
+        break;
+      case 6:
+        value = migrateV6ToV7(value) as unknown as Record<string, unknown>;
+        break;
+      case 7:
+        value = migrateV7ToV8(value);
+        break;
+      case 8:
+        value = migrateV8ToV9(value);
         break;
       default:
         throw new Error(`No migration from save version ${String(value.version)}`);

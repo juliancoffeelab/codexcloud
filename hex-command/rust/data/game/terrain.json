@@ -71,7 +71,7 @@
     "name": "Keep",
     "cost": 1,
     "passable": true,
-    "description": "Your commander can recruit into adjacent empty hexes."
+    "description": "Your commander can recruit into adjacent empty hexes. Blocks ranged attacks through the tile."
   },
   {
     "id": "marsh",
@@ -141,13 +141,27 @@
     "name": "Mountains",
     "cost": 3,
     "passable": false,
-    "description": "A sheer mountain ridge, impassable to land units."
+    "description": "A sheer mountain ridge, impassable to land units. Blocks ranged attacks through the tile."
   },
   {
     "id": "cave",
     "name": "Quarry cave",
     "cost": 2,
     "passable": true,
-    "description": "A sheltered entrance at the foot of a mountain. Costs 2 movement; no protection. Scenario objectives specify what can be found inside."
+    "description": "A sheltered entrance at the foot of a mountain. Costs 2 movement; no protection. The mountain blocks ranged attacks through the tile. Scenario objectives specify what can be found inside."
+  },
+  {
+    "id": "burned-village",
+    "name": "Burned village",
+    "cost": 1,
+    "passable": true,
+    "description": "Charred homes on open ground. No income, healing or protection."
+  },
+  {
+    "id": "signpost",
+    "name": "Road sign",
+    "cost": 1,
+    "passable": true,
+    "description": "A wooden waymarker beside the road. Normal movement; no protection."
   }
 ]

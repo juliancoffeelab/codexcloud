@@ -51,6 +51,7 @@ pub enum Race {
     Skeletons,
     Spirit,
     Beast,
+    Zombies,
 }
 impl Race {
     /// Return the stable authored identifier used at serialization boundaries.
@@ -61,6 +62,7 @@ impl Race {
             Self::Skeletons => "skeletons",
             Self::Spirit => "spirit",
             Self::Beast => "beast",
+            Self::Zombies => "zombies",
         }
     }
 }
@@ -76,6 +78,10 @@ impl std::fmt::Display for Race {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Family {
+    #[serde(rename = "zombie-walker")]
+    ZombieWalker,
+    #[serde(rename = "zombie-decay-caster")]
+    ZombieDecayCaster,
     Captives,
     Bear,
     #[serde(rename = "giant-bat")]
@@ -120,6 +126,8 @@ impl Family {
     pub fn as_str(self) -> &'static str {
         match self {
             Self::Captives => "captives",
+            Self::ZombieWalker => "zombie-walker",
+            Self::ZombieDecayCaster => "zombie-decay-caster",
             Self::Bear => "bear",
             Self::GiantBat => "giant-bat",
             Self::GiantSpider => "giant-spider",
@@ -182,6 +190,9 @@ pub enum Terrain {
     House,
     Mountain,
     Cave,
+    #[serde(rename = "burned-village")]
+    BurnedVillage,
+    Signpost,
 }
 impl Terrain {
     /// Return the stable authored identifier used at serialization boundaries.
@@ -205,6 +216,8 @@ impl Terrain {
             Self::House => "house",
             Self::Mountain => "mountain",
             Self::Cave => "cave",
+            Self::BurnedVillage => "burned-village",
+            Self::Signpost => "signpost",
         }
     }
 }

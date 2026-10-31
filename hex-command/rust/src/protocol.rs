@@ -331,6 +331,7 @@ pub struct UnitActions {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 pub struct BattleInspection {
+    pub objectives: Option<crate::data::CampaignObjectives>,
     pub revision: u32,
     pub units: Vec<UnitActions>,
     pub recruitment: std::collections::BTreeMap<String, Vec<String>>,

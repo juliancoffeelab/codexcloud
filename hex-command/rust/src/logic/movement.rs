@@ -348,6 +348,7 @@ impl<'catalog> Game<'catalog> {
         self.units[index].tile = tile;
         self.units[index].moved = true;
         if [
+            Terrain::Keep,
             Terrain::Village,
             Terrain::Grove,
             Terrain::Fort,
@@ -376,7 +377,8 @@ impl<'catalog> Game<'catalog> {
                 }
             ));
         }
-        self.apply_proximity_transfers();
+        self.collect_items(id);
+        self.apply_faction_transfers();
         self.evaluate_campaign(
             false,
             if actor.side == Side::Player {

@@ -277,8 +277,7 @@
           "text": "Stay inside. We’ll light the villages and see what’s left."
         }
       ],
-      "requiresEvent": "house-visit",
-      "beforeRound": 16,
+      "requiresEvent": "ford-shout",
       "choice": "ferryman-alive"
     },
     {
@@ -320,7 +319,7 @@
         }
       ],
       "requiresEvent": "house-visit",
-      "unlessEvent": "ferryman-alive",
+      "unlessEvent": "ford-shout",
       "choice": "ferryman-dead"
     },
     {

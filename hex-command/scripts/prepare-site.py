@@ -1,4 +1,4 @@
-"""Commit and package the game; GitHub receives the commit after deployment."""
+"""Prepare committed game source as an unpublished Site release; never deploy."""
 
 import argparse
 import json
@@ -22,7 +22,7 @@ def command(args, cwd=ROOT, env=None):
 
 
 def step(label):
-    print(f"PUBLISH: {label}", flush=True)
+    print(f"PREPARE: {label}", flush=True)
 
 
 def read_credential():
@@ -42,18 +42,8 @@ def prepare(credential, message):
     repo = Path(command(["git", "rev-parse", "--show-toplevel"]))
     branch = command(["git", "symbolic-ref", "--short", "HEAD"])
     prefix = ROOT.relative_to(repo).as_posix()
-    # Keep unrelated projects' staged changes out of the publication commit.
-    step("Render generated assets")
-    command(["npm", "run", "art:build"])
-    step("Style checks")
-    command(["npm", "run", "format"])
-    step("Commit project source")
-    command(["git", "add", "-A", "--", "."])
-    changed = subprocess.run(["git", "diff", "--cached", "--quiet", "--", "."], cwd=ROOT)
-    if changed.returncode not in (0, 1):
-        raise RuntimeError("Could not inspect staged project changes")
-    if changed.returncode:
-        command(["git", "commit", "--only", "-m", message, "--", "."])
+    # Changes are checked, committed and pushed by the implementation workflow.
+    # Preparation never reformats, tests or commits the working tree.
     source_commit = command(["git", "rev-parse", "HEAD"])
     command(["git", "diff", "--quiet", "HEAD", "--", "."])
 
@@ -83,21 +73,43 @@ def prepare(credential, message):
     previous = json.loads(manifest_path.read_text()) if manifest_path.exists() else {}
     if previous.get("project_id", hosting["project_id"]) != hosting["project_id"]:
         raise ValueError("Cached source manifest belongs to a different Site")
-    for path in checkout.iterdir():
-        if path.name == ".git":
-            continue
-        if path.is_dir() and not path.is_symlink():
-            shutil.rmtree(path)
-        else:
-            path.unlink()
     tree = source_commit if prefix == "." else f"{source_commit}:{prefix}"
-    # Export tracked SOURCE only; build its output inside this isolated checkout.
-    with tempfile.TemporaryFile() as source_tar:
-        subprocess.run(["git", "archive", "--format=tar", tree], cwd=repo,
-                       stdout=source_tar, check=True)
-        source_tar.seek(0)
-        with tarfile.open(fileobj=source_tar) as archive:
-            archive.extractall(checkout, filter="data")
+    # Copy only changed source; retain ignored build caches and source mtimes.
+    with tempfile.TemporaryDirectory() as snapshot:
+        source = Path(snapshot)
+        with tempfile.TemporaryFile() as source_tar:
+            subprocess.run(["git", "archive", "--format=tar", tree], cwd=repo,
+                           stdout=source_tar, check=True)
+            source_tar.seek(0)
+            with tarfile.open(fileobj=source_tar) as archive:
+                archive.extractall(source, filter="data")
+        current_files = {path.relative_to(source).as_posix()
+                         for path in source.rglob("*") if path.is_file() or path.is_symlink()}
+        tracked = set(command(["git", "ls-files", "-z"], cwd=checkout).split("\0")) - {""}
+        for name in tracked - current_files:
+            path = checkout / name
+            if path.is_file() or path.is_symlink():
+                path.unlink()
+            parent = path.parent
+            while parent != checkout:
+                try:
+                    parent.rmdir()
+                except OSError:
+                    break
+                parent = parent.parent
+        for name in current_files:
+            incoming, destination = source / name, checkout / name
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            if incoming.is_symlink():
+                target = os.readlink(incoming)
+                if destination.is_symlink() and os.readlink(destination) == target:
+                    continue
+                destination.unlink(missing_ok=True)
+                destination.symlink_to(target)
+            elif destination.is_symlink() or not destination.exists() or destination.read_bytes() != incoming.read_bytes():
+                if destination.is_symlink():
+                    destination.unlink()
+                shutil.copy2(incoming, destination)
     manifest_path.write_text(json.dumps({**previous, **hosting}, separators=(",", ":")) + "\n")
     command(["git", "config", "user.name", "Codex"], cwd=checkout)
     command(["git", "config", "user.email", "codex@openai.com"], cwd=checkout)
@@ -111,7 +123,9 @@ def prepare(credential, message):
     if changed.returncode:
         command(["git", "commit", "-m", f"{message} ({source_commit[:7]})"], cwd=checkout)
     # Reuse installed dependencies; source and generated output stay isolated.
-    (checkout / "node_modules").symlink_to(ROOT / "node_modules", target_is_directory=True)
+    dependencies = checkout / "node_modules"
+    if not dependencies.exists():
+        dependencies.symlink_to(ROOT / "node_modules", target_is_directory=True)
     step("Build committed Site source")
     command(["npm", "run", "build"], cwd=checkout)
     command(["git", "diff", "--quiet", "HEAD", "--", "."], cwd=checkout)
@@ -126,7 +140,7 @@ def prepare(credential, message):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--message", default="Publish Hex Command")
+    parser.add_argument("--message", default="Prepare Hex Command release")
     args = parser.parse_args()
     result = prepare(read_credential(), args.message)
     print("SITE_PACKAGE: " + json.dumps(result), flush=True)
@@ -136,5 +150,5 @@ if __name__ == "__main__":
     try:
         main()
     except Exception as error:
-        print(f"Publication preparation failed: {error}", file=sys.stderr)
+        print(f"Release preparation failed: {error}", file=sys.stderr)
         sys.exit(1)

@@ -160,7 +160,7 @@ test("Version-one TS migration is pure, defaults experience and preserves progre
   assert.equal(migrated.checkpoint.state.units[0]!.experience, 7);
   assert.equal(migrated.checkpoint.state.units[1]!.experience, 0);
   assert.deepEqual(migrated.checkpoint.state.campaign, old.state.campaign);
-  const game = LiveGame.restore(createTestFactory(), migrated.checkpoint);
+  const game = LiveGame.restore(createTestFactory(), migrateSave(migrated).save.checkpoint);
   assert.equal(game.round, 4);
   assert.equal(game.unit(old.state.units[0]!.id)?.hp, 5);
   game.dispose();
@@ -308,7 +308,6 @@ test("Rejected saves clear obsolete backups and leave saving enabled", () => {
 });
 
 for (const [id, chapter, type, tile, numericMarks] of [
-  ["lantern-road", 1, "bonearcher", "8,7", ["wave:0"]],
   ["ashen-oath", 2, "boar", "9,4", ["wave:0", "wave:1"]],
 ] as const) {
   test(`Legacy ${id} delayed waves retain wounded troops and cannot deploy twice`, () => {

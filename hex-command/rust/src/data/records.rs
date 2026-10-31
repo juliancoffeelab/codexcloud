@@ -9,6 +9,10 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "lowercase")]
 pub enum ActionRecord {
+    Drop {
+        unit: String,
+        item: String,
+    },
     Move {
         unit: String,
         tile: String,

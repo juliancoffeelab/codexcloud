@@ -3,20 +3,16 @@
   import { iconMarkup } from "../presentation/icons";
   import { arsenalView } from "./arsenal-view";
 
-  let { unit }: { unit: UnitView } = $props();
+  import ItemList from "./ItemList.svelte";
+  let { unit, onDrop }: { unit: UnitView; onDrop?: (item: string) => void } = $props();
   const arsenal = $derived(arsenalView(unit));
 </script>
 
 {#if unit.items?.length}
-  <div class="equipment">
+  <section class="equipment" aria-label="Equipment">
     <h3>Equipment</h3>
-    {#each unit.items as item}
-      <p>
-        <strong>{item.name}</strong>
-        — {item.description}
-      </p>
-    {/each}
-  </div>
+    <ItemList items={unit.items} {onDrop} />
+  </section>
 {/if}
 <div class="arsenal">
   <h3>Attacks</h3>
@@ -59,3 +55,20 @@
     {/each}
   </div>
 </div>
+
+<style>
+  .equipment {
+    margin-top: 14px;
+    container-type: inline-size;
+    min-width: 0;
+    font:
+      14px/1.5 system-ui,
+      sans-serif;
+  }
+  .equipment h3 {
+    margin: 0 0 6px;
+    color: var(--gold);
+    font-size: 14px;
+    font-weight: 600;
+  }
+</style>

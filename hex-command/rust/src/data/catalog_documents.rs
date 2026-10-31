@@ -287,6 +287,7 @@ pub(super) fn map_metadata(
                         ContentError::new(descriptor, format!("invalid unit placement {}", unit.id))
                     })?;
                 Ok(StartingUnit {
+                    items: unit.items.clone(),
                     ai_group: unit.ai_group.clone(),
                     faction: unit.faction.clone(),
                     col: tile.col,

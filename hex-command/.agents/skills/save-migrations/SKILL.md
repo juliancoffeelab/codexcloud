@@ -9,6 +9,10 @@ Read this skill before changing save loading, save formats, migration code or
 historical conversion fixtures, including changes proposed during data-ownership
 audits.
 
+Backfilling or defaulting fields to make older saves compatible is migration work,
+regardless of whether it is called restoration, initialization or authored-default
+resolution.
+
 ## Isolation
 
 Migration conversion code and its historical fixtures must stay self-contained
@@ -23,11 +27,11 @@ converted state after migration; validation must not run historical gameplay.
 
 ## Save contract
 
-`src/save/schema.ts` defines the current version-6 envelope:
+`src/save/schema.ts` defines the current version-9 envelope:
 
 ```json
 {
-  "version": 6,
+  "version": 9,
   "pendingEnemy": false,
   "checkpoint": { "seed": 17, "state": {} }
 }
@@ -150,3 +154,36 @@ The v5-to-v6 step turns historical implicit type-based leadership into explicit
 IDs stored with the migrations and preserves every existing explicit role.
 Current unit definitions have no leadership flag. Rust, AI, UI and current saves
 use only the unit's role; ordinary units of the same type do not become leaders.
+
+## Version-six migration
+
+The v6-to-v7 step makes faction data explicit. A frozen conversion fixture supplies
+The Silent Crossing's wildlife controller and assigns its existing animals to that
+faction, preserving identity, wounds, equipment and progress. Other maps retain
+explicit faction data or receive an empty list. Current snapshots always serialize
+`factions`, including an empty list, and Rust rejects omitted fields or missing
+required authored factions instead of backfilling from the current map.
+
+Older conversion steps read migration-owned metadata frozen from deployed source
+`14371387185340e64c5b68706faa409ebe16fdf8`. That fixture is historical conversion
+data; do not regenerate it when current maps, unit rules or campaigns change.
+
+## Version-seven migration
+
+The v7-to-v8 step adds the required `groundItems: []` battlefield inventory.
+Version-seven checkpoints had carried equipment but no ground items. Conversion
+preserves all existing units, equipment and campaign progress. Current snapshots
+serialize ground items explicitly, including an empty list; Rust does not invent
+missing state during restoration.
+
+## Version-eight migration
+
+The v8-to-v9 step converts Toll Road revision-three checkpoints to revision four
+using migration-owned historical encounter identities. It removes uncontacted
+preplaced Sella, records an already-completed meeting’s spawn as resolved, and
+preserves a joined Sella and every other existing patrol unit. Existing camp
+ownership is retained. The old proximity light memory is discarded, swamp entry
+memory is translated to the shared encounter marker, and the original mire
+caster receives its authored name without changing identity or progression.
+Other chapters receive only the envelope update. No runtime restoration backfill
+or live catalog lookup performs this conversion.

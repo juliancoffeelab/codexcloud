@@ -29,7 +29,7 @@ An overlay can supply:
 - `units`: the complete set of unit placements for this preview, replacing map
   units. Use an empty array for terrain alone. An optional unit `faction` selects
   an available visual palette independently of allegiance (for example white
-  captive artwork). These are illustrations, not spawned units in a running game.
+  passive artwork). These are illustrations, not spawned units in a running game.
 - `memory`: previously remembered condition keys, as exported in a checkpoint’s
   `conditionMemory`. `round` optionally sets the current round (default 1).
 - `marks`: completed event markers, in the engine's `event:<id>` format, for
@@ -46,3 +46,8 @@ movement, AI, triggers or objectives. The preview is marked as a static draft.
 Ground, terrain frames, clipping, unit artwork and night transforms come from the
 existing presentation modules. Do not add terrain-looking overlay drawings or
 custom artwork selectors to fake unsupported map geometry.
+
+Unit placement follows `Battlefield.svelte`: native sprites use the battlefield
+scale, their canvas bottom is at tile center + 20, and units draw in tile order.
+Team bases sit at center + 19; health bars draw at center + 27 in a separate layer
+above all units. Draft bars depict full health, not simulated combat state.

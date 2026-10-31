@@ -41,3 +41,19 @@ impl Objective {
         self.kind.as_str()
     }
 }
+
+/// A resolved objective state for browser presentation.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct ObjectiveStatus {
+    pub visible: bool,
+    pub progress: Progress,
+    pub failed: bool,
+}
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct CampaignObjectives {
+    pub goals: Vec<ObjectiveStatus>,
+    pub optional: Vec<ObjectiveStatus>,
+    pub survival: Vec<ObjectiveStatus>,
+}

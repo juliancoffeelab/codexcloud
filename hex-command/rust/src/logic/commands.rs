@@ -90,6 +90,34 @@ impl Game<'_> {
                 }
                 self.advance(unit.0, advance);
             }
+            Command::DropItem { unit, item } => {
+                let index = self.index(unit.0).ok_or(CommandError::UnknownUnit(unit))?;
+                if !self.may_act(&self.units[index]) {
+                    return Err(CommandError::WrongTurn);
+                }
+                let slot = self.units[index]
+                    .items
+                    .iter()
+                    .position(|i| i.id == item)
+                    .ok_or(CommandError::IllegalItem)?;
+                let item = self.units[index].items.remove(slot);
+                self.record(format!(
+                    "{} dropped {}.",
+                    self.units[index]
+                        .name
+                        .as_deref()
+                        .unwrap_or(&self.rules.units[self.units[index].kind].name),
+                    item.name
+                ));
+                self.ground_items.push(GroundItem {
+                    tile: self.board.ids[self.units[index].tile].clone(),
+                    item,
+                });
+                self.action(ActionRecord::Drop {
+                    unit: format!("u{}", unit.0),
+                    item: self.ground_items.last().unwrap().item.id.clone(),
+                });
+            }
             Command::EndTurn => self.end_turn(),
             Command::DismissDialogue => {
                 let campaign = self.campaign.as_mut().ok_or(CommandError::NoCampaign)?;
@@ -175,6 +203,7 @@ impl Game<'_> {
                 }
             }
         }
+        self.apply_faction_transfers();
         self.remember_conditions();
         Ok(())
     }

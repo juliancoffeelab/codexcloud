@@ -145,6 +145,11 @@
       details={panel.details}
       artwork={view.artwork}
       onAdvance={(type) => actions.advanceUnit(panel.details.unit.id, type)}
+      onDrop={panel.details.faction.controllable &&
+      display.game.turn === "player" &&
+      !display.game.winner
+        ? (item) => actions.dropItem(panel.details.unit.id, item)
+        : undefined}
     />
   {/if}
 </section>

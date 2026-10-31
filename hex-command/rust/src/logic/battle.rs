@@ -101,6 +101,7 @@ pub(crate) struct Game<'catalog> {
     pub(super) traversal: Option<(u32, Vec<usize>)>,
     pub(crate) floors: Rc<Vec<Option<String>>>,
     pub(crate) units: Vec<Unit>,
+    pub(crate) ground_items: Vec<GroundItem>,
     pub(crate) map_id: String,
     pub(crate) map_revision: u32,
     pub(crate) cols: i32,
@@ -234,6 +235,7 @@ impl<'catalog> Game<'catalog> {
         let floors = Rc::new(state.tiles.iter().map(|tile| tile.floor.clone()).collect());
         let mut game = Self {
             factions: Rc::new(state.factions),
+            ground_items: state.ground_items,
             active_faction: None,
             fog: Rc::new(state.tiles.iter().map(|t| t.fog.clone()).collect()),
             condition_memory: state.condition_memory,
@@ -300,6 +302,7 @@ impl<'catalog> Game<'catalog> {
     pub(crate) fn state(&self) -> State {
         State {
             factions: self.factions.as_ref().clone(),
+            ground_items: self.ground_items.clone(),
             condition_memory: self.condition_memory.clone(),
             armies: self.armies.clone(),
             map_id: self.map_id.clone(),
@@ -525,6 +528,7 @@ impl<'catalog> Game<'catalog> {
     pub(crate) fn fork(&self) -> Self {
         Self {
             factions: self.factions.clone(),
+            ground_items: self.ground_items.clone(),
             active_faction: self.active_faction.clone(),
             condition_memory: self.condition_memory.clone(),
             traversal: None,
@@ -640,7 +644,7 @@ impl<'catalog> Game<'catalog> {
                 .collect();
         }
         if let Some(mission) = &self.mission {
-            return if side == Side::Player {
+            let mut options: Vec<_> = if side == Side::Player {
                 &mission.recruits
             } else {
                 &mission.enemy_recruits
@@ -648,6 +652,22 @@ impl<'catalog> Game<'catalog> {
             .iter()
             .map(|name| self.kind(name))
             .collect();
+            if side == Side::Player {
+                for event in &mission.events {
+                    if self
+                        .campaign
+                        .as_ref()
+                        .is_some_and(|state| state.marked_prefixed("event:", &event.id))
+                    {
+                        for kind in event.recruits.iter().map(|name| self.kind(name)) {
+                            if !options.contains(&kind) {
+                                options.push(kind);
+                            }
+                        }
+                    }
+                }
+            }
+            return options;
         }
         [
             "swordsman",

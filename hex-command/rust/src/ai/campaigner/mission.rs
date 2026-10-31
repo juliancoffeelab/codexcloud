@@ -1,6 +1,7 @@
 //! Authored missions are interpreted here and emitted as explicit turn orders.
 use super::CampaignerKind as CampaignBlock;
 use crate::ai::context::BattleView;
+use crate::ai::orders::UnitSelector;
 use crate::ai::{
     Diplomacy, PlanningWorkspace,
     objectives::{actor_matches, objective},
@@ -43,6 +44,7 @@ impl CampaignBlock {
             Self::Mission => self.goals(game, workspace.goals.as_deref()),
             Self::Arena => individual(game.policy_objectives(workspace.goals.as_deref())),
         };
+        let mut scoped = Vec::new();
         let mut inactive: Vec<_> = game
             .units
             .iter()
@@ -69,6 +71,29 @@ impl CampaignBlock {
                 if let Some(group) = group {
                     if !game.group_active(group) {
                         inactive.push(UnitId(unit.id));
+                        continue;
+                    }
+                    if let Some(order) = &group.order {
+                        match order {
+                            GroupOrder::Hold {
+                                area,
+                                attack_radius,
+                            } => {
+                                scoped.push(ScopedOrder {
+                                    actor: UnitId(unit.id),
+                                    area: area.iter().cloned().map(TileId).collect(),
+                                    attack_radius: *attack_radius,
+                                });
+                                let mut target = objective(
+                                    &format!("group:{}:{}", group.id, unit.id),
+                                    ObjectiveKind::Visit,
+                                    area.clone(),
+                                    24.0,
+                                );
+                                target.actor = Some(format!("u{}", unit.id));
+                                authored_targets.push(target);
+                            }
+                        }
                         continue;
                     }
                     let tiles = game
@@ -98,6 +123,7 @@ impl CampaignBlock {
             }
         }
         let mut tactics = TacticalOrders {
+            scoped,
             inactive,
             targets: authored_targets.iter().cloned().map(Target::from).collect(),
             restrained,
@@ -594,12 +620,19 @@ impl Game<'_> {
                 vec![tile.clone()],
                 weight,
             )],
-            Condition::NoUnits { side, unit_type } if *side != self.turn => {
+            Condition::NoUnits {
+                side,
+                unit_type,
+                name,
+            } if *side != self.turn => {
                 let tiles: Vec<_> = self
                     .units
                     .iter()
                     .filter(|u| {
-                        u.side == *side
+                        faction_matches_side(&self.factions, u.faction.as_deref(), u.side, *side)
+                            && name
+                                .as_ref()
+                                .is_none_or(|name| u.name.as_ref() == Some(name))
                             && unit_type
                                 .as_ref()
                                 .is_none_or(|kind| self.rules.units[u.kind].id == *kind)
@@ -760,8 +793,59 @@ impl Game<'_> {
             let state = self.campaign.as_ref().unwrap();
             if side == Side::Player {
                 for (index, g) in mission.goals.iter().enumerate() {
-                    if self.goal_done(g) && discard_completed(g) {
+                    if !self.goal_visible(g) {
                         continue;
+                    }
+                    let evacuated = g.kind() == GoalKind::Escort
+                        && state.evacuated.iter().any(|record| {
+                            record.unit.role == Some(Role::Courier)
+                                && record.unit.side == Side::Player
+                                && Some(&record.unit.tile) == g.tile()
+                        });
+                    if self.goal_done(g) && (discard_completed(g) || evacuated) {
+                        continue;
+                    }
+                    if let Goal::Escort { .. } = g {
+                        let human_courier = self.units.iter().any(|unit| {
+                            unit.role == Some(Role::Courier)
+                                && self
+                                    .faction(self.unit_faction(unit))
+                                    .map_or(unit.side == Side::Player, |faction| {
+                                        faction.controller == Controller::Human
+                                    })
+                        });
+                        if !human_courier {
+                            for courier in self.units.iter().filter(|unit| {
+                                unit.role == Some(Role::Courier)
+                                    && !self.hostile_to_phase(unit, Side::Player)
+                            }) {
+                                let Some(transfer) = self
+                                    .faction(self.unit_faction(courier))
+                                    .and_then(|faction| faction.transfer.as_ref())
+                                else {
+                                    continue;
+                                };
+                                let destination_human = self
+                                    .faction(&transfer.to)
+                                    .map_or(transfer.to == "player", |faction| {
+                                        faction.controller == Controller::Human
+                                    });
+                                if !destination_human {
+                                    continue;
+                                }
+                                let condition = transfer
+                                    .when
+                                    .condition
+                                    .contextualized(&self.board.ids[courier.tile]);
+                                goals.extend(self.condition_objectives(
+                                    &condition,
+                                    &format!("transfer:u{}", courier.id),
+                                    32.0,
+                                    &mut HashSet::default(),
+                                ));
+                            }
+                            continue;
+                        }
                     }
                     if let Goal::Event { event, .. } = g {
                         if self

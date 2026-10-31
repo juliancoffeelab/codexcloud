@@ -31,12 +31,22 @@ pub struct RefugeCounter {
     pub last_counted_round: u32,
     pub escalated: bool,
 }
+/// A unit safely removed from the board, retaining identity and belongings.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct EvacuatedUnit {
+    pub event: String,
+    pub unit: PublicUnit,
+}
 /// Persistent chapter progress, recalled companions, story choices and dialogue.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CampaignState {
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub evacuated: Vec<EvacuatedUnit>,
     pub id: String,
     pub mission: usize,
     pub recall: Vec<String>,

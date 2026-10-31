@@ -135,6 +135,9 @@ impl Game<'_> {
                     && !self.terrain_is(between, Terrain::Forest)
                     && !self.terrain_is(between, Terrain::Hill)
                     && !self.terrain_is(between, Terrain::Grove)
+                    && !self.terrain_is(between, Terrain::Mountain)
+                    && !self.terrain_is(between, Terrain::Cave)
+                    && !self.terrain_is(between, Terrain::Keep)
             })
     }
     pub(crate) fn attack_origins(&self, category: Category, range: u8) -> Rc<Vec<TileSet>> {

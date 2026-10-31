@@ -206,6 +206,8 @@ struct StageFile {
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct InitialUnit {
+    #[serde(default)]
+    items: Vec<Item>,
     faction: Option<String>,
     ai_group: Option<String>,
     id: Option<String>,
@@ -268,10 +270,11 @@ impl InitialState {
                     .checked_add(1)
                     .ok_or_else(|| ContentError::new(path, "initial unit identifier overflow"))?,
             );
+            validate_equipment(&unit.items, &rule.attacks, path)?;
             let tile = format!("{},{}", unit.col, unit.row);
             units.push(PublicUnit {
                 faction: unit.faction,
-                items: vec![],
+                items: unit.items,
                 ai_group: unit.ai_group,
                 id,
                 r#type: unit.r#type,
@@ -291,6 +294,7 @@ impl InitialState {
             .map_err(|message| ContentError::new(path, message))?;
         Ok(State {
             factions: self.factions,
+            ground_items: vec![],
             condition_memory: vec![],
             armies: None,
             map_id: self.map_id,
@@ -864,6 +868,8 @@ fn validate_mission(
         }
         Ok(())
     };
+    validate_faction_conditions(&state.factions, &state.tiles, &mission.events, types)
+        .map_err(|message| ContentError::new(path, message))?;
     unique(mission.events.iter().map(|e| e.id.as_str()), path)?;
     unique(mission.waves.iter().map(|w| w.id.as_str()), path)?;
     let events: HashSet<&str> = mission.events.iter().map(|e| e.id.as_str()).collect();
@@ -879,6 +885,19 @@ fn validate_mission(
     )?;
     for group in &mission.enemy_groups {
         identifier(&group.id, path)?;
+        if let Some(order) = &group.order {
+            match order {
+                GroupOrder::Hold { area, .. } => {
+                    if area.is_empty() {
+                        return Err(ContentError::new(path, "hold area must not be empty"));
+                    }
+                    unique(area.iter().map(String::as_str), path)?;
+                    for tile in area {
+                        tile_ref(tile)?;
+                    }
+                }
+            }
+        }
         if let Some(rule) = &group.when {
             rule.condition
                 .validate(&state.tiles, &mission.events, false)
@@ -902,14 +921,15 @@ fn validate_mission(
             group_ref(id, unit.side)?;
         }
     }
-    let starting = |units: &[StartingUnit]| -> Result<(), ContentError> {
-        for unit in units {
+    let starting = |placements: &[StartingUnit]| -> Result<(), ContentError> {
+        for unit in placements {
             validate_faction_reference(&state.factions, unit.faction.as_deref(), unit.side)
                 .map_err(|message| ContentError::new(path, message))?;
             if let Some(id) = &unit.ai_group {
                 group_ref(id, unit.side)?;
             }
             reference(&unit.r#type, types, path)?;
+            validate_equipment(&unit.items, &units[types[&unit.r#type]].attacks, path)?;
             tile_ref(&format!("{},{}", unit.col, unit.row))?;
         }
         Ok(())
@@ -928,6 +948,14 @@ fn validate_mission(
         ));
     }
     for goal in mission.all_goals() {
+        if let Some(condition) = goal.visible_when() {
+            condition
+                .validate(&state.tiles, &mission.events, false)
+                .map_err(|e| ContentError::new(path, e))?;
+            condition
+                .validate_units(types)
+                .map_err(|e| ContentError::new(path, e))?;
+        }
         for site in goal.sites() {
             tile_ref(&site)?;
         }
@@ -958,6 +986,23 @@ fn validate_mission(
         }
     }
     for event in &mission.events {
+        unique(event.recruits.iter().map(String::as_str), path)?;
+        for recruit in &event.recruits {
+            if !types.contains_key(recruit) {
+                return Err(ContentError::new(path, "unknown event recruit"));
+            }
+        }
+        if let Some(effect) = &event.evacuate {
+            tile_ref(&effect.tile)?;
+            if effect
+                .units
+                .name
+                .as_ref()
+                .is_some_and(|name| name.is_empty())
+            {
+                return Err(ContentError::new(path, "empty evacuation unit name"));
+            }
+        }
         for reward in &event.items {
             reward.item.validate(path)?;
             if reward.item.attacks.iter().any(|a| {

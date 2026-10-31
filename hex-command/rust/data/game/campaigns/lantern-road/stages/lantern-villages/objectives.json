@@ -1,10 +1,42 @@
 {
+  "requiredCompanions": [],
   "goals": [
     {
-      "kind": "control",
-      "label": "Light all three eastern villages",
-      "tiles": ["7,1", "7,4", "7,7"]
+      "kind": "event",
+      "label": "Investigate the area",
+      "event": "foothold-established"
+    },
+    {
+      "kind": "escort",
+      "label": "Bring the captives safely to the hidden village",
+      "tile": "2,1",
+      "visibleWhen": {
+        "kind": "event",
+        "event": "village-contact"
+      }
+    },
+    {
+      "kind": "event",
+      "label": "Lead Nera to the eastern road sign",
+      "tile": "18,5",
+      "event": "eastern-departure",
+      "visibleWhen": {
+        "kind": "event",
+        "event": "village-safe"
+      }
     }
   ],
-  "defendObjectives": true
+  "optionalGoals": [
+    {
+      "kind": "event",
+      "label": "Defeat all enemies before leaving",
+      "event": "road-cleared",
+      "visibleWhen": {
+        "kind": "event",
+        "event": "village-safe"
+      }
+    }
+  ],
+  "enemyLeaderPost": "16,4",
+  "defendObjectives": false
 }

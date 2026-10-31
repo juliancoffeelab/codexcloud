@@ -44,6 +44,20 @@ conditions or alternate branches. Script events are implementation details,
 not automatically optional objectives. Author optional goals explicitly, separately
 from victory requirements; hints offer advice rather than hide side objectives.
 
+## Knowledge and encounter activation
+
+Objectives are orders based on what the party knows, not a checklist of the
+scenario author's plan. Do not reveal undiscovered people, allies, destinations,
+rewards or solutions through objectives, hints, map markers or counters. Keep
+later objectives hidden until the discovery that gives the party a reason to
+pursue them; revealing one must not bypass its actual victory requirement.
+
+Use one encounter activation to drive its dialogue, spawns, lights and objective
+reveals. Any player-controlled unit can discover a location unless the action
+really requires a particular person. A surviving companion can react with the
+party without being marched to a separate invisible trigger. Descriptions of
+settlements, camps and fortifications must make sense in their geography.
+
 ## Choices and consequences
 
 Choices must have consequences. Define what changes when the player takes a
@@ -84,6 +98,13 @@ Use the bundled [map draft renderer](map-drafting.md) for all draft map previews
 Supply map data, unit placements and annotations through its input files. Extend
 this shared renderer when a reusable capability is missing; do not create a
 separate renderer per scenario or add scenario-specific branches.
+
+Draft work may add artwork to the shared library and extend the draft renderer.
+Adding artwork does not authorize gameplay or runtime code changes. Keep broader
+tooling improvements separate; they must not delay the requested preview. Check
+artwork with the artwork build, consistency checks and visual inspection; adding
+art files alone does not justify a broader code audit. Missing gameplay support
+must not block a visual draft.
 
 Change only the intended area during map revisions and compare with the previous
 layout. Use [design-terrain](../design-terrain/SKILL.md) and
