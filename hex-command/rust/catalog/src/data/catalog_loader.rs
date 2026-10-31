@@ -614,7 +614,6 @@ impl Rules {
             recruitment,
             terrain_types: terrain.iter().map(|t| t.id).collect(),
             terrain_names: terrain_names.into_iter().map(Into::into).collect(),
-            terrain_labels: terrain.iter().map(|t| t.name.clone()).collect(),
             unit_log_names: units.iter().map(|u| u.name.to_lowercase().into()).collect(),
             weapon_log_names: units
                 .iter()

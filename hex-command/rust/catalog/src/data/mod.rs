@@ -45,8 +45,6 @@ pub struct Rules {
     pub terrain_names: Cow<'static, [Cow<'static, str>]>,
     /// Closed terrain variants in the same runtime order.
     pub terrain_types: Cow<'static, [Terrain]>,
-    /// Display labels corresponding to terrain identifiers.
-    pub terrain_labels: Cow<'static, [Cow<'static, str>]>,
     /// Precomputed Unicode lowercase labels used in battle logs.
     pub unit_log_names: Cow<'static, [Cow<'static, str>]>,
     pub weapon_log_names: Cow<'static, [Cow<'static, [Cow<'static, str>]>]>,
