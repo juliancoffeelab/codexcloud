@@ -26,6 +26,9 @@ pub enum Condition {
         #[serde(default, rename = "unitType", skip_serializing_if = "Option::is_none")]
         unit_type: Option<String>,
     },
+    Choice {
+        choice: String,
+    },
     Event {
         event: String,
     },
@@ -49,6 +52,16 @@ pub struct ConditionRule {
     pub remember: bool,
 }
 impl Condition {
+    pub(crate) fn uses_proximity(&self) -> bool {
+        match self {
+            Self::Proximity { .. } => true,
+            Self::All { conditions } | Self::Any { conditions } => {
+                conditions.iter().any(Self::uses_proximity)
+            }
+            _ => false,
+        }
+    }
+
     pub(super) fn validate_units(
         &self,
         types: &std::collections::HashMap<String, usize>,

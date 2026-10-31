@@ -113,6 +113,8 @@ def rows(lineup):
     if "commander" in lineup:
         yield lineup["commander"]["units"]
     for tree in lineup["trees"]:
+        if not tree["branches"]:
+            yield [tree["base"]]
         for branch in tree["branches"]:
             yield [tree["base"], *branch["units"]]
 
@@ -133,14 +135,18 @@ def load_lineups(directory=None):
         if race != path.stem or not isinstance(lineup.get("trees"), list) or not lineup["trees"]:
             raise ValueError(f"{path}: expected the race's named tree file")
         for tree in lineup["trees"]:
-            if tree.get("base", {}).get("level") != 1 or not tree.get("branches"):
-                raise ValueError(f"{path}: every starter needs L1 and at least one branch")
+            if tree.get("base", {}).get("level") != 1 or not isinstance(tree.get("branches"), list):
+                raise ValueError(f"{path}: every starter needs L1 and a branches list (which may be empty)")
             for branch in tree["branches"]:
                 if not branch.get("role") or [u.get("level") for u in branch.get("units", [])] != [2, 3]:
                     raise ValueError(f"{path}: branches must contain L2 followed by L3")
         if "commander" in lineup and [u.get("level") for u in lineup["commander"].get("units", [])] != [1, 2, 3]:
             raise ValueError(f"{path}: commander must contain L1, L2 and L3")
         for unit in entries(lineup):
+            factions = unit.get("factions", ["player", "enemy"])
+            available = set(json.loads((ART / "factions.json").read_text())) - {"debug"}
+            if not isinstance(factions, list) or any(not isinstance(faction, str) for faction in factions) or not {"player", "enemy"}.issubset(factions) or len(set(factions)) != len(factions) or not set(factions).issubset(available):
+                raise ValueError(f'{path}: invalid unit faction variants')
             id = unit.get("id")
             if not isinstance(id, str) or not id or Path(id).name != id or not unit.get("name"):
                 raise ValueError(f"{path}: invalid unit identity")
@@ -362,13 +368,14 @@ def composite(base, layers):
 def pixel_sprites():
     lineups = load_lineups()
     native = {}
+    factions = {u["id"]: u.get("factions", ["player", "enemy"]) for lineup in lineups.values() for u in entries(lineup)}
     for id, directory in sorted(unit_directories(lineups).items()):
         matrix = directory / "sprite.txt"
         materials = read_palette(matrix)
         require_grounded(read_matrix(matrix), {**materials, **faction_palette("player")},
                          json.loads((directory / "palette.json").read_text()).get("flying", False), id)
         alpha = None
-        for side in ("player", "enemy"):
+        for side in factions[id]:
             matrix = directory / "sprite.txt"
             if not matrix.exists():
                 raise ValueError(f"{matrix}: a shared sprite matrix is required")

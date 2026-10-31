@@ -51,6 +51,7 @@ pub(crate) fn validate_state_geometry(
     authored: &State,
 ) -> Result<(), StateError> {
     let fail = |message: &str| StateError(message.to_owned());
+    validate_factions(&state.factions, &state.units).map_err(StateError)?;
     if state.cols <= 0 || state.rows <= 0 || state.round == 0 {
         return Err(fail("invalid board dimensions or round"));
     }
@@ -116,6 +117,27 @@ pub(crate) fn validate_state_geometry(
             }
         }
     }
+    if let Some(campaign) = &state.campaign {
+        if let Some(mission) = rules
+            .campaigns
+            .get(&campaign.id)
+            .and_then(|c| c.missions.get(campaign.mission))
+        {
+            for group in &mission.enemy_groups {
+                if group.when.as_ref().is_some_and(|rule| rule.remember) {
+                    allowed_memory.insert(format!("group:{}", group.id));
+                }
+            }
+            for unit in &state.units {
+                if let Some(id) = &unit.ai_group {
+                    if unit.side != Side::Enemy || !mission.enemy_groups.iter().any(|g| g.id == *id)
+                    {
+                        return Err(fail("invalid enemy group"));
+                    }
+                }
+            }
+        }
+    }
     let mut remembered = HashSet::new();
     for key in &state.condition_memory {
         if !allowed_memory.contains(key) || !remembered.insert(key) {
@@ -143,6 +165,12 @@ pub(crate) fn validate_state_geometry(
             .types
             .get(&unit.r#type)
             .ok_or_else(|| fail("unknown unit type"))?;
+        validate_equipment(
+            &unit.items,
+            &rules.units[kind].attacks,
+            "saved unit equipment",
+        )
+        .map_err(|e| StateError(e.to_string()))?;
         if unit.hp <= 0 || unit.hp > rules.units[kind].hp {
             return Err(fail("invalid unit hit points"));
         }
@@ -163,8 +191,7 @@ pub(crate) fn validate_state_geometry(
             return Err(fail("campaign mission and map differ"));
         }
         if mission
-            .goals
-            .iter()
+            .all_goals()
             .flat_map(Goal::sites)
             .any(|site| !tiles.contains(site.as_str()))
         {
@@ -175,12 +202,10 @@ pub(crate) fn validate_state_geometry(
         }
         if !(0..=8).contains(&campaign.carry_gold)
             || campaign.recall.len() > 4
-            || campaign.recall.iter().any(|id| {
-                rules
-                    .types
-                    .get(id)
-                    .is_none_or(|&kind| rules.units[kind].leader)
-            })
+            || campaign
+                .recall
+                .iter()
+                .any(|id| rules.types.get(id).is_none())
         {
             return Err(fail("invalid campaign carryover"));
         }
@@ -220,6 +245,12 @@ pub(crate) fn validate_state_geometry(
                 .types
                 .get(&veteran.r#type)
                 .ok_or_else(|| fail("unknown veteran type"))?;
+            validate_equipment(
+                &veteran.items,
+                &rules.units[kind].attacks,
+                "veteran equipment",
+            )
+            .map_err(|e| StateError(e.to_string()))?;
             if veteran.experience > rules.units[kind].experience_needed.unwrap_or(0) {
                 return Err(fail("invalid veteran experience"));
             }
@@ -253,6 +284,20 @@ pub(crate) fn validate_state_geometry(
                 .units
                 .iter()
                 .any(|u| u.attacks.iter().any(|a| a.id == combat.attack_id))
+                && !state
+                    .units
+                    .iter()
+                    .flat_map(|u| &u.items)
+                    .flat_map(|i| &i.attacks)
+                    .any(|a| a.id == combat.attack_id)
+                && !rules
+                    .campaigns
+                    .values()
+                    .flat_map(|c| &c.missions)
+                    .flat_map(|m| &m.events)
+                    .flat_map(|e| &e.items)
+                    .flat_map(|r| &r.item.attacks)
+                    .any(|a| a.id == combat.attack_id)
         {
             return Err(fail("invalid last combat"));
         }

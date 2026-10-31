@@ -12,7 +12,7 @@ pub(super) fn choices(
     let mut units: Vec<_> = game
         .units()
         .iter()
-        .filter(|u| u.side == game.turn())
+        .filter(|u| game.belongs_to_phase(u, game.turn()))
         .collect();
     units.sort_by_key(|u| u.id);
     units
@@ -95,7 +95,7 @@ mod tests {
     }
     fn battle(rules: &Rules, base: usize) -> (Game<'_>, u32) {
         let mut game = Game::new(rules, "mirror");
-        game.units.retain(|u| rules.units[u.kind].leader);
+        game.units.retain(|u| u.is_leader());
         game.roster_changed();
         let leader = game
             .units
@@ -143,7 +143,7 @@ mod tests {
         let leader = game
             .units
             .iter()
-            .find(|u| rules.units[u.kind].leader && u.side == Side::Player)
+            .find(|u| u.is_leader() && u.side == Side::Player)
             .unwrap()
             .clone();
         let tile = game.placement_tiles(&leader, base, false)[0];
@@ -240,7 +240,6 @@ mod tests {
         let future = rules.types["scout"];
         let mut foe = rules.units[observed].clone();
         foe.id = rules.units[future].id.clone();
-        foe.leader = false;
         foe.damage_modifiers.blade = -10;
         rules.units[future] = foe;
         rules.route_classes[future] = future;

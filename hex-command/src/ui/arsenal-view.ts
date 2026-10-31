@@ -1,5 +1,5 @@
 import type { UnitView } from "../game/view";
-import { TYPES, DAMAGE_TYPES } from "../game/catalog";
+import { TYPES, DAMAGE_TYPES, unitWeapons } from "../game/catalog";
 import type { DamageType } from "../game/types";
 
 function modifierClass(modifier: number): string {
@@ -10,7 +10,7 @@ function modifierClass(modifier: number): string {
 
 export function arsenalView(unit: UnitView) {
   const definition = TYPES[unit.type];
-  const weapons = definition.attacks.map((weapon) => ({
+  const weapons = unitWeapons(unit).map((weapon) => ({
     ...weapon,
     rollLabel: weapon.spread
       ? `${weapon.damage - weapon.spread}–${weapon.damage + weapon.spread}`

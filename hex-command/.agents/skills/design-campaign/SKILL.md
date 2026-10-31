@@ -29,17 +29,28 @@ objective is a sensible response. Connect the premise to the player's actions.
 Plan how discoveries change their understanding; revealing an answer too early
 can undermine the reason to continue toward an objective.
 
+Surprises, good or bad, are important and necessary. Preserve discoveries,
+unknown places and unforeseen consequences. Meaningful choices do not require
+advance disclosure of their future effects. Foreshadow only what fits the
+party's knowledge; do not invent advance knowledge to explain a later reward
+or loss.
+
 Write dialogue from the characters' knowledge, roles and circumstances. Let them
 react to what they encounter. Avoid stating the obvious or inventing story facts
-to explain a placement that has not been thought through.
+to explain a placement that has not been thought through. Briefings and objectives
+use the party's current knowledge; let encounters reveal enemies and outcomes.
+Give players actionable orders and necessary rules, without narrating trigger
+conditions or alternate branches. Script events are implementation details,
+not automatically optional objectives. Author optional goals explicitly, separately
+from victory requirements; hints offer advice rather than hide side objectives.
 
 ## Choices and consequences
 
 Choices must have consequences. Define what changes when the player takes a
 route, spends time, accepts a risk, helps someone or leaves something unresolved.
 Consequences can affect information, relationships, resources, encounters,
-objectives or later scenarios. Make the tradeoffs legible enough for an informed
-decision, without requiring every outcome to be revealed in advance.
+objectives or later scenarios. Give players enough grounding to act on the
+situation they face; let later consequences reveal themselves through play.
 
 Give optional content a purpose and a cost. Rewards must be useful to the party
 and fit its progression. Establish what carries forward and ensure later content

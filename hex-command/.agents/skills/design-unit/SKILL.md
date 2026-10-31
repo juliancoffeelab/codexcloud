@@ -42,3 +42,10 @@ When integration is requested, copy chosen `sprite.txt`/`palette.json` files to
 unit folders and register the line in its race tree. Run `npm run art:build` and
 `npm run art:check`. Artwork does not automatically authorize gameplay stats,
 recruitment changes or publication.
+
+A line with one tier uses the same tree structure: a base and an empty `branches`
+list. Do not invent promotion tiers or separate actor categories to register it.
+An entry can explicitly declare additional `factions` for visual palettes;
+`passive` supplies white cloth for neutral actors, including captive villagers.
+Ordinary player and enemy frames remain required and all variants retain the same
+silhouette. Palette names describe reusable colors, not scenario roles.

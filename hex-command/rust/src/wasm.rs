@@ -343,7 +343,7 @@ impl NativeEngineFactory {
                             })?;
                         for unit in state.units.iter_mut().filter(|u| u.side == side) {
                             let original = &self.rules.units[self.rules.types[&unit.r#type]];
-                            let kind = if original.leader {
+                            let kind = if unit.role == Some(Role::Leader) {
                                 roster.leader.as_str()
                             } else if roster.id == "human" || roster.pool.contains(&unit.r#type) {
                                 unit.r#type.as_str()

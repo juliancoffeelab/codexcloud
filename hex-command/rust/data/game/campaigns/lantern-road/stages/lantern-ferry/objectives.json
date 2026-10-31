@@ -2,14 +2,22 @@
   "goals": [
     {
       "kind": "event",
-      "label": "Reach the ferryman\u2019s house",
+      "label": "Reach the ferryman’s house",
       "tile": "18,10",
       "event": "house-visit"
     },
     {
       "kind": "event",
-      "label": "Light both eastern villages and defeat their spiders",
+      "label": "Light and secure the eastern villages",
       "event": "villages-secured"
+    }
+  ],
+  "optionalGoals": [
+    {
+      "kind": "event",
+      "label": "Save the ferryman by turn 15",
+      "event": "ferryman-alive",
+      "tile": "18,10"
     }
   ]
 }

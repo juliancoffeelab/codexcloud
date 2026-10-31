@@ -8,14 +8,53 @@ use std::collections::BTreeMap;
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct StartingUnit {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub faction: Option<String>,
     pub col: i32,
     pub row: i32,
     pub r#type: String,
     pub side: Side,
+    #[serde(default, rename = "aiGroup", skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub ai_group: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub role: Option<Role>,
+}
+/// Select recipients by unit-instance metadata, independent of their current type.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ItemRecipient {
+    pub side: Side,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub role: Option<Role>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub name: Option<String>,
+}
+impl ItemRecipient {
+    pub(crate) fn accepts(&self, unit: &Unit) -> bool {
+        unit.side == self.side
+            && self
+                .role
+                .as_ref()
+                .is_none_or(|role| unit.role.as_ref() == Some(role))
+            && self
+                .name
+                .as_ref()
+                .is_none_or(|name| unit.name.as_ref() == Some(name))
+    }
+}
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ItemReward {
+    pub recipient: ItemRecipient,
+    pub item: Item,
 }
 /// An authored objective. Each variant requires the fields its rule consumes.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -188,6 +227,9 @@ pub enum Trigger {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct SpawnUnit {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub faction: Option<String>,
     pub id: String,
     pub r#type: String,
     pub side: Side,
@@ -200,6 +242,12 @@ pub struct SpawnUnit {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct SpawnGroup {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub faction: Option<String>,
+    #[serde(default, rename = "aiGroup", skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub ai_group: Option<String>,
     pub area: Vec<String>,
     pub units: Vec<SpawnUnit>,
 }
@@ -209,6 +257,9 @@ pub struct SpawnGroup {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Event {
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub items: Vec<ItemReward>,
     pub id: String,
     pub trigger: Trigger,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -231,6 +282,10 @@ pub struct Event {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub gold: Option<i32>,
+    /// Durable story outcome carried across chapters.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub choice: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub war_dialogue: Option<Vec<Dialogue>>,
@@ -298,6 +353,16 @@ pub struct Layout {
     pub id: String,
     pub units: Vec<StartingUnit>,
 }
+/// Independent mission-controlled enemies; activation and goals do not require leaders.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct EnemyGroup {
+    pub id: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub when: Option<ConditionRule>,
+}
 /// An authored chapter defining objectives, recruits, events and story feedback.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
@@ -315,6 +380,10 @@ pub struct Mission {
     #[serde(default)]
     pub required_companions: Vec<String>,
     pub goals: Vec<Goal>,
+    /// Authored side objectives, displayed separately and never required for victory.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub optional_goals: Vec<Goal>,
     pub recruits: Vec<String>,
     pub enemy_recruits: Vec<String>,
     pub gold: i32,
@@ -327,6 +396,8 @@ pub struct Mission {
     pub intro: Vec<Dialogue>,
     pub victory: Vec<Dialogue>,
     pub events: Vec<Event>,
+    #[serde(default)]
+    pub enemy_groups: Vec<EnemyGroup>,
     pub waves: Vec<Wave>,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
@@ -339,6 +410,10 @@ pub struct Mission {
     pub without_dain: Option<MissionPatch>,
 }
 impl Mission {
+    /// Shared progress rules apply to required and optional goals alike.
+    pub fn all_goals(&self) -> impl Iterator<Item = &Goal> {
+        self.goals.iter().chain(&self.optional_goals)
+    }
     /// Apply the authored fields of a story-dependent mission override.
     pub fn apply(&mut self, patch: &MissionPatch) {
         if let Some(value) = &patch.briefing {

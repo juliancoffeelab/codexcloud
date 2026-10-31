@@ -6,7 +6,7 @@
     },
     "units": [
       {
-        "type": "commander",
+        "type": "swordsman",
         "side": "player",
         "col": 3,
         "row": 4,
@@ -17,7 +17,8 @@
         "type": "adept",
         "side": "player",
         "col": 4,
-        "row": 3
+        "row": 3,
+        "name": "Meri"
       },
       {
         "type": "swordsman",
@@ -29,7 +30,8 @@
         "type": "scout",
         "side": "player",
         "col": 4,
-        "row": 5
+        "row": 5,
+        "name": "Ivo"
       },
       {
         "type": "necromancer",
@@ -79,7 +81,7 @@
   },
   "units": [
     {
-      "type": "commander",
+      "type": "swordsman",
       "side": "player",
       "col": 3,
       "row": 4,
@@ -90,7 +92,8 @@
       "type": "adept",
       "side": "player",
       "col": 4,
-      "row": 3
+      "row": 3,
+      "name": "Meri"
     },
     {
       "type": "swordsman",
@@ -102,7 +105,8 @@
       "type": "scout",
       "side": "player",
       "col": 4,
-      "row": 5
+      "row": 5,
+      "name": "Ivo"
     },
     {
       "type": "necromancer",

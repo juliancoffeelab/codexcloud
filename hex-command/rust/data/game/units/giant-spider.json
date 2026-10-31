@@ -3,14 +3,14 @@
   "name": "Giant Spider",
   "role": "warrior",
   "race": "beast",
-  "hp": 20,
+  "hp": 16,
   "move": 4,
   "cost": 10,
   "attacks": [
     {
       "id": "bite",
       "name": "Bite",
-      "damage": 4,
+      "damage": 3,
       "count": 2,
       "damageType": "pierce",
       "category": "melee",

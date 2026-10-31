@@ -6,6 +6,8 @@ pub use ids::*;
 pub use recruitment::{RecruitmentProfiles, RecruitmentWeights};
 mod commands;
 pub use commands::*;
+mod factions;
+pub use factions::*;
 mod units;
 pub use units::*;
 mod campaign;

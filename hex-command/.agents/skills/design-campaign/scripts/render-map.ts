@@ -22,6 +22,7 @@ import {
 } from "../../../../rust/pkg/hex_command";
 import { battlefieldSpriteSize, mapDimensions, tileCenter } from "../../../../src/ui/geometry";
 import type { TileView } from "../../../../src/game/view";
+import type { ArtworkFaction } from "../../../../src/presentation/art";
 import type { Side } from "../../../../src/game/types";
 
 interface Position {
@@ -29,6 +30,7 @@ interface Position {
   row: number;
 }
 interface Unit extends Position {
+  faction?: ArtworkFaction;
   type: string;
   side: Side;
 }
@@ -51,6 +53,7 @@ interface Overlay {
   title?: string;
   notes?: string[];
   marks?: string[];
+  choices?: string[];
   memory?: string[];
   round?: number;
   units?: Unit[];
@@ -116,6 +119,7 @@ const resolved = previewPresentation({
   units,
   lighting: map.lighting ?? daylight,
   marks: overlay.marks ?? [],
+  choices: overlay.choices ?? [],
   memory: overlay.memory ?? [],
   round: overlay.round ?? 1,
 } as PresentationInput);
@@ -173,7 +177,7 @@ for (const unit of units) {
   const p = position(unit),
     frame = createCanvas(64, 64),
     fc = frame.getContext("2d");
-  fc.drawImage(await sprite(artFrameKey("units", unit.type, unit.side)), 0, 0);
+  fc.drawImage(await sprite(artFrameKey("units", unit.type, unit.faction ?? unit.side)), 0, 0);
   const data = fc.getImageData(0, 0, 64, 64),
     matrix = lightingMatrix(p.x, p.y, lighting);
   for (let i = 0; i < data.data.length; i += 4) {

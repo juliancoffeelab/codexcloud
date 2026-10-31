@@ -1,19 +1,6 @@
 import type { CombatStrike, HpForecast, UnitRole } from "../../rust/pkg/hex_command";
 
 export type Side = "player" | "enemy";
-export type LeaderType =
-  | "commander"
-  | "grovewarden"
-  | "lich"
-  | "marshal"
-  | "necromancer"
-  | "tidekeeper"
-  | "tideseer"
-  | "wildkeeper"
-  | "grand-marshal"
-  | "lich-commander-l3"
-  | "woodland-grove-oracle"
-  | "merfolk-tide-sovereign";
 export type AdvancedTroop =
   | "briarweaver"
   | "deatharcher"
@@ -82,10 +69,22 @@ export type AdvancedTroop =
   | "merfolk-tidecrusher-l3"
   | "merfolk-maceguard-l3";
 export type UnitType =
+  | "captives"
   | "bear"
   | "giant-bat"
   | "giant-spider"
-  | LeaderType
+  | "commander"
+  | "grovewarden"
+  | "lich"
+  | "marshal"
+  | "necromancer"
+  | "tidekeeper"
+  | "tideseer"
+  | "wildkeeper"
+  | "grand-marshal"
+  | "lich-commander-l3"
+  | "woodland-grove-oracle"
+  | "merfolk-tide-sovereign"
   | AdvancedTroop
   | "adept"
   | "archer"
@@ -109,7 +108,7 @@ export type UnitType =
   | "skeleton-axeman"
   | "fox-spearguard"
   | "treant";
-export type RecruitType = Exclude<UnitType, LeaderType>;
+export type RecruitType = UnitType;
 export type Race = "human" | "skeletons" | "beast" | "merfolk" | "spirit";
 export type TerrainType =
   | "plains"
@@ -163,6 +162,11 @@ export interface Tile extends Coordinates {
   fog?: import("../../rust/pkg/hex_command").ConditionRule;
 }
 export interface Unit {
+  faction?: string;
+  items?: import("./immutable").Immutable<
+    (Omit<import("../../rust/pkg/hex_command").Item, "attacks"> & { attacks: Weapon[] })[]
+  >;
+  aiGroup?: string;
   /** Missing on pre-progression saves, which load as zero. */
   experience?: number;
   id: string;
@@ -217,7 +221,6 @@ export interface UnitDefinition {
   ability: string;
   description: string;
   race: Race;
-  leader?: boolean;
 }
 export interface TerrainModifier {
   cost?: number;
@@ -246,6 +249,7 @@ export interface TerrainOverride extends Coordinates {
   fog?: import("../../rust/pkg/hex_command").ConditionRule;
 }
 export interface StartingUnit extends Coordinates {
+  aiGroup?: string;
   type: UnitType;
   side: Side;
   name?: string;
@@ -329,6 +333,7 @@ export interface GameSnapshot {
 }
 /** Full session state, including mutable terrain, for exact move undo. */
 export interface GameState {
+  factions?: import("../../rust/pkg/hex_command").Faction[];
   conditionMemory?: string[];
   armies?: [string, string];
   combatRng?: number;
@@ -403,6 +408,7 @@ export interface MissionDefinition {
   requiredCompanions?: string[];
   hints: string[];
   goals: MissionGoal[];
+  optionalGoals?: MissionGoal[];
   recruits: RecruitType[];
   enemyRecruits: RecruitType[];
   gold: number;
@@ -446,7 +452,7 @@ export interface CampaignDefinition {
   description: string;
   shortDescription: string;
   race: Race;
-  leader: LeaderType;
+  leader: UnitType;
   missions: MissionDefinition[];
   ending: DialogueLine[];
 }

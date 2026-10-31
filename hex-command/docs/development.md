@@ -136,3 +136,27 @@ image APIs. Worker failure, lack of support or
 timeout falls back to yielding row batches. Replaced or disposed requests cancel
 processing and stale results never replace the active map. Daylight needs no
 pixel processing. Development uses this same uncached path.
+
+## Leadership and campaign groups
+
+Leadership belongs to a unit instance's `role: "leader"`; unit definitions do not
+classify types as leaders. Starting rosters and generated arena starts assign
+roles explicitly. The same role controls loss conditions, AI protection,
+recruitment and UI leadership indicators. Promotion preserves the role.
+
+A stage's `enemyGroups` define independent participating groups. Unit placements
+and spawn areas use `aiGroup` to select a group. A group's optional `when` uses
+the shared condition rule: inactive members hold, active members engage opposing
+units. Campaigner resolves participation and per-actor targets; mechanical
+planning capabilities and command emission enforce the participation boundary.
+No leader or keep is required. Untagged units retain ordinary campaign orders.
+
+## Campaign equipment
+
+Scripted events can grant `items` to recipients selected by side, instance role
+or name. Each item has a stable ID, a description and granted attacks; item
+weapon IDs must be distinct from ordinary unit attacks. The engine waits for a
+matching recipient and grants each item once per recipient. Inventory is durable
+unit state: it survives checkpoints, promotion, story carryover and recall.
+Combat, forecasts, tactical planners and the UI share the unit's base attacks
+plus its equipment attacks. Existing checkpoints without inventory load empty.

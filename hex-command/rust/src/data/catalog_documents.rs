@@ -20,6 +20,8 @@ struct StageDocuments {
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct MapDocument {
+    #[serde(default)]
+    factions: Vec<Faction>,
     map_id: String,
     map_revision: u32,
     cols: i32,
@@ -39,6 +41,7 @@ struct MapDocument {
 impl MapDocument {
     fn initial(self, roster: InitialRoster) -> InitialState {
         InitialState {
+            factions: self.factions,
             map_id: self.map_id,
             map_revision: self.map_revision,
             cols: self.cols,
@@ -70,6 +73,8 @@ struct StageRoster {
 struct StageObjectives {
     goals: Vec<Goal>,
     #[serde(default)]
+    optional_goals: Vec<Goal>,
+    #[serde(default)]
     required_companions: Vec<String>,
     #[serde(default)]
     defend_objectives: bool,
@@ -89,6 +94,8 @@ struct StageStory {
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct StageScripts {
+    #[serde(default)]
+    enemy_groups: Vec<EnemyGroup>,
     events: Vec<Event>,
     waves: Vec<Wave>,
     companion_losses: Option<BTreeMap<String, MissionPatch>>,
@@ -236,6 +243,7 @@ pub(super) fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, Conten
             victory: story.victory,
             required_companions: objectives.required_companions,
             goals: objectives.goals,
+            optional_goals: objectives.optional_goals,
             defend_objectives: objectives.defend_objectives,
             enemy_leader_post: objectives.enemy_leader_post,
             recruits: roster.recruits,
@@ -243,6 +251,7 @@ pub(super) fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, Conten
             gold: roster.gold,
             enemy_gold: roster.enemy_gold,
             events: scripts.events,
+            enemy_groups: scripts.enemy_groups,
             waves: scripts.waves,
             companion_losses: scripts.companion_losses,
             refuge: scripts.refuge,
@@ -278,6 +287,8 @@ pub(super) fn map_metadata(
                         ContentError::new(descriptor, format!("invalid unit placement {}", unit.id))
                     })?;
                 Ok(StartingUnit {
+                    ai_group: unit.ai_group.clone(),
+                    faction: unit.faction.clone(),
                     col: tile.col,
                     row: tile.row,
                     r#type: unit.r#type.clone(),
@@ -290,11 +301,13 @@ pub(super) fn map_metadata(
     };
     let presentation =
         crate::logic::conditions::resolve(&crate::logic::conditions::PresentationInput {
+            factions: state.factions.clone(),
             pending: vec![],
             tiles: state.tiles.clone(),
             units: units.clone(),
             lighting: metadata.lighting.clone(),
             marks: vec![],
+            choices: vec![],
             memory: vec![],
             round: 1,
         })

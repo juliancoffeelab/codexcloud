@@ -17,9 +17,8 @@ struct Field {
 fn pressure(board: &BattleView<'_, '_>, actor: &Unit, enemy: &Unit, blockers: TileSet) -> i32 {
     let reach = board.threat_reach_blocked(enemy, blockers);
     let coverage = Threats::coverage(board, enemy, &reach);
-    board.rules().units[enemy.kind]
-        .attacks
-        .iter()
+    board
+        .weapons(enemy)
         .enumerate()
         .filter(|(weapon, _)| coverage[*weapon].contains(actor.tile))
         .map(|(weapon, _)| board.damage(enemy, actor, weapon))
@@ -75,13 +74,13 @@ impl Workspace {
             let enemies: Vec<_> = forecast
                 .units()
                 .iter()
-                .filter(|u| u.side != actor.side)
+                .filter(|u| forecast.hostile(actor, u))
                 .collect();
             let mut blocked = TileSet::new(game.terrain().len());
             for ally in forecast
                 .units()
                 .iter()
-                .filter(|u| u.side == actor.side && u.id != actor.id)
+                .filter(|u| forecast.allied(actor, u) && u.id != actor.id)
             {
                 blocked.insert(ally.tile);
             }
@@ -195,7 +194,7 @@ mod tests {
     fn escorts_reward_threat_removal_and_real_screens_without_adjacency_goals() {
         let rules = Rules::load().unwrap();
         let mut game = Game::new(&rules, "mirror");
-        game.units.retain(|u| rules.units[u.kind].leader);
+        game.units.retain(|u| u.is_leader());
         let actor = game
             .units
             .iter()
@@ -253,7 +252,7 @@ mod tests {
         let distant = game
             .units
             .iter()
-            .find(|u| u.side == Side::Enemy && rules.units[u.kind].leader)
+            .find(|u| u.side == Side::Enemy && u.is_leader())
             .unwrap();
         assert_eq!(escort.attack(guard_id, distant, distant.hp, 1.0), 0.0);
         assert!(

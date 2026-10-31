@@ -8,13 +8,15 @@
       "type": "commander",
       "side": "player",
       "col": 0,
-      "row": 3
+      "row": 3,
+      "role": "leader"
     },
     {
       "type": "commander",
       "side": "enemy",
       "col": 1,
-      "row": 3
+      "row": 3,
+      "role": "leader"
     },
     {
       "type": "soldier",
@@ -1238,6 +1240,18 @@
       "type": "giant-spider",
       "side": "enemy",
       "col": 20,
+      "row": 31
+    },
+    {
+      "type": "captives",
+      "side": "player",
+      "col": 18,
+      "row": 31
+    },
+    {
+      "type": "captives",
+      "side": "enemy",
+      "col": 19,
       "row": 31
     }
   ]

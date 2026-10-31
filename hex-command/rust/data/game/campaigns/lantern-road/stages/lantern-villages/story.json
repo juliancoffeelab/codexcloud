@@ -1,6 +1,6 @@
 {
   "subtitle": "Three crossings. Three homes to reclaim.",
-  "briefing": "The ferryman has brought news of three settlements occupied by the dead. Nera’s company is staying to reopen the road and light their windows again. Sella’s wardens will help, but the Tollkeeper is still collecting from the other bank.",
+  "briefing": "Beyond the crossing, three roadside settlements are held by the dead. Nera’s patrol joins Warden Sella’s relief party to reopen the route. The Tollkeeper commands this stretch of road; the company needs the villages and their shelter, not just his head.",
   "hints": [
     "One bridge need not carry the whole army.",
     "A welcoming village can keep a march alive. Stone sparks punish bones; shield their fragile adepts with infantry.",
@@ -14,8 +14,8 @@
     },
     {
       "speaker": "Nera",
-      "portrait": "commander",
-      "text": "Keep the hammer close. Ivo, find a ford. We need those villages earning for us, not for the tollkeeper."
+      "portrait": "swordsman",
+      "text": "Hold the approaches. Scouts, find another crossing. We need those villages open to the living."
     }
   ],
   "victory": [
@@ -31,7 +31,7 @@
     },
     {
       "speaker": "Nera",
-      "portrait": "commander",
+      "portrait": "swordsman",
       "text": "Then we go to the bell."
     }
   ]

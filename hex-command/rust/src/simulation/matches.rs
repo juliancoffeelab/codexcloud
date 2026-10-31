@@ -101,6 +101,9 @@ pub(crate) fn create_arena<'catalog>(
         let rule = &rules.units[rules.types[leader]];
         starting_cost[side.index()] += rule.cost;
         state.units.push(PublicUnit {
+            faction: None,
+            items: vec![],
+            ai_group: None,
             id: format!("u{}", state.next_id),
             r#type: leader.into(),
             side,
@@ -110,7 +113,7 @@ pub(crate) fn create_arena<'catalog>(
             attacked: false,
             experience: Some(0),
             name: None,
-            role: rule.leader.then_some(Role::Leader),
+            role: Some(Role::Leader),
             retreating: None,
             rebuilding: None,
         });
@@ -486,7 +489,7 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
             ObjectiveKind::Defeat,
             game.units
                 .iter()
-                .filter(|u| u.side != side && game.rules.units[u.kind].leader)
+                .filter(|u| u.side != side && u.is_leader())
                 .map(|u| game.board.ids[u.tile].clone())
                 .collect(),
             12.0,
@@ -697,7 +700,7 @@ mod tests {
             (Policy::Balanced, Some(0)),
         ] {
             let mut game = base.fork();
-            game.units.retain(|unit| rules.units[unit.kind].leader);
+            game.units.retain(|unit| unit.is_leader());
             game.roster_changed();
             game.gold[game.turn.index()] = 1000;
             let record = phase(
@@ -849,7 +852,7 @@ mod tests {
                             let troops: Vec<_> =
                                 game.units.iter().filter(|u| u.side == side).collect();
                             assert_eq!(troops.len(), 1);
-                            assert!(rules.units[troops[0].kind].leader);
+                            assert!(troops[0].is_leader());
                             game.gold[side.index()]
                                 + troops.iter().map(|u| rules.units[u.kind].cost).sum::<i32>()
                         };

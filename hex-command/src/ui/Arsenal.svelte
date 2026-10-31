@@ -7,6 +7,17 @@
   const arsenal = $derived(arsenalView(unit));
 </script>
 
+{#if unit.items?.length}
+  <div class="equipment">
+    <h3>Equipment</h3>
+    {#each unit.items as item}
+      <p>
+        <strong>{item.name}</strong>
+        — {item.description}
+      </p>
+    {/each}
+  </div>
+{/if}
 <div class="arsenal">
   <h3>Attacks</h3>
   <table class="weapon-table" aria-label="Unit attacks">

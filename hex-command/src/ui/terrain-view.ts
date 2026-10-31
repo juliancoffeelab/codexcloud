@@ -105,9 +105,10 @@ export function terrainPanelView(view: BattleView) {
   if (tile.owner === "enemy") ownerLabel = "Enemy";
   const facts = terrainFacts(tile.terrain);
   const campaign = view.game.campaign;
+  const mission = campaign && campaignMission(campaign);
   const seal =
-    campaign &&
-    campaignMission(campaign).goals.find(
+    mission &&
+    [...mission.goals, ...(mission.optionalGoals ?? [])].find(
       (goal) => goal.kind === "seal" && goal.tiles.includes(tile.id),
     );
   if (seal?.kind === "seal") {

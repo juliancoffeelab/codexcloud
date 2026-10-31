@@ -30,19 +30,22 @@
         "type": "adept",
         "side": "player",
         "col": 4,
-        "row": 9
+        "row": 9,
+        "name": "Oren"
       },
       {
         "type": "skeleton",
         "side": "enemy",
         "col": 18,
-        "row": 9
+        "row": 9,
+        "aiGroup": "skeletons"
       },
       {
         "type": "skeleton",
         "side": "enemy",
         "col": 19,
-        "row": 10
+        "row": 10,
+        "aiGroup": "skeletons"
       }
     ]
   },
@@ -72,19 +75,22 @@
       "type": "adept",
       "side": "player",
       "col": 4,
-      "row": 9
+      "row": 9,
+      "name": "Oren"
     },
     {
       "type": "skeleton",
       "side": "enemy",
       "col": 18,
-      "row": 9
+      "row": 9,
+      "aiGroup": "skeletons"
     },
     {
       "type": "skeleton",
       "side": "enemy",
       "col": 19,
-      "row": 10
+      "row": 10,
+      "aiGroup": "skeletons"
     }
   ],
   "recruits": [],

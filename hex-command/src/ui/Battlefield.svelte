@@ -421,9 +421,9 @@
                   ? `url(#night-tile-${tile.col}-${tile.row})`
                   : undefined}
                 class="art-sprite pixel-art unit-art"
-                class:enemy-unit={occupant.unit.side === "enemy"}
+                class:enemy-unit={occupant.faction.relation === "hostile"}
                 class:spent-unit={occupant.unit.attacked}
-                data-faction={occupant.unit.side}
+                data-faction={occupant.faction.id}
                 x={-occupant.spriteSize / 2}
                 y={20 - occupant.spriteSize}
                 width={occupant.spriteSize}

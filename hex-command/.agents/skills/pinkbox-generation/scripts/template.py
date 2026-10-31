@@ -24,7 +24,7 @@ def matrix_path(value):
     return path
 
 
-def prepare(output, anchors, labels, size=64, output_palette=None, body_guide=None, staff_guide=None, flying=None, kind='unit'):
+def prepare(output, anchors, labels, size=64, output_palette=None, body_guide=None, staff_guide=None, flying=None, kind='unit', object_guide=None):
     if kind not in ('unit', 'terrain', 'prop'):
         raise ValueError('Output kind must be unit, terrain or prop')
     if size != 64:
@@ -44,7 +44,7 @@ def prepare(output, anchors, labels, size=64, output_palette=None, body_guide=No
     flying = flight_metadata if flying is None else flying
     if type(flying) is not bool or type(flight_metadata) is not bool:
         raise ValueError("'flying' must be a boolean")
-    for guide in (body_guide, staff_guide):
+    for guide in (body_guide, staff_guide, object_guide):
         if guide is not None:
             gx, gy, gw, gh = guide
             if min(gx, gy) < 0 or min(gw, gh) <= 0 or gx + gw > 64 or gy + gh > 64:
@@ -106,7 +106,8 @@ def prepare(output, anchors, labels, size=64, output_palette=None, body_guide=No
             outputs[-1]['flying'] = flying
         guides = []
         for guide_kind, guide, color in [('body', body_guide, (255, 144, 255, 255)),
-                                   ('staff', staff_guide, (255, 96, 255, 255))]:
+                                   ('staff', staff_guide, (255, 96, 255, 255)),
+                                   ('object', object_guide, (255, 144, 255, 255))]:
             if guide is None:
                 continue
             gx, gy, gw, gh = guide
@@ -160,6 +161,7 @@ if __name__ == '__main__':
     parser.add_argument('--output-palette', type=Path, help='Restrict output swatches and extraction to these original material colors')
     parser.add_argument('--body-guide', type=int, nargs=4, metavar=('X', 'Y', 'W', 'H'), help='Visible native-pixel body box; does not crop extraction')
     parser.add_argument('--staff-guide', type=int, nargs=4, metavar=('X', 'Y', 'W', 'H'), help='Separate native-pixel allowance for a raised staff')
+    parser.add_argument('--object-guide', type=int, nargs=4, metavar=('X', 'Y', 'W', 'H'), help='Hard native-pixel footprint for a prop or terrain object; extraction rejects overflow')
     parser.add_argument('--flying', action=argparse.BooleanOptionalAction, default=None, help='Intentionally suspended pose; saved as flying metadata in the extracted palette')
     args = parser.parse_args()
-    prepare(args.output, args.anchors, args.labels, args.size, args.output_palette, args.body_guide, args.staff_guide, args.flying, args.kind)
+    prepare(args.output, args.anchors, args.labels, args.size, args.output_palette, args.body_guide, args.staff_guide, args.flying, args.kind, args.object_guide)

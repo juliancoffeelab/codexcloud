@@ -22,7 +22,7 @@ pub struct ContentError {
     pub message: String,
 }
 impl ContentError {
-    fn new(path: impl Into<String>, message: impl Into<String>) -> Self {
+    pub(crate) fn new(path: impl Into<String>, message: impl Into<String>) -> Self {
         Self {
             path: path.into(),
             message: message.into(),
@@ -167,8 +167,6 @@ struct UnitSpecification {
     #[serde(default)]
     terrain_modifiers: HashMap<Terrain, TerrainModifier>,
     #[serde(default)]
-    leader: bool,
-    #[serde(default)]
     healing: i32,
     #[serde(default)]
     thorns: i32,
@@ -208,6 +206,8 @@ struct StageFile {
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct InitialUnit {
+    faction: Option<String>,
+    ai_group: Option<String>,
     id: Option<String>,
     r#type: String,
     side: Side,
@@ -226,6 +226,8 @@ fn initial_turn() -> Side {
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct InitialState {
+    #[serde(default)]
+    factions: Vec<Faction>,
     map_id: String,
     map_revision: u32,
     cols: i32,
@@ -268,6 +270,9 @@ impl InitialState {
             );
             let tile = format!("{},{}", unit.col, unit.row);
             units.push(PublicUnit {
+                faction: unit.faction,
+                items: vec![],
+                ai_group: unit.ai_group,
                 id,
                 r#type: unit.r#type,
                 side: unit.side,
@@ -282,7 +287,10 @@ impl InitialState {
                 rebuilding: None,
             });
         }
+        validate_factions(&self.factions, &units)
+            .map_err(|message| ContentError::new(path, message))?;
         Ok(State {
+            factions: self.factions,
             condition_memory: vec![],
             armies: None,
             map_id: self.map_id,
@@ -324,7 +332,7 @@ fn checked_path(path: &str) -> Result<(), ContentError> {
     }
     Ok(())
 }
-fn identifier(id: &str, path: &str) -> Result<(), ContentError> {
+pub(crate) fn identifier(id: &str, path: &str) -> Result<(), ContentError> {
     if id.is_empty()
         || !id
             .bytes()
@@ -337,7 +345,10 @@ fn identifier(id: &str, path: &str) -> Result<(), ContentError> {
     }
     Ok(())
 }
-fn unique<'a>(ids: impl IntoIterator<Item = &'a str>, path: &str) -> Result<(), ContentError> {
+pub(crate) fn unique<'a>(
+    ids: impl IntoIterator<Item = &'a str>,
+    path: &str,
+) -> Result<(), ContentError> {
     let mut seen = HashSet::new();
     for id in ids {
         if !seen.insert(id) {
@@ -496,7 +507,6 @@ impl Rules {
                 || spec.healing < 0
                 || spec.thorns < 0
                 || spec.thorn_aura < 0
-                || spec.attacks.is_empty()
             {
                 return Err(ContentError::new(
                     &path,
@@ -505,22 +515,7 @@ impl Rules {
             }
             unique(spec.attacks.iter().map(|w| w.id.as_str()), &path)?;
             for attack in &spec.attacks {
-                identifier(&attack.id, &path)?;
-                if attack.name.is_empty()
-                    || attack.sound.is_empty()
-                    || attack.range == 0
-                    || attack.damage < 0
-                    || attack.damage > 1000
-                    || attack.spread < 0
-                    || attack.spread > attack.damage
-                    || !(1..=16).contains(&attack.count)
-                    || attack.drain > 100
-                {
-                    return Err(ContentError::new(
-                        &path,
-                        format!("invalid weapon {}", attack.id),
-                    ));
-                }
+                attack.validate(&path)?;
             }
             for next in &spec.advances_to {
                 reference(next, &types, &path)?;
@@ -564,8 +559,8 @@ impl Rules {
                 description: spec.description,
                 hp: spec.hp,
                 r#move: spec.r#move,
-                damage: spec.attacks[0].damage,
-                range: spec.attacks.iter().map(|w| w.range).max().unwrap(),
+                damage: spec.attacks.first().map_or(0, |attack| attack.damage),
+                range: spec.attacks.iter().map(|w| w.range).max().unwrap_or(0),
                 cost: spec.cost,
                 attacks: spec.attacks,
                 damage_modifiers: DamageModifiers {
@@ -575,7 +570,6 @@ impl Rules {
                 },
                 race: spec.race,
                 role: spec.role,
-                leader: spec.leader,
                 healing: spec.healing,
                 thorns: spec.thorns,
                 thorn_aura: spec.thorn_aura,
@@ -657,7 +651,7 @@ impl Rules {
                         "duplicate or mismatched stage/map identifier",
                     ));
                 }
-                validate_mission(&stage.mission, &state, &types, &stage_path)?;
+                validate_mission(&stage.mission, &state, &types, &units, &stage_path)?;
                 map_definitions.push(documents::map_metadata(
                     bundle,
                     &stage_path,
@@ -860,6 +854,7 @@ fn validate_mission(
     mission: &Mission,
     state: &State,
     types: &HashMap<String, usize>,
+    units: &[UnitRule],
     path: &str,
 ) -> Result<(), ContentError> {
     let tiles: HashSet<&str> = state.tiles.iter().map(|t| t.id.as_str()).collect();
@@ -878,8 +873,42 @@ fn validate_mission(
         }
         Ok(())
     };
+    unique(
+        mission.enemy_groups.iter().map(|group| group.id.as_str()),
+        path,
+    )?;
+    for group in &mission.enemy_groups {
+        identifier(&group.id, path)?;
+        if let Some(rule) = &group.when {
+            rule.condition
+                .validate(&state.tiles, &mission.events, false)
+                .map_err(|message| ContentError::new(path, message))?;
+            rule.condition
+                .validate_units(types)
+                .map_err(|message| ContentError::new(path, message))?;
+        }
+    }
+    let group_ref = |id: &str, side: Side| -> Result<(), ContentError> {
+        if side != Side::Enemy || !mission.enemy_groups.iter().any(|group| group.id == id) {
+            return Err(ContentError::new(
+                path,
+                format!("unknown enemy group: {id}"),
+            ));
+        }
+        Ok(())
+    };
+    for unit in &state.units {
+        if let Some(id) = &unit.ai_group {
+            group_ref(id, unit.side)?;
+        }
+    }
     let starting = |units: &[StartingUnit]| -> Result<(), ContentError> {
         for unit in units {
+            validate_faction_reference(&state.factions, unit.faction.as_deref(), unit.side)
+                .map_err(|message| ContentError::new(path, message))?;
+            if let Some(id) = &unit.ai_group {
+                group_ref(id, unit.side)?;
+            }
             reference(&unit.r#type, types, path)?;
             tile_ref(&format!("{},{}", unit.col, unit.row))?;
         }
@@ -898,7 +927,7 @@ fn validate_mission(
             "mission briefing and goals are required",
         ));
     }
-    for goal in &mission.goals {
+    for goal in mission.all_goals() {
         for site in goal.sites() {
             tile_ref(&site)?;
         }
@@ -929,8 +958,45 @@ fn validate_mission(
         }
     }
     for event in &mission.events {
+        for reward in &event.items {
+            reward.item.validate(path)?;
+            if reward.item.attacks.iter().any(|a| {
+                units
+                    .iter()
+                    .any(|unit| unit.attacks.iter().any(|base| base.id == a.id))
+            }) {
+                return Err(ContentError::new(
+                    path,
+                    "equipment attacks need distinct IDs from unit attacks",
+                ));
+            }
+            if reward
+                .recipient
+                .name
+                .as_ref()
+                .is_some_and(|name| name.is_empty())
+            {
+                return Err(ContentError::new(path, "empty item recipient name"));
+            }
+        }
         identifier(&event.id, path)?;
+        if let Some(choice) = &event.choice {
+            identifier(choice, path)?;
+        }
         if let Some(group) = &event.spawn {
+            for unit in &group.units {
+                validate_faction_reference(
+                    &state.factions,
+                    unit.faction.as_deref().or(group.faction.as_deref()),
+                    unit.side,
+                )
+                .map_err(|message| ContentError::new(path, message))?;
+            }
+            if let Some(id) = &group.ai_group {
+                for unit in &group.units {
+                    group_ref(id, unit.side)?;
+                }
+            }
             if group.area.is_empty() || group.units.is_empty() {
                 return Err(ContentError::new(
                     path,

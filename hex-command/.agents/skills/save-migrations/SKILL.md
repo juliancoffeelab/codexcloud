@@ -23,11 +23,11 @@ converted state after migration; validation must not run historical gameplay.
 
 ## Save contract
 
-`src/save/schema.ts` defines the current version-5 envelope:
+`src/save/schema.ts` defines the current version-6 envelope:
 
 ```json
 {
-  "version": 5,
+  "version": 6,
   "pendingEnemy": false,
   "checkpoint": { "seed": 17, "state": {} }
 }
@@ -142,3 +142,11 @@ after validation, without playing any remaining enemy actions.
 This is recovery of a historical format, not permission to save partial phases.
 New saves must persist only the boundaries of the entire enemy turn, even when
 that turn contains many units and commands.
+
+## Version-five migration
+
+The v5-to-v6 step turns historical implicit type-based leadership into explicit
+`role: "leader"` metadata on unit instances. It uses frozen pre-conversion type
+IDs stored with the migrations and preserves every existing explicit role.
+Current unit definitions have no leadership flag. Rust, AI, UI and current saves
+use only the unit's role; ordinary units of the same type do not become leaders.

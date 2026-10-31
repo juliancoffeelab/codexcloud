@@ -63,7 +63,7 @@ pub(in crate::ai) fn prepare(game: &BattleView<'_, '_>, workspace: &mut Planning
             key.0 == u.id
                 && key.1 == u.kind
                 && key.2 == u.side
-                && key.3 == (u.side != game.turn()).then_some(u.tile)
+                && key.3 == (game.hostile_to_phase(u, game.turn())).then_some(u.tile)
                 && key.4 == u.role
                 && key.5 == u.rebuilding
                 && key.6 == u.name
@@ -87,7 +87,7 @@ pub(in crate::ai) fn prepare(game: &BattleView<'_, '_>, workspace: &mut Planning
                 u.id,
                 u.kind,
                 u.side,
-                (u.side != game.turn()).then_some(u.tile),
+                (game.hostile_to_phase(u, game.turn())).then_some(u.tile),
                 u.role,
                 u.rebuilding,
                 u.name.clone(),
@@ -114,7 +114,7 @@ pub(in crate::ai) fn prepare(game: &BattleView<'_, '_>, workspace: &mut Planning
         for unit in game
             .units()
             .iter()
-            .filter(|u| u.side == game.turn() && game.rules().units[u.kind].leader)
+            .filter(|u| game.belongs_to_phase(u, game.turn()) && u.is_leader())
         {
             let required = orders.moving_actor(unit.id);
             let (_, intent) = orders.rebuild_plan(game, unit.id, required);
@@ -130,13 +130,13 @@ pub(in crate::ai) fn prepare(game: &BattleView<'_, '_>, workspace: &mut Planning
         && cache.proximity_roster.iter().copied().eq(game
             .units()
             .iter()
-            .filter(|u| u.side != game.turn())
+            .filter(|u| game.hostile_to_phase(u, game.turn()))
             .map(|u| (u.id, u.tile)));
     if !proximity_same {
         cache.proximity_roster = game
             .units()
             .iter()
-            .filter(|u| u.side != game.turn())
+            .filter(|u| game.hostile_to_phase(u, game.turn()))
             .map(|u| (u.id, u.tile))
             .collect();
         cache.proximity = (0..game.terrain().len())
@@ -148,10 +148,12 @@ pub(in crate::ai) fn prepare(game: &BattleView<'_, '_>, workspace: &mut Planning
         cache.frontline_support.resize(game.terrain().len(), 0.0);
         cache.front = 20;
         cache.screens = 0;
-        for ally in game.units().iter().filter(|u| u.side == game.turn()) {
-            if role(game, ally.kind) == TacticalRole::Frontline
-                && !game.rules().units[ally.kind].leader
-            {
+        for ally in game
+            .units()
+            .iter()
+            .filter(|u| game.belongs_to_phase(u, game.turn()))
+        {
+            if role(game, ally.kind) == TacticalRole::Frontline && !ally.is_leader() {
                 cache.front = if cache.screens == 0 {
                     cache.proximity[ally.tile]
                 } else {
@@ -186,7 +188,7 @@ fn leader_may_advance(
     required: bool,
     proximity: &[u16],
 ) -> bool {
-    if tile == unit.tile || required || !game.units().iter().any(|u| u.side != unit.side) {
+    if tile == unit.tile || required || !game.units().iter().any(|u| game.hostile(&unit, u)) {
         return true;
     }
     let before = proximity[unit.tile];
@@ -263,7 +265,7 @@ pub(in crate::ai) fn plan(
                     && (original.hold != Some(true)
                         || game
                             .at(tile)
-                            .is_some_and(|u| u.side == unit.side && u.id != id))
+                            .is_some_and(|u| game.allied(&unit, u) && u.id != id))
             })
         {
             continue;
@@ -338,16 +340,15 @@ pub(in crate::ai) fn plan(
     let allies: Vec<_> = game
         .units()
         .iter()
-        .filter(|u| u.side == unit.side)
+        .filter(|u| game.allied(&unit, u))
         .collect();
     let movement = if unit.moved {
         0
     } else {
         game.rules().units[unit.kind].r#move
     };
-    let maximum_range = game.rules().units[unit.kind]
-        .attacks
-        .iter()
+    let maximum_range = game
+        .weapons(&unit)
         .map(|a| a.range as usize)
         .max()
         .unwrap_or(0);
@@ -359,7 +360,7 @@ pub(in crate::ai) fn plan(
         .units()
         .iter()
         .filter(|u| {
-            u.side != unit.side
+            game.hostile(&unit, u)
                 && (zero_cost
                     || game.board().distance(unit.tile, u.tile) as usize
                         <= movement + maximum_range)
@@ -403,14 +404,12 @@ pub(in crate::ai) fn plan(
                 .units()
                 .iter()
                 .filter(|enemy| {
-                    enemy.side != unit.side
+                    game.hostile(&unit, enemy)
                         && game.board().distance(enemy.tile, ally.tile)
                             <= game.rules().units[enemy.kind].r#move as u16 + 1
                 })
                 .flat_map(|enemy| {
-                    game.rules().units[enemy.kind]
-                        .attacks
-                        .iter()
+                    game.weapons(enemy)
                         .filter(|w| w.category == Category::Melee)
                         .map(|w| w.count)
                 })
@@ -455,7 +454,7 @@ pub(in crate::ai) fn plan(
         && unit.hp as f64 > game.rules().units[unit.kind].hp as f64 / 2.0
         && allies.iter().any(|u| {
             role(game, u.kind) == TacticalRole::Frontline
-                && !game.rules().units[u.kind].leader
+                && !u.is_leader()
                 && !u.moved
                 && !u.attacked
         })
@@ -498,7 +497,7 @@ pub(in crate::ai) fn plan(
         let proximity = proximity_grid[tile];
         if important
             && unit.role != Some(Role::Courier)
-            && !game.rules().units[unit.kind].leader
+            && !unit.is_leader()
             && !duty.as_ref().is_some_and(|d| d.2)
             && has_screens
             && proximity <= front
@@ -515,7 +514,7 @@ pub(in crate::ai) fn plan(
     destinations.extend(game.reachable(&unit).iter().map(|&(tile, _)| tile));
     let destinations = orders.authored_destinations(game, &unit, destinations);
     let wait_position = position(unit.tile);
-    let recruiting = game.rules().units[unit.kind].leader
+    let recruiting = unit.is_leader()
         && game
             .recruitment_options(unit.side)
             .iter()
@@ -523,16 +522,14 @@ pub(in crate::ai) fn plan(
     let geometry: Vec<_> = if foes.is_empty() {
         vec![]
     } else {
-        game.rules().units[unit.kind]
-            .attacks
-            .iter()
+        game.weapons(&unit)
             .map(|a| game.attack_origins(a.category, a.range))
             .collect()
     };
     let may_advance: Vec<_> = destinations
         .iter()
         .map(|&tile| {
-            !game.rules().units[unit.kind].leader
+            !unit.is_leader()
                 || !rebuilding.is_empty()
                 || leader_may_advance(game, &unit, tile, recruiting, required, proximity_grid)
         })
@@ -632,7 +629,7 @@ pub(in crate::ai) fn plan(
                 0.5
             };
         }
-        if game.rules().units[unit.kind].leader
+        if unit.is_leader()
             && !finishing
             && !terminal
             && rebuilding.is_empty()
@@ -717,7 +714,7 @@ pub(in crate::ai) fn plan(
             add(index, None, None);
         }
         for &target in &foes {
-            for weapon in 0..game.rules().units[unit.kind].attacks.len() {
+            for weapon in 0..game.weapons(&unit).count() {
                 let mut origins = vec![];
                 geometry[weapon][target.tile].for_each(|tile| {
                     let index = by_tile[tile];
@@ -734,7 +731,7 @@ pub(in crate::ai) fn plan(
         for destination in 0..destinations.len() {
             add(destination, None, None);
             for &target in &foes {
-                for weapon in 0..game.rules().units[unit.kind].attacks.len() {
+                for weapon in 0..game.weapons(&unit).count() {
                     add(destination, Some(target), Some(weapon));
                 }
             }
@@ -746,7 +743,7 @@ pub(in crate::ai) fn plan(
         && game
             .units()
             .iter()
-            .filter(|u| u.side != unit.side)
+            .filter(|u| game.hostile(&unit, u))
             .all(|u| {
                 !game.rules().units[u.kind]
                     .costs
@@ -754,12 +751,7 @@ pub(in crate::ai) fn plan(
                     .any(|c| *c == Some(0))
                     && game.board().distance(unit.tile, u.tile) as usize
                         > game.rules().units[u.kind].r#move
-                            + game.rules().units[u.kind]
-                                .attacks
-                                .iter()
-                                .map(|a| a.range as usize)
-                                .max()
-                                .unwrap_or(0)
+                            + game.weapons(u).map(|a| a.range as usize).max().unwrap_or(0)
             })
     {
         return None;
@@ -980,7 +972,7 @@ mod tests {
                 for unit in game
                     .units
                     .iter()
-                    .filter(|u| u.side == game.turn && game.rules.units[u.kind].leader)
+                    .filter(|u| u.side == game.turn && u.is_leader())
                 {
                     for tile in 0..game.terrain.len() {
                         assert_eq!(

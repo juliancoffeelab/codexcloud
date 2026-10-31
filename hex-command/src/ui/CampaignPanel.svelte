@@ -7,7 +7,7 @@
     dialoguePending,
     returnsWithStory,
   } from "../game/campaign-progress";
-  import { TYPES } from "../game/catalog";
+  import { TYPES, isLeader } from "../game/catalog";
   import { artSprite } from "../presentation/art";
   let {
     view,
@@ -25,11 +25,14 @@
   const definition = $derived(campaign ? CAMPAIGNS[campaign.id] : null);
   const mission = $derived(campaign ? campaignMission(campaign) : null);
   const goals = $derived(mission?.goals.map((goal) => goalProgress(view.game, goal)) ?? []);
+  const optionalGoals = $derived(
+    mission?.optionalGoals?.map((goal) => goalProgress(view.game, goal)) ?? [],
+  );
   const survivors = $derived(
     view.game.units.filter(
       (unit) =>
         unit.side === "player" &&
-        !TYPES[unit.type].leader &&
+        !isLeader(unit) &&
         unit.role !== "courier" &&
         !mission?.requiredCompanions?.includes(unit.name ?? "") &&
         !(campaign && returnsWithStory(campaign, unit)),
@@ -77,16 +80,22 @@
     </p>
     <h3>Briefing</h3>
     <p>{mission.briefing}</p>
-    <h3>Hints</h3>
-    <ul class="mission-items">
-      {#each mission.hints as hint}<li><span>{hint}</span></li>{/each}
-    </ul>
+    {#if mission.hints.length}
+      <h3>Hints</h3>
+      <ul class="mission-items">
+        {#each mission.hints as hint}<li><span>{hint}</span></li>{/each}
+      </ul>
+    {/if}
     <h3>Objectives</h3>
     <ul class="mission-items mission-goals">
       {#each goals as goal}
         <li class:completed-goal={goal.done}>
           <span>{goal.label}</span>
-          <strong>{goal.current}/{goal.total}</strong>
+          {#if goal.total > 1}
+            <strong>{goal.current}/{goal.total}</strong>
+          {:else if goal.done}
+            <strong>✓</strong>
+          {/if}
         </li>
       {/each}
       <li class:completed-goal={view.game.winner === "player"}>
@@ -104,15 +113,22 @@
           {#if view.game.winner === "player"}<strong>✓</strong>{/if}
         </li>
       {/each}
-      {#each mission.events.filter((event) => event.label && !mission.goals.some((goal) => goal.kind === "event" && goal.event === event.id)) as event}
-        <li class:completed-goal={campaign.marks.includes(`event:${event.id}`)}>
-          <span>
-            {event.label}{event.gold ? ` (+${event.gold} gold)` : ""}
-            <span class="optional-label">[optional]</span>
-          </span>
-        </li>
-      {/each}
     </ul>
+    {#if optionalGoals.length}
+      <h3>Optional objectives</h3>
+      <ul class="mission-items mission-goals">
+        {#each optionalGoals as goal}
+          <li class:completed-goal={goal.done}>
+            <span>{goal.label}</span>
+            {#if goal.total > 1}
+              <strong>{goal.current}/{goal.total}</strong>
+            {:else if goal.done}
+              <strong>✓</strong>
+            {/if}
+          </li>
+        {/each}
+      </ul>
+    {/if}
   </section>
   {#if view.game.winner && !dialoguePending(campaign)}
     <section id="mission-result" class="campaign-panel" aria-label="Mission result" tabindex="-1">

@@ -15,6 +15,43 @@
           "text": "Dry blankets, clean bandages, and six coins. Someone expected the road to open again. I would hate to disappoint them."
         }
       ]
+    },
+    {
+      "id": "ferry-supplies",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "choice",
+          "choice": "ferryman-alive"
+        }
+      },
+      "label": "The ferryman’s emergency purse supplies the next patrol",
+      "dialogue": [
+        {
+          "speaker": "Nera",
+          "portrait": "swordsman",
+          "text": "The ferryman pressed his emergency purse into my hand. Six coins. We’ll use them to bring his neighbors home."
+        }
+      ],
+      "gold": 6
+    },
+    {
+      "id": "ferry-letter",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "choice",
+          "choice": "ferryman-dead"
+        }
+      },
+      "label": "The ferryman’s letter points the way",
+      "dialogue": [
+        {
+          "speaker": "Nera",
+          "portrait": "swordsman",
+          "text": "He left us a road to follow. We owe him more than a lamp in the window."
+        }
+      ]
     }
   ],
   "waves": [

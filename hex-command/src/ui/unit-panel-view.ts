@@ -7,6 +7,7 @@ import { terrainDamageFacts } from "./terrain-effects";
 import { abilityInfo } from "../presentation/unit-ability";
 
 export interface UnitDetailsView {
+  faction: import("../../rust/pkg/hex_command").UnitFaction;
   unit: UnitView;
   definition: Immutable<UnitDefinition>;
   terrainName: string;
@@ -58,7 +59,7 @@ export function unitPanelView(view: BattleView): UnitPanelView {
   if (!selectedUnit) return { kind: "hidden" };
 
   const targetUnit = game.unit(view.target);
-  const canChooseAttack = game.turn === "player" && selectedUnit.side === "player";
+  const canChooseAttack = game.turn === "player" && game.faction(selectedUnit.id).controllable;
   if (canChooseAttack && targetUnit && game.targets(selectedUnit.id).includes(targetUnit)) {
     return {
       kind: "combat",
@@ -75,10 +76,13 @@ export function unitPanelView(view: BattleView): UnitPanelView {
   return {
     kind: "details",
     details: {
+      faction: game.faction(selectedUnit.id),
       unit: selectedUnit,
       definition: TYPES[selectedUnit.type],
       terrainName: TERRAIN[occupiedTile.terrain].name,
-      actionStatus: actionStatus(selectedUnit),
+      actionStatus: game.faction(selectedUnit.id).controllable
+        ? actionStatus(selectedUnit)
+        : "Not under your control",
       promotions: game
         .promotionOptions(selectedUnit.id)
         .filter(() => canChooseAttack)

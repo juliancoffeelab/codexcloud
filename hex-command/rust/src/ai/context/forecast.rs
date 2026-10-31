@@ -42,7 +42,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         let enemies: Vec<_> = board
             .units
             .iter()
-            .filter(|u| u.side != unit.side)
+            .filter(|u| game.hostile(unit, u))
             .map(|enemy| {
                 let mut blocked = TileSet::new(board.terrain.len());
                 blocked.insert(enemy.tile);
@@ -133,7 +133,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         source
             .units
             .iter()
-            .filter(|u| u.side != side)
+            .filter(|u| source.hostile_to_phase(u, side))
             .map(|enemy| {
                 let mut enemy = enemy.clone();
                 enemy.moved = false;
@@ -167,7 +167,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         board
             .units
             .iter()
-            .filter(|u| u.side != side)
+            .filter(|u| board.hostile_to_phase(u, side))
             .map(|enemy| {
                 let mut blockers = occupied.clone();
                 blockers.insert(enemy.tile);
@@ -191,9 +191,8 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         unit: &Unit,
         positions: &TileSet,
     ) -> Vec<TileSet> {
-        board.rules.units[unit.kind]
-            .attacks
-            .iter()
+        board
+            .weapons(unit)
             .map(|attack| {
                 if let TileSet::Small(positions) = positions {
                     let masks = board.attack_masks(attack.category, attack.range);
@@ -229,7 +228,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                 continue;
             }
             let mut best = 0;
-            for weapon in 0..board.rules.units[enemy.kind].attacks.len() {
+            for weapon in 0..board.weapons(enemy).count() {
                 if positions[weapon].contains(target.tile) {
                     best = best.max(if sum {
                         board
@@ -266,7 +265,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             return 0;
         }
         let important = self.orders.map_or_else(
-            || self.source.rules.units[u.kind].leader,
+            || u.is_leader(),
             |orders| orders.important(&super::BattleView::new(self.source), u),
         );
         let key = (important.then_some(u.id), u.kind, tile, eliminated);
@@ -295,7 +294,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                 let enemies = shadow
                     .units
                     .iter()
-                    .filter(|u| u.side != self.side)
+                    .filter(|u| self.source.hostile_to_phase(u, self.side))
                     .map(|u| {
                         let positions = shadow.threat_reach(u, None);
                         (u.clone(), Self::coverage_engine(&shadow, u, &positions))

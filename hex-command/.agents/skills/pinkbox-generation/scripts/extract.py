@@ -107,6 +107,18 @@ def extract(source, manifest_path, output):
         if not any(s != '.' for r in native for s in r):
             failures.append(f'{slot["label"]}: empty output box')
             continue
+        object_guides = [guide for guide in slot.get('guides', []) if guide['kind'] == 'object']
+        overflow = []
+        for guide in object_guides:
+            gx, gy, gw, gh = guide['rect']
+            if min(gx, gy) < 0 or min(gw, gh) <= 0 or gx + gw > 64 or gy + gh > 64:
+                raise ValueError('Invalid object footprint guide')
+            overflow.extend([xx, yy] for yy, row in enumerate(native) for xx, symbol in enumerate(row)
+                            if symbol != '.' and not (gx <= xx < gx + gw and gy <= yy < gy + gh))
+        if overflow:
+            (directory / 'footprint-overflow.json').write_text(json.dumps(overflow, indent=2) + '\n')
+            failures.append(f'{slot["label"]}: {len(overflow)} pixels outside the declared object footprint')
+            continue
         if kind == 'unit':
             try:
                 renderer.require_grounded(native, palette, slot.get('flying', False), slot['label'])

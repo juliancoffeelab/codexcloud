@@ -17,7 +17,7 @@
 </script>
 
 <div class="unit-detail">
-  <UnitCard unit={details.unit} {artwork} showName showProgress />
+  <UnitCard unit={details.unit} faction={details.faction} {artwork} showName showProgress />
   <div class="unit-info">
     <div class="unit-stats">
       <span class="unit-stat">

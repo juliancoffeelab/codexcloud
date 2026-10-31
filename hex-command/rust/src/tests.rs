@@ -145,6 +145,7 @@ fn restore_rejects_experience_outside_progression_limits() {
         let mut state = opening.clone();
         let campaign = state.campaign.as_mut().unwrap();
         let veteran = Veteran {
+            items: vec![],
             r#type: if story { "commander" } else { "swordsman" }.into(),
             experience: u32::MAX,
             name: story.then(|| "Captain Nera".into()),

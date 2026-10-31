@@ -3,14 +3,14 @@
   "name": "Giant Bat",
   "role": "flank",
   "race": "beast",
-  "hp": 13,
+  "hp": 10,
   "move": 6,
   "cost": 7,
   "attacks": [
     {
       "id": "bite",
       "name": "Bite",
-      "damage": 3,
+      "damage": 2,
       "count": 2,
       "damageType": "blade",
       "category": "melee",

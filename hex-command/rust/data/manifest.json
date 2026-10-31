@@ -111,7 +111,8 @@
     "game/units/spectre.json",
     "game/units/bear.json",
     "game/units/giant-bat.json",
-    "game/units/giant-spider.json"
+    "game/units/giant-spider.json",
+    "game/units/captives.json"
   ],
   "scenarios": [
     "game/scenario/mirror-v1/scenario.json",

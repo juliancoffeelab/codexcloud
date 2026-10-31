@@ -39,9 +39,7 @@ function veteran(value: unknown): value is CampaignVeteran {
     integer(value.experience) &&
     value.experience <= (TYPES[value.type].experienceNeeded ?? 0) &&
     (value.name === undefined || (typeof value.name === "string" && value.name.length <= 80)) &&
-    (value.role === undefined ||
-      value.role === "courier" ||
-      (value.role === "leader" && TYPES[value.type].leader === true))
+    (value.role === undefined || value.role === "courier" || value.role === "leader")
   );
 }
 
@@ -72,11 +70,9 @@ function validUnit(
         value.experience > (TYPES[value.type].experienceNeeded ?? 0))) ||
     (value.name !== undefined && (typeof value.name !== "string" || value.name.length > 80)) ||
     (value.role !== undefined && value.role !== "leader" && value.role !== "courier") ||
-    (value.role === "leader" && !TYPES[value.type].leader) ||
     typeof value.moved !== "boolean" ||
     typeof value.attacked !== "boolean" ||
-    (value.rebuilding !== undefined &&
-      (typeof value.rebuilding !== "boolean" || !TYPES[value.type].leader)) ||
+    (value.rebuilding !== undefined && typeof value.rebuilding !== "boolean") ||
     (value.retreating !== undefined &&
       (typeof value.retreating !== "boolean" || value.side !== "enemy"))
   )
@@ -114,7 +110,7 @@ function campaignState(
     mission.map.id !== mapId ||
     !Array.isArray(value.recall) ||
     value.recall.length > 4 ||
-    !value.recall.every((type) => unitType(type) && !TYPES[type].leader) ||
+    !value.recall.every((type) => unitType(type)) ||
     !integer(value.carryGold) ||
     value.carryGold > 8
   )

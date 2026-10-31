@@ -1,5 +1,5 @@
 import type { GameView, UnitView } from "../game/view";
-import { DAMAGE_TYPES, TERRAIN, TYPES } from "../game/catalog";
+import { DAMAGE_TYPES, TERRAIN, TYPES, unitWeapons } from "../game/catalog";
 import type {
   CombatPreviewDetails,
   DamageBreakdown,
@@ -131,7 +131,7 @@ export function attackChoiceViews(
   attacker: UnitView,
   target: UnitView,
 ): AttackChoiceView[] {
-  return TYPES[attacker.type].attacks.map((weapon) => {
+  return unitWeapons(attacker).map((weapon) => {
     if (!game.canAttack(attacker, target, weapon.id)) {
       return {
         available: false,

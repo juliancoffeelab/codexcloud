@@ -3,7 +3,6 @@
   "role": "warrior",
   "name": "Wildkeeper",
   "race": "beast",
-  "leader": true,
   "hp": 28,
   "move": 3,
   "cost": 0,

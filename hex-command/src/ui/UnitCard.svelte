@@ -5,12 +5,20 @@
 
   interface Props {
     unit: UnitView;
+    faction?: import("../../rust/pkg/hex_command").UnitFaction;
     artwork: Artwork;
     showName?: boolean;
     showProgress?: boolean;
     hp?: number;
   }
-  let { unit, artwork, showName = false, showProgress = false, hp = unit.hp }: Props = $props();
+  let {
+    unit,
+    faction,
+    artwork,
+    showName = false,
+    showProgress = false,
+    hp = unit.hp,
+  }: Props = $props();
 
   const definition = $derived(TYPES[unit.type]);
   const healthPercent = $derived((hp / definition.hp) * 100);
@@ -24,7 +32,7 @@
       72,
       90,
       `portrait ${unit.side === "enemy" ? "enemy-unit" : ""}`,
-      unit.side,
+      faction?.palette ?? unit.side,
     ),
   );
 </script>
@@ -32,7 +40,11 @@
 <div
   class={`combatant ${unit.side}`}
   role="group"
-  aria-label={unit.side === "player" ? "Your unit" : "Enemy unit"}
+  aria-label={faction?.relation === "neutral"
+    ? "Neutral unit"
+    : unit.side === "player"
+      ? "Your unit"
+      : "Enemy unit"}
 >
   {@html portrait}
   <div class="unit-heading">

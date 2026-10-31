@@ -25,34 +25,34 @@ impl BattleView<'_, '_> {
         let foes: Vec<_> = self
             .units()
             .iter()
-            .filter(|u| u.side != self.turn())
+            .filter(|u| self.hostile_to_phase(u, self.turn()))
             .collect();
         let mut ranked: Vec<_> = self
             .units()
             .iter()
             .enumerate()
-            .filter(|(_, u)| u.side == self.turn() && !u.attacked)
+            .filter(|(_, u)| {
+                self.belongs_to_phase(u, self.turn()) && !u.attacked && self.can_act(u.id)
+            })
             .map(|(index, unit)| {
                 let rule = &self.rules().units[unit.kind];
                 let movement = if unit.moved { 0 } else { rule.r#move };
                 let zero_cost = rule.costs.iter().any(|c| *c == Some(0));
-                let range = rule
-                    .attacks
-                    .iter()
+                let range = self
+                    .weapons(unit)
                     .map(|a| a.range as usize)
                     .max()
                     .unwrap_or(0);
                 let reachable = (zero_cost
                     || cache.proximity[unit.tile] as usize <= movement + range)
                     .then(|| self.threat_reach_blocked(unit, self.occupied_tiles().clone()));
-                let geometry: Vec<_> = rule
-                    .attacks
-                    .iter()
+                let geometry: Vec<_> = self
+                    .weapons(unit)
                     .map(|a| self.attack_origins(a.category, a.range))
                     .collect();
                 let mut offense = 0.0f64;
                 for &foe in &foes {
-                    for (weapon, attack) in rule.attacks.iter().enumerate() {
+                    for (weapon, attack) in self.weapons(unit).enumerate() {
                         if !zero_cost
                             && self.board().distance(unit.tile, foe.tile) as usize
                                 > movement + attack.range as usize
@@ -120,14 +120,14 @@ impl BattleView<'_, '_> {
                 if policy == QueueMode::CampaignBlock && personal {
                     score += 20.0;
                 }
-                if role(self, unit.kind) == TacticalRole::Frontline && !rule.leader {
+                if role(self, unit.kind) == TacticalRole::Frontline && !unit.is_leader() {
                     score += 4.0;
                 }
                 if role(self, unit.kind) == TacticalRole::Healer {
                     for ally in self
                         .units()
                         .iter()
-                        .filter(|u| u.side == self.turn() && u.id != unit.id)
+                        .filter(|u| self.belongs_to_phase(u, self.turn()) && u.id != unit.id)
                     {
                         if self.board().distance(unit.tile, ally.tile) as usize > movement + 1 {
                             continue;
@@ -144,7 +144,7 @@ impl BattleView<'_, '_> {
                             };
                     }
                 }
-                if rule.leader && !personal {
+                if unit.is_leader() && !personal {
                     score -= 8.0;
                 }
                 if cache.orders.campaign
@@ -237,7 +237,7 @@ fn next_plan_inner(
         };
         let Some(unit) = game
             .unit(id.0)
-            .filter(|u| u.side == game.turn() && !u.attacked)
+            .filter(|u| game.belongs_to_phase(u, game.turn()) && !u.attacked && game.can_act(u.id))
         else {
             continue;
         };
@@ -248,11 +248,9 @@ fn next_plan_inner(
             && !game
                 .units()
                 .iter()
-                .filter(|u| u.side != game.turn())
+                .filter(|u| game.hostile_to_phase(u, game.turn()))
                 .any(|target| {
-                    game.rules().units[unit.kind]
-                        .attacks
-                        .iter()
+                    game.weapons(unit)
                         .enumerate()
                         .any(|(weapon, _)| game.can_attack(unit, unit.tile, target, weapon))
                 })

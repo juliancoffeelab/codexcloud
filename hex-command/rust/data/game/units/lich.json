@@ -3,7 +3,6 @@
   "role": "ranger",
   "name": "Lich",
   "race": "skeletons",
-  "leader": true,
   "hp": 30,
   "move": 3,
   "cost": 0,

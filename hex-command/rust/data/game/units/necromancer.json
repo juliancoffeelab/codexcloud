@@ -3,7 +3,6 @@
   "role": "ranger",
   "name": "Grave Adept",
   "race": "skeletons",
-  "leader": true,
   "hp": 24,
   "move": 3,
   "cost": 0,

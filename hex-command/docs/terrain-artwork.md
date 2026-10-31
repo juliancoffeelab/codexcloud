@@ -53,3 +53,8 @@ Mountain has three approved massif layouts and is impassable. Cave adds a
 separate dark entrance prop to that foreground and permits entry at movement
 cost 2. Scenario encounter data determines cave occupants and rewards; the
 terrain itself does not spawn wildlife or grant items.
+
+Burned-village artwork composes two burned-home foreground pieces over the ordinary
+`green-plain` floor. The ruined home is bounded by the intact house's painted
+footprint. Standalone house terrain remains the ferryman's home; map drafts use
+village terrain for settlements.

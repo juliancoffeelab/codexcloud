@@ -3,7 +3,6 @@
   "role": "warrior",
   "name": "Grovewarden",
   "race": "beast",
-  "leader": true,
   "hp": 34,
   "move": 3,
   "cost": 0,

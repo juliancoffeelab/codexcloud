@@ -317,6 +317,7 @@ pub struct AttackDetails {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 pub struct UnitActions {
+    pub faction: crate::data::UnitFaction,
     pub unit: String,
     pub reachable: Vec<ReachableTile>,
     pub attacks: Vec<AttackDetails>,

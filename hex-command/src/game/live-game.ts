@@ -182,6 +182,11 @@ export class LiveGame {
     if (!details) throw new Error("That attack cannot reach this enemy.");
     return details as CombatPreviewDetails;
   }
+  faction(id: string) {
+    const profile = this.choices(id)?.faction;
+    if (!profile) throw new Error("Unknown unit.");
+    return profile;
+  }
   promotionOptions(id: string): UnitType[] {
     return (this.choices(id)?.promotions ?? []) as UnitType[];
   }
@@ -297,6 +302,7 @@ export class LiveGame {
       units: detached.units,
       tile: detached.tile.bind(detached),
       unit: detached.unit.bind(detached),
+      faction: detached.faction.bind(detached),
       at: detached.at.bind(detached),
       neighbors: (id: string) => immutable(detached.neighbors(id)),
       cost: detached.cost.bind(detached),

@@ -1,11 +1,12 @@
 import { pixelSprites, pixelUnitModels, pixelFloorColors } from "./pixel-art";
-import type { DialoguePortrait, Side } from "../game/types";
+import type { DialoguePortrait } from "../game/types";
 
 export interface FrameImage {
   readonly url: string;
   readonly width: number;
   readonly height: number;
 }
+export type ArtworkFaction = string;
 export type SpriteKind = "units" | "terrain";
 export interface Artwork {
   readonly frames: Readonly<Record<string, Readonly<FrameImage>>>;
@@ -39,7 +40,7 @@ function renderSprite(
   width: number,
   height: number,
   extraClass = "",
-  side?: Side,
+  side?: ArtworkFaction,
 ): string {
   if (!image) return "";
   return `<svg class="art-sprite pixel-art ${extraClass}" ${side ? `data-faction="${side}"` : ""} x="${x}" y="${y}" width="${width}" height="${height}" viewBox="0 0 ${image.width} ${image.height}" aria-hidden="true" focusable="false"><image href="${image.url}" x="0" y="0" width="${image.width}" height="${image.height}" preserveAspectRatio="none"/></svg>`;
@@ -66,7 +67,7 @@ export function artSprite(
   width: number,
   height: number,
   extraClass = "",
-  side: Side = "player",
+  side: ArtworkFaction = "player",
   floor?: string,
 ): string {
   return renderSprite(
@@ -85,7 +86,7 @@ export function artFrame(
   artwork: Artwork,
   kind: SpriteKind,
   name: string,
-  side: Side = "player",
+  side: ArtworkFaction = "player",
   floor?: string,
 ): Readonly<FrameImage> | undefined {
   return artwork.frames[artFrameKey(kind, name, side, floor)];
@@ -94,7 +95,7 @@ export function artFrame(
 export function artFrameKey(
   kind: SpriteKind,
   name: string,
-  side: Side = "player",
+  side: ArtworkFaction = "player",
   floor?: string,
 ): string {
   if (kind === "units") name = pixelUnitModels[name] ?? name;

@@ -38,7 +38,7 @@ impl Game<'_> {
                 for target in &self.units {
                     let recommended = self.best_attack(unit, target, unit.tile);
                     for weapon in self.attack_options(unit, target, unit.tile) {
-                        let attack = self.rules.units[unit.kind].attacks[weapon].clone();
+                        let attack = self.weapon(unit, weapon).clone();
                         let (damage, retaliation, response) =
                             self.preview(unit, target, weapon, unit.tile);
                         let forecast = self.exchange(unit, target, weapon, unit.tile);
@@ -47,8 +47,7 @@ impl Game<'_> {
                             maximum: forecast.hp_maximum[side],
                             expected: forecast.hp_expected[side],
                         };
-                        let response = response
-                            .map(|index| self.rules.units[target.kind].attacks[index].clone());
+                        let response = response.map(|index| self.weapon(target, index).clone());
                         let retaliation_detail = response
                             .as_ref()
                             .map(|r| self.damage_detail(r, unit, unit.tile));
@@ -74,6 +73,7 @@ impl Game<'_> {
                     }
                 }
                 UnitActions {
+                    faction: self.unit_faction_view(unit),
                     unit: format!("u{}", unit.id),
                     reachable: self
                         .reachable(unit)

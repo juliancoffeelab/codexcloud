@@ -6,6 +6,7 @@ import { beforeEach, test, vi } from "vitest";
 import { LiveGame, nativeValue } from "../src/game/live-game";
 import { loadBattle } from "../src/save/load";
 import { migrateSave } from "../src/save/migrations";
+import historicalLeaderTypes from "../src/save/migrations/legacy/data/type-leaders-v5.json";
 import { migrateV1ToV2 } from "../src/save/migrations/v1-to-v2";
 import { SAVE_VERSION } from "../src/save/schema";
 import { SAVE_KEY } from "../src/save/storage";
@@ -54,7 +55,14 @@ for (const [cols, rows] of [
         expanded.tiles.find((candidate) => candidate.id === tile.id),
         tile,
       );
-    assert.deepEqual(expanded.units, state.units);
+    assert.deepEqual(
+      expanded.units,
+      state.units.map((unit) =>
+        unit.role === undefined && historicalLeaderTypes.includes(unit.type)
+          ? { ...unit, role: "leader" }
+          : unit,
+      ),
+    );
     assert.deepEqual(expanded.gold, state.gold);
     assert.equal(expanded.round, 5);
     assert.equal(migrated.save.checkpoint.seed, 42);
@@ -108,8 +116,17 @@ function checkpoint() {
   game.dispose();
   return saved;
 }
-function oldSnapshot(input = checkpoint().state) {
-  const { tiles, cols: _cols, rows: _rows, ...state } = structuredClone(input);
+function oldSnapshot(
+  input:
+    import("../rust/pkg/hex_command").State | import("../src/game/types").GameState = checkpoint()
+    .state,
+) {
+  const {
+    tiles,
+    cols: _cols,
+    rows: _rows,
+    ...state
+  } = structuredClone(input) as import("../rust/pkg/hex_command").State;
   return {
     version: 1,
     campaignDeploymentFormat: "named-waves-v1",

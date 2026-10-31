@@ -76,6 +76,7 @@ impl std::fmt::Display for Race {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Family {
+    Captives,
     Bear,
     #[serde(rename = "giant-bat")]
     GiantBat,
@@ -118,6 +119,7 @@ impl Family {
     /// Return the stable authored identifier used at serialization boundaries.
     pub fn as_str(self) -> &'static str {
         match self {
+            Self::Captives => "captives",
             Self::Bear => "bear",
             Self::GiantBat => "giant-bat",
             Self::GiantSpider => "giant-spider",

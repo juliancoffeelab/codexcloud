@@ -48,7 +48,7 @@ pub(super) fn choose_with_weights(
     let leader = game
         .units()
         .iter()
-        .find(|u| u.side == side && game.rules().units[u.kind].leader)?;
+        .find(|u| game.belongs_to_phase(u, side) && u.is_leader())?;
     let required = orders.requirements.iter().find(|r| r.deficit(game) > 0);
     let reserved: rustc_hash::FxHashSet<_> =
         orders.reserved.iter().map(|t| game.site(&t.0)).collect();
@@ -67,6 +67,9 @@ pub(super) fn choose_with_weights(
         };
         let rule = &game.rules().units[kind];
         let mut recruit = Unit {
+            faction: leader.faction.clone(),
+            items: vec![],
+            ai_group: None,
             id: 0,
             kind,
             side,
@@ -86,8 +89,8 @@ pub(super) fn choose_with_weights(
             .units()
             .iter()
             .filter(|u| {
-                u.side == side
-                    && !game.rules().units[u.kind].leader
+                game.belongs_to_phase(u, side)
+                    && !u.is_leader()
                     && game.rules().units[u.kind].family == rule.family
             })
             .count();
@@ -156,7 +159,7 @@ mod tests {
 
     fn battle(rules: &Rules, a: usize, b: usize) -> Game<'_> {
         let mut game = Game::new(rules, "mirror");
-        game.units.retain(|u| rules.units[u.kind].leader);
+        game.units.retain(|u| u.is_leader());
         game.roster_changed();
         game.pools = Some([vec![a, b], vec![a, b]]);
         game.gold[0] = 10;

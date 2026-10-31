@@ -4,6 +4,7 @@ mod combat;
 mod commands;
 pub(crate) mod damage;
 pub(crate) mod exchange;
+mod factions;
 #[cfg(any(test, feature = "wasm"))]
 mod inspection;
 mod movement;

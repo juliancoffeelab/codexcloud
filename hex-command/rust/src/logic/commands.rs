@@ -26,7 +26,7 @@ impl Game<'_> {
                     .indices
                     .get(&tile.0)
                     .ok_or_else(|| CommandError::UnknownTile(tile.clone()))?;
-                if actor.side != self.turn {
+                if !self.may_act(actor) {
                     return Err(CommandError::WrongTurn);
                 }
                 if actor.tile == site || !self.reachable(actor).iter().any(|&(t, _)| t == site) {
@@ -43,12 +43,11 @@ impl Game<'_> {
                 let victim = self
                     .unit(target.0)
                     .ok_or(CommandError::UnknownUnit(target))?;
-                let attack = self.rules.units[actor.kind]
-                    .attacks
-                    .iter()
+                let attack = self
+                    .weapons(actor)
                     .position(|a| a.id == weapon.0)
                     .ok_or_else(|| CommandError::UnknownWeapon(weapon.clone()))?;
-                if actor.side != self.turn {
+                if !self.may_act(actor) {
                     return Err(CommandError::WrongTurn);
                 }
                 if actor.attacked || !self.can_attack(actor, actor.tile, victim, attack) {
@@ -68,7 +67,7 @@ impl Game<'_> {
                     .indices
                     .get(&tile.0)
                     .ok_or_else(|| CommandError::UnknownTile(tile.clone()))?;
-                if actor.side != self.turn {
+                if !self.may_act(actor) {
                     return Err(CommandError::WrongTurn);
                 }
                 if !self.placement_tiles(actor, recruit, true).contains(&site) {
@@ -83,7 +82,7 @@ impl Game<'_> {
                     .types
                     .get(&kind.0)
                     .ok_or_else(|| CommandError::UnknownType(kind.clone()))?;
-                if actor.side != self.turn {
+                if !self.may_act(actor) {
                     return Err(CommandError::WrongTurn);
                 }
                 if !self.promotion_options(actor).contains(&advance) {

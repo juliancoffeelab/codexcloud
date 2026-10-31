@@ -4,7 +4,7 @@ import { dialoguePending } from "../game/campaign-progress";
 import type { CampaignId, UnitType } from "../game/types";
 import { writable, type Readable, type Writable } from "svelte/store";
 import { tick } from "svelte";
-import { TYPES, TERRAIN, type Tile, type Unit } from "../game/catalog";
+import { TYPES, TERRAIN, isLeader, type Tile, type Unit } from "../game/catalog";
 import { createMoveUndo } from "../game/undo";
 import { loadBattle } from "../save/load";
 import { saveBattle } from "../save/write";
@@ -120,7 +120,7 @@ export class BattleController {
     if (!this.active()) {
       throw new Error("Wait for your turn.");
     }
-    if (this.#game.unit(unitId)?.side !== "player") {
+    if (!this.#game.unit(unitId) || !this.#game.faction(unitId).controllable) {
       throw new Error("This unit cannot act now.");
     }
   }
@@ -291,7 +291,8 @@ export class BattleController {
     const canMove =
       this.active() &&
       !occupant &&
-      unit?.side === "player" &&
+      unit &&
+      this.#game.faction(unit.id).controllable &&
       this.#game.reachable(unit.id).has(tileId);
     if (
       this.state.inspectedTile &&
@@ -310,8 +311,9 @@ export class BattleController {
     }
     try {
       if (
-        occupant?.side === "enemy" &&
-        unit?.side === "player" &&
+        occupant &&
+        unit &&
+        this.#game.faction(unit.id).controllable &&
         this.#game.targets(unit.id).includes(occupant)
       ) {
         this.selectTarget(occupant);
@@ -346,8 +348,12 @@ export class BattleController {
     this.publish({ gameChanged: false });
     this.playSelectionFeedback(unit.tile);
 
-    if (unit.side === "enemy") {
-      this.message("Enemy unit selected. Select one of your units to act.");
+    if (!this.#game.faction(unit.id).controllable) {
+      this.message(
+        this.#game.faction(unit.id).relation === "neutral"
+          ? "Neutral unit selected."
+          : "Enemy unit selected. Select one of your units to act.",
+      );
     } else if (unit.attacked) {
       this.message("This unit has finished its turn.");
     } else {
@@ -427,9 +433,7 @@ export class BattleController {
 
   recruitHere(type: RecruitType, tileId: string) {
     try {
-      const commander = this.#game.units.find(
-        (unit) => unit.side === "player" && TYPES[unit.type].leader,
-      );
+      const commander = this.#game.units.find((unit) => unit.side === "player" && isLeader(unit));
       if (!commander) {
         throw new Error("This unit cannot act now.");
       }

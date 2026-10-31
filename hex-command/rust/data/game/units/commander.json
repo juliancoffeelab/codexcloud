@@ -5,7 +5,6 @@
   "hp": 32,
   "move": 3,
   "cost": 0,
-  "leader": true,
   "race": "human",
   "terrainModifiers": {
     "ford": {

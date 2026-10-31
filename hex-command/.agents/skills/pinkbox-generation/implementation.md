@@ -29,3 +29,7 @@ check leaves evidence and omits the accepted matrix. Units produce
 pointy-top hex; it never silently clips them. Props are transparent pieces whose
 placement inside the hex is validated during composition. Neither terrain nor
 props inherit unit grounding or flying metadata.
+
+`--object-guide` records a hard native footprint in the slot's guides. Extraction
+checks every foreground pixel against it after retaining provisional evidence;
+overflow writes `footprint-overflow.json` and prevents accepting the matrix.

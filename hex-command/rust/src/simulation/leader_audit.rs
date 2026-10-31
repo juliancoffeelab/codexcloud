@@ -70,7 +70,7 @@ fn strength(game: &Game<'_>, side: Side) -> ArmyStrength {
     for unit in game
         .units
         .iter()
-        .filter(|u| u.side == side && !game.rules.units[u.kind].leader)
+        .filter(|u| u.side == side && !u.is_leader())
     {
         let rule = &game.rules.units[unit.kind];
         total.units += 1;
@@ -92,7 +92,7 @@ fn state(game: &Game<'_>, unit: &Unit) -> LeaderState {
 pub(crate) fn begin(game: &Game<'_>) -> Vec<Pending> {
     game.units
         .iter()
-        .filter(|u| game.rules.units[u.kind].leader)
+        .filter(|u| u.is_leader())
         .map(|leader| {
             let own_phase = leader.side == game.turn;
             let alternatives = if own_phase {
@@ -192,7 +192,7 @@ mod tests {
         let leader = original
             .units
             .iter()
-            .find(|u| u.side == original.turn && rules.units[u.kind].leader)
+            .find(|u| u.side == original.turn && u.is_leader())
             .unwrap()
             .clone();
         let enemy = original
@@ -256,7 +256,7 @@ mod tests {
         let leader = game
             .units
             .iter()
-            .find(|u| u.side == game.turn && rules.units[u.kind].leader)
+            .find(|u| u.side == game.turn && u.is_leader())
             .unwrap()
             .clone();
         let pending = begin(&game);

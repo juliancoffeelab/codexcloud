@@ -141,13 +141,13 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         if retaliation >= self.unit.hp {
             return false;
         }
-        if killed && !self.orders.campaign && g.rules().units[target.kind].leader {
+        if killed && !self.orders.campaign && target.is_leader() {
             return true;
         }
         let incoming = self.risk(from, (killed).then_some(target.id));
         incoming + retaliation < self.unit.hp
             && (self.unit.role != Some(Role::Courier) || incoming + retaliation == 0)
-            && u.side == self.unit.side
+            && g.allied(u, &self.unit)
     }
 }
 impl BattleView<'_, '_> {
@@ -156,7 +156,7 @@ impl BattleView<'_, '_> {
         target.tile = tile;
         let mut first = 0;
         let mut second = 0;
-        for foe in self.units().iter().filter(|o| o.side != u.side) {
+        for foe in self.units().iter().filter(|o| self.hostile(&u, o)) {
             let damage = self
                 .attack_options(foe, &target, foe.tile)
                 .iter()
@@ -178,7 +178,7 @@ impl BattleView<'_, '_> {
         };
         let forecast = self.exchange(u, target, w, from);
         let retaliation = forecast.damage[1];
-        (if self.rules().units[target.kind].leader {
+        (if target.is_leader() {
             20.0
         } else if target.role == Some(Role::Courier) {
             12.0
@@ -200,11 +200,11 @@ impl BattleView<'_, '_> {
         } else {
             self.units()
                 .iter()
-                .filter(|o| o.side != u.side)
+                .filter(|o| self.hostile(&u, o))
                 .map(|o| o.tile)
                 .collect()
         };
-        if self.rules().units[u.kind].leader {
+        if u.is_leader() {
             if let Some(post) = &orders.leader_post {
                 return vec![self.site(&post.0)];
             }
@@ -234,27 +234,31 @@ impl BattleView<'_, '_> {
         let mut ids: Vec<_> = self
             .units()
             .iter()
-            .filter(|u| u.side == self.turn())
+            .filter(|u| self.belongs_to_phase(&u, self.turn()) && self.can_act(u.id))
             .map(|u| u.id)
             .collect();
         let clearing = self.actor_lanes(objectives);
         let order = |u: &Unit| {
+            if u.is_leader() {
+                return ClassicOrder::Leader;
+            }
             let r = &self.rules().units[u.kind];
             match r.id.as_str() {
                 "scout" | "wolf" => ClassicOrder::Scout,
                 "archer" | "thorncaller" | "bonearcher" | "adept" => ClassicOrder::Ranged,
                 "soldier" | "skeleton" | "warden" | "boar" => ClassicOrder::Frontline,
-                "commander" | "wildkeeper" | "necromancer" => ClassicOrder::Leader,
                 _ => match r.family {
-                    Family::Scout | Family::Wolf | Family::Ghost => ClassicOrder::Scout,
+                    Family::Captives | Family::Scout | Family::Wolf | Family::Ghost => {
+                        ClassicOrder::Scout
+                    }
                     Family::Archer | Family::Thorncaller | Family::Bonearcher | Family::Adept => {
                         ClassicOrder::Ranged
                     }
                     Family::Skeleton | Family::Boar => ClassicOrder::Frontline,
-                    Family::Commander | Family::Wildkeeper | Family::Necromancer => {
-                        ClassicOrder::Leader
-                    }
-                    Family::Bear
+                    Family::Commander
+                    | Family::Wildkeeper
+                    | Family::Necromancer
+                    | Family::Bear
                     | Family::GiantBat
                     | Family::GiantSpider
                     | Family::Harpooner
@@ -271,9 +275,7 @@ impl BattleView<'_, '_> {
                     | Family::Swordsman
                     | Family::Tidekeeper
                     | Family::Wavemender => {
-                        if r.leader {
-                            ClassicOrder::Leader
-                        } else if r.range > 1 {
+                        if r.range > 1 {
                             ClassicOrder::Ranged
                         } else {
                             ClassicOrder::Frontline
@@ -299,12 +301,15 @@ impl BattleDraft<'_, '_> {
         rules: &mut ClassicRules<'_, '_>,
         recorder: &mut Recorder,
     ) -> bool {
+        if !self.can_act(id) {
+            return false;
+        }
         let Some(u) = self.unit(id).cloned() else {
             return false;
         };
         let order = TileOrder::new(self, &u, false);
         let mut best: Option<(&Unit, usize, f64)> = None;
-        for target in self.units().iter().filter(|t| t.side != u.side) {
+        for target in self.units().iter().filter(|t| self.hostile(&u, t)) {
             for weapon in self.attack_options(&u, target, u.tile) {
                 if !rules.attack(self, &u, target, weapon, u.tile)
                     || (!desperate && self.preview(&u, target, weapon, u.tile).1 >= u.hp)
@@ -339,7 +344,11 @@ impl BattleDraft<'_, '_> {
         recorder: &mut Recorder,
     ) -> Retreat {
         let u = self.unit(id).unwrap().clone();
-        let enemies: Vec<_> = self.units().iter().filter(|o| o.side != u.side).collect();
+        let enemies: Vec<_> = self
+            .units()
+            .iter()
+            .filter(|o| self.hostile(&u, o))
+            .collect();
         let retaliations: Vec<_> = enemies
             .iter()
             .flat_map(|target| {
@@ -454,7 +463,7 @@ impl BattleDraft<'_, '_> {
         let Some(mut u) = self.unit(id).cloned() else {
             return;
         };
-        if u.side != self.turn() || u.attacked {
+        if !self.belongs_to_phase(&u, self.turn()) || u.attacked {
             return;
         }
         if let Some(promotion) = rules.orders.promotion(self, &u) {
@@ -502,13 +511,13 @@ impl BattleDraft<'_, '_> {
             .chain(self.reachable(&u).iter().copied().map(|(t, _)| t))
             .filter(|&t| rules.movement(self, t))
             .filter(|&t| {
-                !self.rules().units[u.kind].leader
+                !u.is_leader()
                     || !rebuild.is_empty()
                     || self.leader_may_advance(&u, t, recruiting, required)
                     || (!campaign
                         && self.units().iter().any(|target| {
-                            target.side != u.side
-                                && self.rules().units[target.kind].leader
+                            self.hostile(&u, target)
+                                && target.is_leader()
                                 && self
                                     .attack_options(&u, target, t)
                                     .iter()
@@ -612,6 +621,9 @@ impl BattleDraft<'_, '_> {
         recorder: &mut Recorder,
     ) {
         if self.winner().is_some() {
+            return;
+        }
+        if !self.can_act(id) {
             return;
         }
         let Some(u) = self.unit(id).cloned() else {

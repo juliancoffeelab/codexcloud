@@ -93,7 +93,7 @@ mod tests {
     fn player_and_enemy_rebuilding_emit_explicit_hold_targets() {
         let rules = Rules::load().unwrap();
         let mut game = Game::new(&rules, "mirror");
-        game.units.retain(|u| rules.units[u.kind].leader);
+        game.units.retain(|u| u.is_leader());
         game.roster_changed();
         for side in [Side::Player, Side::Enemy] {
             game.begin_turn(side);
@@ -123,6 +123,13 @@ mod tests {
         let rules = Rules::load().unwrap();
         let mut game =
             Game::start_campaign(&rules, "lantern-road", 2, vec![], 0, vec![], vec![], vec![]);
+        for unit in game
+            .units
+            .iter_mut()
+            .filter(|u| rules.units[u.kind].family == Family::Adept)
+        {
+            unit.name = None;
+        }
         let adept = game
             .units
             .iter()
@@ -138,7 +145,7 @@ mod tests {
         let enemy = game
             .units
             .iter_mut()
-            .find(|u| u.side == Side::Enemy && !rules.units[u.kind].leader)
+            .find(|u| u.side == Side::Enemy && !u.is_leader())
             .unwrap();
         enemy.tile = tile;
         game.roster_changed();
@@ -206,12 +213,7 @@ mod tests {
             Game::start_campaign(&rules, "lantern-road", 2, vec![], 0, vec![], vec![], vec![]);
         game.units
             .retain(|u| u.side == Side::Player && rules.units[u.kind].family != Family::Adept);
-        let mut screen = game
-            .units
-            .iter()
-            .find(|u| !rules.units[u.kind].leader)
-            .unwrap()
-            .clone();
+        let mut screen = game.units.iter().find(|u| !u.is_leader()).unwrap().clone();
         for (id, tile) in [
             (20, "2,0"),
             (21, "3,0"),
@@ -227,12 +229,7 @@ mod tests {
         game.gold[Side::Player.index()] = 100;
         game.roster_changed();
         assert_eq!(game.required_recruit(Side::Player), Some(Family::Adept));
-        let leader = game
-            .units
-            .iter()
-            .find(|u| rules.units[u.kind].leader)
-            .unwrap()
-            .id;
+        let leader = game.units.iter().find(|u| u.is_leader()).unwrap().id;
         assert_eq!(game.leader_rebuild_plan(leader, false).1, Some(true));
         let command = Recruiter::Frontline.choose(&game, 7, None, false).unwrap();
         fn kind(command: &Command) -> &UnitTypeId {
@@ -285,7 +282,7 @@ mod tests {
         let target = game
             .units
             .iter()
-            .find(|u| u.side == Side::Enemy && rules.units[u.kind].leader)
+            .find(|u| u.side == Side::Enemy && u.is_leader())
             .unwrap()
             .clone();
         assert!(!crate::ai::campaigner::mission::terminal_attack(

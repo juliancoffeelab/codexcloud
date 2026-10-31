@@ -39,7 +39,7 @@ impl<'catalog> Game<'catalog> {
                 .units
                 .iter()
                 .filter(|ally| {
-                    ally.side == side
+                    self.allied(ally, &self.units[index])
                         && ally.id != self.units[index].id
                         && self.board.distance(ally.tile, self.units[index].tile) == 1
                 })
@@ -54,7 +54,7 @@ impl<'catalog> Game<'catalog> {
                     .units
                     .iter()
                     .filter(|ally| {
-                        ally.side == side
+                        self.allied(ally, target)
                             && ally.id != target.id
                             && self.board.distance(ally.tile, target.tile) == 1
                             && self.rules.units[ally.kind].healing == healing

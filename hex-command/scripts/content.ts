@@ -92,7 +92,9 @@ for (const file of readdirSync(lineupRoot).filter((file) => file.endsWith(".json
   ]);
   if (!entries.some((entry) => enabledLeaders.has(id(entry)))) continue;
   for (const tree of trees) {
-    for (const entry of [tree.base, ...tree.branches.flatMap((branch) => branch.units)]) {
+    const members = [tree.base, ...tree.branches.flatMap((branch) => branch.units)];
+    if (!members.some((entry) => entry.gameplayId || units.has(id(entry)))) continue;
+    for (const entry of members) {
       const unit = units.get(id(entry));
       const next =
         entry === tree.base

@@ -6,7 +6,8 @@
         "id": "zombie-walker",
         "name": "Thin walker",
         "level": 1,
-        "source": "zombie-walker"
+        "source": "zombie-walker",
+        "factions": ["player", "enemy", "green"]
       },
       "branches": [
         {
@@ -16,13 +17,15 @@
               "id": "zombie-fighter",
               "name": "Thin fighter",
               "level": 2,
-              "source": "zombie-fighter"
+              "source": "zombie-fighter",
+              "factions": ["player", "enemy", "green"]
             },
             {
               "id": "zombie-cleaver",
               "name": "Cleaver fighter",
               "level": 3,
-              "source": "zombie-cleaver"
+              "source": "zombie-cleaver",
+              "factions": ["player", "enemy", "green"]
             }
           ]
         },
@@ -33,13 +36,15 @@
               "id": "zombie-decay-caster",
               "name": "Thin caster",
               "level": 2,
-              "source": "zombie-decay-caster"
+              "source": "zombie-decay-caster",
+              "factions": ["player", "enemy", "green"]
             },
             {
               "id": "zombie-plague-carrier",
               "name": "Plague carrier",
               "level": 3,
-              "source": "zombie-plague-carrier"
+              "source": "zombie-plague-carrier",
+              "factions": ["player", "enemy", "green"]
             }
           ]
         },
@@ -50,13 +55,15 @@
               "id": "zombie-shambler",
               "name": "Shambler",
               "level": 2,
-              "source": "zombie-shambler"
+              "source": "zombie-shambler",
+              "factions": ["player", "enemy", "green"]
             },
             {
               "id": "zombie-ghoul",
               "name": "Ghoul",
               "level": 3,
-              "source": "zombie-ghoul"
+              "source": "zombie-ghoul",
+              "factions": ["player", "enemy", "green"]
             }
           ]
         }
@@ -70,19 +77,22 @@
         "id": "zombie-corruption-mage-l1",
         "name": "Corruption mage",
         "level": 1,
-        "source": "zombie-corruption-mage-l1"
+        "source": "zombie-corruption-mage-l1",
+        "factions": ["player", "enemy", "green"]
       },
       {
         "id": "zombie-corruption-mage",
         "name": "Corruption mage",
         "level": 2,
-        "source": "zombie-corruption-mage"
+        "source": "zombie-corruption-mage",
+        "factions": ["player", "enemy", "green"]
       },
       {
         "id": "zombie-corruption-archmage",
         "name": "Corruption archmage",
         "level": 3,
-        "source": "zombie-corruption-archmage"
+        "source": "zombie-corruption-archmage",
+        "factions": ["player", "enemy", "green"]
       }
     ]
   }

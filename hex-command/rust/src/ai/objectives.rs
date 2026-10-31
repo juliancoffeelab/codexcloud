@@ -116,7 +116,7 @@ impl TileOrder {
         let mut enemies = g
             .units()
             .iter()
-            .filter(|o| o.side != side)
+            .filter(|o| g.hostile_to_phase(o, side))
             .map(|o| o.tile)
             .peekable();
         let target = if opposing.peek().is_some() {
@@ -221,7 +221,7 @@ impl BattleView<'_, '_> {
                 .units()
                 .iter()
                 .filter(|u| {
-                    u.side == self.turn()
+                    self.belongs_to_phase(u, self.turn())
                         && if goal.actor.is_some() {
                             actor_matches(&goal.actor, u.id)
                         } else {
@@ -282,7 +282,7 @@ impl BattleView<'_, '_> {
                             }
                             let occupied = self
                                 .at(tile)
-                                .is_some_and(|u| u.id != actor.id && u.side == actor.side);
+                                .is_some_and(|u| u.id != actor.id && self.allied(actor, u));
                             let entering = self
                                 .cost(actor.kind, tile)
                                 .saturating_add(if occupied { penalty } else { 0 });
@@ -312,7 +312,7 @@ impl BattleView<'_, '_> {
                 }
                 if let Some(blocker) = self
                     .at(tile)
-                    .filter(|u| u.side == actor.side && u.id != actor.id)
+                    .filter(|u| self.allied(actor, u) && u.id != actor.id)
                 {
                     lanes
                         .entry(blocker.id)
@@ -324,10 +324,9 @@ impl BattleView<'_, '_> {
         lanes
     }
     pub(super) fn ordinary(&self, u: &Unit) -> impl Iterator<Item = &Unit> {
-        let side = u.side;
         self.units().iter().filter(move |o| {
-            o.side == side
-                && !self.rules().units[o.kind].leader
+            self.allied(u, o)
+                && !o.is_leader()
                 && o.role != Some(Role::Courier)
                 && self.rules().units[o.kind].healing == 0
         })
@@ -335,7 +334,7 @@ impl BattleView<'_, '_> {
     pub fn proximity(&self, side: Side, tile: usize) -> u16 {
         self.units()
             .iter()
-            .filter(|o| o.side != side)
+            .filter(|o| self.hostile_to_phase(o, side))
             .map(|o| self.board().distance(tile, o.tile))
             .min()
             .unwrap_or(20)
@@ -347,7 +346,7 @@ impl BattleView<'_, '_> {
         recruiting: bool,
         required: bool,
     ) -> bool {
-        if tile == u.tile || required || !self.units().iter().any(|o| o.side != u.side) {
+        if tile == u.tile || required || !self.units().iter().any(|o| self.hostile(u, o)) {
             return true;
         }
         let before = self.proximity(u.side, u.tile);
@@ -387,7 +386,7 @@ mod target_tests {
         let leader = |side| {
             view.units()
                 .iter()
-                .find(|unit| unit.side == side && view.rules().units[unit.kind].leader)
+                .find(|unit| unit.side == side && unit.is_leader())
                 .unwrap()
         };
         let left = leader(Side::Player);

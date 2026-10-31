@@ -8,6 +8,8 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PresentationInput {
+    #[serde(default)]
+    pub factions: Vec<Faction>,
     pub tiles: Vec<Tile>,
     pub units: Vec<StartingUnit>,
     #[serde(default)]
@@ -15,6 +17,8 @@ pub struct PresentationInput {
     pub lighting: BattlefieldLighting,
     #[serde(default)]
     pub marks: Vec<String>,
+    #[serde(default)]
+    pub choices: Vec<String>,
     #[serde(default)]
     pub memory: Vec<String>,
     pub round: u32,
@@ -44,7 +48,7 @@ pub(crate) fn matches(
                 return false;
             };
             input.units.iter().any(|unit| {
-                unit.side == *side
+                faction_matches_side(&input.factions, unit.faction.as_deref(), unit.side, *side)
                     && unit_type.as_ref().is_none_or(|kind| unit.r#type == *kind)
                     && name
                         .as_ref()
@@ -55,11 +59,14 @@ pub(crate) fn matches(
         }
         Condition::NoUnits { side, unit_type } => {
             !input.units.iter().any(|unit| {
-                unit.side == *side && unit_type.as_ref().is_none_or(|kind| unit.r#type == *kind)
+                faction_matches_side(&input.factions, unit.faction.as_deref(), unit.side, *side)
+                    && unit_type.as_ref().is_none_or(|kind| unit.r#type == *kind)
             }) && !input.pending.iter().any(|unit| {
-                unit.side == *side && unit_type.as_ref().is_none_or(|kind| unit.r#type == *kind)
+                faction_matches_side(&input.factions, unit.faction.as_deref(), unit.side, *side)
+                    && unit_type.as_ref().is_none_or(|kind| unit.r#type == *kind)
             })
         }
+        Condition::Choice { choice } => input.choices.contains(choice),
         Condition::Event { event } => input
             .marks
             .iter()
@@ -122,11 +129,14 @@ pub fn resolve(input: &PresentationInput) -> (BattlefieldPresentation, Vec<Strin
 impl Game<'_> {
     pub(crate) fn presentation_input(&self) -> PresentationInput {
         PresentationInput {
+            factions: self.factions.as_ref().clone(),
             tiles: self.tiles(),
             units: self
                 .units
                 .iter()
                 .map(|u| StartingUnit {
+                    faction: u.faction.clone(),
+                    ai_group: u.ai_group.clone(),
                     col: self.board.positions[u.tile].0,
                     row: self.board.positions[u.tile].1,
                     r#type: self.rules.units[u.kind].id.clone(),
@@ -149,16 +159,24 @@ impl Game<'_> {
                         })
                         .flat_map(|event| {
                             event.spawn.iter().flat_map(move |group| {
-                                group.units.iter().filter(move |unit| {
-                                    !self
-                                        .campaign
-                                        .as_ref()
-                                        .unwrap()
-                                        .marked(&format!("spawn:{}:{}", event.id, unit.id))
-                                })
+                                group
+                                    .units
+                                    .iter()
+                                    .filter(move |unit| {
+                                        !self
+                                            .campaign
+                                            .as_ref()
+                                            .unwrap()
+                                            .marked(&format!("spawn:{}:{}", event.id, unit.id))
+                                    })
+                                    .map(move |unit| {
+                                        let mut unit = unit.clone();
+                                        unit.faction =
+                                            unit.faction.or_else(|| group.faction.clone());
+                                        unit
+                                    })
                             })
                         })
-                        .cloned()
                         .collect()
                 })
                 .unwrap_or_default(),
@@ -169,6 +187,11 @@ impl Game<'_> {
                 .find(|map| map.id == self.map_id)
                 .map(|map| map.lighting.clone())
                 .unwrap_or_default(),
+            choices: self
+                .campaign
+                .as_ref()
+                .and_then(|state| state.choices.clone())
+                .unwrap_or_default(),
             marks: self
                 .campaign
                 .as_ref()
@@ -178,21 +201,85 @@ impl Game<'_> {
             round: self.round,
         }
     }
+    pub(crate) fn event_condition_met(&self, condition: &Condition) -> bool {
+        let mut input = self.presentation_input();
+        if matches(condition, &input, None) {
+            return true;
+        }
+        if let Some((actor, path)) = &self.traversal {
+            let Some(index) = self.units.iter().position(|u| u.id == *actor) else {
+                return false;
+            };
+            for &tile in path {
+                input.units[index].col = self.board.positions[tile].0;
+                input.units[index].row = self.board.positions[tile].1;
+                if matches(condition, &input, None) {
+                    return true;
+                }
+            }
+        }
+        false
+    }
+    pub(crate) fn group_active(&self, group: &EnemyGroup) -> bool {
+        group.when.as_ref().is_none_or(|rule| {
+            (rule.remember
+                && self
+                    .condition_memory
+                    .contains(&format!("group:{}", group.id)))
+                || matches(&rule.condition, &self.presentation_input(), None)
+        })
+    }
     pub(crate) fn presentation(&self) -> BattlefieldPresentation {
         resolve(&self.presentation_input()).0
     }
     pub(crate) fn remember_conditions(&mut self) {
-        if self.fog.iter().any(Option::is_some)
-            || self.rules.map_definitions.iter().any(|map| {
-                map.id == self.map_id
-                    && map
-                        .lighting
-                        .lights
-                        .iter()
-                        .any(|l| l.when.as_ref().is_some_and(|r| r.remember))
-            })
-        {
-            self.condition_memory = resolve(&self.presentation_input()).1;
+        let group_memory = self.mission.as_ref().is_some_and(|m| {
+            m.enemy_groups
+                .iter()
+                .any(|g| g.when.as_ref().is_some_and(|r| r.remember))
+        });
+        let light_memory = self.rules.map_definitions.iter().any(|map| {
+            map.id == self.map_id
+                && map
+                    .lighting
+                    .lights
+                    .iter()
+                    .any(|light| light.when.as_ref().is_some_and(|rule| rule.remember))
+        });
+        if !group_memory && !light_memory && !self.fog.iter().any(Option::is_some) {
+            return;
+        }
+        let mut input = self.presentation_input();
+        let mut positions = vec![None];
+        if let Some((actor, path)) = &self.traversal {
+            if let Some(index) = self.units.iter().position(|u| u.id == *actor) {
+                positions.extend(
+                    path.iter()
+                        .map(|&tile| Some((index, self.board.positions[tile]))),
+                );
+            }
+        }
+        for position in positions {
+            if let Some((index, (col, row))) = position {
+                input.units[index].col = col;
+                input.units[index].row = row;
+            }
+            input.memory = self.condition_memory.clone();
+            self.condition_memory = resolve(&input).1;
+            if let Some(mission) = &self.mission {
+                for group in &mission.enemy_groups {
+                    if group
+                        .when
+                        .as_ref()
+                        .is_some_and(|rule| rule.remember && matches(&rule.condition, &input, None))
+                    {
+                        let key = format!("group:{}", group.id);
+                        if !self.condition_memory.contains(&key) {
+                            self.condition_memory.push(key);
+                        }
+                    }
+                }
+            }
         }
     }
 }

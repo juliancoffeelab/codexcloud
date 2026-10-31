@@ -1,28 +1,49 @@
 {
   "subtitle": "Find out why the other bank went dark.",
-  "briefing": "The lantern across the river has gone out, and the ferry is closed. The villagers have sent a patrol to find out what happened. Reach the ferryman\u2019s house on the eastern bank, then investigate the villages.",
-  "hints": [
-    "The ferry is closed. The two fords lead across the island.",
-    "Scouting patrols are working in the western woods. Contact them to gain reinforcements; ordinary recruitment is unavailable.",
-    "Explored ground stays visible. Capturing a village lights it, but surviving spiders can take it back."
-  ],
+  "briefing": "The landing lamp has gone out. Across the river, every window is dark. The ferry is tied up on the far bank, and nobody answers from the crossing. Take the island fords and find the ferryman.",
+  "hints": ["Find the scouts in the western woods to reinforce your patrol."],
   "intro": [
+    {
+      "speaker": "Ivo",
+      "portrait": "scout",
+      "text": "That landing lamp has burned every night since I was a boy. Last night it went out. So did every window on the other bank."
+    },
     {
       "speaker": "Nera",
       "portrait": "swordsman",
-      "text": "The other bank is completely dark. We need to reach the ferryman and find out why."
+      "text": "And the ferry?"
     },
     {
       "speaker": "Ivo",
       "portrait": "scout",
-      "text": "The ferry is closed. We can cross by the island fords. Our scouts should still be watching the woods."
+      "text": "Still tied up over there. We’ll have to take the fords round the island."
+    },
+    {
+      "speaker": "Oren",
+      "portrait": "adept",
+      "text": "The wind’s coming down the valley. That mist is creeping the other way."
+    },
+    {
+      "speaker": "Ivo",
+      "portrait": "scout",
+      "text": "You studied fog?"
+    },
+    {
+      "speaker": "Oren",
+      "portrait": "adept",
+      "text": "A whole winter at the Collegium. This wasn’t in the lessons."
+    },
+    {
+      "speaker": "Nera",
+      "portrait": "swordsman",
+      "text": "Find the ferryman. Quickly. Whatever happened, he’s alone over there."
     }
   ],
   "victory": [
     {
       "speaker": "Nera",
       "portrait": "swordsman",
-      "text": "The lanterns are burning again. Take the eastern road\u2014we need to find out where they took everyone."
+      "text": "Both lanterns are burning. Leave someone watching the crossing; the rest of us take the eastern road. We still have people to find."
     }
   ],
   "debrief": "The patrol reached the ferryman and secured the eastern villages."

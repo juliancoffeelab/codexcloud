@@ -8,7 +8,7 @@ fn recruitment_requires_gold_legal_destination_and_owned_keep() {
     let leader = game
         .units
         .iter()
-        .find(|unit| unit.side == Side::Player && game.rules.units[unit.kind].leader)
+        .find(|unit| unit.side == Side::Player && unit.is_leader())
         .unwrap()
         .id;
     let recruit = game.kind(kind);

@@ -27,8 +27,9 @@ An overlay can supply:
 
 - `title` and `notes`: preview title and footer lines.
 - `units`: the complete set of unit placements for this preview, replacing map
-  units. Use an empty array for terrain alone. These are illustrations, not spawned
-  units in a running game.
+  units. Use an empty array for terrain alone. An optional unit `faction` selects
+  an available visual palette independently of allegiance (for example white
+  captive artwork). These are illustrations, not spawned units in a running game.
 - `memory`: previously remembered condition keys, as exported in a checkpoint’s
   `conditionMemory`. `round` optionally sets the current round (default 1).
 - `marks`: completed event markers, in the engine's `event:<id>` format, for

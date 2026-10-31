@@ -87,6 +87,9 @@ thread_local! {
 }
 #[derive(Debug)]
 pub(crate) struct Game<'catalog> {
+    pub(crate) factions: Rc<Vec<Faction>>,
+    /// Turn-local controller scope, never persisted.
+    pub(crate) active_faction: Option<String>,
     pub(crate) rules: &'catalog Rules,
     pub(crate) board: Rc<Board>,
     pub(crate) terrain: Vec<usize>,
@@ -95,6 +98,7 @@ pub(crate) struct Game<'catalog> {
     pub(crate) dead_ends: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) fog: Rc<Vec<Option<ConditionRule>>>,
     pub(crate) condition_memory: Vec<String>,
+    pub(super) traversal: Option<(u32, Vec<usize>)>,
     pub(crate) floors: Rc<Vec<Option<String>>>,
     pub(crate) units: Vec<Unit>,
     pub(crate) map_id: String,
@@ -188,6 +192,9 @@ impl<'catalog> Game<'catalog> {
             .units
             .iter()
             .map(|unit| Unit {
+                faction: unit.faction.clone(),
+                items: unit.items.clone(),
+                ai_group: unit.ai_group.clone(),
                 id: unit.id.strip_prefix('u').unwrap().parse().unwrap(),
                 kind: rules.types[&unit.r#type],
                 side: unit.side,
@@ -226,8 +233,11 @@ impl<'catalog> Game<'catalog> {
         let last_combat = state.last_combat.flatten();
         let floors = Rc::new(state.tiles.iter().map(|tile| tile.floor.clone()).collect());
         let mut game = Self {
+            factions: Rc::new(state.factions),
+            active_faction: None,
             fog: Rc::new(state.tiles.iter().map(|t| t.fog.clone()).collect()),
             condition_memory: state.condition_memory,
+            traversal: None,
             rules,
             board,
             terrain,
@@ -289,6 +299,7 @@ impl<'catalog> Game<'catalog> {
     /// Materialize the protocol snapshot without changing battle state.
     pub(crate) fn state(&self) -> State {
         State {
+            factions: self.factions.as_ref().clone(),
             condition_memory: self.condition_memory.clone(),
             armies: self.armies.clone(),
             map_id: self.map_id.clone(),
@@ -331,6 +342,9 @@ impl<'catalog> Game<'catalog> {
     }
     pub(crate) fn public_unit(&self, unit: &Unit) -> PublicUnit {
         PublicUnit {
+            faction: unit.faction.clone(),
+            items: unit.items.clone(),
+            ai_group: unit.ai_group.clone(),
             id: format!("u{}", unit.id),
             r#type: self.rules.units[unit.kind].id.clone(),
             side: unit.side,
@@ -385,6 +399,9 @@ impl<'catalog> Game<'catalog> {
         let id = self.next_id;
         self.next_id += 1;
         self.units.push(Unit {
+            faction: None,
+            items: vec![],
+            ai_group: None,
             id,
             kind,
             side,
@@ -507,7 +524,10 @@ impl<'catalog> Game<'catalog> {
     }
     pub(crate) fn fork(&self) -> Self {
         Self {
+            factions: self.factions.clone(),
+            active_faction: self.active_faction.clone(),
             condition_memory: self.condition_memory.clone(),
+            traversal: None,
             fog: self.fog.clone(),
             rules: self.rules,
             board: self.board.clone(),
@@ -643,11 +663,10 @@ impl<'catalog> Game<'catalog> {
         .collect()
     }
     pub(crate) fn placement_tiles(&self, leader: &Unit, kind: usize, price: bool) -> Vec<usize> {
-        if !self.rules.units[leader.kind].leader
-            || self.rules.units[kind].leader
+        if !leader.is_leader()
             || !self.recruitment_options(leader.side).contains(&kind)
             || self.winner.is_some()
-            || leader.side != self.turn
+            || !self.may_act(leader)
             || !self.terrain_is(leader.tile, Terrain::Keep)
             || self.owners[leader.tile] != Some(leader.side)
             || (price && self.gold[leader.side.index()] < self.rules.units[kind].cost)
@@ -666,6 +685,7 @@ impl<'catalog> Game<'catalog> {
         self.gold[leader.side.index()] -= self.rules.units[kind].cost;
         self.add(kind, leader.side, tile);
         let unit = self.units.last_mut().unwrap();
+        unit.faction = leader.faction.clone();
         unit.moved = true;
         unit.attacked = true;
         self.record(format!(

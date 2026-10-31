@@ -1,21 +1,16 @@
 {
   "id": "lantern-road",
   "name": "The Lantern Road",
-  "tagline": "A message becomes a road home.",
-  "description": "Lead Captain Nera through a haunted river valley. Escort a courier, reclaim villages, and silence the graves. Human infantry, wardens, and adepts face the undead.",
-  "shortDescription": "A courier must cross the valley, but the dead hold the road.",
+  "tagline": "A dark crossing. A road into the missing villages.",
+  "description": "Lead Captain Nera’s patrol across a river whose far bank has gone dark. Find the ferryman, reopen the village road, and follow the people taken by the dead.",
+  "shortDescription": "Investigate the dark eastern bank and follow the missing villagers.",
   "race": "human",
-  "leader": "commander",
+  "leader": "swordsman",
   "ending": [
     {
       "speaker": "Nera",
-      "portrait": "commander",
-      "text": "We will leave a lantern at each crossing. Not as a warning. As a way home."
-    },
-    {
-      "speaker": "Ivo",
-      "portrait": "scout",
-      "text": "I have a new list. This one has everyone who made it."
+      "portrait": "swordsman",
+      "text": "Leave a watch at every crossing. Carry lamps down the road. We opened the valley; now we keep it open."
     }
   ],
   "stages": [

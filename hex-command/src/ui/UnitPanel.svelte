@@ -113,9 +113,19 @@
     <button id="play-again" class="primary" onclick={onNewBattle}>Play again</button>
   {:else if panel.kind === "combat"}
     <div class="duel">
-      <UnitCard unit={panel.attacker} artwork={display.artwork} hp={health?.[0]} />
+      <UnitCard
+        unit={panel.attacker}
+        faction={display.game.faction(panel.attacker.id)}
+        artwork={display.artwork}
+        hp={health?.[0]}
+      />
       <span class="duel-divider" aria-hidden="true">⚔</span>
-      <UnitCard unit={panel.defender} artwork={display.artwork} hp={health?.[1]} />
+      <UnitCard
+        unit={panel.defender}
+        faction={display.game.faction(panel.defender.id)}
+        artwork={display.artwork}
+        hp={health?.[1]}
+      />
     </div>
     {#if result}
       <CombatResult combat={result} {shown} {complete} />

@@ -116,6 +116,12 @@ pub enum TacticalRole {
 /// Reusable turn-local planning state. Create a fresh workspace for each turn
 /// and discard it when the turn ends.
 pub struct PlanningWorkspace {
+    #[cfg(any(feature = "wasm", test))]
+    controller_index: usize,
+    #[cfg(any(feature = "wasm", test))]
+    controller_factions: Option<Vec<(String, Option<Policy>)>>,
+    #[cfg(any(feature = "wasm", test))]
+    controller_workspace: Option<Box<PlanningWorkspace>>,
     seed: u32,
     recruitment_remaining: Option<usize>,
     goals: Option<Vec<Objective>>,
@@ -153,6 +159,12 @@ impl PlanningWorkspace {
         diplomacy: Diplomacy,
     ) -> Self {
         Self {
+            #[cfg(any(feature = "wasm", test))]
+            controller_index: 0,
+            #[cfg(any(feature = "wasm", test))]
+            controller_factions: None,
+            #[cfg(any(feature = "wasm", test))]
+            controller_workspace: None,
             #[cfg(any(feature = "wasm", test))]
             blocks: None,
             orders: None,
@@ -221,6 +233,39 @@ pub(crate) fn choose_game_command(
     policy: Policy,
     workspace: &mut PlanningWorkspace,
 ) -> Result<Command, CommandError> {
+    if !game.factions.is_empty() && game.active_faction.is_none() {
+        let controllers = workspace
+            .controller_factions
+            .get_or_insert_with(|| game.automatic_factions())
+            .clone();
+        while workspace.controller_index < controllers.len() {
+            let (faction, authored_policy) = &controllers[workspace.controller_index];
+            let selected = authored_policy.unwrap_or(policy);
+            let child = workspace.controller_workspace.get_or_insert_with(|| {
+                Box::new(PlanningWorkspace::new(
+                    workspace
+                        .seed
+                        .wrapping_add(workspace.controller_index as u32),
+                    workspace.recruitment_remaining,
+                    workspace.goals.clone(),
+                    workspace.diplomacy,
+                ))
+            });
+            if !child.initialized && authored_policy.is_none() {
+                child.blocks = workspace.blocks;
+            }
+            let mut scoped = game.fork();
+            scoped.active_faction = Some(faction.clone());
+            let command = choose_game_command(&scoped, selected, child)?;
+            if command == Command::EndTurn {
+                workspace.controller_index += 1;
+                workspace.controller_workspace = None;
+            } else {
+                return Ok(command);
+            }
+        }
+        return Ok(Command::EndTurn);
+    }
     let blocks = workspace.effective_blocks(policy);
     if !blocks.campaign.supports_campaign() && game.campaign.is_some() {
         return Err(CommandError::BattleOnlyPolicy);
@@ -257,6 +302,35 @@ impl Game<'_> {
         goals: Option<&[Objective]>,
         diplomacy: Diplomacy,
     ) -> Result<(), CommandError> {
+        if !self.factions.is_empty() && self.active_faction.is_none() {
+            let controllers = self.automatic_factions();
+            for (index, (faction, authored_policy)) in controllers.into_iter().enumerate() {
+                if self.winner.is_some() {
+                    break;
+                }
+                let selected = authored_policy.unwrap_or(policy);
+                let selected_blocks = if authored_policy.is_none() {
+                    blocks
+                } else {
+                    None
+                };
+                self.active_faction = Some(faction);
+                let result = self.play_blocks(
+                    selected,
+                    selected_blocks,
+                    seed.wrapping_add(index as u32),
+                    limit,
+                    goals,
+                    diplomacy,
+                );
+                self.active_faction = None;
+                result?;
+            }
+            if self.winner.is_none() {
+                self.end_turn();
+            }
+            return Ok(());
+        }
         let blocks = blocks.unwrap_or_else(|| policy.blocks());
         if !blocks.campaign.supports_campaign() && self.campaign.is_some() {
             return Err(CommandError::BattleOnlyPolicy);
@@ -273,6 +347,9 @@ impl Game<'_> {
                 tactic.run_turn(self, &mut workspace)?
             };
             for command in plan.commands {
+                if self.active_faction.is_some() && command == Command::EndTurn {
+                    continue;
+                }
                 self.execute(command)?;
             }
             if workspace.finished || self.winner.is_some() {
@@ -380,11 +457,11 @@ fn attack_command(
     target: u32,
     weapon: usize,
 ) -> Command {
-    let kind = game.unit(unit).unwrap().kind;
+    let actor = game.unit(unit).unwrap();
     Command::Attack {
         unit: UnitId(unit),
         target: UnitId(target),
-        weapon: WeaponId(game.rules().units[kind].attacks[weapon].id.clone()),
+        weapon: WeaponId(game.weapon(actor, weapon).id.clone()),
     }
 }
 fn recruit_command(
@@ -471,6 +548,9 @@ mod courier_tests {
         let target = game.site("9,3");
         // Block the other direct approach as well.
         game.units.push(Unit {
+            faction: None,
+            items: vec![],
+            ai_group: None,
             id: 100,
             kind: rules.types["reefguard"],
             tile: game.site("9,4"),
