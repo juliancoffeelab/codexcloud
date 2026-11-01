@@ -578,10 +578,6 @@ pub(in crate::ai) fn plan(
             let forecast = game.exchange(&unit, target, weapon, tile);
             let damage = forecast.damage[0].round() as i32;
             let retaliation = forecast.damage[1].round() as i32;
-            if orders.protects(unit.id) && game.maximum_retaliation(&unit, target, weapon, tile) > 0
-            {
-                return;
-            }
             let drained = forecast.healing[0].round() as i32;
             response = if important {
                 game.maximum_retaliation(&unit, target, weapon, tile)
@@ -618,7 +614,7 @@ pub(in crate::ai) fn plan(
                 combat += 16.0;
             }
             if response >= unit.hp {
-                if important {
+                if important && !orders.protects(unit.id) {
                     return;
                 }
                 combat -= 18.0;
@@ -762,7 +758,10 @@ pub(in crate::ai) fn plan(
     let mut threats =
         Threats::with_workspace(game, unit.side, &mut workspace.threats).with_orders(orders);
     let before = threats.at(&unit, unit.tile, None);
-    let danger = if important {
+    let danger = if orders.protects(unit.id) {
+        // A finite cost for the fraction of remaining life at risk.
+        40.0 / unit.hp.max(1) as f64
+    } else if important {
         6.0
     } else if category == TacticalRole::Frontline {
         0.55
@@ -808,10 +807,7 @@ pub(in crate::ai) fn plan(
             threats.at(&unit, c.tile, c.eliminated)
         };
         let lethal = incoming >= unit.hp - c.response;
-        if orders.protects(unit.id) && lethal {
-            continue;
-        }
-        if important && lethal && incoming > 0 && !c.terminal {
+        if important && !orders.protects(unit.id) && lethal && incoming > 0 && !c.terminal {
             let least = *minimum
                 .get_or_insert_with(|| threats.minimum(&unit, destinations.iter().copied()));
             if least < unit.hp || incoming + c.response > least || incoming >= before {

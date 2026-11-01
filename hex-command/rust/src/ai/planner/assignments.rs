@@ -411,6 +411,46 @@ pub(in crate::ai) fn fallback(
     Ok(())
 }
 
+/// A vacant destination alone says nothing about access to it. Check connected,
+/// passable, unoccupied cells without forecast enemy pressure along the way.
+fn passage_clear(
+    game: &BattleView<'_, '_>,
+    orders: &TacticalOrders,
+    unit: &Unit,
+    destination: usize,
+) -> bool {
+    if unit.tile == destination {
+        return true;
+    }
+    let route = game.routes(unit.kind, &[destination]);
+    if route[unit.tile] == u16::MAX {
+        return false;
+    }
+    let mut threats = Threats::protected(game, unit.side, orders);
+    let mut visited = vec![false; game.terrain().len()];
+    visited[unit.tile] = true;
+    let mut pending =
+        std::collections::BinaryHeap::from([std::cmp::Reverse((route[unit.tile], unit.tile))]);
+    while let Some(std::cmp::Reverse((_, tile))) = pending.pop() {
+        for &next in &game.board().adjacent[tile] {
+            if visited[next] || route[next] == u16::MAX || game.cost(unit.kind, next) == u16::MAX {
+                continue;
+            }
+            visited[next] = true;
+            if game.at(next).is_some_and(|other| other.id != unit.id)
+                || threats.at(unit, next, None) > 0
+            {
+                continue;
+            }
+            if next == destination {
+                return true;
+            }
+            pending.push(std::cmp::Reverse((route[next], next)));
+        }
+    }
+    false
+}
+
 pub(in crate::ai) fn report(game: &BattleView<'_, '_>, workspace: &mut PlanningWorkspace) {
     if !workspace.finished {
         return;
@@ -464,8 +504,7 @@ pub(in crate::ai) fn report(game: &BattleView<'_, '_>, workspace: &mut PlanningW
         let unit = game.unit(actor.0);
         let achieved = unit.is_some_and(|u| {
             if passage {
-                game.at(game.site(&location.0))
-                    .is_none_or(|o| o.id == actor.0)
+                passage_clear(game, &orders.tactics, u, game.site(&location.0))
             } else {
                 game.board().ids[u.tile] == location.0
             }
@@ -616,78 +655,6 @@ mod tests {
             .unwrap()
             .1 < game.unit(actor).unwrap().hp
         );
-    }
-    #[test]
-    fn every_fixed_planner_rejects_retaliation_damage_for_a_protected_actor() {
-        let rules = Rules::load().unwrap();
-        for planner in [Planner::Classic, Planner::Full, Planner::Queued] {
-            let mut game = small_battle(&rules);
-            game.units
-                .retain(|u| u.is_leader() || u.side == Side::Enemy);
-            let enemy = game
-                .units
-                .iter_mut()
-                .find(|u| u.side == Side::Enemy && !u.is_leader())
-                .unwrap();
-            enemy.hp = rules.units[enemy.kind].hp;
-            let actor = game
-                .units
-                .iter_mut()
-                .find(|u| u.side == Side::Player)
-                .unwrap();
-            actor.hp = rules.units[actor.kind].hp;
-            game.roster_changed();
-            let mut workspace = workspace(&game, planner);
-            let protected = game
-                .units
-                .iter()
-                .find(|u| u.side == Side::Player)
-                .unwrap()
-                .id;
-            for _ in 0..32 {
-                let command = choose_game_command(&game, Policy::Balanced, &mut workspace).unwrap();
-                let end = match &command {
-                    Command::Attack {
-                        unit,
-                        target,
-                        weapon,
-                    } => {
-                        if unit.0 == protected {
-                            let actor = game.unit(unit.0).unwrap();
-                            let weapon =
-                                game.weapons(actor).position(|w| w.id == weapon.0).unwrap();
-                            assert_eq!(
-                                game.preview(
-                                    actor,
-                                    game.unit(target.0).unwrap(),
-                                    weapon,
-                                    actor.tile
-                                )
-                                .1,
-                                0
-                            );
-                        }
-                        false
-                    }
-                    Command::EndTurn => true,
-                    Command::Move { .. }
-                    | Command::Recruit { .. }
-                    | Command::Advance { .. }
-                    | Command::SetUnitIntent { .. }
-                    | Command::DismissDialogue
-                    | Command::RecallMission { .. }
-                    | Command::RetryMission
-                    | Command::PreviousDialogue
-                    | Command::DropItem { .. }
-                    | Command::SkipDialogue => false,
-                };
-                if end {
-                    break;
-                }
-                game.execute(command).unwrap();
-            }
-            assert!(workspace.finished && workspace.commands.is_empty());
-        }
     }
     #[test]
     fn an_unsafe_fallback_is_reported_without_claiming_survival() {

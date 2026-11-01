@@ -93,7 +93,7 @@ def chapter_diagnostics(chapter):
     player_damage = enemy_damage = 0
     recruits, casualties = Counter(), Counter()
     unmet_orders, deferred_orders = Counter(), Counter()
-    rescue_candidates = retaliation_violations = 0
+    rescue_candidates = retaliation_exchanges = 0
     for phase in phases:
         roster = {u['id']: u for u in phase.get('before', []) + phase.get('units', []) + phase.get('losses', [])}
         for action in phase.get('actions', []):
@@ -119,7 +119,7 @@ def chapter_diagnostics(chapter):
                     deferred_orders[duty.get('reason') or 'unspecified'] += 1
             rescue_candidates += planning['report'].get('candidates', 0)
             protected = {f"u{c['Survive']['actor']}" for c in planning['orders']['tactics'].get('constraints', []) if 'Survive' in c}
-            retaliation_violations += sum(c['unit'] in protected and c['retaliation'] > 0 for c in phase.get('combats', []))
+            retaliation_exchanges += sum(c['unit'] in protected and c['retaliation'] > 0 for c in phase.get('combats', []))
     return dict(category=category, reason=reason, idleTail=idle, repeatedTail=repeated,
                 finalPlayerUnits=sum(u['side'] == 'player' for u in units),
                 finalEnemyUnits=sum(u['side'] == 'enemy' for u in units),
@@ -133,7 +133,7 @@ def chapter_diagnostics(chapter):
                 namedGoalActors=list(named_actors), actorArrivals=arrivals, stalledActors=stalled,
                 recordedPhases=bool(phases), unmetOrders=dict(unmet_orders),
                 deferredOrders=dict(deferred_orders), rescueCandidates=rescue_candidates,
-                protectedRetaliationViolations=retaliation_violations,
+                protectedRetaliationExchanges=retaliation_exchanges,
                 recordedPlanning=any(p.get('planning') for p in own))
 
 
@@ -264,7 +264,7 @@ def campaign_tables(outcomes):
                              maxGoalProgress=mission['maxGoalProgress'], goals=mission['goals'],
                              namedLosses=mission['namedLosses'], actorArrivals=mission['actorArrivals'],
                              unmetOrders=mission.get('unmetOrders', {}), deferredOrders=mission.get('deferredOrders', {}),
-                             rescueCandidates=mission.get('rescueCandidates', 0), protectedRetaliationViolations=mission.get('protectedRetaliationViolations', 0),
+                             rescueCandidates=mission.get('rescueCandidates', 0), protectedRetaliationExchanges=mission.get('protectedRetaliationExchanges', mission.get('protectedRetaliationViolations', 0)),
                              recordedPlanning=mission.get('recordedPlanning', False), stalledActors=mission.get('stalledActors', []),
                              detail=outcome.get('detail')))
             chapter = chapters.setdefault(chapter_key, Counter())
@@ -859,7 +859,7 @@ def build_report(inputs, baseline_inputs, out, unit_usage=False, support_effects
     for outcome in current.values():
         for chapter in outcome.get('analysis') or []:
             diagnostics.update(chapter.get('unmetOrders', {}))
-            diagnostics['protected retaliation violations'] += chapter.get('protectedRetaliationViolations', 0)
+            diagnostics['protected retaliation exchanges'] += chapter.get('protectedRetaliationExchanges', chapter.get('protectedRetaliationViolations', 0))
     if any(any(chapter.get('recordedPlanning') for chapter in outcome.get('analysis') or []) for outcome in current.values()):
         findings += ['## Recorded planner diagnostics', '', 'Counts are duty observations per phase, not independent failed attempts. UnsafeFallback means the forecast constraint remained unmet; it does not prove unavoidable death.', '',
                      markdown([dict(reason=reason, observations=count) for reason, count in sorted(diagnostics.items())], ['reason', 'observations']), '']

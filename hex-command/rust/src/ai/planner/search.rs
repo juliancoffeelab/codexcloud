@@ -477,7 +477,10 @@ impl BattleView<'_, '_> {
             } else {
                 commitments.remove(&unit.id);
             }
-            let danger_weight = if important {
+            let danger_weight = if orders.protects(unit.id) {
+                // A finite cost for the fraction of remaining life at risk.
+                40.0 / unit.hp.max(1) as f64
+            } else if important {
                 6.0
             } else if category == TacticalRole::Frontline {
                 0.55
@@ -774,11 +777,6 @@ impl BattleView<'_, '_> {
                         } else {
                             response
                         };
-                        if orders.protects(unit.id)
-                            && self.maximum_retaliation(unit, target, weapon, tile) > 0
-                        {
-                            continue;
-                        }
                         let kill_chance = forecast.death[1];
                         let killed = kill_chance == 1.0;
                         eliminated = killed.then_some(target.id);
@@ -803,7 +801,7 @@ impl BattleView<'_, '_> {
                             combat += 3.0;
                         }
                         if retaliation >= unit.hp {
-                            if important {
+                            if important && !orders.protects(unit.id) {
                                 continue;
                             }
                             combat -= 18.0;
@@ -857,17 +855,21 @@ impl BattleView<'_, '_> {
                         threats.at(&unit, tile, eliminated)
                     };
                     let lethal = incoming >= unit.hp - retaliation;
-                    if orders.protects(unit.id) && lethal {
-                        continue;
-                    }
-                    if important && lethal && incoming > 0 && !finishing && !finishes_battle && {
-                        let minimum_risk = *minimum_risk.get_or_insert_with(|| {
-                            threats.minimum(&unit, destinations.iter().copied())
-                        });
-                        minimum_risk < unit.hp
-                            || incoming + retaliation > minimum_risk
-                            || incoming >= before_risk
-                    } {
+                    if important
+                        && !orders.protects(unit.id)
+                        && lethal
+                        && incoming > 0
+                        && !finishing
+                        && !finishes_battle
+                        && {
+                            let minimum_risk = *minimum_risk.get_or_insert_with(|| {
+                                threats.minimum(&unit, destinations.iter().copied())
+                            });
+                            minimum_risk < unit.hp
+                                || incoming + retaliation > minimum_risk
+                                || incoming >= before_risk
+                        }
+                    {
                         continue;
                     }
                     if important && !finishing && !finishes_battle {

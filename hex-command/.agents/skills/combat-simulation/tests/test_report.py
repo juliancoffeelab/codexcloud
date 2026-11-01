@@ -413,7 +413,7 @@ class CompleteDataTests(unittest.TestCase):
                                    report=dict(candidates=7, duties=[dict(id='survive:u2', status='Unmet', reason='UnsafeFallback')])))
         diagnostic = report.chapter_diagnostics(dict(winner=None, goals=[], phases=[phase], final=dict(units=[])))
         self.assertEqual(diagnostic['unmetOrders'], {'UnsafeFallback': 1})
-        self.assertEqual((diagnostic['protectedRetaliationViolations'], diagnostic['rescueCandidates']), (1, 7))
+        self.assertEqual((diagnostic['protectedRetaliationExchanges'], diagnostic['rescueCandidates']), (1, 7))
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp)/'report.json'
             path.write_text(json.dumps(dict(outcomes=[match(1)], turnTiming=dict(clock='thread_cpu', policies=[dict(policy='mixed', turns=10, meanDecisionMicrosPerTurn=12, meanTurnMicros=15)]))))

@@ -118,6 +118,14 @@ impl Workspace {
             let Some(actor) = forecast.unit(actor.0) else {
                 continue;
             };
+            let mut protected_positions = vec![actor.clone()];
+            if let Some((site, _)) = next {
+                if site != actor.tile {
+                    let mut travelling = actor.clone();
+                    travelling.tile = site;
+                    protected_positions.push(travelling);
+                }
+            }
             let enemies: Vec<_> = forecast
                 .units()
                 .iter()
@@ -136,13 +144,21 @@ impl Workspace {
             for enemy in &enemies {
                 let mut own = TileSet::new(game.terrain().len());
                 own.insert(enemy.tile);
-                let exposed = pressure(&forecast, actor, enemy, own);
+                let exposed = protected_positions
+                    .iter()
+                    .map(|position| pressure(&forecast, position, enemy, own.clone()))
+                    .max()
+                    .unwrap_or(0);
                 if exposed > 0 {
                     threats.insert(enemy.id, exposed);
                 }
                 let mut blockers = blocked.clone();
                 blockers.insert(enemy.tile);
-                baseline += pressure(&forecast, actor, enemy, blockers);
+                baseline += protected_positions
+                    .iter()
+                    .map(|position| pressure(&forecast, position, enemy, blockers.clone()))
+                    .max()
+                    .unwrap_or(0);
             }
             for guard in guards {
                 let Some(unit) = game.unit(guard.0) else {
@@ -224,7 +240,11 @@ impl Workspace {
                     for enemy in &enemies {
                         let mut blockers = occupancy.clone();
                         blockers.insert(enemy.tile);
-                        after += pressure(&forecast, actor, enemy, blockers);
+                        after += protected_positions
+                            .iter()
+                            .map(|position| pressure(&forecast, position, enemy, blockers.clone()))
+                            .max()
+                            .unwrap_or(0);
                     }
                     scores[tile] += ((baseline - after) as f64 * 2.0).clamp(-64.0, 32.0);
                 }

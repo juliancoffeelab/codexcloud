@@ -122,6 +122,7 @@ pub enum BattleObjective {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum TacticalConstraint {
+    /// A soft preference evaluated against objective value and full exposure.
     Survive { actor: UnitId },
 }
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -367,15 +368,14 @@ impl TacticalOrders {
         weapon: usize,
         from: usize,
     ) -> bool {
-        let preview = || game.preview(unit, target, weapon, from);
         self.scoped
             .iter()
             .filter(|order| order.actor.0 == unit.id)
             .all(|order| order.allows_attack(game, from, target.tile))
-            && (!self.protects(unit.id) || preview().1 == 0)
             && (!self.protect_withdrawal
                 || target.retreating != Some(true)
-                    && (!self.mediated.contains(&UnitId(target.id)) || preview().0 < target.hp))
+                    && (!self.mediated.contains(&UnitId(target.id))
+                        || game.preview(unit, target, weapon, from).0 < target.hp))
     }
     pub(crate) fn lanes(&self, game: &BattleView<'_, '_>) -> rustc_hash::FxHashSet<usize> {
         self.withdrawal_tiles

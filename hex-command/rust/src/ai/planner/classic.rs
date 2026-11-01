@@ -109,14 +109,23 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
             + if finishing {
                 -1000.0
             } else {
-                self.risk(tile, None) as f64 * 12.0
+                let risk = self.risk(tile, None);
+                if self.orders.protects(self.unit.id) {
+                    risk as f64 * 40.0 / self.unit.hp.max(1) as f64
+                        + if risk >= self.unit.hp { 40.0 } else { 0.0 }
+                } else {
+                    risk as f64 * 12.0
+                }
             }
     }
     fn movement(&mut self, g: &BattleView, tile: usize) -> bool {
-        !self.important || self.orders.arrives(g, &self.unit, tile) || {
-            let risk = self.risk(tile, None);
-            risk < self.unit.hp || risk <= self.minimum
-        }
+        self.orders.protects(self.unit.id)
+            || !self.important
+            || self.orders.arrives(g, &self.unit, tile)
+            || {
+                let risk = self.risk(tile, None);
+                risk < self.unit.hp || risk <= self.minimum
+            }
     }
     fn attack(
         &mut self,
@@ -137,8 +146,8 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         }
         let retaliation = g.maximum_retaliation(&self.unit, target, weapon, from);
         let killed = g.exchange(&self.unit, target, weapon, from).death[1] == 1.0;
-        if self.orders.protects(self.unit.id) && retaliation > 0 {
-            return false;
+        if self.orders.protects(self.unit.id) {
+            return true;
         }
         if retaliation >= self.unit.hp {
             return false;
@@ -150,6 +159,29 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         incoming + retaliation < self.unit.hp
             && (self.unit.role != Some(Role::Courier) || incoming + retaliation == 0)
             && g.allied(u, &self.unit)
+    }
+
+    fn attack_value(&mut self, g: &BattleView, target: &Unit, weapon: usize, from: usize) -> f64 {
+        let u = &self.unit;
+        let exchange = g.exchange(u, target, weapon, from);
+        let mut value = g.attack_score(u, target, from, Some(weapon))
+            + self.escort.attack(
+                u.id,
+                target,
+                g.preview(u, target, weapon, from).0,
+                exchange.death[1],
+            );
+        if self.orders.protects(u.id) {
+            let retaliation = g.maximum_retaliation(u, target, weapon, from);
+            let hp = u.hp;
+            let before = self.risk(from, None);
+            let after =
+                self.risk(from, (exchange.death[1] == 1.0).then_some(target.id)) + retaliation;
+            // Compare attacking with waiting here, including the following enemy phase.
+            value -= (after - before) as f64 * 40.0 / hp.max(1) as f64
+                + ((after >= hp) as i32 - (before >= hp) as i32) as f64 * 40.0;
+        }
+        value
     }
 }
 impl BattleView<'_, '_> {
@@ -316,17 +348,16 @@ impl BattleDraft<'_, '_> {
         for target in self.units().iter().filter(|t| self.hostile(&u, t)) {
             for weapon in self.attack_options(&u, target, u.tile) {
                 if !rules.attack(self, &u, target, weapon, u.tile)
-                    || (!desperate && self.preview(&u, target, weapon, u.tile).1 >= u.hp)
+                    || (!desperate
+                        && !rules.orders.protects(id)
+                        && self.preview(&u, target, weapon, u.tile).1 >= u.hp)
                 {
                     continue;
                 }
-                let score = self.attack_score(&u, target, u.tile, Some(weapon))
-                    + rules.escort.attack(
-                        id,
-                        target,
-                        self.preview(&u, target, weapon, u.tile).0,
-                        self.exchange(&u, target, weapon, u.tile).death[1],
-                    );
+                let score = rules.attack_value(self, target, weapon, u.tile);
+                if rules.orders.protects(id) && score <= 0.0 {
+                    continue;
+                }
                 if best.as_ref().is_none_or(|(b, _, s)| {
                     score > *s || (score == *s && order.compare(self, target.tile, b.tile).is_lt())
                 }) {
@@ -555,16 +586,10 @@ impl BattleDraft<'_, '_> {
                     .into_iter()
                     .any(|w| rules.attack(self, &u, target, w, t))
                 {
-                    let escort_bonus = self.best_attack(&u, target, t).map_or(0.0, |weapon| {
-                        rules.escort.attack(
-                            id,
-                            target,
-                            self.preview(&u, target, weapon, t).0,
-                            self.exchange(&u, target, weapon, t).death[1],
-                        )
-                    });
-                    opportunity = opportunity
-                        .max(5.0 + (self.attack_score(&u, target, t, None) + escort_bonus) / 5.0);
+                    if let Some(weapon) = self.best_attack(&u, target, t) {
+                        opportunity = opportunity
+                            .max(5.0 + rules.attack_value(self, target, weapon, t) / 5.0);
+                    }
                 }
             }
             let capture =
