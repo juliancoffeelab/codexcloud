@@ -128,7 +128,13 @@ const resolved = previewPresentation({
 const lighting = resolved.lighting;
 const fog = new Set(resolved.fog);
 const artwork = currentArtwork();
-const tiles = terrainMapTiles(map.tiles, map.mapId, artwork);
+const terrainDefinitions = JSON.parse(
+  await readFile(resolve(root, "rust/data/game/terrain.json"), "utf8"),
+) as { id: string; role: import("../../../../rust/pkg/hex_command").TerrainRole }[];
+const terrainRoles = Object.fromEntries(
+  terrainDefinitions.map((definition) => [definition.id, definition.role]),
+);
+const tiles = terrainMapTiles(map.tiles, map.mapId, artwork, terrainRoles);
 const frames = new Map<string, Awaited<ReturnType<typeof loadImage>>>();
 for (const tile of tiles) {
   if (!tile.terrainFrame) throw new Error(`Missing terrain frame: ${tile.id}`);

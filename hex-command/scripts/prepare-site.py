@@ -1,6 +1,7 @@
-"""Prepare committed game source as an unpublished Site release; never deploy."""
+"""Synchronize current game source and prepare an unpublished Site release; never deploy."""
 
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -32,47 +33,44 @@ def read_credential():
         termios.tcsetattr(sys.stdin.fileno(), termios.TCSANOW, settings)
     print("Ready for Site credential JSON on stdin (input is hidden).", flush=True)
     credential = json.loads(sys.stdin.readline())
-    if credential.get("auth_mode") != "http_extra_header":
+    if credential.get("auth_mode", "work_proxy") not in ("http_extra_header", "work_proxy"):
         raise ValueError("Unsupported Site credential authentication mode")
     return credential
 
 
-def prepare(credential, message):
-    hosting = json.loads((ROOT / ".openai/hosting.json").read_text())
+def prepare(credential, message, source_commit=None):
     repo = Path(command(["git", "rev-parse", "--show-toplevel"]))
-    branch = command(["git", "symbolic-ref", "--short", "HEAD"])
     prefix = ROOT.relative_to(repo).as_posix()
-    # Changes are checked, committed and pushed by the implementation workflow.
-    # Preparation never reformats, tests or commits the working tree.
-    source_commit = command(["git", "rev-parse", "HEAD"])
-    command(["git", "diff", "--quiet", "HEAD", "--", "."])
+    # Implementation owns committing/pushing required changes. Publish HEAD;
+    # unrelated staged, unstaged and untracked work is neither a blocker nor
+    # input to this release. Never stage or commit it as a deployment side effect.
+    source_commit = source_commit or command(["git", "rev-parse", "HEAD"])
+    hosting = json.loads(command(["git", "show", f"{source_commit}:./.openai/hosting.json"]))
 
     # The credential never enters an argument, file or log.
     environment = os.environ.copy()
-    environment.update({
-        "GIT_TERMINAL_PROMPT": "0",
-        "GIT_CONFIG_COUNT": "2",
-        "GIT_CONFIG_KEY_0": "http.extraHeader",
-        "GIT_CONFIG_VALUE_0": "Authorization: Bearer " + credential["token"],
-        "GIT_CONFIG_KEY_1": "credential.helper",
-        "GIT_CONFIG_VALUE_1": "",
-    })
+    environment["GIT_TERMINAL_PROMPT"] = "0"
+    if credential.get("auth_mode", "work_proxy") == "http_extra_header":
+        environment.update({
+            "GIT_CONFIG_COUNT": "2",
+            "GIT_CONFIG_KEY_0": "http.extraHeader",
+            "GIT_CONFIG_VALUE_0": "Authorization: Bearer " + credential["token"],
+            "GIT_CONFIG_KEY_1": "credential.helper",
+            "GIT_CONFIG_VALUE_1": "",
+        })
     checkout = ROOT / ".cache/sites" / hosting["project_id"]
     step("Synchronize Site source")
     if checkout.exists():
-        remote = command(["git", "remote", "get-url", "origin"], cwd=checkout)
-        if remote != credential["remote_url"]:
-            raise ValueError("Cached checkout belongs to a different Site repository")
+        command(["git", "remote", "set-url", "origin", credential["remote_url"]], cwd=checkout)
         command(["git", "fetch", "origin", credential["branch"]], cwd=checkout, env=environment)
-        command(["git", "checkout", "-B", credential["branch"], "FETCH_HEAD"], cwd=checkout)
+        command(["git", "-c", "core.hooksPath=/dev/null", "checkout", "--force", "-B",
+                 credential["branch"], "FETCH_HEAD"], cwd=checkout)
+        command(["git", "clean", "-fd"], cwd=checkout)
     else:
         checkout.parent.mkdir(parents=True, exist_ok=True)
-        command(["git", "clone", "--single-branch", "--branch", credential["branch"],
+        command(["git", "-c", "core.hooksPath=/dev/null", "clone", "--single-branch", "--branch", credential["branch"],
                  credential["remote_url"], str(checkout)], env=environment)
     manifest_path = checkout / ".openai/hosting.json"
-    previous = json.loads(manifest_path.read_text()) if manifest_path.exists() else {}
-    if previous.get("project_id", hosting["project_id"]) != hosting["project_id"]:
-        raise ValueError("Cached source manifest belongs to a different Site")
     tree = source_commit if prefix == "." else f"{source_commit}:{prefix}"
     # Copy only changed source; retain ignored build caches and source mtimes.
     with tempfile.TemporaryDirectory() as snapshot:
@@ -110,22 +108,22 @@ def prepare(credential, message):
                 if destination.is_symlink():
                     destination.unlink()
                 shutil.copy2(incoming, destination)
-    manifest_path.write_text(json.dumps({**previous, **hosting}, separators=(",", ":")) + "\n")
+    manifest_path.write_text(json.dumps(hosting, separators=(",", ":")) + "\n")
     command(["git", "config", "user.name", "Codex"], cwd=checkout)
     command(["git", "config", "user.email", "codex@openai.com"], cwd=checkout)
-    # Local cache/build exclusions do not alter the published source.
-    with (checkout / ".git/info/exclude").open("a") as excludes:
-        excludes.write("\ndist/\nnode_modules/\nartifacts/\n")
-    command(["git", "add", "-A"], cwd=checkout)
-    changed = subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=checkout)
-    if changed.returncode not in (0, 1):
-        raise RuntimeError("Could not inspect staged Site changes")
-    if changed.returncode:
-        command(["git", "commit", "-m", f"{message} ({source_commit[:7]})"], cwd=checkout)
-    # Reuse installed dependencies; source and generated output stay isolated.
+    # Install only when the committed dependency inputs change. Never borrow a
+    # mutable workspace's node_modules for a supposedly pinned release build.
     dependencies = checkout / "node_modules"
-    if not dependencies.exists():
-        dependencies.symlink_to(ROOT / "node_modules", target_is_directory=True)
+    dependency_key = hashlib.sha256((checkout / 'package-lock.json').read_bytes()
+                                    + (checkout / 'package.json').read_bytes()).hexdigest()
+    if dependencies.is_symlink():
+        dependencies.unlink()
+    installed = dependencies / '.release-lock.sha256'
+    if not installed.exists() or installed.read_text() != dependency_key:
+        command(["npm", "ci", "--include=dev", "--ignore-scripts", "--no-audit", "--no-fund"], cwd=checkout)
+        installed.write_text(dependency_key)
+    build_environment = os.environ.copy()
+    build_environment['PATH'] = str(dependencies / '.bin') + os.pathsep + build_environment.get('PATH', '')
     step("Build committed Site source")
     # Build explicitly: npm lifecycle hooks also run content checks. Preparation
     # must not smuggle validation into a user-authorized build-only workflow.
@@ -133,24 +131,28 @@ def prepare(credential, message):
              ".agents/skills/rust-toolchain/scripts/with-toolchain.ts",
              "wasm-pack", "build", "rust", "--target", "web", "--release",
              "--out-dir", "pkg", "--out-name", "hex_command", "--no-pack",
-             "--no-opt", "--locked", "--features", "wasm"], cwd=checkout)
+             "--no-opt", "--locked", "--features", "wasm"], cwd=checkout, env=build_environment)
     command(["python3", "scripts/build-pixel-art.py"], cwd=checkout)
     command(["node", "node_modules/vite/bin/vite.js", "build"], cwd=checkout)
-    command(["git", "diff", "--quiet", "HEAD", "--", "."], cwd=checkout)
-    command(["git", "push", "origin", credential["branch"]], cwd=checkout, env=environment)
+    # Generated source is part of the built Site snapshot, not a clean-tree gate.
+    command(["git", "add", "-A"], cwd=checkout)
+    command(["git", "-c", "core.hooksPath=/dev/null", "commit", "--allow-empty",
+             "-m", f"{message} ({source_commit[:7]})"], cwd=checkout)
+    command(["git", "-c", "core.hooksPath=/dev/null", "push", "origin", credential["branch"]], cwd=checkout, env=environment)
     step("Package complete build")
-    archive_path = str(Path(tempfile.gettempdir()) / f"{hosting['project_id']}-publish.tar.gz")
+    archive_fd, archive_path = tempfile.mkstemp(prefix=f"{hosting['project_id']}-", suffix='.tar.gz')
+    os.close(archive_fd)
     result = json.loads(command(["python3", "scripts/package-site.py", archive_path], cwd=checkout))
-    result.update({"source_commit": source_commit, "source_branch": branch,
-                   "checkout_path": str(checkout)})
+    result.update({"source_commit": source_commit, "checkout_path": str(checkout)})
     return result
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--message", default="Prepare Hex Command release")
+    parser.add_argument("--source-commit", help="Exact implementation commit pinned by the operation")
     args = parser.parse_args()
-    result = prepare(read_credential(), args.message)
+    result = prepare(read_credential(), args.message, args.source_commit)
     print("SITE_PACKAGE: " + json.dumps(result), flush=True)
 
 

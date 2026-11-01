@@ -105,6 +105,9 @@ export class Game implements GameState {
   captureState(): GameState {
     return structuredClone({ ...this });
   }
+  captureUndoState() {
+    return this.native().captureUndoState();
+  }
   restoreState(state: GameState): void {
     this.#native.restoreState(state);
     this.restoreData(structuredClone(state));

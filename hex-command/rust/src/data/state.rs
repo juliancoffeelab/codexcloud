@@ -58,7 +58,7 @@ impl HexDirection {
 /// A tile snapshot combining authored coordinates with current terrain and ownership.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Tile {
     pub id: String,
     pub col: i32,
@@ -221,7 +221,7 @@ pub struct State {
     #[cfg_attr(feature = "wasm", tsify(optional, type = "LastCombat | null"))]
     pub last_combat: Option<Option<LastCombat>>,
 }
-fn present_value<'de, D: serde::Deserializer<'de>>(
+pub(crate) fn present_value<'de, D: serde::Deserializer<'de>>(
     deserializer: D,
 ) -> Result<Option<Option<LastCombat>>, D::Error> {
     Option::<LastCombat>::deserialize(deserializer).map(Some)

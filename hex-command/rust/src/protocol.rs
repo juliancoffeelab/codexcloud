@@ -1,7 +1,10 @@
 //! Canonical transfer contract shared by native/WASM hosts and generated TypeScript.
 /// Transport options reuse the core policy and diplomacy vocabularies.
 pub use crate::ai::{Diplomacy as AiDiplomacy, Policy as AiPolicy};
-use crate::data::{Command, CommandError, State, TileId, Weapon};
+use crate::data::{
+    CampaignState, Command, CommandError, Faction, Gold, GroundItem, LastCombat, PublicUnit, Side,
+    State, Tile, TileId, Weapon,
+};
 use serde::{Deserialize, Serialize};
 
 /// Select a scenario or the first mission of an authored campaign.
@@ -131,6 +134,129 @@ pub struct BattleHandle {
 pub struct DispatchResult {
     pub view: EngineView,
     pub combat: Option<CombatAnimation>,
+}
+
+/// Per-command state fields. Terrain is carried separately and only when changed.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
+#[serde(rename_all = "camelCase")]
+pub struct StateFrame {
+    pub factions: Vec<Faction>,
+    pub ground_items: Vec<GroundItem>,
+    /// Selected skirmish factions; campaigns use their authored recruitment.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub armies: Option<[String; 2]>,
+    /// Durable facts about conditions that have been satisfied at least once.
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub condition_memory: Vec<String>,
+    pub map_id: String,
+    pub map_revision: u32,
+    pub cols: i32,
+    pub rows: i32,
+    pub round: u32,
+    pub turn: Side,
+    pub gold: Gold,
+    pub winner: Option<Side>,
+    pub next_id: u32,
+    /// Persisted combat PRNG state; absent legacy saves start from a stable seed.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub combat_rng: Option<u32>,
+    pub log: Vec<String>,
+    pub units: Vec<PublicUnit>,
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub campaign: Option<CampaignState>,
+    #[serde(
+        default,
+        deserialize_with = "crate::data::present_value",
+        skip_serializing_if = "Option::is_none"
+    )]
+    #[cfg_attr(feature = "wasm", tsify(optional, type = "LastCombat | null"))]
+    pub last_combat: Option<Option<LastCombat>>,
+}
+impl StateFrame {
+    /// Exhaustive decomposition keeps new state fields from silently disappearing
+    /// from the browser publication when the core save contract evolves.
+    pub(crate) fn split(state: State) -> (Self, Vec<Tile>) {
+        let State {
+            factions,
+            ground_items,
+            armies,
+            condition_memory,
+            map_id,
+            map_revision,
+            cols,
+            rows,
+            round,
+            turn,
+            gold,
+            winner,
+            next_id,
+            combat_rng,
+            log,
+            units,
+            campaign,
+            last_combat,
+            tiles,
+        } = state;
+        (
+            Self {
+                factions,
+                ground_items,
+                armies,
+                condition_memory,
+                map_id,
+                map_revision,
+                cols,
+                rows,
+                round,
+                turn,
+                gold,
+                winner,
+                next_id,
+                combat_rng,
+                log,
+                units,
+                campaign,
+                last_combat,
+            },
+            tiles,
+        )
+    }
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[serde(tag = "kind", rename_all = "camelCase")]
+pub enum TerrainUpdate {
+    Keep,
+    Patch { tiles: Vec<Tile> },
+    Replace { tiles: Vec<Tile> },
+}
+/// Transient wire publication; never a saved game. Applying it to the matching
+/// prior revision reconstructs the complete immutable EngineView.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
+#[serde(rename_all = "camelCase")]
+pub struct DispatchUpdate {
+    pub base_revision: u32,
+    pub revision: u32,
+    pub state: StateFrame,
+    pub terrain: TerrainUpdate,
+    pub presentation: crate::data::BattlefieldPresentation,
+    pub combat: Option<CombatAnimation>,
+}
+/// Immutable rule costs and board topology, loaded on entering a battlefield.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", tsify(hashmap_as_object))]
+pub struct BoardInspection {
+    pub costs: std::collections::BTreeMap<String, std::collections::BTreeMap<String, Option<u16>>>,
+    pub neighbors: std::collections::BTreeMap<String, Vec<String>>,
 }
 
 /// One resolved exchange for presentation; never retained in a checkpoint.
@@ -335,9 +461,14 @@ pub struct BattleInspection {
     pub revision: u32,
     pub units: Vec<UnitActions>,
     pub recruitment: std::collections::BTreeMap<String, Vec<String>>,
-    pub costs: std::collections::BTreeMap<String, std::collections::BTreeMap<String, Option<u16>>>,
-    pub neighbors: std::collections::BTreeMap<String, Vec<String>>,
     pub income: crate::data::Gold,
 }
 #[cfg(feature = "wasm")]
 response!(InspectionResponse, BattleInspection);
+
+#[cfg(feature = "wasm")]
+response!(UpdateResponse, DispatchUpdate);
+#[cfg(feature = "wasm")]
+response!(BoardResponse, BoardInspection);
+#[cfg(feature = "wasm")]
+response!(SerializedSaveResponse, String);

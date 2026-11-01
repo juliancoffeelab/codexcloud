@@ -244,11 +244,14 @@ export interface TerrainModifier {
 }
 export interface RaceDefinition {
   name: string;
-  terrainModifiers: Partial<Record<TerrainType, TerrainModifier>>;
+  terrainModifiers: Partial<
+    Record<import("../../rust/pkg/hex_command").TerrainRole, TerrainModifier>
+  >;
   /** Signed damage received, inherited by each unit specification. */
   damageModifiers: Record<DamageType, number>;
 }
 export interface TerrainDefinition {
+  role: import("../../rust/pkg/hex_command").TerrainRole;
   name: string;
   cost: number;
   passable: boolean;

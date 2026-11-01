@@ -94,7 +94,10 @@ pub(crate) fn create_arena<'catalog>(
         let start = state
             .tiles
             .iter()
-            .find(|tile| tile.terrain == "keep" && tile.owner == Some(side))
+            .find(|tile| {
+                rules.terrain_roles[rules.terrains[&tile.terrain]] == TerrainRole::Keep
+                    && tile.owner == Some(side)
+            })
             .ok_or("Arena requires an owned keep for each side")?
             .id
             .clone();
@@ -515,7 +518,7 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
             24.0,
         )];
         for tile in 0..game.terrain.len() {
-            if game.terrain_is(tile, Terrain::Village) && game.owners[tile] != Some(side) {
+            if game.role_is(tile, TerrainRole::Village) && game.owners[tile] != Some(side) {
                 goals.push(objective(
                     &format!("village:{}", game.board.ids[tile]),
                     ObjectiveKind::Capture,
@@ -535,7 +538,7 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
             12.0,
         ));
         for tile in 0..game.terrain.len() {
-            if game.terrain_is(tile, Terrain::Ruins)
+            if game.role_is(tile, TerrainRole::Ruins)
                 && !visits[side.index()].contains(&game.board.ids[tile])
             {
                 goals.push(objective(
@@ -562,7 +565,7 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
         )?;
         for command in &record.records.actions {
             if let ActionRecord::Move { tile, .. } = command {
-                if game.terrain_is(game.site(tile), Terrain::Ruins) {
+                if game.role_is(game.site(tile), TerrainRole::Ruins) {
                     visits[side.index()].insert(tile.clone());
                 }
             }
@@ -816,7 +819,7 @@ mod tests {
         let woods = create_arena(&rules, &config).unwrap();
         let trees = (0..woods.terrain.len())
             .filter(|&tile| {
-                woods.terrain_is(tile, Terrain::Forest) || woods.terrain_is(tile, Terrain::Grove)
+                woods.role_is(tile, TerrainRole::Forest) || woods.role_is(tile, TerrainRole::Grove)
             })
             .count();
         assert!(trees * 3 >= woods.terrain.len() * 2);
@@ -824,16 +827,16 @@ mod tests {
         config.landscape = "crossings".into();
         let river = create_arena(&rules, &config).unwrap();
         let keeps: Vec<_> = (0..river.terrain.len())
-            .filter(|&tile| river.terrain_is(tile, Terrain::Keep))
+            .filter(|&tile| river.role_is(tile, TerrainRole::Keep))
             .collect();
         let reachable = |start, bridges: bool, fords: bool| {
             let mut visited = HashSet::from([start]);
             let mut pending = vec![start];
             while let Some(tile) = pending.pop() {
                 for &next in &river.board.adjacent[tile] {
-                    if !river.terrain_is(next, Terrain::Water)
-                        && (bridges || !river.terrain_is(next, Terrain::Bridge))
-                        && (fords || !river.terrain_is(next, Terrain::Ford))
+                    if !river.role_is(next, TerrainRole::Water)
+                        && (bridges || !river.role_is(next, TerrainRole::Bridge))
+                        && (fords || !river.role_is(next, TerrainRole::Ford))
                         && visited.insert(next)
                     {
                         pending.push(next);
@@ -850,7 +853,7 @@ mod tests {
             assert_eq!(
                 bank.iter()
                     .filter(|&&tile| {
-                        river.terrain_is(tile, Terrain::Village)
+                        river.role_is(tile, TerrainRole::Village)
                             && rules.arena.territory.contains(&river.board.ids[tile])
                     })
                     .count(),
@@ -858,10 +861,10 @@ mod tests {
             );
         }
         let fort = (0..river.terrain.len())
-            .find(|&tile| river.terrain_is(tile, Terrain::Fort))
+            .find(|&tile| river.role_is(tile, TerrainRole::Fort))
             .unwrap();
         assert!(river.board.adjacent[fort].iter().all(|&tile| {
-            river.terrain_is(tile, Terrain::Water) || river.terrain_is(tile, Terrain::Bridge)
+            river.role_is(tile, TerrainRole::Water) || river.role_is(tile, TerrainRole::Bridge)
         }));
     }
 

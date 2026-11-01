@@ -24,6 +24,12 @@ impl<'catalog> Game<'catalog> {
         target: &Unit,
         weapon: usize,
     ) -> bool {
+        // Reject mechanically impossible attacks before resolving visibility.
+        // Inspection asks about every unit pair; resolving the entire map's fog
+        // for friendly or out-of-range targets turns a move into a UI stall.
+        if !self.can_attack_at(unit, from, target, target.tile, weapon) {
+            return false;
+        }
         if unit.side == Side::Player
             && self.fog[target.tile].is_some()
             && self
@@ -33,7 +39,7 @@ impl<'catalog> Game<'catalog> {
         {
             return false;
         }
-        self.can_attack_at(unit, from, target, target.tile, weapon)
+        true
     }
     fn can_attack_at(
         &self,

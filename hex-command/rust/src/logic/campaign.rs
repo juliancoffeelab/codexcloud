@@ -865,15 +865,7 @@ impl<'catalog> Game<'catalog> {
             unit.items = veteran.items;
         }
         for unit in &game.units {
-            if [
-                Terrain::Village,
-                Terrain::Grove,
-                Terrain::Ruins,
-                Terrain::Fort,
-            ]
-            .iter()
-            .any(|t| game.terrain_is(unit.tile, *t))
-            {
+            if game.terrain_role(unit.tile).capturable() {
                 game.owners[unit.tile] = Some(unit.side);
             }
         }

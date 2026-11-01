@@ -78,7 +78,11 @@ impl CampaignBlock {
                             GroupOrder::Hold {
                                 area,
                                 attack_radius,
-                            } => {
+                                when,
+                            } if when
+                                .as_ref()
+                                .is_none_or(|condition| game.event_condition_met(condition)) =>
+                            {
                                 scoped.push(ScopedOrder {
                                     actor: UnitId(unit.id),
                                     area: area.iter().cloned().map(TileId).collect(),
@@ -92,9 +96,10 @@ impl CampaignBlock {
                                 );
                                 target.actor = Some(format!("u{}", unit.id));
                                 authored_targets.push(target);
+                                continue;
                             }
+                            GroupOrder::Hold { .. } => {}
                         }
-                        continue;
                     }
                     let tiles = game
                         .units
@@ -999,7 +1004,7 @@ impl Game<'_> {
             }
         }
         for tile in 0..self.terrain.len() {
-            if self.terrain_is(tile, Terrain::Village) && self.owners[tile] != Some(side) {
+            if self.role_is(tile, TerrainRole::Village) && self.owners[tile] != Some(side) {
                 goals.push(objective(
                     &format!("village:{}", self.board.ids[tile]),
                     ObjectiveKind::Capture,
@@ -1153,8 +1158,7 @@ impl Game<'_> {
             let mut homes: Vec<_> = (0..self.terrain.len())
                 .filter(|&t| {
                     self.owners[t] == Some(u.side)
-                        && (self.terrain_is(t, Terrain::Keep)
-                            || self.terrain_is(t, Terrain::Village))
+                        && (self.is_keep(t) || self.role_is(t, TerrainRole::Village))
                 })
                 .collect();
             if homes.is_empty() {
@@ -1183,7 +1187,7 @@ impl Game<'_> {
             return (vec![], u.rebuilding);
         }
         let keeps: Vec<_> = (0..self.terrain.len())
-            .filter(|&t| self.terrain_is(t, Terrain::Keep) && self.owners[t] == Some(u.side))
+            .filter(|&t| self.is_keep(t) && self.owners[t] == Some(u.side))
             .collect();
         let options = self.recruitment_options(u.side);
         if keeps.is_empty() || options.is_empty() {
@@ -1217,7 +1221,7 @@ impl Game<'_> {
             // Only a nearly wiped-out army sends its leader to recover income.
             (0..self.terrain.len())
                 .filter(|&tile| {
-                    self.terrain_is(tile, Terrain::Village) && self.owners[tile] != Some(u.side)
+                    self.role_is(tile, TerrainRole::Village) && self.owners[tile] != Some(u.side)
                 })
                 .collect()
         } else {

@@ -5,6 +5,7 @@ import { test } from "vitest";
 const source = readFileSync(new URL("../scripts/publish-sites-call.js", import.meta.url), "utf8");
 const publish = new Function(
   source
+    .replace(/^import .*;\n/gm, "")
     .replace("export default async function", "async function")
     .replace("export async function", "async function") + "; return publishSite;",
 )() as (
@@ -25,6 +26,7 @@ for (const succeeded of [true, false]) {
             return {
               structuredContent: {
                 id: "deployment",
+                version_id: "prepared",
                 status: succeeded ? "succeeded" : "failed",
                 url: "https://example.test",
                 failure_message: "hosting failed",

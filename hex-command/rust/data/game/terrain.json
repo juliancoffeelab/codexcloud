@@ -4,14 +4,16 @@
     "name": "Road",
     "cost": 1,
     "passable": true,
-    "description": "Normal movement. No protection."
+    "description": "Normal movement. No protection.",
+    "role": "road"
   },
   {
     "id": "plains",
     "name": "Plains",
     "cost": 1,
     "passable": true,
-    "description": "Normal movement. No protection."
+    "description": "Normal movement. No protection.",
+    "role": "plains"
   },
   {
     "id": "forest",
@@ -21,7 +23,8 @@
     "name": "Forest",
     "cost": 2,
     "passable": true,
-    "description": "Costs 2 movement; ranged damage reduced by 1."
+    "description": "Costs 2 movement; ranged damage reduced by 1.",
+    "role": "forest"
   },
   {
     "id": "hill",
@@ -32,21 +35,24 @@
     "name": "Hills",
     "cost": 2,
     "passable": true,
-    "description": "Costs 2 movement; all damage reduced by 1."
+    "description": "Costs 2 movement; all damage reduced by 1.",
+    "role": "hill"
   },
   {
     "id": "water",
     "name": "Water",
     "cost": 1,
     "passable": false,
-    "description": "Impassable to land units."
+    "description": "Impassable to land units.",
+    "role": "water"
   },
   {
     "id": "bridge",
     "name": "Bridge",
     "cost": 1,
     "passable": true,
-    "description": "A crossing over water. Normal movement; no protection."
+    "description": "A crossing over water. Normal movement; no protection.",
+    "role": "bridge"
   },
   {
     "id": "ford",
@@ -57,21 +63,24 @@
     "name": "Shallow water",
     "cost": 2,
     "passable": true,
-    "description": "Costs 3 movement for soldiers and commanders, 2 for archers and scouts. Units here take 1 extra damage."
+    "description": "Costs 3 movement for soldiers and commanders, 2 for archers and scouts. Units here take 1 extra damage.",
+    "role": "ford"
   },
   {
     "id": "village",
     "name": "Village",
     "cost": 1,
     "passable": true,
-    "description": "+2 gold per turn. Heals a friendly occupant by 4 HP."
+    "description": "+2 gold per turn. Heals a friendly occupant by 4 HP.",
+    "role": "village"
   },
   {
     "id": "keep",
     "name": "Keep",
     "cost": 1,
     "passable": true,
-    "description": "Your commander can recruit into adjacent empty hexes. Blocks ranged attacks through the tile."
+    "description": "Your commander can recruit into adjacent empty hexes. Blocks ranged attacks through the tile.",
+    "role": "keep"
   },
   {
     "id": "marsh",
@@ -82,7 +91,8 @@
     "name": "Marsh",
     "cost": 2,
     "passable": true,
-    "description": "Mud slows land units and exposes them to 1 extra damage. Merfolk move easily here and take 1 less damage."
+    "description": "Mud slows land units and exposes them to 1 extra damage. Merfolk move easily here and take 1 less damage.",
+    "role": "marsh"
   },
   {
     "id": "ruins",
@@ -92,7 +102,8 @@
     "name": "Ruins",
     "cost": 1,
     "passable": true,
-    "description": "Broken walls reduce ranged damage by 1 without blocking shots through the tile. Some campaign ruins contain binding stones; their objectives specify who can seal them."
+    "description": "Broken walls reduce ranged damage by 1 without blocking shots through the tile. Some campaign ruins contain binding stones; their objectives specify who can seal them.",
+    "role": "ruins"
   },
   {
     "id": "fort",
@@ -103,7 +114,8 @@
     "name": "Fort",
     "cost": 2,
     "passable": true,
-    "description": "Earthworks reduce all incoming damage by 1. Capture by entering; forts provide no income or healing."
+    "description": "Earthworks reduce all incoming damage by 1. Capture by entering; forts provide no income or healing.",
+    "role": "fort"
   },
   {
     "id": "grove",
@@ -113,56 +125,64 @@
     "name": "Sacred grove",
     "cost": 2,
     "passable": true,
-    "description": "Trees reduce ranged damage by 1 and block shots through the tile. An owned grove heals its friendly occupant by 4 HP, but provides no income."
+    "description": "Trees reduce ranged damage by 1 and block shots through the tile. An owned grove heals its friendly occupant by 4 HP, but provides no income.",
+    "role": "grove"
   },
   {
     "id": "landing",
     "name": "Ferry landing",
     "cost": 1,
     "passable": true,
-    "description": "A jetty on the riverbank. Normal movement; no protection."
+    "description": "A jetty on the riverbank. Normal movement; no protection.",
+    "role": "landing"
   },
   {
     "id": "ferry",
     "name": "Moored ferry",
     "cost": 1,
     "passable": true,
-    "description": "A boat moored beside a riverbank jetty. Normal movement; no protection. Boarding does not move units across the river."
+    "description": "A boat moored beside a riverbank jetty. Normal movement; no protection. Boarding does not move units across the river.",
+    "role": "ferry"
   },
   {
     "id": "house",
     "name": "House",
     "cost": 1,
     "passable": true,
-    "description": "A single home. Normal movement; no protection, income or healing."
+    "description": "A single home. Normal movement; no protection, income or healing.",
+    "role": "house"
   },
   {
     "id": "mountain",
     "name": "Mountains",
     "cost": 3,
     "passable": false,
-    "description": "A sheer mountain ridge, impassable to land units. Blocks ranged attacks through the tile."
+    "description": "A sheer mountain ridge, impassable to land units. Blocks ranged attacks through the tile.",
+    "role": "mountain"
   },
   {
     "id": "cave",
     "name": "Quarry cave",
     "cost": 2,
     "passable": true,
-    "description": "A sheltered entrance at the foot of a mountain. Costs 2 movement; no protection. The mountain blocks ranged attacks through the tile. Scenario objectives specify what can be found inside."
+    "description": "A sheltered entrance at the foot of a mountain. Costs 2 movement; no protection. The mountain blocks ranged attacks through the tile. Scenario objectives specify what can be found inside.",
+    "role": "cave"
   },
   {
     "id": "burned-village",
     "name": "Burned village",
     "cost": 1,
     "passable": true,
-    "description": "Charred homes on open ground. No income, healing or protection."
+    "description": "Charred homes on open ground. No income, healing or protection.",
+    "role": "burned-village"
   },
   {
     "id": "signpost",
     "name": "Road sign",
     "cost": 1,
     "passable": true,
-    "description": "A wooden waymarker beside the road. Normal movement; no protection."
+    "description": "A wooden waymarker beside the road. Normal movement; no protection.",
+    "role": "signpost"
   },
   {
     "id": "castle-wall",
@@ -173,7 +193,8 @@
       "melee": -1,
       "ranged": -1
     },
-    "description": "Paved fortifications. Normal movement; all incoming damage reduced by 1. No income, healing or recruitment."
+    "description": "Paved fortifications. Normal movement; all incoming damage reduced by 1. No income, healing or recruitment.",
+    "role": "fortification"
   },
   {
     "id": "castle-gate",
@@ -184,7 +205,8 @@
       "melee": -1,
       "ranged": -1
     },
-    "description": "Paved fortifications. Normal movement; all incoming damage reduced by 1. No income, healing or recruitment."
+    "description": "Paved fortifications. Normal movement; all incoming damage reduced by 1. No income, healing or recruitment.",
+    "role": "fortification"
   },
   {
     "id": "castle-bell",
@@ -195,7 +217,8 @@
       "melee": -1,
       "ranged": -1
     },
-    "description": "An enclosed bell-tower courtyard. Normal movement; all incoming damage reduced by 1. No income, healing or recruitment."
+    "description": "An enclosed fortified keep. Its owner\u2019s leader can recruit into adjacent empty passable hexes. All incoming damage reduced by 1. No income or healing.",
+    "role": "keep"
   },
   {
     "id": "monastery",
@@ -205,34 +228,39 @@
     "description": "A hilltop sanctuary. Costs 1 movement and shelters against ranged attacks. Scenario rituals use this site.",
     "damageModifiers": {
       "ranged": -1
-    }
+    },
+    "role": "monastery"
   },
   {
     "id": "church",
     "name": "Church",
     "cost": 1,
     "passable": true,
-    "description": "A quiet church. Normal movement; no protection. Scenario discoveries may leave equipment here."
+    "description": "A quiet church. Normal movement; no protection. Scenario discoveries may leave equipment here.",
+    "role": "church"
   },
   {
     "id": "graveyard",
     "name": "Burial ground",
     "cost": 1,
     "passable": true,
-    "description": "Old burial stones. Normal movement; no protection."
+    "description": "Old burial stones. Normal movement; no protection.",
+    "role": "graveyard"
   },
   {
     "id": "ritual-star",
     "name": "Ritual mark",
     "cost": 1,
     "passable": true,
-    "description": "A charged ritual mark. Captives still standing here can be consumed by the bell."
+    "description": "A charged ritual mark. Captives still standing here can be consumed by the bell.",
+    "role": "ritual-star"
   },
   {
     "id": "ritual-spent",
     "name": "Spent ritual mark",
     "cost": 1,
     "passable": true,
-    "description": "The ritual has burned out. It cannot feed the bell again."
+    "description": "The ritual has burned out. It cannot feed the bell again.",
+    "role": "ritual-spent"
   }
 ]

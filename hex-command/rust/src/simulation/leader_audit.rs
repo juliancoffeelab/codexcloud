@@ -127,7 +127,7 @@ pub(crate) fn begin(game: &Game<'_>) -> Vec<Pending> {
                     opponent_after: ArmyStrength::default(),
                     recruitment_before: RecruitmentAvailability {
                         gold: game.gold[leader.side.index()],
-                        on_owned_keep: game.terrain_is(leader.tile, Terrain::Keep)
+                        on_owned_keep: game.is_keep(leader.tile)
                             && game.owners[leader.tile] == Some(leader.side),
                         legal_options,
                         affordable_options,

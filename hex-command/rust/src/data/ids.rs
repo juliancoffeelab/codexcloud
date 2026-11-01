@@ -166,6 +166,158 @@ impl std::fmt::Display for Family {
     }
 }
 
+/// Gameplay meaning of terrain, independent of its authored/artwork identifier.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+pub enum TerrainRole {
+    Bridge,
+    BurnedVillage,
+    Cave,
+    Church,
+    Ferry,
+    Ford,
+    Forest,
+    Fort,
+    Fortification,
+    Graveyard,
+    Grove,
+    Hill,
+    House,
+    Keep,
+    Landing,
+    Marsh,
+    Monastery,
+    Mountain,
+    Plains,
+    RitualSpent,
+    RitualStar,
+    Road,
+    Ruins,
+    Signpost,
+    Village,
+    Water,
+}
+
+impl TerrainRole {
+    pub(crate) fn capturable(self) -> bool {
+        match self {
+            Self::Fort
+            | Self::Grove
+            | Self::Keep
+            | Self::Monastery
+            | Self::Ruins
+            | Self::Village => true,
+            Self::Bridge
+            | Self::BurnedVillage
+            | Self::Cave
+            | Self::Church
+            | Self::Ferry
+            | Self::Ford
+            | Self::Forest
+            | Self::Fortification
+            | Self::Graveyard
+            | Self::Hill
+            | Self::House
+            | Self::Landing
+            | Self::Marsh
+            | Self::Mountain
+            | Self::Plains
+            | Self::RitualSpent
+            | Self::RitualStar
+            | Self::Road
+            | Self::Signpost
+            | Self::Water => false,
+        }
+    }
+    pub(crate) fn blocks_shots(self) -> bool {
+        match self {
+            Self::Cave | Self::Forest | Self::Grove | Self::Hill | Self::Keep | Self::Mountain => {
+                true
+            }
+            Self::Bridge
+            | Self::BurnedVillage
+            | Self::Church
+            | Self::Ferry
+            | Self::Ford
+            | Self::Fort
+            | Self::Fortification
+            | Self::Graveyard
+            | Self::House
+            | Self::Landing
+            | Self::Marsh
+            | Self::Monastery
+            | Self::Plains
+            | Self::RitualSpent
+            | Self::RitualStar
+            | Self::Road
+            | Self::Ruins
+            | Self::Signpost
+            | Self::Village
+            | Self::Water => false,
+        }
+    }
+    pub(crate) fn income(self) -> i32 {
+        match self {
+            Self::Village => 2,
+            Self::Bridge
+            | Self::BurnedVillage
+            | Self::Cave
+            | Self::Church
+            | Self::Ferry
+            | Self::Ford
+            | Self::Forest
+            | Self::Fort
+            | Self::Fortification
+            | Self::Graveyard
+            | Self::Grove
+            | Self::Hill
+            | Self::House
+            | Self::Keep
+            | Self::Landing
+            | Self::Marsh
+            | Self::Monastery
+            | Self::Mountain
+            | Self::Plains
+            | Self::RitualSpent
+            | Self::RitualStar
+            | Self::Road
+            | Self::Ruins
+            | Self::Signpost
+            | Self::Water => 0,
+        }
+    }
+    pub(crate) fn healing(self) -> i32 {
+        match self {
+            Self::Grove | Self::Village => 4,
+            Self::Bridge
+            | Self::BurnedVillage
+            | Self::Cave
+            | Self::Church
+            | Self::Ferry
+            | Self::Ford
+            | Self::Forest
+            | Self::Fort
+            | Self::Fortification
+            | Self::Graveyard
+            | Self::Hill
+            | Self::House
+            | Self::Keep
+            | Self::Landing
+            | Self::Marsh
+            | Self::Monastery
+            | Self::Mountain
+            | Self::Plains
+            | Self::RitualSpent
+            | Self::RitualStar
+            | Self::Road
+            | Self::Ruins
+            | Self::Signpost
+            | Self::Water => 0,
+        }
+    }
+}
+
 /// Closed authored terrain vocabulary.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]

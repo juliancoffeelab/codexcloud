@@ -215,6 +215,19 @@ pub(crate) fn validate_state_geometry(
         {
             return Err(fail("missing objective tile"));
         }
+        // Ritual groups persist their own source site, including pending members.
+        // Reject invalid references here rather than relocating a restored spawn.
+        for mark in campaign
+            .marks
+            .iter()
+            .filter(|mark| mark.starts_with("ritual:") || mark.starts_with("charge:"))
+        {
+            let source =
+                super::rituals::ritual_source(mark).ok_or_else(|| fail("invalid ritual source"))?;
+            if !tiles.contains(source) {
+                return Err(fail("unknown ritual source tile"));
+            }
+        }
         for record in &campaign.evacuated {
             let unit = &record.unit;
             let id = unit

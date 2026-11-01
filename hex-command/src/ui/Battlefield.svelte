@@ -1,24 +1,16 @@
 <script lang="ts">
   import { pixelSprites } from "../presentation/pixel-art";
-  import { onDestroy, tick, untrack } from "svelte";
+  import { tick, untrack } from "svelte";
   import type { TileView } from "../game/view";
   import type { BattleCommands, BattleView } from "../controller/view";
+  import { TERRAIN } from "../game/catalog";
   import { MAPS } from "../game/maps";
-  import { battlefieldTiles, type BattlefieldTileView } from "./battlefield-view";
+  import { BattlefieldViewCache } from "./battlefield-view";
   import { battlefieldSpriteSize, mapDimensions } from "./geometry";
-  import {
-    terrainDrawingOrder,
-    TerrainMapCache,
-    TerrainViewCache,
-    terrainMapKey,
-    terrainMapPreview,
-    type TerrainMapImage,
-  } from "../presentation/terrain-map";
-  import { daylight, lightingKey, lightingMatrix } from "../presentation/battlefield-lighting";
-  import { paintFog } from "../presentation/battlefield-fog";
+  import { TerrainViewCache, terrainAssetKey } from "../presentation/terrain-map";
+  import { lightingKey, lightingMatrix } from "../presentation/battlefield-lighting";
+  import { MapRenderer, type MapFrameRequest } from "../presentation/map-renderer";
   import terrainSprites from "virtual:terrain-prebuilt";
-  import type { Artwork } from "../presentation/art";
-  import { TerrainTilePrefetcher, terrainInspectionUrls } from "../presentation/terrain-prefetch";
 
   interface Props {
     view: BattleView;
@@ -27,15 +19,10 @@
   let { view, actions }: Props = $props();
   let map: SVGSVGElement | undefined;
   let viewport: HTMLDivElement | undefined;
-  const terrainCache = new TerrainMapCache();
   const terrainViewCache = new TerrainViewCache();
-  const terrainPrefetch = new TerrainTilePrefetcher();
-  let loadedTerrain = $state<string>();
-  let bakedTerrain = $state.raw<
-    { key: string; artwork: Artwork; image: Readonly<TerrainMapImage> } | undefined
-  >();
-  let failedSprite = $state<string | null>(null);
-  let hoveredTile = $state<string | null>(null);
+  const battlefieldViewCache = new BattlefieldViewCache();
+  let renderError = $state<string>();
+  let renderAttempt = $state(0);
 
   const game = $derived(view.game);
   const selected = $derived(view.selected);
@@ -45,15 +32,8 @@
   const isPlayerTurn = $derived(game.turn === "player" && !game.winner);
   const recruitTileId = $derived(isPlayerTurn && recruitment ? view.inspectedTile : null);
   const terrainScene = $derived(terrainViewCache.prepare(game, artwork));
-  const terrainResources: Artwork = $derived({
-    frames: Object.fromEntries(
-      [...terrainScene.tiles.values()].flatMap((tile) => [
-        ...(tile.terrainFrame ? [[tile.frameKey, tile.terrainFrame]] : []),
-      ]),
-    ),
-  });
   const tiles = $derived(
-    battlefieldTiles(game, selected, artwork, recruitTileId, terrainScene.tiles),
+    battlefieldViewCache.prepare(game, selected, artwork, recruitTileId, terrainScene.tiles),
   );
   const occupiedTiles = $derived(tiles.filter((tile) => tile.occupant));
   const size = $derived(mapDimensions(game));
@@ -66,37 +46,39 @@
   const terrainKey = $derived(
     JSON.stringify([...JSON.parse(terrainScene.key).slice(0, 4), lightingKey(lighting)]),
   );
-  const authoredTerrainKey = $derived.by(() => {
-    const map = MAPS[game.mapId];
-    return (
-      map &&
-      terrainMapKey(
-        {
-          mapId: map.id,
-          cols: map.cols,
-          rows: map.rows,
-          tiles: map.terrain as readonly TileView[],
-        },
-        lighting,
-      )
-    );
+  // Artwork metadata is part of scene identity, including anchors and drawing depth.
+  const renderTerrainKey = $derived(
+    JSON.stringify([terrainKey, [...terrainScene.tiles.values()].map((tile) => tile.terrainFrame)]),
+  );
+  const mapFrame: MapFrameRequest = $derived({
+    terrainKey: renderTerrainKey,
+    plan: {
+      width: mapWidth,
+      height: mapHeight,
+      pixelScale: 64 / battlefieldSpriteSize,
+      tiles: [...terrainScene.tiles].map(([id, tile]) => ({
+        ...tile,
+        role: TERRAIN[game.tile(id)!.terrain].role,
+      })),
+      lighting,
+    },
+    prebuilt: terrainSprites[terrainAssetKey(terrainKey)],
+    fog: fogTiles,
   });
-  onDestroy(() => terrainCache.dispose());
-  const backdrop = $derived(
-    bakedTerrain?.key === terrainKey && bakedTerrain.artwork === terrainResources
-      ? bakedTerrain.image
-      : undefined,
-  );
-  const prebuilt = $derived(
-    failedSprite === terrainKey
-      ? undefined
-      : terrainMapPreview(terrainKey, terrainSprites, authoredTerrainKey),
-  );
-  const hasBackdrop = $derived(!!(backdrop || prebuilt));
-  const overlayTiles = $derived(
-    hasBackdrop ? tiles.filter((tile) => !backdrop && prebuilt?.changed.has(tile.id)) : tiles,
-  );
-  const hovered = $derived(tiles.find((tile) => tile.id === hoveredTile));
+  // Map lighting is baked by the worker. These filters affect live unit/item overlays only.
+  const nightFilters = $derived.by(() => {
+    if (lighting.time !== "night") return [];
+    const liveTiles = new Set([
+      ...game.units.map((unit) => unit.tile),
+      ...game.groundItems.map((item) => item.tile),
+    ]);
+    return [...terrainScene.tiles]
+      .filter(([id]) => liveTiles.has(id))
+      .map(([, tile]) => ({
+        id: `night-tile-${tile.col}-${tile.row}`,
+        values: lightingMatrix(tile.x, tile.y, lighting).join(" "),
+      }));
+  });
   const inspectionTiles = $derived(
     [game.unit(selected)?.tile, game.unit(view.target)?.tile, view.inspectedTile]
       .filter(Boolean)
@@ -144,74 +126,28 @@
     };
   });
 
-  $effect(() => {
-    if (loadedTerrain !== terrainKey || !prebuilt || prebuilt.changed.size) return;
-    return terrainPrefetch.start(
-      terrainInspectionUrls(
-        artwork,
-        untrack(() => game.tiles),
-      ),
-    );
-  });
-
-  $effect(() => {
-    const key = terrainKey;
-    const resources = terrainResources;
-    if ((prebuilt && !prebuilt.changed.size) || tiles.some((tile) => !tile.terrainFrame)) {
-      terrainCache.dispose();
-      return;
-    }
-    const plan = {
-      width: mapWidth,
-      height: mapHeight,
-      pixelScale: 64 / battlefieldSpriteSize,
-      tiles: untrack(() => tiles),
-      lighting,
+  function mountMap(node: HTMLCanvasElement, request: { frame: MapFrameRequest; attempt: number }) {
+    let renderer: MapRenderer | undefined;
+    let attempt = -1;
+    const update = (next: typeof request) => {
+      try {
+        if (attempt !== next.attempt) {
+          renderer?.destroy();
+          renderer = new MapRenderer(node, (message) => {
+            renderError = message;
+          });
+          attempt = next.attempt;
+        }
+        renderer!.update(next.frame);
+      } catch (error) {
+        renderError = String(error);
+      }
     };
-    let current = true;
-    void terrainCache.prepare(key, resources, plan).then((image) => {
-      if (current && image) bakedTerrain = { key, artwork: resources, image };
-    });
-    return () => {
-      current = false;
-    };
-  });
-
-  function mountFog(node: HTMLElement, ids: readonly string[]) {
-    const canvas = document.createElement("canvas");
-    canvas.style.width = "100%";
-    canvas.style.height = "100%";
-    node.replaceChildren(canvas);
-    const draw = (ids: readonly string[]) => {
-      const scale = 64 / battlefieldSpriteSize;
-      canvas.width = Math.ceil(mapWidth * scale);
-      canvas.height = Math.ceil(mapHeight * scale);
-      const context = canvas.getContext("2d")!;
-      context.scale(scale, scale);
-      paintFog(
-        context,
-        tiles.filter((tile) => ids.includes(tile.id)),
-      );
-    };
-    draw(ids);
+    update(request);
     return {
-      update: draw,
+      update,
       destroy() {
-        node.replaceChildren();
-      },
-    };
-  }
-
-  function mountTerrain(node: HTMLElement, image: Readonly<TerrainMapImage>) {
-    image.canvas.className = "map-terrain";
-    node.replaceChildren(image.canvas);
-    return {
-      update(next: Readonly<TerrainMapImage>) {
-        next.canvas.className = "map-terrain";
-        node.replaceChildren(next.canvas);
-      },
-      destroy() {
-        node.replaceChildren();
+        renderer?.destroy();
       },
     };
   }
@@ -251,31 +187,20 @@
   }
 </script>
 
-{#snippet terrainSprite(tile: BattlefieldTileView)}
-  {#if tile.terrainFrame}
-    <svg
-      class="art-sprite pixel-art terrain-art"
-      x={tile.spriteX}
-      y={tile.spriteY}
-      width={tile.spriteWidth}
-      height={tile.spriteHeight}
-      viewBox={`0 0 ${tile.terrainFrame.width} ${tile.terrainFrame.height}`}
-      aria-hidden="true"
-      focusable="false"
-    >
-      <image
-        href={tile.terrainFrame.url}
-        x="0"
-        y="0"
-        width={tile.terrainFrame.width}
-        height={tile.terrainFrame.height}
-        preserveAspectRatio="none"
-      />
-    </svg>
-  {/if}
-{/snippet}
-
 <section class="map-section" aria-label="Battlefield">
+  {#if renderError}
+    <div role="alert" class="map-render-error">
+      <p>{renderError}</p>
+      <button
+        onclick={() => {
+          renderError = undefined;
+          renderAttempt++;
+        }}
+      >
+        Retry map rendering
+      </button>
+    </div>
+  {/if}
   <div class="map-scroll" bind:this={viewport}>
     <svg
       bind:this={map}
@@ -286,74 +211,30 @@
       aria-label={`${MAPS[game.mapId].name} battlefield`}
     >
       <defs>
-        {#if lighting.time === "night"}
-          {#each tiles as tile (tile.id)}
-            <filter id={`night-tile-${tile.col}-${tile.row}`} color-interpolation-filters="sRGB">
-              <feColorMatrix
-                type="matrix"
-                values={lightingMatrix(tile.x, tile.y, lighting).join(" ")}
-              />
-            </filter>
-          {/each}
-        {/if}
-        {#each overlayTiles as tile (tile.id)}
-          <clipPath id={tile.clipId}><polygon points={tile.points} /></clipPath>
+        {#each nightFilters as filter (filter.id)}
+          <filter id={filter.id} color-interpolation-filters="sRGB">
+            <feColorMatrix type="matrix" values={filter.values} />
+          </filter>
         {/each}
-        {#if hasBackdrop && hovered && !fogSet.has(hovered.id)}
-          <clipPath id="terrain-hover-clip"><polygon points={hovered.points} /></clipPath>
-        {/if}
       </defs>
 
       <g class="terrain-layer">
-        {#if backdrop}
-          <g class="pixel-art" pointer-events="none" aria-hidden="true">
-            <foreignObject
-              x="0"
-              y="0"
-              width={backdrop.displayWidth}
-              height={backdrop.displayHeight}
-            >
-              <div class="terrain-bitmap" use:mountTerrain={backdrop}></div>
-            </foreignObject>
-          </g>
-        {:else if prebuilt}
-          {#key terrainKey}
-            {@const spriteKey = terrainKey}
-            <g class="pixel-art" pointer-events="none" aria-hidden="true">
-              <image
-                class="map-terrain"
-                href={prebuilt.sprite.url}
-                x="0"
-                y="0"
-                width={prebuilt.sprite.displayWidth}
-                height={prebuilt.sprite.displayHeight}
-                preserveAspectRatio="none"
-                pointer-events="none"
-                aria-hidden="true"
-                onload={() => {
-                  if (terrainKey === spriteKey) loadedTerrain = spriteKey;
-                }}
-                onerror={() => {
-                  failedSprite = spriteKey;
-                }}
-              />
-            </g>
-          {/key}
-        {/if}
-        {#if hasBackdrop}
-          {#if hovered?.terrainFrame && lighting.time === "day" && !fogSet.has(hovered.id)}
-            <g
-              class="terrain-hover"
-              clip-path="url(#terrain-hover-clip)"
-              pointer-events="none"
-              aria-hidden="true"
-            >
-              <polygon class="tile-ground" points={hovered.points} fill={hovered.fill} />
-              {@render terrainSprite(hovered)}
-            </g>
-          {/if}
-        {/if}
-        {#each terrainDrawingOrder(tiles) as tile (tile.id)}
+        <foreignObject
+          x="0"
+          y="0"
+          width={mapWidth}
+          height={mapHeight}
+          pointer-events="none"
+          aria-hidden="true"
+        >
+          <div class="terrain-bitmap">
+            <canvas
+              class="map-terrain"
+              use:mountMap={{ frame: mapFrame, attempt: renderAttempt }}
+            ></canvas>
+          </div>
+        </foreignObject>
+        {#each tiles as tile (tile.id)}
           <g
             class={tile.classes}
             role="button"
@@ -362,25 +243,8 @@
             data-tile={tile.id}
             onclick={() => actions.choose(tile.id)}
             onkeydown={(event) => handleTileKey(event, tile)}
-            onpointerenter={(event) => {
-              if (event.pointerType === "mouse") hoveredTile = tile.id;
-            }}
-            onpointerleave={() => {
-              if (hoveredTile === tile.id) hoveredTile = null;
-            }}
           >
-            {#if hasBackdrop && (backdrop || !prebuilt?.changed.has(tile.id))}
-              <polygon points={tile.points} fill="transparent" pointer-events="all" />
-            {:else}
-              <g
-                filter={lighting.time === "night"
-                  ? `url(#night-tile-${tile.col}-${tile.row})`
-                  : undefined}
-              >
-                <polygon class="tile-ground" points={tile.points} fill={tile.fill} />
-                {@render terrainSprite(tile)}
-              </g>
-            {/if}
+            <polygon points={tile.points} fill="transparent" pointer-events="all" />
             {#if tile.classes.includes("objective") || tile.classes.includes("recruitable")}
               <polygon class="tile-highlight-outline" points={tile.points} fill="none" />
             {/if}
@@ -390,7 +254,7 @@
       </g>
 
       <g class="ground-items pixel-art" pointer-events="none" aria-hidden="true">
-        {#each game.groundItems as ground, index (`${ground.tile}-${index}`)}
+        {#each game.groundItems.filter((item) => !fogSet.has(item.tile)) as ground, index (`${ground.tile}-${index}`)}
           {@const site = tiles.find((tile) => tile.id === ground.tile)!}
           {@const pile = game.groundItems.filter((item) => item.tile === ground.tile)}
           {@const offset = (pile.indexOf(ground) - (pile.length - 1) / 2) * 12}
@@ -415,14 +279,6 @@
           </g>
         {/each}
       </g>
-      {#if fogTiles.length}
-        <g class="fog-layer" pointer-events="none" aria-hidden="true">
-          <foreignObject x="0" y="0" width={mapWidth} height={mapHeight}>
-            <div style="width:100%;height:100%" use:mountFog={fogTiles}></div>
-          </foreignObject>
-        </g>
-      {/if}
-
       <!-- Paint every terrain first; adjacent hexes must not hide units or bars. -->
       <g class="unit-layer" pointer-events="none" aria-hidden="true">
         {#each occupiedTiles as tile (tile.occupant!.unit.id)}
@@ -510,7 +366,7 @@
     width: 100%;
     height: 100%;
   }
-  .terrain-bitmap :global(canvas) {
+  .terrain-bitmap canvas {
     display: block;
     width: 100%;
     height: 100%;

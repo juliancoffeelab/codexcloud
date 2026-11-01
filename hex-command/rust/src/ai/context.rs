@@ -277,8 +277,11 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     pub(super) fn kind(&self, name: &str) -> usize {
         self.engine().kind(name)
     }
-    pub(super) fn terrain_is(&self, tile: usize, terrain: Terrain) -> bool {
-        self.engine().terrain_is(tile, terrain)
+    pub(super) fn role_is(&self, tile: usize, role: TerrainRole) -> bool {
+        self.engine().role_is(tile, role)
+    }
+    pub(super) fn is_keep(&self, tile: usize) -> bool {
+        self.engine().is_keep(tile)
     }
     pub(super) fn promotion_options(&self, unit: &Unit) -> Vec<usize> {
         if !self.can_act(unit.id) {

@@ -662,13 +662,13 @@ impl BattleView<'_, '_> {
                 {
                     positioning -= 24.0;
                 }
-                let healing_tile = (self.terrain_is(tile, Terrain::Village)
-                    || self.terrain_is(tile, Terrain::Grove))
+                let healing_tile = (self.role_is(tile, TerrainRole::Village)
+                    || self.role_is(tile, TerrainRole::Grove))
                     && (self.owners()[tile] == Some(side) || self.at(tile).is_none());
                 if healing_tile {
                     positioning += (self.rules().units[unit.kind].hp - unit.hp).min(4) as f64 * 2.0;
                 }
-                if self.terrain_is(tile, Terrain::Village) && self.owners()[tile] != Some(side) {
+                if self.role_is(tile, TerrainRole::Village) && self.owners()[tile] != Some(side) {
                     positioning += 3.0;
                 }
                 {

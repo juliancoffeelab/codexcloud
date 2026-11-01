@@ -133,6 +133,7 @@ pub struct TerrainModifier {
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 /// Authored terrain defaults, also exposed to the browser for display.
 pub struct TerrainDefinition {
+    pub role: TerrainRole,
     pub id: Terrain,
     pub name: String,
     pub cost: u16,
@@ -149,7 +150,7 @@ pub struct TerrainDefinition {
 pub struct RaceDefinition {
     pub id: Race,
     pub name: String,
-    pub terrain_modifiers: HashMap<Terrain, TerrainModifier>,
+    pub terrain_modifiers: HashMap<TerrainRole, TerrainModifier>,
     pub damage_modifiers: DamageModifiers,
 }
 #[derive(Debug, Deserialize)]
@@ -165,7 +166,7 @@ struct UnitSpecification {
     race: Race,
     role: UnitRole,
     #[serde(default)]
-    terrain_modifiers: HashMap<Terrain, TerrainModifier>,
+    terrain_modifiers: HashMap<TerrainRole, TerrainModifier>,
     #[serde(default)]
     healing: i32,
     #[serde(default)]
@@ -471,12 +472,15 @@ impl Rules {
             .collect();
         let race_by_id: HashMap<Race, &RaceDefinition> =
             races.iter().map(|(_, r)| (r.id, r)).collect();
-        let validate_modifiers = |modifiers: &HashMap<Terrain, TerrainModifier>,
+        let validate_modifiers = |modifiers: &HashMap<TerrainRole, TerrainModifier>,
                                   path: &str|
          -> Result<(), ContentError> {
             for id in modifiers.keys() {
-                if !terrains.contains_key(id.as_str()) {
-                    return Err(ContentError::new(path, format!("unknown terrain {id}")));
+                if !terrain.iter().any(|definition| definition.role == *id) {
+                    return Err(ContentError::new(
+                        path,
+                        format!("unused terrain role {id:?}"),
+                    ));
                 }
             }
             Ok(())
@@ -528,8 +532,8 @@ impl Rules {
             let mut costs = Vec::new();
             let mut environment = Vec::new();
             for t in &terrain {
-                let inherited = race.terrain_modifiers.get(&t.id);
-                let individual = spec.terrain_modifiers.get(&t.id);
+                let inherited = race.terrain_modifiers.get(&t.role);
+                let individual = spec.terrain_modifiers.get(&t.role);
                 let passable = individual
                     .and_then(|m| m.passable)
                     .or_else(|| inherited.and_then(|m| m.passable))
@@ -713,6 +717,7 @@ impl Rules {
             &types,
             &maps,
             &arena_maps,
+            &terrain,
         )?;
         unique(
             campaign_defaults.campaigns.iter().map(String::as_str),
@@ -766,6 +771,7 @@ impl Rules {
             content_fingerprint: content_fingerprint(bundle),
             recruitment,
             terrain_types: terrain.iter().map(|t| t.id).collect(),
+            terrain_roles: terrain.iter().map(|t| t.role).collect(),
             terrain_names,
             terrain_labels: terrain.iter().map(|t| t.name.clone()).collect(),
             terrain_definitions: terrain,
@@ -895,7 +901,15 @@ fn validate_mission(
         identifier(&group.id, path)?;
         if let Some(order) = &group.order {
             match order {
-                GroupOrder::Hold { area, .. } => {
+                GroupOrder::Hold { area, when, .. } => {
+                    if let Some(condition) = when {
+                        condition
+                            .validate(&state.tiles, &mission.events, false)
+                            .map_err(|message| ContentError::new(path, message))?;
+                        condition
+                            .validate_units(types)
+                            .map_err(|message| ContentError::new(path, message))?;
+                    }
                     if area.is_empty() {
                         return Err(ContentError::new(path, "hold area must not be empty"));
                     }
@@ -1108,7 +1122,7 @@ fn validate_mission(
             || ritual.first_round == 0
             || ritual.unit_types.is_empty()
             || ritual.spawn.units.is_empty()
-            || ritual.spawn.area.is_empty()
+            || ritual.spawn.radius == 0
         {
             return Err(ContentError::new(path, "invalid periodic ritual"));
         }
@@ -1135,9 +1149,6 @@ fn validate_mission(
             condition
                 .validate_units(types)
                 .map_err(|message| ContentError::new(path, message))?;
-        }
-        for site in &ritual.spawn.area {
-            tile_ref(site)?;
         }
         for unit in &ritual.spawn.units {
             reference(&unit.r#type, types, path)?;
@@ -1210,6 +1221,7 @@ fn validate_simulation(
     types: &HashMap<String, usize>,
     maps: &HashMap<(String, u32), State>,
     arena_maps: &HashMap<(String, u32), State>,
+    terrain: &[TerrainDefinition],
 ) -> Result<(), ContentError> {
     let path = "simulation/rosters.json";
     unique(rosters.iter().map(|r| r.id.as_str()), path)?;
@@ -1272,7 +1284,12 @@ fn validate_simulation(
                 if map
                     .tiles
                     .iter()
-                    .filter(|t| t.terrain == "keep" && t.owner == Some(side))
+                    .filter(|t| {
+                        terrain.iter().any(|definition| {
+                            definition.id.as_str() == t.terrain
+                                && definition.role == TerrainRole::Keep
+                        }) && t.owner == Some(side)
+                    })
                     .count()
                     != 1
                 {

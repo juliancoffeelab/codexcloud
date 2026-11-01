@@ -485,13 +485,13 @@ pub(in crate::ai) fn plan(
         if holding && tile != unit.tile {
             value -= 24.0;
         }
-        let healing = (game.terrain_is(tile, Terrain::Village)
-            || game.terrain_is(tile, Terrain::Grove))
+        let healing = (game.role_is(tile, TerrainRole::Village)
+            || game.role_is(tile, TerrainRole::Grove))
             && (game.owners()[tile] == Some(unit.side) || game.at(tile).is_none());
         if healing {
             value += (game.rules().units[unit.kind].hp - unit.hp).min(4) as f64 * 2.0;
         }
-        if game.terrain_is(tile, Terrain::Village) && game.owners()[tile] != Some(unit.side) {
+        if game.role_is(tile, TerrainRole::Village) && game.owners()[tile] != Some(unit.side) {
             value += 3.0;
         }
         let proximity = proximity_grid[tile];
@@ -549,7 +549,8 @@ pub(in crate::ai) fn plan(
             (
                 position(tile),
                 finishing_sites.contains(&tile) && orders.arrives(game, &unit, tile),
-                (game.terrain_is(tile, Terrain::Village) || game.terrain_is(tile, Terrain::Grove))
+                (game.role_is(tile, TerrainRole::Village)
+                    || game.role_is(tile, TerrainRole::Grove))
                     && (game.owners()[tile] == Some(unit.side) || game.at(tile).is_none()),
             )
         })

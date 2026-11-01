@@ -1,17 +1,18 @@
 <script lang="ts">
   import type { BattleCommands, BattleView } from "../controller/view";
-  import { artSprite } from "../presentation/art";
-  import { terrainLayout } from "../presentation/terrain-layout";
+  import { terrainPreviewFrame, type TerrainPreviewCache } from "../presentation/terrain-preview";
+  import TerrainPreview from "./TerrainPreview.svelte";
   import { terrainPanelView } from "./terrain-view";
 
   interface Props {
     view: BattleView;
     actions: BattleCommands;
+    previews: TerrainPreviewCache;
   }
-  let { view, actions }: Props = $props();
+  let { view, actions, previews }: Props = $props();
 
   const panel = $derived(terrainPanelView(view));
-  const frameName = $derived(panel ? terrainLayout(panel.tile, view.game.mapId).name : "");
+  const frame = $derived(panel ? terrainPreviewFrame(panel.tile, view.artwork) : undefined);
 </script>
 
 <section id="terrain-panel" class="panel" aria-label="Selected terrain" hidden={!panel}>
@@ -42,18 +43,7 @@
     {/if}
     <div class="terrain-detail">
       <div class="terrain-portrait">
-        {@html artSprite(
-          view.artwork,
-          "terrain",
-          frameName,
-          0,
-          0,
-          80,
-          80,
-          "terrain-card-art",
-          "player",
-          panel.tile.floor,
-        )}
+        {#if frame}<TerrainPreview {frame} cache={previews} />{/if}
         <span class="unit-side">Terrain</span>
       </div>
       <div class="terrain-info">

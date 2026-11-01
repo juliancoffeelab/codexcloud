@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { TerrainPreviewCache } from "./presentation/terrain-preview";
   import { preloadTerrainMap } from "./presentation/terrain-preload";
   import { onMount } from "svelte";
   import { BattleController } from "./controller/battle";
@@ -19,6 +20,11 @@
   const inspectionOpen = $derived(
     !!($view.selected || $view.inspectedTile || ($view.game.winner && !$view.game.campaign)),
   );
+  const previews = new TerrainPreviewCache();
+  const previewArtwork = $derived($view.artwork);
+  $effect(() => {
+    previews.prepare(previewArtwork);
+  });
   let briefingExpanded = $state(false);
   const missionMapId = $derived($view.game.mapId);
   $effect(() => {
@@ -74,6 +80,7 @@
     controller.initialize();
     const unregisterTools = registerBattleTools(controller);
     return () => {
+      previews.dispose();
       controller.dispose();
       unregisterTools();
       document.removeEventListener("error", artworkFailed, true);
@@ -105,7 +112,7 @@
       {#if inspectionOpen}
         <aside aria-label="Unit and terrain details">
           <UnitPanel view={$view} {actions} onNewBattle={openMapPicker} />
-          <TerrainPanel view={$view} {actions} />
+          <TerrainPanel view={$view} {actions} {previews} />
           <GroundItemsPanel view={$view} />
         </aside>
       {/if}

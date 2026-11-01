@@ -207,7 +207,7 @@ impl Assessment {
             .iter()
             .enumerate()
             .filter(|(tile, owner)| {
-                **owner != Some(unit.side) && game.terrain_is(*tile, Terrain::Village)
+                **owner != Some(unit.side) && game.role_is(*tile, TerrainRole::Village)
             })
             .map(|(tile, _)| {
                 let covered = allies
@@ -1145,7 +1145,7 @@ mod tests {
                 assert_eq!(recruit.captures, 0.0);
                 let village = (0..game.terrain.len())
                     .find(|&tile| {
-                        game.terrain_is(tile, Terrain::Village)
+                        game.role_is(tile, TerrainRole::Village)
                             && game.board.distance(start, tile) > 2
                     })
                     .unwrap();

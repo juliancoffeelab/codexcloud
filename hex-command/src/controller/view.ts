@@ -7,7 +7,7 @@ import type {
   UnitType,
   RecruitType as GameRecruitType,
 } from "../game/types";
-import { TYPES, isLeader } from "../game/catalog";
+import { TYPES, TERRAIN, isLeader } from "../game/catalog";
 import type { Artwork } from "../presentation/art";
 
 export type RecruitType = GameRecruitType;
@@ -89,7 +89,7 @@ export function recruitmentContext(
   }
   const keep = game
     .neighbors(tile.id)
-    .find((neighbor) => neighbor.terrain === "keep" && neighbor.owner === "player");
+    .find((neighbor) => TERRAIN[neighbor.terrain].role === "keep" && neighbor.owner === "player");
   if (!keep) return null;
   const commander = game.units.find((unit) => unit.side === "player" && isLeader(unit));
   return Object.freeze({ commander, stationed: commander?.tile === keep.id });

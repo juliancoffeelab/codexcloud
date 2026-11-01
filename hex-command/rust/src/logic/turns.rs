@@ -7,11 +7,9 @@ impl<'catalog> Game<'catalog> {
         self.owners
             .iter()
             .enumerate()
-            .filter(|(tile, owner)| {
-                **owner == Some(side) && self.terrain_is(*tile, Terrain::Village)
-            })
-            .count() as i32
-            * 2
+            .filter(|(_, owner)| **owner == Some(side))
+            .map(|(tile, _)| self.terrain_role(tile).income())
+            .sum()
     }
     pub(crate) fn begin_turn(&mut self, side: Side) {
         self.turn = side;
@@ -24,11 +22,9 @@ impl<'catalog> Game<'catalog> {
             }
             unit.moved = false;
             unit.attacked = false;
-            let terrain = self.rules.terrain_types[self.terrain[unit.tile]];
-            if matches!(terrain, Terrain::Village | Terrain::Grove)
-                && self.owners[unit.tile] == Some(side)
-            {
-                unit.hp = (unit.hp + 4).min(self.rules.units[unit.kind].hp);
+            let terrain = self.rules.terrain_roles[self.terrain[unit.tile]];
+            if self.owners[unit.tile] == Some(side) {
+                unit.hp = (unit.hp + terrain.healing()).min(self.rules.units[unit.kind].hp);
             }
         }
         for index in 0..self.units.len() {

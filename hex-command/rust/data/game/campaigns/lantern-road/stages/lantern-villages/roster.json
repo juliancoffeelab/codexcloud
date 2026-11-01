@@ -49,7 +49,8 @@
         "col": 16,
         "row": 4,
         "name": "The Tollkeeper",
-        "role": "leader"
+        "role": "leader",
+        "aiGroup": "tollkeeper"
       },
       {
         "type": "zombie-walker",
@@ -143,7 +144,8 @@
       "col": 16,
       "row": 4,
       "name": "The Tollkeeper",
-      "role": "leader"
+      "role": "leader",
+      "aiGroup": "tollkeeper"
     },
     {
       "type": "zombie-walker",

@@ -103,7 +103,7 @@ impl TileOrder {
             (sum.0 / count as f64, sum.1 / count as f64)
         }
         let mut home_keeps = (0..g.terrain().len())
-            .filter(|&t| g.terrain_is(t, Terrain::Keep) && g.owners()[t] == Some(side))
+            .filter(|&t| g.is_keep(t) && g.owners()[t] == Some(side))
             .peekable();
         let home = if home_keeps.peek().is_some() {
             Some(center(g, home_keeps))
@@ -111,7 +111,7 @@ impl TileOrder {
             None
         };
         let mut opposing = (0..g.terrain().len())
-            .filter(|&t| g.terrain_is(t, Terrain::Keep) && g.owners()[t].is_some_and(|s| s != side))
+            .filter(|&t| g.is_keep(t) && g.owners()[t].is_some_and(|s| s != side))
             .peekable();
         let mut enemies = g
             .units()
@@ -142,8 +142,8 @@ impl TileOrder {
         };
         let a = axial(first);
         let b = axial(second);
-        let av = self.villages && g.terrain_is(first, Terrain::Village);
-        let bv = self.villages && g.terrain_is(second, Terrain::Village);
+        let av = self.villages && g.role_is(first, TerrainRole::Village);
+        let bv = self.villages && g.role_is(second, TerrainRole::Village);
         let home_distance = |p: (f64, f64)| {
             ((p.0 - self.home.0).abs()
                 + (p.1 - self.home.1).abs()

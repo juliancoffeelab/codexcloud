@@ -31,16 +31,6 @@
     },
     {
       "kind": "event",
-      "label": "Search the eastern church",
-      "tile": "18,14",
-      "event": "church-armor",
-      "visibleWhen": {
-        "kind": "event",
-        "event": "church-sighted"
-      }
-    },
-    {
-      "kind": "event",
       "label": "Free the northern captives",
       "tile": "11,5",
       "event": "northern-freed",
@@ -70,6 +60,5 @@
       }
     }
   ],
-  "defendObjectives": false,
-  "enemyLeaderPost": "11,11"
+  "defendObjectives": false
 }

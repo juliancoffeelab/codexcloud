@@ -2,6 +2,39 @@
 use super::battle::Game;
 use crate::data::*;
 
+/// Source coordinates are already part of each durable mark/death group identity.
+/// The same identity keeps partially blocked groups anchored after save/restore.
+pub(super) fn ritual_source(mark: &str) -> Option<&str> {
+    let mut parts = mark.splitn(4, ':');
+    let kind = parts.next()?;
+    let _ritual = parts.next()?;
+    let identity = parts.next()?;
+    let source = parts.next()?;
+    match kind {
+        "charge" => {
+            if identity.strip_prefix('u')?.parse::<u32>().ok()? == 0 {
+                return None;
+            }
+            Some(source)
+        }
+        "ritual" => {
+            if identity.parse::<u32>().ok()? == 0 {
+                return None;
+            }
+            if let Some(tile) = source.strip_prefix("mark-") {
+                Some(tile)
+            } else {
+                let (unit, tile) = source.strip_prefix("death-u")?.split_once('-')?;
+                if unit.parse::<u32>().ok()? == 0 {
+                    return None;
+                }
+                Some(tile)
+            }
+        }
+        _ => None,
+    }
+}
+
 impl Game<'_> {
     #[cfg(any(feature = "wasm", test))]
     pub(crate) fn ritual_notices(&self) -> Vec<String> {
@@ -182,12 +215,14 @@ impl Game<'_> {
                         continue;
                     }
                     let kind = self.kind(&incoming.r#type);
-                    let site = ritual
-                        .spawn
-                        .area
-                        .iter()
-                        .map(|s| self.site(s))
-                        .find(|&t| self.at(t).is_none() && self.cost(kind, t) != u16::MAX);
+                    let origin = self.site(ritual_source(&group).expect("validated ritual source"));
+                    let site = (0..self.terrain.len())
+                        .filter(|&tile| {
+                            self.board.distance(tile, origin) <= ritual.spawn.radius
+                                && self.at(tile).is_none()
+                                && self.cost(kind, tile) != u16::MAX
+                        })
+                        .min_by_key(|&tile| (self.board.distance(tile, origin), tile));
                     if let Some(site) = site {
                         let id = self.add(kind, incoming.side, site);
                         let unit = self.units.iter_mut().find(|u| u.id == id).unwrap();

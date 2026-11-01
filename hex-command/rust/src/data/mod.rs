@@ -46,6 +46,8 @@ pub struct Rules {
     pub terrain_names: Vec<String>,
     /// Closed terrain variants in the same runtime order.
     pub terrain_types: Vec<Terrain>,
+    /// Dense gameplay roles from explicit authored terrain definitions.
+    pub terrain_roles: Vec<TerrainRole>,
     /// Display labels corresponding to terrain identifiers.
     pub terrain_labels: Vec<String>,
     /// Display metadata from the same validated definitions used by the engine.

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { TERRAIN } from "../game/catalog";
   import { dialoguePending } from "../game/campaign-progress";
   import type { BattleView, BattleCommands } from "../controller/view";
   import BattleBar from "./BattleBar.svelte";
@@ -17,8 +18,13 @@
     game.turn === "player" && !game.winner && !dialoguePending(game.campaign),
   );
   const income = $derived(game.income("player"));
-  const ownedVillages = $derived(income / 2);
-  const totalVillages = $derived(game.tiles.filter((tile) => tile.terrain === "village").length);
+  const ownedVillages = $derived(
+    game.tiles.filter((tile) => TERRAIN[tile.terrain].role === "village" && tile.owner === "player")
+      .length,
+  );
+  const totalVillages = $derived(
+    game.tiles.filter((tile) => TERRAIN[tile.terrain].role === "village").length,
+  );
   const canUndo = $derived(view.canUndo);
   const turnLabel = $derived.by(() => {
     if (game.winner === "player") return "Victory";

@@ -401,8 +401,15 @@ impl<'catalog> Game<'catalog> {
     pub(crate) fn kind(&self, name: &str) -> usize {
         self.rules.types[name]
     }
-    pub(crate) fn terrain_is(&self, tile: usize, terrain: Terrain) -> bool {
-        self.rules.terrain_types[self.terrain[tile]] == terrain
+    pub(crate) fn terrain_role(&self, tile: usize) -> TerrainRole {
+        self.rules.terrain_roles[self.terrain[tile]]
+    }
+    pub(crate) fn role_is(&self, tile: usize, role: TerrainRole) -> bool {
+        self.terrain_role(tile) == role
+    }
+    /// Capability is authored once and exported through the catalog for UI discovery too.
+    pub(crate) fn is_keep(&self, tile: usize) -> bool {
+        self.role_is(tile, TerrainRole::Keep)
     }
     pub(crate) fn record(&mut self, message: String) {
         self.log.insert(0, message);
@@ -698,7 +705,7 @@ impl<'catalog> Game<'catalog> {
             || !self.recruitment_options(leader.side).contains(&kind)
             || self.winner.is_some()
             || !self.may_act(leader)
-            || !self.terrain_is(leader.tile, Terrain::Keep)
+            || !self.is_keep(leader.tile)
             || self.owners[leader.tile] != Some(leader.side)
             || (price && self.gold[leader.side.index()] < self.rules.units[kind].cost)
         {

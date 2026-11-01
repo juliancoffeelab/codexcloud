@@ -62,24 +62,40 @@ variants. Native layer composition uses source-over blending without resizing.
 
 ## Publication
 
-Use the [publish skill](../.agents/skills/publish/SKILL.md) when the user requests
-deployment or an update to the live game. Simulation experiments, image previews
-and Git pushes do not imply publication.
+Completed game implementation deploys by default through the
+[deploy skill](../.agents/skills/deploy/SKILL.md), unless the user requests
+local-only work, an unpublished release, or a deployment hold. Complete the
+implementation's appropriate validation and commit/push required changes first, then invoke
+`node scripts/site-operation.mjs deploy` through its documented transport and
+return the production URL. Do not stop at a saved version awaiting another
+instruction. Reviews, documentation/instruction-only changes, drafts, renders,
+simulations and standalone Git pushes do not trigger publication.
 
-Implementation work produces a ready, unpublished release before it is reported
-as checked and pushed. Run `npm run release:prepare` with a fresh Site source
-credential through hidden stdin, then save its archive with `save_site_version`.
-This preparation does not deploy. It preserves the isolated checkout’s build
-caches and does not rerun tests, formatting or working-tree commits. Saved
-versions and their archives live in Sites, so a replacement workspace can still
-publish them.
+An explicit deploy request invokes that operation immediately. Do not run
+separate tests, formatting, inspections, Git commands, builds or previews. The
+operation owns preparation from `HEAD`, necessary builds, Sites source synchronization, packaging,
+credentials, saving the exact release and deployment, preserving the existing
+audience. Exact saved releases are reused without rebuilding or saving again;
+changed commits are built with their committed dependency lockfile. There are
+no deployment-time test, clean-tree, branch-policy, HTML-reference or archive-audit
+gates. Build/package errors and hosting failures remain genuine failures.
+Return the URL only as a successful update when the operation reports
+`deployed: true`. On failure, give the known site address with the error and
+explicitly state that the requested update failed. Do not present an older
+publication as success. A failure does not end the deployment task: before
+investigating or repairing it, announce the failed stage/error, the next action
+and why the live update is delayed. Fix only the observed blocker, commit/push
+required changes and retry the deploy operation without requesting permission
+again. Use its build to verify the repair; do not add a general validation cycle.
+Continue until deployment succeeds or a concrete external prerequisite requires
+user action, explaining that blocker and the known site's unchanged status.
 
-Deployment is one native hosting operation on that saved version. It performs
-no Git operations, checks, formatting, builds, packaging or source synchronization.
-Do not repeat release preparation in response to a deploy request. Use the
-prepared version ID from context, or discover the latest archive-backed saved
-version through Sites when resuming in a fresh environment. Preserve the Site's
-existing audience.
+Uncommitted implementation changes are left alone. Preparation neither checks
+that the implementation working tree is clean nor stages, commits or pushes its
+changes. Required implementation commits and pushes are completed before deployment.
+
+Use the [publish skill](../.agents/skills/publish/SKILL.md) only when an
+unpublished release is requested. Its `prepare` operation saves without deploying.
 
 ## Further guidance
 
@@ -111,7 +127,7 @@ durable fact. Event completion is already remembered by campaign state.
 
 A tile's optional `fog` uses the same rule format and specifies what clears it.
 Rust exports the resolved lights and fogged tile IDs in each engine view and the
-initial presentation in the catalog. The frontend paints soft fog and hides
+initial presentation in the catalog. The rendering worker paints soft fog; the UI hides
 covered enemies; Rust rejects attacks on covered enemies. Remembered condition
 facts persist in `conditionMemory`; resolved masks and rendered images do not.
 Missing lighting defaults to daylight. Color transforms, palette colors and glow
@@ -126,23 +142,71 @@ Stable member markers prevent duplicate spawns after deaths or restoration.
 `noUnits` includes activated pending members when determining whether a threat
 has been cleared. Legacy visit/round/control triggers remain supported.
 
-Production emits finished terrain PNGs with the authored lighting and fixed
-lantern fixtures. Cache keys include terrain geometry, artwork inputs and every
-lighting setting. Up to four condition-controlled lights have every combination
-prebaked (at most 16 variants); larger combinations use runtime processing.
-Ownership and event completion select a different image when a controlled light changes.
-Selection and ordinary unit moves reuse the same image.
-Units receive the corresponding color transform at their position, while health,
-selection and interaction overlays retain their normal colors. Static light
-settings need no per-turn terrain processing.
+Every terrain definition explicitly declares a typed `role`, independent of its
+artwork ID. Bell and ordinary keeps both use `keep`; castle paving and gates use
+`fortification`. Native income, healing, capture, sight blocking, recruitment and
+AI objectives query roles. Race/unit terrain modifiers are keyed by role; resolved
+movement and protection values remain per authored terrain variant. The UI reads
+the same Rust-exported roles for recruitment, ownership, village counts, sounds
+and terrain facts. Asset selection and frozen save conversions retain explicit
+artwork IDs; gameplay rules must not branch on those IDs or list special variants.
+Role behavior methods are exhaustive so adding a role requires choosing its rules.
+An owned keep lets its leader recruit into free, passable adjacent hexes. Leaders
+retain the existing army-size fight/rebuild policy; a recruiting keep does not
+create a permanent stationing duty.
 
-Custom or changed terrain uses the existing batched canvas bake. Uncached night
-processing transfers an RGBA pixel buffer to a disposable Worker, then draws
-the returned pixels and swaps the completed result. Workers need no canvas or
-image APIs. Worker failure, lack of support or
-timeout falls back to yielding row batches. Replaced or disposed requests cancel
-processing and stale results never replace the active map. Daylight needs no
-pixel processing. Development uses this same uncached path.
+A group hold order can include a `when` condition. While it is true, the group
+stays in its authored area. Once false, the group returns to ordinary combat
+orders; it is neither frozen nor tethered to the former guard site. Captive
+watches hold only while their named prisoners remain neutral captives.
+
+Periodic rituals use `spawn.radius` around each consumed source, rather than a
+fixed spawn area. An occupied mark and a captive death charge each record their
+own source tile in durable group markers. Members choose the nearest free,
+traversable tile within that radius. Blocked members stay pending at the same
+source through save/restore; completed members never respawn. Empty marks produce
+no group. Saved charge and group source references are validated on restoration.
+
+All runtime map painting happens in one persistent module Worker using
+OffscreenCanvas and createImageBitmap. It selects complete authored tile frames,
+paints terrain in authored drawing order, applies lighting and fog, and transfers
+one finished ImageBitmap. The main thread only swaps that bitmap using
+ImageBitmapRenderingContext.transferFromImageBitmap. Units, items, health,
+selection and interaction remain independent overlays; live sprite tinting does
+not repaint the map.
+
+Production prebuilds terrain PNGs with authored lighting and lantern fixtures.
+The worker can load an exact matching PNG as its terrain input. Changed/custom
+maps use the same worker to draw tile frames and apply lighting. Both paths then
+compose fog into the finished background. The worker retains only the latest
+terrain base, reusing it when only fog changes. Selection and ordinary moves
+with unchanged terrain, lighting and fog request no new background.
+
+Workers, OffscreenCanvas, createImageBitmap and bitmaprenderer are required
+browser capabilities. There is no main-thread map painting, separate fog canvas,
+SVG terrain substitute or compatibility renderer. Worker/script/image failures
+show a diagnostic with a retry button. The previous completed background stays
+visible during rendering and after failures. Replaced requests cannot publish
+stale frames; obsolete bitmaps are closed and workers terminate on disposal.
+Offline asset builders and draft renderers may paint through their own canvas
+implementation; they are not browser runtime fallbacks.
+
+Terrain inspection portraits use one explicitly registered image per terrain
+type, shared across all floors, orientations, junctions, maps and cells. These
+portrait choices never supply defaults for map rendering. On application entry,
+`TerrainPreviewCache` preloads and decodes these frames; panels reuse the decoded
+image nodes. This UI cache is separate from the worker's map textures and must
+remain when map rendering changes. Pending or failed image loads show a loading
+or retry state rather than an empty portrait.
+
+The native dispatch transport publishes per-command state plus an explicit
+terrain `keep`, `patch` or `replace`, tied to the prior revision. The browser
+reconstructs the complete immutable view while preserving unchanged tile
+identities. Board topology and rule costs are loaded on map entry, rather than
+repeated with every action inspection. Undo retains immutable revisions.
+Persistence still stores the full canonical checkpoint in the existing save
+format; Rust serializes it directly instead of constructing another JavaScript
+map solely for JSON serialization. Transport patches are never save data.
 
 ## Leadership and campaign groups
 

@@ -193,7 +193,7 @@ impl BattleView<'_, '_> {
 
     fn movement_goals(&self, u: &Unit, orders: &crate::ai::orders::TacticalOrders) -> Vec<usize> {
         let villages: Vec<_> = (0..self.terrain().len())
-            .filter(|&t| self.terrain_is(t, Terrain::Village) && self.owners()[t] != Some(u.side))
+            .filter(|&t| self.role_is(t, TerrainRole::Village) && self.owners()[t] != Some(u.side))
             .collect();
         let goals = if self.rules().units[u.kind].family == Family::Scout && !villages.is_empty() {
             villages
@@ -370,7 +370,7 @@ impl BattleDraft<'_, '_> {
         let trapped = !retaliations.is_empty();
         let villages: Vec<_> = (0..self.terrain().len())
             .filter(|&t| {
-                self.terrain_is(t, Terrain::Village)
+                self.role_is(t, TerrainRole::Village)
                     && self.owners()[t] == Some(u.side)
                     && self.at(t).is_none_or(|o| o.id == id)
                     && self.enemy_danger(&u, t) == 0
@@ -566,7 +566,7 @@ impl BattleDraft<'_, '_> {
                 }
             }
             let capture =
-                if self.terrain_is(t, Terrain::Village) && self.owners()[t] != Some(u.side) {
+                if self.role_is(t, TerrainRole::Village) && self.owners()[t] != Some(u.side) {
                     if self.rules().units[u.kind].family == Family::Scout {
                         8.0
                     } else {
@@ -576,7 +576,7 @@ impl BattleDraft<'_, '_> {
                     0.0
                 };
             let heal = if u.hp <= 4
-                && self.terrain_is(t, Terrain::Village)
+                && self.role_is(t, TerrainRole::Village)
                 && self.owners()[t] == Some(u.side)
             {
                 9.0
@@ -587,7 +587,7 @@ impl BattleDraft<'_, '_> {
                 + opportunity
                 + capture
                 + heal
-                + if self.terrain_is(t, Terrain::Hill) {
+                + if self.role_is(t, TerrainRole::Hill) {
                     0.25
                 } else {
                     0.0

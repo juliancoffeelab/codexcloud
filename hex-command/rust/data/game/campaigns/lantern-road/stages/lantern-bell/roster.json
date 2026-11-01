@@ -2,7 +2,7 @@
   "initial": {
     "gold": {
       "player": 20,
-      "enemy": 0
+      "enemy": 12
     },
     "units": [
       {
@@ -24,38 +24,33 @@
         "type": "lich",
         "side": "enemy",
         "col": 11,
-        "row": 11,
+        "row": 12,
         "name": "The Bellwarden",
-        "role": "leader",
-        "aiGroup": "garrison"
+        "role": "leader"
       },
       {
         "type": "skeleton",
         "side": "enemy",
         "col": 10,
-        "row": 12,
-        "aiGroup": "garrison"
+        "row": 12
       },
       {
         "type": "bonearcher",
         "side": "enemy",
         "col": 12,
-        "row": 12,
-        "aiGroup": "garrison"
+        "row": 12
       },
       {
         "type": "skeleton",
         "side": "enemy",
         "col": 10,
-        "row": 13,
-        "aiGroup": "garrison"
+        "row": 13
       },
       {
         "type": "bonearcher",
         "side": "enemy",
         "col": 11,
-        "row": 13,
-        "aiGroup": "garrison"
+        "row": 13
       },
       {
         "type": "skeleton",
@@ -124,38 +119,33 @@
       "type": "lich",
       "side": "enemy",
       "col": 11,
-      "row": 11,
+      "row": 12,
       "name": "The Bellwarden",
-      "role": "leader",
-      "aiGroup": "garrison"
+      "role": "leader"
     },
     {
       "type": "skeleton",
       "side": "enemy",
       "col": 10,
-      "row": 12,
-      "aiGroup": "garrison"
+      "row": 12
     },
     {
       "type": "bonearcher",
       "side": "enemy",
       "col": 12,
-      "row": 12,
-      "aiGroup": "garrison"
+      "row": 12
     },
     {
       "type": "skeleton",
       "side": "enemy",
       "col": 10,
-      "row": 13,
-      "aiGroup": "garrison"
+      "row": 13
     },
     {
       "type": "bonearcher",
       "side": "enemy",
       "col": 11,
-      "row": 13,
-      "aiGroup": "garrison"
+      "row": 13
     },
     {
       "type": "skeleton",
@@ -216,7 +206,7 @@
     }
   ],
   "recruits": ["swordsman", "spearman", "archer", "scout", "adept"],
-  "enemyRecruits": [],
+  "enemyRecruits": ["skeleton", "bonearcher"],
   "gold": 20,
-  "enemyGold": 0
+  "enemyGold": 12
 }

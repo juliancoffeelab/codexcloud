@@ -62,8 +62,14 @@ export function terrainPrebuild(): Plugin {
       const { initSync, previewPresentation } = await import("../rust/pkg/hex_command");
       initSync({ module: await readFile(resolve(root, "rust/pkg/hex_command_bg.wasm")) });
       const content = resolve(root, "rust/data");
-      const manifest = await read<{ scenarios: string[]; campaigns: string[] }>(
+      const manifest = await read<{ terrain: string; scenarios: string[]; campaigns: string[] }>(
         resolve(content, "manifest.json"),
+      );
+      const terrainDefinitions = await read<
+        { id: string; role: import("../rust/pkg/hex_command").TerrainRole }[]
+      >(resolve(content, manifest.terrain));
+      const terrainRoles = Object.fromEntries(
+        terrainDefinitions.map((definition) => [definition.id, definition.role]),
       );
       const descriptors = manifest.scenarios.map((path) => resolve(content, path));
       for (const campaign of manifest.campaigns) {
@@ -107,7 +113,7 @@ export function terrainPrebuild(): Plugin {
           const plan = {
             ...mapDimensions(map),
             pixelScale: 64 / battlefieldSpriteSize,
-            tiles: terrainMapTiles(map.tiles, map.mapId, artwork),
+            tiles: terrainMapTiles(map.tiles, map.mapId, artwork, terrainRoles),
           };
           for (const tile of plan.tiles) {
             const name = tile.terrainFrame?.url;
@@ -115,7 +121,7 @@ export function terrainPrebuild(): Plugin {
             if (frames.has(name)) continue;
             const path = resolve(root, "public", pixelSprites[tile.frameKey]!);
             this.addWatchFile(path);
-            // Keep build-time raster clipping identical to the canvas fallback.
+            // Keep offline raster clipping identical to the rendering worker.
             const frame = createCanvas(tile.terrainFrame!.width, tile.terrainFrame!.height);
             frame.getContext("2d").drawImage(await loadImage(path), 0, 0);
             frames.set(name, frame);

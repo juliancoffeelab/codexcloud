@@ -120,6 +120,42 @@ impl Game<'_> {
         })
     }
 
+    pub(crate) fn inspect_board(&self) -> BoardInspection {
+        BoardInspection {
+            costs: self
+                .rules
+                .units
+                .iter()
+                .map(|rule| {
+                    (
+                        rule.id.clone(),
+                        self.rules
+                            .terrain_names
+                            .iter()
+                            .cloned()
+                            .zip(rule.costs.iter().copied())
+                            .collect(),
+                    )
+                })
+                .collect(),
+            neighbors: self
+                .board
+                .ids
+                .iter()
+                .enumerate()
+                .map(|(index, id)| {
+                    (
+                        id.clone(),
+                        self.board.adjacent[index]
+                            .iter()
+                            .map(|&next| self.board.ids[next].clone())
+                            .collect(),
+                    )
+                })
+                .collect(),
+        }
+    }
+
     pub(crate) fn inspect(&self, revision: u32) -> BattleInspection {
         let units = self
             .units
@@ -213,37 +249,6 @@ impl Game<'_> {
                         self.recruitment_options(side)
                             .into_iter()
                             .map(|kind| self.rules.units[kind].id.clone())
-                            .collect(),
-                    )
-                })
-                .collect(),
-            costs: self
-                .rules
-                .units
-                .iter()
-                .map(|rule| {
-                    (
-                        rule.id.clone(),
-                        self.rules
-                            .terrain_names
-                            .iter()
-                            .cloned()
-                            .zip(rule.costs.iter().copied())
-                            .collect(),
-                    )
-                })
-                .collect(),
-            neighbors: self
-                .board
-                .ids
-                .iter()
-                .enumerate()
-                .map(|(index, id)| {
-                    (
-                        id.clone(),
-                        self.board.adjacent[index]
-                            .iter()
-                            .map(|&next| self.board.ids[next].clone())
                             .collect(),
                     )
                 })

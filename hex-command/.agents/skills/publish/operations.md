@@ -5,16 +5,36 @@ for `scripts/site-operation.mjs`, not a preliminary inspection step. Work from t
 game root. This document owns the calling convention; the skill selects the mode.
 
 - `prepare` returns an unpublished release receipt.
-- `deploy` unconditionally runs preparation, passes the exact returned receipt to
-  deployment, waits for its terminal result and returns `url`.
+- `deploy` resolves the exact `HEAD` release, reusing an exact saved version or
+  preparing it when necessary, then deploys that version and returns the result.
 
 The module API is `runSiteOperation(tools, {mode, cwd, message?})`.
 `tools` supplies the enabled execution and native Sites functions by name. Internally,
 `prepareSite(tools, {cwd, message?})` returns a receipt with `project_id`,
-`version_id`, `version_number`, `source_commit`, `site_commit` and `owner_private`;
-`publishSite(tools, receipt)` returns `{url, version_id, deployment_id}`.
+`version_id`, `source_commit`, `site_commit` and `owner_private` (plus
+`version_number` when returned by the saving API);
+`publishSite(tools, receipt)` returns `{url, deployed: true, source_commit,
+version_id, deployment_id}`. The deployment operation returns
+`{url, deployed: false, error, source_commit}` on failure when a known site address
+is available. That address does not indicate a successful update. It throws a
+failure when no address is available; callers must never fabricate one.
+An operation failure is the end of that attempt, not an instruction to abandon
+the deployment request. Follow the deploy skill's announced, focused repair and
+retry workflow. A repaired source commit begins a new pinned attempt.
 The transport forwards operation-owned tool calls unchanged. It never chooses
 source, versions, audience, builds or retries on the agent’s behalf.
+
+The command serializes concurrent runs, pins the implementation commit once,
+and owns local subprocesses and native Sites calls. An exact cached release
+needs only the current audience lookup and deployment call; no credential,
+source synchronization, build, packaging or save is repeated. A cache miss
+fetches audience and credentials concurrently, installs locked dependencies only
+when needed, builds and packages once. Owner-private deployments use the native
+combined save-and-deploy operation when available, avoiding a separate save/deploy
+round trip; save-only requests never use it. Cache failures
+do not block publication. A deleted saved version is rebuilt, never replaced
+with an older release. Transient native failures retry the same operation once.
+No tests, formatting, quality gates or post-deployment browser checks run here.
 
 ## Code-mode invocation
 
@@ -37,7 +57,7 @@ const session = cell.session_id;
 let buffer = "";
 while (true) {
   buffer += cell.output;
-  let response;
+  const requests = [];
   while (buffer.includes("\n")) {
     const end = buffer.indexOf("\n");
     const line = buffer.slice(0, end).trim();
@@ -50,19 +70,28 @@ while (true) {
       exit();
     }
     if (message.type === "error") throw new Error(message.error);
-    if (message.type !== "tool" || typeof tools[message.name] !== "function")
+    if (message.type !== "tool" || typeof message.name !== "string")
       throw new Error("Unsupported operation tool request");
-    try {
-      response = { id: message.id, result: await tools[message.name](message.args) };
-    } catch (error) {
-      response = { id: message.id, error: String(error) };
-    }
+    requests.push(message);
   }
   if (!session || cell.exit_code !== undefined)
     throw new Error("Site operation ended without a result");
+  const responses = await Promise.all(
+    requests.map(async (message) => {
+      try {
+        if (typeof tools[message.name] !== "function")
+          throw new Error("Unavailable tool: " + message.name);
+        return { id: message.id, result: await tools[message.name](message.args) };
+      } catch (error) {
+        return { id: message.id, error: String(error) };
+      }
+    }),
+  );
   cell = await tools.write_stdin({
     session_id: session,
-    chars: response ? JSON.stringify(response) + "\n" : "",
+    chars: responses.length
+      ? responses.map((response) => JSON.stringify(response)).join("\n") + "\n"
+      : "",
     yield_time_ms: 1000,
     max_output_tokens: 6000,
   });

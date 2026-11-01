@@ -4,67 +4,36 @@ import { TERRAIN, TYPES } from "../game/catalog";
 import type { TerrainType } from "../game/types";
 import { campaignMission } from "../game/campaign-progress";
 
-const descriptions: Record<TerrainType, string> = {
-  monastery: "A hilltop ritual site, sheltering against ranged attacks.",
-  church: "A quiet church. Search it for what remains.",
-  graveyard: "Old burial stones. No protection.",
-  "ritual-star": "A charged mark. Captives must move off it before the bell tolls.",
-  "ritual-spent": "A consumed mark. It cannot raise another group.",
-  "castle-bell":
-    "A bell tower inside an enclosed fortified courtyard. Reduces all incoming damage by 1.",
-  "burned-village": "Burned homes. No income, healing or protection.",
-  marsh: "Mud and reeds expose land troops; merfolk find protection here.",
-  ruins: "Broken walls shelter against ranged attacks.",
-  "castle-wall": "A paved fortified courtyard. Reduces all incoming damage by 1.",
-  "castle-gate": "A fortified courtyard entrance. Reduces all incoming damage by 1.",
-  fort: "Earthworks protect against every damage kind. Capture them to hold a crossing.",
-  grove: "A sacred woodland refuge. Its owner’s occupants heal 4 HP each turn.",
-  plains: "Open grassland with easy footing.",
-  signpost: "A waymarker beside the road. Follow the scenario objective to leave the area.",
-  road: "A winding dirt road through grassland. Normal movement and no protection.",
-  forest: "Trees shelter land troops and obstruct ranged shots. Merfolk are exposed here.",
-  hill: "High ground shelters land troops and obstructs ranged shots. Merfolk are exposed here.",
-  water: "Deep water is impassable to land units. Merfolk can swim through it.",
-  bridge: "A sturdy crossing over water with easy footing, but no protection.",
-  ford: "Shallow water can be crossed on foot. The open water leaves units exposed.",
-  landing: "A wooden jetty connects the river to its bank. Normal movement and no protection.",
-  ferry: "A river ferry is moored alongside the landing. Normal movement and no protection.",
-  house: "A single riverside home. Provides no income or healing.",
-  mountain:
-    "A sheer mountain ridge, impassable to land units. Blocks ranged attacks through the tile.",
-  cave: "A quarry entrance at the foot of a mountain. Blocks ranged attacks through the tile. Scenario objectives describe what can be found inside.",
-  village: "Capture this settlement by moving a unit onto it.",
-  keep: "A fortified home for its army’s commander. Blocks ranged attacks through the tile.",
-};
-
 function protectionFact(terrain: TerrainType): string {
-  if (terrain === "ford") return "Land troops: +1 damage received. Merfolk: no exposure.";
-  if (terrain === "marsh") return "Land troops: +1 damage received. Merfolk: −1 damage received.";
-  if (terrain === "hill") return "Land troops: −1 damage received. Merfolk: +1 damage received.";
-  if (["fort", "castle-wall", "castle-gate", "castle-bell"].includes(terrain))
-    return "Protection: −1 damage from all attacks";
-  if (terrain === "forest" || terrain === "grove")
+  const { role, damageModifiers: modifiers } = TERRAIN[terrain];
+  if (role === "ford") return "Land troops: +1 damage received. Merfolk: no exposure.";
+  if (role === "marsh") return "Land troops: +1 damage received. Merfolk: −1 damage received.";
+  if (role === "hill") return "Land troops: −1 damage received. Merfolk: +1 damage received.";
+  if (role === "forest" || role === "grove")
     return "Land troops: −1 ranged damage. Merfolk: +1 damage from all attacks.";
-  if (["forest", "grove", "ruins", "monastery"].includes(terrain))
-    return "Protection: −1 damage from ranged attacks";
-  return "Protection: none";
+  if (modifiers?.melee === -1 && modifiers?.ranged === -1)
+    return "Protection: −1 damage from all attacks";
+  const effects = Object.entries(modifiers ?? {})
+    .filter(([, value]) => value !== 0)
+    .map(([kind, value]) => `${value! > 0 ? "+" : ""}${value} ${kind} damage`);
+  return effects.length ? `Protection: ${effects.join(", ")}` : "Protection: none";
 }
 
 function terrainFacts(terrain: TerrainType): string[] {
+  const role = TERRAIN[terrain].role;
   const facts: string[] = [];
-  if (terrain !== "water") facts.push(protectionFact(terrain));
-  if (["forest", "hill", "grove"].includes(terrain)) {
+  if (role !== "water") facts.push(protectionFact(terrain));
+  if (["forest", "hill", "grove", "mountain", "cave", "keep"].includes(role)) {
     facts.push("Blocks ranged shots through this hex");
   }
-  if (terrain === "village") {
+  if (role === "village") {
     facts.push(
       "+2 gold at the start of its owner’s turn",
       "Heals a friendly occupant by 4 HP at the start of its turn",
     );
   }
-  if (terrain === "grove")
-    facts.push("Heals its owner’s occupant by 4 HP at the start of its turn");
-  if (terrain === "keep") {
+  if (role === "grove") facts.push("Heals its owner’s occupant by 4 HP at the start of its turn");
+  if (role === "keep") {
     facts.push(
       "Its owner’s leader can recruit into adjacent empty terrain passable to the recruit",
       "Select an empty adjacent hex to recruit",
@@ -112,7 +81,9 @@ export function terrainPanelView(view: BattleView) {
   const tile = view.game.tile(view.inspectedTile);
   if (!tile || view.game.presentation?.fog.includes(tile.id)) return null;
 
-  const hasOwnership = ["village", "keep", "grove", "ruins", "fort"].includes(tile.terrain);
+  const hasOwnership =
+    TERRAIN[tile.terrain].role === "keep" ||
+    ["village", "grove", "ruins", "fort", "monastery"].includes(TERRAIN[tile.terrain].role);
   let ownerLabel = "Unclaimed";
   if (tile.owner === "player") ownerLabel = "Your";
   if (tile.owner === "enemy") ownerLabel = "Enemy";
@@ -135,7 +106,7 @@ export function terrainPanelView(view: BattleView) {
   return {
     tile,
     name: TERRAIN[tile.terrain].name,
-    description: descriptions[tile.terrain],
+    description: TERRAIN[tile.terrain].description,
     ownership: hasOwnership
       ? { label: `${ownerLabel} ${tile.terrain}`, className: tile.owner || "neutral" }
       : null,

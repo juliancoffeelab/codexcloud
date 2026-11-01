@@ -13,6 +13,14 @@ Generate reusable tile libraries from tile definitions before constructing maps.
 Artwork generators accept no map input. Maps use the shared terrain selector;
 an unsupported selection fails instead of generating another tile.
 
+Runtime map painting belongs entirely in the map rendering worker, including
+terrain, rivers, lighting and fog. It returns one completed background bitmap;
+the UI only swaps it beneath live units and interaction overlays. Do not add
+main-thread painting, separate atmospheric canvases or fallback renderers.
+Missing worker/image APIs and rendering failures must surface as explicit errors.
+This changes where complete tile frames are painted, never the prohibition on
+runtime terrain assembly. Offline draft renderers remain independent tools.
+
 Native canvas dimensions are a finite, enforced contract, not a convenience
 setting in artwork metadata. Ordinary terrain is exactly 64×64. Only
 `castle-wall`, `castle-gate` and `castle-bell` use the approved 80×96 canvas,

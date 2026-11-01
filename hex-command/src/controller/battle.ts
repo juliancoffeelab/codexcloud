@@ -211,9 +211,10 @@ export class BattleController {
 
   private playSelectionFeedback(tileId: string) {
     this.animateTileAfterRender(tileId, "select");
+    const tile = this.#game.tile(tileId);
     playInteraction({
       unitType: this.#game.at(tileId)?.type,
-      terrain: this.#game.tile(tileId)?.terrain,
+      terrain: tile && TERRAIN[tile.terrain].role,
     });
   }
 
@@ -245,12 +246,14 @@ export class BattleController {
     } else if (changes.recruited || changes.advanced) {
       playSound("recruit");
     } else if (changes.movedUnit) {
+      const tile = this.#game.tile(changes.movedUnit.tile);
       playInteraction({
         unitType: changes.movedUnit.type,
-        terrain: this.#game.tile(changes.movedUnit.tile)?.terrain,
+        terrain: tile && TERRAIN[tile.terrain].role,
       });
     } else if (changes.capturedTiles.length > 0) {
-      playInteraction({ terrain: "village" });
+      const tile = this.#game.tile(changes.capturedTiles[0]!);
+      playInteraction({ terrain: tile && TERRAIN[tile.terrain].role });
     }
   }
 

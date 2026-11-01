@@ -1,8 +1,12 @@
+import { migrateV15ToV16 } from "./v15-to-v16";
+import { migrateV14ToV15 } from "./v14-to-v15";
 import { currentSave, isRecord, SAVE_VERSION, type BattleSave } from "../schema";
 import { migrateV1ToV2 } from "./v1-to-v2";
 import { migrateV2ToV3 } from "./v2-to-v3";
 import { migrateV9ToV10 } from "./v9-to-v10";
 import { migrateV10ToV11 } from "./v10-to-v11";
+import { migrateV13ToV14 } from "./v13-to-v14";
+import { migrateV12ToV13 } from "./v12-to-v13";
 import { migrateV11ToV12 } from "./v11-to-v12";
 import { migrateV8ToV9 } from "./v8-to-v9";
 import { migrateV7ToV8 } from "./v7-to-v8";
@@ -62,6 +66,18 @@ export function migrateSave(input: unknown): MigrationResult {
         break;
       case 11:
         value = migrateV11ToV12(value);
+        break;
+      case 12:
+        value = migrateV12ToV13(value);
+        break;
+      case 15:
+        value = migrateV15ToV16(value);
+        break;
+      case 14:
+        value = migrateV14ToV15(value);
+        break;
+      case 13:
+        value = migrateV13ToV14(value);
         break;
       default:
         throw new Error(`No migration from save version ${String(value.version)}`);

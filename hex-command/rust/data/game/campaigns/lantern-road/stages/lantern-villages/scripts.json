@@ -214,6 +214,44 @@
       "requiresEvent": "village-contact"
     },
     {
+      "id": "tollkeeper-provoked",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "all",
+          "conditions": [
+            {
+              "kind": "hasUnits",
+              "side": "enemy",
+              "name": "The Tollkeeper"
+            },
+            {
+              "kind": "any",
+              "conditions": [
+                {
+                  "kind": "event",
+                  "event": "prisoners-freed"
+                },
+                {
+                  "kind": "proximity",
+                  "tile": "16,4",
+                  "radius": 3,
+                  "side": "player"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "The Tollkeeper",
+          "portrait": "necromancer",
+          "text": "Living soldiers on my road? You’ll pay for every step. Come closer—I’ll take the toll in bones."
+        }
+      ]
+    },
+    {
       "id": "swamp-sighting",
       "trigger": {
         "kind": "condition",
@@ -712,7 +750,12 @@
       "order": {
         "kind": "hold",
         "area": ["7,6"],
-        "attackRadius": 1
+        "attackRadius": 1,
+        "when": {
+          "kind": "hasUnits",
+          "side": "neutral",
+          "name": "The villagers"
+        }
       }
     },
     {
@@ -723,6 +766,19 @@
           "event": "swamp-sighting"
         },
         "remember": true
+      }
+    },
+    {
+      "id": "tollkeeper",
+      "order": {
+        "kind": "hold",
+        "area": ["16,4"],
+        "attackRadius": 1,
+        "when": {
+          "kind": "hasUnits",
+          "side": "neutral",
+          "name": "The villagers"
+        }
       }
     }
   ]

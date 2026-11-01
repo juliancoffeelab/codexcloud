@@ -36,7 +36,7 @@
         {
           "speaker": "The company",
           "portrait": "adept",
-          "text": "The stones answer the mage’s touch. The mist is bound here; three uninterrupted turns in the circle can break it. Shapes stir among the trees below."
+          "text": "The stones answer the mage\u2019s touch. The mist is bound here; three uninterrupted turns in the circle can break it. Shapes stir among the trees below."
         },
         {
           "speaker": "Oren",
@@ -77,7 +77,7 @@
           "text": "The fog thins and lifts. The keep and the burial grounds lie exposed below."
         }
       ],
-      "label": "The hill ritual clears the valley’s fog."
+      "label": "The hill ritual clears the valley\u2019s fog."
     },
     {
       "id": "bell-sighted",
@@ -99,7 +99,7 @@
         {
           "speaker": "Captain Nera",
           "portrait": "swordsman",
-          "text": "You’ll have no more of them."
+          "text": "You\u2019ll have no more of them."
         }
       ],
       "label": "The company locates the bell keep."
@@ -119,7 +119,7 @@
         {
           "speaker": "Oren",
           "portrait": "adept",
-          "text": "The bell is gathering strength. Get the prisoners off those marks—cutting their bonds won’t be enough."
+          "text": "The bell is gathering strength. Get the prisoners off those marks\u2014cutting their bonds won\u2019t be enough."
         }
       ],
       "label": "The next toll is close."
@@ -159,7 +159,7 @@
         {
           "speaker": "The company",
           "portrait": "spearman",
-          "text": "The vestry has been stripped of food, but two pieces of armor remain beneath a bench."
+          "text": "A shirt of mail beneath the bench. No rust, and silver runes worked into the links."
         },
         {
           "speaker": "Captain Nera",
@@ -172,8 +172,8 @@
           "tile": "18,14",
           "item": {
             "id": "church-mail",
-            "name": "Sanctuary mail",
-            "description": "A well-kept mail shirt from the church stores. Incoming blade and piercing damage reduced by 1 per strike. Drops when its carrier dies.",
+            "name": "Enchanted mail",
+            "description": "Silver wards are worked into the links. Incoming blade and piercing damage reduced by 1 per strike. Drops when its carrier dies.",
             "attacks": [],
             "armor": {
               "blade": -1,
@@ -181,23 +181,9 @@
               "impact": 0
             }
           }
-        },
-        {
-          "tile": "18,13",
-          "item": {
-            "id": "church-helm",
-            "name": "Iron chapel helm",
-            "description": "An old watchman’s helmet. Incoming impact damage reduced by 1 per strike. Drops when its carrier dies.",
-            "attacks": [],
-            "armor": {
-              "blade": 0,
-              "pierce": 0,
-              "impact": -1
-            }
-          }
         }
       ],
-      "label": "Armor is found in the eastern church."
+      "label": "Enchanted mail is found in the eastern church."
     },
     {
       "id": "northern-sighted",
@@ -224,7 +210,7 @@
         {
           "speaker": "Captive",
           "portrait": "captives",
-          "text": "Here! Please—before it rings again!"
+          "text": "Here! Please\u2014before it rings again!"
         }
       ],
       "label": "The northern prisoners have been found."
@@ -279,7 +265,7 @@
         {
           "speaker": "Captive",
           "portrait": "captives",
-          "text": "Here! Please—before it rings again!"
+          "text": "Here! Please\u2014before it rings again!"
         }
       ],
       "label": "The eastern prisoners have been found."
@@ -334,7 +320,7 @@
         {
           "speaker": "Captive",
           "portrait": "captives",
-          "text": "Here! Please—before it rings again!"
+          "text": "Here! Please\u2014before it rings again!"
         }
       ],
       "label": "The southern prisoners have been found."
@@ -375,7 +361,7 @@
         {
           "speaker": "Ivo",
           "portrait": "scout",
-          "text": "The dead from the pass—they’ve followed us!"
+          "text": "The dead from the pass\u2014they\u2019ve followed us!"
         },
         {
           "speaker": "Captain Nera",
@@ -383,7 +369,7 @@
           "text": "Hold them at the tree line. The rest of you, keep moving."
         }
       ],
-      "label": "The Tollkeeper’s surviving force enters from the west.",
+      "label": "The Tollkeeper\u2019s surviving force enters from the west.",
       "spawn": {
         "area": ["0,13", "0,14", "1,14", "0,15", "1,12"],
         "units": [
@@ -409,19 +395,16 @@
   ],
   "enemyGroups": [
     {
-      "id": "garrison",
-      "order": {
-        "kind": "hold",
-        "area": ["10,11", "11,11", "10,12", "11,12", "12,12", "10,13", "11,13"],
-        "attackRadius": 2
-      }
-    },
-    {
       "id": "north-watch",
       "order": {
         "kind": "hold",
         "area": ["11,5", "10,5", "10,6"],
-        "attackRadius": 2
+        "attackRadius": 2,
+        "when": {
+          "kind": "hasUnits",
+          "side": "neutral",
+          "name": "Northern captives"
+        }
       }
     },
     {
@@ -429,7 +412,12 @@
       "order": {
         "kind": "hold",
         "area": ["19,10", "19,9", "18,10"],
-        "attackRadius": 2
+        "attackRadius": 2,
+        "when": {
+          "kind": "hasUnits",
+          "side": "neutral",
+          "name": "Eastern captives"
+        }
       }
     },
     {
@@ -437,7 +425,12 @@
       "order": {
         "kind": "hold",
         "area": ["12,20", "13,20", "12,19"],
-        "attackRadius": 2
+        "attackRadius": 2,
+        "when": {
+          "kind": "hasUnits",
+          "side": "neutral",
+          "name": "Southern captives"
+        }
       }
     },
     {
@@ -451,22 +444,22 @@
     {
       "id": "western-reinforcements",
       "round": 10,
-      "label": "The western watch reaches the valley.",
+      "label": "A lancer, a storm mage and a healer arrive from the western watch.",
       "units": [
         {
-          "type": "swordsman",
+          "type": "lancer",
           "side": "player",
           "col": 0,
           "row": 13
         },
         {
-          "type": "archer",
+          "type": "mage",
           "side": "player",
           "col": 0,
           "row": 14
         },
         {
-          "type": "spearman",
+          "type": "healer",
           "side": "player",
           "col": 0,
           "row": 15
@@ -489,18 +482,6 @@
       "interval": 6,
       "spawn": {
         "aiGroup": "bell-raised",
-        "area": [
-          "10,11",
-          "11,11",
-          "10,12",
-          "11,12",
-          "12,12",
-          "10,13",
-          "11,13",
-          "10,14",
-          "11,14",
-          "12,14"
-        ],
         "units": [
           {
             "id": "spear",
@@ -512,7 +493,8 @@
             "type": "bonearcher",
             "side": "enemy"
           }
-        ]
+        ],
+        "radius": 2
       },
       "deathLight": {
         "col": 11,

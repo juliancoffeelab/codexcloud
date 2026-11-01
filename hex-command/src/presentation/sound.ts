@@ -1,9 +1,10 @@
-import type { UnitType, TerrainType } from "../game/types";
+import type { UnitType } from "../game/types";
 
 export interface InteractionSound {
   attackType?: UnitType;
   unitType?: UnitType;
-  terrain?: TerrainType;
+  /** Gameplay role supplied by the Rust catalog, never an artwork ID. */
+  terrain?: import("../../rust/pkg/hex_command").TerrainRole;
 }
 
 interface Voice {
@@ -82,7 +83,7 @@ export function createSound() {
     if (families.has(`unit-${unitType}`)) return `unit-${unitType}`;
     if (terrain === "ford" || terrain === "marsh") terrain = "water";
     if (terrain === "grove") terrain = "forest";
-    if (terrain === "ruins" || terrain === "fort") terrain = "keep";
+    if (terrain === "ruins" || terrain === "fort" || terrain === "fortification") terrain = "keep";
     return families.has(`terrain-${terrain}`) ? `terrain-${terrain}` : "select";
   }
   function playInteraction(details: InteractionSound) {

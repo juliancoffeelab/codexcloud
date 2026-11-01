@@ -132,3 +132,36 @@ earned experience, took damage or received equipment remain. Obsolete opening
 dialogue is removed with its cursor adjusted; a present Oren supplies the monastery
 lead once if the ritual has not started. Every constant belongs to this historical
 conversion; it never queries current content or changes terrain.
+
+## Version-twelve migration
+
+The v12-to-v13 step corrects the published church reward to one enchanted mail
+shirt. It removes the unintended chapel helm from ground inventory, active units,
+veterans, story veterans and evacuated units in Lantern Road saves. Existing mail
+keeps its mechanics and receives the corrected name and description; queued church
+discovery text describes one item. Other battle progress remains intact. Constants
+are frozen inside the conversion and do not query current content.
+
+## Version-thirteen migration
+
+The v13-to-v14 step installs three keep-side villages in ongoing valley battles,
+using frozen coordinates and tile fields. Only the published plains sites change;
+fog and all unrelated battle state are preserved. The villages begin enemy-owned,
+except when a player unit already occupies one. Existing village ownership is not
+reset. A player occupant on the newly capturable bell keep claims that tile too.
+The obsolete courtyard garrison tag is removed so these units use ordinary AI.
+Other maps pass through unchanged.
+
+## Version-fourteen migration
+
+The v14-to-v15 step assigns the living enemy Tollkeeper in Stage 1 to his
+conditional hold group, replacing the old permanent leader post. It preserves
+units, turns, completed events and all other battle progress. Other maps pass
+through unchanged. The conversion uses only frozen assignment constants.
+
+## Version-fifteen migration
+
+The v15-to-v16 step corrects the three published keep-side villages in the Bell
+valley from green-plain to mountain-rock. Only their floor changes; ownership,
+fog, lights, units, turn, victory and all other progress are preserved. Coordinates
+and prior values are frozen in the conversion. Other maps pass through unchanged.

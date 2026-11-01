@@ -4,7 +4,7 @@ import type { Artwork } from "../presentation/art";
 import type { FrameImage } from "../presentation/art";
 import { TERRAIN, TYPES } from "../game/catalog";
 import { artFrame } from "../presentation/art";
-import { terrainMapTiles, type TerrainTileView } from "../presentation/terrain-map";
+import { terrainTileView, type TerrainTileView } from "../presentation/terrain-map";
 import { battlefieldSpriteSize } from "./geometry";
 import { terrainLayout } from "../presentation/terrain-layout";
 export { terrainArtNames } from "../presentation/terrain-connections";
@@ -34,6 +34,49 @@ export interface BattlefieldTileView extends TileView {
   spriteHeight: number;
   occupant: TileUnitView | null;
   ownerColor: string;
+}
+
+/** Preserve cells whose immutable terrain, occupant and display attributes are
+ * unchanged. Incremental engine publications retain the underlying tile values,
+ * so moving a unit does not invalidate every empty cell's SVG subtree.
+ */
+export class BattlefieldViewCache {
+  private scene?: {
+    game: GameView;
+    artwork: Artwork;
+    terrain: ReadonlyMap<string, TerrainTileView> | undefined;
+    tiles: BattlefieldTileView[];
+  };
+
+  prepare(
+    game: GameView,
+    selected: string | null,
+    artwork: Artwork,
+    recruitTileId: string | null,
+    terrain?: ReadonlyMap<string, TerrainTileView>,
+  ) {
+    const previous = this.scene;
+    let tiles = battlefieldTiles(game, selected, artwork, recruitTileId, terrain);
+    if (
+      previous &&
+      previous.artwork === artwork &&
+      previous.terrain === terrain &&
+      previous.game.tiles.length === game.tiles.length
+    ) {
+      tiles = tiles.map((tile, index) => {
+        const old = previous.tiles[index]!;
+        return previous.game.tiles[index] === game.tiles[index] &&
+          old.occupant?.unit === tile.occupant?.unit &&
+          old.occupant?.faction === tile.occupant?.faction &&
+          old.classes === tile.classes &&
+          old.label === tile.label
+          ? old
+          : tile;
+      });
+    }
+    this.scene = { game, artwork, terrain, tiles };
+    return tiles;
+  }
 }
 
 export function terrainProps(
@@ -106,7 +149,7 @@ export function battlefieldTiles(
   const occupants = new Map(game.units.map((unit) => [unit.tile, unit]));
   const terrainViews =
     terrain ??
-    new Map(terrainMapTiles(game.tiles, game.mapId, artwork).map((tile) => [tile.id, tile]));
+    new Map(game.tiles.map((tile) => [tile.id, terrainTileView(tile, game.mapId, artwork)]));
   return game.tiles.map((tile) => {
     const unit = occupants.get(tile.id);
     const reachable = reachableTiles.has(tile.id);

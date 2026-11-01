@@ -144,6 +144,26 @@ impl NativeEngineFactory {
                 .map(|battle| battle.game(&self.rules).inspect(revision)),
         )
     }
+    /// Board topology and rule costs do not belong to each unit-action refresh.
+    pub fn geometry(&self, id: u32, revision: u32) -> Result<Ts<BoardResponse>, JsError> {
+        encode(
+            self.battle(id, revision)
+                .map(|battle| battle.game(&self.rules).inspect_board()),
+        )
+    }
+    /// Incremental browser publication. The complete snapshot API remains
+    /// available for explicit inspection and persistence tools.
+    #[wasm_bindgen(js_name = dispatchUpdate)]
+    pub fn dispatch_update(
+        &mut self,
+        id: u32,
+        revision: u32,
+        command: Ts<Command>,
+    ) -> Result<Ts<UpdateResponse>, JsError> {
+        encode(
+            decode::<Command>(command).and_then(|command| self.apply_update(id, revision, command)),
+        )
+    }
     /// Apply one decoded [`Command`] against the expected revision.
     /// Success returns [`DispatchResult`]; rejected commands leave state unchanged.
     pub fn dispatch(
@@ -171,6 +191,15 @@ impl NativeEngineFactory {
     pub fn save(&self, id: u32, revision: u32) -> Result<Ts<SaveResponse>, JsError> {
         encode(self.checkpoint(id, revision))
     }
+    /// Serialize the unchanged save format in Rust, avoiding a large temporary
+    /// JS object graph solely to JSON.stringify it again for localStorage.
+    #[wasm_bindgen(js_name = saveJson)]
+    pub fn save_json(&self, id: u32, revision: u32) -> Result<Ts<SerializedSaveResponse>, JsError> {
+        encode(
+            self.checkpoint(id, revision)
+                .map(|saved| serde_json::to_string(&saved).expect("serializable checkpoint")),
+        )
+    }
     /// Release a battle and its planner; later requests return [`EngineError::UnknownBattle`].
     /// All results use the encoded [`EngineResult`] envelope.
     #[wasm_bindgen(js_name = disposeBattle)]
@@ -185,6 +214,54 @@ impl NativeEngineFactory {
 }
 
 impl NativeEngineFactory {
+    fn apply_update(
+        &mut self,
+        id: u32,
+        revision: u32,
+        command: Command,
+    ) -> Result<DispatchUpdate, EngineError> {
+        let before = self.battle(id, revision)?;
+        let old_tiles = before.state.tiles.clone();
+        let old_map = (
+            before.state.map_id.clone(),
+            before.state.map_revision,
+            before.state.cols,
+            before.state.rows,
+        );
+        let result = self.apply(id, revision, command)?;
+        let (state, tiles) = StateFrame::split(result.view.state);
+        let replaced = old_map
+            != (
+                state.map_id.clone(),
+                state.map_revision,
+                state.cols,
+                state.rows,
+            )
+            || old_tiles.len() != tiles.len()
+            || old_tiles.iter().zip(&tiles).any(|(a, b)| a.id != b.id);
+        let terrain = if replaced {
+            TerrainUpdate::Replace { tiles }
+        } else {
+            let changed: Vec<_> = tiles
+                .into_iter()
+                .zip(&old_tiles)
+                .filter_map(|(tile, old)| (tile != *old).then_some(tile))
+                .collect();
+            if changed.is_empty() {
+                TerrainUpdate::Keep
+            } else {
+                TerrainUpdate::Patch { tiles: changed }
+            }
+        };
+        Ok(DispatchUpdate {
+            base_revision: revision,
+            revision: result.view.revision,
+            state,
+            terrain,
+            presentation: result.view.presentation,
+            combat: result.combat,
+        })
+    }
     fn apply(
         &mut self,
         id: u32,
@@ -213,7 +290,11 @@ impl NativeEngineFactory {
             battle.options = None;
         }
         Ok(DispatchResult {
-            view: battle.view(&self.rules),
+            view: EngineView {
+                presentation: game.presentation(),
+                revision: battle.revision,
+                state: battle.state.clone(),
+            },
             combat: game.combat_animation.take(),
         })
     }

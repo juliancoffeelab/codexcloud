@@ -77,12 +77,11 @@ function fixture() {
         units: [],
         objectives: null,
         recruitment: {},
-        costs: {},
-        neighbors: {},
         income: { player: 0, enemy: 0 },
       },
     }),
-    dispatch: (id, revision) => {
+    geometry: () => ({ ok: true, value: { costs: {}, neighbors: {} } }),
+    dispatchUpdate: (id, revision) => {
       requests.push({ id, revision });
       if (stale) {
         return {
@@ -98,7 +97,11 @@ function fixture() {
       return {
         ok: true,
         value: {
-          view: nextView,
+          baseRevision: revision,
+          revision: nextView.revision,
+          state: (({ tiles: _tiles, ...frame }) => frame)(nextView.state),
+          terrain: { kind: "replace", tiles: nextView.state.tiles },
+          presentation: nextView.presentation,
           combat: null,
         },
       };
@@ -108,6 +111,7 @@ function fixture() {
       value: { revision, command: { kind: "endTurn" } },
     }),
     save: () => ({ ok: true, value: { seed: 42, state } }),
+    saveJson: () => ({ ok: true, value: JSON.stringify({ seed: 42, state }) }),
     disposeBattle: (id) => {
       releases.push(id);
       return { ok: true, value: null };

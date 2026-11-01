@@ -9,8 +9,12 @@ demonstrate foreground layouts. A new terrain uses the existing tile `terrain`
 identifier. Do not add a parallel artwork selector to tiles or extend the save
 format just to select its sprite.
 
-1. Register its stable ID, name, movement cost, passability, description and any
-   protection in `rust/data/game/terrain.json`. Add the ID to `Terrain` and
+1. Register its stable ID, explicit typed `role`, name, movement cost, passability,
+   description and any protection in `rust/data/game/terrain.json`. The role owns
+   gameplay meaning: a bell-tower keep uses `keep` just like another keep. Native
+   rules, AI, UI and inherited race/unit modifiers use roles, not artwork IDs or
+   per-variant exceptions. New roles must define exhaustive behavior. Sprite
+   selection and frozen historical migrations continue using concrete IDs. Add the ID to `Terrain` and
    `as_str()` in `rust/src/data/ids.rs` and `TerrainType` in `src/game/types.ts`.
    Check race/unit `terrainModifiers` if the terrain needs special treatment;
    do not inherit another terrain's behavior merely because its artwork is similar.

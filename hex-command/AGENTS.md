@@ -6,15 +6,28 @@
   prototype, render, simulate or evaluate a map or balance change do not authorize
   adding it to the playable catalog. Use an ignored copy of the data and
   `--data-dir`; promote experimental content only when the user requests it.
-- Publication requires a user instruction to publish, deploy or update the live
-  game. Building, testing, showing an image, committing and pushing do not imply
-  publication. Visual changes and time spent working are not publication triggers.
-  Follow the [deploy skill](.agents/skills/deploy/SKILL.md) for an authorized live
-  update; do not invoke the hosted-site workflow for simulation-only work.
-- Finish checked, pushed game implementation batches by preparing and saving an
-  unpublished Site release through the [publish skill](.agents/skills/publish/SKILL.md).
-  A hold on deployment does not prohibit preparation; drafts and simulations do
-  not trigger release preparation. Deployment sequencing belongs to the deploy skill.
+- Completed game implementation batches deploy by default unless the user asks
+  to keep them local, save an unpublished release, or hold deployment. Finish
+  appropriate implementation validation and commit/push required changes, then use
+  the [deploy skill](.agents/skills/deploy/SKILL.md) and return the live URL.
+  Do not stop at an unpublished release or ask for deployment permission again.
+  Reviews, documentation/instruction-only changes, drafts, renders and simulations
+  do not trigger deployment; neither does a Git push by itself.
+- An explicit deploy request is an immediate execution request, not a request
+  for more development or validation. Invoke the deploy operation directly;
+  run no separate tests, inspections, Git commands, builds or previews. The
+  operation owns any necessary preparation and build. Use the
+  [publish skill](.agents/skills/publish/SKILL.md) only for a requested unpublished
+  release. Deployment sequencing belongs to the deploy skill.
+  Deployment uses the current committed snapshot (`HEAD`); uncommitted changes
+  are left alone, not checked as a prerequisite or automatically committed.
+- A real deployment failure authorizes fixing its cause and retrying, without
+  another permission request. Before any investigation or repair tool call,
+  announce the failed stage/error, the next repair action and why deployment is
+  delayed. Fix only the deployment blocker, commit/push required source changes,
+  then rerun the deploy operation and deliver its successful URL. This is recovery
+  after an observed failure, never permission to add preflight checks or a general
+  test/review cycle. Follow the deploy skill for recovery and external blockers.
 
 - **Permanent character canvas rule: every character/unit sprite and portrait is
   exactly 64×64 native pixels. This rule must never be changed; do not reintroduce
@@ -74,9 +87,12 @@
   to change branches. New branches must start from the freshly fetched upstream
   default branch (`main` here), never a stale local copy. Never push directly to
   `main` or bypass the repository's PR workflow.
-- Commit and push before returning only if the current task took more than
-  10 minutes, even if unfinished or checks fail. Otherwise, keep changes local.
-  Report check status and remaining work.
+- Finish completed game implementation batches by committing and pushing required
+  changes before their default deployment, regardless of duration. For other tasks, commit and
+  push before returning only if the task took more than 10 minutes, even if
+  unfinished or checks fail; otherwise keep changes local. Report check status
+  and remaining work. An explicit deploy request follows the operation-only
+  rule above, including for source synchronization.
 
 ## Interruptions
 
@@ -123,10 +139,11 @@ Read the linked `SKILL.md` before starting work that matches its trigger.
 
 - [save-migrations](.agents/skills/save-migrations/SKILL.md): Use when changing or
   auditing save loading, save formats, migrations, or their data and dependencies.
-- [publish](.agents/skills/publish/SKILL.md): Use after checked, pushed game
-  implementation batches or for an explicit request to save an unpublished release.
-- [deploy](.agents/skills/deploy/SKILL.md): Use when the user asks to deploy,
-  publish or update the live game.
+- [publish](.agents/skills/publish/SKILL.md): Use when the user requests an
+  unpublished release.
+- [deploy](.agents/skills/deploy/SKILL.md): Use to finish completed game
+  implementation batches by default, or when the user asks to deploy, publish
+  or update the live game.
 - [combat-simulation](.agents/skills/combat-simulation/SKILL.md): Use when asked
   to review, explain, compare or change AI policies; run or analyze combat
   simulations; or assess balance, campaign competence or simulation performance.

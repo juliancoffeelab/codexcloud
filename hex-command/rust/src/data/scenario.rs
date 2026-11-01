@@ -435,9 +435,24 @@ pub struct Ritual {
     pub unit_types: Vec<String>,
     pub first_round: u32,
     pub interval: u32,
-    pub spawn: SpawnGroup,
+    pub spawn: RitualSpawn,
     pub death_light: super::BattlefieldLight,
     pub label: String,
+}
+
+/// Each consumed ritual source supplies its own origin; placement never uses a fixed map area.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct RitualSpawn {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub faction: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub ai_group: Option<String>,
+    pub radius: u16,
+    pub units: Vec<SpawnUnit>,
 }
 
 /// The peaceful and escalated outcomes of a refuge-defense mission.
@@ -495,6 +510,9 @@ pub struct Layout {
 #[serde(tag = "kind", rename_all = "camelCase", deny_unknown_fields)]
 pub enum GroupOrder {
     Hold {
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        when: Option<Condition>,
         area: Vec<String>,
         #[serde(rename = "attackRadius")]
         attack_radius: u16,
