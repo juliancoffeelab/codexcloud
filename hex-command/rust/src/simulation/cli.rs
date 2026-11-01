@@ -75,6 +75,9 @@ struct SimulationArgs {
     /// Filter the campaign's authored diplomacy modes.
     #[arg(group = "batch", long, value_enum, value_delimiter = ',', action = clap::ArgAction::Set)]
     diplomacy: Option<Vec<Diplomacy>>,
+    /// Filter the campaign's simulation objective routes.
+    #[arg(group = "batch", long, value_delimiter = ',')]
+    objectives: Option<Vec<String>>,
     /// Worker count, defaulting to the available CPU quota.
     #[arg(group = "batch", long, default_value_t = default_workers() as u32, value_parser = clap::value_parser!(u32).range(1..=8))]
     workers: u32,
@@ -285,6 +288,14 @@ impl SimulationArgs {
                 .get_or_insert_with(|| vec![Policy::Classic]);
         }
         options.diplomacy = selection(self.diplomacy, "--diplomacy", &options.diplomacy)?;
+        if let Some(objectives) = self.objectives {
+            let known: Vec<_> = std::iter::once("authored".to_owned())
+                .chain(options.campaign_objectives.values().flatten().cloned())
+                .collect::<std::collections::BTreeSet<_>>()
+                .into_iter()
+                .collect();
+            options.objectives = Some(selection(Some(objectives), "--objectives", &known)?);
+        }
         let mut out = self.out.unwrap_or_else(|| {
             let timestamp = SystemTime::now()
                 .duration_since(UNIX_EPOCH)
@@ -359,6 +370,8 @@ struct PhaseRequest {
     /// Include selected adaptive recruiter score components before running this phase.
     #[serde(default)]
     inspect_recruitment: bool,
+    #[serde(default = "super::types::authored_objective")]
+    objective: String,
     #[serde(default)]
     blocks: Option<crate::ai::Blocks>,
     state: crate::data::State,
@@ -393,6 +406,15 @@ fn phase_stdio(rules: &Rules) -> Result<(), SimulationError> {
     Ok(())
 }
 fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, SimulationError> {
+    let objective_rules = request
+        .state
+        .campaign
+        .as_ref()
+        .map(|campaign| rules.simulation_objective_rules(&campaign.id, &request.objective))
+        .transpose()
+        .map_err(|e| SimulationError::InvalidConfig(e.to_string()))?
+        .flatten();
+    let rules = objective_rules.as_ref().unwrap_or(rules);
     let arena = request
         .arena
         .as_ref()
@@ -449,12 +471,15 @@ fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, Simulation
         )
     });
     game.recordings = Some(crate::data::Records::default());
+    let goals = request
+        .goals
+        .or_else(|| super::objectives::player_goals(&game, &request.objective));
     game.play_blocks(
         request.policy,
         request.blocks,
         request.seed,
         request.recruitment_limit,
-        request.goals.as_deref(),
+        goals.as_deref(),
         request.diplomacy,
     )?;
     let mut response = json!({"final":game.state(),"records":game.recordings});

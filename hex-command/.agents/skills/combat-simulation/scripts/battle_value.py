@@ -15,7 +15,7 @@ FIELDS = ('unitTurns', 'hpDamageDealt', 'hpDamageTaken', 'weaponHPDamageDealt', 
           'ownedTileTurns', 'objectiveControlTurns', 'capturableOccupationTurns',
           'objectiveOccupationTurns', 'casualties', 'recruitGoldLost',
           'casualtyReplacementValue')
-DIMS = ('kind', 'campaign', 'diplomacy', 'mission', 'race', 'policy', 'opponentPolicy', 'map', 'family')
+DIMS = ('kind', 'campaign', 'diplomacy', 'objective', 'mission', 'race', 'policy', 'opponentPolicy', 'map', 'family')
 
 
 def analyze(inputs, journals, value=True, leaders=True):
@@ -57,7 +57,7 @@ def analyze(inputs, journals, value=True, leaders=True):
                 side = unit['side']
                 other = 'enemy' if side == 'player' else 'player'
                 race = config['armies'][side] if kind == 'arena' else profiles[unit['type']]['race']
-                return (kind, config.get('campaign', ''), config.get('diplomacy', ''), mission,
+                return (kind, config.get('campaign', ''), config.get('diplomacy', ''), config.get('objective', 'authored'), mission,
                         race, policy(side), policy(other), landscape, profiles[unit['type']]['family'])
 
             def add(unit, **stats):

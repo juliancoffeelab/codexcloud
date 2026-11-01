@@ -36,6 +36,8 @@ pub struct Armies {
 pub struct CampaignConfig {
     pub seed: u32,
     pub diplomacy: Diplomacy,
+    #[serde(default = "authored_objective")]
+    pub objective: String,
     pub campaign: String,
     pub player: Policy,
     pub enemy: Policy,
@@ -161,4 +163,8 @@ pub struct CampaignResult {
 pub enum MatchResult {
     Arena(ArenaResult),
     Campaign(CampaignResult),
+}
+
+pub fn authored_objective() -> String {
+    "authored".into()
 }

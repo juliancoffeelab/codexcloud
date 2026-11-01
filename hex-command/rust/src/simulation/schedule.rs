@@ -101,6 +101,8 @@ pub struct ScheduleOptions {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub campaign_enemies: Option<Vec<Policy>>,
     pub diplomacy: Vec<Diplomacy>,
+    pub objectives: Option<Vec<String>>,
+    pub campaign_objectives: BTreeMap<String, Vec<String>>,
     pub campaign_diplomacy: BTreeMap<String, Vec<Diplomacy>>,
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub self_play: bool,
@@ -138,6 +140,13 @@ impl ScheduleOptions {
                 .collect(),
             campaigns: rules.campaign_defaults.campaigns.clone(),
             policies: parse(&rules.arena.policies)?,
+            objectives: None,
+            campaign_objectives: rules
+                .campaign_defaults
+                .objectives
+                .iter()
+                .map(|(id, routes)| (id.clone(), routes.keys().cloned().collect()))
+                .collect(),
             campaign_players: None,
             campaign_enemies: None,
             self_play: false,
@@ -176,7 +185,19 @@ impl ScheduleOptions {
                 .is_none_or(|allowed| allowed.contains(mode))
         })
     }
-    /// Count both seats/initiatives and campaign diplomacy settings with checked arithmetic.
+    pub fn objectives_for(&self, campaign: &str) -> Vec<String> {
+        let authored = vec!["authored".to_owned()];
+        let allowed = self.campaign_objectives.get(campaign).unwrap_or(&authored);
+        match &self.objectives {
+            Some(selected) => selected
+                .iter()
+                .filter(|mode| mode.as_str() == "authored" || allowed.contains(mode))
+                .cloned()
+                .collect(),
+            None => allowed.clone(),
+        }
+    }
+    /// Count both seats/initiatives and campaign treatment settings with checked arithmetic.
     pub fn expected_games(&self) -> Result<usize, SimulationError> {
         let entrants = self
             .armies
@@ -236,7 +257,12 @@ impl ScheduleOptions {
                 .iter()
                 .try_fold(0usize, |total, campaign| {
                     total
-                        .checked_add(self.diplomacy_for(campaign).count())
+                        .checked_add(
+                            self.diplomacy_for(campaign)
+                                .count()
+                                .checked_mul(self.objectives_for(campaign).len())
+                                .ok_or("Schedule too large")?,
+                        )
                         .ok_or("Schedule too large")
                 })?
                 .checked_mul(campaign_players)
@@ -390,17 +416,20 @@ pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, Simulatio
                 for (player, player_blocks) in &campaign_players {
                     for (enemy, enemy_blocks) in &campaign_enemies {
                         for diplomacy in options.diplomacy_for(campaign) {
-                            configs.push(MatchConfig::Campaign(CampaignConfig {
-                                campaign: campaign.clone(),
-                                player: *player,
-                                enemy: *enemy,
-                                player_blocks: *player_blocks,
-                                enemy_blocks: *enemy_blocks,
-                                diplomacy: *diplomacy,
-                                seed,
-                                max_rounds: options.campaign_max_rounds,
-                                recruit_limit: options.recruit_limit,
-                            }));
+                            for objective in options.objectives_for(campaign) {
+                                configs.push(MatchConfig::Campaign(CampaignConfig {
+                                    campaign: campaign.clone(),
+                                    player: *player,
+                                    enemy: *enemy,
+                                    player_blocks: *player_blocks,
+                                    enemy_blocks: *enemy_blocks,
+                                    diplomacy: *diplomacy,
+                                    objective,
+                                    seed,
+                                    max_rounds: options.campaign_max_rounds,
+                                    recruit_limit: options.recruit_limit,
+                                }));
+                            }
                         }
                     }
                 }
@@ -569,6 +598,8 @@ mod tests {
             campaign_enemies: None,
             diplomacy: vec![Diplomacy::Pragmatic],
             campaign_diplomacy: BTreeMap::new(),
+            objectives: None,
+            campaign_objectives: BTreeMap::new(),
             self_play: false,
             opponent: None,
         };

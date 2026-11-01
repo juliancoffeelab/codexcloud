@@ -2,5 +2,100 @@
   "defaultMaxRounds": 100,
   "diplomacy": ["pragmatic", "restrained"],
   "policies": ["classic", "rush", "balanced", "rotated", "situational"],
-  "campaigns": ["lantern-road", "green-accord", "ashen-oath", "borrowed-tide"]
+  "campaigns": ["lantern-road", "green-accord", "ashen-oath", "borrowed-tide"],
+  "objectives": {
+    "lantern-road": {
+      "flight": {
+        "stages": {
+          "lantern-villages": {
+            "ignoreOptionalWhen": {
+              "kind": "event",
+              "event": "village-safe"
+            }
+          }
+        }
+      },
+      "fight": {
+        "stages": {
+          "lantern-villages": {
+            "goals": [
+              {
+                "kind": "event",
+                "label": "Investigate the area",
+                "event": "foothold-established"
+              },
+              {
+                "kind": "escort",
+                "label": "Bring the captives safely to the hidden village",
+                "tile": "2,1",
+                "visibleWhen": {
+                  "kind": "event",
+                  "event": "village-contact"
+                }
+              },
+              {
+                "kind": "event",
+                "label": "Defeat all enemies before leaving",
+                "event": "simulation-road-cleared",
+                "visibleWhen": {
+                  "kind": "event",
+                  "event": "village-safe"
+                }
+              },
+              {
+                "kind": "event",
+                "label": "Lead Nera to the eastern road sign",
+                "tile": "18,5",
+                "event": "eastern-departure",
+                "visibleWhen": {
+                  "kind": "all",
+                  "conditions": [
+                    {
+                      "kind": "event",
+                      "event": "village-safe"
+                    },
+                    {
+                      "kind": "event",
+                      "event": "road-cleared"
+                    }
+                  ]
+                }
+              }
+            ],
+            "events": [
+              {
+                "id": "simulation-road-cleared",
+                "trigger": {
+                  "kind": "condition",
+                  "condition": {
+                    "kind": "event",
+                    "event": "road-cleared"
+                  }
+                },
+                "dialogue": []
+              }
+            ],
+            "eventConditions": {
+              "eastern-departure": {
+                "kind": "all",
+                "conditions": [
+                  {
+                    "kind": "proximity",
+                    "tile": "18,5",
+                    "radius": 0,
+                    "side": "player",
+                    "name": "Captain Nera"
+                  },
+                  {
+                    "kind": "event",
+                    "event": "road-cleared"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }

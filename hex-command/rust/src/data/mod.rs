@@ -27,7 +27,7 @@ pub use catalog::{
     ArenaDefaults, ArmyRoster, CampaignDefaults, ContentError, EnvironmentalModifiers, JsonBundle,
     LandscapeConfig, RaceDefinition, TerrainDefinition, TerrainModifier,
 };
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 /// Loaded, validated content with inheritance resolved into runtime tables.
 ///
 /// A host owns this value and lends it to battle operations. Authored array order

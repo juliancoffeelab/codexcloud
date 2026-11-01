@@ -1029,56 +1029,27 @@ impl Game<'_> {
         goals
     }
     pub fn finishes_objective(&self, u: &Unit, tile: usize, goals: &[Objective]) -> bool {
-        fn is_objective_kind_escort_escape(value: &ObjectiveKind) -> bool {
-            match value {
-                ObjectiveKind::Escort | ObjectiveKind::Escape => true,
-                ObjectiveKind::Capture
-                | ObjectiveKind::Defeat
-                | ObjectiveKind::Visit
-                | ObjectiveKind::Seal
-                | ObjectiveKind::Vigil => false,
-            }
+        if self.campaign.is_none()
+            || self.turn != Side::Player
+            || u.side != Side::Player
+            || tile == u.tile
+            || !goals
+                .iter()
+                .any(|g| actor_matches(&g.actor, u.id) && g.tiles.contains(&self.board.ids[tile]))
+            || !self.reachable(u).iter().any(|&(site, _)| site == tile)
+        {
+            return false;
         }
-        fn is_goal_escort(value: &Goal) -> bool {
-            match value {
-                Goal::Escort { .. } => true,
-                Goal::Defeat { .. }
-                | Goal::Escape { .. }
-                | Goal::Control { .. }
-                | Goal::Seal { .. }
-                | Goal::Event { .. }
-                | Goal::Hold { .. }
-                | Goal::Vigil { .. }
-                | Goal::Refuge { .. } => false,
-            }
-        }
-        fn is_goal_escape(value: &Goal) -> bool {
-            match value {
-                Goal::Escape { .. } => true,
-                Goal::Defeat { .. }
-                | Goal::Escort { .. }
-                | Goal::Control { .. }
-                | Goal::Seal { .. }
-                | Goal::Event { .. }
-                | Goal::Hold { .. }
-                | Goal::Vigil { .. }
-                | Goal::Refuge { .. } => false,
-            }
-        }
-
-        self.campaign.is_some()
-            && u.side == Side::Player
-            && goals.iter().any(|g| {
-                actor_matches(&g.actor, u.id)
-                    && is_objective_kind_escort_escape(&g.kind)
-                    && g.tiles.contains(&self.board.ids[tile])
+        // Follow the real route, scripted events and victory rules on an isolated copy.
+        let mut preview = self.fork();
+        preview.recordings = None;
+        preview
+            .execute(Command::Move {
+                unit: UnitId(u.id),
+                tile: TileId(self.board.ids[tile].clone()),
             })
-            && self.mission.as_ref().unwrap().goals.iter().all(|g| {
-                self.goal_done(g)
-                    || ((is_goal_escort(g) && u.role == Some(Role::Courier)
-                        || is_goal_escape(g) && u.role == Some(Role::Leader))
-                        && g.tile() == Some(&self.board.ids[tile]))
-            })
+            .is_ok()
+            && preview.winner == Some(Side::Player)
     }
     pub fn territory(&self) -> Vec<usize> {
         fn is_goal_control(value: &Goal) -> bool {

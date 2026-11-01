@@ -512,6 +512,7 @@ mod tests {
         let result = MatchResult::Campaign(CampaignResult {
             config: CampaignConfig {
                 seed: 1,
+                objective: "authored".into(),
                 diplomacy: crate::ai::Diplomacy::Pragmatic,
                 campaign: "fixture".into(),
                 player: Policy::Classic,

@@ -7,6 +7,7 @@ mod damage;
 pub mod error;
 pub mod leader_audit;
 pub mod matches;
+mod objectives;
 pub mod records;
 pub mod report;
 pub mod schedule;

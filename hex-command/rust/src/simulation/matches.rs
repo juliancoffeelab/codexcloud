@@ -624,6 +624,10 @@ pub fn run_campaign(
     config: CampaignConfig,
 ) -> Result<CampaignResult, SimulationError> {
     validate_limits(config.max_rounds, config.recruit_limit)?;
+    let objective_rules = rules
+        .simulation_objective_rules(&config.campaign, &config.objective)
+        .map_err(|e| SimulationError::InvalidConfig(e.to_string()))?;
+    let rules = objective_rules.as_ref().unwrap_or(rules);
     let chapters = rules
         .campaigns
         .get(&config.campaign)
@@ -668,13 +672,14 @@ pub fn run_campaign(
                 config.enemy
             };
             let side = game.turn;
+            let objective_goals = super::objectives::player_goals(&game, &config.objective);
             phases.push(phase(
                 &mut game,
                 &mut recording,
                 policy,
                 config.seed,
                 config.recruit_limit,
-                None,
+                objective_goals.as_deref(),
                 config.diplomacy,
                 &mut tactics[side.index()],
             )?);

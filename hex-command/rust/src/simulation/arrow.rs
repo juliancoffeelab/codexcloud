@@ -463,6 +463,7 @@ mod tests {
             &rules,
             CampaignConfig {
                 seed: 17,
+                objective: "authored".into(),
                 diplomacy: Diplomacy::Restrained,
                 campaign: "green-accord".into(),
                 player: Policy::Balanced,

@@ -94,9 +94,33 @@ pub struct ArenaDefaults {
 pub struct CampaignDefaults {
     pub default_max_rounds: u32,
     pub diplomacy: Vec<String>,
+    #[serde(default)]
+    pub objectives:
+        std::collections::BTreeMap<String, std::collections::BTreeMap<String, SimulationObjective>>,
     pub policies: Vec<String>,
     pub campaigns: Vec<String>,
 }
+/// Named simulator-only routes. Keys are authored stage map identifiers.
+#[derive(Clone, Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct SimulationObjective {
+    pub stages: std::collections::BTreeMap<String, SimulationStageObjective>,
+}
+#[derive(Clone, Debug, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct SimulationStageObjective {
+    #[serde(default)]
+    pub goals: Option<Vec<Goal>>,
+    #[serde(default)]
+    pub optional_goals: Option<Vec<Goal>>,
+    #[serde(default)]
+    pub events: Vec<Event>,
+    #[serde(default)]
+    pub event_conditions: std::collections::BTreeMap<String, Condition>,
+    #[serde(default)]
+    pub ignore_optional_when: Option<Condition>,
+}
+
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
@@ -710,6 +734,71 @@ impl Rules {
         let rosters: Vec<ArmyRoster> = parse(bundle, &manifest.simulation.rosters)?;
         let arena: ArenaDefaults = parse(bundle, &manifest.simulation.arena)?;
         let campaign_defaults: CampaignDefaults = parse(bundle, &manifest.simulation.campaign)?;
+        for (id, routes) in &campaign_defaults.objectives {
+            let authored = campaigns.get(id).ok_or_else(|| {
+                ContentError::new(
+                    &manifest.simulation.campaign,
+                    format!("unknown campaign {id}"),
+                )
+            })?;
+            if routes.is_empty() {
+                return Err(ContentError::new(
+                    &manifest.simulation.campaign,
+                    "simulation objective routes must not be empty",
+                ));
+            }
+            for (name, route) in routes {
+                identifier(name, &manifest.simulation.campaign)?;
+                if name == "authored" || route.stages.is_empty() {
+                    return Err(ContentError::new(
+                        &manifest.simulation.campaign,
+                        "objective routes need stages and cannot use the reserved name authored",
+                    ));
+                }
+                let mut selected = authored.clone();
+                apply_objective_route(&mut selected, route, &manifest.simulation.campaign)?;
+                for mission in &selected.missions {
+                    let state = maps
+                        .iter()
+                        .find(|((id, _), _)| *id == mission.map.id)
+                        .map(|(_, state)| state)
+                        .ok_or_else(|| {
+                            ContentError::new(
+                                &manifest.simulation.campaign,
+                                "unknown route stage map",
+                            )
+                        })?;
+                    validate_mission(
+                        mission,
+                        state,
+                        &types,
+                        &units,
+                        &terrains,
+                        &manifest.simulation.campaign,
+                    )?;
+                }
+                for (stage, plan) in &route.stages {
+                    let mission = selected
+                        .missions
+                        .iter()
+                        .find(|m| &m.map.id == stage)
+                        .unwrap();
+                    let state = maps
+                        .iter()
+                        .find(|((id, _), _)| id == stage)
+                        .map(|(_, state)| state)
+                        .unwrap();
+                    if let Some(condition) = &plan.ignore_optional_when {
+                        condition
+                            .validate(&state.tiles, &mission.events, false)
+                            .map_err(|e| ContentError::new(&manifest.simulation.campaign, e))?;
+                        condition
+                            .validate_units(&types)
+                            .map_err(|e| ContentError::new(&manifest.simulation.campaign, e))?;
+                    }
+                }
+            }
+        }
         validate_simulation(
             &rosters,
             &arena,
@@ -1649,5 +1738,81 @@ mod tests {
             bundle.insert(path.into(), serde_json::to_string(&unit).unwrap());
             assert_eq!(Rules::from_json_bundle(&bundle).unwrap_err().path, path);
         }
+    }
+}
+
+fn apply_objective_route(
+    campaign: &mut Campaign,
+    route: &SimulationObjective,
+    path: &str,
+) -> Result<(), ContentError> {
+    for (stage, plan) in &route.stages {
+        let mission = campaign
+            .missions
+            .iter_mut()
+            .find(|m| &m.map.id == stage)
+            .ok_or_else(|| {
+                ContentError::new(
+                    path,
+                    format!("objective route references unknown stage {stage}"),
+                )
+            })?;
+        if let Some(goals) = &plan.goals {
+            mission.goals = goals.clone();
+        }
+        if let Some(goals) = &plan.optional_goals {
+            mission.optional_goals = goals.clone();
+        }
+        mission.events.extend(plan.events.clone());
+        for (id, condition) in &plan.event_conditions {
+            let event = mission
+                .events
+                .iter_mut()
+                .find(|e| &e.id == id)
+                .ok_or_else(|| {
+                    ContentError::new(
+                        path,
+                        format!("objective route references unknown event {id}"),
+                    )
+                })?;
+            let Trigger::Condition { condition: current } = &mut event.trigger else {
+                return Err(ContentError::new(
+                    path,
+                    "eventConditions requires a condition-triggered event",
+                ));
+            };
+            *current = condition.clone();
+        }
+    }
+    Ok(())
+}
+impl Rules {
+    /// A named route changes only the native simulation's private catalog copy.
+    pub fn simulation_objective_rules(
+        &self,
+        campaign: &str,
+        route: &str,
+    ) -> Result<Option<Self>, ContentError> {
+        if route == "authored" {
+            return Ok(None);
+        }
+        let plan = self
+            .campaign_defaults
+            .objectives
+            .get(campaign)
+            .and_then(|routes| routes.get(route))
+            .ok_or_else(|| {
+                ContentError::new(
+                    "simulation/campaign.json",
+                    format!("unknown objective route {route} for {campaign}"),
+                )
+            })?;
+        let mut selected = self.clone();
+        apply_objective_route(
+            selected.campaigns.get_mut(campaign).unwrap(),
+            plan,
+            "simulation/campaign.json",
+        )?;
+        Ok(Some(selected))
     }
 }

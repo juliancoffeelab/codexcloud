@@ -29,3 +29,33 @@ npm run ai:analyze -- artifacts/saved/report.json --out artifacts/saved/analytic
 
 Use the [metrics reference](metrics.md) to choose required telemetry and the
 [reporting reference](reporting.md) to deliver the requested comparison.
+
+## Campaign objective routes
+
+`--diplomacy pragmatic,restrained` filters the modes declared by each campaign's
+`playerDiplomacy`. `--objectives flight,fight` likewise filters that campaign's
+named simulation routes. The scheduler takes their cross product with seeds,
+player tactics and enemy tactics. Reports keep both dimensions separate.
+`--objectives authored` runs the unchanged authored objectives as a control.
+
+Declare routes under `objectives.<campaign-id>.<route-name>.stages` in
+`rust/data/simulation/campaign.json`. Stage keys are authored map identifiers;
+route names are arbitrary identifiers, not Rust enum variants. Campaigns without
+routes retain one `authored` configuration. Adding a campaign or route needs data
+and its normal campaign-list registration, not simulator code.
+
+Each stage can declare:
+
+- `goals` and `optionalGoals`: complete replacement arrays using the existing
+  campaign Goal schema. Omitted arrays keep the authored objectives.
+- `events`: additional events using the existing campaign Event schema.
+- `eventConditions`: existing condition-event IDs mapped to explicit replacement
+  conditions. Use these to express route prerequisites and ordering.
+- `ignoreOptionalWhen`: a condition after which the simulation player omits
+  incidental optional-event targets. This changes its goals, not combat legality.
+
+Definitions are explicit: the runner never infers exits, enemy factions, goal
+positions or a campaign's intended branches. Catalog loading validates route
+names, stages, goals, events and conditions with the normal campaign validators.
+Routes apply to private native-simulation catalog copies; they add no playable
+menus, choices, commands or save fields. The browser retains its authored goals.
